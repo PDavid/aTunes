@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<project name="atunes" basedir=".">
+
+	<property name="deploy_folder" value="${basedir}/deploy/aTunes" />
+	<property name="deploy_base_folder" value="${basedir}/deploy" />
+	<property name="deployable" value="${basedir}/deployable" />
+	<property name="deploy_result" value="${basedir}/deploy_result" />
+	<property name="build_tools" location="${basedir}/build_tools" />
+	<property name="lib_build" location="${build_tools}/lib" />
+	<property name="lib" location="${basedir}/lib" />
+	<property name="launch4j.dir" location="${lib_build}/launch4j" />
+	<property name="win_tools" location="${basedir}/win_tools" />
+	<property name="translations" location="${basedir}/src/main/resources/translations" />
+	<property name="settings" location="${basedir}/src/main/resources/settings" />
+	<property name="images" location="${basedir}/src/main/resources/images" />
+	<property name="src" location="${basedir}/src/main/java" />
+
+	<!-- Allows us to use the IzPack Ant task -->
+	<taskdef name="izpack" classpath="${lib_build}/standalone-compiler.jar" classname="com.izforge.izpack.ant.IzPackTask" />
+	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${lib_build}/launch4j/launch4j.jar:${lib_build}/launch4j/xstream.jar" />
+	<!-- Creates a Linux desktop entry-->
+	<taskdef name="desktopEntry" classpath="${lib_build}/ant-deb.jar" classname="com.googlecode.ant_deb_task.DesktopEntry" />
+	<!-- Creates an deb package-->
+	<taskdef name="deb" classpath="${lib_build}/ant-deb.jar" classname="com.googlecode.ant_deb_task.Deb" />
+
+
+
+	<!-- Removes configuration, temporary and cache files -->
+	<target name="clean">
+		<delete dir="${deploy_result}" />
+		<delete dir="${deploy_base_folder}" />
+	</target>
+
+	
+	<!-- Creates the exe file for Windows -->
+	<target name="create_aTunes.exe">
+		<launch4j configFile="${build_tools}/launch4j.xml" outfile="${deploy_folder}/aTunes.exe" />
+	</target>
+
+
+	<!-- Prepares the directory structure -->
+	<target name="prepare">
+
+		<mkdir dir="${deploy_folder}" />
+		<copy todir="${deploy_folder}">
+			<fileset dir="${deployable}" includes="*" />
+		</copy>
+
+		<copy todir="${deploy_folder}/settings">
+			<fileset dir="${settings}" includes="*" />
+		</copy>
+
+		<copy todir="${deploy_folder}/build_tools">
+			<fileset dir="${build_tools}" includes="*" />
+		</copy>
+
+		<copy todir="${deploy_folder}" file="docs/changelog.txt" />
+
+		<mkdir dir="${deploy_folder}/translations" />
+		<copy todir="${deploy_folder}/translations">
+			<fileset dir="${translations}" includes="*" />
+		</copy>
+
+		<mkdir dir="${deploy_folder}/win_tools" />
+		<copy todir="${deploy_folder}/win_tools">
+			<fileset dir="${win_tools}" includes="**/" />
+		</copy>
+		<mkdir dir="${deploy_folder}/mac_tools" />
+
+		<mkdir dir="${deploy_folder}/src" />
+		<copy todir="${deploy_folder}/src">
+			<fileset dir="${src}" excludes="*/*.class" />
+		</copy>
+		<mkdir dir="${deploy_folder}/temp" />
+		<mkdir dir="${deploy_folder}/javadoc" />
+
+		<copy file="target/atunes-${version}.jar" tofile="${deploy_folder}/aTunes.jar" />
+
+		<copy todir="${deploy_folder}/temp">
+			<fileset dir="${images}" includes="*.*" />
+		</copy>
+
+		<copy todir="${deploy_folder}/temp">
+			<fileset dir="${images}/themes" includes="*.*" />
+		</copy>
+
+		<delete dir="${deploy_folder}/temp" />
+
+		<mkdir dir="${deploy_result}" />
+
+		<copy todir="${deploy_folder}" file="${build_tools}/shortcutSpec.xml" />
+	</target>
+
+
+
+	<!-- Creates a standard .jar installer -->
+	<target name="create_installer" depends="prepare">
+		<!-- We call IzPack -->
+		<echo message="Makes the installer using IzPack" />
+		<izpack input="${build_tools}/izPack_build.xml" output="${deploy_result}/aTunes_installer.jar" installerType="standard" basedir="${deploy_folder}" />
+
+		<!-- Create an exe for installer -->
+		<launch4j configFile="${build_tools}/launch4j_installer.xml" outfile="${deploy_result}/aTunes_installer.exe" />
+	</target>
+
+	
+	<!-- Creates a Ubuntu/Debian package -->
+	<target name="create_deb" depends="prepare">
+
+		<desktopEntry toFile="deploy/aTunes/atunes.desktop" name="aTunes" icon="atunes125" exec="atunes" categories="Audio;AudioVideo;" type="Application">
+			<name lang="de" value="aTunes" />
+			<genericName value="Audio Player" />
+			<genericName lang="de" value="Audioplayer" />
+			<comment value="aTunes is a full-featured audio player and organizer" />
+			<comment lang="de" value="aTunes ist ein vollwertiger Audioplayer und -manager" />
+		</desktopEntry>
+
+
+		<deb todir="${deploy_result}" package="atunes" section="sound" depends="libxine1-plugins|mplayer|vlc,sun-java6-jre|sun-java6-jdk|openjdk-java6-jre|openjdk-java6-jdk" recommends="cdda2wav,vorbis-tools,flac" suggests="icedax,lame,faac">
+
+			<version upstream="${version}" />
+			<maintainer name="aTunes team" email="atunes-packages@lists.sourceforge.net" />
+			<description synopsis="Audio Player">aTunes is a full-featured audio player and organizer. aTunes supports mp3, ogg, wma, wav, flac and mp4 files and allows users to edit tags, organize music and rip audio cds easily.</description>
+
+			<tarfileset dir="${deploy_folder}" prefix="usr/share/atunes" username="root" group="root" filemode="755">
+				<include name="**/*.sh" />
+			</tarfileset>
+			<tarfileset dir="${deploy_folder}" prefix="usr/share/atunes" username="root" group="root">
+				<exclude name="**/temp/**" />
+				<exclude name="**/aTunes.sh" />
+				<exclude name="**/atunes.desktop" />
+				<exclude name="**/win_tools/**" />
+				<exclude name="**/mac_tools/**" />
+				<exclude name="**/javadoc/**" />
+				<exclude name="**/src/**" />
+				<exclude name="**/*.dll" />
+				<exclude name="**/*.exe" />
+				<exclude name="**/*.command" />
+				<exclude name="**/*.ico" />
+				<exclude name="**/*.icns" />
+				<exclude name="**/atunes125.png" />
+				<exclude name="**/shortcutSpec.xml" />
+				<exclude name="**/settings/**" />
+				<exclude name="**/translations/**" />
+				<exclude name="**/build_tools/**" />
+				<exclude name="**/atunes" />
+			</tarfileset>
+			<tarfileset dir="${deployable}" prefix="usr/share/pixmaps" username="root" group="root">
+				<include name="**/atunes125.png" />
+			</tarfileset>
+			<tarfileset dir="${deployable}" prefix="usr/bin" username="root" group="root" filemode="755">
+				<include name="atunes" />
+			</tarfileset>
+			<tarfileset dir="${deploy_folder}" prefix="usr/share/applications" username="root" group="root">
+				<include name="atunes.desktop" />
+			</tarfileset>
+		</deb>
+
+	</target>
+</project>

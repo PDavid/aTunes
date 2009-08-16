@@ -1,0 +1,794 @@
+﻿aTunes 1.14.0
+-------------
+- Support for libnotify (Gnome)
+- File chooser in tag dialog should open in directory of the audio file (feature request [2786730])
+- Three new look and feel skins (Dust, Dust Coffee and Twilight)
+- Avoid child nodes in album tree view in navigator
+- Use artist names comparator in device view
+- New command to start CD ripper
+- Start app and run commands if there is no more instances
+- New extended tool tip used in all navigation views
+- New options to execute commands before and after accessing repository
+- Added options in help menu to go to web site or wiki
+- New option to edit tags from folder name pattern
+- Show warning before clearing playlist (feature request [2786727])
+- Show warning if karaoke or normalization mode is enabled
+- Audio object properties panel enhancements
+- Added option to synchronize device with play list
+- Visual improvements in full screen mode
+- INTERNAL: Avoid unnecessary refresh view operations
+- INTERNAL: Share actions between play list and navigation tree and table
+- INTERNAL: Refactoring of play list
+
+aTunes 1.13.3
+-------------
+- FIX: LyricWiki XML API is offline
+- FIX: Search: wrong song is added [2820043]
+- FIX: Column selection popup menu opens at the wrong location [2819588]
+- FIX: When removing songs from favorites, not all songs were removed
+- FIX: Extract Image action opens dialog in wrong monitor
+
+aTunes 1.13.2
+-------------
+- FIX: Last.fm issue with new image size
+- FIX: Wrong export to device with album artist pattern [2811019]
+- FIX: Invalid handling of disc number [2810837]
+- FIX: Mute bug with MPlayer engine
+- FIX: Wrong colours if album cover is retrieved automatically [2795024]
+- Croatian translation added (thanks to Dominko Aždajić)
+- Danish translation added (thanks to David Rasmussen)
+
+aTunes 1.13.1
+-------------
+- FIX: aTunes does not start anymore if proxy is set [2788274]
+- FIX: Tray icon bug
+- FIX: Album Tooltip in Linux shows task bar button
+- FIX: NPE when trying to set album tooltip image if tooltip is no longer visible
+- FIX: No sort type defined by default
+- FIX: CD Ripper fails if CD artist or composer are unknown [2791497]
+
+aTunes 1.13.0
+-------------
+- Hotkeys are now configurable (feature request [1951766])
+- Option to import folders to repository (feature request [1966408])
+- Global hotkeys support for Linux (feature request [2629848])
+- Application can receive commands (play, stop, next, previous) from other instances or third-party apps
+- Configurable OSD width and horizontal / vertical alignment
+- Added tool to import loved tracks from LastFM profile
+- Error correction when ripping CD's
+- Option to retry repository load when it's not found
+- Some visual improvements in player controls
+- Option to copy playlist to mp3 player (feature request [2526017])
+- New export process
+- Added "ban" in Last.FM (feature request [2533022])
+- Added option to automatically "love" songs in Last.FM when added to favorites
+- Import process includes an option to complete tags using custom patterns
+- Better quality of artist images retrieved from LastFM
+- Added support for Disc Number tag attribute
+- Show a message in context panel for every similar artist available in repository
+- New option to edit tags from file name pattern
+- Added help to complete title from file name when editing tag
+- Folder are now removed completely in folder view
+- Remove common track titles text from last.fm albums
+- FIX: aTunes should have an icon for MacOS [2192873] (patch by Patawrouks)
+- FIX: Last.fm submission through proxy [2519827]
+- FIX: Allow application arguments when using .deb package
+- FIX: Full screen view does not use the full screen on Gnome systems [2690528]
+- FIX: "Repair genres" should repair only empty genre tag fields
+- FIX: M3U files with online radios are not loaded properly [2704880]
+- FIX: Show splash screen in the same screen where application is
+- FIX: Avoid HTTP 505 from Last.fm if version name is not encoded properly when scrobbling
+- FIX: Show full screen in the same screen where application is
+- FIX: Tray icon poup menu problems [2690531]
+- FIX: Radio playlist not played because url has no extension [2493205]
+- FIX: Artist missing on last tracks of an imported CD [2593977]
+- FIX: Null quality when importing CD [2747699]
+- FIX: Context panel is inactive when song is selected [2773989]
+- FIX: Context panel was updated when changing not current playing audio file
+- FIX: Context panel sometimes showed the wrong cover in the titel pane
+- FIX: NPE when setting automatically some attributes if file has no tag
+- Galician translation added (thanks to Martín Pena)
+
+aTunes 1.12.0
+-------------
+- Option for person names sorting in artist tag view
+- Delete tag fields if value is empty [2343496] (patch by scorefan)
+- Play list can be arranged with drag and drop (feature request [1905732])
+- Audio file names can be renamed (feature request [2342878])
+- Show cover in the EditTagDialog in a new tab (patch [2392923] by scorefan)
+- Sort radio labels
+- Volume control with mouse wheel (patch [2395469] by Patawrouks)
+- Normalization status in player controls panel (patch [2357826] by Patawrouks)
+- Show ticks and labels on player's progress bar (patch [2397785] by Patawrouks)
+- Workaround to apply equalizer changes when using mplayer (Patch 2327240 by Patawrouks)
+- Album list and similar artists panel new design
+- New context tab to show videos from YouTube (Patch by Tobias Melcher)
+- All tag fields can now be written to wma format
+- Show player controls based on player engine capabilities (patch [2453943] by Patawrouks)
+- Cue sheet support (patch by Mingsky)
+- New options to filter album list in Context Information Panel
+- Clear play list key changed from ESC to Ctrl+Delete
+- Improvements in multiple window view
+- INTERNAL: Refactored play lists handling 
+- INTERNAL: Refactored background processes
+- Added keys' combination to show Navigator and Context Information Panel
+- Playlist open/save dialog does not store location (feature request [2506813])
+- Hide JSplitPane divider when one panel is not visible
+- Playlist & player behaviors options (patch [2418597] by Patawrouks) 
+- FIX: Set files writable if necessary when editing tags
+- FIX: Audio object properties panel state was not stored correctly
+- FIX: Use last.fm cover when internal or external cover is not available in ContextInformationPanel
+- FIX: Navigator filter not cleared when text field becomes empty
+- FIX: Wrong panel shown in preferences dialog
+- FIX: Artist tooltip appears in navigator when mouse over an album
+- FIX: F2 shortcut does not work [2535617]
+- FIX: Window don't fit to single Screen in Windows [2491656]
+- FIX: Preferences dialog keeps settings even if it was cancelled [2558019]
+- FIX: Tag editing does not chang context info if necessary [ 2558040 ]
+
+
+aTunes 1.11.2 "Bora"
+--------------------
+- FIX: Drag and drop feature is broken
+- FIX: Mute problem in tray icon menu [2465514]
+- FIX: Edit titles dialog fails [2459528]
+
+
+aTunes 1.11.1
+-------------
+- FIX: Last.fm submission bug [2367672]
+- FIX: Full screen doesn't work with Windows XP [2373904]
+- FIX: Log file was always written to the default config folder
+- FIX: Maximum heap size increased [2383890]
+- FIX: Listeners are added in the preferences dialog more than once (patch [2357826] by Patawrouks)
+- FIX: Navigator filters dissapear when pressing Ctrl, Alt, Shift... keys [2393149]
+- FIX: Error trying to get artist from an album with album artist filled when adding to favorites
+- FIX: When repository cache can't be read, repository is reloaded without asking user to select folders again
+- FIX: Better quality for similar artists images
+- FIX: Workaround to show correct length of VBR mp3 files when using mplayer (bug [2391301])
+- FIX: Avoid window width to be greater than main device width when using multiple monitors
+- FIX: Shutdown should work even if exception gets thrown
+- FIX: Shuffle playlist button is disabled if no item in playlist is selected
+- FIX: Volume label shows "00" the first time application is started
+- FIX: Import simple .m3u playlists even if header is missing [2414081]
+- FIX: Mute problem [2445870]
+- FIX: Preferences dialog does not show the theme preview after deleting all settings
+
+
+aTunes 1.11.0
+-------------
+- No more GUI freezing in repository selection dialog
+- Cache for Last.fm submissions
+- "Sort by artist and album" option for navigation table
+- Better support for editing tags of more than one file
+- Improved radio browser
+- Added option "Set cover automatically"
+- If possible use album artist for album context information
+- Less intrusive update dialog
+- "Add as favorite in Last.FM" option in context information panel
+- Improvements of favorites in play list
+- Use localized wiki text from Last.fm
+- Lyrics providers and their order can be specified
+- Updated mp3 encoder
+- Updated cdda2wav.exe
+- Updated Jaudiotagger to 1.157
+- Enable / disable playlist auto scroll (Feature request [2138582])
+- Added song filter in navigator (Feature request [1999677])
+- Better random selection of audio objects in play list when shuffle enabled
+- Better support for multiple monitors
+- Display the volume level [2291909] (patch by Patawrouks)
+- Pause/resume selected song in playlist with space bar [2291609] (patch by Patawrouks)
+- EQ change workaround for Mplayer [2327240] (patch by Patawrouks)
+- Added a shutdown hook to close the player when JVM receives a kill or ^C
+signal. [2326431] (patch by Patawrouks)
+- Added "Close" and "Close others" to play list tabs popup
+- Keep selected nodes in navigator after a tag operation (Feature request [ 2138584 ])
+- INTERNAL: Refactored navigator
+- FIX: Full screen does not work [2100247]
+- FIX: When only ID3v1 was present, tag could not be written when certain fields were added [2141228]
+- FIX: Radio "Labels" can not be added to playlist [ 2268809 ]
+- FIX: "Set lyrics automatically" cannot be terminated [ 2214909 ] 
+- FIX: DnD exception in playlist [ 2322716 ]
+
+
+aTunes 1.10.1
+-------------
+- FIX: Wrong artist info in albums context info panel [2108222]
+- FIX: Wrong translation encoding [2118277]
+- FIX: OSD not displayed when jumping to next or previous track [2120875]
+- FIX: Multiple window mode does not work [2121569]
+- FIX: Lyrics retrieved from lyricwiki aren't well formatted [2124859]
+- FIX: Can't read and write tags in wma files [2110232]
+- FIX: Request of restarting doesn't work [2129107]
+- FIX: Context Panel split pane location not changed when pressing "Show Context Information" option if window size is maximized 
+- FIX: Not supported formats are not skipped under Xine [ 2110008 ]
+
+
+aTunes 1.10.0
+-------------
+- Improved GUI performance (update to Substance 5)
+- Added support for Xine (thanks to Aekold Helbrass)
+- Support for Lyricsfly
+- Fill podcast feed name from rss/atom feed (feature request [1993075])
+- Use true full screen for full screen dialog if possible
+- Right-click should not press tray buttons (feature request[1995438])
+- Images can be read from and written to a tag
+- Also show cover image from tag or harddisk in context information panel
+- Display genre name if genre field contains a mappable number
+- Added tooltip for folder nodes in navigator
+- Added option to highlight folders in navigator containing incomplete tags
+- Rename and refactor Audioscrobbler panel to Context information panel
+- Use album artist when ordering in playlist (feature request [1997534])
+- When selecting repository again, don't read again files of previous repository and refresh instead of this
+- Allowed drag and drop from play list to device tree to copy files (feature request [1997528])
+- Button for editing lyrics (feature request [2001975])
+- Enable/Disable font smoothing option
+- Added search in device and favorites
+- Added cache for several devices (feature request [ 2026378 ])
+- Support for Radios and Podcast feed entries connections with proxy server (without authentification)
+- Added cache for several devices (feature request [ 2026378 ])
+- Refresh navigator as user types in filter text field
+- Added option to show/hide context tabs text
+- Show track number in navigation table
+- "Now playing" support for Last.fm
+- Improved html escaping
+- Sort play list ascending or descending (feature request [ 2083814 ])
+- FIX: Lyrics service should handle punctuations [1990786]
+- FIX: Empty dialog could appear before the next songs begins playing
+- FIX: Offer to restart when "Use default font" is changed
+- FIX: Selected audioscrobbler panel is not remembered [1993084]
+- FIX: setExtendedState in Linux systems does not work before setVisible (see bug report http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6365898)
+- FIX: Statistics are not updated when option cacheFilesBeforePlaying is enabled
+- FIX: NPE thrown when refreshing file info after editing tag if album artist attribute present but artist not found
+- FIX: Cover not shown when title contains special symbols (bug [2001927]]
+- FIX: Catch exception when file contains a ID3v1.0 tag
+- FIX: Could not write to mp4 files when genre was not in genre list
+- FIX: Avoid remove information from context information panel when user presses Ok button in preferences window
+- FIX: Use ALT key to move songs in play list (bug [ 2020922 ])
+- FIX: Fade away not working
+- FIX: Status bar error when pausing during buffering (bug [ 2036625 ])
+- FIX: aTunes unusable because of Autoresizing and JSplitPanes (bug [ 1952665 ])
+- FIX: Window position on startup with multiple screen devices (bug [ 2007977 ])
+- FIX: Use global hotkeys Interface Bug (bug [ 2083795 ])
+- INTERNAL: Switched to new Last.fm api
+- Swedish translation added (thanks to Tobias Järvelöv)
+
+
+aTunes 1.9.0 "Mistral"
+----------------------
+- FIX: Empty error dialog appeared sometimes before a new song should play
+- FIX: LyricMode now handles brackets and punctuation
+
+
+aTunes 1.9.0
+------------
+- Custom button shapers for player controls
+- Improvements on play list auto scrolling
+- Added popup menu button to show all opened play lists
+- Improvements on startup time
+- Sort songs by modification date in navigator (feature request [1890500])
+- Tags and Folders tags merged in new Repository tab
+- Device view reworked
+- Fading effects for tooltips if Java 6 Update 10 is used
+- Added JavaDoc documentation
+- Update system now supports unstable versions
+- Improvements on repository selection dialog
+- Application ask user to restart app when changing some preferences
+- Show notification for new podcast entries in status bar (feature request [1958192])
+- Expanded and selected nodes remembered in folder view
+- LyricsDirectory engine added
+- Support for optional Nero AAC encoder added
+- Support for CDParanoia on Mac OS X (thanks to Roeland Maes)
+- Arrange columns button moved to playlist popup button
+- Use custom icon for every type of favorite nodes in favorite tree
+- Added option to show/hide navigator tabs text
+- Added option to place navigator tabs at left or top
+- Pressing Enter on playlist starts playing selected song
+- Added option to show / hide tool bar
+- Audioscrobbler panel tabs customized by type of information (song, radio, podcast)
+- Show audio object info on first Audioscrobbler panel before lyrics are retrieved
+- Pressing enter will apply changes in InputDialog (thanks to Aekold Helbrass)
+- FIX: Opening a song from OS file explorer is ignored (Bug [1954405])
+- FIX: Don't refresh all navigator tabs when changing repository view
+- FIX: Duplicate items in albums combo box in tag editing dialog [1955151]
+- FIX: Lyrics retrieval from LyricWiki doesn't work anymore
+- FIX: Better handling of cdda2wav output on Linux systems
+- FIX: Search tool field descriptions not translated [1956353]
+- FIX: Split Pane Divider Position [1961908]
+- FIX: Lyrics present in tags are shown faster
+- FIX: Previous button didn't work well when moving songs to previous position
+- FIX: Use album artist if available for folder names when exporting files
+- Ukrainian translation added (thanks to Aekold Helbrass)
+
+
+aTunes 1.8.3 "Ostwind"
+----------------------
+- Fix for lyricwiki and lirc
+- Fix for cdda2wav under Linux
+- Updated to JAudiotagger 1.117 (various small bugfixes)
+- Updated arabic and norwegian translations
+- Added polish translation (thanks to Paweł Baranik)
+
+aTunes 1.8.3
+------------
+- Better quality for scaled images
+- Shuffle playlist function added
+- Smart playlist: add unplayed songs to playlist (Feature request [1903996])
+- Bigger cache for radios and podcast entries
+- Can now rip and encode in parallel which should result in faster ripping
+- Added radio labels to create groups in radio navigator
+- Added preset radio stations
+- Added search feature using Lucene
+- Access to file folder from play list (Feature request [1914944])
+- Fade away music when stopping (Feature request [1905438])
+- Config folder customizable with application argument (Feature Request [1911681])
+- Podcast entry downloads (with contributions by Philip Heron)
+- Added option to cache files to a temporal folder before playing
+- Added random device autofilling
+- FIX: LyricWiki uppercase bug
+- FIX: Lyrics retrieving stops if empty lyrics are retrieved
+- FIX: Better sort order for folders in folder view
+- FIX: Drag and drop from navigator tree to playlist doesn't work with radios and podcasts
+- FIX: Displaying artist view in navigator was slow
+- FIX: The alphabetical ordering for the artists in the navigator window is case dependant [1913639]
+- FIX: Full screen appears in monitor where aTunes is visible [1874517]
+- FIX: Cover navigator height with multiple monitors [1913587]
+- FIX: Reduced probability of false positive for end of file detection
+- FIX: Workaround to avoid mplayer volume bug when paused
+- FIX: Deleted songs are not skipped if short path names are used
+- Polish translation added (Pawel Baranik)
+
+
+aTunes 1.8.2
+------------
+- Basic hotkey support (Windows 2000, XP, 2003, Vista only)
+- Karaoke function added
+- Slider disabled if a radio or podcast entry is playing
+- Don't update stats until the song has played for half of the duration or four minutes (Feature Request [1864788])
+- More time info in player panel for radios and podcast feed entries
+- Bitrate and frequency info for radios
+- Added "Play Now" feature at navigator table
+- Artist wiki text is shown on user-defined language
+- Use Escape key to close dialogs (Feature Request [1868326])
+- Multiple playlist support
+- Added support for Real Audio (tags read only)
+- Added lyrics, composer and album artist field for tags
+- Added equalizer
+- Option for renaming radios, podcast feeds and playlists
+- Read ICY info from radio streams
+- Added "Search for video" button at audioscrobbler panel
+- Radio support for non-playlist urls
+- Transparency support for OSD dialog
+- Previous button really jumps to previous played audio objects
+- Tag view now uses "Album Artist" field if found as artist name
+- Show audio object type in playlist
+- XML repository for better compability with future versions
+- FIX: OSD display wrong track [1864517]
+- FIX: MPlayer does not accept filenames outside the local codepage on Windows
+- FIX: Bug in handling jpeg in IDT3v2 tags [1823609]
+- FIX: File name not appears in OSD when tag has no title
+- FIX: Avoid artist wiki info JTextArea to scroll to bottom
+- FIX: Avoid podcast feed entry description JTextArea to scroll to bottom
+- FIX: Navigator window not appearing when multiple windows is set [1851062]
+- FIX: Lyrics race condition
+- FIX: Horizontal split pane divider location not remembered
+- FIX: Wrong status bar info when paused radio or podcast feed entry is resumed
+- FIX: Valid folder method name can remove too many dots
+- FIX: Maximized frame state is not remembered when the frame visibility is toggled via the tray menu
+- FIX: Wrong tooltip in playlist for radios and podcast feed entries
+- FIX: Big images must be scaled down to fit window in image viewer
+- FIX: Setting mute mode during radio or podcast feed entry caching is ignored
+- FIX: When adding songs to an empty list in shuffle mode, random song is selected for playing
+- FIX: When searching for dowloaded cover files, extension is not included, so any cover is retrieved
+- FIX: Titles were not editable in CD ripper when offline or no title names were found
+- FIX: Artist nodes would not display correctly under genre view
+- FIX: Titles would get lost in album view if album name is shared by multiple artists [1838614]
+- FIX: Mp4 files encoded by FAAC were not editable (thanks to Paul Taylor from JAudiotagger)
+- FIX: Scale down album picture to fit screen [ 1868337 ]
+- INTERNAL: New interface AudioObject for AudioFile, Radio and PodcastFeedEntry
+- INTERNAL: JDK 6 tray icon used; JDIC libs removed
+- Russian translation added (Kostin Dmitry)
+- Dutch translation added (Kristof Bal)
+
+
+aTunes 1.8.1
+------------
+- Refactored lyrics search engine and added a new search engine based on http://lyricwiki.org
+- Show "-" instead of 00:00 as duration for podcast feed entries without duration node (duration=0)
+- Better duration parsing for podcast feed entries
+- New properties dialogs
+- Icons for tray icon menu and visual improvements
+- Option for enabling/disabling normalisation added to preferences panel
+- No more freezing in cover navigator with many cover images
+- Faster application shutdown
+- Case insensitive auto completion
+- Migrated tagging library to JAudiotagger 
+- Added support for mp4 tags
+- Added "Scroll Playlist to current song" button at play list controls
+- Added ripping to wav format
+- Added optional support for faac (experimental!)
+- Reduced dependencies for ripping to cdda2wav/icedax, all encoders are optional
+- Changed detection for unsuccessfull connection when using cdda2wav/icedax
+- mplayer.exe updated to v1.0rc2 to fix problems with flac files
+- Use JXStatusBar for status bar
+- Use Tahoma or Segoe UI font if available and appropriate
+- Use SubstanceBusinessBlackSteel skin as default
+- Visual enhancements for AddRadioDialog and AddPodcastFeedDialog
+- Favorites data stored in a separate file from Repository
+- Modified installer with multi-language support
+- Link to contributors in "About" dialog
+- Autodetection of locale with appropriate choice of language (Andrej Herich)
+- Right to left layout support (for arabic)
+- Revised OSD animation
+- Remove podcast entries that are no longer in the feed
+- Close OSD on mouse click
+- Added "Play at startup" option at Preferences
+- Added HD cache for Audioscrobbler images and data
+- Added HD cache for Lyrics
+- Solaris support added (James C. McPherson)
+- Mark Podcast Feed Entry as listended menu item added
+- Option for using smart sorting in tag view (ignoring "The") (Feature Request [1853676])
+- Better context menu for radios and podcast feeds (Feature Request [1858166])
+- INTERNAL: Improved thread safety and gui responsiveness
+- FIX: Cursor jump when editing tags
+- FIX: When ID3v1.1 tags were present, edit dialog would not appear
+- FIX: Track number not appearing in edit tag dialog under certain circumstances
+- FIX: When using mass tagging, fields left blank are deleted in tag (Bug 1837362)
+- FIX: Alt+6 for Podcast view
+- FIX: Application settings are now stored in an xml file. In this way we prevent misconfiguration after version upgrades
+- FIX: Selected rows problem in JTables (Bug 1821288)
+- FIX: AudioScrobbler race condition (Bug 1848927)
+- FIX: avoid playing the same song on shuffle mode (Michael Rutter)
+- Norwegian translation added (thanks to Arild Hansen)
+- Turkish translation added (thanks to Serkan Aytin)
+- Arabic translation added (thanks to Muhammad Bashir Al-Noimi)
+- Hungarian translation added (thanks to Attila Balázs and anonymous)
+- Italian translation updated (capitanfuturo1)
+
+
+aTunes 1.8.0
+------------
+- Added audio podcast support (rss + atom) (Thomas Beckers)
+- FIX: app icon image for EditPreferencesDialog (Thomas Beckers)
+- Added delay when scrolling to next song in playlist under Linux in an attempt to reduce freezes (Sylvain Gaudard and Thomas Beckers)
+- Added filename verification when writting to mp3 devices (Sylvain Gaudard)
+- FIX: Could not delete files from mp3 devices (Sylvain Gaudard)
+- FIX: aTunes would not play next song under certain circumstances (Sylvain Gaudard)
+- FIX: aTunes would hop a song because of bad EOF detection (Sylvain Gaudard)
+- Added Score column in play list (NOTE: Read/Write Score from/to audio files not implemented)
+- FIX: disable reordering and resizing of columns in some audioscrobbler panel tables (Thomas Beckers)
+- FIX: NullPointerException in NavigationTreeMouseListener (Thomas Beckers)
+- Enabled Volume Normalization Option to Mplayer
+- FIX: max volume for radios
+- FIX: .jpg.png ending (cd ripping & Amazon image)
+- FIX: CD Import Progress Dialog title not reset (1828438)
+- FIX: null pointer exception when cancelling cd ripping
+- Added czech translation (thanks to Vladim�r Sl�vik)
+
+
+aTunes 1.7.4
+------------
+- Added year and genre fields to CD ripper (Thomas Beckers)
+- Added saving of currently selected AudioScrobbler panel (Thomas Beckers)
+- Added brighter tray icons for Windows Vista (Thomas Beckers)
+- Added icons in About menu (Thomas Beckers)
+- Added an entry for enabling/disabling Audioscrobbler panel (Thomas Beckers)
+- FIX: Persistent split pane divider location (Thomas Beckers)
+- FIX: Null pointer when deleting a radio station (Thomas Beckers)
+- FIX: Icons doesn't change from "play" to "pause" [Bug 1818060] (Thomas Beckers)
+- FIX: "Clear Tag" option freezes UI
+- Updated Substance Look And Feel version to 4.0
+- Repository refresh improved: now checks modification date
+- FIX: duplicate entries on stats
+- FIX: Null pointer on Amazon album search
+- FIX: aTunes freezes at startup when no repository found
+- Added button for search filter in playlist bar and moved playlist bar to the bottom (Sylvain Gaudard)
+- Added saving of last used settings in CD ripper (Sylvain Gaudard)
+- Added filename and pathname checking for export tool (Sylain Gaudard)
+- Added CTRL-F keybinding to search filter in playlist panel and allowed switching it off by pressing a second time the search filter button (Sylvain Gaudard)
+- Added Terracotta and Sunset themes avaible in Substance 4.0 (Sylvain Gaudard)
+- Added new icon for search field reset (Sylvain Gaudard)
+- Added tooltips to playlist search filter (Sylvain Gaudard)
+- Reduced font size of file properties panel to allow longer filenames (Sylvain Gaudard)
+- FIX: Adapted preferences dialog for greek translation in order to display the complete text (Sylvain Gaudard, Pavlos Paraskeuopoulos)
+- FIX: Null pointer when file properties panel gets enabled if no song in playlist [Bug 1810167] (Sylvain Gaudard)
+- FIX: Race condition in mplayer handler (Sylvain Gaudard)
+- FIX: aTunes launches several mplayer instances [Bug 1818064] (Thomas Beckers, Sylvain Gaudard)
+- FIX: Updated cdda2wav.exe to version 2.01.01a35 to fix compatibility with Windows Vista (Thomas Beckers, Sylvain Gaudard)
+- FIX: Race condition on AudioScrobbler service
+- Added device features: auto-mount devices, copy from and to repository
+- FIX: Set default max memory to 128MB (previously was 64MB)
+- AudioScrobbler Album information visual changes
+- AudioScrobbler Artist information visual changes
+- AudioScrobbler Similar artist information visual changes
+- Added Artist Bio at AudioScrobbler panel
+- FIX: aTunes would not play the next file with non-english version of mplayer (Bertrand Florat)
+
+
+aTunes 1.7.3
+------------
+- FIX: Case insensitive auto-completion on tag edition
+- FIX: Lyric search improvement (Bertrand Florat)
+- FIX: Bring window to front when clicking on tray icon (Thomas Beckers)
+- Added possibility to change track names in the CD ripper dialog (Thomas Beckers)
+- Changed the layout of the general panel in the preferences dialog (Sylvain Gaudard)
+- Added some icons in the menus (Sylvain Gaudard)
+- Added a "close" entry in the option menu of the full screen view (Sylvain Gaudard)
+- Added FLAC encoder support (Sylvain Gaudard)
+- Added q=-1 and q=0 quality settings to the CD ripper dialog for the ogg encoder (Sylvain Gaudard)
+- Added filename checking and substitution for CD ripper (Sylvain Gaudard)
+- Removed the requirement to have all encoders installed. Added encoder auto-detect (Sylvain Gaudard) 
+- Faster detection for CD ripper, especially if no CD is present (Sylvain Gaudard)
+- FIX: When using the dev=ATA detection method, the CD ripper would not work (Sylvain Gaudard)
+- FIX: When ripping songs the ' character is missing in the tags (Sylvain Gaudard)
+- FIX: Special characters are not written correctly to ogg files (Sylvain Gaudard)
+- FIX: Under some non-Windows systems, lame does not write special characters correctly (Sylvain Gaudard)
+- FIX: Adapted id3v2.4 charset to match specification when reading (Sylvain Gaudard)
+- FIX: Detection of data CD (Sylvain Gaudard)
+- FIX: Year was not displayed when reading id3v2.4 tags (Sylvain Gaudard)
+- Added Greek translation (thanks to Pavlos Paraskeuopoulos)
+- FIX: JSplitPanel persistent location on left and right panels (Thomas Beckers, Sylvain Gaudard, Alex Aranda)
+- Added support for "Open With" OS feature
+
+
+aTunes 1.7.2
+------------
+- Added "Remove from Disk" option for songs, albums, artists or folders
+- FIX: Language Selector Dialog displays incorrectly
+- Added PNG format for covers of repository
+- Save automatically covers in PNG instead of JPEG
+- FIX: Process mplayer ends anormally when closing aTunes
+- Added slovak translation (thanks to Andrej Herich)
+- Added "Year" column to play list
+- FIX: CD Detection/Rip on Linux Machines (Sylvain Gaudard)
+- Look up Audio CD's at all CD-ROM drives (Sylvain Gaudard)
+- FIX: Playlist loading with relative paths (Sylvain Gaudard)
+
+aTunes 1.7.1
+------------
+- Added Full Screen Mode
+- Fixed mplayer process for MAC OS X
+- Added MAC OS X launcher
+
+aTunes 1.7.0
+------------
+- Added Radio Support
+- FIX: Navigator tag filter doesn't work
+- Reorganized main menu (Sylvain Gaudard):
+		- "Player" new as "Volume" in "Edit"; 
+		- "Repair" new in "Edit"; 
+		- "Smart Playlist" new in "Playlist";
+
+
+aTunes 1.6.6
+------------
+- Added portuguese translation (thanks to MÃ¡rcio Martins)
+- Added brazilian portuguese translation (thanks to Flavio Mattos)
+- FIX: Don't set language specific column name as column id
+- FIX: Fixed loop when BADAUTH on Last.fm submit 
+- FIX: Disable automatic play list scrolling when window lost focus
+- FIX: Allow read config of previous versions
+- INTERNAL: Refactoring PlayListHandler
+- Added play list length at status bar
+- Added "Get Covers" button to Cover Navigator
+- FIX: genre is lost when editing tag 
+- File properties panel changed place
+- FIX: System tray bug at linux
+- New column in play list with favorite icon
+
+
+aTunes 1.6.5
+------------
+- Added "Set title automatically" on playlist: Set song title with artist, album and track information
+- New Play List design: allowing more columns, and sort and order
+- Startup improvement
+- New title
+- Added Last.fm scrobbling function
+- Added Cover Navigator
+- Tag edition improved
+- Added Tag Repair menu
+
+aTunes 1.6.4
+------------
+- Added Smart PlayList menu
+- Fixed URLEncoder
+- Fixed sorting of songs when clicking on "Set current artist as PlayList" and "Set current album as PlayList"
+- Repository can contain more than one folder
+
+aTunes 1.6.3
+------------
+- Added Copy To Clipboard button for lyrics
+- Added flac support
+- Redesigned play list auto scroll
+- Redesigned file properties window
+- Added tooltip for play list songs
+- Fixed mute button bug
+
+aTunes 1.6.2
+------------
+- Improved log system
+- Fixed mplayer process concurrency
+- Fixed seek function when paused
+- Added last play date on song information panel
+
+aTunes 1.6.1
+------------
+- Fixed pause function
+- Removed play list autoscroll to avoid Swing thread freezes
+- Added cover at lyrics panel
+- Added genre tree
+
+aTunes 1.6.0
+------------
+- Player engine changed to mplayer
+- Supported formats: mp3, ogg, wav, wma, mp4
+- Update code to fit changes in Audioscrobbler web services
+- Lyrics charset encoding fixed
+- Added track number to songs ripped
+- Default theme changed to Ebony
+- Added traditional chinese (thanks to Wutong Feng)
+
+aTunes 1.5.3
+------------
+- Fixed volume 0 at first start
+- Ogg default quality: 4
+- Track number column can be hidden
+- Added japanese translation (thanks to Hiroshi Masui)
+- Added chinese translation (thanks to Wutong Feng)
+
+aTunes 1.5.2
+------------
+- Added song lyrics search at www.lyrc.com.ar
+- Added volume and mute shortcuts
+- JProgressBar of song progress changed to JSlider
+- Album search improved at Audioscrobbler
+- Stats window improved visually
+- Added cd ripper quality option
+
+
+aTunes 1.5.1
+------------
+- Added track column to play list
+- Added genre column to play list
+- Fixed track number read from files
+- Added "Set track number automatically" option in play list
+- Added "Set genre automatically" option in play list
+- Play list can be sorted clicking on table headers
+- Fixed some GUI bugs
+- Added tooltips
+- Redesigned AudioScrobbler service
+- Added first version of tool bar
+
+aTunes 1.5.0
+------------
+- Added GUI themes
+- Added italian translation (thanks to Giuseppe Caliendo)
+
+
+aTunes 1.4.2
+------------
+- Removed duration read thread. Now duration is read at repository loading (Fixes bug 1626234)
+- Fixed german translation (Sylvain Gaurard)
+- Added french translation (Sylvain Gaurard)
+
+
+aTunes 1.4.1
+------------
+- Added "Check for updates" in about menu
+- Added german translation thanks to Sylvain Gaudard
+- Fixed bug 1626896
+
+
+aTunes 1.4.0
+------------
+- Improved interface
+- Changed Open Strands To Audioscrobbler
+- Added Amazon querys to set titles of an album
+- Added Preferences Dialog
+- Added spectrum analyzer
+- Added play list filter
+- Added extended album tooltip in navigator
+- Bugs fixed
+
+aTunes 1.3
+----------
+- Improved interface
+- Simple view changed with multiple window view
+- Added duration column on play list
+- Added duration information on repository
+- Playlist columns artist and album can be hidden
+- Added mute control
+- Bugs fixed
+
+aTunes 1.2
+----------
+- Ripper / encoder frontend for cdda2wav, lame and oggenc
+
+
+aTunes 1.1
+------------
+- Changes in configuration file
+- Artist search capabilities in YouTube, Wikipedia, Google Video, etc.
+- Open Strands integration to retrieve song information
+
+aTunes 1.0.1
+------------
+- Re-added spanish translation
+
+aTunes 1.0
+----------
+- Lots of bugs fixed
+- Added device view
+- Added keyboard shortcuts
+- Drag and Drop support
+- Added statistics (using JFreeChart)
+- Added ogg support (using entagged lib)
+- Added log4j log system
+- Translations separated from project
+- Added system tray icon (using jdic) (only for windows for the moment)
+- Added tray player icons (using jdic too)
+- Brand-new installer (made with izPack)
+- Repository auto-refresh implemented
+- UI improved
+
+aTunes 0.9
+----------
+- Added italian language (Thanks to Roberto Boriotti)
+- Added export tool, to copy files from a device/folder to a folder
+- More bug fixes
+
+aTunes 0.8
+----------
+- Added tag editor using jid3lib
+- Added "Clear tag" option
+- Fixed aspect ratio in pictures (again, but this time actually fixed)
+- Improved performance of repository load
+- Load progress dialog is now determinate (shows songs loaded / total, and current loading dir)
+- Picture inside a song can be saved as a JPEG file
+- Added album and artist info tabs in file properties panel
+- More bug fixes
+
+aTunes 0.7
+----------
+- Added language selection dialog at first boot
+
+aTunes 0.6
+----------
+- Added expand / collapse buttons
+- Added filter on repository tree
+- Navigation table can be hidden
+- Added folders view on navigation tree
+- Multiple selection on navigation tree works
+- Fixed tag encoding to ISO-8859-1
+- Save and load playlist songs in M3U format
+- Added favorites view on navigation tree
+- OSD doesn't gain focus
+- Repository refresh option added (refresh is done in background)
+
+aTunes 0.5
+----------
+- New simple view
+- New tiny view
+- State (view, size, location, shuffle, repeat, etc) is saved, so it is used the next time you launch the app
+- When loading a previous playlist, the playing song is setted to the last playing song
+- You can move around the playing song clicking in the progress bar
+- Changed File Properties Panel
+- File Properties Panel can be hided (state is saved)
+- Changed app icon
+- Added french and portuguese translations (Thanks to Ronan Niger)
+- Removed Fast Add Button in Play List
+- Added Fast Add Dialog for simple and tiny view
+- Added german translation (Thanks to Maximilian Haupt)
+- Multiuser support: different configuration for each user, stored in home directories
+- Time indicator can show elapsed time or remaining time
+
+aTunes 0.4
+----------
+- Fixed some translation bugs
+- Fixed simple view
+- Changed some gui look and feel
+- Fixed aspect ratio bug in pictures
+- Added support for external images of files
+- Added support to show multiple pictures of a file in Image Dialog
+- Added Fast Add Button in Play List
+- Added Windows executable made with launch4j

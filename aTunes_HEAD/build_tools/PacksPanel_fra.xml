@@ -1,0 +1,10 @@
+<langpack>
+	<str id="core.package" txt="Application principale aTunes"/>
+	<str id="core.package.description" txt="Installation du lecteur audio libre. aTunes sait lire les fichiers flac, mp3, mp4, ogg, wav, wma ainsi que les radios web, permet l’édition de tags, la gestion de la musique ou encore l’encodage des CDs audios. aTunes est écrit en Java ce qui lui permet d’être disponible sur toutes les plate-formes."/>
+	<str id="source.package" txt="Code source"/>
+	<str id="source.package.description" txt="Code source de l'application"/> 
+	<str id="win_tools_base.package" txt="Applications de base"/>
+	<str id="win_tools_base.package.description" txt="Applications de base requises pour Windows"/> 
+	<str id="win_tools_encoders.package" txt="Encodeurs additionnels"/>
+	<str id="win_tools_encoders.package.description" txt="Encodeurs permettant de créer des fichiers Flac ou Mp3 à partir d'un CD audio"/> 
+</langpack>

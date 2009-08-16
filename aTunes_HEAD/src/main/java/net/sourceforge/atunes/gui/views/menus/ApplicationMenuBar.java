@@ -1,0 +1,359 @@
+/*
+ * aTunes 1.14.0
+ * Copyright (C) 2006-2009 Alex Aranda, Sylvain Gaudard, Thomas Beckers and contributors
+ *
+ * See http://www.atunes.org/wiki/index.php?title=Contributing for information about contributors
+ *
+ * http://www.atunes.org
+ * http://sourceforge.net/projects/atunes
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+package net.sourceforge.atunes.gui.views.menus;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JSeparator;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
+
+import net.sourceforge.atunes.kernel.ControllerProxy;
+import net.sourceforge.atunes.kernel.actions.Actions;
+import net.sourceforge.atunes.kernel.actions.AddPodcastFeedAction;
+import net.sourceforge.atunes.kernel.actions.AddRadioAction;
+import net.sourceforge.atunes.kernel.actions.CheckUpdatesAction;
+import net.sourceforge.atunes.kernel.actions.CollapseTreesAction;
+import net.sourceforge.atunes.kernel.actions.ConnectDeviceAction;
+import net.sourceforge.atunes.kernel.actions.CustomSearchAction;
+import net.sourceforge.atunes.kernel.actions.DisconnectDeviceAction;
+import net.sourceforge.atunes.kernel.actions.EditPreferencesAction;
+import net.sourceforge.atunes.kernel.actions.ExitAction;
+import net.sourceforge.atunes.kernel.actions.ExpandTreesAction;
+import net.sourceforge.atunes.kernel.actions.ExportAction;
+import net.sourceforge.atunes.kernel.actions.FilterNavigatorAction;
+import net.sourceforge.atunes.kernel.actions.FullScreenAction;
+import net.sourceforge.atunes.kernel.actions.GoToWebSiteAction;
+import net.sourceforge.atunes.kernel.actions.GoToWikiAction;
+import net.sourceforge.atunes.kernel.actions.ImportLovedTracksFromLastFM;
+import net.sourceforge.atunes.kernel.actions.ImportToRepositoryAction;
+import net.sourceforge.atunes.kernel.actions.MuteAction;
+import net.sourceforge.atunes.kernel.actions.RefreshDeviceAction;
+import net.sourceforge.atunes.kernel.actions.RefreshRepositoryAction;
+import net.sourceforge.atunes.kernel.actions.RepairAlbumNamesAction;
+import net.sourceforge.atunes.kernel.actions.RepairGenresAction;
+import net.sourceforge.atunes.kernel.actions.RepairTrackNumbersAction;
+import net.sourceforge.atunes.kernel.actions.ReportBugOrFeatureRequestAction;
+import net.sourceforge.atunes.kernel.actions.RipCDAction;
+import net.sourceforge.atunes.kernel.actions.SelectRepositoryAction;
+import net.sourceforge.atunes.kernel.actions.ShowAboutAction;
+import net.sourceforge.atunes.kernel.actions.ShowAlbumsInNavigatorAction;
+import net.sourceforge.atunes.kernel.actions.ShowArtistsInNavigatorAction;
+import net.sourceforge.atunes.kernel.actions.ShowAudioObjectPropertiesAction;
+import net.sourceforge.atunes.kernel.actions.ShowContextAction;
+import net.sourceforge.atunes.kernel.actions.ShowCoverNavigatorAction;
+import net.sourceforge.atunes.kernel.actions.ShowEqualizerAction;
+import net.sourceforge.atunes.kernel.actions.ShowFoldersInNavigatorAction;
+import net.sourceforge.atunes.kernel.actions.ShowGenresInNavigatorAction;
+import net.sourceforge.atunes.kernel.actions.ShowLogAction;
+import net.sourceforge.atunes.kernel.actions.ShowNavigationTableAction;
+import net.sourceforge.atunes.kernel.actions.ShowNavigatorAction;
+import net.sourceforge.atunes.kernel.actions.ShowOSDAction;
+import net.sourceforge.atunes.kernel.actions.ShowPlayListControlsAction;
+import net.sourceforge.atunes.kernel.actions.ShowRadioBrowserAction;
+import net.sourceforge.atunes.kernel.actions.ShowStatsAction;
+import net.sourceforge.atunes.kernel.actions.ShowStatusBarAction;
+import net.sourceforge.atunes.kernel.actions.ShowToolbarAction;
+import net.sourceforge.atunes.kernel.actions.SortNavigatorByArtistAndAlbumAction;
+import net.sourceforge.atunes.kernel.actions.SortNavigatorByFileNameAction;
+import net.sourceforge.atunes.kernel.actions.SortNavigatorByModificationDateAction;
+import net.sourceforge.atunes.kernel.actions.SortNavigatorByTitleAction;
+import net.sourceforge.atunes.kernel.actions.SortNavigatorByTrackNumberAction;
+import net.sourceforge.atunes.kernel.actions.VolumeDownAction;
+import net.sourceforge.atunes.kernel.actions.VolumeUpAction;
+import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.NavigationView;
+import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
+import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
+import net.sourceforge.atunes.utils.LanguageTool;
+
+/**
+ * The Class ApplicationMenuBar.
+ */
+public class ApplicationMenuBar extends JMenuBar {
+
+    private static final long serialVersionUID = 234977404080329591L;
+
+    /** The file. */
+    private JMenu file;
+
+    /** The edit. */
+    private JMenu edit;
+
+    /** The view. */
+    private JMenu view;
+
+    /** The navigator */
+    private JMenu navigator;
+
+    /** The play list. */
+    private JMenu playList;
+
+    /** The tools. */
+    private JMenu tools;
+
+    /** The device. */
+    private JMenu device;
+
+    /** The help. */
+    private JMenu help;
+
+    /**
+     * Instantiates a new application menu bar.
+     */
+    public ApplicationMenuBar() {
+        super();
+        addMenus();
+    }
+
+    /**
+     * Creates "File" menu
+     * 
+     * @return
+     */
+    private JMenu getFileMenu() {
+        if (file == null) {
+            file = new JMenu(LanguageTool.getString("FILE"));
+            file.add(Actions.getAction(SelectRepositoryAction.class));
+            file.add(Actions.getAction(RefreshRepositoryAction.class));
+            file.add(new JSeparator());
+            file.add(Actions.getAction(ImportToRepositoryAction.class));
+            file.add(Actions.getAction(ExportAction.class));
+            file.add(new JSeparator());
+            file.add(Actions.getAction(ExitAction.class));
+        }
+        return file;
+    }
+
+    /**
+     * Creates "Edit" menu
+     * 
+     * @return
+     */
+    private JMenu getEditMenu() {
+        if (edit == null) {
+            edit = new JMenu(LanguageTool.getString("EDIT"));
+            JMenu player = new JMenu(LanguageTool.getString("VOLUME"));
+            JMenuItem showEqual = new JMenuItem(Actions.getAction(ShowEqualizerAction.class));
+            player.add(showEqual);
+            if (!PlayerHandler.getInstance().supportsCapability(PlayerEngineCapability.EQUALIZER)) {
+                showEqual.setEnabled(false);
+            }
+            player.add(Actions.getAction(VolumeUpAction.class));
+            player.add(Actions.getAction(VolumeDownAction.class));
+            player.add(new JCheckBoxMenuItem(Actions.getAction(MuteAction.class)));
+            JMenu repair = new JMenu(LanguageTool.getString("REPAIR"));
+            repair.add(Actions.getAction(RepairTrackNumbersAction.class));
+            repair.add(Actions.getAction(RepairGenresAction.class));
+            repair.add(Actions.getAction(RepairAlbumNamesAction.class));
+            edit.add(player);
+            edit.add(Actions.getAction(EditPreferencesAction.class));
+            edit.add(new JSeparator());
+            edit.add(repair);
+        }
+        return edit;
+    }
+
+    /**
+     * Creates "View" menu
+     * 
+     * @return
+     */
+    private JMenu getViewMenu() {
+        if (view == null) {
+            view = new JMenu(LanguageTool.getString("VIEW"));
+            
+            // Add dinamically actions to show each navigation view loaded
+            int acceleratorIndex = 1;
+            for (NavigationView navigationView : NavigationHandler.getInstance().getNavigationViews()) {
+				view.add(navigationView.getActionToShowView(acceleratorIndex++));
+            }
+            
+            view.add(new JSeparator());
+            view.add(new JCheckBoxMenuItem(Actions.getAction(ShowToolbarAction.class)));
+            view.add(new JCheckBoxMenuItem(Actions.getAction(ShowStatusBarAction.class)));
+            view.add(new JCheckBoxMenuItem(Actions.getAction(ShowPlayListControlsAction.class)));
+            view.add(new JCheckBoxMenuItem(Actions.getAction(ShowNavigatorAction.class)));
+            view.add(new JCheckBoxMenuItem(Actions.getAction(ShowNavigationTableAction.class)));
+            view.add(new JCheckBoxMenuItem(Actions.getAction(ShowAudioObjectPropertiesAction.class)));
+            view.add(new JCheckBoxMenuItem(Actions.getAction(ShowContextAction.class)));
+            view.add(new JCheckBoxMenuItem(Actions.getAction(ShowOSDAction.class)));
+            view.add(new JSeparator());
+            view.add(Actions.getAction(FullScreenAction.class));
+        }
+        return view;
+    }
+
+    /**
+     * Creates "Navigator" menu
+     * 
+     * @return
+     */
+    private JMenu getNavigatorMenu() {
+        if (navigator == null) {
+            navigator = new JMenu(LanguageTool.getString("NAVIGATOR"));
+            JRadioButtonMenuItem showArtist = new JRadioButtonMenuItem(Actions.getAction(ShowArtistsInNavigatorAction.class));
+            JRadioButtonMenuItem showAlbum = new JRadioButtonMenuItem(Actions.getAction(ShowAlbumsInNavigatorAction.class));
+            JRadioButtonMenuItem showGenre = new JRadioButtonMenuItem(Actions.getAction(ShowGenresInNavigatorAction.class));
+            JRadioButtonMenuItem showFolder = new JRadioButtonMenuItem(Actions.getAction(ShowFoldersInNavigatorAction.class));
+            ButtonGroup group = new ButtonGroup();
+            group.add(showArtist);
+            group.add(showAlbum);
+            group.add(showGenre);
+            group.add(showFolder);
+            navigator.add(showArtist);
+            navigator.add(showAlbum);
+            navigator.add(showGenre);
+            navigator.add(showFolder);
+            navigator.add(new JSeparator());
+            navigator.add(Actions.getAction(ExpandTreesAction.class));
+            navigator.add(Actions.getAction(CollapseTreesAction.class));
+            navigator.add(new JSeparator());
+            JRadioButtonMenuItem sortByTrack = new JRadioButtonMenuItem(Actions.getAction(SortNavigatorByTrackNumberAction.class));
+            JRadioButtonMenuItem sortByArtist = new JRadioButtonMenuItem(Actions.getAction(SortNavigatorByArtistAndAlbumAction.class));
+            JRadioButtonMenuItem sortByTitle = new JRadioButtonMenuItem(Actions.getAction(SortNavigatorByTitleAction.class));
+            JRadioButtonMenuItem sortByFile = new JRadioButtonMenuItem(Actions.getAction(SortNavigatorByFileNameAction.class));
+            JRadioButtonMenuItem sortByModificationTime = new JRadioButtonMenuItem(Actions.getAction(SortNavigatorByModificationDateAction.class));
+            ButtonGroup group2 = new ButtonGroup();
+            group2.add(sortByTrack);
+            group2.add(sortByArtist);
+            group2.add(sortByTitle);
+            group2.add(sortByFile);
+            group2.add(sortByModificationTime);
+            navigator.add(sortByTrack);
+            navigator.add(sortByArtist);
+            navigator.add(sortByTitle);
+            navigator.add(sortByFile);
+            navigator.add(sortByModificationTime);
+            navigator.add(new JSeparator());
+            navigator.add(Actions.getAction(FilterNavigatorAction.class));
+        }
+        return navigator;
+    }
+
+    /**
+     * Creates "Playlist" menu
+     * 
+     * @return
+     */
+    private JMenu getPlayListMenu() {
+        if (playList == null) {
+            playList = new JMenu(LanguageTool.getString("PLAYLIST"));
+            PlayListMenu.fillMenu(playList, ControllerProxy.getInstance().getPlayListController().getMainPlayListTable());
+            // Every time menu is opened all menu items are updated according to play list selection
+            playList.addMenuListener(new MenuListener() {
+                @Override
+                public void menuSelected(MenuEvent e) {
+                    PlayListMenu.updatePlayListMenuItems(ControllerProxy.getInstance().getPlayListController().getMainPlayListTable());
+                }
+
+                @Override
+                public void menuCanceled(MenuEvent e) {
+                    // Nothing to do
+                }
+
+                @Override
+                public void menuDeselected(MenuEvent e) {
+                    // Nothing to do
+                }
+
+            });
+        }
+        return playList;
+    }
+
+    /**
+     * Creates "Tools" menu
+     * 
+     * @return
+     */
+    private JMenu getToolsMenu() {
+        if (tools == null) {
+            tools = new JMenu(LanguageTool.getString("TOOLS"));
+            tools.add(Actions.getAction(RipCDAction.class));
+            tools.add(new JSeparator());
+            tools.add(Actions.getAction(ShowStatsAction.class));
+            tools.add(Actions.getAction(ShowCoverNavigatorAction.class));
+            tools.add(new JSeparator());
+            tools.add(Actions.getAction(AddRadioAction.class));
+            tools.add(Actions.getAction(ShowRadioBrowserAction.class));
+            tools.add(Actions.getAction(AddPodcastFeedAction.class));
+            tools.add(new JSeparator());
+            tools.add(Actions.getAction(CustomSearchAction.class));
+            tools.add(new JSeparator());
+            tools.add(Actions.getAction(ImportLovedTracksFromLastFM.class));
+        }
+        return tools;
+    }
+
+    /**
+     * Creates "Device" menu
+     * 
+     * @return
+     */
+    private JMenu getDeviceMenu() {
+        if (device == null) {
+            device = new JMenu(LanguageTool.getString("DEVICE"));
+            device.add(Actions.getAction(ConnectDeviceAction.class));
+            device.add(Actions.getAction(RefreshDeviceAction.class));
+            device.add(Actions.getAction(DisconnectDeviceAction.class));
+        }
+        return device;
+    }
+
+    /**
+     * Creates "Help" menu
+     * 
+     * @return
+     */
+    private JMenu getCustomHelpMenu() {
+        if (help == null) {
+            help = new JMenu(LanguageTool.getString("HELP"));
+            help.add(Actions.getAction(GoToWebSiteAction.class));
+            help.add(Actions.getAction(GoToWikiAction.class));
+            help.add(Actions.getAction(ReportBugOrFeatureRequestAction.class));
+            help.add(new JSeparator());
+            help.add(Actions.getAction(ShowLogAction.class));
+            help.add(Actions.getAction(CheckUpdatesAction.class));
+            help.add(new JSeparator());
+            help.add(Actions.getAction(ShowAboutAction.class));
+        }
+        return help;
+    }
+
+    /**
+     * Adds the menus.
+     */
+    private void addMenus() {
+        add(getFileMenu());
+        add(getEditMenu());
+        add(getViewMenu());
+        add(getNavigatorMenu());
+        add(getPlayListMenu());
+        add(getDeviceMenu());
+        add(getToolsMenu());
+        add(getCustomHelpMenu());
+    }
+}

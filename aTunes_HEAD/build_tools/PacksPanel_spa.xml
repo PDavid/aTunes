@@ -1,0 +1,7 @@
+<langpack>
+	<str id="core.package" txt="Aplicación aTunes"/>
+	<str id="core.package.description" txt="Instalación de aTunes. aTunes es un gestor y reproductor de música libre. Le permite reproducir archivos mp3, ogg, wma y otros formatos. También le permite reproducir radios de Internet y escuchar y descargar podcasts.
+	Adicionalmente, incorpora herramientas para gestionar su colección de música, permitiéndole editar etiquetas, ripear CDs de audio, conectar dispositivos portátiles, etc."/>
+	<str id="source.package" txt="Código Fuente"/>
+	<str id="source.package.description" txt="Código Fuente de la Aplicación"/> 
+</langpack>

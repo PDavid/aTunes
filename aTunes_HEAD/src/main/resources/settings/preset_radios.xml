@@ -1,0 +1,1080 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<list version='1.0'>
+	<Radio>
+		<name>Buureradio</name>
+		<url>http://live-three.dmd2.ch/listen.pls</url>
+		<label>Switzerland</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>Kanal K</name>
+		<url>http://82.197.165.150/listen.pls</url>
+		<label>Switzerland</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>Lausanne FM</name>
+		<url>http://broadcast.infomaniak.ch/lausannefm-high.mp3.pls</url>
+		<label>Switzerland</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>LuNe Radio</name>
+		<url>http://broadcaster.infomaniak.ch/lune-high.mp3.m3u</url>
+		<label>Switzerland</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>Radio Basilisk</name>
+		<url>http://asx.skypro.ch/radio/internet-128/radiobasilisk.asx</url>
+		<label>Switzerland</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>48000</frequency>
+	</Radio>
+	<Radio>
+		<name>Radio BE1</name>
+		<url>http://www.radiobe1.ch/be1.m3u</url>
+		<label>Switzerland</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>Radio Engiadina</name>
+		<url>http://engiadina.stream.green.ch/engiadina.wax</url>
+		<label>Switzerland</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>40</bitrate>
+		<frequency>32000</frequency>
+	</Radio>
+	<Radio>
+		<name>Radio Freiburg</name>
+		<url>http://broadcast.infomaniak.ch/radiofreiburg-high.mp3.pls</url>
+		<label>Switzerland</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>Radio Grischa</name>
+		<url>mms://stream.green.ch/grischa</url>
+		<label>Switzerland</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>40</bitrate>
+		<frequency>32000</frequency>
+	</Radio>
+	<Radio>
+		<name>Radio Lac</name>
+		<url>http://broadcast.infomaniak.ch/radiolac-high.mp3.pls</url>
+		<label>Switzerland</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>Radio Liechtenstein</name>
+		<url>http://live.radio.li:8000/live.ogg.m3u</url>
+		<label>Switzerland</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>155</bitrate>
+		<frequency>22050</frequency>
+	</Radio>
+	<Radio>
+		<name>World Radio Switzerland</name>
+		<url>http://broadcast.infomaniak.ch/wrgfm-high.mp3.m3u</url>
+		<label>Switzerland</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>1449 AM URB</name>
+		<url>http://people.bath.ac.uk/su9urb/audio/urb-hi.m3u</url>
+		<label>Student radio</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>96</bitrate>
+		<frequency>22050</frequency>
+	</Radio>
+	<Radio>
+		<name>Campus FM Radio (Malta)</name>
+		<url>mms://stream.um.edu.mt/CampusFM</url>
+		<label>Student radio</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>32</bitrate>
+		<frequency>22050</frequency>
+	</Radio>
+	<Radio>
+		<name>Fréquence Banane</name>
+		<url>http://www.frequencebanane.ch/fb_128.m3u</url>
+		<label>Student radio</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>LCR</name>
+		<url>http://susvstream.lboro.ac.uk:20000/LCR.asx</url>
+		<label>Student radio</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>32</bitrate>
+		<frequency>22050</frequency>
+	</Radio>
+	<Radio>
+		<name>Queen&apos;s Radio</name>
+		<url>http://quis.qub.ac.uk:8080/qrlivehi.m3u</url>
+		<label>Student radio</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>96</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>RaBe</name>
+		<url>http://beemy.catatec.ch:8000/playlist.pls?mount=/radio_rabe_95.6_fm&amp;file=dummy.pls</url>
+		<label>Student radio</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>56</bitrate>
+		<frequency>22050</frequency>
+	</Radio>
+	<Radio>
+		<name>Radio Campus Angers</name>
+		<url>http://www.radiocampusangers.com:8000/rca.mp3.m3u</url>
+		<label>Student radio</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>224</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>Radio Campus Lille</name>
+		<url>http://www-radio-campus.univ-lille1.fr/Radio_Campus_High_Ogg.m3u</url>
+		<label>Student radio</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>117</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>Radio Campus Paris</name>
+		<url>http://www.radiocampusparis.org/coa/stream_rcp.m3u</url>
+		<label>Student radio</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>96</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>Radio Campus Toulouse</name>
+		<url>http://www.campustoulouse.net/son-streaming.m3u</url>
+		<label>Student radio</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>192</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>Rare FM</name>
+		<url>http://stream.rarefm.ucl.ac.uk:8000/stream.m3u</url>
+		<label>Student radio</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>DRS 1</name>
+		<url>http://asx.skypro.tv/asx/radio-drs/DRS1.asx</url>
+		<label>SRG SSR idée suisse</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>48</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>DRS 2</name>
+		<url>http://asx.skypro.tv/asx/radio-drs/DRS2.asx</url>
+		<label>SRG SSR idée suisse</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>DRS 3</name>
+		<url>http://asx.skypro.tv/asx/radio-drs/DRS3.asx</url>
+		<label>SRG SSR idée suisse</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>DRS 4 News</name>
+		<url>http://asx.skypro.ch/radio/internet-64/drs4.asx</url>
+		<label>SRG SSR idée suisse</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>48</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>DRS Musikwelle</name>
+		<url>mms://dms-cl-021.skypro-media.net/mw531</url>
+		<label>SRG SSR idée suisse</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>48</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>Radio Rumantsch</name>
+		<url>http://real.xobix.ch/live/rr.ram</url>
+		<label>SRG SSR idée suisse</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>64</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>Rete Uno</name>
+		<url>http://real.xobix.ch/live/rsi1.ram</url>
+		<label>SRG SSR idée suisse</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>64</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>Rete Due</name>
+		<url>http://real.xobix.ch/live/rsi2.ram</url>
+		<label>SRG SSR idée suisse</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>64</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>Rete Tre</name>
+		<url>http://real.xobix.ch/live/rsi3.ram</url>
+		<label>SRG SSR idée suisse</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>64</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>RSR La 1ère</name>
+		<url>http://broadcast.infomaniak.ch/rsr-la1ere-high.mp3</url>
+		<label>SRG SSR idée suisse</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>RSR Espace 2</name>
+		<url>http://broadcast.infomaniak.ch/rsr-espace2-high.mp3</url>
+		<label>SRG SSR idée suisse</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>RSR Couleur 3</name>
+		<url>http://broadcast.infomaniak.ch/rsr-couleur3-high.mp3</url>
+		<label>SRG SSR idée suisse</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>RSR Option Musique</name>
+		<url>http://broadcast.infomaniak.ch/rsr-optionmusique-high.mp3</url>
+		<label>SRG SSR idée suisse</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>Swissclassic</name>
+		<url>http://www.radioswissclassic.ch/live/mp3.ram</url>
+		<label>SRG SSR idée suisse</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>Swissjazz</name>
+		<url>http://www.radioswissjazz.ch/live/mp3.ram</url>
+		<label>SRG SSR idée suisse</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>Swisspop</name>
+		<url>http://www.radioswisspop.ch/live/mp3.ram</url>
+		<label>SRG SSR idée suisse</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>Virus</name>
+		<url>http://live-one.dmd2.ch/virus/virus_hi.m3u</url>
+		<label>SRG SSR idée suisse</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>Virus Bounce</name>
+		<url>http://live-one.dmd2.ch/virus/virus_bo.m3u</url>
+		<label>SRG SSR idée suisse</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>Virus Shake</name>
+		<url>http://live-one.dmd2.ch/virus/virus_sh.m3u</url>
+		<label>SRG SSR idée suisse</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>Soulful Bits Radio</name>
+		<url>http://www.soulfulbits.com/files/streaming/soulfulbits-radio.m3u</url>
+		<label>Soul/Funk</label>
+	</Radio>
+	<Radio>
+		<name>California-101</name>
+		<url>http://str0.creacast.com:802/listen.pls</url>
+		<label>Rock</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>Raggakings [Reggae]</name>
+		<url>http://www.raggakings.net/listen.m3u</url>
+		<label>Reggea</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>BigUp Roots Radio</name>
+		<url>http://radio.bigupradio.com:8005/listen.pls</url>
+		<label>Reggea</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>Urban.FM</name>
+		<url>http://www.trokit.com/clients/urban/urban.m3u</url>
+		<label>Reggea</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>Sky FM Reggae</name>
+		<url>http://www.sky.fm/mp3/rootsreggae.pls</url>
+		<label>Reggea</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>WEBADUB The Hot Reggae Radio</name>
+		<url>http://mx-solution.com:16000/listen.pls</url>
+		<label>Reggea</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>Frequence 3 [Pop]</name>
+		<url>http://streams.frequence3.net/hd-mp3.m3u</url>
+		<label>Pop</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>Indie Pop Rocks [Indie]</name>
+		<url>http://www.somafm.com/indiepop.pls</url>
+		<label>Pop</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>Virgin Radio [Rock/Pop]</name>
+		<url>http://www.smgradio.com/core/audio/mp3/live.pls?service=vrbb</url>
+		<label>Pop</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>City Gold 107.5 fm</name>
+		<url>http://stream.citygold.be:8004/listen.pls</url>
+		<label>Oldies/80&apos;s/90&apos;s</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>Frekvence 1 Legendy</name>
+		<url>mms://netshow.play.cz/Frekvence1_Legendy</url>
+		<label>Oldies/80&apos;s/90&apos;s</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>Nostalgie</name>
+		<url>http://cache.yacast.fr/V4/nostalgie/nostalgie.asx</url>
+		<label>Oldies/80&apos;s/90&apos;s</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>Nostalgie 60&apos;s</name>
+		<url>http://player.nostalgie.fr/V4/nostalgie/webradios/60s/60s.asx</url>
+		<label>Oldies/80&apos;s/90&apos;s</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>48000</frequency>
+	</Radio>
+	<Radio>
+		<name>Nostalgie 70&apos;s</name>
+		<url>http://player.nostalgie.fr/V4/nostalgie/webradios/70s/70s.asx</url>
+		<label>Oldies/80&apos;s/90&apos;s</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>48000</frequency>
+	</Radio>
+	<Radio>
+		<name>Nostalgie Chansons Françaises</name>
+		<url>http://player.nostalgie.fr/V4/nostalgie/webradios/chansonsfr/chansonsfr.asx</url>
+		<label>Oldies/80&apos;s/90&apos;s</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>48000</frequency>
+	</Radio>
+	<Radio>
+		<name>Radio Mila Gold</name>
+		<url>http://193.108.24.21:8000/mila.m3u</url>
+		<label>Oldies/80&apos;s/90&apos;s</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>Radio U-Pop 80s</name>
+		<url>http://trio.icecast.linxtelecom.com:8000/neti.ogg.m3u</url>
+		<label>Oldies/80&apos;s/90&apos;s</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>Zone80</name>
+		<url>http://www.zone80.be/stream/z80_128.m3u</url>
+		<label>Oldies/80&apos;s/90&apos;s</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>192</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>NRK P1</name>
+		<url>http://media.hiof.no/streams/m3u/nrk-p1-172.ogg.m3u</url>
+		<label>Norway</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>172</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>NRK P2</name>
+		<url>http://media.hiof.no/streams/m3u/nrk-p2-172.ogg.m3u</url>
+		<label>Norway</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>172</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>NRK P3</name>
+		<url>http://media.hiof.no/streams/m3u/nrk-petre-172.ogg.m3u</url>
+		<label>Norway</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>172</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>NRK mP3</name>
+		<url>http://media.hiof.no/streams/m3u/nrk-mpetre-172.ogg.m3u</url>
+		<label>Norway</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>172</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>NRK Klassisk</name>
+		<url>http://media.hiof.no/streams/m3u/nrk-alltid-klassisk-172.ogg.m3u</url>
+		<label>Norway</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>172</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>DNR</name>
+		<url>mms://mediasvr.pt.lu/dnr</url>
+		<label>Luxembourg</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>48000</frequency>
+	</Radio>
+	<Radio>
+		<name>LRB</name>
+		<url>http://mediasvr.pt.lu/lrb</url>
+		<label>Luxembourg</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>96</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>Radio 100.7 (Luxembourg)</name>
+		<url>http://streaming.pt.lu/100komma7.asx</url>
+		<label>Luxembourg</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>32</bitrate>
+		<frequency>32000</frequency>
+	</Radio>
+	<Radio>
+		<name>Radio Ara</name>
+		<url>http://rs1.radiostreamer.com:8030/listen.pls</url>
+		<label>Luxembourg</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>Radio Luxembourg</name>
+		<url>http://s8.mediastreaming.it:7050/listen.pls</url>
+		<label>Luxembourg</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>RTL Radio Lëtzebuerg</name>
+		<url>http://www.rtl.lu/modules/asxwrapper.asx?clip=/radiolive&amp;MSsuxx=.asx</url>
+		<label>Luxembourg</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>48000</frequency>
+	</Radio>
+	<Radio>
+		<name>Europe 1</name>
+		<url>mms://viplagardere.yacast.net/encodereurope1</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>32</bitrate>
+		<frequency>32000</frequency>
+	</Radio>
+	<Radio>
+		<name>France Culture</name>
+		<url>http://viphttp.yacast.net/V4/radiofrance/franceculture_bd.m3u</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>32</bitrate>
+		<frequency>16000</frequency>
+	</Radio>
+	<Radio>
+		<name>France Info</name>
+		<url>http://viphttp.yacast.net/V4/radiofrance/franceinfo_bd.m3u</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>32</bitrate>
+		<frequency>16000</frequency>
+	</Radio>
+	<Radio>
+		<name>France Inter</name>
+		<url>http://viphttp.yacast.net/V4/radiofrance/franceinter_bd.m3u</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>32</bitrate>
+		<frequency>16000</frequency>
+	</Radio>
+	<Radio>
+		<name>France Musiques</name>
+		<url>http://viphttp.yacast.net/V4/radiofrance/francemusique_bd.m3u</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>32</bitrate>
+		<frequency>16000</frequency>
+	</Radio>
+	<Radio>
+		<name>Le Mouv</name>
+		<url>http://viphttp.yacast.net/V4/radiofrance/lemouv_bd.m3u</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>32</bitrate>
+		<frequency>16000</frequency>
+	</Radio>
+	<Radio>
+		<name>Nostalgie</name>
+		<url>mms://vipnrj.yacast.net/encodernostalgie</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>NRJ</name>
+		<url>mms://vipnrj.yacast.net/encodernrj</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>Rires et Chansons</name>
+		<url>mms://vipmms9.yacast.net/encoderrireetchansons</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>Rires et chansons sketches</name>
+		<url>mms://vipnrj.yacast.net/rir_webradio02</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>48000</frequency>
+	</Radio>
+	<Radio>
+		<name>Rires et chansons nouveaux talents</name>
+		<url>mms://vipnrj.yacast.net/rir_webradio03</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>48000</frequency>
+	</Radio>
+	<Radio>
+		<name>Rires et chansons live</name>
+		<url>mms://vipnrj.yacast.net/rir_webradio01</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>48000</frequency>
+	</Radio>
+	<Radio>
+		<name>RFM</name>
+		<url>mms://viplagardere.yacast.net/encoderrfm</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>64</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>Europe 2</name>
+		<url>mms://vipmms9.yacast.net/encodereurope2</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>64</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>RMC</name>
+		<url>http://213.205.96.91:9000</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>56</bitrate>
+		<frequency>22050</frequency>
+	</Radio>
+	<Radio>
+		<name>NRJ Nouvelle-Calédonie</name>
+		<url>http://radio.lagoon.nc/nrj</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>RRB Nouvelle-Calédonie</name>
+		<url>http://radio.lagoon.nc/rrb</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>Radio Pi Canal Reggae</name>
+		<url>http://www.radiopi.org/RadioPi_playliste.m3u</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>Old School, SoulsVilleOnline.com</name>
+		<url>http://www.live365.com/play/18244</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>RTL</name>
+		<url>http://streaming.radio.rtl.fr/rtl-1-44-96</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>96</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>OuiFM</name>
+		<url>http://broadcast.infomaniak.net:80/ouifm-high.mp3</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>Chérie FM</name>
+		<url>mms://vipnrj.yacast.net/encodercheriefm</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>Fun Radio</name>
+		<url>http://streaming.radio.funradio.fr:80/fun-1-44-96</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>96</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>Radio Trafic FM 107.7 - Escota (En continu)</name>
+		<url>rtsp://a1251.l252147898.c2521.e.lr.akamaistream.net/live/D/1251/2521/666/reflector:47898</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>32</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>France Bleu Drôme Ardèche</name>
+		<url>http://www.tv-radio.com/station/france_bleu_drome_ardeche_mp3/france_bleu_drome_ardeche_mp3-32k.pls</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>32</bitrate>
+		<frequency>24000</frequency>
+	</Radio>
+	<Radio>
+		<name>RFI Monde</name>
+		<url>mms://wmod.streaming.rfi.fr.edgestreams.net/rfi/francais/audio/directs/r001/rfimonde.wsx</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>32</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>RFI Afrique</name>
+		<url>mms://wmod.streaming.rfi.fr.edgestreams.net/rfi/francais/audio/directs/r001/rfiafrique.wsx</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>32</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>RFI Musique</name>
+		<url>mms://wmod.streaming.rfi.fr.edgestreams.net/rfi/francais/audio/directs/r001/rfimusique.wsx</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>64</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>Radio Trafic FM 107.7 ASF (Flash Info)</name>
+		<url>http://www.asf.fr/rubriques/flashsradio/voc1.asf</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>64</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>RTL 2</name>
+		<url>http://streaming.radio.rtl2.fr:80/rtl2-1-44-96</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>96</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>France Bleu loire ocean</name>
+		<url>http://www.tv-radio.com/station/france_bleu_loire_ocean_mp3/france_bleu_loire_ocean_mp3-32k.pls</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>32</bitrate>
+		<frequency>24000</frequency>
+	</Radio>
+	<Radio>
+		<name>alouette fr</name>
+		<url>http://www.alouette.fr/alouette.m3u</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>st tropez fm</name>
+		<url>http://stream.saint-tropez-web-radio.com/sttropezwebradio.asx</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>W3 Blues Radio</name>
+		<url>http://88.191.26.244:8000/live</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>FreeDom</name>
+		<url>http://213.246.51.79/</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>128</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>Radio Blagon Rock Français</name>
+		<url>http://radioblagon-serveur2.zik.dj:8010/listen.pls</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>Radio Blagon Canal Soft</name>
+		<url>http://radioblagon-serveur3.zik.dj:8010/listen.pls</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>Radio Blagon Reggae Island</name>
+		<url>http://radioblagon-serveur3.zik.dj:8100/listen.pls</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>Radio Blagon Ambien</name>
+		<url>http://radioblagon-serveur1.zik.dj:8100/listen.pls</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>Radio Nova</name>
+		<url>http://broadcast.infomaniak.net/radionova-high.mp3</url>
+		<label>France</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio> 
+	<Radio>
+		<name>Bluemars [Ambient/Space-Music]</name>
+		<url>http://207.200.96.225:8020/listen.pls</url>
+		<label>Electronic</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>Digitally Imported - Chillout [Chill-Out]</name>
+		<url>http://di.fm/mp3/chillout.pls</url>
+		<label>Electronic</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>Digitally Imported - Classic Techno [Techno]</name>
+		<url>http://di.fm/mp3/classictechno.pls</url>
+		<label>Electronic</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>Digitally Imported - Trance [Trance]</name>
+		<url>http://di.fm/mp3/trance.pls</url>
+		<label>Electronic</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>Electronic Culture [Minimal Techno]</name>
+		<url>http://www.shouted.fm/tunein/electro-dsl.m3u</url>
+		<label>Electronic</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>Groove Salad [Chill-Out]</name>
+		<url>http://www.somafm.com/groovesalad.pls</url>
+		<label>Electronic</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>Drone Zone [Ambient]</name>
+		<url>http://somafm.com/dronezone.pls</url>
+		<label>Electronic</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>Tags Trance Trip [Trance]</name>
+		<url>http://somafm.com/tagstrance.pls</url>
+		<label>Electronic</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>MTH.House [House]</name>
+		<url>http://stream.mth-house.de:8500/listen.pls</url>
+		<label>Electronic</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>Pure DJ [Trance]</name>
+		<url>http://www.puredj.com/etc/pls/128K.pls</url>
+		<label>Electronic</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>Secret Agent [Downtempo/Lounge]</name>
+		<url>http://somafm.com/secretagent.pls</url>
+		<label>Electronic</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>X T C Radio [Techno/Trance]</name>
+		<url>http://62.141.37.26:8000</url>
+		<label>Electronic</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>Radio Paradise</name>
+		<url>http://www.radioparadise.com/musiclinks/rp_192.m3u</url>
+		<label>Eclectical</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>192</bitrate>
+		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>ČRo 1 - Radiožurnál</name>
+		<url>http://www.rozhlas.cz/audio/download/cro1_lowogg.m3u</url>
+		<label>Czech</label>
+	</Radio>
+	<Radio>
+		<name>ČRo 2 - Praha</name>
+		<url>http://www.rozhlas.cz/audio/download/cro2_lowogg.m3u</url>
+		<label>Czech</label>
+	</Radio>
+	<Radio>
+		<name>ČRo 3 - Vltava</name>
+		<url>http://www.rozhlas.cz/audio/download/cro3_lowogg.m3u</url>
+		<label>Czech</label>
+	</Radio>
+	<Radio>
+		<name>ČRo 6</name>
+		<url>http://www.rozhlas.cz/audio/download/cro6_lowogg.m3u</url>
+		<label>Czech</label>
+	</Radio>
+	<Radio>
+		<name>ČRo - Rádio Česko</name>
+		<url>http://www.rozhlas.cz/audio/download/radioCesko-lowogg.m3u</url>
+		<label>Czech</label>
+	</Radio>
+	<Radio>
+		<name>ČRo - D-dur</name>
+		<url>http://www.rozhlas.cz/audio/download/ddur_lowogg.m3u</url>
+		<label>Czech</label>
+	</Radio>
+	<Radio>
+		<name>ČRo - Leonardo</name>
+		<url>http://www.rozhlas.cz/audio/download/leonardo_lowogg.m3u</url>
+		<label>Czech</label>
+	</Radio>
+	<Radio>
+		<name>ČRo - Rádio Wave</name>
+		<url>http://www.rozhlas.cz/audio/download/radiowave_low_ogg.m3u</url>
+		<label>Czech</label>
+	</Radio>
+	<Radio>
+		<name>Mostly Classical [Classical]</name>
+		<url>http://www.sky.fm/mp3/classical.pls</url>
+		<label>Classical</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>Classic FM</name>
+		<url>http://www.play.cz/radio/classic128.asx</url>
+		<label>Classical</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>Radio Stephansdom</name>
+		<url>http://srvhost24.serverhosting.apa.net:8000/rsdstream128.m3u</url>
+		<label>Classical</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>Klassikaraadio</name>
+		<url>mms://213.35.156.21/klassikaraadio</url>
+		<label>Classical</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>Latvijas Radio 3 Klasika</name>
+		<url>mms://lr1w.latvijasradio.lv/pplr3</url>
+		<label>Classical</label>
+		<isRemoved>false</isRemoved>
+		<bitrate>0</bitrate>
+		<frequency>0</frequency>
+	</Radio>
+</list>

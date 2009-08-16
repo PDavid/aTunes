@@ -1,0 +1,329 @@
+/*
+ * aTunes 1.14.0
+ * Copyright (C) 2006-2009 Alex Aranda, Sylvain Gaudard, Thomas Beckers and contributors
+ *
+ * See http://www.atunes.org/wiki/index.php?title=Contributing for information about contributors
+ *
+ * http://www.atunes.org
+ * http://sourceforge.net/projects/atunes
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+package net.sourceforge.atunes.misc;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+public class PointedList<T> implements Serializable {
+
+    private static final long serialVersionUID = 5516540213103483594L;
+
+    /**
+     * List with objects
+     */
+    private List<T> list = null;
+
+    /**
+     * Pointer to object or null. Initially first object is pointed
+     */
+    private Integer pointer = 0;
+
+    /**
+     * Default constructor
+     */
+    public PointedList() {
+        this.list = new ArrayList<T>();
+    }
+
+    /**
+     * Construct a new pointed list from another pointed list
+     * 
+     * @param pointedList
+     */
+    public PointedList(PointedList<T> pointedList) {
+        this.list = new ArrayList<T>(pointedList.list);
+        this.pointer = Integer.valueOf(pointedList.pointer);
+    }
+
+    /**
+     * Returns current pointed object
+     * 
+     * @return the current object
+     */
+    public T getCurrentObject() {
+        if (this.pointer == null || isEmpty() || size() <= this.pointer) {
+            return null;
+        }
+        return get(pointer);
+    }
+
+    /**
+     * Returns next object
+     * 
+     * @return the next object
+     */
+    public T getNextObject(int index) {
+        return getNextObject(false, index);
+    }
+
+    /**
+     * Returns previous object
+     * 
+     * @return the previous object
+     */
+    public T getPreviousObject(int index) {
+        return getPreviousObject(false, index);
+    }
+
+    /**
+     * Moves pointer to next object
+     * 
+     * @return the next object
+     */
+    public T moveToNextObject() {
+        return getNextObject(true, 1);
+    }
+
+    /**
+     * Moved pointer to previous object
+     * 
+     * @return the previous object
+     */
+    public T moveToPreviousObject() {
+        return getPreviousObject(true, 1);
+    }
+
+    /**
+     * Sorts this list with given comparator
+     * 
+     * @param c
+     */
+    public void sort(Comparator<T> c) {
+        if (isEmpty() || getCurrentObject() == null) {
+            return;
+        }
+        T currentObject = getCurrentObject();
+        Collections.sort(this.list, c);
+        setPointer(indexOf(currentObject));
+    }
+
+    /**
+     * Shuffles this list keeping pointed object
+     */
+    public void shuffle() {
+        if (isEmpty() || getCurrentObject() == null) {
+            return;
+        }
+        T currentObject = getCurrentObject();
+        Collections.shuffle(this.list);
+        setPointer(indexOf(currentObject));
+    }
+
+    public void add(T element) {
+        add(this.list.size(), element);
+    }
+
+    public void add(int index, T element) {
+        this.list.add(index, element);
+        if (size() > 1 && this.pointer != null && index <= this.pointer) {
+            this.pointer++;
+        }
+    }
+
+    public boolean addAll(int index, Collection<T> c) {
+        boolean result = this.list.addAll(index, c);
+        if (size() > 1 && this.pointer != null && index <= this.pointer) {
+            this.pointer = this.pointer + c.size();
+        }
+        return result;
+    }
+
+    public T remove(int index) {
+        if (index < 0 || this.list.size() <= index) {
+            return null;
+        }
+
+        if (this.pointer != null && index < this.pointer) {
+            // If position to remove is under pointer, move pointer one position 
+            this.pointer--;
+        } else if (this.pointer != null && index == this.pointer) {
+            // If pointed and removed object is the last one, update pointer to previous
+            if (this.pointer == size() - 1) {
+                this.pointer = size() - 2;
+                // Only one item, put pointer to null
+                if (this.pointer == -1) {
+                    this.pointer = null;
+                }
+            }
+        }
+        return this.list.remove(index);
+    }
+
+    public void clear() {
+        this.pointer = 0;
+        this.list.clear();
+    }
+
+    public void replace(int index, T newObject) {
+        if (index < 0 || this.list.size() <= index || newObject == null) {
+            return;
+        }
+
+        this.list.remove(index);
+        this.list.add(index, newObject);
+    }
+
+    /**
+     * Sets pointer
+     * 
+     * @param pointer
+     */
+    public void setPointer(Integer pointer) {
+        this.pointer = pointer;
+    }
+
+    /**
+     * Returns next object and updates pointer if necessary
+     * 
+     * @return the next object
+     */
+    private T getNextObject(boolean movePointer, int index) {
+        if (isEmpty()) {
+            return null;
+        }
+
+        Integer nextObjectIndex = null;
+        if (this.pointer == null) {
+            nextObjectIndex = 0;
+        } else {
+            nextObjectIndex = (this.pointer + index) % size();
+            // End of list reached and cyclic disabled, return null
+            if (nextObjectIndex < index && !isCyclic()) {
+                nextObjectIndex = null;
+                return null;
+            }
+        }
+
+        if (movePointer) {
+            this.pointer = nextObjectIndex;
+        }
+
+        // Return object
+        return get(nextObjectIndex);
+    }
+
+    /**
+     * Returns previous object and updates pointer if necessary
+     * 
+     * @return the previous object
+     */
+    private T getPreviousObject(boolean movePointer, int index) {
+        if (isEmpty()) {
+            return null;
+        }
+
+        Integer previousObjectIndex = null;
+        if (this.pointer == null) {
+            previousObjectIndex = size() - index;
+        } else {
+            previousObjectIndex = this.pointer - index;
+            // Beginning of list reached and cyclic disabled, return null, otherwise move to end of list
+            if (previousObjectIndex <= -index) {
+                if (!isCyclic()) {
+                    previousObjectIndex = null;
+                    return null;
+                }
+                previousObjectIndex = size() - index;
+            }
+        }
+
+        if (movePointer) {
+            this.pointer = previousObjectIndex;
+        }
+
+        // Return object
+        return get(previousObjectIndex);
+    }
+
+    /**
+     * Returns <code>true</code> if list is cyclic
+     * 
+     * @return
+     */
+    public boolean isCyclic() {
+        // Default implementation is cyclic
+        return true;
+    }
+
+    /**
+     * @return the pointer
+     */
+    public Integer getPointer() {
+        return this.pointer;
+    }
+
+    /**
+     * Returns size of this list
+     * 
+     * @return
+     */
+    public int size() {
+        return this.list.size();
+    }
+
+    /**
+     * Returns if this list is empty
+     * 
+     * @return
+     */
+    public boolean isEmpty() {
+        return this.list.isEmpty();
+    }
+
+    /**
+     * Returns object at given position
+     * 
+     * @param index
+     * @return
+     */
+    public T get(int index) {
+        if (index >= 0 && this.list.size() > index) {
+            return this.list.get(index);
+        }
+        return null;
+    }
+
+    /**
+     * Returns index of given object
+     * 
+     * @param object
+     * @return
+     */
+    public int indexOf(T object) {
+        return this.list.indexOf(object);
+    }
+
+    /**
+     * @return the list
+     */
+    public List<T> getList() {
+        return this.list;
+    }
+
+    public boolean contains(T object) {
+        return this.list.contains(object);
+    }
+
+}

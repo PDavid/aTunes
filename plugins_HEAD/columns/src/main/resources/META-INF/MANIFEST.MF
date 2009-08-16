@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+
+Name: net.sourceforge.atunes.plugins.columns.CommentColumn
+
+Name: net.sourceforge.atunes.plugins.columns.LyricsColumn

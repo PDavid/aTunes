@@ -1,0 +1,11 @@
+<langpack>
+	<str id="core.package" txt="aTunes - glavni program"/>
+	<str id="core.package.description" txt="Instalacija programa aTunes. aTunes je sveobuhvatna aplikacija za izvođenje i upravljanje zvukovnim datotekama temeljena na Javi, tako da se može smjestiti na različite platforme kao što su MS Windows, Linux i drugi unixoidni sustavi.
+	Pri tom je moguće izvoditi MP3-, OGG-, WMA-, WAV-, FLAC- i MP4-datoteke. Pored toga, aTunes omogućava i izmjene datotečnih oznaka (eng.: tags), upravljanje glazbenim datotekama, snimanje glazbe s audio-diskova, skupljanje podcastnih sažetaka itd."/>
+	<str id="source.package" txt="Izvorni kôd aTunesa"/>
+	<str id="source.package.description" txt="Izvorni kôd aTunesa"/> 
+	<str id="win_tools_base.package" txt="Osnovne alatke"/>
+	<str id="win_tools_base.package.description" txt="Osnovni pomoćni programi potrebni za operacijski sustav MS Windows"/> 
+	<str id="win_tools_encoders.package" txt="Dodatne alatke za kodiranje"/>
+	<str id="win_tools_encoders.package.description" txt="Instalacija dodatnih alatki za kodiranje je potrebna kako bi primjerice glazba s audio-diskova mogla biti pretvarana u oblike MP3- ili FLAC-datoteka"/> 
+</langpack>
