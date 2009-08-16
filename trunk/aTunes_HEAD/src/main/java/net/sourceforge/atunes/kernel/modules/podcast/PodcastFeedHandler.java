@@ -1,0 +1,477 @@
+/*
+ * aTunes 1.14.0
+ * Copyright (C) 2006-2009 Alex Aranda, Sylvain Gaudard, Thomas Beckers and contributors
+ *
+ * See http://www.atunes.org/wiki/index.php?title=Contributing for information about contributors
+ *
+ * http://www.atunes.org
+ * http://sourceforge.net/projects/atunes
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+package net.sourceforge.atunes.kernel.modules.podcast;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+
+import javax.swing.SwingWorker;
+
+import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.views.dialogs.TransferProgressDialog;
+import net.sourceforge.atunes.kernel.ApplicationFinishListener;
+import net.sourceforge.atunes.kernel.Kernel;
+import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
+import net.sourceforge.atunes.kernel.modules.state.ApplicationStateChangeListener;
+import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
+import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
+import net.sourceforge.atunes.misc.SystemProperties;
+import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.utils.FileNameUtils;
+import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.StringUtils;
+
+/**
+ * The Class PodcastFeedHandler.
+ */
+public final class PodcastFeedHandler implements ApplicationFinishListener, ApplicationStateChangeListener {
+
+    /** The instance. */
+    private static PodcastFeedHandler instance = new PodcastFeedHandler();
+
+    /** The default podcast feed entries retrieval interval. */
+    public static final long DEFAULT_PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL = 180000;
+
+    /** The logger. */
+    Logger logger = new Logger();
+
+    /** The podcast feeds. */
+    private List<PodcastFeed> podcastFeeds;
+
+    /*
+     * Podcast Feed Entry downloading
+     */
+    /** The podcast feed entry downloader executor service. */
+    private ExecutorService podcastFeedEntryDownloaderExecutorService = Executors.newCachedThreadPool();
+
+    /** The running downloads. */
+    volatile List<PodcastFeedEntryDownloader> runningDownloads = Collections.synchronizedList(new ArrayList<PodcastFeedEntryDownloader>());
+
+    /*
+     * Podcast Feed Entry download checker
+     */
+    /** The podcast feed entry download checker executor service. */
+    private ScheduledExecutorService podcastFeedEntryDownloadCheckerExecutorService = Executors.newScheduledThreadPool(1);
+
+    /*
+     * Podcast Feed Entry retrieval
+     */
+    /** The podcast feed entry retriever executor service. */
+    private ScheduledExecutorService podcastFeedEntryRetrieverExecutorService = Executors.newScheduledThreadPool(1);
+
+    /** The scheduled podcast feed entry retriever future. */
+    private ScheduledFuture<?> scheduledPodcastFeedEntryRetrieverFuture;
+
+    /**
+     * Instantiates a new podcast feed handler.
+     */
+    private PodcastFeedHandler() {
+        Kernel.getInstance().addFinishListener(this);
+        ApplicationStateHandler.getInstance().addStateChangeListener(this);
+    }
+
+    /**
+     * Gets the single instance of PodcastFeedHandler.
+     * 
+     * @return single instance of PodcastFeedHandler
+     */
+    public static PodcastFeedHandler getInstance() {
+        return instance;
+    }
+
+    /**
+     * Adds a Podcast Feed.
+     */
+    public void addPodcastFeed() {
+        PodcastFeed podcastFeed = VisualHandler.getInstance().showAddPodcastFeedDialog();
+        if (podcastFeed != null) {
+            addPodcastFeed(podcastFeed);
+            NavigationHandler.getInstance().refreshView(PodcastNavigationView.class);
+            retrievePodcastFeedEntries();
+        }
+    }
+
+    /**
+     * Adds a Podcast Feed.
+     * 
+     * @param podcastFeed
+     *            A Podcast Feed that should be added
+     */
+    private void addPodcastFeed(PodcastFeed podcastFeed) {
+        logger.info(LogCategories.HANDLER, "Adding podcast feed");
+        // Note: Do not use Collection.sort(...);
+        boolean added = false;
+        Comparator<PodcastFeed> comparator = PodcastFeed.getComparator();
+        for (int i = 0; i < podcastFeeds.size(); i++) {
+            if (comparator.compare(podcastFeed, podcastFeeds.get(i)) < 0) {
+                podcastFeeds.add(i, podcastFeed);
+                added = true;
+                break;
+            }
+        }
+        if (!added) {
+            podcastFeeds.add(podcastFeed);
+        }
+    }
+
+    /**
+     * Finish.
+     */
+    public void applicationFinish() {
+        podcastFeedEntryRetrieverExecutorService.shutdownNow();
+        synchronized (runningDownloads) {
+            for (int i = 0; i < runningDownloads.size(); i++) {
+                PodcastFeedEntryDownloader podcastFeedEntryDownloader = runningDownloads.get(i);
+                podcastFeedEntryDownloader.cancel(true);
+                new File(getDownloadPath(podcastFeedEntryDownloader.getPodcastFeedEntry())).deleteOnExit();
+            }
+        }
+        podcastFeedEntryDownloadCheckerExecutorService.shutdownNow();
+        ApplicationStateHandler.getInstance().persistPodcastFeedCache(podcastFeeds);
+    }
+
+    /**
+     * Returns a list with all Podcast Feeds.
+     * 
+     * @return The podcast feeds
+     */
+    public List<PodcastFeed> getPodcastFeeds() {
+        return new ArrayList<PodcastFeed>(podcastFeeds);
+    }
+
+    /**
+     * Returns a list with all Podcast Feed Entries.
+     * 
+     * @return A list with all Podcast Feed Entries
+     */
+    public List<PodcastFeedEntry> getPodcastFeedEntries() {
+        List<PodcastFeedEntry> podcastFeedEntries = new ArrayList<PodcastFeedEntry>();
+        for (PodcastFeed podcastFeed : podcastFeeds) {
+            podcastFeedEntries.addAll(podcastFeed.getPodcastFeedEntries());
+        }
+        return podcastFeedEntries;
+    }
+
+    /**
+     * Reads the stored Podcast Feeds.
+     */
+    void readPodcastFeeds() {
+        podcastFeeds = ApplicationStateHandler.getInstance().retrievePodcastFeedCache();
+    }
+
+    /**
+     * Runnable process to read podcasts cache.
+     * 
+     * @return the read podcast feeds runnable
+     */
+    public Runnable getReadPodcastFeedsRunnable() {
+        return new Runnable() {
+            @Override
+            public void run() {
+                readPodcastFeeds();
+            }
+        };
+    }
+
+    /**
+     * Removes a Podcast Feed.
+     * 
+     * @param podcastFeed
+     *            A Podcast Feed that should be removed
+     */
+    public void removePodcastFeed(PodcastFeed podcastFeed) {
+        logger.info(LogCategories.HANDLER, "Removing podcast feed");
+        podcastFeeds.remove(podcastFeed);
+        NavigationHandler.getInstance().refreshView(PodcastNavigationView.class);
+    }
+
+    /**
+     * Starts the Podcast Feed Entry Retriever.
+     */
+    public void startPodcastFeedEntryRetriever() {
+        // When upgrading from a previous version, retrievel interval can be 0
+        long retrieval = ApplicationState.getInstance().getPodcastFeedEntriesRetrievalInterval();
+        long retrievalInterval = retrieval > 0 ? retrieval : DEFAULT_PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL;
+
+        schedulePodcastFeedEntryRetriever(retrievalInterval);
+    }
+
+    /**
+     * Start podcast feed entry download checker.
+     */
+    public void startPodcastFeedEntryDownloadChecker() {
+        podcastFeedEntryDownloadCheckerExecutorService.scheduleWithFixedDelay(new PodcastFeedEntryDownloadChecker(), 0, 10000, TimeUnit.MILLISECONDS);
+    }
+
+    /**
+     * Sets the Podcast Feed Entry retrieval interval.
+     * 
+     * @param newRetrievalInterval
+     *            The Podcast Feed Entry retrieval interval
+     */
+    private void setPodcastFeedEntryRetrievalInterval(long newRetrievalInterval) {
+        if (newRetrievalInterval < 0) {
+            throw new IllegalArgumentException("sleeping time must not be smaller than 0");
+        }
+        schedulePodcastFeedEntryRetriever(newRetrievalInterval);
+    }
+
+    /**
+     * Schedules the PodcastFeedEntryRetriever with the given interval.
+     * 
+     * @param newRetrievalInterval
+     *            The Podcast Feed Entry retrieval interval
+     */
+    private void schedulePodcastFeedEntryRetriever(long newRetrievalInterval) {
+        if (scheduledPodcastFeedEntryRetrieverFuture != null) {
+            scheduledPodcastFeedEntryRetrieverFuture.cancel(true);
+        }
+        scheduledPodcastFeedEntryRetrieverFuture = podcastFeedEntryRetrieverExecutorService.scheduleWithFixedDelay(new PodcastFeedEntryRetriever(getPodcastFeeds()), 0,
+                newRetrievalInterval, TimeUnit.MILLISECONDS);
+    }
+
+    /**
+     * Retrieves Podcast Feed Entries and refreshes view asynchronously.
+     * 
+     * @see net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntryRetriever#retrievePodcastFeedEntries()
+     */
+    public void retrievePodcastFeedEntries() {
+        podcastFeedEntryRetrieverExecutorService.execute(new PodcastFeedEntryRetriever(getPodcastFeeds()));
+    }
+
+    /**
+     * Download Podcast Feed Entry.
+     * 
+     * @param podcastFeedEntry
+     *            the podcast feed entry
+     */
+    public void downloadPodcastFeedEntry(final PodcastFeedEntry podcastFeedEntry) {
+        if (isDownloading(podcastFeedEntry)) {
+            return;
+        }
+        final TransferProgressDialog d = VisualHandler.getInstance().getNewTransferProgressDialog(LanguageTool.getString("PODCAST_FEED_ENTRY_DOWNLOAD"), null);
+        d.setIcon(ImageLoader.RSS);
+        final PodcastFeedEntryDownloader downloadPodcastFeedEntry = new PodcastFeedEntryDownloader(podcastFeedEntry);
+        synchronized (runningDownloads) {
+            runningDownloads.add(downloadPodcastFeedEntry);
+        }
+        downloadPodcastFeedEntry.addPropertyChangeListener(new PropertyChangeListener() {
+
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                if (evt.getPropertyName().equals("progress")) {
+                    d.setProgressBarValue((Integer) evt.getNewValue());
+                    if ((Integer) evt.getNewValue() == 100) {
+                        d.dispose();
+                        synchronized (runningDownloads) {
+                            runningDownloads.remove(downloadPodcastFeedEntry);
+                        }
+                    }
+                } else if (evt.getPropertyName().equals("byteProgress")) {
+                    d.setCurrentProgress((Long) evt.getNewValue());
+                } else if (evt.getPropertyName().equals("totalBytes")) {
+                    d.setTotalProgress((Long) evt.getNewValue());
+                } else if (evt.getPropertyName().equals("failed")) {
+                    cancelDownloading(podcastFeedEntry, d, downloadPodcastFeedEntry);
+                }
+            }
+        });
+        d.addCancelButtonActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cancelDownloading(podcastFeedEntry, d, downloadPodcastFeedEntry);
+            }
+        });
+        d.setInfoText(podcastFeedEntry.getName());
+        podcastFeedEntryDownloaderExecutorService.execute(downloadPodcastFeedEntry);
+        d.setVisible(true);
+    }
+
+    /**
+     * Cancel downloading.
+     * 
+     * @param podcastFeedEntry
+     *            the podcast feed entry
+     * @param d
+     *            the d
+     * @param downloadPodcastFeedEntry
+     *            the download podcast feed entry
+     */
+    void cancelDownloading(final PodcastFeedEntry podcastFeedEntry, final TransferProgressDialog d, final PodcastFeedEntryDownloader downloadPodcastFeedEntry) {
+        try {
+            downloadPodcastFeedEntry.cancel(false);
+        } catch (CancellationException ex) {
+            // Nothing to do
+        }
+        d.dispose();
+
+        final File f = new File(getDownloadPath(podcastFeedEntry));
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                while (f.exists() && !Thread.currentThread().isInterrupted()) {
+                    f.delete();
+                }
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    // Nothing to do
+                }
+                synchronized (runningDownloads) {
+                    runningDownloads.remove(downloadPodcastFeedEntry);
+                }
+                logger.info(LogCategories.PODCAST, "podcast entry download cancelled: " + podcastFeedEntry.getName());
+            }
+        };
+        new Thread(r).start();
+    }
+
+    /**
+     * Gets the download path.
+     * 
+     * @param podcastFeedEntry
+     *            the podcast feed entry
+     * 
+     * @return the download path
+     */
+    public String getDownloadPath(PodcastFeedEntry podcastFeedEntry) {
+        String path = ApplicationState.getInstance().getPodcastFeedEntryDownloadPath();
+        if (path == null || path.isEmpty()) {
+            path = StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.DEFAULT_PODCAST_FEED_ENTRY_DOWNLOAD_DIR);
+        }
+        File podcastFeedsDownloadFolder = new File(path);
+
+        // Check if podcast folder exists
+        if (!podcastFeedsDownloadFolder.exists()) {
+            boolean check = podcastFeedsDownloadFolder.mkdir();
+            if (!check) {
+                logger.error(LogCategories.PODCAST, "Problem Creating file!");
+                return "";
+            }
+        }
+
+        if (podcastFeedEntry.getPodcastFeed().getName() == null || podcastFeedEntry.getPodcastFeed().getName().trim().isEmpty()) {
+            return "";
+        }
+
+        // Check if subfolder exists and otherwise create
+        File podcastFeedDownloadFolder = new File(podcastFeedsDownloadFolder.toString() + "/" + FileNameUtils.getValidFileName(podcastFeedEntry.getPodcastFeed().getName()));
+        if (!podcastFeedDownloadFolder.exists()) {
+            boolean check = podcastFeedDownloadFolder.mkdir();
+            if (!check) {
+                logger.error(LogCategories.PODCAST, "Problem Creating file!");
+                return "";
+            }
+        }
+        String[] elements = podcastFeedEntry.getUrl().split("/");
+        if (elements.length > 0) {
+            String filename = elements[elements.length - 1];
+            return podcastFeedDownloadFolder.toString() + "/" + FileNameUtils.getValidFileName(filename);
+        }
+        throw new IllegalArgumentException();
+    }
+
+    /**
+     * Checks if is downloaded.
+     * 
+     * @param podcastFeedEntry
+     *            the podcast feed entry
+     * 
+     * @return true, if is downloaded
+     */
+    public boolean isDownloaded(PodcastFeedEntry podcastFeedEntry) {
+        File f = new File(getDownloadPath(podcastFeedEntry));
+        return f.exists();
+    }
+
+    /**
+     * Delete downloaded podcast feed entry.
+     * 
+     * @param podcastFeedEntry
+     *            the podcast feed entry
+     */
+    public void deleteDownloadedPodcastFeedEntry(final PodcastFeedEntry podcastFeedEntry) {
+        final File f = new File(getDownloadPath(podcastFeedEntry));
+        new SwingWorker<Boolean, Void>() {
+
+            @Override
+            protected Boolean doInBackground() throws Exception {
+                return f.delete();
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    if (get()) {
+                        podcastFeedEntry.setDownloaded(false);
+                        VisualHandler.getInstance().getNavigationPanel().getNavigationTable().repaint();
+                    }
+                } catch (InterruptedException e) {
+                    logger.error(LogCategories.PODCAST, e);
+                } catch (ExecutionException e) {
+                    logger.error(LogCategories.PODCAST, e);
+                }
+            }
+        }.execute();
+    }
+
+    /**
+     * Checks if is downloading.
+     * 
+     * @param podcastFeedEntry
+     *            the podcast feed entry
+     * 
+     * @return true, if is downloading
+     */
+    public boolean isDownloading(PodcastFeedEntry podcastFeedEntry) {
+        synchronized (runningDownloads) {
+            for (int i = 0; i < runningDownloads.size(); i++) {
+                if (runningDownloads.get(i).getPodcastFeedEntry().equals(podcastFeedEntry)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void applicationStateChanged(ApplicationState newState) {
+        setPodcastFeedEntryRetrievalInterval(newState.getPodcastFeedEntriesRetrievalInterval());
+    }
+}

@@ -1,0 +1,19 @@
+<launch4jConfig>
+  <dontWrapJar>true</dontWrapJar>
+  <headerType>0</headerType>
+  <jar>aTunes.jar</jar>
+  <errTitle></errTitle>
+  <jarArgs></jarArgs>
+  <chdir>.</chdir>
+  <customProcName>true</customProcName>
+  <stayAlive>false</stayAlive>
+  <icon>../deployable/aTunes.ico</icon>
+  <jre>
+    <path></path>
+    <minVersion>1.6.0</minVersion>
+    <maxVersion></maxVersion>
+    <initialHeapSize>18</initialHeapSize>
+    <maxHeapSize>512</maxHeapSize>
+    <args>-cp aTunes.jar;lib/* net.sourceforge.atunes.Main</args>
+  </jre>
+</launch4jConfig>

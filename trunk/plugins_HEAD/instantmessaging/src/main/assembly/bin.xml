@@ -1,0 +1,22 @@
+<assembly>
+	<id>bin</id>
+	<formats>
+		<format>zip</format>
+	</formats>
+	<fileSets>
+		<fileSet>
+			<directory>target</directory>
+			<outputDirectory />
+			<includes>
+				<include>*.jar</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>resources</directory>
+			<outputDirectory />
+			<includes>
+				<include>**/*.*</include>
+			</includes>
+		</fileSet>
+	</fileSets>
+</assembly>

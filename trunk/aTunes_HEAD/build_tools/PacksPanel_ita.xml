@@ -1,0 +1,10 @@
+<langpack>
+    <str id="core.package" txt="aTunes - Programma principale"/>
+    <str id="core.package.description" txt="aTunes è un'applicazione completa per la riproduzione e la gestione di file audio, sviluppata in linguaggio Java, per cui può essere eseguita in differenti piattaforme: Windows, Linux e altre versioni Unix. Può riprodurre file mp3, ogg, wma, wav, flac, mp4 e flussi internet radio, permettendo all'utilizzatore di modificare facilmente i marcatori, organizzare i file audio e rippare i CD Audio. E' richiesta la presenza dell'interprete Java 6."/>
+    <str id="source.package" txt="Sorgenti"/>
+    <str id="source.package.description" txt="Codice sorgente dell'applicazione"/> 
+  	<str id="win_tools_base.package" txt="Strumenti base per Windows"/>
+	  <str id="win_tools_base.package.description" txt="Strumenti base richiesti per l'uso in Windows (mplayer e cdda2wav)"/> 
+	  <str id="win_tools_encoders.package" txt="Encoder addizionali per sistemi Windows"/>
+	  <str id="win_tools_encoders.package.description" txt="Questo pacchetto contiene encoder aggiuntivi che permettono di codificare CD in formato Flac e MP3"/> 
+</langpack>

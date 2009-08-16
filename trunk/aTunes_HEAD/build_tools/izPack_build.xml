@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+	<!--
+		aTunes installer creation with izPack To compile it : - go in the bin
+		directory where you installed IzPack - call "compile izPack_build.xml
+		-b ."
+	-->
+<installation version="1.0">
+	<info>
+		<appname>aTunes</appname>
+		<appversion>1.14.0</appversion>
+  		<url>http://www.atunes.org/</url>
+		<webdir>http://downloads.sourceforge.net/atunes</webdir>
+		<authors>
+			<author name="Alex Aranda (developer, translator)" email="alex@atunes.org" />
+			<author name="Sylvain Gaudard (developer, translator)" email="sylvain@atunes.org" />
+			<author name="Thomas Beckers (developer)" email="thomas@atunes.org" />
+			<author
+				name="All contributors are listed at www.atunes.org in the 'About' section"
+				email="" />
+		</authors>
+		<javaversion>1.6</javaversion>
+	</info>
+	<guiprefs width="640" height="500" resizable="no">
+		<modifier key="langDisplayType" value="native" />
+		<laf name='substance'>
+			<param name="variant" value="business-black" />
+			<os family="unix" />
+			<os family="windows" />
+			<os family="mac" />
+		</laf>
+	</guiprefs>
+	<locale>
+		<langpack iso3="eng" />
+		<langpack iso3="deu" />
+		<langpack iso3="fra" />
+		<langpack iso3="spa" />
+		<langpack iso3="por" />
+		<langpack iso3="glg" />
+		<langpack iso3="ita" />
+		<langpack iso3="ned" />
+		<langpack iso3="swe" />
+		<langpack iso3="nor" />
+		<langpack iso3="ell" />
+		<langpack iso3="pol" />
+		<langpack iso3="cze" />
+		<langpack iso3="svk" />
+		<langpack iso3="hun" />
+		<langpack iso3="rus" />
+		<langpack iso3="ukr" />
+		<langpack iso3="tur" />
+		<langpack iso3="chn" />
+		<langpack iso3="jpn" />
+	</locale>
+	<resources>
+		<res id="LicencePanel.licence" src="license.txt" />
+		<res id="shortcutSpec.xml" src="shortcutSpec.xml" />
+		<!--
+			Translation files. Each languages must be specified separately,
+			otherwise english is used
+		-->
+		<res id="packsLang.xml_deu" src="build_tools/PacksPanel_deu.xml" />
+		<res id="packsLang.xml_fra" src="build_tools/PacksPanel_fra.xml" />
+		<res id="packsLang.xml_ita" src="build_tools/PacksPanel_ita.xml" />
+		<res id="packsLang.xml_spa" src="build_tools/PacksPanel_spa.xml" />
+		<res id="packsLang.xml_hrv" src="build_tools/PacksPanel_hrv.xml" />
+		<res id='installer.langsel.img' src="build_tools/appIconTitle.png" />
+	</resources>
+	<panels>
+		<panel classname="LicencePanel" />
+		<panel classname="TargetPanel" />
+		<panel classname="PacksPanel" />
+		<panel classname="InstallPanel" />
+		<panel classname="ShortcutPanel" />
+		<panel classname="SimpleFinishPanel" />
+	</panels>
+	<packs>
+		<pack name="aTunes Base" id="core.package" required="yes">
+			<!--
+				Do not change indentation of field description!!!!! Changes are
+				applied to dialog!!!!!
+			-->
+			<description>aTunes is a full-featured audio player and organizer. aTunes supports mp3, ogg, wma, wav, flac and mp4 files and allows users to edit tags, organize music and rip audio cds easily. Java SE 6 is required.</description>
+			<file src="lib" targetdir="$INSTALL_PATH" />
+			
+			<file src="translations" targetdir="$INSTALL_PATH" />
+			<file src="settings" targetdir="$INSTALL_PATH" />
+			
+			<file src="aTunes.ico" targetdir="$INSTALL_PATH" >
+				<os family="win" />
+			</file>
+			<file src="aTunes.ico" targetdir="$INSTALL_PATH" >
+				<os family="unix" />
+			</file>
+			<file src="aTunes.icns" targetdir="$INSTALL_PATH" >
+				<os family="mac" />
+			</file>
+			<file src="uninstall.ico" targetdir="$INSTALL_PATH" >
+				<os family="win" />
+			</file>
+			<file src="uninstall.ico" targetdir="$INSTALL_PATH" >
+				<os family="unix" />
+			</file>
+			<file src="aTunes.exe" targetdir="$INSTALL_PATH" >
+				<os family="win" />
+			</file>
+			<file src="JIntellitype.dll" targetdir="$INSTALL_PATH" >
+				<os family="win" />
+			</file>
+			<file src="libJXGrabKey.so" targetdir="$INSTALL_PATH" >
+				<os family="unix" />
+			</file>
+			<file src="aTunes.jar" targetdir="$INSTALL_PATH" />
+			<file src="aTunes.sh" targetdir="$INSTALL_PATH">
+				<os family="unix" />
+			</file>
+			<executable targetfile="$INSTALL_PATH/aTunes.sh" stage="never">
+				<os family="unix" />
+			</executable>
+			<file src="aTunes.command" targetdir="$INSTALL_PATH">
+				<os family="mac" />
+			</file>
+			<executable targetfile="$INSTALL_PATH/aTunes.command"
+				stage="never">
+				<os family="mac" />
+			</executable>
+			<file src="mac_tools" targetdir="$INSTALL_PATH">
+				<os family="mac" />
+			</file>
+			<symlink action="single" link="$INSTALL_PATH/mac_tools/mplayer" resource="/Applications/MPlayer OS X 2.app/contents/Resources/mplayer.app/contents/MacOS/mplayer" >
+				<os family="mac" />
+			</symlink>
+			<file src="license.txt" targetdir="$INSTALL_PATH" />
+		</pack>
+		<pack name="Base tools for Windows" id="win_tools_base.package" required="yes">
+			<description>Required base tools for Windows (mplayer and cdda2wav)</description>
+			<os family="windows" />
+			<file src="win_tools/mplayer.exe" targetdir="$INSTALL_PATH/win_tools"/>
+			<file src="win_tools/cdda2wav.exe" targetdir="$INSTALL_PATH/win_tools"/>
+			<file src="win_tools/oggenc.exe" targetdir="$INSTALL_PATH/win_tools"/>
+			<file src="win_tools/cygwin1.dll" targetdir="$INSTALL_PATH/win_tools"/>
+			<file src="win_tools/pthreadGC2.dll" targetdir="$INSTALL_PATH/win_tools"/>
+		</pack>
+		<pack name="Sources" id="source.package" required="no"
+		      preselected="no">
+			<description>aTunes source code and JavaDoc</description>
+			<file src="src" targetdir="$INSTALL_PATH" />
+			<file src="javadoc" targetdir="$INSTALL_PATH" />
+		</pack>
+		<pack name="Additional encoders for Windows OS" id="win_tools_encoders.package" required="no"
+			preselected="yes">
+			<os family="windows" />
+			<description>This package contains additional encoders which allow encoding audio CDs to the Flac and Mp3 formats</description>
+			<file src="win_tools/lame.exe" targetdir="$INSTALL_PATH/win_tools"/>
+			<file src="win_tools/flac.exe" targetdir="$INSTALL_PATH/win_tools"/>
+		</pack>
+		<!--pack name="Base tools for Mac OS X" id="mac_tools_base" required="yes">
+			<os family="mac" />
+			<description>Needed Mac OS X binaries (mplayer)</description>
+			<file src="mac_tools" targetdir="$INSTALL_PATH"/>
+			<executable targetfile="$INSTALL_PATH/mac_tools/mplayer"
+				    stage="never"/>
+			<file src="aTunes.command" targetdir="$INSTALL_PATH"/>
+			<executable targetfile="$INSTALL_PATH/aTunes.command"
+				    stage="never"/>
+		</pack-->
+	</packs>
+	<native type="izpack" name="ShellLink.dll" />
+	<native type="izpack" name="ShellLink_x64.dll"/>
+</installation>

@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+
+Name: Pidgin Message
+Plugin-Class: net.sourceforge.atunes.plugins.updatemessage.PidginMessage
+Plugin-Author: aTunes Team
+Plugin-Icon: Pidgin.png
+Plugin-Url: http://www.atunes.org
+Plugin-Version: 1.0
+Plugin-OS: Linux
+
+Name: Kopete Message
+Plugin-Class: net.sourceforge.atunes.plugins.updatemessage.KopeteMessage
+Plugin-Author: aTunes Team
+Plugin-Icon: Kopete.png
+Plugin-Url: http://www.atunes.org
+Plugin-Version: 1.0
+Plugin-OS: Linux

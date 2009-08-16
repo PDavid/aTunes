@@ -1,0 +1,41 @@
+<assembly>
+	<id>bin</id>
+	<formats>
+		<format>tar.gz</format>
+	</formats>
+	<dependencySets>
+		<dependencySet>
+			<outputDirectory>/lib</outputDirectory>
+		</dependencySet>
+	</dependencySets>
+	<fileSets>
+		<fileSet>
+			<directory>${basedir}/deployable</directory>
+			<outputDirectory />
+			<includes>
+				<include>**.*</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>${basedir}/win_tools</directory>
+			<outputDirectory>/win_tools</outputDirectory>
+			<includes>
+				<include>**.*</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>${basedir}/deploy/aTunes</directory>
+			<outputDirectory />
+			<includes>
+				<include>aTunes.exe</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>${basedir}/target</directory>
+			<outputDirectory />
+			<includes>
+				<include>aTunes.jar</include>
+			</includes>
+		</fileSet>
+	</fileSets>
+</assembly>

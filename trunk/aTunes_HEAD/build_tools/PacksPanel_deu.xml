@@ -1,0 +1,12 @@
+<langpack>
+	<str id="core.package" txt="aTunes"/>
+	<str id="core.package.description" txt="Installiert den Audiospieler und -manager. Als Java-Anwendung ist aTunes auf verschiedenen Plattformen wie Windows, Linux und anderen Unix-ähnlichen Systeme lauffähig.
+	
+	Es können MP3-, OGG-, WMA-, WAV-, FLAC- und MP4-Dateien abgespielt werden. Zudem ist es mit aTunes möglich, die Tags zu ändern, die Musik zu organisieren oder Audio-CDs einzulesen"/>
+	<str id="source.package" txt="aTunes-Quellcode"/>
+	<str id="source.package.description" txt="Quellcode von aTunes"/> 
+	<str id="win_tools_base.package" txt="Benötigte Grundanwendungen"/>
+	<str id="win_tools_base.package.description" txt="Benötigte Anwendungen für das Windows-Betriebssystem"/> 
+	<str id="win_tools_encoders.package" txt="Zusätzliche Encoder"/>
+	<str id="win_tools_encoders.package.description" txt="Installiert zusätzliche Encoder, um Musikstücke von Audio-CDs in das MP3- oder das FLAC-Format konvertieren zu können"/> 
+</langpack>
