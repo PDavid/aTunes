@@ -150,6 +150,8 @@ public class PluginsPanel extends PreferencesPanel {
         c.gridy = 2;
         c.insets = new Insets(10, 5, 10, 5);
         c.gridheight = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weighty = 0;
         add(pluginDetailPanel, c);
         
         pluginsTable.setDefaultRenderer(PluginInfo.class, new SubstanceDefaultTableCellRenderer() {
