@@ -5,7 +5,14 @@
 	</formats>
 	<fileSets>
 		<fileSet>
-			<directory>src</directory>
+			<directory>target</directory>
+			<outputDirectory />
+			<includes>
+				<include>*.jar</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>resources</directory>
 			<outputDirectory />
 			<includes>
 				<include>**/*.*</include>

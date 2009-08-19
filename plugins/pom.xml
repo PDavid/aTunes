@@ -6,9 +6,10 @@
   <version>0.1</version>
   <packaging>pom</packaging>
   <modules>
-  	<module>instantmessaging</module>
-  	<module>columns</module>
-  	<module>favoritenavigationview</module>
+  	<module>net-sourceforge-atunes-plugins-instantmessaging</module>
+  	<module>net-sourceforge-atunes-plugins-commentcolumn</module>
+  	<module>net-sourceforge-atunes-plugins-lyricscolumn</module>
+  	<module>net-sourceforge-atunes-plugins-navigationviews-favoritesview</module>
   </modules>
   <dependencies>
   	<dependency>
@@ -20,17 +21,6 @@
   <build>
   	<plugins>
   		<plugin>
-  			<groupId>org.apache.maven.plugins</groupId>
-  			<artifactId>maven-jar-plugin</artifactId>
-  			<configuration>
-  				<archive>
-  					<manifestFile>
-  						src/main/resources/META-INF/MANIFEST.MF
-  					</manifestFile>
-  				</archive>
-  			</configuration>
-  		</plugin>
-  		<plugin>
   			<artifactId>maven-compiler-plugin</artifactId>
   			<configuration>
   				<source>1.6</source>
@@ -40,25 +30,6 @@
   				<encoding>utf-8</encoding>
   			</configuration>
   		</plugin>
-    		<plugin>
-  			<artifactId>maven-assembly-plugin</artifactId>
-  			<configuration>
-  				<descriptors>
-  					<descriptor>src/main/assembly/bin.xml</descriptor>
-  				</descriptors>
-  				<appendAssemblyId>no</appendAssemblyId>
-  			</configuration>
-  			<executions>
-  				<execution>
-  					<id>make-assembly</id>
-  					<phase>package</phase>
-  					<goals>
-  						<goal>single</goal>
-  					</goals>
-  				</execution>
-  			</executions>
-  		</plugin>
-
   	</plugins>
   </build>
 </project>
