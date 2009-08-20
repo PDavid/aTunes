@@ -15,53 +15,93 @@
 	<plugin>
  	  <groupId>org.apache.maven.plugins</groupId>
   	  <artifactId>maven-jar-plugin</artifactId>
-  	  <configuration>
-  	    <archive>
-          <manifestSections>
-            
-            <manifestSection>
-              <name>Pidgin Message</name>
-              <manifestEntries>
-                <Plugin-Class>net.sourceforge.atunes.plugins.instantmessaging.PidginMessage</Plugin-Class>
-                <Plugin-Author>aTunes Team</Plugin-Author>
-                <Plugin-Icon>Pidgin.png</Plugin-Icon>
-                <Plugin-Url>http://www.atunes.org</Plugin-Url>
-                <Plugin-Version>${version}</Plugin-Version>
-                <Plugin-OS>Linux</Plugin-OS>
-              </manifestEntries>
-            </manifestSection>
-
-            <manifestSection>
-              <name>Kopete Message</name>
-              <manifestEntries>
-                <Plugin-Class>net.sourceforge.atunes.plugins.instantmessaging.KopeteMessage</Plugin-Class>
-                <Plugin-Author>aTunes Team</Plugin-Author>
-                <Plugin-Icon>Kopete.png</Plugin-Icon>
-                <Plugin-Url>http://www.atunes.org</Plugin-Url>
-                <Plugin-Version>${version}</Plugin-Version>
-                <Plugin-OS>Linux</Plugin-OS>
-              </manifestEntries>
-            </manifestSection>
-            
-          </manifestSections>
-        </archive>
-      </configuration>
+      <executions>
+        <execution> 
+          <id>default</id>
+          <phase>package</phase> 
+          <goals> 
+            <goal>jar</goal> 
+          </goals> 
+          <configuration> 
+              <classifier>pidgin</classifier> 
+              <excludes> 
+                <exclude>**/*/Kopete*.class</exclude> 
+                <exclude>Kopete.png</exclude>
+              </excludes>	
+              <archive>
+                <manifestSections>
+                  <manifestSection>
+                    <name>Pidgin Message</name>
+                    <manifestEntries>
+                      <Plugin-Class>net.sourceforge.atunes.plugins.instantmessaging.PidginMessage</Plugin-Class>
+                      <Plugin-Author>aTunes Team</Plugin-Author>
+                      <Plugin-Icon>Pidgin.png</Plugin-Icon>
+                      <Plugin-Url>http://www.atunes.org</Plugin-Url>
+                      <Plugin-Version>${version}</Plugin-Version>
+                      <Plugin-OS>Linux</Plugin-OS>
+                    </manifestEntries>
+                  </manifestSection>
+                </manifestSections>
+              </archive>
+          </configuration> 
+        </execution> 
+        <execution> 
+          <id>kopete</id>
+          <phase>package</phase> 
+          <goals> 
+            <goal>jar</goal> 
+          </goals> 
+          <configuration> 
+              <classifier>kopete</classifier> 
+              <excludes> 
+                <exclude>**/*/Pidgin*.class</exclude> 
+                <exclude>Pidgin.png</exclude>
+              </excludes>	
+              <archive>
+                <manifestSections>
+                  <manifestSection>
+                    <name>Kopete Message</name>
+                    <manifestEntries>
+                      <Plugin-Class>net.sourceforge.atunes.plugins.instantmessaging.KopeteMessage</Plugin-Class>
+                      <Plugin-Author>aTunes Team</Plugin-Author>
+                      <Plugin-Icon>Kopete.png</Plugin-Icon>
+                      <Plugin-Url>http://www.atunes.org</Plugin-Url>
+                      <Plugin-Version>${version}</Plugin-Version>
+                      <Plugin-OS>Linux</Plugin-OS>
+                    </manifestEntries>
+                  </manifestSection>
+                </manifestSections>
+              </archive>
+          </configuration> 
+        </execution>       
+      </executions>
 	</plugin>
     <plugin>
   	  <artifactId>maven-assembly-plugin</artifactId>
-  	  <configuration>
-  	    <descriptors>
-  	      <descriptor>../src/main/assembly/bin.xml</descriptor>
-  		</descriptors>
-  	    <appendAssemblyId>no</appendAssemblyId>
-  	  </configuration>
   	  <executions>
   	    <execution>
-  		  <id>make-assembly</id>
-  			<phase>package</phase>
-  			<goals>
-  			  <goal>single</goal>
-  			</goals>
+  		  <id>make-pidgin-assembly</id>
+  		  <phase>package</phase>
+  		  <goals>
+  			<goal>single</goal>
+  		  </goals>
+  	      <configuration>
+  	        <descriptors>
+  	          <descriptor>src/main/assembly/pidgin-bin.xml</descriptor>
+  		    </descriptors>
+  	      </configuration>
+  		</execution>
+  	    <execution>
+  		  <id>make-kopete-assembly</id>
+  		  <phase>package</phase>
+  		  <goals>
+  			<goal>single</goal>
+  		  </goals>
+  	      <configuration>
+  	        <descriptors>
+  	          <descriptor>src/main/assembly/kopete-bin.xml</descriptor>
+  		    </descriptors>
+  	      </configuration>
   		</execution>
   	  </executions>
   	</plugin>
