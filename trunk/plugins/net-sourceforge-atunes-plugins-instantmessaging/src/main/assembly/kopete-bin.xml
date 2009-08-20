@@ -1,0 +1,23 @@
+<assembly>
+	<id>kopete</id>
+	<formats>
+		<format>zip</format>
+	</formats>
+	<baseDirectory>${module.artifactId}-${version}-kopete</baseDirectory>
+	<fileSets>
+		<fileSet>
+			<directory>target</directory>
+			<outputDirectory />
+			<includes>
+				<include>*kopete.jar</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>resources</directory>
+			<outputDirectory />
+			<includes>
+				<include>KopeteMessage.py</include>
+			</includes>
+		</fileSet>
+	</fileSets>
+</assembly>

@@ -1,0 +1,23 @@
+<assembly>
+	<id>pidgin</id>
+	<formats>
+		<format>zip</format>
+	</formats>
+	<baseDirectory>${module.artifactId}-${version}-pidgin</baseDirectory>
+	<fileSets>
+		<fileSet>
+			<directory>target</directory>
+			<outputDirectory />
+			<includes>
+				<include>*pidgin.jar</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>resources</directory>
+			<outputDirectory />
+			<includes>
+				<include>PidginMessage.py</include>
+			</includes>
+		</fileSet>
+	</fileSets>
+</assembly>
