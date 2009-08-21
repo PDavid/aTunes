@@ -32,23 +32,20 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.NetworkUtils;
 
 /**
- * The Class Radio.
+ * A radio station.
  */
 public class Radio implements AudioObject, Serializable, TreeObject, Comparable<Radio> {
 
     private static final long serialVersionUID = 3295941106814718559L;
 
-    /** The Constant PLAYLISTS. */
     private static final String[] PLAYLISTS = { "m3u", "pls", "asx", "wax", "b4s", "kpl", "wvx", "ram", "rm", "smil" };
 
-    /** The comparator. */
     private static Comparator<Radio> comparator = new Comparator<Radio>() {
         @Override
         public int compare(Radio o1, Radio o2) {
@@ -56,38 +53,17 @@ public class Radio implements AudioObject, Serializable, TreeObject, Comparable<
         }
     };
 
-    /** The name. */
     String name;
-
-    /** The url. */
     private String url;
-
-    /** The label. */
     private String label;
-
-    /** The genre. */
     private String genre;
-
-    /** The is removed. */
     private boolean isRemoved;
-
     // Song infos from radio stream
-    /** The artist. */
     private transient String artist;
-
-    /** The title. */
     private transient String title;
-
-    /** The composer. */
     private transient String composer;
-
-    /** The song info available. */
     private transient boolean songInfoAvailable;
-
-    /** The bitrate. */
     private long bitrate;
-
-    /** The frequency. */
     private int frequency;
 
     /**
@@ -142,11 +118,6 @@ public class Radio implements AudioObject, Serializable, TreeObject, Comparable<
         songInfoAvailable = false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object o) {
         if (o == null || !(o instanceof Radio)) {
@@ -156,41 +127,21 @@ public class Radio implements AudioObject, Serializable, TreeObject, Comparable<
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.model.AudioObject#getAlbum()
-     */
     @Override
     public String getAlbum() {
         return "";
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.model.AudioObject#getAlbumArtist()
-     */
     @Override
     public String getAlbumArtist() {
         return "";
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.model.AudioObject#getArtist()
-     */
     @Override
     public String getArtist() {
         return artist == null ? "" : artist;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.model.TreeObject#getAudioObjects()
-     */
     @Override
     public List<AudioObject> getAudioObjects() {
         List<AudioObject> songs = new ArrayList<AudioObject>();
@@ -198,21 +149,11 @@ public class Radio implements AudioObject, Serializable, TreeObject, Comparable<
         return songs;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.model.AudioObject#getBitrate()
-     */
     @Override
     public long getBitrate() {
         return bitrate;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.model.AudioObject#getComposer()
-     */
     @Override
     public String getComposer() {
         if (composer != null) {
@@ -221,31 +162,16 @@ public class Radio implements AudioObject, Serializable, TreeObject, Comparable<
         return "";
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.model.AudioObject#getDuration()
-     */
     @Override
     public long getDuration() {
         return 0;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.model.AudioObject#getFrequency()
-     */
     @Override
     public int getFrequency() {
         return frequency;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.model.AudioObject#getGenre()
-     */
     @Override
     public String getGenre() {
         if (genre != null) {
@@ -254,11 +180,6 @@ public class Radio implements AudioObject, Serializable, TreeObject, Comparable<
         return "";
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.model.AudioObject#getLyrics()
-     */
     @Override
     public String getLyrics() {
         return "";
@@ -284,72 +205,36 @@ public class Radio implements AudioObject, Serializable, TreeObject, Comparable<
         return songs;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.model.AudioObject#getStars()
-     */
     @Override
     public int getStars() {
         return 0;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.model.AudioObject#getTitle()
-     */
     @Override
     public String getTitle() {
         return title == null ? getName() : title;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.model.AudioObject#getTitleOrFileName()
-     */
     @Override
     public String getTitleOrFileName() {
         return getTitle();
     }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.model.AudioObject#getTrackNumber()
-     */
 
     @Override
     public Integer getTrackNumber() {
         return 0;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.model.AudioObject#getUrl()
-     */
     @Override
     public String getUrl() {
         return url;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.model.AudioObject#getYear()
-     */
     @Override
     public String getYear() {
         return "";
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         return (name + url).hashCode();
@@ -360,7 +245,7 @@ public class Radio implements AudioObject, Serializable, TreeObject, Comparable<
      * 
      * @return true, if successful
      */
-    public boolean hasPlaylistUrl() {
+    public boolean hasPlaylistUrl(Proxy proxy) {
         // First check based on URL end (extension)
         for (String pl : PLAYLISTS) {
             if (url.trim().toLowerCase().endsWith(pl)) {
@@ -371,7 +256,7 @@ public class Radio implements AudioObject, Serializable, TreeObject, Comparable<
         // WORKAROUND: If URL has no extension, then try to get from content
         // Just read first bytes to avoid starting read a non playlist url
         try {
-            String radioContent = NetworkUtils.readURL(NetworkUtils.getConnection(url, Proxy.getProxy(ApplicationState.getInstance().getProxy())), 100);
+            String radioContent = NetworkUtils.readURL(NetworkUtils.getConnection(url, proxy), 100);
             for (String pl : PLAYLISTS) {
                 if (radioContent.trim().toLowerCase().contains(pl)) {
                     return true;
@@ -485,11 +370,6 @@ public class Radio implements AudioObject, Serializable, TreeObject, Comparable<
         this.songInfoAvailable = songInfoAvailable;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.model.AudioObject#setStars(int)
-     */
     @Override
     public void setStars(int stars) {
         // Nothing to do
@@ -515,11 +395,6 @@ public class Radio implements AudioObject, Serializable, TreeObject, Comparable<
         this.url = url;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         return name;
@@ -544,11 +419,6 @@ public class Radio implements AudioObject, Serializable, TreeObject, Comparable<
         this.label = label;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.model.AudioObject#isSeekable()
-     */
     @Override
     public boolean isSeekable() {
         return false;
