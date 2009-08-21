@@ -32,6 +32,7 @@ import net.sourceforge.atunes.kernel.modules.player.PlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
+import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.audio.CueTrack;
@@ -325,7 +326,7 @@ public class MPlayerEngine extends PlayerEngine {
         }
 
         // If a radio has a playlist url add playlist command
-        if (audioObject instanceof Radio && ((Radio) audioObject).hasPlaylistUrl()) {
+        if (audioObject instanceof Radio && ((Radio) audioObject).hasPlaylistUrl(Proxy.getProxy(ApplicationState.getInstance().getProxy()))) {
             command.add(PLAYLIST);
         }
 
