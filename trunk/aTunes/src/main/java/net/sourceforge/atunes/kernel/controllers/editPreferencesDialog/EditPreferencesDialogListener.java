@@ -58,12 +58,6 @@ public class EditPreferencesDialogListener implements ListSelectionListener, Act
         this.editPreferencesDialogController = editPreferencesDialogController;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
     @Override
     public void actionPerformed(ActionEvent e) {
         boolean needRestart = false;
