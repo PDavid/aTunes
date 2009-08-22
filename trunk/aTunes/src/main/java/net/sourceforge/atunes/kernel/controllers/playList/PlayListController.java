@@ -234,7 +234,7 @@ public class PlayListController extends PanelController<PlayListPanel> implement
     public void playSelectedAudioObject() {
         int audioObject = getPanelControlled().getPlayListTable().getSelectedRow();
         PlayListHandler.getInstance().setPositionToPlayInVisiblePlayList(audioObject);
-        PlayerHandler.getInstance().playCurrentAudioObject(true);
+        PlayerHandler.getInstance().playCurrentAudioObject(false);
     }
 
     /**
