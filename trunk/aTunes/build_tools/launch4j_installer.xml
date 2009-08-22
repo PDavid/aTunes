@@ -8,7 +8,7 @@
   <chdir></chdir>
   <customProcName>false</customProcName>
   <stayAlive>false</stayAlive>
-  <icon>../deployable/aTunes.ico</icon>
+  <icon>../build_resources/aTunes.ico</icon>
   <jre>
     <path></path>
     <minVersion>1.6.0</minVersion>
