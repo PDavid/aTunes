@@ -48,8 +48,8 @@ import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.kernel.modules.updates.UpdateHandler;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.SystemProperties;
@@ -141,6 +141,7 @@ public class Kernel {
                     }
                     // Add application finish listener
                     Kernel.getInstance().addFinishListener(MultipleInstancesHandler.getInstance());
+                    
                     // Set font smoothing
                     Fonts.setFontSmoothing();
                     // Set look and feel

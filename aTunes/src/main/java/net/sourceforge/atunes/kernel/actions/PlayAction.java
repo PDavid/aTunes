@@ -28,6 +28,7 @@ import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.ControllerProxy;
+import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.LanguageTool;
 
@@ -43,7 +44,7 @@ public class PlayAction extends Action {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        ControllerProxy.getInstance().getPlayListController().playSelectedAudioObject();
+    	PlayerHandler.getInstance().playCurrentAudioObject(true);
     }
 
     @Override
