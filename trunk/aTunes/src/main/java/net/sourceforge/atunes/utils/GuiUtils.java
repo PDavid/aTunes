@@ -33,7 +33,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Enumeration;
 import java.util.Locale;
 
 import javax.swing.AbstractAction;
@@ -44,7 +43,6 @@ import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import javax.swing.plaf.FontUIResource;
 
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -337,23 +335,6 @@ public final class GuiUtils {
                 componentOrientation = ComponentOrientation.getOrientation(ApplicationState.getInstance().getLocale().getLocale());
             }
 
-        }
-    }
-
-    /**
-     * Sets the default font for all Swing components.
-     * 
-     * @param f
-     *            the f
-     */
-    public static void setUIFont(FontUIResource f) {
-        Enumeration<Object> keys = UIManager.getDefaults().keys();
-        while (keys.hasMoreElements()) {
-            Object key = keys.nextElement();
-            Object value = UIManager.get(key);
-            if (value instanceof FontUIResource) {
-                UIManager.put(key, f);
-            }
         }
     }
 

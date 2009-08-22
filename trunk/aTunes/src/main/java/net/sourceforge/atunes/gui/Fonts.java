@@ -22,18 +22,24 @@ package net.sourceforge.atunes.gui;
 
 import java.awt.Font;
 
-import javax.swing.UIManager;
+import javax.swing.UIDefaults;
 import javax.swing.plaf.FontUIResource;
 
+import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.utils.GuiUtils;
+import net.sourceforge.atunes.kernel.modules.state.beans.FontBean;
 
 import org.jvnet.substance.SubstanceLookAndFeel;
+import org.jvnet.substance.fonts.FontPolicy;
+import org.jvnet.substance.fonts.FontSet;
 
 /**
  * All fonts that are used and that are different from the default font.
  */
 public final class Fonts {
+
+    private static final boolean USE_FONT_SMOOTHING_SETTINGS_FROM_OS_DEFAULT_VALUE = false;
+    private static final boolean USE_FONT_SMOOTHING_DEFAULT_VALUE = true;
 
     public static Font ABOUT_BIG_FONT;
     public static Font APP_VERSION_TITLE_FONT;
@@ -68,16 +74,25 @@ public final class Fonts {
      * </p>
      */
     public static void initializeFonts() {
-        /*
-         * Get appropriate font for the currently selected language. For Chinese
-         * or Japanese we should use default font.
-         */
-        if ("zh".equals(ApplicationState.getInstance().getLocale().getLanguage()) || "ja".equals(ApplicationState.getInstance().getLocale().getLanguage())
-                || ApplicationState.getInstance().isUseDefaultFont()) {
-            font = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
-            GuiUtils.setUIFont(new FontUIResource(font));
+        FontSettings fontSettings = ApplicationState.getInstance().getFontSettings();
+        if (fontSettings != null) {
+            font = fontSettings.getFont().toFont();
+            setFontPolicy(font);
         } else {
-            font = SubstanceLookAndFeel.getFontPolicy().getFontSet("Substance", UIManager.getDefaults()).getControlFont();
+            /*
+             * Get appropriate font for the currently selected language. For
+             * Chinese or Japanese we should use default font.
+             */
+            if ("zh".equals(ApplicationState.getInstance().getLocale().getLanguage()) || "ja".equals(ApplicationState.getInstance().getLocale().getLanguage())) {
+                font = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
+                setFontPolicy(font);
+            } else {
+                FontSet fs = SubstanceLookAndFeel.getFontPolicy().getFontSet("Substance", null);
+                FontUIResource controlFont = fs.getControlFont();
+                font = controlFont;
+            }
+            ApplicationState.getInstance().setFontSettings(
+                    new FontSettings(new FontBean(font), USE_FONT_SMOOTHING_DEFAULT_VALUE, USE_FONT_SMOOTHING_SETTINGS_FROM_OS_DEFAULT_VALUE));
         }
 
         ABOUT_BIG_FONT = font.deriveFont(font.getSize() + 8f);
@@ -99,13 +114,57 @@ public final class Fonts {
         FULL_SCREEN_LINE2_FONT = font.deriveFont(font.getSize() + 15f);
     }
 
+    private static void setFontPolicy(final Font baseFont) {
+        SubstanceLookAndFeel.setFontPolicy(new FontPolicy() {
+
+            @Override
+            public FontSet getFontSet(String arg0, UIDefaults arg1) {
+                return new FontSet() {
+
+                    @Override
+                    public FontUIResource getWindowTitleFont() {
+                        return new FontUIResource(baseFont.deriveFont(Font.BOLD, baseFont.getSize() + 1f));
+                    }
+
+                    @Override
+                    public FontUIResource getTitleFont() {
+                        return new FontUIResource(baseFont.deriveFont((float) baseFont.getSize()));
+                    }
+
+                    @Override
+                    public FontUIResource getSmallFont() {
+                        return new FontUIResource(baseFont.deriveFont(baseFont.getSize() - 1f));
+                    }
+
+                    @Override
+                    public FontUIResource getMessageFont() {
+                        return new FontUIResource(baseFont.deriveFont(baseFont.getSize() - 1f));
+                    }
+
+                    @Override
+                    public FontUIResource getMenuFont() {
+                        return new FontUIResource(baseFont.deriveFont((float) baseFont.getSize()));
+                    }
+
+                    @Override
+                    public FontUIResource getControlFont() {
+                        return new FontUIResource(baseFont.deriveFont((float) baseFont.getSize()));
+                    }
+                };
+            }
+        });
+    }
+
     public static void setFontSmoothing() {
-        if (!ApplicationState.getInstance().isUseOSSettingsForFontSmoothing()) {
-            if (ApplicationState.getInstance().isUseFontSmoothing()) {
+        FontSettings fontSettings = ApplicationState.getInstance().getFontSettings();
+        if (fontSettings != null && !fontSettings.isUseFontSmoothingSettingsFromOs()) {
+            if (fontSettings.isUseFontSmoothing()) {
                 System.setProperty("awt.useSystemAAFontSettings", "lcd");
             } else {
                 System.setProperty("awt.useSystemAAFontSettings", "false");
             }
+        } else {
+            System.setProperty("awt.useSystemAAFontSettings", "lcd");
         }
     }
 

@@ -25,30 +25,34 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.images.ThemePreviewLoader;
+import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog;
+import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
+import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.utils.LanguageTool;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
+import org.jvnet.substance.SubstanceLookAndFeel;
 import org.jvnet.substance.api.renderers.SubstanceDefaultListCellRenderer;
 
 /**
@@ -63,11 +67,11 @@ public class GeneralPanel extends PreferencesPanel {
     private JComboBox language;
     private JCheckBox showIconTray;
     private JCheckBox showTrayPlayer;
-    private JCheckBox useDefaultFont;
-    JCheckBox useOSSettingForFontSmoothing;
-    JCheckBox useFontSmoothing;
+    private JButton fontSettings;
     JComboBox theme;
     JLabel themePreview;
+
+    private FontSettings fs;
 
     /**
      * Instantiates a new general panel.
@@ -122,16 +126,31 @@ public class GeneralPanel extends PreferencesPanel {
         showTrayPlayer = new JCheckBox(LanguageTool.getString("SHOW_TRAY_PLAYER"));
         JLabel label5 = new JLabel(LanguageTool.getString("THEME"));
         label5.setFont(Fonts.GENERAL_FONT_BOLD);
-        useDefaultFont = new JCheckBox(LanguageTool.getString("USE_DEFAULT_FONT"));
-        useOSSettingForFontSmoothing = new JCheckBox(LanguageTool.getString("USE_OS_SETTINGS_FOR_FONT_SMOOTHING"));
-        useOSSettingForFontSmoothing.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                useFontSmoothing.setEnabled(!useOSSettingForFontSmoothing.isSelected());
 
+        fontSettings = new JButton(LanguageTool.getString("CHANGE_FONT_SETTINGS"));
+        fontSettings.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    FontChooserDialog fontChooserDialog;
+                    if (fs != null) {
+                        fontChooserDialog = new FontChooserDialog(VisualHandler.getInstance().getFrame().getFrame(), 300, 300, fs.getFont().toFont(), fs.isUseFontSmoothing(), fs
+                                .isUseFontSmoothingSettingsFromOs(), ApplicationState.getInstance().getLocale().getLocale());
+                    } else {
+                        fontChooserDialog = new FontChooserDialog(VisualHandler.getInstance().getFrame().getFrame(), 300, 300, SubstanceLookAndFeel.getFontPolicy().getFontSet(
+                                "Substance", UIManager.getDefaults()).getControlFont(), true, false, ApplicationState.getInstance().getLocale().getLocale());
+                    }
+                    fontChooserDialog.setVisible(true);
+                    if (fontChooserDialog.getSelectedFontSettings() != null) {
+                        fs = fontChooserDialog.getSelectedFontSettings();
+                    }
+                } catch (Exception e1) {
+                    e1.printStackTrace(System.out);
+                }
             }
         });
-        useFontSmoothing = new JCheckBox(LanguageTool.getString("USE_FONT_SMOOTHING"));
+
         theme = new JComboBox(new ListComboBoxModel<String>(LookAndFeelSelector.getListOfSkins()));
         theme.addActionListener(new ActionListener() {
             @Override
@@ -166,44 +185,31 @@ public class GeneralPanel extends PreferencesPanel {
         c.weightx = 1;
         c.insets = new Insets(5, 0, 0, 0);
         add(showTitle, c);
-        c.gridx = 1;
-        c.gridy = 4;
-        c.weightx = 1;
-        c.insets = new Insets(5, 0, 0, 0);
-        add(useDefaultFont, c);
         c.gridx = 0;
         c.gridy = 5;
-        c.weightx = 1;
-        c.insets = new Insets(5, 0, 0, 0);
-        add(useOSSettingForFontSmoothing, c);
-        c.gridx = 1;
-        c.gridy = 5;
-        c.gridwidth = 1;
-        c.insets = new Insets(5, 0, 0, 0);
-        add(useFontSmoothing, c);
-        c.gridx = 0;
-        c.gridy = 6;
         c.gridwidth = 1;
         c.insets = new Insets(5, 0, 0, 0);
         add(showTrayPlayer, c);
         c.gridx = 1;
-        c.gridy = 6;
+        c.gridy = 5;
         c.insets = new Insets(5, 0, 0, 0);
         add(showIconTray, c);
         c.gridx = 0;
-        c.gridy = 7;
+        c.gridy = 6;
         c.gridwidth = 2;
         c.insets = new Insets(20, 0, 0, 0);
         add(label5, c);
         c.gridx = 0;
-        c.gridy = 8;
-        c.weighty = 1;
+        c.gridy = 7;
         c.insets = new Insets(5, 0, 0, 0);
         add(themePreview, c);
         c.gridx = 1;
-        c.weighty = 1;
         c.insets = new Insets(40, 0, 0, 0);
         add(theme, c);
+        c.gridx = 0;
+        c.gridy = 8;
+        c.weighty = 1;
+        add(fontSettings, c);
     }
 
     @Override
@@ -226,26 +232,27 @@ public class GeneralPanel extends PreferencesPanel {
             needRestart = true;
         }
 
-        Boolean oldIsUseDefaultFont = state.isUseDefaultFont();
-        Boolean newIsUseDefaultFont = useDefaultFont.isSelected();
-        state.setUseDefaultFont(newIsUseDefaultFont);
-        if (!oldIsUseDefaultFont.equals(newIsUseDefaultFont)) {
-            needRestart = true;
-        }
-
-        Boolean oldIsUseOSSettingsForFontSmoothing = state.isUseOSSettingsForFontSmoothing();
-        Boolean newIsUseOSSettingsForFontSmoothing = useOSSettingForFontSmoothing.isSelected();
-        state.setUseOSSettingsForFontSmoothing(newIsUseOSSettingsForFontSmoothing);
-        if (!oldIsUseOSSettingsForFontSmoothing.equals(newIsUseOSSettingsForFontSmoothing)) {
-            needRestart = true;
-        }
-
-        Boolean oldIsUseFontSmoothing = state.isUseFontSmoothing();
-        Boolean newUseFontSmoothing = useFontSmoothing.isSelected();
-        state.setUseFontSmoothing(newUseFontSmoothing);
-        if (!oldIsUseFontSmoothing.equals(newUseFontSmoothing)) {
-            needRestart = true;
-        }
+        //        Boolean oldIsUseDefaultFont = state.isUseDefaultFont();
+        //        Boolean newIsUseDefaultFont = useDefaultFont.isSelected();
+        //        state.setUseDefaultFont(newIsUseDefaultFont);
+        //        if (!oldIsUseDefaultFont.equals(newIsUseDefaultFont)) {
+        //            needRestart = true;
+        //        }
+        //
+        //        Boolean oldIsUseOSSettingsForFontSmoothing = state.isUseOSSettingsForFontSmoothing();
+        //        Boolean newIsUseOSSettingsForFontSmoothing = useOSSettingForFontSmoothing.isSelected();
+        //        state.setUseOSSettingsForFontSmoothing(newIsUseOSSettingsForFontSmoothing);
+        //        if (!oldIsUseOSSettingsForFontSmoothing.equals(newIsUseOSSettingsForFontSmoothing)) {
+        //            needRestart = true;
+        //        }
+        //
+        //        Boolean oldIsUseFontSmoothing = state.isUseFontSmoothing();
+        //        Boolean newUseFontSmoothing = useFontSmoothing.isSelected();
+        //        state.setUseFontSmoothing(newUseFontSmoothing);
+        //        if (!oldIsUseFontSmoothing.equals(newUseFontSmoothing)) {
+        //            needRestart = true;
+        //        }
+        state.setFontSettings(fs);
 
         state.setShowSystemTray(showIconTray.isSelected());
         state.setShowTrayPlayer(showTrayPlayer.isSelected());
@@ -312,36 +319,6 @@ public class GeneralPanel extends PreferencesPanel {
     }
 
     /**
-     * Sets the use default font.
-     * 
-     * @param use
-     *            the new use default font
-     */
-    private void setUseDefaultFont(boolean use) {
-        useDefaultFont.setSelected(use);
-    }
-
-    /**
-     * Sets if the os setting for font smoothing should be used.
-     * 
-     * @param use
-     *            if the os setting for font smoothing should be used
-     */
-    private void setUseOSSettingsForFontSmoothing(boolean use) {
-        useOSSettingForFontSmoothing.setSelected(use);
-    }
-
-    /**
-     * Sets the font smoothing.
-     * 
-     * @param use
-     *            if font smoothing should be applied
-     */
-    private void setUseFontSmoothing(boolean use) {
-        useFontSmoothing.setSelected(use);
-    }
-
-    /**
      * Sets the window type.
      * 
      * @param type
@@ -359,9 +336,7 @@ public class GeneralPanel extends PreferencesPanel {
         setShowIconTray(state.isShowSystemTray());
         setShowTrayPlayer(state.isShowTrayPlayer());
         setTheme(state.getSkin());
-        setUseDefaultFont(state.isUseDefaultFont());
-        setUseFontSmoothing(state.isUseFontSmoothing());
-        setUseOSSettingsForFontSmoothing(state.isUseOSSettingsForFontSmoothing());
+        fs = state.getFontSettings();
     }
 
     @Override
