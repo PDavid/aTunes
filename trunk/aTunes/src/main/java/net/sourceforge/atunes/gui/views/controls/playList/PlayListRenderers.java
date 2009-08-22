@@ -96,7 +96,8 @@ public class PlayListRenderers {
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component c = super.getTableCellRendererComponent(table, ((AudioObject) value).getTitleOrFileName(), isSelected, hasFocus, row, column);
                 setFontForRow((JLabel) c, row);
-                ((JLabel) c).setToolTipText(getToolTipForAudioObject((AudioObject) value));
+                //TODO: Extend navigator tooltips to play list
+                //((JLabel) c).setToolTipText(getToolTipForAudioObject((AudioObject) value));
 
                 // Get alignment from model
                 ((JLabel) c).setHorizontalAlignment(((PlayListColumnModel) table.getColumnModel()).getColumnObject(column).getAlignment());
