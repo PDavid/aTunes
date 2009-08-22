@@ -96,6 +96,7 @@ public class ImageLoader {
     public static final ImageIcon KARAOKE = getImage("karaoke.png");
     public static final ImageIcon LANGUAGE = getImage("language.png");
     public static final ImageIcon LOG = getImage("loag.png");
+    public static final ImageIcon LASTFM = getImage("lastFm.png");
     public static final ImageIcon MARK_RSS_AS_READ = getImage("markAsRead.png");
     public static final ImageIcon MINIMIZE_BUTTON = getImage("minimizeButton.png");
     public static final ImageIcon NAVIGATE = getImage("navigate.png");

@@ -35,6 +35,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
@@ -280,7 +281,7 @@ public class InternetPanel extends PreferencesPanel {
 
     @Override
     public ImageIcon getIcon() {
-        return null;
+        return ImageLoader.NETWORK_LITTLE;
     }
 
 }

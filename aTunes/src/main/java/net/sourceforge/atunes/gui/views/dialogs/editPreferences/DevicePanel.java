@@ -41,6 +41,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -300,7 +301,7 @@ public class DevicePanel extends PreferencesPanel {
 
     @Override
     public ImageIcon getIcon() {
-        return null;
+        return ImageLoader.DEVICE;
     }
 
 }
