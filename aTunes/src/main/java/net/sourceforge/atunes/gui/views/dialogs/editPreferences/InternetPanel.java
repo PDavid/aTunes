@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
@@ -275,6 +276,11 @@ public class InternetPanel extends PreferencesPanel {
     @Override
     public void dialogVisibilityChanged(boolean visible) {
         // Do nothing
+    }
+
+    @Override
+    public ImageIcon getIcon() {
+        return null;
     }
 
 }

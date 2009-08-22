@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.Box;
+import javax.swing.ImageIcon;
 import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -58,14 +59,8 @@ import net.sourceforge.atunes.utils.LanguageTool;
 
 import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
-/**
- * The Class PlayerPanel.
- */
 public class PlayerPanel extends PreferencesPanel {
 
-    /**
-     * The Class HotkeyTableModel.
-     */
     class HotkeyTableModel extends AbstractTableModel {
 
         private static final long serialVersionUID = -5726677745418003289L;
@@ -403,6 +398,11 @@ public class PlayerPanel extends PreferencesPanel {
                 HotkeyHandler.getInstance().enableHotkeys(ApplicationState.getInstance().getHotkeysConfig());
             }
         }
+    }
+
+    @Override
+    public ImageIcon getIcon() {
+        return null;
     }
 
 }

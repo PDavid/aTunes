@@ -31,6 +31,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -44,9 +45,6 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.LanguageTool;
 import net.sourceforge.atunes.utils.StringUtils;
 
-/**
- * The Class ImportExportPanel.
- */
 public class ImportExportPanel extends PreferencesPanel {
 
     private static final long serialVersionUID = 3331810461314007217L;
@@ -304,6 +302,11 @@ public class ImportExportPanel extends PreferencesPanel {
     @Override
     public void dialogVisibilityChanged(boolean visible) {
         // Do nothing
+    }
+
+    @Override
+    public ImageIcon getIcon() {
+        return null;
     }
 
 }

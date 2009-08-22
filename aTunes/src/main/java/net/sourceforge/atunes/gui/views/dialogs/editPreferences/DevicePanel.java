@@ -30,6 +30,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -45,9 +46,6 @@ import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.LanguageTool;
 
-/**
- * The Class DevicePanel.
- */
 public class DevicePanel extends PreferencesPanel {
 
     private static final long serialVersionUID = 3331810461314007217L;
@@ -298,6 +296,11 @@ public class DevicePanel extends PreferencesPanel {
     @Override
     public void dialogVisibilityChanged(boolean visible) {
         // Do nothing
+    }
+
+    @Override
+    public ImageIcon getIcon() {
+        return null;
     }
 
 }

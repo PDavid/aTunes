@@ -23,6 +23,7 @@ package net.sourceforge.atunes.gui.views.dialogs.editPreferences;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -164,6 +165,11 @@ public class RepositoryPanel extends PreferencesPanel {
     @Override
     public void dialogVisibilityChanged(boolean visible) {
         // Do nothing
+    }
+
+    @Override
+    public ImageIcon getIcon() {
+        return null;
     }
 
 }

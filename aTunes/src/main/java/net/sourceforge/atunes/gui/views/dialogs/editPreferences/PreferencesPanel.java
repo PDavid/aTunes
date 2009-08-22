@@ -22,6 +22,7 @@ package net.sourceforge.atunes.gui.views.dialogs.editPreferences;
 
 import java.awt.GridBagLayout;
 
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -52,6 +53,8 @@ public abstract class PreferencesPanel extends JPanel {
     public String getTitle() {
         return title;
     }
+
+    public abstract ImageIcon getIcon();
 
     /**
      * Called to update preferences values

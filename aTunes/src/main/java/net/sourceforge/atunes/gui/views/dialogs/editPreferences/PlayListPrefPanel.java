@@ -22,6 +22,7 @@ package net.sourceforge.atunes.gui.views.dialogs.editPreferences;
 
 import java.awt.GridBagConstraints;
 
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -32,9 +33,6 @@ import net.sourceforge.atunes.utils.LanguageTool;
  */
 public class PlayListPrefPanel extends PreferencesPanel {
 
-    /**
-	 * 
-	 */
     private static final long serialVersionUID = -7814272907267661918L;
 
     public static final String PROP_PLAYLIST_STOP_ON_SWITCH = "PLAYLIST_STOP_ON_SWITCH";
@@ -128,6 +126,11 @@ public class PlayListPrefPanel extends PreferencesPanel {
     @Override
     public void dialogVisibilityChanged(boolean visible) {
         // Do nothing
+    }
+
+    @Override
+    public ImageIcon getIcon() {
+        return null;
     }
 
 }

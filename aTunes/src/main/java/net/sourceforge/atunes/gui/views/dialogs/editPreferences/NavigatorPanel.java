@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.DefaultCellEditor;
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -49,26 +50,14 @@ import net.sourceforge.atunes.utils.LanguageTool;
 
 import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
-/**
- * The Class NavigatorPanel.
- */
 public class NavigatorPanel extends PreferencesPanel {
 
     private static final long serialVersionUID = -4315748284461119970L;
 
-    /** The show favorites. */
     private JCheckBox showFavorites;
-
-    /** The show extended tool tip. */
     JCheckBox showExtendedToolTip;
-
-    /** The extended tool tip delay. */
     JComboBox extendedToolTipDelay;
-
-    /** The use smart tag view sorting. */
     private JCheckBox useSmartTagViewSorting;
-
-    /** The use artist names sorting. */
     private JCheckBox useArtistNamesSorting;
 
     /**
@@ -464,6 +453,11 @@ public class NavigatorPanel extends PreferencesPanel {
     @Override
     public void dialogVisibilityChanged(boolean visible) {
         // Do nothing
+    }
+
+    @Override
+    public ImageIcon getIcon() {
+        return null;
     }
 
 }
