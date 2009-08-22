@@ -21,6 +21,7 @@ package net.sourceforge.atunes.kernel.modules.plugins;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -81,6 +82,10 @@ public class PluginsHandler implements PluginListener {
     public void initPlugins() {
         try {
             factory = new PluginsFactory();
+            // Core plugins folder
+            factory.addPluginsFolder(getCorePluginsFolder());
+            
+            // User plugins folder
             factory.addPluginsFolder(getUserPluginsFolder());
             addPluginListeners();
             int plugins = factory.start(getPluginClassNames());
@@ -132,12 +137,36 @@ public class PluginsHandler implements PluginListener {
     /**
      * Return list of available plugins
      * 
+     * <b>Note:</b> Only user plugins are returned 
+     * 
      * @return
      */
     public List<PluginInfo> getAvailablePlugins() {
-        return this.factory.getPlugins();
+    	List<PluginInfo> filteredList = new ArrayList<PluginInfo>();
+    	for (PluginInfo plugin : this.factory.getPlugins()) {
+    		if (!plugin.getPluginLocation().startsWith(getCorePluginsFolder())) {
+    			filteredList.add(plugin);
+    		}
+    	}
+    	return filteredList;
     }
 
+    /**
+     * Return path to core plugins folder, which is where application is installed (working directory) 
+     * @return
+     */
+    private static String getCorePluginsFolder() {
+        String workingDirectory = SystemProperties.getWorkingDirectory();
+        String pluginsFolder = StringUtils.getString(workingDirectory, SystemProperties.FILE_SEPARATOR, Constants.CORE_PLUGINS_DIR);
+        File pluginFile = new File(pluginsFolder);
+        if (!pluginFile.exists()) {
+            if (!pluginFile.mkdir()) {
+                return workingDirectory;
+            }
+        }
+        return pluginsFolder;
+    }
+    
     /**
      * Return path to plugins folder, which is inside user config folder.
      * 
