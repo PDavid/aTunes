@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <project name="atunes" basedir=".">
 
-	<property name="deploy_folder" value="${basedir}/deploy/aTunes" />
-	<property name="deploy_base_folder" value="${basedir}/deploy" />
-	<property name="deployable" value="${basedir}/deployable" />
+	<property name="deploy_folder" value="${basedir}/target/aTunes" />
+	<property name="build_resources" value="${basedir}/build_resources" />
 	<property name="target" value="${basedir}/target" />
 	<property name="build_tools" location="${basedir}/build_tools" />
 	<property name="lib_build" location="${build_tools}/lib" />
@@ -15,6 +14,7 @@
 	<property name="images" location="${basedir}/src/main/resources/images" />
 	<property name="core_plugins" location="${basedir}/core_plugins" />
 	<property name="src" location="${basedir}/src/main/java" />
+	<property name="debug_folder" value="${basedir}/debug" />
 
 	<!-- Allows us to use the IzPack Ant task -->
 	<taskdef name="izpack" classpath="${lib_build}/standalone-compiler.jar" classname="com.izforge.izpack.ant.IzPackTask" />
@@ -28,12 +28,13 @@
 
 	<!-- Removes configuration, temporary and cache files -->
 	<target name="clean">
-		<delete dir="${deploy_base_folder}" />
+		<delete dir="${debug_folder}" />
 	</target>
 
 	
 	<!-- Creates the exe file for Windows -->
 	<target name="create_aTunes.exe">
+		<mkdir dir="${deploy_folder}" />
 		<launch4j configFile="${build_tools}/launch4j.xml" outfile="${deploy_folder}/aTunes.exe" />
 	</target>
 
@@ -41,9 +42,8 @@
 	<!-- Prepares the directory structure -->
 	<target name="prepare">
 
-		<mkdir dir="${deploy_folder}" />
 		<copy todir="${deploy_folder}">
-			<fileset dir="${deployable}" includes="*" />
+			<fileset dir="${build_resources}" includes="*" />
 		</copy>
 
 		<copy todir="${deploy_folder}/settings">
@@ -112,7 +112,7 @@
 	<!-- Creates a Ubuntu/Debian package -->
 	<target name="create_deb" depends="prepare">
 
-		<desktopEntry toFile="deploy/aTunes/atunes.desktop" name="aTunes" icon="atunes125" exec="atunes" categories="Audio;AudioVideo;" type="Application">
+		<desktopEntry toFile="${deploy_folder}/atunes.desktop" name="aTunes" icon="atunes125" exec="atunes" categories="Audio;AudioVideo;" type="Application">
 			<name lang="de" value="aTunes" />
 			<genericName value="Audio Player" />
 			<genericName lang="de" value="Audioplayer" />
@@ -150,10 +150,10 @@
 				<exclude name="**/build_tools/**" />
 				<exclude name="**/atunes" />
 			</tarfileset>
-			<tarfileset dir="${deployable}" prefix="usr/share/pixmaps" username="root" group="root">
+			<tarfileset dir="${build_resources}" prefix="usr/share/pixmaps" username="root" group="root">
 				<include name="**/atunes125.png" />
 			</tarfileset>
-			<tarfileset dir="${deployable}" prefix="usr/bin" username="root" group="root" filemode="755">
+			<tarfileset dir="${build_resources}" prefix="usr/bin" username="root" group="root" filemode="755">
 				<include name="atunes" />
 			</tarfileset>
 			<tarfileset dir="${deploy_folder}" prefix="usr/share/applications" username="root" group="root">
