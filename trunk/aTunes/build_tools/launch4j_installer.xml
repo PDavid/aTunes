@@ -1,8 +1,8 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>0</headerType>
-  <jar>../deploy_result/aTunes_installer.jar</jar>
-  <outfile>../deplot_result/aTunes_installer.exe</outfile>
+  <jar>../target/aTunes_installer.jar</jar>
+  <outfile>../target/aTunes_installer.exe</outfile>
   <errTitle></errTitle>
   <jarArgs></jarArgs>
   <chdir></chdir>
