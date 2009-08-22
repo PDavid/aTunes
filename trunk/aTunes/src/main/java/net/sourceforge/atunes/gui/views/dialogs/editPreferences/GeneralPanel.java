@@ -42,6 +42,7 @@ import javax.swing.UIManager;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.LookAndFeelSelector;
+import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.images.ThemePreviewLoader;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
@@ -328,6 +329,11 @@ public class GeneralPanel extends PreferencesPanel {
     @Override
     public void dialogVisibilityChanged(boolean visible) {
         // Do nothing
+    }
+
+    @Override
+    public ImageIcon getIcon() {
+        return ImageLoader.PREFS;
     }
 
 }

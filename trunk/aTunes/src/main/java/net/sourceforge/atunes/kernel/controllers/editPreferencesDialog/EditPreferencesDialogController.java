@@ -116,7 +116,7 @@ public class EditPreferencesDialogController extends DialogController<EditPrefer
         DefaultListModel listModel = new DefaultListModel();
 
         for (PreferencesPanel p : panels) {
-            listModel.addElement(p.getTitle());
+            listModel.addElement(p);
         }
 
         getDialogControlled().setListModel(listModel);

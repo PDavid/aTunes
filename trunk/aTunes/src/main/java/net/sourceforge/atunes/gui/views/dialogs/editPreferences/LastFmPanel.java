@@ -23,6 +23,7 @@ package net.sourceforge.atunes.gui.views.dialogs.editPreferences;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
@@ -41,13 +42,8 @@ public class LastFmPanel extends PreferencesPanel {
 
     private static final long serialVersionUID = -9216216930198145476L;
 
-    /** The Last.fm enabled check box */
     private JCheckBox lastFmEnabled;
-
-    /** The last fm user. */
     private JTextField lastFmUser;
-
-    /** The last fm password. */
     private JPasswordField lastFmPassword;
 
     /**
@@ -170,6 +166,11 @@ public class LastFmPanel extends PreferencesPanel {
     @Override
     public void dialogVisibilityChanged(boolean visible) {
         // Do nothing
+    }
+
+    @Override
+    public ImageIcon getIcon() {
+        return null;
     }
 
 }

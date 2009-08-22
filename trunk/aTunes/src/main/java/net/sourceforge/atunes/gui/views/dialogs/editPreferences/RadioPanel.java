@@ -22,6 +22,7 @@ package net.sourceforge.atunes.gui.views.dialogs.editPreferences;
 
 import java.awt.GridBagConstraints;
 
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -100,6 +101,11 @@ public class RadioPanel extends PreferencesPanel {
     @Override
     public void dialogVisibilityChanged(boolean visible) {
         // Do nothing
+    }
+
+    @Override
+    public ImageIcon getIcon() {
+        return null;
     }
 
 }

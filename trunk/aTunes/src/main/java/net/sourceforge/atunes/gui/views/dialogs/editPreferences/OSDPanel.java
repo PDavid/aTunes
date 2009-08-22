@@ -25,6 +25,7 @@ import java.awt.Insets;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -33,9 +34,6 @@ import javax.swing.SwingConstants;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.LanguageTool;
 
-/**
- * The Class OSDPanel.
- */
 public class OSDPanel extends PreferencesPanel {
 
     private static final long serialVersionUID = 4489293347321979288L;
@@ -229,6 +227,11 @@ public class OSDPanel extends PreferencesPanel {
     @Override
     public void dialogVisibilityChanged(boolean visible) {
         // Do nothing
+    }
+
+    @Override
+    public ImageIcon getIcon() {
+        return null;
     }
 
 }

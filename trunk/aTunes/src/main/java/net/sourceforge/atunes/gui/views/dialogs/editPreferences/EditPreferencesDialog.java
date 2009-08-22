@@ -21,27 +21,29 @@
 package net.sourceforge.atunes.gui.views.dialogs.editPreferences;
 
 import java.awt.CardLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ListModel;
 
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.LanguageTool;
 
-// General characteristics of the preference dialog
+import org.jvnet.substance.api.renderers.SubstanceDefaultListCellRenderer;
 
 /**
- * The Class EditPreferencesDialog.
+ * General characteristics of the preference dialog
  */
 public class EditPreferencesDialog extends CustomModalDialog {
 
@@ -105,6 +107,18 @@ public class EditPreferencesDialog extends CustomModalDialog {
         JPanel container = new JPanel(new GridBagLayout());
         container.setOpaque(false);
         list = new JList();
+        list.setCellRenderer(new SubstanceDefaultListCellRenderer() {
+
+            private static final long serialVersionUID = 2995773411601157488L;
+
+            @Override
+            public Component getListCellRendererComponent(JList arg0, Object value, int arg2, boolean arg3, boolean arg4) {
+                PreferencesPanel p = (PreferencesPanel) value;
+                JLabel label = (JLabel) super.getListCellRendererComponent(arg0, p.getTitle(), arg2, arg3, arg4);
+                label.setIcon(p.getIcon());
+                return label;
+            }
+        });
         JScrollPane scrollPane = new JScrollPane(list);
         // Force minimum width of scroll pane to show items
         scrollPane.setMinimumSize(new Dimension(200, 0));
@@ -166,7 +180,7 @@ public class EditPreferencesDialog extends CustomModalDialog {
      * @param listModel
      *            the new list model
      */
-    public void setListModel(DefaultListModel listModel) {
+    public void setListModel(ListModel listModel) {
         list.setModel(listModel);
     }
 
