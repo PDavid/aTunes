@@ -265,4 +265,7 @@ public final class Constants {
     /** Plugins dir */
     public static final String PLUGINS_DIR = "plugins";
 
+    /** Core plugins dir */
+    public static final String CORE_PLUGINS_DIR = "core_plugins";
+
 }

@@ -260,5 +260,13 @@ public final class SystemProperties {
         }
         return tempFolder;
     }
-
+    
+    /**
+     * Returns the current working directory
+     * @return
+     */
+    public static String getWorkingDirectory() {
+    	return System.getProperty("user.dir");
+    }
+    
 }

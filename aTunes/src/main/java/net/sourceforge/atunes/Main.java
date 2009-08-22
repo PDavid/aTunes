@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes;
 
-import java.io.File;
 import java.util.List;
 
 import javax.swing.RepaintManager;
@@ -65,7 +64,7 @@ public final class Main {
         logger.info(LogCategories.START, StringUtils.getString("Debug mode = ", Kernel.DEBUG));
 
         // Fifth line: Execution path
-        logger.info(LogCategories.START, StringUtils.getString("Execution path = ", new File("").getAbsolutePath()));
+        logger.info(LogCategories.START, StringUtils.getString("Execution path = ", SystemProperties.getWorkingDirectory()));
     }
 
     /**
