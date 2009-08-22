@@ -71,7 +71,7 @@ public class GeneralPanel extends PreferencesPanel {
     JComboBox theme;
     JLabel themePreview;
 
-    private FontSettings fs;
+    FontSettings currentFontSettings;
 
     /**
      * Instantiates a new general panel.
@@ -133,16 +133,17 @@ public class GeneralPanel extends PreferencesPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 FontChooserDialog fontChooserDialog;
-                if (fs != null) {
-                    fontChooserDialog = new FontChooserDialog(VisualHandler.getInstance().getFrame().getFrame(), 300, 300, fs.getFont().toFont(), fs.isUseFontSmoothing(), fs
-                            .isUseFontSmoothingSettingsFromOs(), ApplicationState.getInstance().getLocale().getLocale());
+                if (currentFontSettings != null) {
+                    fontChooserDialog = new FontChooserDialog(VisualHandler.getInstance().getFrame().getFrame(), 300, 300, currentFontSettings.getFont().toFont(),
+                            currentFontSettings.isUseFontSmoothing(), currentFontSettings.isUseFontSmoothingSettingsFromOs(), ApplicationState.getInstance().getLocale()
+                                    .getLocale());
                 } else {
                     fontChooserDialog = new FontChooserDialog(VisualHandler.getInstance().getFrame().getFrame(), 300, 300, SubstanceLookAndFeel.getFontPolicy().getFontSet(
                             "Substance", UIManager.getDefaults()).getControlFont(), true, false, ApplicationState.getInstance().getLocale().getLocale());
                 }
                 fontChooserDialog.setVisible(true);
                 if (fontChooserDialog.getSelectedFontSettings() != null) {
-                    fs = fontChooserDialog.getSelectedFontSettings();
+                    currentFontSettings = fontChooserDialog.getSelectedFontSettings();
                 }
             }
         });
@@ -228,27 +229,11 @@ public class GeneralPanel extends PreferencesPanel {
             needRestart = true;
         }
 
-        //        Boolean oldIsUseDefaultFont = state.isUseDefaultFont();
-        //        Boolean newIsUseDefaultFont = useDefaultFont.isSelected();
-        //        state.setUseDefaultFont(newIsUseDefaultFont);
-        //        if (!oldIsUseDefaultFont.equals(newIsUseDefaultFont)) {
-        //            needRestart = true;
-        //        }
-        //
-        //        Boolean oldIsUseOSSettingsForFontSmoothing = state.isUseOSSettingsForFontSmoothing();
-        //        Boolean newIsUseOSSettingsForFontSmoothing = useOSSettingForFontSmoothing.isSelected();
-        //        state.setUseOSSettingsForFontSmoothing(newIsUseOSSettingsForFontSmoothing);
-        //        if (!oldIsUseOSSettingsForFontSmoothing.equals(newIsUseOSSettingsForFontSmoothing)) {
-        //            needRestart = true;
-        //        }
-        //
-        //        Boolean oldIsUseFontSmoothing = state.isUseFontSmoothing();
-        //        Boolean newUseFontSmoothing = useFontSmoothing.isSelected();
-        //        state.setUseFontSmoothing(newUseFontSmoothing);
-        //        if (!oldIsUseFontSmoothing.equals(newUseFontSmoothing)) {
-        //            needRestart = true;
-        //        }
-        state.setFontSettings(fs);
+        FontSettings oldFontSettings = state.getFontSettings();
+        state.setFontSettings(currentFontSettings);
+        if (!oldFontSettings.equals(currentFontSettings)) {
+            needRestart = true;
+        }
 
         state.setShowSystemTray(showIconTray.isSelected());
         state.setShowTrayPlayer(showTrayPlayer.isSelected());
@@ -332,7 +317,7 @@ public class GeneralPanel extends PreferencesPanel {
         setShowIconTray(state.isShowSystemTray());
         setShowTrayPlayer(state.isShowTrayPlayer());
         setTheme(state.getSkin());
-        fs = state.getFontSettings();
+        currentFontSettings = state.getFontSettings();
     }
 
     @Override
