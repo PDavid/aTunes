@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.gui.views.controls;
 
-import java.awt.BorderLayout;
 import java.awt.Window;
 
 import javax.swing.BorderFactory;
@@ -30,15 +29,9 @@ import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.utils.GuiUtils;
 
-/**
- * The Class CustomModalDialog.
- */
 public abstract class CustomModalDialog extends JDialog {
 
     private static final long serialVersionUID = 1L;
-
-    /** The container. */
-    private JPanel container;
 
     /**
      * Instantiates a new custom modal dialog.
@@ -59,10 +52,6 @@ public abstract class CustomModalDialog extends JDialog {
         setModalityType(modal ? ModalityType.APPLICATION_MODAL : ModalityType.MODELESS);
         setLocationRelativeTo(owner);
         setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-        container = new JPanel(new BorderLayout());
-
-        container.setBorder(BorderFactory.createLineBorder(GuiUtils.getBorderColor()));
-        add(container);
     }
 
     /**
@@ -87,7 +76,8 @@ public abstract class CustomModalDialog extends JDialog {
      */
     public void setContent(JPanel content) {
         content.setOpaque(false);
-        container.add(content, BorderLayout.CENTER);
+        content.setBorder(BorderFactory.createLineBorder(GuiUtils.getBorderColor()));
+        add(content);
     }
 
 }
