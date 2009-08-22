@@ -102,10 +102,10 @@
 	<target name="create_installer" depends="prepare">
 		<!-- We call IzPack -->
 		<echo message="Makes the installer using IzPack" />
-		<izpack input="${build_tools}/izPack_build.xml" output="${target}/aTunes_installer.jar" installerType="standard" basedir="${deploy_folder}" />
+		<izpack input="${build_tools}/izPack_build.xml" output="${target}/aTunes_${version}_installer.jar" installerType="standard" basedir="${deploy_folder}" />
 
 		<!-- Create an exe for installer -->
-		<launch4j configFile="${build_tools}/launch4j_installer.xml" outfile="${target}/aTunes_installer.exe" />
+		<launch4j configFile="${build_tools}/launch4j_installer.xml" jar="${target}/aTunes_${version}_installer.jar" outfile="${target}/aTunes_${version}_installer.exe" />
 	</target>
 
 	
