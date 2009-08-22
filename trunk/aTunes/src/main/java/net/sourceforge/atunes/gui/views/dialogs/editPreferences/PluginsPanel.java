@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.gui.views.dialogs.editPreferences;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -34,6 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -120,9 +122,8 @@ public class PluginsPanel extends PreferencesPanel {
         c.gridx = 0;
         c.gridy = 0;
         c.weightx = 1;
-        c.weighty = 1;
+        c.weighty = 0.6;
         c.fill = GridBagConstraints.BOTH;
-        c.gridwidth = 2;
         c.gridheight = 2;
          
         add(scrollPane, c);
@@ -150,8 +151,8 @@ public class PluginsPanel extends PreferencesPanel {
         c.gridy = 2;
         c.insets = new Insets(10, 5, 10, 5);
         c.gridheight = 1;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.weighty = 0;
+        c.weighty = 0.4;
+        c.gridwidth = 2;
         add(pluginDetailPanel, c);
         
         pluginsTable.setDefaultRenderer(PluginInfo.class, new SubstanceDefaultTableCellRenderer() {
@@ -189,7 +190,7 @@ public class PluginsPanel extends PreferencesPanel {
         });
         
         pluginPreferencesButton = new JButton(StringUtils.getString(LanguageTool.getString("PREFERENCES"), "..."));
-        c.gridx = 2;
+        c.gridx = 1;
         c.gridy = 0;
         c.weightx = 0;
         c.weighty = 0;
