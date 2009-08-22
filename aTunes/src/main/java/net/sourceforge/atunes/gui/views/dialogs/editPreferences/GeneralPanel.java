@@ -132,21 +132,17 @@ public class GeneralPanel extends PreferencesPanel {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    FontChooserDialog fontChooserDialog;
-                    if (fs != null) {
-                        fontChooserDialog = new FontChooserDialog(VisualHandler.getInstance().getFrame().getFrame(), 300, 300, fs.getFont().toFont(), fs.isUseFontSmoothing(), fs
-                                .isUseFontSmoothingSettingsFromOs(), ApplicationState.getInstance().getLocale().getLocale());
-                    } else {
-                        fontChooserDialog = new FontChooserDialog(VisualHandler.getInstance().getFrame().getFrame(), 300, 300, SubstanceLookAndFeel.getFontPolicy().getFontSet(
-                                "Substance", UIManager.getDefaults()).getControlFont(), true, false, ApplicationState.getInstance().getLocale().getLocale());
-                    }
-                    fontChooserDialog.setVisible(true);
-                    if (fontChooserDialog.getSelectedFontSettings() != null) {
-                        fs = fontChooserDialog.getSelectedFontSettings();
-                    }
-                } catch (Exception e1) {
-                    e1.printStackTrace(System.out);
+                FontChooserDialog fontChooserDialog;
+                if (fs != null) {
+                    fontChooserDialog = new FontChooserDialog(VisualHandler.getInstance().getFrame().getFrame(), 300, 300, fs.getFont().toFont(), fs.isUseFontSmoothing(), fs
+                            .isUseFontSmoothingSettingsFromOs(), ApplicationState.getInstance().getLocale().getLocale());
+                } else {
+                    fontChooserDialog = new FontChooserDialog(VisualHandler.getInstance().getFrame().getFrame(), 300, 300, SubstanceLookAndFeel.getFontPolicy().getFontSet(
+                            "Substance", UIManager.getDefaults()).getControlFont(), true, false, ApplicationState.getInstance().getLocale().getLocale());
+                }
+                fontChooserDialog.setVisible(true);
+                if (fontChooserDialog.getSelectedFontSettings() != null) {
+                    fs = fontChooserDialog.getSelectedFontSettings();
                 }
             }
         });
