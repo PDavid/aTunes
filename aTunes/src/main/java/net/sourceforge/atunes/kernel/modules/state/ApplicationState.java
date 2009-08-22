@@ -29,6 +29,7 @@ import javax.swing.SwingConstants;
 import net.sourceforge.atunes.gui.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.StandardFrame;
 import net.sourceforge.atunes.gui.views.controls.playList.ColumnBean;
+import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
 import net.sourceforge.atunes.kernel.modules.context.lyrics.engines.LyricsEngineInfo;
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeysConfig;
@@ -119,12 +120,7 @@ public class ApplicationState {
     /** The theme. */
     private String skin = LookAndFeelSelector.DEFAULT_SKIN;
 
-    /** The use default font. */
-    private boolean useDefaultFont;
-
-    private boolean useOSSettingsForFontSmoothing;
-
-    private boolean useFontSmoothing = true;
+    private FontSettings fontSettings;
 
     /** The play at startup. */
     private boolean playAtStartup;
@@ -1034,15 +1030,6 @@ public class ApplicationState {
     }
 
     /**
-     * Checks if is use default font.
-     * 
-     * @return the useDefaultFont
-     */
-    public boolean isUseDefaultFont() {
-        return useDefaultFont;
-    }
-
-    /**
      * Checks if normalisation is used.
      * 
      * @return True if normalization is used
@@ -1641,16 +1628,6 @@ public class ApplicationState {
     }
 
     /**
-     * Sets the use default font.
-     * 
-     * @param useDefaultFont
-     *            the useDefaultFont to set
-     */
-    public void setUseDefaultFont(boolean useDefaultFont) {
-        this.useDefaultFont = useDefaultFont;
-    }
-
-    /**
      * Sets if the error correction for CD ripping is used
      * 
      * @param useCdErrorCorrection
@@ -1972,21 +1949,6 @@ public class ApplicationState {
     }
 
     /**
-     * @return the useFontSmoothing
-     */
-    public boolean isUseFontSmoothing() {
-        return useFontSmoothing;
-    }
-
-    /**
-     * @param useFontSmoothing
-     *            the useFontSmoothing to set
-     */
-    public void setUseFontSmoothing(boolean useFontSmoothing) {
-        this.useFontSmoothing = useFontSmoothing;
-    }
-
-    /**
      * @return the showContextTabsText
      */
     public boolean isShowContextTabsText() {
@@ -1999,21 +1961,6 @@ public class ApplicationState {
      */
     public void setShowContextTabsText(boolean showContextTabsText) {
         this.showContextTabsText = showContextTabsText;
-    }
-
-    /**
-     * @return the useOSSettingsForFontSmoothing
-     */
-    public boolean isUseOSSettingsForFontSmoothing() {
-        return useOSSettingsForFontSmoothing;
-    }
-
-    /**
-     * @param useOSSettingsForFontSmoothing
-     *            the useOSSettingsForFontSmoothing to set
-     */
-    public void setUseOSSettingsForFontSmoothing(boolean useOSSettingsForFontSmoothing) {
-        this.useOSSettingsForFontSmoothing = useOSSettingsForFontSmoothing;
     }
 
     public String getPlayerEngine() {
@@ -2480,6 +2427,14 @@ public class ApplicationState {
 
     public void setUseLibnotify(boolean useLibnotify) {
         this.useLibnotify = useLibnotify;
+    }
+
+    public FontSettings getFontSettings() {
+        return fontSettings;
+    }
+
+    public void setFontSettings(FontSettings fontSettings) {
+        this.fontSettings = fontSettings;
     }
 
 }
