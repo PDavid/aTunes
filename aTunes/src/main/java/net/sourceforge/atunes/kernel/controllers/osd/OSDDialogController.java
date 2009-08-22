@@ -130,14 +130,19 @@ public class OSDDialogController extends WindowController<OSDDialog> {
 
         location = new Point(x, y);
 
+        // By default OSD image has shadow, unless it's a generic image
+        getWindowControlled().setShadowBorder(true);
+        
         ImageIcon i;
         if (audioObject.canHaveCustomImages()) {
             i = audioObject.getCustomImage(-1, -1);
             if (i == null) {
                 i = audioObject.getGenericImage(GenericImageSize.MEDIUM);
+                getWindowControlled().setShadowBorder(false);
             }
         } else {
             i = audioObject.getGenericImage(GenericImageSize.MEDIUM);
+            getWindowControlled().setShadowBorder(false);
         }
         getWindowControlled().setImage(i);
         getWindowControlled().setLine1(audioObject.getTitle());

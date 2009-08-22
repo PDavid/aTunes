@@ -94,7 +94,6 @@ public class OSDDialog extends CustomWindow {
         panel.setSize(width, height);
         image = new JLabel();
         image.setOpaque(true);
-        image.setBorder(new DropShadowBorder());
         line1 = new JLabel();
         line2 = new JLabel();
         line3 = new JLabel();
@@ -185,6 +184,14 @@ public class OSDDialog extends CustomWindow {
             mask = new Area(new RoundRectangle2D.Float(2, 2, width - 3, height - 3, 20, 25));
         }
         GuiUtils.setWindowShape(this, mask);
+    }
+    
+    /**
+     * Sets a shadow border if the given argument is true
+     * @param shadowBorder
+     */
+    public void setShadowBorder(boolean shadowBorder) {
+        image.setBorder(shadowBorder ? new DropShadowBorder() : null);
     }
 
 }
