@@ -107,7 +107,7 @@ public class EditPreferencesDialog extends CustomModalDialog {
         list = new JList();
         JScrollPane scrollPane = new JScrollPane(list);
         // Force minimum width of scroll pane to show items
-        scrollPane.setMinimumSize(new Dimension(200,0));
+        scrollPane.setMinimumSize(new Dimension(200, 0));
         options = new JPanel();
         ok = new CustomButton(null, LanguageTool.getString("OK"));
         cancel = new CustomButton(null, LanguageTool.getString("CANCEL"));
@@ -119,22 +119,23 @@ public class EditPreferencesDialog extends CustomModalDialog {
         c.gridx = 0;
         c.gridy = 0;
         c.gridwidth = 1;
-        c.weightx = 0.5;
+        c.weightx = 0;
         c.weighty = 1;
-        c.fill = GridBagConstraints.BOTH;
+        c.fill = GridBagConstraints.VERTICAL;
         c.insets = new Insets(5, 5, 0, 5);
         container.add(scrollPane, c);
         c.gridx = 1;
         c.gridy = 0;
-        c.weightx = 0.6;
+        c.weightx = 1;
         c.insets = new Insets(5, 5, 0, 5);
+        c.fill = GridBagConstraints.BOTH;
         container.add(options, c);
         c.gridx = 1;
         c.gridy = 1;
         c.weightx = 0;
         c.weighty = 0;
         c.fill = GridBagConstraints.NONE;
-        c.anchor = GridBagConstraints.EAST;
+        c.anchor = GridBagConstraints.LINE_END;
         c.insets = new Insets(10, 0, 10, 10);
         container.add(auxPanel, c);
 
