@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.gui.views.dialogs.editPreferences;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -31,11 +30,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -52,7 +52,9 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 import net.sourceforge.atunes.gui.Fonts;
+import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
@@ -139,7 +141,7 @@ public class PluginsPanel extends PreferencesPanel {
         pluginLocationLabel.setFont(Fonts.SMALL_FONT);
         final JLabel pluginAuthorLabel = new JLabel();
         pluginAuthorLabel.setFont(Fonts.SMALL_FONT);
-        final JLabel pluginUrlLabel = new JLabel();
+        final UrlLabel pluginUrlLabel = new UrlLabel();
         pluginUrlLabel.setFont(Fonts.SMALL_FONT);
         pluginDetailPanel.add(pluginNameLabel);
         pluginDetailPanel.add(pluginVersionLabel);
@@ -165,7 +167,7 @@ public class PluginsPanel extends PreferencesPanel {
                 if (((PluginInfo)value).getIcon() != null) {
                     ((JLabel) c).setIcon(ImageUtils.scaleImageBicubic(((PluginInfo)value).getIcon(), CELL_HEIGHT - 5, CELL_HEIGHT - 5));
                 } else {
-                    ((JLabel) c).setIcon(null);
+                    ((JLabel) c).setIcon(ImageUtils.scaleImageBicubic(ImageLoader.EMPTY.getImage(), CELL_HEIGHT - 5, CELL_HEIGHT - 5));
                 }
                 return c;
             }
@@ -183,7 +185,7 @@ public class PluginsPanel extends PreferencesPanel {
         		   pluginClassNameLabel.setText(StringUtils.getString("<html><b>", LanguageTool.getString("CLASS_NAME"), ":</b> ", plugin.getClassName(), "</html>"));        		   
         		   pluginLocationLabel.setText(StringUtils.getString("<html><b>", LanguageTool.getString("LOCATION"), ":</b> ", plugin.getPluginLocation(), "</html>"));
         		   pluginAuthorLabel.setText(StringUtils.getString("<html><b>", LanguageTool.getString("AUTHOR"), ":</b> ", plugin.getAuthor(), "</html>"));
-        		   pluginUrlLabel.setText(StringUtils.getString("<html><b>URL: </b>", plugin.getUrl(), "</html>"));
+        		   pluginUrlLabel.setText(plugin.getUrl(), plugin.getUrl());
         		   pluginPreferencesButton.setEnabled(((PluginsTableModel)pluginsTable.getModel()).getPluginConfigurationAt(pluginsTable.getSelectedRow()) != null);
         	   }
             } 
@@ -312,6 +314,13 @@ public class PluginsPanel extends PreferencesPanel {
         public PluginsTableModel(List<PluginInfo> plugins) {
             super();
             this.plugins = plugins;
+            // Sort plugins by name
+            Collections.sort(this.plugins, new Comparator<PluginInfo>() {
+            	@Override
+            	public int compare(PluginInfo o1, PluginInfo o2) {
+            		return o1.getName().compareToIgnoreCase(o2.getName());
+            	}
+            });
         }
 
         @Override
