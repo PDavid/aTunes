@@ -22,29 +22,20 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.kernel.modules.notify.NotifyHandler;
+import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 
-/**
- * This action enables or disables OSD
- * 
- * @author fleax
- * 
- */
 public class ShowOSDAction extends Action {
 
     private static final long serialVersionUID = 646318992035897920L;
 
     ShowOSDAction() {
-        super(LanguageTool.getString("SHOW_OSD"), ImageLoader.OSD);
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("SHOW_OSD"));
-        putValue(SELECTED_KEY, ApplicationState.getInstance().isShowOSD());
+        super();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        ApplicationState.getInstance().setShowOSD((Boolean) getValue(SELECTED_KEY));
+        NotifyHandler.getInstance().showNotification(PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList());
     }
 
     @Override

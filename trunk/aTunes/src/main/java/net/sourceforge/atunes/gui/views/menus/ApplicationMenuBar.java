@@ -70,7 +70,7 @@ import net.sourceforge.atunes.kernel.actions.ShowGenresInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowLogAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigationTableAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorAction;
-import net.sourceforge.atunes.kernel.actions.ShowOSDAction;
+import net.sourceforge.atunes.kernel.actions.OSDSettingAction;
 import net.sourceforge.atunes.kernel.actions.ShowPlayListControlsAction;
 import net.sourceforge.atunes.kernel.actions.ShowRadioBrowserAction;
 import net.sourceforge.atunes.kernel.actions.ShowStatsAction;
@@ -199,7 +199,7 @@ public class ApplicationMenuBar extends JMenuBar {
             view.add(new JCheckBoxMenuItem(Actions.getAction(ShowNavigationTableAction.class)));
             view.add(new JCheckBoxMenuItem(Actions.getAction(ShowAudioObjectPropertiesAction.class)));
             view.add(new JCheckBoxMenuItem(Actions.getAction(ShowContextAction.class)));
-            view.add(new JCheckBoxMenuItem(Actions.getAction(ShowOSDAction.class)));
+            view.add(new JCheckBoxMenuItem(Actions.getAction(OSDSettingAction.class)));
             view.add(new JSeparator());
             view.add(Actions.getAction(FullScreenAction.class));
         }
