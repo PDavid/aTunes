@@ -44,7 +44,7 @@ import net.sourceforge.atunes.kernel.actions.ExitAction;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
 import net.sourceforge.atunes.kernel.actions.RepeatModeAction;
 import net.sourceforge.atunes.kernel.actions.ShowAboutAction;
-import net.sourceforge.atunes.kernel.actions.ShowOSDAction;
+import net.sourceforge.atunes.kernel.actions.OSDSettingAction;
 import net.sourceforge.atunes.kernel.actions.ShuffleModeAction;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -160,7 +160,7 @@ public final class SystemTrayHandler implements ApplicationFinishListener, Appli
 
         menu.add(new JSeparator());
 
-        showOSD = new JCheckBoxMenuItem(Actions.getAction(ShowOSDAction.class));
+        showOSD = new JCheckBoxMenuItem(Actions.getAction(OSDSettingAction.class));
         menu.add(showOSD);
 
         menu.add(new JSeparator());
