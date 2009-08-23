@@ -1121,7 +1121,6 @@ public final class VisualHandler implements PlaybackStateListener, ApplicationFi
      *            the show
      */
     public void showNavigationTable(boolean show) {
-        ApplicationState.getInstance().setShowNavigationTable(show);
         frame.showNavigationTable(show);
     }
 

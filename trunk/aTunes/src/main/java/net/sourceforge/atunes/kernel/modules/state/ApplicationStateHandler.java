@@ -38,7 +38,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.Constants;
@@ -144,33 +143,10 @@ public final class ApplicationStateHandler implements ApplicationFinishListener,
     }
 
     /**
-     * Process to apply state.
-     * 
-     * @return the apply state runnable
-     */
-    public Runnable getApplyStateRunnable() {
-        return new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            applyState();
-                        }
-                    });
-                } catch (Exception e) {
-                    logger.internalError(e);
-                }
-            }
-        };
-    }
-
-    /**
      * Apply state. Some properties (window maximized, position, etc) are
      * already setted in gui creation
      */
-    void applyState() {
+    public void applyState() {
         logger.debug(LogCategories.HANDLER);
 
         // System tray player

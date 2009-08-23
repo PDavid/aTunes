@@ -255,7 +255,7 @@ public class Kernel {
             Timer timer = new Timer();
             timer.start();
 
-            Scheduler.runInParallel(true, ApplicationStateHandler.getInstance().getApplyStateRunnable());
+            ApplicationStateHandler.getInstance().applyState();
 
             VisualHandler.getInstance().setFullFrameVisible(true);
             //Hide title dialog

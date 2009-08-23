@@ -169,7 +169,7 @@ public class NavigationController extends PanelController<NavigationPanel> imple
             view.getTree().addTreeSelectionListener(new TreeSelectionListener() {
                 @Override
                 public void valueChanged(TreeSelectionEvent e) {
-                    updateTreeAndTable((JTree) e.getSource());
+                    updateTableContent((JTree) e.getSource());
                 }
             });
         }
@@ -215,7 +215,7 @@ public class NavigationController extends PanelController<NavigationPanel> imple
                 if (newFilter == null) {
                     getPanelControlled().getTableFilterPanel().setVisible(false);
                 }
-                updateTreeAndTable(NavigationHandler.getInstance().getCurrentView().getTree());
+                updateTableContent(NavigationHandler.getInstance().getCurrentView().getTree());
             }
         });
     }
@@ -426,21 +426,26 @@ public class NavigationController extends PanelController<NavigationPanel> imple
     }
 
     /**
-     * Tree selection.
+     * Updates table contents when user selects a tree node or the table filter changes
      * 
      * @param tree
      *            the tree
      */
-    public void updateTreeAndTable(JTree tree) {
-        List<AudioObject> songs = new ArrayList<AudioObject>();
-        TreePath[] paths = tree.getSelectionPaths();
-
+    public void updateTableContent(JTree tree) {
+    	// If navigation table is not shown then don't update it
+    	if (!ApplicationState.getInstance().isShowNavigationTable()) {
+    		return;
+    	}
+    	
         // Avoid events when changes on a tree different than the one which is visible
         if (tree != NavigationHandler.getInstance().getCurrentView().getTree()) {
             return;
         }
 
+        TreePath[] paths = tree.getSelectionPaths();
+
         if (paths != null) {
+            List<AudioObject> songs = new ArrayList<AudioObject>();
             for (TreePath element : paths) {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) (element.getLastPathComponent());
                 songs.addAll(getAudioObjectsForTreeNode(NavigationHandler.getInstance().getViewByName(ApplicationState.getInstance().getNavigationView()), node));
