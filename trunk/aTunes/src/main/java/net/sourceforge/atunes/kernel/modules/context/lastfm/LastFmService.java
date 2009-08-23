@@ -284,7 +284,7 @@ public class LastFmService {
             Image img = lastFmCache.retrieveArtistThumbImage(artist);
             if (img == null && artist.getImageUrl() != null && !artist.getImageUrl().isEmpty()) {
                 // Try to get from Artist.getImages() method 
-                img = getArtistImageFromLastFM(artist.getName());
+                img = getArtistImageFromLastFM(artist.getName(), ImageSize.LARGE);
 
                 // if not then get from artist info
                 if (img == null) {
@@ -318,7 +318,7 @@ public class LastFmService {
             }
 
             // Try to get from LastFM
-            img = getArtistImageFromLastFM(similar.getArtistName());
+            img = getArtistImageFromLastFM(similar.getArtistName(), ImageSize.ORIGINAL);
 
             // Get from similar artist info
             if (img == null) {
@@ -343,18 +343,19 @@ public class LastFmService {
      * Returns current artist image at LastFM
      * 
      * @param artistName
+     * @param size
      * @return
      */
-    private Image getArtistImageFromLastFM(String artistName) {
+    private Image getArtistImageFromLastFM(String artistName, ImageSize size) {
         try {
             // Try to get from Artist.getImages() method 
             PaginatedResult<net.roarsoftware.lastfm.Image> images = Artist.getImages(artistName, 1, 1, API_KEY);
             List<net.roarsoftware.lastfm.Image> imageList = new ArrayList<net.roarsoftware.lastfm.Image>(images.getPageResults());
             if (!imageList.isEmpty()) {
                 Set<ImageSize> sizes = imageList.get(0).availableSizes();
-                // Try to get original
-                if (sizes.contains(ImageSize.ORIGINAL)) {
-                    return NetworkUtils.getImage(NetworkUtils.getConnection(imageList.get(0).getImageURL(ImageSize.ORIGINAL), proxy));
+                // Try to get the given size
+                if (sizes.contains(size)) {
+                    return NetworkUtils.getImage(NetworkUtils.getConnection(imageList.get(0).getImageURL(size), proxy));
                 }
             }
         } catch (IOException e) {
