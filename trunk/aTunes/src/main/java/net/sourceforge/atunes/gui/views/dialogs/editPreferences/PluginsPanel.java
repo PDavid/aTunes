@@ -190,8 +190,9 @@ public class PluginsPanel extends PreferencesPanel {
                 }
             }
         });
-
+        
         pluginPreferencesButton = new JButton(StringUtils.getString(LanguageTool.getString("PREFERENCES"), "..."));
+        pluginPreferencesButton.setEnabled(false);
         c.gridx = 1;
         c.gridy = 0;
         c.weightx = 0;
