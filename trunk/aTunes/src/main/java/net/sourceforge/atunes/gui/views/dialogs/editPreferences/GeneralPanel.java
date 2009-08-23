@@ -84,9 +84,8 @@ public class GeneralPanel extends PreferencesPanel {
         JLabel label = new JLabel(LanguageTool.getString("WINDOW_TYPE"));
         label.setFont(Fonts.GENERAL_FONT_BOLD);
         windowType = new JComboBox(new String[] { LanguageTool.getString("STANDARD_WINDOW"), LanguageTool.getString("MULTIPLE_WINDOW") });
-        //JLabel label2 = new JLabel(LanguageTool.getString("CHANGE_WINDOW_TYPE_ON_NEXT_START"));
-        JLabel label3 = new JLabel(LanguageTool.getString("LANGUAGE"));
-        label3.setFont(Fonts.GENERAL_FONT_BOLD);
+        JLabel label2 = new JLabel(LanguageTool.getString("LANGUAGE"));
+        label2.setFont(Fonts.GENERAL_FONT_BOLD);
 
         List<Locale> langs = LanguageTool.getLanguages();
         Locale[] array = langs.toArray(new Locale[langs.size()]);
@@ -122,11 +121,10 @@ public class GeneralPanel extends PreferencesPanel {
             }
         });
 
-        //JLabel label4 = new JLabel(LanguageTool.getString("CHANGE_LANGUAGE_ON_NEXT_START"));
         showIconTray = new JCheckBox(LanguageTool.getString("SHOW_TRAY_ICON"));
         showTrayPlayer = new JCheckBox(LanguageTool.getString("SHOW_TRAY_PLAYER"));
-        JLabel label5 = new JLabel(LanguageTool.getString("THEME"));
-        label5.setFont(Fonts.GENERAL_FONT_BOLD);
+        JLabel label3 = new JLabel(LanguageTool.getString("THEME"));
+        label3.setFont(Fonts.GENERAL_FONT_BOLD);
 
         fontSettings = new JButton(LanguageTool.getString("CHANGE_FONT_SETTINGS"));
         fontSettings.addActionListener(new ActionListener() {
@@ -160,15 +158,13 @@ public class GeneralPanel extends PreferencesPanel {
         themePreview = new JLabel(LanguageTool.getString("PREVIEW"));
         themePreview.setVerticalTextPosition(SwingConstants.TOP);
         themePreview.setHorizontalTextPosition(SwingConstants.CENTER);
-        //JLabel label6 = new JLabel(LanguageTool.getString("CHANGE_THEME_ON_NEXT_START"));
 
         GridBagConstraints c = new GridBagConstraints();
         // First display language
         c.gridy = 0;
-        c.gridwidth = 1;
         c.anchor = GridBagConstraints.FIRST_LINE_START;
         c.insets = new Insets(5, 0, 0, 0);
-        add(label3, c);
+        add(label2, c);
         c.gridx = 1;
         add(language, c);
         c.gridx = 0;
@@ -179,35 +175,34 @@ public class GeneralPanel extends PreferencesPanel {
         c.insets = new Insets(25, 0, 0, 0);
         add(windowType, c);
         c.gridx = 0;
-        c.gridy = 4;
-        c.weightx = 1;
-        c.insets = new Insets(5, 0, 0, 0);
-        add(showTitle, c);
-        c.gridx = 0;
-        c.gridy = 5;
-        c.gridwidth = 1;
-        c.insets = new Insets(5, 0, 0, 0);
-        add(showTrayPlayer, c);
-        c.gridx = 1;
-        c.gridy = 5;
-        c.insets = new Insets(5, 0, 0, 0);
-        add(showIconTray, c);
-        c.gridx = 0;
-        c.gridy = 6;
-        c.gridwidth = 2;
+        c.gridy = 3;
         c.insets = new Insets(20, 0, 0, 0);
-        add(label5, c);
+        add(label3, c);
         c.gridx = 0;
-        c.gridy = 7;
+        c.gridy = 4;
         c.insets = new Insets(5, 0, 0, 0);
         add(themePreview, c);
         c.gridx = 1;
         c.insets = new Insets(40, 0, 0, 0);
         add(theme, c);
         c.gridx = 0;
-        c.gridy = 8;
-        c.weighty = 1;
+        c.gridy = 5;
+        c.insets = new Insets(40, 0, 40, 0);
         add(fontSettings, c);
+        c.gridx = 0;
+        c.gridy = 6;
+        c.weightx = 1;
+        c.insets = new Insets(5, 0, 0, 0);
+        add(showTitle, c);
+        c.gridx = 0;
+        c.gridy = 7;
+        c.weighty = 1;
+        c.insets = new Insets(5, 0, 0, 0);
+        add(showTrayPlayer, c);
+        c.gridx = 1;
+        c.gridy = 7;
+        c.insets = new Insets(5, 0, 0, 0);
+        add(showIconTray, c);
     }
 
     @Override
