@@ -983,15 +983,6 @@ public final class RepositoryHandler implements LoaderListener, AudioFilesRemove
         VisualHandler.getInstance().getProgressDialog().setCancelButtonEnabled(true);
 
         notifyFinishRepositoryRead();
-
-        // Update index
-        Scheduler.scheduleTaskAfter("Update Repository Index", new Runnable() {
-            @Override
-            public void run() {
-                // Call to update index
-                SearchHandler.getInstance().updateSearchIndex(RepositorySearchableObject.getInstance());
-            }
-        }, 5);
     }
 
     /*
@@ -1010,9 +1001,6 @@ public final class RepositoryHandler implements LoaderListener, AudioFilesRemove
 
         // Set new repository
         repository = tempRepository;
-
-        // Call to update index
-        SearchHandler.getInstance().updateSearchIndex(RepositorySearchableObject.getInstance());
 
         // Persist
         ApplicationStateHandler.getInstance().persistRepositoryCache(repository, false);

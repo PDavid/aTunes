@@ -71,8 +71,6 @@ public final class FavoritesHandler implements ApplicationFinishListener {
             @Override
             public void run() {
                 SearchHandler.getInstance().registerSearchableObject(FavoritesSearchableObject.getInstance());
-                // Update search index
-                SearchHandler.getInstance().updateSearchIndex(FavoritesSearchableObject.getInstance());
             }
         };
     }
@@ -265,9 +263,6 @@ public final class FavoritesHandler implements ApplicationFinishListener {
 
         // Update file properties panel
         ControllerProxy.getInstance().getFilePropertiesController().refreshFavoriteIcons();
-
-        // Update search index
-        SearchHandler.getInstance().updateSearchIndex(FavoritesSearchableObject.getInstance());
     }
 
 }

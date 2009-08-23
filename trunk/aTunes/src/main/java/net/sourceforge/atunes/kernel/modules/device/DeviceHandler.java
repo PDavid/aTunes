@@ -556,8 +556,6 @@ public final class DeviceHandler implements LoaderListener, DeviceConnectionList
 
         // Register device to search in
         SearchHandler.getInstance().registerSearchableObject(DeviceSearchableObject.getInstance());
-        // Update device index
-        SearchHandler.getInstance().updateSearchIndex(DeviceSearchableObject.getInstance());
 
         // Enable action to copy to device
         Actions.getAction(CopyPlayListToDeviceAction.class).setEnabled(true);
@@ -579,9 +577,6 @@ public final class DeviceHandler implements LoaderListener, DeviceConnectionList
         deviceRepository = tempDeviceRepository;
         tempDeviceRepository = null;
         notifyDeviceReload(loader);
-
-        // Update device index
-        SearchHandler.getInstance().updateSearchIndex(DeviceSearchableObject.getInstance());
 
         // Enable action to copy to device
         Actions.getAction(CopyPlayListToDeviceAction.class).setEnabled(true);

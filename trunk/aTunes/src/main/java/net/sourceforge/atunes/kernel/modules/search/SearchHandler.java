@@ -147,15 +147,21 @@ public final class SearchHandler {
     }
 
     /**
-     * Starts a search by showing search dialog.
+     * Starts a search by updating indexes and showing search dialog.
      */
     public void startSearch() {
+    	// Updates indexes
+    	for (SearchableObject searchableObject : searchableObjects) {
+    		updateSearchIndex(searchableObject);
+    	}
+    	
         // Set list of searchable objects
         ControllerProxy.getInstance().getCustomSearchController().setListOfSearchableObjects(searchableObjects);
 
         // Set list of operators
         ControllerProxy.getInstance().getCustomSearchController().setListOfOperators(searchOperators);
 
+        // Show dialog to start search
         ControllerProxy.getInstance().getCustomSearchController().showSearchDialog();
     }
 
@@ -239,7 +245,7 @@ public final class SearchHandler {
      *            the searchable object
      */
 
-    public void updateSearchIndex(final SearchableObject searchableObject) {
+    private void updateSearchIndex(final SearchableObject searchableObject) {
         SwingWorker<Void, Void> refreshSearchIndex = new SwingWorker<Void, Void>() {
             private IndexWriter indexWriter;
 
@@ -302,6 +308,8 @@ public final class SearchHandler {
                     try {
                         indexWriter.optimize();
                         indexWriter.close();
+                        
+                        indexWriter = null;
                     } catch (CorruptIndexException e) {
                         logger.error(LogCategories.HANDLER, e);
                     } catch (IOException e) {
