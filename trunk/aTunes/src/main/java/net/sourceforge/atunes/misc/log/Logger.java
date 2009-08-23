@@ -67,15 +67,7 @@ public class Logger {
     public Logger() {
         // Get invoker class and call Log4j getLogger
         Throwable t = new Throwable();
-        StackTraceElement[] s = t.getStackTrace();
-        String className = s[1].getClassName();
-        Class<?> cl = null;
-        try {
-            cl = Class.forName(className);
-            logger = org.apache.log4j.Logger.getLogger(cl);
-        } catch (ClassNotFoundException e) {
-            System.out.println(StringUtils.getString("ERROR: Could not load class ", className));
-        }
+        logger = org.apache.log4j.Logger.getLogger(t.getStackTrace()[1].getClassName());
     }
 
     /**
