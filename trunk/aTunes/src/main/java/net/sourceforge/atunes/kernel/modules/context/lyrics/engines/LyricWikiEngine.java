@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.context.lyrics.engines;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.List;
 
 import net.htmlparser.jericho.Element;
@@ -101,8 +102,11 @@ public class LyricWikiEngine extends LyricsEngine {
             String html = readURL(getConnection(url), RESPONSE_ENCODING);
             String lyrics = extractLyrics(html);
             return lyrics != null && !lyrics.isEmpty() ? new Lyrics(lyrics, url) : null;
-        } catch (IOException e) {
+        } catch (UnknownHostException e) {
             logger.error(LogCategories.SERVICE, "Cannot fetch lyrics for: " + artist + "/" + title);
+            return null;
+        } catch (IOException e) {
+            logger.info(LogCategories.SERVICE, "Cannot fetch lyrics for: " + artist + "/" + title);
             return null;
         }
 
