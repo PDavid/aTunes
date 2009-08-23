@@ -440,6 +440,6 @@ public class ContextPanel extends PreferencesPanel {
 
     @Override
     public ImageIcon getIcon() {
-        return null;
+        return ImageLoader.CONTEXT;
     }
 }

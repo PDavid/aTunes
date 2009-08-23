@@ -607,7 +607,7 @@ public class PluginsPanel extends PreferencesPanel {
 
     @Override
     public ImageIcon getIcon() {
-        return null;
+        return ImageLoader.PLUGIN;
     }
 
 }

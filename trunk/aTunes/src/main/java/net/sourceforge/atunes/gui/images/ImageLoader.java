@@ -65,6 +65,7 @@ public class ImageLoader {
     public static final ImageIcon CLOSE_BUTTON = getImage("closeButton.png");
     public static final ImageIcon CLOSE_TAB = getImage("closeTab.png");
     public static final ImageIcon COLLAPSE = getImage("collapse.png");
+    public static final ImageIcon CONTEXT = getImage("context.png");
     public static final ImageIcon DATE = getImage("date.png");
     public static final ImageIcon DELETE_FILE = getImage("delete.png");
     public static final ImageIcon DELETE_TAG = getImage("erase.png");
@@ -124,6 +125,7 @@ public class ImageLoader {
     public static final ImageIcon PLAY_TRAY = SystemProperties.OS.isWindowsVista() ? getImage("playTrayVista.png") : getImage("playTray.png");
     public static final ImageIcon PLAY_TRAY_MENU = getImage("playTrayMenu.png");
     public static final ImageIcon PLAYLIST = getImage("playlist.png");
+    public static final ImageIcon PLUGIN = getImage("plugin.png");
     public static final ImageIcon POWERED_BY_LAST_FM = getImage("poweredByLastFm.png");
     public static final ImageIcon PREFS = getImage("prefs.png");
     public static final ImageIcon PREVIOUS = getImage("previous.png");
