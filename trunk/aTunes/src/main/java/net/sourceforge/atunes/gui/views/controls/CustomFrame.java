@@ -27,9 +27,6 @@ import javax.swing.JFrame;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.utils.GuiUtils;
 
-/**
- * The Class CustomFrame.
- */
 public abstract class CustomFrame extends JFrame {
 
     private static final long serialVersionUID = -7162399690169458143L;
@@ -39,7 +36,7 @@ public abstract class CustomFrame extends JFrame {
      */
     public CustomFrame() {
         super();
-        setIconImage(ImageLoader.APP_ICON.getImage());
+        setIconImage(ImageLoader.APP_ICON_BIG.getImage());
     }
 
     /**

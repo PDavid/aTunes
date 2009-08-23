@@ -41,9 +41,9 @@ public class ImageLoader {
     public static final ImageIcon APP_TITLE = getImage("title.png");
     public static final ImageIcon APP_ICON = getImage("appIcon.png");
     public static final ImageIcon APP_ICON_TRAY = getImage("appIconTray.png");
-    public static final ImageIcon APP_ICON_BIG = getImage("appIconBig.png");
+    public static final ImageIcon APP_ICON_MEDIUM = getImage("appIconMedium.png");
     public static final ImageIcon APP_ICON_TINY = getImage("appIconTiny.png");
-    public static final ImageIcon APP_ICON_TITLE = getImage("appIconTitle.png");
+    public static final ImageIcon APP_ICON_BIG = getImage("appIconBig.png");
     public static final ImageIcon ARTIST = getImage("artist.png");
     public static final ImageIcon ARTIST_FAVORITE = getImage("artistFavorite.png");
     public static final ImageIcon ARTIST_SIMILAR = getImage("artistSimilar.png");

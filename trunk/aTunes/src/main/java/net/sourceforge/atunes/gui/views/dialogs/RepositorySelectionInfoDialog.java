@@ -65,7 +65,7 @@ public class RepositorySelectionInfoDialog extends CustomModalDialog {
      */
     private void setContent() {
         JPanel panel = new JPanel(new GridBagLayout());
-        JLabel icon = new JLabel(ImageLoader.APP_ICON_TITLE);
+        JLabel icon = new JLabel(ImageLoader.APP_ICON_BIG);
         JTextArea text = new JTextArea(LanguageTool.getString("REPOSITORY_SELECTION_INFO_TEXT"));
         text.setOpaque(false);
         text.setEditable(false);
