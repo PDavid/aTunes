@@ -342,9 +342,6 @@ public final class PlayerHandler implements ApplicationFinishListener, PluginLis
                 instance.playerEngine.addPlaybackStateListener(instance.playerEngine);
                 instance.playerEngine.addPlaybackStateListener(VisualHandler.getInstance());
                 instance.playerEngine.addPlaybackStateListener(NotifyHandler.getInstance());
-
-                // Initial playback state is stopped
-                instance.playerEngine.callPlaybackStateListeners(PlaybackState.STOPPED);
             }
 
             // Add a shutdown hook to perform some actions before killing the JVM
@@ -360,6 +357,14 @@ public final class PlayerHandler implements ApplicationFinishListener, PluginLis
             }));
         }
         return instance;
+    }
+
+    /**
+     * Initializes handler
+     */
+    public void initHandler() {
+        // Initial playback state is stopped
+        getInstance().playerEngine.callPlaybackStateListeners(PlaybackState.STOPPED);
     }
 
     private static void handlePlayerError(Throwable t) {

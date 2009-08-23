@@ -39,6 +39,7 @@ import net.sourceforge.atunes.kernel.modules.device.DeviceConnectionMonitor;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.favorites.FavoritesHandler;
 import net.sourceforge.atunes.kernel.modules.instances.MultipleInstancesHandler;
+import net.sourceforge.atunes.kernel.modules.player.PlaybackState;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
@@ -265,6 +266,8 @@ public class Kernel {
                 @Override
                 public void run() {
                     RepositoryHandler.getInstance().setRepository();
+
+                    PlayerHandler.getInstance().initHandler();
 
                     PlayListHandler.getInstance().setPlayLists();
                     if (!playList.isEmpty()) {
