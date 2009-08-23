@@ -58,7 +58,7 @@ public class UpdateDialog extends CustomFrame {
         text = text.replace("(%VERSION%)", Constants.VERSION.toShortString());
         text = text.replace("(%NEW_VERSION%)", version.toShortString());
 
-        JLabel img = new JLabel(ImageLoader.APP_ICON_TITLE);
+        JLabel img = new JLabel(ImageLoader.APP_ICON_BIG);
 
         JTextArea text1 = new JTextArea(text);
         text1.setBorder(BorderFactory.createEmptyBorder());

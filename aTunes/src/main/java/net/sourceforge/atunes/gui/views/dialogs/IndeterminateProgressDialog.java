@@ -87,7 +87,7 @@ public class IndeterminateProgressDialog extends CustomModalDialog {
      */
     private JPanel getContent() {
         JPanel panel = new JPanel(new GridBagLayout());
-        pictureLabel = new JLabel(ImageLoader.APP_ICON_TITLE);
+        pictureLabel = new JLabel(ImageLoader.APP_ICON_BIG);
         label = new JLabel(StringUtils.getString(LanguageTool.getString("PLEASE_WAIT"), "..."));
         Font f = label.getFont().deriveFont(Font.PLAIN);
         label.setFont(f);
