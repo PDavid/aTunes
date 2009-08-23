@@ -208,8 +208,6 @@ public class ContextPanelController extends PanelController<ContextPanel> {
      *            the clear artist and similar
      */
     public void clear(boolean clearArtistAndSimilar) {
-        getLogger().debug(LogCategories.CONTROLLER, clearArtistAndSimilar);
-
         lyricsSourceUrl = null;
         audioObject = null;
 
@@ -330,8 +328,6 @@ public class ContextPanelController extends PanelController<ContextPanel> {
      *            the img
      */
     public void notifyArtistImage(final Image img) {
-        getLogger().debug(LogCategories.CONTROLLER);
-
         getPanelControlled().getArtistImageLabel().setIcon(new ImageIcon(img));
         getPanelControlled().getArtistImageLabel().setVisible(true);
     }
@@ -355,9 +351,6 @@ public class ContextPanelController extends PanelController<ContextPanel> {
 
         getPanelControlled().getYearLabel().setText(album != null ? album.getYear() : "",
                 album != null && album.getYear() != null ? StringUtils.getString("http://en.wikipedia.org/wiki/", album.getYear()) : null);
-        if (album != null) {
-            getLogger().debug(LogCategories.CONTROLLER, new String[] { album.getTitle() });
-        }
         if (img != null) {
             ImageIcon image = ImageUtils.resize(new ImageIcon(img), Constants.ALBUM_IMAGE_SIZE, Constants.ALBUM_IMAGE_SIZE);
             getPanelControlled().getAlbumCoverLabel().setIcon(image);
@@ -376,8 +369,6 @@ public class ContextPanelController extends PanelController<ContextPanel> {
      *            the cover
      */
     public void notifyFinishGetAlbumsInfo(final AlbumInfo album, final Image cover) {
-        getLogger().debug(LogCategories.CONTROLLER, new String[] { album.getTitle() });
-
         if (album.getArtist().equals(audioObject.getArtist())) {
             getPanelControlled().getArtistAlbumsLabel().setText(album.getArtist(), album.getArtistUrl());
             getPanelControlled().getArtistAlbumsLabel().setVisible(true);
@@ -398,8 +389,6 @@ public class ContextPanelController extends PanelController<ContextPanel> {
      *            the img
      */
     public void notifyFinishGetSimilarArtist(final ArtistInfo artist, final Image img) {
-        getLogger().debug(LogCategories.CONTROLLER);
-
         getPanelControlled().getSimilarArtistsPanel().setVisible(true);
         fillSimilarArtistsList(artist, img);
     }
@@ -453,8 +442,6 @@ public class ContextPanelController extends PanelController<ContextPanel> {
      *            the audio object
      */
     public void setAudioObjectInfo(final AudioObject audioObject) {
-        getLogger().debug(LogCategories.CONTROLLER);
-
         lyricsSourceUrl = null;
         this.audioObject = audioObject;
 
@@ -571,8 +558,6 @@ public class ContextPanelController extends PanelController<ContextPanel> {
      *            the lyrics
      */
     public void setLyrics(AudioObject audioObject, Lyrics lyrics) {
-        getLogger().debug(LogCategories.CONTROLLER);
-
         getPanelControlled().getLyricsContainer().setLineWrap(false);
         getPanelControlled().getLyricsContainer().setText(lyrics != null ? lyrics.getLyrics() : "");
         getPanelControlled().getLyricsContainer().setCaretPosition(0);

@@ -202,7 +202,6 @@ public final class ContextHandler implements ContextListener, ApplicationFinishL
                 boolean exception;
                 exception = lastFmCache.clearCache();
                 exception = lyricsCache.clearCache() || exception;
-                logger.debug(LogCategories.HANDLER);
                 logger.debug(LogCategories.HANDLER, exception);
                 return exception;
             }
@@ -482,8 +481,6 @@ public final class ContextHandler implements ContextListener, ApplicationFinishL
             return;
         }
 
-        logger.debug(LogCategories.HANDLER);
-
         ControllerProxy.getInstance().getContextPanelController().notifyFinishGetAlbumInfo(file.getArtist(), album, image);
 
         lastAlbumRetrieved = file.getAlbum();
@@ -496,8 +493,6 @@ public final class ContextHandler implements ContextListener, ApplicationFinishL
             return;
         }
 
-        logger.debug(LogCategories.HANDLER);
-
         // Image is scaled to best fit panel
         ControllerProxy.getInstance().getContextPanelController().notifyArtistImage(
                 ImageUtils.scaleImageBicubic(img, Constants.ARTIST_IMAGE_SIZE, Constants.ARTIST_IMAGE_SIZE).getImage());
@@ -509,8 +504,6 @@ public final class ContextHandler implements ContextListener, ApplicationFinishL
             return;
         }
 
-        logger.debug(LogCategories.HANDLER);
-
         ControllerProxy.getInstance().getContextPanelController().notifyFinishGetAlbumsInfo(alb, cover);
 
         lastArtistRetrieved = alb.getArtist();
@@ -521,8 +514,6 @@ public final class ContextHandler implements ContextListener, ApplicationFinishL
         if (currentWorkerId != id) {
             return;
         }
-
-        logger.debug(LogCategories.HANDLER);
 
         // Update if artist is available
         a.setAvailable(RepositoryHandler.getInstance().getArtistStructure().containsKey(a.getName()));
@@ -583,8 +574,6 @@ public final class ContextHandler implements ContextListener, ApplicationFinishL
      *            the audio object
      */
     public void retrieveInfoAndShowInPanel(AudioObject ao) {
-        logger.debug(LogCategories.HANDLER);
-
         // Avoid retrieve information about the same audio object twice except if is an AudioFile and has been recently changed
         if (lastAudioObject != null && lastAudioObject.equals(ao)) {
             if (ao instanceof AudioFile) {
@@ -639,8 +628,6 @@ public final class ContextHandler implements ContextListener, ApplicationFinishL
      *            the audio object
      */
     private void retrieveInfo(AudioObject audioObject) {
-        logger.debug(LogCategories.HANDLER);
-
         if (audioObject == null) {
             return;
         }
@@ -698,8 +685,6 @@ public final class ContextHandler implements ContextListener, ApplicationFinishL
         if (currentWorkerId != id) {
             return;
         }
-
-        logger.debug(LogCategories.HANDLER);
 
         if (img != null && ApplicationState.getInstance().isSaveContextPicture()) { // save image in folder of file
             String imageFileName = AudioFilePictureUtils.getFileNameForCover(file);
@@ -893,8 +878,6 @@ public final class ContextHandler implements ContextListener, ApplicationFinishL
      *            the password
      */
     private void updateLastFmService(ProxyBean proxy, final String user, String password) {
-        logger.debug(LogCategories.HANDLER);
-
         cancelIfWorking();
         Proxy p = null;
         try {
@@ -917,8 +900,6 @@ public final class ContextHandler implements ContextListener, ApplicationFinishL
     }
 
     private void updateYoutubeService(ProxyBean proxy) {
-        logger.debug(LogCategories.HANDLER);
-
         Proxy p = null;
         try {
             if (proxy != null) {
@@ -933,7 +914,6 @@ public final class ContextHandler implements ContextListener, ApplicationFinishL
     }
 
     public void updateLyricsService(List<LyricsEngine> lyricsEngines, LyricsCache lyricsCache) {
-        logger.debug(LogCategories.HANDLER);
         this.lyricsService = new LyricsService(lyricsEngines, lyricsCache);
         clearLastRetrieved();
     }

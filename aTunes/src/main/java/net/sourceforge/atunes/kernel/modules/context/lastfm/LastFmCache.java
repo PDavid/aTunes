@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.Constants;
@@ -621,7 +622,8 @@ public class LastFmCache {
         try {
             String path = getFileNameForArtistThumbAtCache(artist);
             if (path != null && new File(path).exists()) {
-                return new ImageIcon(path).getImage();
+            	ImageIcon icon = new ImageIcon(path);
+                return icon.getImage();
             }
         } catch (IOException e) {
             logger.error(LogCategories.CACHE, e);

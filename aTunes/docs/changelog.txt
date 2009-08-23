@@ -21,6 +21,7 @@
 - INTERNAL: Share actions between play list and navigation tree and table
 - INTERNAL: Refactoring of play list
 - FIX: Images with alpha channel are displayed wrong
+- FIX: Too much memory needed when retrieving artist images from Last.fm with original size
 
 aTunes 1.13.3
 -------------
