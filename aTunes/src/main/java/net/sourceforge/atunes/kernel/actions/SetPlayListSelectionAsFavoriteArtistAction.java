@@ -46,7 +46,7 @@ public class SetPlayListSelectionAsFavoriteArtistAction extends Action {
     private static final long serialVersionUID = 3403777999793279297L;
 
     SetPlayListSelectionAsFavoriteArtistAction() {
-        super(LanguageTool.getString("SET_FAVORITE_ARTIST"), ImageLoader.ARTIST_FAVORITE);
+        super(LanguageTool.getString("SET_FAVORITE_ARTIST"), ImageLoader.getImage(ImageLoader.ARTIST_FAVORITE));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0));
     }
 

@@ -170,7 +170,7 @@ public class RepositoryPanel extends PreferencesPanel {
 
     @Override
     public ImageIcon getIcon() {
-        return ImageLoader.AUDIO_FILE_LITTLE;
+        return ImageLoader.getImage(ImageLoader.AUDIO_FILE_LITTLE);
     }
 
 }

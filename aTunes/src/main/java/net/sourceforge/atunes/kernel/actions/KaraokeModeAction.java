@@ -42,7 +42,7 @@ public class KaraokeModeAction extends Action {
     Timer timer;
 
     KaraokeModeAction() {
-        super(LanguageTool.getString("KARAOKE"), ImageLoader.KARAOKE);
+        super(LanguageTool.getString("KARAOKE"), ImageLoader.getImage(ImageLoader.KARAOKE));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("KARAOKE"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().isKaraoke());
 
@@ -52,9 +52,9 @@ public class KaraokeModeAction extends Action {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if (showWarning) {
-                    putValue(SMALL_ICON, ImageLoader.KARAOKE);
+                    putValue(SMALL_ICON, ImageLoader.getImage(ImageLoader.KARAOKE));
                 } else {
-                    putValue(SMALL_ICON, ImageLoader.WARNING);
+                    putValue(SMALL_ICON, ImageLoader.getImage(ImageLoader.WARNING));
                 }
                 showWarning = !showWarning;
             }
@@ -70,7 +70,7 @@ public class KaraokeModeAction extends Action {
         ApplicationState.getInstance().setKaraoke((Boolean) getValue(SELECTED_KEY));
         if (timer.isRunning()) {
             timer.stop();
-            putValue(SMALL_ICON, ImageLoader.KARAOKE);
+            putValue(SMALL_ICON, ImageLoader.getImage(ImageLoader.KARAOKE));
         } else {
             timer.start();
         }

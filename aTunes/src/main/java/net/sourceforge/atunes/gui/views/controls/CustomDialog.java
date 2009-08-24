@@ -43,7 +43,7 @@ public abstract class CustomDialog extends JDialog {
         super(owner);
         setSize(width, height);
         setLocationRelativeTo(owner);
-        setIconImage(ImageLoader.APP_ICON.getImage());
+        setIconImage(ImageLoader.getImage(ImageLoader.APP_ICON).getImage());
     }
 
     /**

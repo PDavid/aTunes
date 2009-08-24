@@ -87,7 +87,7 @@ public class RepositoryNavigationView extends NavigationView {
 
     @Override
     public ImageIcon getIcon() {
-        return ImageLoader.AUDIO_FILE_LITTLE;
+        return ImageLoader.getImage(ImageLoader.AUDIO_FILE_LITTLE);
     }
 
     @Override
@@ -621,28 +621,28 @@ public class RepositoryNavigationView extends NavigationView {
 
                 if (content instanceof Artist) {
                     if (!ApplicationState.getInstance().isShowFavoritesInNavigator() || !FavoritesHandler.getInstance().getFavoriteArtistsInfo().containsValue(content)) {
-                        label.setIcon(ImageLoader.ARTIST);
+                        label.setIcon(ImageLoader.getImage(ImageLoader.ARTIST));
                     } else {
-                        label.setIcon(ImageLoader.ARTIST_FAVORITE);
+                        label.setIcon(ImageLoader.getImage(ImageLoader.ARTIST_FAVORITE));
                     }
                 } else if (content instanceof Album) {
                     if (!ApplicationState.getInstance().isShowFavoritesInNavigator() || !FavoritesHandler.getInstance().getFavoriteAlbumsInfo().containsValue(content)) {
-                        label.setIcon(ImageLoader.ALBUM);
+                        label.setIcon(ImageLoader.getImage(ImageLoader.ALBUM));
                     } else {
-                        label.setIcon(ImageLoader.ALBUM_FAVORITE);
+                        label.setIcon(ImageLoader.getImage(ImageLoader.ALBUM_FAVORITE));
                     }
                 } else if (content instanceof Genre) {
-                    label.setIcon(ImageLoader.GENRE);
+                    label.setIcon(ImageLoader.getImage(ImageLoader.GENRE));
                 } else if (content instanceof Folder) {
-                    label.setIcon(ImageLoader.FOLDER);
+                    label.setIcon(ImageLoader.getImage(ImageLoader.FOLDER));
                     if (ApplicationState.getInstance().isHighlightIncompleteTagFolders() && HighlightFoldersByIncompleteTags.hasIncompleteTags((Folder) content)) {
                         label.setForeground(ColorDefinitions.GENERAL_UNKNOWN_ELEMENT_FOREGROUND_COLOR);
                     }
                 } else if (content instanceof String) {
                     if (((String) content).equals(LanguageTool.getString("REPOSITORY"))) {
-                        label.setIcon(ImageLoader.AUDIO_FILE_LITTLE);
+                        label.setIcon(ImageLoader.getImage(ImageLoader.AUDIO_FILE_LITTLE));
                     } else {
-                        label.setIcon(ImageLoader.FOLDER);
+                        label.setIcon(ImageLoader.getImage(ImageLoader.FOLDER));
                     }
                     label.setToolTipText(null);
                 }

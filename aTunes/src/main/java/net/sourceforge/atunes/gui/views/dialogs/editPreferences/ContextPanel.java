@@ -247,7 +247,7 @@ public class ContextPanel extends PreferencesPanel {
             }
         });
         clearCache = new JButton(LanguageTool.getString("CLEAR_CACHE"));
-        info = new JLabel(ImageLoader.POWERED_BY_LAST_FM, GuiUtils.getComponentOrientationAsSwingConstant());
+        info = new JLabel(ImageLoader.getImage(ImageLoader.POWERED_BY_LAST_FM), GuiUtils.getComponentOrientationAsSwingConstant());
         info.addMouseListener((new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -440,6 +440,6 @@ public class ContextPanel extends PreferencesPanel {
 
     @Override
     public ImageIcon getIcon() {
-        return ImageLoader.CONTEXT;
+        return ImageLoader.getImage(ImageLoader.CONTEXT);
     }
 }

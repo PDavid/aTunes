@@ -98,7 +98,7 @@ public class PatternInputDialog extends CustomModalDialog {
     public PatternInputDialog(Window owner, final boolean massiveRecognition) {
         super(owner, 550, 350, true);
         setResizable(false);
-        setIconImage(ImageLoader.APP_ICON.getImage());
+        setIconImage(ImageLoader.getImage(ImageLoader.APP_ICON).getImage());
         setTitle(LanguageTool.getString("PATTERN_INPUT"));
 
         // Label with instructions

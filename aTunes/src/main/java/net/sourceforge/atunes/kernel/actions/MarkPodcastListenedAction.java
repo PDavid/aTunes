@@ -38,7 +38,7 @@ public class MarkPodcastListenedAction extends Action {
     private static final long serialVersionUID = 2594418895817769179L;
 
     MarkPodcastListenedAction() {
-        super(LanguageTool.getString("MARK_PODCAST_AS_LISTENED"), ImageLoader.MARK_RSS_AS_READ);
+        super(LanguageTool.getString("MARK_PODCAST_AS_LISTENED"), ImageLoader.getImage(ImageLoader.MARK_RSS_AS_READ));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("MARK_PODCAST_AS_LISTENED"));
     }
 

@@ -34,7 +34,7 @@ public class RemoveOldPodcastEntryAction extends ActionOverSelectedObjects<Podca
     private static final long serialVersionUID = -1499729879534990802L;
 
     RemoveOldPodcastEntryAction() {
-        super(LanguageTool.getString("REMOVE_OLD_PODCAST_ENTRY"), ImageLoader.REMOVE, PodcastFeedEntry.class);
+        super(LanguageTool.getString("REMOVE_OLD_PODCAST_ENTRY"), ImageLoader.getImage(ImageLoader.REMOVE), PodcastFeedEntry.class);
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("REMOVE_OLD_PODCAST_ENTRY"));
     }
 

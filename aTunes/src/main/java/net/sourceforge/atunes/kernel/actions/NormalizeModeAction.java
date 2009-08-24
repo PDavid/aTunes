@@ -37,7 +37,7 @@ public class NormalizeModeAction extends Action {
     Timer timer;
 
     public NormalizeModeAction() {
-        super(LanguageTool.getString("NORMALIZE"), ImageLoader.NORMALIZATION);
+        super(LanguageTool.getString("NORMALIZE"), ImageLoader.getImage(ImageLoader.NORMALIZATION));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("NORMALIZE"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().isUseNormalisation());
 
@@ -67,7 +67,7 @@ public class NormalizeModeAction extends Action {
         PlayerHandler.getInstance().applyNormalization();
         if (timer.isRunning()) {
             timer.stop();
-            putValue(SMALL_ICON, ImageLoader.NORMALIZATION);
+            putValue(SMALL_ICON, ImageLoader.getImage(ImageLoader.NORMALIZATION));
         } else {
             timer.start();
         }

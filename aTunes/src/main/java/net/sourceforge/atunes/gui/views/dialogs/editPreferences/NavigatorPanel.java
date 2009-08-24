@@ -458,7 +458,7 @@ public class NavigatorPanel extends PreferencesPanel {
 
     @Override
     public ImageIcon getIcon() {
-        return ImageLoader.NAVIGATE;
+        return ImageLoader.getImage(ImageLoader.NAVIGATE);
     }
 
 }

@@ -54,7 +54,7 @@ public class AlbumColumn extends Column {
     public Object getValueFor(AudioObject audioObject) {
         // Return album
         return new JLabel(audioObject.getAlbum(), !FavoritesHandler.getInstance().getFavoriteAlbumsInfo().containsKey(audioObject.getAlbum()) ? null
-                : ImageLoader.ALBUM_FAVORITE, SwingConstants.LEFT);
+                : ImageLoader.getImage(ImageLoader.ALBUM_FAVORITE), SwingConstants.LEFT);
     }
 
 

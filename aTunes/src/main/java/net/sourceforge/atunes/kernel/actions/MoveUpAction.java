@@ -42,7 +42,7 @@ public class MoveUpAction extends Action {
     private static final long serialVersionUID = 8200322913128575526L;
 
     MoveUpAction() {
-        super(LanguageTool.getString("MOVE_UP"), ImageLoader.GO_UP);
+        super(LanguageTool.getString("MOVE_UP"), ImageLoader.getImage(ImageLoader.GO_UP));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("MOVE_UP_TOOLTIP"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_UP, ActionEvent.ALT_MASK));
         setEnabled(false);

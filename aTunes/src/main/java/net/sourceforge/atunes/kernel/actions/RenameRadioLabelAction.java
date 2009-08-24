@@ -39,7 +39,7 @@ public class RenameRadioLabelAction extends Action {
     private static final long serialVersionUID = -606790181321223318L;
 
     RenameRadioLabelAction() {
-        super(LanguageTool.getString("RENAME_LABEL"), ImageLoader.EDIT_ALBUM);
+        super(LanguageTool.getString("RENAME_LABEL"), ImageLoader.getImage(ImageLoader.EDIT_ALBUM));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("RENAME_LABEL"));
     }
 
@@ -49,7 +49,7 @@ public class RenameRadioLabelAction extends Action {
         Object o = ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
         if (o instanceof String) {
             String label = (String) o;
-            String result = VisualHandler.getInstance().showInputDialog(LanguageTool.getString("RENAME_LABEL"), label, ImageLoader.RADIO_LITTLE.getImage());
+            String result = VisualHandler.getInstance().showInputDialog(LanguageTool.getString("RENAME_LABEL"), label, ImageLoader.getImage(ImageLoader.RADIO_LITTLE).getImage());
             if (result != null) {
                 List<Radio> radios = RadioHandler.getInstance().getRadios(label);
                 RadioHandler.getInstance().setLabel(radios, result);
@@ -57,7 +57,7 @@ public class RenameRadioLabelAction extends Action {
             }
         } else if (o instanceof Radio) {
             Radio radio = (Radio) o;
-            String result = VisualHandler.getInstance().showInputDialog(LanguageTool.getString("RENAME_LABEL"), radio.getLabel(), ImageLoader.RADIO_LITTLE.getImage());
+            String result = VisualHandler.getInstance().showInputDialog(LanguageTool.getString("RENAME_LABEL"), radio.getLabel(), ImageLoader.getImage(ImageLoader.RADIO_LITTLE).getImage());
             if (result != null) {
                 radio.setLabel(result);
                 NavigationHandler.getInstance().refreshView(RadioNavigationView.class);

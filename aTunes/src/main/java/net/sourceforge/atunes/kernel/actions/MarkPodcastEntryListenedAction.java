@@ -33,7 +33,7 @@ public class MarkPodcastEntryListenedAction extends ActionOverSelectedObjects<Po
     private static final long serialVersionUID = 1563803489549692850L;
 
     MarkPodcastEntryListenedAction() {
-        super(LanguageTool.getString("MARK_PODCAST_ENTRY_AS_LISTENED"), ImageLoader.MARK_RSS_AS_READ, PodcastFeedEntry.class);
+        super(LanguageTool.getString("MARK_PODCAST_ENTRY_AS_LISTENED"), ImageLoader.getImage(ImageLoader.MARK_RSS_AS_READ), PodcastFeedEntry.class);
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("MARK_PODCAST_ENTRY_AS_LISTENED"));
     }
 

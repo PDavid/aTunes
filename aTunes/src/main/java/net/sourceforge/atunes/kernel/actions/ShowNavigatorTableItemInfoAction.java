@@ -42,7 +42,7 @@ public class ShowNavigatorTableItemInfoAction extends Action {
     private static final long serialVersionUID = -2006569851431046347L;
 
     ShowNavigatorTableItemInfoAction() {
-        super(LanguageTool.getString("INFO"), ImageLoader.INFO);
+        super(LanguageTool.getString("INFO"), ImageLoader.getImage(ImageLoader.INFO));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("INFO_BUTTON_TOOLTIP"));
         setEnabled(false);
     }

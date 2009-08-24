@@ -144,7 +144,7 @@ public class AddRadioDialog extends CustomModalDialog {
         c.gridheight = 2;
         c.fill = GridBagConstraints.NONE;
         c.weightx = -1;
-        panel.add(new JLabel(ImageLoader.RADIO), c);
+        panel.add(new JLabel(ImageLoader.getImage(ImageLoader.RADIO)), c);
 
         JPanel auxPanel = new JPanel();
         auxPanel.add(okButton);

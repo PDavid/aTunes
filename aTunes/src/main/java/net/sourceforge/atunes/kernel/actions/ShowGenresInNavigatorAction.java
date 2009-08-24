@@ -33,7 +33,7 @@ public class ShowGenresInNavigatorAction extends Action {
     private static final long serialVersionUID = 8717980405436543347L;
 
     ShowGenresInNavigatorAction() {
-        super(LanguageTool.getString("SHOW_GENRE"), ImageLoader.GENRE);
+        super(LanguageTool.getString("SHOW_GENRE"), ImageLoader.getImage(ImageLoader.GENRE));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("SHOW_GENRE"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().getViewMode() == ViewMode.GENRE);
     }

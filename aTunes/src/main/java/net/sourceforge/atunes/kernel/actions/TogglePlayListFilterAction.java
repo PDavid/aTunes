@@ -42,7 +42,7 @@ public class TogglePlayListFilterAction extends Action {
     private static final long serialVersionUID = -5448844077734097830L;
 
     TogglePlayListFilterAction() {
-        super(LanguageTool.getString("FILTER"), ImageLoader.SEARCH);
+        super(LanguageTool.getString("FILTER"), ImageLoader.getImage(ImageLoader.SEARCH));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("FILTER"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK));
     }

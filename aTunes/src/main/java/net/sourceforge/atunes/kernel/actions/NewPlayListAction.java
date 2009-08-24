@@ -39,7 +39,7 @@ public class NewPlayListAction extends Action {
     private static final long serialVersionUID = 3866441529401824151L;
 
     public NewPlayListAction() {
-        super(LanguageTool.getString("NEW_PLAYLIST"), ImageLoader.NEW_PLAYLIST);
+        super(LanguageTool.getString("NEW_PLAYLIST"), ImageLoader.getImage(ImageLoader.NEW_PLAYLIST));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("NEW_PLAYLIST"));
     }
 

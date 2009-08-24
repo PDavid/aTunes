@@ -230,7 +230,7 @@ public class FullScreenWindow extends CustomWindow {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     controlsPanel.setVisible(false);
-                    setCursor(Toolkit.getDefaultToolkit().createCustomCursor(ImageLoader.EMPTY.getImage(), new Point(0, 0), "invisibleCursor"));
+                    setCursor(Toolkit.getDefaultToolkit().createCustomCursor(ImageLoader.getImage(ImageLoader.EMPTY).getImage(), new Point(0, 0), "invisibleCursor"));
                     if (options.isVisible()) {
                         options.setVisible(false);
                     }

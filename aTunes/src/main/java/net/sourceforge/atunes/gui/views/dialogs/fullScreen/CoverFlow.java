@@ -116,9 +116,9 @@ public class CoverFlow extends JPanel {
            @Override
            protected Image doInBackground() throws Exception {
                if (audioObject instanceof Radio) {
-                   return ImageLoader.RADIO_BIG.getImage();
+                   return ImageLoader.getImage(ImageLoader.RADIO_BIG).getImage();
                } else if (audioObject instanceof PodcastFeedEntry) {
-                   return ImageLoader.RSS_BIG.getImage();
+                   return ImageLoader.getImage(ImageLoader.RSS_BIG).getImage();
                }
                if (cachedImages.containsKey(audioObject)) {
                    return cachedImages.get(audioObject);
@@ -157,7 +157,7 @@ public class CoverFlow extends JPanel {
            }
        }
        if (result == null) {
-           result = ImageLoader.NO_COVER.getImage();
+           result = ImageLoader.getImage(ImageLoader.NO_COVER).getImage();
        }
        return result;
    }
@@ -169,7 +169,7 @@ public class CoverFlow extends JPanel {
        }
        
        if (object == null) {
-           cover.setImage(ImageUtils.scaleImageBicubic(ImageLoader.NO_COVER.getImage(), getImageSize(covers.indexOf(cover)), getImageSize(covers.indexOf(cover))));
+           cover.setImage(ImageUtils.scaleImageBicubic(ImageLoader.getImage(ImageLoader.NO_COVER).getImage(), getImageSize(covers.indexOf(cover)), getImageSize(covers.indexOf(cover))));
        } else {
            int size = getImageSize(covers.indexOf(cover));
            ImageIcon imageScaled = ImageUtils.scaleImageBicubic(image, size, size);

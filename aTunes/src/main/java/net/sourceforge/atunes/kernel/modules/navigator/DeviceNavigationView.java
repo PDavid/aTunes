@@ -84,7 +84,7 @@ public class DeviceNavigationView extends NavigationView {
 
     @Override
     public ImageIcon getIcon() {
-        return ImageLoader.DEVICE;
+        return ImageLoader.getImage(ImageLoader.DEVICE);
     }
 
     @Override
@@ -545,15 +545,15 @@ public class DeviceNavigationView extends NavigationView {
 
                 JLabel label = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
                 if (content instanceof Artist) {
-                    label.setIcon(ImageLoader.ARTIST);
+                    label.setIcon(ImageLoader.getImage(ImageLoader.ARTIST));
                 } else if (content instanceof Album) {
-                    label.setIcon(ImageLoader.ALBUM);
+                    label.setIcon(ImageLoader.getImage(ImageLoader.ALBUM));
                 } else if (content instanceof Genre) {
-                    label.setIcon(ImageLoader.GENRE);
+                    label.setIcon(ImageLoader.getImage(ImageLoader.GENRE));
                 } else if (content instanceof Folder) {
-                    label.setIcon(ImageLoader.FOLDER);
+                    label.setIcon(ImageLoader.getImage(ImageLoader.FOLDER));
                 } else {
-                    label.setIcon(ImageLoader.DEVICE);
+                    label.setIcon(ImageLoader.getImage(ImageLoader.DEVICE));
                 }
 
                 if (value.toString() != null) {

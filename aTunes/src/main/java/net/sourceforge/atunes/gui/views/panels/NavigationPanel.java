@@ -39,8 +39,8 @@ import javax.swing.SwingConstants;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.gui.views.controls.NavigationTable;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.NavigationView;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.TimeUtils;
@@ -125,16 +125,16 @@ public class NavigationPanel extends JPanel {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component comp = super.getTableCellRendererComponent(table, "", isSelected, hasFocus, row, column);
-                ImageIcon icon = ImageLoader.EMPTY;
+                ImageIcon icon = ImageLoader.getImage(ImageLoader.EMPTY);
                 Property val = (Property) value;
                 if (val == Property.FAVORITE) {
-                    icon = ImageLoader.FAVORITE;
+                    icon = ImageLoader.getImage(ImageLoader.FAVORITE);
                 } else if (val == Property.NOT_LISTENED_ENTRY) {
-                    icon = ImageLoader.NEW_PODCAST_ENTRY;
+                    icon = ImageLoader.getImage(ImageLoader.NEW_PODCAST_ENTRY);
                 } else if (val == Property.DOWNLOADED_ENTRY) {
-                    icon = ImageLoader.DOWNLOAD_PODCAST;
+                    icon = ImageLoader.getImage(ImageLoader.DOWNLOAD_PODCAST);
                 } else if (val == Property.OLD_ENTRY) {
-                    icon = ImageLoader.REMOVE;
+                    icon = ImageLoader.getImage(ImageLoader.REMOVE);
                 }
                 ((JLabel) comp).setIcon(icon);
                 return comp;

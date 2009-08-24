@@ -51,7 +51,7 @@ public class RemoveFromDiskAction extends Action {
     private static final long serialVersionUID = -6958409532399604195L;
 
     public RemoveFromDiskAction() {
-        super(LanguageTool.getString("REMOVE_FROM_DISK"), ImageLoader.DELETE_FILE);
+        super(LanguageTool.getString("REMOVE_FROM_DISK"), ImageLoader.getImage(ImageLoader.DELETE_FILE));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("REMOVE_FROM_DISK"));
     }
 

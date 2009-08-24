@@ -37,7 +37,7 @@ public class RepeatModeAction extends Action {
     private static final long serialVersionUID = 2032609750151412458L;
 
     RepeatModeAction() {
-        super(LanguageTool.getString("REPEAT"), ImageLoader.REPEAT);
+        super(LanguageTool.getString("REPEAT"), ImageLoader.getImage(ImageLoader.REPEAT));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("REPEAT"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().isRepeat());
     }

@@ -36,7 +36,7 @@ public class SortNavigatorByTitleAction extends Action {
     private static final long serialVersionUID = -839238449400105763L;
 
     SortNavigatorByTitleAction() {
-        super(LanguageTool.getString("SORT_BY_TITLE"), ImageLoader.TITLE);
+        super(LanguageTool.getString("SORT_BY_TITLE"), ImageLoader.getImage(ImageLoader.TITLE));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("SORT_BY_TITLE"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().getSortType() == SortType.BY_TITLE);
     }

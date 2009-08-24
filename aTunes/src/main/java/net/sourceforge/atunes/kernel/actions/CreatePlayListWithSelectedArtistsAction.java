@@ -45,7 +45,7 @@ public class CreatePlayListWithSelectedArtistsAction extends ActionOverSelectedO
     private static final long serialVersionUID = 242525309967706255L;
 
     CreatePlayListWithSelectedArtistsAction() {
-        super(LanguageTool.getString("SET_ARTIST_AS_PLAYLIST"), ImageLoader.ARTIST, AudioObject.class);
+        super(LanguageTool.getString("SET_ARTIST_AS_PLAYLIST"), ImageLoader.getImage(ImageLoader.ARTIST), AudioObject.class);
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("ARTIST_BUTTON_TOOLTIP"));
         setEnabled(false);
     }

@@ -168,7 +168,7 @@ public class PodcastFeedPanel extends PreferencesPanel {
 
     @Override
     public ImageIcon getIcon() {
-        return ImageLoader.RSS_LITTLE;
+        return ImageLoader.getImage(ImageLoader.RSS_LITTLE);
     }
 
 }

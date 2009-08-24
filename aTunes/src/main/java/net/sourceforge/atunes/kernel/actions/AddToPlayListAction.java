@@ -34,7 +34,7 @@ public class AddToPlayListAction extends ActionOverSelectedObjects<AudioObject> 
     private static final long serialVersionUID = 1625697867534974341L;
 
     AddToPlayListAction() {
-        super(LanguageTool.getString("ADD_TO_PLAYLIST"), ImageLoader.ADD, AudioObject.class);
+        super(LanguageTool.getString("ADD_TO_PLAYLIST"), ImageLoader.getImage(ImageLoader.ADD), AudioObject.class);
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("ADD_TO_PLAYLIST"));
     }
 

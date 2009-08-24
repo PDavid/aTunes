@@ -28,8 +28,8 @@ import javax.swing.JFrame;
 
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.menus.ApplicationMenuBar;
-import net.sourceforge.atunes.gui.views.panels.ContextPanel;
 import net.sourceforge.atunes.gui.views.panels.AudioObjectPropertiesPanel;
+import net.sourceforge.atunes.gui.views.panels.ContextPanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;

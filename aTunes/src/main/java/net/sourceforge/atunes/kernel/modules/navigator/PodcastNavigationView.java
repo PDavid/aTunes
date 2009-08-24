@@ -73,7 +73,7 @@ public class PodcastNavigationView extends NavigationView {
 
     @Override
     public ImageIcon getIcon() {
-        return ImageLoader.RSS_LITTLE;
+        return ImageLoader.getImage(ImageLoader.RSS_LITTLE);
     }
 
     @Override
@@ -319,7 +319,7 @@ public class PodcastNavigationView extends NavigationView {
             @Override
             public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
                 JLabel icon = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-                icon.setIcon(ImageLoader.RSS_LITTLE);
+                icon.setIcon(ImageLoader.getImage(ImageLoader.RSS_LITTLE));
                 return icon;
             }
         };

@@ -93,7 +93,7 @@ public class ProgressDialog extends CustomFrame {
         progressBar = new JProgressBar();
         progressBar.setBorder(BorderFactory.createEmptyBorder());
         progressBar.setStringPainted(true);
-        imagelabel = new JLabel(ImageLoader.APP_ICON_BIG);
+        imagelabel = new JLabel(ImageLoader.getImage(ImageLoader.APP_ICON_BIG));
         infoLabel = new JLabel();
         currentLabel = new JLabel();
         separatorLabel = new JLabel(" / ");

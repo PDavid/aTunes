@@ -174,7 +174,7 @@ public class RepositoryProgressDialog extends CustomModalDialog {
      */
     private JPanel getContent() {
         JPanel panel = new JPanel(new GridBagLayout());
-        pictureLabel = new JLabel(ImageLoader.APP_ICON_BIG);
+        pictureLabel = new JLabel(ImageLoader.getImage(ImageLoader.APP_ICON_BIG));
         label = new JLabel(StringUtils.getString(LanguageTool.getString("LOADING"), "..."));
         Font f = label.getFont().deriveFont(Font.PLAIN);
         label.setFont(f);

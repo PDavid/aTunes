@@ -106,7 +106,7 @@ public class SearchDialog extends CustomModalDialog {
      */
     private void setContent() {
         JPanel panel = new JPanel(new GridBagLayout());
-        JLabel icon = new JLabel(ImageLoader.NETWORK);
+        JLabel icon = new JLabel(ImageLoader.getImage(ImageLoader.NETWORK));
         JLabel text = new JLabel(StringUtils.getString(LanguageTool.getString("SEARCH_AT"), "..."));
         text.setFont(text.getFont().deriveFont(Font.PLAIN));
         final JList list = new JList(SearchFactory.getSearches().toArray());

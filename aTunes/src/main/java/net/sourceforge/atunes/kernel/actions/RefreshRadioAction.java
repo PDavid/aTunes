@@ -34,7 +34,7 @@ public class RefreshRadioAction extends Action {
     private static final long serialVersionUID = 2614238225399634969L;
 
     RefreshRadioAction() {
-        super(LanguageTool.getString("REFRESH"), ImageLoader.REFRESH);
+        super(LanguageTool.getString("REFRESH"), ImageLoader.getImage(ImageLoader.REFRESH));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("REFRESH"));
     }
 

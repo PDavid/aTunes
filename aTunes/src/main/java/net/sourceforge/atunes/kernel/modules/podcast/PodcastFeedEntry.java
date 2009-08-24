@@ -530,13 +530,13 @@ public class PodcastFeedEntry implements AudioObject, Serializable, Comparable<P
     public ImageIcon getGenericImage(GenericImageSize imageSize) {
         switch (imageSize) {
         case SMALL: {
-            return ImageLoader.RSS_LITTLE;
+            return ImageLoader.getImage(ImageLoader.RSS_LITTLE);
         }
         case MEDIUM: {
-            return ImageLoader.RSS;
+            return ImageLoader.getImage(ImageLoader.RSS);
         }
         case BIG: {
-            return ImageLoader.RSS_BIG;
+            return ImageLoader.getImage(ImageLoader.RSS_BIG);
         }
         default: {
             throw new IllegalArgumentException("unknown image size");

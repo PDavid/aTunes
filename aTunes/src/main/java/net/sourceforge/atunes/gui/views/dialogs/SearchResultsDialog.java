@@ -124,9 +124,9 @@ public class SearchResultsDialog extends CustomDialog {
      */
     private JPanel getButtonsPanel() {
         JPanel buttonsPanel = new JPanel(new GridBagLayout());
-        showElementInfo = new JButton(LanguageTool.getString("INFO"), ImageLoader.INFO);
-        addToCurrentPlayList = new JButton(LanguageTool.getString("ADD_TO_PLAYLIST"), ImageLoader.ADD);
-        addToNewPlayList = new JButton(LanguageTool.getString("ADD_TO_NEW_PLAYLIST"), ImageLoader.ADD);
+        showElementInfo = new JButton(LanguageTool.getString("INFO"), ImageLoader.getImage(ImageLoader.INFO));
+        addToCurrentPlayList = new JButton(LanguageTool.getString("ADD_TO_PLAYLIST"), ImageLoader.getImage(ImageLoader.ADD));
+        addToNewPlayList = new JButton(LanguageTool.getString("ADD_TO_NEW_PLAYLIST"), ImageLoader.getImage(ImageLoader.ADD));
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;

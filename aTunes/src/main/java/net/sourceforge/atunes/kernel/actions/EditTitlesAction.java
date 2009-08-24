@@ -37,7 +37,7 @@ public class EditTitlesAction extends Action {
     private static final long serialVersionUID = -2883223880879440970L;
 
     EditTitlesAction() {
-        super(LanguageTool.getString("EDIT_TITLES"), ImageLoader.EDIT_ALBUM);
+        super(LanguageTool.getString("EDIT_TITLES"), ImageLoader.getImage(ImageLoader.EDIT_ALBUM));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("EDIT_TITLES"));
     }
 

@@ -171,7 +171,7 @@ public class LastFmPanel extends PreferencesPanel {
 
     @Override
     public ImageIcon getIcon() {
-        return ImageLoader.LASTFM;
+        return ImageLoader.getImage(ImageLoader.LASTFM);
     }
 
 }

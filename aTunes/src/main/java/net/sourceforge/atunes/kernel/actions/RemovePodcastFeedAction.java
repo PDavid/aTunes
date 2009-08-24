@@ -37,7 +37,7 @@ public class RemovePodcastFeedAction extends ActionOverSelectedObjects<PodcastFe
     private static final long serialVersionUID = -7470658878101801512L;
 
     RemovePodcastFeedAction() {
-        super(LanguageTool.getString("REMOVE_PODCAST_FEED"), ImageLoader.DELETE_FILE, PodcastFeedEntry.class);
+        super(LanguageTool.getString("REMOVE_PODCAST_FEED"), ImageLoader.getImage(ImageLoader.DELETE_FILE), PodcastFeedEntry.class);
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("REMOVE_PODCAST_FEED"));
     }
 

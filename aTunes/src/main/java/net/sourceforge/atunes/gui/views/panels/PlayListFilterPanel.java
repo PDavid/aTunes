@@ -62,7 +62,7 @@ public class PlayListFilterPanel extends JPanel {
         filterLabel = new JLabel(LanguageTool.getString("FILTER"));
         filterTextField = new JTextField();
         filterTextField.setToolTipText(LanguageTool.getString("FILTER_TEXTFIELD_TOOLTIP"));
-        clearFilterButton = new JLabel(ImageLoader.UNDO);
+        clearFilterButton = new JLabel(ImageLoader.getImage(ImageLoader.UNDO));
         clearFilterButton.setToolTipText(LanguageTool.getString("CLEAR_FILTER_BUTTON_TOOLTIP"));
 
         GridBagConstraints c = new GridBagConstraints();

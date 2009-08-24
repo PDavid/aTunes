@@ -40,7 +40,7 @@ public class RefreshRepositoryAction extends Action {
     private static final long serialVersionUID = -5708270585764283210L;
 
     RefreshRepositoryAction() {
-        super(LanguageTool.getString("REFRESH_REPOSITORY"), ImageLoader.REFRESH);
+        super(LanguageTool.getString("REFRESH_REPOSITORY"), ImageLoader.getImage(ImageLoader.REFRESH));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("REFRESH_REPOSITORY"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
     }

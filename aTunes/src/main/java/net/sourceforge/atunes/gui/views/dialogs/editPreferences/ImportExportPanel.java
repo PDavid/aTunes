@@ -307,7 +307,7 @@ public class ImportExportPanel extends PreferencesPanel {
 
     @Override
     public ImageIcon getIcon() {
-        return ImageLoader.EXPORT;
+        return ImageLoader.getImage(ImageLoader.EXPORT);
     }
 
 }

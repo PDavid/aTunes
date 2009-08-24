@@ -51,7 +51,7 @@ public class NextButton extends JButton {
      * @param size
      */
     public NextButton(Dimension size) {
-        super(ImageLoader.NEXT);
+        super(ImageLoader.getImage(ImageLoader.NEXT));
         // Force size
         setPreferredSize(size);
         setMinimumSize(size);

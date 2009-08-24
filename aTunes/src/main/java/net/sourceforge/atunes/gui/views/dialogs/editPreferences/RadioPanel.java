@@ -106,7 +106,7 @@ public class RadioPanel extends PreferencesPanel {
 
     @Override
     public ImageIcon getIcon() {
-        return ImageLoader.RADIO_LITTLE;
+        return ImageLoader.getImage(ImageLoader.RADIO_LITTLE);
     }
 
 }

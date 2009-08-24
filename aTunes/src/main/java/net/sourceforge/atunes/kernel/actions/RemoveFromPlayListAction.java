@@ -42,7 +42,7 @@ public class RemoveFromPlayListAction extends Action {
     private static final long serialVersionUID = 7249538257655420803L;
 
     RemoveFromPlayListAction() {
-        super(LanguageTool.getString("REMOVE"), ImageLoader.REMOVE);
+        super(LanguageTool.getString("REMOVE"), ImageLoader.getImage(ImageLoader.REMOVE));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("REMOVE_TOOLTIP"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
         setEnabled(false);

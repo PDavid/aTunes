@@ -46,7 +46,7 @@ public class EditTagAction extends ActionOverSelectedObjects<AudioFile> {
     public static final String NAVIGATOR = "NAVIGATOR";
 
     EditTagAction() {
-        super(LanguageTool.getString("EDIT_TAG"), ImageLoader.TAG, AudioFile.class);
+        super(LanguageTool.getString("EDIT_TAG"), ImageLoader.getImage(ImageLoader.TAG), AudioFile.class);
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("EDIT_TAG"));
     }
 

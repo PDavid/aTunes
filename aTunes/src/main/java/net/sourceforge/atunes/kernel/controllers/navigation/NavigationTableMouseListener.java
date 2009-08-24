@@ -26,8 +26,8 @@ import java.util.List;
 
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
 import net.sourceforge.atunes.gui.views.panels.NavigationPanel;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.NavigationView;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.model.AudioObject;
 

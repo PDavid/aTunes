@@ -48,7 +48,7 @@ public class ArtistColumn extends Column {
     public Object getValueFor(AudioObject audioObject) {
         // Return artist
         return new JLabel(audioObject.getArtist(), !FavoritesHandler.getInstance().getFavoriteArtistsInfo().containsKey(audioObject.getArtist()) ? null
-                : ImageLoader.ARTIST_FAVORITE, SwingConstants.LEFT);
+                : ImageLoader.getImage(ImageLoader.ARTIST_FAVORITE), SwingConstants.LEFT);
     }
 
 }

@@ -60,17 +60,17 @@ public class MuteAction extends Action {
      */
     public void updateIcon() {
         if (ApplicationState.getInstance().isMuteEnabled()) {
-            putValue(SMALL_ICON, ImageLoader.VOLUME_MUTE);
+            putValue(SMALL_ICON, ImageLoader.getImage(ImageLoader.VOLUME_MUTE));
         } else {
             int volume = ApplicationState.getInstance().getVolume();
             if (volume > 80) {
-                putValue(SMALL_ICON, ImageLoader.VOlUME_MAX);
+                putValue(SMALL_ICON, ImageLoader.getImage(ImageLoader.VOlUME_MAX));
             } else if (volume > 40) {
-                putValue(SMALL_ICON, ImageLoader.VOLUME_MED);
+                putValue(SMALL_ICON, ImageLoader.getImage(ImageLoader.VOLUME_MED));
             } else if (volume > 5) {
-                putValue(SMALL_ICON, ImageLoader.VOLUME_MIN);
+                putValue(SMALL_ICON, ImageLoader.getImage(ImageLoader.VOLUME_MIN));
             } else {
-                putValue(SMALL_ICON, ImageLoader.VOLUME_ZERO);
+                putValue(SMALL_ICON, ImageLoader.getImage(ImageLoader.VOLUME_ZERO));
             }
         }
     }

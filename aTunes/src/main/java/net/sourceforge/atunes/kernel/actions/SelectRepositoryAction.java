@@ -37,7 +37,7 @@ public class SelectRepositoryAction extends Action {
     private static final long serialVersionUID = 6921256152199287639L;
 
     SelectRepositoryAction() {
-        super(LanguageTool.getString("SELECT_REPOSITORY"), ImageLoader.FOLDER);
+        super(LanguageTool.getString("SELECT_REPOSITORY"), ImageLoader.getImage(ImageLoader.FOLDER));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("SELECT_REPOSITORY"));
     }
 

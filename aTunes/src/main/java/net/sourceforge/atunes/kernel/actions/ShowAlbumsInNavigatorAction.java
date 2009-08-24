@@ -33,7 +33,7 @@ public class ShowAlbumsInNavigatorAction extends Action {
     private static final long serialVersionUID = -3691606154694473768L;
 
     public ShowAlbumsInNavigatorAction() {
-        super(LanguageTool.getString("SHOW_ALBUMS"), ImageLoader.ALBUM);
+        super(LanguageTool.getString("SHOW_ALBUMS"), ImageLoader.getImage(ImageLoader.ALBUM));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("SHOW_ALBUMS"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().getViewMode() == ViewMode.ALBUM);
     }

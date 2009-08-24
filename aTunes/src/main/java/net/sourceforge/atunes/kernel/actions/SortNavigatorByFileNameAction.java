@@ -36,7 +36,7 @@ public class SortNavigatorByFileNameAction extends Action {
     private static final long serialVersionUID = -8155000610794558158L;
 
     SortNavigatorByFileNameAction() {
-        super(LanguageTool.getString("SORT_BY_FILE_NAME"), ImageLoader.FILE_NAME);
+        super(LanguageTool.getString("SORT_BY_FILE_NAME"), ImageLoader.getImage(ImageLoader.FILE_NAME));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("SORT_BY_FILE_NAME"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().getSortType() == SortType.BY_FILE);
     }

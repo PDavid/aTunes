@@ -33,7 +33,7 @@ public class ShowArtistsInNavigatorAction extends Action {
     private static final long serialVersionUID = -6172848158352600345L;
 
     public ShowArtistsInNavigatorAction() {
-        super(LanguageTool.getString("SHOW_ARTISTS"), ImageLoader.ARTIST);
+        super(LanguageTool.getString("SHOW_ARTISTS"), ImageLoader.getImage(ImageLoader.ARTIST));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("SHOW_ARTISTS"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().getViewMode() == ViewMode.ARTIST);
     }

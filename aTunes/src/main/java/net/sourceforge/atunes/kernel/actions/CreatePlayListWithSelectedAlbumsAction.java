@@ -46,7 +46,7 @@ public class CreatePlayListWithSelectedAlbumsAction extends ActionOverSelectedOb
     private static final long serialVersionUID = -2917908051161952409L;
 
     CreatePlayListWithSelectedAlbumsAction() {
-        super(LanguageTool.getString("SET_ALBUM_AS_PLAYLIST"), ImageLoader.ALBUM, AudioObject.class);
+        super(LanguageTool.getString("SET_ALBUM_AS_PLAYLIST"), ImageLoader.getImage(ImageLoader.ALBUM), AudioObject.class);
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("ALBUM_BUTTON_TOOLTIP"));
         setEnabled(false);
     }

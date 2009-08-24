@@ -38,7 +38,7 @@ public class ShowStatusBarAction extends Action {
     private static final long serialVersionUID = 2303076465024539635L;
 
     ShowStatusBarAction() {
-        super(LanguageTool.getString("SHOW_STATUS_BAR"), ImageLoader.STATUS_BAR);
+        super(LanguageTool.getString("SHOW_STATUS_BAR"), ImageLoader.getImage(ImageLoader.STATUS_BAR));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("SHOW_STATUS_BAR"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().isShowStatusBar());
     }

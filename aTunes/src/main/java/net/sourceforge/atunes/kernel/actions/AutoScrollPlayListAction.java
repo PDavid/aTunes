@@ -37,7 +37,7 @@ public class AutoScrollPlayListAction extends Action {
     private static final long serialVersionUID = -9039622325405324974L;
 
     AutoScrollPlayListAction() {
-        super(null, ImageLoader.SCROLL_PLAYLIST);
+        super(null, ImageLoader.getImage(ImageLoader.SCROLL_PLAYLIST));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("SCROLL_PLAYLIST_TO_CURRENT_SONG"));
     }
 

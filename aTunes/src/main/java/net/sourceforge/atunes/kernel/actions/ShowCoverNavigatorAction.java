@@ -37,7 +37,7 @@ public class ShowCoverNavigatorAction extends Action {
     private static final long serialVersionUID = 4927892497869144235L;
 
     ShowCoverNavigatorAction() {
-        super(LanguageTool.getString("COVER_NAVIGATOR"), ImageLoader.CD_COVER);
+        super(LanguageTool.getString("COVER_NAVIGATOR"), ImageLoader.getImage(ImageLoader.CD_COVER));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("COVER_NAVIGATOR"));
     }
 

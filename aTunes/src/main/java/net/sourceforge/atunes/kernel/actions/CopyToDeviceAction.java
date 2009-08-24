@@ -39,7 +39,7 @@ public class CopyToDeviceAction extends ActionOverSelectedObjects<AudioObject> {
     private static final long serialVersionUID = -7689483210176624995L;
 
     CopyToDeviceAction() {
-        super(LanguageTool.getString("COPY_TO_DEVICE"), ImageLoader.DEVICE, AudioObject.class);
+        super(LanguageTool.getString("COPY_TO_DEVICE"), ImageLoader.getImage(ImageLoader.DEVICE), AudioObject.class);
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("COPY_TO_DEVICE"));
     }
 

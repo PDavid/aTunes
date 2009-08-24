@@ -132,7 +132,7 @@ public class LanguageSelectorDialog extends JDialog {
      */
     private static JFrame getFrame() {
         JFrame f = new JFrame();
-        f.setIconImage(ImageLoader.LANGUAGE.getImage());
+        f.setIconImage(ImageLoader.getImage(ImageLoader.LANGUAGE).getImage());
         return f;
     }
 

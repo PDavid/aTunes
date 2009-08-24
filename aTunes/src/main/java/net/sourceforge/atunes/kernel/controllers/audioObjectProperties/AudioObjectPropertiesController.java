@@ -239,7 +239,7 @@ public class AudioObjectPropertiesController extends PanelController<AudioObject
                     || FavoritesHandler.getInstance().getFavoriteArtistsInfo().containsKey(currentAudioObject.getArtist())
                     || FavoritesHandler.getInstance().getFavoriteAlbumsInfo().containsKey(currentAudioObject.getAlbum());
 
-            getPanelControlled().getTitleLabel().setIcon(favorite ? ImageLoader.FAVORITE : null);
+            getPanelControlled().getTitleLabel().setIcon(favorite ? ImageLoader.getImage(ImageLoader.FAVORITE) : null);
         }
     }
 

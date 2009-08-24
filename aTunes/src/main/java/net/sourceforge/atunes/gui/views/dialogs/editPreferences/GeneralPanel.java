@@ -328,7 +328,7 @@ public class GeneralPanel extends PreferencesPanel {
 
     @Override
     public ImageIcon getIcon() {
-        return ImageLoader.PREFS;
+        return ImageLoader.getImage(ImageLoader.PREFS);
     }
 
 }

@@ -42,7 +42,7 @@ public class ShufflePlayListAction extends Action {
     private static final long serialVersionUID = -6608120075596882123L;
 
     ShufflePlayListAction() {
-        super(LanguageTool.getString("SHUFFLE_PLAYLIST"), ImageLoader.SHUFFLE_PLAYLIST);
+        super(LanguageTool.getString("SHUFFLE_PLAYLIST"), ImageLoader.getImage(ImageLoader.SHUFFLE_PLAYLIST));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("SHUFFLE_PLAYLIST"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK));
         setEnabled(false);

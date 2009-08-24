@@ -83,7 +83,7 @@ public class RadioBrowserDialog extends CustomFrame {
         treeTable.setShowGrid(false);
         treeTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JPanel topPanel = new JPanel(new BorderLayout(10, 0));
-        radioIcon = new JLabel(ImageLoader.RADIO);
+        radioIcon = new JLabel(ImageLoader.getImage(ImageLoader.RADIO));
         browserInstructions = new JLabel(LanguageTool.getString("RADIO_BROWSER_INSTRUCTIONS"));
         closeButton = new JButton(LanguageTool.getString("CLOSE"));
         closeButton.addActionListener(new ActionListener() {

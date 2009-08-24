@@ -35,7 +35,7 @@ public class RemoveRadioAction extends ActionOverSelectedObjects<Radio> {
     private static final long serialVersionUID = 8755385947718573969L;
 
     RemoveRadioAction() {
-        super(LanguageTool.getString("REMOVE_RADIO"), ImageLoader.DELETE_FILE, Radio.class);
+        super(LanguageTool.getString("REMOVE_RADIO"), ImageLoader.getImage(ImageLoader.DELETE_FILE), Radio.class);
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("REMOVE_RADIO"));
     }
 

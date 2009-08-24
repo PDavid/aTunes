@@ -38,7 +38,7 @@ public class CheckUpdatesAction extends Action {
     private static final long serialVersionUID = 999420226547524484L;
 
     CheckUpdatesAction() {
-        super(LanguageTool.getString("CHECK_FOR_UPDATES"), ImageLoader.CHECK_FOR_UPDATES);
+        super(LanguageTool.getString("CHECK_FOR_UPDATES"), ImageLoader.getImage(ImageLoader.CHECK_FOR_UPDATES));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("CHECK_FOR_UPDATES"));
     }
 

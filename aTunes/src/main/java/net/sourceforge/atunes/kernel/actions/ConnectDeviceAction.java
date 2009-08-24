@@ -37,7 +37,7 @@ public class ConnectDeviceAction extends Action {
     private static final long serialVersionUID = -8571631451521817410L;
 
     public ConnectDeviceAction() {
-        super(LanguageTool.getString("CONNECT"), ImageLoader.DEVICE_CONNECT);
+        super(LanguageTool.getString("CONNECT"), ImageLoader.getImage(ImageLoader.DEVICE_CONNECT));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("CONNECT"));
     }
 

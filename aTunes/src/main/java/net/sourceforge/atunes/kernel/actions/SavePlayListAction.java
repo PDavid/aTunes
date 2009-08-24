@@ -50,7 +50,7 @@ public class SavePlayListAction extends Action {
     private static final long serialVersionUID = -303252911138284095L;
 
     SavePlayListAction() {
-        super(StringUtils.getString(LanguageTool.getString("SAVE"), "..."), ImageLoader.SAVE);
+        super(StringUtils.getString(LanguageTool.getString("SAVE"), "..."), ImageLoader.getImage(ImageLoader.SAVE));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("SAVE_PLAYLIST_TOOLTIP"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
     }

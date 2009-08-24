@@ -43,7 +43,7 @@ public class ShowPlayListItemInfoAction extends Action {
     private static final long serialVersionUID = -2006569851431046347L;
 
     ShowPlayListItemInfoAction() {
-        super(LanguageTool.getString("INFO"), ImageLoader.INFO);
+        super(LanguageTool.getString("INFO"), ImageLoader.getImage(ImageLoader.INFO));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("INFO_BUTTON_TOOLTIP"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
         setEnabled(false);

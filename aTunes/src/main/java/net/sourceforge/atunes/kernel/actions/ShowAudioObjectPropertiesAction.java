@@ -38,7 +38,7 @@ public class ShowAudioObjectPropertiesAction extends Action {
     private static final long serialVersionUID = 7212419139147093739L;
 
     ShowAudioObjectPropertiesAction() {
-        super(LanguageTool.getString("SHOW_SONG_PROPERTIES"), ImageLoader.INFO);
+        super(LanguageTool.getString("SHOW_SONG_PROPERTIES"), ImageLoader.getImage(ImageLoader.INFO));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("SHOW_SONG_PROPERTIES"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().isShowAudioObjectProperties());
     }

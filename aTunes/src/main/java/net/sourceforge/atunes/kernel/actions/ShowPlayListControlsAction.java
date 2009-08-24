@@ -32,7 +32,7 @@ public class ShowPlayListControlsAction extends Action {
     private static final long serialVersionUID = 4338048323889228870L;
 
     ShowPlayListControlsAction() {
-        super(LanguageTool.getString("SHOW_PLAYLIST_CONTROLS"), ImageLoader.PLAY_LIST_CONTROLS);
+        super(LanguageTool.getString("SHOW_PLAYLIST_CONTROLS"), ImageLoader.getImage(ImageLoader.PLAY_LIST_CONTROLS));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("SHOW_PLAYLIST_CONTROLS"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().isShowPlaylistControls());
         ControllerProxy.getInstance().getPlayListController().getPlayListControlsPanel().setVisible((Boolean) getValue(SELECTED_KEY));

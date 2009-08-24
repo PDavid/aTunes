@@ -40,7 +40,7 @@ public class OpenFolderAction extends ActionOverSelectedObjects<AudioFile> {
     private static final long serialVersionUID = 1682289345922375850L;
 
     OpenFolderAction() {
-        super(LanguageTool.getString("OPEN_FOLDER"), ImageLoader.FOLDER_ORANGE, AudioFile.class);
+        super(LanguageTool.getString("OPEN_FOLDER"), ImageLoader.getImage(ImageLoader.FOLDER_ORANGE), AudioFile.class);
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("OPEN_FOLDER"));
     }
 

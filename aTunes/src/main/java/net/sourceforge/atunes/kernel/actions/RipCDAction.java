@@ -38,7 +38,7 @@ public class RipCDAction extends Action {
     private static final long serialVersionUID = -362457188090138933L;
 
     RipCDAction() {
-        super(StringUtils.getString(LanguageTool.getString("RIP_CD"), "..."), ImageLoader.CD_AUDIO_TINY);
+        super(StringUtils.getString(LanguageTool.getString("RIP_CD"), "..."), ImageLoader.getImage(ImageLoader.CD_AUDIO_TINY));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("RIP_CD"));
     }
 

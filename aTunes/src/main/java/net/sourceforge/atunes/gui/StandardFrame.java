@@ -47,8 +47,8 @@ import net.sourceforge.atunes.gui.views.controls.CustomFrame;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.dialogs.UpdateDialog;
 import net.sourceforge.atunes.gui.views.menus.ApplicationMenuBar;
-import net.sourceforge.atunes.gui.views.panels.ContextPanel;
 import net.sourceforge.atunes.gui.views.panels.AudioObjectPropertiesPanel;
+import net.sourceforge.atunes.gui.views.panels.ContextPanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
@@ -162,9 +162,9 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
         @Override
         public void actionPerformed(ActionEvent e) {
             if (b) {
-                getStatusBarNewVersionLabel().setIcon(ImageLoader.CHECK_FOR_UPDATES);
+                getStatusBarNewVersionLabel().setIcon(ImageLoader.getImage(ImageLoader.CHECK_FOR_UPDATES));
             } else {
-                getStatusBarNewVersionLabel().setIcon(ImageLoader.CHECK_FOR_UPDATES_BW);
+                getStatusBarNewVersionLabel().setIcon(ImageLoader.getImage(ImageLoader.CHECK_FOR_UPDATES_BW));
             }
             b = !b;
         }
@@ -537,14 +537,14 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
      */
     private JLabel getStatusBarDeviceLabel() {
         if (statusBarDeviceLabel == null) {
-            statusBarDeviceLabel = new JLabel(ImageLoader.DEVICE);
+            statusBarDeviceLabel = new JLabel(ImageLoader.getImage(ImageLoader.DEVICE));
         }
         return statusBarDeviceLabel;
     }
 
     private JLabel getStatusBarNewPodcastEntriesLabel() {
         if (statusBarNewPodcastEntriesLabel == null) {
-            statusBarNewPodcastEntriesLabel = new JLabel(ImageLoader.RSS_LITTLE);
+            statusBarNewPodcastEntriesLabel = new JLabel(ImageLoader.getImage(ImageLoader.RSS_LITTLE));
             statusBarNewPodcastEntriesLabel.setToolTipText(LanguageTool.getString("NEW_PODCAST_ENTRIES"));
             statusBarNewPodcastEntriesLabel.addMouseListener(new MouseAdapter() {
                 @Override
@@ -559,7 +559,7 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
 
     JLabel getStatusBarNewVersionLabel() {
         if (statusBarNewVersionLabel == null) {
-            statusBarNewVersionLabel = new JLabel(ImageLoader.CHECK_FOR_UPDATES);
+            statusBarNewVersionLabel = new JLabel(ImageLoader.getImage(ImageLoader.CHECK_FOR_UPDATES));
             statusBarNewVersionLabel.setToolTipText(LanguageTool.getString("NEW_VERSION_AVAILABLE"));
             statusBarNewVersionLabel.addMouseListener(new MouseAdapter() {
                 @Override

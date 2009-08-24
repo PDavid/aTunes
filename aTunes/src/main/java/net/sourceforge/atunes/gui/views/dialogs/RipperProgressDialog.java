@@ -124,7 +124,7 @@ public class RipperProgressDialog extends CustomFrame {
     private void setContent() {
         JPanel panel = new JPanel(new GridBagLayout());
 
-        cover = new JLabel(ImageLoader.CD_AUDIO);
+        cover = new JLabel(ImageLoader.getImage(ImageLoader.CD_AUDIO));
 
         JLabel totalProgressLabel = new JLabel(LanguageTool.getString("TOTAL_PROGRESS"));
         totalProgressBar = new JProgressBar();
