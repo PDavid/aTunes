@@ -45,7 +45,7 @@ public class RemoveFromFavoritesAction extends Action {
     private static final long serialVersionUID = -4288879781314486222L;
 
     public RemoveFromFavoritesAction() {
-        super(LanguageTool.getString("REMOVE_FROM_FAVORITES"), ImageLoader.DELETE_TAG);
+        super(LanguageTool.getString("REMOVE_FROM_FAVORITES"), ImageLoader.getImage(ImageLoader.DELETE_TAG));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("REMOVE_FROM_FAVORITES"));
     }
 

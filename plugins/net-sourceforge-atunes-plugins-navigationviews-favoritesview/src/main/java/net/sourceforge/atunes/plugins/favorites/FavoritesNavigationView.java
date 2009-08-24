@@ -65,7 +65,7 @@ public class FavoritesNavigationView extends NavigationView implements Plugin {
 
     @Override
     public ImageIcon getIcon() {
-        return ImageLoader.FAVORITE;
+        return ImageLoader.getImage(ImageLoader.FAVORITE);
     }
 
     @Override
@@ -386,19 +386,19 @@ public class FavoritesNavigationView extends NavigationView implements Plugin {
                 JLabel label = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
                 // Set custom icon for every type of node: artist, album, song...
                 if (content instanceof Artist) {
-                    label.setIcon(ImageLoader.ARTIST);
+                    label.setIcon(ImageLoader.getImage(ImageLoader.ARTIST));
                 } else if (content instanceof Album) {
-                    label.setIcon(ImageLoader.ALBUM);
+                    label.setIcon(ImageLoader.getImage(ImageLoader.ALBUM));
                 } else if (content instanceof String) {
                     String str = (String) content;
                     if (str.equals(LanguageTool.getString("ARTISTS"))) {
-                        label.setIcon(ImageLoader.ARTIST);
+                        label.setIcon(ImageLoader.getImage(ImageLoader.ARTIST));
                     } else if (str.equals(LanguageTool.getString("ALBUMS"))) {
-                        label.setIcon(ImageLoader.ALBUM);
+                        label.setIcon(ImageLoader.getImage(ImageLoader.ALBUM));
                     } else if (str.equals(LanguageTool.getString("SONGS"))) {
-                        label.setIcon(ImageLoader.AUDIO_FILE_LITTLE);
+                        label.setIcon(ImageLoader.getImage(ImageLoader.AUDIO_FILE_LITTLE));
                     } else {
-                        label.setIcon(ImageLoader.FAVORITE);
+                        label.setIcon(ImageLoader.getImage(ImageLoader.FAVORITE));
                     }
                 }
 
