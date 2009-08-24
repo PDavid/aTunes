@@ -403,7 +403,7 @@ public class PlayerPanel extends PreferencesPanel {
 
     @Override
     public ImageIcon getIcon() {
-        return ImageLoader.PLAY_TINY;
+        return ImageLoader.getImage(ImageLoader.PLAY_TINY);
     }
 
 }

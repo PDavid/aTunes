@@ -131,7 +131,7 @@ public class PlayListPrefPanel extends PreferencesPanel {
 
     @Override
     public ImageIcon getIcon() {
-        return ImageLoader.PLAYLIST;
+        return ImageLoader.getImage(ImageLoader.PLAYLIST);
     }
 
 }

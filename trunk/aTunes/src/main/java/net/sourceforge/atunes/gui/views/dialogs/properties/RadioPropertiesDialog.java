@@ -149,7 +149,7 @@ class RadioPropertiesDialog extends PropertiesDialog {
      * Fill picture.
      */
     private void fillPicture() {
-        ImageIcon picture = ImageLoader.RADIO;
+        ImageIcon picture = ImageLoader.getImage(ImageLoader.RADIO);
         pictureLabel.setPreferredSize(new Dimension(picture.getIconWidth(), picture.getIconHeight()));
         pictureLabel.setIcon(picture);
         pictureLabel.setVisible(true);

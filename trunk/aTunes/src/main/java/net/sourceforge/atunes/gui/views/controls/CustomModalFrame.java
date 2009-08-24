@@ -54,7 +54,7 @@ public abstract class CustomModalFrame extends JFrame {
         super();
         setSize(width, height);
         getRootPane().setWindowDecorationStyle(JRootPane.PLAIN_DIALOG);
-        setIconImage(ImageLoader.APP_ICON.getImage());
+        setIconImage(ImageLoader.getImage(ImageLoader.APP_ICON).getImage());
         setLocationRelativeTo(owner);
         this.owner = owner;
     }

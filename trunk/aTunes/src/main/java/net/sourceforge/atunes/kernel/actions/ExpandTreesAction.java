@@ -23,8 +23,8 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.NavigationView;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.LanguageTool;
 
@@ -33,7 +33,7 @@ public class ExpandTreesAction extends Action {
     private static final long serialVersionUID = -2632581565309673327L;
 
     ExpandTreesAction() {
-        super(LanguageTool.getString("EXPAND"), ImageLoader.EXPAND);
+        super(LanguageTool.getString("EXPAND"), ImageLoader.getImage(ImageLoader.EXPAND));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("EXPAND"));
     }
 

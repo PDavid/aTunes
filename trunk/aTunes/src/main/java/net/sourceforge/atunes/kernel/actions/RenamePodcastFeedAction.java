@@ -38,7 +38,7 @@ public class RenamePodcastFeedAction extends Action {
     private static final long serialVersionUID = 8334487960720117561L;
 
     RenamePodcastFeedAction() {
-        super(LanguageTool.getString("RENAME_PODCAST_FEED"), ImageLoader.EDIT_ALBUM);
+        super(LanguageTool.getString("RENAME_PODCAST_FEED"), ImageLoader.getImage(ImageLoader.EDIT_ALBUM));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("RENAME_PODCAST_FEED"));
     }
 
@@ -46,7 +46,7 @@ public class RenamePodcastFeedAction extends Action {
     public void actionPerformed(ActionEvent e) {
         TreePath path = NavigationHandler.getInstance().getView(PodcastNavigationView.class).getTree().getSelectionPath();
         PodcastFeed podcastFeed = (PodcastFeed) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
-        String result = VisualHandler.getInstance().showInputDialog(LanguageTool.getString("RENAME_PODCAST_FEED"), podcastFeed.getName(), ImageLoader.RSS_LITTLE.getImage());
+        String result = VisualHandler.getInstance().showInputDialog(LanguageTool.getString("RENAME_PODCAST_FEED"), podcastFeed.getName(), ImageLoader.getImage(ImageLoader.RSS_LITTLE).getImage());
         if (result != null) {
             podcastFeed.setName(result);
         }

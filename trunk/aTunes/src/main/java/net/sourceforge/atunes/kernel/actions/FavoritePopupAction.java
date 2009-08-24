@@ -40,7 +40,7 @@ public class FavoritePopupAction extends Action {
     private static final long serialVersionUID = -3225610033024437572L;
 
     FavoritePopupAction() {
-        super(null, ImageLoader.FAVORITE);
+        super(null, ImageLoader.getImage(ImageLoader.FAVORITE));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("FAVORITE_TOOLTIP"));
         setEnabled(false);
     }

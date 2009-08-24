@@ -64,22 +64,22 @@ public class ScoreColumn extends Column {
 
                 switch ((Integer) value) {
                 case 0:
-                    label.setIcon(ImageLoader.EMPTY);
+                    label.setIcon(ImageLoader.getImage(ImageLoader.EMPTY));
                     break;
                 case 1:
-                    label.setIcon(ImageLoader.ONE_STAR);
+                    label.setIcon(ImageLoader.getImage(ImageLoader.ONE_STAR));
                     break;
                 case 2:
-                    label.setIcon(ImageLoader.TWO_STAR);
+                    label.setIcon(ImageLoader.getImage(ImageLoader.TWO_STAR));
                     break;
                 case 3:
-                    label.setIcon(ImageLoader.THREE_STAR);
+                    label.setIcon(ImageLoader.getImage(ImageLoader.THREE_STAR));
                     break;
                 case 4:
-                    label.setIcon(ImageLoader.FOUR_STAR);
+                    label.setIcon(ImageLoader.getImage(ImageLoader.FOUR_STAR));
                     break;
                 case 5:
-                    label.setIcon(ImageLoader.FIVE_STAR);
+                    label.setIcon(ImageLoader.getImage(ImageLoader.FIVE_STAR));
                     break;
                 }
 
@@ -100,22 +100,22 @@ public class ScoreColumn extends Column {
                 JLabel label = (JLabel) super.getTableCellRendererComponent(arg0, "", arg2, arg3, arg4, arg5);
                 switch ((Integer) value) {
                 case 0:
-                    label.setIcon(ImageLoader.EMPTY);
+                    label.setIcon(ImageLoader.getImage(ImageLoader.EMPTY));
                     break;
                 case 1:
-                    label.setIcon(ImageLoader.ONE_STAR);
+                    label.setIcon(ImageLoader.getImage(ImageLoader.ONE_STAR));
                     break;
                 case 2:
-                    label.setIcon(ImageLoader.TWO_STAR);
+                    label.setIcon(ImageLoader.getImage(ImageLoader.TWO_STAR));
                     break;
                 case 3:
-                    label.setIcon(ImageLoader.THREE_STAR);
+                    label.setIcon(ImageLoader.getImage(ImageLoader.THREE_STAR));
                     break;
                 case 4:
-                    label.setIcon(ImageLoader.FOUR_STAR);
+                    label.setIcon(ImageLoader.getImage(ImageLoader.FOUR_STAR));
                     break;
                 case 5:
-                    label.setIcon(ImageLoader.FIVE_STAR);
+                    label.setIcon(ImageLoader.getImage(ImageLoader.FIVE_STAR));
                     break;
                 }
                 return label;

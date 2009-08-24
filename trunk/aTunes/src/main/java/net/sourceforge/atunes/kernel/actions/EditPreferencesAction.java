@@ -38,7 +38,7 @@ public class EditPreferencesAction extends Action {
     private static final long serialVersionUID = -6303396973997577995L;
 
     EditPreferencesAction() {
-        super(StringUtils.getString(LanguageTool.getString("PREFERENCES"), "..."), ImageLoader.PREFS);
+        super(StringUtils.getString(LanguageTool.getString("PREFERENCES"), "..."), ImageLoader.getImage(ImageLoader.PREFS));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("PREFERENCES"));
     }
 

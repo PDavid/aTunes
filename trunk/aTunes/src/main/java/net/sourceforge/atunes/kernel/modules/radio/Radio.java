@@ -472,13 +472,13 @@ public class Radio implements AudioObject, Serializable, TreeObject, Comparable<
     public ImageIcon getGenericImage(GenericImageSize imageSize) {
         switch (imageSize) {
         case SMALL: {
-            return ImageLoader.RADIO_LITTLE;
+            return ImageLoader.getImage(ImageLoader.RADIO_LITTLE);
         }
         case MEDIUM: {
-            return ImageLoader.RADIO;
+            return ImageLoader.getImage(ImageLoader.RADIO);
         }
         case BIG: {
-            return ImageLoader.RADIO_BIG;
+            return ImageLoader.getImage(ImageLoader.RADIO_BIG);
         }
         default: {
             throw new IllegalArgumentException("unknown image size");

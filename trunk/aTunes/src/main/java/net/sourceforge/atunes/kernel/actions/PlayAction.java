@@ -36,7 +36,7 @@ public class PlayAction extends Action {
     private static final long serialVersionUID = -1122746023245126869L;
 
     PlayAction() {
-        super(LanguageTool.getString("PLAY"), ImageLoader.PLAY_MENU);
+        super(LanguageTool.getString("PLAY"), ImageLoader.getImage(ImageLoader.PLAY_MENU));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("PLAY"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0));
     }

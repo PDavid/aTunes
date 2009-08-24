@@ -792,13 +792,13 @@ public class AudioFile implements AudioObject, Serializable, Comparable<AudioFil
     public ImageIcon getGenericImage(GenericImageSize imageSize) {
         switch (imageSize) {
         case SMALL: {
-            return ImageLoader.AUDIO_FILE_LITTLE;
+            return ImageLoader.getImage(ImageLoader.AUDIO_FILE_LITTLE);
         }
         case MEDIUM: {
-            return ImageLoader.AUDIO_FILE;
+            return ImageLoader.getImage(ImageLoader.AUDIO_FILE);
         }
         case BIG: {
-            return ImageLoader.AUDIO_FILE_BIG;
+            return ImageLoader.getImage(ImageLoader.AUDIO_FILE_BIG);
         }
         default: {
             throw new IllegalArgumentException("unknown image size");

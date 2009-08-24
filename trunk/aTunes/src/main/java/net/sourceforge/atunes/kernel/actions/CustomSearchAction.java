@@ -40,7 +40,7 @@ public class CustomSearchAction extends Action {
     private static final long serialVersionUID = 7036619806075628842L;
 
     CustomSearchAction() {
-        super(LanguageTool.getString("SEARCH"), ImageLoader.SEARCH);
+        super(LanguageTool.getString("SEARCH"), ImageLoader.getImage(ImageLoader.SEARCH));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("SEARCH"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.CTRL_MASK));
     }

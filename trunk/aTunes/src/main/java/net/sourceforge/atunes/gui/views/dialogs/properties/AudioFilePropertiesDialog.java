@@ -246,7 +246,7 @@ class AudioFilePropertiesDialog extends PropertiesDialog {
                     if (cover != null) {
                         pictureLabel.setIcon(cover);
                     } else {
-                        pictureLabel.setIcon(ImageLoader.NO_COVER_AUDIOFILE_PROPERTIES);
+                        pictureLabel.setIcon(ImageLoader.getImage(ImageLoader.NO_COVER_AUDIOFILE_PROPERTIES));
                     }
                     pictureLabel.setVisible(true);
                 } catch (InterruptedException e) {

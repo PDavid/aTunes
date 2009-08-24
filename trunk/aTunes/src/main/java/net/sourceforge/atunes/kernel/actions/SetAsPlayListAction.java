@@ -34,7 +34,7 @@ public class SetAsPlayListAction extends ActionOverSelectedObjects<AudioObject> 
     private static final long serialVersionUID = -8993769615827375740L;
 
     SetAsPlayListAction() {
-        super(LanguageTool.getString("SET_AS_PLAYLIST"), ImageLoader.PLAYLIST, AudioObject.class);
+        super(LanguageTool.getString("SET_AS_PLAYLIST"), ImageLoader.getImage(ImageLoader.PLAYLIST), AudioObject.class);
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("SET_AS_PLAYLIST"));
     }
 

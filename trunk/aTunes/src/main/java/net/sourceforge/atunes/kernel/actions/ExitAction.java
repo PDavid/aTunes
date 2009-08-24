@@ -38,7 +38,7 @@ public class ExitAction extends Action {
     private static final long serialVersionUID = 1900672708942690561L;
 
     ExitAction() {
-        super(LanguageTool.getString("EXIT"), ImageLoader.EXIT);
+        super(LanguageTool.getString("EXIT"), ImageLoader.getImage(ImageLoader.EXIT));
     }
 
     @Override

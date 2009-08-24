@@ -37,7 +37,7 @@ public class DisconnectDeviceAction extends Action {
     private static final long serialVersionUID = 1782027529649014492L;
 
     public DisconnectDeviceAction() {
-        super(LanguageTool.getString("DISCONNECT"), ImageLoader.DEVICE_DECONNECT);
+        super(LanguageTool.getString("DISCONNECT"), ImageLoader.getImage(ImageLoader.DEVICE_DECONNECT));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("DISCONNECT"));
         setEnabled(false);
     }

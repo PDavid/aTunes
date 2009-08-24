@@ -81,15 +81,15 @@ public class PlayListTable extends JTable implements DragSourceListener, DragGes
         public static ImageIcon getPlayStateIcon(PlayState state) {
             switch (state) {
             case PLAYING:
-                return ImageLoader.PLAY_TINY;
+                return ImageLoader.getImage(ImageLoader.PLAY_TINY);
             case STOPPED:
-                return ImageLoader.STOP_TINY;
+                return ImageLoader.getImage(ImageLoader.STOP_TINY);
             case PAUSED:
-                return ImageLoader.PAUSE_TINY;
+                return ImageLoader.getImage(ImageLoader.PAUSE_TINY);
             case NONE:
-                return ImageLoader.EMPTY;
+                return ImageLoader.getImage(ImageLoader.EMPTY);
             default:
-                return ImageLoader.EMPTY;
+                return ImageLoader.getImage(ImageLoader.EMPTY);
             }
         }
     }

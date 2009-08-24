@@ -37,7 +37,7 @@ public class ShowStatsAction extends Action {
     private static final long serialVersionUID = -7828653987968794083L;
 
     ShowStatsAction() {
-        super(LanguageTool.getString("STATS"), ImageLoader.STATS);
+        super(LanguageTool.getString("STATS"), ImageLoader.getImage(ImageLoader.STATS));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("STATS"));
     }
 

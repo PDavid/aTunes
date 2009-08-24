@@ -52,11 +52,11 @@ public class TypeColumn extends Column {
     @Override
     public Object getValueFor(AudioObject audioObject) {
         if (audioObject instanceof AudioFile) {
-            return ImageLoader.AUDIO_FILE_LITTLE;
+            return ImageLoader.getImage(ImageLoader.AUDIO_FILE_LITTLE);
         } else if (audioObject instanceof Radio) {
-            return ImageLoader.RADIO_LITTLE;
+            return ImageLoader.getImage(ImageLoader.RADIO_LITTLE);
         } else if (audioObject instanceof PodcastFeedEntry) {
-            return ImageLoader.RSS_LITTLE;
+            return ImageLoader.getImage(ImageLoader.RSS_LITTLE);
         } else {
             return null;
         }

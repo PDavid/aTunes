@@ -43,7 +43,7 @@ public class LoadPlayListAction extends Action {
     private static final long serialVersionUID = 3409230917351152853L;
 
     LoadPlayListAction() {
-        super(StringUtils.getString(LanguageTool.getString("LOAD"), "..."), ImageLoader.FOLDER);
+        super(StringUtils.getString(LanguageTool.getString("LOAD"), "..."), ImageLoader.getImage(ImageLoader.FOLDER));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("LOAD_PLAYLIST_TOOLTIP"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK));
     }

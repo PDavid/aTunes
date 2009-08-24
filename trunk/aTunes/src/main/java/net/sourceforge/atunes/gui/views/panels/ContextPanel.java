@@ -876,10 +876,10 @@ public class ContextPanel extends JPanel {
     public void showAllTabs(String tabTitle, Icon firstTabIcon, boolean enabled) {
         firstTabTitle = tabTitle;
         tabbedPane.addTab(null, firstTabIcon, audioObjectPanel);
-        tabbedPane.addTab(null, ImageLoader.ALBUM, albumTabPanel);
-        tabbedPane.addTab(null, ImageLoader.ARTIST, artistTabPanel);
-        tabbedPane.addTab(null, ImageLoader.ARTIST_SIMILAR, similarTabPanel);
-        tabbedPane.addTab(null, ImageLoader.YOUTUBE, youtubeTabPanel);
+        tabbedPane.addTab(null, ImageLoader.getImage(ImageLoader.ALBUM), albumTabPanel);
+        tabbedPane.addTab(null, ImageLoader.getImage(ImageLoader.ARTIST), artistTabPanel);
+        tabbedPane.addTab(null, ImageLoader.getImage(ImageLoader.ARTIST_SIMILAR), similarTabPanel);
+        tabbedPane.addTab(null, ImageLoader.getImage(ImageLoader.YOUTUBE), youtubeTabPanel);
         setContextTabsText(ApplicationState.getInstance().isShowContextTabsText());
         tabbedPane.setEnabledAt(0, enabled);
         tabbedPane.setEnabledAt(1, enabled);
@@ -894,7 +894,7 @@ public class ContextPanel extends JPanel {
      * @param enabled
      */
     public void showAllTabs(boolean enabled) {
-        showAllTabs(LanguageTool.getString("SONG"), ImageLoader.AUDIO_FILE_LITTLE, enabled);
+        showAllTabs(LanguageTool.getString("SONG"), ImageLoader.getImage(ImageLoader.AUDIO_FILE_LITTLE), enabled);
     }
 
     /**

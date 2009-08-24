@@ -74,11 +74,11 @@ public class ImageDialog extends CustomFrame {
         ImageIcon[] thumbs;
 
         if (audioObject instanceof Radio) {
-            images = new ImageIcon[] { ImageLoader.RADIO_BIG };
-            thumbs = new ImageIcon[] { ImageLoader.RADIO };
+            images = new ImageIcon[] { ImageLoader.getImage(ImageLoader.RADIO_BIG) };
+            thumbs = new ImageIcon[] { ImageLoader.getImage(ImageLoader.RADIO) };
         } else if (audioObject instanceof PodcastFeedEntry) {
-            images = new ImageIcon[] { ImageLoader.RSS_BIG };
-            thumbs = new ImageIcon[] { ImageLoader.RSS };
+            images = new ImageIcon[] { ImageLoader.getImage(ImageLoader.RSS_BIG) };
+            thumbs = new ImageIcon[] { ImageLoader.getImage(ImageLoader.RSS) };
         } else {
             images = AudioFilePictureUtils.getPicturesForFile((AudioFile) audioObject, -1, -1);
             thumbs = AudioFilePictureUtils.getPicturesForFile((AudioFile) audioObject, Constants.IMAGE_WIDTH, Constants.IMAGE_HEIGHT);

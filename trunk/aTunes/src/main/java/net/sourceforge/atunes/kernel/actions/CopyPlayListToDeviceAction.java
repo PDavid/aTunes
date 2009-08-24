@@ -39,7 +39,7 @@ public class CopyPlayListToDeviceAction extends Action {
     private static final long serialVersionUID = 5899793232403738425L;
 
     CopyPlayListToDeviceAction() {
-        super(LanguageTool.getString("COPY_PLAYLIST_TO_DEVICE"), ImageLoader.DEVICE);
+        super(LanguageTool.getString("COPY_PLAYLIST_TO_DEVICE"), ImageLoader.getImage(ImageLoader.DEVICE));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("COPY_PLAYLIST_TO_DEVICE"));
         setEnabled(false);
     }

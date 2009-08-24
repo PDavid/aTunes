@@ -283,7 +283,7 @@ public class ContextPanelController extends PanelController<ContextPanel> {
         if (cover != null) {
             album.setCover(ImageUtils.scaleImageBicubic(cover, Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT));
         } else {
-            album.setCover(ImageLoader.EMPTY_CONTEXT);
+            album.setCover(ImageLoader.getImage(ImageLoader.EMPTY_CONTEXT));
         }
         ((ContextAlbumsTableModel) getPanelControlled().getAlbumsTable().getModel()).addAlbum(album);
 
@@ -303,7 +303,7 @@ public class ContextPanelController extends PanelController<ContextPanel> {
         if (img != null) {
             artist.setImage(ImageUtils.scaleImageBicubic(img, Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT));
         } else {
-            artist.setImage(ImageLoader.EMPTY_CONTEXT);
+            artist.setImage(ImageLoader.getImage(ImageLoader.EMPTY_CONTEXT));
         }
         ((ContextArtistsTableModel) getPanelControlled().getSimilarArtistsTable().getModel()).addArtist(artist);
 
@@ -488,7 +488,7 @@ public class ContextPanelController extends PanelController<ContextPanel> {
                         try {
                             ImageIcon image = get();
                             if (image == null) {
-                                image = ImageLoader.NO_COVER;
+                                image = ImageLoader.getImage(ImageLoader.NO_COVER);
                             }
                             getPanelControlled().getAudioObjectCover().setIcon(image);
                             getPanelControlled().getAudioObjectCover().setBorder(new DropShadowBorder());
@@ -527,7 +527,7 @@ public class ContextPanelController extends PanelController<ContextPanel> {
         } else if (audioObject instanceof Radio) {
             //clear(true);
             Radio radio = (Radio) audioObject;
-            getPanelControlled().getAudioObjectCover().setIcon(ImageLoader.RADIO);
+            getPanelControlled().getAudioObjectCover().setIcon(ImageLoader.getImage(ImageLoader.RADIO));
             getPanelControlled().getAudioObjectCover().setBorder(BorderFactory.createEmptyBorder());
             getPanelControlled().getAudioObjectCover().setVisible(true);
             getPanelControlled().getAudioObjectLabel().setText(radio.getName());
@@ -537,7 +537,7 @@ public class ContextPanelController extends PanelController<ContextPanel> {
         } else if (audioObject instanceof PodcastFeedEntry) {
             //clear(true);
             PodcastFeedEntry podcastFeedEntry = (PodcastFeedEntry) audioObject;
-            getPanelControlled().getAudioObjectCover().setIcon(ImageLoader.RSS);
+            getPanelControlled().getAudioObjectCover().setIcon(ImageLoader.getImage(ImageLoader.RSS));
             getPanelControlled().getAudioObjectCover().setBorder(BorderFactory.createEmptyBorder());
             getPanelControlled().getAudioObjectCover().setVisible(true);
             getPanelControlled().getAudioObjectLabel().setText(podcastFeedEntry.getName());

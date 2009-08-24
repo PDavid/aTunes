@@ -36,7 +36,7 @@ public class FilterNavigatorAction extends Action {
     private static final long serialVersionUID = 8983724480558125905L;
 
     FilterNavigatorAction() {
-        super(LanguageTool.getString("FILTER"), ImageLoader.SEARCH);
+        super(LanguageTool.getString("FILTER"), ImageLoader.getImage(ImageLoader.SEARCH));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("FILTER"));
     }
 

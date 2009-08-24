@@ -36,7 +36,7 @@ public class SortNavigatorByModificationDateAction extends Action {
     private static final long serialVersionUID = 1062000465102539985L;
 
     SortNavigatorByModificationDateAction() {
-        super(LanguageTool.getString("SORT_BY_MODIFICATION_DATE"), ImageLoader.DATE);
+        super(LanguageTool.getString("SORT_BY_MODIFICATION_DATE"), ImageLoader.getImage(ImageLoader.DATE));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("SORT_BY_MODIFICATION_DATE"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().getSortType() == SortType.BY_MODIFICATION_TIME);
     }

@@ -42,7 +42,7 @@ public class ShowNavigatorAction extends Action {
     private static final long serialVersionUID = 5137162733978906000L;
 
     ShowNavigatorAction() {
-        super(LanguageTool.getString("SHOW_NAVIGATION_PANEL"), ImageLoader.NAVIGATE);
+        super(LanguageTool.getString("SHOW_NAVIGATION_PANEL"), ImageLoader.getImage(ImageLoader.NAVIGATE));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("SHOW_NAVIGATION_PANEL"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().isShowNavigationPanel());
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));

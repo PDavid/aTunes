@@ -62,7 +62,7 @@ public class PlayListRenderers {
                 if (PlayListHandler.getInstance().isCurrentVisibleRowPlaying(row)) {
                     ((JLabel) c).setIcon(PlayState.getPlayStateIcon(playlist.getPlayState()));
                 } else {
-                    ((JLabel) c).setIcon(ImageLoader.EMPTY);
+                    ((JLabel) c).setIcon(ImageLoader.getImage(ImageLoader.EMPTY));
                 }
 
                 // Get alignment from model

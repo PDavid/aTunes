@@ -36,7 +36,7 @@ public class SortNavigatorByTrackNumberAction extends Action {
     private static final long serialVersionUID = -5596356500000621446L;
 
     SortNavigatorByTrackNumberAction() {
-        super(LanguageTool.getString("SORT_BY_TRACK_NUMBER"), ImageLoader.NUMBER);
+        super(LanguageTool.getString("SORT_BY_TRACK_NUMBER"), ImageLoader.getImage(ImageLoader.NUMBER));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("SORT_BY_TRACK_NUMBER"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().getSortType() == SortType.BY_TRACK_NUMBER);
     }

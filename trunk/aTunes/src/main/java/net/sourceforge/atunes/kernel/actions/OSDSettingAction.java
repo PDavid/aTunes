@@ -37,7 +37,7 @@ public class OSDSettingAction extends Action {
     private static final long serialVersionUID = 646318992035897920L;
 
     OSDSettingAction() {
-        super(LanguageTool.getString("SHOW_OSD"), ImageLoader.OSD);
+        super(LanguageTool.getString("SHOW_OSD"), ImageLoader.getImage(ImageLoader.OSD));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("SHOW_OSD"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().isShowOSD());
     }

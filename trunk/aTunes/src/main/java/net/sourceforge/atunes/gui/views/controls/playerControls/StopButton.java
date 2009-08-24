@@ -48,7 +48,7 @@ public class StopButton extends JButton {
      * @param size
      */
     public StopButton(Dimension size) {
-        super(ImageLoader.STOP);
+        super(ImageLoader.getImage(ImageLoader.STOP));
         // Force size
         setPreferredSize(size);
         setMinimumSize(size);

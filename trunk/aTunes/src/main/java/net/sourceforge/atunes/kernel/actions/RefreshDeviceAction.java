@@ -37,7 +37,7 @@ public class RefreshDeviceAction extends Action {
     private static final long serialVersionUID = -5047885921099142L;
 
     public RefreshDeviceAction() {
-        super(LanguageTool.getString("REFRESH"), ImageLoader.DEVICE_REFRESH);
+        super(LanguageTool.getString("REFRESH"), ImageLoader.getImage(ImageLoader.DEVICE_REFRESH));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("REFRESH"));
         setEnabled(false);
     }

@@ -36,7 +36,7 @@ public abstract class CustomFrame extends JFrame {
      */
     public CustomFrame() {
         super();
-        setIconImage(ImageLoader.APP_ICON_BIG.getImage());
+        setIconImage(ImageLoader.getImage(ImageLoader.APP_ICON_BIG).getImage());
     }
 
     /**
@@ -51,7 +51,7 @@ public abstract class CustomFrame extends JFrame {
         super(title);
         setSize(width, height);
         setLocationRelativeTo(owner);
-        setIconImage(ImageLoader.APP_ICON.getImage());
+        setIconImage(ImageLoader.getImage(ImageLoader.APP_ICON).getImage());
     }
 
     /**

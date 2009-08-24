@@ -52,7 +52,7 @@ public class PlayPauseButton extends JButton {
      * @param height
      */
     public PlayPauseButton(Dimension size) {
-        super(ImageLoader.PLAY);
+        super(ImageLoader.getImage(ImageLoader.PLAY));
         // Force size of button
         setPreferredSize(size);
         setMinimumSize(size);
@@ -77,9 +77,9 @@ public class PlayPauseButton extends JButton {
      */
     public void setPlaying(boolean playing) {
         if (playing) {
-            setIcon(ImageLoader.PAUSE);
+            setIcon(ImageLoader.getImage(ImageLoader.PAUSE));
         } else {
-            setIcon(ImageLoader.PLAY);
+            setIcon(ImageLoader.getImage(ImageLoader.PLAY));
         }
         this.playing = playing;
     }

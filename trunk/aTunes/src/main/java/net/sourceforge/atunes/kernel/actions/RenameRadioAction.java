@@ -39,7 +39,7 @@ public class RenameRadioAction extends Action {
     private static final long serialVersionUID = -922076985505834816L;
 
     RenameRadioAction() {
-        super(LanguageTool.getString("RENAME_RADIO"), ImageLoader.EDIT_ALBUM);
+        super(LanguageTool.getString("RENAME_RADIO"), ImageLoader.getImage(ImageLoader.EDIT_ALBUM));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("RENAME_RADIO"));
     }
 
@@ -47,7 +47,7 @@ public class RenameRadioAction extends Action {
     public void actionPerformed(ActionEvent e) {
         TreePath path = NavigationHandler.getInstance().getView(RadioNavigationView.class).getTree().getSelectionPath();
         Radio radio = (Radio) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
-        String result = VisualHandler.getInstance().showInputDialog(LanguageTool.getString("RENAME_RADIO"), radio.getName(), ImageLoader.RADIO_LITTLE.getImage());
+        String result = VisualHandler.getInstance().showInputDialog(LanguageTool.getString("RENAME_RADIO"), radio.getName(), ImageLoader.getImage(ImageLoader.RADIO_LITTLE).getImage());
         if (result != null) {
             RadioHandler.getInstance().setName(radio, result);
         }

@@ -35,7 +35,7 @@ public class AddFavoriteRadioAction extends ActionOverSelectedObjects<Radio> {
     private static final long serialVersionUID = 82199784140877040L;
 
     AddFavoriteRadioAction() {
-        super(LanguageTool.getString("ADD_FAVORITE_RADIO"), ImageLoader.RADIO_FAVORITE, Radio.class);
+        super(LanguageTool.getString("ADD_FAVORITE_RADIO"), ImageLoader.getImage(ImageLoader.RADIO_FAVORITE), Radio.class);
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("RADIO_VIEW_TOOLTIP"));
     }
 

@@ -40,7 +40,7 @@ public class AddPodcastFeedAction extends Action {
     private static final long serialVersionUID = 2866782020999148427L;
 
     AddPodcastFeedAction() {
-        super(LanguageTool.getString("ADD_PODCAST_FEED"), ImageLoader.RSS_ADD);
+        super(LanguageTool.getString("ADD_PODCAST_FEED"), ImageLoader.getImage(ImageLoader.RSS_ADD));
     }
 
     @Override

@@ -35,7 +35,7 @@ public class FillDeviceWithRandomSongsAction extends Action {
     private static final long serialVersionUID = -201250351035880261L;
 
     FillDeviceWithRandomSongsAction() {
-        super(LanguageTool.getString("FILL_DEVICE_WITH_RANDOM_SONGS"), ImageLoader.SHUFFLE_PLAYLIST);
+        super(LanguageTool.getString("FILL_DEVICE_WITH_RANDOM_SONGS"), ImageLoader.getImage(ImageLoader.SHUFFLE_PLAYLIST));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("FILL_DEVICE_WITH_RANDOM_SONGS"));
     }
 
@@ -43,7 +43,7 @@ public class FillDeviceWithRandomSongsAction extends Action {
     public void actionPerformed(ActionEvent e) {
         String freeMemory = "20";
         // Ask how much memory should be left free
-        freeMemory = VisualHandler.getInstance().showInputDialog(LanguageTool.getString("MEMORY_TO_LEAVE_FREE"), freeMemory, ImageLoader.DEVICE.getImage());
+        freeMemory = VisualHandler.getInstance().showInputDialog(LanguageTool.getString("MEMORY_TO_LEAVE_FREE"), freeMemory, ImageLoader.getImage(ImageLoader.DEVICE).getImage());
         long result;
         try {
             result = Long.parseLong(freeMemory.trim());

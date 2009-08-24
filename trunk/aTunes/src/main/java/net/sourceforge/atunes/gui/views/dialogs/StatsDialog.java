@@ -216,10 +216,10 @@ public class StatsDialog extends CustomFrame {
         artistPanel.add(artistsChart, c);
 
         tabbedPane = new JTabbedPane();
-        tabbedPane.addTab(LanguageTool.getString("GENERAL"), ImageLoader.INFO, generalPanel);
-        tabbedPane.addTab(LanguageTool.getString("SONG"), ImageLoader.FILE, songPanel);
-        tabbedPane.addTab(LanguageTool.getString("ALBUM"), ImageLoader.ALBUM, albumPanel);
-        tabbedPane.addTab(LanguageTool.getString("ARTIST"), ImageLoader.ARTIST, artistPanel);
+        tabbedPane.addTab(LanguageTool.getString("GENERAL"), ImageLoader.getImage(ImageLoader.INFO), generalPanel);
+        tabbedPane.addTab(LanguageTool.getString("SONG"), ImageLoader.getImage(ImageLoader.FILE), songPanel);
+        tabbedPane.addTab(LanguageTool.getString("ALBUM"), ImageLoader.getImage(ImageLoader.ALBUM), albumPanel);
+        tabbedPane.addTab(LanguageTool.getString("ARTIST"), ImageLoader.getImage(ImageLoader.ARTIST), artistPanel);
         panel.add(tabbedPane, BorderLayout.CENTER);
         return panel;
     }

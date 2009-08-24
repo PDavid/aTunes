@@ -42,9 +42,9 @@ import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ExitAction;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
+import net.sourceforge.atunes.kernel.actions.OSDSettingAction;
 import net.sourceforge.atunes.kernel.actions.RepeatModeAction;
 import net.sourceforge.atunes.kernel.actions.ShowAboutAction;
-import net.sourceforge.atunes.kernel.actions.OSDSettingAction;
 import net.sourceforge.atunes.kernel.actions.ShuffleModeAction;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -108,7 +108,7 @@ public final class SystemTrayHandler implements ApplicationFinishListener, Appli
      * @return the j tray icon popup menu
      */
     private JTrayIconPopupMenu fillMenu(JTrayIconPopupMenu menu) {
-        playMenu = new JMenuItem(LanguageTool.getString("PLAY"), ImageLoader.PLAY_TRAY_MENU);
+        playMenu = new JMenuItem(LanguageTool.getString("PLAY"), ImageLoader.getImage(ImageLoader.PLAY_TRAY_MENU));
         playMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -117,7 +117,7 @@ public final class SystemTrayHandler implements ApplicationFinishListener, Appli
         });
         menu.add(playMenu);
 
-        JMenuItem stop = new JMenuItem(LanguageTool.getString("STOP"), ImageLoader.STOP_TRAY_MENU);
+        JMenuItem stop = new JMenuItem(LanguageTool.getString("STOP"), ImageLoader.getImage(ImageLoader.STOP_TRAY_MENU));
         stop.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -126,7 +126,7 @@ public final class SystemTrayHandler implements ApplicationFinishListener, Appli
         });
         menu.add(stop);
 
-        JMenuItem previous = new JMenuItem(LanguageTool.getString("PREVIOUS"), ImageLoader.PREVIOUS_TRAY_MENU);
+        JMenuItem previous = new JMenuItem(LanguageTool.getString("PREVIOUS"), ImageLoader.getImage(ImageLoader.PREVIOUS_TRAY_MENU));
         previous.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -135,7 +135,7 @@ public final class SystemTrayHandler implements ApplicationFinishListener, Appli
         });
         menu.add(previous);
 
-        JMenuItem next = new JMenuItem(LanguageTool.getString("NEXT"), ImageLoader.NEXT_TRAY_MENU);
+        JMenuItem next = new JMenuItem(LanguageTool.getString("NEXT"), ImageLoader.getImage(ImageLoader.NEXT_TRAY_MENU));
         next.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -146,7 +146,7 @@ public final class SystemTrayHandler implements ApplicationFinishListener, Appli
 
         menu.add(new JSeparator());
 
-        mute = new JCheckBoxMenuItem(LanguageTool.getString("MUTE"), ImageLoader.VOLUME_MUTE_TRAY_MENU);
+        mute = new JCheckBoxMenuItem(LanguageTool.getString("MUTE"), ImageLoader.getImage(ImageLoader.VOLUME_MUTE_TRAY_MENU));
         mute.setAction(Actions.getAction(MuteAction.class));
         menu.add(mute);
 
@@ -201,7 +201,7 @@ public final class SystemTrayHandler implements ApplicationFinishListener, Appli
         initSystemTray();
         if (tray != null) {
             trayIconVisible = true;
-            trayIcon = new JTrayIcon(ImageLoader.APP_ICON_TRAY.getImage(), SystemProperties.OS == OperatingSystem.LINUX);
+            trayIcon = new JTrayIcon(ImageLoader.getImage(ImageLoader.APP_ICON_TRAY).getImage(), SystemProperties.OS == OperatingSystem.LINUX);
             trayIcon.setToolTip(StringUtils.getString(Constants.APP_NAME, " ", Constants.VERSION.toShortString()));
             trayIcon.setJTrayIconJPopupMenu(fillMenu(trayIcon.new JTrayIconPopupMenu()));
             trayIcon.setImageAutoSize(true);
@@ -233,7 +233,7 @@ public final class SystemTrayHandler implements ApplicationFinishListener, Appli
         initSystemTray();
         if (tray != null) {
             trayPlayerVisible = true;
-            nextIcon = new TrayIcon(ImageLoader.NEXT_TRAY.getImage());
+            nextIcon = new TrayIcon(ImageLoader.getImage(ImageLoader.NEXT_TRAY).getImage());
             nextIcon.setImageAutoSize(true);
             nextIcon.addMouseListener(new MouseAdapter() {
                 @Override
@@ -249,7 +249,7 @@ public final class SystemTrayHandler implements ApplicationFinishListener, Appli
                 logger.error(LogCategories.TRAY, e);
             }
 
-            stopIcon = new TrayIcon(ImageLoader.STOP_TRAY.getImage());
+            stopIcon = new TrayIcon(ImageLoader.getImage(ImageLoader.STOP_TRAY).getImage());
             stopIcon.setImageAutoSize(true);
             stopIcon.addMouseListener(new MouseAdapter() {
                 @Override
@@ -265,7 +265,7 @@ public final class SystemTrayHandler implements ApplicationFinishListener, Appli
                 logger.error(LogCategories.TRAY, e);
             }
 
-            playIcon = new TrayIcon(ImageLoader.PLAY_TRAY.getImage());
+            playIcon = new TrayIcon(ImageLoader.getImage(ImageLoader.PLAY_TRAY).getImage());
             playIcon.setImageAutoSize(true);
             playIcon.addMouseListener(new MouseAdapter() {
                 @Override
@@ -281,7 +281,7 @@ public final class SystemTrayHandler implements ApplicationFinishListener, Appli
                 logger.error(LogCategories.TRAY, e);
             }
 
-            previousIcon = new TrayIcon(ImageLoader.PREVIOUS_TRAY.getImage());
+            previousIcon = new TrayIcon(ImageLoader.getImage(ImageLoader.PREVIOUS_TRAY).getImage());
             previousIcon.setImageAutoSize(true);
             previousIcon.addMouseListener(new MouseAdapter() {
                 @Override
@@ -311,18 +311,18 @@ public final class SystemTrayHandler implements ApplicationFinishListener, Appli
         if (playing) {
             if (trayIcon != null) {
                 playMenu.setText(LanguageTool.getString("PAUSE"));
-                playMenu.setIcon(ImageLoader.PAUSE_TRAY_MENU);
+                playMenu.setIcon(ImageLoader.getImage(ImageLoader.PAUSE_TRAY_MENU));
             }
             if (playIcon != null) {
-                playIcon.setImage(ImageLoader.PAUSE_TRAY.getImage());
+                playIcon.setImage(ImageLoader.getImage(ImageLoader.PAUSE_TRAY).getImage());
             }
         } else {
             if (trayIcon != null) {
                 playMenu.setText(LanguageTool.getString("PLAY"));
-                playMenu.setIcon(ImageLoader.PLAY_TRAY_MENU);
+                playMenu.setIcon(ImageLoader.getImage(ImageLoader.PLAY_TRAY_MENU));
             }
             if (playIcon != null) {
-                playIcon.setImage(ImageLoader.PLAY_TRAY.getImage());
+                playIcon.setImage(ImageLoader.getImage(ImageLoader.PLAY_TRAY).getImage());
             }
         }
 

@@ -37,7 +37,7 @@ public class ShuffleModeAction extends Action {
     private static final long serialVersionUID = 6841858742889010498L;
 
     ShuffleModeAction() {
-        super(LanguageTool.getString("SHUFFLE"), ImageLoader.SHUFFLE);
+        super(LanguageTool.getString("SHUFFLE"), ImageLoader.getImage(ImageLoader.SHUFFLE));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("SHUFFLE"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().isShuffle());
 

@@ -281,7 +281,7 @@ public class InternetPanel extends PreferencesPanel {
 
     @Override
     public ImageIcon getIcon() {
-        return ImageLoader.NETWORK_LITTLE;
+        return ImageLoader.getImage(ImageLoader.NETWORK_LITTLE);
     }
 
 }

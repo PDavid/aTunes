@@ -40,7 +40,7 @@ public class AddRadioAction extends Action {
     private static final long serialVersionUID = -5764149587317233484L;
 
     public AddRadioAction() {
-        super(LanguageTool.getString("ADD_RADIO"), ImageLoader.RADIO_ADD);
+        super(LanguageTool.getString("ADD_RADIO"), ImageLoader.getImage(ImageLoader.RADIO_ADD));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("ADD_RADIO"));
     }
 

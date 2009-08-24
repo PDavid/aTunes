@@ -38,7 +38,7 @@ public class RenameAudioFileInNavigationTableAction extends Action {
     private static final long serialVersionUID = 5607758675193509752L;
 
     public RenameAudioFileInNavigationTableAction() {
-        super(LanguageTool.getString("RENAME_AUDIO_FILE_NAME"), ImageLoader.FILE_NAME);
+        super(LanguageTool.getString("RENAME_AUDIO_FILE_NAME"), ImageLoader.getImage(ImageLoader.FILE_NAME));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("RENAME_AUDIO_FILE_NAME"));
     }
 
@@ -47,7 +47,7 @@ public class RenameAudioFileInNavigationTableAction extends Action {
         List<AudioFile> audioFiles = ControllerProxy.getInstance().getNavigationController().getFilesSelectedInNavigator();
         if (audioFiles.size() == 1) {
             String name = VisualHandler.getInstance().showInputDialog(LanguageTool.getString("RENAME_AUDIO_FILE_NAME"),
-                    FilenameUtils.getBaseName(audioFiles.get(0).getFile().getAbsolutePath()), ImageLoader.FILE_NAME.getImage());
+                    FilenameUtils.getBaseName(audioFiles.get(0).getFile().getAbsolutePath()), ImageLoader.getImage(ImageLoader.FILE_NAME).getImage());
             if (name != null && !name.isEmpty()) {
                 RepositoryHandler.getInstance().rename(audioFiles.get(0), name);
             }

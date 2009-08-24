@@ -37,7 +37,7 @@ public class ShowToolbarAction extends Action {
     private static final long serialVersionUID = -6045235796588795737L;
 
     ShowToolbarAction() {
-        super(LanguageTool.getString("SHOW_TOOL_BAR"), ImageLoader.TOOL_BAR);
+        super(LanguageTool.getString("SHOW_TOOL_BAR"), ImageLoader.getImage(ImageLoader.TOOL_BAR));
     }
 
     @Override

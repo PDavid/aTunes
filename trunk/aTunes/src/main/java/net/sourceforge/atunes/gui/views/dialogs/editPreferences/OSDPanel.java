@@ -232,7 +232,7 @@ public class OSDPanel extends PreferencesPanel {
 
     @Override
     public ImageIcon getIcon() {
-        return ImageLoader.OSD;
+        return ImageLoader.getImage(ImageLoader.OSD);
     }
 
 }

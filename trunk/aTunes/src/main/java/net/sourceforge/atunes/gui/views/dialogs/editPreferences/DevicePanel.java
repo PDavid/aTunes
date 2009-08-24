@@ -301,7 +301,7 @@ public class DevicePanel extends PreferencesPanel {
 
     @Override
     public ImageIcon getIcon() {
-        return ImageLoader.DEVICE;
+        return ImageLoader.getImage(ImageLoader.DEVICE);
     }
 
 }

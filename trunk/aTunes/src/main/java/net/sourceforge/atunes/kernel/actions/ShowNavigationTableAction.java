@@ -40,7 +40,7 @@ public class ShowNavigationTableAction extends Action {
     private static final long serialVersionUID = -3275592274940501407L;
 
     ShowNavigationTableAction() {
-        super(LanguageTool.getString("SHOW_NAVIGATION_TABLE"), ImageLoader.NAVIGATION_TABLE);
+        super(LanguageTool.getString("SHOW_NAVIGATION_TABLE"), ImageLoader.getImage(ImageLoader.NAVIGATION_TABLE));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("SHOW_NAVIGATION_TABLE"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().isShowNavigationTable());
     }

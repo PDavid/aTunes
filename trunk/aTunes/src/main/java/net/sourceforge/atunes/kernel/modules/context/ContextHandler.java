@@ -606,15 +606,15 @@ public final class ContextHandler implements ContextListener, ApplicationFinishL
                 } else if (ao instanceof Radio) {
                     // Radio with song information -> show all tabs
                     if (((Radio) ao).isSongInfoAvailable()) {
-                        ControllerProxy.getInstance().getContextPanelController().showAllTabs(LanguageTool.getString("RADIO"), ImageLoader.RADIO_LITTLE, true);
+                        ControllerProxy.getInstance().getContextPanelController().showAllTabs(LanguageTool.getString("RADIO"), ImageLoader.getImage(ImageLoader.RADIO_LITTLE), true);
                         ControllerProxy.getInstance().getContextPanelController().setSelectedIndex(ApplicationState.getInstance().getSelectedContextTab());
                     } else {
                         // Radio without song information -> show only first tab
-                        ControllerProxy.getInstance().getContextPanelController().showFirstTab(LanguageTool.getString("RADIO"), ImageLoader.RADIO_LITTLE);
+                        ControllerProxy.getInstance().getContextPanelController().showFirstTab(LanguageTool.getString("RADIO"), ImageLoader.getImage(ImageLoader.RADIO_LITTLE));
                     }
                 } else if (ao instanceof PodcastFeedEntry) {
                     // Podcast -> show only first tab
-                    ControllerProxy.getInstance().getContextPanelController().showFirstTab(LanguageTool.getString("PODCAST_FEED"), ImageLoader.RSS_LITTLE);
+                    ControllerProxy.getInstance().getContextPanelController().showFirstTab(LanguageTool.getString("PODCAST_FEED"), ImageLoader.getImage(ImageLoader.RSS_LITTLE));
                 }
                 retrieveInfo(ao);
             }

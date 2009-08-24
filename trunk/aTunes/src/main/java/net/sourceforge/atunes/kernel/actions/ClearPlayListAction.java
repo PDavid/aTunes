@@ -43,7 +43,7 @@ public class ClearPlayListAction extends Action {
     private static final long serialVersionUID = 7784228526804232608L;
 
     ClearPlayListAction() {
-        super(LanguageTool.getString("CLEAR"), ImageLoader.CLEAR);
+        super(LanguageTool.getString("CLEAR"), ImageLoader.getImage(ImageLoader.CLEAR));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("CLEAR_TOOLTIP"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, ActionEvent.CTRL_MASK));
     }

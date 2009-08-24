@@ -36,7 +36,7 @@ public class SortNavigatorByArtistAndAlbumAction extends Action {
     private static final long serialVersionUID = -7368073653910611456L;
 
     SortNavigatorByArtistAndAlbumAction() {
-        super(LanguageTool.getString("SORT_BY_ARTIST_AND_ALBUM"), ImageLoader.ARTIST);
+        super(LanguageTool.getString("SORT_BY_ARTIST_AND_ALBUM"), ImageLoader.getImage(ImageLoader.ARTIST));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("SORT_BY_ARTIST_AND_ALBUM"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().getSortType() == SortType.BY_ARTIST_AND_ALBUM);
     }

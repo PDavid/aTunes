@@ -40,7 +40,7 @@ public class FullScreenAction extends Action {
     private static final long serialVersionUID = 916565212685861604L;
 
     FullScreenAction() {
-        super(LanguageTool.getString("FULL_SCREEN"), ImageLoader.FULLSCREEN);
+        super(LanguageTool.getString("FULL_SCREEN"), ImageLoader.getImage(ImageLoader.FULLSCREEN));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("FULL_SCREEN"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F11, 0));
     }

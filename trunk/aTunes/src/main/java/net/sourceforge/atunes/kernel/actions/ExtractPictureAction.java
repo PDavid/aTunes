@@ -34,7 +34,7 @@ public class ExtractPictureAction extends ActionOverSelectedObjects<AudioFile> {
     private static final long serialVersionUID = -8618297820141610193L;
 
     ExtractPictureAction() {
-        super(LanguageTool.getString("EXTRACT_PICTURE"), ImageLoader.EXPORT_PICTURE, AudioFile.class);
+        super(LanguageTool.getString("EXTRACT_PICTURE"), ImageLoader.getImage(ImageLoader.EXPORT_PICTURE), AudioFile.class);
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("EXTRACT_PICTURE"));
     }
 

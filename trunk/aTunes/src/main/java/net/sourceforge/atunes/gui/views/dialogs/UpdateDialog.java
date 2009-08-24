@@ -50,7 +50,7 @@ public class UpdateDialog extends CustomFrame {
     public UpdateDialog(ApplicationVersion version, Component owner) {
         super(LanguageTool.getString("NEW_VERSION_AVAILABLE"), 400, 150, owner);
         setResizable(false);
-        setIconImage(ImageLoader.APP_ICON.getImage());
+        setIconImage(ImageLoader.getImage(ImageLoader.APP_ICON).getImage());
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         JPanel panel = new JPanel(new GridBagLayout());
@@ -58,7 +58,7 @@ public class UpdateDialog extends CustomFrame {
         text = text.replace("(%VERSION%)", Constants.VERSION.toShortString());
         text = text.replace("(%NEW_VERSION%)", version.toShortString());
 
-        JLabel img = new JLabel(ImageLoader.APP_ICON_BIG);
+        JLabel img = new JLabel(ImageLoader.getImage(ImageLoader.APP_ICON_BIG));
 
         JTextArea text1 = new JTextArea(text);
         text1.setBorder(BorderFactory.createEmptyBorder());

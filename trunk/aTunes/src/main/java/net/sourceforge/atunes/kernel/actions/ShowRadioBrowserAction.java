@@ -37,7 +37,7 @@ public class ShowRadioBrowserAction extends Action {
     private static final long serialVersionUID = 531135150461152301L;
 
     ShowRadioBrowserAction() {
-        super(LanguageTool.getString("RADIO_BROWSER"), ImageLoader.RADIO_LITTLE);
+        super(LanguageTool.getString("RADIO_BROWSER"), ImageLoader.getImage(ImageLoader.RADIO_LITTLE));
     }
 
     @Override

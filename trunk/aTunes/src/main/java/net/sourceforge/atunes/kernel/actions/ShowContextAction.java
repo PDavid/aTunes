@@ -36,7 +36,7 @@ public class ShowContextAction extends Action {
     private static final long serialVersionUID = 5939730387818346294L;
 
     ShowContextAction() {
-        super(LanguageTool.getString("SHOW_CONTEXT_INFORMATION"), ImageLoader.CONTEXT);
+        super(LanguageTool.getString("SHOW_CONTEXT_INFORMATION"), ImageLoader.getImage(ImageLoader.CONTEXT));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("SHOW_CONTEXT_INFORMATION"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().isUseContext());
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.CTRL_MASK));

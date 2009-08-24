@@ -38,7 +38,7 @@ public class SetFavoriteArtistFromNavigatorAction extends ActionOverSelectedObje
     private static final long serialVersionUID = -3551889307264609825L;
 
     SetFavoriteArtistFromNavigatorAction() {
-        super(LanguageTool.getString("SET_FAVORITE_ARTIST"), ImageLoader.FAVORITE, AudioFile.class);
+        super(LanguageTool.getString("SET_FAVORITE_ARTIST"), ImageLoader.getImage(ImageLoader.FAVORITE), AudioFile.class);
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("SET_FAVORITE_ARTIST"));
     }
 

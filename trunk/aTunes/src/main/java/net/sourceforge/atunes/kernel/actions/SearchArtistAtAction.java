@@ -43,7 +43,7 @@ public class SearchArtistAtAction extends Action {
     private static final long serialVersionUID = -8934175706272236046L;
 
     SearchArtistAtAction() {
-        super(StringUtils.getString(LanguageTool.getString("SEARCH_ARTIST_AT"), "..."), ImageLoader.SEARCH_AT);
+        super(StringUtils.getString(LanguageTool.getString("SEARCH_ARTIST_AT"), "..."), ImageLoader.getImage(ImageLoader.SEARCH_AT));
         putValue(SHORT_DESCRIPTION, StringUtils.getString(LanguageTool.getString("SEARCH_ARTIST_AT"), "..."));
     }
 

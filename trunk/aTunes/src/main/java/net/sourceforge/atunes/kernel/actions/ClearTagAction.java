@@ -38,7 +38,7 @@ public class ClearTagAction extends ActionOverSelectedObjects<AudioFile> {
     public static final String NAVIGATOR = "NAVIGATOR";
 
     ClearTagAction() {
-        super(LanguageTool.getString("CLEAR_TAG"), ImageLoader.DELETE_TAG, AudioFile.class);
+        super(LanguageTool.getString("CLEAR_TAG"), ImageLoader.getImage(ImageLoader.DELETE_TAG), AudioFile.class);
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("CLEAR_TAG"));
     }
 

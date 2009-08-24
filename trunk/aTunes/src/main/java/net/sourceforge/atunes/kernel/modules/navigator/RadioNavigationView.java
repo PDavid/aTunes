@@ -73,7 +73,7 @@ public class RadioNavigationView extends NavigationView {
 
     @Override
     public ImageIcon getIcon() {
-        return ImageLoader.RADIO_LITTLE;
+        return ImageLoader.getImage(ImageLoader.RADIO_LITTLE);
     }
 
     @Override
@@ -417,9 +417,9 @@ public class RadioNavigationView extends NavigationView {
             public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
                 JLabel icon = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
                 if (leaf || row == 0) {
-                    icon.setIcon(ImageLoader.RADIO_LITTLE);
+                    icon.setIcon(ImageLoader.getImage(ImageLoader.RADIO_LITTLE));
                 } else {
-                    icon.setIcon(ImageLoader.FOLDER);
+                    icon.setIcon(ImageLoader.getImage(ImageLoader.FOLDER));
                 }
                 return icon;
             }

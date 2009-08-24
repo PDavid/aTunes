@@ -200,7 +200,7 @@ class PodcastFeedEntryPropertiesDialog extends PropertiesDialog {
      * Fill picture.
      */
     private void fillPicture() {
-        ImageIcon picture = ImageLoader.RSS;
+        ImageIcon picture = ImageLoader.getImage(ImageLoader.RSS);
         pictureLabel.setPreferredSize(new Dimension(picture.getIconWidth(), picture.getIconHeight()));
         pictureLabel.setIcon(picture);
         pictureLabel.setVisible(true);

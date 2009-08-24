@@ -104,7 +104,7 @@ public class ButtonTabComponent extends JPanel {
             if (getModel().isPressed()) {
                 g2.translate(1, 1);
             }
-            g2.drawImage(ImageLoader.CLOSE_TAB.getImage(), 0, 0, ImageLoader.CLOSE_TAB.getIconWidth(), ImageLoader.CLOSE_TAB.getIconHeight(), null);
+            g2.drawImage(ImageLoader.getImage(ImageLoader.CLOSE_TAB).getImage(), 0, 0, ImageLoader.getImage(ImageLoader.CLOSE_TAB).getIconWidth(), ImageLoader.getImage(ImageLoader.CLOSE_TAB).getIconHeight(), null);
         }
 
         // we don't want to update UI for this button

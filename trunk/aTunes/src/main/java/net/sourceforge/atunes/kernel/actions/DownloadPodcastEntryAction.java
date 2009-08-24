@@ -33,7 +33,7 @@ public class DownloadPodcastEntryAction extends ActionOverSelectedObjects<Podcas
     private static final long serialVersionUID = 1081237259786604605L;
 
     DownloadPodcastEntryAction() {
-        super(LanguageTool.getString("DOWNLOAD_PODCAST_ENTRY"), ImageLoader.DOWNLOAD_PODCAST, PodcastFeedEntry.class);
+        super(LanguageTool.getString("DOWNLOAD_PODCAST_ENTRY"), ImageLoader.getImage(ImageLoader.DOWNLOAD_PODCAST), PodcastFeedEntry.class);
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("DOWNLOAD_PODCAST_ENTRY"));
         setEnabled(false);
     }

@@ -39,7 +39,7 @@ public class CopyToRepositoryAction extends ActionOverSelectedObjects<AudioFile>
     private static final long serialVersionUID = 2416674807979541242L;
 
     CopyToRepositoryAction() {
-        super(LanguageTool.getString("COPY_TO_REPOSITORY"), ImageLoader.EXPORT, AudioFile.class);
+        super(LanguageTool.getString("COPY_TO_REPOSITORY"), ImageLoader.getImage(ImageLoader.EXPORT), AudioFile.class);
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("COPY_TO_REPOSITORY"));
     }
 

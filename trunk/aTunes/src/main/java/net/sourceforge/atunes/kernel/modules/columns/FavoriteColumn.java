@@ -51,12 +51,12 @@ public class FavoriteColumn extends Column {
     public Object getValueFor(AudioObject audioObject) {
         // Return image
         if (audioObject instanceof Radio) {
-            return ImageLoader.EMPTY;
+            return ImageLoader.getImage(ImageLoader.EMPTY);
         }
         if (audioObject instanceof PodcastFeedEntry) {
-            return ImageLoader.EMPTY;
+            return ImageLoader.getImage(ImageLoader.EMPTY);
         }
-        return FavoritesHandler.getInstance().getFavoriteSongsInfo().containsValue(audioObject) ? ImageLoader.FAVORITE : ImageLoader.EMPTY;
+        return FavoritesHandler.getInstance().getFavoriteSongsInfo().containsValue(audioObject) ? ImageLoader.getImage(ImageLoader.FAVORITE) : ImageLoader.getImage(ImageLoader.EMPTY);
     }
     
     @Override

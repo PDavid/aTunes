@@ -73,7 +73,7 @@ public class NavigationFilterPanel extends JPanel {
         JLabel filterLabel = new JLabel(LanguageTool.getString("FILTER"));
         filterTextField = new JTextField();
         filterTextField.setToolTipText(LanguageTool.getString("FILTER_TEXTFIELD_TOOLTIP"));
-        clearFilterLabel = new JLabel(ImageLoader.UNDO);
+        clearFilterLabel = new JLabel(ImageLoader.getImage(ImageLoader.UNDO));
         clearFilterLabel.setToolTipText(LanguageTool.getString("CLEAR_FILTER_BUTTON_TOOLTIP"));
 
         GridBagConstraints c = new GridBagConstraints();

@@ -136,7 +136,7 @@ public class AddPodcastFeedDialog extends CustomModalDialog {
         c.gridheight = 2;
         c.fill = GridBagConstraints.NONE;
         c.weightx = -1;
-        panel.add(new JLabel(ImageLoader.RSS), c);
+        panel.add(new JLabel(ImageLoader.getImage(ImageLoader.RSS)), c);
 
         JPanel auxPanel = new JPanel();
         auxPanel.add(okButton);

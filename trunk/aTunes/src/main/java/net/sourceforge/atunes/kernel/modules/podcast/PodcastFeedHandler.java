@@ -46,9 +46,9 @@ import net.sourceforge.atunes.kernel.ApplicationFinishListener;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
+import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateChangeListener;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
@@ -286,7 +286,7 @@ public final class PodcastFeedHandler implements ApplicationFinishListener, Appl
             return;
         }
         final TransferProgressDialog d = VisualHandler.getInstance().getNewTransferProgressDialog(LanguageTool.getString("PODCAST_FEED_ENTRY_DOWNLOAD"), null);
-        d.setIcon(ImageLoader.RSS);
+        d.setIcon(ImageLoader.getImage(ImageLoader.RSS));
         final PodcastFeedEntryDownloader downloadPodcastFeedEntry = new PodcastFeedEntryDownloader(podcastFeedEntry);
         synchronized (runningDownloads) {
             runningDownloads.add(downloadPodcastFeedEntry);

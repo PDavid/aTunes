@@ -42,7 +42,7 @@ public class MoveDownAction extends Action {
     private static final long serialVersionUID = 8200322913128575526L;
 
     MoveDownAction() {
-        super(LanguageTool.getString("MOVE_DOWN"), ImageLoader.GO_DOWN);
+        super(LanguageTool.getString("MOVE_DOWN"), ImageLoader.getImage(ImageLoader.GO_DOWN));
         putValue(SHORT_DESCRIPTION, LanguageTool.getString("MOVE_DOWN_TOOLTIP"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, ActionEvent.ALT_MASK));
         setEnabled(false);

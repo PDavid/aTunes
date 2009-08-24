@@ -73,7 +73,7 @@ public class SplashScreenDialog extends CustomWindow {
         JPanel panel = new JPanel(null);
         panel.setOpaque(false);
 
-        JLabel image = new JLabel(ImageLoader.APP_TITLE);
+        JLabel image = new JLabel(ImageLoader.getImage(ImageLoader.APP_TITLE));
         image.setSize(new Dimension(475, 200));
         image.setLocation(0, 0);
 
