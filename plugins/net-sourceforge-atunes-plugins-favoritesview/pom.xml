@@ -6,7 +6,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>net.sourceforge.atunes.plugins</groupId>
-  <artifactId>net-sourceforge-atunes-plugins-navigationviews-favoritesview</artifactId>
+  <artifactId>net-sourceforge-atunes-plugins-favoritesview</artifactId>
   <version>0.1.0</version>
   <build>
   <plugins>

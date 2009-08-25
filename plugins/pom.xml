@@ -9,7 +9,7 @@
   	<module>net-sourceforge-atunes-plugins-instantmessaging</module>
   	<module>net-sourceforge-atunes-plugins-commentcolumn</module>
   	<module>net-sourceforge-atunes-plugins-lyricscolumn</module>
-  	<module>net-sourceforge-atunes-plugins-navigationviews-favoritesview</module>
+  	<module>net-sourceforge-atunes-plugins-favoritesview</module>
   </modules>
   <dependencies>
   	<dependency>
