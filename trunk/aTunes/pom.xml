@@ -119,7 +119,6 @@
 					<descriptors>
 						<descriptor>src/main/assembly/bin.xml</descriptor>
 					</descriptors>
-					<appendAssemblyId>no</appendAssemblyId>
 				</configuration>
 				<executions>
 					<execution>
