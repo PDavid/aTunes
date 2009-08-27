@@ -39,7 +39,6 @@ import org.apache.commons.io.FileUtils;
  */
 public class TransferToDeviceProcess extends AudioFileTransferProcess {
 
-    /** The path. */
     private String path;
 
     /**

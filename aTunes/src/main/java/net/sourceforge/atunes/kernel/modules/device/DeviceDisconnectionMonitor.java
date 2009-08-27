@@ -29,21 +29,12 @@ import javax.swing.SwingUtilities;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
-/**
- * The Class DeviceDisconnectionMonitor.
- */
 public class DeviceDisconnectionMonitor extends Thread {
 
-    /** The instance. */
     private static DeviceDisconnectionMonitor instance;
-
-    /** The listeners. */
     private static List<DeviceDisconnectionListener> listeners = new ArrayList<DeviceDisconnectionListener>();
-
-    /** The TIM e_ t o_ wait. */
     private static int TIME_TO_WAIT = 5000;
 
-    /** The logger. */
     private Logger logger = new Logger();
 
     /**
@@ -83,11 +74,6 @@ public class DeviceDisconnectionMonitor extends Thread {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Thread#run()
-     */
     @Override
     public void run() {
         super.run();
