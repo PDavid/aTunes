@@ -30,21 +30,12 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
-/**
- * The Class DeviceConnectionMonitor.
- */
 public class DeviceConnectionMonitor extends Thread {
 
-    /** The instance. */
     private static DeviceConnectionMonitor instance;
-
-    /** The listeners. */
     private static List<DeviceConnectionListener> listeners = new ArrayList<DeviceConnectionListener>();
-
-    /** The TIM e_ t o_ wait. */
     private static int TIME_TO_WAIT = 5000;
 
-    /** The logger. */
     private Logger logger = new Logger();
 
     /**
@@ -84,11 +75,6 @@ public class DeviceConnectionMonitor extends Thread {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Thread#run()
-     */
     @Override
     public void run() {
         super.run();

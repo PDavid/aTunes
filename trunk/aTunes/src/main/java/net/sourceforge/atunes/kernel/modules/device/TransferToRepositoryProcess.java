@@ -27,9 +27,6 @@ import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.utils.LanguageTool;
 
-/**
- * The Class TransferToRepositoryProcess.
- */
 public class TransferToRepositoryProcess extends AudioFileTransferProcess {
 
     public TransferToRepositoryProcess(List<AudioFile> files) {

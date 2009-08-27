@@ -76,29 +76,17 @@ import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.LanguageTool;
 import net.sourceforge.atunes.utils.StringUtils;
 
-/**
- * The Class DeviceHandler.
- */
-public final class DeviceHandler implements LoaderListener, DeviceConnectionListener, DeviceDisconnectionListener, ApplicationFinishListener, AudioFilesRemovedListener, ApplicationStateChangeListener {
+public final class DeviceHandler implements LoaderListener, DeviceConnectionListener, DeviceDisconnectionListener, ApplicationFinishListener, AudioFilesRemovedListener,
+        ApplicationStateChangeListener {
 
-    /** The instance. */
     private static DeviceHandler instance = new DeviceHandler();
 
-    /** The logger. */
     private Logger logger = new Logger();
 
-    /** The device repository. */
     private Repository deviceRepository;
-
-    /** The temp device repository. */
     private Repository tempDeviceRepository;
-
-    /** The current loader. */
     private RepositoryLoader currentLoader;
-
-    /** The device path. */
     private File devicePath;
-
     /**
      * Device identification
      */
@@ -304,7 +292,6 @@ public final class DeviceHandler implements LoaderListener, DeviceConnectionList
     /**
      * Disconnect device.
      */
-
     public void disconnectDevice() {
         // Persist device metadata
         ApplicationStateHandler.getInstance().persistDeviceCache(deviceId, deviceRepository);
@@ -468,12 +455,6 @@ public final class DeviceHandler implements LoaderListener, DeviceConnectionList
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seenet.sourceforge.atunes.kernel.modules.repository.LoaderListener#
-     * notifyCurrentPath(java.lang.String)
-     */
     @Override
     public void notifyCurrentPath(String path) {
         // Nothing to do
@@ -508,35 +489,16 @@ public final class DeviceHandler implements LoaderListener, DeviceConnectionList
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seenet.sourceforge.atunes.kernel.modules.repository.LoaderListener#
-     * notifyFileLoaded()
-     */
     @Override
     public void notifyFileLoaded() {
         // Nothing to do
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seenet.sourceforge.atunes.kernel.modules.repository.LoaderListener#
-     * notifyFilesInRepository(int)
-     */
     @Override
     public void notifyFilesInRepository(int files) {
         // Nothing to do
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seenet.sourceforge.atunes.kernel.modules.repository.LoaderListener#
-     * notifyFinishRead
-     * (net.sourceforge.atunes.kernel.modules.repository.RepositoryLoader)
-     */
     @Override
     public void notifyFinishRead(RepositoryLoader loader) {
         deviceRepository = loader.getRepository();
@@ -562,13 +524,6 @@ public final class DeviceHandler implements LoaderListener, DeviceConnectionList
         Actions.getAction(SynchronizeDeviceWithPlayListAction.class).setEnabled(true);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seenet.sourceforge.atunes.kernel.modules.repository.LoaderListener#
-     * notifyFinishRefresh
-     * (net.sourceforge.atunes.kernel.modules.repository.RepositoryLoader)
-     */
     @Override
     public void notifyFinishRefresh(RepositoryLoader loader) {
         if (loader != null) {
@@ -583,12 +538,6 @@ public final class DeviceHandler implements LoaderListener, DeviceConnectionList
         Actions.getAction(SynchronizeDeviceWithPlayListAction.class).setEnabled(true);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seenet.sourceforge.atunes.kernel.modules.repository.LoaderListener#
-     * notifyRemainingTime(long)
-     */
     @Override
     public void notifyRemainingTime(long time) {
         // Nothing to do
@@ -811,6 +760,6 @@ public final class DeviceHandler implements LoaderListener, DeviceConnectionList
 
     @Override
     public void applicationStateChanged(ApplicationState newState) {
-    	DeviceConnectionMonitor.startMonitor();
+        DeviceConnectionMonitor.startMonitor();
     }
 }
