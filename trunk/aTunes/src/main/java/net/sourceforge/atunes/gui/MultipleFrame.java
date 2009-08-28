@@ -59,77 +59,40 @@ import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.LanguageTool;
 
 /**
- * The Class MultipleFrame.
+ * The multiple winfow frame
  */
 public class MultipleFrame implements Frame {
 
-    /** The Constant frameDimension. */
-    private static final Dimension frameDimension = new Dimension(500, 400);
-
-    /** The Constant navigatorDimension. */
-    private static final Dimension navigatorDimension = new Dimension(300, 689);
-
-    /** The Constant filePropertiesDimension. */
-    private static final Dimension filePropertiesDimension = new Dimension(500, 130);
-
-    /** The Constant contextDimension. */
-    private static final Dimension contextDimension = new Dimension(300, 689);
-
-    /** The frame. */
-    private CustomFrame frame;
-
-    /** The navigator dialog. */
-    CustomDialog navigatorDialog;
-
-    /** The file properties dialog. */
-    private CustomDialog filePropertiesDialog;
-
-    /** The audio scrobbler dialog. */
-    private CustomDialog contextDialog;
-
-    /** The menu bar. */
-    private ApplicationMenuBar menuBar;
-
-    /** The tool bar. */
-    ToolBar toolBar;
-
-    /** The navigation panel. */
-    private NavigationPanel navigationPanel;
-
-    /** The play list panel. */
-    private PlayListPanel playListPanel;
-
-    /** The player controls panel. */
-    private PlayerControlsPanel playerControlsPanel;
-
-    /** The file properties panel. */
-    private AudioObjectPropertiesPanel filePropertiesPanel;
-
-    /** The audio scrobbler panel. */
-    private ContextPanel contextPanel;
-
-    /** The Constant NONE. */
-    static final int NONE = -1;
-
-    /** The Constant NORTH. */
-    static final int NORTH = 0;
-
-    /** The Constant SOUTH. */
-    static final int SOUTH = 1;
-
-    /** The Constant WEST. */
-    static final int WEST = 2;
-
-    /** The Constant EAST. */
-    static final int EAST = 3;
-
-    /** The windows. */
-    List<Window> windows;
-
     private static final int STICKY_INSET = 30;
 
-    private static int screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
-    private static int screenHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
+    private static int SCREEN_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
+    private static int SCREEN_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height;
+
+    private static final int NONE = -1;
+    private static final int NORTH = 0;
+    private static final int SOUTH = 1;
+    private static final int WEST = 2;
+    private static final int EAST = 3;
+
+    private static final Dimension frameDimension = new Dimension(500, 400);
+    private static final Dimension navigatorDimension = new Dimension(300, 689);
+    private static final Dimension filePropertiesDimension = new Dimension(500, 130);
+    private static final Dimension contextDimension = new Dimension(300, 689);
+
+    private CustomFrame frame;
+
+    CustomDialog navigatorDialog;
+    private CustomDialog filePropertiesDialog;
+    private CustomDialog contextDialog;
+    private ApplicationMenuBar menuBar;
+    ToolBar toolBar;
+    private NavigationPanel navigationPanel;
+    private PlayListPanel playListPanel;
+    private PlayerControlsPanel playerControlsPanel;
+    private AudioObjectPropertiesPanel filePropertiesPanel;
+    private ContextPanel contextPanel;
+
+    List<Window> windows;
 
     /**
      * Instantiates a new multiple frame.
@@ -182,11 +145,6 @@ public class MultipleFrame implements Frame {
         GuiUtils.applyComponentOrientation(contextPanel);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#create()
-     */
     @Override
     public void create() {
         menuBar = new ApplicationMenuBar();
@@ -252,81 +210,41 @@ public class MultipleFrame implements Frame {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#getAppMenuBar()
-     */
     @Override
     public ApplicationMenuBar getAppMenuBar() {
         return menuBar;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#getAudioScrobblerPanel()
-     */
     @Override
     public ContextPanel getContextPanel() {
         return contextPanel;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#getExtendedState()
-     */
     @Override
     public int getExtendedState() {
         return frame.getExtendedState();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#getFrame()
-     */
     @Override
     public JFrame getFrame() {
         return frame;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#getLocation()
-     */
     @Override
     public Point getLocation() {
         return frame.getLocation();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#getNavigationPanel()
-     */
     @Override
     public NavigationPanel getNavigationPanel() {
         return navigationPanel;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#getPlayerControls()
-     */
     @Override
     public PlayerControlsPanel getPlayerControls() {
         return playerControlsPanel;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#getPlayListPanel()
-     */
     @Override
     public PlayListPanel getPlayListPanel() {
         if (playListPanel == null) {
@@ -335,41 +253,21 @@ public class MultipleFrame implements Frame {
         return playListPanel;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#getPlayListTable()
-     */
     @Override
     public PlayListTable getPlayListTable() {
         return getPlayListPanel().getPlayListTable();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#getPropertiesPanel()
-     */
     @Override
     public AudioObjectPropertiesPanel getPropertiesPanel() {
         return filePropertiesPanel;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#getSize()
-     */
     @Override
     public Dimension getSize() {
         return frame.getSize();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#getToolBar()
-     */
     @Override
     public ToolBar getToolBar() {
         return toolBar;
@@ -385,23 +283,11 @@ public class MultipleFrame implements Frame {
         return frame.isVisible();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.gui.Frame#setCenterStatusBar(java.lang.String,
-     * java.lang.String)
-     */
     @Override
     public void setCenterStatusBar(String text, String toolTip) {
         // Nothing to do
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#setDefaultCloseOperation(int)
-     */
     @Override
     public void setDefaultCloseOperation(int op) {
         frame.setDefaultCloseOperation(op);
@@ -410,88 +296,41 @@ public class MultipleFrame implements Frame {
         contextDialog.setDefaultCloseOperation(op);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#setExtendedState(int)
-     */
     @Override
     public void setExtendedState(int state) {
         //frame.setExtendedState(state);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.gui.Frame#setLeftStatusBarText(java.lang.String,
-     * java.lang.String)
-     */
     @Override
     public void setLeftStatusBarText(String text, String toolTip) {
         //	Nothing to do
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#setLocation(java.awt.Point)
-     */
     @Override
     public void setLocation(Point location) {
         //frame.setLocation(location.x, location.y);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.gui.Frame#setLocationRelativeTo(java.awt.Component
-     * )
-     */
     @Override
     public void setLocationRelativeTo(Component c) {
         frame.setLocationRelativeTo(c);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#setRightStatusBar(java.lang.String,
-     * java.lang.String)
-     */
     @Override
     public void setRightStatusBar(String text, String toolTip) {
         // Nothing to do
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.gui.Frame#setStatusBarImageLabelIcon(javax.swing
-     * .Icon, java.lang.String)
-     */
     @Override
     public void setStatusBarDeviceLabelText(String text) {
         // Nothing to do
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#setTitle(java.lang.String)
-     */
     @Override
     public void setTitle(String title) {
         frame.setTitle(title);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#setVisible(boolean)
-     */
     @Override
     public void setVisible(boolean visible) {
         frame.setVisible(visible);
@@ -506,32 +345,16 @@ public class MultipleFrame implements Frame {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#showContextPanel(boolean, boolean)
-     */
     @Override
     public void showContextPanel(boolean show, boolean changeSize) {
         contextDialog.setVisible(show);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#showNavigationPanel(boolean,
-     * boolean)
-     */
     @Override
     public void showNavigationPanel(boolean show, boolean changeSize) {
         navigatorDialog.setVisible(show);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#showNavigationTable(boolean)
-     */
     @Override
     public void showNavigationTable(boolean show) {
         navigationPanel.getNavigationTableContainer().setVisible(show);
@@ -543,63 +366,31 @@ public class MultipleFrame implements Frame {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#showProgressBar(boolean,
-     * java.lang.String)
-     */
     @Override
     public void showProgressBar(boolean visible, String tooltip) {
         // Nothing to do
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#showSongProperties(boolean)
-     */
     @Override
     public void showSongProperties(boolean show) {
         filePropertiesDialog.setVisible(show);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#showStatusBar(boolean)
-     */
     @Override
     public void showStatusBar(boolean show) {
         // Nothing to do
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#showToolBar(boolean)
-     */
     @Override
     public void showToolBar(boolean show) {
         getToolBar().setVisible(show);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#showDeviceInfo(boolean)
-     */
     @Override
     public void showDeviceInfo(boolean show) {
         // Nothing to do
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.gui.Frame#showNewPodcastFeedEntriesInfo(boolean)
-     */
     @Override
     public void showNewPodcastFeedEntriesInfo(boolean show) {
         if (show) {
@@ -607,12 +398,6 @@ public class MultipleFrame implements Frame {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#showNewVersionInfo(boolean,
-     * net.sourceforge.atunes.kernel.modules.updates.ApplicationVersion)
-     */
     @Override
     public void showNewVersionInfo(boolean show, ApplicationVersion version) {
         if (show) {
@@ -751,9 +536,9 @@ public class MultipleFrame implements Frame {
 
         // Sticky borders
         x = (x < STICKY_INSET) ? 0 : x;
-        x = (screenWidth - (x + window.getSize().width) < STICKY_INSET) ? screenWidth - window.getSize().width : x;
+        x = (SCREEN_WIDTH - (x + window.getSize().width) < STICKY_INSET) ? SCREEN_WIDTH - window.getSize().width : x;
         y = (y < STICKY_INSET) ? 0 : y;
-        y = (screenHeight - (y + window.getSize().height) < STICKY_INSET) ? screenHeight - window.getSize().height : y;
+        y = (SCREEN_HEIGHT - (y + window.getSize().height) < STICKY_INSET) ? SCREEN_HEIGHT - window.getSize().height : y;
 
         if (windows.size() > 1) {
             for (int i = 0; i < windows.size(); i++) {
