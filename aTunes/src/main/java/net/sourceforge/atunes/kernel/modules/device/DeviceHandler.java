@@ -256,7 +256,9 @@ public final class DeviceHandler implements LoaderListener, DeviceConnectionList
             }
         });
         // Add this listener second so when this is called filesCopiedToDevice has been updated
-        process.addProcessListener(listener);
+        if (listener != null) {
+        	process.addProcessListener(listener);
+        }
         process.execute();
     }
 
