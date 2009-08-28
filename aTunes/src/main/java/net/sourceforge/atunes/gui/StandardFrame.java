@@ -67,93 +67,40 @@ import net.sourceforge.atunes.utils.LanguageTool;
 import org.jdesktop.swingx.JXStatusBar;
 
 /**
- * The Class StandardFrame.
+ * The standard frame
  */
 public class StandardFrame extends CustomFrame implements net.sourceforge.atunes.gui.Frame {
 
     private static final long serialVersionUID = 1L;
 
-    /** The Constant NAVIGATION_PANEL_WIDTH. */
     public static final int NAVIGATION_PANEL_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 280);
-
-    /** The Constant NAVIGATION_PANEL_MINIMUM_WIDTH. */
     public static final int NAVIGATION_PANEL_MINIMUM_WIDTH = NAVIGATION_PANEL_WIDTH - 80;
-
-    /** The Constant NAVIGATION_PANEL_MAXIMUM_WIDTH. */
     public static final int NAVIGATION_PANEL_MAXIMUM_WIDTH = NAVIGATION_PANEL_WIDTH + 50;
-
-    /** The Constant CONTEXT_PANEL_WIDTH. */
     public static final int CONTEXT_PANEL_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 280);
-
-    /** The Constant CONTEXT_PANEL_MINIMUM_WIDTH. */
     public static final int CONTEXT_PANEL_MINIMUM_WIDTH = CONTEXT_PANEL_WIDTH - 50;
-
-    /** The Constant FILE_PROPERTIES_PANEL_HEIGHT. */
     public static final int FILE_PROPERTIES_PANEL_HEIGHT = 100;
-
-    /** The Constant PLAY_LIST_PANEL_WIDTH. */
     public static final int PLAY_LIST_PANEL_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 490);
-
-    /** The Constant NAVIGATOR_SPLIT_PANE_DIVIDER_LOCATION. */
     public static final int NAVIGATOR_SPLIT_PANE_DIVIDER_LOCATION = GuiUtils.getComponentHeightForResolution(1024, 612);
-
     private static final int SPLIT_PANE_DEFAULT_DIVIDER_SIZE = 10;
+    public static final int MARGIN = 100;
 
-    /** The Constant margin. */
-    public static final int margin = 100;
-
-    /** The left vertical split pane. */
     private JSplitPane leftVerticalSplitPane;
-
-    /** The right vertical split pane. */
     private JSplitPane rightVerticalSplitPane;
-
-    /** The left status bar. */
     private JLabel leftStatusBar;
-
-    /** The center status bar. */
     private JLabel centerStatusBar;
-
-    /** The right status bar. */
     private JLabel rightStatusBar;
-
-    /** The status bar image label. */
     private JLabel statusBarDeviceLabel;
-
-    /** The new podcast entries label. */
     private JLabel statusBarNewPodcastEntriesLabel;
-
-    /** The new version label. */
     private JLabel statusBarNewVersionLabel;
-
-    /** The update Dialog */
     UpdateDialog updateDialog;
-
-    /** The progress bar. */
     private JProgressBar progressBar;
-
-    /** The app menu bar. */
     private ApplicationMenuBar appMenuBar;
-
-    /** The navigation panel. */
     private NavigationPanel navigationPanel;
-
-    /** The play list panel. */
     private PlayListPanel playListPanel;
-
-    /** The properties panel. */
     private AudioObjectPropertiesPanel propertiesPanel;
-
-    /** The audio scrobbler panel. */
     private ContextPanel contextPanel;
-
-    /** The player controls. */
     private PlayerControlsPanel playerControls;
-
-    /** The status bar. */
     private JXStatusBar statusBar;
-
-    /** The tool bar. */
     private ToolBar toolBar;
 
     Timer statusBarNewVersionInfoTimer = new Timer(1000, new ActionListener() {
@@ -170,7 +117,6 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
         }
     });
 
-    /** The logger. */
     Logger logger = new Logger();
 
     /**
@@ -180,11 +126,6 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
         super();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#create()
-     */
     @Override
     public void create() {
         // Set frame basic attributes
@@ -226,11 +167,6 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
         GuiUtils.applyComponentOrientation(this);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.awt.Window#dispose()
-     */
     @Override
     public void dispose() {
         VisualHandler.getInstance().finish();
@@ -245,21 +181,11 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
         VisualHandler.getInstance().showAboutDialog();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#getAppMenuBar()
-     */
     @Override
     public ApplicationMenuBar getAppMenuBar() {
         return appMenuBar;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#getContextPanel()
-     */
     @Override
     public ContextPanel getContextPanel() {
         if (contextPanel == null) {
@@ -370,11 +296,6 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
         return panel;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#getFrame()
-     */
     @Override
     public JFrame getFrame() {
         return this;
@@ -401,11 +322,6 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
         return leftVerticalSplitPane;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#getNavigationPanel()
-     */
     @Override
     public NavigationPanel getNavigationPanel() {
         if (navigationPanel == null) {
@@ -422,11 +338,6 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
         return navigationPanel;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#getPlayerControls()
-     */
     @Override
     public PlayerControlsPanel getPlayerControls() {
         if (playerControls == null) {
@@ -435,11 +346,6 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
         return playerControls;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#getPlayListPanel()
-     */
     @Override
     public PlayListPanel getPlayListPanel() {
         if (playListPanel == null) {
@@ -450,11 +356,6 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
         return playListPanel;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#getPlayListTable()
-     */
     @Override
     public PlayListTable getPlayListTable() {
         return getPlayListPanel().getPlayListTable();
@@ -474,11 +375,6 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
         return progressBar;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#getPropertiesPanel()
-     */
     @Override
     public AudioObjectPropertiesPanel getPropertiesPanel() {
         if (propertiesPanel == null) {
@@ -573,36 +469,17 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
         return statusBarNewVersionLabel;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#getToolBar()
-     */
     @Override
     public ToolBar getToolBar() {
         return toolBar;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.gui.Frame#setCenterStatusBar(java.lang.String,
-     * java.lang.String)
-     */
     @Override
     public void setCenterStatusBar(String text, String toolTip) {
         getCenterStatusBar().setText(text);
         getCenterStatusBar().setToolTipText(toolTip);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.gui.Frame#setLeftStatusBarText(java.lang.String,
-     * java.lang.String)
-     */
     @Override
     public void setLeftStatusBarText(String text, String toolTip) {
         getLeftStatusBar().setText(text);
@@ -621,12 +498,6 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
         setWindowSize();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#setRightStatusBar(java.lang.String,
-     * java.lang.String)
-     */
     @Override
     public void setRightStatusBar(String text, String toolTip) {
         getRightStatusBar().setText(text);
@@ -645,23 +516,11 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
         setWindowSize();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.gui.Frame#setStatusBarImageLabelIcon(javax.swing
-     * .Icon, java.lang.String)
-     */
     @Override
     public void setStatusBarDeviceLabelText(String text) {
         getStatusBarDeviceLabel().setText(text);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.awt.Window#setVisible(boolean)
-     */
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);
@@ -704,7 +563,7 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
             } else {
                 // Set size always according to main device dimension 
                 // Avoid create a frame too big: if device width is greater than 2000 pixels then use half width
-                setSize((GuiUtils.getDeviceWidth() > 2000 ? GuiUtils.getDeviceWidth() / 2 : GuiUtils.getDeviceWidth()) - margin, GuiUtils.getDeviceHeight() - margin);
+                setSize((GuiUtils.getDeviceWidth() > 2000 ? GuiUtils.getDeviceWidth() / 2 : GuiUtils.getDeviceWidth()) - MARGIN, GuiUtils.getDeviceHeight() - MARGIN);
             }
         }
 
@@ -712,15 +571,10 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
 
     private void setWindowSizeMaximized() {
         Dimension screen = getToolkit().getScreenSize();
-        setSize(screen.width - margin, screen.height - margin);
+        setSize(screen.width - MARGIN, screen.height - MARGIN);
         setExtendedState(Frame.MAXIMIZED_BOTH);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#showContextPanel(boolean, boolean)
-     */
     @Override
     public void showContextPanel(boolean show, boolean changeSize) {
         boolean wasVisible = getContextPanel().isVisible();
@@ -755,12 +609,6 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#showNavigationPanel(boolean,
-     * boolean)
-     */
     @Override
     public void showNavigationPanel(boolean show, boolean changeSize) {
         getNavigationPanel().setVisible(show);
@@ -781,11 +629,6 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#showNavigationTable(boolean)
-     */
     @Override
     public void showNavigationTable(boolean show) {
         getNavigationPanel().getNavigationTableContainer().setVisible(show);
@@ -800,12 +643,6 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#showProgressBar(boolean,
-     * java.lang.String)
-     */
     @Override
     public void showProgressBar(boolean visible, String tooltip) {
         if (visible) {
@@ -819,41 +656,21 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
         statusBar.validate();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#showSongProperties(boolean)
-     */
     @Override
     public void showSongProperties(boolean show) {
         getPropertiesPanel().setVisible(show);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#showStatusBar(boolean)
-     */
     @Override
     public void showStatusBar(boolean show) {
         getStatusBar().setVisible(show);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#showToolBar(boolean)
-     */
     @Override
     public void showToolBar(boolean show) {
         getToolBar().setVisible(show);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#showStatusBarImageLabel(boolean)
-     */
     @Override
     public void showDeviceInfo(boolean show) {
         if (show) {
