@@ -203,7 +203,7 @@ public class PlayListColumns implements PluginListener {
     public static void storeCurrentColumnSettings() {
         // Get ColumnsBean from default columns and store it
         HashMap<String, ColumnBean> newColumnsBeans = new HashMap<String, ColumnBean>();
-        for (Column column : availableColumns) {
+        for (Column column : getAvailableColumns()) {
             newColumnsBeans.put(column.getClass().getName(), column.getColumnBean());
         }
         ApplicationState.getInstance().setColumns(newColumnsBeans);
@@ -233,7 +233,7 @@ public class PlayListColumns implements PluginListener {
      * @return
      */
     public static Column getColumn(Class<? extends Column> columnClass) {
-        for (Column column : availableColumns) {
+        for (Column column : getAvailableColumns()) {
             if (column.getClass().equals(columnClass)) {
                 return column;
             }
@@ -245,7 +245,7 @@ public class PlayListColumns implements PluginListener {
     public void pluginActivated(PluginInfo plugin) {
         try {
             Column pluginColumn = (Column) plugin.getInstance();
-            availableColumns.add(pluginColumn);
+            getAvailableColumns().add(pluginColumn);
             
             // Apply configuration if column has been previously used
             boolean needRefresh = false;
@@ -271,7 +271,7 @@ public class PlayListColumns implements PluginListener {
     @Override
     public void pluginDeactivated(PluginInfo plugin, Collection<Plugin> createdInstances) {
         for (Plugin instancedColumn : createdInstances) {
-            availableColumns.remove(instancedColumn);
+        	getAvailableColumns().remove(instancedColumn);
         }
         refreshColumns();
     }

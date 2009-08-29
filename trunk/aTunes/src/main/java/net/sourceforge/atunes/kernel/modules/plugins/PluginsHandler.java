@@ -41,6 +41,7 @@ import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.ZipUtils;
 
+import org.apache.commons.io.FileUtils;
 import org.commonjukebox.plugins.Plugin;
 import org.commonjukebox.plugins.PluginInfo;
 import org.commonjukebox.plugins.PluginListener;
@@ -185,7 +186,7 @@ public class PluginsHandler implements PluginListener {
     }
 
     /**
-     * Unzips a zip file in plugins directory
+     * Unzips a zip file in user plugins directory and updates plugins
      * 
      * @param zipFile
      * @throws PluginSystemException
@@ -202,6 +203,29 @@ public class PluginsHandler implements PluginListener {
             logger.error(LogCategories.PLUGINS, e);
             throw e;
         }
+    }
+    
+    /**
+     * Removes a plugin from user plugins folder and updates plugins
+     * @param plugin
+     * @throws IOException
+     * @throws PluginSystemException 
+     */
+    public void uninstallPlugin(PluginInfo plugin) throws IOException, PluginSystemException {
+    	// Only remove plugins if are contained in a separate folder under user plugins folder
+    	File pluginLocation = new File(plugin.getPluginLocation());
+    	if (pluginLocation.getParent().equals(new File(getUserPluginsFolder()).getAbsolutePath())) {
+    		try {
+    			FileUtils.deleteDirectory(pluginLocation);
+    			factory.refresh();
+    		} catch (IOException e) {
+                logger.error(LogCategories.PLUGINS, e);
+                throw e;
+    		} catch (PluginSystemException e) {
+                logger.error(LogCategories.PLUGINS, e);
+                throw e;
+    		}
+    	}
     }
 
     /**
