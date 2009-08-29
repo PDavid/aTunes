@@ -29,6 +29,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -82,6 +83,8 @@ public class PluginsPanel extends PreferencesPanel {
     JTable pluginsTable;
 
     JButton pluginPreferencesButton;
+    
+    JButton uninstallPluginButton;
 
     private static final int CELL_HEIGHT = 30;
 
@@ -126,7 +129,7 @@ public class PluginsPanel extends PreferencesPanel {
         c.weightx = 1;
         c.weighty = 0.6;
         c.fill = GridBagConstraints.BOTH;
-        c.gridheight = 2;
+        c.gridheight = 3;
 
         add(scrollPane, c);
 
@@ -150,7 +153,7 @@ public class PluginsPanel extends PreferencesPanel {
         pluginDetailPanel.add(pluginAuthorLabel);
         pluginDetailPanel.add(pluginUrlLabel);
 
-        c.gridy = 2;
+        c.gridy = 3;
         c.insets = new Insets(10, 5, 10, 5);
         c.gridheight = 1;
         c.weighty = 0.4;
@@ -187,6 +190,7 @@ public class PluginsPanel extends PreferencesPanel {
                     pluginAuthorLabel.setText(StringUtils.getString("<html><b>", LanguageTool.getString("AUTHOR"), ":</b> ", plugin.getAuthor(), "</html>"));
                     pluginUrlLabel.setText(plugin.getUrl(), plugin.getUrl());
                     pluginPreferencesButton.setEnabled(((PluginsTableModel) pluginsTable.getModel()).getPluginConfigurationAt(pluginsTable.getSelectedRow()) != null);
+                    uninstallPluginButton.setEnabled(pluginsTable.getSelectedRow() != -1);
                 }
             }
         });
@@ -246,10 +250,29 @@ public class PluginsPanel extends PreferencesPanel {
                         updatePanel(null);
                     } catch (Exception e1) {
                         VisualHandler.getInstance().showErrorDialog(e1.getMessage());
-                        e1.printStackTrace();
+                        logger.error(LogCategories.PLUGINS, e1);
                     }
                 }
             }
+        });
+        
+        uninstallPluginButton = new JButton(LanguageTool.getString("UNINSTALL"));
+        uninstallPluginButton.setEnabled(false);
+        c.gridy = 2;
+        add(uninstallPluginButton, c);
+        
+        uninstallPluginButton.addActionListener(new ActionListener() {
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+                int row = pluginsTable.getSelectedRow();
+                PluginInfo plugin = ((PluginsTableModel) pluginsTable.getModel()).getPluginAt(row);
+                try {
+					PluginsHandler.getInstance().uninstallPlugin(plugin);
+				} catch (Exception e1) {
+                    VisualHandler.getInstance().showErrorDialog(e1.getMessage());
+                    logger.error(LogCategories.PLUGINS, e1);
+				}
+        	}
         });
     }
 
