@@ -25,7 +25,7 @@ package net.sourceforge.atunes.kernel.modules.player.mplayer;
  */
 class MPlayerPositionThread extends Thread {
 
-    private static final int STEP = 200;
+    private static final int STEP = 250;
 
     private MPlayerEngine engine;
 
@@ -49,7 +49,7 @@ class MPlayerPositionThread extends Thread {
                 Thread.sleep(STEP);
             }
         } catch (InterruptedException e) {
-            engine.handlePlayerEngineError(e);
+            // Interrupted when playback is stopped
         }
     }
 }
