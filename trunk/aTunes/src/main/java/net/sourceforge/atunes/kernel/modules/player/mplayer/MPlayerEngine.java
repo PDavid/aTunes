@@ -218,7 +218,7 @@ public class MPlayerEngine extends PlayerEngine {
             process = null;
             mPlayerErrorReader = null;
             mPlayerOutputReader = null;
-            commandWriter.setProcess(null);
+            commandWriter.finishProcess();
             setCurrentAudioObjectPlayedTime(0);
         }
     }
@@ -233,7 +233,7 @@ public class MPlayerEngine extends PlayerEngine {
         process = null;
         mPlayerErrorReader = null;
         mPlayerOutputReader = null;
-        commandWriter.setProcess(null);
+        commandWriter.finishProcess();
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
