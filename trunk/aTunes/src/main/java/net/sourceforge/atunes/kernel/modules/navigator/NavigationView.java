@@ -245,7 +245,7 @@ public abstract class NavigationView implements AudioObjectsSource {
      * @return
      */
     public abstract List<AudioObject> filterNavigatorTable(List<AudioObject> audioObjects, String filter);
-    
+
     /**
      * Enables or disables tree popup menu items of this view
      * 
@@ -430,7 +430,7 @@ public abstract class NavigationView implements AudioObjectsSource {
      * 
      * @return
      */
-    protected ViewMode getCurrentViewMode() {
+    public ViewMode getCurrentViewMode() {
         return ApplicationState.getInstance().getViewMode();
     }
 
@@ -439,7 +439,7 @@ public abstract class NavigationView implements AudioObjectsSource {
      * 
      * @return
      */
-    protected String getCurrentTreeFilter() {
+    public String getCurrentTreeFilter() {
         return ControllerProxy.getInstance().getNavigationController().getNavigationPanel().getTreeFilterPanel().getFilter();
     }
 
@@ -563,7 +563,7 @@ public abstract class NavigationView implements AudioObjectsSource {
 
         return objectsExpanded;
     }
-    
+
     /**
      * Expands a list of nodes of a tree
      * 
@@ -594,28 +594,31 @@ public abstract class NavigationView implements AudioObjectsSource {
             tree.setSelectionPaths(pathsToSelect);
         }
     }
-    
+
     /**
      * Returns an action to show this view
-     * @param index (index of this view in view's list, valid values are 1 to 9, others will not be added an accelerator)
+     * 
+     * @param index
+     *            (index of this view in view's list, valid values are 1 to 9,
+     *            others will not be added an accelerator)
      * @return
      */
     public final net.sourceforge.atunes.kernel.actions.Action getActionToShowView(int index) {
-    	net.sourceforge.atunes.kernel.actions.Action viewAction = new net.sourceforge.atunes.kernel.actions.Action(getTitle(), getIcon()) {
+        net.sourceforge.atunes.kernel.actions.Action viewAction = new net.sourceforge.atunes.kernel.actions.Action(getTitle(), getIcon()) {
 
-    		private static final long serialVersionUID = 2895222205333520899L;
+            private static final long serialVersionUID = 2895222205333520899L;
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				ControllerProxy.getInstance().getNavigationController().setNavigationView(NavigationView.this.getClass().getName());
-			}
-		};
-		
-		// The first 9 views will have an accelerator key ALT + index
-		if (index > 0 && index < 10) {
-			viewAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_0 + index, ActionEvent.ALT_MASK));
-		}
-		
-		return viewAction;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ControllerProxy.getInstance().getNavigationController().setNavigationView(NavigationView.this.getClass().getName());
+            }
+        };
+
+        // The first 9 views will have an accelerator key ALT + index
+        if (index > 0 && index < 10) {
+            viewAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_0 + index, ActionEvent.ALT_MASK));
+        }
+
+        return viewAction;
     }
 }

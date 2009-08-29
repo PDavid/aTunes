@@ -62,7 +62,7 @@ import net.sourceforge.atunes.utils.LanguageTool;
 
 import org.jvnet.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
 
-public class PodcastNavigationView extends NavigationView {
+public final class PodcastNavigationView extends NavigationView {
 
     /** The podcast feed tree. */
     private JTree podcastFeedTree;

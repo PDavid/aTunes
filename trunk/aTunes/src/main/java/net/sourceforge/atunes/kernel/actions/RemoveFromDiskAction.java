@@ -33,6 +33,7 @@ import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
+import net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.RepositoryNavigationView;
@@ -41,7 +42,6 @@ import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.model.Folder;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.LanguageTool;
@@ -61,7 +61,7 @@ public class RemoveFromDiskAction extends Action {
         if (VisualHandler.getInstance().showConfirmationDialog(LanguageTool.getString("REMOVE_CONFIRMATION"), LanguageTool.getString("CONFIRMATION")) == JOptionPane.OK_OPTION) {
 
             // Podcast view
-            if (ApplicationState.getInstance().getNavigationView().equals(PodcastNavigationView.class.getName())) {
+            if (NavigationHandler.getInstance().getCurrentView() instanceof PodcastNavigationView) {
                 int[] rows = ControllerProxy.getInstance().getNavigationController().getNavigationPanel().getNavigationTable().getSelectedRows();
                 if (rows.length > 0) {
                     List<AudioObject> songs = new ArrayList<AudioObject>();
@@ -74,10 +74,9 @@ public class RemoveFromDiskAction extends Action {
                         PodcastFeedHandler.getInstance().deleteDownloadedPodcastFeedEntry(podcastFeedEntry);
                     }
                 }
-
-                // Repository view with folder view mode, folder selected: delete folders instead of content
-            } else if (ApplicationState.getInstance().getNavigationView().equals(RepositoryNavigationView.class.getName())
-                    && ApplicationState.getInstance().getViewMode() == ViewMode.FOLDER
+                // Repository or device view with folder view mode, folder selected: delete folders instead of content
+            } else if ((NavigationHandler.getInstance().getCurrentView() instanceof RepositoryNavigationView || NavigationHandler.getInstance().getCurrentView() instanceof DeviceNavigationView)
+                    && NavigationHandler.getInstance().getCurrentViewMode() == ViewMode.FOLDER
                     && ControllerProxy.getInstance().getNavigationController().getPopupMenuCaller() instanceof JTree) {
                 TreePath[] paths = NavigationHandler.getInstance().getCurrentView().getTree().getSelectionPaths();
                 List<Folder> foldersToRemove = new ArrayList<Folder>();
@@ -91,7 +90,6 @@ public class RemoveFromDiskAction extends Action {
                 }
                 RepositoryHandler.getInstance().removeFoldersPhysically(foldersToRemove);
 
-                // Remove files
             } else {
                 List<AudioFile> files = ControllerProxy.getInstance().getNavigationController().getFilesSelectedInNavigator();
                 RepositoryHandler.getInstance().removePhysically(files);
