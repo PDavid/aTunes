@@ -267,7 +267,7 @@ public abstract class PlayerEngine implements PlaybackStateListener {
 
     @Override
     public void playbackStateChanged(PlaybackState newState, AudioObject currentAudioObject) {
-        if (newState == PlaybackState.PLAY_FINISHED) {
+        if (newState == PlaybackState.PLAY_FINISHED || newState == PlaybackState.PLAY_INTERRUPTED) {
             submitToLastFmAndUpdateStats();            
         } else if (newState == PlaybackState.STOPPED) {
         	setCurrentAudioObjectPlayedTime(0);
@@ -350,6 +350,9 @@ public abstract class PlayerEngine implements PlaybackStateListener {
      * Starts playing previous audio object from play list
      */
     final void playPreviousAudioObject() {
+    	// Call listeners to notify playback was interrupted
+		callPlaybackStateListeners(PlaybackState.PLAY_INTERRUPTED);
+
         switchPlaybackTo(PlayListHandler.getInstance().getPreviousAudioObject(), false, false);
     }
 
@@ -363,6 +366,10 @@ public abstract class PlayerEngine implements PlaybackStateListener {
      * 
      */
     final void playNextAudioObject(boolean audioObjectFinished) {
+    	if (!audioObjectFinished) {
+        	// Call listeners to notify playback was interrupted
+    		callPlaybackStateListeners(PlaybackState.PLAY_INTERRUPTED);
+    	}
         switchPlaybackTo(PlayListHandler.getInstance().getNextAudioObject(), true, audioObjectFinished);
     }
     
