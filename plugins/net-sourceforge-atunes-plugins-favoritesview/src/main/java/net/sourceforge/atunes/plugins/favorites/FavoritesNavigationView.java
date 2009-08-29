@@ -1,6 +1,5 @@
 package net.sourceforge.atunes.plugins.favorites;
 
-
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,7 +52,7 @@ import org.commonjukebox.plugins.PluginConfiguration;
 import org.commonjukebox.plugins.PluginInfo;
 import org.jvnet.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
 
-public class FavoritesNavigationView extends NavigationView implements Plugin {
+public final class FavoritesNavigationView extends NavigationView implements Plugin {
 
     private JTree favoritesTree;
 
@@ -413,24 +412,24 @@ public class FavoritesNavigationView extends NavigationView implements Plugin {
         };
     }
 
-	@Override
-	public void configurationChanged(PluginConfiguration arg0) {
-		// No configuration
-	}
+    @Override
+    public void configurationChanged(PluginConfiguration arg0) {
+        // No configuration
+    }
 
-	@Override
-	public PluginConfiguration getDefaultConfiguration() {
-		// No configuration
-		return null;
-	}
+    @Override
+    public PluginConfiguration getDefaultConfiguration() {
+        // No configuration
+        return null;
+    }
 
-	@Override
-	public void setConfiguration(PluginConfiguration arg0) {
-		// No configuration
-	}
+    @Override
+    public void setConfiguration(PluginConfiguration arg0) {
+        // No configuration
+    }
 
-	@Override
-	public void setPluginInfo(PluginInfo arg0) {
-		// No info needed
-	}
+    @Override
+    public void setPluginInfo(PluginInfo arg0) {
+        // No info needed
+    }
 }

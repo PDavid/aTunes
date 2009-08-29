@@ -71,7 +71,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jvnet.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
 
-public class DeviceNavigationView extends NavigationView {
+public final class DeviceNavigationView extends NavigationView {
 
     /** The device tree. */
     private JTree deviceTree;

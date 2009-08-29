@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.kernel.ControllerProxy;
+import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateChangeListener;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
@@ -40,28 +41,29 @@ import org.commonjukebox.plugins.PluginSystemException;
 
 public class NavigationHandler implements PluginListener, ApplicationStateChangeListener {
 
-	/**
-	 * Singleton instance
-	 */
-	private static NavigationHandler instance;
-	
+    /**
+     * Singleton instance
+     */
+    private static NavigationHandler instance;
+
     private List<NavigationView> navigationViews;
 
     private Logger logger;
-    
+
     /**
      * Getter of singleton instance
+     * 
      * @return
      */
     public static NavigationHandler getInstance() {
-    	if (instance == null) {
-    		instance = new NavigationHandler();
-    	}
-    	return instance;
+        if (instance == null) {
+            instance = new NavigationHandler();
+        }
+        return instance;
     }
-    
+
     private NavigationHandler() {
-    	ApplicationStateHandler.getInstance().addStateChangeListener(this);
+        ApplicationStateHandler.getInstance().addStateChangeListener(this);
     }
 
     public List<NavigationView> getNavigationViews() {
@@ -77,19 +79,25 @@ public class NavigationHandler implements PluginListener, ApplicationStateChange
     }
 
     /**
-     * Builds a map containing classes of navigation view as keys and references to instances as values
+     * Builds a map containing classes of navigation view as keys and references
+     * to instances as values
+     * 
      * @return
      */
     private Map<Class<? extends NavigationView>, NavigationView> getNavigationViewsMap() {
-    	Map<Class<? extends NavigationView>, NavigationView> navigationViewsMap = new HashMap<Class<? extends NavigationView>, NavigationView>();
-    	for (NavigationView view : getNavigationViews()) {
-    		navigationViewsMap.put(view.getClass(), view);
-    	}
+        Map<Class<? extends NavigationView>, NavigationView> navigationViewsMap = new HashMap<Class<? extends NavigationView>, NavigationView>();
+        for (NavigationView view : getNavigationViews()) {
+            navigationViewsMap.put(view.getClass(), view);
+        }
         return navigationViewsMap;
     }
 
     public NavigationView getCurrentView() {
         return getView(getViewByName(ApplicationState.getInstance().getNavigationView()));
+    }
+
+    public ViewMode getCurrentViewMode() {
+        return getCurrentView().getCurrentViewMode();
     }
 
     public NavigationView getView(Class<? extends NavigationView> navigationViewClass) {
@@ -122,11 +130,11 @@ public class NavigationHandler implements PluginListener, ApplicationStateChange
             return null;
         }
         for (Class<? extends NavigationView> viewFromMap : getNavigationViewsMap().keySet()) {
-        	if (viewFromMap.getName().equals(className)) {
-        		return viewFromMap;
-        	}
+            if (viewFromMap.getName().equals(className)) {
+                return viewFromMap;
+            }
         }
-        
+
         // If class is not found (maybe the view was a plugin and has been removed, return default view)
         return RepositoryNavigationView.class;
     }
@@ -134,39 +142,40 @@ public class NavigationHandler implements PluginListener, ApplicationStateChange
     public int indexOf(Class<? extends NavigationView> view) {
         return getNavigationViews().indexOf(getNavigationViewsMap().get(view));
     }
-    
+
     @Override
     public void pluginActivated(PluginInfo plugin) {
-    	try {
-			getNavigationViews().add((NavigationView)plugin.getInstance());
-		} catch (PluginSystemException e) {
-			getLogger().error(LogCategories.PLUGINS, e);
-			
-		}
+        try {
+            getNavigationViews().add((NavigationView) plugin.getInstance());
+        } catch (PluginSystemException e) {
+            getLogger().error(LogCategories.PLUGINS, e);
+
+        }
     }
-    
+
     @Override
     public void pluginDeactivated(PluginInfo plugin, Collection<Plugin> views) {
-    	// Remove all views
-    	for (Plugin view : views) {
-    		getNavigationViews().remove(view);
-    	}
+        // Remove all views
+        for (Plugin view : views) {
+            getNavigationViews().remove(view);
+        }
     }
-    
+
     /**
      * Internal getter for logger
+     * 
      * @return
      */
     private Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
     }
-    
+
     @Override
     public void applicationStateChanged(ApplicationState newState) {
-    	// TODO: Remove refreshing explicitly radio view
+        // TODO: Remove refreshing explicitly radio view
         refreshView(RadioNavigationView.class);
         refreshCurrentView();
     }

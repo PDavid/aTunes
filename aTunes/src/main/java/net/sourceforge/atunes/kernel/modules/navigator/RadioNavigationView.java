@@ -60,7 +60,7 @@ import net.sourceforge.atunes.utils.LanguageTool;
 
 import org.jvnet.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
 
-public class RadioNavigationView extends NavigationView {
+public final class RadioNavigationView extends NavigationView {
 
     /** The radio tree. */
     private JTree radioTree;
