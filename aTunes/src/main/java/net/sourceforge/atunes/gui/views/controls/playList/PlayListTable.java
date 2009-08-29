@@ -170,6 +170,11 @@ public class PlayListTable extends JTable implements DragSourceListener, DragGes
         // Create drag source and set listener
         dragSource = new DragSource();
         dragSource.createDefaultDragGestureRecognizer(this, DnDConstants.ACTION_COPY, this);
+
+        // Force minimum row height to 16 pixels to avoid icons height greater than row height
+        if (getRowHeight() < 16) {
+        	setRowHeight(16);
+        }
     }
 
     /**
