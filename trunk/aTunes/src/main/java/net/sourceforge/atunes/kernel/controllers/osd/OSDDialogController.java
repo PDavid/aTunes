@@ -145,7 +145,7 @@ public class OSDDialogController extends WindowController<OSDDialog> {
             getWindowControlled().setShadowBorder(false);
         }
         getWindowControlled().setImage(i);
-        getWindowControlled().setLine1(audioObject.getTitle());
+        getWindowControlled().setLine1(audioObject.getTitleOrFileName());
         getWindowControlled().setLine2(audioObject.getAlbum());
         getWindowControlled().setLine3(audioObject.getArtist());
 
