@@ -145,11 +145,11 @@ class VlcPlayerOutputReader extends Thread {
             endReached = position >= lenght - 1;
         }
         if (isCueSheet && endReached) {
-            engine.playNextAudioObject(true);
+            engine.currentAudioObjectFinished();
         }
         if (line.equals("status change: ( stop state: 0 )")) {
             if (endReached) {
-                engine.playNextAudioObject(true);
+                engine.currentAudioObjectFinished();
             }
         }
 

@@ -170,7 +170,7 @@ public class GStreamerEngine extends PlayerEngine {
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
                     public void run() {
-                        playNextAudioObject(true);
+                    	currentAudioObjectFinished();
                     }
                 });
             }

@@ -232,7 +232,7 @@ public abstract class PlayerEngine implements PlaybackStateListener {
     /**
      * Adds a new playback state listener
      */
-    public void addPlaybackStateListener(PlaybackStateListener listener) {
+    public final void addPlaybackStateListener(PlaybackStateListener listener) {
         if (playbackStateListeners == null) {
             playbackStateListeners = new ArrayList<PlaybackStateListener>();
         }
@@ -244,7 +244,7 @@ public abstract class PlayerEngine implements PlaybackStateListener {
      * 
      * @param listener
      */
-    public void removePlaybackStateListener(PlaybackStateListener listener) {
+    public final void removePlaybackStateListener(PlaybackStateListener listener) {
         if (playbackStateListeners == null || !playbackStateListeners.contains(listener)) {
             return;
         }
@@ -259,7 +259,7 @@ public abstract class PlayerEngine implements PlaybackStateListener {
      * @param newState
      * @param currentAudioObject
      */
-    void callPlaybackStateListeners(PlaybackState newState) {
+    final void callPlaybackStateListeners(PlaybackState newState) {
         for (PlaybackStateListener listener : playbackStateListeners) {
             listener.playbackStateChanged(newState, audioObject);
         }
@@ -267,9 +267,10 @@ public abstract class PlayerEngine implements PlaybackStateListener {
 
     @Override
     public void playbackStateChanged(PlaybackState newState, AudioObject currentAudioObject) {
-        if (newState == PlaybackState.STOPPED) {
-            submitToLastFmAndUpdateStats();
-            setCurrentAudioObjectPlayedTime(0);
+        if (newState == PlaybackState.PLAY_FINISHED) {
+            submitToLastFmAndUpdateStats();            
+        } else if (newState == PlaybackState.STOPPED) {
+        	setCurrentAudioObjectPlayedTime(0);
         }
     }
 
@@ -348,21 +349,34 @@ public abstract class PlayerEngine implements PlaybackStateListener {
     /**
      * Starts playing previous audio object from play list
      */
-    public final void playPreviousAudioObject() {
+    final void playPreviousAudioObject() {
         switchPlaybackTo(PlayListHandler.getInstance().getPreviousAudioObject(), false, false);
     }
 
     /**
      * Starts playing next audio object from play list
      * 
-     * @param autoNext
+     * @param audioObjectFinished
      *            <code>true</code> if this method is called because current
      *            audio object has finished, <code>false</code> if this method
      *            is called because user has pressed the "NEXT" button
      * 
      */
-    public final void playNextAudioObject(boolean autoNext) {
-        switchPlaybackTo(PlayListHandler.getInstance().getNextAudioObject(), true, autoNext);
+    final void playNextAudioObject(boolean audioObjectFinished) {
+        switchPlaybackTo(PlayListHandler.getInstance().getNextAudioObject(), true, audioObjectFinished);
+    }
+    
+    /**
+     * This method must be called by engine when audio object finishes its playback
+     */
+    public final void currentAudioObjectFinished() {
+    	logger.info(LogCategories.PLAYER, "Playback finished");
+    	
+    	// Call listeners to notify playback finished
+		callPlaybackStateListeners(PlaybackState.PLAY_FINISHED);
+		
+		// Move to the next audio object
+		playNextAudioObject(true);
     }
 
     /**
@@ -486,7 +500,7 @@ public abstract class PlayerEngine implements PlaybackStateListener {
         ControllerProxy.getInstance().getPlayerControlsController().setCurrentAudioObjectTimePlayed(actualPlayedTime, currentAudioObjectLength);
         VisualHandler.getInstance().getFullScreenWindow().setCurrentAudioObjectPlayedTime(actualPlayedTime, currentAudioObjectLength);
 
-        if (!(submissionState == SubmissionState.NOT_SUBMITTED) && (actualPlayedTime > currentAudioObjectLength / 2 || actualPlayedTime >= 240000)) {
+        if ((submissionState == SubmissionState.NOT_SUBMITTED) && (actualPlayedTime > currentAudioObjectLength / 2 || actualPlayedTime >= 240000)) {
             submissionState = SubmissionState.PENDING;
         }
     }

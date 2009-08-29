@@ -219,7 +219,7 @@ public final class HotkeyHandler implements HotkeyListener, ApplicationFinishLis
         logger.debug(LogCategories.HANDLER, "Hotkey " + id);
         switch (id) {
         case HOTKEY_NEXT: {
-            PlayerHandler.getInstance().playNextAudioObject(false);
+            PlayerHandler.getInstance().playNextAudioObject();
             break;
         }
         case HOTKEY_PREVIOUS: {

@@ -204,15 +204,9 @@ public final class PlayerHandler implements ApplicationFinishListener, PluginLis
 
     /**
      * Starts playing next audio object from play list
-     * 
-     * @param autoNext
-     *            <code>true</code> if this method is called because current
-     *            audio object has finished, <code>false</code> if this method
-     *            is called because user has pressed the "NEXT" button
-     * 
      */
-    public final void playNextAudioObject(boolean autoNext) {
-        playerEngine.playNextAudioObject(autoNext);
+    public final void playNextAudioObject() {
+        playerEngine.playNextAudioObject(false);
     }
 
     /**

@@ -32,7 +32,7 @@ public class PlayNextAudioObjectAction extends Action {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        PlayerHandler.getInstance().playNextAudioObject(false);
+        PlayerHandler.getInstance().playNextAudioObject();
     }
 
     @Override

@@ -64,7 +64,7 @@ public class NextButton extends JButton {
         addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                PlayerHandler.getInstance().playNextAudioObject(false);
+                PlayerHandler.getInstance().playNextAudioObject();
             } 
         });
     }

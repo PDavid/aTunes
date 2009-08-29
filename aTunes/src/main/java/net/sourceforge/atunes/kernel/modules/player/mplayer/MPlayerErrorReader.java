@@ -67,7 +67,7 @@ class MPlayerErrorReader extends Thread {
                         SwingUtilities.invokeLater(new Runnable() {
                             @Override
                             public void run() {
-                                engine.playNextAudioObject(true);
+                                engine.currentAudioObjectFinished();
                             }
                         });
                     }
