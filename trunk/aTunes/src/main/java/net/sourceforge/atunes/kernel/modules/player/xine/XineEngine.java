@@ -176,7 +176,7 @@ public class XineEngine extends PlayerEngine {
                                 // End of track reached, we must go to the next audio object in this way
                                 if (prevPosition - 250 >= cueTrackDuration) {
                                     s = -1;
-                                    playNextAudioObject(true);
+                                    currentAudioObjectFinished();
                                 }
                             } else {
                                 prevPosition = s;
@@ -193,7 +193,7 @@ public class XineEngine extends PlayerEngine {
             });
             durationUpdater.start();
         } else {
-            playNextAudioObject(true);
+        	currentAudioObjectFinished();
         }
     }
 
@@ -347,7 +347,7 @@ public class XineEngine extends PlayerEngine {
             xineController.start(startPosition, 0);
         } catch (Exception e) {
             info("Xine encountered an error: " + e);
-            playNextAudioObject(true);
+            currentAudioObjectFinished();
         }
     }
 
@@ -374,7 +374,7 @@ public class XineEngine extends PlayerEngine {
                     SwingUtilities.invokeAndWait(new Runnable() {
                         @Override
                         public void run() {
-                            playNextAudioObject(true);
+                        	currentAudioObjectFinished();
                         }
                     });
                 } catch (InterruptedException e) {

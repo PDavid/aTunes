@@ -124,7 +124,7 @@ abstract class MPlayerOutputReader extends Thread {
 
         // End
         if (line.matches(".*\\x2e\\x2e\\x2e\\x20\\(.*\\x20.*\\).*")) {
-            engine.playNextAudioObject(true);
+            engine.currentAudioObjectFinished();
         }
     }
 

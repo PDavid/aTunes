@@ -29,6 +29,7 @@ public enum PlaybackState {
     PLAYING,
     RESUMING,
     PAUSED, 
-    STOPPED
+    STOPPED,
+    PLAY_FINISHED
     
 }

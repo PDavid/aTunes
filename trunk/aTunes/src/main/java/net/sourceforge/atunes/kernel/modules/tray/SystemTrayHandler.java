@@ -139,7 +139,7 @@ public final class SystemTrayHandler implements ApplicationFinishListener, Appli
         next.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                PlayerHandler.getInstance().playNextAudioObject(false);
+                PlayerHandler.getInstance().playNextAudioObject();
             }
         });
         menu.add(next);
@@ -239,7 +239,7 @@ public final class SystemTrayHandler implements ApplicationFinishListener, Appli
                 @Override
                 public void mousePressed(MouseEvent e) {
                     if (e.getButton() == MouseEvent.BUTTON1) {
-                        PlayerHandler.getInstance().playNextAudioObject(false);
+                        PlayerHandler.getInstance().playNextAudioObject();
                     }
                 }
             });

@@ -77,7 +77,7 @@ class AudioFileMPlayerOutputReader extends MPlayerOutputReader {
         // MPlayer bug: Workaround (for audio files) for "mute bug" [1868482] 
         if (engine.isMute() && length > 0 && length - time < 2000) {
             logger.debug(LogCategories.PLAYER, "MPlayer 'mute bug' workaround applied");
-            engine.playNextAudioObject(true);
+            engine.currentAudioObjectFinished();
             interrupt();
         }
     }
