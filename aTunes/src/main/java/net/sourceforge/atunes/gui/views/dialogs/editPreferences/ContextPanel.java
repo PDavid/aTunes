@@ -274,7 +274,7 @@ public class ContextPanel extends PreferencesPanel {
                 return c;
             }
         });
-        JButton upButton = new JButton(ImageLoader.GO_UP);
+        JButton upButton = new JButton(ImageLoader.getImage(ImageLoader.GO_UP));
         upButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -284,7 +284,7 @@ public class ContextPanel extends PreferencesPanel {
                 }
             }
         });
-        JButton downButton = new JButton(ImageLoader.GO_DOWN);
+        JButton downButton = new JButton(ImageLoader.getImage(ImageLoader.GO_DOWN));
         downButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
