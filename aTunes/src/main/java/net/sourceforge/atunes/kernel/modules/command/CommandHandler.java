@@ -27,6 +27,7 @@ import javax.swing.SwingUtilities;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.PlayNextAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.PlayPreviousAudioObjectAction;
+import net.sourceforge.atunes.kernel.actions.ShowOSDAction;
 
 public class CommandHandler {
 
@@ -146,6 +147,7 @@ public class CommandHandler {
     public void initActions() {
         Actions.getAction(PlayNextAudioObjectAction.class);
         Actions.getAction(PlayPreviousAudioObjectAction.class);
+        Actions.getAction(ShowOSDAction.class);
     }
 
 }
