@@ -273,6 +273,9 @@ public class Kernel {
                         PlayListHandler.getInstance().addToPlayListAndPlay(playList);
                         ControllerProxy.getInstance().getPlayListController().refreshPlayList();
                     }
+                    
+                    CommandHandler.getInstance().initActions();
+                    
                     callActionsAfterStart();
                 }
             });
