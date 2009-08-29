@@ -816,7 +816,7 @@ public final class PlayListHandler implements AudioFilesRemovedListener, PlayLis
         objects.add(audioObject);
         objects.add(getCurrentPlayList(false).getNextAudioObject(1));
         objects.add(getCurrentPlayList(false).getNextAudioObject(2));
-        
+
         VisualHandler.getInstance().getFullScreenWindow().setAudioObjects(objects);
 
 
