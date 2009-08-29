@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.kernel.modules.player.mplayer;
 
+import java.util.regex.Pattern;
+
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
@@ -37,6 +39,9 @@ class RadioMPlayerOutputReader extends MPlayerOutputReader {
     private Radio radio;
     private String lastArtist = "";
     private String lastTitle = "";
+
+    /** Pattern of end of play back */
+    private static final Pattern endPattern = Pattern.compile(".*\\x2e\\x2e\\x2e.*\\(.*\\).*");
 
     /**
      * Instantiates a new radio m player output reader.
@@ -117,7 +122,7 @@ class RadioMPlayerOutputReader extends MPlayerOutputReader {
         }
 
         // End (Quit)
-        if (line.matches(".*\\x2e\\x2e\\x2e.*\\(.*\\).*")) {
+        if (endPattern.matcher(line).matches()) {
             radio.deleteSongInfo();
             ControllerProxy.getInstance().getPlayListController().refreshPlayList();
         }

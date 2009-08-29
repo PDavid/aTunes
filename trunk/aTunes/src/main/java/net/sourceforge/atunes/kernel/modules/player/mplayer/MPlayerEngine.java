@@ -97,6 +97,7 @@ public class MPlayerEngine extends PlayerEngine {
     private MPlayerCommandWriter commandWriter;
     private MPlayerOutputReader mPlayerOutputReader;
     private MPlayerErrorReader mPlayerErrorReader;
+    private MPlayerPositionThread mPlayerPositionThread;
     /** The current fade away process running */
     private FadeAwayRunnable currentFadeAwayRunnable = null;
     /** A cue track is playing (different computation required) */
@@ -182,6 +183,8 @@ public class MPlayerEngine extends PlayerEngine {
             mPlayerOutputReader.start();
             mPlayerErrorReader = new MPlayerErrorReader(this, process, audioObjectToPlay);
             mPlayerErrorReader.start();
+            mPlayerPositionThread = new MPlayerPositionThread(this);
+            mPlayerPositionThread.start();
             commandWriter.sendGetDurationCommand();
 
             setVolume(ApplicationState.getInstance().getVolume());
@@ -218,6 +221,8 @@ public class MPlayerEngine extends PlayerEngine {
             process = null;
             mPlayerErrorReader = null;
             mPlayerOutputReader = null;
+            mPlayerPositionThread.interrupt();
+            mPlayerPositionThread = null;
             commandWriter.finishProcess();
             setCurrentAudioObjectPlayedTime(0);
         }
@@ -233,6 +238,8 @@ public class MPlayerEngine extends PlayerEngine {
         process = null;
         mPlayerErrorReader = null;
         mPlayerOutputReader = null;
+        mPlayerPositionThread.interrupt();
+        mPlayerPositionThread = null;
         commandWriter.finishProcess();
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -437,13 +444,6 @@ public class MPlayerEngine extends PlayerEngine {
         } else {
             return MACOS_COMMAND;
         }
-    }
-
-    @Override
-    protected void initializePlayerEngine() {
-        super.initializePlayerEngine();
-        MPlayerPositionThread positionThread = new MPlayerPositionThread(this);
-        positionThread.start();
     }
 
     /**

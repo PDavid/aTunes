@@ -30,6 +30,10 @@ import net.sourceforge.atunes.misc.log.LogCategories;
 class AudioFileMPlayerOutputReader extends MPlayerOutputReader {
 
     private AudioFile audioFile;
+    
+    private boolean isMp3File;
+    
+    private boolean isCueFile;
 
     /**
      * Instantiates a new audio file m player output reader.
@@ -44,6 +48,9 @@ class AudioFileMPlayerOutputReader extends MPlayerOutputReader {
     AudioFileMPlayerOutputReader(MPlayerEngine engine, Process process, AudioFile audioFile) {
         super(engine, process);
         this.audioFile = audioFile;
+        // Check audio file type only once and use calculated value in read method
+        this.isMp3File = AudioFile.isMp3File(audioFile.getFile());
+        this.isCueFile = AudioFile.isCueFile(audioFile.getFile());
     }
 
     @Override
@@ -55,13 +62,12 @@ class AudioFileMPlayerOutputReader extends MPlayerOutputReader {
     protected void read(String line) {
         super.read(line);
 
-        // Read length
-        if (line.matches(".*ANS_LENGTH.*")) {
+        if (line.contains("ANS_LENGTH")) {
             // Length still inaccurate with mp3 VBR files!
             // Apply workaround to get length from audio file properties (read by jaudiotagger) instead of mplayer
-            if (AudioFile.isMp3File(audioFile.getFile())) {
+            if (isMp3File) {
                 length = (int) (audioFile.getDuration() * 1000);
-            } else if (AudioFile.isCueFile(audioFile.getFile())) {
+            } else if (isCueFile) {
                 // If this audio file is a track in cue-sheet, its length should be read from cue-sheet.
                 length = (int) (((CueTrack) audioFile).getDuration() * 1000);
             } else {
@@ -80,5 +86,5 @@ class AudioFileMPlayerOutputReader extends MPlayerOutputReader {
             engine.currentAudioObjectFinished();
             interrupt();
         }
-    }
+    }    
 }

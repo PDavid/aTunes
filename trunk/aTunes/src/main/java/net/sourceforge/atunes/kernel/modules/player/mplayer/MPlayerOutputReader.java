@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.modules.player.mplayer;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.regex.Pattern;
 
 import javax.swing.SwingUtilities;
 
@@ -52,6 +53,9 @@ abstract class MPlayerOutputReader extends Thread {
     protected static boolean isCueSheet;
     protected static int cueTrackStartPosition;
 
+    /** Pattern of end of play back */
+    private static final Pattern endPattern = Pattern.compile(".*\\x2e\\x2e\\x2e\\x20\\(.*\\x20.*\\).*");
+    
     /**
      * Instantiates a new mplayer output reader.
      * 
@@ -112,7 +116,7 @@ abstract class MPlayerOutputReader extends Thread {
     protected void read(String line) {
         // Read progress			
         // MPlayer bug: Duration still inaccurate with mp3 VBR files! Flac duration bug
-        if (line.matches(".*ANS_TIME_POSITION.*")) {
+        if (line.contains("ANS_TIME_POSITION")) {
             if (isCueSheet) {
                 time = (int) (Float.parseFloat(line.substring(line.indexOf("=") + 1)) * 1000.0) - cueTrackStartPosition;
                 engine.setTime(time);
@@ -123,7 +127,7 @@ abstract class MPlayerOutputReader extends Thread {
         }
 
         // End
-        if (line.matches(".*\\x2e\\x2e\\x2e\\x20\\(.*\\x20.*\\).*")) {
+        if (endPattern.matcher(line).matches()) {
             engine.currentAudioObjectFinished();
         }
     }
