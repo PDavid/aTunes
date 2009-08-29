@@ -79,22 +79,9 @@ import net.sourceforge.atunes.model.TreeObject;
  */
 public class NavigationController extends PanelController<NavigationPanel> implements AudioFilesRemovedListener {
 
-    /**
-     * The Enum ViewMode.
-     */
     public enum ViewMode {
 
-        /** The ARTIST. */
-        ARTIST,
-
-        /** The ALBUM. */
-        ALBUM,
-
-        /** The GENRE. */
-        GENRE,
-
-        /** The FOLDER. */
-        FOLDER
+        ARTIST, ALBUM, GENRE, FOLDER
     }
 
     static Logger logger = new Logger();
@@ -153,12 +140,6 @@ public class NavigationController extends PanelController<NavigationPanel> imple
         RepositoryHandler.getInstance().addAudioFilesRemovedListener(this);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.kernel.controllers.model.Controller#addBindings()
-     */
     @Override
     protected void addBindings() {
         getPanelControlled().getNavigationTable().setModel(new NavigationTableModel());
@@ -192,9 +173,9 @@ public class NavigationController extends PanelController<NavigationPanel> imple
                 int view = getPanelControlled().getTabbedPane().getSelectedIndex();
                 // Maybe tabbed pane is empty so set navigation only if it contains tabs
                 if (view != -1) {
-                	if (view != NavigationHandler.getInstance().indexOf(NavigationHandler.getInstance().getViewByName(ApplicationState.getInstance().getNavigationView()))) {
-                		setNavigationView(NavigationHandler.getInstance().getNavigationViews().get(view).getClass().getName());
-                	}
+                    if (view != NavigationHandler.getInstance().indexOf(NavigationHandler.getInstance().getViewByName(ApplicationState.getInstance().getNavigationView()))) {
+                        setNavigationView(NavigationHandler.getInstance().getNavigationViews().get(view).getClass().getName());
+                    }
                 }
             }
         });
@@ -229,13 +210,6 @@ public class NavigationController extends PanelController<NavigationPanel> imple
         return getPanelControlled();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.kernel.controllers.model.Controller#addStateBindings
-     * ()
-     */
     @Override
     protected void addStateBindings() {
     }
@@ -276,7 +250,8 @@ public class NavigationController extends PanelController<NavigationPanel> imple
             for (TreePath path : paths) {
                 DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) path.getLastPathComponent();
                 if (treeNode.getUserObject() instanceof TreeObject) {
-                    files.addAll(ControllerProxy.getInstance().getNavigationController().getAudioObjectsForTreeNode(NavigationHandler.getInstance().getCurrentView().getClass(), treeNode));
+                    files.addAll(ControllerProxy.getInstance().getNavigationController().getAudioObjectsForTreeNode(NavigationHandler.getInstance().getCurrentView().getClass(),
+                            treeNode));
                 }
             }
         }
@@ -332,15 +307,10 @@ public class NavigationController extends PanelController<NavigationPanel> imple
      * Notify device reload.
      */
     public void notifyDeviceReload() {
-        NavigationHandler.getInstance().getView(DeviceNavigationView.class).refreshView(ApplicationState.getInstance().getViewMode(), getPanelControlled().getTreeFilterPanel().getFilter());
+        NavigationHandler.getInstance().getView(DeviceNavigationView.class).refreshView(ApplicationState.getInstance().getViewMode(),
+                getPanelControlled().getTreeFilterPanel().getFilter());
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.kernel.controllers.model.Controller#notifyReload()
-     */
     @Override
     public void notifyReload() {
         NavigationHandler.getInstance().refreshCurrentView();
@@ -426,17 +396,18 @@ public class NavigationController extends PanelController<NavigationPanel> imple
     }
 
     /**
-     * Updates table contents when user selects a tree node or the table filter changes
+     * Updates table contents when user selects a tree node or the table filter
+     * changes
      * 
      * @param tree
      *            the tree
      */
     public void updateTableContent(JTree tree) {
-    	// If navigation table is not shown then don't update it
-    	if (!ApplicationState.getInstance().isShowNavigationTable()) {
-    		return;
-    	}
-    	
+        // If navigation table is not shown then don't update it
+        if (!ApplicationState.getInstance().isShowNavigationTable()) {
+            return;
+        }
+
         // Avoid events when changes on a tree different than the one which is visible
         if (tree != NavigationHandler.getInstance().getCurrentView().getTree()) {
             return;

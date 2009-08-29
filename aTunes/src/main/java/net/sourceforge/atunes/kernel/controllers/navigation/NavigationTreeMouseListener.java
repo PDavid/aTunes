@@ -39,7 +39,6 @@ import net.sourceforge.atunes.model.AudioObject;
  */
 public class NavigationTreeMouseListener extends MouseAdapter {
 
-    /** The controller. */
     private NavigationController controller;
 
     /**
@@ -81,11 +80,6 @@ public class NavigationTreeMouseListener extends MouseAdapter {
         return !found;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.awt.event.MouseAdapter#mouseClicked(java.awt.event.MouseEvent)
-     */
     @Override
     public void mouseClicked(MouseEvent e) {
         NavigationView currentView = NavigationHandler.getInstance().getCurrentView();
@@ -115,11 +109,6 @@ public class NavigationTreeMouseListener extends MouseAdapter {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.awt.event.MouseAdapter#mouseExited(java.awt.event.MouseEvent)
-     */
     @Override
     public void mouseExited(MouseEvent arg0) {
         if (!ApplicationState.getInstance().isShowExtendedTooltip()) {
