@@ -24,6 +24,10 @@ import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
+import net.sourceforge.atunes.kernel.actions.Actions;
+import net.sourceforge.atunes.kernel.actions.PlayNextAudioObjectAction;
+import net.sourceforge.atunes.kernel.actions.PlayPreviousAudioObjectAction;
+
 public class CommandHandler {
 
     /**
@@ -137,6 +141,11 @@ public class CommandHandler {
                 }
             });
         }
+    }
+
+    public void initActions() {
+        Actions.getAction(PlayNextAudioObjectAction.class);
+        Actions.getAction(PlayPreviousAudioObjectAction.class);
     }
 
 }
