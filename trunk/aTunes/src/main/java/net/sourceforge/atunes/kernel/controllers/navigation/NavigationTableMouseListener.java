@@ -36,10 +36,7 @@ import net.sourceforge.atunes.model.AudioObject;
  */
 public class NavigationTableMouseListener extends MouseAdapter {
 
-    /** The controller. */
     private NavigationController controller;
-
-    /** The panel. */
     private NavigationPanel panel;
 
     /**
@@ -55,11 +52,6 @@ public class NavigationTableMouseListener extends MouseAdapter {
         this.panel = panel;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.awt.event.MouseAdapter#mouseClicked(java.awt.event.MouseEvent)
-     */
     @Override
     public void mouseClicked(MouseEvent event) {
         NavigationView currentView = NavigationHandler.getInstance().getCurrentView();

@@ -39,10 +39,8 @@ import net.sourceforge.atunes.misc.log.Logger;
  */
 public class NavigationTreeToolTipListener extends MouseAdapter implements MouseMotionListener, MouseWheelListener {
 
-    /** The Constant logger. */
     static final Logger logger = new Logger();
 
-    /** The controller. */
     NavigationController controller;
 
     /**
@@ -57,13 +55,6 @@ public class NavigationTreeToolTipListener extends MouseAdapter implements Mouse
         this.controller = controller;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * java.awt.event.MouseMotionListener#mouseDragged(java.awt.event.MouseEvent
-     * )
-     */
     @Override
     public void mouseDragged(MouseEvent arg0) {
         if (!ApplicationState.getInstance().isShowExtendedTooltip()) {
@@ -74,12 +65,6 @@ public class NavigationTreeToolTipListener extends MouseAdapter implements Mouse
         controller.getExtendedToolTip().setVisible(false);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * java.awt.event.MouseMotionListener#mouseMoved(java.awt.event.MouseEvent)
-     */
     @Override
     public void mouseMoved(MouseEvent e) {
         if (!ApplicationState.getInstance().isShowExtendedTooltip()) {
@@ -126,12 +111,6 @@ public class NavigationTreeToolTipListener extends MouseAdapter implements Mouse
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seejava.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.
-     * MouseWheelEvent)
-     */
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
         if (!ApplicationState.getInstance().isShowExtendedTooltip()) {
