@@ -190,6 +190,11 @@ public class FullScreenWindow extends CustomWindow {
     };
     
     /**
+     * Audio Objects to show in full screen
+     */
+    private List<AudioObject> objects;
+    
+    /**
      * Instantiates a new full screen dialog.
      * 
      * @param owner
@@ -288,8 +293,11 @@ public class FullScreenWindow extends CustomWindow {
             return;
         }
 
-        setText(objects.get(2));
-        covers.paint(objects);
+        this.objects = objects;
+
+        if (isVisible()) {
+        	updateWindow();
+        }
     }
     
     private void setText(AudioObject audioObject) {
@@ -585,6 +593,7 @@ public class FullScreenWindow extends CustomWindow {
     public void setVisible(boolean visible) {
         super.setVisible(visible);
         if (visible) {
+        	updateWindow();
             activateTimer();
         }
         setFullScreen(visible);
@@ -593,5 +602,13 @@ public class FullScreenWindow extends CustomWindow {
     public void setVolume(int volume) {
         volumeSlider.setValue(volume);
         volumeLevel.setText(StringUtils.getString(String.valueOf(volume), " %"));
+    }
+    
+    /**
+     * Updates the window with the current objects
+     */
+    private void updateWindow() {
+        setText(objects.get(2));
+        covers.paint(objects);
     }
 }
