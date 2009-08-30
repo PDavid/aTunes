@@ -268,6 +268,8 @@ public class PluginsPanel extends PreferencesPanel {
                 PluginInfo plugin = ((PluginsTableModel) pluginsTable.getModel()).getPluginAt(row);
                 try {
 					PluginsHandler.getInstance().uninstallPlugin(plugin);
+                    // Update panel after uninstalling a plugin
+                    updatePanel(null);
 				} catch (Exception e1) {
                     VisualHandler.getInstance().showErrorDialog(e1.getMessage());
                     logger.error(LogCategories.PLUGINS, e1);
