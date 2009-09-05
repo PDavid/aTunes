@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.modules.context.lyrics.engines;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
-import net.sourceforge.atunes.kernel.modules.context.Lyrics;
+import net.sourceforge.atunes.kernel.modules.context.audioobject.Lyrics;
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -58,7 +58,7 @@ public class LyricsflyEngine extends LyricsEngine {
                 return null;
             }
             String lyrics = XMLUtils.getChildElementContent(xmlDocument.getDocumentElement(), "tx");
-            lyrics = lyrics.replace("[br]", "");
+            lyrics = lyrics.replace("[br]", "\n");
             return lyrics.trim().isEmpty() ? null : new Lyrics(lyrics, "http://lyricsfly.com/");
         } catch (UnknownHostException e) {
             logger.error(LogCategories.SERVICE, e);
