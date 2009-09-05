@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.modules.context.lyrics.engines;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
-import net.sourceforge.atunes.kernel.modules.context.audioobject.Lyrics;
+import net.sourceforge.atunes.kernel.modules.context.Lyrics;
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
