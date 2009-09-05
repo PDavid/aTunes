@@ -29,7 +29,6 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -83,7 +82,7 @@ public class PluginsPanel extends PreferencesPanel {
     JTable pluginsTable;
 
     JButton pluginPreferencesButton;
-    
+
     JButton uninstallPluginButton;
 
     private static final int CELL_HEIGHT = 30;
@@ -194,7 +193,7 @@ public class PluginsPanel extends PreferencesPanel {
                 }
             }
         });
-        
+
         pluginPreferencesButton = new JButton(StringUtils.getString(LanguageTool.getString("PREFERENCES"), "..."));
         pluginPreferencesButton.setEnabled(false);
         c.gridx = 1;
@@ -255,26 +254,26 @@ public class PluginsPanel extends PreferencesPanel {
                 }
             }
         });
-        
+
         uninstallPluginButton = new JButton(LanguageTool.getString("UNINSTALL"));
         uninstallPluginButton.setEnabled(false);
         c.gridy = 2;
         add(uninstallPluginButton, c);
-        
+
         uninstallPluginButton.addActionListener(new ActionListener() {
-        	@Override
-        	public void actionPerformed(ActionEvent e) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
                 int row = pluginsTable.getSelectedRow();
                 PluginInfo plugin = ((PluginsTableModel) pluginsTable.getModel()).getPluginAt(row);
                 try {
-					PluginsHandler.getInstance().uninstallPlugin(plugin);
+                    PluginsHandler.getInstance().uninstallPlugin(plugin);
                     // Update panel after uninstalling a plugin
                     updatePanel(null);
-				} catch (Exception e1) {
+                } catch (Exception e1) {
                     VisualHandler.getInstance().showErrorDialog(e1.getMessage());
                     logger.error(LogCategories.PLUGINS, e1);
-				}
-        	}
+                }
+            }
         });
     }
 
