@@ -52,7 +52,7 @@ public class PointedList<T> implements Serializable {
      * 
      * @param pointedList
      */
-    public PointedList(PointedList<T> pointedList) {
+    public PointedList(PointedList<? extends T> pointedList) {
         this.list = new ArrayList<T>(pointedList.list);
         this.pointer = Integer.valueOf(pointedList.pointer);
     }
@@ -142,7 +142,7 @@ public class PointedList<T> implements Serializable {
         }
     }
 
-    public boolean addAll(int index, Collection<T> c) {
+    public boolean addAll(int index, Collection<? extends T> c) {
         boolean result = this.list.addAll(index, c);
         if (size() > 1 && this.pointer != null && index <= this.pointer) {
             this.pointer = this.pointer + c.size();

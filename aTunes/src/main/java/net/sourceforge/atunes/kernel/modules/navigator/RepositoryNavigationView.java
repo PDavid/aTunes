@@ -45,6 +45,7 @@ import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.gui.views.menus.EditTagMenu;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAction;
+import net.sourceforge.atunes.kernel.actions.AddToPlayListAfterCurrentAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.CopyToDeviceAction;
 import net.sourceforge.atunes.kernel.actions.EditTitlesAction;
 import net.sourceforge.atunes.kernel.actions.ExtractPictureAction;
@@ -148,6 +149,7 @@ public class RepositoryNavigationView extends NavigationView {
         if (tablePopupMenu == null) {
             tablePopupMenu = new JPopupMenu();
             tablePopupMenu.add(getMenuItemForAction(AddToPlayListAction.class));
+            tablePopupMenu.add(getMenuItemForAction(AddToPlayListAfterCurrentAudioObjectAction.class));
             tablePopupMenu.add(getMenuItemForAction(SetAsPlayListAction.class));
             tablePopupMenu.add(Actions.getAction(PlayNowAction.class));
             tablePopupMenu.add(new JSeparator());

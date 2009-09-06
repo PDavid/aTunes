@@ -17,6 +17,7 @@
 - Added option to synchronize device with play list
 - Visual improvements in full screen mode
 - Font chooser for configuring the font settings
+- Option to add audio object to playlist after current audio object
 - INTERNAL: Avoid unnecessary refresh view operations
 - INTERNAL: Share actions between play list and navigation tree and table
 - INTERNAL: Refactoring of play list

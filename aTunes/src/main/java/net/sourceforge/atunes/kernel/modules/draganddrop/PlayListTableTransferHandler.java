@@ -208,7 +208,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
 
             if (!audioObjectsToAdd.isEmpty()) {
                 List<AudioObject> songsSorted = RepositoryHandler.getInstance().sort(audioObjectsToAdd);
-                PlayListHandler.getInstance().addToPlayList(dropRow, songsSorted);
+                PlayListHandler.getInstance().addToPlayList(dropRow, songsSorted, true);
                 // Keep selected rows: if drop row is the bottom of play list (-1) then select last row
                 if (dropRow == -1) {
                     dropRow = PlayListHandler.getInstance().getCurrentPlayList(true).size() - audioObjectsToAdd.size();
@@ -330,7 +330,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
 
             if (!filesToAdd.isEmpty()) {
                 List<AudioObject> songsSorted = RepositoryHandler.getInstance().sort(filesToAdd);
-                PlayListHandler.getInstance().addToPlayList(dropRow, songsSorted);
+                PlayListHandler.getInstance().addToPlayList(dropRow, songsSorted, true);
                 // Keep selected rows: if drop row is the bottom of play list (-1) then select last row
                 if (dropRow == -1) {
                     dropRow = PlayListHandler.getInstance().getCurrentPlayList(true).size() - filesToAdd.size();
