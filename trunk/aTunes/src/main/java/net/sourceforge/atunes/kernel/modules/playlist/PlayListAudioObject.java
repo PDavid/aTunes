@@ -67,7 +67,7 @@ class PlayListAudioObject {
      * @param audioObjects
      * @return
      */
-    protected static List<PlayListAudioObject> getList(int startPosition, List<AudioObject> audioObjects) {
+    protected static List<PlayListAudioObject> getList(int startPosition, List<? extends AudioObject> audioObjects) {
         List<PlayListAudioObject> result = new ArrayList<PlayListAudioObject>();
         int positionFromStart = 0;
         for (AudioObject ao : audioObjects) {

@@ -43,6 +43,7 @@ import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddFavoriteRadioAction;
 import net.sourceforge.atunes.kernel.actions.AddRadioAction;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAction;
+import net.sourceforge.atunes.kernel.actions.AddToPlayListAfterCurrentAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.PlayNowAction;
 import net.sourceforge.atunes.kernel.actions.RefreshRadioAction;
 import net.sourceforge.atunes.kernel.actions.RemoveRadioAction;
@@ -124,6 +125,7 @@ public final class RadioNavigationView extends NavigationView {
         if (radioTableMenu == null) {
             radioTableMenu = new JPopupMenu();
             radioTableMenu.add(getMenuItemForAction(AddToPlayListAction.class));
+            radioTableMenu.add(getMenuItemForAction(AddToPlayListAfterCurrentAudioObjectAction.class));
             radioTableMenu.add(getMenuItemForAction(SetAsPlayListAction.class));
             radioTableMenu.add(new JMenuItem(Actions.getAction(PlayNowAction.class)));
             radioTableMenu.add(new JSeparator());

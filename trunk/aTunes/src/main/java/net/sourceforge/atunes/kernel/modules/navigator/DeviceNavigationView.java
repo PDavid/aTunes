@@ -44,6 +44,7 @@ import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.gui.views.menus.EditTagMenu;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAction;
+import net.sourceforge.atunes.kernel.actions.AddToPlayListAfterCurrentAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.CopyToRepositoryAction;
 import net.sourceforge.atunes.kernel.actions.EditTitlesAction;
 import net.sourceforge.atunes.kernel.actions.ExtractPictureAction;
@@ -143,6 +144,7 @@ public final class DeviceNavigationView extends NavigationView {
         if (deviceTableMenu == null) {
             deviceTableMenu = new JPopupMenu();
             deviceTableMenu.add(getMenuItemForAction(AddToPlayListAction.class));
+            deviceTableMenu.add(getMenuItemForAction(AddToPlayListAfterCurrentAudioObjectAction.class));
             deviceTableMenu.add(getMenuItemForAction(SetAsPlayListAction.class));
             deviceTableMenu.add(new JMenuItem(Actions.getAction(PlayNowAction.class)));
             deviceTableMenu.add(new JSeparator());

@@ -98,7 +98,7 @@ public final class PlayListHandler implements AudioFilesRemovedListener, PlayLis
 
         // Add audio file removed listener
         RepositoryHandler.getInstance().addAudioFilesRemovedListener(this);
-        
+
         // Add application state change listener
         ApplicationStateHandler.getInstance().addStateChangeListener(this);
     }
@@ -379,8 +379,8 @@ public final class PlayListHandler implements AudioFilesRemovedListener, PlayLis
      * @param audioObjects
      *            the audio objects
      */
-    public void addToPlayList(List<AudioObject> audioObjects) {
-        addToPlayList(getCurrentPlayList(true).size(), audioObjects);
+    public void addToPlayList(List<? extends AudioObject> audioObjects) {
+        addToPlayList(getCurrentPlayList(true).size(), audioObjects, true);
     }
 
     /**
@@ -391,14 +391,14 @@ public final class PlayListHandler implements AudioFilesRemovedListener, PlayLis
      * @param audioObjects
      *            the audio objects
      */
-    public void addToPlayList(int location, List<AudioObject> audioObjects) {
+    public void addToPlayList(int location, List<? extends AudioObject> audioObjects, boolean visible) {
         // If null or empty, nothing to do
         if (audioObjects == null || audioObjects.isEmpty()) {
             return;
         }
 
         // Get play list
-        PlayList playList = getCurrentPlayList(true);
+        PlayList playList = getCurrentPlayList(visible);
 
         // If play list is filtered remove filter
         if (isFiltered()) {
@@ -443,6 +443,11 @@ public final class PlayListHandler implements AudioFilesRemovedListener, PlayLis
         ControllerProxy.getInstance().getPlayListController().refreshPlayList();
 
         logger.info(LogCategories.HANDLER, StringUtils.getString(audioObjects.size(), " audio objects added to play list"));
+    }
+
+    public void addToActivePlayList(List<? extends AudioObject> audioObjects) {
+        PlayList playList = getCurrentPlayList(false);
+        addToPlayList(playList.getCurrentAudioObjectIndex() + 1, audioObjects, false);
     }
 
     /**
@@ -723,7 +728,7 @@ public final class PlayListHandler implements AudioFilesRemovedListener, PlayLis
      */
     public void playNow(AudioObject audioObject) {
         if (!getCurrentPlayList(true).contains(audioObject)) {
-            ArrayList<AudioObject> list = new ArrayList<AudioObject>();
+            List<AudioObject> list = new ArrayList<AudioObject>();
             list.add(audioObject);
             addToPlayListAndPlay(list);
         } else {
@@ -796,9 +801,9 @@ public final class PlayListHandler implements AudioFilesRemovedListener, PlayLis
         if (audioObject == null) {
             return;
         }
-        
+
         addToPlaybackHistory(audioObject);
-        
+
         // Update file properties
         if (ApplicationState.getInstance().isShowAudioObjectProperties()) {
             ControllerProxy.getInstance().getFilePropertiesController().updateValues(audioObject);
@@ -808,7 +813,7 @@ public final class PlayListHandler implements AudioFilesRemovedListener, PlayLis
         if (ApplicationState.getInstance().isUseContext()) {
             ContextHandler.getInstance().retrieveInfoAndShowInPanel(audioObject);
         }
-        
+
         // Update full screen information when play back history has been updated
         List<AudioObject> objects = new ArrayList<AudioObject>();
         objects.add(getCurrentPlayList(false).getPreviousAudioObject(2));
@@ -818,7 +823,6 @@ public final class PlayListHandler implements AudioFilesRemovedListener, PlayLis
         objects.add(getCurrentPlayList(false).getNextAudioObject(2));
 
         VisualHandler.getInstance().getFullScreenWindow().setAudioObjects(objects);
-
 
         // Disable slider if audio object is a radio or podcast feed entry
         boolean b = audioObject.isSeekable();
@@ -961,7 +965,7 @@ public final class PlayListHandler implements AudioFilesRemovedListener, PlayLis
             boolean filterAlbum = PlayListColumns.isAlbumVisible();
 
             //TODO: generalize to all visible volumns
-            
+
             filterText = filterText.toLowerCase();
 
             for (AudioObject f : nonFilteredPlayList.getAudioObjects()) {
@@ -1103,7 +1107,7 @@ public final class PlayListHandler implements AudioFilesRemovedListener, PlayLis
         // Update status bar
         VisualHandler.getInstance().showPlayListInformation(getCurrentPlayList(true));
     }
-    
+
     @Override
     public void applicationStateChanged(ApplicationState newState) {
         if (newState.isAutoScrollPlayListEnabled()) {

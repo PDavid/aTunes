@@ -42,6 +42,7 @@ import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddPodcastFeedAction;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAction;
+import net.sourceforge.atunes.kernel.actions.AddToPlayListAfterCurrentAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.CopyToDeviceAction;
 import net.sourceforge.atunes.kernel.actions.DownloadPodcastEntryAction;
 import net.sourceforge.atunes.kernel.actions.MarkPodcastEntryListenedAction;
@@ -122,6 +123,7 @@ public final class PodcastNavigationView extends NavigationView {
         if (podcastFeedTableMenu == null) {
             podcastFeedTableMenu = new JPopupMenu();
             podcastFeedTableMenu.add(getMenuItemForAction(AddToPlayListAction.class));
+            podcastFeedTableMenu.add(getMenuItemForAction(AddToPlayListAfterCurrentAudioObjectAction.class));
             podcastFeedTableMenu.add(getMenuItemForAction(SetAsPlayListAction.class));
             podcastFeedTableMenu.add(Actions.getAction(PlayNowAction.class));
             podcastFeedTableMenu.add(new JSeparator());

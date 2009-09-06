@@ -117,7 +117,7 @@ public class PlayList implements Serializable, Cloneable {
      * 
      * @param audioObjectsList
      */
-    private void add(List<AudioObject> audioObjectsList) {
+    private void add(List<? extends AudioObject> audioObjectsList) {
         int position = this.audioObjects.size();
         add(position, audioObjectsList);
     }
@@ -140,7 +140,7 @@ public class PlayList implements Serializable, Cloneable {
      * @param index
      * @param audioObjectsList
      */
-    protected void add(int index, List<AudioObject> audioObjectsList) {
+    protected void add(int index, List<? extends AudioObject> audioObjectsList) {
         this.audioObjects.addAll(index, audioObjectsList);
         notifyAudioObjectsAdded(index, audioObjectsList);
     }
@@ -478,7 +478,7 @@ public class PlayList implements Serializable, Cloneable {
      * @param position
      * @param audioObjectList
      */
-    private void notifyAudioObjectsAdded(int position, List<AudioObject> audioObjectList) {
+    private void notifyAudioObjectsAdded(int position, List<? extends AudioObject> audioObjectList) {
         List<PlayListAudioObject> playListAudioObjects = PlayListAudioObject.getList(position, audioObjectList);
         for (PlayListChangedListener listener : getListeners()) {
             listener.audioObjectsAdded(playListAudioObjects);

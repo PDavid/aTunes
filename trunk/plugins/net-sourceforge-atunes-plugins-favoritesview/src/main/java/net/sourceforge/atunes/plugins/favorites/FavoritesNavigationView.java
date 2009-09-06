@@ -23,6 +23,7 @@ import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.gui.views.menus.EditTagMenu;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAction;
+import net.sourceforge.atunes.kernel.actions.AddToPlayListAfterCurrentAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.CopyToDeviceAction;
 import net.sourceforge.atunes.kernel.actions.EditTitlesAction;
 import net.sourceforge.atunes.kernel.actions.ExtractPictureAction;
@@ -123,6 +124,7 @@ public final class FavoritesNavigationView extends NavigationView implements Plu
         if (favoriteTableMenu == null) {
             favoriteTableMenu = new JPopupMenu();
             favoriteTableMenu.add(getMenuItemForAction(AddToPlayListAction.class));
+            favoriteTableMenu.add(getMenuItemForAction(AddToPlayListAfterCurrentAudioObjectAction.class));
             favoriteTableMenu.add(getMenuItemForAction(SetAsPlayListAction.class));
             favoriteTableMenu.add(Actions.getAction(PlayNowAction.class));
             favoriteTableMenu.add(new JSeparator());
