@@ -168,32 +168,8 @@ public final class Constants {
     /** Last.fm cache dir. */
     public static final String LAST_FM_CACHE_DIR = "lastfm";
 
-    /** Last.fm album cover cache dir. */
-    public static final String LAST_FM_ALBUM_COVER_CACHE_DIR = "album_covers";
-
-    /** Last.fm album info cache dir. */
-    public static final String LAST_FM_ALBUM_INFO_CACHE_DIR = "album_info";
-
-    /** Last.fm artist image cache dir. */
-    public static final String LAST_FM_ARTIST_IMAGE_CACHE_DIR = "artist_images";
-
-    /** Last.fm artist info cache dir. */
-    public static final String LAST_FM_ARTIST_SIMILAR_CACHE_DIR = "artist_similar";
-
-    /** Last.fm artist thumb cache dir. */
-    public static final String LAST_FM_ARTIST_THUMB_CACHE_DIR = "artist_thumbs";
-
-    /** Last.fm artist info cache dir. */
-    public static final String LAST_FM_ALBUM_LIST_CACHE_DIR = "artist_info";
-
-    /** Last.fm artist wiki cache dir. */
-    public static final String LAST_FM_ARTIST_WIKI_CACHE_DIR = "artist_wiki";
-
     /** Last.fm artist submission cache dir. */
     public static final String LAST_FM_SUBMISSION_CACHE_DIR = "submission";
-
-    /** Lyrics cache dir. */
-    public static final String LYRICS_CACHE_DIR = "lyrics";
 
     /** Equalizer presets file. */
     public static final String EQUALIZER_PRESETS_FILE = "/settings/presets.properties";
@@ -261,7 +237,7 @@ public final class Constants {
 
     /** VLC config file */
     public static final String VLC_CONFIG_FILE = "/settings/vlc.properties";
-    
+
     /** Plugins dir */
     public static final String PLUGINS_DIR = "plugins";
 
