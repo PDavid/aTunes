@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import javax.swing.ImageIcon;
+
 import net.roarsoftware.lastfm.Album;
 import net.roarsoftware.lastfm.Artist;
 import net.roarsoftware.lastfm.Authenticator;
@@ -62,8 +64,6 @@ import net.sourceforge.atunes.utils.NetworkUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
- * The Class LastFmService.
- * 
  * This class is responsible of retrieve information from Last.fm web services.
  */
 public class LastFmService {
@@ -260,7 +260,7 @@ public class LastFmService {
             img = lastFmCache.retrieveAlbumCover(album);
             if (img == null && album.getBigCoverURL() != null && !album.getBigCoverURL().isEmpty()) {
                 img = NetworkUtils.getImage(NetworkUtils.getConnection(album.getBigCoverURL(), proxy));
-                lastFmCache.storeAlbumCover(album, img);
+                lastFmCache.storeAlbumCover(album, new ImageIcon(img));
             }
 
             return img;
@@ -291,7 +291,7 @@ public class LastFmService {
                     img = NetworkUtils.getImage(NetworkUtils.getConnection(artist.getImageUrl(), proxy));
                 }
 
-                lastFmCache.storeArtistThumbImage(artist, img);
+                lastFmCache.storeArtistThumbImage(artist, new ImageIcon(img));
             }
             return img;
         } catch (Exception e) {
@@ -329,7 +329,7 @@ public class LastFmService {
             }
 
             if (img != null) {
-                lastFmCache.storeArtistImage(similar, img);
+                lastFmCache.storeArtistImage(similar, new ImageIcon(img));
             }
 
             return img;

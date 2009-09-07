@@ -20,9 +20,10 @@
 
 package net.sourceforge.atunes.kernel.modules.context;
 
+import java.io.Serializable;
 import java.util.List;
 
-public interface SimilarArtistsInfo {
+public interface SimilarArtistsInfo extends Serializable {
 
     /**
      * Gets the artist name.

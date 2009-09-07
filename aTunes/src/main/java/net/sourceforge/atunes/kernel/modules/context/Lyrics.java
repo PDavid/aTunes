@@ -21,11 +21,14 @@
 package net.sourceforge.atunes.kernel.modules.context;
 
 import java.beans.ConstructorProperties;
+import java.io.Serializable;
 
 import net.sourceforge.atunes.utils.StringUtils;
 
-public class Lyrics {
+public class Lyrics implements Serializable {
 
+    private static final long serialVersionUID = 8228456817740963954L;
+    
     private String lyrics;
     private String url;
 

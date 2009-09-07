@@ -30,27 +30,13 @@ import net.sourceforge.atunes.kernel.modules.context.ContextListener;
 import net.sourceforge.atunes.kernel.modules.context.lastfm.LastFmService;
 import net.sourceforge.atunes.model.AudioObject;
 
-/**
- * The Class LastFmCoversRunnable.
- */
 public class LastFmCoversRunnable implements Runnable {
 
-    /** The listener. */
     ContextListener listener;
-
-    /** The service. */
     private LastFmService service;
-
-    /** The albums. */
     private List<? extends AlbumInfo> albums;
-
-    /** The interrupted. */
     private volatile boolean interrupted;
-
-    /** The id. */
     long id;
-
-    /** The audio file */
     AudioObject audioObject;
 
     /**
@@ -80,11 +66,6 @@ public class LastFmCoversRunnable implements Runnable {
         interrupted = true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Runnable#run()
-     */
     @Override
     public void run() {
         if (albums != null) {

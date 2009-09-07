@@ -28,15 +28,11 @@ import net.roarsoftware.lastfm.Album;
 import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
 import net.sourceforge.atunes.kernel.modules.context.AlbumListInfo;
 
-/**
- * The Class LastFmAlbumList.
- */
 public class LastFmAlbumList implements AlbumListInfo {
 
-    /** The artist. */
-    private String artist;
+    private static final long serialVersionUID = 5865751328573689357L;
 
-    /** The albums. */
+    private String artist;
     private List<AlbumInfo> albums;
 
     /**

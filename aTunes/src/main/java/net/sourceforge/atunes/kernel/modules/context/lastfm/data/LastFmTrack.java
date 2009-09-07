@@ -23,15 +23,11 @@ package net.sourceforge.atunes.kernel.modules.context.lastfm.data;
 import net.roarsoftware.lastfm.Track;
 import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
 
-/**
- * The Class LastFmTrack.
- */
 public class LastFmTrack implements TrackInfo {
 
-    /** The title. */
-    private String title;
+    private static final long serialVersionUID = -2692319576271311514L;
 
-    /** The url. */
+    private String title;
     private String url;
 
     /**

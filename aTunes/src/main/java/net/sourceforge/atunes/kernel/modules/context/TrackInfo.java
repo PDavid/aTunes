@@ -20,7 +20,9 @@
 
 package net.sourceforge.atunes.kernel.modules.context;
 
-public interface TrackInfo {
+import java.io.Serializable;
+
+public interface TrackInfo extends Serializable {
 
     /**
      * Gets the title.

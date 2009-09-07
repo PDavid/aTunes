@@ -27,15 +27,9 @@ import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
 import net.sourceforge.atunes.kernel.modules.context.lastfm.LastFmService;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 
-/**
- * The Class LastFmAlbumCoverCallable.
- */
 public class LastFmAlbumCoverCallable implements Callable<Image> {
 
-    /** The service. */
     private LastFmService service;
-
-    /** The file. */
     private AudioFile file;
 
     /**
@@ -51,11 +45,6 @@ public class LastFmAlbumCoverCallable implements Callable<Image> {
         this.file = file;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.concurrent.Callable#call()
-     */
     @Override
     public Image call() throws Exception {
         AlbumInfo album = null;

@@ -20,11 +20,14 @@
 
 package net.sourceforge.atunes.kernel.modules.context.lastfm.data;
 
+import java.io.Serializable;
+
 /**
  * This class represents a track loved by user in LastFm
- * 
  */
-public class LastFmLovedTrack {
+public class LastFmLovedTrack implements Serializable {
+
+    private static final long serialVersionUID = -1808577722802627061L;
 
     /**
      * Artist name
@@ -60,4 +63,5 @@ public class LastFmLovedTrack {
     public String getTitle() {
         return title;
     }
+
 }

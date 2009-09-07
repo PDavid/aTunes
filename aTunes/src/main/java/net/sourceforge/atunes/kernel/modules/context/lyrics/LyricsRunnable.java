@@ -28,21 +28,12 @@ import net.sourceforge.atunes.kernel.modules.context.Lyrics;
 import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
 
-/**
- * The Class LyricsRunnable.
- */
 public class LyricsRunnable implements Runnable {
 
-    /** The audio object. */
     AudioObject audioObject;
-
-    /** The context information listener. */
     ContextListener listener;
-
     /** The retrieved lyrics */
     Lyrics lyrics = null;
-
-    /** The id. */
     long id;
 
     /**
@@ -62,11 +53,6 @@ public class LyricsRunnable implements Runnable {
         this.id = id;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Runnable#run()
-     */
     @Override
     public void run() {
         // First check if tag contains the lyrics. Favour this over internet services.

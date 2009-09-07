@@ -29,9 +29,6 @@ import net.sourceforge.atunes.kernel.modules.context.lyrics.engines.LyricsEngine
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
-/**
- * The Class LyricsService.
- */
 public class LyricsService {
 
     private static Logger logger = new Logger();

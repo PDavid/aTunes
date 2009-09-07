@@ -20,12 +20,13 @@
 
 package net.sourceforge.atunes.kernel.modules.context;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 import javax.swing.ImageIcon;
 
-public interface AlbumInfo {
+public interface AlbumInfo extends Serializable {
 
     /**
      * Gets the artist.

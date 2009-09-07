@@ -30,106 +30,87 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
+import net.sf.ehcache.Element;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
 import net.sourceforge.atunes.kernel.modules.context.AlbumListInfo;
 import net.sourceforge.atunes.kernel.modules.context.ArtistInfo;
 import net.sourceforge.atunes.kernel.modules.context.SimilarArtistsInfo;
+import net.sourceforge.atunes.misc.AbstractCache;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.XMLUtils;
 
 import org.apache.commons.io.FileUtils;
 
-/**
- * The Class LastFmCache.
- */
-public class LastFmCache {
+public class LastFmCache extends AbstractCache {
 
-    /** Logger. */
-    private static Logger logger = new Logger();
+    private static final String ARTIST_WIKI = "artistWiki";
+    private static final String ARTIST_THUMB = "artistThumb";
+    private static final String ARTIST_SIMILAR = "artistSimilar";
+    private static final String ALBUM_LIST = "albumList";
+    private static final String ARTIST_IMAGE = "artistImage";
+    private static final String ALBUM_INFO = "albumInfo";
+    private static final String ALBUM_COVER = "albumCover";
 
-    /** Album Cover Cache dir. */
-    private static File albumCoverCacheDir = new File(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), SystemProperties.FILE_SEPARATOR,
-            Constants.CACHE_DIR, SystemProperties.FILE_SEPARATOR, Constants.LAST_FM_CACHE_DIR, SystemProperties.FILE_SEPARATOR, Constants.LAST_FM_ALBUM_COVER_CACHE_DIR));
-
-    /** Album Cover Cache dir. */
-    private static File albumInfoCacheDir = new File(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), SystemProperties.FILE_SEPARATOR, Constants.CACHE_DIR,
-            SystemProperties.FILE_SEPARATOR, Constants.LAST_FM_CACHE_DIR, SystemProperties.FILE_SEPARATOR, Constants.LAST_FM_ALBUM_INFO_CACHE_DIR));
-
-    /** Artist thumbs cache dir. */
-    private static File artistThumbCacheDir = new File(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), SystemProperties.FILE_SEPARATOR,
-            Constants.CACHE_DIR, SystemProperties.FILE_SEPARATOR, Constants.LAST_FM_CACHE_DIR, SystemProperties.FILE_SEPARATOR, Constants.LAST_FM_ARTIST_THUMB_CACHE_DIR));
-
-    /** Artist image cache dir. */
-    private static File artistImageCacheDir = new File(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), SystemProperties.FILE_SEPARATOR,
-            Constants.CACHE_DIR, SystemProperties.FILE_SEPARATOR, Constants.LAST_FM_CACHE_DIR, SystemProperties.FILE_SEPARATOR, Constants.LAST_FM_ARTIST_IMAGE_CACHE_DIR));
-
-    /** Artist image cache dir. */
-    private static File artistSimilarCacheDir = new File(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), SystemProperties.FILE_SEPARATOR,
-            Constants.CACHE_DIR, SystemProperties.FILE_SEPARATOR, Constants.LAST_FM_CACHE_DIR, SystemProperties.FILE_SEPARATOR, Constants.LAST_FM_ARTIST_SIMILAR_CACHE_DIR));
-
-    /** Album list cache dir. */
-    private static File albumListCacheDir = new File(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), SystemProperties.FILE_SEPARATOR, Constants.CACHE_DIR,
-            SystemProperties.FILE_SEPARATOR, Constants.LAST_FM_CACHE_DIR, SystemProperties.FILE_SEPARATOR, Constants.LAST_FM_ALBUM_LIST_CACHE_DIR));
-
-    /** Artist info cache dir. */
-    private static File artistWikiCacheDir = new File(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), SystemProperties.FILE_SEPARATOR,
-            Constants.CACHE_DIR, SystemProperties.FILE_SEPARATOR, Constants.LAST_FM_CACHE_DIR, SystemProperties.FILE_SEPARATOR, Constants.LAST_FM_ARTIST_WIKI_CACHE_DIR));
+    private Logger logger = new Logger();
 
     private static File submissionCacheDir = new File(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), SystemProperties.FILE_SEPARATOR,
             Constants.CACHE_DIR, SystemProperties.FILE_SEPARATOR, Constants.LAST_FM_CACHE_DIR, SystemProperties.FILE_SEPARATOR, Constants.LAST_FM_SUBMISSION_CACHE_DIR));
 
+    public LastFmCache() {
+        super(LastFmCache.class.getResource("/settings/ehcache-lastfm.xml"));
+    }
+
     /**
      * Clears the cache.
      * 
-     * @return If an IOException occured during clearing
+     * @return If an Exception occured during clearing
      */
     public synchronized boolean clearCache() {
         boolean exception = false;
         try {
-            FileUtils.cleanDirectory(albumCoverCacheDir);
-        } catch (IOException e) {
+            getCache(ALBUM_COVER).removeAll();
+        } catch (Exception e) {
             logger.info(LogCategories.FILE_DELETE, "Could not delete all files from album cover cache");
             exception = true;
         }
         try {
-            FileUtils.cleanDirectory(albumInfoCacheDir);
-        } catch (IOException e) {
+            getCache(ALBUM_INFO).removeAll();
+        } catch (Exception e) {
             logger.info(LogCategories.FILE_DELETE, "Could not delete all files from album info cache");
             exception = true;
         }
         try {
-            FileUtils.cleanDirectory(artistImageCacheDir);
-        } catch (IOException e) {
+            getCache(ARTIST_IMAGE).removeAll();
+        } catch (Exception e) {
             logger.info(LogCategories.FILE_DELETE, "Could not delete all files from artist image cache");
             exception = true;
         }
         try {
-            FileUtils.cleanDirectory(albumListCacheDir);
-        } catch (IOException e) {
+            getCache(ALBUM_LIST).removeAll();
+        } catch (Exception e) {
             logger.info(LogCategories.FILE_DELETE, "Could not delete all files from album list cache");
             exception = true;
         }
         try {
-            FileUtils.cleanDirectory(artistSimilarCacheDir);
-        } catch (IOException e) {
+            getCache(ARTIST_SIMILAR).removeAll();
+        } catch (Exception e) {
             logger.info(LogCategories.FILE_DELETE, "Could not delete all files from similar artist cache");
             exception = true;
         }
         try {
-            FileUtils.cleanDirectory(artistThumbCacheDir);
-        } catch (IOException e) {
+            getCache(ARTIST_THUMB).removeAll();
+        } catch (Exception e) {
             logger.info(LogCategories.FILE_DELETE, "Could not delete all files from artist thumbs cache");
             exception = true;
         }
         try {
-            FileUtils.cleanDirectory(artistWikiCacheDir);
-        } catch (IOException e) {
+            getCache(ARTIST_WIKI).removeAll();
+        } catch (Exception e) {
             logger.info(LogCategories.FILE_DELETE, "Could not delete all files from artist wiki cache");
             exception = true;
         }
@@ -137,364 +118,11 @@ public class LastFmCache {
         return exception;
     }
 
-    /**
-     * Private getter for albumCoverCacheDir. If dir does not exist, it's
-     * created
-     * 
-     * @return the album cover cache dir
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     */
-    private synchronized File getAlbumCoverCacheDir() throws IOException {
-        if (!albumCoverCacheDir.exists()) {
-            FileUtils.forceMkdir(albumCoverCacheDir);
-        }
-        return albumCoverCacheDir;
-    }
-
-    /**
-     * Private getter for albumInfoCacheDir. If dir does not exist, it's created
-     * 
-     * @return the album info cache dir
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     */
-    private synchronized File getAlbumInfoCacheDir() throws IOException {
-        if (!albumInfoCacheDir.exists()) {
-            FileUtils.forceMkdir(albumInfoCacheDir);
-        }
-        return albumInfoCacheDir;
-    }
-
-    /**
-     * Private getter for artistImageCacheDir. If dir does not exist, it's
-     * created
-     * 
-     * @return the artist image cache dir
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     */
-    private synchronized File getArtistImageCacheDir() throws IOException {
-        if (!artistImageCacheDir.exists()) {
-            FileUtils.forceMkdir(artistImageCacheDir);
-        }
-        return artistImageCacheDir;
-    }
-
-    /**
-     * Private getter for artistInfoCacheDir. If dir does not exist, it's
-     * created
-     * 
-     * @return the artist info cache dir
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     */
-    private synchronized File getAlbumListCacheDir() throws IOException {
-        if (!albumListCacheDir.exists()) {
-            FileUtils.forceMkdir(albumListCacheDir);
-        }
-        return albumListCacheDir;
-    }
-
-    /**
-     * Private getter for artistSimilarCacheDir. If dir does not exist, it's
-     * created
-     * 
-     * @return the artist similar cache dir
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     */
-    private synchronized File getArtistSimilarCacheDir() throws IOException {
-        if (!artistSimilarCacheDir.exists()) {
-            FileUtils.forceMkdir(artistSimilarCacheDir);
-        }
-        return artistSimilarCacheDir;
-    }
-
-    /**
-     * Private getter for artistThumbCacheDir. If dir does not exist, it's
-     * created
-     * 
-     * @return the artist thumbs cache dir
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     */
-    private synchronized File getArtistThumbsCacheDir() throws IOException {
-        if (!artistThumbCacheDir.exists()) {
-            FileUtils.forceMkdir(artistThumbCacheDir);
-        }
-        return artistThumbCacheDir;
-    }
-
-    /**
-     * Private getter for artistWikiCacheDir. If dir does not exist, it's
-     * created
-     * 
-     * @return the artist wiki cache dir
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     */
-    private synchronized File getArtistWikiCacheDir() throws IOException {
-        if (!artistWikiCacheDir.exists()) {
-            FileUtils.forceMkdir(artistWikiCacheDir);
-        }
-        return artistWikiCacheDir;
-    }
-
     private synchronized File getSubmissionDataDir() throws IOException {
         if (!submissionCacheDir.exists()) {
             FileUtils.forceMkdir(submissionCacheDir);
         }
         return submissionCacheDir;
-    }
-
-    /**
-     * Album Cover Filename.
-     * 
-     * @param album
-     *            the album
-     * 
-     * @return the file name for album cover
-     */
-
-    private String getFileNameForAlbumCover(AlbumInfo album) {
-        return StringUtils.getString(album.getBigCoverURL().hashCode(), ".", ImageUtils.FILES_EXTENSION);
-    }
-
-    /**
-     * Absolute Path to Album Cover Filename.
-     * 
-     * @param album
-     *            the album
-     * 
-     * @return the file name for album cover at cache
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     */
-    private String getFileNameForAlbumCoverAtCache(AlbumInfo album) throws IOException {
-        File albumCoverCacheDirFile = getAlbumCoverCacheDir();
-
-        if (albumCoverCacheDirFile == null) {
-            return null;
-        }
-
-        return StringUtils.getString(albumCoverCacheDirFile.getAbsolutePath(), SystemProperties.FILE_SEPARATOR, getFileNameForAlbumCover(album));
-    }
-
-    /**
-     * Album Cover Filename.
-     * 
-     * @param album
-     *            the album
-     * @param artist
-     *            the artist
-     * 
-     * @return the file name for album info
-     */
-
-    private String getFileNameForAlbumInfo(String artist, String album) {
-        return StringUtils.getString(artist.hashCode(), album.hashCode(), ".xml");
-    }
-
-    /**
-     * Absolute Path to Album Info Filename.
-     * 
-     * @param album
-     *            the album
-     * @param artist
-     *            the artist
-     * 
-     * @return the file name for album info at cache
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     */
-    private String getFileNameForAlbumInfoAtCache(String artist, String album) throws IOException {
-        File albumInfoCacheDirFile = getAlbumInfoCacheDir();
-
-        if (albumInfoCacheDirFile == null) {
-            return null;
-        }
-
-        return StringUtils.getString(albumInfoCacheDirFile.getAbsolutePath(), SystemProperties.FILE_SEPARATOR, getFileNameForAlbumInfo(artist, album));
-    }
-
-    /**
-     * Artist Image Filename.
-     * 
-     * @param artist
-     *            the artist
-     * 
-     * @return the file name for artist image
-     */
-
-    private String getFileNameForArtistImage(SimilarArtistsInfo artist) {
-        return StringUtils.getString(artist.getArtistName().hashCode(), ".", ImageUtils.FILES_EXTENSION);
-    }
-
-    /**
-     * Absolute Path to Artist Image Filename.
-     * 
-     * @param artist
-     *            the artist
-     * 
-     * @return the file name for artist image at cache
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     */
-    private String getFileNameForArtistImageAtCache(SimilarArtistsInfo artist) throws IOException {
-        File artistImageCacheDirFile = getArtistImageCacheDir();
-
-        if (artistImageCacheDirFile == null) {
-            return null;
-        }
-
-        return StringUtils.getString(artistImageCacheDirFile.getAbsolutePath(), SystemProperties.FILE_SEPARATOR, getFileNameForArtistImage(artist));
-    }
-
-    /**
-     * Artist Info Filename.
-     * 
-     * @param artist
-     *            the artist
-     * 
-     * @return the file name for artist info
-     */
-
-    private String getFileNameForArtistInfo(String artist) {
-        return StringUtils.getString(artist.hashCode(), ".xml");
-    }
-
-    /**
-     * Absolute Path to Artist info Filename.
-     * 
-     * @param artist
-     *            the artist
-     * 
-     * @return the file name for artist info at cache
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     */
-    private String getFileNameForAlbumListAtCache(String artist) throws IOException {
-        File albumListCacheDirFile = getAlbumListCacheDir();
-
-        if (albumListCacheDirFile == null) {
-            return null;
-        }
-
-        return StringUtils.getString(albumListCacheDirFile.getAbsolutePath(), SystemProperties.FILE_SEPARATOR, getFileNameForArtistInfo(artist));
-    }
-
-    /**
-     * Artist Similar Filename.
-     * 
-     * @param artist
-     *            the artist
-     * 
-     * @return the file name for artist similar
-     */
-
-    private String getFileNameForArtistSimilar(String artist) {
-        return StringUtils.getString(artist.hashCode(), ".xml");
-    }
-
-    /**
-     * Absolute Path to Artist similar Filename.
-     * 
-     * @param artist
-     *            the artist
-     * 
-     * @return the file name for artist similar at cache
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     */
-    private String getFileNameForArtistSimilarAtCache(String artist) throws IOException {
-        File artistSimilarCacheDirFile = getArtistSimilarCacheDir();
-
-        if (artistSimilarCacheDirFile == null) {
-            return null;
-        }
-
-        return StringUtils.getString(artistSimilarCacheDirFile.getAbsolutePath(), SystemProperties.FILE_SEPARATOR, getFileNameForArtistSimilar(artist));
-    }
-
-    /**
-     * Artist Thumb Filename.
-     * 
-     * @param artist
-     *            the artist
-     * 
-     * @return the file name for artist thumb
-     */
-
-    private String getFileNameForArtistThumb(ArtistInfo artist) {
-        return StringUtils.getString(artist.getName().hashCode(), ".", ImageUtils.FILES_EXTENSION);
-    }
-
-    /**
-     * Absolute Path to Artist Thumb Filename.
-     * 
-     * @param artist
-     *            the artist
-     * 
-     * @return the file name for artist thumb at cache
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     */
-    private String getFileNameForArtistThumbAtCache(ArtistInfo artist) throws IOException {
-        File artistThumbCacheDirFile = getArtistThumbsCacheDir();
-
-        if (artistThumbCacheDirFile == null) {
-            return null;
-        }
-
-        return StringUtils.getString(artistThumbCacheDirFile.getAbsolutePath(), SystemProperties.FILE_SEPARATOR, getFileNameForArtistThumb(artist));
-    }
-
-    /**
-     * Artist Info Filename.
-     * 
-     * @param artist
-     *            the artist
-     * 
-     * @return the file name for artist wiki
-     */
-
-    private String getFileNameForArtistWiki(String artist) {
-        return StringUtils.getString(artist.hashCode(), ".xml");
-    }
-
-    /**
-     * Absolute Path to Artist similar Filename.
-     * 
-     * @param artist
-     *            the artist
-     * 
-     * @return the file name for artist wiki at cache
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     */
-    private String getFileNameForArtistWikiAtCache(String artist) throws IOException {
-        File artistWikiCacheDirFile = getArtistWikiCacheDir();
-
-        if (artistWikiCacheDirFile == null) {
-            return null;
-        }
-
-        return StringUtils.getString(artistWikiCacheDirFile.getAbsolutePath(), SystemProperties.FILE_SEPARATOR, getFileNameForArtistWiki(artist));
     }
 
     private String getFileNameForSubmissionCache() throws IOException {
@@ -516,15 +144,12 @@ public class LastFmCache {
      * @return the image
      */
     public synchronized Image retrieveAlbumCover(AlbumInfo album) {
-        try {
-            String path = getFileNameForAlbumCoverAtCache(album);
-            if (path != null && new File(path).exists()) {
-                return new ImageIcon(path).getImage();
-            }
-        } catch (IOException e) {
-            logger.error(LogCategories.CACHE, e);
+        Element element = getCache(ALBUM_COVER).get(album);
+        if (element == null) {
+            return null;
+        } else {
+            return ((ImageIcon) element.getValue()).getImage();
         }
-        return null;
     }
 
     /**
@@ -538,15 +163,12 @@ public class LastFmCache {
      * @return the audio scrobbler album
      */
     public synchronized AlbumInfo retrieveAlbumInfo(String artist, String album) {
-        try {
-            String path = getFileNameForAlbumInfoAtCache(artist, album);
-            if (path != null && new File(path).exists()) {
-                return (AlbumInfo) XMLUtils.readBeanFromFile(path);
-            }
-        } catch (IOException e) {
-            logger.error(LogCategories.CACHE, e);
+        Element element = getCache(ALBUM_INFO).get(artist + album);
+        if (element == null) {
+            return null;
+        } else {
+            return (AlbumInfo) element.getValue();
         }
-        return null;
     }
 
     /**
@@ -558,15 +180,12 @@ public class LastFmCache {
      * @return the image
      */
     public synchronized Image retrieveArtistImage(SimilarArtistsInfo artist) {
-        try {
-            String path = getFileNameForArtistImageAtCache(artist);
-            if (path != null && new File(path).exists()) {
-                return new ImageIcon(path).getImage();
-            }
-        } catch (IOException e) {
-            logger.error(LogCategories.CACHE, e);
+        Element element = getCache(ARTIST_IMAGE).get(artist);
+        if (element == null) {
+            return null;
+        } else {
+            return ((ImageIcon) element.getValue()).getImage();
         }
-        return null;
     }
 
     /**
@@ -578,15 +197,12 @@ public class LastFmCache {
      * @return the audio scrobbler album list
      */
     public synchronized AlbumListInfo retrieveAbumList(String artist) {
-        try {
-            String path = getFileNameForAlbumListAtCache(artist);
-            if (path != null && new File(path).exists()) {
-                return (AlbumListInfo) XMLUtils.readBeanFromFile(path);
-            }
-        } catch (IOException e) {
-            logger.error(LogCategories.CACHE, e);
+        Element element = getCache(ALBUM_LIST).get(artist);
+        if (element == null) {
+            return null;
+        } else {
+            return (AlbumListInfo) element.getValue();
         }
-        return null;
     }
 
     /**
@@ -598,15 +214,12 @@ public class LastFmCache {
      * @return the audio scrobbler similar artists
      */
     public synchronized SimilarArtistsInfo retrieveArtistSimilar(String artist) {
-        try {
-            String path = getFileNameForArtistSimilarAtCache(artist);
-            if (path != null && new File(path).exists()) {
-                return (SimilarArtistsInfo) XMLUtils.readBeanFromFile(path);
-            }
-        } catch (IOException e) {
-            logger.error(LogCategories.CACHE, e);
+        Element element = getCache(ARTIST_SIMILAR).get(artist);
+        if (element == null) {
+            return null;
+        } else {
+            return (SimilarArtistsInfo) element.getValue();
         }
-        return null;
     }
 
     /**
@@ -618,16 +231,12 @@ public class LastFmCache {
      * @return the image
      */
     public synchronized Image retrieveArtistThumbImage(ArtistInfo artist) {
-        try {
-            String path = getFileNameForArtistThumbAtCache(artist);
-            if (path != null && new File(path).exists()) {
-            	ImageIcon icon = new ImageIcon(path);
-                return icon.getImage();
-            }
-        } catch (IOException e) {
-            logger.error(LogCategories.CACHE, e);
+        Element element = getCache(ARTIST_THUMB).get(artist);
+        if (element == null) {
+            return null;
+        } else {
+            return ((ImageIcon) element.getValue()).getImage();
         }
-        return null;
     }
 
     /**
@@ -639,15 +248,12 @@ public class LastFmCache {
      * @return the string
      */
     public synchronized String retrieveArtistWiki(String artist) {
-        try {
-            String path = getFileNameForArtistWikiAtCache(artist);
-            if (path != null && new File(path).exists()) {
-                return (String) XMLUtils.readBeanFromFile(path);
-            }
-        } catch (IOException e) {
-            logger.error(LogCategories.CACHE, e);
+        Element element = getCache(ARTIST_WIKI).get(artist);
+        if (element == null) {
+            return null;
+        } else {
+            return (String) element.getValue();
         }
-        return null;
     }
 
     /**
@@ -658,20 +264,14 @@ public class LastFmCache {
      * @param cover
      *            the cover
      */
-    public synchronized void storeAlbumCover(AlbumInfo album, Image cover) {
+    public synchronized void storeAlbumCover(AlbumInfo album, ImageIcon cover) {
         if (cover == null || album == null) {
             return;
         }
 
-        try {
-            String fileAbsPath = getFileNameForAlbumCoverAtCache(album);
-            if (fileAbsPath != null) {
-                ImageUtils.writeImageToFile(cover, fileAbsPath);
-                logger.debug(LogCategories.CACHE, StringUtils.getString("Stored album Cover for album ", album.getTitle()));
-            }
-        } catch (IOException e) {
-            logger.error(LogCategories.CACHE, e);
-        }
+        Element element = new Element(album, cover);
+        getCache(ALBUM_COVER).put(element);
+        logger.debug(LogCategories.CACHE, StringUtils.getString("Stored album Cover for album ", album.getTitle()));
     }
 
     /**
@@ -689,15 +289,9 @@ public class LastFmCache {
             return;
         }
 
-        try {
-            String fileAbsPath = getFileNameForAlbumInfoAtCache(artist, album);
-            if (fileAbsPath != null) {
-                XMLUtils.writeBeanToFile(albumObject, fileAbsPath);
-                logger.debug(LogCategories.CACHE, StringUtils.getString("Stored album info for album ", artist, " ", album));
-            }
-        } catch (IOException e) {
-            logger.error(LogCategories.CACHE, e);
-        }
+        Element element = new Element(artist + album, albumObject);
+        getCache(ALBUM_INFO).put(element);
+        logger.debug(LogCategories.CACHE, StringUtils.getString("Stored album info for album ", artist, " ", album));
     }
 
     /**
@@ -708,20 +302,14 @@ public class LastFmCache {
      * @param image
      *            the image
      */
-    public synchronized void storeArtistImage(SimilarArtistsInfo artist, Image image) {
+    public synchronized void storeArtistImage(SimilarArtistsInfo artist, ImageIcon image) {
         if (image == null || artist == null) {
             return;
         }
 
-        try {
-            String fileAbsPath = getFileNameForArtistImageAtCache(artist);
-            if (fileAbsPath != null) {
-                ImageUtils.writeImageToFile(image, fileAbsPath);
-                logger.debug(LogCategories.CACHE, StringUtils.getString("Stored artist image for ", artist.getArtistName()));
-            }
-        } catch (IOException e) {
-            logger.error(LogCategories.CACHE, e);
-        }
+        Element element = new Element(artist, image);
+        getCache(ARTIST_IMAGE).put(element);
+        logger.debug(LogCategories.CACHE, StringUtils.getString("Stored artist image for ", artist.getArtistName()));
     }
 
     /**
@@ -737,15 +325,9 @@ public class LastFmCache {
             return;
         }
 
-        try {
-            String fileAbsPath = getFileNameForAlbumListAtCache(artist);
-            if (fileAbsPath != null) {
-                XMLUtils.writeBeanToFile(list, fileAbsPath);
-                logger.debug(LogCategories.CACHE, StringUtils.getString("Stored album list for ", artist));
-            }
-        } catch (IOException e) {
-            logger.error(LogCategories.CACHE, e);
-        }
+        Element element = new Element(artist, list);
+        getCache(ALBUM_LIST).put(element);
+        logger.debug(LogCategories.CACHE, StringUtils.getString("Stored album list for ", artist));
     }
 
     /**
@@ -761,15 +343,9 @@ public class LastFmCache {
             return;
         }
 
-        try {
-            String fileAbsPath = getFileNameForArtistSimilarAtCache(artist);
-            if (fileAbsPath != null) {
-                XMLUtils.writeBeanToFile(similar, fileAbsPath);
-                logger.debug(LogCategories.CACHE, StringUtils.getString("Stored artist similar for ", artist));
-            }
-        } catch (IOException e) {
-            logger.error(LogCategories.CACHE, e);
-        }
+        Element element = new Element(artist, similar);
+        getCache(ARTIST_SIMILAR).put(element);
+        logger.debug(LogCategories.CACHE, StringUtils.getString("Stored artist similar for ", artist));
     }
 
     /**
@@ -780,20 +356,14 @@ public class LastFmCache {
      * @param image
      *            the image
      */
-    public synchronized void storeArtistThumbImage(ArtistInfo artist, Image image) {
+    public synchronized void storeArtistThumbImage(ArtistInfo artist, ImageIcon image) {
         if (image == null || artist == null) {
             return;
         }
 
-        try {
-            String fileAbsPath = getFileNameForArtistThumbAtCache(artist);
-            if (fileAbsPath != null) {
-                ImageUtils.writeImageToFile(image, fileAbsPath);
-                logger.debug(LogCategories.CACHE, StringUtils.getString("Stored artist thumb for ", artist.getName()));
-            }
-        } catch (IOException e) {
-            logger.error(LogCategories.CACHE, e);
-        }
+        Element element = new Element(artist, image);
+        getCache(ARTIST_THUMB).put(element);
+        logger.debug(LogCategories.CACHE, StringUtils.getString("Stored artist thumb for ", artist.getName()));
     }
 
     /**
@@ -809,15 +379,9 @@ public class LastFmCache {
             return;
         }
 
-        try {
-            String fileAbsPath = getFileNameForArtistWikiAtCache(artist);
-            if (fileAbsPath != null) {
-                XMLUtils.writeBeanToFile(wikiText, fileAbsPath);
-                logger.debug(LogCategories.CACHE, StringUtils.getString("Stored artist wiki for ", artist));
-            }
-        } catch (IOException e) {
-            logger.error(LogCategories.CACHE, e);
-        }
+        Element element = new Element(artist, wikiText);
+        getCache(ARTIST_WIKI).put(element);
+        logger.debug(LogCategories.CACHE, StringUtils.getString("Stored artist wiki for ", artist));
     }
 
     public synchronized void addSubmissionData(SubmissionData submissionData) {
@@ -863,5 +427,15 @@ public class LastFmCache {
         } catch (IOException e) {
             logger.error(LogCategories.CACHE, e);
         }
+    }
+
+    public void shutdown() {
+        getCache(ALBUM_COVER).dispose();
+        getCache(ALBUM_INFO).dispose();
+        getCache(ALBUM_LIST).dispose();
+        getCache(ARTIST_IMAGE).dispose();
+        getCache(ARTIST_SIMILAR).dispose();
+        getCache(ARTIST_THUMB).dispose();
+        getCache(ARTIST_WIKI).dispose();
     }
 }
