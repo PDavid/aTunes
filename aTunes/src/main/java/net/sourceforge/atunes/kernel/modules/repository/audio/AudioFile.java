@@ -43,7 +43,6 @@ import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
-import net.sourceforge.atunes.utils.ImageUtils;
 
 import org.jaudiotagger.audio.AudioFileIO;
 
@@ -760,23 +759,7 @@ public class AudioFile implements AudioObject, Serializable, Comparable<AudioFil
      */
     @Override
     public ImageIcon getCustomImage(int width, int height) {
-
         ImageIcon result = null;
-
-        String fileNameCover = AudioFilePictureUtils.getFileNameForCover(this);
-        if (fileNameCover != null) {
-            File coverFile = new File(fileNameCover);
-            if (coverFile.exists()) {
-                ImageIcon image = new ImageIcon(coverFile.getAbsolutePath());
-                if (width == -1 || height == -1) {
-                    return image;
-                }
-                int maxSize = (image.getIconWidth() > image.getIconHeight()) ? image.getIconWidth() : image.getIconHeight();
-                int newWidth = (int) ((float) image.getIconWidth() / (float) maxSize * width);
-                int newHeight = (int) ((float) image.getIconHeight() / (float) maxSize * height);
-                return ImageUtils.scaleImageBicubic(image.getImage(), newWidth, newHeight);
-            }
-        }
         // Don't try to read from cue tracks
         if (!AudioFile.isCueFile(getFile())) {
             result = AudioFilePictureUtils.getInsidePicture(this, width, height);
