@@ -30,24 +30,12 @@ import net.sourceforge.atunes.kernel.modules.context.SimilarArtistsInfo;
 import net.sourceforge.atunes.kernel.modules.context.lastfm.LastFmService;
 import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
 
-/**
- * The Class LastFmSimilarArtistsRunnable.
- */
 public class LastFmSimilarArtistsRunnable implements Runnable {
 
-    /** The listener. */
     ContextListener listener;
-
-    /** The service. */
     private LastFmService service;
-
-    /** The artist. */
     private String artist;
-
-    /** The interrupted. */
     private volatile boolean interrupted;
-
-    /** The id. */
     long id;
 
     /**
@@ -76,11 +64,6 @@ public class LastFmSimilarArtistsRunnable implements Runnable {
         interrupted = true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Runnable#run()
-     */
     @Override
     public void run() {
         if (!interrupted && artist != null && !Artist.isUnknownArtist(artist)) {

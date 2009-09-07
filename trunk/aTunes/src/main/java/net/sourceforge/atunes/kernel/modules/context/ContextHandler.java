@@ -86,9 +86,6 @@ import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.LanguageTool;
 import net.sourceforge.atunes.utils.StringUtils;
 
-/**
- * The Class ContextHandler.
- */
 public final class ContextHandler implements ContextListener, ApplicationFinishListener, ApplicationStateChangeListener {
 
     private static ContextHandler instance;
@@ -606,7 +603,8 @@ public final class ContextHandler implements ContextListener, ApplicationFinishL
                 } else if (ao instanceof Radio) {
                     // Radio with song information -> show all tabs
                     if (((Radio) ao).isSongInfoAvailable()) {
-                        ControllerProxy.getInstance().getContextPanelController().showAllTabs(LanguageTool.getString("RADIO"), ImageLoader.getImage(ImageLoader.RADIO_LITTLE), true);
+                        ControllerProxy.getInstance().getContextPanelController()
+                                .showAllTabs(LanguageTool.getString("RADIO"), ImageLoader.getImage(ImageLoader.RADIO_LITTLE), true);
                         ControllerProxy.getInstance().getContextPanelController().setSelectedIndex(ApplicationState.getInstance().getSelectedContextTab());
                     } else {
                         // Radio without song information -> show only first tab
@@ -938,6 +936,8 @@ public final class ContextHandler implements ContextListener, ApplicationFinishL
         logger.debug(LogCategories.HANDLER);
         executorService.shutdownNow();
         scrobblerExecutorService.shutdownNow();
+        lyricsCache.shutdown();
+        lastFmCache.shutdown();
     }
 
     /**
@@ -1203,7 +1203,7 @@ public final class ContextHandler implements ContextListener, ApplicationFinishL
         }
         return null;
     }
-    
+
     @Override
     public void applicationStateChanged(ApplicationState newState) {
         updateLastFmService(newState.getProxy(), newState.getLastFmUser(), newState.getLastFmPassword());

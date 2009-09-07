@@ -29,21 +29,14 @@ import net.roarsoftware.lastfm.ImageSize;
 import net.sourceforge.atunes.kernel.modules.context.ArtistInfo;
 import net.sourceforge.atunes.kernel.modules.context.SimilarArtistsInfo;
 
-/**
- * The Class LastFmSimilarArtists.
- */
 public class LastFmSimilarArtists implements SimilarArtistsInfo {
 
-    /** The Constant MAX_SIMILAR_ARTISTS. */
+    private static final long serialVersionUID = -8771547790339792068L;
+
     public static final int MAX_SIMILAR_ARTISTS = 15;
 
-    /** The artist name. */
     private String artistName;
-
-    /** The picture. */
     private String picture;
-
-    /** The artists. */
     private List<ArtistInfo> artists;
 
     /**
@@ -130,6 +123,31 @@ public class LastFmSimilarArtists implements SimilarArtistsInfo {
     @Override
     public void setPicture(String picture) {
         this.picture = picture;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((artistName == null) ? 0 : artistName.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        LastFmSimilarArtists other = (LastFmSimilarArtists) obj;
+        if (artistName == null) {
+            if (other.artistName != null)
+                return false;
+        } else if (!artistName.equals(other.artistName))
+            return false;
+        return true;
     }
 
 }

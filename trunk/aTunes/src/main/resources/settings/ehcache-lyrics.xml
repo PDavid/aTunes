@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="ehcache.xsd">
+
+	<diskStore path="ehcache.disk.store.dir/lyrics" />
+
+	<defaultCache maxElementsInMemory="500" eternal="true"
+		overflowToDisk="true" timeToIdleSeconds="300" timeToLiveSeconds="600"
+		diskPersistent="true" diskExpiryThreadIntervalSeconds="1"
+		memoryStoreEvictionPolicy="LFU" />
+
+	<cache name="lyrics" maxElementsInMemory="10" maxElementsOnDisk="10000"
+		eternal="true" overflowToDisk="true" diskSpoolBufferSizeMB="5"
+		diskPersistent="true" memoryStoreEvictionPolicy="LFU" />
+
+</ehcache>

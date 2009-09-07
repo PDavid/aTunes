@@ -20,9 +20,11 @@
 
 package net.sourceforge.atunes.kernel.modules.context;
 
+import java.io.Serializable;
+
 import javax.swing.ImageIcon;
 
-public interface ArtistInfo {
+public interface ArtistInfo extends Serializable {
 
     /**
      * Gets the image.

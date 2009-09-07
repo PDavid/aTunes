@@ -38,12 +38,10 @@ import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
 import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
 import net.sourceforge.atunes.utils.StringUtils;
 
-/**
- * The Class LastFmAlbum.
- */
 public class LastFmAlbum implements AlbumInfo {
 
-    /** The Constant df. */
+    private static final long serialVersionUID = -8021357529697065642L;
+
     private static final ThreadLocal<SimpleDateFormat> df = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
@@ -51,32 +49,15 @@ public class LastFmAlbum implements AlbumInfo {
         }
     };
 
-    /** The artist. */
     private String artist;
-
-    /** The title. */
     private String title;
-
-    /** The url. */
     private String url;
-
-    /** The release date string. */
     private String releaseDateString;
-
-    /** The big cover url. */
     private String bigCoverURL;
-
-    /** The cover url. */
     private String coverURL;
-
-    /** The small cover url. */
     private String smallCoverURL;
-
-    /** The tracks. */
     private List<TrackInfo> tracks;
-
-    // Used by renderers
-    /** The cover. */
+    // Used by renderers   
     private ImageIcon cover;
 
     /**
@@ -368,13 +349,34 @@ public class LastFmAlbum implements AlbumInfo {
         this.url = url;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         return StringUtils.getString(artist, " - ", title);
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((bigCoverURL == null) ? 0 : bigCoverURL.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        LastFmAlbum other = (LastFmAlbum) obj;
+        if (bigCoverURL == null) {
+            if (other.bigCoverURL != null)
+                return false;
+        } else if (!bigCoverURL.equals(other.bigCoverURL))
+            return false;
+        return true;
+    }
+
 }

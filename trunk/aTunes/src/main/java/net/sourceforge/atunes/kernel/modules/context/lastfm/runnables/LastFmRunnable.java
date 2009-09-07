@@ -30,42 +30,19 @@ import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 
-/**
- * The Class LastFmRunnable.
- */
 public class LastFmRunnable implements Runnable {
 
-    /** The logger. */
     private static Logger logger = new Logger();
 
-    /** The interrupted. */
     private volatile boolean interrupted;
-
-    /** The albums runnable. */
     private LastFmAlbumsRunnable albumsRunnable;
-
-    /** The covers runnable. */
     private LastFmCoversRunnable coversRunnable;
-
-    /** The artists runnable. */
     private LastFmSimilarArtistsRunnable artistsRunnable;
-
-    /** The listener. */
     private ContextListener listener;
-
-    /** The service. */
     private LastFmService service;
-
-    /** The audio object. */
     private AudioObject audioObject;
-
-    /** The retrieve artist info. */
     private boolean retrieveArtistInfo = true;
-
-    /** The id. */
     private long id;
-
-    /** The executor service. */
     private ExecutorService executorService;
 
     /**
@@ -104,11 +81,6 @@ public class LastFmRunnable implements Runnable {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Runnable#run()
-     */
     @Override
     public void run() {
         albumsRunnable = new LastFmAlbumsRunnable(listener, service, audioObject, id);

@@ -270,6 +270,11 @@
 			<version>2.0.235</version>
 		</dependency>
 		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+			<version>1.6.2</version>
+		</dependency>
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.6</version>
@@ -410,6 +415,11 @@
 			<name>atunes-depenencies-not-in-central-repo</name>
 			<url>http://gimlet.is.inf.uni-due.de:8081/nexus/content/repositories/atunes-dependencies/
 			</url>
+		</repository>
+		<repository>
+			<id>ehcache</id>
+			<name>ehcache</name>
+			<url>http://oss.sonatype.org/content/repositories/sourceforge-releases/</url>
 		</repository>
 	</repositories>
 

@@ -20,93 +20,37 @@
 
 package net.sourceforge.atunes.kernel.modules.context.lyrics;
 
-import java.io.File;
-import java.io.IOException;
-
-import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.kernel.Kernel;
+import net.sf.ehcache.Element;
 import net.sourceforge.atunes.kernel.modules.context.Lyrics;
-import net.sourceforge.atunes.misc.SystemProperties;
+import net.sourceforge.atunes.misc.AbstractCache;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
-import net.sourceforge.atunes.utils.XMLUtils;
 
-import org.apache.commons.io.FileUtils;
+public class LyricsCache extends AbstractCache {
 
-public class LyricsCache {
+    private static final String LYRICS = "lyrics";
 
-    private static Logger logger = new Logger();
+    private Logger logger = new Logger();
 
-    private static File lyricsCacheDir = new File(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), SystemProperties.FILE_SEPARATOR, Constants.CACHE_DIR,
-            SystemProperties.FILE_SEPARATOR, Constants.LYRICS_CACHE_DIR));
+    public LyricsCache() {
+        super(LyricsCache.class.getResource("/settings/ehcache-lyrics.xml"));
+    }
 
     /**
      * Clears the cache.
      * 
-     * @return If an IOException occured during clearing
+     * @return If an Exception occured during clearing
      */
     public synchronized boolean clearCache() {
         try {
-            FileUtils.cleanDirectory(lyricsCacheDir);
-        } catch (IOException e) {
+            getCache(LYRICS).removeAll();
+            getCache(LYRICS).flush();
+        } catch (Exception e) {
             logger.info(LogCategories.FILE_DELETE, "Could not delete all files from lyricsr cache");
             return true;
         }
         return false;
-    }
-
-    /**
-     * Lyrics Filename.
-     * 
-     * @param artist
-     *            the artist
-     * @param title
-     *            the title
-     * 
-     * @return the file name for lyric
-     */
-
-    private String getFileNameForLyric(String artist, String title) {
-        return StringUtils.getString(artist.hashCode(), title.hashCode(), ".xml");
-    }
-
-    /**
-     * Absolute Path to Lyric Filename.
-     * 
-     * @param artist
-     *            the artist
-     * @param title
-     *            the title
-     * 
-     * @return the file name for lyric at cache
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     */
-    private String getFileNameForLyricAtCache(String artist, String title) throws IOException {
-        File lyricCacheDir = getLyricsCacheDir();
-
-        if (lyricCacheDir == null) {
-            return null;
-        }
-
-        return StringUtils.getString(lyricCacheDir.getAbsolutePath(), SystemProperties.FILE_SEPARATOR, getFileNameForLyric(artist, title));
-    }
-
-    /**
-     * Private getter for lyricsCacheDir. If dir does not exist, it's created
-     * 
-     * @return the lyrics cache dir
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     */
-    private static File getLyricsCacheDir() throws IOException {
-        if (!lyricsCacheDir.exists()) {
-            FileUtils.forceMkdir(lyricsCacheDir);
-        }
-        return lyricsCacheDir;
     }
 
     /**
@@ -120,15 +64,12 @@ public class LyricsCache {
      * @return the string
      */
     public synchronized Lyrics retrieveLyric(String artist, String title) {
-        try {
-            String path = getFileNameForLyricAtCache(artist, title);
-            if (path != null && new File(path).exists()) {
-                return (Lyrics) XMLUtils.readBeanFromFile(path);
-            }
-        } catch (IOException e) {
-            logger.error(LogCategories.CACHE, e);
+        Element element = getCache(LYRICS).get(artist + title);
+        if (element != null) {
+            return (Lyrics) element.getValue();
+        } else {
+            return null;
         }
-        return null;
     }
 
     /**
@@ -145,15 +86,12 @@ public class LyricsCache {
         if (artist == null || title == null || lyric == null) {
             return;
         }
+        Element element = new Element(artist + title, lyric);
+        getCache(LYRICS).put(element);
+        logger.debug(LogCategories.CACHE, StringUtils.getString("Stored lyric for ", title));
+    }
 
-        try {
-            String fileAbsPath = getFileNameForLyricAtCache(artist, title);
-            if (fileAbsPath != null) {
-                XMLUtils.writeBeanToFile(lyric, fileAbsPath);
-                logger.debug(LogCategories.CACHE, StringUtils.getString("Stored lyric for ", title));
-            }
-        } catch (IOException e) {
-            logger.error(LogCategories.CACHE, e);
-        }
+    public void shutdown() {
+        getCache(LYRICS).dispose();
     }
 }
