@@ -30,8 +30,13 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Arrays;
 
 import javax.swing.BorderFactory;
@@ -103,6 +108,8 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
     private JXStatusBar statusBar;
     private ToolBar toolBar;
 
+    private WindowAdapter fullFrameStateListener;
+
     Timer statusBarNewVersionInfoTimer = new Timer(1000, new ActionListener() {
         private boolean b;
 
@@ -155,16 +162,74 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
         }
 
         // Set window state listener
-        addWindowStateListener(VisualHandler.getInstance().getWindowStateListener());
-        addWindowFocusListener(VisualHandler.getInstance().getWindowStateListener());
+        addWindowStateListener(getWindowStateListener());
+        addWindowFocusListener(getWindowStateListener());
 
-        addComponentListener(VisualHandler.getInstance().getStandardWindowListener());
+        addComponentListener(getStandardWindowListener());
 
         // Create frame content
         setContentPane(getContentPanel());
 
         // Apply component orientation
         GuiUtils.applyComponentOrientation(this);
+    }
+
+    /**
+     * Gets the window state listener.
+     * 
+     * @return the window state listener
+     */
+    private WindowAdapter getWindowStateListener() {
+        if (fullFrameStateListener == null) {
+            fullFrameStateListener = new WindowAdapter() {
+                @Override
+                public void windowGainedFocus(WindowEvent e) {
+                    logger.debug(LogCategories.DESKTOP, "Window Gained Focus");
+                }
+
+                @Override
+                public void windowLostFocus(WindowEvent e) {
+                    logger.debug(LogCategories.DESKTOP, "Window Focus Lost");
+                }
+
+                @Override
+                public void windowStateChanged(WindowEvent e) {
+                    if (e.getNewState() == java.awt.Frame.ICONIFIED) {
+                        if (ApplicationState.getInstance().isShowSystemTray()) {
+                            StandardFrame.this.setVisible(false);
+                        }
+                        logger.debug(LogCategories.DESKTOP, "Window Iconified");
+                    } else if (e.getNewState() != java.awt.Frame.ICONIFIED) {
+                        logger.debug(LogCategories.DESKTOP, "Window Deiconified");
+                        ControllerProxy.getInstance().getPlayListController().scrollPlayList(false);
+                    }
+                }
+            };
+        }
+        return fullFrameStateListener;
+    }
+
+    /**
+     * Gets the standard window listener.
+     * 
+     * @return the standard window listener
+     */
+    private ComponentListener getStandardWindowListener() {
+        final int minHeight = 410;
+        return new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                JFrame f = StandardFrame.this.getFrame();
+
+                if (StandardFrame.this.getPlayListPanel().getSize().width < StandardFrame.PLAY_LIST_PANEL_WIDTH) {
+                    f.setSize(f.getWidth() + (StandardFrame.PLAY_LIST_PANEL_WIDTH - StandardFrame.this.getPlayListPanel().getSize().width + 10), f.getHeight());
+                }
+
+                if (f.getHeight() < minHeight) {
+                    f.setSize(f.getWidth(), minHeight);
+                }
+            }
+        };
     }
 
     @Override
@@ -176,7 +241,6 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
     /**
      * This method is called from the OSXAdapter
      */
-
     public void about() {
         VisualHandler.getInstance().showAboutDialog();
     }

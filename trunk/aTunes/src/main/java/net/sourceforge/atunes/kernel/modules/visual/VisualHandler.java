@@ -28,16 +28,10 @@ import java.awt.Point;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 import javax.swing.Action;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -123,79 +117,32 @@ import net.sourceforge.atunes.utils.LanguageTool;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.TimeUtils;
 
-/**
- * The Class VisualHandler.
- */
 public final class VisualHandler implements PlaybackStateListener, ApplicationFinishListener, ApplicationStateChangeListener {
 
-    /** The instance. */
     private static VisualHandler instance = new VisualHandler();
 
-    /** Logger. */
     Logger logger = new Logger();
 
-    /** Frames. */
     Frame frame;
-
-    /** Dialogs. */
     private OSDDialog osdDialog;
-
-    /** The progress dialog. */
     private RepositoryProgressDialog progressDialog;
-
-    /** The edit tag dialog. */
     private EditTagDialog editTagDialog;
-
-    /** The export dialog. */
     private ExportOptionsDialog exportDialog;
-
-    /** The stats dialog. */
     private StatsDialog statsDialog;
-
-    /** The search dialog. */
     private SearchDialog searchDialog;
-
-    /** The rip cd dialog. */
     private RipCdDialog ripCdDialog;
-
-    /** The ripper progress dialog. */
     private RipperProgressDialog ripperProgressDialog;
-
-    /** The indeterminate progress dialog. */
     private IndeterminateProgressDialog indeterminateProgressDialog;
-
-    /** The edit titles dialog. */
     private EditTitlesDialog editTitlesDialog;
-
-    /** The edit preferences dialog. */
     private EditPreferencesDialog editPreferencesDialog;
-
-    /** The equalizer dialog. */
     private EqualizerDialog equalizerDialog;
-
-    /** The about dialog. */
     private AboutDialog aboutDialog;
-
-    /** The splash screen dialog. */
     private SplashScreenDialog splashScreenDialog;
-
-    /** The custom search dialog. */
     private CustomSearchDialog customSearchDialog;
-
-    /** The search results dialog. */
     private SearchResultsDialog searchResultsDialog;
-
-    /** The radio browser dialog. */
     private RadioBrowserDialog radioBrowserDialog;
-
-    /** The review import dialog. */
     private ReviewImportDialog reviewImportDialog;
-
-    /** The full screen window. */
     private FullScreenWindow fullScreenWindow;
-
-    /** The full frame state listener. */
-    private WindowAdapter fullFrameStateListener;
 
     /**
      * Instantiates a new visual handler.
@@ -537,29 +484,6 @@ public final class VisualHandler implements PlaybackStateListener, ApplicationFi
     }
 
     /**
-     * Gets the standard window listener.
-     * 
-     * @return the standard window listener
-     */
-    public ComponentListener getStandardWindowListener() {
-        final int minHeight = 410;
-        return new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                JFrame f = frame.getFrame();
-
-                if (frame.getPlayListPanel().getSize().width < StandardFrame.PLAY_LIST_PANEL_WIDTH) {
-                    f.setSize(f.getWidth() + (StandardFrame.PLAY_LIST_PANEL_WIDTH - frame.getPlayListPanel().getSize().width + 10), f.getHeight());
-                }
-
-                if (f.getHeight() < minHeight) {
-                    f.setSize(f.getWidth(), minHeight);
-                }
-            }
-        };
-    }
-
-    /**
      * Gets the stats dialog.
      * 
      * @return the stats dialog
@@ -596,41 +520,6 @@ public final class VisualHandler implements PlaybackStateListener, ApplicationFi
      */
     public Dimension getWindowSize() {
         return frame.getSize();
-    }
-
-    /**
-     * Gets the window state listener.
-     * 
-     * @return the window state listener
-     */
-    public WindowAdapter getWindowStateListener() {
-        if (fullFrameStateListener == null) {
-            fullFrameStateListener = new WindowAdapter() {
-                @Override
-                public void windowGainedFocus(WindowEvent e) {
-                    logger.debug(LogCategories.DESKTOP, "Window Gained Focus");
-                }
-
-                @Override
-                public void windowLostFocus(WindowEvent e) {
-                    logger.debug(LogCategories.DESKTOP, "Window Focus Lost");
-                }
-
-                @Override
-                public void windowStateChanged(WindowEvent e) {
-                    if (e.getNewState() == java.awt.Frame.ICONIFIED) {
-                        if (ApplicationState.getInstance().isShowSystemTray()) {
-                            frame.setVisible(false);
-                        }
-                        logger.debug(LogCategories.DESKTOP, "Window Iconified");
-                    } else if (e.getNewState() != java.awt.Frame.ICONIFIED) {
-                        logger.debug(LogCategories.DESKTOP, "Window Deiconified");
-                        ControllerProxy.getInstance().getPlayListController().scrollPlayList(false);
-                    }
-                }
-            };
-        }
-        return fullFrameStateListener;
     }
 
     /**
@@ -1466,14 +1355,14 @@ public final class VisualHandler implements PlaybackStateListener, ApplicationFi
             updateStatusBar(LanguageTool.getString("PAUSED"));
             setTitleBar("");
             getPlayListTable().setPlayState(PlayState.PAUSED);
-            
+
         } else if (newState == PlaybackState.RESUMING) {
             // Resume
             setPlaying(true);
             updateStatusBar(PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList());
             updateTitleBar(PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList());
             getPlayListTable().setPlayState(PlayState.PLAYING);
-            
+
         } else if (newState == PlaybackState.PLAYING) {
             // Playing
             updateStatusBar(currentAudioObject);
