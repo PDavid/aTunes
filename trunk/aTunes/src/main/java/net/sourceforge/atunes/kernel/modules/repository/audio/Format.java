@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.modules.repository.audio;
 
 public enum Format {
 
-    MP3("mp3"), OGG("ogg"), MP4_1("m4a"), MP4_2("mp4"), WAV("wav"), WMA("wma"), FLAC("flac"), APE("ape"), MPC("mpc"), REAL_1("ra"), REAL_2("rm"), MPPLUS("mp+"), MAC("mac"), ;
+    MP3("mp3"), OGG("ogg"), MP4_1("m4a"), MP4_2("mp4"), WAV("wav"), WMA("wma"), FLAC("flac"), APE("ape"), MPC("mpc"), REAL_1("ra"), REAL_2("rm"), MPPLUS("mp+"), MAC("mac");
 
     private String extension;
 
