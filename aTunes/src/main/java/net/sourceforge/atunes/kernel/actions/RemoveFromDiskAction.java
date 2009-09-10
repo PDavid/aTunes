@@ -62,37 +62,48 @@ public class RemoveFromDiskAction extends Action {
 
             // Podcast view
             if (NavigationHandler.getInstance().getCurrentView() instanceof PodcastNavigationView) {
-                int[] rows = ControllerProxy.getInstance().getNavigationController().getNavigationPanel().getNavigationTable().getSelectedRows();
-                if (rows.length > 0) {
-                    List<AudioObject> songs = new ArrayList<AudioObject>();
-                    for (int element : rows) {
-                        songs.add(((NavigationTableModel) ControllerProxy.getInstance().getNavigationController().getNavigationPanel().getNavigationTable().getModel())
-                                .getSongAt(element));
-                    }
-                    for (int i = 0; i < songs.size(); i++) {
-                        PodcastFeedEntry podcastFeedEntry = (PodcastFeedEntry) songs.get(i);
-                        PodcastFeedHandler.getInstance().deleteDownloadedPodcastFeedEntry(podcastFeedEntry);
-                    }
-                }
+                fromPodcastView();
                 // Repository or device view with folder view mode, folder selected: delete folders instead of content
             } else if ((NavigationHandler.getInstance().getCurrentView() instanceof RepositoryNavigationView || NavigationHandler.getInstance().getCurrentView() instanceof DeviceNavigationView)
                     && NavigationHandler.getInstance().getCurrentViewMode() == ViewMode.FOLDER
                     && ControllerProxy.getInstance().getNavigationController().getPopupMenuCaller() instanceof JTree) {
-                TreePath[] paths = NavigationHandler.getInstance().getCurrentView().getTree().getSelectionPaths();
-                List<Folder> foldersToRemove = new ArrayList<Folder>();
-                if (paths != null) {
-                    for (TreePath path : paths) {
-                        Object treeNode = ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
-                        if (treeNode instanceof Folder) {
-                            foldersToRemove.add((Folder) treeNode);
-                        }
-                    }
-                }
-                RepositoryHandler.getInstance().removeFoldersPhysically(foldersToRemove);
+                fromRepositoryOrDeviceView();
 
             } else {
-                List<AudioFile> files = ControllerProxy.getInstance().getNavigationController().getFilesSelectedInNavigator();
-                RepositoryHandler.getInstance().removePhysically(files);
+                fromOtherViews();
+            }
+        }
+    }
+
+    private void fromOtherViews() {
+        List<AudioFile> files = ControllerProxy.getInstance().getNavigationController().getFilesSelectedInNavigator();
+        RepositoryHandler.getInstance().removePhysically(files);
+    }
+
+    private void fromRepositoryOrDeviceView() {
+        TreePath[] paths = NavigationHandler.getInstance().getCurrentView().getTree().getSelectionPaths();
+        List<Folder> foldersToRemove = new ArrayList<Folder>();
+        if (paths != null) {
+            for (TreePath path : paths) {
+                Object treeNode = ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
+                if (treeNode instanceof Folder) {
+                    foldersToRemove.add((Folder) treeNode);
+                }
+            }
+        }
+        RepositoryHandler.getInstance().removeFoldersPhysically(foldersToRemove);
+    }
+
+    private void fromPodcastView() {
+        int[] rows = ControllerProxy.getInstance().getNavigationController().getNavigationPanel().getNavigationTable().getSelectedRows();
+        if (rows.length > 0) {
+            List<AudioObject> songs = new ArrayList<AudioObject>();
+            for (int element : rows) {
+                songs.add(((NavigationTableModel) ControllerProxy.getInstance().getNavigationController().getNavigationPanel().getNavigationTable().getModel()).getSongAt(element));
+            }
+            for (int i = 0; i < songs.size(); i++) {
+                PodcastFeedEntry podcastFeedEntry = (PodcastFeedEntry) songs.get(i);
+                PodcastFeedHandler.getInstance().deleteDownloadedPodcastFeedEntry(podcastFeedEntry);
             }
         }
     }
