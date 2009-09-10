@@ -25,8 +25,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.SwingUtilities;
 
@@ -57,18 +57,18 @@ public abstract class Process {
     /**
      * List of listeners notified when Process ends or is canceled
      */
-    List<ProcessListener> listeners;
+    volatile List<ProcessListener> listeners;
 
     /**
      * Flag indicating if process has been canceled
      */
-    protected boolean cancel = false;
+    protected volatile boolean cancel = false;
 
     /**
      * Size of this process. This can be for example the total number of files
      * to copy, to delete, ...
      */
-    protected long processSize;
+    protected volatile long processSize;
 
     /**
      * The dialog used to show the progress of this process
@@ -88,7 +88,7 @@ public abstract class Process {
      */
     public final void addProcessListener(ProcessListener listener) {
         if (listeners == null) {
-            listeners = new ArrayList<ProcessListener>();
+            listeners = new CopyOnWriteArrayList<ProcessListener>();
         }
         listeners.add(listener);
     }

@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
@@ -42,13 +43,9 @@ import net.sourceforge.atunes.utils.StringUtils;
  * Synchronizes play list and device: device is updated with play list content
  * 
  * @author fleax
- * 
  */
 public class SynchronizeDeviceWithPlayListAction extends Action {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = -1885495996370465881L;
 
     protected Logger logger = new Logger();
@@ -62,7 +59,7 @@ public class SynchronizeDeviceWithPlayListAction extends Action {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        SwingWorker<HashMap<String, List<AudioFile>>, Void> worker = new SwingWorker<HashMap<String, List<AudioFile>>, Void>() {
+        SwingWorker<Map<String, List<AudioFile>>, Void> worker = new SwingWorker<Map<String, List<AudioFile>>, Void>() {
 
             protected int filesRemoved = 0;
 
@@ -91,7 +88,7 @@ public class SynchronizeDeviceWithPlayListAction extends Action {
             };
 
             @Override
-            protected HashMap<String, List<AudioFile>> doInBackground() throws Exception {
+            protected Map<String, List<AudioFile>> doInBackground() throws Exception {
                 // Get play list elements
                 List<AudioFile> playListObjects;
                 if (ApplicationState.getInstance().isAllowRepeatedSongsInDevice()) {
@@ -110,7 +107,7 @@ public class SynchronizeDeviceWithPlayListAction extends Action {
                 // Get elements present in device and not in play list -> objects to be removed from device
                 List<AudioFile> objectsToRemoveFromDevice = DeviceHandler.getInstance().getElementsNotPresentInList(playListObjects);
 
-                HashMap<String, List<AudioFile>> result = new HashMap<String, List<AudioFile>>();
+                Map<String, List<AudioFile>> result = new HashMap<String, List<AudioFile>>();
                 result.put("ADD", objectsToCopyToDevice);
                 result.put("REMOVE", objectsToRemoveFromDevice);
                 filesRemoved = objectsToRemoveFromDevice.size();
@@ -121,7 +118,7 @@ public class SynchronizeDeviceWithPlayListAction extends Action {
             protected void done() {
                 super.done();
                 try {
-                    HashMap<String, List<AudioFile>> files = get();
+                    Map<String, List<AudioFile>> files = get();
 
                     VisualHandler.getInstance().hideIndeterminateProgressDialog();
 
