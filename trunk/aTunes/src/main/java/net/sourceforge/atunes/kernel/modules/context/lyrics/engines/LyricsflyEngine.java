@@ -22,11 +22,13 @@ package net.sourceforge.atunes.kernel.modules.context.lyrics.engines;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.security.GeneralSecurityException;
 
 import net.sourceforge.atunes.kernel.modules.context.Lyrics;
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.utils.CryptoUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.XMLUtils;
 
@@ -38,12 +40,7 @@ import org.w3c.dom.Document;
  */
 public class LyricsflyEngine extends LyricsEngine {
 
-    static Logger logger = new Logger();
-
-    /*
-     * DO NOT USE THIS KEY FOR OTHER APPLICATIONS THAN aTunes!
-     */
-    private static final String USER_ID = "d34b3dc1dc7faf2a4-atunes.org";
+    private Logger logger = new Logger();
 
     public LyricsflyEngine(Proxy proxy) {
         super(proxy);
@@ -64,12 +61,14 @@ public class LyricsflyEngine extends LyricsEngine {
             logger.error(LogCategories.SERVICE, e);
         } catch (IOException e) {
             logger.error(LogCategories.SERVICE, e);
+        } catch (GeneralSecurityException e) {
+            logger.error(LogCategories.SERVICE, e);
         }
         return null;
     }
 
-    private String getUrl(String artist, String title) {
-        return StringUtils.getString("http://lyricsfly.com/api/api.php?i=" + USER_ID, "&a=", encodeString(artist), "&t=", encodeString(title));
+    private String getUrl(String artist, String title) throws GeneralSecurityException, IOException {
+        return StringUtils.getString("http://lyricsfly.com/api/api.php?i=" + new String(CryptoUtils.decrypt(C)), "&a=", encodeString(artist), "&t=", encodeString(title));
     }
 
     @Override
@@ -81,5 +80,11 @@ public class LyricsflyEngine extends LyricsEngine {
     public String getUrlForAddingNewLyrics(String artist, String title) {
         return "http://lyricsfly.com/submit/";
     }
+
+    /*
+     * DO NOT USE THIS KEY FOR OTHER APPLICATIONS THAN aTunes!
+     */
+    private static final byte[] C = { 118, -12, 36, 60, 15, -18, 24, -28, -73, -26, -35, -42, 124, 84, -96, -93, 82, 37, 50, -63, 97, 101, -91, -59, -14, -91, 41, 73, -121, -17,
+            -55, 113 };
 
 }
