@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.kernel.modules.player.vlcplayer;
 
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
-import net.sourceforge.atunes.kernel.modules.repository.audio.CueTrack;
 
 class AudioFileVlcPlayerOutputReader extends VlcPlayerOutputReader {
 
@@ -47,11 +46,7 @@ class AudioFileVlcPlayerOutputReader extends VlcPlayerOutputReader {
         super.init();
         //System.out.println("length " + (audioFile.getDuration() * 1000));
         if (AudioFile.isValidAudioFile(audioFile.getFile())) {
-            if (AudioFile.isCueFile(audioFile.getFile())) {
-                engine.setCurrentLength(((CueTrack) audioFile).getDuration() * 1000);
-            } else {
-                engine.setCurrentLength(audioFile.getDuration() * 1000);
-            }
+            engine.setCurrentLength(audioFile.getDuration() * 1000);
             super.lenght = ((int) audioFile.getDuration());
         }
     }

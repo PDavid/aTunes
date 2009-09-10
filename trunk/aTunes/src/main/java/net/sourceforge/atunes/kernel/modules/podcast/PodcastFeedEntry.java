@@ -37,11 +37,10 @@ import net.sourceforge.atunes.utils.DateUtils;
 /**
  * Represents a entry of a podcast feed.
  */
-public class PodcastFeedEntry implements AudioObject, Serializable, Comparable<PodcastFeedEntry> {
+public final class PodcastFeedEntry implements AudioObject, Serializable, Comparable<PodcastFeedEntry> {
 
     private static final long serialVersionUID = 4185336290582212484L;
 
-    /** The comparator. */
     private static Comparator<PodcastFeedEntry> comparator = new Comparator<PodcastFeedEntry>() {
         @Override
         public int compare(PodcastFeedEntry o1, PodcastFeedEntry o2) {
@@ -49,34 +48,15 @@ public class PodcastFeedEntry implements AudioObject, Serializable, Comparable<P
         }
     };
 
-    /** The name. */
     String name;
-
-    /** The author. */
     private String author;
-
-    /** The url. */
     private String url;
-
-    /** The description. */
     private String description;
-
-    /** The duration. */
     private long duration;
-
-    /** The date. */
     private Date date;
-
-    /** The podcast feed. */
     private PodcastFeed podcastFeed;
-
-    /** The listened. */
     private boolean listened;
-
-    /** The downloaded. */
     private boolean downloaded;
-
-    /** The old. */
     private boolean old;
 
     /**

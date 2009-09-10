@@ -30,7 +30,6 @@ import javax.swing.SwingUtilities;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
-import net.sourceforge.atunes.kernel.modules.repository.audio.CueTrack;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.ClosingUtils;
 
@@ -42,11 +41,6 @@ class VlcPlayerOutputReader extends Thread {
     protected int lenght = 0;
     protected int position = 0;
     protected boolean endReached = false;
-
-    protected static boolean isCueSheet = false;
-    private static int cueStartPosition;
-
-    private static long cueTrackDuration;
 
     /**
      * Instantiates a new m player output reader.
@@ -78,13 +72,7 @@ class VlcPlayerOutputReader extends Thread {
      * @return the m player output reader
      */
     static VlcPlayerOutputReader newInstance(VlcPlayerEngine handler, AudioObject ao) {
-        isCueSheet = false;
         if (ao instanceof AudioFile) {
-            if (AudioFile.isCueFile(((AudioFile) ao).getFile())) {
-                cueStartPosition = ((CueTrack) ao).getTrackStartPositionAsInt();
-                cueTrackDuration = ((CueTrack) ao).getDuration();
-                isCueSheet = true;
-            }
             return new AudioFileVlcPlayerOutputReader(handler, (AudioFile) ao);
         } else if (ao instanceof Radio) {
             return new RadioVlcPlayerOutputReader(handler, (Radio) ao);
@@ -105,9 +93,6 @@ class VlcPlayerOutputReader extends Thread {
             try {
                 int retrievedValue = new Long(line).intValue();
                 if (retrievedValue > 0) {
-                    if (isCueSheet) {
-                        retrievedValue = (int) cueTrackDuration;
-                    }
                     engine.setCurrentLength(retrievedValue * 1000);
                     lenght = retrievedValue * 1000;
                 } else {
@@ -127,9 +112,6 @@ class VlcPlayerOutputReader extends Thread {
             try {
                 int retrievedValue = new Integer(line).intValue();
                 if (retrievedValue <= lenght) {
-                    if (isCueSheet) {
-                        retrievedValue = retrievedValue - cueStartPosition;
-                    }
                     engine.setTime(retrievedValue * 1000);
                     position = retrievedValue;
                 }
@@ -143,9 +125,6 @@ class VlcPlayerOutputReader extends Thread {
         //automatically play next audio if end is reached and player stops 
         if (lenght > 0) {
             endReached = position >= lenght - 1;
-        }
-        if (isCueSheet && endReached) {
-            engine.currentAudioObjectFinished();
         }
         if (line.equals("status change: ( stop state: 0 )")) {
             if (endReached) {

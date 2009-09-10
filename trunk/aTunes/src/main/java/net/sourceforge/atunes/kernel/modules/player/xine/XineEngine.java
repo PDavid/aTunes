@@ -32,7 +32,6 @@ import net.sourceforge.atunes.kernel.modules.player.PlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
-import net.sourceforge.atunes.kernel.modules.repository.audio.CueTrack;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.SystemProperties;
@@ -54,12 +53,6 @@ public class XineEngine extends PlayerEngine {
     XineController xineController;
     private Timer durationUpdater;
     final Object xineLock = new Object();
-
-    // Required for computing positions
-    boolean isCueTrack;
-    float cueTrackStartPosition;
-    long cueTrackDuration;
-    long audioFileDuration;
 
     @Override
     protected boolean isEngineAvailable() {
@@ -108,13 +101,8 @@ public class XineEngine extends PlayerEngine {
             internalStop();
         }
         info("Opening stream and setting xine params");
-        if (audioObjectToPlay instanceof CueTrack) {
-            xineController.open(((CueTrack) audioObjectToPlay).getAudioFileName());
-            isCueTrack = true;
-        } else {
-            xineController.open(audioObjectToPlay.getUrl());
-            isCueTrack = false;
-        }
+
+        xineController.open(audioObjectToPlay.getUrl());
 
         xineController.setVolume(ApplicationState.getInstance().getVolume());
 
@@ -137,24 +125,11 @@ public class XineEngine extends PlayerEngine {
             if (streamLength <= 0) {
                 valid = false;
             }
-            if (isCueTrack) {
-                cueTrackDuration = audioObjectToPlay.getDuration() * 1000;
-                audioFileDuration = streamLength;
-                setCurrentAudioObjectLength(cueTrackDuration);
-            } else {
-                setCurrentAudioObjectLength(streamLength);
-            }
+            setCurrentAudioObjectLength(streamLength);
         }
 
         if (valid) {
-            if (isCueTrack) {
-                // Begin playing where cue track is located in audio file
-                // TODO: Computation is somewhat off, need to find out why
-                cueTrackStartPosition = ((CueTrack) audioObjectToPlay).getTrackStartPositionAsInt() * 1000;
-                startPlayback((int) ((cueTrackStartPosition / audioFileDuration) * 65535));
-            } else {
-                startPlayback(0);
-            }
+            startPlayback(0);
             info("Starting duration thread");
             durationUpdater = new Timer(250, new ActionListener() {
                 int prevPosition;
@@ -168,20 +143,8 @@ public class XineEngine extends PlayerEngine {
                         }
                         // TODO perform better checks. May be >= is better here, but there is some bug with seek
                         if (s >= 0) {
-                            if (isCueTrack) {
-                                // This is a cue sheet, do not consider the whole file but only part containing the track, therefore
-                                // compute as if the track would be a single one and not part of a bigger file
-                                prevPosition = s - (int) cueTrackStartPosition;
-                                setTime(prevPosition);
-                                // End of track reached, we must go to the next audio object in this way
-                                if (prevPosition - 250 >= cueTrackDuration) {
-                                    s = -1;
-                                    currentAudioObjectFinished();
-                                }
-                            } else {
-                                prevPosition = s;
-                                setTime(prevPosition);
-                            }
+                            prevPosition = s;
+                            setTime(prevPosition);
                             //if ((audioObjectToPlay instanceof PodcastFeedEntry || audioObjectToPlay instanceof Radio) && s < 1000) {
                             if (s < 1000) {
                                 VisualHandler.getInstance().updateStatusBar(audioObjectToPlay);
@@ -193,7 +156,7 @@ public class XineEngine extends PlayerEngine {
             });
             durationUpdater.start();
         } else {
-        	currentAudioObjectFinished();
+            currentAudioObjectFinished();
         }
     }
 
@@ -245,11 +208,7 @@ public class XineEngine extends PlayerEngine {
     @Override
     protected void seekTo(double position) {
         if (xineController != null) {
-            if (isCueTrack) {
-                startPlayback(percentToXineCueFile(position));
-            } else {
-                startPlayback(percentToXine(position));
-            }
+            startPlayback(percentToXine(position));
         }
     }
 
@@ -325,22 +284,6 @@ public class XineEngine extends PlayerEngine {
         return (int) (65535 * percent);
     }
 
-    /**
-     * Computes the value to pass to Xine for a cue track. The special about a
-     * cue track is that not the whole audio file is played but just one part of
-     * it (one track), so we must only seek in one segment of the file.
-     * 
-     * @param percent
-     * @return
-     */
-    private int percentToXineCueFile(double percent) {
-        if (percent == 0) {
-            return ((int) ((cueTrackStartPosition / audioFileDuration) * 65535));
-        } else {
-            return (int) (((cueTrackStartPosition + (cueTrackDuration * percent)) / audioFileDuration) * 65535);
-        }
-    }
-
     private void startPlayback(final int startPosition) {
         info("Starting playback");
         try {
@@ -374,7 +317,7 @@ public class XineEngine extends PlayerEngine {
                     SwingUtilities.invokeAndWait(new Runnable() {
                         @Override
                         public void run() {
-                        	currentAudioObjectFinished();
+                            currentAudioObjectFinished();
                         }
                     });
                 } catch (InterruptedException e) {

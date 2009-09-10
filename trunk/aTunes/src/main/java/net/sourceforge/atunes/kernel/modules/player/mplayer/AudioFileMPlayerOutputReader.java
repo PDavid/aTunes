@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.kernel.modules.player.mplayer;
 
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
-import net.sourceforge.atunes.kernel.modules.repository.audio.CueTrack;
 import net.sourceforge.atunes.misc.log.LogCategories;
 
 /**
@@ -30,10 +29,8 @@ import net.sourceforge.atunes.misc.log.LogCategories;
 class AudioFileMPlayerOutputReader extends MPlayerOutputReader {
 
     private AudioFile audioFile;
-    
+
     private boolean isMp3File;
-    
-    private boolean isCueFile;
 
     /**
      * Instantiates a new audio file m player output reader.
@@ -50,7 +47,6 @@ class AudioFileMPlayerOutputReader extends MPlayerOutputReader {
         this.audioFile = audioFile;
         // Check audio file type only once and use calculated value in read method
         this.isMp3File = AudioFile.isMp3File(audioFile.getFile());
-        this.isCueFile = AudioFile.isCueFile(audioFile.getFile());
     }
 
     @Override
@@ -67,9 +63,6 @@ class AudioFileMPlayerOutputReader extends MPlayerOutputReader {
             // Apply workaround to get length from audio file properties (read by jaudiotagger) instead of mplayer
             if (isMp3File) {
                 length = (int) (audioFile.getDuration() * 1000);
-            } else if (isCueFile) {
-                // If this audio file is a track in cue-sheet, its length should be read from cue-sheet.
-                length = (int) (((CueTrack) audioFile).getDuration() * 1000);
             } else {
                 length = (int) (Float.parseFloat(line.substring(line.indexOf('=') + 1)) * 1000.0);
                 if (length == 0) {
@@ -86,5 +79,5 @@ class AudioFileMPlayerOutputReader extends MPlayerOutputReader {
             engine.currentAudioObjectFinished();
             interrupt();
         }
-    }    
+    }
 }

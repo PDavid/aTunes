@@ -33,7 +33,6 @@ import java.util.StringTokenizer;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
-import net.sourceforge.atunes.kernel.modules.repository.audio.CueTrack;
 import net.sourceforge.atunes.kernel.modules.repository.model.Album;
 import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.model.Folder;
@@ -819,9 +818,6 @@ public class RepositoryLoader extends Thread {
                         audioFiles.add(element);
                     } else if (AudioFilePictureUtils.isValidPicture(element)) {
                         pictures.add(element);
-                    } else if (AudioFile.isCueFile(element)) {
-                        // Cue sheet is valid audio file too
-                        audioFiles.add(element);
                     }
                 }
 
@@ -841,42 +837,16 @@ public class RepositoryLoader extends Thread {
                             audio = oldAudioFile;
                             audioFilesList.add(audio);
                         } else {
-                            if (AudioFile.isCueFile(audioFiles.get(i))) {
-                                // If it is a cue-sheet file, then extract Cue track here
-                                List<CueTrack> tracks = CueTrack.read(audioFiles.get(i).getAbsolutePath());
-                                for (CueTrack track : tracks) {
-                                    audioFilesList.add(track);
-                                }
-                            } else {
-                                audio = new AudioFile(audioFiles.get(i).getAbsolutePath());
-                                audioFilesList.add(audio);
-                            }
-                        }
-                    } else {
-                        if (AudioFile.isCueFile(audioFiles.get(i))) {
-                            // If it is a cue-sheet file, then extract Cue track here
-                            List<CueTrack> tracks = CueTrack.read(audioFiles.get(i).getAbsolutePath());
-                            for (CueTrack track : tracks) {
-                                audioFilesList.add(track);
-                            }
-                        } else {
                             audio = new AudioFile(audioFiles.get(i).getAbsolutePath());
                             audioFilesList.add(audio);
                         }
+                    } else {
+                        audio = new AudioFile(audioFiles.get(i).getAbsolutePath());
+                        audioFilesList.add(audio);
                     }
                 }
 
                 for (AudioFile audioFile : audioFilesList) {
-                    if (AudioFile.isCueFile(audioFile.getFile())) {
-                        //make connection between track and its audio file
-                        for (AudioFile cueaudio : audioFilesList) {
-                            if (cueaudio.getUrl().equals(((CueTrack) audioFile).getAudioFileName())) {
-                                cueaudio.addTrack((CueTrack) audioFile);
-                                ((CueTrack) audioFile).setCueFile(cueaudio);
-                                break;
-                            }
-                        }
-                    }
                     audioFile.setExternalPictures(pictures);
                     if (listener != null) {
                         SwingUtilities.invokeLater(new Runnable() {

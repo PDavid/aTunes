@@ -40,7 +40,7 @@ import net.sourceforge.atunes.utils.NetworkUtils;
 /**
  * A radio station.
  */
-public class Radio implements AudioObject, Serializable, TreeObject, Comparable<Radio> {
+public final class Radio implements AudioObject, Serializable, TreeObject, Comparable<Radio> {
 
     private static final long serialVersionUID = 3295941106814718559L;
 

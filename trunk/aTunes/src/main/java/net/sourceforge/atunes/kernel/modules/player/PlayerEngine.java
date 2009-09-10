@@ -32,7 +32,6 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
-import net.sourceforge.atunes.kernel.modules.repository.audio.CueTrack;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.TempFolder;
@@ -268,9 +267,9 @@ public abstract class PlayerEngine implements PlaybackStateListener {
     @Override
     public void playbackStateChanged(PlaybackState newState, AudioObject currentAudioObject) {
         if (newState == PlaybackState.PLAY_FINISHED || newState == PlaybackState.PLAY_INTERRUPTED) {
-            submitToLastFmAndUpdateStats();            
+            submitToLastFmAndUpdateStats();
         } else if (newState == PlaybackState.STOPPED) {
-        	setCurrentAudioObjectPlayedTime(0);
+            setCurrentAudioObjectPlayedTime(0);
         }
     }
 
@@ -350,8 +349,8 @@ public abstract class PlayerEngine implements PlaybackStateListener {
      * Starts playing previous audio object from play list
      */
     final void playPreviousAudioObject() {
-    	// Call listeners to notify playback was interrupted
-		callPlaybackStateListeners(PlaybackState.PLAY_INTERRUPTED);
+        // Call listeners to notify playback was interrupted
+        callPlaybackStateListeners(PlaybackState.PLAY_INTERRUPTED);
 
         switchPlaybackTo(PlayListHandler.getInstance().getPreviousAudioObject(), false, false);
     }
@@ -366,24 +365,25 @@ public abstract class PlayerEngine implements PlaybackStateListener {
      * 
      */
     final void playNextAudioObject(boolean audioObjectFinished) {
-    	if (!audioObjectFinished) {
-        	// Call listeners to notify playback was interrupted
-    		callPlaybackStateListeners(PlaybackState.PLAY_INTERRUPTED);
-    	}
+        if (!audioObjectFinished) {
+            // Call listeners to notify playback was interrupted
+            callPlaybackStateListeners(PlaybackState.PLAY_INTERRUPTED);
+        }
         switchPlaybackTo(PlayListHandler.getInstance().getNextAudioObject(), true, audioObjectFinished);
     }
-    
+
     /**
-     * This method must be called by engine when audio object finishes its playback
+     * This method must be called by engine when audio object finishes its
+     * playback
      */
     public final void currentAudioObjectFinished() {
-    	logger.info(LogCategories.PLAYER, "Playback finished");
-    	
-    	// Call listeners to notify playback finished
-		callPlaybackStateListeners(PlaybackState.PLAY_FINISHED);
-		
-		// Move to the next audio object
-		playNextAudioObject(true);
+        logger.info(LogCategories.PLAYER, "Playback finished");
+
+        // Call listeners to notify playback finished
+        callPlaybackStateListeners(PlaybackState.PLAY_FINISHED);
+
+        // Move to the next audio object
+        playNextAudioObject(true);
     }
 
     /**
@@ -499,10 +499,6 @@ public abstract class PlayerEngine implements PlaybackStateListener {
      */
     protected final void setCurrentAudioObjectPlayedTime(long playedTime) {
         long actualPlayedTime = playedTime;
-        // if current audio object is a cue track, then we should revise the played time
-        if (audioObject != null && AudioFile.isCueFile(((AudioFile) audioObject).getFile())) {
-            actualPlayedTime -= ((CueTrack) audioObject).getTrackStartPositionAsInt() * 1000l;
-        }
         this.currentAudioObjectPlayedTime = actualPlayedTime;
         ControllerProxy.getInstance().getPlayerControlsController().setCurrentAudioObjectTimePlayed(actualPlayedTime, currentAudioObjectLength);
         VisualHandler.getInstance().getFullScreenWindow().setCurrentAudioObjectPlayedTime(actualPlayedTime, currentAudioObjectLength);

@@ -33,8 +33,6 @@ import net.sourceforge.atunes.kernel.modules.player.PlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
-import net.sourceforge.atunes.kernel.modules.repository.audio.CueTrack;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.misc.SystemProperties;
@@ -102,13 +100,6 @@ public class VlcPlayerEngine extends PlayerEngine {
     private VlcOutputReader vlcOutputReader;
     /** The actual duration of media **/
     private long duration = 0;
-
-    /** A cue track is playing (different computation required) */
-    private boolean isCueTrack;
-    /** The start position of the cue track */
-    private int cueTrackStartPosition;
-    /** The duration of the cue track */
-    private long cueTrackDuration;
 
     /**
      * static initialization
@@ -234,11 +225,7 @@ public class VlcPlayerEngine extends PlayerEngine {
     protected void seekTo(double position) {
         //VLC needs a position in seconds
         if (duration > 0 && duration < Integer.MAX_VALUE) {
-            if (isCueTrack) {
-                position = cueTrackStartPosition + (cueTrackDuration * position * 1000);
-            } else {
-                position = position * duration;
-            }
+            position = position * duration;
             commandWriter.sendSeekCommand(new Double(position / 1000).intValue());
         }
     }
@@ -429,19 +416,6 @@ public class VlcPlayerEngine extends PlayerEngine {
                 command.add(proxyParam);
             }
             command.add(HTTP_CACHE);
-        } else {
-            if (AudioFile.isCueFile(((AudioFile) audioObject).getFile())) {
-                isCueTrack = true;
-                url = ((CueTrack) audioObject).getAudioFileName();
-                cueTrackStartPosition = ((CueTrack) audioObject).getTrackStartPositionAsInt();
-                cueTrackDuration = ((CueTrack) audioObject).getDuration();
-                command.add("--start-time=" + String.valueOf(cueTrackStartPosition));
-                if (((CueTrack) audioObject).getTrackEndPosition() != null) { //it is not the last track
-                    command.add("--stop-time=" + (cueTrackStartPosition + cueTrackDuration));
-                }
-            } else {
-                isCueTrack = false;
-            }
         }
 
         command.add(url);
