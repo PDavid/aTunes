@@ -58,7 +58,6 @@ import net.sourceforge.atunes.kernel.modules.repository.Repository;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryLoader;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
-import net.sourceforge.atunes.kernel.modules.repository.audio.CueTrack;
 import net.sourceforge.atunes.kernel.modules.repository.model.Album;
 import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.model.Folder;
@@ -158,12 +157,6 @@ public final class DeviceHandler implements LoaderListener, DeviceConnectionList
             if (!songsSelected.containsKey(number)) {
                 //add song  to selected ones ...
                 songsSelected.put(number, songs.get(number));
-
-                if (!(songs.get(number) instanceof CueTrack)) {
-                    songsSelected.put(number, songs.get(number));
-                    // Compute free space after song has been added
-                    deviceFreeSpace = deviceFreeSpace - songs.get(number).getFile().length();
-                }
             }
         }
 
@@ -212,17 +205,6 @@ public final class DeviceHandler implements LoaderListener, DeviceConnectionList
         // Get size of files
         long size = 0;
         for (AudioFile file : collection) {
-            if (file instanceof CueTrack) {
-                //if file is a cue track
-                AudioFile audiofile = ((CueTrack) file).getCueFile();
-                //add its audio file into files list
-                if (!collection.contains(audiofile)) {
-                    collection.add(audiofile);
-                }
-                //remove cue track from files list
-                collection.remove(file);
-                continue;
-            }
             size = size + file.getFile().length();
         }
         // Get free space in device
@@ -257,7 +239,7 @@ public final class DeviceHandler implements LoaderListener, DeviceConnectionList
         });
         // Add this listener second so when this is called filesCopiedToDevice has been updated
         if (listener != null) {
-        	process.addProcessListener(listener);
+            process.addProcessListener(listener);
         }
         process.execute();
     }

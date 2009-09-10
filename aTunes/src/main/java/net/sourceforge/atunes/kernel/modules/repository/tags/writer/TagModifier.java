@@ -29,7 +29,6 @@ import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
-import net.sourceforge.atunes.kernel.modules.repository.audio.CueTrack;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.ImageInfo;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.Tag;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
@@ -190,12 +189,6 @@ public class TagModifier {
         int track = tag.getTrackNumber();
         int discNumber = tag.getDiscNumber();
         String albumArtist = tag.getAlbumArtist() != null ? tag.getAlbumArtist() : "";
-
-        if (AudioFile.isCueFile(file.getFile())) {
-            //modify cue sheet file
-            ((CueTrack) file).modifyTag(tag);
-            return;
-        }
 
         try {
             org.jaudiotagger.audio.AudioFile audioFile = org.jaudiotagger.audio.AudioFileIO.read(file.getFile());

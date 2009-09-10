@@ -53,7 +53,7 @@ import org.jaudiotagger.audio.AudioFileIO;
  * 
  * @author fleax
  */
-public class AudioFile implements AudioObject, Serializable, Comparable<AudioFile> {
+public final class AudioFile implements AudioObject, Serializable, Comparable<AudioFile> {
 
     private static final long serialVersionUID = -1139001443603556703L;
 
@@ -69,9 +69,6 @@ public class AudioFile implements AudioObject, Serializable, Comparable<AudioFil
     protected long readTime;
     private int stars = 0;
 
-    /** cue audio file use this list to make association with its tracks */
-    private List<CueTrack> tracks;
-
     /**
      * Instantiates a new audio file.
      * 
@@ -80,7 +77,6 @@ public class AudioFile implements AudioObject, Serializable, Comparable<AudioFil
      */
     public AudioFile(String fileName) {
         readFile(new File(fileName));
-        tracks = null;
     }
 
     /**
@@ -92,7 +88,7 @@ public class AudioFile implements AudioObject, Serializable, Comparable<AudioFil
     private void readFile(File file) {
         this.file = file;
         // Don't read from formats not supported by Jaudiotagger
-        if (!isApeFile(file) && !isMPCFile(file) && !isCueFile(file)) {
+        if (!isApeFile(file) && !isMPCFile(file)) {
             introspectTags();
             readAudioProperties(this);
         }
@@ -229,18 +225,6 @@ public class AudioFile implements AudioObject, Serializable, Comparable<AudioFil
      */
     public static boolean isRealAudioFile(File file) {
         return file.getAbsolutePath().toLowerCase().endsWith(Format.REAL_1.getExtension()) || file.getAbsolutePath().toLowerCase().endsWith(Format.REAL_2.getExtension());
-    }
-
-    /**
-     * Checks if is valid cue file.
-     * 
-     * @param file
-     *            The file
-     * 
-     * @return true, if is cue file
-     */
-    public static boolean isCueFile(File file) {
-        return file.getAbsolutePath().toLowerCase().endsWith(Format.CUE.getExtension());
     }
 
     /**
@@ -666,25 +650,6 @@ public class AudioFile implements AudioObject, Serializable, Comparable<AudioFil
         return file.compareTo(o.getFile());
     }
 
-    /**
-     * This AudioFile associates with a cue sheet
-     * 
-     * @param track
-     */
-    public void addTrack(CueTrack track) {
-        if (tracks == null) {
-            tracks = new ArrayList<CueTrack>();
-        }
-        tracks.add(track);
-    }
-
-    /**
-     * Get tracks list
-     */
-    public List<CueTrack> getTracks() {
-        return tracks;
-    }
-
     @Override
     public Integer getDiscNumber() {
         if (tag != null && tag.getDiscNumber() >= 1) {
@@ -760,10 +725,7 @@ public class AudioFile implements AudioObject, Serializable, Comparable<AudioFil
     @Override
     public ImageIcon getCustomImage(int width, int height) {
         ImageIcon result = null;
-        // Don't try to read from cue tracks
-        if (!AudioFile.isCueFile(getFile())) {
-            result = AudioFilePictureUtils.getInsidePicture(this, width, height);
-        }
+        result = AudioFilePictureUtils.getInsidePicture(this, width, height);
         if (result == null) {
             result = AudioFilePictureUtils.getExternalPicture(this, width, height);
         }

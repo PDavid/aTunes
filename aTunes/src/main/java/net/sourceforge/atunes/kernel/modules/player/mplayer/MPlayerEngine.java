@@ -35,7 +35,6 @@ import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
-import net.sourceforge.atunes.kernel.modules.repository.audio.CueTrack;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.misc.SystemProperties;
@@ -347,19 +346,6 @@ public class MPlayerEngine extends PlayerEngine {
             }
         } else {
             url = audioObject.getUrl();
-            if (!isRemoteAudio && AudioFile.isCueFile(((AudioFile) audioObject).getFile())) {
-                isCueTrack = true;
-                url = ((CueTrack) audioObject).getAudioFileName();
-                cueTrackStartPosition = ((CueTrack) audioObject).getTrackStartPositionAsInt();
-                cueTrackDuration = ((CueTrack) audioObject).getDuration();
-                audioFileDuration = ((CueTrack) audioObject).getTotalDuration();
-                command.add("-ss");
-                command.add(String.valueOf(cueTrackStartPosition));
-                if (((CueTrack) audioObject).getTrackEndPosition() != null) { //it is not the last track
-                    command.add("-endpos");
-                    command.add(((CueTrack) audioObject).getTrackEndPosition());
-                }
-            }
         }
         if (shortPathName) {
             String shortPath = FileNameUtils.getShortPathNameW(url);

@@ -343,14 +343,6 @@ public class EditTagDialogController extends DialogController<EditTagDialog> {
             getDialogControlled().setAlbumArtistSelected(audioFiles.size() == 1);
         }
 
-        for (AudioFile audioFile : audioFiles) {
-            //we can edit only performer and title of a cue track now
-            if (AudioFile.isCueFile(audioFile.getFile())) {
-                mask();
-                break;
-            }
-        }
-
         // If there is only one file add a help to complete title from file name
         if (audioFiles.size() == 1) {
             final String fileName = audioFiles.get(0).getNameWithoutExtension();
@@ -401,32 +393,6 @@ public class EditTagDialogController extends DialogController<EditTagDialog> {
 
     EditTagDialog getDialog() {
         return getDialogControlled();
-    }
-
-    private void mask() {
-        getDialogControlled().setCoverSelected(false);
-        getDialogControlled().setAlbumArtistSelected(false);
-        getDialogControlled().setTrackNumberSelected(false);
-        getDialogControlled().setDiscNumberSelected(false);
-        getDialogControlled().setYearSelected(false);
-        getDialogControlled().setGenreSelected(false);
-        getDialogControlled().setCommentSelected(false);
-        getDialogControlled().setLyricsSelected(false);
-        getDialogControlled().setAlbumSelected(false);
-        getDialogControlled().setComposerSelected(false);
-
-        getDialogControlled().getAlbumArtistTextField().setEditable(false);
-        getDialogControlled().getTrackNumberTextField().setEditable(false);
-        getDialogControlled().getDiscNumberTextField().setEditable(false);
-        getDialogControlled().getYearTextField().setEditable(false);
-        getDialogControlled().getGenreComboBox().setEditable(false);
-        getDialogControlled().getCommentTextArea().setEditable(false);
-        getDialogControlled().getLyricsTextArea().setEditable(false);
-        getDialogControlled().getAlbumTextField().setEditable(false);
-        getDialogControlled().getComposerTextField().setEditable(false);
-
-        getDialogControlled().getTitleCheckBox().setEnabled(true);
-        getDialogControlled().getArtistCheckBox().setEnabled(true);
     }
 
     /**

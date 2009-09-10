@@ -27,8 +27,6 @@ import javax.swing.JSlider;
 
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
-import net.sourceforge.atunes.kernel.modules.repository.audio.CueTrack;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.GuiUtils;
 
@@ -74,13 +72,6 @@ public class PlayerControlsListener extends MouseAdapter {
                 return;
             }
 
-            // If it is a cue track, then adjust the percent
-            if (AudioFile.isCueFile(((AudioFile) audioObject).getFile())) {
-                int startPosition = ((CueTrack) audioObject).getTrackStartPositionAsInt();
-                float duration = ((CueTrack) audioObject).getDuration();
-                long trackDuration = ((CueTrack) audioObject).getTotalDuration();
-                perCent = (startPosition + perCent * duration) / trackDuration;
-            }
             PlayerHandler.getInstance().seekCurrentAudioObject(perCent);
         }
     }

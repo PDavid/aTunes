@@ -30,7 +30,6 @@ import javax.swing.SwingUtilities;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
-import net.sourceforge.atunes.kernel.modules.repository.audio.CueTrack;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -49,13 +48,9 @@ abstract class MPlayerOutputReader extends Thread {
     protected int length;
     protected int time;
 
-    // TODO: this should not be static
-    protected static boolean isCueSheet;
-    protected static int cueTrackStartPosition;
-
     /** Pattern of end of play back */
     private static final Pattern endPattern = Pattern.compile(".*\\x2e\\x2e\\x2e\\x20\\(.*\\x20.*\\).*");
-    
+
     /**
      * Instantiates a new mplayer output reader.
      * 
@@ -83,13 +78,6 @@ abstract class MPlayerOutputReader extends Thread {
      */
     static MPlayerOutputReader newInstance(MPlayerEngine handler, Process process, AudioObject ao) {
         if (ao instanceof AudioFile) {
-            // In case of a cue sheet, correct the position to reflect the position in the cue track and not the one in the actual audio file.
-            if (AudioFile.isCueFile(((AudioFile) ao).getFile())) {
-                cueTrackStartPosition = ((CueTrack) ao).getTrackStartPositionAsInt() * 1000;
-                isCueSheet = true;
-            } else {
-                isCueSheet = false;
-            }
             return new AudioFileMPlayerOutputReader(handler, process, (AudioFile) ao);
         } else if (ao instanceof Radio) {
             return new RadioMPlayerOutputReader(handler, process, (Radio) ao);
@@ -117,13 +105,8 @@ abstract class MPlayerOutputReader extends Thread {
         // Read progress			
         // MPlayer bug: Duration still inaccurate with mp3 VBR files! Flac duration bug
         if (line.contains("ANS_TIME_POSITION")) {
-            if (isCueSheet) {
-                time = (int) (Float.parseFloat(line.substring(line.indexOf("=") + 1)) * 1000.0) - cueTrackStartPosition;
-                engine.setTime(time);
-            } else {
-                time = (int) (Float.parseFloat(line.substring(line.indexOf("=") + 1)) * 1000.0);
-                engine.setTime(time);
-            }
+            time = (int) (Float.parseFloat(line.substring(line.indexOf("=") + 1)) * 1000.0);
+            engine.setTime(time);
         }
 
         // End

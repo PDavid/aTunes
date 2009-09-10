@@ -49,7 +49,6 @@ import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.favorites.FavoritesHandler;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
-import net.sourceforge.atunes.kernel.modules.repository.audio.CueTrack;
 import net.sourceforge.atunes.kernel.modules.repository.model.Album;
 import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.model.Folder;
@@ -1197,26 +1196,6 @@ public final class RepositoryHandler implements LoaderListener, AudioFilesRemove
         }
 
         for (AudioFile fileToRemove : filesToRemove) {
-            // We do not delete a single cue track, as the audio file still will contain the track
-            if (AudioFile.isCueFile(fileToRemove.getFile())) {
-                String text = StringUtils.getString(LanguageTool.getString("CUE_TRACKS_CANT_BE_DELETED") + "\n" + ((CueTrack) fileToRemove).getAudioFileName());
-                VisualHandler.getInstance().showErrorDialog(text);
-                continue;
-            }
-            List<CueTrack> list = fileToRemove.getTracks();
-            if (list != null) {
-                // This file associates with cue tracks, so multiple tracks have to be deleted as they are all present physically in this file
-                String text = StringUtils.getString(fileToRemove.toString() + "\n\n" + LanguageTool.getString("REMOVE_CUE_TRACK_AUDIOFILE_CONFIRMATION"));
-                if (VisualHandler.getInstance().showConfirmationDialog(text, LanguageTool.getString("CONFIRMATION")) == JOptionPane.OK_OPTION) {
-                    // Delete all cue tracks
-                    for (CueTrack track : list) {
-                        deleteFile(track);
-                    }
-                } else {
-                    continue;
-                }
-            }
-
             deleteFile(fileToRemove);
         }
 
