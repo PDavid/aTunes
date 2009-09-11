@@ -87,7 +87,7 @@ public final class ApplicationStateHandler implements ApplicationFinishListener,
      * Listeners of the state of the application
      */
     private Set<ApplicationStateChangeListener> stateChangeListeners;
-    
+
     /**
      * Instantiates a new application data handler.
      */
@@ -106,37 +106,41 @@ public final class ApplicationStateHandler implements ApplicationFinishListener,
     }
 
     /**
-     * Adds a new ApplicationStateChangeListener. This listener will be notified when application state is changed
+     * Adds a new ApplicationStateChangeListener. This listener will be notified
+     * when application state is changed
+     * 
      * @param listener
      */
     public void addStateChangeListener(ApplicationStateChangeListener listener) {
-    	if (stateChangeListeners == null) {
-    		stateChangeListeners = new HashSet<ApplicationStateChangeListener>();
-    	}
-    	stateChangeListeners.add(listener);
+        if (stateChangeListeners == null) {
+            stateChangeListeners = new HashSet<ApplicationStateChangeListener>();
+        }
+        stateChangeListeners.add(listener);
     }
-    
+
     /**
-     * Removes an ApplicationStateChangeListener. This listener will not be notified again when application state is changed
+     * Removes an ApplicationStateChangeListener. This listener will not be
+     * notified again when application state is changed
+     * 
      * @param listener
      */
     public void removeStateChangeListener(ApplicationStateChangeListener listener) {
-    	if (stateChangeListeners == null) {
-    		return;
-    	}
-    	stateChangeListeners.remove(listener);
+        if (stateChangeListeners == null) {
+            return;
+        }
+        stateChangeListeners.remove(listener);
     }
-    
+
     /**
      * Notifies all listeners of an application state change
      */
     public void notifyApplicationStateChanged() {
-    	for (ApplicationStateChangeListener listener : stateChangeListeners) {
-    		logger.debug(LogCategories.HANDLER, StringUtils.getString("Call to ApplicationStateChangeListener: ", listener.getClass().getName()));
-    		listener.applicationStateChanged(ApplicationState.getInstance());
-    	}
+        for (ApplicationStateChangeListener listener : stateChangeListeners) {
+            logger.debug(LogCategories.HANDLER, StringUtils.getString("Call to ApplicationStateChangeListener: ", listener.getClass().getName()));
+            listener.applicationStateChanged(ApplicationState.getInstance());
+        }
     }
-    
+
     @Override
     public void applicationFinish() {
         storeState();

@@ -1,3 +1,22 @@
+/*
+ * aTunes 1.14.0
+ * Copyright (C) 2006-2009 Alex Aranda, Sylvain Gaudard, Thomas Beckers and contributors
+ *
+ * See http://www.atunes.org/wiki/index.php?title=Contributing for information about contributors
+ *
+ * http://www.atunes.org
+ * http://sourceforge.net/projects/atunes
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
 package net.sourceforge.atunes.kernel.modules.context.youtube;
 
 import java.awt.Color;
@@ -39,47 +58,49 @@ import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
 /**
  * Content to show videos from Youtube
+ * 
  * @author alex
- *
+ * 
  */
 public class YoutubeContent extends ContextPanelContent {
-	
-	private static final long serialVersionUID = 5041098100868186051L;
-	
-	private SubstanceContextImageJTable youtubeResultTable;
 
-	public YoutubeContent() {
-		super(new YoutubeDataSource());
-	}
-	
-	@Override
-	protected String getContentName() {
-		return LanguageTool.getString("YOUTUBE_VIDEOS");
-	}
-	
-	@Override
-	protected Map<String, ?> getDataSourceParameters(AudioObject audioObject) {
-		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put(YoutubeDataSource.INPUT_AUDIO_OBJECT, audioObject);
-		return parameters;
-	}
-	
-	@Override
-	protected void updateContentWithDataSourceResult(Map<String, ?> result) {
-		if (result.containsKey(YoutubeDataSource.OUTPUT_VIDEOS)) {
-			youtubeResultTable.setModel(new YoutubeResultTableModel((List<YoutubeResultEntry>)result.get(YoutubeDataSource.OUTPUT_VIDEOS)));
-		}
-	}
-	
-	@Override
-	protected void clearContextPanelContent() {
-		super.clearContextPanelContent();
-		youtubeResultTable.setModel(new YoutubeResultTableModel(null));
-	}
-	
-	@Override
-	protected Component getComponent() {
-		// Create components
+    private static final long serialVersionUID = 5041098100868186051L;
+
+    private SubstanceContextImageJTable youtubeResultTable;
+
+    public YoutubeContent() {
+        super(new YoutubeDataSource());
+    }
+
+    @Override
+    protected String getContentName() {
+        return LanguageTool.getString("YOUTUBE_VIDEOS");
+    }
+
+    @Override
+    protected Map<String, ?> getDataSourceParameters(AudioObject audioObject) {
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put(YoutubeDataSource.INPUT_AUDIO_OBJECT, audioObject);
+        return parameters;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    protected void updateContentWithDataSourceResult(Map<String, ?> result) {
+        if (result.containsKey(YoutubeDataSource.OUTPUT_VIDEOS)) {
+            youtubeResultTable.setModel(new YoutubeResultTableModel((List<YoutubeResultEntry>) result.get(YoutubeDataSource.OUTPUT_VIDEOS)));
+        }
+    }
+
+    @Override
+    protected void clearContextPanelContent() {
+        super.clearContextPanelContent();
+        youtubeResultTable.setModel(new YoutubeResultTableModel(null));
+    }
+
+    @Override
+    protected Component getComponent() {
+        // Create components
         youtubeResultTable = new SubstanceContextImageJTable();
         youtubeResultTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         youtubeResultTable.setShowGrid(false);
@@ -92,32 +113,31 @@ public class YoutubeContent extends ContextPanelContent {
                 Color backgroundColor = super.getTableCellRendererComponent(table, value, arg2, arg3, arg4, arg5).getBackground();
 
                 return getPanelForTableRenderer(((YoutubeResultEntry) value).getImage(), StringUtils.getString("<html>", ((YoutubeResultEntry) value).getName(), "<br>(",
-                        ((YoutubeResultEntry) value).getDuration(), ")</html>"), backgroundColor, Constants.CONTEXT_IMAGE_WIDTH,
-                        Constants.CONTEXT_IMAGE_HEIGHT);
+                        ((YoutubeResultEntry) value).getDuration(), ")</html>"), backgroundColor, Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT);
             }
         });
-        youtubeResultTable.setColumnSelectionAllowed(false);        
+        youtubeResultTable.setColumnSelectionAllowed(false);
 
         JMenuItem playMenuItem = new JMenuItem(LanguageTool.getString("PLAY_VIDEO_AT_YOUTUBE"));
         playMenuItem.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				playVideoAtYoutube();
-			}
-		});
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                playVideoAtYoutube();
+            }
+        });
         JMenuItem downloadMenuItem = new JMenuItem(LanguageTool.getString("DOWNLOAD_VIDEO"));
         downloadMenuItem.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				downloadVideo();
-			}
-		});
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                downloadVideo();
+            }
+        });
         final JPopupMenu youtubeTableMenu = new JPopupMenu();
         youtubeTableMenu.add(playMenuItem);
         youtubeTableMenu.add(downloadMenuItem);
         youtubeTableMenu.setInvoker(youtubeResultTable);
-        
+
         youtubeResultTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -137,37 +157,36 @@ public class YoutubeContent extends ContextPanelContent {
             }
 
             private void showPopup(MouseEvent e) {
-            	youtubeResultTable.getSelectionModel().setSelectionInterval(youtubeResultTable.rowAtPoint(e.getPoint()),
-            			youtubeResultTable.rowAtPoint(e.getPoint()));
+                youtubeResultTable.getSelectionModel().setSelectionInterval(youtubeResultTable.rowAtPoint(e.getPoint()), youtubeResultTable.rowAtPoint(e.getPoint()));
                 youtubeTableMenu.show(e.getComponent(), e.getX(), e.getY());
             }
         });
 
         return youtubeResultTable;
-	}
+    }
 
     @Override
     protected List<Component> getOptions() {
-    	List<Component> options = new ArrayList<Component>();
-    	JMenuItem moreResults = new JMenuItem(LanguageTool.getString("SEE_MORE_RESULTS"));
-    	moreResults.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				searchMoreResultsInYoutube();
-			}
-		});
-    	JMenuItem openYoutube = new JMenuItem(LanguageTool.getString("GO_TO_YOUTUBE"));
-    	openYoutube.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				openYoutube();
-			}
-		});
-    	options.add(moreResults);
-    	options.add(openYoutube);
-    	return options;
+        List<Component> options = new ArrayList<Component>();
+        JMenuItem moreResults = new JMenuItem(LanguageTool.getString("SEE_MORE_RESULTS"));
+        moreResults.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                searchMoreResultsInYoutube();
+            }
+        });
+        JMenuItem openYoutube = new JMenuItem(LanguageTool.getString("GO_TO_YOUTUBE"));
+        openYoutube.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                openYoutube();
+            }
+        });
+        options.add(moreResults);
+        options.add(openYoutube);
+        return options;
     }
 
     /**
@@ -219,7 +238,7 @@ public class YoutubeContent extends ContextPanelContent {
         int selectedVideo = youtubeResultTable.getSelectedRow();
         if (selectedVideo != -1) {
             // get entry
-            YoutubeResultEntry entry = ((YoutubeResultTableModel)youtubeResultTable.getModel()).getEntry(selectedVideo);
+            YoutubeResultEntry entry = ((YoutubeResultTableModel) youtubeResultTable.getModel()).getEntry(selectedVideo);
             if (entry.getUrl() != null) {
                 //open youtube url
                 DesktopHandler.getInstance().openURL(entry.getUrl());
@@ -230,25 +249,26 @@ public class YoutubeContent extends ContextPanelContent {
             }
         }
     }
-    
+
     /**
      * Searches for more results of the last search
      * 
      * @return
      */
     protected void searchMoreResultsInYoutube() {
-    	String searchString = YoutubeService.getInstance().getSearchForAudioObject(ContextHandler.getInstance().getCurrentAudioObject());
-    	if (searchString.length() > 0) {
-    		final List<YoutubeResultEntry> result = YoutubeService.getInstance().searchInYoutube(searchString, youtubeResultTable.getRowCount() + 1);
-    		((YoutubeResultTableModel)youtubeResultTable.getModel()).addEntries(result);
-    	}
+        String searchString = YoutubeService.getInstance().getSearchForAudioObject(ContextHandler.getInstance().getCurrentAudioObject());
+        if (searchString.length() > 0) {
+            final List<YoutubeResultEntry> result = YoutubeService.getInstance().searchInYoutube(searchString, youtubeResultTable.getRowCount() + 1);
+            ((YoutubeResultTableModel) youtubeResultTable.getModel()).addEntries(result);
+        }
     }
-    
+
     /**
      * Opens a web browser to show youtube results
      */
     protected void openYoutube() {
-    	DesktopHandler.getInstance().openSearch(SearchFactory.getSearchForName("YouTube"), YoutubeService.getInstance().getSearchForAudioObject(ContextHandler.getInstance().getCurrentAudioObject()));
-	}
+        DesktopHandler.getInstance().openSearch(SearchFactory.getSearchForName("YouTube"),
+                YoutubeService.getInstance().getSearchForAudioObject(ContextHandler.getInstance().getCurrentAudioObject()));
+    }
 
 }

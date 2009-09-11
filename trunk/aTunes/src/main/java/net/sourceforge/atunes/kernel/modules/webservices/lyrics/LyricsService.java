@@ -42,12 +42,12 @@ import net.sourceforge.atunes.misc.log.Logger;
  */
 public class LyricsService implements ApplicationStateChangeListener {
 
-	/** Logger */
+    /** Logger */
     private static Logger logger;
 
     /** Contains a list of LyricsEngine to get lyrics. */
     private List<LyricsEngine> lyricsEngines;
-    
+
     /** Cache */
     private static LyricsCache lyricsCache = new LyricsCache();
 
@@ -55,25 +55,27 @@ public class LyricsService implements ApplicationStateChangeListener {
      * Singleton instance
      */
     private static LyricsService instance;
-    
+
     /**
      * Getter for singleton instance
+     * 
      * @return
      */
     public static LyricsService getInstance() {
-    	if (instance == null) {
-    		instance = new LyricsService();
-    	}
-    	return instance;
+        if (instance == null) {
+            instance = new LyricsService();
+        }
+        return instance;
     }
-    
+
     /**
      * Private constructor for singleton instance
+     * 
      * @param lyricsEngines
      * @param lyricsCache
      */
     private LyricsService() {
-    	ApplicationStateHandler.getInstance().addStateChangeListener(this);
+        ApplicationStateHandler.getInstance().addStateChangeListener(this);
         this.lyricsEngines = loadEngines(ApplicationState.getInstance().getProxy());
     }
 
@@ -81,8 +83,8 @@ public class LyricsService implements ApplicationStateChangeListener {
      * Updates service after a configuration change
      */
     public void updateService() {
-    	// Force create service again
-    	instance = null;
+        // Force create service again
+        instance = null;
     }
 
     /**
@@ -128,10 +130,10 @@ public class LyricsService implements ApplicationStateChangeListener {
     public Map<String, String> getUrlsForAddingNewLyrics(String artist, String title) {
         Map<String, String> result = new HashMap<String, String>();
         for (LyricsEngine lyricsEngine : lyricsEngines) {
-        	String url = lyricsEngine.getUrlForAddingNewLyrics(artist, title);
-        	if (url != null && !url.trim().equals("")) {
-        		result.put(lyricsEngine.getLyricsProviderName(), url);
-        	}
+            String url = lyricsEngine.getUrlForAddingNewLyrics(artist, title);
+            if (url != null && !url.trim().equals("")) {
+                result.put(lyricsEngine.getLyricsProviderName(), url);
+            }
         }
         return result;
     }
@@ -143,7 +145,7 @@ public class LyricsService implements ApplicationStateChangeListener {
     private void setLyricsEngines(List<LyricsEngine> lyricsEngines) {
         this.lyricsEngines = lyricsEngines;
     }
-    
+
     /**
      * Loads lyrics engines
      * 
@@ -212,7 +214,7 @@ public class LyricsService implements ApplicationStateChangeListener {
         }
         return result;
     }
-    
+
     /**
      * Sets the lyric engines for the lyrics service
      * 
@@ -220,65 +222,66 @@ public class LyricsService implements ApplicationStateChangeListener {
      *            the lyrics engines info
      */
     private void setLyricsEngines(ProxyBean p, List<LyricsEngineInfo> lyricsEnginesInfo) {
-    	List<LyricsEngine> result = new ArrayList<LyricsEngine>();
+        List<LyricsEngine> result = new ArrayList<LyricsEngine>();
 
-    	// Get engines
-    	for (LyricsEngineInfo lyricsEngineInfo : lyricsEnginesInfo) {
-    		if (lyricsEngineInfo.isEnabled()) {
-    			try {
-    				Class<?> clazz = Class.forName(lyricsEngineInfo.getClazz());
-    				Constructor<?> constructor = clazz.getConstructor(Proxy.class);
-    				result.add((LyricsEngine) constructor.newInstance(p));
-    			} catch (ClassNotFoundException e) {
-    				getLogger().error(LogCategories.HANDLER, e);
-    			} catch (InstantiationException e) {
-    				getLogger().error(LogCategories.HANDLER, e);
-    			} catch (IllegalAccessException e) {
-    				getLogger().error(LogCategories.HANDLER, e);
-    			} catch (SecurityException e) {
-    				getLogger().error(LogCategories.HANDLER, e);
-    			} catch (NoSuchMethodException e) {
-    				getLogger().error(LogCategories.HANDLER, e);
-    			} catch (IllegalArgumentException e) {
-    				getLogger().error(LogCategories.HANDLER, e);
-    			} catch (InvocationTargetException e) {
-    				getLogger().error(LogCategories.HANDLER, e);
-    			}
-    		}
-    	}
-    	setLyricsEngines(result);
+        // Get engines
+        for (LyricsEngineInfo lyricsEngineInfo : lyricsEnginesInfo) {
+            if (lyricsEngineInfo.isEnabled()) {
+                try {
+                    Class<?> clazz = Class.forName(lyricsEngineInfo.getClazz());
+                    Constructor<?> constructor = clazz.getConstructor(Proxy.class);
+                    result.add((LyricsEngine) constructor.newInstance(p));
+                } catch (ClassNotFoundException e) {
+                    getLogger().error(LogCategories.HANDLER, e);
+                } catch (InstantiationException e) {
+                    getLogger().error(LogCategories.HANDLER, e);
+                } catch (IllegalAccessException e) {
+                    getLogger().error(LogCategories.HANDLER, e);
+                } catch (SecurityException e) {
+                    getLogger().error(LogCategories.HANDLER, e);
+                } catch (NoSuchMethodException e) {
+                    getLogger().error(LogCategories.HANDLER, e);
+                } catch (IllegalArgumentException e) {
+                    getLogger().error(LogCategories.HANDLER, e);
+                } catch (InvocationTargetException e) {
+                    getLogger().error(LogCategories.HANDLER, e);
+                }
+            }
+        }
+        setLyricsEngines(result);
     }
-
 
     /**
      * Getter for logger
+     * 
      * @return
      */
     private Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
     }
 
     /**
      * Delegate method to clear cache
+     * 
      * @return
      */
     public boolean clearCache() {
-    	return lyricsCache.clearCache();
+        return lyricsCache.clearCache();
     }
-    
+
     @Override
     public void applicationStateChanged(ApplicationState newState) {
-    	setLyricsEngines(newState.getProxy(), newState.getLyricsEnginesInfo());
+        setLyricsEngines(newState.getProxy(), newState.getLyricsEnginesInfo());
     }
-    
+
     /**
      * Finishes service
      */
     public void finishService() {
-    	lyricsCache.shutdown();
+        lyricsCache.shutdown();
     }
 
 }

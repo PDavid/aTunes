@@ -51,35 +51,33 @@ public class AddBannedSongInLastFMAction extends Action {
     public void actionPerformed(ActionEvent e) {
         banSong(ContextHandler.getInstance().getCurrentAudioObject());
     }
-    
+
     /**
      * Calls last.fm service to ban a song
      * 
      * @param song
      */
     public void banSong(final AudioObject song) {
-    	setEnabled(false);
-    	new SwingWorker<Void, Void>() {
+        setEnabled(false);
+        new SwingWorker<Void, Void>() {
 
-    		@Override
-    		protected Void doInBackground() throws Exception {
-    			LastFmService.getInstance().addBannedSong(song);
-    			return null;
-    		}
+            @Override
+            protected Void doInBackground() throws Exception {
+                LastFmService.getInstance().addBannedSong(song);
+                return null;
+            }
 
-    		@Override
-    		protected void done() {
-    			try {
-    				get();
-    			} catch (InterruptedException e) {
-    			} catch (ExecutionException e) {
-    			} finally {
-    				setEnabled(true);
-    			}
-    		}
-    	}.execute();
+            @Override
+            protected void done() {
+                try {
+                    get();
+                } catch (InterruptedException e) {
+                } catch (ExecutionException e) {
+                } finally {
+                    setEnabled(true);
+                }
+            }
+        }.execute();
     }
-
-
 
 }

@@ -43,7 +43,7 @@ public class TypeColumn extends Column {
         setVisible(true);
         setAlignment(SwingConstants.CENTER);
     }
-    
+
     @Override
     protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
         return 0;
@@ -61,7 +61,7 @@ public class TypeColumn extends Column {
             return null;
         }
     }
-    
+
     @Override
     public String getHeaderText() {
         return "";

@@ -37,7 +37,7 @@ public class YearColumn extends Column {
         setAlignment(SwingConstants.CENTER);
         setVisible(false);
     }
-    
+
     @Override
     protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
         return ao1.getYear().compareTo(ao2.getYear());

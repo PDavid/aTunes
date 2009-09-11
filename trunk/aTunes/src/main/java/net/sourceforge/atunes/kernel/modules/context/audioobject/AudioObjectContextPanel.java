@@ -1,3 +1,22 @@
+/*
+ * aTunes 1.14.0
+ * Copyright (C) 2006-2009 Alex Aranda, Sylvain Gaudard, Thomas Beckers and contributors
+ *
+ * See http://www.atunes.org/wiki/index.php?title=Contributing for information about contributors
+ *
+ * http://www.atunes.org
+ * http://sourceforge.net/projects/atunes
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
 package net.sourceforge.atunes.kernel.modules.context.audioobject;
 
 import java.util.ArrayList;
@@ -16,60 +35,60 @@ import net.sourceforge.atunes.utils.LanguageTool;
 
 /**
  * Context panel to show song information
+ * 
  * @author alex
- *
+ * 
  */
 public class AudioObjectContextPanel extends ContextPanel {
-	
-	private static final long serialVersionUID = -7910261492394049289L;
 
-	private List<ContextPanelContent> contents;
-	
-	@Override
-	protected ImageIcon getContextPanelIcon(AudioObject audioObject) {
-		if (audioObject instanceof AudioFile || (audioObject instanceof Radio && ((Radio)audioObject).isSongInfoAvailable())) {
-			return ImageLoader.getImage(ImageLoader.AUDIO_FILE_LITTLE);
-		} else if (audioObject instanceof Radio) {
-			return ImageLoader.getImage(ImageLoader.RADIO_LITTLE);
-		} else if (audioObject instanceof PodcastFeedEntry) {
-			return ImageLoader.getImage(ImageLoader.RSS_LITTLE);
-		}
-		
-		return null;
-	}
-	
-	@Override
-	public String getContextPanelName() {
-		return "AUDIOOBJECT";
-	}
-	
-	@Override
-	protected String getContextPanelTitle(AudioObject audioObject) {
-		if (audioObject instanceof AudioFile || (audioObject instanceof Radio && ((Radio)audioObject).isSongInfoAvailable())) {
-			return LanguageTool.getString("SONG");
-		} else if (audioObject instanceof Radio) {
-			return LanguageTool.getString("RADIO");
-		} else if (audioObject instanceof PodcastFeedEntry) {
-			return LanguageTool.getString("PODCAST_FEED");
-		}
-		
-		return null;
-	}
+    private static final long serialVersionUID = -7910261492394049289L;
 
-	@Override
-	protected List<ContextPanelContent> getContents() {
-		if (contents == null) {
-			contents = new ArrayList<ContextPanelContent>();
-			contents.add(new AudioObjectBasicInfoContent());
-			contents.add(new LyricsContent());
-		}
-		return contents;
-	}
-	
-	@Override
-	protected boolean isPanelEnabledForAudioObject(AudioObject audioObject) {
-		return true;
-	}
-	
+    private List<ContextPanelContent> contents;
+
+    @Override
+    protected ImageIcon getContextPanelIcon(AudioObject audioObject) {
+        if (audioObject instanceof AudioFile || (audioObject instanceof Radio && ((Radio) audioObject).isSongInfoAvailable())) {
+            return ImageLoader.getImage(ImageLoader.AUDIO_FILE_LITTLE);
+        } else if (audioObject instanceof Radio) {
+            return ImageLoader.getImage(ImageLoader.RADIO_LITTLE);
+        } else if (audioObject instanceof PodcastFeedEntry) {
+            return ImageLoader.getImage(ImageLoader.RSS_LITTLE);
+        }
+
+        return null;
+    }
+
+    @Override
+    public String getContextPanelName() {
+        return "AUDIOOBJECT";
+    }
+
+    @Override
+    protected String getContextPanelTitle(AudioObject audioObject) {
+        if (audioObject instanceof AudioFile || (audioObject instanceof Radio && ((Radio) audioObject).isSongInfoAvailable())) {
+            return LanguageTool.getString("SONG");
+        } else if (audioObject instanceof Radio) {
+            return LanguageTool.getString("RADIO");
+        } else if (audioObject instanceof PodcastFeedEntry) {
+            return LanguageTool.getString("PODCAST_FEED");
+        }
+
+        return null;
+    }
+
+    @Override
+    protected List<ContextPanelContent> getContents() {
+        if (contents == null) {
+            contents = new ArrayList<ContextPanelContent>();
+            contents.add(new AudioObjectBasicInfoContent());
+            contents.add(new LyricsContent());
+        }
+        return contents;
+    }
+
+    @Override
+    protected boolean isPanelEnabledForAudioObject(AudioObject audioObject) {
+        return true;
+    }
 
 }

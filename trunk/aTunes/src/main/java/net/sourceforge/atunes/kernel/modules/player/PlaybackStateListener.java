@@ -25,6 +25,7 @@ public interface PlaybackStateListener {
 
     /**
      * This method is called when playback changes
+     * 
      * @param newState
      * @param currentAudioObject
      */

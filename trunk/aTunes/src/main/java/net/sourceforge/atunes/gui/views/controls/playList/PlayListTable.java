@@ -173,7 +173,7 @@ public class PlayListTable extends JTable implements DragSourceListener, DragGes
 
         // Force minimum row height to 16 pixels to avoid icons height greater than row height
         if (getRowHeight() < 16) {
-        	setRowHeight(16);
+            setRowHeight(16);
         }
     }
 

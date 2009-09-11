@@ -37,7 +37,7 @@ public class TrackColumn extends Column {
         setVisible(true);
         setAlignment(SwingConstants.CENTER);
     }
-    
+
     @Override
     protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
         return ao1.getTrackNumber().compareTo(ao2.getTrackNumber());

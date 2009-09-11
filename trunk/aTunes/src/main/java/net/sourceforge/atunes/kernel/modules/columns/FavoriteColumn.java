@@ -29,7 +29,7 @@ import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.model.AudioObject;
 
 public class FavoriteColumn extends Column {
-    
+
     /**
      * 
      */
@@ -41,7 +41,7 @@ public class FavoriteColumn extends Column {
         setWidth(20);
         setVisible(true);
     }
-    
+
     @Override
     protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
         return 0;
@@ -56,14 +56,13 @@ public class FavoriteColumn extends Column {
         if (audioObject instanceof PodcastFeedEntry) {
             return ImageLoader.getImage(ImageLoader.EMPTY);
         }
-        return FavoritesHandler.getInstance().getFavoriteSongsInfo().containsValue(audioObject) ? ImageLoader.getImage(ImageLoader.FAVORITE) : ImageLoader.getImage(ImageLoader.EMPTY);
+        return FavoritesHandler.getInstance().getFavoriteSongsInfo().containsValue(audioObject) ? ImageLoader.getImage(ImageLoader.FAVORITE) : ImageLoader
+                .getImage(ImageLoader.EMPTY);
     }
-    
+
     @Override
     public String getHeaderText() {
         return "";
     }
-
-    
 
 }

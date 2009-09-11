@@ -138,7 +138,7 @@ public final class TagEditionOperations {
         // If trackNumber could not be retrieved from file name, try to get from last.fm
         // To get this, titles must match
         if (trackNumber == 0) {
-        	trackNumber = LastFmService.getInstance().getTrackNumberForFile(audioFile);
+            trackNumber = LastFmService.getInstance().getTrackNumberForFile(audioFile);
         }
 
         return trackNumber;

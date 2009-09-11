@@ -31,7 +31,7 @@ class MPlayerCommandWriter {
 
     /** The process. */
     private volatile Process process;
-    
+
     /** Stream used to send commands to mplayer */
     private volatile PrintStream streamToProcess;
 
@@ -53,12 +53,12 @@ class MPlayerCommandWriter {
      */
     private void sendCommand(String command) {
         if (process != null) {
-        	if (streamToProcess == null) {
-        		streamToProcess = new PrintStream(process.getOutputStream()); 
-        	}
-        	streamToProcess.print(command);
-        	streamToProcess.print('\n');
-        	streamToProcess.flush();
+            if (streamToProcess == null) {
+                streamToProcess = new PrintStream(process.getOutputStream());
+            }
+            streamToProcess.print(command);
+            streamToProcess.print('\n');
+            streamToProcess.flush();
         }
     }
 
@@ -143,8 +143,8 @@ class MPlayerCommandWriter {
      *            the new process
      */
     void finishProcess() {
-    	this.streamToProcess.close();
-    	this.streamToProcess = null;
-        this.process = null;        
+        this.streamToProcess.close();
+        this.streamToProcess = null;
+        this.process = null;
     }
 }

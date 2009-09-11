@@ -87,7 +87,7 @@ public class YoutubeService {
      * Singleton instance
      */
     private static YoutubeService instance;
-    
+
     private YoutubeService(ProxyBean proxyBean) {
         Proxy proxy = null;
         try {
@@ -95,31 +95,30 @@ public class YoutubeService {
                 proxy = Proxy.getProxy(proxyBean);
             }
         } catch (Exception e) {
-        	logger.error(LogCategories.SERVICE, e);        	
+            logger.error(LogCategories.SERVICE, e);
         }
         this.proxy = proxy;
     }
 
     /**
      * Getter for singleton instance
+     * 
      * @return
      */
     public static YoutubeService getInstance() {
-    	if (instance == null) {
-    		instance = new YoutubeService(ApplicationState.getInstance().getProxy());
-    	}
-    	return instance;
+        if (instance == null) {
+            instance = new YoutubeService(ApplicationState.getInstance().getProxy());
+        }
+        return instance;
     }
-    
+
     /**
      * Updates service after a configuration change
      */
     public void updateService() {
-    	// Force create service again
-    	instance = null;
+        // Force create service again
+        instance = null;
     }
-
-    
 
     /**
      * triggers youtube search and returns result in table model structure by

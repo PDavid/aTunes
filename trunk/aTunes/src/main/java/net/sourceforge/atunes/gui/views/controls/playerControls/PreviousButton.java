@@ -59,12 +59,12 @@ public class PreviousButton extends JButton {
         setFocusable(false);
         putClientProperty(SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY, GuiUtils.getComponentOrientation().isLeftToRight() ? new RightConcaveButtonShaper(
                 PlayerControlsPanel.PLAY_BUTTON_SIZE.height) : new LeftConcaveButtonShaper(PlayerControlsPanel.PLAY_BUTTON_SIZE.height));
-        
+
         // Add behaviour
         addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                PlayerHandler.getInstance().playPreviousAudioObject();            
+                PlayerHandler.getInstance().playPreviousAudioObject();
             }
         });
     }

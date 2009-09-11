@@ -183,9 +183,10 @@ public class ProxyBean {
     public void setUser(String user) {
         this.user = user;
     }
-    
+
     /**
      * Returns a proxy object from a bean
+     * 
      * @param bean
      * @return
      * @throws IOException

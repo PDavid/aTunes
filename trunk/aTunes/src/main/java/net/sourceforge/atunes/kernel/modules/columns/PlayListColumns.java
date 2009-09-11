@@ -50,7 +50,6 @@ public class PlayListColumns implements PluginListener {
     /** The current visible columns. */
     private static List<Class<? extends Column>> currentColumns;
 
-
     /** The available columns. */
     private static List<Column> availableColumns;
 
@@ -58,14 +57,15 @@ public class PlayListColumns implements PluginListener {
      * Singleton instance, used to handle plugin listener
      */
     private static PlayListColumns instance;
-    
+
     /**
      * Logger
      */
     private Logger logger = new Logger();
-    
+
     /**
      * Returns singleton instance
+     * 
      * @return
      */
     public static PlayListColumns getInstance() {
@@ -74,7 +74,7 @@ public class PlayListColumns implements PluginListener {
         }
         return instance;
     }
-    
+
     /**
      * Gets the available columns.
      * 
@@ -177,7 +177,7 @@ public class PlayListColumns implements PluginListener {
     }
 
     /**
-     * Returns columns for selection 
+     * Returns columns for selection
      * 
      * @return the columns for selection
      */
@@ -195,7 +195,6 @@ public class PlayListColumns implements PluginListener {
         Collections.sort(result);
         return result;
     }
-
 
     /**
      * Store current column settings.
@@ -226,9 +225,10 @@ public class PlayListColumns implements PluginListener {
     public static boolean isArtistVisible() {
         return getColumn(ArtistColumn.class) != null ? getColumn(ArtistColumn.class).isVisible() : false;
     }
-    
+
     /**
      * Returns a column object given its class name
+     * 
      * @param columnClass
      * @return
      */
@@ -240,13 +240,13 @@ public class PlayListColumns implements PluginListener {
         }
         return null;
     }
-    
+
     @Override
     public void pluginActivated(PluginInfo plugin) {
         try {
             Column pluginColumn = (Column) plugin.getInstance();
             getAvailableColumns().add(pluginColumn);
-            
+
             // Apply configuration if column has been previously used
             boolean needRefresh = false;
             Map<String, ColumnBean> columnsBeans = ApplicationState.getInstance().getColumns();
@@ -257,7 +257,7 @@ public class PlayListColumns implements PluginListener {
                     needRefresh = true;
                 }
             }
-            
+
             // Refresh columns if necessary
             if (needRefresh) {
                 refreshColumns();
@@ -267,20 +267,21 @@ public class PlayListColumns implements PluginListener {
             logger.error(LogCategories.PLAYLIST, e);
         }
     }
-    
+
     @Override
     public void pluginDeactivated(PluginInfo plugin, Collection<Plugin> createdInstances) {
         for (Plugin instancedColumn : createdInstances) {
-        	getAvailableColumns().remove(instancedColumn);
+            getAvailableColumns().remove(instancedColumn);
         }
         refreshColumns();
     }
-    
+
     /**
-     * Internal method called to refresh columns when a plugin is activated or deactivated
+     * Internal method called to refresh columns when a plugin is activated or
+     * deactivated
      */
     private void refreshColumns() {
-        ((PlayListColumnModel)VisualHandler.getInstance().getPlayListTable().getColumnModel()).arrangeColumns(false);
+        ((PlayListColumnModel) VisualHandler.getInstance().getPlayListTable().getColumnModel()).arrangeColumns(false);
     }
 
 }

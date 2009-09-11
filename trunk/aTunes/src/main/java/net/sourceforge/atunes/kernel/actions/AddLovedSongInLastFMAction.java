@@ -51,35 +51,34 @@ public class AddLovedSongInLastFMAction extends Action {
     public void actionPerformed(ActionEvent e) {
         loveSong(ContextHandler.getInstance().getCurrentAudioObject());
     }
-    
+
     /**
      * Calls last.fm service to add a song as favorite
      * 
      * @param song
      */
     public void loveSong(final AudioObject song) {
-    	setEnabled(false);
-    	new SwingWorker<Void, Void>() {
+        setEnabled(false);
+        new SwingWorker<Void, Void>() {
 
-    		@Override
-    		protected Void doInBackground() throws Exception {
-    			LastFmService.getInstance().addLovedSong(song);
-    			return null;
-    		}
+            @Override
+            protected Void doInBackground() throws Exception {
+                LastFmService.getInstance().addLovedSong(song);
+                return null;
+            }
 
-    		@Override
-    		protected void done() {
-    			try {
-    				get();
-    			} catch (InterruptedException e) {
-    			} catch (ExecutionException e) {
-    			} finally {
-    		        setEnabled(true);
-    			}
-    		}
+            @Override
+            protected void done() {
+                try {
+                    get();
+                } catch (InterruptedException e) {
+                } catch (ExecutionException e) {
+                } finally {
+                    setEnabled(true);
+                }
+            }
 
-    	}.execute();
+        }.execute();
     }
-
 
 }

@@ -47,12 +47,12 @@ public class MuteButton extends JToggleButton {
      */
     public MuteButton(Dimension size) {
         super(Actions.getAction(MuteAction.class));
-        
+
         // Force size
         setPreferredSize(size);
         setMinimumSize(size);
         setMaximumSize(size);
         setFocusable(false);
-        putClientProperty(SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY, new RoundRectButtonShaper());        
+        putClientProperty(SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY, new RoundRectButtonShaper());
     }
 }

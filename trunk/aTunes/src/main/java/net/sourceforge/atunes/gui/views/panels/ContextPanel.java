@@ -63,12 +63,12 @@ public class ContextPanel extends JPanel {
     private void setContent() {
         tabbedPane = new JTabbedPane();
         add(tabbedPane, BorderLayout.CENTER);
-        
+
         // Add tabs
         for (net.sourceforge.atunes.kernel.modules.context.ContextPanel panel : ContextHandler.getInstance().getContextPanels()) {
-        	tabbedPane.addTab(panel.getTitle(), panel.getIcon(), panel.getUIComponent());
+            tabbedPane.addTab(panel.getTitle(), panel.getIcon(), panel.getUIComponent());
         }
-        
+
         // Set previous selected tab
         // IMPORTANT: this method must be called before adding change listener to avoid firing events when
         // UI is being created
@@ -76,60 +76,64 @@ public class ContextPanel extends JPanel {
 
         // Add listener for tab changes
         tabbedPane.addChangeListener(new ChangeListener() {
-        	@Override
-        	public void stateChanged(ChangeEvent e) {
-        		ContextHandler.getInstance().contextPanelChanged();
-        	}
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                ContextHandler.getInstance().contextPanelChanged();
+            }
         });
     }
-    
+
     /**
      * Sets text of tabs
+     * 
      * @param set
      */
     public void updateContextTabsText() {
-    	int i = 0;
-    	for (net.sourceforge.atunes.kernel.modules.context.ContextPanel panel : ContextHandler.getInstance().getContextPanels()) {
-    		tabbedPane.setTitleAt(i, panel.getTitle());
-    		i++;
-    	}
+        int i = 0;
+        for (net.sourceforge.atunes.kernel.modules.context.ContextPanel panel : ContextHandler.getInstance().getContextPanels()) {
+            tabbedPane.setTitleAt(i, panel.getTitle());
+            i++;
+        }
     }
 
     /**
      * Sets text of tabs
+     * 
      * @param set
      */
     public void updateContextTabsIcons() {
-    	int i = 0;
-    	for (net.sourceforge.atunes.kernel.modules.context.ContextPanel panel : ContextHandler.getInstance().getContextPanels()) {
-    		tabbedPane.setIconAt(i, panel.getIcon());
-    		i++;
-    	}
+        int i = 0;
+        for (net.sourceforge.atunes.kernel.modules.context.ContextPanel panel : ContextHandler.getInstance().getContextPanels()) {
+            tabbedPane.setIconAt(i, panel.getIcon());
+            i++;
+        }
     }
 
     public void enableContextTabs() {
-    	int i = 0;
-    	for (net.sourceforge.atunes.kernel.modules.context.ContextPanel panel : ContextHandler.getInstance().getContextPanels()) {
-    		tabbedPane.setEnabledAt(i, panel.isEnabled());
-    		tabbedPane.getComponentAt(i).setEnabled(panel.isEnabled());
-    		i++;
-    	}
+        int i = 0;
+        for (net.sourceforge.atunes.kernel.modules.context.ContextPanel panel : ContextHandler.getInstance().getContextPanels()) {
+            tabbedPane.setEnabledAt(i, panel.isEnabled());
+            tabbedPane.getComponentAt(i).setEnabled(panel.isEnabled());
+            i++;
+        }
     }
-	
-	/**
-	 * Selects given tab index
-	 * @param index
-	 */
-	public void setSelectedIndex(int index) {
-		tabbedPane.setSelectedIndex(index);
-	}
-	
-	/**
-	 * Returns selected tab index
-	 * @return
-	 */
-	public int getSelectedIndex() {
-		return tabbedPane.getSelectedIndex();
-		
-	}
+
+    /**
+     * Selects given tab index
+     * 
+     * @param index
+     */
+    public void setSelectedIndex(int index) {
+        tabbedPane.setSelectedIndex(index);
+    }
+
+    /**
+     * Returns selected tab index
+     * 
+     * @return
+     */
+    public int getSelectedIndex() {
+        return tabbedPane.getSelectedIndex();
+
+    }
 }

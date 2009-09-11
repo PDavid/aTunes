@@ -45,9 +45,9 @@ import net.sourceforge.atunes.model.AudioObject;
 
 public final class ContextHandler implements ApplicationFinishListener, ApplicationStateChangeListener {
 
-	/**
-	 * Singleton instance of handler
-	 */
+    /**
+     * Singleton instance of handler
+     */
     private static ContextHandler instance;
 
     /**
@@ -70,34 +70,35 @@ public final class ContextHandler implements ApplicationFinishListener, Applicat
      * Context panels defined
      */
     private List<ContextPanel> contextPanels;
-    
+
     /**
      * Instantiates a new context handler.
      */
     private ContextHandler() {
-    	// TODO: Move to a web services handler
-    	LastFmService.getInstance().updateService();
-    	LyricsService.getInstance().updateService();
-    	
+        // TODO: Move to a web services handler
+        LastFmService.getInstance().updateService();
+        LyricsService.getInstance().updateService();
+
         Kernel.getInstance().addFinishListener(this);
-        ApplicationStateHandler.getInstance().addStateChangeListener(this);        
+        ApplicationStateHandler.getInstance().addStateChangeListener(this);
     }
-    
+
     /**
      * Returns context panels
+     * 
      * @return
      */
     public List<ContextPanel> getContextPanels() {
-    	if (contextPanels == null) {
-    		contextPanels = new ArrayList<ContextPanel>();
-    		// TODO: Put here every new context panel
-    		contextPanels.add(new AudioObjectContextPanel());
-    		contextPanels.add(new AlbumContextPanel());
-    		contextPanels.add(new ArtistContextPanel());
-    		contextPanels.add(new SimilarArtistsContextPanel());
-    		contextPanels.add(new YoutubeContextPanel());
-    	}
-    	return contextPanels;
+        if (contextPanels == null) {
+            contextPanels = new ArrayList<ContextPanel>();
+            // TODO: Put here every new context panel
+            contextPanels.add(new AudioObjectContextPanel());
+            contextPanels.add(new AlbumContextPanel());
+            contextPanels.add(new ArtistContextPanel());
+            contextPanels.add(new SimilarArtistsContextPanel());
+            contextPanels.add(new YoutubeContextPanel());
+        }
+        return contextPanels;
     }
 
     /**
@@ -116,20 +117,20 @@ public final class ContextHandler implements ApplicationFinishListener, Applicat
      * Called when user changes context tab
      */
     public void contextPanelChanged() {
-    	// Update selected tab
-    	ApplicationState.getInstance().setSelectedContextTab(VisualHandler.getInstance().getContextPanel().getSelectedIndex());
-    	// Call to fill information
-    	retrieveInfo(currentAudioObject);	
+        // Update selected tab
+        ApplicationState.getInstance().setSelectedContextTab(VisualHandler.getInstance().getContextPanel().getSelectedIndex());
+        // Call to fill information
+        retrieveInfo(currentAudioObject);
     }
-    
+
     /**
      * Clears all context panels
      */
     public void clear() {
         // Clear all context panels
-    	for (ContextPanel panel : getContextPanels()) {
-    		panel.clearContextPanel();
-    	}
+        for (ContextPanel panel : getContextPanels()) {
+            panel.clearContextPanel();
+        }
         currentAudioObject = null;
     }
 
@@ -139,7 +140,7 @@ public final class ContextHandler implements ApplicationFinishListener, Applicat
      * @param ao
      *            the audio object
      */
-    public void retrieveInfoAndShowInPanel(AudioObject ao) {    	
+    public void retrieveInfoAndShowInPanel(AudioObject ao) {
         // Avoid retrieve information about the same audio object twice except if is an AudioFile and has been recently changed
         if (currentAudioObject != null && currentAudioObject.equals(ao)) {
             if (ao instanceof AudioFile) {
@@ -161,38 +162,38 @@ public final class ContextHandler implements ApplicationFinishListener, Applicat
 
         if (ApplicationState.getInstance().isUseContext()) {
             // Updates titles
-        	VisualHandler.getInstance().getContextPanel().updateContextTabsText();
-        	
-        	// Update icons
-        	VisualHandler.getInstance().getContextPanel().updateContextTabsIcons();
-        	
-        	// Enable or disable tabs
-        	VisualHandler.getInstance().getContextPanel().enableContextTabs();
-        	
-        	// If selected panel is not enabled then select another one
-        	if (!getContextPanels().get(ApplicationState.getInstance().getSelectedContextTab()).isEnabled()) {
-        		int i = 0;
-        		while (i < getContextPanels().size() && !getContextPanels().get(i).isEnabled()) {
-        			i++;
-        		}
-        		// Any panel is enabled, so select the first one
-        		if (i == getContextPanels().size()) {
-        			i = 0;
-        		}
-        		ApplicationState.getInstance().setSelectedContextTab(i);
-        		VisualHandler.getInstance().getContextPanel().setSelectedIndex(ApplicationState.getInstance().getSelectedContextTab());
-        	}
+            VisualHandler.getInstance().getContextPanel().updateContextTabsText();
+
+            // Update icons
+            VisualHandler.getInstance().getContextPanel().updateContextTabsIcons();
+
+            // Enable or disable tabs
+            VisualHandler.getInstance().getContextPanel().enableContextTabs();
+
+            // If selected panel is not enabled then select another one
+            if (!getContextPanels().get(ApplicationState.getInstance().getSelectedContextTab()).isEnabled()) {
+                int i = 0;
+                while (i < getContextPanels().size() && !getContextPanels().get(i).isEnabled()) {
+                    i++;
+                }
+                // Any panel is enabled, so select the first one
+                if (i == getContextPanels().size()) {
+                    i = 0;
+                }
+                ApplicationState.getInstance().setSelectedContextTab(i);
+                VisualHandler.getInstance().getContextPanel().setSelectedIndex(ApplicationState.getInstance().getSelectedContextTab());
+            }
 
             if (ao == null) {
                 // Clear all tabs
                 clear();
             } else {
-            	// Retrieve data for audio object
+                // Retrieve data for audio object
                 retrieveInfo(ao);
             }
         }
     }
-    
+
     /**
      * Retrieve info.
      * 
@@ -203,9 +204,9 @@ public final class ContextHandler implements ApplicationFinishListener, Applicat
         if (audioObject == null) {
             return;
         }
-        
+
         // Update current context panel
-        getContextPanels().get(ApplicationState.getInstance().getSelectedContextTab()).updateContextPanel(audioObject);        
+        getContextPanels().get(ApplicationState.getInstance().getSelectedContextTab()).updateContextPanel(audioObject);
     }
 
     /**
@@ -219,27 +220,28 @@ public final class ContextHandler implements ApplicationFinishListener, Applicat
 
     @Override
     public void applicationStateChanged(ApplicationState newState) {
-    	// TODO: Move this to a webservices handler
-    	LastFmService.getInstance().updateService();
-    	LyricsService.getInstance().updateService();
-    	YoutubeService.getInstance().updateService();
+        // TODO: Move this to a webservices handler
+        LastFmService.getInstance().updateService();
+        LyricsService.getInstance().updateService();
+        YoutubeService.getInstance().updateService();
     }
-    
+
     /**
      * Getter of logger
+     * 
      * @return
      */
     private Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
     }
 
-	/**
-	 * @return the lastAudioObject
-	 */
-	public AudioObject getCurrentAudioObject() {
-		return currentAudioObject;
-	}
+    /**
+     * @return the lastAudioObject
+     */
+    public AudioObject getCurrentAudioObject() {
+        return currentAudioObject;
+    }
 }

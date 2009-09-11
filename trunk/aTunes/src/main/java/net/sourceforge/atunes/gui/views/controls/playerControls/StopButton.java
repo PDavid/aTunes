@@ -55,13 +55,13 @@ public class StopButton extends JButton {
         setMaximumSize(size);
         setFocusable(false);
         putClientProperty(SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY, new RoundRectButtonShaper());
-        
+
         // Add behaviour
         addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 PlayerHandler.getInstance().stopCurrentAudioObject(true);
-            } 
+            }
         });
     }
 }

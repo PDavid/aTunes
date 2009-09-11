@@ -30,7 +30,7 @@ import javax.swing.event.ChangeListener;
 import net.sourceforge.atunes.kernel.modules.player.Volume;
 
 public class VolumeSlider extends JSlider {
-    
+
     /**
      * 
      */
@@ -44,7 +44,7 @@ public class VolumeSlider extends JSlider {
         setValue(50);
         setFocusable(false);
         setPreferredSize(new Dimension(80, 20));
-        
+
         // Add behaviour
         addMouseWheelListener(new MouseWheelListener() {
             @Override
@@ -55,16 +55,16 @@ public class VolumeSlider extends JSlider {
                 } else {
                     setValue(getValue() - 5);
                 }
-                
+
                 Volume.setVolume(getValue());
             }
-        });        
-        
-        addChangeListener(new ChangeListener() {
-           @Override
-            public void stateChanged(ChangeEvent e) {
-               Volume.setVolume(getValue());
-            } 
         });
-    }    
+
+        addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                Volume.setVolume(getValue());
+            }
+        });
+    }
 }

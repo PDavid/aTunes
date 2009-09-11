@@ -58,28 +58,29 @@ public class AmazonService implements ApplicationStateChangeListener {
 
     /** The proxy. */
     private Proxy proxy;
-    
+
     /**
      * Singleton instance
      */
     private static AmazonService instance;
-    
+
     /**
      * Default private constructor
      */
     private AmazonService() {
-    	
+
     }
-    
+
     /**
      * Getter of the singleton object
+     * 
      * @return
      */
     public static AmazonService getInstance() {
-    	if (instance == null) {
-    		instance = new AmazonService();
-    	}
-    	return instance;
+        if (instance == null) {
+            instance = new AmazonService();
+        }
+        return instance;
     }
 
     /**
@@ -117,13 +118,14 @@ public class AmazonService implements ApplicationStateChangeListener {
         try {
             return NetworkUtils.getImage(NetworkUtils.getConnection(url, proxy));
         } catch (IOException e) {
-        	getLogger().error(LogCategories.NETWORK, e);
+            getLogger().error(LogCategories.NETWORK, e);
         }
         return null;
     }
 
     /**
-     * @param proxy the proxy to set
+     * @param proxy
+     *            the proxy to set
      */
     public void setProxyBean(ProxyBean proxyBean) {
         try {
@@ -132,18 +134,19 @@ public class AmazonService implements ApplicationStateChangeListener {
             getLogger().error(LogCategories.NETWORK, e);
         }
     }
-    
+
     /**
      * Returns the internal logger of this class
+     * 
      * @return
      */
     private Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
     }
-    
+
     @Override
     public void applicationStateChanged(ApplicationState newState) {
         setProxyBean(newState.getProxy());

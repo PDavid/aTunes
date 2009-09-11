@@ -49,7 +49,7 @@ public class EditTitlesProcess extends ChangeTagProcess {
     protected void retrieveInformationBeforeChangeTags() {
         super.retrieveInformationBeforeChangeTags();
         if (filesAndTitles == null) {
-        	filesAndTitles = getTitlesForFiles(filesToChange);
+            filesAndTitles = getTitlesForFiles(filesToChange);
         }
     }
 
@@ -66,7 +66,7 @@ public class EditTitlesProcess extends ChangeTagProcess {
     public void setFilesAndTitles(Map<AudioFile, String> filesAndTitles) {
         this.filesAndTitles = filesAndTitles;
     }
-    
+
     /**
      * Returns a hash of files with its songs titles.
      * 
@@ -77,18 +77,18 @@ public class EditTitlesProcess extends ChangeTagProcess {
      */
 
     public Map<AudioFile, String> getTitlesForFiles(List<AudioFile> files) {
-    	Map<AudioFile, String> result = new HashMap<AudioFile, String>();
+        Map<AudioFile, String> result = new HashMap<AudioFile, String>();
 
-    	// For each file
-    	for (AudioFile f : files) {
-    		String title = LastFmService.getInstance().getTitleForFile(f);
-    		if (title != null) {
-    			result.put(f, title);
-    		}
-    	}
+        // For each file
+        for (AudioFile f : files) {
+            String title = LastFmService.getInstance().getTitleForFile(f);
+            if (title != null) {
+                result.put(f, title);
+            }
+        }
 
-    	// Return files matched
-    	return result;
+        // Return files matched
+        return result;
     }
 
 }

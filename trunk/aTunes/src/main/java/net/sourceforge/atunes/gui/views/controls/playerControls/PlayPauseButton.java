@@ -59,13 +59,13 @@ public class PlayPauseButton extends JButton {
         setMaximumSize(size);
         setFocusable(false);
         putClientProperty(SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY, new CircleButtonShaper());
-        
+
         // Add behaviour
         addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 PlayerHandler.getInstance().playCurrentAudioObject(true);
-            } 
+            }
         });
     }
 

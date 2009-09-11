@@ -34,7 +34,6 @@ import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.modules.command.CommandHandler;
-import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.device.DeviceConnectionMonitor;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.favorites.FavoritesHandler;
@@ -142,7 +141,7 @@ public class Kernel {
                     }
                     // Add application finish listener
                     Kernel.getInstance().addFinishListener(MultipleInstancesHandler.getInstance());
-                    
+
                     // Set font smoothing
                     Fonts.setFontSmoothing();
                     // Set look and feel
@@ -192,7 +191,7 @@ public class Kernel {
                 @Override
                 public void run() {
                     // Init plugins
-                    PluginsHandler.getInstance().initPlugins();                    
+                    PluginsHandler.getInstance().initPlugins();
                     // Start component creation
                     instance.startCreation();
                     // Start bussiness
@@ -274,9 +273,9 @@ public class Kernel {
                         PlayListHandler.getInstance().addToPlayListAndPlay(playList);
                         ControllerProxy.getInstance().getPlayListController().refreshPlayList();
                     }
-                    
+
                     CommandHandler.getInstance().initActions();
-                    
+
                     callActionsAfterStart();
                 }
             });

@@ -255,7 +255,8 @@ public class PatternInputDialog extends CustomModalDialog {
      * @param massiveRecognition
      */
     void previewPattern(boolean massiveRecognition) {
-        Map<String, String> matches = AbstractPattern.getPatternMatches(((JTextField) patternComboBox.getEditor().getEditorComponent()).getText(), previewString, massiveRecognition);
+        Map<String, String> matches = AbstractPattern.getPatternMatches(((JTextField) patternComboBox.getEditor().getEditorComponent()).getText(), previewString,
+                massiveRecognition);
 
         String[][] data = new String[matches.size()][2];
         int i = 0;

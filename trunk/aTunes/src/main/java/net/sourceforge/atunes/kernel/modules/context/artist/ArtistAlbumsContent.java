@@ -1,3 +1,22 @@
+/*
+ * aTunes 1.14.0
+ * Copyright (C) 2006-2009 Alex Aranda, Sylvain Gaudard, Thomas Beckers and contributors
+ *
+ * See http://www.atunes.org/wiki/index.php?title=Contributing for information about contributors
+ *
+ * http://www.atunes.org
+ * http://sourceforge.net/projects/atunes
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
 package net.sourceforge.atunes.kernel.modules.context.artist;
 
 import java.awt.Color;
@@ -24,47 +43,49 @@ import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
 /**
  * Albums of an artist
+ * 
  * @author alex
- *
+ * 
  */
 public class ArtistAlbumsContent extends ContextPanelContent {
 
-	private static final long serialVersionUID = -5538266144953409867L;
-	private SubstanceContextImageJTable albumsTable;
-	
-	public ArtistAlbumsContent() {
-		super(new ArtistInfoDataSource());
-	}
-	
-	@Override
-	protected String getContentName() {
-		return LanguageTool.getString("ALBUMS");
-	}
+    private static final long serialVersionUID = -5538266144953409867L;
+    private SubstanceContextImageJTable albumsTable;
 
-	@Override
-	protected Map<String, ?> getDataSourceParameters(AudioObject audioObject) {
-		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put(ArtistInfoDataSource.INPUT_AUDIO_OBJECT, audioObject);
-		parameters.put(ArtistInfoDataSource.INPUT_ALBUMS, true);
-		return parameters;
-	}
+    public ArtistAlbumsContent() {
+        super(new ArtistInfoDataSource());
+    }
 
-	@Override
-	protected void updateContentWithDataSourceResult(Map<String, ?> result) {
-		if (result.containsKey(ArtistInfoDataSource.OUTPUT_ALBUMS)) {
-	        albumsTable.setModel(new ContextAlbumsTableModel((List<AlbumInfo>) result.get(ArtistInfoDataSource.OUTPUT_ALBUMS)));
-		}
-	}
-	
-	@Override
-	protected void clearContextPanelContent() {
-		super.clearContextPanelContent();
-		albumsTable.setModel(new ContextAlbumsTableModel(null));
-	}
-	
-	@Override
-	protected Component getComponent() {
-		// Create components
+    @Override
+    protected String getContentName() {
+        return LanguageTool.getString("ALBUMS");
+    }
+
+    @Override
+    protected Map<String, ?> getDataSourceParameters(AudioObject audioObject) {
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put(ArtistInfoDataSource.INPUT_AUDIO_OBJECT, audioObject);
+        parameters.put(ArtistInfoDataSource.INPUT_ALBUMS, true);
+        return parameters;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    protected void updateContentWithDataSourceResult(Map<String, ?> result) {
+        if (result.containsKey(ArtistInfoDataSource.OUTPUT_ALBUMS)) {
+            albumsTable.setModel(new ContextAlbumsTableModel((List<AlbumInfo>) result.get(ArtistInfoDataSource.OUTPUT_ALBUMS)));
+        }
+    }
+
+    @Override
+    protected void clearContextPanelContent() {
+        super.clearContextPanelContent();
+        albumsTable.setModel(new ContextAlbumsTableModel(null));
+    }
+
+    @Override
+    protected Component getComponent() {
+        // Create components
         albumsTable = new SubstanceContextImageJTable();
         albumsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         albumsTable.setShowGrid(false);
@@ -93,8 +114,8 @@ public class ArtistAlbumsContent extends ContextPanelContent {
                 }
             }
         });
-        
+
         return albumsTable;
-	}
-	
+    }
+
 }

@@ -85,7 +85,7 @@ public class PluginsHandler implements PluginListener {
             factory = new PluginsFactory();
             // Core plugins folder
             factory.addPluginsFolder(getCorePluginsFolder());
-            
+
             // User plugins folder
             factory.addPluginsFolder(getUserPluginsFolder());
             addPluginListeners();
@@ -138,22 +138,24 @@ public class PluginsHandler implements PluginListener {
     /**
      * Return list of available plugins
      * 
-     * <b>Note:</b> Only user plugins are returned 
+     * <b>Note:</b> Only user plugins are returned
      * 
      * @return
      */
     public List<PluginInfo> getAvailablePlugins() {
-    	List<PluginInfo> filteredList = new ArrayList<PluginInfo>();
-    	for (PluginInfo plugin : this.factory.getPlugins()) {
-    		if (!plugin.getPluginLocation().startsWith(getCorePluginsFolder())) {
-    			filteredList.add(plugin);
-    		}
-    	}
-    	return filteredList;
+        List<PluginInfo> filteredList = new ArrayList<PluginInfo>();
+        for (PluginInfo plugin : this.factory.getPlugins()) {
+            if (!plugin.getPluginLocation().startsWith(getCorePluginsFolder())) {
+                filteredList.add(plugin);
+            }
+        }
+        return filteredList;
     }
 
     /**
-     * Return path to core plugins folder, which is where application is installed (working directory) 
+     * Return path to core plugins folder, which is where application is
+     * installed (working directory)
+     * 
      * @return
      */
     private static String getCorePluginsFolder() {
@@ -167,7 +169,7 @@ public class PluginsHandler implements PluginListener {
         }
         return pluginsFolder;
     }
-    
+
     /**
      * Return path to plugins folder, which is inside user config folder.
      * 
@@ -204,28 +206,29 @@ public class PluginsHandler implements PluginListener {
             throw e;
         }
     }
-    
+
     /**
      * Removes a plugin from user plugins folder and updates plugins
+     * 
      * @param plugin
      * @throws IOException
-     * @throws PluginSystemException 
+     * @throws PluginSystemException
      */
     public void uninstallPlugin(PluginInfo plugin) throws IOException, PluginSystemException {
-    	// Only remove plugins if are contained in a separate folder under user plugins folder
-    	File pluginLocation = new File(plugin.getPluginLocation());
-    	if (pluginLocation.getParent().equals(new File(getUserPluginsFolder()).getAbsolutePath())) {
-    		try {
-    			FileUtils.deleteDirectory(pluginLocation);
-    			factory.refresh();
-    		} catch (IOException e) {
+        // Only remove plugins if are contained in a separate folder under user plugins folder
+        File pluginLocation = new File(plugin.getPluginLocation());
+        if (pluginLocation.getParent().equals(new File(getUserPluginsFolder()).getAbsolutePath())) {
+            try {
+                FileUtils.deleteDirectory(pluginLocation);
+                factory.refresh();
+            } catch (IOException e) {
                 logger.error(LogCategories.PLUGINS, e);
                 throw e;
-    		} catch (PluginSystemException e) {
+            } catch (PluginSystemException e) {
                 logger.error(LogCategories.PLUGINS, e);
                 throw e;
-    		}
-    	}
+            }
+        }
     }
 
     /**

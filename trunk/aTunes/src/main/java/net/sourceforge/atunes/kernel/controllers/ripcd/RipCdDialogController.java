@@ -325,8 +325,8 @@ public class RipCdDialogController extends DialogController<RipCdDialog> {
         // Creates folders when information is coming from cdda2wav
         if (cdInfo.getArtist() != null && cdInfo.getAlbum() != null) {
             getDialogControlled().getFolderName().setText(
-                    StringUtils.getString(RepositoryHandler.getInstance().getRepositoryPath(), SystemProperties.FILE_SEPARATOR, cdInfo.getArtist(), SystemProperties.FILE_SEPARATOR,
-                            cdInfo.getAlbum()));
+                    StringUtils.getString(RepositoryHandler.getInstance().getRepositoryPath(), SystemProperties.FILE_SEPARATOR, cdInfo.getArtist(),
+                            SystemProperties.FILE_SEPARATOR, cdInfo.getAlbum()));
         } else {
             getDialogControlled().getFolderName().setText(path);
         }
