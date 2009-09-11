@@ -21,11 +21,14 @@
 package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTree;
+import javax.swing.SwingWorker;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
@@ -43,12 +46,19 @@ import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.model.Folder;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
+import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.StringUtils;
+
+import org.apache.commons.io.FileUtils;
 
 public class RemoveFromDiskAction extends Action {
 
     private static final long serialVersionUID = -6958409532399604195L;
+
+    private Logger logger = new Logger();
 
     public RemoveFromDiskAction() {
         super(LanguageTool.getString("REMOVE_FROM_DISK"), ImageLoader.getImage(ImageLoader.DELETE_FILE));
@@ -76,13 +86,31 @@ public class RemoveFromDiskAction extends Action {
     }
 
     private void fromOtherViews() {
-        List<AudioFile> files = ControllerProxy.getInstance().getNavigationController().getFilesSelectedInNavigator();
-        RepositoryHandler.getInstance().removePhysically(files);
+        final List<AudioFile> files = ControllerProxy.getInstance().getNavigationController().getFilesSelectedInNavigator();
+        RepositoryHandler.getInstance().remove(files);
+        VisualHandler.getInstance().showIndeterminateProgressDialog(LanguageTool.getString("PLEASE_WAIT"));
+        new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() {
+                for (AudioFile audioFile : files) {
+                    File file = audioFile.getFile();
+                    if (file != null) {
+                        file.delete();
+                    }
+                }
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                VisualHandler.getInstance().hideIndeterminateProgressDialog();
+            }
+        }.execute();
     }
 
     private void fromRepositoryOrDeviceView() {
         TreePath[] paths = NavigationHandler.getInstance().getCurrentView().getTree().getSelectionPaths();
-        List<Folder> foldersToRemove = new ArrayList<Folder>();
+        final List<Folder> foldersToRemove = new ArrayList<Folder>();
         if (paths != null) {
             for (TreePath path : paths) {
                 Object treeNode = ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
@@ -91,7 +119,27 @@ public class RemoveFromDiskAction extends Action {
                 }
             }
         }
-        RepositoryHandler.getInstance().removeFoldersPhysically(foldersToRemove);
+        RepositoryHandler.getInstance().removeFolders(foldersToRemove);
+        VisualHandler.getInstance().showIndeterminateProgressDialog(LanguageTool.getString("PLEASE_WAIT"));
+        new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() {
+                for (Folder folder : foldersToRemove) {
+                    try {
+                        FileUtils.deleteDirectory(folder.getFolderPath());
+                        logger.info(LogCategories.REPOSITORY, StringUtils.getString("Removed folder ", folder));
+                    } catch (IOException e) {
+                        logger.info(LogCategories.REPOSITORY, StringUtils.getString("Could not remove folder ", folder, e.getMessage()));
+                    }
+                }
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                VisualHandler.getInstance().hideIndeterminateProgressDialog();
+            }
+        }.execute();
     }
 
     private void fromPodcastView() {

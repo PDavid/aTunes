@@ -20,6 +20,7 @@
 package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -88,7 +89,7 @@ public class SynchronizeDeviceWithPlayListAction extends Action {
             };
 
             @Override
-            protected Map<String, List<AudioFile>> doInBackground() throws Exception {
+            protected Map<String, List<AudioFile>> doInBackground() {
                 // Get play list elements
                 List<AudioFile> playListObjects;
                 if (ApplicationState.getInstance().isAllowRepeatedSongsInDevice()) {
@@ -116,14 +117,32 @@ public class SynchronizeDeviceWithPlayListAction extends Action {
 
             @Override
             protected void done() {
-                super.done();
                 try {
                     Map<String, List<AudioFile>> files = get();
 
                     VisualHandler.getInstance().hideIndeterminateProgressDialog();
 
                     // Remove elements from device
-                    RepositoryHandler.getInstance().removePhysically(files.get("REMOVE"));
+                    final List<AudioFile> filesToRemove = files.get("REMOVE");
+                    RepositoryHandler.getInstance().remove(filesToRemove);
+                    SynchronizeDeviceWithPlayListAction.this.setEnabled(false);
+                    new SwingWorker<Void, Void>() {
+                        @Override
+                        protected Void doInBackground() {
+                            for (AudioFile audioFile : filesToRemove) {
+                                File file = audioFile.getFile();
+                                if (file != null) {
+                                    file.delete();
+                                }
+                            }
+                            return null;
+                        }
+
+                        @Override
+                        protected void done() {
+                            SynchronizeDeviceWithPlayListAction.this.setEnabled(true);
+                        }
+                    }.execute();
 
                     // Copy elements to device if necessary, otherwise show message and finish
                     if (!files.get("ADD").isEmpty()) {
