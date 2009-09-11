@@ -21,9 +21,14 @@
 package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
+import java.util.concurrent.ExecutionException;
 
-import net.sourceforge.atunes.kernel.ControllerProxy;
+import javax.swing.SwingWorker;
+
+import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
+import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.LanguageTool;
 
 /**
@@ -44,7 +49,37 @@ public class AddBannedSongInLastFMAction extends Action {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        ControllerProxy.getInstance().getContextPanelController().addBannedSong();
+        banSong(ContextHandler.getInstance().getCurrentAudioObject());
     }
+    
+    /**
+     * Calls last.fm service to ban a song
+     * 
+     * @param song
+     */
+    public void banSong(final AudioObject song) {
+    	setEnabled(false);
+    	new SwingWorker<Void, Void>() {
+
+    		@Override
+    		protected Void doInBackground() throws Exception {
+    			LastFmService.getInstance().addBannedSong(song);
+    			return null;
+    		}
+
+    		@Override
+    		protected void done() {
+    			try {
+    				get();
+    			} catch (InterruptedException e) {
+    			} catch (ExecutionException e) {
+    			} finally {
+    				setEnabled(true);
+    			}
+    		}
+    	}.execute();
+    }
+
+
 
 }

@@ -26,6 +26,8 @@ import java.util.Map;
 import net.sourceforge.atunes.kernel.ApplicationFinishListener;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.Kernel;
+import net.sourceforge.atunes.kernel.actions.Actions;
+import net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
@@ -36,6 +38,7 @@ import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
 import net.sourceforge.atunes.kernel.modules.search.searchableobjects.FavoritesSearchableObject;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
+import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.model.TreeObject;
 
 /**
@@ -129,7 +132,7 @@ public final class FavoritesHandler implements ApplicationFinishListener {
 
             // Add to LastFM if necessary
             if (ApplicationState.getInstance().isLastFmEnabled() && ApplicationState.getInstance().isAutoLoveFavoriteSong()) {
-                ContextHandler.getInstance().loveSong(song);
+                Actions.getAction(AddLovedSongInLastFMAction.class).actionPerformed(null);
             }
         }
         callActionsAfterFavoritesChange();

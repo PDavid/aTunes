@@ -28,10 +28,10 @@ import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
-import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
+import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.utils.LanguageTool;
 
 /**
@@ -138,7 +138,7 @@ public final class TagEditionOperations {
         // If trackNumber could not be retrieved from file name, try to get from last.fm
         // To get this, titles must match
         if (trackNumber == 0) {
-            trackNumber = ContextHandler.getInstance().getTrackNumberForFile(audioFile);
+        	trackNumber = LastFmService.getInstance().getTrackNumberForFile(audioFile);
         }
 
         return trackNumber;
@@ -213,5 +213,4 @@ public final class TagEditionOperations {
             editTrackNumber(audioFilesToBeRepaired);
         }
     }
-
 }

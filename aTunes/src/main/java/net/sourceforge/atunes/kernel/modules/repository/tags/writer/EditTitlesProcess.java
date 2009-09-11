@@ -20,11 +20,12 @@
 
 package net.sourceforge.atunes.kernel.modules.repository.tags.writer;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 
 /**
  * The Class ChangeTitlesProcess.
@@ -48,7 +49,7 @@ public class EditTitlesProcess extends ChangeTagProcess {
     protected void retrieveInformationBeforeChangeTags() {
         super.retrieveInformationBeforeChangeTags();
         if (filesAndTitles == null) {
-            filesAndTitles = ContextHandler.getInstance().getTitlesForFiles(filesToChange);
+        	filesAndTitles = getTitlesForFiles(filesToChange);
         }
     }
 
@@ -65,4 +66,29 @@ public class EditTitlesProcess extends ChangeTagProcess {
     public void setFilesAndTitles(Map<AudioFile, String> filesAndTitles) {
         this.filesAndTitles = filesAndTitles;
     }
+    
+    /**
+     * Returns a hash of files with its songs titles.
+     * 
+     * @param files
+     *            the files
+     * 
+     * @return the titles for files
+     */
+
+    public Map<AudioFile, String> getTitlesForFiles(List<AudioFile> files) {
+    	Map<AudioFile, String> result = new HashMap<AudioFile, String>();
+
+    	// For each file
+    	for (AudioFile f : files) {
+    		String title = LastFmService.getInstance().getTitleForFile(f);
+    		if (title != null) {
+    			result.put(f, title);
+    		}
+    	}
+
+    	// Return files matched
+    	return result;
+    }
+
 }

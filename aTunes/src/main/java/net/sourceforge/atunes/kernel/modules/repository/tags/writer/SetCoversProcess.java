@@ -24,15 +24,19 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
 
-import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
+import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.model.Album;
+import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.EditTagInfo;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.Tag;
+import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.utils.ImageUtils;
 
 /**
@@ -55,7 +59,7 @@ public class SetCoversProcess extends ChangeTagProcess {
     @Override
     protected void retrieveInformationBeforeChangeTags() {
         super.retrieveInformationBeforeChangeTags();
-        this.filesAndCovers = ContextHandler.getInstance().getCoversForFiles(this.filesToChange);
+        this.filesAndCovers = getCoversForFiles(this.filesToChange);
     }
 
     @Override
@@ -67,4 +71,49 @@ public class SetCoversProcess extends ChangeTagProcess {
         ImageIO.write(bufferedCover, "PNG", byteArrayOutputStream);
         TagModifier.setInfo(file, newTag, true, byteArrayOutputStream.toByteArray());
     }
+    
+    /**
+     * Gets the covers for files.
+     * 
+     * @param files
+     *            the files
+     * 
+     * @return the covers for files
+     */
+    private Map<AudioFile, Image> getCoversForFiles(List<AudioFile> files) {
+    	Map<AudioFile, Image> result = new HashMap<AudioFile, Image>();
+
+    	Map<Integer, Image> coverCache = new HashMap<Integer, Image>();
+
+    	for (AudioFile f : files) {
+    		if (!Artist.isUnknownArtist(f.getArtist()) && !Album.isUnknownAlbum(f.getAlbum())) {
+    			Image cover = null;
+    			int cacheKey = f.getArtist().hashCode() + f.getAlbum().hashCode();
+    			if (coverCache.containsKey(cacheKey)) {
+    				cover = coverCache.get(cacheKey);
+    			} else {
+    				AlbumInfo albumInfo = LastFmService.getInstance().getAlbum(f.getArtist(), f.getAlbum());
+    				if (albumInfo == null) {
+    					continue;
+    				}
+    				cover = LastFmService.getInstance().getImage(albumInfo);
+    				if (cover == null) {
+    					continue;
+    				}
+    				coverCache.put(cacheKey, cover);
+    				// Wait one second to avoid IP banning
+    				try {
+    					Thread.sleep(1000);
+    				} catch (InterruptedException e) {
+    					// Nothing to do
+    				}
+    			}
+    			if (cover != null) {
+    				result.put(f, cover);
+    			}
+    		}
+    	}
+    	return result;
+    }
+
 }

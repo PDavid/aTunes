@@ -21,11 +21,13 @@
 package net.sourceforge.atunes.kernel.modules.repository.tags.writer;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
+import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 
 /**
  * The Class SetGenresProcess.
@@ -47,7 +49,7 @@ public class SetGenresProcess extends ChangeTagProcess {
     @Override
     protected void retrieveInformationBeforeChangeTags() {
         super.retrieveInformationBeforeChangeTags();
-        this.filesAndGenres = ContextHandler.getInstance().getGenresForFiles(filesToChange);
+        this.filesAndGenres = getGenresForFiles(filesToChange);
     }
 
     @Override
@@ -58,5 +60,43 @@ public class SetGenresProcess extends ChangeTagProcess {
             TagModifier.setGenre(file, genre);
         }
     }
+    
+    /**
+     * Gets the genres for files.
+     * 
+     * @param files
+     *            the files
+     * 
+     * @return the genres for files
+     */
+    private Map<AudioFile, String> getGenresForFiles(List<AudioFile> files) {
+    	Map<AudioFile, String> result = new HashMap<AudioFile, String>();
+
+    	Map<String, String> tagCache = new HashMap<String, String>();
+
+    	for (AudioFile f : files) {
+    		if (!Artist.isUnknownArtist(f.getArtist())) {
+    			String tag = null;
+    			if (tagCache.containsKey(f.getArtist())) {
+    				tag = tagCache.get(f.getArtist());
+    			} else {
+    				tag = LastFmService.getInstance().getArtistTopTag(f.getArtist());
+    				tagCache.put(f.getArtist(), tag);
+    				// Wait one second to avoid IP banning
+    				try {
+    					Thread.sleep(1000);
+    				} catch (InterruptedException e) {
+    					// Nothing to do
+    				}
+    			}
+    			if (tag != null) {
+    				result.put(f, tag);
+    			}
+    		}
+    	}
+
+    	return result;
+    }
+
 
 }

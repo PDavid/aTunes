@@ -51,9 +51,11 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
-import net.sourceforge.atunes.kernel.modules.context.lyrics.engines.LyricsEngineInfo;
+import net.sourceforge.atunes.kernel.actions.Actions;
+import net.sourceforge.atunes.kernel.actions.ClearCachesAction;
 import net.sourceforge.atunes.kernel.modules.desktop.DesktopHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsEngineInfo;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.LanguageTool;
 
@@ -197,9 +199,6 @@ public class ContextPanel extends PreferencesPanel {
      */
     JTextField minimumSongNumber;
 
-    /** The clear cache. */
-    private JButton clearCache;
-
     /** The info label. */
     private JLabel info;
 
@@ -246,7 +245,7 @@ public class ContextPanel extends PreferencesPanel {
                 hideVariousArtistsAlbums.setEnabled(activateContext.isSelected());
             }
         });
-        clearCache = new JButton(LanguageTool.getString("CLEAR_CACHE"));
+        JButton clearCache = new JButton(Actions.getAction(ClearCachesAction.class));
         info = new JLabel(ImageLoader.getImage(ImageLoader.POWERED_BY_LAST_FM), GuiUtils.getComponentOrientationAsSwingConstant());
         info.addMouseListener((new MouseAdapter() {
             @Override
@@ -335,15 +334,6 @@ public class ContextPanel extends PreferencesPanel {
         c.insets = new Insets(20, 0, 0, 0);
         c.weighty = 1;
         add(info, c);
-    }
-
-    /**
-     * Gets the clear cache.
-     * 
-     * @return the clear cache
-     */
-    public JButton getClearCache() {
-        return clearCache;
     }
 
     @Override

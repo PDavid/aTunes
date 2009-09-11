@@ -77,7 +77,6 @@ public class EditPreferencesDialogController extends DialogController<EditPrefer
         getDialogControlled().getList().addListSelectionListener(listener);
         getDialogControlled().getCancel().addActionListener(listener);
         getDialogControlled().getOk().addActionListener(listener);
-        getDialogControlled().getContextPanel().getClearCache().addActionListener(listener);
         getDialogControlled().addComponentListener(new ComponentAdapter() {
             @Override
             public void componentShown(ComponentEvent e) {

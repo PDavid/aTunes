@@ -31,7 +31,6 @@ import net.sourceforge.atunes.gui.StandardFrame;
 import net.sourceforge.atunes.gui.views.controls.playList.ColumnBean;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
-import net.sourceforge.atunes.kernel.modules.context.lyrics.engines.LyricsEngineInfo;
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeysConfig;
 import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
 import net.sourceforge.atunes.kernel.modules.internetsearch.SearchFactory;
@@ -43,6 +42,7 @@ import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler.SortTy
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.TagAttribute;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
+import net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsEngineInfo;
 
 /**
  * <p>

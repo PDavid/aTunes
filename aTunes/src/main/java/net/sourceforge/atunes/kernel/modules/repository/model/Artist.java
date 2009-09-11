@@ -30,9 +30,9 @@ import java.util.Map;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
-import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.LanguageTool;
@@ -209,7 +209,7 @@ public class Artist implements Serializable, TreeObject, Comparable<Artist> {
 
     @Override
     public ImageIcon getExtendedToolTipImage() {
-        Image img = ContextHandler.getInstance().getImageForArtist(name);
+        Image img = LastFmService.getInstance().getImage(name);
         if (img != null) {
             return new ImageIcon(img);
         }

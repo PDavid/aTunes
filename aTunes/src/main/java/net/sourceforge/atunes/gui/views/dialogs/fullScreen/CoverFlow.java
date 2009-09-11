@@ -39,6 +39,7 @@ import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
@@ -149,7 +150,7 @@ public class CoverFlow extends JPanel {
     * @return
     */
    protected Image getPicture(AudioFile audioFile) {
-       Image result = ContextHandler.getInstance().getAlbumCover(audioFile);
+       Image result = LastFmService.getInstance().getAlbumImage(audioFile.getArtist(), audioFile.getAlbum());
        if (result == null) {
            ImageIcon[] pictures = AudioFilePictureUtils.getPicturesForFile(audioFile, -1, -1);
            if (pictures != null && pictures.length > 0) {

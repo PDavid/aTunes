@@ -153,4 +153,7 @@ public class LogCategories {
     
     /** The Constant PLUGINS. */
     public static final String PLUGINS = "PLUGINS     ";
+    
+    /** The Constant CONTEXT. */
+    public static final String CONTEXT = "CONTEXT     ";
 }

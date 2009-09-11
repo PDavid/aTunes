@@ -52,6 +52,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.kernel.modules.updates.UpdateHandler;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
+import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.Timer;
 import net.sourceforge.atunes.misc.log.LogCategories;
@@ -306,7 +307,7 @@ public class Kernel {
         Scheduler.scheduleTaskAfter("Repository Post Init Actions", RepositoryHandler.getInstance().getAfterStartActionsRunnable(), 3);
         Scheduler.scheduleTaskAfter("Favorite Post Init Actions", FavoritesHandler.getInstance().getAfterStartActionsRunnable(), 3);
 
-        ContextHandler.getInstance().submitCacheToLastFm();
+        LastFmService.getInstance().submitCacheToLastFm();
 
         Scheduler.scheduleTaskAfter("Device Monitor", new Runnable() {
             @Override
