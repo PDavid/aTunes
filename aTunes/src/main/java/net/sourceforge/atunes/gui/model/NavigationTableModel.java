@@ -101,7 +101,8 @@ public class NavigationTableModel implements TableModel {
      */
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        return NavigationHandler.getInstance().getView(NavigationHandler.getInstance().getViewByName(ApplicationState.getInstance().getNavigationView())).getNavigatorTableColumnClass(columnIndex);
+        return NavigationHandler.getInstance().getView(NavigationHandler.getInstance().getViewByName(ApplicationState.getInstance().getNavigationView()))
+                .getNavigatorTableColumnClass(columnIndex);
     }
 
     /*
@@ -111,7 +112,8 @@ public class NavigationTableModel implements TableModel {
      */
     @Override
     public int getColumnCount() {
-        return NavigationHandler.getInstance().getView(NavigationHandler.getInstance().getViewByName(ApplicationState.getInstance().getNavigationView())).getNavigatorTableColumnCount();
+        return NavigationHandler.getInstance().getView(NavigationHandler.getInstance().getViewByName(ApplicationState.getInstance().getNavigationView()))
+                .getNavigatorTableColumnCount();
     }
 
     /*
@@ -121,7 +123,8 @@ public class NavigationTableModel implements TableModel {
      */
     @Override
     public String getColumnName(int columnIndex) {
-        return NavigationHandler.getInstance().getView(NavigationHandler.getInstance().getViewByName(ApplicationState.getInstance().getNavigationView())).getNavigatorTableColumnName(columnIndex);
+        return NavigationHandler.getInstance().getView(NavigationHandler.getInstance().getViewByName(ApplicationState.getInstance().getNavigationView()))
+                .getNavigatorTableColumnName(columnIndex);
     }
 
     /*
@@ -199,7 +202,8 @@ public class NavigationTableModel implements TableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         AudioObject audioObject = songs.get(rowIndex);
 
-        return NavigationHandler.getInstance().getView(NavigationHandler.getInstance().getViewByName(ApplicationState.getInstance().getNavigationView())).getNavigatorTableValueAt(audioObject, columnIndex);
+        return NavigationHandler.getInstance().getView(NavigationHandler.getInstance().getViewByName(ApplicationState.getInstance().getNavigationView())).getNavigatorTableValueAt(
+                audioObject, columnIndex);
 
     }
 

@@ -35,7 +35,7 @@ public class PlayingColumn extends Column {
         setWidth(16);
         setVisible(true);
     }
-    
+
     @Override
     protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
         return 0;
@@ -45,11 +45,10 @@ public class PlayingColumn extends Column {
     public Object getValueFor(AudioObject audioObject) {
         return 1;
     }
-    
+
     @Override
     public String getHeaderText() {
         return "";
     }
-
 
 }

@@ -53,7 +53,7 @@ import net.sourceforge.atunes.utils.LanguageTool;
 public class FontChooserDialog extends CustomModalDialog {
 
     public static class FontSettings {
-        
+
         private FontBean font;
         private boolean useFontSmoothing;
         private boolean useFontSmoothingSettingsFromOs;

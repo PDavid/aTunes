@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.utils.LanguageTool;
 
 /**
@@ -42,8 +41,8 @@ public class OpenLyricsSourceAction extends Action {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-    	// TODO: CONTEXT Change this
-    	//ControllerProxy.getInstance().getContextPanelController().openLyricsSourceUrl();
+        // TODO: CONTEXT Change this
+        //ControllerProxy.getInstance().getContextPanelController().openLyricsSourceUrl();
 
     }
 

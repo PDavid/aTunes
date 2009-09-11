@@ -95,10 +95,10 @@ public class FullScreenWindow extends CustomWindow {
     static Logger logger = new Logger();
 
     private CoverFlow covers;
-    
+
     /** The text label. */
     private JLabel textLabel;
-    
+
     /** The text label 2 */
     private JLabel textLabel2;
 
@@ -134,23 +134,23 @@ public class FullScreenWindow extends CustomWindow {
 
     /** The next button. */
     private NextButton nextButton;
-    
+
     /** The mute button */
     private MuteButton muteButton;
-    
+
     /** The volume slider */
     private VolumeSlider volumeSlider;
-    
+
     /** The volume level */
     private VolumeLevel volumeLevel;
-    
+
     protected JPanel textPanel;
-    
+
     protected JPanel controlsPanel;
 
     /** The playing. */
     private boolean playing;
-    
+
     /** The background. */
     ImageIcon background;
 
@@ -163,37 +163,37 @@ public class FullScreenWindow extends CustomWindow {
             }
         }
     };
-    
+
     Timer hideMouseTimer;
 
     MouseListener clickListener = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
             activateTimer();
-        } 
+        }
     };
-    
+
     MouseMotionListener moveListener = new MouseMotionAdapter() {
         @Override
         public void mouseMoved(MouseEvent e) {
-           activateTimer();
-        } 
+            activateTimer();
+        }
     };
-    
+
     MouseListener showMenuListener = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
             if (e.getButton() == MouseEvent.BUTTON3) {
                 options.show(e.getComponent(), e.getX(), e.getY());
             }
-        }  
+        }
     };
-    
+
     /**
      * Audio Objects to show in full screen
      */
     private List<AudioObject> objects;
-    
+
     /**
      * Instantiates a new full screen dialog.
      * 
@@ -219,12 +219,12 @@ public class FullScreenWindow extends CustomWindow {
             setBackground(backgroundFile);
         }
         GuiUtils.applyComponentOrientation(this);
-                
+
         addMouseMotionListener(moveListener);
-        
+
         addMouseListener(clickListener);
     }
-    
+
     void activateTimer() {
         setCursor(Cursor.getDefaultCursor());
         controlsPanel.setVisible(true);
@@ -279,7 +279,7 @@ public class FullScreenWindow extends CustomWindow {
     public boolean isPlaying() {
         return playing;
     }
-        
+
     /**
      * Sets the audio object.
      * 
@@ -296,10 +296,10 @@ public class FullScreenWindow extends CustomWindow {
         this.objects = objects;
 
         if (isVisible()) {
-        	updateWindow();
+            updateWindow();
         }
     }
-    
+
     private void setText(AudioObject audioObject) {
         // No object
         if (audioObject == null) {
@@ -361,9 +361,9 @@ public class FullScreenWindow extends CustomWindow {
         options = new JPopupMenu(LanguageTool.getString("OPTIONS"));
         options.addKeyListener(keyAdapter);
         options.addMouseListener(clickListener);
-        
+
         panel.addMouseListener(showMenuListener);
-        
+
         selectBackground = new JMenuItem(LanguageTool.getString("SELECT_BACKGROUND"));
 
         selectBackground.addActionListener(new ActionListener() {
@@ -439,15 +439,15 @@ public class FullScreenWindow extends CustomWindow {
         covers.setMinimumSize(coverSize);
         covers.setMaximumSize(coverSize);
         covers.setPreferredSize(coverSize);
-        
+
         covers.addMouseListener(clickListener);
         covers.addMouseListener(showMenuListener);
         covers.addMouseMotionListener(moveListener);
-        
+
         textLabel = new JLabel();
         textLabel.setFont(Fonts.FULL_SCREEN_LINE1_FONT);
         textLabel.setForeground(Color.WHITE);
-        
+
         textLabel2 = new JLabel();
         textLabel2.setFont(Fonts.CONTEXT_INFORMATION_BIG_FONT);
         textLabel2.setForeground(Color.WHITE);
@@ -477,12 +477,12 @@ public class FullScreenWindow extends CustomWindow {
         progressBar.setValue(0);
         progressBar.setFocusable(false);
 
-        JPanel textAndControlsPanel = new JPanel(new GridLayout(2,1));
+        JPanel textAndControlsPanel = new JPanel(new GridLayout(2, 1));
         textAndControlsPanel.setOpaque(false);
-        
+
         textPanel = new JPanel(new GridBagLayout());
         textPanel.setOpaque(false);
-        
+
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
@@ -492,9 +492,9 @@ public class FullScreenWindow extends CustomWindow {
         textPanel.add(textLabel, c);
         c.gridy = 1;
         textPanel.add(textLabel2, c);
-        
+
         textAndControlsPanel.add(textPanel);
-        
+
         controlsPanel = new JPanel(new GridBagLayout());
         controlsPanel.setOpaque(false);
 
@@ -514,7 +514,7 @@ public class FullScreenWindow extends CustomWindow {
         c.insets = new Insets(0, 10, 0, inset);
         c.weightx = 0;
         controlsPanel.add(remainingTime, c);
-        
+
         JPanel buttonsPanel = PlayerControlsPanel.getPanelWithPlayerControls(stopButton, previousButton, playButton, nextButton, muteButton, volumeSlider, volumeLevel);
 
         c.gridx = 0;
@@ -522,7 +522,7 @@ public class FullScreenWindow extends CustomWindow {
         c.gridy = 1;
         c.insets = new Insets(20, 0, 5, 0);
         controlsPanel.add(buttonsPanel, c);
-        
+
         textAndControlsPanel.add(controlsPanel);
 
         panel.add(covers, BorderLayout.CENTER);
@@ -593,7 +593,7 @@ public class FullScreenWindow extends CustomWindow {
     public void setVisible(boolean visible) {
         super.setVisible(visible);
         if (visible) {
-        	updateWindow();
+            updateWindow();
             activateTimer();
         }
         setFullScreen(visible);
@@ -603,7 +603,7 @@ public class FullScreenWindow extends CustomWindow {
         volumeSlider.setValue(volume);
         volumeLevel.setText(StringUtils.getString(String.valueOf(volume), " %"));
     }
-    
+
     /**
      * Updates the window with the current objects
      */

@@ -30,7 +30,7 @@ import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.model.AudioObject;
 
 public class TimesPlayedColumn extends Column {
-    
+
     /**
      * 
      */

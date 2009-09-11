@@ -47,7 +47,8 @@ public class RenameRadioAction extends Action {
     public void actionPerformed(ActionEvent e) {
         TreePath path = NavigationHandler.getInstance().getView(RadioNavigationView.class).getTree().getSelectionPath();
         Radio radio = (Radio) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
-        String result = VisualHandler.getInstance().showInputDialog(LanguageTool.getString("RENAME_RADIO"), radio.getName(), ImageLoader.getImage(ImageLoader.RADIO_LITTLE).getImage());
+        String result = VisualHandler.getInstance().showInputDialog(LanguageTool.getString("RENAME_RADIO"), radio.getName(),
+                ImageLoader.getImage(ImageLoader.RADIO_LITTLE).getImage());
         if (result != null) {
             RadioHandler.getInstance().setName(radio, result);
         }

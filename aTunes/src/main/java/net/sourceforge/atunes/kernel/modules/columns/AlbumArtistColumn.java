@@ -33,7 +33,7 @@ public class AlbumArtistColumn extends Column {
         super("ALBUM_ARTIST", String.class);
         setVisible(false);
     }
-    
+
     @Override
     protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
         if (ao1.getAlbumArtist().equals(ao2.getAlbumArtist())) {

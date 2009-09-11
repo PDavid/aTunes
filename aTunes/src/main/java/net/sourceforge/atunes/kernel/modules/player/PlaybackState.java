@@ -21,16 +21,12 @@ package net.sourceforge.atunes.kernel.modules.player;
 
 /**
  * This enum defined all possible states of player
+ * 
  * @author fleax
- *
+ * 
  */
 public enum PlaybackState {
 
-    PLAYING,
-    RESUMING,
-    PAUSED, 
-    STOPPED,
-    PLAY_FINISHED,
-    PLAY_INTERRUPTED
-    
+    PLAYING, RESUMING, PAUSED, STOPPED, PLAY_FINISHED, PLAY_INTERRUPTED
+
 }

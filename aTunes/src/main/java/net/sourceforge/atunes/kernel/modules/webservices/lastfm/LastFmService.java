@@ -117,16 +117,18 @@ public class LastFmService {
      * Singleton instance
      */
     private static LastFmService instance;
-    
+
     /**
      * Getter of singleton instance;
+     * 
      * @return
      */
     public static LastFmService getInstance() {
-    	if (instance == null) {    		
-    		instance = new LastFmService(ApplicationState.getInstance().getProxy(), ApplicationState.getInstance().getLastFmUser(), ApplicationState.getInstance().getLastFmPassword());
-    	}
-    	return instance;
+        if (instance == null) {
+            instance = new LastFmService(ApplicationState.getInstance().getProxy(), ApplicationState.getInstance().getLastFmUser(), ApplicationState.getInstance()
+                    .getLastFmPassword());
+        }
+        return instance;
     }
 
     /**
@@ -146,7 +148,7 @@ public class LastFmService {
                 proxy = Proxy.getProxy(proxyBean);
             }
         } catch (Exception e) {
-        	logger.error(LogCategories.SERVICE, e);        	
+            logger.error(LogCategories.SERVICE, e);
         }
 
         this.proxy = proxy;
@@ -165,18 +167,18 @@ public class LastFmService {
      * Updates service after a configuration change
      */
     public void updateService() {
-    	// Force create service again
-    	instance = null;
+        // Force create service again
+        instance = null;
     }
-    
+
     /**
      * Finishes service
      */
     public void finishService() {
-    	scrobblerExecutorService.shutdownNow();
-    	lastFmCache.shutdown();
+        scrobblerExecutorService.shutdownNow();
+        lastFmCache.shutdown();
     }
-    
+
     /**
      * Gets the album.
      * 
@@ -205,9 +207,10 @@ public class LastFmService {
         }
         return null;
     }
-    
+
     /**
      * Gets the image of the album
+     * 
      * @param artist
      * @param album
      * @return
@@ -536,8 +539,8 @@ public class LastFmService {
         } catch (IOException e) {
             logger.error(LogCategories.SERVICE, e);
             handshakePerformed = false;
-            lastFmCache.addSubmissionData(new net.sourceforge.atunes.kernel.modules.webservices.lastfm.SubmissionData(file.getArtist(), file.getTitle(), file.getAlbum(), (int) file
-                    .getDuration(), file.getTrackNumber(), Source.USER.toString(), (int) startedToPlay));
+            lastFmCache.addSubmissionData(new net.sourceforge.atunes.kernel.modules.webservices.lastfm.SubmissionData(file.getArtist(), file.getTitle(), file.getAlbum(),
+                    (int) file.getDuration(), file.getTrackNumber(), Source.USER.toString(), (int) startedToPlay));
             throw new ScrobblerException(e.getMessage());
         }
     }
@@ -777,15 +780,16 @@ public class LastFmService {
         }
         return true;
     }
-    
+
     /**
      * Delegate method to clear cache
+     * 
      * @return
      */
     public boolean clearCache() {
-    	return lastFmCache.clearCache();
+        return lastFmCache.clearCache();
     }
-    
+
     /**
      * Return title of an AudioFile known its artist and album
      * 
@@ -793,20 +797,21 @@ public class LastFmService {
      * @return
      */
     public String getTitleForFile(AudioFile f) {
-    	// If has valid artist name, album name, and track number...
-    	if (!net.sourceforge.atunes.kernel.modules.repository.model.Artist.isUnknownArtist(f.getArtist()) && !net.sourceforge.atunes.kernel.modules.repository.model.Album.isUnknownAlbum(f.getAlbum()) && f.getTrackNumber() > 0) {
-    		// Find album
-    		AlbumInfo albumRetrieved = getAlbum(f.getArtist(), f.getAlbum());
-    		if (albumRetrieved != null) {
-    			if (albumRetrieved.getTracks().size() >= f.getTrackNumber()) {
-    				// Get track
-    				return albumRetrieved.getTracks().get(f.getTrackNumber() - 1).getTitle();
-    			}
-    		}
-    	}
-    	return null;
+        // If has valid artist name, album name, and track number...
+        if (!net.sourceforge.atunes.kernel.modules.repository.model.Artist.isUnknownArtist(f.getArtist())
+                && !net.sourceforge.atunes.kernel.modules.repository.model.Album.isUnknownAlbum(f.getAlbum()) && f.getTrackNumber() > 0) {
+            // Find album
+            AlbumInfo albumRetrieved = getAlbum(f.getArtist(), f.getAlbum());
+            if (albumRetrieved != null) {
+                if (albumRetrieved.getTracks().size() >= f.getTrackNumber()) {
+                    // Get track
+                    return albumRetrieved.getTracks().get(f.getTrackNumber() - 1).getTitle();
+                }
+            }
+        }
+        return null;
     }
-    
+
     /**
      * Return track number of an AudioFile known its artist and album
      * 
@@ -814,22 +819,23 @@ public class LastFmService {
      * @return
      */
     public int getTrackNumberForFile(AudioFile f) {
-    	// If has valid artist name, album name and title
-    	if (!net.sourceforge.atunes.kernel.modules.repository.model.Artist.isUnknownArtist(f.getArtist()) && !net.sourceforge.atunes.kernel.modules.repository.model.Album.isUnknownAlbum(f.getAlbum()) && !StringUtils.isEmpty(f.getTitle())) {
-    		// Find album
-    		AlbumInfo albumRetrieved = getAlbum(f.getArtist(), f.getAlbum());
-    		if (albumRetrieved != null) {
-    			// Try to match titles to get track
-    			int trackIndex = 1;
-    			for (TrackInfo track : albumRetrieved.getTracks()) {
-    				if (track.getTitle().equalsIgnoreCase(f.getTitle())) {
-    					return trackIndex;
-    				}
-    				trackIndex++;
-    			}
-    		}
-    	}
-    	return 0;
+        // If has valid artist name, album name and title
+        if (!net.sourceforge.atunes.kernel.modules.repository.model.Artist.isUnknownArtist(f.getArtist())
+                && !net.sourceforge.atunes.kernel.modules.repository.model.Album.isUnknownAlbum(f.getAlbum()) && !StringUtils.isEmpty(f.getTitle())) {
+            // Find album
+            AlbumInfo albumRetrieved = getAlbum(f.getArtist(), f.getAlbum());
+            if (albumRetrieved != null) {
+                // Try to match titles to get track
+                int trackIndex = 1;
+                for (TrackInfo track : albumRetrieved.getTracks()) {
+                    if (track.getTitle().equalsIgnoreCase(f.getTitle())) {
+                        return trackIndex;
+                    }
+                    trackIndex++;
+                }
+            }
+        }
+        return 0;
     }
 
     /**
@@ -841,62 +847,62 @@ public class LastFmService {
      *            the seconds played
      */
     public void submitToLastFm(final AudioFile audioFile, final long secondsPlayed) {
-    	if (ApplicationState.getInstance().isLastFmEnabled()) {
-    		Runnable r = new Runnable() {
-    			@Override
-    			public void run() {
-    				try {
-    					submit(audioFile, secondsPlayed);
-    				} catch (ScrobblerException e) {
-    					if (e.getStatus() == 2) {
-    						logger.error(LogCategories.SERVICE, "Authentication failure on Last.fm service");
-    						SwingUtilities.invokeLater(new Runnable() {
-    							@Override
-    							public void run() {
-    								VisualHandler.getInstance().showErrorDialog(LanguageTool.getString("LASTFM_USER_ERROR"));
-    								// Disable service by deleting password
-    								ApplicationState.getInstance().setLastFmEnabled(false);
-    							}
-    						});
-    					} else {
-    						logger.error(LogCategories.SERVICE, e.getMessage());
-    					}
-    				}
-    			}
-    		};
-    		try {
-    			scrobblerExecutorService.submit(r);
-    		} catch (RejectedExecutionException e) {
-    			logger.info(LogCategories.SERVICE, "execution of submission runnable rejected");
-    		}
-    	}
+        if (ApplicationState.getInstance().isLastFmEnabled()) {
+            Runnable r = new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        submit(audioFile, secondsPlayed);
+                    } catch (ScrobblerException e) {
+                        if (e.getStatus() == 2) {
+                            logger.error(LogCategories.SERVICE, "Authentication failure on Last.fm service");
+                            SwingUtilities.invokeLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    VisualHandler.getInstance().showErrorDialog(LanguageTool.getString("LASTFM_USER_ERROR"));
+                                    // Disable service by deleting password
+                                    ApplicationState.getInstance().setLastFmEnabled(false);
+                                }
+                            });
+                        } else {
+                            logger.error(LogCategories.SERVICE, e.getMessage());
+                        }
+                    }
+                }
+            };
+            try {
+                scrobblerExecutorService.submit(r);
+            } catch (RejectedExecutionException e) {
+                logger.info(LogCategories.SERVICE, "execution of submission runnable rejected");
+            }
+        }
     }
 
     /**
      * Submits Last.fm cache
      */
     public void submitCacheToLastFm() {
-    	if (ApplicationState.getInstance().isLastFmEnabled()) {
-    		Runnable r = new Runnable() {
-    			@Override
-    			public void run() {
-    				try {
-    					submitCache();
-    				} catch (ScrobblerException e) {
-    					if (e.getStatus() == 2) {
-    						logger.error(LogCategories.SERVICE, "Authentication failure on Last.fm service");
-    					} else {
-    						logger.error(LogCategories.SERVICE, e.getMessage());
-    					}
-    				}
-    			}
-    		};
-    		try {
-    			scrobblerExecutorService.submit(r);
-    		} catch (RejectedExecutionException e) {
-    			logger.info(LogCategories.SERVICE, "execution of cache submission runnable rejected");
-    		}
-    	}
+        if (ApplicationState.getInstance().isLastFmEnabled()) {
+            Runnable r = new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        submitCache();
+                    } catch (ScrobblerException e) {
+                        if (e.getStatus() == 2) {
+                            logger.error(LogCategories.SERVICE, "Authentication failure on Last.fm service");
+                        } else {
+                            logger.error(LogCategories.SERVICE, e.getMessage());
+                        }
+                    }
+                }
+            };
+            try {
+                scrobblerExecutorService.submit(r);
+            } catch (RejectedExecutionException e) {
+                logger.info(LogCategories.SERVICE, "execution of cache submission runnable rejected");
+            }
+        }
     }
 
     /**
@@ -906,34 +912,34 @@ public class LastFmService {
      *            the file
      */
     public void submitNowPlayingInfoToLastFm(final AudioFile audioFile) {
-    	if (ApplicationState.getInstance().isLastFmEnabled()) {
-    		Runnable r = new Runnable() {
-    			@Override
-    			public void run() {
-    				try {
-    					submitNowPlayingInfo(audioFile);
-    				} catch (ScrobblerException e) {
-    					if (e.getStatus() == 2) {
-    						logger.error(LogCategories.SERVICE, "Authentication failure on Last.fm service");
-    						SwingUtilities.invokeLater(new Runnable() {
-    							@Override
-    							public void run() {
-    								VisualHandler.getInstance().showErrorDialog(LanguageTool.getString("LASTFM_USER_ERROR"));
-    								// Disable service by deleting password
-    								ApplicationState.getInstance().setLastFmEnabled(false);
-    							}
-    						});
-    					} else {
-    						logger.error(LogCategories.SERVICE, e.getMessage());
-    					}
-    				}
-    			}
-    		};
-    		try {
-    			scrobblerExecutorService.submit(r);
-    		} catch (RejectedExecutionException e) {
-    			logger.info(LogCategories.SERVICE, "execution of now playing runnable rejected");
-    		}
-    	}
-    }    
+        if (ApplicationState.getInstance().isLastFmEnabled()) {
+            Runnable r = new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        submitNowPlayingInfo(audioFile);
+                    } catch (ScrobblerException e) {
+                        if (e.getStatus() == 2) {
+                            logger.error(LogCategories.SERVICE, "Authentication failure on Last.fm service");
+                            SwingUtilities.invokeLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    VisualHandler.getInstance().showErrorDialog(LanguageTool.getString("LASTFM_USER_ERROR"));
+                                    // Disable service by deleting password
+                                    ApplicationState.getInstance().setLastFmEnabled(false);
+                                }
+                            });
+                        } else {
+                            logger.error(LogCategories.SERVICE, e.getMessage());
+                        }
+                    }
+                }
+            };
+            try {
+                scrobblerExecutorService.submit(r);
+            } catch (RejectedExecutionException e) {
+                logger.info(LogCategories.SERVICE, "execution of now playing runnable rejected");
+            }
+        }
+    }
 }

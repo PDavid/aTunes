@@ -181,7 +181,7 @@ public class ImageLoader {
      * cache of images
      */
     private static HashMap<String, ImageIcon> images = new HashMap<String, ImageIcon>();
-    
+
     /**
      * Returns an image.
      * 
@@ -191,12 +191,12 @@ public class ImageLoader {
      * @return An ImageIcon
      */
     public static ImageIcon getImage(String imgName) {
-    	if (!images.containsKey(imgName)) {
-    		URL imgURL = ImageLoader.class.getResource("/images/" + imgName);
-    		if (imgURL != null) {
-    			images.put(imgName, new ImageIcon(imgURL));
-    		}
-    	}
+        if (!images.containsKey(imgName)) {
+            URL imgURL = ImageLoader.class.getResource("/images/" + imgName);
+            if (imgURL != null) {
+                images.put(imgName, new ImageIcon(imgURL));
+            }
+        }
         return images.get(imgName);
     }
 }

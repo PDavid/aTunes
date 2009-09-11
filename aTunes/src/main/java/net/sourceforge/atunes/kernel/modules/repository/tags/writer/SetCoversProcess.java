@@ -71,7 +71,7 @@ public class SetCoversProcess extends ChangeTagProcess {
         ImageIO.write(bufferedCover, "PNG", byteArrayOutputStream);
         TagModifier.setInfo(file, newTag, true, byteArrayOutputStream.toByteArray());
     }
-    
+
     /**
      * Gets the covers for files.
      * 
@@ -81,39 +81,39 @@ public class SetCoversProcess extends ChangeTagProcess {
      * @return the covers for files
      */
     private Map<AudioFile, Image> getCoversForFiles(List<AudioFile> files) {
-    	Map<AudioFile, Image> result = new HashMap<AudioFile, Image>();
+        Map<AudioFile, Image> result = new HashMap<AudioFile, Image>();
 
-    	Map<Integer, Image> coverCache = new HashMap<Integer, Image>();
+        Map<Integer, Image> coverCache = new HashMap<Integer, Image>();
 
-    	for (AudioFile f : files) {
-    		if (!Artist.isUnknownArtist(f.getArtist()) && !Album.isUnknownAlbum(f.getAlbum())) {
-    			Image cover = null;
-    			int cacheKey = f.getArtist().hashCode() + f.getAlbum().hashCode();
-    			if (coverCache.containsKey(cacheKey)) {
-    				cover = coverCache.get(cacheKey);
-    			} else {
-    				AlbumInfo albumInfo = LastFmService.getInstance().getAlbum(f.getArtist(), f.getAlbum());
-    				if (albumInfo == null) {
-    					continue;
-    				}
-    				cover = LastFmService.getInstance().getImage(albumInfo);
-    				if (cover == null) {
-    					continue;
-    				}
-    				coverCache.put(cacheKey, cover);
-    				// Wait one second to avoid IP banning
-    				try {
-    					Thread.sleep(1000);
-    				} catch (InterruptedException e) {
-    					// Nothing to do
-    				}
-    			}
-    			if (cover != null) {
-    				result.put(f, cover);
-    			}
-    		}
-    	}
-    	return result;
+        for (AudioFile f : files) {
+            if (!Artist.isUnknownArtist(f.getArtist()) && !Album.isUnknownAlbum(f.getAlbum())) {
+                Image cover = null;
+                int cacheKey = f.getArtist().hashCode() + f.getAlbum().hashCode();
+                if (coverCache.containsKey(cacheKey)) {
+                    cover = coverCache.get(cacheKey);
+                } else {
+                    AlbumInfo albumInfo = LastFmService.getInstance().getAlbum(f.getArtist(), f.getAlbum());
+                    if (albumInfo == null) {
+                        continue;
+                    }
+                    cover = LastFmService.getInstance().getImage(albumInfo);
+                    if (cover == null) {
+                        continue;
+                    }
+                    coverCache.put(cacheKey, cover);
+                    // Wait one second to avoid IP banning
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        // Nothing to do
+                    }
+                }
+                if (cover != null) {
+                    result.put(f, cover);
+                }
+            }
+        }
+        return result;
     }
 
 }

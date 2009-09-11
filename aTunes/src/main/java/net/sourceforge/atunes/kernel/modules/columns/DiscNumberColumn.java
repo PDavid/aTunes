@@ -37,7 +37,7 @@ public class DiscNumberColumn extends Column {
         setVisible(false);
         setAlignment(SwingConstants.CENTER);
     }
-    
+
     @Override
     protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
         return ao1.getDiscNumber().compareTo(ao2.getDiscNumber());

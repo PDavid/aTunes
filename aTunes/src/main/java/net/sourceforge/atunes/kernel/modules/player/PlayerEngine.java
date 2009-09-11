@@ -513,7 +513,7 @@ public abstract class PlayerEngine implements PlaybackStateListener {
      */
     private void submitToLastFmAndUpdateStats() {
         if ((submissionState == SubmissionState.PENDING) && audioObject instanceof AudioFile) {
-        	LastFmService.getInstance().submitToLastFm((AudioFile) audioObject, currentAudioObjectPlayedTime / 1000);
+            LastFmService.getInstance().submitToLastFm((AudioFile) audioObject, currentAudioObjectPlayedTime / 1000);
             RepositoryHandler.getInstance().setAudioFileStatistics((AudioFile) audioObject);
             if (VisualHandler.getInstance().getStatsDialog().isVisible()) {
                 ControllerProxy.getInstance().getStatsDialogController().updateStats();
@@ -597,7 +597,7 @@ public abstract class PlayerEngine implements PlaybackStateListener {
 
         // Send Now Playing info to Last.fm
         if (audioObject instanceof AudioFile) {
-        	LastFmService.getInstance().submitNowPlayingInfoToLastFm((AudioFile) audioObject);
+            LastFmService.getInstance().submitNowPlayingInfoToLastFm((AudioFile) audioObject);
         }
 
         this.audioObject = audioObject;

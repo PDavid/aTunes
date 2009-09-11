@@ -150,11 +150,11 @@ public final class SearchHandler {
      * Starts a search by updating indexes and showing search dialog.
      */
     public void startSearch() {
-    	// Updates indexes
-    	for (SearchableObject searchableObject : searchableObjects) {
-    		updateSearchIndex(searchableObject);
-    	}
-    	
+        // Updates indexes
+        for (SearchableObject searchableObject : searchableObjects) {
+            updateSearchIndex(searchableObject);
+        }
+
         // Set list of searchable objects
         ControllerProxy.getInstance().getCustomSearchController().setListOfSearchableObjects(searchableObjects);
 
@@ -308,7 +308,7 @@ public final class SearchHandler {
                     try {
                         indexWriter.optimize();
                         indexWriter.close();
-                        
+
                         indexWriter = null;
                     } catch (CorruptIndexException e) {
                         logger.error(LogCategories.HANDLER, e);

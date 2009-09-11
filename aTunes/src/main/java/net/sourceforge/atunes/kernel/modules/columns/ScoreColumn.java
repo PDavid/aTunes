@@ -50,7 +50,7 @@ public class ScoreColumn extends Column {
         setVisible(true);
         setEditable(true);
     }
-    
+
     @Override
     public TableCellEditor getCellEditor() {
         JComboBox comboBox = new JComboBox(new Object[] { 0, 1, 2, 3, 4, 5 });

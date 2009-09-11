@@ -101,7 +101,7 @@ public class NavigationPanel extends JPanel {
 
         // Add tabs
         addTabs();
-        
+
         // Set navigator tabs text based on configuration 
         setNavigatorTabsText(ApplicationState.getInstance().isShowNavigatorTabsText());
 
@@ -264,13 +264,13 @@ public class NavigationPanel extends JPanel {
      * Updates tabbed pane to show all tabs
      */
     public void addTabs() {
-    	tabbedPane.removeAll();
-    	
+        tabbedPane.removeAll();
+
         for (NavigationView view : NavigationHandler.getInstance().getNavigationViews()) {
             tabbedPane.addTab(view.getTitle(), view.getIcon(), view.getTreeScrollPane(), view.getTooltip());
         }
     }
-    
+
     /**
      * Shows or hides tabbed pane text
      * 
@@ -282,19 +282,19 @@ public class NavigationPanel extends JPanel {
             tabbedPane.setTitleAt(i++, set ? view.getTitle() : null);
         }
     }
-    
+
     /**
      * Updates tabs keeping selected tab view
      */
     public void updateTabs() {
-    	int selectedTab = tabbedPane.getSelectedIndex();
-    	addTabs();
-    	setNavigatorTabsText(ApplicationState.getInstance().isShowNavigatorTabsText());
-    	if (tabbedPane.getTabCount() > selectedTab) {
-    		tabbedPane.setSelectedIndex(selectedTab);
-    	} else {
-    		tabbedPane.setSelectedIndex(0);
-    	}
+        int selectedTab = tabbedPane.getSelectedIndex();
+        addTabs();
+        setNavigatorTabsText(ApplicationState.getInstance().isShowNavigatorTabsText());
+        if (tabbedPane.getTabCount() > selectedTab) {
+            tabbedPane.setSelectedIndex(selectedTab);
+        } else {
+            tabbedPane.setSelectedIndex(0);
+        }
     }
 
     /**

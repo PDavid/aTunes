@@ -28,7 +28,7 @@ public class TitleColumn extends Column {
      * 
      */
     private static final long serialVersionUID = -4113331298039010230L;
-    
+
     public TitleColumn() {
         super("TITLE", AudioObject.class);
         setVisible(true);

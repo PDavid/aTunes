@@ -38,7 +38,7 @@ public class BitrateColumn extends Column {
         setVisible(false);
         setAlignment(SwingConstants.CENTER);
     }
-    
+
     @Override
     protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
         return Long.valueOf(ao1.getBitrate()).compareTo(Long.valueOf(ao2.getBitrate()));

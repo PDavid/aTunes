@@ -37,7 +37,7 @@ public class PathColumn extends Column {
         setWidth(350);
         setVisible(false);
     }
-    
+
     @Override
     protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
         String p1 = "";

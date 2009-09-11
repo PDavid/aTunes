@@ -38,7 +38,7 @@ public class AlbumColumn extends Column {
         super("ALBUM", JLabel.class);
         setVisible(true);
     }
-    
+
     @Override
     protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
         if (ao1.getAlbum().equals(ao2.getAlbum())) {
@@ -53,9 +53,8 @@ public class AlbumColumn extends Column {
     @Override
     public Object getValueFor(AudioObject audioObject) {
         // Return album
-        return new JLabel(audioObject.getAlbum(), !FavoritesHandler.getInstance().getFavoriteAlbumsInfo().containsKey(audioObject.getAlbum()) ? null
-                : ImageLoader.getImage(ImageLoader.ALBUM_FAVORITE), SwingConstants.LEFT);
+        return new JLabel(audioObject.getAlbum(), !FavoritesHandler.getInstance().getFavoriteAlbumsInfo().containsKey(audioObject.getAlbum()) ? null : ImageLoader
+                .getImage(ImageLoader.ALBUM_FAVORITE), SwingConstants.LEFT);
     }
-
 
 }

@@ -33,7 +33,7 @@ public class ComposerColumn extends Column {
         super("COMPOSER", String.class);
         setVisible(true);
     }
-    
+
     @Override
     protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
         return ao1.getComposer().compareTo(ao2.getComposer());

@@ -53,8 +53,8 @@ public class MuteAction extends Action {
         ApplicationState.getInstance().setMuteEnabled((Boolean) getValue(SELECTED_KEY));
         PlayerHandler.getInstance().applyMuteState(ApplicationState.getInstance().isMuteEnabled());
         updateIcon();
-    }    
-    
+    }
+
     /**
      * Updates icon of mute
      */

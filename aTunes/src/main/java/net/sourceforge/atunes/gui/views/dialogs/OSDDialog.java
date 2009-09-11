@@ -185,9 +185,10 @@ public class OSDDialog extends CustomWindow {
         }
         GuiUtils.setWindowShape(this, mask);
     }
-    
+
     /**
      * Sets a shadow border if the given argument is true
+     * 
      * @param shadowBorder
      */
     public void setShadowBorder(boolean shadowBorder) {

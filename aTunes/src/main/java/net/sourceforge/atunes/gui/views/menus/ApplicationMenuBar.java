@@ -184,13 +184,13 @@ public class ApplicationMenuBar extends JMenuBar {
     private JMenu getViewMenu() {
         if (view == null) {
             view = new JMenu(LanguageTool.getString("VIEW"));
-            
+
             // Add dinamically actions to show each navigation view loaded
             int acceleratorIndex = 1;
             for (NavigationView navigationView : NavigationHandler.getInstance().getNavigationViews()) {
-				view.add(navigationView.getActionToShowView(acceleratorIndex++));
+                view.add(navigationView.getActionToShowView(acceleratorIndex++));
             }
-            
+
             view.add(new JSeparator());
             view.add(new JCheckBoxMenuItem(Actions.getAction(ShowToolbarAction.class)));
             view.add(new JCheckBoxMenuItem(Actions.getAction(ShowStatusBarAction.class)));

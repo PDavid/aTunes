@@ -233,8 +233,8 @@ public class PlayListController extends PanelController<PlayListPanel> implement
      * 
      */
     public void playSelectedAudioObject() {
-    	int audioObject = getPanelControlled().getPlayListTable().getSelectedRow();
-    	PlayListHandler.getInstance().setPositionToPlayInVisiblePlayList(audioObject);
+        int audioObject = getPanelControlled().getPlayListTable().getSelectedRow();
+        PlayListHandler.getInstance().setPositionToPlayInVisiblePlayList(audioObject);
         PlayerHandler.getInstance().playCurrentAudioObject(false);
     }
 
@@ -242,12 +242,12 @@ public class PlayListController extends PanelController<PlayListPanel> implement
      * Scrolls to songs currently playing.
      */
     public void scrollPlayList(boolean isUserAction) {
-		// Sometimes scroll can be fired when application starts if window size is changed
-    	// In that cases call to scroll could thrown an exception is current play list is not yet initialized
-    	// So check first if the visible play list is initialized before scroll it
-    	if (PlayListHandler.getInstance().getCurrentPlayList(true) != null) {
-    		scrollPlayList(PlayListHandler.getInstance().getCurrentAudioObjectIndexInVisiblePlayList(), isUserAction);
-    	}
+        // Sometimes scroll can be fired when application starts if window size is changed
+        // In that cases call to scroll could thrown an exception is current play list is not yet initialized
+        // So check first if the visible play list is initialized before scroll it
+        if (PlayListHandler.getInstance().getCurrentPlayList(true) != null) {
+            scrollPlayList(PlayListHandler.getInstance().getCurrentAudioObjectIndexInVisiblePlayList(), isUserAction);
+        }
     }
 
     /**

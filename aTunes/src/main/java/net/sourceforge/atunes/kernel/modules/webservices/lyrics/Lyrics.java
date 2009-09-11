@@ -28,7 +28,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 public class Lyrics implements Serializable {
 
     private static final long serialVersionUID = 8228456817740963954L;
-    
+
     private String lyrics;
     private String url;
 

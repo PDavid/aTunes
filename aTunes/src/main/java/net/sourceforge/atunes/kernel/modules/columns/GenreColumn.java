@@ -23,7 +23,7 @@ import net.sourceforge.atunes.gui.views.controls.playList.Column;
 import net.sourceforge.atunes.model.AudioObject;
 
 public class GenreColumn extends Column {
-    
+
     /**
      * 
      */
@@ -33,7 +33,7 @@ public class GenreColumn extends Column {
         super("GENRE", String.class);
         setVisible(true);
     }
-    
+
     @Override
     protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
         if (ao1.getGenre().equals(ao2.getGenre())) {
@@ -53,6 +53,5 @@ public class GenreColumn extends Column {
         // Return genre
         return audioObject.getGenre();
     }
-
 
 }

@@ -46,7 +46,8 @@ public class RenamePodcastFeedAction extends Action {
     public void actionPerformed(ActionEvent e) {
         TreePath path = NavigationHandler.getInstance().getView(PodcastNavigationView.class).getTree().getSelectionPath();
         PodcastFeed podcastFeed = (PodcastFeed) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
-        String result = VisualHandler.getInstance().showInputDialog(LanguageTool.getString("RENAME_PODCAST_FEED"), podcastFeed.getName(), ImageLoader.getImage(ImageLoader.RSS_LITTLE).getImage());
+        String result = VisualHandler.getInstance().showInputDialog(LanguageTool.getString("RENAME_PODCAST_FEED"), podcastFeed.getName(),
+                ImageLoader.getImage(ImageLoader.RSS_LITTLE).getImage());
         if (result != null) {
             podcastFeed.setName(result);
         }

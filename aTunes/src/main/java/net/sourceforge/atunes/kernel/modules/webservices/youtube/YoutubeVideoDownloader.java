@@ -31,7 +31,6 @@ import java.util.List;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.gui.views.dialogs.TransferProgressDialog;
-import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;

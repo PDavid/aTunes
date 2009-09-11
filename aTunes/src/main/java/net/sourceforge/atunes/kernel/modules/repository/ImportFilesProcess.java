@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.process.AudioFileTransferProcess;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.DefaultTag;

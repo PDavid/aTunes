@@ -38,7 +38,7 @@ public class FrequencyColumn extends Column {
         setVisible(false);
         setAlignment(SwingConstants.CENTER);
     }
-    
+
     @Override
     protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
         return Integer.valueOf(ao1.getFrequency()).compareTo(Integer.valueOf(ao2.getFrequency()));

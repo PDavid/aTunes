@@ -390,7 +390,7 @@ public final class SystemTrayHandler implements ApplicationFinishListener, Appli
             trayIcon.displayMessage(Constants.APP_NAME, LanguageTool.getString("TRAY_ICON_MESSAGE"), TrayIcon.MessageType.INFO);
         }
     }
-    
+
     @Override
     public void applicationStateChanged(ApplicationState newState) {
         setTrayIconVisible(newState.isShowSystemTray());

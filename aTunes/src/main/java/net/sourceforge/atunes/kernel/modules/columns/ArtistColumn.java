@@ -38,7 +38,7 @@ public class ArtistColumn extends Column {
         super("ARTIST", JLabel.class);
         setVisible(true);
     }
-    
+
     @Override
     protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
         return ao1.getArtist().compareTo(ao2.getArtist());
@@ -47,8 +47,8 @@ public class ArtistColumn extends Column {
     @Override
     public Object getValueFor(AudioObject audioObject) {
         // Return artist
-        return new JLabel(audioObject.getArtist(), !FavoritesHandler.getInstance().getFavoriteArtistsInfo().containsKey(audioObject.getArtist()) ? null
-                : ImageLoader.getImage(ImageLoader.ARTIST_FAVORITE), SwingConstants.LEFT);
+        return new JLabel(audioObject.getArtist(), !FavoritesHandler.getInstance().getFavoriteArtistsInfo().containsKey(audioObject.getArtist()) ? null : ImageLoader
+                .getImage(ImageLoader.ARTIST_FAVORITE), SwingConstants.LEFT);
     }
 
 }

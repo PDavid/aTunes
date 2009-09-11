@@ -44,8 +44,8 @@ public class NavigationTableColumnModel extends DefaultTableColumnModel {
     public void addColumn(TableColumn aColumn) {
         super.addColumn(aColumn);
 
-        int maxWidth = NavigationHandler.getInstance().getView(NavigationHandler.getInstance().getViewByName(ApplicationState.getInstance().getNavigationView())).getNavigatorTableMaxWidthForColumn(
-                aColumn.getModelIndex());
+        int maxWidth = NavigationHandler.getInstance().getView(NavigationHandler.getInstance().getViewByName(ApplicationState.getInstance().getNavigationView()))
+                .getNavigatorTableMaxWidthForColumn(aColumn.getModelIndex());
 
         if (maxWidth != -1) {
             aColumn.setMaxWidth(maxWidth);

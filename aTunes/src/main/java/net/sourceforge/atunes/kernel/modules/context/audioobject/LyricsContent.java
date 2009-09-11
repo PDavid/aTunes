@@ -1,3 +1,22 @@
+/*
+ * aTunes 1.14.0
+ * Copyright (C) 2006-2009 Alex Aranda, Sylvain Gaudard, Thomas Beckers and contributors
+ *
+ * See http://www.atunes.org/wiki/index.php?title=Contributing for information about contributors
+ *
+ * http://www.atunes.org
+ * http://sourceforge.net/projects/atunes
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
 package net.sourceforge.atunes.kernel.modules.context.audioobject;
 
 import java.awt.Component;
@@ -27,140 +46,141 @@ import net.sourceforge.atunes.utils.LanguageTool;
 
 /**
  * Lyrics information
+ * 
  * @author alex
- *
+ * 
  */
 public class LyricsContent extends ContextPanelContent {
-	
-	private static final long serialVersionUID = 962229017133714396L;
-	
-	private JTextArea lyricsContainer;
 
-	private JMenu addLyrics;
-	
-	private JMenuItem copyLyrics;
-	
-	private JMenuItem openLyrics;
-	
-	private String lyricsSourceUrl;
-	
-	private AudioObject audioObject;
-	
-	public LyricsContent() {
-		super(new LyricsDataSource());
-	}
-	
-	@Override
-	protected Map<String, ?> getDataSourceParameters(AudioObject audioObject) {
-		Map<String, AudioObject> parameters = new HashMap<String, AudioObject>();
-		parameters.put(LyricsDataSource.INPUT_AUDIO_OBJECT, audioObject);
-		this.audioObject = audioObject;
-		return parameters;
-	}
-	
-	@Override
-	protected void updateContentWithDataSourceResult(Map<String, ?> result) {
-		if (result.containsKey(LyricsDataSource.OUTPUT_LYRIC)) {
-			Lyrics lyrics = (Lyrics)result.get(LyricsDataSource.OUTPUT_LYRIC);
-			lyricsContainer.setLineWrap(false);
-			lyricsContainer.setText(lyrics.getLyrics());
-			lyricsContainer.setCaretPosition(0);
-			
-			boolean lyricsNotEmpty = lyrics != null && !lyrics.getLyrics().trim().isEmpty();
-			copyLyrics.setEnabled(lyricsNotEmpty);
-	        addLyrics.setEnabled(!lyricsNotEmpty);
-	        lyricsSourceUrl = lyrics != null ? lyrics.getUrl() : null;
-	        openLyrics.setEnabled(true);
-	        if (!lyricsNotEmpty) {
-	            addLyrics.removeAll();
-	            for (final Entry<String, String> entry : LyricsService.getInstance().getUrlsForAddingNewLyrics(audioObject.getArtist(), audioObject.getTitle()).entrySet()) {
-	                JMenuItem mi = new JMenuItem(entry.getKey());
-	                mi.addActionListener(new ActionListener() {
-	                    @Override
-	                    public void actionPerformed(ActionEvent e) {
-	                        DesktopHandler.getInstance().openURL(entry.getValue());
-	                    }
-	                });
-	                addLyrics.add(mi);
-	            }
-	            addLyrics.setEnabled(addLyrics.getMenuComponentCount() > 0);
-	        }
+    private static final long serialVersionUID = 962229017133714396L;
 
-		}
-	}
-	
-	@Override
-	protected void clearContextPanelContent() {
-		super.clearContextPanelContent();
-		lyricsContainer.setText(null);
-		copyLyrics.setEnabled(false);
-		addLyrics.setEnabled(false);
-		addLyrics.removeAll();
-		openLyrics.setEnabled(false);
-		lyricsSourceUrl = null;
-		audioObject = null;
-	}
-	
-	@Override
-	protected String getContentName() {
-		return LanguageTool.getString("LYRICS");
-	}
-	
-	@Override
-	protected Component getComponent() {
+    private JTextArea lyricsContainer;
+
+    private JMenu addLyrics;
+
+    private JMenuItem copyLyrics;
+
+    private JMenuItem openLyrics;
+
+    private String lyricsSourceUrl;
+
+    private AudioObject audioObject;
+
+    public LyricsContent() {
+        super(new LyricsDataSource());
+    }
+
+    @Override
+    protected Map<String, ?> getDataSourceParameters(AudioObject audioObject) {
+        Map<String, AudioObject> parameters = new HashMap<String, AudioObject>();
+        parameters.put(LyricsDataSource.INPUT_AUDIO_OBJECT, audioObject);
+        this.audioObject = audioObject;
+        return parameters;
+    }
+
+    @Override
+    protected void updateContentWithDataSourceResult(Map<String, ?> result) {
+        if (result.containsKey(LyricsDataSource.OUTPUT_LYRIC)) {
+            Lyrics lyrics = (Lyrics) result.get(LyricsDataSource.OUTPUT_LYRIC);
+            lyricsContainer.setLineWrap(false);
+            lyricsContainer.setText(lyrics.getLyrics());
+            lyricsContainer.setCaretPosition(0);
+
+            boolean lyricsNotEmpty = lyrics != null && !lyrics.getLyrics().trim().isEmpty();
+            copyLyrics.setEnabled(lyricsNotEmpty);
+            addLyrics.setEnabled(!lyricsNotEmpty);
+            lyricsSourceUrl = lyrics != null ? lyrics.getUrl() : null;
+            openLyrics.setEnabled(true);
+            if (!lyricsNotEmpty) {
+                addLyrics.removeAll();
+                for (final Entry<String, String> entry : LyricsService.getInstance().getUrlsForAddingNewLyrics(audioObject.getArtist(), audioObject.getTitle()).entrySet()) {
+                    JMenuItem mi = new JMenuItem(entry.getKey());
+                    mi.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            DesktopHandler.getInstance().openURL(entry.getValue());
+                        }
+                    });
+                    addLyrics.add(mi);
+                }
+                addLyrics.setEnabled(addLyrics.getMenuComponentCount() > 0);
+            }
+
+        }
+    }
+
+    @Override
+    protected void clearContextPanelContent() {
+        super.clearContextPanelContent();
+        lyricsContainer.setText(null);
+        copyLyrics.setEnabled(false);
+        addLyrics.setEnabled(false);
+        addLyrics.removeAll();
+        openLyrics.setEnabled(false);
+        lyricsSourceUrl = null;
+        audioObject = null;
+    }
+
+    @Override
+    protected String getContentName() {
+        return LanguageTool.getString("LYRICS");
+    }
+
+    @Override
+    protected Component getComponent() {
         lyricsContainer = new JTextArea();
         lyricsContainer.setBorder(null);
         lyricsContainer.setEditable(false);
         lyricsContainer.setWrapStyleWord(true);
         lyricsContainer.setOpaque(false);
         return lyricsContainer;
-	}
-	
-	@Override
-	protected boolean isScrollNeeded() {
-		return true;
-	}
-	
-	@Override
-	protected List<Component> getOptions() {
-		List<Component> options = new ArrayList<Component>();
-		copyLyrics = new JMenuItem(new AbstractAction(LanguageTool.getString("COPY_TO_CLIPBOARD")) {
-			
-			private static final long serialVersionUID = -851267486478098295L;
+    }
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-		        String sLyric = lyricsContainer.getText();
-		        if (sLyric == null) {
-		            sLyric = "";
-		        }
-		        ClipboardFacade.copyToClipboard(sLyric);
-			}
-		});		
-		options.add(copyLyrics);
-		
+    @Override
+    protected boolean isScrollNeeded() {
+        return true;
+    }
+
+    @Override
+    protected List<Component> getOptions() {
+        List<Component> options = new ArrayList<Component>();
+        copyLyrics = new JMenuItem(new AbstractAction(LanguageTool.getString("COPY_TO_CLIPBOARD")) {
+
+            private static final long serialVersionUID = -851267486478098295L;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String sLyric = lyricsContainer.getText();
+                if (sLyric == null) {
+                    sLyric = "";
+                }
+                ClipboardFacade.copyToClipboard(sLyric);
+            }
+        });
+        options.add(copyLyrics);
+
         addLyrics = new JMenu(LanguageTool.getString("ADD_LYRICS"));
         options.add(addLyrics);
-        
-        openLyrics = new JMenuItem(new AbstractAction(LanguageTool.getString("OPEN_LYRICS_SOURCE")) {
-			
-			private static final long serialVersionUID = 9043861642969889713L;
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-		        if (lyricsSourceUrl != null && !lyricsSourceUrl.trim().isEmpty()) {
-		            DesktopHandler.getInstance().openURL(lyricsSourceUrl);
-		        } else {
-		            if (audioObject instanceof AudioFile) {
-		                ControllerProxy.getInstance().getEditTagDialogController().editFiles(Arrays.asList((AudioFile) audioObject));
-		            }
-		        }
-			}
-		});
-        
+        openLyrics = new JMenuItem(new AbstractAction(LanguageTool.getString("OPEN_LYRICS_SOURCE")) {
+
+            private static final long serialVersionUID = 9043861642969889713L;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (lyricsSourceUrl != null && !lyricsSourceUrl.trim().isEmpty()) {
+                    DesktopHandler.getInstance().openURL(lyricsSourceUrl);
+                } else {
+                    if (audioObject instanceof AudioFile) {
+                        ControllerProxy.getInstance().getEditTagDialogController().editFiles(Arrays.asList((AudioFile) audioObject));
+                    }
+                }
+            }
+        });
+
         options.add(openLyrics);
-        
-		return options;
-	}
+
+        return options;
+    }
 
 }

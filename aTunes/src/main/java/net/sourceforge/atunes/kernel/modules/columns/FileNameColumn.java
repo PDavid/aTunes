@@ -37,7 +37,7 @@ public class FileNameColumn extends Column {
         setWidth(250);
         setVisible(false);
     }
-    
+
     @Override
     protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
         return ((AudioFile) ao1).getFile().getName().compareTo(((AudioFile) ao2).getFile().getName());

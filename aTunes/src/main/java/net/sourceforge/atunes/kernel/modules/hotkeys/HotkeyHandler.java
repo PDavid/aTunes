@@ -265,7 +265,7 @@ public final class HotkeyHandler implements HotkeyListener, ApplicationFinishLis
         if (newState.isEnableHotkeys()) {
             enableHotkeys(newState.getHotkeysConfig());
         } else {
-        	disableHotkeys();
+            disableHotkeys();
         }
     }
 }

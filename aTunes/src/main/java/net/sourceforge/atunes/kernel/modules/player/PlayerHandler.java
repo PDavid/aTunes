@@ -390,11 +390,10 @@ public final class PlayerHandler implements ApplicationFinishListener, PluginLis
 
     @Override
     public void pluginDeactivated(PluginInfo plugin, Collection<Plugin> createdInstances) {
-        logger.info(LogCategories.PLUGINS, StringUtils.getString("Plugin deactivated: ", plugin.getName(), " (", plugin.getClassName(),")"));
+        logger.info(LogCategories.PLUGINS, StringUtils.getString("Plugin deactivated: ", plugin.getName(), " (", plugin.getClassName(), ")"));
         for (Plugin createdInstance : createdInstances) {
             PlayerHandler.getInstance().removePlaybackStateListener((PlaybackStateListener) createdInstance);
         }
     }
-
 
 }
