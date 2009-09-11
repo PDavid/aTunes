@@ -23,186 +23,210 @@ import org.jdesktop.swingx.JXTaskPane;
 import org.jdesktop.swingx.JXTaskPaneContainer;
 
 /**
- * This class represents a context panel shown in a context tab. Context panel shows information related to the current
- * audio object active in the application 
+ * This class represents a context panel shown in a context tab. Context panel
+ * shows information related to the current audio object active in the
+ * application
+ * 
  * @author alex
- *
+ * 
  */
 public abstract class ContextPanel {
 
-	private static final long serialVersionUID = 7870512266932745272L;
+    private static final long serialVersionUID = 7870512266932745272L;
 
-	/**
-	 * Logger shared by all context panels
-	 */
-	private static Logger logger;
+    /**
+     * Logger shared by all context panels
+     */
+    private static Logger logger;
 
-	/**
-	 * Last AudioObject used to update context panel 
-	 */
-	private AudioObject audioObject;
-	
-	// BEGIN OF METHODS TO BE IMPLEMENTED BY CONCRETE CONTEXT PANELS
-	
-	/**
-	 * Name of the context panel. This is an internal ID
-	 * @return The name of the context panel
-	 */
-	public abstract String getContextPanelName();
-	
-	/**
-	 * Title of the context panel as it will appear in context tab
-	 * @param audioObject The current audio object in context panels or <code>null</code> if no current audio object is selected
-	 * 
-	 * @return The title of the context panel
-	 */
-	protected abstract String getContextPanelTitle(AudioObject audioObject);
-	
-	/**
-	 * Icon of the context panel. This icon is used in context tab
-	 * @param audioObject The current audio object in context panels or <code>null</code> if no current audio object is selected
-	 * @return The icon of the context panel
-	 */
-	protected abstract ImageIcon getContextPanelIcon(AudioObject audioObject);
-	
-	/**
-	 * List of contents shown in the context panel. Contents are shown in order in context tab
-	 * @return List of contents of the context panel
-	 */
-	protected abstract List<ContextPanelContent> getContents();
-	
-	/**
-	 * Indicates if panel must be enabled or disabled for the given audio object
-	 * @param audioObject The current audio object in context panels or <code>null</code> if no current audio object is selected
-	 * @return
-	 */
-	protected abstract boolean isPanelEnabledForAudioObject(AudioObject audioObject);
-	
-	// END OF METHODS TO BE IMPLEMENTED BY CONCRETE CONTEXT PANELS
-	
-	/**
-	 * Updates the context panel with information related to the given audio object
-	 * This method must be called every time the current audio object of the application changes and the panel is visible
-	 * (the context tab showing this panel is selected)
-	 * @param audioObject
-	 */
-	public final void updateContextPanel(AudioObject audioObject) {
-		// If the AudioObject is the same as used before to update panel then do nothing
-		if (this.audioObject != null && this.audioObject.equals(audioObject)) {
-			return;
-		}
-		
-		getLogger().debug(LogCategories.CONTEXT, StringUtils.getString("Updating panel: ", getContextPanelName()));
-		for (ContextPanelContent content : getContents()) {
-			content.clearContextPanelContent();
-			content.updateContextPanelContent(audioObject);
-		}
-		
-		this.audioObject = audioObject;
-	}
-	
-	/**
-	 * Removes all content from this context panel
-	 * This method must be called when the user selected a different context tab, so if user returns to the tab showing
-	 * this panel method updateContextPanel must be called again
-	 */
-	public final void clearContextPanel() {
-		getLogger().debug(LogCategories.CONTEXT, StringUtils.getString("Clearing panel: ", getContextPanelName()));
-		for (ContextPanelContent content : getContents()) {
-			content.clearContextPanelContent();
-		}
-		audioObject = null;
-	}
-	
-	/**
-	 * Returns a graphical component with all contents of the context panel
-	 * @return
-	 */
-	public final Component getUIComponent() {
-		JXTaskPaneContainer container = new JXTaskPaneContainer();
-		container.setOpaque(false);
-		for (ContextPanelContent content : getContents()) {
-			JXTaskPane taskPane = new JXTaskPane();
-			content.setParentTaskPane(taskPane);
-			taskPane.setTitle(content.getContentName());
-			
-			Component componentToAdd = content.getComponent();
-			if (content.isScrollNeeded()) {
-				JScrollPane scroll = new JScrollPane(componentToAdd);
-				scroll.setBorder(null);
-				scroll.setOpaque(false);
-				componentToAdd = scroll;
-			}
-			
-			List<Component> options = content.getOptions();
-			if (options != null && !options.isEmpty()) {
-				PopUpButton button = new PopUpButton(LanguageTool.getString("OPTIONS"), PopUpButton.TOP_RIGHT);
-				for (Component option : options) {
-					button.add(option);
-				}
-				JPanel panel = new JPanel(new GridBagLayout());
-				panel.setOpaque(false);
-				GridBagConstraints c = new GridBagConstraints();
-				c.weightx = 1;
-				c.weighty = 1;
-				c.fill = GridBagConstraints.BOTH;
-				panel.add(componentToAdd, c);
-				c.gridy = 1;
-				c.weightx = 0;
-				c.weighty = 0;
-				c.fill = GridBagConstraints.NONE;
-				c.insets = new Insets(5, 0, 0, 0);
-				c.anchor = GridBagConstraints.WEST;
-				panel.add(button, c);				
-				GuiUtils.applyComponentOrientation(panel);
-				componentToAdd = panel;
-			}
-			
-			taskPane.add(componentToAdd);
-			taskPane.setCollapsed(true);
-			container.add(taskPane);
-		}
-		JScrollPane scrollPane = new JScrollPane(container);
-		scrollPane.setBorder(null);
-		return scrollPane;
-	}
-	
-	/**
-	 * Returns title to be used in tab for the current audio object
-	 * @return
-	 */
-	public final String getTitle() {
-		if (ApplicationState.getInstance().isShowContextTabsText()) {
-			return getContextPanelTitle(ContextHandler.getInstance().getCurrentAudioObject());
-		} else {
-			return null;
-		}
-	}
-	
-	/**
-	 * Returns icon to be used in tab for the current audio object
-	 * @return
-	 */
-	public final ImageIcon getIcon() {
-		return getContextPanelIcon(ContextHandler.getInstance().getCurrentAudioObject());
-	}
-	
-	/**
-	 * Returns <code>true</code> if tab is enabled (can be used) for the current audio object
-	 * @return
-	 */
-	public final boolean isEnabled() {
-		return isPanelEnabledForAudioObject(ContextHandler.getInstance().getCurrentAudioObject());
-	}
-	
-	/**
-	 * Getter of logger
-	 * @return
-	 */
-	private Logger getLogger() {
-		if (logger == null) {
-			logger = new Logger();
-		}
-		return logger;
-	}
+    /**
+     * Last AudioObject used to update context panel
+     */
+    private AudioObject audioObject;
+
+    // BEGIN OF METHODS TO BE IMPLEMENTED BY CONCRETE CONTEXT PANELS
+
+    /**
+     * Name of the context panel. This is an internal ID
+     * 
+     * @return The name of the context panel
+     */
+    public abstract String getContextPanelName();
+
+    /**
+     * Title of the context panel as it will appear in context tab
+     * 
+     * @param audioObject
+     *            The current audio object in context panels or
+     *            <code>null</code> if no current audio object is selected
+     * 
+     * @return The title of the context panel
+     */
+    protected abstract String getContextPanelTitle(AudioObject audioObject);
+
+    /**
+     * Icon of the context panel. This icon is used in context tab
+     * 
+     * @param audioObject
+     *            The current audio object in context panels or
+     *            <code>null</code> if no current audio object is selected
+     * @return The icon of the context panel
+     */
+    protected abstract ImageIcon getContextPanelIcon(AudioObject audioObject);
+
+    /**
+     * List of contents shown in the context panel. Contents are shown in order
+     * in context tab
+     * 
+     * @return List of contents of the context panel
+     */
+    protected abstract List<ContextPanelContent> getContents();
+
+    /**
+     * Indicates if panel must be enabled or disabled for the given audio object
+     * 
+     * @param audioObject
+     *            The current audio object in context panels or
+     *            <code>null</code> if no current audio object is selected
+     * @return
+     */
+    protected abstract boolean isPanelEnabledForAudioObject(AudioObject audioObject);
+
+    // END OF METHODS TO BE IMPLEMENTED BY CONCRETE CONTEXT PANELS
+
+    /**
+     * Updates the context panel with information related to the given audio
+     * object This method must be called every time the current audio object of
+     * the application changes and the panel is visible (the context tab showing
+     * this panel is selected)
+     * 
+     * @param audioObject
+     */
+    public final void updateContextPanel(AudioObject audioObject) {
+        // If the AudioObject is the same as used before to update panel then do nothing
+        if (this.audioObject != null && this.audioObject.equals(audioObject)) {
+            return;
+        }
+
+        getLogger().debug(LogCategories.CONTEXT, StringUtils.getString("Updating panel: ", getContextPanelName()));
+        for (ContextPanelContent content : getContents()) {
+            content.clearContextPanelContent();
+            content.updateContextPanelContent(audioObject);
+        }
+
+        this.audioObject = audioObject;
+    }
+
+    /**
+     * Removes all content from this context panel This method must be called
+     * when the user selected a different context tab, so if user returns to the
+     * tab showing this panel method updateContextPanel must be called again
+     */
+    public final void clearContextPanel() {
+        getLogger().debug(LogCategories.CONTEXT, StringUtils.getString("Clearing panel: ", getContextPanelName()));
+        for (ContextPanelContent content : getContents()) {
+            content.clearContextPanelContent();
+        }
+        audioObject = null;
+    }
+
+    /**
+     * Returns a graphical component with all contents of the context panel
+     * 
+     * @return
+     */
+    public final Component getUIComponent() {
+        JXTaskPaneContainer container = new JXTaskPaneContainer();
+        container.setOpaque(false);
+        for (ContextPanelContent content : getContents()) {
+            JXTaskPane taskPane = new JXTaskPane();
+            content.setParentTaskPane(taskPane);
+            taskPane.setTitle(content.getContentName());
+
+            Component componentToAdd = content.getComponent();
+            if (content.isScrollNeeded()) {
+                JScrollPane scroll = new JScrollPane(componentToAdd);
+                scroll.setBorder(null);
+                scroll.setOpaque(false);
+                scroll.getVerticalScrollBar().setUnitIncrement(50);
+                componentToAdd = scroll;
+            }
+
+            List<Component> options = content.getOptions();
+            if (options != null && !options.isEmpty()) {
+                PopUpButton button = new PopUpButton(LanguageTool.getString("OPTIONS"), PopUpButton.TOP_RIGHT);
+                for (Component option : options) {
+                    button.add(option);
+                }
+                JPanel panel = new JPanel(new GridBagLayout());
+                panel.setOpaque(false);
+                GridBagConstraints c = new GridBagConstraints();
+                c.weightx = 1;
+                c.weighty = 1;
+                c.fill = GridBagConstraints.BOTH;
+                panel.add(componentToAdd, c);
+                c.gridy = 1;
+                c.weightx = 0;
+                c.weighty = 0;
+                c.fill = GridBagConstraints.NONE;
+                c.insets = new Insets(5, 0, 0, 0);
+                c.anchor = GridBagConstraints.WEST;
+                panel.add(button, c);
+                GuiUtils.applyComponentOrientation(panel);
+                componentToAdd = panel;
+            }
+
+            taskPane.add(componentToAdd);
+            taskPane.setCollapsed(true);
+            container.add(taskPane);
+        }
+        JScrollPane scrollPane = new JScrollPane(container);
+        scrollPane.setBorder(null);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(50);
+        return scrollPane;
+    }
+
+    /**
+     * Returns title to be used in tab for the current audio object
+     * 
+     * @return
+     */
+    public final String getTitle() {
+        if (ApplicationState.getInstance().isShowContextTabsText()) {
+            return getContextPanelTitle(ContextHandler.getInstance().getCurrentAudioObject());
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Returns icon to be used in tab for the current audio object
+     * 
+     * @return
+     */
+    public final ImageIcon getIcon() {
+        return getContextPanelIcon(ContextHandler.getInstance().getCurrentAudioObject());
+    }
+
+    /**
+     * Returns <code>true</code> if tab is enabled (can be used) for the current
+     * audio object
+     * 
+     * @return
+     */
+    public final boolean isEnabled() {
+        return isPanelEnabledForAudioObject(ContextHandler.getInstance().getCurrentAudioObject());
+    }
+
+    /**
+     * Getter of logger
+     * 
+     * @return
+     */
+    private Logger getLogger() {
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
+    }
 }
