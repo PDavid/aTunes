@@ -90,7 +90,7 @@ public class LyricsContent extends ContextPanelContent {
             copyLyrics.setEnabled(lyricsNotEmpty);
             addLyrics.setEnabled(!lyricsNotEmpty);
             lyricsSourceUrl = lyrics != null ? lyrics.getUrl() : null;
-            openLyrics.setEnabled(true);
+            openLyrics.setEnabled(lyricsNotEmpty);
             if (!lyricsNotEmpty) {
                 addLyrics.removeAll();
                 for (final Entry<String, String> entry : LyricsService.getInstance().getUrlsForAddingNewLyrics(audioObject.getArtist(), audioObject.getTitle()).entrySet()) {
