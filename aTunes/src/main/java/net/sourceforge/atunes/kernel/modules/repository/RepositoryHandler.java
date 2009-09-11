@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,17 +68,13 @@ import net.sourceforge.atunes.utils.LanguageTool;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.TimeUtils;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 /**
- * The Class RepositoryHandler.
+ * The repository handler
  */
 public final class RepositoryHandler implements LoaderListener, AudioFilesRemovedListener, ApplicationFinishListener {
 
-    /**
-     * The Enum SortType.
-     */
     public enum SortType {
 
         /** by track sort order */
@@ -98,30 +93,16 @@ public final class RepositoryHandler implements LoaderListener, AudioFilesRemove
         BY_MODIFICATION_TIME
     }
 
-    /** The instance. */
     private static RepositoryHandler instance = new RepositoryHandler();
 
-    /** The logger. */
     Logger logger = new Logger();
 
-    /** The repository. */
     Repository repository;
-
-    /** The temp repository. */
     private Repository tempRepository;
-
-    /** The files loaded. */
     private int filesLoaded;
-
-    /** The current loader. */
     private RepositoryLoader currentLoader;
-
-    /** The repository refresher. */
     RepositoryAutoRefresher repositoryRefresher;
-
-    /** The repository retrieved from cache. */
     Repository repositoryRetrievedFromCache = null;
-
     /** Listeners notified when an audio file is removed */
     private List<AudioFilesRemovedListener> audioFilesRemovedListeners = new ArrayList<AudioFilesRemovedListener>();
 
@@ -222,8 +203,7 @@ public final class RepositoryHandler implements LoaderListener, AudioFilesRemove
     }
 
     /**
-     * Permanently deletes an audio file from the repository metainformation and
-     * then from the disk or device.
+     * Permanently deletes an audio file from the repository metainformation
      * 
      * @param file
      *            File to be removed permanently
@@ -314,14 +294,9 @@ public final class RepositoryHandler implements LoaderListener, AudioFilesRemove
                 FavoritesHandler.getInstance().getFavorites().getFavoriteAlbums().remove(file.getAlbum());
             }
 
-            // Now delete file
-            file.getFile().delete();
-
         }
         // File is on a device
         else if (DeviceHandler.getInstance().isDevicePath(file.getUrl())) {
-            // This is OK for generic device, but what about iPods?
-            file.getFile().delete();
             logger.info(LogCategories.REPOSITORY, StringUtils.getString("Deleted file ", file, " from device"));
         }
     }
@@ -1155,42 +1130,33 @@ public final class RepositoryHandler implements LoaderListener, AudioFilesRemove
     }
 
     /**
-     * Removes a list of folders permanently from disk.
+     * Removes a list of folders from repository.
      * 
      * @param foldersToRemove
      */
-    public void removeFoldersPhysically(List<Folder> foldersToRemove) {
-        for (Folder f : foldersToRemove) {
-            File folder = f.getFolderPath();
+    public void removeFolders(List<Folder> foldersToRemove) {
+        for (Folder folder : foldersToRemove) {
 
             // Remove content
-            removePhysically(f.getAudioFiles());
-
-            // Remove folder
-            try {
-                FileUtils.deleteDirectory(folder);
-                logger.info(LogCategories.REPOSITORY, StringUtils.getString("Removed folder ", folder));
-            } catch (IOException e) {
-                logger.info(LogCategories.REPOSITORY, StringUtils.getString("Could not remove folder ", folder, e.getMessage()));
-            }
+            remove(folder.getAudioFiles());
 
             // Remove from model
-            if (f.getParentFolder() != null) {
-                f.getParentFolder().removeFolder(f);
+            if (folder.getParentFolder() != null) {
+                folder.getParentFolder().removeFolder(folder);
             }
 
-            // Update navigatr
+            // Update navigator
             ControllerProxy.getInstance().getNavigationController().notifyReload();
         }
     }
 
     /**
-     * Removes a list of files permanently from disk.
+     * Removes a list of files from repository
      * 
      * @param filesToRemove
      *            Files that should be removed
      */
-    public void removePhysically(List<AudioFile> filesToRemove) {
+    public void remove(List<AudioFile> filesToRemove) {
         if (filesToRemove == null || filesToRemove.isEmpty()) {
             return;
         }
