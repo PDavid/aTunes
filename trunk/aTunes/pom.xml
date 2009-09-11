@@ -322,9 +322,9 @@
 			<version>3.2.1</version>
 		</dependency>
 		<dependency>
-			<groupId>jaudiotagger</groupId>
+			<groupId>org.jaudiotagger</groupId>
 			<artifactId>jaudiotagger</artifactId>
-			<version>custom</version>
+			<version>1.197-SVN</version>
 		</dependency>
 		<dependency>
 			<groupId>gstreamer</groupId>
