@@ -28,7 +28,6 @@ import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListTabPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.controllers.audioObjectProperties.AudioObjectPropertiesController;
-import net.sourceforge.atunes.kernel.controllers.context.ContextPanelController;
 import net.sourceforge.atunes.kernel.controllers.customsearch.CustomSearchController;
 import net.sourceforge.atunes.kernel.controllers.editPreferencesDialog.EditPreferencesDialogController;
 import net.sourceforge.atunes.kernel.controllers.editTagDialog.EditTagDialogController;
@@ -86,9 +85,6 @@ public class ControllerProxy {
     /** The edit titles dialog controller. */
     private EditTitlesDialogController editTitlesDialogController;
 
-    /** The context controller. */
-    private ContextPanelController contextController;
-
     /** The edit preferences dialog controller. */
     private EditPreferencesDialogController editPreferencesDialogController;
 
@@ -127,18 +123,6 @@ public class ControllerProxy {
             instance = new ControllerProxy();
         }
         return instance;
-    }
-
-    /**
-     * Gets the audio scrobbler controller.
-     * 
-     * @return the audio scrobbler controller
-     */
-    public ContextPanelController getContextPanelController() {
-        if (contextController == null) {
-            contextController = new ContextPanelController(VisualHandler.getInstance().getContextPanel());
-        }
-        return contextController;
     }
 
     /**

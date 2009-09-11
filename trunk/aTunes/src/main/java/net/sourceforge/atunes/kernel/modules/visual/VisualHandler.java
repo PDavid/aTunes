@@ -1394,7 +1394,7 @@ public final class VisualHandler implements PlaybackStateListener, ApplicationFi
         getNavigationPanel().updateTabs();
 
         // Set text for context tabs
-        getContextPanel().setContextTabsText(newState.isShowContextTabsText());
+        getContextPanel().updateContextTabsText();
 
         // Set ticks for the player progress bar
         getPlayerControls().setShowTicksAndLabels(newState.isShowTicks());

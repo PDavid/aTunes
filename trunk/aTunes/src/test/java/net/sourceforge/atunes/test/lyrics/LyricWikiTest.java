@@ -21,8 +21,8 @@ package net.sourceforge.atunes.test.lyrics;
 
 import java.util.UUID;
 
-import net.sourceforge.atunes.kernel.modules.context.Lyrics;
-import net.sourceforge.atunes.kernel.modules.context.lyrics.engines.LyricWikiEngine;
+import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
+import net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricWikiEngine;
 
 import org.junit.Assert;
 import org.junit.Before;

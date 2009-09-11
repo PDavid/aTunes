@@ -76,8 +76,6 @@ public class EditPreferencesDialogListener implements ListSelectionListener, Act
             }
         } else if (e.getSource() == editPreferencesDialog.getCancel()) {
             editPreferencesDialog.setVisible(false);
-        } else if (e.getSource() == editPreferencesDialog.getContextPanel().getClearCache()) {
-            ContextHandler.getInstance().clearCaches();
         }
 
     }

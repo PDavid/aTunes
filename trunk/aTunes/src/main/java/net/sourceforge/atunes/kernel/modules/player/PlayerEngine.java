@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.ControllerProxy;
-import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
@@ -34,6 +33,7 @@ import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
+import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.misc.TempFolder;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -513,7 +513,7 @@ public abstract class PlayerEngine implements PlaybackStateListener {
      */
     private void submitToLastFmAndUpdateStats() {
         if ((submissionState == SubmissionState.PENDING) && audioObject instanceof AudioFile) {
-            ContextHandler.getInstance().submitToLastFm((AudioFile) audioObject, currentAudioObjectPlayedTime / 1000);
+        	LastFmService.getInstance().submitToLastFm((AudioFile) audioObject, currentAudioObjectPlayedTime / 1000);
             RepositoryHandler.getInstance().setAudioFileStatistics((AudioFile) audioObject);
             if (VisualHandler.getInstance().getStatsDialog().isVisible()) {
                 ControllerProxy.getInstance().getStatsDialogController().updateStats();
@@ -597,7 +597,7 @@ public abstract class PlayerEngine implements PlaybackStateListener {
 
         // Send Now Playing info to Last.fm
         if (audioObject instanceof AudioFile) {
-            ContextHandler.getInstance().submitNowPlayingInfoToLastFm((AudioFile) audioObject);
+        	LastFmService.getInstance().submitNowPlayingInfoToLastFm((AudioFile) audioObject);
         }
 
         this.audioObject = audioObject;

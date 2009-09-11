@@ -42,7 +42,8 @@ public class OpenLyricsSourceAction extends Action {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        ControllerProxy.getInstance().getContextPanelController().openLyricsSourceUrl();
+    	// TODO: CONTEXT Change this
+    	//ControllerProxy.getInstance().getContextPanelController().openLyricsSourceUrl();
 
     }
 

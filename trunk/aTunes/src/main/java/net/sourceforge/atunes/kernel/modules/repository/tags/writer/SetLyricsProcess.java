@@ -23,9 +23,8 @@ package net.sourceforge.atunes.kernel.modules.repository.tags.writer;
 import java.io.IOException;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
-import net.sourceforge.atunes.kernel.modules.context.Lyrics;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
 
 /**
  * The Class SetLyricsProcess.
@@ -47,7 +46,7 @@ public class SetLyricsProcess extends ChangeTagProcess {
     protected void changeTag(AudioFile file) throws IOException {
         // Check if no lyrics is present and we have enough info for a querry
         if (file.getLyrics().isEmpty() && !file.getArtist().isEmpty() && !file.getTitle().isEmpty()) {
-            Lyrics lyrics = ContextHandler.getInstance().getLyrics(file.getArtist(), file.getTitle());
+            Lyrics lyrics = null;// TODO: CONTEXT: Change thisContextHandler.getInstance().getLyrics(file.getArtist(), file.getTitle());
             String lyricsString = lyrics != null ? lyrics.getLyrics().trim() : "";
             if (!lyricsString.isEmpty()) {
                 TagModifier.setLyrics(file, lyricsString);

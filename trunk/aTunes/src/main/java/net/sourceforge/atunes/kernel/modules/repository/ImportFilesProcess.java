@@ -33,6 +33,7 @@ import net.sourceforge.atunes.kernel.modules.repository.tags.tag.Tag;
 import net.sourceforge.atunes.kernel.modules.repository.tags.writer.TagEditionOperations;
 import net.sourceforge.atunes.kernel.modules.repository.tags.writer.TagModifier;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.LanguageTool;
@@ -237,7 +238,7 @@ public class ImportFilesProcess extends AudioFileTransferProcess {
      */
     private void setTitle(AudioFile fileToImport) {
         if (ApplicationState.getInstance().isSetTitlesWhenImporting()) {
-            String newTitle = ContextHandler.getInstance().getTitleForFile(fileToImport);
+            String newTitle = LastFmService.getInstance().getTitleForFile(fileToImport);
             if (newTitle != null) {
                 if (fileToImport.getTag() == null) {
                     fileToImport.setTag(new DefaultTag());

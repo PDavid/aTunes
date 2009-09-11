@@ -27,13 +27,13 @@ import java.util.List;
 
 import javax.swing.SwingWorker;
 
-import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
-import net.sourceforge.atunes.kernel.modules.context.lastfm.data.LastFmLovedTrack;
 import net.sourceforge.atunes.kernel.modules.favorites.FavoritesHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
+import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
+import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmLovedTrack;
 import net.sourceforge.atunes.utils.LanguageTool;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -51,7 +51,7 @@ public class ImportLovedTracksFromLastFM extends Action {
             @Override
             protected List<AudioFile> doInBackground() throws Exception {
                 // Get loved tracks
-                List<LastFmLovedTrack> lovedTracks = ContextHandler.getInstance().getLovedTracks();
+                List<LastFmLovedTrack> lovedTracks = LastFmService.getInstance().getLovedTracks();
                 if (!lovedTracks.isEmpty()) {
                     List<AudioFile> favoriteAudioFiles = new ArrayList<AudioFile>();
                     for (LastFmLovedTrack lovedTrack : lovedTracks) {
