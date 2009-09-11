@@ -84,7 +84,6 @@ public class LyricsflyEngine extends LyricsEngine {
     /*
      * DO NOT USE THIS KEY FOR OTHER APPLICATIONS THAN aTunes!
      */
-    private static final byte[] C = { 118, -12, 36, 60, 15, -18, 24, -28, -73, -26, -35, -42, 124, 84, -96, -93, 82, 37, 50, -63, 97, 101, -91, -59, -14, -91, 41, 73, -121, -17,
-            -55, 113 };
+    private static final byte[] C = { -113, 48, 87, 26, 59, 127, 85, -7, -72, 92, 78, -96, -25, 46, -16, 112, -104, 20, -78, 126, 26, 13, -40, 46 };
 
 }
