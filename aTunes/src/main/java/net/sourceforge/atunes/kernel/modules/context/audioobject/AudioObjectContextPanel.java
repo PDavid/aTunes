@@ -31,6 +31,7 @@ import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.utils.LanguageTool;
 
 /**
@@ -47,15 +48,11 @@ public class AudioObjectContextPanel extends ContextPanel {
 
     @Override
     protected ImageIcon getContextPanelIcon(AudioObject audioObject) {
-        if (audioObject instanceof AudioFile || (audioObject instanceof Radio && ((Radio) audioObject).isSongInfoAvailable())) {
+        if (audioObject != null) {
+            return audioObject.getGenericImage(GenericImageSize.SMALL);
+        } else {
             return ImageLoader.getImage(ImageLoader.AUDIO_FILE_LITTLE);
-        } else if (audioObject instanceof Radio) {
-            return ImageLoader.getImage(ImageLoader.RADIO_LITTLE);
-        } else if (audioObject instanceof PodcastFeedEntry) {
-            return ImageLoader.getImage(ImageLoader.RSS_LITTLE);
         }
-
-        return ImageLoader.getImage(ImageLoader.AUDIO_FILE_LITTLE);
     }
 
     @Override

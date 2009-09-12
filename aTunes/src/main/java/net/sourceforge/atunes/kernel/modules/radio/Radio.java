@@ -61,7 +61,6 @@ public final class Radio implements AudioObject, Serializable, TreeObject, Compa
     // Song infos from radio stream
     private transient String artist;
     private transient String title;
-    private transient String composer;
     private transient boolean songInfoAvailable;
     private long bitrate;
     private int frequency;
@@ -156,9 +155,6 @@ public final class Radio implements AudioObject, Serializable, TreeObject, Compa
 
     @Override
     public String getComposer() {
-        if (composer != null) {
-            return composer;
-        }
         return "";
     }
 
@@ -308,16 +304,6 @@ public final class Radio implements AudioObject, Serializable, TreeObject, Compa
      */
     public void setBitrate(long bitrate) {
         this.bitrate = bitrate;
-    }
-
-    /**
-     * Sets the composer.
-     * 
-     * @param composer
-     *            the new composer
-     */
-    public void setComposer(String composer) {
-        this.composer = composer;
     }
 
     /**
