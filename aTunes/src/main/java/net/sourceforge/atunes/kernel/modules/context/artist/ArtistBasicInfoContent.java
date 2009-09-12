@@ -31,10 +31,11 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.text.StyleConstants;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.Fonts;
+import net.sourceforge.atunes.gui.views.controls.CustomTextPane;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
 import net.sourceforge.atunes.model.AudioObject;
@@ -55,7 +56,7 @@ public class ArtistBasicInfoContent extends ContextPanelContent {
 
     private JLabel artistImageLabel;
     private UrlLabel artistNameLabel;
-    private JTextArea artistWikiAbstract;
+    private CustomTextPane artistWikiAbstract;
     private UrlLabel artistWikiReadMore;
 
     public ArtistBasicInfoContent() {
@@ -115,9 +116,7 @@ public class ArtistBasicInfoContent extends ContextPanelContent {
         artistImageLabel = new JLabel();
         artistNameLabel = new UrlLabel();
         artistNameLabel.setFont(Fonts.CONTEXT_INFORMATION_BIG_FONT);
-        artistWikiAbstract = new JTextArea();
-        artistWikiAbstract.setLineWrap(true);
-        artistWikiAbstract.setWrapStyleWord(true);
+        artistWikiAbstract = new CustomTextPane(StyleConstants.ALIGN_JUSTIFIED);
         artistWikiAbstract.setEditable(false);
         artistWikiAbstract.setBorder(BorderFactory.createEmptyBorder());
         artistWikiAbstract.setOpaque(false);

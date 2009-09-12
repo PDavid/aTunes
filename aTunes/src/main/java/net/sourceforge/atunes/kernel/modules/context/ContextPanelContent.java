@@ -176,20 +176,22 @@ public abstract class ContextPanelContent {
         // get desired alignment of images and text. Other ways to achieve this like setPreferredSize doesn't work because when width of panel is low
         // preferred size is ignored, but insets don't
         JPanel panel = new JPanel(new GridBagLayout());
-        panel.setOpaque(true);
         GridBagConstraints c = new GridBagConstraints();
 
         JLabel imageLabel = new JLabel(image);
-        imageLabel.setOpaque(true);
+        imageLabel.setOpaque(false);
         imageLabel.setBorder(image != null ? new DropShadowBorder() : null);
         JLabel textLabel = new JLabel(text);
-        textLabel.setOpaque(true);
+        textLabel.setOpaque(false);
         textLabel.setVerticalAlignment(SwingConstants.TOP);
 
         if (backgroundColor != null) {
+            panel.setOpaque(true);
             textLabel.setBackground(backgroundColor);
             panel.setBackground(backgroundColor);
             imageLabel.setBackground(backgroundColor);
+        } else {
+        	panel.setOpaque(false);
         }
 
         c.gridx = 0;

@@ -32,12 +32,9 @@ import java.util.Map.Entry;
 import javax.swing.AbstractAction;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import javax.swing.JTextPane;
-import javax.swing.text.MutableAttributeSet;
-import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
 
+import net.sourceforge.atunes.gui.views.controls.CustomTextPane;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
@@ -58,7 +55,7 @@ public class LyricsContent extends ContextPanelContent {
 
     private static final long serialVersionUID = 962229017133714396L;
 
-    private JTextPane lyricsContainer;
+    private CustomTextPane lyricsContainer;
 
     private JMenu addLyrics;
 
@@ -131,14 +128,9 @@ public class LyricsContent extends ContextPanelContent {
 
     @Override
     protected Component getComponent() {
-        lyricsContainer = new JTextPane();
-		StyledDocument doc = lyricsContainer.getStyledDocument();
- 		MutableAttributeSet standard = new SimpleAttributeSet();
-		StyleConstants.setAlignment(standard, StyleConstants.ALIGN_CENTER);
-		doc.setParagraphAttributes(0, 0, standard, true);
+        lyricsContainer = new CustomTextPane(StyleConstants.ALIGN_CENTER);
         lyricsContainer.setBorder(null);
         lyricsContainer.setEditable(false);
-        lyricsContainer.setOpaque(false);
         return lyricsContainer;
     }
 
