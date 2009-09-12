@@ -32,7 +32,11 @@ import java.util.Map.Entry;
 import javax.swing.AbstractAction;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import javax.swing.JTextArea;
+import javax.swing.JTextPane;
+import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
@@ -54,7 +58,7 @@ public class LyricsContent extends ContextPanelContent {
 
     private static final long serialVersionUID = 962229017133714396L;
 
-    private JTextArea lyricsContainer;
+    private JTextPane lyricsContainer;
 
     private JMenu addLyrics;
 
@@ -82,7 +86,6 @@ public class LyricsContent extends ContextPanelContent {
     protected void updateContentWithDataSourceResult(Map<String, ?> result) {
         if (result.containsKey(LyricsDataSource.OUTPUT_LYRIC)) {
             Lyrics lyrics = (Lyrics) result.get(LyricsDataSource.OUTPUT_LYRIC);
-            lyricsContainer.setLineWrap(false);
             lyricsContainer.setText(lyrics.getLyrics());
             lyricsContainer.setCaretPosition(0);
 
@@ -128,10 +131,13 @@ public class LyricsContent extends ContextPanelContent {
 
     @Override
     protected Component getComponent() {
-        lyricsContainer = new JTextArea();
+        lyricsContainer = new JTextPane();
+		StyledDocument doc = lyricsContainer.getStyledDocument();
+ 		MutableAttributeSet standard = new SimpleAttributeSet();
+		StyleConstants.setAlignment(standard, StyleConstants.ALIGN_CENTER);
+		doc.setParagraphAttributes(0, 0, standard, true);
         lyricsContainer.setBorder(null);
         lyricsContainer.setEditable(false);
-        lyricsContainer.setWrapStyleWord(true);
         lyricsContainer.setOpaque(false);
         return lyricsContainer;
     }
