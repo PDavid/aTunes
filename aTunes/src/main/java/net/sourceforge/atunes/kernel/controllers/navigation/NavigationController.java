@@ -354,8 +354,8 @@ public class NavigationController extends PanelController<NavigationPanel> imple
         // If current view is equals to the new view then don't change tabbed pane selected index
         // This can happen when this method is called from a stateChanged method of tabbed pane listener when user
         // changes selected tab
-        if (currentView != newView) {
-            getPanelControlled().getTabbedPane().setSelectedIndex(NavigationHandler.getInstance().indexOf(navigationView));
+        if (currentView != newView && newView < getPanelControlled().getTabbedPane().getTabCount()) {
+            getPanelControlled().getTabbedPane().setSelectedIndex(newView);
         }
 
         boolean viewModeSupported = NavigationHandler.getInstance().getView(navigationView).isViewModeSupported();

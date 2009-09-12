@@ -27,19 +27,17 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.kernel.ControllerProxy;
+import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationStateChangeListener;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
-import net.sourceforge.atunes.misc.log.Logger;
 
 import org.commonjukebox.plugins.Plugin;
 import org.commonjukebox.plugins.PluginInfo;
 import org.commonjukebox.plugins.PluginListener;
 import org.commonjukebox.plugins.PluginSystemException;
 
-public class NavigationHandler implements PluginListener, ApplicationStateChangeListener {
+public class NavigationHandler extends Handler implements PluginListener {
 
     /**
      * Singleton instance
@@ -47,8 +45,6 @@ public class NavigationHandler implements PluginListener, ApplicationStateChange
     private static NavigationHandler instance;
 
     private List<NavigationView> navigationViews;
-
-    private Logger logger;
 
     /**
      * Getter of singleton instance
@@ -63,8 +59,20 @@ public class NavigationHandler implements PluginListener, ApplicationStateChange
     }
 
     private NavigationHandler() {
-        ApplicationStateHandler.getInstance().addStateChangeListener(this);
     }
+    
+    @Override
+    public void applicationFinish() {
+    }
+    
+    @Override
+    protected void initHandler() {
+    }
+    
+    @Override
+    public void applicationStarted() {
+    }
+
 
     public List<NavigationView> getNavigationViews() {
         if (navigationViews == null) {
@@ -78,6 +86,7 @@ public class NavigationHandler implements PluginListener, ApplicationStateChange
         return navigationViews;
     }
 
+    
     /**
      * Builds a map containing classes of navigation view as keys and references
      * to instances as values
@@ -147,9 +156,10 @@ public class NavigationHandler implements PluginListener, ApplicationStateChange
     public void pluginActivated(PluginInfo plugin) {
         try {
             getNavigationViews().add((NavigationView) plugin.getInstance());
+            // Set tabs and text for navigator
+            ControllerProxy.getInstance().getNavigationController().getNavigationPanel().updateTabs();
         } catch (PluginSystemException e) {
             getLogger().error(LogCategories.PLUGINS, e);
-
         }
     }
 
@@ -159,18 +169,6 @@ public class NavigationHandler implements PluginListener, ApplicationStateChange
         for (Plugin view : views) {
             getNavigationViews().remove(view);
         }
-    }
-
-    /**
-     * Internal getter for logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
     }
 
     @Override

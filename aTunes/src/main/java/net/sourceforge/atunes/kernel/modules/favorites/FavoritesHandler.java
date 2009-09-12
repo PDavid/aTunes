@@ -23,12 +23,12 @@ package net.sourceforge.atunes.kernel.modules.favorites;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.ApplicationFinishListener;
 import net.sourceforge.atunes.kernel.ControllerProxy;
-import net.sourceforge.atunes.kernel.Kernel;
+import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.repository.AudioFilesRemovedListener;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.model.Album;
@@ -42,17 +42,13 @@ import net.sourceforge.atunes.model.TreeObject;
 /**
  * The Class FavoritesHandler.
  */
-public final class FavoritesHandler implements ApplicationFinishListener {
+public final class FavoritesHandler extends Handler implements AudioFilesRemovedListener {
 
     /** The instance. */
     private static FavoritesHandler instance = new FavoritesHandler();
 
     /** The favorites. */
     private Favorites favorites;
-
-    FavoritesHandler() {
-        Kernel.getInstance().addFinishListener(this);
-    }
 
     /**
      * Gets the single instance of FavoritesHandler.
@@ -63,17 +59,19 @@ public final class FavoritesHandler implements ApplicationFinishListener {
         return instance;
     }
 
-    /**
-     * Returns a runnable object to be executed after application start
-     */
-    public Runnable getAfterStartActionsRunnable() {
-        // TODO: create an interface with this method for all classes that need execute code after kernel start
-        return new Runnable() {
-            @Override
-            public void run() {
-                SearchHandler.getInstance().registerSearchableObject(FavoritesSearchableObject.getInstance());
-            }
-        };
+    @Override
+    public void applicationStateChanged(ApplicationState newState) {
+    	// TODO Auto-generated method stub	
+    }
+    
+    @Override
+    protected void initHandler() {
+    	RepositoryHandler.getInstance().addAudioFilesRemovedListener(this);
+    }
+    
+    @Override
+    public void applicationStarted() {
+    	SearchHandler.getInstance().registerSearchableObject(FavoritesSearchableObject.getInstance());
     }
 
     /**
@@ -84,7 +82,7 @@ public final class FavoritesHandler implements ApplicationFinishListener {
      */
     public void addFavoriteAlbums(List<AudioFile> songs) {
         Map<String, Artist> structure = RepositoryHandler.getInstance().getRepository().getStructure().getTreeStructure();
-        Map<String, Album> favAlbums = favorites.getFavoriteAlbums();
+        Map<String, Album> favAlbums = getFavorites().getFavoriteAlbums();
         for (int i = 0; i < songs.size(); i++) {
             AudioFile f = songs.get(i);
             Artist artist = structure.get(f.getArtist());
@@ -105,7 +103,7 @@ public final class FavoritesHandler implements ApplicationFinishListener {
      */
     public void addFavoriteArtists(List<AudioFile> songs) {
         Map<String, Artist> structure = RepositoryHandler.getInstance().getRepository().getStructure().getTreeStructure();
-        Map<String, Artist> favArtists = favorites.getFavoriteArtists();
+        Map<String, Artist> favArtists = getFavorites().getFavoriteArtists();
         for (int i = 0; i < songs.size(); i++) {
             AudioFile f = songs.get(i);
             Artist artist = structure.get(f.getArtist());
@@ -124,7 +122,7 @@ public final class FavoritesHandler implements ApplicationFinishListener {
         if (songs == null || songs.isEmpty()) {
             return;
         }
-        Map<String, AudioFile> favSongs = favorites.getFavoriteAudioFiles();
+        Map<String, AudioFile> favSongs = getFavorites().getFavoriteAudioFiles();
         for (AudioFile song : songs) {
             favSongs.put(song.getUrl(), song);
 
@@ -140,7 +138,7 @@ public final class FavoritesHandler implements ApplicationFinishListener {
      * Finish.
      */
     public void applicationFinish() {
-        ApplicationStateHandler.getInstance().persistFavoritesCache(favorites);
+        ApplicationStateHandler.getInstance().persistFavoritesCache(getFavorites());
     }
 
     /**
@@ -149,7 +147,7 @@ public final class FavoritesHandler implements ApplicationFinishListener {
      * @return the favorite albums info
      */
     public Map<String, Album> getFavoriteAlbumsInfo() {
-        return favorites.getFavoriteAlbums();
+        return getFavorites().getFavoriteAlbums();
     }
 
     /**
@@ -158,16 +156,25 @@ public final class FavoritesHandler implements ApplicationFinishListener {
      * @return the favorite artists info
      */
     public Map<String, Artist> getFavoriteArtistsInfo() {
-        return favorites.getFavoriteArtists();
+        return getFavorites().getFavoriteArtists();
     }
 
+    @Override
+    protected Runnable getPreviousInitializationTask() {
+    	return new Runnable() {
+    		@Override
+    		public void run() {
+                favorites = ApplicationStateHandler.getInstance().retrieveFavoritesCache();
+    		}
+    	};
+    }
+    
     /**
      * Gets the favorites.
      * 
      * @return the favorites
      */
-    public Favorites getFavorites() {
-        // TODO: this method should be removed to manage favorites objects only in this class
+    private Favorites getFavorites() {
         return favorites;
     }
 
@@ -177,14 +184,14 @@ public final class FavoritesHandler implements ApplicationFinishListener {
      * @return the favorite songs
      */
     public List<AudioFile> getFavoriteSongs() {
-        return favorites.getAllFavoriteSongs();
+        return getFavorites().getAllFavoriteSongs();
     }
 
     /**
      * Gets the favorite songs map
      */
     public Map<String, AudioFile> getFavoriteSongsMap() {
-        return favorites.getAllFavoriteSongsMap();
+        return getFavorites().getAllFavoriteSongsMap();
     }
 
     /**
@@ -193,31 +200,7 @@ public final class FavoritesHandler implements ApplicationFinishListener {
      * @return the favorite songs info
      */
     public Map<String, AudioFile> getFavoriteSongsInfo() {
-        return favorites.getFavoriteAudioFiles();
-    }
-
-    /**
-     * Read favorites.
-     */
-    void readFavorites() {
-        favorites = ApplicationStateHandler.getInstance().retrieveFavoritesCache();
-        if (favorites == null) {
-            favorites = new Favorites();
-        }
-    }
-
-    /**
-     * Runnable process to read favorites cache.
-     * 
-     * @return the read favotires runnable
-     */
-    public Runnable getReadFavotiresRunnable() {
-        return new Runnable() {
-            @Override
-            public void run() {
-                readFavorites();
-            }
-        };
+        return getFavorites().getFavoriteAudioFiles();
     }
 
     /**
@@ -229,9 +212,9 @@ public final class FavoritesHandler implements ApplicationFinishListener {
     public void removeFromFavorites(List<TreeObject> objects) {
         for (TreeObject obj : objects) {
             if (obj instanceof Artist) {
-                favorites.getFavoriteArtists().remove(obj.toString());
+            	getFavorites().getFavoriteArtists().remove(obj.toString());
             } else {
-                favorites.getFavoriteAlbums().remove(obj.toString());
+            	getFavorites().getFavoriteAlbums().remove(obj.toString());
             }
         }
 
@@ -246,7 +229,7 @@ public final class FavoritesHandler implements ApplicationFinishListener {
      */
     public void removeSongsFromFavorites(List<AudioFile> files) {
         for (AudioFile file : files) {
-            favorites.getFavoriteAudioFiles().remove(file.getUrl());
+        	getFavorites().getFavoriteAudioFiles().remove(file.getUrl());
         }
 
         callActionsAfterFavoritesChange();
@@ -266,4 +249,22 @@ public final class FavoritesHandler implements ApplicationFinishListener {
         ControllerProxy.getInstance().getFilePropertiesController().refreshFavoriteIcons();
     }
 
+    @Override
+    public void audioFilesRemoved(List<AudioFile> audioFiles) {
+    	for (AudioFile file : audioFiles) {
+    		// Remove from favorite audio files
+    		getFavorites().getFavoriteAudioFiles().remove(file.getUrl());
+
+    		// If artist has been removed then remove it from favorites too
+    		if (!RepositoryHandler.getInstance().getRepository().getStructure().getTreeStructure().containsKey(file.getArtist())) {
+    			getFavorites().getFavoriteArtists().remove(file.getArtist());
+    		} else {
+    			// If album has been removed then remove it from favorites too
+    			if (RepositoryHandler.getInstance().getRepository().getStructure().getTreeStructure().get(file.getArtist()).getAlbum(file.getAlbum()) == null) {
+    				getFavorites().getFavoriteAlbums().remove(file.getAlbum());
+    			}
+    		}
+    	}
+
+    }
 }

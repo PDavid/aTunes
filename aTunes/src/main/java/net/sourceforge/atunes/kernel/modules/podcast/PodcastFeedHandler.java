@@ -42,17 +42,15 @@ import javax.swing.SwingWorker;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.views.dialogs.TransferProgressDialog;
-import net.sourceforge.atunes.kernel.ApplicationFinishListener;
+import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationStateChangeListener;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.LanguageTool;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -60,16 +58,13 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The Class PodcastFeedHandler.
  */
-public final class PodcastFeedHandler implements ApplicationFinishListener, ApplicationStateChangeListener {
+public final class PodcastFeedHandler extends Handler {
 
     /** The instance. */
     private static PodcastFeedHandler instance = new PodcastFeedHandler();
 
     /** The default podcast feed entries retrieval interval. */
     public static final long DEFAULT_PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL = 180000;
-
-    /** The logger. */
-    Logger logger = new Logger();
 
     /** The podcast feeds. */
     private List<PodcastFeed> podcastFeeds;
@@ -98,12 +93,14 @@ public final class PodcastFeedHandler implements ApplicationFinishListener, Appl
     /** The scheduled podcast feed entry retriever future. */
     private ScheduledFuture<?> scheduledPodcastFeedEntryRetrieverFuture;
 
-    /**
-     * Instantiates a new podcast feed handler.
-     */
-    private PodcastFeedHandler() {
-        Kernel.getInstance().addFinishListener(this);
-        ApplicationStateHandler.getInstance().addStateChangeListener(this);
+    @Override
+    protected void initHandler() {
+    }
+    
+    @Override
+    public void applicationStarted() {
+        startPodcastFeedEntryDownloadChecker();
+        startPodcastFeedEntryRetriever();
     }
 
     /**
@@ -134,19 +131,19 @@ public final class PodcastFeedHandler implements ApplicationFinishListener, Appl
      *            A Podcast Feed that should be added
      */
     private void addPodcastFeed(PodcastFeed podcastFeed) {
-        logger.info(LogCategories.HANDLER, "Adding podcast feed");
+        getLogger().info(LogCategories.HANDLER, "Adding podcast feed");
         // Note: Do not use Collection.sort(...);
         boolean added = false;
         Comparator<PodcastFeed> comparator = PodcastFeed.getComparator();
-        for (int i = 0; i < podcastFeeds.size(); i++) {
-            if (comparator.compare(podcastFeed, podcastFeeds.get(i)) < 0) {
-                podcastFeeds.add(i, podcastFeed);
+        for (int i = 0; i < getPodcastFeeds().size(); i++) {
+            if (comparator.compare(podcastFeed, getPodcastFeeds().get(i)) < 0) {
+            	getPodcastFeeds().add(i, podcastFeed);
                 added = true;
                 break;
             }
         }
         if (!added) {
-            podcastFeeds.add(podcastFeed);
+        	getPodcastFeeds().add(podcastFeed);
         }
     }
 
@@ -163,16 +160,26 @@ public final class PodcastFeedHandler implements ApplicationFinishListener, Appl
             }
         }
         podcastFeedEntryDownloadCheckerExecutorService.shutdownNow();
-        ApplicationStateHandler.getInstance().persistPodcastFeedCache(podcastFeeds);
+        ApplicationStateHandler.getInstance().persistPodcastFeedCache(getPodcastFeeds());
     }
 
+    @Override
+    protected Runnable getPreviousInitializationTask() {
+    	return new Runnable() {
+    		@Override
+    		public void run() {
+    			podcastFeeds = ApplicationStateHandler.getInstance().retrievePodcastFeedCache();
+    		}
+    	};
+    }
+    
     /**
      * Returns a list with all Podcast Feeds.
      * 
      * @return The podcast feeds
      */
     public List<PodcastFeed> getPodcastFeeds() {
-        return new ArrayList<PodcastFeed>(podcastFeeds);
+        return podcastFeeds;
     }
 
     /**
@@ -182,31 +189,10 @@ public final class PodcastFeedHandler implements ApplicationFinishListener, Appl
      */
     public List<PodcastFeedEntry> getPodcastFeedEntries() {
         List<PodcastFeedEntry> podcastFeedEntries = new ArrayList<PodcastFeedEntry>();
-        for (PodcastFeed podcastFeed : podcastFeeds) {
+        for (PodcastFeed podcastFeed : getPodcastFeeds()) {
             podcastFeedEntries.addAll(podcastFeed.getPodcastFeedEntries());
         }
         return podcastFeedEntries;
-    }
-
-    /**
-     * Reads the stored Podcast Feeds.
-     */
-    void readPodcastFeeds() {
-        podcastFeeds = ApplicationStateHandler.getInstance().retrievePodcastFeedCache();
-    }
-
-    /**
-     * Runnable process to read podcasts cache.
-     * 
-     * @return the read podcast feeds runnable
-     */
-    public Runnable getReadPodcastFeedsRunnable() {
-        return new Runnable() {
-            @Override
-            public void run() {
-                readPodcastFeeds();
-            }
-        };
     }
 
     /**
@@ -216,8 +202,8 @@ public final class PodcastFeedHandler implements ApplicationFinishListener, Appl
      *            A Podcast Feed that should be removed
      */
     public void removePodcastFeed(PodcastFeed podcastFeed) {
-        logger.info(LogCategories.HANDLER, "Removing podcast feed");
-        podcastFeeds.remove(podcastFeed);
+        getLogger().info(LogCategories.HANDLER, "Removing podcast feed");
+        getPodcastFeeds().remove(podcastFeed);
         NavigationHandler.getInstance().refreshView(PodcastNavigationView.class);
     }
 
@@ -356,7 +342,7 @@ public final class PodcastFeedHandler implements ApplicationFinishListener, Appl
                 synchronized (runningDownloads) {
                     runningDownloads.remove(downloadPodcastFeedEntry);
                 }
-                logger.info(LogCategories.PODCAST, "podcast entry download cancelled: " + podcastFeedEntry.getName());
+                getLogger().info(LogCategories.PODCAST, "podcast entry download cancelled: " + podcastFeedEntry.getName());
             }
         };
         new Thread(r).start();
@@ -381,7 +367,7 @@ public final class PodcastFeedHandler implements ApplicationFinishListener, Appl
         if (!podcastFeedsDownloadFolder.exists()) {
             boolean check = podcastFeedsDownloadFolder.mkdir();
             if (!check) {
-                logger.error(LogCategories.PODCAST, "Problem Creating file!");
+                getLogger().error(LogCategories.PODCAST, "Problem Creating file!");
                 return "";
             }
         }
@@ -395,7 +381,7 @@ public final class PodcastFeedHandler implements ApplicationFinishListener, Appl
         if (!podcastFeedDownloadFolder.exists()) {
             boolean check = podcastFeedDownloadFolder.mkdir();
             if (!check) {
-                logger.error(LogCategories.PODCAST, "Problem Creating file!");
+                getLogger().error(LogCategories.PODCAST, "Problem Creating file!");
                 return "";
             }
         }
@@ -443,9 +429,9 @@ public final class PodcastFeedHandler implements ApplicationFinishListener, Appl
                         VisualHandler.getInstance().getNavigationPanel().getNavigationTable().repaint();
                     }
                 } catch (InterruptedException e) {
-                    logger.error(LogCategories.PODCAST, e);
+                    getLogger().error(LogCategories.PODCAST, e);
                 } catch (ExecutionException e) {
-                    logger.error(LogCategories.PODCAST, e);
+                    getLogger().error(LogCategories.PODCAST, e);
                 }
             }
         }.execute();

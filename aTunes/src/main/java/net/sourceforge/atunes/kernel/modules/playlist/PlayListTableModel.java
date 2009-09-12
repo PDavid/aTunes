@@ -43,6 +43,11 @@ public class PlayListTableModel implements TableModel {
     private List<TableModelListener> listeners;
 
     /**
+     * Reference to the visible play list
+     */
+    private PlayList visiblePlayList = null;
+    
+    /**
      * Constructor.
      * 
      * @param table
@@ -106,8 +111,8 @@ public class PlayListTableModel implements TableModel {
      */
     @Override
     public int getRowCount() {
-        if (PlayListHandler.getInstance().getCurrentPlayList(true) != null) {
-            return PlayListHandler.getInstance().getCurrentPlayList(true).size();
+        if (visiblePlayList != null) {
+            return visiblePlayList.size();
         }
         return 0;
     }
@@ -125,8 +130,8 @@ public class PlayListTableModel implements TableModel {
     @Override
     public Object getValueAt(int rowIndex, int colIndex) {
         // Call Column method to get value from AudioFile
-        if (PlayListHandler.getInstance().getCurrentPlayList(true) != null) {
-            return PlayListColumns.getColumn(PlayListColumns.getColumnId(colIndex)).getValueFor(PlayListHandler.getInstance().getCurrentPlayList(true).get(rowIndex));
+        if (visiblePlayList != null) {
+            return PlayListColumns.getColumn(PlayListColumns.getColumnId(colIndex)).getValueFor(visiblePlayList.get(rowIndex));
         }
         return null;
     }
@@ -186,7 +191,7 @@ public class PlayListTableModel implements TableModel {
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         // AudioFile
-        AudioObject file = PlayListHandler.getInstance().getCurrentPlayList(true).get(rowIndex);
+        AudioObject file = visiblePlayList.get(rowIndex);
 
         // Column ID
         Class<? extends Column> c = PlayListColumns.getColumnId(columnIndex);
@@ -194,4 +199,11 @@ public class PlayListTableModel implements TableModel {
         // Call column set value
         PlayListColumns.getColumn(c).setValueFor(file, aValue);
     }
+
+	/**
+	 * @param visiblePlayList the visiblePlayList to set
+	 */
+	public void setVisiblePlayList(PlayList visiblePlayList) {
+		this.visiblePlayList = visiblePlayList;
+	}
 }

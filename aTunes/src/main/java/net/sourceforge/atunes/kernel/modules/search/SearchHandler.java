@@ -33,8 +33,9 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.kernel.ControllerProxy;
+import net.sourceforge.atunes.kernel.Handler;
+import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -56,10 +57,7 @@ import org.apache.lucene.store.LockObtainFailedException;
 /**
  * The Class SearchHandler.
  */
-public final class SearchHandler {
-
-    /** Logger. */
-    static Logger logger = new Logger();
+public final class SearchHandler extends Handler {
 
     /** Default lucene field. */
     public static final String DEFAULT_INDEX = "any";
@@ -104,6 +102,23 @@ public final class SearchHandler {
      * Constructor.
      */
     private SearchHandler() {
+    }
+    
+    @Override
+    public void applicationFinish() {
+    }
+    
+    @Override
+    public void applicationStateChanged(ApplicationState newState) {
+    }
+    
+    @Override
+    public void applicationStarted() {
+    }
+
+    
+    @Override
+    protected void initHandler() {
         currentIndexingWorks = new HashMap<SearchableObject, Boolean>();
         searchableObjects = new ArrayList<SearchableObject>();
         indexLocks = new HashMap<SearchableObject, ReadWriteLock>();
@@ -196,7 +211,7 @@ public final class SearchHandler {
                 rawSearchResults.add(new RawSearchResult(searcher.doc(scoreDoc.doc), scoreDoc.score));
             }
             List<SearchResult> result = searchableObject.getSearchResult(rawSearchResults);
-            logger.debug(LogCategories.REPOSITORY, "Query: " + queryString + " (" + result.size() + " search results)");
+            getLogger().debug(LogCategories.REPOSITORY, "Query: " + queryString + " (" + result.size() + " search results)");
             return result;
         } catch (IOException e) {
             throw new SearchIndexNotAvailableException();
@@ -270,21 +285,21 @@ public final class SearchHandler {
             }
 
             private void initSearchIndex() {
-                logger.info(LogCategories.HANDLER, "Updating index for " + searchableObject.getClass());
+                getLogger().info(LogCategories.HANDLER, "Updating index for " + searchableObject.getClass());
                 try {
                     FileUtils.deleteDirectory(new File(searchableObject.getPathToIndex()));
                     indexWriter = new IndexWriter(searchableObject.getPathToIndex(), new SimpleAnalyzer(), IndexWriter.MaxFieldLength.UNLIMITED);
                 } catch (CorruptIndexException e) {
-                    logger.error(LogCategories.HANDLER, e);
+                    getLogger().error(LogCategories.HANDLER, e);
                 } catch (LockObtainFailedException e) {
-                    logger.error(LogCategories.HANDLER, e);
+                    getLogger().error(LogCategories.HANDLER, e);
                 } catch (IOException e) {
-                    logger.error(LogCategories.HANDLER, e);
+                    getLogger().error(LogCategories.HANDLER, e);
                 }
             }
 
             private void updateSearchIndex(List<AudioObject> audioObjects) {
-                logger.info(LogCategories.HANDLER, "update search index");
+                getLogger().info(LogCategories.HANDLER, "update search index");
                 if (indexWriter != null) {
                     for (AudioObject audioObject : audioObjects) {
                         Document d = searchableObject.getDocumentForElement(audioObject);
@@ -294,16 +309,16 @@ public final class SearchHandler {
                         try {
                             indexWriter.addDocument(d);
                         } catch (CorruptIndexException e) {
-                            logger.error(LogCategories.HANDLER, e);
+                            getLogger().error(LogCategories.HANDLER, e);
                         } catch (IOException e) {
-                            logger.error(LogCategories.HANDLER, e);
+                            getLogger().error(LogCategories.HANDLER, e);
                         }
                     }
                 }
             }
 
             private void finishSearchIndex() {
-                logger.info(LogCategories.HANDLER, StringUtils.getString("Update index for ", searchableObject.getClass(), " finished"));
+                getLogger().info(LogCategories.HANDLER, StringUtils.getString("Update index for ", searchableObject.getClass(), " finished"));
                 if (indexWriter != null) {
                     try {
                         indexWriter.optimize();
@@ -311,9 +326,9 @@ public final class SearchHandler {
 
                         indexWriter = null;
                     } catch (CorruptIndexException e) {
-                        logger.error(LogCategories.HANDLER, e);
+                        getLogger().error(LogCategories.HANDLER, e);
                     } catch (IOException e) {
-                        logger.error(LogCategories.HANDLER, e);
+                        getLogger().error(LogCategories.HANDLER, e);
                     }
                 }
             }

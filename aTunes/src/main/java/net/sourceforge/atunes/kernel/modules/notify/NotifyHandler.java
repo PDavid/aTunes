@@ -19,23 +19,40 @@
  */
 package net.sourceforge.atunes.kernel.modules.notify;
 
+import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.modules.player.PlaybackState;
 import net.sourceforge.atunes.kernel.modules.player.PlaybackStateListener;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
 
-public final class NotifyHandler implements PlaybackStateListener {
+public final class NotifyHandler extends Handler implements PlaybackStateListener {
 
     private static NotifyHandler instance;
 
     private NotifyHandler() {
     }
 
+    @Override
+    public void applicationFinish() {
+    }
+    
+    @Override
+    public void applicationStateChanged(ApplicationState newState) {
+    }
+    
+    @Override
+    protected void initHandler() {
+    };
+    
     public static NotifyHandler getInstance() {
         if (instance == null) {
             instance = new NotifyHandler();
         }
         return instance;
+    }
+
+    @Override
+    public void applicationStarted() {
     }
 
     /**

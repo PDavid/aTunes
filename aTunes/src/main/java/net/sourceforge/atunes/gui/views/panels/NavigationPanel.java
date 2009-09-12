@@ -263,7 +263,7 @@ public class NavigationPanel extends JPanel {
     /**
      * Updates tabbed pane to show all tabs
      */
-    public void addTabs() {
+    private void addTabs() {
         tabbedPane.removeAll();
 
         for (NavigationView view : NavigationHandler.getInstance().getNavigationViews()) {

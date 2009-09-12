@@ -41,11 +41,9 @@ import javax.swing.SwingWorker;
 import net.sourceforge.atunes.gui.views.dialogs.MultiFolderSelectionDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ReviewImportDialog;
 import net.sourceforge.atunes.gui.views.dialogs.SelectorDialog;
-import net.sourceforge.atunes.kernel.ApplicationFinishListener;
 import net.sourceforge.atunes.kernel.ControllerProxy;
-import net.sourceforge.atunes.kernel.Kernel;
+import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
-import net.sourceforge.atunes.kernel.modules.favorites.FavoritesHandler;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.model.Album;
@@ -60,7 +58,6 @@ import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.RankList;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.FileNameUtils;
@@ -73,7 +70,7 @@ import org.apache.commons.io.FilenameUtils;
 /**
  * The repository handler
  */
-public final class RepositoryHandler implements LoaderListener, AudioFilesRemovedListener, ApplicationFinishListener {
+public final class RepositoryHandler extends Handler implements LoaderListener, AudioFilesRemovedListener {
 
     public enum SortType {
 
@@ -95,8 +92,6 @@ public final class RepositoryHandler implements LoaderListener, AudioFilesRemove
 
     private static RepositoryHandler instance = new RepositoryHandler();
 
-    Logger logger = new Logger();
-
     Repository repository;
     private Repository tempRepository;
     private int filesLoaded;
@@ -110,10 +105,23 @@ public final class RepositoryHandler implements LoaderListener, AudioFilesRemove
      * Instantiates a new repository handler.
      */
     private RepositoryHandler() {
-        Kernel.getInstance().addFinishListener(this);
-
+    }
+    
+    @Override
+    public void applicationStateChanged(ApplicationState newState) {
+    	
+    }
+    
+    @Override
+    protected void initHandler() {
         // Add itself as listener
         addAudioFilesRemovedListener(this);
+    }
+
+    @Override
+    public void applicationStarted() {
+        SearchHandler.getInstance().registerSearchableObject(RepositorySearchableObject.getInstance());
+        RepositoryHandler.this.repositoryRefresher = new RepositoryAutoRefresher(RepositoryHandler.this);
     }
 
     /**
@@ -123,19 +131,6 @@ public final class RepositoryHandler implements LoaderListener, AudioFilesRemove
      */
     public static RepositoryHandler getInstance() {
         return instance;
-    }
-
-    /**
-     * Returns a runnable object to be executed after application start
-     */
-    public Runnable getAfterStartActionsRunnable() {
-        return new Runnable() {
-            @Override
-            public void run() {
-                SearchHandler.getInstance().registerSearchableObject(RepositorySearchableObject.getInstance());
-                RepositoryHandler.this.repositoryRefresher = new RepositoryAutoRefresher(RepositoryHandler.this);
-            }
-        };
     }
 
     /**
@@ -169,7 +164,7 @@ public final class RepositoryHandler implements LoaderListener, AudioFilesRemove
                 if (ControllerProxy.getInstance().getNavigationController() != null) {
                     ControllerProxy.getInstance().getNavigationController().notifyReload();
                 }
-                logger.info(LogCategories.REPOSITORY, "Repository refresh done");
+                getLogger().info(LogCategories.REPOSITORY, "Repository refresh done");
             }
         };
         worker.execute();
@@ -227,8 +222,6 @@ public final class RepositoryHandler implements LoaderListener, AudioFilesRemove
             }
 
             // Remove from tree structure
-            boolean artistRemoved = false;
-            boolean albumRemoved = false;
             Artist a = repository.getStructure().getTreeStructure().get(albumArtist);
             if (a == null) {
                 a = repository.getStructure().getTreeStructure().get(artist);
@@ -238,14 +231,12 @@ public final class RepositoryHandler implements LoaderListener, AudioFilesRemove
                 if (alb != null) {
                     if (alb.getAudioObjects().size() == 1) {
                         a.removeAlbum(alb);
-                        albumRemoved = true;
                     } else {
                         alb.removeAudioFile(file);
                     }
 
                     if (a.getAudioObjects().size() <= 1) {
                         repository.getStructure().getTreeStructure().remove(a.getName());
-                        artistRemoved = true;
                     }
                 }
             }
@@ -282,22 +273,10 @@ public final class RepositoryHandler implements LoaderListener, AudioFilesRemove
 
             // Update repository duration
             repository.removeDurationInSeconds(file.getDuration());
-
-            // Remove from favorite audio files
-            FavoritesHandler.getInstance().getFavorites().getFavoriteAudioFiles().remove(file.getUrl());
-
-            if (artistRemoved) {
-                FavoritesHandler.getInstance().getFavorites().getFavoriteArtists().remove(file.getArtist());
-            }
-
-            if (albumRemoved) {
-                FavoritesHandler.getInstance().getFavorites().getFavoriteAlbums().remove(file.getAlbum());
-            }
-
         }
         // File is on a device
         else if (DeviceHandler.getInstance().isDevicePath(file.getUrl())) {
-            logger.info(LogCategories.REPOSITORY, StringUtils.getString("Deleted file ", file, " from device"));
+            getLogger().info(LogCategories.REPOSITORY, StringUtils.getString("Deleted file ", file, " from device"));
         }
     }
 
@@ -318,9 +297,9 @@ public final class RepositoryHandler implements LoaderListener, AudioFilesRemove
                 // Wait process to end
                 p.waitFor();
                 int rc = p.exitValue();
-                logger.info(LogCategories.END, StringUtils.getString("Command '", command, "' return code: ", rc));
+                getLogger().info(LogCategories.END, StringUtils.getString("Command '", command, "' return code: ", rc));
             } catch (Exception e) {
-                logger.error(LogCategories.END, e);
+                getLogger().error(LogCategories.END, e);
             }
         }
     }
@@ -915,7 +894,7 @@ public final class RepositoryHandler implements LoaderListener, AudioFilesRemove
 
     @Override
     public void notifyFilesInRepository(int totalFiles) {
-        logger.debug(LogCategories.REPOSITORY, new String[] { Integer.toString(totalFiles) });
+        getLogger().debug(LogCategories.REPOSITORY, new String[] { Integer.toString(totalFiles) });
 
         VisualHandler.getInstance().getProgressDialog().getProgressBar().setIndeterminate(false);
         VisualHandler.getInstance().getProgressDialog().getTotalFilesLabel().setText(StringUtils.getString(totalFiles));
@@ -983,7 +962,7 @@ public final class RepositoryHandler implements LoaderListener, AudioFilesRemove
         if (ControllerProxy.getInstance().getNavigationController() != null) {
             ControllerProxy.getInstance().getNavigationController().notifyReload();
         }
-        logger.info(LogCategories.REPOSITORY, "Repository refresh done");
+        getLogger().info(LogCategories.REPOSITORY, "Repository refresh done");
     }
 
     /**
@@ -1007,12 +986,8 @@ public final class RepositoryHandler implements LoaderListener, AudioFilesRemove
 
     }
 
-    /**
-     * Process to read repository from cache.
-     * 
-     * @return the read repository from cache runnable
-     */
-    public Runnable getReadRepositoryFromCacheRunnable() {
+    @Override
+    protected Runnable getPreviousInitializationTask() {
         return new Runnable() {
             @Override
             public void run() {
@@ -1024,16 +999,16 @@ public final class RepositoryHandler implements LoaderListener, AudioFilesRemove
                         // Wait process to end
                         p.waitFor();
                         int rc = p.exitValue();
-                        logger.info(LogCategories.START, StringUtils.getString("Command '", command, "' return code: ", rc));
+                        getLogger().info(LogCategories.START, StringUtils.getString("Command '", command, "' return code: ", rc));
                     } catch (Exception e) {
-                        logger.error(LogCategories.START, e);
+                    	getLogger().error(LogCategories.START, e);
                     }
                 }
                 repositoryRetrievedFromCache = ApplicationStateHandler.getInstance().retrieveRepositoryCache();
             }
         };
     }
-
+    
     /**
      * Sets the repository.
      */
@@ -1100,7 +1075,7 @@ public final class RepositoryHandler implements LoaderListener, AudioFilesRemove
      * Refresh.
      */
     private void refresh() {
-        logger.info(LogCategories.REPOSITORY, "Refreshing repository");
+        getLogger().info(LogCategories.REPOSITORY, "Refreshing repository");
         filesLoaded = 0;
         currentLoader = new RepositoryLoader(repository.getFolders(), true);
         currentLoader.addRepositoryLoaderListener(this);
@@ -1223,7 +1198,7 @@ public final class RepositoryHandler implements LoaderListener, AudioFilesRemove
             return true;
         } catch (Exception e) {
             repository = null;
-            logger.error(LogCategories.REPOSITORY, e);
+            getLogger().error(LogCategories.REPOSITORY, e);
             return false;
         }
     }
@@ -1524,9 +1499,9 @@ public final class RepositoryHandler implements LoaderListener, AudioFilesRemove
                     process.execute();
 
                 } catch (InterruptedException e) {
-                    logger.error(LogCategories.REPOSITORY, e);
+                    getLogger().error(LogCategories.REPOSITORY, e);
                 } catch (ExecutionException e) {
-                    logger.error(LogCategories.REPOSITORY, e);
+                    getLogger().error(LogCategories.REPOSITORY, e);
                 }
             }
         };

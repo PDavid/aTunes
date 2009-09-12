@@ -29,15 +29,16 @@ import java.util.Set;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.controls.playList.Column;
+import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.columns.PlayListColumns;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationView;
 import net.sourceforge.atunes.kernel.modules.player.PlaybackStateListener;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
+import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.ZipUtils;
 
@@ -48,7 +49,7 @@ import org.commonjukebox.plugins.PluginListener;
 import org.commonjukebox.plugins.PluginSystemException;
 import org.commonjukebox.plugins.PluginsFactory;
 
-public class PluginsHandler implements PluginListener {
+public class PluginsHandler extends Handler implements PluginListener {
 
     /** Singleton instance */
     private static PluginsHandler instance;
@@ -59,11 +60,6 @@ public class PluginsHandler implements PluginListener {
     private PluginsFactory factory;
 
     private static Set<PluginType> pluginTypes;
-
-    /**
-     * Logger of this handler
-     */
-    Logger logger = new Logger();
 
     /**
      * Getter of singleton instance
@@ -80,7 +76,7 @@ public class PluginsHandler implements PluginListener {
     /**
      * Initializes all plugins found in plugins dir
      */
-    public void initPlugins() {
+    private void initPlugins() {
         try {
             factory = new PluginsFactory();
             // Core plugins folder
@@ -90,11 +86,35 @@ public class PluginsHandler implements PluginListener {
             factory.addPluginsFolder(getUserPluginsFolder());
             addPluginListeners();
             int plugins = factory.start(getPluginClassNames());
-            logger.info(LogCategories.PLUGINS, StringUtils.getString("Found ", plugins, " plugins"));
+            getLogger().info(LogCategories.PLUGINS, StringUtils.getString("Found ", plugins, " plugins"));
         } catch (PluginSystemException e) {
-            logger.error(LogCategories.PLUGINS, e);
+            getLogger().error(LogCategories.PLUGINS, e);
         }
     }
+    
+    @Override
+    public void applicationFinish() {
+    	// TODO Auto-generated method stub
+    	
+    }
+    
+    @Override
+    public void applicationStateChanged(ApplicationState newState) {
+    	// TODO Auto-generated method stub
+    	
+    }
+    
+    @Override
+    protected void initHandler() {
+    	initPlugins();
+    }
+    
+    @Override
+    public void applicationStarted() {
+    	// TODO Auto-generated method stub
+    	
+    }
+
 
     /**
      * A set of all plugin types accepted TODO: Add a new plugin type here
@@ -199,10 +219,10 @@ public class PluginsHandler implements PluginListener {
             ZipUtils.unzipArchive(zipFile, new File(getUserPluginsFolder()));
             factory.refresh();
         } catch (IOException e) {
-            logger.error(LogCategories.PLUGINS, e);
+            getLogger().error(LogCategories.PLUGINS, e);
             throw e;
         } catch (PluginSystemException e) {
-            logger.error(LogCategories.PLUGINS, e);
+            getLogger().error(LogCategories.PLUGINS, e);
             throw e;
         }
     }
@@ -222,10 +242,10 @@ public class PluginsHandler implements PluginListener {
                 FileUtils.deleteDirectory(pluginLocation);
                 factory.refresh();
             } catch (IOException e) {
-                logger.error(LogCategories.PLUGINS, e);
+                getLogger().error(LogCategories.PLUGINS, e);
                 throw e;
             } catch (PluginSystemException e) {
-                logger.error(LogCategories.PLUGINS, e);
+                getLogger().error(LogCategories.PLUGINS, e);
                 throw e;
             }
         }
@@ -245,18 +265,18 @@ public class PluginsHandler implements PluginListener {
                 plugin.deactivate();
             }
         } catch (PluginSystemException e) {
-            logger.error(LogCategories.PLUGINS, e);
+            getLogger().error(LogCategories.PLUGINS, e);
         }
     }
 
     @Override
     public void pluginActivated(PluginInfo plugin) {
-        logger.info(LogCategories.PLUGINS, StringUtils.getString("Plugin activated: ", plugin.getName(), " (", plugin.getClassName(), ")"));
+        getLogger().info(LogCategories.PLUGINS, StringUtils.getString("Plugin activated: ", plugin.getName(), " (", plugin.getClassName(), ")"));
     }
 
     @Override
     public void pluginDeactivated(PluginInfo plugin, Collection<Plugin> createdInstances) {
-        logger.info(LogCategories.PLUGINS, StringUtils.getString("Plugin deactivated: ", plugin.getName(), " (", plugin.getClassName(), ")"));
+        getLogger().info(LogCategories.PLUGINS, StringUtils.getString("Plugin deactivated: ", plugin.getName(), " (", plugin.getClassName(), ")"));
     }
 
     /**

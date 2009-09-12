@@ -29,11 +29,13 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.kernel.Handler;
+import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
+import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.LanguageTool;
 import net.sourceforge.atunes.utils.NetworkUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -45,7 +47,7 @@ import org.w3c.dom.Element;
 /**
  * Handler for updates
  */
-public final class UpdateHandler {
+public final class UpdateHandler extends Handler {
 
     /** Url to look for new version. */
     private static final String updatesURL = "http://www.atunes.org/latest.xml";
@@ -53,14 +55,31 @@ public final class UpdateHandler {
     /** Instance */
     private static UpdateHandler instance = new UpdateHandler();
 
-    /** Logger. */
-    Logger logger = new Logger();
-
     private UpdateHandler() {
     }
 
+    @Override
+    public void applicationFinish() {
+    }
+    
+    @Override
+    public void applicationStateChanged(ApplicationState newState) {
+    }
+    
+    
+    @Override
+    protected void initHandler() {
+    }
+    
     public static UpdateHandler getInstance() {
         return instance;
+    }
+
+    @Override
+    public void applicationStarted() {
+        if (!Kernel.NO_UPDATE) {
+        	checkUpdates(ApplicationState.getInstance().getProxy(), false, false);
+        }
     }
 
     /**
@@ -90,9 +109,9 @@ public final class UpdateHandler {
                         VisualHandler.getInstance().showMessage(LanguageTool.getString("NOT_NEW_VERSION"));
                     }
                 } catch (InterruptedException e) {
-                    logger.internalError(e);
+                    getLogger().internalError(e);
                 } catch (ExecutionException e) {
-                    logger.internalError(e);
+                    getLogger().internalError(e);
                 }
             }
         }.execute();
@@ -135,11 +154,11 @@ public final class UpdateHandler {
             result = new ApplicationVersion(date, major, minor, revision, VersionType.FINAL, "", url);
 
         } catch (UnknownHostException uhe) {
-            logger.error(LogCategories.NETWORK, "Could not connect to www.atunes.org");
+            getLogger().error(LogCategories.NETWORK, "Could not connect to www.atunes.org");
         } catch (IOException e) {
-            logger.error(LogCategories.NETWORK, "Could not connect to www.atunes.org");
+            getLogger().error(LogCategories.NETWORK, "Could not connect to www.atunes.org");
         } catch (Exception e) {
-            logger.internalError(e);
+            getLogger().internalError(e);
         }
         return result;
     }
