@@ -81,7 +81,7 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
     public static final int NAVIGATION_PANEL_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 280);
     public static final int NAVIGATION_PANEL_MINIMUM_WIDTH = NAVIGATION_PANEL_WIDTH - 80;
     public static final int NAVIGATION_PANEL_MAXIMUM_WIDTH = NAVIGATION_PANEL_WIDTH + 50;
-    public static final int CONTEXT_PANEL_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 280);
+    public static final int CONTEXT_PANEL_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 295);
     public static final int CONTEXT_PANEL_MINIMUM_WIDTH = CONTEXT_PANEL_WIDTH - 50;
     public static final int FILE_PROPERTIES_PANEL_HEIGHT = 100;
     public static final int PLAY_LIST_PANEL_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 490);
