@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.desktop;
+package net.sourceforge.atunes.utils;
 
 import java.awt.Desktop;
 import java.io.File;
@@ -35,42 +35,24 @@ import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.utils.FileNameUtils;
 
 /**
- * Handler for Desktop interaction.
+ * Desktop utility methods
  */
-public final class DesktopHandler {
+public final class DesktopUtils {
 
-    /** The logger. */
     static Logger logger = new Logger();
+    private static boolean isDesktopSupported;
+    static Desktop desktop;
 
-    /** The instance. */
-    private static DesktopHandler instance = new DesktopHandler();
-
-    /** The is desktop supported. */
-    private boolean isDesktopSupported;
-
-    /** The desktop. */
-    Desktop desktop;
-
-    /**
-     * Instantiates a new desktop handler.
-     */
-    private DesktopHandler() {
+    static {
         isDesktopSupported = Desktop.isDesktopSupported();
         if (isDesktopSupported) {
             desktop = Desktop.getDesktop();
         }
     }
 
-    /**
-     * Gets the single instance of DesktopHandler.
-     * 
-     * @return single instance of DesktopHandler
-     */
-    public static DesktopHandler getInstance() {
-        return instance;
+    private DesktopUtils() {
     }
 
     /**
@@ -81,7 +63,7 @@ public final class DesktopHandler {
      * @param query
      *            query
      */
-    public void openSearch(Search search, String query) {
+    public static void openSearch(Search search, String query) {
         if (search != null && isDesktopSupported) {
             try {
                 desktop.browse(search.getURL(query).toURI());
@@ -101,7 +83,7 @@ public final class DesktopHandler {
      * @param uri
      *            URI
      */
-    public void openURI(URI uri) {
+    public static void openURI(URI uri) {
         if (isDesktopSupported) {
             try {
                 desktop.browse(uri);
@@ -117,7 +99,7 @@ public final class DesktopHandler {
      * @param url
      *            URL
      */
-    public void openURL(String url) {
+    public static void openURL(String url) {
         if (isDesktopSupported) {
             try {
                 openURI(new URL(url).toURI());
@@ -135,7 +117,7 @@ public final class DesktopHandler {
      * @param url
      *            URL
      */
-    public void openURL(URL url) {
+    public static void openURL(URL url) {
         if (isDesktopSupported) {
             try {
                 openURI(url.toURI());
@@ -151,7 +133,7 @@ public final class DesktopHandler {
      * @param file
      *            The file that should be opened
      */
-    public void openFile(File file) {
+    public static void openFile(File file) {
         if (isDesktopSupported) {
             final File fileToOpen;
             /*

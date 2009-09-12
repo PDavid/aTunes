@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
-import net.sourceforge.atunes.kernel.modules.desktop.DesktopHandler;
+import net.sourceforge.atunes.utils.DesktopUtils;
 
 /**
  * A link for url labels
@@ -47,7 +47,7 @@ class Link extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        DesktopHandler.getInstance().openURL(url);
+        DesktopUtils.openURL(url);
     }
 
 }

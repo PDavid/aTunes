@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.kernel.modules.desktop.DesktopHandler;
+import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.LanguageTool;
 
 /**
@@ -43,7 +43,7 @@ public class GoToWebSiteAction extends Action {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        DesktopHandler.getInstance().openURL(Constants.APP_WEB);
+        DesktopUtils.openURL(Constants.APP_WEB);
     }
 
 }

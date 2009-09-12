@@ -36,12 +36,12 @@ import javax.swing.JTextArea;
 
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
-import net.sourceforge.atunes.kernel.modules.desktop.DesktopHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService;
 import net.sourceforge.atunes.misc.ClipboardFacade;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.LanguageTool;
 
 /**
@@ -98,7 +98,7 @@ public class LyricsContent extends ContextPanelContent {
                     mi.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            DesktopHandler.getInstance().openURL(entry.getValue());
+                            DesktopUtils.openURL(entry.getValue());
                         }
                     });
                     addLyrics.add(mi);
@@ -169,7 +169,7 @@ public class LyricsContent extends ContextPanelContent {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (lyricsSourceUrl != null && !lyricsSourceUrl.trim().isEmpty()) {
-                    DesktopHandler.getInstance().openURL(lyricsSourceUrl);
+                    DesktopUtils.openURL(lyricsSourceUrl);
                 } else {
                     if (audioObject instanceof AudioFile) {
                         ControllerProxy.getInstance().getEditTagDialogController().editFiles(Arrays.asList((AudioFile) audioObject));

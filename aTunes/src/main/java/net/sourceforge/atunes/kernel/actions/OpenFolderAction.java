@@ -25,8 +25,8 @@ import java.util.HashSet;
 import java.util.List;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
-import net.sourceforge.atunes.kernel.modules.desktop.DesktopHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.LanguageTool;
 
 /**
@@ -57,7 +57,7 @@ public class OpenFolderAction extends ActionOverSelectedObjects<AudioFile> {
 
         // ... then open
         for (File folder : foldersToOpen) {
-            DesktopHandler.getInstance().openFile(folder);
+            DesktopUtils.openFile(folder);
         }
     }
 }

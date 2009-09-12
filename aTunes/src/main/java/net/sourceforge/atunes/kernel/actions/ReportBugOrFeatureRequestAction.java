@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.images.ImageLoader;
-import net.sourceforge.atunes.kernel.modules.desktop.DesktopHandler;
+import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.LanguageTool;
 
 /**
@@ -44,7 +44,7 @@ public class ReportBugOrFeatureRequestAction extends Action {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        DesktopHandler.getInstance().openURL(Constants.REPORT_BUG_OR_REQUEST_FEATURE_URL);
+        DesktopUtils.openURL(Constants.REPORT_BUG_OR_REQUEST_FEATURE_URL);
     }
 
 }

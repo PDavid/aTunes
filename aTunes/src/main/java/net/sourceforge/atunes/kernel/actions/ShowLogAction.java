@@ -26,8 +26,8 @@ import java.io.File;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.Kernel;
-import net.sourceforge.atunes.kernel.modules.desktop.DesktopHandler;
 import net.sourceforge.atunes.misc.SystemProperties;
+import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.LanguageTool;
 
 /**
@@ -48,7 +48,7 @@ public class ShowLogAction extends Action {
     @Override
     public void actionPerformed(ActionEvent e) {
         final File file = SystemProperties.getFileFromUserConfigFolder(Constants.LOG_FILE, Kernel.DEBUG);
-        DesktopHandler.getInstance().openFile(file);
+        DesktopUtils.openFile(file);
     }
 
 }

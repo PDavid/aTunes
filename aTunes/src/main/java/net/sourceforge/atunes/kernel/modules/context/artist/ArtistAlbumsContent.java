@@ -34,8 +34,8 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.substance.SubstanceContextImageJTable;
 import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
 import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
-import net.sourceforge.atunes.kernel.modules.desktop.DesktopHandler;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.LanguageTool;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -109,7 +109,7 @@ public class ArtistAlbumsContent extends ContextPanelContent {
                     int selectedAlbum = albumsTable.getSelectedRow();
                     if (selectedAlbum != -1) {
                         AlbumInfo album = ((ContextAlbumsTableModel) albumsTable.getModel()).getAlbum(selectedAlbum);
-                        DesktopHandler.getInstance().openURL(album.getUrl());
+                        DesktopUtils.openURL(album.getUrl());
                     }
                 }
             }

@@ -34,8 +34,8 @@ import net.sourceforge.atunes.gui.substance.SubstanceContextImageJTable;
 import net.sourceforge.atunes.kernel.modules.context.ArtistInfo;
 import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.context.SimilarArtistsInfo;
-import net.sourceforge.atunes.kernel.modules.desktop.DesktopHandler;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.LanguageTool;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -104,7 +104,7 @@ public class SimilarArtistsContent extends ContextPanelContent {
                     int selectedArtist = similarArtistsTable.getSelectedRow();
                     if (selectedArtist != -1) {
                         ArtistInfo artist = ((SimilarArtistsTableModel) similarArtistsTable.getModel()).getArtist(selectedArtist);
-                        DesktopHandler.getInstance().openURL(artist.getUrl());
+                        DesktopUtils.openURL(artist.getUrl());
                     }
                 }
             }

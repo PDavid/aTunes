@@ -34,8 +34,8 @@ import javax.swing.table.TableColumn;
 import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
 import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
-import net.sourceforge.atunes.kernel.modules.desktop.DesktopHandler;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.LanguageTool;
 
@@ -129,7 +129,7 @@ public class AlbumTracksContent extends ContextPanelContent {
                     int selectedTrack = tracksTable.getSelectedRow();
                     if (selectedTrack != -1) {
                         TrackInfo track = ((ContextTracksTableModel) tracksTable.getModel()).getTrack(selectedTrack);
-                        DesktopHandler.getInstance().openURL(track.getUrl());
+                        DesktopUtils.openURL(track.getUrl());
                     }
                 }
             }
