@@ -53,9 +53,9 @@ import javax.swing.table.TableModel;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ClearCachesAction;
-import net.sourceforge.atunes.kernel.modules.desktop.DesktopHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsEngineInfo;
+import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.LanguageTool;
 
@@ -250,7 +250,7 @@ public class ContextPanel extends PreferencesPanel {
         info.addMouseListener((new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                DesktopHandler.getInstance().openURL("http://www.last.fm");
+                DesktopUtils.openURL("http://www.last.fm");
             }
         }));
         JLabel enginesTableLabel = new JLabel(LanguageTool.getString("LYRICS_ENGINES_SELECTION"));

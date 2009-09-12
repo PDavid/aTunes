@@ -21,13 +21,13 @@
 package net.sourceforge.atunes.kernel;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.kernel.modules.desktop.DesktopHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.DateUtils;
+import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.LanguageTool;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -59,7 +59,7 @@ public class LanguageSelector {
                                     StringUtils
                                             .getString(LanguageTool
                                                     .getString("The translation file you are using has not been updated for a long time. \nPlease contact us in order to refresh your favourite translation.")));
-                    DesktopHandler.getInstance().openURL(Constants.CONTRIBUTORS_WANTED);
+                    DesktopUtils.openURL(Constants.CONTRIBUTORS_WANTED);
                 }
                 ApplicationState.getInstance().setNagDialogCounter(ApplicationState.getInstance().getNagDialogCounter() + 1);
             }

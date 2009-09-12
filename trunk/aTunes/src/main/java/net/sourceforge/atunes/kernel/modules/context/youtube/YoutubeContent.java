@@ -41,7 +41,6 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.substance.SubstanceContextImageJTable;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
-import net.sourceforge.atunes.kernel.modules.desktop.DesktopHandler;
 import net.sourceforge.atunes.kernel.modules.internetsearch.SearchFactory;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
@@ -49,6 +48,7 @@ import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeResultEn
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeService;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeVideoDownloader;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.LanguageTool;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -241,7 +241,7 @@ public class YoutubeContent extends ContextPanelContent {
             YoutubeResultEntry entry = ((YoutubeResultTableModel) youtubeResultTable.getModel()).getEntry(selectedVideo);
             if (entry.getUrl() != null) {
                 //open youtube url
-                DesktopHandler.getInstance().openURL(entry.getUrl());
+                DesktopUtils.openURL(entry.getUrl());
                 // When playing a video in web browser automatically pause current song
                 if (PlayerHandler.getInstance().isEnginePlaying()) {
                     PlayerHandler.getInstance().playCurrentAudioObject(true);
@@ -267,7 +267,7 @@ public class YoutubeContent extends ContextPanelContent {
      * Opens a web browser to show youtube results
      */
     protected void openYoutube() {
-        DesktopHandler.getInstance().openSearch(SearchFactory.getSearchForName("YouTube"),
+        DesktopUtils.openSearch(SearchFactory.getSearchForName("YouTube"),
                 YoutubeService.getInstance().getSearchForAudioObject(ContextHandler.getInstance().getCurrentAudioObject()));
     }
 

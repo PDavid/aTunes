@@ -29,13 +29,13 @@ import javax.swing.tree.TreePath;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.views.dialogs.SearchDialog;
 import net.sourceforge.atunes.kernel.ControllerProxy;
-import net.sourceforge.atunes.kernel.modules.desktop.DesktopHandler;
 import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
 import net.sourceforge.atunes.kernel.modules.internetsearch.SearchFactory;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
+import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.LanguageTool;
 
 public class SearchArtistAction extends Action {
@@ -62,7 +62,7 @@ public class SearchArtistAction extends Action {
             }
 
             if (search != null) {
-                DesktopHandler.getInstance().openSearch(search, a.getName());
+                DesktopUtils.openSearch(search, a.getName());
             }
         }
     }

@@ -27,7 +27,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.JTextArea;
 
-import net.sourceforge.atunes.kernel.modules.desktop.DesktopHandler;
+import net.sourceforge.atunes.utils.DesktopUtils;
 
 /**
  * The Class UrlTextArea.
@@ -72,7 +72,7 @@ public class UrlTextArea extends JTextArea {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                DesktopHandler.getInstance().openURL(url);
+                DesktopUtils.openURL(url);
             }
 
             @Override
