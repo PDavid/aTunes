@@ -216,13 +216,15 @@ public class MPlayerEngine extends PlayerEngine {
             // If there is a fade away process stop inmediately
             if (currentFadeAwayRunnable != null) {
                 currentFadeAwayRunnable.finish();
+            } else {
+            	// This is already called from fade away runnable when finishing
+                process = null;
+                mPlayerErrorReader = null;
+                mPlayerOutputReader = null;
+                commandWriter.finishProcess();
+                mPlayerPositionThread.interrupt();
+                mPlayerPositionThread = null;
             }
-            process = null;
-            mPlayerErrorReader = null;
-            mPlayerOutputReader = null;
-            mPlayerPositionThread.interrupt();
-            mPlayerPositionThread = null;
-            commandWriter.finishProcess();
             setCurrentAudioObjectPlayedTime(0);
         }
     }
