@@ -166,7 +166,6 @@ public abstract class ContextPanel {
             if (content.isScrollNeeded()) {
                 JScrollPane scroll = new JScrollPane(componentToAdd);
                 scroll.setBorder(null);
-                scroll.setOpaque(false);
                 scroll.getVerticalScrollBar().setUnitIncrement(50);
                 componentToAdd = scroll;
             }
@@ -178,7 +177,6 @@ public abstract class ContextPanel {
                     button.add(option);
                 }
                 JPanel panel = new JPanel(new GridBagLayout());
-                panel.setOpaque(false);
                 GridBagConstraints c = new GridBagConstraints();
                 c.weightx = 1;
                 c.weighty = 1;

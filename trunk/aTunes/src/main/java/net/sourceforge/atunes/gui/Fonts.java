@@ -120,7 +120,7 @@ public final class Fonts {
             @Override
             public FontSet getFontSet(String arg0, UIDefaults arg1) {
                 return new FontSet() {
-
+                	
                     @Override
                     public FontUIResource getWindowTitleFont() {
                         return new FontUIResource(baseFont.deriveFont(Font.BOLD, baseFont.getSize() + 1f));
