@@ -74,9 +74,6 @@ public class LyricsDataSource implements ContextInformationDataSource {
                 lyrics = LyricsService.getInstance().getLyrics(audioObject.getArtist().trim(), audioObject.getTitle().trim());
             }
         }
-        if (lyrics != null) {
-            lyrics.setLyrics(lyrics.getLyrics().replaceAll("'", "\'"));
-        }
 
         if (lyrics == null) {
             lyrics = new Lyrics("", "");
