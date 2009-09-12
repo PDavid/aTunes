@@ -307,9 +307,9 @@
 			<version>custom</version>
 		</dependency>
 		<dependency>
-			<groupId>lastfm</groupId>
+			<groupId>lastfm-bindings</groupId>
 			<artifactId>lastfm-bindings</artifactId>
-			<version>custom</version>
+			<version>160-SVN</version>
 		</dependency>
 		<dependency>
 			<groupId>jxgrabkey</groupId>
