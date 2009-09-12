@@ -111,8 +111,10 @@ public class LyricsService implements ApplicationStateChangeListener {
                     lyric = lyricsEngines.get(i++).getLyricsFor(artist, song);
                 }
             }
-            lyric.setLyrics(lyric.getLyrics().replaceAll("'", "\'"));
-            lyric.setLyrics(lyric.getLyrics().replaceAll("\n\n", "\n"));
+            if (lyric != null) {
+            	lyric.setLyrics(lyric.getLyrics().replaceAll("'", "\'"));
+            	lyric.setLyrics(lyric.getLyrics().replaceAll("\n\n", "\n"));
+            }
             lyricsCache.storeLyric(artist, song, lyric);
         }
         // Return lyric
