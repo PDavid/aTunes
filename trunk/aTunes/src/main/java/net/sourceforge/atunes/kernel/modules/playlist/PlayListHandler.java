@@ -27,12 +27,10 @@ import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.JFileChooser;
-import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 
-import net.sourceforge.atunes.kernel.ApplicationFinishListener;
 import net.sourceforge.atunes.kernel.ControllerProxy;
-import net.sourceforge.atunes.kernel.Kernel;
+import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.SavePlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
@@ -45,11 +43,9 @@ import net.sourceforge.atunes.kernel.modules.repository.AudioFilesRemovedListene
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationStateChangeListener;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.LanguageTool;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -57,16 +53,10 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The Class PlayListHandler.
  */
-public final class PlayListHandler implements AudioFilesRemovedListener, PlayListEventListener, ApplicationFinishListener, ApplicationStateChangeListener {
-
-    /** Logger. */
-    private static Logger logger = new Logger();
+public final class PlayListHandler extends Handler implements AudioFilesRemovedListener, PlayListEventListener  {
 
     /** Singleton instance. */
     private static PlayListHandler instance = new PlayListHandler();
-
-    /** Play lists retrieved from cache. */
-    ListOfPlayLists retrievedListOfPlayLists;
 
     /**
      * The play list counter used when creating new play lists with default
@@ -75,7 +65,7 @@ public final class PlayListHandler implements AudioFilesRemovedListener, PlayLis
     private static int playListNameCounter = 1;
 
     /** The play lists currently opened. */
-    private List<PlayList> playLists;
+    private List<PlayList> playLists = new ArrayList<PlayList>();
 
     /** Index of the active play list */
     private int activePlayListIndex = 0;
@@ -85,22 +75,24 @@ public final class PlayListHandler implements AudioFilesRemovedListener, PlayLis
 
     /** Stores original play list without filter. */
     private static PlayList nonFilteredPlayList;
+    
+    /** Play lists stored */
+    private static ListOfPlayLists playListsRetrievedFromCache;
 
     /**
      * Private constructor.
      */
     private PlayListHandler() {
-        // Initialize list
-        playLists = new ArrayList<PlayList>();
-
-        // Add finish listener to this handler
-        Kernel.getInstance().addFinishListener(this);
-
+    }
+    
+    @Override
+    protected void initHandler() {
         // Add audio file removed listener
         RepositoryHandler.getInstance().addAudioFilesRemovedListener(this);
+    }
 
-        // Add application state change listener
-        ApplicationStateHandler.getInstance().addStateChangeListener(this);
+    @Override
+    public void applicationStarted() {
     }
 
     /**
@@ -299,6 +291,8 @@ public final class PlayListHandler implements AudioFilesRemovedListener, PlayLis
         VisualHandler.getInstance().getPlayListTable().getSelectionModel().clearSelection();
 
         setPlayList(newSelectedPlayList);
+        // Update table model
+        ((PlayListTableModel)VisualHandler.getInstance().getPlayListTable().getModel()).setVisiblePlayList(getCurrentPlayList(true));
         ControllerProxy.getInstance().getPlayListController().refreshPlayList();
 
         // If playlist is active then perform an auto scroll
@@ -442,7 +436,7 @@ public final class PlayListHandler implements AudioFilesRemovedListener, PlayLis
         // Update play list table
         ControllerProxy.getInstance().getPlayListController().refreshPlayList();
 
-        logger.info(LogCategories.HANDLER, StringUtils.getString(audioObjects.size(), " audio objects added to play list"));
+        getLogger().info(LogCategories.HANDLER, StringUtils.getString(audioObjects.size(), " audio objects added to play list"));
     }
 
     public void addToActivePlayList(List<? extends AudioObject> audioObjects) {
@@ -477,7 +471,7 @@ public final class PlayListHandler implements AudioFilesRemovedListener, PlayLis
      * Removes all audio objects from visible play list.
      */
     public void clearPlayList() {
-        logger.debug(LogCategories.HANDLER);
+        getLogger().debug(LogCategories.HANDLER);
 
         // Remove filter
         setFilter(null);
@@ -516,7 +510,7 @@ public final class PlayListHandler implements AudioFilesRemovedListener, PlayLis
             // Refresh play list
             ControllerProxy.getInstance().getPlayListController().refreshPlayList();
 
-            logger.info(LogCategories.HANDLER, "Play list clear");
+            getLogger().info(LogCategories.HANDLER, "Play list clear");
         }
 
         // Fire clear event
@@ -530,34 +524,30 @@ public final class PlayListHandler implements AudioFilesRemovedListener, PlayLis
      * Called by kernel when application is finishing.
      */
     public void applicationFinish() {
-        logger.debug(LogCategories.HANDLER);
+        getLogger().debug(LogCategories.HANDLER);
         // Store play list
         ApplicationStateHandler.getInstance().persistPlayList();
     }
 
-    /**
-     * Gets the read play lists runnable.
-     * 
-     * @return the read play lists runnable
-     */
-    public Runnable getReadPlayListsRunnable() {
-        return new Runnable() {
-            @Override
-            public void run() {
-                retrievedListOfPlayLists = ApplicationStateHandler.getInstance().retrievePlayListCache();
-            }
-        };
+    @Override
+    protected Runnable getPreviousInitializationTask() {
+    	return new Runnable() {
+    		@Override
+    		public void run() {
+    			playListsRetrievedFromCache = ApplicationStateHandler.getInstance().retrievePlayListCache();
+    		}
+    	};
     }
-
+    
     /**
      * Retrieves stored play list and loads it. This method is used when opening
      * application, to load play list of previous execution
      */
     public void setPlayLists() {
-        logger.debug(LogCategories.HANDLER);
+        getLogger().debug(LogCategories.HANDLER);
 
         // Get playlists from application cache
-        final ListOfPlayLists listOfPlayLists = retrievedListOfPlayLists;
+        final ListOfPlayLists listOfPlayLists = playListsRetrievedFromCache;
 
         // Set selected play list as default 
         int selected = listOfPlayLists.getSelectedPlayList();
@@ -600,16 +590,21 @@ public final class PlayListHandler implements AudioFilesRemovedListener, PlayLis
             }
         }
 
+        // Update table model
+        ((PlayListTableModel)VisualHandler.getInstance().getPlayListTable().getModel()).setVisiblePlayList(getCurrentPlayList(true));
+        
         // Refresh play list
         // For some strange reason, this is needed even if play list is empty
         ControllerProxy.getInstance().getPlayListController().refreshPlayList();
+        
+        playListsRetrievedFromCache = null;
     }
 
     /**
      * Loads play list from a file.
      */
     public void loadPlaylist() {
-        logger.debug(LogCategories.HANDLER);
+        getLogger().debug(LogCategories.HANDLER);
         JFileChooser fileChooser = new JFileChooser(ApplicationState.getInstance().getLoadPlaylistPath());
         FileFilter filter = PlayListIO.getPlaylistFileFilter();
         // Open file chooser
@@ -679,7 +674,7 @@ public final class PlayListHandler implements AudioFilesRemovedListener, PlayLis
      *            the rows
      */
     public void moveToBottom(int[] rows) {
-        logger.debug(LogCategories.HANDLER);
+        getLogger().debug(LogCategories.HANDLER);
         PlayList currentPlayList = getCurrentPlayList(true);
         int j = 0;
         for (int i = rows.length - 1; i >= 0; i--) {
@@ -701,7 +696,7 @@ public final class PlayListHandler implements AudioFilesRemovedListener, PlayLis
      *            the rows
      */
     public void moveToTop(int[] rows) {
-        logger.debug(LogCategories.HANDLER);
+        getLogger().debug(LogCategories.HANDLER);
         PlayList currentPlayList = getCurrentPlayList(true);
         for (int i = 0; i < rows.length; i++) {
             AudioObject aux = currentPlayList.get(rows[i]);
@@ -787,7 +782,7 @@ public final class PlayListHandler implements AudioFilesRemovedListener, PlayLis
             VisualHandler.getInstance().getPlayerControls().setShowTicksAndLabels(false);
         }
         VisualHandler.getInstance().showPlayListInformation(currentPlayList);
-        logger.info(LogCategories.HANDLER, StringUtils.getString(rows.length, " objects removed from play list"));
+        getLogger().info(LogCategories.HANDLER, StringUtils.getString(rows.length, " objects removed from play list"));
     }
 
     /**
@@ -836,7 +831,7 @@ public final class PlayListHandler implements AudioFilesRemovedListener, PlayLis
      * Shuffle current play list
      */
     public void shuffle() {
-        logger.debug(LogCategories.HANDLER);
+        getLogger().debug(LogCategories.HANDLER);
 
         PlayList currentPlaylist = getCurrentPlayList(true);
 
@@ -860,7 +855,7 @@ public final class PlayListHandler implements AudioFilesRemovedListener, PlayLis
             return;
         }
 
-        logger.debug(LogCategories.HANDLER);
+        getLogger().debug(LogCategories.HANDLER);
 
         PlayList currentPlaylist = getCurrentPlayList(true);
 
@@ -870,25 +865,6 @@ public final class PlayListHandler implements AudioFilesRemovedListener, PlayLis
         }
 
         currentPlaylist.sort(comp);
-    }
-
-    /**
-     * Starts playing current audio object.
-     * 
-     * @return the start to play runnable
-     */
-    public Runnable getStartToPlayRunnable() {
-        return new Runnable() {
-            @Override
-            public void run() {
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        PlayerHandler.getInstance().playCurrentAudioObject(true);
-                    }
-                });
-            }
-        };
     }
 
     /**
@@ -1094,7 +1070,7 @@ public final class PlayListHandler implements AudioFilesRemovedListener, PlayLis
 
     public void addToPlaybackHistory(AudioObject object) {
         getCurrentPlayList(false).addToPlaybackHistory(object);
-        logger.debug(LogCategories.PLAYLIST, StringUtils.getString("Added to history: ", object.getTitle()));
+        getLogger().debug(LogCategories.PLAYLIST, StringUtils.getString("Added to history: ", object.getTitle()));
     }
 
     @Override

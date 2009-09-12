@@ -24,12 +24,15 @@ import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
+import net.sourceforge.atunes.ApplicationArguments;
+import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.PlayNextAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.PlayPreviousAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.ShowOSDAction;
+import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 
-public class CommandHandler {
+public class CommandHandler extends Handler {
 
     /**
      * Singleton instance
@@ -62,6 +65,11 @@ public class CommandHandler {
      * Default constructor made private
      */
     private CommandHandler() {
+    }
+
+    @Override
+    public void applicationStarted() {
+    	runCommands(ApplicationArguments.getSavedCommands());
     }
 
     /**
@@ -144,7 +152,20 @@ public class CommandHandler {
         }
     }
 
-    public void initActions() {
+    @Override
+    public void applicationFinish() {
+    }
+    
+    @Override
+    public void applicationStateChanged(ApplicationState newState) {
+    }
+    
+    @Override
+    protected void initHandler() {
+    	initActions();
+    }
+    
+    private void initActions() {
         Actions.getAction(PlayNextAudioObjectAction.class);
         Actions.getAction(PlayPreviousAudioObjectAction.class);
         Actions.getAction(ShowOSDAction.class);

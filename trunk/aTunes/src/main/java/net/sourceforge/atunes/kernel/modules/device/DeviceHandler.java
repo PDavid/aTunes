@@ -40,9 +40,8 @@ import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.dialogs.FileSelectionDialog;
-import net.sourceforge.atunes.kernel.ApplicationFinishListener;
 import net.sourceforge.atunes.kernel.ControllerProxy;
-import net.sourceforge.atunes.kernel.Kernel;
+import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ConnectDeviceAction;
 import net.sourceforge.atunes.kernel.actions.CopyPlayListToDeviceAction;
@@ -65,22 +64,17 @@ import net.sourceforge.atunes.kernel.modules.repository.model.Genre;
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
 import net.sourceforge.atunes.kernel.modules.search.searchableobjects.DeviceSearchableObject;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationStateChangeListener;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.LanguageTool;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public final class DeviceHandler implements LoaderListener, DeviceConnectionListener, DeviceDisconnectionListener, ApplicationFinishListener, AudioFilesRemovedListener,
-        ApplicationStateChangeListener {
+public final class DeviceHandler extends Handler implements LoaderListener, DeviceConnectionListener, DeviceDisconnectionListener, AudioFilesRemovedListener {
 
     private static DeviceHandler instance = new DeviceHandler();
-
-    private Logger logger = new Logger();
 
     private Repository deviceRepository;
     private Repository tempDeviceRepository;
@@ -100,9 +94,18 @@ public final class DeviceHandler implements LoaderListener, DeviceConnectionList
      * Instantiates a new device handler.
      */
     private DeviceHandler() {
-        Kernel.getInstance().addFinishListener(this);
+    }
+    
+    @Override
+    protected void initHandler() {
         RepositoryHandler.getInstance().addAudioFilesRemovedListener(this);
-        ApplicationStateHandler.getInstance().addStateChangeListener(this);
+    }
+
+    @Override
+    public void applicationStarted() {
+        // Start device monitor
+        DeviceConnectionMonitor.startMonitor();
+        DeviceConnectionMonitor.addListener(this);
     }
 
     /**
@@ -122,7 +125,7 @@ public final class DeviceHandler implements LoaderListener, DeviceConnectionList
      */
     public void fillWithRandomSongs(long leaveFreeLong) {
         long leaveFree = leaveFreeLong;
-        logger.debug(LogCategories.HANDLER, new String[] { Long.toString(leaveFree) });
+        getLogger().debug(LogCategories.HANDLER, new String[] { Long.toString(leaveFree) });
 
         // Get reference to Repository songs
         List<AudioFile> songs = RepositoryHandler.getInstance().getAudioFiles();
@@ -143,7 +146,7 @@ public final class DeviceHandler implements LoaderListener, DeviceConnectionList
 
         // Not enough space avaible
         if (leaveFree > deviceFreeSpace) {
-            logger.debug(LogCategories.HANDLER, LanguageTool.getString("NOT_ENOUGH_SPACE_ON_DEVICE"));
+            getLogger().debug(LogCategories.HANDLER, LanguageTool.getString("NOT_ENOUGH_SPACE_ON_DEVICE"));
             VisualHandler.getInstance().showErrorDialog(LanguageTool.getString("NOT_ENOUGH_SPACE_ON_DEVICE"));
             return;
         }
@@ -303,7 +306,7 @@ public final class DeviceHandler implements LoaderListener, DeviceConnectionList
 
         deviceRepository = null;
         notifyFinishRefresh(null);
-        logger.info(LogCategories.REPOSITORY, "Device disconnected");
+        getLogger().info(LogCategories.REPOSITORY, "Device disconnected");
 
         Actions.getAction(ConnectDeviceAction.class).setEnabled(true);
         Actions.getAction(RefreshDeviceAction.class).setEnabled(false);
@@ -486,7 +489,7 @@ public final class DeviceHandler implements LoaderListener, DeviceConnectionList
     @Override
     public void notifyFinishRead(RepositoryLoader loader) {
         deviceRepository = loader.getRepository();
-        logger.info(LogCategories.REPOSITORY, "Device read");
+        getLogger().info(LogCategories.REPOSITORY, "Device read");
         notifyDeviceReload(loader);
 
         actionsAfterConnectDevice();
@@ -532,7 +535,7 @@ public final class DeviceHandler implements LoaderListener, DeviceConnectionList
      */
     public void refreshDevice() {
         VisualHandler.getInstance().showProgressBar(true, null);
-        logger.info(LogCategories.REPOSITORY, "Refreshing device");
+        getLogger().info(LogCategories.REPOSITORY, "Refreshing device");
         currentLoader = new RepositoryLoader(deviceRepository.getFolders(), true);
         currentLoader.addRepositoryLoaderListener(this);
         currentLoader.setOldRepository(deviceRepository);
@@ -546,7 +549,7 @@ public final class DeviceHandler implements LoaderListener, DeviceConnectionList
      *            the path
      */
     private void retrieveDevice(File path) {
-        logger.info(LogCategories.REPOSITORY, StringUtils.getString("Reading device mounted on ", path));
+        getLogger().info(LogCategories.REPOSITORY, StringUtils.getString("Reading device mounted on ", path));
 
         setDevicePath(path);
 
@@ -615,7 +618,7 @@ public final class DeviceHandler implements LoaderListener, DeviceConnectionList
                 bw.close();
             }
         } catch (IOException e) {
-            logger.error(LogCategories.HANDLER, e);
+            getLogger().error(LogCategories.HANDLER, e);
         }
         return id;
     }

@@ -26,7 +26,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.ApplicationFinishListener;
+import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.notify.NotifyHandler;
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
@@ -34,7 +34,6 @@ import net.sourceforge.atunes.kernel.modules.player.xine.XineEngine;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.LanguageTool;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -48,12 +47,7 @@ import org.commonjukebox.plugins.PluginSystemException;
 /**
  * This class is resopnsible for handling the player engine.
  */
-public final class PlayerHandler implements ApplicationFinishListener, PluginListener {
-
-    /**
-     * The logger used in player handler
-     */
-    protected static Logger logger = new Logger();
+public final class PlayerHandler extends Handler implements PluginListener {
 
     /**
      * The player engine used
@@ -79,6 +73,19 @@ public final class PlayerHandler implements ApplicationFinishListener, PluginLis
      * Instantiates a new player handler.
      */
     private PlayerHandler() {
+    }
+
+    @Override
+    public void applicationStateChanged(ApplicationState newState) {
+    	// TODO Auto-generated method stub
+    	
+    }
+
+    @Override
+    public void applicationStarted() {
+        if (ApplicationState.getInstance().isPlayAtStartup()) {
+            playCurrentAudioObject(true);
+        }
     }
 
     /**
@@ -237,6 +244,8 @@ public final class PlayerHandler implements ApplicationFinishListener, PluginLis
 
     @Override
     public void applicationFinish() {
+        // Stop must be called explicitely to avoid playback after user closed app
+        PlayerHandler.getInstance().stopCurrentAudioObject(true);
         playerEngine.finishPlayer();
     }
 
@@ -295,7 +304,7 @@ public final class PlayerHandler implements ApplicationFinishListener, PluginLis
 
             Arrays.sort(engineNames);
 
-            logger.info(LogCategories.PLAYER, "List of availables engines : " + ArrayUtils.toString(engineNames));
+            getLogger().info(LogCategories.PLAYER, "List of availables engines : " + ArrayUtils.toString(engineNames));
 
             if (engines.isEmpty()) {
                 handlePlayerError(new IllegalStateException(LanguageTool.getString("NO_PLAYER_ENGINE")));
@@ -306,7 +315,7 @@ public final class PlayerHandler implements ApplicationFinishListener, PluginLis
                 // If selected engine is not available then try default engine or another one
                 if (!ArrayUtils.contains(engineNames, selectedEngine)) {
 
-                    logger.info(LogCategories.PLAYER, selectedEngine + " is not availaible");
+                    getLogger().info(LogCategories.PLAYER, selectedEngine + " is not availaible");
                     if (ArrayUtils.contains(engineNames, DEFAULT_ENGINE)) {
                         selectedEngine = DEFAULT_ENGINE;
                     } else {
@@ -320,7 +329,7 @@ public final class PlayerHandler implements ApplicationFinishListener, PluginLis
                 for (PlayerEngine engine : engines) {
                     if (engine.getEngineName().equals(selectedEngine)) {
                         instance.playerEngine = engine;
-                        logger.info(LogCategories.PLAYER, "Engine initialized : " + selectedEngine);
+                        getLogger().info(LogCategories.PLAYER, "Engine initialized : " + selectedEngine);
                     }
                 }
 
@@ -343,9 +352,9 @@ public final class PlayerHandler implements ApplicationFinishListener, PluginLis
 
                 @Override
                 public void run() {
-                    logger.debug(LogCategories.SHUTDOWN_HOOK, "Final check for Zombie player engines");
+                    getLogger().debug(LogCategories.SHUTDOWN_HOOK, "Final check for Zombie player engines");
                     instance.playerEngine.killPlayer();
-                    logger.debug(LogCategories.SHUTDOWN_HOOK, "Closing player ...");
+                    getLogger().debug(LogCategories.SHUTDOWN_HOOK, "Closing player ...");
                 }
 
             }));
@@ -362,8 +371,8 @@ public final class PlayerHandler implements ApplicationFinishListener, PluginLis
     }
 
     private static void handlePlayerError(Throwable t) {
-        logger.error(LogCategories.PLAYER, StringUtils.getString("Player Error: ", t));
-        logger.error(LogCategories.PLAYER, t);
+        getLogger().error(LogCategories.PLAYER, StringUtils.getString("Player Error: ", t));
+        getLogger().error(LogCategories.PLAYER, t);
         VisualHandler.getInstance().showErrorDialog(t.getMessage());
     }
 
@@ -384,13 +393,13 @@ public final class PlayerHandler implements ApplicationFinishListener, PluginLis
             PlaybackStateListener listener = (PlaybackStateListener) plugin.getInstance();
             addPlaybackStateListener(listener);
         } catch (PluginSystemException e) {
-            logger.error(LogCategories.PLUGINS, e);
+            getLogger().error(LogCategories.PLUGINS, e);
         }
     }
 
     @Override
     public void pluginDeactivated(PluginInfo plugin, Collection<Plugin> createdInstances) {
-        logger.info(LogCategories.PLUGINS, StringUtils.getString("Plugin deactivated: ", plugin.getName(), " (", plugin.getClassName(), ")"));
+        getLogger().info(LogCategories.PLUGINS, StringUtils.getString("Plugin deactivated: ", plugin.getName(), " (", plugin.getClassName(), ")"));
         for (Plugin createdInstance : createdInstances) {
             PlayerHandler.getInstance().removePlaybackStateListener((PlaybackStateListener) createdInstance);
         }

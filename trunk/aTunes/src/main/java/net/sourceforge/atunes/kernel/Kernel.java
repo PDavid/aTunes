@@ -33,23 +33,13 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.LookAndFeelSelector;
-import net.sourceforge.atunes.kernel.modules.command.CommandHandler;
-import net.sourceforge.atunes.kernel.modules.device.DeviceConnectionMonitor;
-import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
-import net.sourceforge.atunes.kernel.modules.favorites.FavoritesHandler;
-import net.sourceforge.atunes.kernel.modules.instances.MultipleInstancesHandler;
-import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
-import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
-import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
-import net.sourceforge.atunes.kernel.modules.updates.UpdateHandler;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.misc.SystemProperties;
@@ -84,6 +74,11 @@ public class Kernel {
     public static boolean NO_UPDATE;
 
     /**
+     * List of start listeners
+     */
+    private List<ApplicationStartListener> startListeners;
+    
+    /**
      * List of finish listeners
      */
     private List<ApplicationFinishListener> finishListeners;
@@ -92,6 +87,7 @@ public class Kernel {
      * Constructor of Kernel.
      */
     protected Kernel() {
+    	startListeners = new ArrayList<ApplicationStartListener>();
         finishListeners = new ArrayList<ApplicationFinishListener>();
     }
 
@@ -102,6 +98,17 @@ public class Kernel {
      */
     public static Kernel getInstance() {
         return instance;
+    }
+
+    /**
+     * Adds a start listener to list of listeners. All classes that implements
+     * ApplicationStartListener must call this method in order to be notified
+     * by Kernel when application has started
+     * 
+     * @param listener
+     */
+    public void addStartListener(ApplicationStartListener listener) {
+        this.startListeners.add(listener);
     }
 
     /**
@@ -125,11 +132,12 @@ public class Kernel {
     public static void startKernel(final List<String> args) {
         logger.debug(LogCategories.START, "Starting Kernel");
 
+        instance = new Kernel();
+        
         try {
             SwingUtilities.invokeAndWait(new Runnable() {
                 @Override
                 public void run() {
-                    instance = new Kernel();
 
                     // Init proxy settings
                     try {
@@ -139,8 +147,6 @@ public class Kernel {
                     } catch (IOException e) {
                         logger.error(LogCategories.START, e);
                     }
-                    // Add application finish listener
-                    Kernel.getInstance().addFinishListener(MultipleInstancesHandler.getInstance());
 
                     // Set font smoothing
                     Fonts.setFontSmoothing();
@@ -170,12 +176,10 @@ public class Kernel {
             logger.error(LogCategories.START, e);
             logger.error(LogCategories.START, e.getCause());
         }
+        
+        Handler.registerHandlers();
 
-        // Read caches
-        Scheduler.runInParallel(true, RadioHandler.getInstance().getReadRadiosRunnable(), PodcastFeedHandler.getInstance().getReadPodcastFeedsRunnable(), FavoritesHandler
-                .getInstance().getReadFavotiresRunnable(), PlayListHandler.getInstance().getReadPlayListsRunnable(), RepositoryHandler.getInstance()
-                .getReadRepositoryFromCacheRunnable());
-
+        
         // Find for audio files on arguments
         final List<String> songs = new ArrayList<String>();
         for (String arg : args) {
@@ -190,12 +194,21 @@ public class Kernel {
             SwingUtilities.invokeAndWait(new Runnable() {
                 @Override
                 public void run() {
-                    // Init plugins
-                    PluginsHandler.getInstance().initPlugins();
                     // Start component creation
-                    instance.startCreation();
-                    // Start bussiness
-                    instance.start(PlayListIO.getAudioObjectsFromFileNamesList(songs));
+                    instance.startCreation();                    
+                }
+            });
+        } catch (Exception e) {
+            logger.error(LogCategories.START, e);
+            logger.error(LogCategories.START, e.getCause());
+        }
+
+        try {
+            SwingUtilities.invokeAndWait(new Runnable() {
+                @Override
+                public void run() {
+                	// Start bussiness
+                	instance.start(PlayListIO.getAudioObjectsFromFileNamesList(songs));
                 }
             });
         } catch (Exception e) {
@@ -230,8 +243,6 @@ public class Kernel {
         try {
             timer.start();
             logger.info(LogCategories.END, StringUtils.getString("Closing ", Constants.APP_NAME, " ", Constants.VERSION.toString()));
-            // Stop must be called explicitely to avoid playback after user closed app
-            PlayerHandler.getInstance().stopCurrentAudioObject(true);
             // Call actions needed before closing application
             callActionsBeforeEnd();
         } finally {
@@ -249,7 +260,7 @@ public class Kernel {
      * @param playList
      *            the play list
      */
-    void start(final List<AudioObject> playList) {
+    void start(final List<AudioObject> playList) {    	
         try {
             Timer timer = new Timer();
             timer.start();
@@ -264,20 +275,23 @@ public class Kernel {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
+                	Handler.initHandlers();
+
                     RepositoryHandler.getInstance().setRepository();
-
-                    PlayerHandler.getInstance().initHandler();
-
                     PlayListHandler.getInstance().setPlayLists();
+                    
                     if (!playList.isEmpty()) {
                         PlayListHandler.getInstance().addToPlayListAndPlay(playList);
                         ControllerProxy.getInstance().getPlayListController().refreshPlayList();
                     }
-
-                    CommandHandler.getInstance().initActions();
-
-                    callActionsAfterStart();
                 }
+            });
+
+            SwingUtilities.invokeLater(new Runnable() {
+            	@Override
+            	public void run() {
+                    callActionsAfterStart();
+            	}
             });
 
             logger.info(LogCategories.START, StringUtils.getString("Application started (", StringUtils.toString(timer.stop(), 3), " seconds)"));
@@ -291,49 +305,18 @@ public class Kernel {
      * Call actions after start.
      */
     void callActionsAfterStart() {
-        // Check commands found in application arguments and execute them
-        Scheduler.scheduleTaskAfter("Execute commands", new Runnable() {
-            @Override
-            public void run() {
-                CommandHandler.getInstance().runCommands(ApplicationArguments.getSavedCommands());
-            }
-        }, 1);
-
-        if (ApplicationState.getInstance().isPlayAtStartup()) {
-            Scheduler.scheduleTaskAfter("Start Play", PlayListHandler.getInstance().getStartToPlayRunnable(), 3);
-        }
-
-        Scheduler.scheduleTaskAfter("Repository Post Init Actions", RepositoryHandler.getInstance().getAfterStartActionsRunnable(), 3);
-        Scheduler.scheduleTaskAfter("Favorite Post Init Actions", FavoritesHandler.getInstance().getAfterStartActionsRunnable(), 3);
-
-        LastFmService.getInstance().submitCacheToLastFm();
-
-        Scheduler.scheduleTaskAfter("Device Monitor", new Runnable() {
-            @Override
-            public void run() {
-                // Start device monitor
-                DeviceConnectionMonitor.startMonitor();
-                DeviceConnectionMonitor.addListener(DeviceHandler.getInstance());
-            }
-        }, 10);
-
-        Scheduler.scheduleTaskAfter("Podcast Retriever", new Runnable() {
-            @Override
-            public void run() {
-                // Start podcast retriever
-                PodcastFeedHandler.getInstance().startPodcastFeedEntryDownloadChecker();
-                PodcastFeedHandler.getInstance().startPodcastFeedEntryRetriever();
-            }
-        }, 15);
-        if (!NO_UPDATE) {
-            Scheduler.scheduleTaskAfter("Check Updates", new Runnable() {
-                @Override
-                public void run() {
-                    // Check for updates
-                    UpdateHandler.getInstance().checkUpdates(ApplicationState.getInstance().getProxy(), false, false);
-                }
-            }, 20);
-        }
+    	// Call all ApplicationStartListener instances to finish
+    	for (ApplicationStartListener startListener : startListeners) {
+    		try {
+    			if (startListener != null) {
+    				startListener.applicationStarted();
+    			}
+    		} catch (Exception e) {
+    			logger.error(LogCategories.START, e);
+    		}
+    	}
+    	// TODO: Move this to webservices handler
+    	LastFmService.getInstance().submitCacheToLastFm();
     }
 
     /**

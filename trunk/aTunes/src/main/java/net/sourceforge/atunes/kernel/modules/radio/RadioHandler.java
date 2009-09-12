@@ -29,8 +29,7 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.kernel.ApplicationFinishListener;
-import net.sourceforge.atunes.kernel.Kernel;
+import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.RadioNavigationView;
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
@@ -39,7 +38,6 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.NetworkUtils;
 import net.sourceforge.atunes.utils.XMLUtils;
 
@@ -48,13 +46,10 @@ import net.sourceforge.atunes.utils.XMLUtils;
  * 
  * @author sylvain
  */
-public final class RadioHandler implements ApplicationFinishListener {
+public final class RadioHandler extends Handler {
 
     /** The instance. */
     private static RadioHandler instance = new RadioHandler();
-
-    /** The logger. */
-    Logger logger = new Logger();
 
     /** The radios. */
     private List<Radio> radios;
@@ -72,7 +67,24 @@ public final class RadioHandler implements ApplicationFinishListener {
      * Instantiates a new radio handler.
      */
     private RadioHandler() {
-        Kernel.getInstance().addFinishListener(this);
+    }
+    
+    @Override
+    public void applicationStateChanged(ApplicationState newState) {
+    	// TODO Auto-generated method stub
+    	
+    }
+    
+    @Override
+    protected void initHandler() {
+    	// TODO Auto-generated method stub
+    	
+    }
+    
+    @Override
+    public void applicationStarted() {
+    	// TODO Auto-generated method stub
+    	
     }
 
     /**
@@ -101,11 +113,11 @@ public final class RadioHandler implements ApplicationFinishListener {
      *            Station
      */
     public void addRadio(Radio radio) {
-        logger.info(LogCategories.HANDLER, "Adding radio");
-        if (radio != null && !radios.contains(radio)) {
-            radios.add(radio);
+        getLogger().info(LogCategories.HANDLER, "Adding radio");
+        if (radio != null && !getRadios().contains(radio)) {
+        	getRadios().add(radio);
         }
-        Collections.sort(radios, Radio.getComparator());
+        Collections.sort(getRadios(), Radio.getComparator());
         NavigationHandler.getInstance().refreshView(RadioNavigationView.class);
     }
 
@@ -113,20 +125,38 @@ public final class RadioHandler implements ApplicationFinishListener {
      * Write stations to xml files.
      */
     public void applicationFinish() {
-        ApplicationStateHandler.getInstance().persistRadioCache(radios);
+        ApplicationStateHandler.getInstance().persistRadioCache(getRadios());
         // Only write preset list if new stations were added
         if (!noNewStations) {
             ApplicationStateHandler.getInstance().persistPresetRadioCache(presetRadios);
         }
     }
 
+    @Override
+    protected Runnable getPreviousInitializationTask() {
+    	return new Runnable() {
+    		/**
+    		 * Read radio stations lists. We use different files, one for presets which
+    		 * is not modified by the user and a second one for all the user
+    		 * modifications.
+    		 */
+			@Override
+			public void run() {
+	    		radios = ApplicationStateHandler.getInstance().retrieveRadioCache();
+	    		presetRadios = ApplicationStateHandler.getInstance().retrieveRadioPreset();
+			}
+		};
+    }
+    
     /**
      * Gets the radios.
+     * 
+     * Radio cache is read on demand
      * 
      * @return the radios
      */
     public List<Radio> getRadios() {
-        return new ArrayList<Radio>(radios);
+        return radios;
     }
 
     /**
@@ -144,7 +174,7 @@ public final class RadioHandler implements ApplicationFinishListener {
             retrievedPresetRadios.removeAll(presetRadios);
         }
         presetRadios.addAll(retrievedPresetRadios);
-        presetRadios.removeAll(radios);
+        presetRadios.removeAll(getRadios());
         return new ArrayList<Radio>(presetRadios);
     }
 
@@ -157,17 +187,7 @@ public final class RadioHandler implements ApplicationFinishListener {
      * @return the radios
      */
     public List<Radio> getRadios(String label) {
-        return new ArrayList<Radio>(radios);
-    }
-
-    /**
-     * Read radio stations lists. We use different files, one for presets which
-     * is not modified by the user and a second one for all the user
-     * modifications.
-     */
-    void readRadios() {
-        radios = ApplicationStateHandler.getInstance().retrieveRadioCache();
-        presetRadios = ApplicationStateHandler.getInstance().retrieveRadioPreset();
+        return new ArrayList<Radio>(getRadios());
     }
 
     /**
@@ -179,7 +199,7 @@ public final class RadioHandler implements ApplicationFinishListener {
         List<String> result = new ArrayList<String>();
         List<String> newResult = new ArrayList<String>();
         // Read labels from user radios
-        for (Radio radio : radios) {
+        for (Radio radio : getRadios()) {
             String label = radio.getLabel();
             if (!result.contains(label)) {
                 result.add(label);
@@ -215,20 +235,6 @@ public final class RadioHandler implements ApplicationFinishListener {
     }
 
     /**
-     * Runnable process to read radio cache.
-     * 
-     * @return the read radios runnable
-     */
-    public Runnable getReadRadiosRunnable() {
-        return new Runnable() {
-            @Override
-            public void run() {
-                readRadios();
-            }
-        };
-    }
-
-    /**
      * Remove stations from the list. Preset stations are not really removed but
      * are marked so they not show up in the navigator
      * 
@@ -236,17 +242,17 @@ public final class RadioHandler implements ApplicationFinishListener {
      *            Radio to be removed
      */
     public void removeRadios(List<Radio> radios) {
-        logger.info(LogCategories.HANDLER, "Removing radios");
+        getLogger().info(LogCategories.HANDLER, "Removing radios");
         for (Radio radio : radios) {
             if (!presetRadios.contains(radio)) {
-                this.radios.remove(radio);
+                getRadios().remove(radio);
             }
             // Preset radio station, we can not delete from preset file directly but must mark it as removed.
             else {
                 presetRadios.remove(radio);
                 final Radio newRadio = new Radio(radio.getName(), radio.getUrl(), radio.getLabel());
                 newRadio.setRemoved(true);
-                this.radios.add(newRadio);
+                getRadios().add(newRadio);
             }
         }
         NavigationHandler.getInstance().refreshView(RadioNavigationView.class);
@@ -309,9 +315,9 @@ public final class RadioHandler implements ApplicationFinishListener {
                     getRadioPresets();
                     NavigationHandler.getInstance().refreshView(RadioNavigationView.class);
                 } catch (InterruptedException e) {
-                    logger.error(LogCategories.HANDLER, e);
+                    getLogger().error(LogCategories.HANDLER, e);
                 } catch (ExecutionException e) {
-                    logger.error(LogCategories.HANDLER, e);
+                    getLogger().error(LogCategories.HANDLER, e);
                 }
 
             }
@@ -361,7 +367,7 @@ public final class RadioHandler implements ApplicationFinishListener {
      */
     public Radio getRadioIfLoaded(String url) {
         // Check in user radios
-        for (Radio radio : radios) {
+        for (Radio radio : getRadios()) {
             if (radio.getUrl().equalsIgnoreCase(url)) {
                 return radio;
             }

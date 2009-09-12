@@ -34,14 +34,14 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.kernel.ApplicationFinishListener;
+import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.modules.command.CommandHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -49,12 +49,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The Class MultipleInstancesHandler.
  */
-public final class MultipleInstancesHandler implements ApplicationFinishListener {
-
-    /**
-     * Logger
-     */
-    static Logger logger = new Logger();
+public final class MultipleInstancesHandler extends Handler {
 
     /**
      * Used to ignore errors in sockets when closing application
@@ -104,7 +99,7 @@ public final class MultipleInstancesHandler implements ApplicationFinishListener
                     br = new BufferedReader(new InputStreamReader(s.getInputStream()));
                     String str;
                     while ((str = br.readLine()) != null) {
-                        logger.info(LogCategories.HANDLER, StringUtils.getString("Received connection with content: \"", str, "\""));
+                        getLogger().info(LogCategories.HANDLER, StringUtils.getString("Received connection with content: \"", str, "\""));
                         if (PlayListIO.isValidPlayList(str)) {
                             List<String> songs = PlayListIO.read(new File(str));
                             List<AudioObject> files = PlayListIO.getAudioObjectsFromFileNamesList(songs);
@@ -124,11 +119,11 @@ public final class MultipleInstancesHandler implements ApplicationFinishListener
                     }
                     ClosingUtils.close(br);
                     ClosingUtils.close(s);
-                    logger.info(LogCategories.HANDLER, StringUtils.getString("Connection finished"));
+                    getLogger().info(LogCategories.HANDLER, StringUtils.getString("Connection finished"));
                 }
             } catch (IOException e) {
                 if (!closing) {
-                    logger.error(LogCategories.HANDLER, e);
+                    getLogger().error(LogCategories.HANDLER, e);
                 }
             } finally {
                 ClosingUtils.close(bos);
@@ -213,6 +208,18 @@ public final class MultipleInstancesHandler implements ApplicationFinishListener
      */
     private MultipleInstancesHandler() {
         // Nothing to do
+    }
+    
+    @Override
+    public void applicationStateChanged(ApplicationState newState) {
+    }
+    
+    @Override
+    protected void initHandler() {
+    }
+
+    @Override
+    public void applicationStarted() {
     }
 
     /**

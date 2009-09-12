@@ -22,29 +22,23 @@ package net.sourceforge.atunes.kernel.modules.hotkeys;
 
 import java.awt.event.InputEvent;
 
-import net.sourceforge.atunes.kernel.ApplicationFinishListener;
-import net.sourceforge.atunes.kernel.Kernel;
+import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
 import net.sourceforge.atunes.kernel.modules.notify.NotifyHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationStateChangeListener;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.LanguageTool;
 
 /**
  * Handler for global hotkeys keys.
  */
-public final class HotkeyHandler implements HotkeyListener, ApplicationFinishListener, ApplicationStateChangeListener {
+public final class HotkeyHandler extends Handler implements HotkeyListener {
 
     private static HotkeyHandler instance;
-
-    private static Logger logger = new Logger();
 
     private static final int RIGHT_ARROW = 39;
     private static final int LEFT_ARROW = 37;
@@ -86,8 +80,10 @@ public final class HotkeyHandler implements HotkeyListener, ApplicationFinishLis
      * Instantiates a new hotkey handler.
      */
     private HotkeyHandler() {
-        Kernel.getInstance().addFinishListener(this);
-        ApplicationStateHandler.getInstance().addStateChangeListener(this);
+    }
+    
+    @Override
+    protected void initHandler() {
         hotkeys = Hotkeys.createInstance(this);
         HotkeysConfig hc = ApplicationState.getInstance().getHotkeysConfig();
         hotkeysConfig = hc != null ? hc : DEFAULT_HOTKEYS_CONFIG;
@@ -95,8 +91,14 @@ public final class HotkeyHandler implements HotkeyListener, ApplicationFinishLis
             supported = true;
         } else {
             supported = false;
-            logger.info(LogCategories.HANDLER, "Hotkeys are not supported");
+            getLogger().info(LogCategories.HANDLER, "Hotkeys are not supported");
         }
+    }
+
+    @Override
+    public void applicationStarted() {
+    	// TODO Auto-generated method stub
+    	
     }
 
     /**
@@ -175,7 +177,7 @@ public final class HotkeyHandler implements HotkeyListener, ApplicationFinishLis
             if (allHotKeysRegistered) {
                 hotkeys.activate();
                 enabled = true;
-                logger.info(LogCategories.HOTKEYS, "Hotkeys activated successfully");
+                getLogger().info(LogCategories.HOTKEYS, "Hotkeys activated successfully");
             } else {
                 // If not, then unregister hotkeys
                 for (Hotkey entry : hotkeysConfig) {
@@ -187,7 +189,7 @@ public final class HotkeyHandler implements HotkeyListener, ApplicationFinishLis
 
                 // Show an error message
                 VisualHandler.getInstance().showErrorDialog(LanguageTool.getString("HOTKEYS_ACTIVATION_ERROR_MESSAGE"));
-                logger.error(LogCategories.HOTKEYS, "Hotkeys were not activated successfully");
+                getLogger().error(LogCategories.HOTKEYS, "Hotkeys were not activated successfully");
             }
         }
     }
@@ -216,7 +218,7 @@ public final class HotkeyHandler implements HotkeyListener, ApplicationFinishLis
 
     @Override
     public void onHotKey(final int id) {
-        logger.debug(LogCategories.HANDLER, "Hotkey " + id);
+        getLogger().debug(LogCategories.HANDLER, "Hotkey " + id);
         switch (id) {
         case HOTKEY_NEXT: {
             PlayerHandler.getInstance().playNextAudioObject();
@@ -255,7 +257,7 @@ public final class HotkeyHandler implements HotkeyListener, ApplicationFinishLis
             break;
         }
         default: {
-            logger.error(LogCategories.HOTKEYS, "unknown hotkey id: " + id);
+            getLogger().error(LogCategories.HOTKEYS, "unknown hotkey id: " + id);
         }
         }
     }

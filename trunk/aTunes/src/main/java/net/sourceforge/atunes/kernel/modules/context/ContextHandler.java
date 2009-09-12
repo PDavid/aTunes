@@ -23,8 +23,7 @@ package net.sourceforge.atunes.kernel.modules.context;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.ApplicationFinishListener;
-import net.sourceforge.atunes.kernel.Kernel;
+import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.modules.context.album.AlbumContextPanel;
 import net.sourceforge.atunes.kernel.modules.context.artist.ArtistContextPanel;
 import net.sourceforge.atunes.kernel.modules.context.audioobject.AudioObjectContextPanel;
@@ -33,27 +32,19 @@ import net.sourceforge.atunes.kernel.modules.context.youtube.YoutubeContextPanel
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationStateChangeListener;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeService;
 import net.sourceforge.atunes.misc.log.LogCategories;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 
-public final class ContextHandler implements ApplicationFinishListener, ApplicationStateChangeListener {
+public final class ContextHandler extends Handler {
 
     /**
      * Singleton instance of handler
      */
     private static ContextHandler instance;
-
-    /**
-     * Logger
-     */
-    Logger logger;
 
     /**
      * The current audio object used to retrieve information
@@ -71,16 +62,14 @@ public final class ContextHandler implements ApplicationFinishListener, Applicat
      */
     private List<ContextPanel> contextPanels;
 
-    /**
-     * Instantiates a new context handler.
-     */
-    private ContextHandler() {
-        // TODO: Move to a web services handler
-        LastFmService.getInstance().updateService();
-        LyricsService.getInstance().updateService();
+    protected void initHandler() {
+    	// TODO: Move to a web services handler
+    	LastFmService.getInstance().updateService();
+    	LyricsService.getInstance().updateService();
+    }
 
-        Kernel.getInstance().addFinishListener(this);
-        ApplicationStateHandler.getInstance().addStateChangeListener(this);
+    @Override
+    public void applicationStarted() {
     }
 
     /**
@@ -224,18 +213,6 @@ public final class ContextHandler implements ApplicationFinishListener, Applicat
         LastFmService.getInstance().updateService();
         LyricsService.getInstance().updateService();
         YoutubeService.getInstance().updateService();
-    }
-
-    /**
-     * Getter of logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
     }
 
     /**

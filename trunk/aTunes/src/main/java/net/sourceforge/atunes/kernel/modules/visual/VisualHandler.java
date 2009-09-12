@@ -83,8 +83,8 @@ import net.sourceforge.atunes.gui.views.panels.ContextPanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
-import net.sourceforge.atunes.kernel.ApplicationFinishListener;
 import net.sourceforge.atunes.kernel.ControllerProxy;
+import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ShowToolbarAction;
@@ -104,24 +104,19 @@ import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationStateChangeListener;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.kernel.modules.tray.SystemTrayHandler;
 import net.sourceforge.atunes.kernel.modules.updates.ApplicationVersion;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.LanguageTool;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.TimeUtils;
 
-public final class VisualHandler implements PlaybackStateListener, ApplicationFinishListener, ApplicationStateChangeListener {
+public final class VisualHandler extends Handler implements PlaybackStateListener {
 
     private static VisualHandler instance = new VisualHandler();
-
-    Logger logger = new Logger();
 
     Frame frame;
     private OSDDialog osdDialog;
@@ -148,13 +143,10 @@ public final class VisualHandler implements PlaybackStateListener, ApplicationFi
      * Instantiates a new visual handler.
      */
     private VisualHandler() {
-        if (!ApplicationState.getInstance().isMultipleWindow()) {
-            frame = new StandardFrame();
-        } else {
-            frame = new MultipleFrame();
-        }
-        Kernel.getInstance().addFinishListener(this);
-        ApplicationStateHandler.getInstance().addStateChangeListener(this);
+    }
+    
+    @Override
+    protected void initHandler() {
     }
 
     /**
@@ -164,6 +156,10 @@ public final class VisualHandler implements PlaybackStateListener, ApplicationFi
      */
     public static VisualHandler getInstance() {
         return instance;
+    }
+
+    @Override
+    public void applicationStarted() {
     }
 
     /**
@@ -262,6 +258,13 @@ public final class VisualHandler implements PlaybackStateListener, ApplicationFi
      * @return the frame
      */
     public Frame getFrame() {
+    	if (frame == null) {
+            if (!ApplicationState.getInstance().isMultipleWindow()) {
+                frame = new StandardFrame();
+            } else {
+                frame = new MultipleFrame();
+            }
+    	}
         return frame;
     }
 
@@ -534,7 +537,7 @@ public final class VisualHandler implements PlaybackStateListener, ApplicationFi
                 }
             });
         } catch (Exception e) {
-            logger.internalError(e);
+            getLogger().internalError(e);
         }
     }
 
@@ -913,7 +916,7 @@ public final class VisualHandler implements PlaybackStateListener, ApplicationFi
                 }
             });
         } catch (Exception e) {
-            logger.internalError(e);
+            getLogger().internalError(e);
         }
     }
 
@@ -1218,13 +1221,13 @@ public final class VisualHandler implements PlaybackStateListener, ApplicationFi
      * Start visualization.
      */
     public void startVisualization() {
-        logger.debug(LogCategories.START, "Starting visualization");
+        getLogger().debug(LogCategories.START, "Starting visualization");
 
         if (SystemProperties.IS_JAVA_6_UPDATE_10_OR_LATER) {
             FadingPopupFactory.install();
         }
 
-        frame.create();
+        getFrame().create();
 
         // Create drag and drop listener
         PlayListTableTransferHandler playListTransferHandler = new PlayListTableTransferHandler();
@@ -1236,17 +1239,17 @@ public final class VisualHandler implements PlaybackStateListener, ApplicationFi
         showProgressBar(false, null);
         hideDeviceInfoOnStatusBar();
 
-        //SwingUtilities.updateComponentTreeUI(frame.getFrame());
-        logger.debug(LogCategories.START, "Start visualization done");
+        //SwingUtilities.updateComponentTreeUI(getFrame().getFrame());
+        getLogger().debug(LogCategories.START, "Start visualization done");
     }
 
     /**
      * Toggle window visibility.
      */
     public void toggleWindowVisibility() {
-        frame.setVisible(!frame.isVisible());
-        frame.getFrame().toFront();
-        frame.getFrame().setState(java.awt.Frame.NORMAL);
+        getFrame().setVisible(!getFrame().isVisible());
+        getFrame().getFrame().toFront();
+        getFrame().getFrame().setState(java.awt.Frame.NORMAL);
     }
 
     /**

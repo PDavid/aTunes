@@ -37,8 +37,7 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.views.controls.JTrayIcon;
 import net.sourceforge.atunes.gui.views.controls.JTrayIcon.JTrayIconPopupMenu;
-import net.sourceforge.atunes.kernel.ApplicationFinishListener;
-import net.sourceforge.atunes.kernel.Kernel;
+import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ExitAction;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
@@ -48,13 +47,10 @@ import net.sourceforge.atunes.kernel.actions.ShowAboutAction;
 import net.sourceforge.atunes.kernel.actions.ShuffleModeAction;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationStateChangeListener;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
 import net.sourceforge.atunes.misc.log.LogCategories;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.LanguageTool;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -62,9 +58,8 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The system tray handler.
  */
-public final class SystemTrayHandler implements ApplicationFinishListener, ApplicationStateChangeListener {
+public final class SystemTrayHandler extends Handler {
 
-    private static Logger logger = new Logger();
     private static SystemTrayHandler instance = new SystemTrayHandler();
 
     private boolean trayInitialized;
@@ -86,8 +81,18 @@ public final class SystemTrayHandler implements ApplicationFinishListener, Appli
      * Instantiates a new system tray handler.
      */
     private SystemTrayHandler() {
-        Kernel.getInstance().addFinishListener(this);
-        ApplicationStateHandler.getInstance().addStateChangeListener(this);
+    }
+    
+    @Override
+    protected void initHandler() {
+    	// TODO Auto-generated method stub
+    	
+    }
+    
+    @Override
+    public void applicationStarted() {
+    	// TODO Auto-generated method stub
+    	
     }
 
     /**
@@ -209,7 +214,7 @@ public final class SystemTrayHandler implements ApplicationFinishListener, Appli
             try {
                 tray.add(trayIcon);
             } catch (AWTException e) {
-                logger.error(LogCategories.TRAY, e);
+                getLogger().error(LogCategories.TRAY, e);
             }
 
             trayIcon.addMouseListener(new MouseAdapter() {
@@ -222,7 +227,7 @@ public final class SystemTrayHandler implements ApplicationFinishListener, Appli
             });
             VisualHandler.getInstance().setFrameDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         } else {
-            logger.error(LogCategories.TRAY, "No system tray supported");
+            getLogger().error(LogCategories.TRAY, "No system tray supported");
         }
     }
 
@@ -246,7 +251,7 @@ public final class SystemTrayHandler implements ApplicationFinishListener, Appli
             try {
                 tray.add(nextIcon);
             } catch (AWTException e) {
-                logger.error(LogCategories.TRAY, e);
+                getLogger().error(LogCategories.TRAY, e);
             }
 
             stopIcon = new TrayIcon(ImageLoader.getImage(ImageLoader.STOP_TRAY).getImage());
@@ -262,7 +267,7 @@ public final class SystemTrayHandler implements ApplicationFinishListener, Appli
             try {
                 tray.add(stopIcon);
             } catch (AWTException e) {
-                logger.error(LogCategories.TRAY, e);
+                getLogger().error(LogCategories.TRAY, e);
             }
 
             playIcon = new TrayIcon(ImageLoader.getImage(ImageLoader.PLAY_TRAY).getImage());
@@ -278,7 +283,7 @@ public final class SystemTrayHandler implements ApplicationFinishListener, Appli
             try {
                 tray.add(playIcon);
             } catch (AWTException e) {
-                logger.error(LogCategories.TRAY, e);
+                getLogger().error(LogCategories.TRAY, e);
             }
 
             previousIcon = new TrayIcon(ImageLoader.getImage(ImageLoader.PREVIOUS_TRAY).getImage());
@@ -294,10 +299,10 @@ public final class SystemTrayHandler implements ApplicationFinishListener, Appli
             try {
                 tray.add(previousIcon);
             } catch (AWTException e) {
-                logger.error(LogCategories.TRAY, e);
+                getLogger().error(LogCategories.TRAY, e);
             }
         } else {
-            logger.error(LogCategories.TRAY, "No system tray supported");
+            getLogger().error(LogCategories.TRAY, "No system tray supported");
         }
     }
 
