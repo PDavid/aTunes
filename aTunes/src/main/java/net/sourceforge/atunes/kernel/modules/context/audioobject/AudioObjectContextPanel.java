@@ -55,7 +55,7 @@ public class AudioObjectContextPanel extends ContextPanel {
             return ImageLoader.getImage(ImageLoader.RSS_LITTLE);
         }
 
-        return null;
+        return ImageLoader.getImage(ImageLoader.AUDIO_FILE_LITTLE);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class AudioObjectContextPanel extends ContextPanel {
             return LanguageTool.getString("PODCAST_FEED");
         }
 
-        return null;
+        return LanguageTool.getString("SONG");
     }
 
     @Override
