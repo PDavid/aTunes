@@ -63,9 +63,9 @@ public final class ContextHandler extends Handler {
     private List<ContextPanel> contextPanels;
 
     protected void initHandler() {
-    	// TODO: Move to a web services handler
-    	LastFmService.getInstance().updateService();
-    	LyricsService.getInstance().updateService();
+        // TODO: Move to a web services handler
+        LastFmService.getInstance().updateService();
+        LyricsService.getInstance().updateService();
     }
 
     @Override
@@ -158,20 +158,6 @@ public final class ContextHandler extends Handler {
 
             // Enable or disable tabs
             VisualHandler.getInstance().getContextPanel().enableContextTabs();
-
-            // If selected panel is not enabled then select another one
-            if (!getContextPanels().get(ApplicationState.getInstance().getSelectedContextTab()).isEnabled()) {
-                int i = 0;
-                while (i < getContextPanels().size() && !getContextPanels().get(i).isEnabled()) {
-                    i++;
-                }
-                // Any panel is enabled, so select the first one
-                if (i == getContextPanels().size()) {
-                    i = 0;
-                }
-                ApplicationState.getInstance().setSelectedContextTab(i);
-                VisualHandler.getInstance().getContextPanel().setSelectedIndex(ApplicationState.getInstance().getSelectedContextTab());
-            }
 
             if (ao == null) {
                 // Clear all tabs
