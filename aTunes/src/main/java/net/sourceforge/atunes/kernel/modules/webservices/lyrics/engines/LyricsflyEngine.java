@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.UnknownHostException;
 import java.security.GeneralSecurityException;
 
@@ -40,6 +41,10 @@ import org.w3c.dom.Document;
  */
 public class LyricsflyEngine extends LyricsEngine {
 
+    private static final int RETRY_COUNT = 3;
+    private static final int SLEEP_TIME = 1500;
+    private static final String LIMITED_TIME_STATUS = "402";
+
     private Logger logger = new Logger();
 
     public LyricsflyEngine(Proxy proxy) {
@@ -49,14 +54,14 @@ public class LyricsflyEngine extends LyricsEngine {
     @Override
     public Lyrics getLyricsFor(String artist, String title) {
         try {
-            String xml = readURL(getConnection(getUrl(artist, title)), "UTF-8");
-            Document xmlDocument = XMLUtils.getXMLDocument(xml);
-            if (xmlDocument == null) {
+            Document xmlDocument = connectAndRead(artist, title);
+            if (xmlDocument != null) {
+                String lyrics = XMLUtils.getChildElementContent(xmlDocument.getDocumentElement(), "tx");
+                lyrics = lyrics.replace("[br]", "\n");
+                return lyrics.trim().isEmpty() ? null : new Lyrics(lyrics, "http://lyricsfly.com/");
+            } else {
                 return null;
             }
-            String lyrics = XMLUtils.getChildElementContent(xmlDocument.getDocumentElement(), "tx");
-            lyrics = lyrics.replace("[br]", "\n");
-            return lyrics.trim().isEmpty() ? null : new Lyrics(lyrics, "http://lyricsfly.com/");
         } catch (UnknownHostException e) {
             logger.error(LogCategories.SERVICE, e);
         } catch (IOException e) {
@@ -65,6 +70,37 @@ public class LyricsflyEngine extends LyricsEngine {
             logger.error(LogCategories.SERVICE, e);
         }
         return null;
+    }
+
+    private Document connectAndRead(String artist, String title) throws GeneralSecurityException, IOException, UnknownHostException {
+        String status;
+        int c = 0;
+        HttpURLConnection connection = null;
+        Document xmlResponse = null;
+        do {
+            if (connection != null) {
+                connection.disconnect();
+                try {
+                    Thread.sleep(SLEEP_TIME);
+                } catch (InterruptedException e) {
+                    logger.error(LogCategories.SERVICE, e);
+                }
+            }
+            String url = getUrl(artist, title);
+            connection = (HttpURLConnection) getConnection(url);
+
+            xmlResponse = XMLUtils.getXMLDocument(readURL(connection, "UTF-8"));
+            status = extractStatus(xmlResponse);
+        } while (LIMITED_TIME_STATUS.equals(status) && c++ < RETRY_COUNT);
+        return xmlResponse;
+    }
+
+    private String extractStatus(Document xmlDocument) {
+        String status = XMLUtils.evaluateXPathExpressionAndReturnString("//status/text()", xmlDocument);
+        if (status != null) {
+            status = status.trim();
+        }
+        return status;
     }
 
     private String getUrl(String artist, String title) throws GeneralSecurityException, IOException {

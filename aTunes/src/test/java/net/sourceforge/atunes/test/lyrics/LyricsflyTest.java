@@ -46,17 +46,22 @@ public class LyricsflyTest {
     }
 
     @Test
-    public void testCaseInsensitivity() {
+    public void testCaseInsensitivity() throws InterruptedException {
+        Thread.sleep(1000);
         Lyrics lyrics1 = testedObject.getLyricsFor("Louis Armstrong", "We Have All The Time In The World");
+        Thread.sleep(1000);
         Lyrics lyrics2 = testedObject.getLyricsFor("Louis armstrong", "We Have All The Time In The World");
+        Thread.sleep(1000);
         Lyrics lyrics3 = testedObject.getLyricsFor("Louis Armstrong", "We Have All the Time In the world");
+
         Assert.assertEquals(lyrics1, lyrics2);
         Assert.assertEquals(lyrics2, lyrics3);
         Assert.assertEquals(lyrics3, lyrics1);
     }
 
     @Test
-    public void testGetLyricsForWhereArtistAndTitleNotExist() {
+    public void testGetLyricsForWhereArtistAndTitleNotExist() throws InterruptedException {
+        Thread.sleep(1000);
         Lyrics lyrics = testedObject.getLyricsFor(UUID.randomUUID().toString(), UUID.randomUUID().toString());
         Assert.assertEquals(null, lyrics);
     }
