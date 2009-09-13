@@ -113,12 +113,31 @@ public final class XMLUtils {
      * @param node
      *            The Node for which this expression should be evaluated
      * 
-     * @return The result od evaluating the XPath expression to the given Node
+     * @return The result of evaluating the XPath expression to the given Node
      *         or <code>null</code> if an ecxception occured
      */
     public static Node evaluateXPathExpressionAndReturnNode(String expression, Node node) {
         try {
             return (Node) xPath.get().evaluate(expression, node, XPathConstants.NODE);
+        } catch (XPathExpressionException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Evaluates a XPath expression from a XML node, returning a String object.
+     * 
+     * @param expression
+     *            A XPath expression
+     * @param node
+     *            The Node for which this expression should be evaluated
+     * 
+     * @return The result of evaluating the XPath expression to the given Node
+     *         or <code>null</code> if an ecxception occured
+     */
+    public static String evaluateXPathExpressionAndReturnString(String expression, Node node) {
+        try {
+            return (String) xPath.get().evaluate(expression, node, XPathConstants.STRING);
         } catch (XPathExpressionException e) {
             return null;
         }
@@ -132,7 +151,7 @@ public final class XMLUtils {
      * @param node
      *            The NodeList for which this expression should be evaluated
      * 
-     * @return The result od evaluating the XPath expression to the given or
+     * @return The result of evaluating the XPath expression to the given or
      *         <code>null</code> if an ecxception occured NodeList
      */
     public static NodeList evaluateXPathExpressionAndReturnNodeList(String expression, Node node) {
