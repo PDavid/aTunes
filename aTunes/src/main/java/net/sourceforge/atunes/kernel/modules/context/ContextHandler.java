@@ -21,7 +21,11 @@
 package net.sourceforge.atunes.kernel.modules.context;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.modules.context.album.AlbumContextPanel;
@@ -39,7 +43,12 @@ import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeService;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.AudioObject;
 
-public final class ContextHandler extends Handler {
+import org.commonjukebox.plugins.Plugin;
+import org.commonjukebox.plugins.PluginInfo;
+import org.commonjukebox.plugins.PluginListener;
+import org.commonjukebox.plugins.PluginSystemException;
+
+public final class ContextHandler extends Handler implements PluginListener {
 
     /**
      * Singleton instance of handler
@@ -70,6 +79,18 @@ public final class ContextHandler extends Handler {
 
     @Override
     public void applicationStarted() {
+        // Set previous selected tab
+        // IMPORTANT: this method must be called before adding change listener to avoid firing events when
+        // UI is being created
+        VisualHandler.getInstance().getContextPanel().setSelectedIndex(ApplicationState.getInstance().getSelectedContextTab());
+
+        // Add listener for tab changes
+        VisualHandler.getInstance().getContextPanel().getTabbedPane().addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                contextPanelChanged();
+            }
+        });
     }
 
     /**
@@ -105,7 +126,7 @@ public final class ContextHandler extends Handler {
     /**
      * Called when user changes context tab
      */
-    public void contextPanelChanged() {
+    private void contextPanelChanged() {
         // Update selected tab
         ApplicationState.getInstance().setSelectedContextTab(VisualHandler.getInstance().getContextPanel().getSelectedIndex());
         // Call to fill information
@@ -206,5 +227,24 @@ public final class ContextHandler extends Handler {
      */
     public AudioObject getCurrentAudioObject() {
         return currentAudioObject;
+    }
+    
+    @Override
+    public void pluginActivated(PluginInfo plugin) {
+    	try {
+    		ContextPanel newPanel = (ContextPanel) plugin.getInstance();
+    		getContextPanels().add(newPanel);
+    		VisualHandler.getInstance().getContextPanel().addContextPanel(newPanel);
+    	} catch (PluginSystemException e) {
+    		getLogger().error(LogCategories.PLUGINS, e);
+    	}
+    }
+    
+    @Override
+    public void pluginDeactivated(PluginInfo plugin, Collection<Plugin> createdInstances) {
+    	for (Plugin instance : createdInstances) {
+    		getContextPanels().remove((ContextPanel)instance);
+    		VisualHandler.getInstance().getContextPanel().removeContextPanel((ContextPanel)instance);
+    	}
     }
 }
