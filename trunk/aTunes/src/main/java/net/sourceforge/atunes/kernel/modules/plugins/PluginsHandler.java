@@ -32,6 +32,8 @@ import net.sourceforge.atunes.gui.views.controls.playList.Column;
 import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.columns.PlayListColumns;
+import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
+import net.sourceforge.atunes.kernel.modules.context.ContextPanel;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationView;
 import net.sourceforge.atunes.kernel.modules.player.PlaybackStateListener;
@@ -127,6 +129,7 @@ public class PluginsHandler extends Handler implements PluginListener {
             pluginTypes.add(new PluginType(PlaybackStateListener.class.getName(), PlayerHandler.getInstance(), false));
             pluginTypes.add(new PluginType(Column.class.getName(), PlayListColumns.getInstance(), false));
             pluginTypes.add(new PluginType(NavigationView.class.getName(), NavigationHandler.getInstance(), false));
+            pluginTypes.add(new PluginType(ContextPanel.class.getName(), ContextHandler.getInstance(), false));
         }
         return pluginTypes;
     }
