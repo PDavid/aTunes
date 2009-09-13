@@ -131,6 +131,7 @@ public class LyricsContent extends ContextPanelContent {
         lyricsContainer = new CustomTextPane(StyleConstants.ALIGN_CENTER);
         lyricsContainer.setBorder(null);
         lyricsContainer.setEditable(false);
+        lyricsContainer.setOpaque(false);
         return lyricsContainer;
     }
 
