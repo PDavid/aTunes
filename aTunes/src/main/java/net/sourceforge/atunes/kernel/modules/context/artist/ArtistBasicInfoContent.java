@@ -121,6 +121,7 @@ public class ArtistBasicInfoContent extends ContextPanelContent {
         artistWikiAbstract.setBorder(BorderFactory.createEmptyBorder());
         artistWikiAbstract.setOpaque(false);
         JScrollPane artistWikiScrollPane = new JScrollPane(artistWikiAbstract);
+        artistWikiScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
         artistWikiScrollPane.setBorder(BorderFactory.createEmptyBorder());
         artistWikiReadMore = new UrlLabel();
 
