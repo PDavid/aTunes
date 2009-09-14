@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel.modules.webservices.lastfm;
 
 import java.awt.Image;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -68,13 +69,12 @@ import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmSimil
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.utils.CryptoUtils;
 import net.sourceforge.atunes.utils.LanguageTool;
 import net.sourceforge.atunes.utils.NetworkUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
- * The Class LastFmService.
- * 
  * This class is responsible of retrieve information from Last.fm web services.
  */
 public class LastFmService {
@@ -84,8 +84,10 @@ public class LastFmService {
     /*
      * DO NOT USE THESE KEYS FOR OTHER APPLICATIONS THAN aTunes!
      */
-    private static final String API_KEY = "e4dd8c105b26ecbf84e2806d7a9660f3";
-    private static final String API_SECRET = "056392d397eb5fec6f4d07f38285d1a2";
+    private static final byte[] API_KEY = { 78, 119, -39, -5, -89, -107, -38, 41, -87, -107, 122, 98, -33, 46, 32, -47, -44, 54, 97, 67, 105, 122, 11, -26, -81, 90, 94, 55, 121,
+            11, 14, -104, -70, 123, -88, -70, -108, 75, -77, 98 };
+    private static final byte[] API_SECRET = { 38, -8, 33, 63, 10, 86, 29, -2, 87, -63, 67, 111, -5, -101, -87, 38, 2, 35, 86, -86, 19, 110, -81, -115, 102, 54, -24, 27, 40, -124,
+            -57, -62, -70, 123, -88, -70, -108, 75, -77, 98 };
     private static final String CLIENT_ID = "atu";
     private static final String CLIENT_VERSION = Constants.VERSION.toShortString();
 
@@ -194,9 +196,9 @@ public class LastFmService {
             // Try to get from cache
             AlbumInfo albumObject = lastFmCache.retrieveAlbumInfo(artist, album);
             if (albumObject == null) {
-                Album a = Album.getInfo(artist, album, API_KEY);
+                Album a = Album.getInfo(artist, album, getApiKey());
                 if (a != null) {
-                    Playlist pl = Playlist.fetchAlbumPlaylist(a.getId(), API_KEY);
+                    Playlist pl = Playlist.fetchAlbumPlaylist(a.getId(), getApiKey());
                     albumObject = LastFmAlbum.getAlbum(a, pl);
                     lastFmCache.storeAlbumInfo(artist, album, albumObject);
                 }
@@ -244,7 +246,7 @@ public class LastFmService {
             // Try to get from cache
             AlbumListInfo albumList = lastFmCache.retrieveAbumList(artist);
             if (albumList == null) {
-                Collection<Album> as = Artist.getTopAlbums(artist, API_KEY);
+                Collection<Album> as = Artist.getTopAlbums(artist, getApiKey());
                 if (as != null) {
                     AlbumListInfo albums = LastFmAlbumList.getAlbumList(as, artist);
 
@@ -308,7 +310,7 @@ public class LastFmService {
      */
     public String getArtistTopTag(String artist) {
         try {
-            Collection<String> topTags = Artist.getTopTags(artist, API_KEY);
+            Collection<String> topTags = Artist.getTopTags(artist, getApiKey());
             List<String> tags = new ArrayList<String>(topTags);
             return tags.isEmpty() ? "" : tags.get(0);
         } catch (Exception e) {
@@ -421,7 +423,7 @@ public class LastFmService {
     private Image getArtistImageFromLastFM(String artistName, ImageSize size) {
         try {
             // Try to get from Artist.getImages() method 
-            PaginatedResult<net.roarsoftware.lastfm.Image> images = Artist.getImages(artistName, 1, 1, API_KEY);
+            PaginatedResult<net.roarsoftware.lastfm.Image> images = Artist.getImages(artistName, 1, 1, getApiKey());
             List<net.roarsoftware.lastfm.Image> imageList = new ArrayList<net.roarsoftware.lastfm.Image>(images.getPageResults());
             if (!imageList.isEmpty()) {
                 Set<ImageSize> sizes = imageList.get(0).availableSizes();
@@ -449,8 +451,8 @@ public class LastFmService {
             // Try to get from cache
             SimilarArtistsInfo similar = lastFmCache.retrieveArtistSimilar(artist);
             if (similar == null) {
-                Collection<Artist> as = Artist.getSimilar(artist, API_KEY);
-                Artist a = Artist.getInfo(artist, API_KEY);
+                Collection<Artist> as = Artist.getSimilar(artist, getApiKey());
+                Artist a = Artist.getInfo(artist, getApiKey());
                 if (a != null) {
                     similar = LastFmSimilarArtists.getSimilarArtists(as, a);
                     lastFmCache.storeArtistSimilar(artist, similar);
@@ -477,7 +479,7 @@ public class LastFmService {
             String wikiText = lastFmCache.retrieveArtistWiki(artist);
             if (wikiText == null) {
 
-                Artist a = Artist.getInfo(artist, locale, API_KEY);
+                Artist a = Artist.getInfo(artist, locale, getApiKey());
                 wikiText = a != null ? a.getWikiSummary() : "";
                 wikiText = wikiText.replaceAll("<.*?>", "");
                 wikiText = StringUtils.unescapeHTML(wikiText, 0);
@@ -557,7 +559,7 @@ public class LastFmService {
         }
 
         logger.info(LogCategories.SERVICE, StringUtils.getString("Trying to submit loved song to Last.fm: ", song.getArtist(), " - ", song.getTitle()));
-        Session s = Authenticator.getMobileSession(user, password, API_KEY, API_SECRET);
+        Session s = Authenticator.getMobileSession(user, password, getApiKey(), getApiSecret());
         Result r = Track.love(song.getArtist(), song.getTitle(), s);
         if (r.getStatus().equals(Status.OK)) {
             logger.info(LogCategories.SERVICE, StringUtils.getString("Loved song submitted OK"));
@@ -580,7 +582,7 @@ public class LastFmService {
         }
 
         logger.info(LogCategories.SERVICE, StringUtils.getString("Trying to submit banned song to Last.fm: ", song.getArtist(), " - ", song.getTitle()));
-        Session s = Authenticator.getMobileSession(user, password, API_KEY, API_SECRET);
+        Session s = Authenticator.getMobileSession(user, password, getApiKey(), getApiSecret());
         Result r = Track.ban(song.getArtist(), song.getTitle(), s);
         if (r.getStatus().equals(Status.OK)) {
             logger.info(LogCategories.SERVICE, StringUtils.getString("Banned song submitted OK"));
@@ -941,5 +943,27 @@ public class LastFmService {
                 logger.info(LogCategories.SERVICE, "execution of now playing runnable rejected");
             }
         }
+    }
+
+    private static String getApiKey() {
+        try {
+            return new String(CryptoUtils.decrypt(API_KEY));
+        } catch (GeneralSecurityException e) {
+            logger.internalError(e);
+        } catch (IOException e) {
+            logger.internalError(e);
+        }
+        return "";
+    }
+
+    private static String getApiSecret() {
+        try {
+            return new String(CryptoUtils.decrypt(API_SECRET));
+        } catch (GeneralSecurityException e) {
+            logger.internalError(e);
+        } catch (IOException e) {
+            logger.internalError(e);
+        }
+        return "";
     }
 }

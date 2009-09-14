@@ -45,7 +45,6 @@ import javax.crypto.spec.SecretKeySpec;
 public final class CryptoUtils {
 
     /* Length: 8 Bytes for DES */
-    /** The Constant SECRET_KEY. */
     private static final String SECRET_KEY = "5Gjd9T0b";
 
     private CryptoUtils() {
