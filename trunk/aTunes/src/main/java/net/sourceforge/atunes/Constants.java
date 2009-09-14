@@ -22,6 +22,7 @@ package net.sourceforge.atunes;
 
 import net.sourceforge.atunes.kernel.modules.updates.ApplicationVersion;
 import net.sourceforge.atunes.kernel.modules.updates.VersionType;
+import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -93,17 +94,11 @@ public final class Constants {
     /** The Constant XML_CACHE_FAVORITES_NAME. */
     public static final String XML_CACHE_FAVORITES_NAME = "favorites.xml";
 
-    /** Image width at audio object properties panel. */
-    public static final int IMAGE_WIDTH = 90;
+    /** Image size at audio object properties panel. */
+    public static final ImageSize IMAGE_SIZE = ImageSize.SIZE_90;
 
-    /** Image height at audio object properties panel. */
-    public static final int IMAGE_HEIGHT = 90;
-
-    /** Image width at dialogs. */
-    public static final int DIALOG_IMAGE_WIDTH = 120;
-
-    /** Image height at dialogs. */
-    public static final int DIALOG_IMAGE_HEIGHT = 120;
+    /** Image size at dialogs. */
+    public static final ImageSize DIALOG_IMAGE_SIZE = ImageSize.SIZE_120;
 
     /** Large image width at dialogs. */
     public static final int DIALOG_LARGE_IMAGE_WIDTH = 400;
@@ -228,12 +223,12 @@ public final class Constants {
     /**
      * Size of album image in ContextPanel. Images are scaled to fit this size
      */
-    public static final int ALBUM_IMAGE_SIZE = 200;
+    public static final ImageSize ALBUM_IMAGE_SIZE = ImageSize.SIZE_200;
 
     /**
      * Size of images in cover navigator
      */
-    public static final int COVER_NAVIGATOR_IMAGE_SIZE = 150;
+    public static final ImageSize COVER_NAVIGATOR_IMAGE_SIZE = ImageSize.SIZE_150;
 
     /** VLC config file */
     public static final String VLC_CONFIG_FILE = "/settings/vlc.properties";

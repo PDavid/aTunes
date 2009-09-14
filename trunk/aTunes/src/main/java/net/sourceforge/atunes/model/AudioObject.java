@@ -155,11 +155,6 @@ public interface AudioObject {
     public Integer getDiscNumber();
 
     /**
-     * If this audio object can have custom images.
-     */
-    public boolean canHaveCustomImages();
-
-    /**
      * Returns a generic image for this audio object.
      * 
      * @param imageSize
@@ -170,14 +165,11 @@ public interface AudioObject {
     public ImageIcon getGenericImage(GenericImageSize imageSize);
 
     /**
-     * Returns a custom image for this audio object.
+     * Returns a image for this audio object.
      * 
-     * @param width
-     *            the width of the custom image
-     * @param height
-     *            the height of the custom image
-     * @return the custom image or <code>null</code> if no such image is
-     *         available
+     * @param imageSize
+     *            the size of the image
+     * @return the image or <code>null</code> if no such image is available
      */
-    public ImageIcon getCustomImage(int width, int height);
+    public ImageIcon getImage(ImageSize imageSize);
 }

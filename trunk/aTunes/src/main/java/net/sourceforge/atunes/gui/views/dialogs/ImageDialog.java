@@ -81,7 +81,7 @@ public class ImageDialog extends CustomFrame {
             thumbs = new ImageIcon[] { ImageLoader.getImage(ImageLoader.RSS) };
         } else {
             images = AudioFilePictureUtils.getPicturesForFile((AudioFile) audioObject, -1, -1);
-            thumbs = AudioFilePictureUtils.getPicturesForFile((AudioFile) audioObject, Constants.IMAGE_WIDTH, Constants.IMAGE_HEIGHT);
+            thumbs = AudioFilePictureUtils.getPicturesForFile((AudioFile) audioObject, Constants.IMAGE_SIZE.getSize(), Constants.IMAGE_SIZE.getSize());
         }
         if (images.length > 1) {
             setTitle(StringUtils.getString(Constants.APP_NAME, " - ", LanguageTool.getString("PICTURES_OF_FILE"), " ", audioObject.getTitle()));

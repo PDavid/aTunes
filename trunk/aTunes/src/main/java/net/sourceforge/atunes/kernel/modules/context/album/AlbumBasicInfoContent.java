@@ -92,7 +92,7 @@ public class AlbumBasicInfoContent extends ContextPanelContent {
 
             Image image = (Image) result.get(AlbumInfoDataSource.OUTPUT_IMAGE);
             if (image != null) {
-                ImageIcon imageIcon = ImageUtils.resize(new ImageIcon(image), Constants.ALBUM_IMAGE_SIZE, Constants.ALBUM_IMAGE_SIZE);
+                ImageIcon imageIcon = ImageUtils.resize(new ImageIcon(image), Constants.ALBUM_IMAGE_SIZE.getSize(), Constants.ALBUM_IMAGE_SIZE.getSize());
                 albumCoverLabel.setIcon(imageIcon);
                 albumCoverLabel.setBorder(new DropShadowBorder());
             }

@@ -34,6 +34,7 @@ import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.GenericImageSize;
+import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.NetworkUtils;
 
@@ -434,12 +435,7 @@ public final class Radio implements AudioObject, Serializable, TreeObject, Compa
     }
 
     @Override
-    public boolean canHaveCustomImages() {
-        return false;
-    }
-
-    @Override
-    public ImageIcon getCustomImage(int width, int height) {
+    public ImageIcon getImage(ImageSize imageSize) {
         return null;
     }
 

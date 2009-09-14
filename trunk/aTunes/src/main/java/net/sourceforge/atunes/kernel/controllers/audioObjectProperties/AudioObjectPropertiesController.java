@@ -28,7 +28,6 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.SwingWorker;
 
-import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.views.panels.AudioObjectPropertiesPanel;
 import net.sourceforge.atunes.kernel.controllers.model.PanelController;
@@ -38,6 +37,7 @@ import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.GenericImageSize;
+import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.LanguageTool;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.TimeUtils;
@@ -118,12 +118,8 @@ public class AudioObjectPropertiesController extends PanelController<AudioObject
                 @Override
                 protected ImageIcon doInBackground() throws Exception {
                     ImageIcon imageForAudioObject;
-                    if (currentAudioObject.canHaveCustomImages()) {
-                        imageForAudioObject = currentAudioObject.getCustomImage(Constants.IMAGE_WIDTH, Constants.IMAGE_HEIGHT);
-                        if (imageForAudioObject == null) {
-                            imageForAudioObject = currentAudioObject.getGenericImage(GenericImageSize.MEDIUM);
-                        }
-                    } else {
+                    imageForAudioObject = currentAudioObject.getImage(ImageSize.SIZE_90);
+                    if (imageForAudioObject == null) {
                         imageForAudioObject = currentAudioObject.getGenericImage(GenericImageSize.MEDIUM);
                     }
                     return imageForAudioObject;

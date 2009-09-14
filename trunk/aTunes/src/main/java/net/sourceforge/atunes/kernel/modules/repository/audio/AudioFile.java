@@ -42,6 +42,7 @@ import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.GenericImageSize;
+import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 
 import org.jaudiotagger.audio.AudioFileIO;
@@ -703,18 +704,11 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
         return result;
     }
 
-    @Override
-    public boolean canHaveCustomImages() {
-        return true;
-    }
-
     /**
      * Returns an image associated to an audio file, with following order: - If
-     * a image saved by aTunes exists, then return it. - If not, find an
-     * internal image - If not, find an external image - If not, return null
+     * not, find an internal image - If not, find an external image - If not,
+     * return null
      * 
-     * @param file
-     *            Audio File
      * @param width
      *            Width in pixels or -1 to keep original width
      * @param height
@@ -723,11 +717,11 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
      * @return the image for audio file
      */
     @Override
-    public ImageIcon getCustomImage(int width, int height) {
+    public ImageIcon getImage(ImageSize imageSize) {
         ImageIcon result = null;
-        result = AudioFilePictureUtils.getInsidePicture(this, width, height);
+        result = AudioFilePictureUtils.getInsidePicture(this, imageSize.getSize(), imageSize.getSize());
         if (result == null) {
-            result = AudioFilePictureUtils.getExternalPicture(this, width, height);
+            result = AudioFilePictureUtils.getExternalPicture(this, imageSize.getSize(), imageSize.getSize());
         }
 
         return result;

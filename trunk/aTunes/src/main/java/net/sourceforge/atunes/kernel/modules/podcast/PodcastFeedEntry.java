@@ -32,6 +32,7 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.GenericImageSize;
+import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.DateUtils;
 
 /**
@@ -358,12 +359,7 @@ public final class PodcastFeedEntry implements AudioObject, Serializable, Compar
     }
 
     @Override
-    public boolean canHaveCustomImages() {
-        return false;
-    }
-
-    @Override
-    public ImageIcon getCustomImage(int width, int height) {
+    public ImageIcon getImage(ImageSize imageSize) {
         return null;
     }
 
