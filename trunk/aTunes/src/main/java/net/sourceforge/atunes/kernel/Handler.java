@@ -4,6 +4,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import net.sourceforge.atunes.kernel.modules.cdripper.RipperHandler;
 import net.sourceforge.atunes.kernel.modules.command.CommandHandler;
@@ -38,7 +41,7 @@ public abstract class Handler implements ApplicationStartListener, ApplicationFi
 
     private static List<Class<? extends Handler>> handlerClasses;
 
-    private static List<Thread> initializationTasks;
+    private static ExecutorService executorService = Executors.newFixedThreadPool(3);
 
     static {
         // TODO: Add here every new Handler
@@ -133,15 +136,13 @@ public abstract class Handler implements ApplicationStartListener, ApplicationFi
         }
 
         // Execute previous initialization tasks
-        initializationTasks = new ArrayList<Thread>();
         for (Handler handler : handlers) {
             Runnable task = handler.getPreviousInitializationTask();
             if (task != null) {
-                Thread thread = new Thread(task);
-                initializationTasks.add(thread);
-                thread.start();
+                executorService.submit(task);
             }
         }
+        executorService.shutdown();
     }
 
     /**
@@ -149,14 +150,11 @@ public abstract class Handler implements ApplicationStartListener, ApplicationFi
      */
     static void initHandlers() {
         // First join to all previous initialization tasks
-        for (Thread thread : initializationTasks) {
-            try {
-                thread.join();
-            } catch (InterruptedException e) {
-                getLogger().error(LogCategories.HANDLER, e);
-            }
+        try {
+            executorService.awaitTermination(1000, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            logger.error(LogCategories.HANDLER, e);
         }
-        initializationTasks = null;
 
         // Initialize handlers
         for (Handler handler : handlers) {
