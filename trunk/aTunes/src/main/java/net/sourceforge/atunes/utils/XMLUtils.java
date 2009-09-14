@@ -72,7 +72,6 @@ public final class XMLUtils {
     private XMLUtils() {
     }
 
-    /** The x path. */
     private static ThreadLocal<XPath> xPath = new ThreadLocal<XPath>() {
         @Override
         protected XPath initialValue() {
@@ -80,7 +79,6 @@ public final class XMLUtils {
         }
     };
 
-    /** The x stream. */
     private static XStream xStream = new XStream();
     static {
         xStream.alias("Repository", Repository.class);
