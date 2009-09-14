@@ -48,19 +48,11 @@ import net.sourceforge.atunes.utils.XMLUtils;
  */
 public final class RadioHandler extends Handler {
 
-    /** The instance. */
     private static RadioHandler instance = new RadioHandler();
 
-    /** The radios. */
     private List<Radio> radios;
-
-    /** The preset radios. */
     private List<Radio> presetRadios;
-
-    /** The retrieved preset radios. */
     List<Radio> retrievedPresetRadios = new ArrayList<Radio>();
-
-    /** The no new stations. */
     boolean noNewStations = true;
 
     /**
@@ -68,23 +60,17 @@ public final class RadioHandler extends Handler {
      */
     private RadioHandler() {
     }
-    
+
     @Override
     public void applicationStateChanged(ApplicationState newState) {
-    	// TODO Auto-generated method stub
-    	
     }
-    
+
     @Override
     protected void initHandler() {
-    	// TODO Auto-generated method stub
-    	
     }
-    
+
     @Override
     public void applicationStarted() {
-    	// TODO Auto-generated method stub
-    	
     }
 
     /**
@@ -115,7 +101,7 @@ public final class RadioHandler extends Handler {
     public void addRadio(Radio radio) {
         getLogger().info(LogCategories.HANDLER, "Adding radio");
         if (radio != null && !getRadios().contains(radio)) {
-        	getRadios().add(radio);
+            getRadios().add(radio);
         }
         Collections.sort(getRadios(), Radio.getComparator());
         NavigationHandler.getInstance().refreshView(RadioNavigationView.class);
@@ -134,20 +120,20 @@ public final class RadioHandler extends Handler {
 
     @Override
     protected Runnable getPreviousInitializationTask() {
-    	return new Runnable() {
-    		/**
-    		 * Read radio stations lists. We use different files, one for presets which
-    		 * is not modified by the user and a second one for all the user
-    		 * modifications.
-    		 */
-			@Override
-			public void run() {
-	    		radios = ApplicationStateHandler.getInstance().retrieveRadioCache();
-	    		presetRadios = ApplicationStateHandler.getInstance().retrieveRadioPreset();
-			}
-		};
+        return new Runnable() {
+            /**
+             * Read radio stations lists. We use different files, one for
+             * presets which is not modified by the user and a second one for
+             * all the user modifications.
+             */
+            @Override
+            public void run() {
+                radios = ApplicationStateHandler.getInstance().retrieveRadioCache();
+                presetRadios = ApplicationStateHandler.getInstance().retrieveRadioPreset();
+            }
+        };
     }
-    
+
     /**
      * Gets the radios.
      * 

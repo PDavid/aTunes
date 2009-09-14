@@ -311,7 +311,7 @@ public class FullScreenWindow extends CustomWindow {
             textLabel2.setText(((Radio) audioObject).getUrl());
         } else if (audioObject instanceof PodcastFeedEntry) {
             progressBar.setEnabled(false);
-            textLabel.setText(((PodcastFeedEntry) audioObject).getName());
+            textLabel.setText(((PodcastFeedEntry) audioObject).getTitle());
             textLabel2.setText(((PodcastFeedEntry) audioObject).getPodcastFeed().getName());
         } else {
             textLabel.setText(audioObject.getTitleOrFileName());

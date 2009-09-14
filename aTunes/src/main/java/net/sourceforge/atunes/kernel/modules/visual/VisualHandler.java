@@ -144,7 +144,7 @@ public final class VisualHandler extends Handler implements PlaybackStateListene
      */
     private VisualHandler() {
     }
-    
+
     @Override
     protected void initHandler() {
     }
@@ -258,13 +258,13 @@ public final class VisualHandler extends Handler implements PlaybackStateListene
      * @return the frame
      */
     public Frame getFrame() {
-    	if (frame == null) {
+        if (frame == null) {
             if (!ApplicationState.getInstance().isMultipleWindow()) {
                 frame = new StandardFrame();
             } else {
                 frame = new MultipleFrame();
             }
-    	}
+        }
         return frame;
     }
 
@@ -1327,7 +1327,7 @@ public final class VisualHandler extends Handler implements PlaybackStateListene
             }
 
             if (song instanceof PodcastFeedEntry) {
-                setTitleBar(StringUtils.getString(((PodcastFeedEntry) song).getName(), " (", ((PodcastFeedEntry) song).getUrl(), ")"));
+                setTitleBar(StringUtils.getString(((PodcastFeedEntry) song).getTitle(), " (", ((PodcastFeedEntry) song).getUrl(), ")"));
                 return;
             }
 

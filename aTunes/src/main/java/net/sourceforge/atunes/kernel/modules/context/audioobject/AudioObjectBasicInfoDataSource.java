@@ -95,7 +95,7 @@ public class AudioObjectBasicInfoDataSource implements ContextInformationDataSou
                 result.put(OUTPUT_TITLE, ((Radio) audioObject).getName());
                 result.put(OUTPUT_ARTIST, ((Radio) audioObject).getUrl());
             } else if (audioObject instanceof PodcastFeedEntry) {
-                result.put(OUTPUT_TITLE, ((PodcastFeedEntry) audioObject).getName());
+                result.put(OUTPUT_TITLE, ((PodcastFeedEntry) audioObject).getTitle());
             }
         }
         return result;

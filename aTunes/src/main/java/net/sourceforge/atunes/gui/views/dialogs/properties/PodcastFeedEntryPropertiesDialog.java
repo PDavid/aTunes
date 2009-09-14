@@ -111,7 +111,7 @@ class PodcastFeedEntryPropertiesDialog extends PropertiesDialog {
      * @return title for dialog
      */
     private static String getTitleText(PodcastFeedEntry entry) {
-        return StringUtils.getString(LanguageTool.getString("INFO_OF_PODCAST_FEED"), " ", entry.getName());
+        return StringUtils.getString(LanguageTool.getString("INFO_OF_PODCAST_FEED"), " ", entry.getTitle());
     }
 
     /**
@@ -211,8 +211,8 @@ class PodcastFeedEntryPropertiesDialog extends PropertiesDialog {
      */
     private void setContent() {
         fillPicture();
-        titleLabel.setText(getHtmlFormatted(LanguageTool.getString("NAME"), StringUtils.isEmpty(entry.getName()) ? "-" : entry.getName()));
-        artistLabel.setText(getHtmlFormatted(LanguageTool.getString("ARTIST"), StringUtils.isEmpty(entry.getAuthor()) ? "-" : entry.getAuthor()));
+        titleLabel.setText(getHtmlFormatted(LanguageTool.getString("NAME"), StringUtils.isEmpty(entry.getTitle()) ? "-" : entry.getTitle()));
+        artistLabel.setText(getHtmlFormatted(LanguageTool.getString("ARTIST"), StringUtils.isEmpty(entry.getArtist()) ? "-" : entry.getArtist()));
         urlLabel.setText(getHtmlFormatted(LanguageTool.getString("URL"), entry.getUrl()));
         if (entry.getDuration() > 0) {
             durationLabel.setText(getHtmlFormatted(LanguageTool.getString("DURATION"), TimeUtils.seconds2String(entry.getDuration())));
