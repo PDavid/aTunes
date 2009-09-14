@@ -27,28 +27,18 @@ import java.util.Map;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 
-/**
- * The Class ContextPanel.
- */
 public class ContextPanel extends JPanel {
 
     private static final long serialVersionUID = 707242790413122482L;
 
-    /** The Constant PREF_SIZE. */
     public static final Dimension PREF_SIZE = new Dimension(230, 0);
-
-    /** The Constant MINIMUM_SIZE. */
     public static final Dimension MINIMUM_SIZE = new Dimension(170, 0);
 
-    /** The tabbed pane. */
     private JTabbedPane tabbedPane;
-    
+
     private Map<net.sourceforge.atunes.kernel.modules.context.ContextPanel, Integer> panelsIndexes = new HashMap<net.sourceforge.atunes.kernel.modules.context.ContextPanel, Integer>();
 
     /**
@@ -126,29 +116,31 @@ public class ContextPanel extends JPanel {
     public int getSelectedIndex() {
         return tabbedPane.getSelectedIndex();
     }
-    
+
     /**
      * Adds a new context panel
+     * 
      * @param panel
      */
     public void addContextPanel(net.sourceforge.atunes.kernel.modules.context.ContextPanel panel) {
-    	tabbedPane.addTab(panel.getTitle(), panel.getIcon(), panel.getUIComponent());
-    	panelsIndexes.put(panel, tabbedPane.getTabCount()-1);
-    }
-    
-    /**
-     * Removes a context panel
-     * @param panel
-     */
-    public void removeContextPanel(net.sourceforge.atunes.kernel.modules.context.ContextPanel panel) {    	
-    	tabbedPane.remove(panelsIndexes.get(panel));
-    	panelsIndexes.remove(panel);
+        tabbedPane.addTab(panel.getTitle(), panel.getIcon(), panel.getUIComponent());
+        panelsIndexes.put(panel, tabbedPane.getTabCount() - 1);
     }
 
-	/**
-	 * @return the tabbedPane
-	 */
-	public JTabbedPane getTabbedPane() {
-		return tabbedPane;
-	}
+    /**
+     * Removes a context panel
+     * 
+     * @param panel
+     */
+    public void removeContextPanel(net.sourceforge.atunes.kernel.modules.context.ContextPanel panel) {
+        tabbedPane.remove(panelsIndexes.get(panel));
+        panelsIndexes.remove(panel);
+    }
+
+    /**
+     * @return the tabbedPane
+     */
+    public JTabbedPane getTabbedPane() {
+        return tabbedPane;
+    }
 }

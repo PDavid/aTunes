@@ -136,11 +136,6 @@ public class LyricsContent extends ContextPanelContent {
     }
 
     @Override
-    protected boolean isScrollNeeded() {
-        return true;
-    }
-
-    @Override
     protected List<Component> getOptions() {
         List<Component> options = new ArrayList<Component>();
         copyLyrics = new JMenuItem(new AbstractAction(LanguageTool.getString("COPY_TO_CLIPBOARD")) {
