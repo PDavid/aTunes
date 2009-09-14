@@ -37,7 +37,7 @@ public class CryptoUtilsTest {
     public void encryptAndDecryptTest() throws IOException, GeneralSecurityException {
         Assert.assertEquals(TEST_STRING_1, new String(CryptoUtils.decrypt(CryptoUtils.encrypt(TEST_STRING_1.getBytes()))));
         Assert.assertEquals(EMPTY_TEST_STRING, new String(CryptoUtils.decrypt(CryptoUtils.encrypt(EMPTY_TEST_STRING.getBytes()))));
-        Assert.assertEquals(EMPTY_TEST_STRING, new String(CryptoUtils.decrypt(CryptoUtils.encrypt(null))));
+        Assert.assertEquals(EMPTY_TEST_STRING, new String(CryptoUtils.decrypt(CryptoUtils.encrypt((byte[]) null))));
         Assert.assertEquals(TEST_STRING_2, new String(CryptoUtils.decrypt(CryptoUtils.encrypt(TEST_STRING_2.getBytes()))));
     }
 
