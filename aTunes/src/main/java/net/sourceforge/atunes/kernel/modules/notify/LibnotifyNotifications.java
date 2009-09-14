@@ -26,12 +26,12 @@ import java.util.concurrent.Executors;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.misc.TempFolder;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.GenericImageSize;
+import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.ImageUtils;
 
 public class LibnotifyNotifications implements Notifications {
@@ -58,13 +58,8 @@ public class LibnotifyNotifications implements Notifications {
                 StringBuilder sb = new StringBuilder();
 
                 sb.append("--icon=");
-                ImageIcon imageForAudioObject;
-                if (audioObject.canHaveCustomImages()) {
-                    imageForAudioObject = audioObject.getCustomImage(Constants.ALBUM_IMAGE_SIZE, Constants.ALBUM_IMAGE_SIZE);
-                    if (imageForAudioObject == null) {
-                        imageForAudioObject = audioObject.getGenericImage(GenericImageSize.MEDIUM);
-                    }
-                } else {
+                ImageIcon imageForAudioObject = audioObject.getImage(ImageSize.SIZE_200);
+                if (imageForAudioObject == null) {
                     imageForAudioObject = audioObject.getGenericImage(GenericImageSize.MEDIUM);
                 }
                 sb.append(TempFolder.getInstance().writeImageToTempFolder(ImageUtils.toBufferedImage(imageForAudioObject.getImage()), UUID.randomUUID().toString())

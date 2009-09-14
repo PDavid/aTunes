@@ -30,6 +30,7 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.LanguageTool;
@@ -156,8 +157,8 @@ public class Album implements Serializable, TreeObject, Comparable<Album> {
      * 
      * @return the picture
      */
-    public ImageIcon getPicture(int width, int height) {
-        return songs.get(0).getCustomImage(width, height);
+    public ImageIcon getPicture(ImageSize imageSize) {
+        return songs.get(0).getImage(imageSize);
     }
 
     /**
@@ -230,7 +231,7 @@ public class Album implements Serializable, TreeObject, Comparable<Album> {
 
     @Override
     public ImageIcon getExtendedToolTipImage() {
-        return getPicture(-1, -1);
+        return getPicture(ImageSize.SIZE_MAX);
     }
 
     @Override

@@ -37,6 +37,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.GenericImageSize;
+import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
@@ -133,14 +134,8 @@ public class OSDDialogController extends WindowController<OSDDialog> {
         // By default OSD image has shadow, unless it's a generic image
         getWindowControlled().setShadowBorder(true);
 
-        ImageIcon i;
-        if (audioObject.canHaveCustomImages()) {
-            i = audioObject.getCustomImage(-1, -1);
-            if (i == null) {
-                i = audioObject.getGenericImage(GenericImageSize.MEDIUM);
-                getWindowControlled().setShadowBorder(false);
-            }
-        } else {
+        ImageIcon i = audioObject.getImage(ImageSize.SIZE_MAX);
+        if (i == null) {
             i = audioObject.getGenericImage(GenericImageSize.MEDIUM);
             getWindowControlled().setShadowBorder(false);
         }

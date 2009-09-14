@@ -57,9 +57,9 @@ import org.jdesktop.swingx.border.DropShadowBorder;
  */
 public class CoverNavigatorController extends FrameController<CoverNavigatorFrame> {
 
-    private static final int COVER_PANEL_WIDTH = Constants.COVER_NAVIGATOR_IMAGE_SIZE + 20;
+    private static final int COVER_PANEL_WIDTH = Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize() + 20;
 
-    private static final int COVER_PANEL_HEIGHT = Constants.COVER_NAVIGATOR_IMAGE_SIZE + 40;
+    private static final int COVER_PANEL_HEIGHT = Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize() + 40;
 
     private static class IntermediateResult {
 
@@ -168,14 +168,14 @@ public class CoverNavigatorController extends FrameController<CoverNavigatorFram
         JLabel coverLabel = new JLabel(cover);
         coverLabel.setToolTipText(album.getName());
         if (cover == null) {
-            coverLabel.setPreferredSize(new Dimension(Constants.COVER_NAVIGATOR_IMAGE_SIZE, Constants.COVER_NAVIGATOR_IMAGE_SIZE));
+            coverLabel.setPreferredSize(new Dimension(Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize(), Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize()));
             coverLabel.setBorder(BorderFactory.createLineBorder(GuiUtils.getBorderColor()));
         } else {
             coverLabel.setBorder(new DropShadowBorder());
         }
 
         JLabel label = new JLabel(album.getName(), SwingConstants.CENTER);
-        label.setPreferredSize(new Dimension(Constants.COVER_NAVIGATOR_IMAGE_SIZE, 20));
+        label.setPreferredSize(new Dimension(Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize(), 20));
 
         panel.add(coverLabel);
         panel.add(label);
@@ -232,7 +232,7 @@ public class CoverNavigatorController extends FrameController<CoverNavigatorFram
                         c.fill = GridBagConstraints.NONE;
                         c.anchor = GridBagConstraints.NORTHWEST;
                     }
-                    ImageIcon cover = album.getPicture(Constants.COVER_NAVIGATOR_IMAGE_SIZE, Constants.COVER_NAVIGATOR_IMAGE_SIZE);
+                    ImageIcon cover = album.getPicture(Constants.COVER_NAVIGATOR_IMAGE_SIZE);
                     publish(new IntermediateResult(album, cover, (GridBagConstraints) c.clone()));
                     coversAdded++;
                     c.gridx++;

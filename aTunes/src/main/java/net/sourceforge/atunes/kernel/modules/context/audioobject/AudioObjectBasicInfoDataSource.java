@@ -109,11 +109,11 @@ public class AudioObjectBasicInfoDataSource implements ContextInformationDataSou
      */
     private ImageIcon getImage(AudioObject audioObject) {
         if (audioObject instanceof AudioFile) {
-            ImageIcon localImage = audioObject.getCustomImage(Constants.ALBUM_IMAGE_SIZE, Constants.ALBUM_IMAGE_SIZE);
+            ImageIcon localImage = audioObject.getImage(Constants.ALBUM_IMAGE_SIZE);
             if (localImage == null) {
                 Image image = LastFmService.getInstance().getAlbumImage(audioObject.getArtist(), audioObject.getAlbum());
                 if (image != null) {
-                    localImage = ImageUtils.resize(new ImageIcon(image), Constants.ALBUM_IMAGE_SIZE, Constants.ALBUM_IMAGE_SIZE);
+                    localImage = ImageUtils.resize(new ImageIcon(image), Constants.ALBUM_IMAGE_SIZE.getSize(), Constants.ALBUM_IMAGE_SIZE.getSize());
                 }
             }
             return localImage;

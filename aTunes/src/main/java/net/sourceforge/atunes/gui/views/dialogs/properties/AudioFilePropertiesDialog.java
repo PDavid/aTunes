@@ -137,7 +137,7 @@ class AudioFilePropertiesDialog extends PropertiesDialog {
         JPanel panel = new JPanel(new GridBagLayout());
 
         pictureLabel = new JLabel();
-        pictureLabel.setPreferredSize(new Dimension(Constants.DIALOG_IMAGE_WIDTH, Constants.DIALOG_IMAGE_HEIGHT));
+        pictureLabel.setPreferredSize(new Dimension(Constants.DIALOG_IMAGE_SIZE.getSize(), Constants.DIALOG_IMAGE_SIZE.getSize()));
         pictureLabel.setBorder(BorderFactory.createLineBorder(GuiUtils.getBorderColor()));
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
@@ -235,7 +235,7 @@ class AudioFilePropertiesDialog extends PropertiesDialog {
         new SwingWorker<ImageIcon, Void>() {
             @Override
             protected ImageIcon doInBackground() throws Exception {
-                return file.getCustomImage(Constants.DIALOG_IMAGE_WIDTH, Constants.DIALOG_IMAGE_HEIGHT);
+                return file.getImage(Constants.DIALOG_IMAGE_SIZE);
             }
 
             @Override
