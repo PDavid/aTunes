@@ -44,11 +44,11 @@ public final class PodcastFeedEntry implements AudioObject, Serializable, Compar
     private static Comparator<PodcastFeedEntry> comparator = new Comparator<PodcastFeedEntry>() {
         @Override
         public int compare(PodcastFeedEntry o1, PodcastFeedEntry o2) {
-            return o1.name.compareToIgnoreCase(o2.name);
+            return o1.title.compareToIgnoreCase(o2.title);
         }
     };
 
-    String name;
+    String title;
     private String author;
     private String url;
     private String description;
@@ -62,8 +62,8 @@ public final class PodcastFeedEntry implements AudioObject, Serializable, Compar
     /**
      * Constructor.
      * 
-     * @param name
-     *            the name of the podcast feed entry
+     * @param title
+     *            the title of the podcast feed entry
      * @param author
      *            the author of the podcast feed entry
      * @param url
@@ -77,8 +77,8 @@ public final class PodcastFeedEntry implements AudioObject, Serializable, Compar
      * @param podcastFeed
      *            the corresponding podcast feed of the podcast feed entry
      */
-    public PodcastFeedEntry(String name, String author, String url, String description, Date date, long duration, PodcastFeed podcastFeed) {
-        this.name = name;
+    public PodcastFeedEntry(String title, String author, String url, String description, Date date, long duration, PodcastFeed podcastFeed) {
+        this.title = title;
         this.author = author;
         this.url = url;
         this.description = description;
@@ -115,11 +115,6 @@ public final class PodcastFeedEntry implements AudioObject, Serializable, Compar
         return result;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object o) {
         if (o == null || !(o instanceof PodcastFeedEntry)) {
@@ -128,60 +123,26 @@ public final class PodcastFeedEntry implements AudioObject, Serializable, Compar
         return getUrl().equals(((PodcastFeedEntry) o).getUrl());
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.model.AudioObject#getAlbum()
-     */
     @Override
     public String getAlbum() {
         return getPodcastFeed().getName();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.model.AudioObject#getAlbumArtist()
-     */
     @Override
     public String getAlbumArtist() {
         return "";
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.model.AudioObject#getArtist()
-     */
     @Override
     public String getArtist() {
         return author;
     }
 
-    /**
-     * Gets the author.
-     * 
-     * @return the author
-     */
-    public String getAuthor() {
-        return author;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.model.AudioObject#getBitrate()
-     */
     @Override
     public long getBitrate() {
         return 0;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.model.AudioObject#getComposer()
-     */
     @Override
     public String getComposer() {
         return "";
@@ -205,53 +166,24 @@ public final class PodcastFeedEntry implements AudioObject, Serializable, Compar
         return description;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.model.AudioObject#getDuration()
-     */
     @Override
     public long getDuration() {
         return duration;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.model.AudioObject#getFrequency()
-     */
     @Override
     public int getFrequency() {
         return 0;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.model.AudioObject#getGenre()
-     */
     @Override
     public String getGenre() {
         return "";
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.model.AudioObject#getLyrics()
-     */
     @Override
     public String getLyrics() {
         return "";
-    }
-
-    /**
-     * Gets the name.
-     * 
-     * @return the name
-     */
-    public String getName() {
-        return name;
     }
 
     /**
@@ -273,62 +205,31 @@ public final class PodcastFeedEntry implements AudioObject, Serializable, Compar
         return podcastFeed;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.model.AudioObject#getStars()
-     */
     @Override
     public int getStars() {
         return 0;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.model.AudioObject#getTitle()
-     */
     @Override
     public String getTitle() {
-        return getName();
+        return title;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.model.AudioObject#getTitleOrFileName()
-     */
     @Override
     public String getTitleOrFileName() {
-        return getName();
+        return getTitle();
     }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.model.AudioObject#getTrackNumber()
-     */
 
     @Override
     public Integer getTrackNumber() {
         return 0;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.model.AudioObject#getUrl()
-     */
     @Override
     public String getUrl() {
         return url;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.model.AudioObject#getYear()
-     */
     @Override
     public String getYear() {
         if (date != null) {
@@ -339,11 +240,6 @@ public final class PodcastFeedEntry implements AudioObject, Serializable, Compar
         return "";
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         return getUrl().hashCode();
@@ -374,16 +270,6 @@ public final class PodcastFeedEntry implements AudioObject, Serializable, Compar
      */
     public boolean isOld() {
         return old;
-    }
-
-    /**
-     * Sets the author.
-     * 
-     * @param author
-     *            the author to set
-     */
-    public void setAuthor(String author) {
-        this.author = author;
     }
 
     /**
@@ -427,16 +313,6 @@ public final class PodcastFeedEntry implements AudioObject, Serializable, Compar
     }
 
     /**
-     * Sets the name.
-     * 
-     * @param name
-     *            the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
      * Sets the podcast feed.
      * 
      * @param podcastFeed
@@ -446,11 +322,6 @@ public final class PodcastFeedEntry implements AudioObject, Serializable, Compar
         this.podcastFeed = podcastFeed;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.model.AudioObject#setStars(int)
-     */
     @Override
     public void setStars(int stars) {
         // Nothing to do
@@ -466,21 +337,11 @@ public final class PodcastFeedEntry implements AudioObject, Serializable, Compar
         this.url = url;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
-        return name;
+        return title;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.model.AudioObject#isSeekable()
-     */
     @Override
     public boolean isSeekable() {
         return downloaded;
@@ -488,7 +349,7 @@ public final class PodcastFeedEntry implements AudioObject, Serializable, Compar
 
     @Override
     public int compareTo(PodcastFeedEntry o1) {
-        return name.compareTo(o1.name);
+        return title.compareTo(o1.title);
     }
 
     @Override

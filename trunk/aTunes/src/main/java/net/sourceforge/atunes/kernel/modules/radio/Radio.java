@@ -49,11 +49,11 @@ public final class Radio implements AudioObject, Serializable, TreeObject, Compa
     private static Comparator<Radio> comparator = new Comparator<Radio>() {
         @Override
         public int compare(Radio o1, Radio o2) {
-            return o1.name.compareToIgnoreCase(o2.name);
+            return o1.getName().compareToIgnoreCase(o2.getName());
         }
     };
 
-    String name;
+    private String name;
     private String url;
     private String label;
     private String genre;
@@ -188,17 +188,6 @@ public final class Radio implements AudioObject, Serializable, TreeObject, Compa
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     * Gets the radios.
-     * 
-     * @return the radios
-     */
-    public List<Radio> getRadios() {
-        List<Radio> songs = new ArrayList<Radio>();
-        songs.add(this);
-        return songs;
     }
 
     @Override

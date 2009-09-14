@@ -56,47 +56,32 @@ import net.sourceforge.atunes.utils.LanguageTool;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
- * The Class PodcastFeedHandler.
+ * The handler for podcast feeds.
  */
 public final class PodcastFeedHandler extends Handler {
 
-    /** The instance. */
     private static PodcastFeedHandler instance = new PodcastFeedHandler();
 
-    /** The default podcast feed entries retrieval interval. */
     public static final long DEFAULT_PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL = 180000;
 
-    /** The podcast feeds. */
     private List<PodcastFeed> podcastFeeds;
-
-    /*
+    /**
      * Podcast Feed Entry downloading
      */
-    /** The podcast feed entry downloader executor service. */
     private ExecutorService podcastFeedEntryDownloaderExecutorService = Executors.newCachedThreadPool();
-
     /** The running downloads. */
     volatile List<PodcastFeedEntryDownloader> runningDownloads = Collections.synchronizedList(new ArrayList<PodcastFeedEntryDownloader>());
-
-    /*
+    /**
      * Podcast Feed Entry download checker
      */
-    /** The podcast feed entry download checker executor service. */
     private ScheduledExecutorService podcastFeedEntryDownloadCheckerExecutorService = Executors.newScheduledThreadPool(1);
-
-    /*
-     * Podcast Feed Entry retrieval
-     */
-    /** The podcast feed entry retriever executor service. */
     private ScheduledExecutorService podcastFeedEntryRetrieverExecutorService = Executors.newScheduledThreadPool(1);
-
-    /** The scheduled podcast feed entry retriever future. */
     private ScheduledFuture<?> scheduledPodcastFeedEntryRetrieverFuture;
 
     @Override
     protected void initHandler() {
     }
-    
+
     @Override
     public void applicationStarted() {
         startPodcastFeedEntryDownloadChecker();
@@ -137,13 +122,13 @@ public final class PodcastFeedHandler extends Handler {
         Comparator<PodcastFeed> comparator = PodcastFeed.getComparator();
         for (int i = 0; i < getPodcastFeeds().size(); i++) {
             if (comparator.compare(podcastFeed, getPodcastFeeds().get(i)) < 0) {
-            	getPodcastFeeds().add(i, podcastFeed);
+                getPodcastFeeds().add(i, podcastFeed);
                 added = true;
                 break;
             }
         }
         if (!added) {
-        	getPodcastFeeds().add(podcastFeed);
+            getPodcastFeeds().add(podcastFeed);
         }
     }
 
@@ -165,14 +150,14 @@ public final class PodcastFeedHandler extends Handler {
 
     @Override
     protected Runnable getPreviousInitializationTask() {
-    	return new Runnable() {
-    		@Override
-    		public void run() {
-    			podcastFeeds = ApplicationStateHandler.getInstance().retrievePodcastFeedCache();
-    		}
-    	};
+        return new Runnable() {
+            @Override
+            public void run() {
+                podcastFeeds = ApplicationStateHandler.getInstance().retrievePodcastFeedCache();
+            }
+        };
     }
-    
+
     /**
      * Returns a list with all Podcast Feeds.
      * 
@@ -304,7 +289,7 @@ public final class PodcastFeedHandler extends Handler {
                 cancelDownloading(podcastFeedEntry, d, downloadPodcastFeedEntry);
             }
         });
-        d.setInfoText(podcastFeedEntry.getName());
+        d.setInfoText(podcastFeedEntry.getTitle());
         podcastFeedEntryDownloaderExecutorService.execute(downloadPodcastFeedEntry);
         d.setVisible(true);
     }
@@ -342,7 +327,7 @@ public final class PodcastFeedHandler extends Handler {
                 synchronized (runningDownloads) {
                     runningDownloads.remove(downloadPodcastFeedEntry);
                 }
-                getLogger().info(LogCategories.PODCAST, "podcast entry download cancelled: " + podcastFeedEntry.getName());
+                getLogger().info(LogCategories.PODCAST, "podcast entry download cancelled: " + podcastFeedEntry.getTitle());
             }
         };
         new Thread(r).start();
