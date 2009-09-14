@@ -107,7 +107,7 @@ public abstract class ContextPanelContent {
      * previous information retrieved for previous audio object
      */
     protected void clearContextPanelContent() {
-        parentTaskPane.setCollapsed(true);
+   		parentTaskPane.setCollapsed(true);
         if (worker != null) {
             worker.cancel(true);
         }
