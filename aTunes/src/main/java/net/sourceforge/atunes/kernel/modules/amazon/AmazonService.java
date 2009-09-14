@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel.modules.amazon;
 
 import java.awt.Image;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -29,34 +30,23 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationStateChangeListene
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.utils.CryptoUtils;
 import net.sourceforge.atunes.utils.NetworkUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.XMLUtils;
 
 import org.w3c.dom.Document;
 
-/**
- * The Class AmazonService.
- */
 public class AmazonService implements ApplicationStateChangeListener {
 
-    /** The logger. */
-    private Logger logger;
+    private static Logger logger;
 
-    /** The Constant SUBSCRIPTION_ID. */
-    private static final String SUBSCRIPTION_ID = "06SX9FYP905XDBHBCZR2";
-
-    /** The Constant ARTIST_WILDCARD. */
+    private static final byte[] SUBSCRIPTION_ID = { 104, -42, 15, -100, -57, 28, -119, 50, -53, -82, -46, 108, 37, -25, -74, 110, -112, 93, -100, 3, 99, -94, 17, 79 };
     private static final String ARTIST_WILDCARD = "(%ARTIST%)";
-
-    /** The Constant ALBUM_WILDCARD. */
     private static final String ALBUM_WILDCARD = "(%ALBUM%)";
+    private static String searchURL = StringUtils.getString("http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&Operation=ItemSearch&SubscriptionId=",
+            getSubscriptionId(), "&SearchIndex=Music&Artist=", ARTIST_WILDCARD, "&Title=", ALBUM_WILDCARD, "&ResponseGroup=Images,Tracks");
 
-    /** The search url. */
-    private static String searchURL = StringUtils.getString("http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&Operation=ItemSearch&SubscriptionId=", SUBSCRIPTION_ID,
-            "&SearchIndex=Music&Artist=", ARTIST_WILDCARD, "&Title=", ALBUM_WILDCARD, "&ResponseGroup=Images,Tracks");
-
-    /** The proxy. */
     private Proxy proxy;
 
     /**
@@ -150,5 +140,16 @@ public class AmazonService implements ApplicationStateChangeListener {
     @Override
     public void applicationStateChanged(ApplicationState newState) {
         setProxyBean(newState.getProxy());
+    }
+
+    private static String getSubscriptionId() {
+        try {
+            return new String(CryptoUtils.decrypt(SUBSCRIPTION_ID));
+        } catch (GeneralSecurityException e) {
+            logger.internalError(e);
+        } catch (IOException e) {
+            logger.internalError(e);
+        }
+        return "";
     }
 }
