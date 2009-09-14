@@ -30,7 +30,6 @@ import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.text.StyleConstants;
 
 import net.sourceforge.atunes.Constants;
@@ -120,9 +119,6 @@ public class ArtistBasicInfoContent extends ContextPanelContent {
         artistWikiAbstract.setEditable(false);
         artistWikiAbstract.setBorder(BorderFactory.createEmptyBorder());
         artistWikiAbstract.setOpaque(false);
-        JScrollPane artistWikiScrollPane = new JScrollPane(artistWikiAbstract);
-        artistWikiScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-        artistWikiScrollPane.setBorder(BorderFactory.createEmptyBorder());
         artistWikiReadMore = new UrlLabel();
 
         // Add components
@@ -140,7 +136,7 @@ public class ArtistBasicInfoContent extends ContextPanelContent {
         c.weightx = 1;
         c.weighty = 0.3;
         c.fill = GridBagConstraints.BOTH;
-        panel.add(artistWikiScrollPane, c);
+        panel.add(artistWikiAbstract, c);
         c.gridy = 3;
         c.weighty = 0;
         panel.add(artistWikiReadMore, c);
