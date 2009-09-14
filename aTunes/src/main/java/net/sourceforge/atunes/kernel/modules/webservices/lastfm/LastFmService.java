@@ -40,6 +40,7 @@ import net.roarsoftware.lastfm.Album;
 import net.roarsoftware.lastfm.Artist;
 import net.roarsoftware.lastfm.Authenticator;
 import net.roarsoftware.lastfm.Caller;
+import net.roarsoftware.lastfm.Event;
 import net.roarsoftware.lastfm.ImageSize;
 import net.roarsoftware.lastfm.PaginatedResult;
 import net.roarsoftware.lastfm.Playlist;
@@ -945,6 +946,16 @@ public class LastFmService {
         }
     }
 
+    /**
+     * Returns events of an artist
+     * TODO: This is a convenience method to allow plugins access last fm services without opening access to api key outside this class 
+     * @param artist
+     * @return
+     */
+    public Collection<Event> getArtistEvents(String artist) {
+    	return Artist.getEvents(artist, getApiKey());
+    }
+     
     private static String getApiKey() {
         try {
             return new String(CryptoUtils.decrypt(API_KEY));

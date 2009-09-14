@@ -200,9 +200,14 @@ public final class ContextHandler extends Handler implements PluginListener {
         if (audioObject == null) {
             return;
         }
-
+        
+        // Context panel can be removed so check index
+        int selectedTab = ApplicationState.getInstance().getSelectedContextTab();
+        if (selectedTab >= getContextPanels().size()) {
+        	selectedTab = 0;
+        }
         // Update current context panel
-        getContextPanels().get(ApplicationState.getInstance().getSelectedContextTab()).updateContextPanel(audioObject);
+        getContextPanels().get(selectedTab).updateContextPanel(audioObject);
     }
 
     /**
