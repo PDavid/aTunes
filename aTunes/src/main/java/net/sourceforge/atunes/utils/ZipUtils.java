@@ -52,10 +52,15 @@ public final class ZipUtils {
      * @throws IOException
      */
     public static void unzipArchive(File archive, File outputDir) throws IOException {
-        ZipFile zipfile = new ZipFile(archive);
-        for (Enumeration<? extends ZipEntry> e = zipfile.entries(); e.hasMoreElements();) {
-            ZipEntry entry = e.nextElement();
-            unzipEntry(zipfile, entry, outputDir);
+        ZipFile zipfile = null;
+        try {
+            zipfile = new ZipFile(archive);
+            for (Enumeration<? extends ZipEntry> e = zipfile.entries(); e.hasMoreElements();) {
+                ZipEntry entry = e.nextElement();
+                unzipEntry(zipfile, entry, outputDir);
+            }
+        } finally {
+            ClosingUtils.close(zipfile);
         }
     }
 
@@ -81,8 +86,8 @@ public final class ZipUtils {
         try {
             IOUtils.copy(inputStream, outputStream);
         } finally {
-            outputStream.close();
-            inputStream.close();
+            ClosingUtils.close(outputStream);
+            ClosingUtils.close(inputStream);
         }
     }
 
@@ -92,7 +97,8 @@ public final class ZipUtils {
      * @param dir
      */
     private static void createDir(File dir) throws IOException {
-        if (!dir.mkdirs())
+        if (!dir.mkdirs()) {
             throw new IOException("Can not create dir " + dir);
+        }
     }
 }

@@ -26,6 +26,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.zip.ZipFile;
 
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -54,6 +55,26 @@ public final class ClosingUtils {
         if (closable != null) {
             try {
                 closable.close();
+            } catch (IOException e) {
+                logger.error(LogCategories.INTERNAL_ERROR, e);
+            }
+        }
+    }
+
+    /**
+     * Closes a zip file
+     * <p>
+     * Note: This method does not throw an IOException
+     * </p>
+     * 
+     * @param zipFile
+     *            The zip file that should be closed (<code>null</code> is
+     *            permitted)
+     */
+    public static void close(ZipFile zipFile) {
+        if (zipFile != null) {
+            try {
+                zipFile.close();
             } catch (IOException e) {
                 logger.error(LogCategories.INTERNAL_ERROR, e);
             }
