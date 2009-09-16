@@ -294,12 +294,12 @@
 		<dependency>
 			<groupId>substance</groupId>
 			<artifactId>substance</artifactId>
-			<version>5.2</version>
+			<version>5.3-RC</version>
 		</dependency>
 		<dependency>
 			<groupId>substance</groupId>
 			<artifactId>substance-swingx</artifactId>
-			<version>5.2</version>
+			<version>5.3-RC</version>
 		</dependency>
 		<dependency>
 			<groupId>libxine</groupId>

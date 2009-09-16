@@ -35,9 +35,6 @@ public class ThemePreviewLoader {
     private static Map<String, String> preview = new HashMap<String, String>();
 
     static {
-        /*
-         * toned down skins
-         */
         preview.put("BusinessBlackSteel", "BusinessBlackSteel.png");
         preview.put("Creme", "Creme.png");
         preview.put("Business", "Business.png");
@@ -53,10 +50,6 @@ public class ThemePreviewLoader {
         preview.put("MistAqua", "MistAqua.png");
         preview.put("Dust", "Dust.png");
         preview.put("DustCoffee", "DustCoffee.png");
-
-        /*
-         * dark skins
-         */
         preview.put("RavenGraphite", "RavenGraphite.png");
         preview.put("RavenGraphiteGlass", "RavenGraphiteGlass.png");
         preview.put("Raven", "Raven.png");
@@ -64,12 +57,10 @@ public class ThemePreviewLoader {
         preview.put("ChallengerDeep", "ChallengerDeep.png");
         preview.put("EmeraldDusk", "EmeraldDusk.png");
         preview.put("Twilight", "Twilight.png");
-
-        /*
-         * satured skins
-         */
         preview.put("OfficeBlue2007", "OfficeBlue2007.png");
-
+        preview.put("Gemini", "Gemini.png");
+        preview.put("GraphiteAqua", "GraphiteAqua.png");
+        preview.put("Magellan", "Magellan.png");
         /*
          * custom skins
          */
