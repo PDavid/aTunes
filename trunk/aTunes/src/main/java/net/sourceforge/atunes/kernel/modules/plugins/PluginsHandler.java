@@ -40,6 +40,7 @@ import net.sourceforge.atunes.kernel.modules.player.PlaybackStateListener;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.SystemProperties;
+import net.sourceforge.atunes.misc.Timer;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.ZipUtils;
@@ -80,6 +81,8 @@ public class PluginsHandler extends Handler implements PluginListener {
      */
     private void initPlugins() {
         try {
+        	Timer t = new Timer();
+        	t.start();
             factory = new PluginsFactory();
             // Core plugins folder
             factory.addPluginsFolder(getCorePluginsFolder());
@@ -88,7 +91,7 @@ public class PluginsHandler extends Handler implements PluginListener {
             factory.addPluginsFolder(getUserPluginsFolder());
             addPluginListeners();
             int plugins = factory.start(getPluginClassNames());
-            getLogger().info(LogCategories.PLUGINS, StringUtils.getString("Found ", plugins, " plugins"));
+            getLogger().info(LogCategories.PLUGINS, StringUtils.getString("Found ", plugins, " plugins (", t.stop(), " seconds)"));            
         } catch (PluginSystemException e) {
             getLogger().error(LogCategories.PLUGINS, e);
         }
