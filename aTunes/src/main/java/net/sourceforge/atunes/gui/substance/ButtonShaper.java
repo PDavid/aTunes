@@ -37,9 +37,6 @@ import org.jvnet.substance.utils.border.SubstanceButtonBorder;
 /*
  * based on code from Xtreme Media Player
  */
-/**
- * The Class ButtonShaper.
- */
 public abstract class ButtonShaper implements SubstanceButtonShaper {
 
     @Override
@@ -48,11 +45,13 @@ public abstract class ButtonShaper implements SubstanceButtonShaper {
     }
 
     @Override
+    @Deprecated
     public GeneralPath getButtonOutline(AbstractButton button, Insets insets) {
         throw new UnsupportedOperationException();
     }
 
     @Override
+    @Deprecated
     public GeneralPath getButtonOutline(AbstractButton button, Insets insets, int width, int height) {
         throw new UnsupportedOperationException();
     }

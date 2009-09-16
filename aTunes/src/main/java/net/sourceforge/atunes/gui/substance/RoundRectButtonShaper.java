@@ -30,9 +30,6 @@ import javax.swing.AbstractButton;
 /*
  * based on code from Xtreme Media Player
  */
-/**
- * The Class RoundRectButtonShaper.
- */
 public class RoundRectButtonShaper extends ButtonShaper {
 
     @Override

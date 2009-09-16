@@ -30,9 +30,6 @@ import javax.swing.AbstractButton;
 /*
  * based on code from Xtreme Media Player
  */
-/**
- * The Class CircleButtonShaper.
- */
 public class CircleButtonShaper extends ButtonShaper {
 
     @Override

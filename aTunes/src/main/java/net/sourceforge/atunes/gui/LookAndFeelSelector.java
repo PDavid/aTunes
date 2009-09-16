@@ -41,9 +41,6 @@ import org.jvnet.lafwidget.utils.LafConstants;
 import org.jvnet.substance.SubstanceLookAndFeel;
 import org.jvnet.substance.api.SubstanceConstants;
 
-/**
- * The Class LookAndFeelSelector.
- */
 public final class LookAndFeelSelector {
 
     public static Logger logger = new Logger();
@@ -81,9 +78,6 @@ public final class LookAndFeelSelector {
     private static Map<String, String> setMapOfSkins() {
         Map<String, String> result = new HashMap<String, String>();
 
-        /*
-         * toned down skins
-         */
         result.put("BusinessBlackSteel", "org.jvnet.substance.skin.SubstanceBusinessBlackSteelLookAndFeel");
         result.put("Creme", "org.jvnet.substance.skin.SubstanceCremeLookAndFeel");
         result.put("Business", "org.jvnet.substance.skin.SubstanceBusinessLookAndFeel");
@@ -99,10 +93,6 @@ public final class LookAndFeelSelector {
         result.put("MistAqua", "org.jvnet.substance.skin.SubstanceMistAquaLookAndFeel");
         result.put("DustCoffee", "org.jvnet.substance.skin.SubstanceDustCoffeeLookAndFeel");
         result.put("Dust", "org.jvnet.substance.skin.SubstanceDustLookAndFeel");
-
-        /*
-         * dark skins
-         */
         result.put("RavenGraphite", "org.jvnet.substance.skin.SubstanceRavenGraphiteLookAndFeel");
         result.put("RavenGraphiteGlass", "org.jvnet.substance.skin.SubstanceRavenGraphiteGlassLookAndFeel");
         result.put("Raven", "org.jvnet.substance.skin.SubstanceRavenLookAndFeel");
@@ -110,11 +100,10 @@ public final class LookAndFeelSelector {
         result.put("ChallengerDeep", "org.jvnet.substance.skin.SubstanceChallengerDeepLookAndFeel");
         result.put("EmeraldDusk", "org.jvnet.substance.skin.SubstanceEmeraldDuskLookAndFeel");
         result.put("Twilight", "org.jvnet.substance.skin.SubstanceTwilightLookAndFeel");
-
-        /*
-         * satured skins
-         */
         result.put("OfficeBlue2007", "org.jvnet.substance.skin.SubstanceOfficeBlue2007LookAndFeel");
+        result.put("Gemini", "org.jvnet.substance.api.skin.SubstanceGeminiLookAndFeel");
+        result.put("Magellan", "org.jvnet.substance.api.skin.SubstanceMagellanLookAndFeel");
+        result.put("GraphiteAqua", "org.jvnet.substance.api.skin.SubstanceGraphiteAquaLookAndFeel");
 
         /*
          * custom skins
