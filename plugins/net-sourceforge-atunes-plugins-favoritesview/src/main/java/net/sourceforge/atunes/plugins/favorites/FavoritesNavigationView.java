@@ -46,7 +46,7 @@ import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.commonjukebox.plugins.Plugin;
 import org.commonjukebox.plugins.PluginConfiguration;
@@ -70,18 +70,18 @@ public final class FavoritesNavigationView extends NavigationView implements Plu
 
     @Override
     public String getTitle() {
-        return LanguageTool.getString("FAVORITES");
+        return I18nUtils.getString("FAVORITES");
     }
 
     @Override
     public String getTooltip() {
-        return LanguageTool.getString("FAVORITES_TAB_TOOLTIP");
+        return I18nUtils.getString("FAVORITES_TAB_TOOLTIP");
     }
 
     @Override
     public JTree getTree() {
         if (favoritesTree == null) {
-            favoritesTree = new NavigationTree(new DefaultTreeModel(new DefaultMutableTreeNode(LanguageTool.getString("FAVORITES"))));
+            favoritesTree = new NavigationTree(new DefaultTreeModel(new DefaultMutableTreeNode(I18nUtils.getString("FAVORITES"))));
             favoritesTree.setToggleClickCount(0);
             favoritesTree.setCellRenderer(getTreeRenderer());
         }
@@ -175,23 +175,23 @@ public final class FavoritesNavigationView extends NavigationView implements Plu
 
         Map<String, ?> data = getViewData(viewMode);
 
-        root.setUserObject(LanguageTool.getString("FAVORITES"));
+        root.setUserObject(I18nUtils.getString("FAVORITES"));
         root.removeAllChildren();
 
         DefaultMutableTreeNode artistsNode = new DefaultMutableTreeNode();
-        artistsNode.setUserObject(LanguageTool.getString("ARTISTS"));
+        artistsNode.setUserObject(I18nUtils.getString("ARTISTS"));
         nodesToExpand.add(artistsNode);
         addArtistNodes(artistsNode, treeFilter, (Map<String, Artist>) data.get("ARTISTS"), objectsSelected, objectsExpanded, nodesToSelect, nodesToExpand);
         root.add(artistsNode);
 
         DefaultMutableTreeNode albumsNode = new DefaultMutableTreeNode();
-        albumsNode.setUserObject(LanguageTool.getString("ALBUMS"));
+        albumsNode.setUserObject(I18nUtils.getString("ALBUMS"));
         nodesToExpand.add(albumsNode);
         addAlbumNodes(albumsNode, treeFilter, (Map<String, Album>) data.get("ALBUMS"), objectsSelected, objectsExpanded, nodesToSelect, nodesToExpand);
         root.add(albumsNode);
 
         DefaultMutableTreeNode songsNode = new DefaultMutableTreeNode();
-        songsNode.setUserObject(LanguageTool.getString("SONGS"));
+        songsNode.setUserObject(I18nUtils.getString("SONGS"));
         root.add(songsNode);
 
         treeModel.reload();
@@ -217,9 +217,9 @@ public final class FavoritesNavigationView extends NavigationView implements Plu
                 songs = ((TreeObject) node.getUserObject()).getAudioObjects();
             } else {
                 songs = new ArrayList<AudioObject>();
-                if (node.getUserObject().toString().equals(LanguageTool.getString("ARTISTS"))) {
+                if (node.getUserObject().toString().equals(I18nUtils.getString("ARTISTS"))) {
                     songs.addAll(RepositoryHandler.getInstance().getAudioFilesForArtists(FavoritesHandler.getInstance().getFavoriteArtistsInfo()));
-                } else if (node.getUserObject().toString().equals(LanguageTool.getString("ALBUMS"))) {
+                } else if (node.getUserObject().toString().equals(I18nUtils.getString("ALBUMS"))) {
                     songs.addAll(RepositoryHandler.getInstance().getAudioFilesForAlbums(FavoritesHandler.getInstance().getFavoriteAlbumsInfo()));
                 } else {
                     songs.addAll(new ArrayList<AudioFile>(FavoritesHandler.getInstance().getFavoriteSongsInfo().values()));
@@ -319,9 +319,9 @@ public final class FavoritesNavigationView extends NavigationView implements Plu
         case 0:
             return "";
         case 1:
-            return LanguageTool.getString("TITLE");
+            return I18nUtils.getString("TITLE");
         case 2:
-            return LanguageTool.getString("DURATION");
+            return I18nUtils.getString("DURATION");
         default:
             return "";
         }
@@ -392,11 +392,11 @@ public final class FavoritesNavigationView extends NavigationView implements Plu
                     label.setIcon(ImageLoader.getImage(ImageLoader.ALBUM));
                 } else if (content instanceof String) {
                     String str = (String) content;
-                    if (str.equals(LanguageTool.getString("ARTISTS"))) {
+                    if (str.equals(I18nUtils.getString("ARTISTS"))) {
                         label.setIcon(ImageLoader.getImage(ImageLoader.ARTIST));
-                    } else if (str.equals(LanguageTool.getString("ALBUMS"))) {
+                    } else if (str.equals(I18nUtils.getString("ALBUMS"))) {
                         label.setIcon(ImageLoader.getImage(ImageLoader.ALBUM));
-                    } else if (str.equals(LanguageTool.getString("SONGS"))) {
+                    } else if (str.equals(I18nUtils.getString("SONGS"))) {
                         label.setIcon(ImageLoader.getImage(ImageLoader.AUDIO_FILE_LITTLE));
                     } else {
                         label.setIcon(ImageLoader.getImage(ImageLoader.FAVORITE));

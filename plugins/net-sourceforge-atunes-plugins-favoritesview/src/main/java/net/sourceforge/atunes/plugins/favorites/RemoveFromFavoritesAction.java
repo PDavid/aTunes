@@ -38,15 +38,15 @@ import net.sourceforge.atunes.kernel.modules.repository.model.Album;
 import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class RemoveFromFavoritesAction extends Action {
 
     private static final long serialVersionUID = -4288879781314486222L;
 
     public RemoveFromFavoritesAction() {
-        super(LanguageTool.getString("REMOVE_FROM_FAVORITES"), ImageLoader.getImage(ImageLoader.DELETE_TAG));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("REMOVE_FROM_FAVORITES"));
+        super(I18nUtils.getString("REMOVE_FROM_FAVORITES"), ImageLoader.getImage(ImageLoader.DELETE_TAG));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("REMOVE_FROM_FAVORITES"));
     }
 
     @Override
