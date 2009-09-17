@@ -25,6 +25,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.Collator;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -49,6 +50,7 @@ import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
+import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -93,7 +95,7 @@ public class GeneralPanel extends PreferencesPanel {
         Arrays.sort(array, new Comparator<Locale>() {
             @Override
             public int compare(Locale l1, Locale l2) {
-                return java.text.Collator.getInstance().compare(l1.getDisplayName(currentLocale), l2.getDisplayName(currentLocale));
+                return Collator.getInstance().compare(l1.getDisplayName(currentLocale), l2.getDisplayName(currentLocale));
             }
         });
         language = new JComboBox(array);
@@ -151,9 +153,11 @@ public class GeneralPanel extends PreferencesPanel {
         theme.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String t = (String) theme.getSelectedItem();
-                themePreview.setIcon(ThemePreviewLoader.getImage(t));
+                String selectedTheme = (String) theme.getSelectedItem();
+                themePreview.setIcon(ThemePreviewLoader.getImage(selectedTheme));
+                GuiUtils.applyTheme(selectedTheme);
             }
+
         });
         themePreview = new JLabel(I18nUtils.getString("PREVIEW"));
         themePreview.setVerticalTextPosition(SwingConstants.TOP);
@@ -234,12 +238,8 @@ public class GeneralPanel extends PreferencesPanel {
         state.setShowSystemTray(showIconTray.isSelected());
         state.setShowTrayPlayer(showTrayPlayer.isSelected());
 
-        String oldTheme = state.getSkin();
         String newTheme = (String) theme.getSelectedItem();
         state.setSkin(newTheme);
-        if (!oldTheme.equals(newTheme)) {
-            needRestart = true;
-        }
 
         return needRestart;
     }

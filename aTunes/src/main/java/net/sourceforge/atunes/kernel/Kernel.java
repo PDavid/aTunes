@@ -151,6 +151,7 @@ public class Kernel {
                     // Set font smoothing
                     Fonts.setFontSmoothing();
                     // Set look and feel
+                    LookAndFeelSelector.initLookAndFeel();
                     LookAndFeelSelector.setLookAndFeel(ApplicationState.getInstance().getSkin());
                     ColorDefinitions.initColors();
                     // Set language

@@ -115,6 +115,18 @@ public final class LookAndFeelSelector {
         return result;
     }
 
+    public static void initLookAndFeel() {
+        if (Kernel.IGNORE_LOOK_AND_FEEL) {
+            return;
+        }
+
+        UIManager.put(LafWidget.ANIMATION_KIND, LafConstants.AnimationKind.NONE);
+        UIManager.put(SubstanceLookAndFeel.TABBED_PANE_CONTENT_BORDER_KIND, SubstanceConstants.TabContentPaneBorderKind.SINGLE_FULL);
+
+        JFrame.setDefaultLookAndFeelDecorated(true);
+        JDialog.setDefaultLookAndFeelDecorated(true);
+    }
+
     /**
      * Sets the look and feel.
      * 
@@ -136,11 +148,6 @@ public final class LookAndFeelSelector {
             // Get border color
             GuiUtils.setBorderColor(SubstanceLookAndFeel.getCurrentSkin().getMainActiveColorScheme().getMidColor());
 
-            UIManager.put(LafWidget.ANIMATION_KIND, LafConstants.AnimationKind.NONE);
-            UIManager.put(SubstanceLookAndFeel.TABBED_PANE_CONTENT_BORDER_KIND, SubstanceConstants.TabContentPaneBorderKind.SINGLE_FULL);
-
-            JFrame.setDefaultLookAndFeelDecorated(true);
-            JDialog.setDefaultLookAndFeelDecorated(true);
         } catch (ClassNotFoundException e) {
             logger.internalError(e);
         } catch (InstantiationException e) {
