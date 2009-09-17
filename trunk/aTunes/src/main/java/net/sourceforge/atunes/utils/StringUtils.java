@@ -223,7 +223,7 @@ public final class StringUtils {
      *            the start position
      * @return the unescaped HTML string
      */
-    public static final String unescapeHTML(String source, int start) {
+    public static String unescapeHTML(String source, int start) {
         return StringEscapeUtils.unescapeHtml(source.substring(start));
     }
 
@@ -233,7 +233,7 @@ public final class StringUtils {
      * @param number
      * @return
      */
-    public static final int getNumberOrZero(String number) {
+    public static int getNumberOrZero(String number) {
         if (isEmpty(number)) {
             return 0;
         }
@@ -255,7 +255,7 @@ public final class StringUtils {
      * @param endChar
      * @return
      */
-    public static final List<String> getTextBetweenChars(String string, char beginChar, char endChar) {
+    public static List<String> getTextBetweenChars(String string, char beginChar, char endChar) {
         List<String> result = new ArrayList<String>();
 
         if (string == null || string.indexOf(beginChar) == -1 || string.indexOf(endChar) == -1) {
