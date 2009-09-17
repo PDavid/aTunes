@@ -24,7 +24,6 @@
 - INTERNAL: Refactoring of play list
 - INTERNAL: Update search indexes only if user is going to perform a search
 - INTERNAL: Don't update navigation table if it's not visible
-- FIX: Too much memory needed when retrieving artist images from Last.fm with original size
 - FIX: Deleting many files from device freezes aTunes gui for some seconds [2855962]
 
 aTunes 1.13.4
@@ -32,6 +31,7 @@ aTunes 1.13.4
 - Lyricsfly engine update
 - FIX: Images with alpha channel are displayed wrong
 - FIX: Windows 7 ready application icon
+- FIX: Too much memory needed when retrieving artist images from Last.fm with original size
 
 aTunes 1.13.3
 -------------
