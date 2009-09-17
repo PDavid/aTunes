@@ -31,7 +31,7 @@ import net.sourceforge.atunes.gui.views.dialogs.editPreferences.EditPreferencesD
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The listener interface for receiving editPreferencesDialog events.
@@ -67,7 +67,7 @@ public class EditPreferencesDialogListener implements ListSelectionListener, Act
                 ApplicationStateHandler.getInstance().notifyApplicationStateChanged();
                 if (needRestart) {
                     // Let user decide if want to restart
-                    int result = VisualHandler.getInstance().showConfirmationDialog(LanguageTool.getString("APPLICATION_NEEDS_RESTART"), LanguageTool.getString("CONFIRMATION"));
+                    int result = VisualHandler.getInstance().showConfirmationDialog(I18nUtils.getString("APPLICATION_NEEDS_RESTART"), I18nUtils.getString("CONFIRMATION"));
                     if (result == JOptionPane.OK_OPTION) {
                         Kernel.getInstance().restart();
                     }

@@ -23,14 +23,14 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.kernel.modules.repository.tags.writer.TagEditionOperations;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class RepairTrackNumbersAction extends Action {
 
     private static final long serialVersionUID = 4117130815173907225L;
 
     RepairTrackNumbersAction() {
-        super(LanguageTool.getString("REPAIR_TRACK_NUMBERS"));
+        super(I18nUtils.getString("REPAIR_TRACK_NUMBERS"));
     }
 
     @Override

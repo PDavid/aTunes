@@ -37,7 +37,7 @@ import javax.swing.WindowConstants;
 import net.sourceforge.atunes.gui.views.controls.CustomFrame;
 import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The Class CoverNavigatorFrame.
@@ -71,7 +71,7 @@ public class CoverNavigatorFrame extends CustomFrame {
      *            the artists
      */
     public CoverNavigatorFrame(List<Artist> artists, Component owner) {
-        super(LanguageTool.getString("COVER_NAVIGATOR"), width, height, owner);
+        super(I18nUtils.getString("COVER_NAVIGATOR"), width, height, owner);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setContent(artists);
         setResizable(false);
@@ -140,7 +140,7 @@ public class CoverNavigatorFrame extends CustomFrame {
         coversScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         coversScrollPane.getVerticalScrollBar().setUnitIncrement(20);
 
-        coversButton = new JButton(LanguageTool.getString("GET_COVERS"));
+        coversButton = new JButton(I18nUtils.getString("GET_COVERS"));
         coversButton.setSize(new Dimension(150, 25));
         coversButton.setLocation(10 + (int) (width * 0.3) + 20, height - 70);
 

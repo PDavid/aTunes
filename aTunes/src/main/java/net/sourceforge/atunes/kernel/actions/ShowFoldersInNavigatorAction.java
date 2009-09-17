@@ -26,15 +26,15 @@ import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class ShowFoldersInNavigatorAction extends Action {
 
     private static final long serialVersionUID = -3422236983060989235L;
 
     ShowFoldersInNavigatorAction() {
-        super(LanguageTool.getString("SHOW_FOLDERS"), ImageLoader.getImage(ImageLoader.FOLDER));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("SHOW_FOLDERS"));
+        super(I18nUtils.getString("SHOW_FOLDERS"), ImageLoader.getImage(ImageLoader.FOLDER));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_FOLDERS"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().getViewMode() == ViewMode.FOLDER);
     }
 

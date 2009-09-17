@@ -26,15 +26,15 @@ import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationView;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class ExpandTreesAction extends Action {
 
     private static final long serialVersionUID = -2632581565309673327L;
 
     ExpandTreesAction() {
-        super(LanguageTool.getString("EXPAND"), ImageLoader.getImage(ImageLoader.EXPAND));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("EXPAND"));
+        super(I18nUtils.getString("EXPAND"), ImageLoader.getImage(ImageLoader.EXPAND));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("EXPAND"));
     }
 
     @Override

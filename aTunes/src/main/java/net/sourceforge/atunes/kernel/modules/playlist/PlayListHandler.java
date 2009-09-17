@@ -47,7 +47,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -207,7 +207,7 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
      */
     private String getNameForPlaylist(PlayList pl) {
         if (pl == null || pl.getName() == null) {
-            String name = StringUtils.getString(LanguageTool.getString("PLAYLIST"), " ", playListNameCounter++);
+            String name = StringUtils.getString(I18nUtils.getString("PLAYLIST"), " ", playListNameCounter++);
             // If any play list already has the same name then call method again
             for (PlayList playList : playLists) {
                 if (playList.getName() != null && name.equalsIgnoreCase(playList.getName().trim())) {
@@ -623,7 +623,7 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
                     process.execute();
                 }
             } else {
-                VisualHandler.getInstance().showErrorDialog(LanguageTool.getString("FILE_NOT_FOUND"));
+                VisualHandler.getInstance().showErrorDialog(I18nUtils.getString("FILE_NOT_FOUND"));
             }
         }
     }

@@ -36,7 +36,7 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -50,8 +50,8 @@ public class SavePlayListAction extends Action {
     private static final long serialVersionUID = -303252911138284095L;
 
     SavePlayListAction() {
-        super(StringUtils.getString(LanguageTool.getString("SAVE"), "..."), ImageLoader.getImage(ImageLoader.SAVE));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("SAVE_PLAYLIST_TOOLTIP"));
+        super(StringUtils.getString(I18nUtils.getString("SAVE"), "..."), ImageLoader.getImage(ImageLoader.SAVE));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("SAVE_PLAYLIST_TOOLTIP"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
     }
 
@@ -74,7 +74,7 @@ public class SavePlayListAction extends Action {
 
             // If file does not exist, or exist and overwrite is confirmed, then write file
             if (!file.exists()
-                    || (file.exists() && VisualHandler.getInstance().showConfirmationDialog(LanguageTool.getString("OVERWRITE_FILE"), LanguageTool.getString("INFO")) == JOptionPane.OK_OPTION)) {
+                    || (file.exists() && VisualHandler.getInstance().showConfirmationDialog(I18nUtils.getString("OVERWRITE_FILE"), I18nUtils.getString("INFO")) == JOptionPane.OK_OPTION)) {
                 PlayListIO.write(PlayListHandler.getInstance().getCurrentPlayList(true), file);
             }
         }

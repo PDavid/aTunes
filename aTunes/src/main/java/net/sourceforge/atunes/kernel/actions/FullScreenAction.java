@@ -27,7 +27,7 @@ import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * This action shows full screen mode
@@ -40,8 +40,8 @@ public class FullScreenAction extends Action {
     private static final long serialVersionUID = 916565212685861604L;
 
     FullScreenAction() {
-        super(LanguageTool.getString("FULL_SCREEN"), ImageLoader.getImage(ImageLoader.FULLSCREEN));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("FULL_SCREEN"));
+        super(I18nUtils.getString("FULL_SCREEN"), ImageLoader.getImage(ImageLoader.FULLSCREEN));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("FULL_SCREEN"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F11, 0));
     }
 

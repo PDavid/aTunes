@@ -27,7 +27,7 @@ import java.util.List;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.utils.DesktopUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Opens OS file browser with folder of selected elements
@@ -40,8 +40,8 @@ public class OpenFolderAction extends ActionOverSelectedObjects<AudioFile> {
     private static final long serialVersionUID = 1682289345922375850L;
 
     OpenFolderAction() {
-        super(LanguageTool.getString("OPEN_FOLDER"), ImageLoader.getImage(ImageLoader.FOLDER_ORANGE), AudioFile.class);
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("OPEN_FOLDER"));
+        super(I18nUtils.getString("OPEN_FOLDER"), ImageLoader.getImage(ImageLoader.FOLDER_ORANGE), AudioFile.class);
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("OPEN_FOLDER"));
     }
 
     @Override

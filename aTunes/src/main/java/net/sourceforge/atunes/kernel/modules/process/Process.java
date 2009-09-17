@@ -34,7 +34,7 @@ import net.sourceforge.atunes.gui.views.dialogs.ProgressDialog;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * A Process represents a task to be done in background. While task is being
@@ -111,7 +111,7 @@ public abstract class Process {
      * @return
      */
     protected String getProgressDialogInformation() {
-        return LanguageTool.getString("PLEASE_WAIT");
+        return I18nUtils.getString("PLEASE_WAIT");
     }
 
     /**

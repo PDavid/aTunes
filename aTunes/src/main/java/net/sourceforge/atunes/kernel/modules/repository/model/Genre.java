@@ -32,7 +32,7 @@ import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -174,7 +174,7 @@ public class Genre implements Serializable, TreeObject {
     public String getToolTip() {
         int artistNumber = getArtists().size();
         int songs = getAudioObjects().size();
-        return StringUtils.getString(getName(), " (", LanguageTool.getString("ARTISTS"), ": ", artistNumber, ", ", LanguageTool.getString("SONGS"), ": ", songs, ")");
+        return StringUtils.getString(getName(), " (", I18nUtils.getString("ARTISTS"), ": ", artistNumber, ", ", I18nUtils.getString("SONGS"), ": ", songs, ")");
     }
 
     @Override
@@ -186,9 +186,9 @@ public class Genre implements Serializable, TreeObject {
     public void setExtendedToolTip(ExtendedToolTip toolTip) {
         toolTip.setLine1(name);
         int artistNumber = artists.size();
-        toolTip.setLine2(StringUtils.getString(artistNumber, " ", (artistNumber > 1 ? LanguageTool.getString("ARTISTS") : LanguageTool.getString("ARTIST"))));
+        toolTip.setLine2(StringUtils.getString(artistNumber, " ", (artistNumber > 1 ? I18nUtils.getString("ARTISTS") : I18nUtils.getString("ARTIST"))));
         int songs = getAudioObjects().size();
-        toolTip.setLine3(StringUtils.getString(songs, " ", (songs > 1 ? LanguageTool.getString("SONGS") : LanguageTool.getString("SONG"))));
+        toolTip.setLine3(StringUtils.getString(songs, " ", (songs > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG"))));
     }
 
     @Override
@@ -209,7 +209,7 @@ public class Genre implements Serializable, TreeObject {
      * @return
      */
     public static String getUnknownGenre() {
-        return LanguageTool.getString("UNKNOWN_GENRE");
+        return I18nUtils.getString("UNKNOWN_GENRE");
     }
 
     /**

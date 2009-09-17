@@ -26,7 +26,7 @@ import java.util.List;
 import net.sourceforge.atunes.kernel.modules.process.Process;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * This class represents a process which performs changes in tag of a set of
@@ -53,7 +53,7 @@ public abstract class ChangeTagProcess extends Process {
 
     @Override
     public String getProgressDialogTitle() {
-        return LanguageTool.getString("PERFORMING_CHANGES");
+        return I18nUtils.getString("PERFORMING_CHANGES");
     }
 
     @Override

@@ -35,7 +35,7 @@ import net.sourceforge.atunes.kernel.modules.cdripper.RipperHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.utils.DateUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -88,7 +88,7 @@ public class RipCdDialogListener extends KeyAdapter implements ActionListener {
         } else if (e.getSource() == ripCdDialog.getFolderSelectionButton()) {
             JFileChooser chooser = new JFileChooser();
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            int returnVal = chooser.showDialog(ripCdDialog, LanguageTool.getString("SELECT_FOLDER"));
+            int returnVal = chooser.showDialog(ripCdDialog, I18nUtils.getString("SELECT_FOLDER"));
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File selectedPath = chooser.getSelectedFile();
                 ripCdDialog.getFolderName().setText(selectedPath.getAbsolutePath());

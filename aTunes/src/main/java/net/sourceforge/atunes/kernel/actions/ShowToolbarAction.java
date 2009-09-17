@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * This action shows or hides tool bar
@@ -37,7 +37,7 @@ public class ShowToolbarAction extends Action {
     private static final long serialVersionUID = -6045235796588795737L;
 
     ShowToolbarAction() {
-        super(LanguageTool.getString("SHOW_TOOL_BAR"), ImageLoader.getImage(ImageLoader.TOOL_BAR));
+        super(I18nUtils.getString("SHOW_TOOL_BAR"), ImageLoader.getImage(ImageLoader.TOOL_BAR));
     }
 
     @Override

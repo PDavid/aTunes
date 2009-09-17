@@ -37,7 +37,7 @@ import net.sourceforge.atunes.kernel.controllers.model.FrameController;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jfree.chart.ChartFactory;
@@ -124,7 +124,7 @@ public class StatsDialogController extends FrameController<StatsDialog> {
      */
     private void setAlbumsChart() {
         DefaultCategoryDataset dataset = getDataSet(RepositoryHandler.getInstance().getMostPlayedAlbumsInRanking(10));
-        JFreeChart chart = ChartFactory.createStackedBarChart3D(LanguageTool.getString("ALBUM_MOST_PLAYED"), null, null, dataset, PlotOrientation.HORIZONTAL, false, false, false);
+        JFreeChart chart = ChartFactory.createStackedBarChart3D(I18nUtils.getString("ALBUM_MOST_PLAYED"), null, null, dataset, PlotOrientation.HORIZONTAL, false, false, false);
         chart.getTitle().setFont(Fonts.CHART_TITLE_FONT);
         chart.setBackgroundPaint(Color.WHITE);
         chart.setPadding(new RectangleInsets(5, 0, 0, 0));
@@ -152,7 +152,7 @@ public class StatsDialogController extends FrameController<StatsDialog> {
     private void setAlbumsTable() {
         List<Object[]> albums = RepositoryHandler.getInstance().getMostPlayedAlbumsInRanking(-1);
         if (albums != null) {
-            String[] headers = new String[] { LanguageTool.getString("ALBUM"), LanguageTool.getString("TIMES_PLAYED"), "%" };
+            String[] headers = new String[] { I18nUtils.getString("ALBUM"), I18nUtils.getString("TIMES_PLAYED"), "%" };
             Object[][] content = new Object[albums.size()][3];
             for (int i = 0; i < albums.size(); i++) {
                 content[i][0] = albums.get(i)[0];
@@ -172,7 +172,7 @@ public class StatsDialogController extends FrameController<StatsDialog> {
      */
     private void setArtistsChart() {
         DefaultCategoryDataset dataset = getDataSet(RepositoryHandler.getInstance().getMostPlayedArtistsInRanking(10));
-        JFreeChart chart = ChartFactory.createStackedBarChart3D(LanguageTool.getString("ARTIST_MOST_PLAYED"), null, null, dataset, PlotOrientation.HORIZONTAL, false, false, false);
+        JFreeChart chart = ChartFactory.createStackedBarChart3D(I18nUtils.getString("ARTIST_MOST_PLAYED"), null, null, dataset, PlotOrientation.HORIZONTAL, false, false, false);
         chart.getTitle().setFont(Fonts.CHART_TITLE_FONT);
         chart.setBackgroundPaint(Color.WHITE);
         chart.setPadding(new RectangleInsets(5, 0, 0, 0));
@@ -200,7 +200,7 @@ public class StatsDialogController extends FrameController<StatsDialog> {
     private void setArtistsTable() {
         List<Object[]> artists = RepositoryHandler.getInstance().getMostPlayedArtistsInRanking(-1);
         if (artists != null) {
-            String[] headers = new String[] { LanguageTool.getString("ARTIST"), LanguageTool.getString("TIMES_PLAYED"), "%" };
+            String[] headers = new String[] { I18nUtils.getString("ARTIST"), I18nUtils.getString("TIMES_PLAYED"), "%" };
             Object[][] content = new Object[artists.size()][3];
             for (int i = 0; i < artists.size(); i++) {
                 content[i][0] = artists.get(i)[0];
@@ -222,9 +222,9 @@ public class StatsDialogController extends FrameController<StatsDialog> {
         DefaultPieDataset dataset = new DefaultPieDataset();
         int different = RepositoryHandler.getInstance().getDifferentAudioFilesPlayed();
         int total = RepositoryHandler.getInstance().getAudioFiles().size();
-        dataset.setValue(LanguageTool.getString("SONGS_PLAYED"), different);
-        dataset.setValue(LanguageTool.getString("SONGS_NEVER_PLAYED"), total - different);
-        JFreeChart chart = ChartFactory.createPieChart3D(LanguageTool.getString("SONGS_PLAYED"), dataset, false, false, false);
+        dataset.setValue(I18nUtils.getString("SONGS_PLAYED"), different);
+        dataset.setValue(I18nUtils.getString("SONGS_NEVER_PLAYED"), total - different);
+        JFreeChart chart = ChartFactory.createPieChart3D(I18nUtils.getString("SONGS_PLAYED"), dataset, false, false, false);
         chart.getTitle().setFont(Fonts.CHART_TITLE_FONT);
         chart.setBackgroundPaint(GuiUtils.getBackgroundColor());
         chart.getTitle().setPaint(GuiUtils.getForegroundColor());
@@ -247,14 +247,14 @@ public class StatsDialogController extends FrameController<StatsDialog> {
         int different = RepositoryHandler.getInstance().getDifferentAudioFilesPlayed();
         int total = RepositoryHandler.getInstance().getAudioFiles().size();
         if (total != 0) {
-            String[] headers = new String[] { " ", LanguageTool.getString("COUNT"), "%" };
+            String[] headers = new String[] { " ", I18nUtils.getString("COUNT"), "%" };
             Object[][] content = new Object[2][3];
             content[0] = new Object[3];
-            content[0][0] = LanguageTool.getString("SONGS_PLAYED");
+            content[0][0] = I18nUtils.getString("SONGS_PLAYED");
             content[0][1] = different;
             content[0][2] = StringUtils.toString((float) different / (float) total * 100, 2);
             content[1] = new Object[3];
-            content[1][0] = LanguageTool.getString("SONGS_NEVER_PLAYED");
+            content[1][0] = I18nUtils.getString("SONGS_NEVER_PLAYED");
             content[1][1] = total - different;
             content[1][2] = StringUtils.toString((float) (total - different) / (float) total * 100, 2);
             setTable(getFrameControlled().getGeneralTable(), headers, content);
@@ -266,7 +266,7 @@ public class StatsDialogController extends FrameController<StatsDialog> {
      */
     private void setSongsChart() {
         DefaultCategoryDataset dataset = getDataSet(RepositoryHandler.getInstance().getMostPlayedAudioFilesInRanking(10));
-        JFreeChart chart = ChartFactory.createStackedBarChart3D(LanguageTool.getString("SONG_MOST_PLAYED"), null, null, dataset, PlotOrientation.HORIZONTAL, false, false, false);
+        JFreeChart chart = ChartFactory.createStackedBarChart3D(I18nUtils.getString("SONG_MOST_PLAYED"), null, null, dataset, PlotOrientation.HORIZONTAL, false, false, false);
         chart.getTitle().setFont(Fonts.CHART_TITLE_FONT);
         chart.setBackgroundPaint(Color.WHITE);
         chart.setPadding(new RectangleInsets(5, 0, 0, 0));
@@ -294,7 +294,7 @@ public class StatsDialogController extends FrameController<StatsDialog> {
     private void setSongsTable() {
         List<Object[]> songs = RepositoryHandler.getInstance().getMostPlayedAudioFilesInRanking(-1);
         if (songs != null) {
-            String[] headers = new String[] { LanguageTool.getString("SONG"), LanguageTool.getString("TIMES_PLAYED"), "%" };
+            String[] headers = new String[] { I18nUtils.getString("SONG"), I18nUtils.getString("TIMES_PLAYED"), "%" };
             Object[][] content = new Object[songs.size()][3];
             for (int i = 0; i < songs.size(); i++) {
                 content[i][0] = songs.get(i)[0];

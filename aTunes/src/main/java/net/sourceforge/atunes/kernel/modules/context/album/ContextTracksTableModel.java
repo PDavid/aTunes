@@ -28,7 +28,7 @@ import javax.swing.table.TableModel;
 
 import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
 import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -92,7 +92,7 @@ public class ContextTracksTableModel implements TableModel {
      */
     @Override
     public String getColumnName(int columnIndex) {
-        return columnIndex != 0 ? LanguageTool.getString("SONGS") : "";
+        return columnIndex != 0 ? I18nUtils.getString("SONGS") : "";
     }
 
     /*

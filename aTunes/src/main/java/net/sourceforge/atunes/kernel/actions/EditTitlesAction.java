@@ -30,15 +30,15 @@ import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.repository.model.Album;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class EditTitlesAction extends Action {
 
     private static final long serialVersionUID = -2883223880879440970L;
 
     EditTitlesAction() {
-        super(LanguageTool.getString("EDIT_TITLES"), ImageLoader.getImage(ImageLoader.EDIT_ALBUM));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("EDIT_TITLES"));
+        super(I18nUtils.getString("EDIT_TITLES"), ImageLoader.getImage(ImageLoader.EDIT_ALBUM));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("EDIT_TITLES"));
     }
 
     @Override

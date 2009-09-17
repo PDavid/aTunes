@@ -56,7 +56,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
@@ -76,7 +76,7 @@ public class PlayerPanel extends PreferencesPanel {
 
         @Override
         public String getColumnName(int column) {
-            return column == 0 ? LanguageTool.getString("ACTION") : LanguageTool.getString("HOTKEY");
+            return column == 0 ? I18nUtils.getString("ACTION") : I18nUtils.getString("HOTKEY");
         }
 
         @Override
@@ -146,19 +146,19 @@ public class PlayerPanel extends PreferencesPanel {
      * Instantiates a new player panel.
      */
     public PlayerPanel() {
-        super(LanguageTool.getString("PLAYER"));
+        super(I18nUtils.getString("PLAYER"));
         Box engineBox = Box.createHorizontalBox();
         engineBox.setAlignmentX(Component.LEFT_ALIGNMENT);
-        engineBox.add(new JLabel(LanguageTool.getString("PLAYER_ENGINE")));
+        engineBox.add(new JLabel(I18nUtils.getString("PLAYER_ENGINE")));
         engineBox.add(Box.createHorizontalStrut(6));
         engineCombo = new JComboBox(PlayerHandler.getInstance().getEngineNames());
         engineBox.add(engineCombo);
         engineBox.add(Box.createHorizontalGlue());
-        playAtStartup = new JCheckBox(LanguageTool.getString("PLAY_AT_STARTUP"));
-        useFadeAway = new JCheckBox(LanguageTool.getString("USE_FADE_AWAY"));
-        showTicks = new JCheckBox(LanguageTool.getString("SHOW_TICKS"));
-        useShortPathNames = new JCheckBox(LanguageTool.getString("USE_SHORT_PATH_NAMES_FOR_MPLAYER"));
-        enableGlobalHotkeys = new JCheckBox(LanguageTool.getString("ENABLE_GLOBAL_HOTKEYS"));
+        playAtStartup = new JCheckBox(I18nUtils.getString("PLAY_AT_STARTUP"));
+        useFadeAway = new JCheckBox(I18nUtils.getString("USE_FADE_AWAY"));
+        showTicks = new JCheckBox(I18nUtils.getString("SHOW_TICKS"));
+        useShortPathNames = new JCheckBox(I18nUtils.getString("USE_SHORT_PATH_NAMES_FOR_MPLAYER"));
+        enableGlobalHotkeys = new JCheckBox(I18nUtils.getString("ENABLE_GLOBAL_HOTKEYS"));
 
         hotkeyTable = new JTable();
         hotkeyTable.setModel(tableModel);
@@ -178,13 +178,13 @@ public class PlayerPanel extends PreferencesPanel {
                 }
                 String keyWarnings = "";
                 if (conflicts.contains(row)) {
-                    keyWarnings += LanguageTool.getString("DUPLICATE_HOTKEYS");
+                    keyWarnings += I18nUtils.getString("DUPLICATE_HOTKEYS");
                 }
                 if (notRecommendedKeys.contains(row)) {
                     if (conflicts.contains(row)) {
                         keyWarnings += " ";
                     }
-                    keyWarnings += LanguageTool.getString("NOT_RECOMMENDED_HOTKEYS");
+                    keyWarnings += I18nUtils.getString("NOT_RECOMMENDED_HOTKEYS");
                 }
                 ((JLabel) c).setToolTipText(keyWarnings.isEmpty() ? null : keyWarnings);
                 return c;
@@ -216,7 +216,7 @@ public class PlayerPanel extends PreferencesPanel {
             inputMap.put(keyStroke, "none");
         }
 
-        resetHotkeys = new JButton(LanguageTool.getString("RESET"));
+        resetHotkeys = new JButton(I18nUtils.getString("RESET"));
         resetHotkeys.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -227,7 +227,7 @@ public class PlayerPanel extends PreferencesPanel {
 
         JScrollPane scrollPane = new JScrollPane(hotkeyTable);
         scrollPane.setMinimumSize(new Dimension(400, 200));
-        cacheFilesBeforePlaying = new JCheckBox(LanguageTool.getString("CACHE_FILES_BEFORE_PLAYING"));
+        cacheFilesBeforePlaying = new JCheckBox(I18nUtils.getString("CACHE_FILES_BEFORE_PLAYING"));
 
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;

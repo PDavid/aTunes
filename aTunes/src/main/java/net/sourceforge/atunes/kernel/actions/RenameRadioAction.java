@@ -32,22 +32,22 @@ import net.sourceforge.atunes.kernel.modules.navigator.RadioNavigationView;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class RenameRadioAction extends Action {
 
     private static final long serialVersionUID = -922076985505834816L;
 
     RenameRadioAction() {
-        super(LanguageTool.getString("RENAME_RADIO"), ImageLoader.getImage(ImageLoader.EDIT_ALBUM));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("RENAME_RADIO"));
+        super(I18nUtils.getString("RENAME_RADIO"), ImageLoader.getImage(ImageLoader.EDIT_ALBUM));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("RENAME_RADIO"));
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         TreePath path = NavigationHandler.getInstance().getView(RadioNavigationView.class).getTree().getSelectionPath();
         Radio radio = (Radio) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
-        String result = VisualHandler.getInstance().showInputDialog(LanguageTool.getString("RENAME_RADIO"), radio.getName(),
+        String result = VisualHandler.getInstance().showInputDialog(I18nUtils.getString("RENAME_RADIO"), radio.getName(),
                 ImageLoader.getImage(ImageLoader.RADIO_LITTLE).getImage());
         if (result != null) {
             RadioHandler.getInstance().setName(radio, result);

@@ -27,7 +27,7 @@ import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Displays custom search dialog
@@ -40,8 +40,8 @@ public class CustomSearchAction extends Action {
     private static final long serialVersionUID = 7036619806075628842L;
 
     CustomSearchAction() {
-        super(LanguageTool.getString("SEARCH"), ImageLoader.getImage(ImageLoader.SEARCH));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("SEARCH"));
+        super(I18nUtils.getString("SEARCH"), ImageLoader.getImage(ImageLoader.SEARCH));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("SEARCH"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.CTRL_MASK));
     }
 

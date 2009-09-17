@@ -32,7 +32,7 @@ import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.GenericImageSize;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Context panel to show song information
@@ -63,14 +63,14 @@ public class AudioObjectContextPanel extends ContextPanel {
     @Override
     protected String getContextPanelTitle(AudioObject audioObject) {
         if (audioObject instanceof AudioFile || (audioObject instanceof Radio && ((Radio) audioObject).isSongInfoAvailable())) {
-            return LanguageTool.getString("SONG");
+            return I18nUtils.getString("SONG");
         } else if (audioObject instanceof Radio) {
-            return LanguageTool.getString("RADIO");
+            return I18nUtils.getString("RADIO");
         } else if (audioObject instanceof PodcastFeedEntry) {
-            return LanguageTool.getString("PODCAST_FEED");
+            return I18nUtils.getString("PODCAST_FEED");
         }
 
-        return LanguageTool.getString("SONG");
+        return I18nUtils.getString("SONG");
     }
 
     @Override

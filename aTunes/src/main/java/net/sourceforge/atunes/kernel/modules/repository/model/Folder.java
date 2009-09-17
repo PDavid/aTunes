@@ -34,7 +34,7 @@ import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -302,7 +302,7 @@ public class Folder implements Serializable, TreeObject {
     @Override
     public String getToolTip() {
         int songs = getAudioFiles().size();
-        return StringUtils.getString(getName(), " (", songs, " ", (songs > 1 ? LanguageTool.getString("SONGS") : LanguageTool.getString("SONG")), ")");
+        return StringUtils.getString(getName(), " (", songs, " ", (songs > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG")), ")");
     }
 
     @Override
@@ -315,12 +315,12 @@ public class Folder implements Serializable, TreeObject {
         toolTip.setLine1(name);
         int folderNumber = folders.size();
         if (folderNumber > 0) {
-            toolTip.setLine2(StringUtils.getString(folderNumber, " ", (folderNumber > 1 ? LanguageTool.getString("FOLDERS") : LanguageTool.getString("FOLDER"))));
+            toolTip.setLine2(StringUtils.getString(folderNumber, " ", (folderNumber > 1 ? I18nUtils.getString("FOLDERS") : I18nUtils.getString("FOLDER"))));
         } else {
             toolTip.setLine2(null);
         }
         int songs = getAudioObjects().size();
-        toolTip.setLine3(StringUtils.getString(songs, " ", (songs > 1 ? LanguageTool.getString("SONGS") : LanguageTool.getString("SONG"))));
+        toolTip.setLine3(StringUtils.getString(songs, " ", (songs > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG"))));
     }
 
     @Override

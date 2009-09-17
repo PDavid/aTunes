@@ -41,20 +41,20 @@ import net.sourceforge.atunes.gui.views.controls.CustomFrame;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.kernel.modules.updates.ApplicationVersion;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class UpdateDialog extends CustomFrame {
 
     private static final long serialVersionUID = -778226654176158965L;
 
     public UpdateDialog(ApplicationVersion version, Component owner) {
-        super(LanguageTool.getString("NEW_VERSION_AVAILABLE"), 400, 150, owner);
+        super(I18nUtils.getString("NEW_VERSION_AVAILABLE"), 400, 150, owner);
         setResizable(false);
         setIconImage(ImageLoader.getImage(ImageLoader.APP_ICON).getImage());
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         JPanel panel = new JPanel(new GridBagLayout());
-        String text = LanguageTool.getString("NEW_VERSION_AVAILABLE_TEXT");
+        String text = I18nUtils.getString("NEW_VERSION_AVAILABLE_TEXT");
         text = text.replace("(%VERSION%)", Constants.VERSION.toShortString());
         text = text.replace("(%NEW_VERSION%)", version.toShortString());
 
@@ -67,10 +67,10 @@ public class UpdateDialog extends CustomFrame {
         text1.setLineWrap(true);
         text1.setWrapStyleWord(true);
 
-        UrlLabel url = new UrlLabel(LanguageTool.getString("GO_TO_DOWNLOAD_PAGE"), version.getDownloadURL());
+        UrlLabel url = new UrlLabel(I18nUtils.getString("GO_TO_DOWNLOAD_PAGE"), version.getDownloadURL());
         url.setHorizontalAlignment(SwingConstants.CENTER);
 
-        CustomButton ok = new CustomButton(null, LanguageTool.getString("OK"));
+        CustomButton ok = new CustomButton(null, I18nUtils.getString("OK"));
         ok.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 dispose();

@@ -82,7 +82,7 @@ public final class AudioFilePictureUtils {
                 if (!file.getName().toUpperCase().endsWith("PNG")) {
                     file = new File(StringUtils.getString(file.getAbsolutePath(), ".png"));
                 }
-                if (!file.exists() || (file.exists() && JOptionPane.showConfirmDialog(null, LanguageTool.getString("OVERWRITE_FILE")) == JOptionPane.OK_OPTION)) {
+                if (!file.exists() || (file.exists() && JOptionPane.showConfirmDialog(null, I18nUtils.getString("OVERWRITE_FILE")) == JOptionPane.OK_OPTION)) {
                     savePictureToFile(song, file);
                 }
             }

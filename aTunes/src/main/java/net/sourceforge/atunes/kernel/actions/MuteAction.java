@@ -25,7 +25,7 @@ import java.awt.event.ActionEvent;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Enables or disables mute
@@ -38,8 +38,8 @@ public class MuteAction extends Action {
     private static final long serialVersionUID = 306200192652324065L;
 
     MuteAction() {
-        super(LanguageTool.getString("MUTE"));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("MUTE"));
+        super(I18nUtils.getString("MUTE"));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("MUTE"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().isMuteEnabled());
         updateIcon();
     }

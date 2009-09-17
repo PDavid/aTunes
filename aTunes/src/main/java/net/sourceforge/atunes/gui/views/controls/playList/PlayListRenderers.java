@@ -36,7 +36,7 @@ import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.DateUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
@@ -169,13 +169,13 @@ public class PlayListRenderers {
 
             // If stats is null -> never played
             if (stats == null) {
-                sb.append(LanguageTool.getString("SONG_NEVER_PLAYED"));
+                sb.append(I18nUtils.getString("SONG_NEVER_PLAYED"));
             } else {
-                sb.append(LanguageTool.getString("LAST_DATE_PLAYED"));
+                sb.append(I18nUtils.getString("LAST_DATE_PLAYED"));
                 sb.append(": ");
                 sb.append(DateUtils.toString(stats.getLastPlayed()));
                 sb.append(" - ");
-                sb.append(LanguageTool.getString("TIMES_PLAYED"));
+                sb.append(I18nUtils.getString("TIMES_PLAYED"));
                 sb.append(": ");
                 sb.append(stats.getTimesPlayed());
             }

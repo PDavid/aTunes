@@ -47,7 +47,7 @@ import net.sourceforge.atunes.kernel.controllers.ripcd.RipCdDialogController;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
 import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
@@ -92,11 +92,11 @@ public class RipCdDialog extends CustomModalDialog {
             if (column == 0) {
                 return "";
             } else if (column == 1) {
-                return LanguageTool.getString("TITLE");
+                return I18nUtils.getString("TITLE");
             } else if (column == 2) {
-                return LanguageTool.getString("ARTIST");
+                return I18nUtils.getString("ARTIST");
             } else if (column == 3) {
-                return LanguageTool.getString("COMPOSER");
+                return I18nUtils.getString("COMPOSER");
             } else {
                 return "";
             }
@@ -122,15 +122,15 @@ public class RipCdDialog extends CustomModalDialog {
                 return tracksSelected.get(rowIndex);
             } else if (columnIndex == 1) {
                 if (rowIndex > trackNames.size() - 1) {
-                    trackNames.add(rowIndex, StringUtils.getString(LanguageTool.getString("TRACK"), " ", (rowIndex + 1)));
-                    return StringUtils.getString(LanguageTool.getString("TRACK"), " ", (rowIndex + 1));
+                    trackNames.add(rowIndex, StringUtils.getString(I18nUtils.getString("TRACK"), " ", (rowIndex + 1)));
+                    return StringUtils.getString(I18nUtils.getString("TRACK"), " ", (rowIndex + 1));
                 }
                 if (rowIndex < trackNames.size()) {
                     return trackNames.get(rowIndex);
                 }
 
-                trackNames.add(rowIndex, StringUtils.getString(LanguageTool.getString("TRACK"), " ", (rowIndex + 1)));
-                return StringUtils.getString(LanguageTool.getString("TRACK"), " ", (rowIndex + 1));
+                trackNames.add(rowIndex, StringUtils.getString(I18nUtils.getString("TRACK"), " ", (rowIndex + 1)));
+                return StringUtils.getString(I18nUtils.getString("TRACK"), " ", (rowIndex + 1));
 
             } else if (columnIndex == 2) {
                 if (rowIndex > artistNames.size() - 1) {
@@ -249,7 +249,7 @@ public class RipCdDialog extends CustomModalDialog {
      */
     public RipCdDialog(JFrame owner) {
         super(owner, 750, 540, true);
-        setTitle(LanguageTool.getString("RIP_CD"));
+        setTitle(I18nUtils.getString("RIP_CD"));
         setContent(getContent());
         GuiUtils.applyComponentOrientation(this);
         enableCloseActionWithEscapeKey();
@@ -363,41 +363,41 @@ public class RipCdDialog extends CustomModalDialog {
         });
 
         JScrollPane scrollPane = new JScrollPane(table);
-        JLabel artistLabel = new JLabel(LanguageTool.getString("ALBUM_ARTIST"));
+        JLabel artistLabel = new JLabel(I18nUtils.getString("ALBUM_ARTIST"));
         artistTextField = new JTextField();
-        JLabel albumLabel = new JLabel(LanguageTool.getString("ALBUM"));
+        JLabel albumLabel = new JLabel(I18nUtils.getString("ALBUM"));
         albumTextField = new JTextField();
         JLabel yearLabel = new JLabel();
-        yearLabel.setText(LanguageTool.getString("YEAR"));
+        yearLabel.setText(I18nUtils.getString("YEAR"));
         yearTextField = new JTextField();
-        JLabel genreLabel = new JLabel(LanguageTool.getString("GENRE"));
+        JLabel genreLabel = new JLabel(I18nUtils.getString("GENRE"));
 
         genreComboBox = new JComboBox();
         genreComboBox.setEditable(true);
-        amazonButton = new CustomButton(null, LanguageTool.getString("GET_TITLES_FROM_AMAZON"));
+        amazonButton = new CustomButton(null, I18nUtils.getString("GET_TITLES_FROM_AMAZON"));
         amazonButton.setEnabled(false);
-        JLabel formatLabel = new JLabel(LanguageTool.getString("ENCODE_TO"));
+        JLabel formatLabel = new JLabel(I18nUtils.getString("ENCODE_TO"));
 
         format = new JComboBox();
-        JLabel qualityLabel = new JLabel(LanguageTool.getString("QUALITY"));
+        JLabel qualityLabel = new JLabel(I18nUtils.getString("QUALITY"));
 
         quality = new JComboBox(new String[] {});
         quality.setMinimumSize(new Dimension(150, 20));
-        JLabel filePatternLabel = new JLabel(LanguageTool.getString("FILEPATTERN"));
+        JLabel filePatternLabel = new JLabel(I18nUtils.getString("FILEPATTERN"));
 
         filePattern = new JComboBox(RipCdDialogController.FILENAMEPATTERN);
-        JLabel dir = new JLabel(LanguageTool.getString("FOLDER"));
+        JLabel dir = new JLabel(I18nUtils.getString("FOLDER"));
 
         folderName = new JTextField();
-        folderSelectionButton = new JButton(LanguageTool.getString("SELECT_FOLDER"));
+        folderSelectionButton = new JButton(I18nUtils.getString("SELECT_FOLDER"));
 
         // Explain what the file name pattern means
-        JLabel explainPatterns = new JLabel(StringUtils.getString("%A=", LanguageTool.getString("ARTIST"), "  -  %L=", LanguageTool.getString("ALBUM"), "  -  %N=", LanguageTool
-                .getString("TRACK"), "  -  %T=", LanguageTool.getString("TITLE")));
+        JLabel explainPatterns = new JLabel(StringUtils.getString("%A=", I18nUtils.getString("ARTIST"), "  -  %L=", I18nUtils.getString("ALBUM"), "  -  %N=", I18nUtils
+                .getString("TRACK"), "  -  %T=", I18nUtils.getString("TITLE")));
 
-        useCdErrorCorrection = new JCheckBox(LanguageTool.getString("USE_CD_ERROR_CORRECTION"));
-        ok = new CustomButton(null, LanguageTool.getString("OK"));
-        cancel = new CustomButton(null, LanguageTool.getString("CANCEL"));
+        useCdErrorCorrection = new JCheckBox(I18nUtils.getString("USE_CD_ERROR_CORRECTION"));
+        ok = new CustomButton(null, I18nUtils.getString("OK"));
+        cancel = new CustomButton(null, I18nUtils.getString("CANCEL"));
 
         JPanel auxPanel = new JPanel();
         auxPanel.setOpaque(false);

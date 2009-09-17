@@ -29,15 +29,15 @@ import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler.SortType;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class SortNavigatorByFileNameAction extends Action {
 
     private static final long serialVersionUID = -8155000610794558158L;
 
     SortNavigatorByFileNameAction() {
-        super(LanguageTool.getString("SORT_BY_FILE_NAME"), ImageLoader.getImage(ImageLoader.FILE_NAME));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("SORT_BY_FILE_NAME"));
+        super(I18nUtils.getString("SORT_BY_FILE_NAME"), ImageLoader.getImage(ImageLoader.FILE_NAME));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("SORT_BY_FILE_NAME"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().getSortType() == SortType.BY_FILE);
     }
 

@@ -44,7 +44,7 @@ import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The Class ExportOptionsDialog.
@@ -81,7 +81,7 @@ public class ExportOptionsDialog extends CustomModalDialog {
     public ExportOptionsDialog(JFrame parent) {
         super(parent, 400, 220, true);
         setResizable(false);
-        setTitle(LanguageTool.getString("EXPORT"));
+        setTitle(I18nUtils.getString("EXPORT"));
         setContent(getContent());
         GuiUtils.applyComponentOrientation(this);
         enableCloseActionWithEscapeKey();
@@ -104,7 +104,7 @@ public class ExportOptionsDialog extends CustomModalDialog {
         container.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // Export instructions
-        JTextArea exportInstructions = new JTextArea(LanguageTool.getString("EXPORT_INSTRUCTIONS"));
+        JTextArea exportInstructions = new JTextArea(I18nUtils.getString("EXPORT_INSTRUCTIONS"));
         exportInstructions.setWrapStyleWord(true);
         exportInstructions.setLineWrap(true);
         exportInstructions.setEditable(false);
@@ -113,8 +113,8 @@ public class ExportOptionsDialog extends CustomModalDialog {
 
         // Export Type
         JPanel exportTypePanel = new JPanel(new GridLayout(2, 1));
-        currentNavigatorSelectionRadioButton = new JRadioButton(LanguageTool.getString("CURRENT_NAVIGATOR_SELECTION"));
-        currentPlayListSelectionRadioButton = new JRadioButton(LanguageTool.getString("CURRENT_PLAYLIST_SELECTION"));
+        currentNavigatorSelectionRadioButton = new JRadioButton(I18nUtils.getString("CURRENT_NAVIGATOR_SELECTION"));
+        currentPlayListSelectionRadioButton = new JRadioButton(I18nUtils.getString("CURRENT_PLAYLIST_SELECTION"));
         ButtonGroup group = new ButtonGroup();
         group.add(currentNavigatorSelectionRadioButton);
         group.add(currentPlayListSelectionRadioButton);
@@ -124,7 +124,7 @@ public class ExportOptionsDialog extends CustomModalDialog {
 
         // Export location
         JPanel exportLocationPanel = new JPanel(new BorderLayout());
-        JLabel locationLabel = new JLabel(LanguageTool.getString("LOCATION"));
+        JLabel locationLabel = new JLabel(I18nUtils.getString("LOCATION"));
         exportLocationPanel.add(locationLabel, BorderLayout.WEST);
         exportLocationFileChooser = new CustomJFileChooser(this, 20, JFileChooser.DIRECTORIES_ONLY);
         exportLocationPanel.add(exportLocationFileChooser, BorderLayout.CENTER);
@@ -132,14 +132,14 @@ public class ExportOptionsDialog extends CustomModalDialog {
         // Buttons
         JPanel buttons = new JPanel(new GridLayout(1, 2, 5, 0));
         buttons.setOpaque(false);
-        exportButton = new CustomButton(null, LanguageTool.getString("EXPORT"));
+        exportButton = new CustomButton(null, I18nUtils.getString("EXPORT"));
         exportButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
             }
         });
-        JButton cancelButton = new CustomButton(null, LanguageTool.getString("CANCEL"));
+        JButton cancelButton = new CustomButton(null, I18nUtils.getString("CANCEL"));
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

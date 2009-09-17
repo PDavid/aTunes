@@ -32,7 +32,7 @@ import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -320,8 +320,8 @@ public class PodcastFeed implements TreeObject, Serializable {
     @Override
     public void setExtendedToolTip(ExtendedToolTip toolTip) {
         toolTip.setLine1(name);
-        toolTip.setLine2(StringUtils.getString(LanguageTool.getString("PODCAST_ENTRIES"), ": ", podcastFeedEntries.size()));
-        toolTip.setLine3(StringUtils.getString(LanguageTool.getString("NEW_PODCAST_ENTRIES_TOOLTIP"), ": ", getNewEntriesCount()));
+        toolTip.setLine2(StringUtils.getString(I18nUtils.getString("PODCAST_ENTRIES"), ": ", podcastFeedEntries.size()));
+        toolTip.setLine3(StringUtils.getString(I18nUtils.getString("NEW_PODCAST_ENTRIES_TOOLTIP"), ": ", getNewEntriesCount()));
     }
 
     @Override

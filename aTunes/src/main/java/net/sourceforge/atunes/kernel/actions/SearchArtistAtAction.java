@@ -35,7 +35,7 @@ import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.utils.DesktopUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class SearchArtistAtAction extends Action {
@@ -43,8 +43,8 @@ public class SearchArtistAtAction extends Action {
     private static final long serialVersionUID = -8934175706272236046L;
 
     SearchArtistAtAction() {
-        super(StringUtils.getString(LanguageTool.getString("SEARCH_ARTIST_AT"), "..."), ImageLoader.getImage(ImageLoader.SEARCH_AT));
-        putValue(SHORT_DESCRIPTION, StringUtils.getString(LanguageTool.getString("SEARCH_ARTIST_AT"), "..."));
+        super(StringUtils.getString(I18nUtils.getString("SEARCH_ARTIST_AT"), "..."), ImageLoader.getImage(ImageLoader.SEARCH_AT));
+        putValue(SHORT_DESCRIPTION, StringUtils.getString(I18nUtils.getString("SEARCH_ARTIST_AT"), "..."));
     }
 
     @Override

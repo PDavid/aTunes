@@ -39,7 +39,7 @@ import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -135,7 +135,7 @@ public class AudioObjectBasicInfoDataSource implements ContextInformationDataSou
         // Get last date played
         AudioFileStats stats = RepositoryHandler.getInstance().getAudioFileStatistics((AudioFile) audioObject);
         if (stats == null) {
-            return LanguageTool.getString("SONG_NEVER_PLAYED");
+            return I18nUtils.getString("SONG_NEVER_PLAYED");
         } else {
             // If song is playing, take previous play, if not, take last
             Date date;
@@ -147,9 +147,9 @@ public class AudioObjectBasicInfoDataSource implements ContextInformationDataSou
 
             // If date is null -> never played
             if (date == null) {
-                return LanguageTool.getString("SONG_NEVER_PLAYED");
+                return I18nUtils.getString("SONG_NEVER_PLAYED");
             } else {
-                return StringUtils.getString("<html>", LanguageTool.getString("LAST_DATE_PLAYED"), ":<br/><center> ", DateUtils.toString(date), "<center></html>");
+                return StringUtils.getString("<html>", I18nUtils.getString("LAST_DATE_PLAYED"), ":<br/><center> ", DateUtils.toString(date), "<center></html>");
             }
         }
     }

@@ -28,7 +28,7 @@ import javax.swing.Timer;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class NormalizeModeAction extends Action {
 
@@ -37,8 +37,8 @@ public class NormalizeModeAction extends Action {
     Timer timer;
 
     public NormalizeModeAction() {
-        super(LanguageTool.getString("NORMALIZE"), ImageLoader.getImage(ImageLoader.NORMALIZATION));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("NORMALIZE"));
+        super(I18nUtils.getString("NORMALIZE"), ImageLoader.getImage(ImageLoader.NORMALIZATION));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("NORMALIZE"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().isUseNormalisation());
 
         timer = new Timer(1000, new ActionListener() {

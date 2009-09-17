@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jdesktop.swingx.treetable.AbstractTreeTableModel;
 import org.jdesktop.swingx.treetable.DefaultMutableTreeTableNode;
@@ -138,11 +138,11 @@ public class RadioBrowserTreeTableModel extends AbstractTreeTableModel {
     @Override
     public String getColumnName(int column) {
         if (column == 0) {
-            return LanguageTool.getString("LABEL");
+            return I18nUtils.getString("LABEL");
         } else if (column == 1) {
-            return LanguageTool.getString("NAME");
+            return I18nUtils.getString("NAME");
         } else {
-            return LanguageTool.getString("URL");
+            return I18nUtils.getString("URL");
         }
     }
 

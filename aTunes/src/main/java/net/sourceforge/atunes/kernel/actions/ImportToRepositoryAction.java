@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -37,8 +37,8 @@ public class ImportToRepositoryAction extends Action {
     private static final long serialVersionUID = -5708270585764283210L;
 
     ImportToRepositoryAction() {
-        super(StringUtils.getString(LanguageTool.getString("IMPORT"), "..."));
-        putValue(SHORT_DESCRIPTION, StringUtils.getString(LanguageTool.getString("IMPORT"), "..."));
+        super(StringUtils.getString(I18nUtils.getString("IMPORT"), "..."));
+        putValue(SHORT_DESCRIPTION, StringUtils.getString(I18nUtils.getString("IMPORT"), "..."));
     }
 
     @Override

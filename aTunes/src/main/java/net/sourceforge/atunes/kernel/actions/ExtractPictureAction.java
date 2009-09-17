@@ -27,15 +27,15 @@ import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class ExtractPictureAction extends ActionOverSelectedObjects<AudioFile> {
 
     private static final long serialVersionUID = -8618297820141610193L;
 
     ExtractPictureAction() {
-        super(LanguageTool.getString("EXTRACT_PICTURE"), ImageLoader.getImage(ImageLoader.EXPORT_PICTURE), AudioFile.class);
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("EXTRACT_PICTURE"));
+        super(I18nUtils.getString("EXTRACT_PICTURE"), ImageLoader.getImage(ImageLoader.EXPORT_PICTURE), AudioFile.class);
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("EXTRACT_PICTURE"));
     }
 
     @Override

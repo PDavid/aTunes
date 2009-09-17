@@ -52,7 +52,7 @@ import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -113,7 +113,7 @@ public final class SystemTrayHandler extends Handler {
      * @return the j tray icon popup menu
      */
     private JTrayIconPopupMenu fillMenu(JTrayIconPopupMenu menu) {
-        playMenu = new JMenuItem(LanguageTool.getString("PLAY"), ImageLoader.getImage(ImageLoader.PLAY_TRAY_MENU));
+        playMenu = new JMenuItem(I18nUtils.getString("PLAY"), ImageLoader.getImage(ImageLoader.PLAY_TRAY_MENU));
         playMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -122,7 +122,7 @@ public final class SystemTrayHandler extends Handler {
         });
         menu.add(playMenu);
 
-        JMenuItem stop = new JMenuItem(LanguageTool.getString("STOP"), ImageLoader.getImage(ImageLoader.STOP_TRAY_MENU));
+        JMenuItem stop = new JMenuItem(I18nUtils.getString("STOP"), ImageLoader.getImage(ImageLoader.STOP_TRAY_MENU));
         stop.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -131,7 +131,7 @@ public final class SystemTrayHandler extends Handler {
         });
         menu.add(stop);
 
-        JMenuItem previous = new JMenuItem(LanguageTool.getString("PREVIOUS"), ImageLoader.getImage(ImageLoader.PREVIOUS_TRAY_MENU));
+        JMenuItem previous = new JMenuItem(I18nUtils.getString("PREVIOUS"), ImageLoader.getImage(ImageLoader.PREVIOUS_TRAY_MENU));
         previous.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -140,7 +140,7 @@ public final class SystemTrayHandler extends Handler {
         });
         menu.add(previous);
 
-        JMenuItem next = new JMenuItem(LanguageTool.getString("NEXT"), ImageLoader.getImage(ImageLoader.NEXT_TRAY_MENU));
+        JMenuItem next = new JMenuItem(I18nUtils.getString("NEXT"), ImageLoader.getImage(ImageLoader.NEXT_TRAY_MENU));
         next.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -151,7 +151,7 @@ public final class SystemTrayHandler extends Handler {
 
         menu.add(new JSeparator());
 
-        mute = new JCheckBoxMenuItem(LanguageTool.getString("MUTE"), ImageLoader.getImage(ImageLoader.VOLUME_MUTE_TRAY_MENU));
+        mute = new JCheckBoxMenuItem(I18nUtils.getString("MUTE"), ImageLoader.getImage(ImageLoader.VOLUME_MUTE_TRAY_MENU));
         mute.setAction(Actions.getAction(MuteAction.class));
         menu.add(mute);
 
@@ -315,7 +315,7 @@ public final class SystemTrayHandler extends Handler {
     public void setPlaying(boolean playing) {
         if (playing) {
             if (trayIcon != null) {
-                playMenu.setText(LanguageTool.getString("PAUSE"));
+                playMenu.setText(I18nUtils.getString("PAUSE"));
                 playMenu.setIcon(ImageLoader.getImage(ImageLoader.PAUSE_TRAY_MENU));
             }
             if (playIcon != null) {
@@ -323,7 +323,7 @@ public final class SystemTrayHandler extends Handler {
             }
         } else {
             if (trayIcon != null) {
-                playMenu.setText(LanguageTool.getString("PLAY"));
+                playMenu.setText(I18nUtils.getString("PLAY"));
                 playMenu.setIcon(ImageLoader.getImage(ImageLoader.PLAY_TRAY_MENU));
             }
             if (playIcon != null) {
@@ -392,7 +392,7 @@ public final class SystemTrayHandler extends Handler {
     private void trayIconAdvice() {
         // For some reason, in Linux systems display message causes Swing freeze
         if (SystemProperties.OS != OperatingSystem.LINUX) {
-            trayIcon.displayMessage(Constants.APP_NAME, LanguageTool.getString("TRAY_ICON_MESSAGE"), TrayIcon.MessageType.INFO);
+            trayIcon.displayMessage(Constants.APP_NAME, I18nUtils.getString("TRAY_ICON_MESSAGE"), TrayIcon.MessageType.INFO);
         }
     }
 

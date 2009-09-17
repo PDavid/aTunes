@@ -87,7 +87,7 @@ import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationView;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The Class ApplicationMenuBar.
@@ -135,7 +135,7 @@ public class ApplicationMenuBar extends JMenuBar {
      */
     private JMenu getFileMenu() {
         if (file == null) {
-            file = new JMenu(LanguageTool.getString("FILE"));
+            file = new JMenu(I18nUtils.getString("FILE"));
             file.add(Actions.getAction(SelectRepositoryAction.class));
             file.add(Actions.getAction(RefreshRepositoryAction.class));
             file.add(new JSeparator());
@@ -154,8 +154,8 @@ public class ApplicationMenuBar extends JMenuBar {
      */
     private JMenu getEditMenu() {
         if (edit == null) {
-            edit = new JMenu(LanguageTool.getString("EDIT"));
-            JMenu player = new JMenu(LanguageTool.getString("VOLUME"));
+            edit = new JMenu(I18nUtils.getString("EDIT"));
+            JMenu player = new JMenu(I18nUtils.getString("VOLUME"));
             JMenuItem showEqual = new JMenuItem(Actions.getAction(ShowEqualizerAction.class));
             player.add(showEqual);
             if (!PlayerHandler.getInstance().supportsCapability(PlayerEngineCapability.EQUALIZER)) {
@@ -164,7 +164,7 @@ public class ApplicationMenuBar extends JMenuBar {
             player.add(Actions.getAction(VolumeUpAction.class));
             player.add(Actions.getAction(VolumeDownAction.class));
             player.add(new JCheckBoxMenuItem(Actions.getAction(MuteAction.class)));
-            JMenu repair = new JMenu(LanguageTool.getString("REPAIR"));
+            JMenu repair = new JMenu(I18nUtils.getString("REPAIR"));
             repair.add(Actions.getAction(RepairTrackNumbersAction.class));
             repair.add(Actions.getAction(RepairGenresAction.class));
             repair.add(Actions.getAction(RepairAlbumNamesAction.class));
@@ -183,7 +183,7 @@ public class ApplicationMenuBar extends JMenuBar {
      */
     private JMenu getViewMenu() {
         if (view == null) {
-            view = new JMenu(LanguageTool.getString("VIEW"));
+            view = new JMenu(I18nUtils.getString("VIEW"));
 
             // Add dinamically actions to show each navigation view loaded
             int acceleratorIndex = 1;
@@ -213,7 +213,7 @@ public class ApplicationMenuBar extends JMenuBar {
      */
     private JMenu getNavigatorMenu() {
         if (navigator == null) {
-            navigator = new JMenu(LanguageTool.getString("NAVIGATOR"));
+            navigator = new JMenu(I18nUtils.getString("NAVIGATOR"));
             JRadioButtonMenuItem showArtist = new JRadioButtonMenuItem(Actions.getAction(ShowArtistsInNavigatorAction.class));
             JRadioButtonMenuItem showAlbum = new JRadioButtonMenuItem(Actions.getAction(ShowAlbumsInNavigatorAction.class));
             JRadioButtonMenuItem showGenre = new JRadioButtonMenuItem(Actions.getAction(ShowGenresInNavigatorAction.class));
@@ -260,7 +260,7 @@ public class ApplicationMenuBar extends JMenuBar {
      */
     private JMenu getPlayListMenu() {
         if (playList == null) {
-            playList = new JMenu(LanguageTool.getString("PLAYLIST"));
+            playList = new JMenu(I18nUtils.getString("PLAYLIST"));
             PlayListMenu.fillMenu(playList, ControllerProxy.getInstance().getPlayListController().getMainPlayListTable());
             // Every time menu is opened all menu items are updated according to play list selection
             playList.addMenuListener(new MenuListener() {
@@ -291,7 +291,7 @@ public class ApplicationMenuBar extends JMenuBar {
      */
     private JMenu getToolsMenu() {
         if (tools == null) {
-            tools = new JMenu(LanguageTool.getString("TOOLS"));
+            tools = new JMenu(I18nUtils.getString("TOOLS"));
             tools.add(Actions.getAction(RipCDAction.class));
             tools.add(new JSeparator());
             tools.add(Actions.getAction(ShowStatsAction.class));
@@ -315,7 +315,7 @@ public class ApplicationMenuBar extends JMenuBar {
      */
     private JMenu getDeviceMenu() {
         if (device == null) {
-            device = new JMenu(LanguageTool.getString("DEVICE"));
+            device = new JMenu(I18nUtils.getString("DEVICE"));
             device.add(Actions.getAction(ConnectDeviceAction.class));
             device.add(Actions.getAction(RefreshDeviceAction.class));
             device.add(Actions.getAction(DisconnectDeviceAction.class));
@@ -330,7 +330,7 @@ public class ApplicationMenuBar extends JMenuBar {
      */
     private JMenu getCustomHelpMenu() {
         if (help == null) {
-            help = new JMenu(LanguageTool.getString("HELP"));
+            help = new JMenu(I18nUtils.getString("HELP"));
             help.add(Actions.getAction(GoToWebSiteAction.class));
             help.add(Actions.getAction(GoToWikiAction.class));
             help.add(Actions.getAction(ReportBugOrFeatureRequestAction.class));

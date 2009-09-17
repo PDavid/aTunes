@@ -42,7 +42,7 @@ import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomFrame;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -80,7 +80,7 @@ public class RipperProgressDialog extends CustomFrame {
      * Instantiates a new ripper progress dialog.
      */
     public RipperProgressDialog(Component owner) {
-        super(LanguageTool.getString("RIPPING_CD"), 420, 180, owner);
+        super(I18nUtils.getString("RIPPING_CD"), 420, 180, owner);
         setResizable(false);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setContent();
@@ -115,7 +115,7 @@ public class RipperProgressDialog extends CustomFrame {
      *            the album
      */
     public void setArtistAndAlbum(String artist, String album) {
-        setTitle(StringUtils.getString(LanguageTool.getString("RIPPING_CD"), " ", artist, " - ", album));
+        setTitle(StringUtils.getString(I18nUtils.getString("RIPPING_CD"), " ", artist, " - ", album));
     }
 
     /**
@@ -126,20 +126,20 @@ public class RipperProgressDialog extends CustomFrame {
 
         cover = new JLabel(ImageLoader.getImage(ImageLoader.CD_AUDIO));
 
-        JLabel totalProgressLabel = new JLabel(LanguageTool.getString("TOTAL_PROGRESS"));
+        JLabel totalProgressLabel = new JLabel(I18nUtils.getString("TOTAL_PROGRESS"));
         totalProgressBar = new JProgressBar();
         totalProgressBar.setPreferredSize(new Dimension(10, 12));
         totalProgressValueLabel = new JLabel();
-        JLabel decodeProgressLabel = new JLabel(LanguageTool.getString("DECODING"));
+        JLabel decodeProgressLabel = new JLabel(I18nUtils.getString("DECODING"));
         decodeProgressBar = new JProgressBar();
         decodeProgressBar.setPreferredSize(new Dimension(10, 12));
         decodeProgressValueLabel = new JLabel();
-        JLabel encodeProgressLabel = new JLabel(LanguageTool.getString("ENCODING"));
+        JLabel encodeProgressLabel = new JLabel(I18nUtils.getString("ENCODING"));
         encodeProgressBar = new JProgressBar();
         encodeProgressBar.setPreferredSize(new Dimension(10, 12));
         encodeProgressLabel.setBorder(BorderFactory.createEmptyBorder());
         encodeProgressValueLabel = new JLabel();
-        cancelButton = new CustomButton(null, LanguageTool.getString("CANCEL"));
+        cancelButton = new CustomButton(null, I18nUtils.getString("CANCEL"));
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

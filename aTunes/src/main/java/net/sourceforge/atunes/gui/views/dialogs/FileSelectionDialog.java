@@ -53,7 +53,7 @@ import javax.swing.tree.TreeSelectionModel;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jvnet.substance.api.renderers.SubstanceDefaultListCellRenderer;
 import org.jvnet.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
@@ -169,7 +169,7 @@ public class FileSelectionDialog extends CustomModalDialog {
 
         selection = new JLabel();
 
-        okButton = new CustomButton(null, LanguageTool.getString("OK"));
+        okButton = new CustomButton(null, I18nUtils.getString("OK"));
         okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -197,7 +197,7 @@ public class FileSelectionDialog extends CustomModalDialog {
                 setVisible(false);
             }
         });
-        cancelButton = new CustomButton(null, LanguageTool.getString("CANCEL"));
+        cancelButton = new CustomButton(null, I18nUtils.getString("CANCEL"));
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

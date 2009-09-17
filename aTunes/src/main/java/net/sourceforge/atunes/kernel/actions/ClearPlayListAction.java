@@ -31,7 +31,7 @@ import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * This class clears current play list
@@ -43,14 +43,14 @@ public class ClearPlayListAction extends Action {
     private static final long serialVersionUID = 7784228526804232608L;
 
     ClearPlayListAction() {
-        super(LanguageTool.getString("CLEAR"), ImageLoader.getImage(ImageLoader.CLEAR));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("CLEAR_TOOLTIP"));
+        super(I18nUtils.getString("CLEAR"), ImageLoader.getImage(ImageLoader.CLEAR));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("CLEAR_TOOLTIP"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, ActionEvent.CTRL_MASK));
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        int returnValue = JOptionPane.showConfirmDialog(VisualHandler.getInstance().getFrame().getFrame(), LanguageTool.getString("CLEAR_PLAYLIST_WARNING"), LanguageTool
+        int returnValue = JOptionPane.showConfirmDialog(VisualHandler.getInstance().getFrame().getFrame(), I18nUtils.getString("CLEAR_PLAYLIST_WARNING"), I18nUtils
                 .getString("CLEAR"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (JOptionPane.YES_OPTION == returnValue) {
             PlayListHandler.getInstance().clearPlayList();

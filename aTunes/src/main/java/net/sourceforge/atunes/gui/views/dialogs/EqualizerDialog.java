@@ -39,7 +39,7 @@ import net.sourceforge.atunes.gui.views.controls.CustomModalFrame;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -67,7 +67,7 @@ public class EqualizerDialog extends CustomModalFrame {
     public EqualizerDialog(JFrame owner) {
         // Width required by german translation
         super(owner, 510, 300);
-        setTitle(StringUtils.getString(LanguageTool.getString("EQUALIZER"), " - ", Constants.APP_NAME, " ", Constants.VERSION.toShortString()));
+        setTitle(StringUtils.getString(I18nUtils.getString("EQUALIZER"), " - ", Constants.APP_NAME, " ", Constants.VERSION.toShortString()));
         add(getContent());
         setResizable(false);
         GuiUtils.applyComponentOrientation(this);
@@ -119,9 +119,9 @@ public class EqualizerDialog extends CustomModalFrame {
             labels[i].setFont(Fonts.SMALL_FONT);
         }
 
-        JLabel changeWhenStopped = new JLabel(LanguageTool.getString("CAN_ONLY_CHANGE_WHEN_STOPPED"));
+        JLabel changeWhenStopped = new JLabel(I18nUtils.getString("CAN_ONLY_CHANGE_WHEN_STOPPED"));
 
-        JButton loadPresetButton = new JButton(LanguageTool.getString("LOAD_PRESET"));
+        JButton loadPresetButton = new JButton(I18nUtils.getString("LOAD_PRESET"));
         loadPresetButton.setFont(Fonts.BUTTON_FONT);
         loadPresetButton.addActionListener(new ActionListener() {
 
@@ -130,7 +130,7 @@ public class EqualizerDialog extends CustomModalFrame {
                 String[] names = PlayerHandler.getInstance().getEqualizer().getPresetsNames();
 
                 // Show selector
-                SelectorDialog selector = new SelectorDialog(EqualizerDialog.this, LanguageTool.getString("LOAD_PRESET"), names, null);
+                SelectorDialog selector = new SelectorDialog(EqualizerDialog.this, I18nUtils.getString("LOAD_PRESET"), names, null);
                 selector.setVisible(true);
 
                 // Get result
@@ -142,7 +142,7 @@ public class EqualizerDialog extends CustomModalFrame {
             }
         });
 
-        JButton okButton = new JButton(LanguageTool.getString("OK"));
+        JButton okButton = new JButton(I18nUtils.getString("OK"));
         okButton.addActionListener(new ActionListener() {
             // When OK is clicked, save settings and change application state
             @Override
@@ -152,7 +152,7 @@ public class EqualizerDialog extends CustomModalFrame {
             }
         });
 
-        JButton applyButton = new JButton(LanguageTool.getString("APPLY"));
+        JButton applyButton = new JButton(I18nUtils.getString("APPLY"));
         applyButton.addActionListener(new ActionListener() {
             // When Apply is clicked, save settings and change application state
             // and restart the current playing media from its's last postion 
@@ -163,7 +163,7 @@ public class EqualizerDialog extends CustomModalFrame {
             }
         });
 
-        JButton cancelButton = new JButton(LanguageTool.getString("CANCEL"));
+        JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

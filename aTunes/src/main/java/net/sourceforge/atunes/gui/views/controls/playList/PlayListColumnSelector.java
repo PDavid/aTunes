@@ -46,7 +46,7 @@ import javax.swing.table.TableModel;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
@@ -102,7 +102,7 @@ public class PlayListColumnSelector extends CustomModalDialog {
             if (columnIndex == 0) {
                 return columns.get(rowIndex).isVisible();
             }
-            return LanguageTool.getString(columns.get(rowIndex).getColumnName());
+            return I18nUtils.getString(columns.get(rowIndex).getColumnName());
         }
 
         @Override
@@ -250,8 +250,8 @@ public class PlayListColumnSelector extends CustomModalDialog {
         });
 
         JScrollPane scrollPane = new JScrollPane(columnsList);
-        JLabel label = new JLabel(LanguageTool.getString("SELECT_COLUMNS"));
-        JButton okButton = new JButton(LanguageTool.getString("OK"));
+        JLabel label = new JLabel(I18nUtils.getString("SELECT_COLUMNS"));
+        JButton okButton = new JButton(I18nUtils.getString("OK"));
         okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

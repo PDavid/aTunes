@@ -28,7 +28,7 @@ import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.DesktopUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -57,18 +57,18 @@ public class LanguageSelector {
                             .getInstance()
                             .showMessage(
                                     StringUtils
-                                            .getString(LanguageTool
+                                            .getString(I18nUtils
                                                     .getString("The translation file you are using has not been updated for a long time. \nPlease contact us in order to refresh your favourite translation.")));
                     DesktopUtils.openURL(Constants.CONTRIBUTORS_WANTED);
                 }
                 ApplicationState.getInstance().setNagDialogCounter(ApplicationState.getInstance().getNagDialogCounter() + 1);
             }
-            LanguageTool.setLanguage(locale.getLocale());
+            I18nUtils.setLanguage(locale.getLocale());
             logger.info(LogCategories.START, StringUtils.getString("Setting language: ", locale.getLocale()));
         } else {
             logger.info(LogCategories.START, "Language not configured; using default language");
-            LanguageTool.setLanguage(null);
-            ApplicationState.getInstance().setLocale(new LocaleBean(LanguageTool.getLanguageSelected()));
+            I18nUtils.setLanguage(null);
+            ApplicationState.getInstance().setLocale(new LocaleBean(I18nUtils.getLanguageSelected()));
         }
         // Set Locale for DateUtils
         DateUtils.setLocale(ApplicationState.getInstance().getLocale().getLocale());

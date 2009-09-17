@@ -43,7 +43,7 @@ import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationView;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.TimeUtils;
+import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
@@ -179,7 +179,7 @@ public class NavigationPanel extends JPanel {
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component comp;
                 if (((Long) value) > 0) {
-                    comp = super.getTableCellRendererComponent(table, TimeUtils.seconds2String((Long) value), isSelected, hasFocus, row, column);
+                    comp = super.getTableCellRendererComponent(table, StringUtils.seconds2String((Long) value), isSelected, hasFocus, row, column);
                     ((JLabel) comp).setHorizontalAlignment(SwingConstants.RIGHT);
                 } else {
                     comp = super.getTableCellRendererComponent(table, "-", isSelected, hasFocus, row, column);

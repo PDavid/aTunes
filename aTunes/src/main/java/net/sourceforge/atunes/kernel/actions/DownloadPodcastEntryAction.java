@@ -26,15 +26,15 @@ import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class DownloadPodcastEntryAction extends ActionOverSelectedObjects<PodcastFeedEntry> {
 
     private static final long serialVersionUID = 1081237259786604605L;
 
     DownloadPodcastEntryAction() {
-        super(LanguageTool.getString("DOWNLOAD_PODCAST_ENTRY"), ImageLoader.getImage(ImageLoader.DOWNLOAD_PODCAST), PodcastFeedEntry.class);
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("DOWNLOAD_PODCAST_ENTRY"));
+        super(I18nUtils.getString("DOWNLOAD_PODCAST_ENTRY"), ImageLoader.getImage(ImageLoader.DOWNLOAD_PODCAST), PodcastFeedEntry.class);
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("DOWNLOAD_PODCAST_ENTRY"));
         setEnabled(false);
     }
 

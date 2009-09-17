@@ -45,7 +45,7 @@ import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -84,9 +84,9 @@ public class ImageDialog extends CustomFrame {
             thumbs = AudioFilePictureUtils.getPicturesForFile((AudioFile) audioObject, Constants.IMAGE_SIZE.getSize(), Constants.IMAGE_SIZE.getSize());
         }
         if (images.length > 1) {
-            setTitle(StringUtils.getString(Constants.APP_NAME, " - ", LanguageTool.getString("PICTURES_OF_FILE"), " ", audioObject.getTitle()));
+            setTitle(StringUtils.getString(Constants.APP_NAME, " - ", I18nUtils.getString("PICTURES_OF_FILE"), " ", audioObject.getTitle()));
         } else {
-            setTitle(StringUtils.getString(Constants.APP_NAME, " - ", LanguageTool.getString("PICTURE_OF_FILE"), " ", audioObject.getTitle()));
+            setTitle(StringUtils.getString(Constants.APP_NAME, " - ", I18nUtils.getString("PICTURE_OF_FILE"), " ", audioObject.getTitle()));
         }
 
         setResizable(images.length > 1);

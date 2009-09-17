@@ -34,7 +34,7 @@ import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -90,7 +90,7 @@ class RadioPropertiesDialog extends PropertiesDialog {
      * @return title for dialog
      */
     private static String getTitleText(Radio radio) {
-        return StringUtils.getString(LanguageTool.getString("INFO_OF_RADIO"), " ", radio.getName());
+        return StringUtils.getString(I18nUtils.getString("INFO_OF_RADIO"), " ", radio.getName());
     }
 
     /**
@@ -160,12 +160,12 @@ class RadioPropertiesDialog extends PropertiesDialog {
      */
     private void setContent() {
         fillPicture();
-        titleLabel.setText(getHtmlFormatted(LanguageTool.getString("NAME"), StringUtils.isEmpty(radio.getName()) ? "-" : radio.getName()));
-        urlLabel.setText(getHtmlFormatted(LanguageTool.getString("URL"), radio.getUrl()));
-        labelLabel.setText(getHtmlFormatted(LanguageTool.getString("LABEL"), StringUtils.isEmpty(radio.getLabel()) ? "-" : radio.getLabel()));
+        titleLabel.setText(getHtmlFormatted(I18nUtils.getString("NAME"), StringUtils.isEmpty(radio.getName()) ? "-" : radio.getName()));
+        urlLabel.setText(getHtmlFormatted(I18nUtils.getString("URL"), radio.getUrl()));
+        labelLabel.setText(getHtmlFormatted(I18nUtils.getString("LABEL"), StringUtils.isEmpty(radio.getLabel()) ? "-" : radio.getLabel()));
         bitrateLabel
-                .setText(getHtmlFormatted(LanguageTool.getString("BITRATE"), radio.getBitrate() > 0 ? StringUtils.getString(String.valueOf(radio.getBitrate()), " kbps") : "-"));
-        frequencyLabel.setText(getHtmlFormatted(LanguageTool.getString("FREQUENCY"), radio.getFrequency() > 0 ? StringUtils.getString(String.valueOf(radio.getFrequency()), " Hz")
+                .setText(getHtmlFormatted(I18nUtils.getString("BITRATE"), radio.getBitrate() > 0 ? StringUtils.getString(String.valueOf(radio.getBitrate()), " kbps") : "-"));
+        frequencyLabel.setText(getHtmlFormatted(I18nUtils.getString("FREQUENCY"), radio.getFrequency() > 0 ? StringUtils.getString(String.valueOf(radio.getFrequency()), " Hz")
                 : "-"));
     }
 }

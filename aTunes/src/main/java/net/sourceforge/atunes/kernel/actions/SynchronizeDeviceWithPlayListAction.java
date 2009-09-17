@@ -37,7 +37,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -52,8 +52,8 @@ public class SynchronizeDeviceWithPlayListAction extends Action {
     protected Logger logger = new Logger();
 
     public SynchronizeDeviceWithPlayListAction() {
-        super(LanguageTool.getString("SYNCHRONIZE_DEVICE_WITH_PLAYLIST"));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("SYNCHRONIZE_DEVICE_WITH_PLAYLIST"));
+        super(I18nUtils.getString("SYNCHRONIZE_DEVICE_WITH_PLAYLIST"));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("SYNCHRONIZE_DEVICE_WITH_PLAYLIST"));
         setEnabled(false);
     }
 
@@ -70,8 +70,8 @@ public class SynchronizeDeviceWithPlayListAction extends Action {
                     @Override
                     public void run() {
                         VisualHandler.getInstance().showMessage(
-                                StringUtils.getString(LanguageTool.getString("SYNCHRONIZATION_FINISHED"), " ", LanguageTool.getString("ADDED"), ": ", added ? DeviceHandler
-                                        .getInstance().getFilesCopiedToDevice() : 0, " ", LanguageTool.getString("REMOVED"), ": ", filesRemoved));
+                                StringUtils.getString(I18nUtils.getString("SYNCHRONIZATION_FINISHED"), " ", I18nUtils.getString("ADDED"), ": ", added ? DeviceHandler
+                                        .getInstance().getFilesCopiedToDevice() : 0, " ", I18nUtils.getString("REMOVED"), ": ", filesRemoved));
                     }
                 });
             }
@@ -157,7 +157,7 @@ public class SynchronizeDeviceWithPlayListAction extends Action {
             }
         };
         worker.execute();
-        VisualHandler.getInstance().showIndeterminateProgressDialog(LanguageTool.getString("PLEASE_WAIT"));
+        VisualHandler.getInstance().showIndeterminateProgressDialog(I18nUtils.getString("PLEASE_WAIT"));
     }
 
 }

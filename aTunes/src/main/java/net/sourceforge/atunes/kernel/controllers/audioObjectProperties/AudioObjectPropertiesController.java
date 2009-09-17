@@ -38,9 +38,8 @@ import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.ImageSize;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
-import net.sourceforge.atunes.utils.TimeUtils;
 
 import org.jdesktop.swingx.border.DropShadowBorder;
 
@@ -97,12 +96,12 @@ public class AudioObjectPropertiesController extends PanelController<AudioObject
     void fillFileProperties() {
         if (currentAudioObject != null) {
             getPanelControlled().getBitrateLabel().setText(
-                    StringUtils.getString("<html><b>", LanguageTool.getString("BITRATE"), ":</b>    ", currentAudioObject.getBitrate(), " Kbps"));
+                    StringUtils.getString("<html><b>", I18nUtils.getString("BITRATE"), ":</b>    ", currentAudioObject.getBitrate(), " Kbps"));
             getPanelControlled().getFrequencyLabel().setText(
-                    StringUtils.getString("<html><b>", LanguageTool.getString("FREQUENCY"), ":</b>    ", currentAudioObject.getFrequency(), " Hz"));
+                    StringUtils.getString("<html><b>", I18nUtils.getString("FREQUENCY"), ":</b>    ", currentAudioObject.getFrequency(), " Hz"));
         } else {
-            getPanelControlled().getBitrateLabel().setText(StringUtils.getString("<html><b>", LanguageTool.getString("BITRATE"), ":</b>    "));
-            getPanelControlled().getFrequencyLabel().setText(StringUtils.getString("<html><b>", LanguageTool.getString("FREQUENCY"), ":</b>    "));
+            getPanelControlled().getBitrateLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("BITRATE"), ":</b>    "));
+            getPanelControlled().getFrequencyLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("FREQUENCY"), ":</b>    "));
         }
 
     }
@@ -168,42 +167,42 @@ public class AudioObjectPropertiesController extends PanelController<AudioObject
 
             // \u202D is Unicode symbol for orientation override to LTR. 
             getPanelControlled().getUrlLabel().setText(
-                    StringUtils.getString("<html><b>", LanguageTool.getString("FILE"), ":</b>    ", "\u202D", currentAudioObject.getUrl(), " \u202C </html>"));
+                    StringUtils.getString("<html><b>", I18nUtils.getString("FILE"), ":</b>    ", "\u202D", currentAudioObject.getUrl(), " \u202C </html>"));
 
             getPanelControlled().getTitleLabel().setText(
-                    StringUtils.getString("<html><b>", LanguageTool.getString("SONG"), ":</b>    ", currentAudioObject.getTitleOrFileName(), " - ", currentAudioObject.getArtist(),
-                            " - ", currentAudioObject.getAlbum(), "\u202D (", TimeUtils.seconds2String(currentAudioObject.getDuration()), ") \u202C </html>"));
+                    StringUtils.getString("<html><b>", I18nUtils.getString("SONG"), ":</b>    ", currentAudioObject.getTitleOrFileName(), " - ", currentAudioObject.getArtist(),
+                            " - ", currentAudioObject.getAlbum(), "\u202D (", StringUtils.seconds2String(currentAudioObject.getDuration()), ") \u202C </html>"));
 
             if (currentAudioObject.getTrackNumber() > 0) {
-                getPanelControlled().getTrackLabel().setText(StringUtils.getString("<html><b>", LanguageTool.getString("TRACK"), ":</b>    ", currentAudioObject.getTrackNumber()));
+                getPanelControlled().getTrackLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("TRACK"), ":</b>    ", currentAudioObject.getTrackNumber()));
             } else {
-                getPanelControlled().getTrackLabel().setText(StringUtils.getString("<html><b>", LanguageTool.getString("TRACK"), ":"));
+                getPanelControlled().getTrackLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("TRACK"), ":"));
             }
 
             if (currentAudioObject.getYear().isEmpty()) {
-                getPanelControlled().getYearLabel().setText(StringUtils.getString("<html><b>", LanguageTool.getString("YEAR"), ":</b>    ", currentAudioObject.getYear()));
+                getPanelControlled().getYearLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("YEAR"), ":</b>    ", currentAudioObject.getYear()));
             } else {
-                getPanelControlled().getYearLabel().setText(StringUtils.getString("<html><b>", LanguageTool.getString("YEAR"), ":"));
+                getPanelControlled().getYearLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("YEAR"), ":"));
             }
 
             if (currentAudioObject.getDiscNumber() > 0) {
                 getPanelControlled().getDiscNumberLabel().setText(
-                        StringUtils.getString("<html><b>", LanguageTool.getString("DISC_NUMBER"), ":</b>    ", currentAudioObject.getDiscNumber()));
+                        StringUtils.getString("<html><b>", I18nUtils.getString("DISC_NUMBER"), ":</b>    ", currentAudioObject.getDiscNumber()));
             } else {
-                getPanelControlled().getDiscNumberLabel().setText(StringUtils.getString("<html><b>", LanguageTool.getString("DISC_NUMBER"), ":"));
+                getPanelControlled().getDiscNumberLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("DISC_NUMBER"), ":"));
             }
 
-            getPanelControlled().getGenreLabel().setText(StringUtils.getString("<html><b>", LanguageTool.getString("GENRE"), ":</b>    ", currentAudioObject.getGenre()));
+            getPanelControlled().getGenreLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("GENRE"), ":</b>    ", currentAudioObject.getGenre()));
 
             // Favorite icons
             refreshFavoriteIcons();
         } else {
-            getPanelControlled().getUrlLabel().setText(StringUtils.getString("<html><b>", LanguageTool.getString("FILE"), ":</b>    "));
-            getPanelControlled().getTitleLabel().setText(StringUtils.getString("<html><b>", LanguageTool.getString("SONG"), ":</b>    "));
-            getPanelControlled().getTrackLabel().setText(StringUtils.getString("<html><b>", LanguageTool.getString("TRACK"), ":</b>    "));
-            getPanelControlled().getYearLabel().setText(StringUtils.getString("<html><b>", LanguageTool.getString("YEAR"), ":</b>    "));
-            getPanelControlled().getGenreLabel().setText(StringUtils.getString("<html><b>", LanguageTool.getString("GENRE"), ":</b>    "));
-            getPanelControlled().getDiscNumberLabel().setText(StringUtils.getString("<html><b>", LanguageTool.getString("DISC_NUMBER"), ":</b>    "));
+            getPanelControlled().getUrlLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("FILE"), ":</b>    "));
+            getPanelControlled().getTitleLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("SONG"), ":</b>    "));
+            getPanelControlled().getTrackLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("TRACK"), ":</b>    "));
+            getPanelControlled().getYearLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("YEAR"), ":</b>    "));
+            getPanelControlled().getGenreLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("GENRE"), ":</b>    "));
+            getPanelControlled().getDiscNumberLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("DISC_NUMBER"), ":</b>    "));
         }
     }
 

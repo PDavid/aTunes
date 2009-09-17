@@ -27,7 +27,7 @@ import javax.swing.JCheckBox;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The Class RadioPanel.
@@ -61,11 +61,11 @@ public class PlayListPrefPanel extends PreferencesPanel {
      * Instantiates a new radio panel.
      */
     public PlayListPrefPanel() {
-        super(LanguageTool.getString("PLAYLIST"));
+        super(I18nUtils.getString("PLAYLIST"));
 
-        stopSongWhenSwitching = new JCheckBox(LanguageTool.getString(PROP_PLAYLIST_STOP_ON_SWITCH));
-        stopSongWhenClearing = new JCheckBox(LanguageTool.getString(PROP_PLAYLIST_STOP_ON_CLEAR));
-        autoScrollPlayList = new JCheckBox(LanguageTool.getString(PROP_AUTO_SCROLL_PLAYLIST));
+        stopSongWhenSwitching = new JCheckBox(I18nUtils.getString(PROP_PLAYLIST_STOP_ON_SWITCH));
+        stopSongWhenClearing = new JCheckBox(I18nUtils.getString(PROP_PLAYLIST_STOP_ON_CLEAR));
+        autoScrollPlayList = new JCheckBox(I18nUtils.getString(PROP_AUTO_SCROLL_PLAYLIST));
 
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 1;

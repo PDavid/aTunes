@@ -28,7 +28,7 @@ import net.sourceforge.atunes.gui.model.NavigationTableModel;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * This action opens a window which shows information about the current selected
@@ -42,8 +42,8 @@ public class ShowNavigatorTableItemInfoAction extends Action {
     private static final long serialVersionUID = -2006569851431046347L;
 
     ShowNavigatorTableItemInfoAction() {
-        super(LanguageTool.getString("INFO"), ImageLoader.getImage(ImageLoader.INFO));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("INFO_BUTTON_TOOLTIP"));
+        super(I18nUtils.getString("INFO"), ImageLoader.getImage(ImageLoader.INFO));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("INFO_BUTTON_TOOLTIP"));
         setEnabled(false);
     }
 

@@ -33,7 +33,7 @@ import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -213,7 +213,7 @@ public class Album implements Serializable, TreeObject, Comparable<Album> {
     @Override
     public String getToolTip() {
         int songs = getAudioObjects().size();
-        return StringUtils.getString(getName(), " - ", getArtist(), " (", songs, " ", (songs > 1 ? LanguageTool.getString("SONGS") : LanguageTool.getString("SONG")), ")");
+        return StringUtils.getString(getName(), " - ", getArtist(), " (", songs, " ", (songs > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG")), ")");
     }
 
     @Override
@@ -226,7 +226,7 @@ public class Album implements Serializable, TreeObject, Comparable<Album> {
         toolTip.setLine1(name);
         toolTip.setLine2(artist.getName());
         int songNumber = songs.size();
-        toolTip.setLine3(StringUtils.getString(songNumber, " ", (songNumber > 1 ? LanguageTool.getString("SONGS") : LanguageTool.getString("SONG"))));
+        toolTip.setLine3(StringUtils.getString(songNumber, " ", (songNumber > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG"))));
     }
 
     @Override
@@ -245,7 +245,7 @@ public class Album implements Serializable, TreeObject, Comparable<Album> {
      * @return
      */
     public static String getUnknownAlbum() {
-        return LanguageTool.getString("UNKNOWN_ALBUM");
+        return I18nUtils.getString("UNKNOWN_ALBUM");
     }
 
     /**

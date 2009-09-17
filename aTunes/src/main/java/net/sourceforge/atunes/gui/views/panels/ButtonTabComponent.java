@@ -37,7 +37,7 @@ import javax.swing.plaf.basic.BasicButtonUI;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Component to be used as as tabComponent; Contains a JLabel to show the text
@@ -61,7 +61,7 @@ public class ButtonTabComponent extends JPanel {
         public TabButton() {
             int size = 17;
             setPreferredSize(new Dimension(size, size));
-            setToolTipText(LanguageTool.getString("CLOSE"));
+            setToolTipText(I18nUtils.getString("CLOSE"));
             // Make the button looks the same for all Laf's
             setUI(new BasicButtonUI());
             // Make it transparent

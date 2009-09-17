@@ -38,7 +38,7 @@ import javax.swing.ListModel;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jvnet.substance.api.renderers.SubstanceDefaultListCellRenderer;
 
@@ -64,7 +64,7 @@ public class EditPreferencesDialog extends CustomModalDialog {
     public EditPreferencesDialog(JFrame owner) {
         super(owner, GuiUtils.getComponentWidthForResolution(1280, 1000), GuiUtils.getComponentHeightForResolution(1024, 700), true);
         setResizable(true);
-        setTitle(LanguageTool.getString("PREFERENCES"));
+        setTitle(I18nUtils.getString("PREFERENCES"));
         add(getContent());
         GuiUtils.applyComponentOrientation(this);
         enableCloseActionWithEscapeKey();
@@ -123,8 +123,8 @@ public class EditPreferencesDialog extends CustomModalDialog {
         // Force minimum width of scroll pane to show items
         scrollPane.setMinimumSize(new Dimension(200, 0));
         options = new JPanel();
-        ok = new CustomButton(null, LanguageTool.getString("OK"));
-        cancel = new CustomButton(null, LanguageTool.getString("CANCEL"));
+        ok = new CustomButton(null, I18nUtils.getString("OK"));
+        cancel = new CustomButton(null, I18nUtils.getString("CANCEL"));
         JPanel auxPanel = new JPanel();
         auxPanel.add(ok);
         auxPanel.add(cancel);

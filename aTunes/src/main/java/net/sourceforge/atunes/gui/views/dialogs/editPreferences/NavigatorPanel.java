@@ -47,7 +47,7 @@ import net.sourceforge.atunes.kernel.modules.repository.HighlightFoldersByIncomp
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.TagAttribute;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
@@ -179,7 +179,7 @@ public class NavigatorPanel extends PreferencesPanel {
             if (columnIndex == 0) {
                 return tagAttributes.get(TagAttribute.values()[rowIndex]);
             }
-            return LanguageTool.getString(TagAttribute.values()[rowIndex].name());
+            return I18nUtils.getString(TagAttribute.values()[rowIndex].name());
         }
 
         /*
@@ -247,10 +247,10 @@ public class NavigatorPanel extends PreferencesPanel {
      */
 
     public NavigatorPanel() {
-        super(LanguageTool.getString("NAVIGATOR"));
-        showFavorites = new JCheckBox(LanguageTool.getString("SHOW_FAVORITES"));
-        showExtendedToolTip = new JCheckBox(LanguageTool.getString("SHOW_EXTENDED_TOOLTIP"));
-        final JLabel label = new JLabel(LanguageTool.getString("EXTENDED_TOOLTIP_DELAY"));
+        super(I18nUtils.getString("NAVIGATOR"));
+        showFavorites = new JCheckBox(I18nUtils.getString("SHOW_FAVORITES"));
+        showExtendedToolTip = new JCheckBox(I18nUtils.getString("SHOW_EXTENDED_TOOLTIP"));
+        final JLabel label = new JLabel(I18nUtils.getString("EXTENDED_TOOLTIP_DELAY"));
         extendedToolTipDelay = new JComboBox(new Integer[] { 1, 2, 3, 4, 5 });
         showExtendedToolTip.addActionListener(new ActionListener() {
             @Override
@@ -259,11 +259,11 @@ public class NavigatorPanel extends PreferencesPanel {
                 extendedToolTipDelay.setEnabled(showExtendedToolTip.isSelected());
             }
         });
-        useSmartTagViewSorting = new JCheckBox(LanguageTool.getString("USE_SMART_TAG_VIEW_SORTING"));
-        useArtistNamesSorting = new JCheckBox(LanguageTool.getString("USE_PERSON_NAMES_ARTIST_TAG_VIEW_SORTING"));
-        showNavigatorTabsAtLeft = new JCheckBox(LanguageTool.getString("SHOW_NAVIGATION_TABS_AT_LEFT"));
-        showNavigatorTabsText = new JCheckBox(LanguageTool.getString("SHOW_NAVIGATION_TABS_TEXT"));
-        highlightFoldersWithIncompleteBasicTags = new JCheckBox(LanguageTool.getString("HIGHLIGHT_INCOMPLETE_TAG_FOLDERS"));
+        useSmartTagViewSorting = new JCheckBox(I18nUtils.getString("USE_SMART_TAG_VIEW_SORTING"));
+        useArtistNamesSorting = new JCheckBox(I18nUtils.getString("USE_PERSON_NAMES_ARTIST_TAG_VIEW_SORTING"));
+        showNavigatorTabsAtLeft = new JCheckBox(I18nUtils.getString("SHOW_NAVIGATION_TABS_AT_LEFT"));
+        showNavigatorTabsText = new JCheckBox(I18nUtils.getString("SHOW_NAVIGATION_TABS_TEXT"));
+        highlightFoldersWithIncompleteBasicTags = new JCheckBox(I18nUtils.getString("HIGHLIGHT_INCOMPLETE_TAG_FOLDERS"));
         highlightFoldersWithIncompleteBasicTags.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

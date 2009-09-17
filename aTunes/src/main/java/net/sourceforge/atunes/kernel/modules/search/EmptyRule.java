@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.search;
 
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -35,6 +35,6 @@ public class EmptyRule {
      */
     @Override
     public String toString() {
-        return StringUtils.getString("<", LanguageTool.getString("EMPTY_RULE"), ">");
+        return StringUtils.getString("<", I18nUtils.getString("EMPTY_RULE"), ">");
     }
 }

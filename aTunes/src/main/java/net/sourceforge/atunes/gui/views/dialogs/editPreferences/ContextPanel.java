@@ -57,7 +57,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsEngineInfo;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
@@ -209,12 +209,12 @@ public class ContextPanel extends PreferencesPanel {
      * Instantiates a new audio scrobbler panel.
      */
     public ContextPanel() {
-        super(LanguageTool.getString("CONTEXT_INFORMATION"));
-        activateContext = new JCheckBox(LanguageTool.getString("ACTIVATE_CONTEXT_INFORMATION"));
-        savePictures = new JCheckBox(LanguageTool.getString("SAVE_PICTURES_TO_AUDIO_FOLDERS"));
-        showTextInTabs = new JCheckBox(LanguageTool.getString("SHOW_CONTEXT_TABS_TEXT"));
-        hideVariousArtistsAlbums = new JCheckBox(LanguageTool.getString("HIDE_VARIOUS_ARTISTS_ALBUMS"));
-        minimumSongNumberPerAlbum = new JCheckBox(LanguageTool.getString("MINIMUM_SONG_NUMBER_PER_ALBUM"));
+        super(I18nUtils.getString("CONTEXT_INFORMATION"));
+        activateContext = new JCheckBox(I18nUtils.getString("ACTIVATE_CONTEXT_INFORMATION"));
+        savePictures = new JCheckBox(I18nUtils.getString("SAVE_PICTURES_TO_AUDIO_FOLDERS"));
+        showTextInTabs = new JCheckBox(I18nUtils.getString("SHOW_CONTEXT_TABS_TEXT"));
+        hideVariousArtistsAlbums = new JCheckBox(I18nUtils.getString("HIDE_VARIOUS_ARTISTS_ALBUMS"));
+        minimumSongNumberPerAlbum = new JCheckBox(I18nUtils.getString("MINIMUM_SONG_NUMBER_PER_ALBUM"));
         minimumSongNumber = new JTextField(4);
         minimumSongNumber.addKeyListener(new KeyAdapter() {
             @Override
@@ -253,7 +253,7 @@ public class ContextPanel extends PreferencesPanel {
                 DesktopUtils.openURL("http://www.last.fm");
             }
         }));
-        JLabel enginesTableLabel = new JLabel(LanguageTool.getString("LYRICS_ENGINES_SELECTION"));
+        JLabel enginesTableLabel = new JLabel(I18nUtils.getString("LYRICS_ENGINES_SELECTION"));
         final LyricsEnginesTableModel model = new LyricsEnginesTableModel();
         enginesTable = new JTable(model);
         enginesTable.setShowGrid(false);

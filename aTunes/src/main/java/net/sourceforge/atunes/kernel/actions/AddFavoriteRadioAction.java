@@ -28,15 +28,15 @@ import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class AddFavoriteRadioAction extends ActionOverSelectedObjects<Radio> {
 
     private static final long serialVersionUID = 82199784140877040L;
 
     AddFavoriteRadioAction() {
-        super(LanguageTool.getString("ADD_FAVORITE_RADIO"), ImageLoader.getImage(ImageLoader.RADIO_FAVORITE), Radio.class);
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("RADIO_VIEW_TOOLTIP"));
+        super(I18nUtils.getString("ADD_FAVORITE_RADIO"), ImageLoader.getImage(ImageLoader.RADIO_FAVORITE), Radio.class);
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("RADIO_VIEW_TOOLTIP"));
     }
 
     @Override

@@ -36,7 +36,7 @@ import javax.swing.WindowConstants;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.views.controls.CustomDialog;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
@@ -72,7 +72,7 @@ public class SearchResultsDialog extends CustomDialog {
         super(owner, GuiUtils.getComponentWidthForResolution(1280, 900), 600);
         setResizable(true);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle(LanguageTool.getString("SEARCH_RESULTS"));
+        setTitle(I18nUtils.getString("SEARCH_RESULTS"));
         add(getContent());
 
         enableDisposeActionWithEscapeKey();
@@ -124,9 +124,9 @@ public class SearchResultsDialog extends CustomDialog {
      */
     private JPanel getButtonsPanel() {
         JPanel buttonsPanel = new JPanel(new GridBagLayout());
-        showElementInfo = new JButton(LanguageTool.getString("INFO"), ImageLoader.getImage(ImageLoader.INFO));
-        addToCurrentPlayList = new JButton(LanguageTool.getString("ADD_TO_PLAYLIST"), ImageLoader.getImage(ImageLoader.ADD));
-        addToNewPlayList = new JButton(LanguageTool.getString("ADD_TO_NEW_PLAYLIST"), ImageLoader.getImage(ImageLoader.ADD));
+        showElementInfo = new JButton(I18nUtils.getString("INFO"), ImageLoader.getImage(ImageLoader.INFO));
+        addToCurrentPlayList = new JButton(I18nUtils.getString("ADD_TO_PLAYLIST"), ImageLoader.getImage(ImageLoader.ADD));
+        addToNewPlayList = new JButton(I18nUtils.getString("ADD_TO_NEW_PLAYLIST"), ImageLoader.getImage(ImageLoader.ADD));
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;

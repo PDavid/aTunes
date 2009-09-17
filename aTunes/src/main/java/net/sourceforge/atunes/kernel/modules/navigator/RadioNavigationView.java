@@ -57,7 +57,7 @@ import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jvnet.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
 
@@ -79,21 +79,21 @@ public final class RadioNavigationView extends NavigationView {
 
     @Override
     public String getTitle() {
-        return LanguageTool.getString("RADIO");
+        return I18nUtils.getString("RADIO");
     }
 
     @Override
     public String getTooltip() {
-        return LanguageTool.getString("RADIO_TAB_TOOLTIP");
+        return I18nUtils.getString("RADIO_TAB_TOOLTIP");
     }
 
     @Override
     public JTree getTree() {
         if (radioTree == null) {
-            radioTree = new NavigationTree(new DefaultTreeModel(new DefaultMutableTreeNode(LanguageTool.getString("RADIO"))));
+            radioTree = new NavigationTree(new DefaultTreeModel(new DefaultMutableTreeNode(I18nUtils.getString("RADIO"))));
             radioTree.setToggleClickCount(0);
             radioTree.setCellRenderer(getTreeRenderer());
-            radioTree.setToolTipText(LanguageTool.getString("RADIO_VIEW_TOOLTIP"));
+            radioTree.setToolTipText(I18nUtils.getString("RADIO_VIEW_TOOLTIP"));
         }
         return radioTree;
     }
@@ -166,7 +166,7 @@ public final class RadioNavigationView extends NavigationView {
         // Nodes to be expanded after refresh
         List<DefaultMutableTreeNode> nodesToExpand = new ArrayList<DefaultMutableTreeNode>();
 
-        root.setUserObject(LanguageTool.getString("RADIO"));
+        root.setUserObject(I18nUtils.getString("RADIO"));
         root.removeAllChildren();
         addRadioNodes((List<Radio>) data.get("RADIOS"), (List<Radio>) data.get("PRESET_RADIOS"), root, treeFilter, (Boolean) data.get("SHOW_ALL_STATIONS"), objectsExpanded,
                 objectsSelected, nodesToExpand, nodesToSelect);
@@ -367,7 +367,7 @@ public final class RadioNavigationView extends NavigationView {
         case 0:
             return "";
         case 1:
-            return LanguageTool.getString("URL");
+            return I18nUtils.getString("URL");
         default:
             return "";
         }

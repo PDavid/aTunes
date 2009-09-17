@@ -36,7 +36,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.NetworkUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.XMLUtils;
@@ -106,7 +106,7 @@ public final class UpdateHandler extends Handler {
                     if (version != null && version.compareTo(Constants.VERSION) == 1) {
                         VisualHandler.getInstance().showNewVersionInfo(version, alwaysInDialog);
                     } else if (showNoNewVersion) {
-                        VisualHandler.getInstance().showMessage(LanguageTool.getString("NOT_NEW_VERSION"));
+                        VisualHandler.getInstance().showMessage(I18nUtils.getString("NOT_NEW_VERSION"));
                     }
                 } catch (InterruptedException e) {
                     getLogger().internalError(e);

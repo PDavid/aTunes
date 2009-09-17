@@ -30,7 +30,7 @@ import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.tags.writer.EditTagFromFolderNamePatternProcess;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -47,8 +47,8 @@ public class AutoSetTagFromFolderNamePatternAction extends ActionOverSelectedObj
     private static final long serialVersionUID = -1253820711948217089L;
 
     public AutoSetTagFromFolderNamePatternAction() {
-        super(StringUtils.getString(LanguageTool.getString("AUTO_SET_TAG_FROM_FOLDER_NAME_PATTERN"), "..."), AudioFile.class);
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("AUTO_SET_TAG_FROM_FOLDER_NAME_PATTERN"));
+        super(StringUtils.getString(I18nUtils.getString("AUTO_SET_TAG_FROM_FOLDER_NAME_PATTERN"), "..."), AudioFile.class);
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("AUTO_SET_TAG_FROM_FOLDER_NAME_PATTERN"));
     }
 
     @Override

@@ -29,7 +29,7 @@ import javax.swing.KeyStroke;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * This action toggles visibility of play list filter box
@@ -42,8 +42,8 @@ public class TogglePlayListFilterAction extends Action {
     private static final long serialVersionUID = -5448844077734097830L;
 
     TogglePlayListFilterAction() {
-        super(LanguageTool.getString("FILTER"), ImageLoader.getImage(ImageLoader.SEARCH));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("FILTER"));
+        super(I18nUtils.getString("FILTER"), ImageLoader.getImage(ImageLoader.SEARCH));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("FILTER"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK));
     }
 

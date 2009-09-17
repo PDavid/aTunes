@@ -30,7 +30,7 @@ import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.model.Album;
 import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * This action creates a new play list with all songs of the album that is
@@ -46,8 +46,8 @@ public class CreatePlayListWithSelectedAlbumsAction extends ActionOverSelectedOb
     private static final long serialVersionUID = -2917908051161952409L;
 
     CreatePlayListWithSelectedAlbumsAction() {
-        super(LanguageTool.getString("SET_ALBUM_AS_PLAYLIST"), ImageLoader.getImage(ImageLoader.ALBUM), AudioObject.class);
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("ALBUM_BUTTON_TOOLTIP"));
+        super(I18nUtils.getString("SET_ALBUM_AS_PLAYLIST"), ImageLoader.getImage(ImageLoader.ALBUM), AudioObject.class);
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("ALBUM_BUTTON_TOOLTIP"));
         setEnabled(false);
     }
 

@@ -35,7 +35,7 @@ import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -190,7 +190,7 @@ public class Artist implements Serializable, TreeObject, Comparable<Artist> {
     @Override
     public String getToolTip() {
         int albums = getAlbums().size();
-        return StringUtils.getString(getName(), " (", albums, " ", (albums > 1 ? LanguageTool.getString("ALBUMS") : LanguageTool.getString("ALBUM")), ")");
+        return StringUtils.getString(getName(), " (", albums, " ", (albums > 1 ? I18nUtils.getString("ALBUMS") : I18nUtils.getString("ALBUM")), ")");
     }
 
     @Override
@@ -202,9 +202,9 @@ public class Artist implements Serializable, TreeObject, Comparable<Artist> {
     public void setExtendedToolTip(ExtendedToolTip toolTip) {
         toolTip.setLine1(name);
         int albumNumber = albums.size();
-        toolTip.setLine2(StringUtils.getString(albumNumber, " ", (albumNumber > 1 ? LanguageTool.getString("ALBUMS") : LanguageTool.getString("ALBUM"))));
+        toolTip.setLine2(StringUtils.getString(albumNumber, " ", (albumNumber > 1 ? I18nUtils.getString("ALBUMS") : I18nUtils.getString("ALBUM"))));
         Integer timesPlayed = RepositoryHandler.getInstance().getArtistTimesPlayed(this);
-        toolTip.setLine3(StringUtils.getString(LanguageTool.getString("TIMES_PLAYED"), ": ", timesPlayed));
+        toolTip.setLine3(StringUtils.getString(I18nUtils.getString("TIMES_PLAYED"), ": ", timesPlayed));
     }
 
     @Override
@@ -227,7 +227,7 @@ public class Artist implements Serializable, TreeObject, Comparable<Artist> {
      * @return
      */
     public static String getUnknownArtist() {
-        return LanguageTool.getString("UNKNOWN_ARTIST");
+        return I18nUtils.getString("UNKNOWN_ARTIST");
     }
 
     /**

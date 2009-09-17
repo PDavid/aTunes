@@ -39,9 +39,8 @@ import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
-import net.sourceforge.atunes.utils.TimeUtils;
 
 /**
  * The Class PodcastFeedEntryPropertiesDialog.
@@ -111,7 +110,7 @@ class PodcastFeedEntryPropertiesDialog extends PropertiesDialog {
      * @return title for dialog
      */
     private static String getTitleText(PodcastFeedEntry entry) {
-        return StringUtils.getString(LanguageTool.getString("INFO_OF_PODCAST_FEED"), " ", entry.getTitle());
+        return StringUtils.getString(I18nUtils.getString("INFO_OF_PODCAST_FEED"), " ", entry.getTitle());
     }
 
     /**
@@ -211,23 +210,23 @@ class PodcastFeedEntryPropertiesDialog extends PropertiesDialog {
      */
     private void setContent() {
         fillPicture();
-        titleLabel.setText(getHtmlFormatted(LanguageTool.getString("NAME"), StringUtils.isEmpty(entry.getTitle()) ? "-" : entry.getTitle()));
-        artistLabel.setText(getHtmlFormatted(LanguageTool.getString("ARTIST"), StringUtils.isEmpty(entry.getArtist()) ? "-" : entry.getArtist()));
-        urlLabel.setText(getHtmlFormatted(LanguageTool.getString("URL"), entry.getUrl()));
+        titleLabel.setText(getHtmlFormatted(I18nUtils.getString("NAME"), StringUtils.isEmpty(entry.getTitle()) ? "-" : entry.getTitle()));
+        artistLabel.setText(getHtmlFormatted(I18nUtils.getString("ARTIST"), StringUtils.isEmpty(entry.getArtist()) ? "-" : entry.getArtist()));
+        urlLabel.setText(getHtmlFormatted(I18nUtils.getString("URL"), entry.getUrl()));
         if (entry.getDuration() > 0) {
-            durationLabel.setText(getHtmlFormatted(LanguageTool.getString("DURATION"), TimeUtils.seconds2String(entry.getDuration())));
+            durationLabel.setText(getHtmlFormatted(I18nUtils.getString("DURATION"), StringUtils.seconds2String(entry.getDuration())));
         } else {
-            durationLabel.setText(getHtmlFormatted(LanguageTool.getString("DURATION"), "-"));
+            durationLabel.setText(getHtmlFormatted(I18nUtils.getString("DURATION"), "-"));
         }
         if (entry.getDate() != null) {
-            dateLabel.setText(getHtmlFormatted(LanguageTool.getString("DATE"), StringUtils.getString(DateFormat.getDateInstance(DateFormat.LONG,
+            dateLabel.setText(getHtmlFormatted(I18nUtils.getString("DATE"), StringUtils.getString(DateFormat.getDateInstance(DateFormat.LONG,
                     ApplicationState.getInstance().getLocale().getLocale()).format(entry.getDate()), ", ", DateFormat.getTimeInstance().format(entry.getDate()))));
         } else {
-            dateLabel.setText(getHtmlFormatted(LanguageTool.getString("DATE"), "-"));
+            dateLabel.setText(getHtmlFormatted(I18nUtils.getString("DATE"), "-"));
         }
-        podcastFeedLabel.setText(getHtmlFormatted(LanguageTool.getString("PODCAST_FEED"), entry.getPodcastFeed().getName()));
-        downloadedLabel.setText(getHtmlFormatted(LanguageTool.getString("DOWNLOADED"), entry.isDownloaded() ? LanguageTool.getString("YES") : LanguageTool.getString("NO")));
-        descriptionLabel.setText(getHtmlFormatted(LanguageTool.getString("DESCRIPTION"), ""));
+        podcastFeedLabel.setText(getHtmlFormatted(I18nUtils.getString("PODCAST_FEED"), entry.getPodcastFeed().getName()));
+        downloadedLabel.setText(getHtmlFormatted(I18nUtils.getString("DOWNLOADED"), entry.isDownloaded() ? I18nUtils.getString("YES") : I18nUtils.getString("NO")));
+        descriptionLabel.setText(getHtmlFormatted(I18nUtils.getString("DESCRIPTION"), ""));
         descriptionTextArea.setText(entry.getDescription());
         descriptionTextArea.setCaretPosition(0);
     }

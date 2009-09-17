@@ -26,15 +26,15 @@ import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class MarkPodcastEntryListenedAction extends ActionOverSelectedObjects<PodcastFeedEntry> {
 
     private static final long serialVersionUID = 1563803489549692850L;
 
     MarkPodcastEntryListenedAction() {
-        super(LanguageTool.getString("MARK_PODCAST_ENTRY_AS_LISTENED"), ImageLoader.getImage(ImageLoader.MARK_RSS_AS_READ), PodcastFeedEntry.class);
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("MARK_PODCAST_ENTRY_AS_LISTENED"));
+        super(I18nUtils.getString("MARK_PODCAST_ENTRY_AS_LISTENED"), ImageLoader.getImage(ImageLoader.MARK_RSS_AS_READ), PodcastFeedEntry.class);
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("MARK_PODCAST_ENTRY_AS_LISTENED"));
     }
 
     @Override

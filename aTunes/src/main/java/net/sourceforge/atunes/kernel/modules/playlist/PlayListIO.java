@@ -39,7 +39,7 @@ import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.ClosingUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -138,7 +138,7 @@ public class PlayListIO {
 
             @Override
             public String getDescription() {
-                return LanguageTool.getString("PLAYLIST");
+                return I18nUtils.getString("PLAYLIST");
             }
         };
     }

@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.ControllerProxy;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -38,8 +38,8 @@ public class EditPreferencesAction extends Action {
     private static final long serialVersionUID = -6303396973997577995L;
 
     EditPreferencesAction() {
-        super(StringUtils.getString(LanguageTool.getString("PREFERENCES"), "..."), ImageLoader.getImage(ImageLoader.PREFS));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("PREFERENCES"));
+        super(StringUtils.getString(I18nUtils.getString("PREFERENCES"), "..."), ImageLoader.getImage(ImageLoader.PREFS));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("PREFERENCES"));
     }
 
     @Override

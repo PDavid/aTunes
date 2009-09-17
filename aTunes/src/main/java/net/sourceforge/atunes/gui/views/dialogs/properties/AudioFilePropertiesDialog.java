@@ -40,9 +40,8 @@ import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
-import net.sourceforge.atunes.utils.TimeUtils;
 
 /**
  * The Class AudioFilePropertiesDialog.
@@ -127,7 +126,7 @@ class AudioFilePropertiesDialog extends PropertiesDialog {
      * @return title for dialog
      */
     private static String getTitleText(AudioFile file) {
-        return StringUtils.getString(LanguageTool.getString("INFO_OF_FILE"), " ", file.getFile().getName());
+        return StringUtils.getString(I18nUtils.getString("INFO_OF_FILE"), " ", file.getFile().getName());
     }
 
     /**
@@ -265,20 +264,20 @@ class AudioFilePropertiesDialog extends PropertiesDialog {
 
     private void setContent() {
         fillPicture();
-        songLabel.setText(getHtmlFormatted(LanguageTool.getString("SONG"), StringUtils.isEmpty(file.getTitle()) ? "-" : file.getTitle()));
-        artistLabel.setText(getHtmlFormatted(LanguageTool.getString("ARTIST"), StringUtils.isEmpty(file.getArtist()) ? "-" : file.getArtist()));
-        albumArtistLabel.setText(getHtmlFormatted(LanguageTool.getString("ALBUM_ARTIST"), StringUtils.isEmpty(file.getAlbumArtist()) ? "-" : file.getAlbumArtist()));
-        albumLabel.setText(getHtmlFormatted(LanguageTool.getString("ALBUM"), StringUtils.isEmpty(file.getAlbum()) ? "-" : file.getAlbum()));
-        fileNameLabel.setText(getHtmlFormatted(LanguageTool.getString("FILE"), file.getFile().getName()));
-        pathLabel.setText(getHtmlFormatted(LanguageTool.getString("LOCATION"), file.getFile().getParent()));
-        durationLabel.setText(getHtmlFormatted(LanguageTool.getString("DURATION"), TimeUtils.seconds2String(file.getDuration())));
-        trackLabel.setText(getHtmlFormatted(LanguageTool.getString("TRACK"), file.getTrackNumber() > 0 ? file.getTrackNumber().toString() : "-"));
-        discNumberLabel.setText(getHtmlFormatted(LanguageTool.getString("DISC_NUMBER"), file.getDiscNumber() > 0 ? file.getDiscNumber().toString() : "-"));
-        genreLabel.setText(getHtmlFormatted(LanguageTool.getString("GENRE"), StringUtils.isEmpty(file.getGenre()) ? "-" : file.getGenre()));
-        yearLabel.setText(getHtmlFormatted(LanguageTool.getString("YEAR"), StringUtils.getNumberOrZero(file.getYear()) > 0 ? file.getYear() : "-"));
-        composerLabel.setText(getHtmlFormatted(LanguageTool.getString("COMPOSER"), StringUtils.isEmpty(file.getComposer()) ? "-" : file.getComposer()));
-        bitrateLabel.setText(getHtmlFormatted(LanguageTool.getString("BITRATE"), StringUtils.getString(Long.toString(file.getBitrate()), " Kbps")));
-        frequencyLabel.setText(getHtmlFormatted(LanguageTool.getString("FREQUENCY"), StringUtils.getString(Integer.toString(file.getFrequency()), " Hz")));
+        songLabel.setText(getHtmlFormatted(I18nUtils.getString("SONG"), StringUtils.isEmpty(file.getTitle()) ? "-" : file.getTitle()));
+        artistLabel.setText(getHtmlFormatted(I18nUtils.getString("ARTIST"), StringUtils.isEmpty(file.getArtist()) ? "-" : file.getArtist()));
+        albumArtistLabel.setText(getHtmlFormatted(I18nUtils.getString("ALBUM_ARTIST"), StringUtils.isEmpty(file.getAlbumArtist()) ? "-" : file.getAlbumArtist()));
+        albumLabel.setText(getHtmlFormatted(I18nUtils.getString("ALBUM"), StringUtils.isEmpty(file.getAlbum()) ? "-" : file.getAlbum()));
+        fileNameLabel.setText(getHtmlFormatted(I18nUtils.getString("FILE"), file.getFile().getName()));
+        pathLabel.setText(getHtmlFormatted(I18nUtils.getString("LOCATION"), file.getFile().getParent()));
+        durationLabel.setText(getHtmlFormatted(I18nUtils.getString("DURATION"), StringUtils.seconds2String(file.getDuration())));
+        trackLabel.setText(getHtmlFormatted(I18nUtils.getString("TRACK"), file.getTrackNumber() > 0 ? file.getTrackNumber().toString() : "-"));
+        discNumberLabel.setText(getHtmlFormatted(I18nUtils.getString("DISC_NUMBER"), file.getDiscNumber() > 0 ? file.getDiscNumber().toString() : "-"));
+        genreLabel.setText(getHtmlFormatted(I18nUtils.getString("GENRE"), StringUtils.isEmpty(file.getGenre()) ? "-" : file.getGenre()));
+        yearLabel.setText(getHtmlFormatted(I18nUtils.getString("YEAR"), StringUtils.getNumberOrZero(file.getYear()) > 0 ? file.getYear() : "-"));
+        composerLabel.setText(getHtmlFormatted(I18nUtils.getString("COMPOSER"), StringUtils.isEmpty(file.getComposer()) ? "-" : file.getComposer()));
+        bitrateLabel.setText(getHtmlFormatted(I18nUtils.getString("BITRATE"), StringUtils.getString(Long.toString(file.getBitrate()), " Kbps")));
+        frequencyLabel.setText(getHtmlFormatted(I18nUtils.getString("FREQUENCY"), StringUtils.getString(Integer.toString(file.getFrequency()), " Hz")));
     }
 
 }

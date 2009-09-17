@@ -50,7 +50,7 @@ import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeVideoDow
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.FileNameUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jfree.ui.ExtensionFileFilter;
@@ -74,7 +74,7 @@ public class YoutubeContent extends ContextPanelContent {
 
     @Override
     protected String getContentName() {
-        return LanguageTool.getString("YOUTUBE_VIDEOS");
+        return I18nUtils.getString("YOUTUBE_VIDEOS");
     }
 
     @Override
@@ -118,14 +118,14 @@ public class YoutubeContent extends ContextPanelContent {
         });
         youtubeResultTable.setColumnSelectionAllowed(false);
 
-        JMenuItem playMenuItem = new JMenuItem(LanguageTool.getString("PLAY_VIDEO_AT_YOUTUBE"));
+        JMenuItem playMenuItem = new JMenuItem(I18nUtils.getString("PLAY_VIDEO_AT_YOUTUBE"));
         playMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 playVideoAtYoutube();
             }
         });
-        JMenuItem downloadMenuItem = new JMenuItem(LanguageTool.getString("DOWNLOAD_VIDEO"));
+        JMenuItem downloadMenuItem = new JMenuItem(I18nUtils.getString("DOWNLOAD_VIDEO"));
         downloadMenuItem.addActionListener(new ActionListener() {
 
             @Override
@@ -168,7 +168,7 @@ public class YoutubeContent extends ContextPanelContent {
     @Override
     protected List<Component> getOptions() {
         List<Component> options = new ArrayList<Component>();
-        JMenuItem moreResults = new JMenuItem(LanguageTool.getString("SEE_MORE_RESULTS"));
+        JMenuItem moreResults = new JMenuItem(I18nUtils.getString("SEE_MORE_RESULTS"));
         moreResults.addActionListener(new ActionListener() {
 
             @Override
@@ -176,7 +176,7 @@ public class YoutubeContent extends ContextPanelContent {
                 searchMoreResultsInYoutube();
             }
         });
-        JMenuItem openYoutube = new JMenuItem(LanguageTool.getString("GO_TO_YOUTUBE"));
+        JMenuItem openYoutube = new JMenuItem(I18nUtils.getString("GO_TO_YOUTUBE"));
         openYoutube.addActionListener(new ActionListener() {
 
             @Override
@@ -201,7 +201,7 @@ public class YoutubeContent extends ContextPanelContent {
             // Open save dialog to select file
             JFileChooser dialog = new JFileChooser();
             dialog.setDialogType(JFileChooser.SAVE_DIALOG);
-            dialog.setDialogTitle(LanguageTool.getString("SAVE_YOUTUBE_VIDEO"));
+            dialog.setDialogTitle(I18nUtils.getString("SAVE_YOUTUBE_VIDEO"));
             dialog.setFileFilter(new ExtensionFileFilter("FLV", "FLV"));
             // Set default file name
             // for some reason dialog fails with files with [ or ] chars

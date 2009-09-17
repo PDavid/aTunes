@@ -35,7 +35,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.utils.FileNameUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.commons.io.FileUtils;
@@ -82,7 +82,7 @@ public class ImportFilesProcess extends AudioFileTransferProcess {
 
     @Override
     public String getProgressDialogTitle() {
-        return StringUtils.getString(LanguageTool.getString("IMPORTING"), "...");
+        return StringUtils.getString(I18nUtils.getString("IMPORTING"), "...");
     }
 
     /**

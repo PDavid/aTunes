@@ -54,7 +54,7 @@ import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
@@ -209,7 +209,7 @@ public class AboutDialog extends CustomModalDialog {
         license.setOpaque(false);
         license.setBorder(BorderFactory.createEmptyBorder());
 
-        UrlLabel contributors = new UrlLabel(LanguageTool.getString("CONTRIBUTORS"), Constants.CONTRIBUTORS_WEB);
+        UrlLabel contributors = new UrlLabel(I18nUtils.getString("CONTRIBUTORS"), Constants.CONTRIBUTORS_WEB);
         contributors.setFont(Fonts.APP_VERSION_TITLE_FONT);
 
         JTable propertiesTable = new JTable(tableModel);
@@ -228,7 +228,7 @@ public class AboutDialog extends CustomModalDialog {
         });
         JScrollPane propertiesScrollPane = new JScrollPane(propertiesTable);
 
-        JButton close = new CustomButton(null, LanguageTool.getString("CLOSE"));
+        JButton close = new CustomButton(null, I18nUtils.getString("CLOSE"));
         close.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -237,8 +237,8 @@ public class AboutDialog extends CustomModalDialog {
         });
 
         JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.addTab(LanguageTool.getString("LICENSE"), license);
-        tabbedPane.addTab(LanguageTool.getString("PROPERTIES"), propertiesScrollPane);
+        tabbedPane.addTab(I18nUtils.getString("LICENSE"), license);
+        tabbedPane.addTab(I18nUtils.getString("PROPERTIES"), propertiesScrollPane);
 
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 1;

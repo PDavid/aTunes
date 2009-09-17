@@ -27,7 +27,7 @@ import javax.swing.SwingWorker;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Action to clear caches from last.fm and lyrics
@@ -43,7 +43,7 @@ public class ClearCachesAction extends Action {
     private static final long serialVersionUID = 5131926704037915711L;
 
     public ClearCachesAction() {
-        super(LanguageTool.getString("CLEAR_CACHE"));
+        super(I18nUtils.getString("CLEAR_CACHE"));
     }
 
     @Override

@@ -59,7 +59,7 @@ import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jvnet.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
 
@@ -79,18 +79,18 @@ public final class PodcastNavigationView extends NavigationView {
 
     @Override
     public String getTitle() {
-        return LanguageTool.getString("PODCAST_FEEDS");
+        return I18nUtils.getString("PODCAST_FEEDS");
     }
 
     @Override
     public String getTooltip() {
-        return LanguageTool.getString("PODCAST_FEED_TAB_TOOLTIP");
+        return I18nUtils.getString("PODCAST_FEED_TAB_TOOLTIP");
     }
 
     @Override
     public JTree getTree() {
         if (podcastFeedTree == null) {
-            podcastFeedTree = new NavigationTree(new DefaultTreeModel(new DefaultMutableTreeNode(LanguageTool.getString("PODCAST_FEEDS"))));
+            podcastFeedTree = new NavigationTree(new DefaultTreeModel(new DefaultMutableTreeNode(I18nUtils.getString("PODCAST_FEEDS"))));
             podcastFeedTree.setToggleClickCount(0);
             podcastFeedTree.setCellRenderer(getTreeRenderer());
             podcastFeedTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
@@ -165,7 +165,7 @@ public final class PodcastNavigationView extends NavigationView {
         DefaultTreeModel treeModel = (DefaultTreeModel) getTree().getModel();
 
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();
-        root.setUserObject(LanguageTool.getString("PODCAST_FEEDS"));
+        root.setUserObject(I18nUtils.getString("PODCAST_FEEDS"));
         root.removeAllChildren();
         addPodcastFeedNodes((List<PodcastFeed>) data.get("PODCASTS"), root, treeFilter);
         treeModel.reload();
@@ -258,9 +258,9 @@ public final class PodcastNavigationView extends NavigationView {
         case 2:
             return "";
         case 3:
-            return LanguageTool.getString("PODCAST_ENTRIES");
+            return I18nUtils.getString("PODCAST_ENTRIES");
         case 4:
-            return LanguageTool.getString("DURATION");
+            return I18nUtils.getString("DURATION");
         default:
             return "";
         }

@@ -28,15 +28,15 @@ import net.sourceforge.atunes.gui.model.NavigationTableModel;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class PlayNowAction extends Action {
 
     private static final long serialVersionUID = -2099290583376403144L;
 
     PlayNowAction() {
-        super(LanguageTool.getString("PLAY_NOW"), ImageLoader.getImage(ImageLoader.PLAY_MENU));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("PLAY_NOW"));
+        super(I18nUtils.getString("PLAY_NOW"), ImageLoader.getImage(ImageLoader.PLAY_MENU));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("PLAY_NOW"));
     }
 
     @Override

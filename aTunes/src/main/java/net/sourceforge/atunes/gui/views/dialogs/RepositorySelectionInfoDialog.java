@@ -36,7 +36,7 @@ import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The Class RepositorySelectionInfoDialog.
@@ -54,7 +54,7 @@ public class RepositorySelectionInfoDialog extends CustomModalDialog {
     public RepositorySelectionInfoDialog(JFrame owner) {
         super(owner, 400, 250, true);
         setResizable(false);
-        setTitle(LanguageTool.getString("REPOSITORY_SELECTION_INFO"));
+        setTitle(I18nUtils.getString("REPOSITORY_SELECTION_INFO"));
         setContent();
         GuiUtils.applyComponentOrientation(this);
         enableCloseActionWithEscapeKey();
@@ -66,13 +66,13 @@ public class RepositorySelectionInfoDialog extends CustomModalDialog {
     private void setContent() {
         JPanel panel = new JPanel(new GridBagLayout());
         JLabel icon = new JLabel(ImageLoader.getImage(ImageLoader.APP_ICON_BIG));
-        JTextArea text = new JTextArea(LanguageTool.getString("REPOSITORY_SELECTION_INFO_TEXT"));
+        JTextArea text = new JTextArea(I18nUtils.getString("REPOSITORY_SELECTION_INFO_TEXT"));
         text.setOpaque(false);
         text.setEditable(false);
         text.setWrapStyleWord(true);
         text.setLineWrap(true);
         text.setBorder(BorderFactory.createEmptyBorder());
-        CustomButton button = new CustomButton(null, LanguageTool.getString("OK"));
+        CustomButton button = new CustomButton(null, I18nUtils.getString("OK"));
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

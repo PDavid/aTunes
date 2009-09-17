@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Shows about dialog
@@ -36,8 +36,8 @@ public class ShowAboutAction extends Action {
     private static final long serialVersionUID = 5969136618082752831L;
 
     public ShowAboutAction() {
-        super(LanguageTool.getString("ABOUT"));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("ABOUT"));
+        super(I18nUtils.getString("ABOUT"));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("ABOUT"));
     }
 
     @Override

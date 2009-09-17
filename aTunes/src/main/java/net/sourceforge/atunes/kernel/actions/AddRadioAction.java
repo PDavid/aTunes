@@ -27,7 +27,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Opens dialog to add a radio
@@ -40,8 +40,8 @@ public class AddRadioAction extends Action {
     private static final long serialVersionUID = -5764149587317233484L;
 
     public AddRadioAction() {
-        super(LanguageTool.getString("ADD_RADIO"), ImageLoader.getImage(ImageLoader.RADIO_ADD));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("ADD_RADIO"));
+        super(I18nUtils.getString("ADD_RADIO"), ImageLoader.getImage(ImageLoader.RADIO_ADD));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("ADD_RADIO"));
     }
 
     @Override

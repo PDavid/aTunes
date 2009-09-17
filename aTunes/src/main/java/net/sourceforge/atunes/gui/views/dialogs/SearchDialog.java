@@ -41,7 +41,7 @@ import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
 import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
 import net.sourceforge.atunes.kernel.modules.internetsearch.SearchFactory;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -107,7 +107,7 @@ public class SearchDialog extends CustomModalDialog {
     private void setContent() {
         JPanel panel = new JPanel(new GridBagLayout());
         JLabel icon = new JLabel(ImageLoader.getImage(ImageLoader.NETWORK));
-        JLabel text = new JLabel(StringUtils.getString(LanguageTool.getString("SEARCH_AT"), "..."));
+        JLabel text = new JLabel(StringUtils.getString(I18nUtils.getString("SEARCH_AT"), "..."));
         text.setFont(text.getFont().deriveFont(Font.PLAIN));
         final JList list = new JList(SearchFactory.getSearches().toArray());
         list.setSelectedIndex(0);
@@ -141,13 +141,13 @@ public class SearchDialog extends CustomModalDialog {
         //			}
         //		});
 
-        setAsDefaultCheckBox = new JCheckBox(LanguageTool.getString("SET_AS_DEFAULT"));
+        setAsDefaultCheckBox = new JCheckBox(I18nUtils.getString("SET_AS_DEFAULT"));
         setAsDefaultCheckBox.setOpaque(false);
         setAsDefaultCheckBox.setFont(setAsDefaultCheckBox.getFont().deriveFont(Font.PLAIN));
         setAsDefaultCheckBox.setHorizontalAlignment(SwingConstants.CENTER);
 
         JScrollPane scrollPane = new JScrollPane(list);
-        CustomButton okButton = new CustomButton(null, LanguageTool.getString("OK"));
+        CustomButton okButton = new CustomButton(null, I18nUtils.getString("OK"));
         okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -156,7 +156,7 @@ public class SearchDialog extends CustomModalDialog {
                 setVisible(false);
             }
         });
-        CustomButton cancelButton = new CustomButton(null, LanguageTool.getString("CANCEL"));
+        CustomButton cancelButton = new CustomButton(null, I18nUtils.getString("CANCEL"));
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

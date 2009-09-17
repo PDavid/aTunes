@@ -29,7 +29,7 @@ import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Adds a song to loved tracks in Last.fm profile
@@ -42,8 +42,8 @@ public class AddLovedSongInLastFMAction extends Action {
     private static final long serialVersionUID = -2687851398606488392L;
 
     AddLovedSongInLastFMAction() {
-        super(LanguageTool.getString("ADD_LOVED_SONG_IN_LASTFM"));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("ADD_LOVED_SONG_IN_LASTFM"));
+        super(I18nUtils.getString("ADD_LOVED_SONG_IN_LASTFM"));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("ADD_LOVED_SONG_IN_LASTFM"));
         setEnabled(ApplicationState.getInstance().isLastFmEnabled());
     }
 

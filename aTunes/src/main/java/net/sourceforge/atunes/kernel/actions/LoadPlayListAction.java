@@ -29,7 +29,7 @@ import javax.swing.KeyStroke;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -43,8 +43,8 @@ public class LoadPlayListAction extends Action {
     private static final long serialVersionUID = 3409230917351152853L;
 
     LoadPlayListAction() {
-        super(StringUtils.getString(LanguageTool.getString("LOAD"), "..."), ImageLoader.getImage(ImageLoader.FOLDER));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("LOAD_PLAYLIST_TOOLTIP"));
+        super(StringUtils.getString(I18nUtils.getString("LOAD"), "..."), ImageLoader.getImage(ImageLoader.FOLDER));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("LOAD_PLAYLIST_TOOLTIP"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK));
     }
 

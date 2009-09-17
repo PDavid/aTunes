@@ -29,15 +29,15 @@ import javax.swing.KeyStroke;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class PlayAction extends Action {
 
     private static final long serialVersionUID = -1122746023245126869L;
 
     PlayAction() {
-        super(LanguageTool.getString("PLAY"), ImageLoader.getImage(ImageLoader.PLAY_MENU));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("PLAY"));
+        super(I18nUtils.getString("PLAY"), ImageLoader.getImage(ImageLoader.PLAY_MENU));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("PLAY"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0));
     }
 

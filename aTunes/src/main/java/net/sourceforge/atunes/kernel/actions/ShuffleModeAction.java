@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * This action enables or disables shuffle mode
@@ -37,8 +37,8 @@ public class ShuffleModeAction extends Action {
     private static final long serialVersionUID = 6841858742889010498L;
 
     ShuffleModeAction() {
-        super(LanguageTool.getString("SHUFFLE"), ImageLoader.getImage(ImageLoader.SHUFFLE));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("SHUFFLE"));
+        super(I18nUtils.getString("SHUFFLE"), ImageLoader.getImage(ImageLoader.SHUFFLE));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHUFFLE"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().isShuffle());
 
     }

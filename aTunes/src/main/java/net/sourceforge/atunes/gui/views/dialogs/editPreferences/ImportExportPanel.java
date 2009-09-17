@@ -43,7 +43,7 @@ import javax.swing.table.DefaultTableModel;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class ImportExportPanel extends PreferencesPanel {
@@ -99,17 +99,17 @@ public class ImportExportPanel extends PreferencesPanel {
      * Instantiates a new import / export panel.
      */
     public ImportExportPanel() {
-        super(StringUtils.getString(LanguageTool.getString("IMPORT"), "/", LanguageTool.getString("EXPORT")));
+        super(StringUtils.getString(I18nUtils.getString("IMPORT"), "/", I18nUtils.getString("EXPORT")));
         JPanel fileNamePanel = new JPanel(new GridBagLayout());
-        fileNamePanel.setBorder(BorderFactory.createTitledBorder(LanguageTool.getString("FILE_NAME")));
-        fileNameNoChangeRadioButton = new JRadioButton(LanguageTool.getString("NO_CHANGE"));
+        fileNamePanel.setBorder(BorderFactory.createTitledBorder(I18nUtils.getString("FILE_NAME")));
+        fileNameNoChangeRadioButton = new JRadioButton(I18nUtils.getString("NO_CHANGE"));
         fileNameNoChangeRadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 fileNamePatternTextField.setEnabled(false);
             }
         });
-        fileNameCustomizedRadioButton = new JRadioButton(LanguageTool.getString("CUSTOM"));
+        fileNameCustomizedRadioButton = new JRadioButton(I18nUtils.getString("CUSTOM"));
         fileNameCustomizedRadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -122,15 +122,15 @@ public class ImportExportPanel extends PreferencesPanel {
         group.add(fileNameCustomizedRadioButton);
 
         JPanel folderPathPanel = new JPanel(new GridBagLayout());
-        folderPathPanel.setBorder(BorderFactory.createTitledBorder(LanguageTool.getString("FOLDER")));
-        folderPathNoChangeRadioButton = new JRadioButton(LanguageTool.getString("NO_CHANGE"));
+        folderPathPanel.setBorder(BorderFactory.createTitledBorder(I18nUtils.getString("FOLDER")));
+        folderPathNoChangeRadioButton = new JRadioButton(I18nUtils.getString("NO_CHANGE"));
         folderPathNoChangeRadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 folderPathPatternTextField.setEnabled(false);
             }
         });
-        folderPathCustomizedRadioButton = new JRadioButton(LanguageTool.getString("CUSTOM"));
+        folderPathCustomizedRadioButton = new JRadioButton(I18nUtils.getString("CUSTOM"));
         folderPathCustomizedRadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -174,25 +174,25 @@ public class ImportExportPanel extends PreferencesPanel {
 
             @Override
             public String getColumnName(int column) {
-                return column == 0 ? LanguageTool.getString("PATTERN") : LanguageTool.getString("VALUE");
+                return column == 0 ? I18nUtils.getString("PATTERN") : I18nUtils.getString("VALUE");
             }
         });
 
         JPanel patternsPanel = new JPanel(new BorderLayout());
         patternsPanel.setPreferredSize(new Dimension(250, 200));
-        patternsPanel.setBorder(BorderFactory.createTitledBorder(LanguageTool.getString("AVAILABLE_PATTERNS")));
+        patternsPanel.setBorder(BorderFactory.createTitledBorder(I18nUtils.getString("AVAILABLE_PATTERNS")));
         patternsPanel.add(new JScrollPane(availablePatternsTable), BorderLayout.CENTER);
 
-        reviewTagsBeforeImportCheckBox = new JCheckBox(LanguageTool.getString("REVIEW_TAGS_BEFORE_IMPORTING"));
+        reviewTagsBeforeImportCheckBox = new JCheckBox(I18nUtils.getString("REVIEW_TAGS_BEFORE_IMPORTING"));
         reviewTagsBeforeImportCheckBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 applyChangesToSourceFilesCheckBox.setEnabled(((JCheckBox) e.getSource()).isSelected());
             }
         });
-        applyChangesToSourceFilesCheckBox = new JCheckBox(LanguageTool.getString("APPLY_CHANGES_TO_SOURCE_FILES"));
-        setTrackNumberWhenImportingCheckBox = new JCheckBox(LanguageTool.getString("AUTO_SET_TRACK_NUMBER"));
-        setTitlesWhenImportingCheckBox = new JCheckBox(LanguageTool.getString("AUTO_SET_TITLE"));
+        applyChangesToSourceFilesCheckBox = new JCheckBox(I18nUtils.getString("APPLY_CHANGES_TO_SOURCE_FILES"));
+        setTrackNumberWhenImportingCheckBox = new JCheckBox(I18nUtils.getString("AUTO_SET_TRACK_NUMBER"));
+        setTitlesWhenImportingCheckBox = new JCheckBox(I18nUtils.getString("AUTO_SET_TITLE"));
 
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
@@ -248,7 +248,7 @@ public class ImportExportPanel extends PreferencesPanel {
         c.weighty = 1;
 
         JPanel specificImportOptions = new JPanel(new GridLayout(4, 1));
-        specificImportOptions.setBorder(BorderFactory.createTitledBorder(LanguageTool.getString("SPECIFIC_IMPORT_OPTIONS")));
+        specificImportOptions.setBorder(BorderFactory.createTitledBorder(I18nUtils.getString("SPECIFIC_IMPORT_OPTIONS")));
         specificImportOptions.add(reviewTagsBeforeImportCheckBox);
         specificImportOptions.add(applyChangesToSourceFilesCheckBox);
         specificImportOptions.add(setTrackNumberWhenImportingCheckBox);

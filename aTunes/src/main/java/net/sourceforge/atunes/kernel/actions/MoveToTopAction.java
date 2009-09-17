@@ -29,7 +29,7 @@ import javax.swing.KeyStroke;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * This action moves selected rows in play list to top
@@ -42,8 +42,8 @@ public class MoveToTopAction extends Action {
     private static final long serialVersionUID = 8200322913128575526L;
 
     MoveToTopAction() {
-        super(LanguageTool.getString("MOVE_TO_TOP"), ImageLoader.getImage(ImageLoader.GO_TOP));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("MOVE_TO_TOP_TOOLTIP"));
+        super(I18nUtils.getString("MOVE_TO_TOP"), ImageLoader.getImage(ImageLoader.GO_TOP));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("MOVE_TO_TOP_TOOLTIP"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_T, ActionEvent.ALT_MASK));
         setEnabled(false);
     }

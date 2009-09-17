@@ -69,7 +69,7 @@ import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public final class DeviceHandler extends Handler implements LoaderListener, DeviceConnectionListener, DeviceDisconnectionListener, AudioFilesRemovedListener {
@@ -146,8 +146,8 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
 
         // Not enough space avaible
         if (leaveFree > deviceFreeSpace) {
-            getLogger().debug(LogCategories.HANDLER, LanguageTool.getString("NOT_ENOUGH_SPACE_ON_DEVICE"));
-            VisualHandler.getInstance().showErrorDialog(LanguageTool.getString("NOT_ENOUGH_SPACE_ON_DEVICE"));
+            getLogger().debug(LogCategories.HANDLER, I18nUtils.getString("NOT_ENOUGH_SPACE_ON_DEVICE"));
+            VisualHandler.getInstance().showErrorDialog(I18nUtils.getString("NOT_ENOUGH_SPACE_ON_DEVICE"));
             return;
         }
 
@@ -172,7 +172,7 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
      */
     public void connectDevice() {
         FileSelectionDialog dialog = VisualHandler.getInstance().getFileSelectionDialog(true);
-        dialog.setTitle(LanguageTool.getString("SELECT_DEVICE"));
+        dialog.setTitle(I18nUtils.getString("SELECT_DEVICE"));
         dialog.startDialog();
         if (!dialog.isCanceled()) {
             File dir = dialog.getSelectedDir();
@@ -215,7 +215,7 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
 
         // Check if there is enough free space on device
         if (size > deviceFreeSpace) {
-            VisualHandler.getInstance().showErrorDialog(LanguageTool.getString("NOT_ENOUGH_SPACE_ON_DEVICE"));
+            VisualHandler.getInstance().showErrorDialog(I18nUtils.getString("NOT_ENOUGH_SPACE_ON_DEVICE"));
             return;
         }
 
@@ -234,7 +234,7 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
                         refreshDevice();
                         filesCopiedToDevice = process.getFilesTransferred().size();
                         if (!ok) {
-                            VisualHandler.getInstance().showErrorDialog(LanguageTool.getString("ERRORS_IN_EXPORT_PROCESS"));
+                            VisualHandler.getInstance().showErrorDialog(I18nUtils.getString("ERRORS_IN_EXPORT_PROCESS"));
                         }
                     }
                 });
@@ -255,7 +255,7 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
      */
     @Override
     public void deviceConnected(String location) {
-        if (VisualHandler.getInstance().showConfirmationDialog(LanguageTool.getString("DEVICE_CONNECT_CONFIRMATION"), LanguageTool.getString("DEVICE_DETECTED")) == JOptionPane.OK_OPTION) {
+        if (VisualHandler.getInstance().showConfirmationDialog(I18nUtils.getString("DEVICE_CONNECT_CONFIRMATION"), I18nUtils.getString("DEVICE_DETECTED")) == JOptionPane.OK_OPTION) {
             VisualHandler.getInstance().showProgressBar(true, null);
             this.retrieveDevice(new File(location));
         }
@@ -269,7 +269,7 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
      */
     @Override
     public void deviceDisconnected(String location) {
-        VisualHandler.getInstance().showMessage(LanguageTool.getString("DEVICE_DISCONNECTION_DETECTED"));
+        VisualHandler.getInstance().showMessage(I18nUtils.getString("DEVICE_DISCONNECTION_DETECTED"));
         disconnectDevice();
 
         // Start device connection monitor
@@ -379,7 +379,7 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
         if (deviceRepository != null) {
             int songs = deviceRepository.countFiles();
             File dir = deviceRepository.getFolders().get(0);
-            return StringUtils.getString(Integer.toString(songs), " ", LanguageTool.getString("SONGS"), "  (", LanguageTool.getString("FREE_SPACE"), ": ", StringUtils
+            return StringUtils.getString(Integer.toString(songs), " ", I18nUtils.getString("SONGS"), "  (", I18nUtils.getString("FREE_SPACE"), ": ", StringUtils
                     .fromByteToMegaOrGiga(dir.getFreeSpace()), ")");
         }
         return null;

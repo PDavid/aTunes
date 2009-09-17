@@ -29,7 +29,7 @@ import javax.swing.KeyStroke;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * This action shuffles play list order
@@ -42,8 +42,8 @@ public class ShufflePlayListAction extends Action {
     private static final long serialVersionUID = -6608120075596882123L;
 
     ShufflePlayListAction() {
-        super(LanguageTool.getString("SHUFFLE_PLAYLIST"), ImageLoader.getImage(ImageLoader.SHUFFLE_PLAYLIST));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("SHUFFLE_PLAYLIST"));
+        super(I18nUtils.getString("SHUFFLE_PLAYLIST"), ImageLoader.getImage(ImageLoader.SHUFFLE_PLAYLIST));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHUFFLE_PLAYLIST"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK));
         setEnabled(false);
     }

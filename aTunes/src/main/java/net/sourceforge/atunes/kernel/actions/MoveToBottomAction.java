@@ -29,7 +29,7 @@ import javax.swing.KeyStroke;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * This action moves selected rows in play list to bottom
@@ -42,8 +42,8 @@ public class MoveToBottomAction extends Action {
     private static final long serialVersionUID = 8200322913128575526L;
 
     MoveToBottomAction() {
-        super(LanguageTool.getString("MOVE_TO_BOTTOM"), ImageLoader.getImage(ImageLoader.GO_BOTTOM));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("MOVE_BOTTOM_TOOLTIP"));
+        super(I18nUtils.getString("MOVE_TO_BOTTOM"), ImageLoader.getImage(ImageLoader.GO_BOTTOM));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("MOVE_BOTTOM_TOOLTIP"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_B, ActionEvent.ALT_MASK));
         setEnabled(false);
     }

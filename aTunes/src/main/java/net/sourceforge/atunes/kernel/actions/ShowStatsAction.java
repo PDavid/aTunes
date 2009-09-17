@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.ControllerProxy;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * This action shows stats window
@@ -37,8 +37,8 @@ public class ShowStatsAction extends Action {
     private static final long serialVersionUID = -7828653987968794083L;
 
     ShowStatsAction() {
-        super(LanguageTool.getString("STATS"), ImageLoader.getImage(ImageLoader.STATS));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("STATS"));
+        super(I18nUtils.getString("STATS"), ImageLoader.getImage(ImageLoader.STATS));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("STATS"));
     }
 
     @Override

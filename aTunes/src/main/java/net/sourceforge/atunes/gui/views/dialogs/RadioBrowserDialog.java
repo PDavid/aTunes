@@ -37,7 +37,7 @@ import javax.swing.ListSelectionModel;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.views.controls.CustomFrame;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jdesktop.swingx.JXTreeTable;
 
@@ -68,7 +68,7 @@ public class RadioBrowserDialog extends CustomFrame {
      * Instantiates a new radio browser dialog.
      */
     public RadioBrowserDialog(Component owner) {
-        super(LanguageTool.getString("RADIO_BROWSER"), GuiUtils.getComponentWidthForResolution(1280, 800), GuiUtils.getComponentHeightForResolution(1024, 700), owner);
+        super(I18nUtils.getString("RADIO_BROWSER"), GuiUtils.getComponentWidthForResolution(1280, 800), GuiUtils.getComponentHeightForResolution(1024, 700), owner);
         setContent();
         GuiUtils.applyComponentOrientation(this);
         enableCloseActionWithEscapeKey();
@@ -84,8 +84,8 @@ public class RadioBrowserDialog extends CustomFrame {
         treeTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JPanel topPanel = new JPanel(new BorderLayout(10, 0));
         radioIcon = new JLabel(ImageLoader.getImage(ImageLoader.RADIO));
-        browserInstructions = new JLabel(LanguageTool.getString("RADIO_BROWSER_INSTRUCTIONS"));
-        closeButton = new JButton(LanguageTool.getString("CLOSE"));
+        browserInstructions = new JLabel(I18nUtils.getString("RADIO_BROWSER_INSTRUCTIONS"));
+        closeButton = new JButton(I18nUtils.getString("CLOSE"));
         closeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

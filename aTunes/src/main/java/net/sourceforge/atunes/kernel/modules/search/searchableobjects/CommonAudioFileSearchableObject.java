@@ -29,7 +29,7 @@ import net.sourceforge.atunes.kernel.modules.search.SearchResult;
 import net.sourceforge.atunes.kernel.modules.search.SearchResultTableModel;
 import net.sourceforge.atunes.kernel.modules.search.SearchableObject;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.lucene.document.Document;
@@ -170,13 +170,13 @@ public abstract class CommonAudioFileSearchableObject implements SearchableObjec
             @Override
             public String getColumnName(int columnIndex) {
                 if (columnIndex == 0) {
-                    return LanguageTool.getString("TITLE");
+                    return I18nUtils.getString("TITLE");
                 } else if (columnIndex == 1) {
-                    return LanguageTool.getString("ARTIST");
+                    return I18nUtils.getString("ARTIST");
                 } else if (columnIndex == 2) {
-                    return LanguageTool.getString("ALBUM");
+                    return I18nUtils.getString("ALBUM");
                 } else if (columnIndex == 3) {
-                    return LanguageTool.getString("LOCATION");
+                    return I18nUtils.getString("LOCATION");
                 }
                 return null;
             }

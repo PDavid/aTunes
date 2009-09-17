@@ -29,7 +29,7 @@ import javax.swing.KeyStroke;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * This action shows or hides navigator
@@ -42,8 +42,8 @@ public class ShowNavigatorAction extends Action {
     private static final long serialVersionUID = 5137162733978906000L;
 
     ShowNavigatorAction() {
-        super(LanguageTool.getString("SHOW_NAVIGATION_PANEL"), ImageLoader.getImage(ImageLoader.NAVIGATE));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("SHOW_NAVIGATION_PANEL"));
+        super(I18nUtils.getString("SHOW_NAVIGATION_PANEL"), ImageLoader.getImage(ImageLoader.NAVIGATE));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_NAVIGATION_PANEL"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().isShowNavigationPanel());
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));
     }

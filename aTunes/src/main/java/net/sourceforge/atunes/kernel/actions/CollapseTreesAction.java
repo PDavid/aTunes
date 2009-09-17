@@ -26,15 +26,15 @@ import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationView;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class CollapseTreesAction extends Action {
 
     private static final long serialVersionUID = 4230335834253793622L;
 
     CollapseTreesAction() {
-        super(LanguageTool.getString("COLLAPSE"), ImageLoader.getImage(ImageLoader.COLLAPSE));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("COLLAPSE"));
+        super(I18nUtils.getString("COLLAPSE"), ImageLoader.getImage(ImageLoader.COLLAPSE));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("COLLAPSE"));
     }
 
     @Override

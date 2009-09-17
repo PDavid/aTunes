@@ -32,7 +32,6 @@ import net.sourceforge.atunes.kernel.controllers.model.PanelController;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.utils.StringUtils;
-import net.sourceforge.atunes.utils.TimeUtils;
 
 /**
  * The Class PlayerControlsController.
@@ -122,12 +121,12 @@ public class PlayerControlsController extends PanelController<PlayerControlsPane
     public void setCurrentAudioObjectTimePlayed(long timePlayed, long totalTime) {
         long remainingTime = totalTime - timePlayed;
         if (timePlayed == 0) {
-            getPanelControlled().getRemainingTime().setText(TimeUtils.milliseconds2String(timePlayed));
+            getPanelControlled().getRemainingTime().setText(StringUtils.milliseconds2String(timePlayed));
         } else {
-            getPanelControlled().getRemainingTime().setText(remainingTime > 0 ? StringUtils.getString("- ", TimeUtils.milliseconds2String(remainingTime)) : "-");
+            getPanelControlled().getRemainingTime().setText(remainingTime > 0 ? StringUtils.getString("- ", StringUtils.milliseconds2String(remainingTime)) : "-");
         }
 
-        getPanelControlled().getTime().setText(TimeUtils.milliseconds2String(timePlayed));
+        getPanelControlled().getTime().setText(StringUtils.milliseconds2String(timePlayed));
         getPanelControlled().getProgressBar().setValue((int) timePlayed);
     }
 
@@ -237,7 +236,7 @@ public class PlayerControlsController extends PanelController<PlayerControlsPane
      * @return the label for duration
      */
     private JLabel getLabelForDuration(int unit) {
-        String duration = TimeUtils.milliseconds2String(unit);
+        String duration = StringUtils.milliseconds2String(unit);
         JLabel label = new JLabel(duration, SwingConstants.CENTER);
         Font currentFont = label.getFont();
         label.setFont(new Font(currentFont.getFontName(), Font.ITALIC, Math.max(currentFont.getSize() - 2, 8)));

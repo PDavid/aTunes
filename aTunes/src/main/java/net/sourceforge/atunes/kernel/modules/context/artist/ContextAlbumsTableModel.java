@@ -27,7 +27,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The Class ContextAlbumsTableModel.
@@ -99,7 +99,7 @@ public class ContextAlbumsTableModel implements TableModel {
      */
     @Override
     public String getColumnName(int columnIndex) {
-        return LanguageTool.getString("ALBUMS");
+        return I18nUtils.getString("ALBUMS");
     }
 
     /*

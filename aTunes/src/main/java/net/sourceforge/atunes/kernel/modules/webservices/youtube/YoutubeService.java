@@ -37,7 +37,6 @@ import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.NetworkUtils;
 import net.sourceforge.atunes.utils.StringUtils;
-import net.sourceforge.atunes.utils.TimeUtils;
 import net.sourceforge.atunes.utils.XMLUtils;
 
 import org.w3c.dom.Document;
@@ -192,7 +191,7 @@ public class YoutubeService {
                     if (durationNode != null) {
                         String duration = ((Element) durationNode).getAttribute("seconds");
                         if (duration != null) {
-                            entry.setDuration(TimeUtils.seconds2String(Long.parseLong(duration)));
+                            entry.setDuration(StringUtils.seconds2String(Long.parseLong(duration)));
                         }
                     }
                 }

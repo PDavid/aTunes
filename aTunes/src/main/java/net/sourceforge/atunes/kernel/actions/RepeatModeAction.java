@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * This action enables or disables repeat mode
@@ -37,8 +37,8 @@ public class RepeatModeAction extends Action {
     private static final long serialVersionUID = 2032609750151412458L;
 
     RepeatModeAction() {
-        super(LanguageTool.getString("REPEAT"), ImageLoader.getImage(ImageLoader.REPEAT));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("REPEAT"));
+        super(I18nUtils.getString("REPEAT"), ImageLoader.getImage(ImageLoader.REPEAT));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("REPEAT"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().isRepeat());
     }
 

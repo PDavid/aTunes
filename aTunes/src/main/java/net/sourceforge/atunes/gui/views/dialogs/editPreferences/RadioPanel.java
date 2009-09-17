@@ -27,7 +27,7 @@ import javax.swing.JCheckBox;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The Class RadioPanel.
@@ -46,9 +46,9 @@ public class RadioPanel extends PreferencesPanel {
      * Instantiates a new radio panel.
      */
     public RadioPanel() {
-        super(LanguageTool.getString("RADIO"));
-        readInfoFromRadioStream = new JCheckBox(LanguageTool.getString("READ_INFO_FROM_RADIO_STREAM"));
-        showAllRadioStations = new JCheckBox(LanguageTool.getString("SHOW_ALL_RADIO_STATIONS"));
+        super(I18nUtils.getString("RADIO"));
+        readInfoFromRadioStream = new JCheckBox(I18nUtils.getString("READ_INFO_FROM_RADIO_STREAM"));
+        showAllRadioStations = new JCheckBox(I18nUtils.getString("SHOW_ALL_RADIO_STATIONS"));
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 1;
         c.gridy = 0;

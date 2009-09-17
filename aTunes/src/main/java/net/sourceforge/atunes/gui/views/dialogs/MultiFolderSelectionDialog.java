@@ -60,7 +60,7 @@ import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jvnet.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
 
@@ -392,7 +392,7 @@ public class MultiFolderSelectionDialog extends CustomModalDialog {
         fileSystemTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         scrollPane = new JScrollPane();
 
-        okButton = new CustomButton(null, LanguageTool.getString("OK"));
+        okButton = new CustomButton(null, I18nUtils.getString("OK"));
         okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -400,7 +400,7 @@ public class MultiFolderSelectionDialog extends CustomModalDialog {
                 dispose();
             }
         });
-        cancelButton = new CustomButton(null, LanguageTool.getString("CANCEL"));
+        cancelButton = new CustomButton(null, I18nUtils.getString("CANCEL"));
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -478,7 +478,7 @@ public class MultiFolderSelectionDialog extends CustomModalDialog {
      */
     private void setTree() {
 
-        DefaultTreeModel model = new DefaultTreeModel(new DefaultMutableTreeNode(LanguageTool.getString("PLEASE_WAIT") + "..."));
+        DefaultTreeModel model = new DefaultTreeModel(new DefaultMutableTreeNode(I18nUtils.getString("PLEASE_WAIT") + "..."));
         fileSystemTree.setModel(model);
         fileSystemTree.setRootVisible(true);
         fileSystemTree.setCellRenderer(new CheckRenderer());
@@ -585,7 +585,7 @@ public class MultiFolderSelectionDialog extends CustomModalDialog {
                             fileSystemTree.setSelectionPath(event.getPath());
                             selectedNode.removeAllChildren();
 
-                            selectedNode.add(new DefaultMutableTreeNode(LanguageTool.getString("PLEASE_WAIT") + "..."));
+                            selectedNode.add(new DefaultMutableTreeNode(I18nUtils.getString("PLEASE_WAIT") + "..."));
 
                             new SwingWorker<List<CheckNode>, Void>() {
 

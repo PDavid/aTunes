@@ -55,7 +55,7 @@ import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * This class represents a dialog used to enter a pattern It contains a preview
@@ -82,7 +82,7 @@ public class PatternInputDialog extends CustomModalDialog {
     /** The pattern entered */
     String result = null;
 
-    static final String[] PREVIEW_COLUMN_NAMES = new String[] { LanguageTool.getString("NAME"), LanguageTool.getString("VALUE") };
+    static final String[] PREVIEW_COLUMN_NAMES = new String[] { I18nUtils.getString("NAME"), I18nUtils.getString("VALUE") };
 
     /**
      * Instantiates a new pattern input dialog.
@@ -99,10 +99,10 @@ public class PatternInputDialog extends CustomModalDialog {
         super(owner, 550, 350, true);
         setResizable(false);
         setIconImage(ImageLoader.getImage(ImageLoader.APP_ICON).getImage());
-        setTitle(LanguageTool.getString("PATTERN_INPUT"));
+        setTitle(I18nUtils.getString("PATTERN_INPUT"));
 
         // Label with instructions
-        JTextArea textArea = new JTextArea(LanguageTool.getString("PATTERN_INPUT_INSTRUCTIONS"));
+        JTextArea textArea = new JTextArea(I18nUtils.getString("PATTERN_INPUT_INSTRUCTIONS"));
         textArea.setBorder(BorderFactory.createEmptyBorder());
         textArea.setWrapStyleWord(true);
         textArea.setEditable(false);
@@ -127,15 +127,15 @@ public class PatternInputDialog extends CustomModalDialog {
         patternPreviewTable = new JTable();
         JScrollPane patternPreviewTableScrollPane = new JScrollPane(patternPreviewTable);
         patternPreviewPanel.add(patternPreviewTableScrollPane, BorderLayout.CENTER);
-        patternPreviewPanel.setBorder(BorderFactory.createTitledBorder(LanguageTool.getString("PREVIEW")));
+        patternPreviewPanel.setBorder(BorderFactory.createTitledBorder(I18nUtils.getString("PREVIEW")));
 
         JPanel availablePatternsPanel = new JPanel(new BorderLayout());
         availablePatternsTable = new JTable();
         JScrollPane availablePatternsScrollPane = new JScrollPane(availablePatternsTable);
         availablePatternsPanel.add(availablePatternsScrollPane, BorderLayout.CENTER);
-        availablePatternsPanel.setBorder(BorderFactory.createTitledBorder(LanguageTool.getString("AVAILABLE_PATTERNS")));
+        availablePatternsPanel.setBorder(BorderFactory.createTitledBorder(I18nUtils.getString("AVAILABLE_PATTERNS")));
 
-        JButton okButton = new JButton(LanguageTool.getString("OK"));
+        JButton okButton = new JButton(I18nUtils.getString("OK"));
         ActionListener okListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -174,7 +174,7 @@ public class PatternInputDialog extends CustomModalDialog {
             }
         };
         okButton.addActionListener(okListener);
-        JButton cancelButton = new JButton(LanguageTool.getString("CANCEL"));
+        JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -261,7 +261,7 @@ public class PatternInputDialog extends CustomModalDialog {
         String[][] data = new String[matches.size()][2];
         int i = 0;
         for (Entry<String, String> entry : matches.entrySet()) {
-            data[i][0] = LanguageTool.getString(entry.getKey());
+            data[i][0] = I18nUtils.getString(entry.getKey());
             data[i][1] = entry.getValue();
             i++;
         }
@@ -306,7 +306,7 @@ public class PatternInputDialog extends CustomModalDialog {
             @Override
             public void addColumn(TableColumn column) {
                 super.addColumn(column);
-                if (column.getHeaderValue().equals(LanguageTool.getString("NAME"))) {
+                if (column.getHeaderValue().equals(I18nUtils.getString("NAME"))) {
                     column.setPreferredWidth(100);
                 } else {
                     // Space removed from first column is given to second column
@@ -327,7 +327,7 @@ public class PatternInputDialog extends CustomModalDialog {
         };
         patternPreviewTable.setModel(patternPreviewTableModel);
 
-        DefaultTableModel availablePatternsTableModel = new DefaultTableModel(patterns, new String[] { LanguageTool.getString("PATTERN"), LanguageTool.getString("DESCRIPTION") }) {
+        DefaultTableModel availablePatternsTableModel = new DefaultTableModel(patterns, new String[] { I18nUtils.getString("PATTERN"), I18nUtils.getString("DESCRIPTION") }) {
             /**
              * 
              */

@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.utils.DesktopUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Opens browser to show Wiki
@@ -37,8 +37,8 @@ public class GoToWikiAction extends Action {
     private static final long serialVersionUID = -2614037760672140565L;
 
     GoToWikiAction() {
-        super(LanguageTool.getString("GO_TO_WIKI"));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("GO_TO_WIKI"));
+        super(I18nUtils.getString("GO_TO_WIKI"));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("GO_TO_WIKI"));
     }
 
     @Override

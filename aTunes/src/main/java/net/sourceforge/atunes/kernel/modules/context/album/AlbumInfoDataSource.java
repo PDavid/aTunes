@@ -40,7 +40,7 @@ import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Data Source for basic album object information Retrieves basic information
@@ -120,7 +120,7 @@ public class AlbumInfoDataSource implements ContextInformationDataSource {
             }
 
             List<AlbumInfo> albums = null;
-            if (!audioObject.getArtist().equals(LanguageTool.getString("UNKNOWN_ARTIST"))) {
+            if (!audioObject.getArtist().equals(I18nUtils.getString("UNKNOWN_ARTIST"))) {
                 // Get 
                 AlbumListInfo albumList = LastFmService.getInstance().getAlbumList(audioObject.getArtist(), ApplicationState.getInstance().isHideVariousArtistsAlbums(),
                         ApplicationState.getInstance().getMinimumSongNumberPerAlbum());

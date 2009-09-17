@@ -31,22 +31,22 @@ import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class RenamePodcastFeedAction extends Action {
 
     private static final long serialVersionUID = 8334487960720117561L;
 
     RenamePodcastFeedAction() {
-        super(LanguageTool.getString("RENAME_PODCAST_FEED"), ImageLoader.getImage(ImageLoader.EDIT_ALBUM));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("RENAME_PODCAST_FEED"));
+        super(I18nUtils.getString("RENAME_PODCAST_FEED"), ImageLoader.getImage(ImageLoader.EDIT_ALBUM));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("RENAME_PODCAST_FEED"));
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         TreePath path = NavigationHandler.getInstance().getView(PodcastNavigationView.class).getTree().getSelectionPath();
         PodcastFeed podcastFeed = (PodcastFeed) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
-        String result = VisualHandler.getInstance().showInputDialog(LanguageTool.getString("RENAME_PODCAST_FEED"), podcastFeed.getName(),
+        String result = VisualHandler.getInstance().showInputDialog(I18nUtils.getString("RENAME_PODCAST_FEED"), podcastFeed.getName(),
                 ImageLoader.getImage(ImageLoader.RSS_LITTLE).getImage());
         if (result != null) {
             podcastFeed.setName(result);

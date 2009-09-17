@@ -25,7 +25,7 @@ import net.sourceforge.atunes.gui.views.controls.playList.Column;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.TimeUtils;
+import net.sourceforge.atunes.utils.StringUtils;
 
 public class LengthColumn extends Column {
 
@@ -55,7 +55,7 @@ public class LengthColumn extends Column {
         if (audioObject instanceof PodcastFeedEntry && ((PodcastFeedEntry) audioObject).getDuration() <= 0) {
             return "-";
         }
-        return TimeUtils.seconds2String(audioObject.getDuration());
+        return StringUtils.seconds2String(audioObject.getDuration());
     }
 
 }

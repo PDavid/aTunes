@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.utils.DesktopUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Opens browser to show main web site
@@ -37,8 +37,8 @@ public class GoToWebSiteAction extends Action {
     private static final long serialVersionUID = -2614037760672140565L;
 
     GoToWebSiteAction() {
-        super(LanguageTool.getString("GO_TO_WEB_SITE"));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("GO_TO_WEB_SITE"));
+        super(I18nUtils.getString("GO_TO_WEB_SITE"));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("GO_TO_WEB_SITE"));
     }
 
     @Override

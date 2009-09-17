@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.kernel.modules.repository.tags.writer.TagEditionOperations;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * This action invokes process to repair genres of repository
@@ -35,7 +35,7 @@ public class RepairGenresAction extends Action {
     private static final long serialVersionUID = -7789897583007508598L;
 
     RepairGenresAction() {
-        super(LanguageTool.getString("REPAIR_GENRES"));
+        super(I18nUtils.getString("REPAIR_GENRES"));
     }
 
     @Override

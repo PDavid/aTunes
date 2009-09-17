@@ -73,7 +73,7 @@ import net.sourceforge.atunes.kernel.modules.repository.model.Genre;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jvnet.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
@@ -93,18 +93,18 @@ public class RepositoryNavigationView extends NavigationView {
 
     @Override
     public String getTitle() {
-        return LanguageTool.getString("REPOSITORY");
+        return I18nUtils.getString("REPOSITORY");
     }
 
     @Override
     public String getTooltip() {
-        return LanguageTool.getString("REPOSITORY_TAB_TOOLTIP");
+        return I18nUtils.getString("REPOSITORY_TAB_TOOLTIP");
     }
 
     @Override
     public JTree getTree() {
         if (tree == null) {
-            tree = new NavigationTree(new DefaultTreeModel(new DefaultMutableTreeNode(LanguageTool.getString("REPOSITORY"))));
+            tree = new NavigationTree(new DefaultTreeModel(new DefaultMutableTreeNode(I18nUtils.getString("REPOSITORY"))));
             tree.setToggleClickCount(0);
             tree.setCellRenderer(getTreeRenderer());
             ToolTipManager.sharedInstance().registerComponent(tree);
@@ -247,7 +247,7 @@ public class RepositoryNavigationView extends NavigationView {
      */
     private void refreshArtistView(Map<String, Artist> structure, String currentFilter, DefaultMutableTreeNode root, DefaultTreeModel treeModel, List<TreeObject> objectsSelected, List<TreeObject> objectsExpanded) {
         // Set root
-        root.setUserObject(LanguageTool.getString("REPOSITORY"));
+        root.setUserObject(I18nUtils.getString("REPOSITORY"));
         root.removeAllChildren();
 
         List<String> artistNamesList = new ArrayList<String>(structure.keySet());
@@ -324,7 +324,7 @@ public class RepositoryNavigationView extends NavigationView {
      */
     private void refreshAlbumView(Map<String, Album> structure, String currentFilter, DefaultMutableTreeNode root, DefaultTreeModel treeModel, List<TreeObject> objectsSelected, List<TreeObject> objectsExpanded) {
         // Set root
-        root.setUserObject(LanguageTool.getString("REPOSITORY"));
+        root.setUserObject(I18nUtils.getString("REPOSITORY"));
         root.removeAllChildren();
 
         List<String> albumsNamesList = new ArrayList<String>(structure.keySet());
@@ -386,7 +386,7 @@ public class RepositoryNavigationView extends NavigationView {
         List<DefaultMutableTreeNode> nodesToExpand = new ArrayList<DefaultMutableTreeNode>();
 
         // Refresh nodes
-        root.setUserObject(LanguageTool.getString("REPOSITORY"));
+        root.setUserObject(I18nUtils.getString("REPOSITORY"));
         root.removeAllChildren();
         List<String> genreNamesList = new ArrayList<String>(structure.keySet());
         Collections.sort(genreNamesList, comparator);
@@ -458,7 +458,7 @@ public class RepositoryNavigationView extends NavigationView {
     private void refreshFolderView(Map<String, Folder> structure, String currentFilter, DefaultMutableTreeNode root, DefaultTreeModel treeModel, List<TreeObject> objectsSelected, List<TreeObject> objectsExpanded) {
 
         // Refresh nodes
-        root.setUserObject(LanguageTool.getString("REPOSITORY"));
+        root.setUserObject(I18nUtils.getString("REPOSITORY"));
         root.removeAllChildren();
         RefreshUtils.addFolderNodes(structure, root, currentFilter, comparator);
 
@@ -522,9 +522,9 @@ public class RepositoryNavigationView extends NavigationView {
             case 0:
                 return "";
             case 1:
-                return LanguageTool.getString("FILE");
+                return I18nUtils.getString("FILE");
             case 2:
-                return LanguageTool.getString("DURATION");
+                return I18nUtils.getString("DURATION");
             }
         } else {
             switch (columnIndex) {
@@ -533,9 +533,9 @@ public class RepositoryNavigationView extends NavigationView {
             case 1:
                 return "";
             case 2:
-                return LanguageTool.getString("TITLE");
+                return I18nUtils.getString("TITLE");
             case 3:
-                return LanguageTool.getString("DURATION");
+                return I18nUtils.getString("DURATION");
             }
         }
         return "";
@@ -641,7 +641,7 @@ public class RepositoryNavigationView extends NavigationView {
                         label.setForeground(ColorDefinitions.GENERAL_UNKNOWN_ELEMENT_FOREGROUND_COLOR);
                     }
                 } else if (content instanceof String) {
-                    if (((String) content).equals(LanguageTool.getString("REPOSITORY"))) {
+                    if (((String) content).equals(I18nUtils.getString("REPOSITORY"))) {
                         label.setIcon(ImageLoader.getImage(ImageLoader.AUDIO_FILE_LITTLE));
                     } else {
                         label.setIcon(ImageLoader.getImage(ImageLoader.FOLDER));
@@ -678,6 +678,6 @@ public class RepositoryNavigationView extends NavigationView {
 
     static String getToolTipForRepository() {
         int songs = RepositoryHandler.getInstance().getAudioFiles().size();
-        return StringUtils.getString(LanguageTool.getString("REPOSITORY"), " (", songs, " ", (songs > 1 ? LanguageTool.getString("SONGS") : LanguageTool.getString("SONG")), ")");
+        return StringUtils.getString(I18nUtils.getString("REPOSITORY"), " (", songs, " ", (songs > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG")), ")");
     }
 }

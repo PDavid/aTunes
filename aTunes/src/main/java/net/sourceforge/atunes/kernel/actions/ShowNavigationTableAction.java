@@ -27,7 +27,7 @@ import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Show or hide navigation table
@@ -40,8 +40,8 @@ public class ShowNavigationTableAction extends Action {
     private static final long serialVersionUID = -3275592274940501407L;
 
     ShowNavigationTableAction() {
-        super(LanguageTool.getString("SHOW_NAVIGATION_TABLE"), ImageLoader.getImage(ImageLoader.NAVIGATION_TABLE));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("SHOW_NAVIGATION_TABLE"));
+        super(I18nUtils.getString("SHOW_NAVIGATION_TABLE"), ImageLoader.getImage(ImageLoader.NAVIGATION_TABLE));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_NAVIGATION_TABLE"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().isShowNavigationTable());
     }
 

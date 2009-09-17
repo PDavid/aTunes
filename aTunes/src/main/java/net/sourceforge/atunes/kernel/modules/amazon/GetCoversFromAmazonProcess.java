@@ -31,7 +31,7 @@ import net.sourceforge.atunes.kernel.modules.repository.model.Album;
 import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The Class GetCoversFromAmazonProcess.
@@ -87,7 +87,7 @@ public class GetCoversFromAmazonProcess extends Process {
 
     @Override
     public String getProgressDialogTitle() {
-        return LanguageTool.getString("RETRIEVING_COVERS");
+        return I18nUtils.getString("RETRIEVING_COVERS");
     }
 
     @Override

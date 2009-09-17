@@ -28,7 +28,7 @@ import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.utils.DesktopUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Opens application logs in OS default editor
@@ -41,8 +41,8 @@ public class ShowLogAction extends Action {
     private static final long serialVersionUID = 3596625443325726180L;
 
     ShowLogAction() {
-        super(LanguageTool.getString("SHOW_LOG"), ImageLoader.getImage(ImageLoader.SHOW_LOG_FILE));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("SHOW_LOG"));
+        super(I18nUtils.getString("SHOW_LOG"), ImageLoader.getImage(ImageLoader.SHOW_LOG_FILE));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_LOG"));
     }
 
     @Override

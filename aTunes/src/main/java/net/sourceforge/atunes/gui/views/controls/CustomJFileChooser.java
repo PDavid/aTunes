@@ -34,7 +34,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import net.sourceforge.atunes.misc.SystemProperties;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * A custom file chooser with text field and button that opens the chooser.
@@ -72,7 +72,7 @@ public class CustomJFileChooser extends JPanel {
                 chooser.setFileSelectionMode(type);
                 chooser.setSelectedFile(defaultFolder);
                 if (type == JFileChooser.DIRECTORIES_ONLY) {
-                    chooser.setDialogTitle(LanguageTool.getString("SELECT_FOLDER"));
+                    chooser.setDialogTitle(I18nUtils.getString("SELECT_FOLDER"));
                 }
                 if (chooser.showDialog(parent, null) == JFileChooser.APPROVE_OPTION) {
                     result = chooser.getSelectedFile().getAbsolutePath();

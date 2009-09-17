@@ -35,7 +35,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -307,7 +307,7 @@ public final class PlayerHandler extends Handler implements PluginListener {
             getLogger().info(LogCategories.PLAYER, "List of availables engines : " + ArrayUtils.toString(engineNames));
 
             if (engines.isEmpty()) {
-                handlePlayerError(new IllegalStateException(LanguageTool.getString("NO_PLAYER_ENGINE")));
+                handlePlayerError(new IllegalStateException(I18nUtils.getString("NO_PLAYER_ENGINE")));
             } else {
                 // Get engine of application state (default or selected by user)
                 String selectedEngine = ApplicationState.getInstance().getPlayerEngine();
@@ -334,7 +334,7 @@ public final class PlayerHandler extends Handler implements PluginListener {
                 }
 
                 if (instance.playerEngine == null) {
-                    handlePlayerError(new IllegalStateException(LanguageTool.getString("NO_PLAYER_ENGINE")));
+                    handlePlayerError(new IllegalStateException(I18nUtils.getString("NO_PLAYER_ENGINE")));
                 }
 
                 // Init engine

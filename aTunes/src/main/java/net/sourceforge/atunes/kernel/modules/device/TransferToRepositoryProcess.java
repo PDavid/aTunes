@@ -25,7 +25,7 @@ import java.util.List;
 import net.sourceforge.atunes.kernel.modules.process.AudioFileTransferProcess;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class TransferToRepositoryProcess extends AudioFileTransferProcess {
 
@@ -35,7 +35,7 @@ public class TransferToRepositoryProcess extends AudioFileTransferProcess {
 
     @Override
     public String getProgressDialogTitle() {
-        return LanguageTool.getString("COPYING_TO_REPOSITORY");
+        return I18nUtils.getString("COPYING_TO_REPOSITORY");
     }
 
     @Override

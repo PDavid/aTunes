@@ -43,7 +43,7 @@ import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jdesktop.swingx.border.DropShadowBorder;
 
@@ -138,7 +138,7 @@ public class AudioObjectBasicInfoContent extends ContextPanelContent {
 
     @Override
     protected String getContentName() {
-        return LanguageTool.getString("INFO");
+        return I18nUtils.getString("INFO");
     }
 
     @Override
@@ -179,14 +179,14 @@ public class AudioObjectBasicInfoContent extends ContextPanelContent {
     @Override
     protected List<Component> getOptions() {
         List<Component> options = new ArrayList<Component>();
-        lovedSong = new JMenuItem(LanguageTool.getString("ADD_LOVED_SONG_IN_LASTFM"));
+        lovedSong = new JMenuItem(I18nUtils.getString("ADD_LOVED_SONG_IN_LASTFM"));
         lovedSong.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 LastFmService.getInstance().addLovedSong(ContextHandler.getInstance().getCurrentAudioObject());
             }
         });
-        bannedSong = new JMenuItem(LanguageTool.getString("ADD_BANNED_SONG_IN_LASTFM"));
+        bannedSong = new JMenuItem(I18nUtils.getString("ADD_BANNED_SONG_IN_LASTFM"));
         bannedSong.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

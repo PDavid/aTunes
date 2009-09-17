@@ -32,7 +32,7 @@ import javax.swing.JLabel;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class PodcastFeedPanel extends PreferencesPanel {
 
@@ -60,13 +60,13 @@ public class PodcastFeedPanel extends PreferencesPanel {
      * Instantiates a new podcast feed panel.
      */
     public PodcastFeedPanel() {
-        super(LanguageTool.getString("PODCAST_FEEDS"));
-        retrievalIntervalLabel = new JLabel(LanguageTool.getString("PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL"));
+        super(I18nUtils.getString("PODCAST_FEEDS"));
+        retrievalIntervalLabel = new JLabel(I18nUtils.getString("PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL"));
         retrievalInterval = new JComboBox(new Long[] { 1l, 3l, 5l, 10l, 15l, 30l, 60l });
-        downloadFolderLabel = new JLabel(LanguageTool.getString("PODCAST_FEED_ENTRIES_DOWNLOAD_FOLDER"));
+        downloadFolderLabel = new JLabel(I18nUtils.getString("PODCAST_FEED_ENTRIES_DOWNLOAD_FOLDER"));
         downloadFolderFileChooser = new CustomJFileChooser(this, 20, JFileChooser.DIRECTORIES_ONLY);
-        useDownloadedPodcastFeedEntries = new JCheckBox(LanguageTool.getString("USE_DOWNLOADED_PODCAST_FEED_ENTRIES"));
-        removePodcastFeedEntriesRemovedFromPodcastFeed = new JCheckBox(LanguageTool.getString("REMOVE_PODCAST_FEED_ENTRIES_REMOVED_FROM_PODCAST_FEED"));
+        useDownloadedPodcastFeedEntries = new JCheckBox(I18nUtils.getString("USE_DOWNLOADED_PODCAST_FEED_ENTRIES"));
+        removePodcastFeedEntriesRemovedFromPodcastFeed = new JCheckBox(I18nUtils.getString("REMOVE_PODCAST_FEED_ENTRIES_REMOVED_FROM_PODCAST_FEED"));
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;

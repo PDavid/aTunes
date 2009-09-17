@@ -36,7 +36,7 @@ import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The Class InputDialog.
@@ -70,7 +70,7 @@ public class InputDialog extends CustomModalDialog {
         setTitle(title);
         JPanel panel = new JPanel(new GridBagLayout());
         textField = new JTextField();
-        JButton okButton = new JButton(LanguageTool.getString("OK"));
+        JButton okButton = new JButton(I18nUtils.getString("OK"));
         ActionListener okListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -80,7 +80,7 @@ public class InputDialog extends CustomModalDialog {
         };
         okButton.addActionListener(okListener);
         textField.addActionListener(okListener);
-        JButton cancelButton = new JButton(LanguageTool.getString("CANCEL"));
+        JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

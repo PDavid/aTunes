@@ -56,7 +56,7 @@ import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.utils.ImageUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -578,7 +578,7 @@ public final class RipperHandler extends Handler {
                             @Override
                             public void run() {
                                 VisualHandler.getInstance().hideIndeterminateProgressDialog();
-                                VisualHandler.getInstance().showErrorDialog(LanguageTool.getString("NO_CD_INSERTED"));
+                                VisualHandler.getInstance().showErrorDialog(I18nUtils.getString("NO_CD_INSERTED"));
                             }
                         });
                     }
@@ -638,7 +638,7 @@ public final class RipperHandler extends Handler {
     boolean testTools() {
         if (!CdToWavConverter.testTool()) {
             getLogger().error(LogCategories.RIPPER, "Error testing \"cdda2wav\" or \"cdparanoia\". Check program is installed");
-            VisualHandler.getInstance().showErrorDialog(LanguageTool.getString("CDDA2WAV_NOT_FOUND"));
+            VisualHandler.getInstance().showErrorDialog(I18nUtils.getString("CDDA2WAV_NOT_FOUND"));
             return false;
         }
         return true;
