@@ -37,7 +37,7 @@ import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The Class AddRadioDialog.
@@ -66,7 +66,7 @@ public class AddRadioDialog extends CustomModalDialog {
      */
     public AddRadioDialog(JFrame owner) {
         super(owner, 500, 200, true);
-        setTitle(LanguageTool.getString("ADD_RADIO"));
+        setTitle(I18nUtils.getString("ADD_RADIO"));
         setResizable(false);
         setContent(getContent());
         GuiUtils.applyComponentOrientation(this);
@@ -92,14 +92,14 @@ public class AddRadioDialog extends CustomModalDialog {
     private JPanel getContent() {
         JPanel panel = new JPanel(new GridBagLayout());
 
-        JLabel nameLabel = new JLabel(LanguageTool.getString("NAME"));
+        JLabel nameLabel = new JLabel(I18nUtils.getString("NAME"));
         nameTextField = new JTextField();
-        JLabel urlLabel = new JLabel(LanguageTool.getString("URL"));
+        JLabel urlLabel = new JLabel(I18nUtils.getString("URL"));
         urlTextField = new JTextField();
-        JLabel labelLabel = new JLabel(LanguageTool.getString("LABEL"));
+        JLabel labelLabel = new JLabel(I18nUtils.getString("LABEL"));
         labelTextField = new JTextField();
 
-        JButton okButton = new JButton(LanguageTool.getString("OK"));
+        JButton okButton = new JButton(I18nUtils.getString("OK"));
         okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -107,7 +107,7 @@ public class AddRadioDialog extends CustomModalDialog {
                 AddRadioDialog.this.dispose();
             }
         });
-        JButton cancelButton = new JButton(LanguageTool.getString("CANCEL"));
+        JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

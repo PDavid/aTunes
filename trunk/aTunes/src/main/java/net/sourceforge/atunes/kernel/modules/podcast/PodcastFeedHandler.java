@@ -52,7 +52,7 @@ import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.utils.FileNameUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -256,7 +256,7 @@ public final class PodcastFeedHandler extends Handler {
         if (isDownloading(podcastFeedEntry)) {
             return;
         }
-        final TransferProgressDialog d = VisualHandler.getInstance().getNewTransferProgressDialog(LanguageTool.getString("PODCAST_FEED_ENTRY_DOWNLOAD"), null);
+        final TransferProgressDialog d = VisualHandler.getInstance().getNewTransferProgressDialog(I18nUtils.getString("PODCAST_FEED_ENTRY_DOWNLOAD"), null);
         d.setIcon(ImageLoader.getImage(ImageLoader.RSS));
         final PodcastFeedEntryDownloader downloadPodcastFeedEntry = new PodcastFeedEntryDownloader(podcastFeedEntry);
         synchronized (runningDownloads) {

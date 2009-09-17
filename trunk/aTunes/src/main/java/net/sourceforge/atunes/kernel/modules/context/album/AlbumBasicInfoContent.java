@@ -39,7 +39,7 @@ import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
 import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.ImageUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jdesktop.swingx.border.DropShadowBorder;
@@ -65,7 +65,7 @@ public class AlbumBasicInfoContent extends ContextPanelContent {
 
     @Override
     protected String getContentName() {
-        return LanguageTool.getString("INFO");
+        return I18nUtils.getString("INFO");
     }
 
     @Override
@@ -84,7 +84,7 @@ public class AlbumBasicInfoContent extends ContextPanelContent {
             AlbumInfo album = (AlbumInfo) result.get(AlbumInfoDataSource.OUTPUT_ALBUM);
             artistLabel.setText(album != null ? album.getArtist() : audioObject.getArtist(), album != null ? album.getArtistUrl() : null);
             artistLabel.setEnabled(album != null && album.getArtistUrl() != null);
-            albumLabel.setText(album != null ? album.getTitle() : LanguageTool.getString("UNKNOWN_ALBUM"), album != null ? album.getUrl() : null);
+            albumLabel.setText(album != null ? album.getTitle() : I18nUtils.getString("UNKNOWN_ALBUM"), album != null ? album.getUrl() : null);
             albumLabel.setEnabled(album != null && album.getUrl() != null);
             // TODO: wikipedia is opened in English
             yearLabel.setText(album != null ? album.getYear() : "", album != null && album.getYear() != null ? StringUtils.getString("http://en.wikipedia.org/wiki/", album

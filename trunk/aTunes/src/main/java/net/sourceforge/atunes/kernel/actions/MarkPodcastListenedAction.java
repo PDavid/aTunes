@@ -31,15 +31,15 @@ import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class MarkPodcastListenedAction extends Action {
 
     private static final long serialVersionUID = 2594418895817769179L;
 
     MarkPodcastListenedAction() {
-        super(LanguageTool.getString("MARK_PODCAST_AS_LISTENED"), ImageLoader.getImage(ImageLoader.MARK_RSS_AS_READ));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("MARK_PODCAST_AS_LISTENED"));
+        super(I18nUtils.getString("MARK_PODCAST_AS_LISTENED"), ImageLoader.getImage(ImageLoader.MARK_RSS_AS_READ));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("MARK_PODCAST_AS_LISTENED"));
     }
 
     @Override

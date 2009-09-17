@@ -39,7 +39,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.utils.FileNameUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.commons.io.FileUtils;
@@ -119,9 +119,9 @@ public abstract class AudioFileTransferProcess extends Process {
                             @Override
                             public void run() {
                                 userSelectionWhenErrors = (String) VisualHandler.getInstance().showMessage(
-                                        StringUtils.getString(LanguageTool.getString("ERROR"), ": ", thrownExceptions.get(0).getMessage()), LanguageTool.getString("ERROR"),
+                                        StringUtils.getString(I18nUtils.getString("ERROR"), ": ", thrownExceptions.get(0).getMessage()), I18nUtils.getString("ERROR"),
                                         JOptionPane.ERROR_MESSAGE,
-                                        new String[] { LanguageTool.getString("IGNORE"), LanguageTool.getString("IGNORE_ALL"), LanguageTool.getString("CANCEL") });
+                                        new String[] { I18nUtils.getString("IGNORE"), I18nUtils.getString("IGNORE_ALL"), I18nUtils.getString("CANCEL") });
                             }
                         });
                     } catch (InterruptedException e1) {
@@ -129,12 +129,12 @@ public abstract class AudioFileTransferProcess extends Process {
                     } catch (InvocationTargetException e1) {
                         // Do nothing
                     }
-                    if (LanguageTool.getString("IGNORE").equals(userSelectionWhenErrors)) {
+                    if (I18nUtils.getString("IGNORE").equals(userSelectionWhenErrors)) {
                         // Do nothing, let execution continue
-                    } else if (LanguageTool.getString("IGNORE_ALL").equals(userSelectionWhenErrors)) {
+                    } else if (I18nUtils.getString("IGNORE_ALL").equals(userSelectionWhenErrors)) {
                         // Don't display more error messages
                         ignoreAllErrors = true;
-                    } else if (LanguageTool.getString("CANCEL").equals(userSelectionWhenErrors)) {
+                    } else if (I18nUtils.getString("CANCEL").equals(userSelectionWhenErrors)) {
                         // Only in this case set errors to true to force refresh in other case
                         errors = true;
 

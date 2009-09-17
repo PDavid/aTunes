@@ -27,15 +27,15 @@ import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class RemoveOldPodcastEntryAction extends ActionOverSelectedObjects<PodcastFeedEntry> {
 
     private static final long serialVersionUID = -1499729879534990802L;
 
     RemoveOldPodcastEntryAction() {
-        super(LanguageTool.getString("REMOVE_OLD_PODCAST_ENTRY"), ImageLoader.getImage(ImageLoader.REMOVE), PodcastFeedEntry.class);
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("REMOVE_OLD_PODCAST_ENTRY"));
+        super(I18nUtils.getString("REMOVE_OLD_PODCAST_ENTRY"), ImageLoader.getImage(ImageLoader.REMOVE), PodcastFeedEntry.class);
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("REMOVE_OLD_PODCAST_ENTRY"));
     }
 
     @Override

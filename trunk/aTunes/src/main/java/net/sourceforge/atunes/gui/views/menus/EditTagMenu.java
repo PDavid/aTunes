@@ -33,14 +33,14 @@ import net.sourceforge.atunes.kernel.actions.AutoSetTitlesAction;
 import net.sourceforge.atunes.kernel.actions.AutoSetTracksAction;
 import net.sourceforge.atunes.kernel.actions.ClearTagAction;
 import net.sourceforge.atunes.kernel.actions.EditTagAction;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class EditTagMenu extends JMenu {
 
     private static final long serialVersionUID = -8235925186759302907L;
 
     public EditTagMenu(boolean playlistMenu, AudioObjectsSource audioObjectsSource) {
-        super(LanguageTool.getString("TAGS"));
+        super(I18nUtils.getString("TAGS"));
         add(Actions.getMenuItemForAction(EditTagAction.class, playlistMenu ? EditTagAction.PLAYLIST : EditTagAction.NAVIGATOR, audioObjectsSource));
         add(new JSeparator());
         add(Actions.getMenuItemForAction(AutoSetTagFromFolderNamePatternAction.class, audioObjectsSource));

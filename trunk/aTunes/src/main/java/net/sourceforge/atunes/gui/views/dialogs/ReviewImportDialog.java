@@ -51,7 +51,7 @@ import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.kernel.modules.repository.TagAttributesReviewed;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jdesktop.swingx.JXTreeTable;
@@ -79,7 +79,7 @@ public class ReviewImportDialog extends CustomModalDialog {
      */
     public ReviewImportDialog(Component owner) {
         super((JFrame) owner, GuiUtils.getComponentWidthForResolution(1280, 1200), GuiUtils.getComponentHeightForResolution(1024, 700), true);
-        setTitle(LanguageTool.getString("REVIEW_TAGS"));
+        setTitle(I18nUtils.getString("REVIEW_TAGS"));
         setContent();
         GuiUtils.applyComponentOrientation(this);
         enableCloseActionWithEscapeKey();
@@ -98,13 +98,13 @@ public class ReviewImportDialog extends CustomModalDialog {
         treeTable.getTableHeader().setReorderingAllowed(false);
         treeTable.setSurrendersFocusOnKeystroke(true);
         JPanel topPanel = new JPanel(new BorderLayout(10, 0));
-        reviewInstructions = new JTextArea(LanguageTool.getString("REVIEW_TAGS_INSTRUCTIONS"));
+        reviewInstructions = new JTextArea(I18nUtils.getString("REVIEW_TAGS_INSTRUCTIONS"));
         reviewInstructions.setEditable(false);
         reviewInstructions.setLineWrap(true);
         reviewInstructions.setWrapStyleWord(true);
         reviewInstructions.setOpaque(false);
         reviewInstructions.setBorder(BorderFactory.createEmptyBorder());
-        JButton okButton = new JButton(LanguageTool.getString("OK"));
+        JButton okButton = new JButton(I18nUtils.getString("OK"));
         okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -112,7 +112,7 @@ public class ReviewImportDialog extends CustomModalDialog {
                 setVisible(false);
             }
         });
-        JButton cancelButton = new JButton(LanguageTool.getString("CANCEL"));
+        JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -121,7 +121,7 @@ public class ReviewImportDialog extends CustomModalDialog {
         });
         topPanel.add(reviewInstructions, BorderLayout.CENTER);
 
-        final JButton fillTagsFromFolderName = new JButton(StringUtils.getString(LanguageTool.getString("FILL_TAGS_FROM_FOLDER_NAME"), "..."));
+        final JButton fillTagsFromFolderName = new JButton(StringUtils.getString(I18nUtils.getString("FILL_TAGS_FROM_FOLDER_NAME"), "..."));
         // Disabled as initially there is no row selected
         fillTagsFromFolderName.setEnabled(false);
         fillTagsFromFolderName.addActionListener(new ActionListener() {

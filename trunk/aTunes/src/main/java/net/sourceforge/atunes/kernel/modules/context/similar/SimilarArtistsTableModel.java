@@ -27,7 +27,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 import net.sourceforge.atunes.kernel.modules.context.ArtistInfo;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The Class ContextArtistsTableModel.
@@ -100,7 +100,7 @@ public class SimilarArtistsTableModel implements TableModel {
     @Override
     public String getColumnName(int columnIndex) {
         if (columnIndex == 0) {
-            return LanguageTool.getString("SIMILAR_ARTISTS");
+            return I18nUtils.getString("SIMILAR_ARTISTS");
         }
         return "";
     }

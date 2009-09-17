@@ -30,7 +30,7 @@ import javax.swing.table.TableCellEditor;
 
 import net.sourceforge.atunes.kernel.modules.repository.TagAttributesReviewed;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jdesktop.swingx.JXTreeTable;
 import org.jdesktop.swingx.treetable.AbstractTreeTableModel;
@@ -169,10 +169,10 @@ public class ReviewImportTreeTableModel extends AbstractTreeTableModel {
     @Override
     public String getColumnName(int column) {
         if (column == 0) {
-            return LanguageTool.getString("FOLDER");
+            return I18nUtils.getString("FOLDER");
         }
 
-        return LanguageTool.getString(this.getTagAttributesReviewed().getTagAttributeName(column - 1));
+        return I18nUtils.getString(this.getTagAttributesReviewed().getTagAttributeName(column - 1));
     }
 
     /**

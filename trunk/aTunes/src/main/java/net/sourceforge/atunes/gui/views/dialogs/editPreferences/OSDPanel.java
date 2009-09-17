@@ -33,7 +33,7 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class OSDPanel extends PreferencesPanel {
 
@@ -45,26 +45,26 @@ public class OSDPanel extends PreferencesPanel {
     private JComboBox osdVerticalAlignment;
     private JCheckBox useLibnotify;
 
-    private static final String LEFT = LanguageTool.getString("LEFT");
-    private static final String CENTER = LanguageTool.getString("CENTER");
-    private static final String RIGHT = LanguageTool.getString("RIGHT");
-    private static final String TOP = LanguageTool.getString("TOP");
-    private static final String BOTTOM = LanguageTool.getString("BOTTOM");
+    private static final String LEFT = I18nUtils.getString("LEFT");
+    private static final String CENTER = I18nUtils.getString("CENTER");
+    private static final String RIGHT = I18nUtils.getString("RIGHT");
+    private static final String TOP = I18nUtils.getString("TOP");
+    private static final String BOTTOM = I18nUtils.getString("BOTTOM");
 
     /**
      * Instantiates a new oSD panel.
      */
     public OSDPanel() {
-        super(LanguageTool.getString("OSD"));
-        JLabel label = new JLabel(LanguageTool.getString("OSD_DURATION"));
+        super(I18nUtils.getString("OSD"));
+        JLabel label = new JLabel(I18nUtils.getString("OSD_DURATION"));
         osdDuration = new JComboBox(new Integer[] { 2, 4, 6 });
-        JLabel label2 = new JLabel(LanguageTool.getString("OSD_WIDTH"));
+        JLabel label2 = new JLabel(I18nUtils.getString("OSD_WIDTH"));
         osdWidth = new JComboBox(new Integer[] { 400, 500, 600 });
-        JLabel label3 = new JLabel(LanguageTool.getString("HORIZONTAL_ALIGNMENT"));
+        JLabel label3 = new JLabel(I18nUtils.getString("HORIZONTAL_ALIGNMENT"));
         osdHorizontalAlignment = new JComboBox(new String[] { LEFT, CENTER, RIGHT });
-        JLabel label4 = new JLabel(LanguageTool.getString("VERTICAL_ALIGNMENT"));
+        JLabel label4 = new JLabel(I18nUtils.getString("VERTICAL_ALIGNMENT"));
         osdVerticalAlignment = new JComboBox(new String[] { TOP, CENTER, BOTTOM });
-        JLabel label5 = new JLabel(LanguageTool.getString("USE_LIBNOTIFY"));
+        JLabel label5 = new JLabel(I18nUtils.getString("USE_LIBNOTIFY"));
         useLibnotify = new JCheckBox();
         useLibnotify.addItemListener(new ItemListener() {
             @Override

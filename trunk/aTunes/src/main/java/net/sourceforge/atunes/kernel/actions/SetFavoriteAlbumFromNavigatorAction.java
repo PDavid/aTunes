@@ -31,15 +31,15 @@ import net.sourceforge.atunes.kernel.modules.favorites.FavoritesHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.model.Album;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class SetFavoriteAlbumFromNavigatorAction extends ActionOverSelectedObjects<AudioFile> {
 
     private static final long serialVersionUID = 836910667009804037L;
 
     SetFavoriteAlbumFromNavigatorAction() {
-        super(LanguageTool.getString("SET_FAVORITE_ALBUM"), ImageLoader.getImage(ImageLoader.FAVORITE), AudioFile.class);
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("SET_FAVORITE_ALBUM"));
+        super(I18nUtils.getString("SET_FAVORITE_ALBUM"), ImageLoader.getImage(ImageLoader.FAVORITE), AudioFile.class);
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("SET_FAVORITE_ALBUM"));
     }
 
     @Override

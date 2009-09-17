@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Opens a web browser to show lyrics source
@@ -35,8 +35,8 @@ public class OpenLyricsSourceAction extends Action {
     private static final long serialVersionUID = 3251794899765238146L;
 
     OpenLyricsSourceAction() {
-        super(LanguageTool.getString("OPEN_LYRICS_SOURCE"));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("OPEN_LYRICS_SOURCE"));
+        super(I18nUtils.getString("OPEN_LYRICS_SOURCE"));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("OPEN_LYRICS_SOURCE"));
     }
 
     @Override

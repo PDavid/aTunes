@@ -48,7 +48,7 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.StopButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeLevel;
 import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The Class PlayerControlsPanel.
@@ -308,7 +308,7 @@ public class PlayerControlsPanel extends JPanel {
             time.setHorizontalAlignment(SwingConstants.CENTER);
 
             progressBar = new JSlider();
-            progressBar.setToolTipText(LanguageTool.getString("CLICK_TO_SEEK"));
+            progressBar.setToolTipText(I18nUtils.getString("CLICK_TO_SEEK"));
             progressBar.setMinimum(0);
             progressBar.setValue(0);
             progressBar.setFocusable(false);

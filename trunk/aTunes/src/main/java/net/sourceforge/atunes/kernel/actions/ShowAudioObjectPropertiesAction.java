@@ -25,7 +25,7 @@ import java.awt.event.ActionEvent;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * This action show audio object properties panel
@@ -38,8 +38,8 @@ public class ShowAudioObjectPropertiesAction extends Action {
     private static final long serialVersionUID = 7212419139147093739L;
 
     ShowAudioObjectPropertiesAction() {
-        super(LanguageTool.getString("SHOW_SONG_PROPERTIES"), ImageLoader.getImage(ImageLoader.INFO));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("SHOW_SONG_PROPERTIES"));
+        super(I18nUtils.getString("SHOW_SONG_PROPERTIES"), ImageLoader.getImage(ImageLoader.INFO));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_SONG_PROPERTIES"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().isShowAudioObjectProperties());
     }
 

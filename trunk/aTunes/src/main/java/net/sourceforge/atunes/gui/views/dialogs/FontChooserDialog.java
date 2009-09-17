@@ -48,7 +48,7 @@ import javax.swing.event.ListSelectionListener;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
 import net.sourceforge.atunes.kernel.modules.state.beans.FontBean;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class FontChooserDialog extends CustomModalDialog {
 
@@ -149,7 +149,7 @@ public class FontChooserDialog extends CustomModalDialog {
         this.fontSettings.setUseFontSmoothing(useFontSmoothing);
         this.fontSettings.setUseFontSmoothingSettingsFromOs(useFontSmoothingSettingsFromOs);
         setResizable(false);
-        setTitle(LanguageTool.getString("FONT_SETTINGS"));
+        setTitle(I18nUtils.getString("FONT_SETTINGS"));
         setContent(getContent());
         GuiUtils.applyComponentOrientation(this);
         enableDisposeActionWithEscapeKey();
@@ -185,7 +185,7 @@ public class FontChooserDialog extends CustomModalDialog {
             }
         });
         fontSizeList.setSelectedValue(fontSettings.font.getSize(), true);
-        useFontSmoothingCheckbox = new JCheckBox(LanguageTool.getString("USE_FONT_SMOOTHING"));
+        useFontSmoothingCheckbox = new JCheckBox(I18nUtils.getString("USE_FONT_SMOOTHING"));
         useFontSmoothingCheckbox.setSelected(fontSettings.isUseFontSmoothing());
         useFontSmoothingCheckbox.addItemListener(new ItemListener() {
 
@@ -195,7 +195,7 @@ public class FontChooserDialog extends CustomModalDialog {
             }
         });
         useFontSmoothingCheckbox.setSelected(fontSettings.isUseFontSmoothing());
-        useFontSmoothingSettingsFromOsCheckbox = new JCheckBox(LanguageTool.getString("USE_OS_SETTINGS_FOR_FONT_SMOOTHING"));
+        useFontSmoothingSettingsFromOsCheckbox = new JCheckBox(I18nUtils.getString("USE_OS_SETTINGS_FOR_FONT_SMOOTHING"));
         useFontSmoothingSettingsFromOsCheckbox.setSelected(fontSettings.isUseFontSmoothingSettingsFromOs());
         useFontSmoothingSettingsFromOsCheckbox.addItemListener(new ItemListener() {
 
@@ -214,7 +214,7 @@ public class FontChooserDialog extends CustomModalDialog {
                 FontChooserDialog.this.dispose();
             }
         });
-        okButton.setText(LanguageTool.getString("OK"));
+        okButton.setText(I18nUtils.getString("OK"));
         cancelButton = new JButton();
         cancelButton.addActionListener(new ActionListener() {
 
@@ -224,7 +224,7 @@ public class FontChooserDialog extends CustomModalDialog {
                 FontChooserDialog.this.dispose();
             }
         });
-        cancelButton.setText(LanguageTool.getString("CANCEL"));
+        cancelButton.setText(I18nUtils.getString("CANCEL"));
 
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();

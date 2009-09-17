@@ -61,9 +61,8 @@ import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.FileNameUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
-import net.sourceforge.atunes.utils.TimeUtils;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -143,7 +142,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                VisualHandler.getInstance().showProgressBar(true, StringUtils.getString(LanguageTool.getString("REFRESHING"), "..."));
+                VisualHandler.getInstance().showProgressBar(true, StringUtils.getString(I18nUtils.getString("REFRESHING"), "..."));
             }
         });
         SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
@@ -914,7 +913,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
             tempRepository = loader.getRepository();
         }
         VisualHandler.getInstance().getProgressDialog().setCancelButtonEnabled(false);
-        VisualHandler.getInstance().getProgressDialog().getLabel().setText(LanguageTool.getString("STORING_REPOSITORY_INFORMATION"));
+        VisualHandler.getInstance().getProgressDialog().getLabel().setText(I18nUtils.getString("STORING_REPOSITORY_INFORMATION"));
         VisualHandler.getInstance().getProgressDialog().getProgressLabel().setText("");
         VisualHandler.getInstance().getProgressDialog().getTotalFilesLabel().setText("");
         VisualHandler.getInstance().getProgressDialog().getFolderLabel().setText(" ");
@@ -982,7 +981,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
     @Override
     public void notifyRemainingTime(final long millis) {
         VisualHandler.getInstance().getProgressDialog().getRemainingTimeLabel().setText(
-                StringUtils.getString(LanguageTool.getString("REMAINING_TIME"), ":   ", TimeUtils.milliseconds2String(millis)));
+                StringUtils.getString(I18nUtils.getString("REMAINING_TIME"), ":   ", StringUtils.milliseconds2String(millis)));
 
     }
 
@@ -1020,10 +1019,10 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
                 Object selection = null;
                 // Test if repository exists and show message until repository exists or user doesn't press "RETRY"
                 do {
-                    selection = VisualHandler.getInstance().showMessage(StringUtils.getString(LanguageTool.getString("REPOSITORY_NOT_FOUND"), ": ", rep.getFolders().get(0)),
-                            LanguageTool.getString("REPOSITORY_NOT_FOUND"), JOptionPane.WARNING_MESSAGE,
-                            new String[] { LanguageTool.getString("RETRY"), LanguageTool.getString("SELECT_REPOSITORY") });
-                } while (LanguageTool.getString("RETRY").equals(selection) && !rep.exists());
+                    selection = VisualHandler.getInstance().showMessage(StringUtils.getString(I18nUtils.getString("REPOSITORY_NOT_FOUND"), ": ", rep.getFolders().get(0)),
+                            I18nUtils.getString("REPOSITORY_NOT_FOUND"), JOptionPane.WARNING_MESSAGE,
+                            new String[] { I18nUtils.getString("RETRY"), I18nUtils.getString("SELECT_REPOSITORY") });
+                } while (I18nUtils.getString("RETRY").equals(selection) && !rep.exists());
 
                 if (!rep.exists() && !selectRepository(true)) {
                     // select "old" repository if repository was not found and no new repository was selected
@@ -1046,7 +1045,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
                 for (String f : lastRepositoryFolders) {
                     foldersToRead.add(new File(f));
                 }
-                VisualHandler.getInstance().showMessage(LanguageTool.getString("RELOAD_REPOSITORY_MESSAGE"));
+                VisualHandler.getInstance().showMessage(I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"));
                 retrieve(foldersToRead);
                 return;
             }
@@ -1098,7 +1097,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
      */
     public void refreshRepository() {
         if (!repositoryIsNull()) {
-            String text = StringUtils.getString(LanguageTool.getString("REFRESHING"), "...");
+            String text = StringUtils.getString(I18nUtils.getString("REFRESHING"), "...");
             VisualHandler.getInstance().showProgressBar(true, text);
             refresh();
         }
@@ -1185,7 +1184,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
      * @return true, if successful
      */
     public boolean retrieve(List<File> folders) {
-        VisualHandler.getInstance().getProgressDialog().setTitle(LanguageTool.getString("PLEASE_WAIT"));
+        VisualHandler.getInstance().getProgressDialog().setTitle(I18nUtils.getString("PLEASE_WAIT"));
         VisualHandler.getInstance().getProgressDialog().setVisible(true);
         VisualHandler.getInstance().getProgressDialog().activateGlassPane();
         filesLoaded = 0;
@@ -1222,7 +1221,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
      */
     public boolean selectRepository(boolean repositoryNotFound) {
         MultiFolderSelectionDialog dialog = VisualHandler.getInstance().getMultiFolderSelectionDialog();
-        dialog.setText(LanguageTool.getString("SELECT_REPOSITORY_FOLDERS"));
+        dialog.setText(I18nUtils.getString("SELECT_REPOSITORY_FOLDERS"));
         dialog.startDialog((repository != null && !repositoryNotFound) ? repository.getFolders() : null);
         if (!dialog.isCancelled()) {
             List<File> folders = dialog.getSelectedFolders();
@@ -1399,14 +1398,14 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
     public void importFoldersToRepository() {
         // First check if repository is selected. If not, display a message
         if (getRepository() == null) {
-            VisualHandler.getInstance().showErrorDialog(LanguageTool.getString("SELECT_REPOSITORY_BEFORE_IMPORT"));
+            VisualHandler.getInstance().showErrorDialog(I18nUtils.getString("SELECT_REPOSITORY_BEFORE_IMPORT"));
             return;
         }
 
         // Now show dialog to select folders
         MultiFolderSelectionDialog dialog = VisualHandler.getInstance().getMultiFolderSelectionDialog();
-        dialog.setTitle(LanguageTool.getString("IMPORT"));
-        dialog.setText(LanguageTool.getString("SELECT_FOLDERS_TO_IMPORT"));
+        dialog.setTitle(I18nUtils.getString("IMPORT"));
+        dialog.setText(I18nUtils.getString("SELECT_FOLDERS_TO_IMPORT"));
         dialog.startDialog(null);
         if (!dialog.isCancelled()) {
             List<File> folders = dialog.getSelectedFolders();
@@ -1419,7 +1418,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
                     for (int i = 0; i < getRepository().getFolders().size(); i++) {
                         folderNames[i] = getRepository().getFolders().get(i).getAbsolutePath();
                     }
-                    SelectorDialog selector = new SelectorDialog(VisualHandler.getInstance().getFrame().getFrame(), LanguageTool.getString("SELECT_REPOSITORY_FOLDER_TO_IMPORT"),
+                    SelectorDialog selector = new SelectorDialog(VisualHandler.getInstance().getFrame().getFrame(), I18nUtils.getString("SELECT_REPOSITORY_FOLDER_TO_IMPORT"),
                             folderNames, null);
                     selector.setVisible(true);
                     path = selector.getSelection();
@@ -1445,7 +1444,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
         SwingWorker<List<AudioFile>, Void> worker = new SwingWorker<List<AudioFile>, Void>() {
             @Override
             protected List<AudioFile> doInBackground() throws Exception {
-                VisualHandler.getInstance().showIndeterminateProgressDialog(StringUtils.getString(LanguageTool.getString("READING_FILES_TO_IMPORT"), "..."));
+                VisualHandler.getInstance().showIndeterminateProgressDialog(StringUtils.getString(I18nUtils.getString("READING_FILES_TO_IMPORT"), "..."));
                 return RepositoryLoader.getSongsForFolders(folders);
             }
 
@@ -1482,7 +1481,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
                                     SwingUtilities.invokeAndWait(new Runnable() {
                                         @Override
                                         public void run() {
-                                            VisualHandler.getInstance().showErrorDialog(LanguageTool.getString("ERRORS_IN_IMPORT_PROCESS"));
+                                            VisualHandler.getInstance().showErrorDialog(I18nUtils.getString("ERRORS_IN_IMPORT_PROCESS"));
                                         }
                                     });
                                 } catch (InterruptedException e) {

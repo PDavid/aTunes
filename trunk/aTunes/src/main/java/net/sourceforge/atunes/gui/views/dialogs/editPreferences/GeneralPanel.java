@@ -49,7 +49,7 @@ import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
@@ -79,15 +79,15 @@ public class GeneralPanel extends PreferencesPanel {
      */
     public GeneralPanel() {
         // Titles are in bold. Label order has been changed, so number don't match any more
-        super(LanguageTool.getString("GENERAL"));
-        showTitle = new JCheckBox(LanguageTool.getString("SHOW_TITLE"));
-        JLabel label = new JLabel(LanguageTool.getString("WINDOW_TYPE"));
+        super(I18nUtils.getString("GENERAL"));
+        showTitle = new JCheckBox(I18nUtils.getString("SHOW_TITLE"));
+        JLabel label = new JLabel(I18nUtils.getString("WINDOW_TYPE"));
         label.setFont(Fonts.GENERAL_FONT_BOLD);
-        windowType = new JComboBox(new String[] { LanguageTool.getString("STANDARD_WINDOW"), LanguageTool.getString("MULTIPLE_WINDOW") });
-        JLabel label2 = new JLabel(LanguageTool.getString("LANGUAGE"));
+        windowType = new JComboBox(new String[] { I18nUtils.getString("STANDARD_WINDOW"), I18nUtils.getString("MULTIPLE_WINDOW") });
+        JLabel label2 = new JLabel(I18nUtils.getString("LANGUAGE"));
         label2.setFont(Fonts.GENERAL_FONT_BOLD);
 
-        List<Locale> langs = LanguageTool.getLanguages();
+        List<Locale> langs = I18nUtils.getLanguages();
         Locale[] array = langs.toArray(new Locale[langs.size()]);
         final Locale currentLocale = ApplicationState.getInstance().getLocale().getLocale();
         Arrays.sort(array, new Comparator<Locale>() {
@@ -121,12 +121,12 @@ public class GeneralPanel extends PreferencesPanel {
             }
         });
 
-        showIconTray = new JCheckBox(LanguageTool.getString("SHOW_TRAY_ICON"));
-        showTrayPlayer = new JCheckBox(LanguageTool.getString("SHOW_TRAY_PLAYER"));
-        JLabel label3 = new JLabel(LanguageTool.getString("THEME"));
+        showIconTray = new JCheckBox(I18nUtils.getString("SHOW_TRAY_ICON"));
+        showTrayPlayer = new JCheckBox(I18nUtils.getString("SHOW_TRAY_PLAYER"));
+        JLabel label3 = new JLabel(I18nUtils.getString("THEME"));
         label3.setFont(Fonts.GENERAL_FONT_BOLD);
 
-        fontSettings = new JButton(LanguageTool.getString("CHANGE_FONT_SETTINGS"));
+        fontSettings = new JButton(I18nUtils.getString("CHANGE_FONT_SETTINGS"));
         fontSettings.addActionListener(new ActionListener() {
 
             @Override
@@ -155,7 +155,7 @@ public class GeneralPanel extends PreferencesPanel {
                 themePreview.setIcon(ThemePreviewLoader.getImage(t));
             }
         });
-        themePreview = new JLabel(LanguageTool.getString("PREVIEW"));
+        themePreview = new JLabel(I18nUtils.getString("PREVIEW"));
         themePreview.setVerticalTextPosition(SwingConstants.TOP);
         themePreview.setHorizontalTextPosition(SwingConstants.CENTER);
 
@@ -212,7 +212,7 @@ public class GeneralPanel extends PreferencesPanel {
         state.setShowTitle(showTitle.isSelected());
 
         boolean oldMultipleWindow = state.isMultipleWindow();
-        boolean newMultipleWindow = windowType.getSelectedItem().equals(LanguageTool.getString("MULTIPLE_WINDOW"));
+        boolean newMultipleWindow = windowType.getSelectedItem().equals(I18nUtils.getString("MULTIPLE_WINDOW"));
         state.setMultipleWindow(newMultipleWindow);
         if (oldMultipleWindow != newMultipleWindow) {
             needRestart = true;
@@ -308,8 +308,8 @@ public class GeneralPanel extends PreferencesPanel {
     @Override
     public void updatePanel(ApplicationState state) {
         setShowTitle(state.isShowTitle());
-        setWindowType(state.isMultipleWindow() ? LanguageTool.getString("MULTIPLE_WINDOW") : LanguageTool.getString("STANDARD_WINDOW"));
-        setLanguage(LanguageTool.getLanguageSelected());
+        setWindowType(state.isMultipleWindow() ? I18nUtils.getString("MULTIPLE_WINDOW") : I18nUtils.getString("STANDARD_WINDOW"));
+        setLanguage(I18nUtils.getLanguageSelected());
         setShowIconTray(state.isShowSystemTray());
         setShowTrayPlayer(state.isShowTrayPlayer());
         setTheme(state.getSkin());

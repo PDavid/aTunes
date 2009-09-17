@@ -40,7 +40,7 @@ import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.gui.views.controls.CustomDialog;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The Class CustomSearchDialog.
@@ -125,7 +125,7 @@ public class CustomSearchDialog extends CustomDialog {
         super(owner, 600, 500);
         setResizable(false);
         setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-        setTitle(LanguageTool.getString("SEARCH"));
+        setTitle(I18nUtils.getString("SEARCH"));
         add(getContent());
         GuiUtils.applyComponentOrientation(this);
     }
@@ -185,7 +185,7 @@ public class CustomSearchDialog extends CustomDialog {
         if (searchAtPanel == null) {
             searchAtPanel = new JPanel();
             searchAtPanel.setBorder(BorderFactory.createEtchedBorder());
-            searchAtLabel = new JLabel(LanguageTool.getString("SEARCH_IN"));
+            searchAtLabel = new JLabel(I18nUtils.getString("SEARCH_IN"));
             searchAtComboBox = new JComboBox();
             searchAtPanel.add(searchAtLabel);
             searchAtPanel.add(searchAtComboBox);
@@ -207,7 +207,7 @@ public class CustomSearchDialog extends CustomDialog {
             simpleRulesScrollPane = new JScrollPane(simpleRulesList);
             simpleRulesComboBox = new JComboBox();
             simpleRulesTextField = new JTextField();
-            simpleRulesAddButton = new JButton(LanguageTool.getString("ADD"));
+            simpleRulesAddButton = new JButton(I18nUtils.getString("ADD"));
 
             GridBagConstraints c = new GridBagConstraints();
             c.insets = new Insets(5, 5, 5, 5);
@@ -255,10 +255,10 @@ public class CustomSearchDialog extends CustomDialog {
             complexRulesTree = new JTree();
 
             complexRulesScrollPane = new JScrollPane(complexRulesTree);
-            complexRulesAndButton = new JButton(LanguageTool.getString("AND"));
-            complexRulesOrButton = new JButton(LanguageTool.getString("OR"));
-            complexRulesNotButton = new JButton(LanguageTool.getString("NOT"));
-            complexRulesRemoveButton = new JButton(LanguageTool.getString("REMOVE_FIELD"));
+            complexRulesAndButton = new JButton(I18nUtils.getString("AND"));
+            complexRulesOrButton = new JButton(I18nUtils.getString("OR"));
+            complexRulesNotButton = new JButton(I18nUtils.getString("NOT"));
+            complexRulesRemoveButton = new JButton(I18nUtils.getString("REMOVE_FIELD"));
 
             GridBagConstraints c = new GridBagConstraints();
             c.insets = new Insets(5, 5, 5, 5);
@@ -300,7 +300,7 @@ public class CustomSearchDialog extends CustomDialog {
         if (advancedSearchPanel == null) {
             advancedSearchPanel = new JPanel(new GridBagLayout());
             advancedSearchPanel.setBorder(BorderFactory.createEtchedBorder());
-            advancedSearchCheckBox = new JCheckBox(LanguageTool.getString("ENABLE_ADVANCED_SEARCH"));
+            advancedSearchCheckBox = new JCheckBox(I18nUtils.getString("ENABLE_ADVANCED_SEARCH"));
             advancedSearchTextField = new JTextField();
             GridBagConstraints c = new GridBagConstraints();
             c.gridx = 0;
@@ -323,8 +323,8 @@ public class CustomSearchDialog extends CustomDialog {
     private JPanel getButtonsPanel() {
         if (buttonsPanel == null) {
             buttonsPanel = new JPanel();
-            searchButton = new JButton(LanguageTool.getString("SEARCH"));
-            cancelButton = new JButton(LanguageTool.getString("CANCEL"));
+            searchButton = new JButton(I18nUtils.getString("SEARCH"));
+            cancelButton = new JButton(I18nUtils.getString("CANCEL"));
             buttonsPanel.add(searchButton);
             buttonsPanel.add(cancelButton);
         }

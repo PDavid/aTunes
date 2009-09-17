@@ -24,7 +24,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.process.AudioFileTransferProcess;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Exports (song) files to a partition/device and checks if filename is valid.
@@ -50,7 +50,7 @@ public class ExportFilesProcess extends AudioFileTransferProcess {
 
     @Override
     public String getProgressDialogTitle() {
-        return LanguageTool.getString("EXPORTING");
+        return I18nUtils.getString("EXPORTING");
     }
 
     @Override

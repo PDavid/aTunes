@@ -24,15 +24,15 @@ import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class CloseOtherPlaylistsAction extends Action {
 
     private static final long serialVersionUID = 902195930910854889L;
 
     CloseOtherPlaylistsAction() {
-        super(LanguageTool.getString("CLOSE_OTHER_PLAYLISTS"));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("CLOSE_OTHER_PLAYLISTS"));
+        super(I18nUtils.getString("CLOSE_OTHER_PLAYLISTS"));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("CLOSE_OTHER_PLAYLISTS"));
     }
 
     @Override

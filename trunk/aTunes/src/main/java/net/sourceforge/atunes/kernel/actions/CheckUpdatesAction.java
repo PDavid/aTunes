@@ -25,7 +25,7 @@ import java.awt.event.ActionEvent;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.updates.UpdateHandler;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Called to search for a new version of the application
@@ -38,8 +38,8 @@ public class CheckUpdatesAction extends Action {
     private static final long serialVersionUID = 999420226547524484L;
 
     CheckUpdatesAction() {
-        super(LanguageTool.getString("CHECK_FOR_UPDATES"), ImageLoader.getImage(ImageLoader.CHECK_FOR_UPDATES));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("CHECK_FOR_UPDATES"));
+        super(I18nUtils.getString("CHECK_FOR_UPDATES"), ImageLoader.getImage(ImageLoader.CHECK_FOR_UPDATES));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("CHECK_FOR_UPDATES"));
     }
 
     @Override

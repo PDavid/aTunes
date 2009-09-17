@@ -63,7 +63,7 @@ import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.commonjukebox.plugins.PluginConfiguration;
@@ -103,7 +103,7 @@ public class PluginsPanel extends PreferencesPanel {
      * Instantiates a new plugins panel.
      */
     public PluginsPanel() {
-        super(LanguageTool.getString("PLUGINS"));
+        super(I18nUtils.getString("PLUGINS"));
         pluginsTable = new JTable();
         pluginsTable.setRowHeight(CELL_HEIGHT);
         pluginsTable.setShowGrid(false);
@@ -114,7 +114,7 @@ public class PluginsPanel extends PreferencesPanel {
             @Override
             public void addColumn(TableColumn column) {
                 super.addColumn(column);
-                if (column.getHeaderValue().equals(LanguageTool.getString("ACTIVE"))) {
+                if (column.getHeaderValue().equals(I18nUtils.getString("ACTIVE"))) {
                     column.setMinWidth(80);
                     column.setMaxWidth(100);
                 }
@@ -182,11 +182,11 @@ public class PluginsPanel extends PreferencesPanel {
                 // Enable preferences button if plugin has any configuration and update detail panel
                 if (pluginsTable.getSelectedRow() != -1) {
                     PluginInfo plugin = ((PluginsTableModel) pluginsTable.getModel()).getPluginAt(pluginsTable.getSelectedRow());
-                    pluginNameLabel.setText(StringUtils.getString("<html><b>", LanguageTool.getString("NAME"), ":</b> ", plugin.getName(), "</html>"));
-                    pluginVersionLabel.setText(StringUtils.getString("<html><b>", LanguageTool.getString("VERSION"), ":</b> ", plugin.getVersion(), "</html>"));
-                    pluginClassNameLabel.setText(StringUtils.getString("<html><b>", LanguageTool.getString("CLASS_NAME"), ":</b> ", plugin.getClassName(), "</html>"));
-                    pluginLocationLabel.setText(StringUtils.getString("<html><b>", LanguageTool.getString("LOCATION"), ":</b> ", plugin.getPluginLocation(), "</html>"));
-                    pluginAuthorLabel.setText(StringUtils.getString("<html><b>", LanguageTool.getString("AUTHOR"), ":</b> ", plugin.getAuthor(), "</html>"));
+                    pluginNameLabel.setText(StringUtils.getString("<html><b>", I18nUtils.getString("NAME"), ":</b> ", plugin.getName(), "</html>"));
+                    pluginVersionLabel.setText(StringUtils.getString("<html><b>", I18nUtils.getString("VERSION"), ":</b> ", plugin.getVersion(), "</html>"));
+                    pluginClassNameLabel.setText(StringUtils.getString("<html><b>", I18nUtils.getString("CLASS_NAME"), ":</b> ", plugin.getClassName(), "</html>"));
+                    pluginLocationLabel.setText(StringUtils.getString("<html><b>", I18nUtils.getString("LOCATION"), ":</b> ", plugin.getPluginLocation(), "</html>"));
+                    pluginAuthorLabel.setText(StringUtils.getString("<html><b>", I18nUtils.getString("AUTHOR"), ":</b> ", plugin.getAuthor(), "</html>"));
                     pluginUrlLabel.setText(plugin.getUrl(), plugin.getUrl());
                     pluginPreferencesButton.setEnabled(((PluginsTableModel) pluginsTable.getModel()).getPluginConfigurationAt(pluginsTable.getSelectedRow()) != null);
                     uninstallPluginButton.setEnabled(pluginsTable.getSelectedRow() != -1);
@@ -194,7 +194,7 @@ public class PluginsPanel extends PreferencesPanel {
             }
         });
 
-        pluginPreferencesButton = new JButton(StringUtils.getString(LanguageTool.getString("PREFERENCES"), "..."));
+        pluginPreferencesButton = new JButton(StringUtils.getString(I18nUtils.getString("PREFERENCES"), "..."));
         pluginPreferencesButton.setEnabled(false);
         c.gridx = 1;
         c.gridy = 0;
@@ -221,7 +221,7 @@ public class PluginsPanel extends PreferencesPanel {
             }
         });
 
-        JButton installNewPluginButton = new JButton(StringUtils.getString(LanguageTool.getString("INSTALL"), "..."));
+        JButton installNewPluginButton = new JButton(StringUtils.getString(I18nUtils.getString("INSTALL"), "..."));
         c.gridy = 1;
         add(installNewPluginButton, c);
 
@@ -237,7 +237,7 @@ public class PluginsPanel extends PreferencesPanel {
 
                     @Override
                     public String getDescription() {
-                        return LanguageTool.getString("ZIP_FILES");
+                        return I18nUtils.getString("ZIP_FILES");
                     }
                 };
                 fileChooser.setFileFilter(filter);
@@ -255,7 +255,7 @@ public class PluginsPanel extends PreferencesPanel {
             }
         });
 
-        uninstallPluginButton = new JButton(LanguageTool.getString("UNINSTALL"));
+        uninstallPluginButton = new JButton(I18nUtils.getString("UNINSTALL"));
         uninstallPluginButton.setEnabled(false);
         c.gridy = 2;
         add(uninstallPluginButton, c);
@@ -374,9 +374,9 @@ public class PluginsPanel extends PreferencesPanel {
         public String getColumnName(int columnIndex) {
             switch (columnIndex) {
             case 0:
-                return LanguageTool.getString("ACTIVE");
+                return I18nUtils.getString("ACTIVE");
             case 1:
-                return LanguageTool.getString("NAME");
+                return I18nUtils.getString("NAME");
             default:
                 break;
             }
@@ -531,9 +531,9 @@ public class PluginsPanel extends PreferencesPanel {
         @Override
         public String getColumnName(int columnIndex) {
             if (columnIndex == 0) {
-                return LanguageTool.getString("NAME");
+                return I18nUtils.getString("NAME");
             }
-            return LanguageTool.getString("VALUE");
+            return I18nUtils.getString("VALUE");
         }
 
         @Override
@@ -579,7 +579,7 @@ public class PluginsPanel extends PreferencesPanel {
             super(owner, GuiUtils.getComponentWidthForResolution(1280, 500), GuiUtils.getComponentHeightForResolution(1024, 300), true);
             this.configuration = configuration;
             setResizable(true);
-            setTitle(StringUtils.getString(LanguageTool.getString("PLUGIN_PROPERTIES_EDITOR"), ": ", plugin.getName()));
+            setTitle(StringUtils.getString(I18nUtils.getString("PLUGIN_PROPERTIES_EDITOR"), ": ", plugin.getName()));
             add(getContent());
             GuiUtils.applyComponentOrientation(this);
             enableCloseActionWithEscapeKey();
@@ -589,14 +589,14 @@ public class PluginsPanel extends PreferencesPanel {
             JPanel panel = new JPanel(new BorderLayout());
             PluginConfigurationPanel configPanel = new PluginConfigurationPanel(configuration);
             panel.add(configPanel, BorderLayout.CENTER);
-            JButton okButton = new JButton(LanguageTool.getString("OK"));
+            JButton okButton = new JButton(I18nUtils.getString("OK"));
             okButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     PluginEditorDialog.this.setVisible(false);
                 }
             });
-            JButton cancelButton = new JButton(LanguageTool.getString("CANCEL"));
+            JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
             cancelButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {

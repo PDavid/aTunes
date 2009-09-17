@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.ControllerProxy;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * This action scrolls play list to show the current playing item
@@ -38,7 +38,7 @@ public class AutoScrollPlayListAction extends Action {
 
     AutoScrollPlayListAction() {
         super(null, ImageLoader.getImage(ImageLoader.SCROLL_PLAYLIST));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("SCROLL_PLAYLIST_TO_CURRENT_SONG"));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("SCROLL_PLAYLIST_TO_CURRENT_SONG"));
     }
 
     @Override

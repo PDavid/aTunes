@@ -27,7 +27,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.tags.writer.TagEditionOperations;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Calls process to set covers automatically
@@ -40,8 +40,8 @@ public class AutoSetCoversAction extends ActionOverSelectedObjects<AudioFile> {
     private static final long serialVersionUID = -5997105583422805310L;
 
     AutoSetCoversAction() {
-        super(LanguageTool.getString("AUTO_SET_COVER"), AudioFile.class);
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("AUTO_SET_COVER"));
+        super(I18nUtils.getString("AUTO_SET_COVER"), AudioFile.class);
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("AUTO_SET_COVER"));
     }
 
     @Override

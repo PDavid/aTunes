@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * This action shows cover navigator
@@ -37,8 +37,8 @@ public class ShowCoverNavigatorAction extends Action {
     private static final long serialVersionUID = 4927892497869144235L;
 
     ShowCoverNavigatorAction() {
-        super(LanguageTool.getString("COVER_NAVIGATOR"), ImageLoader.getImage(ImageLoader.CD_COVER));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("COVER_NAVIGATOR"));
+        super(I18nUtils.getString("COVER_NAVIGATOR"), ImageLoader.getImage(ImageLoader.CD_COVER));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("COVER_NAVIGATOR"));
     }
 
     @Override

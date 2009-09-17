@@ -26,7 +26,7 @@ import net.sourceforge.atunes.kernel.modules.context.ContextInformationDataSourc
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class LyricsDataSource implements ContextInformationDataSource {
 
@@ -70,7 +70,7 @@ public class LyricsDataSource implements ContextInformationDataSource {
         }
         // Query internet service for lyrics
         else {
-            if (!audioObject.getTitle().trim().isEmpty() && !audioObject.getArtist().trim().isEmpty() && !audioObject.getArtist().equals(LanguageTool.getString("UNKNOWN_ARTIST"))) {
+            if (!audioObject.getTitle().trim().isEmpty() && !audioObject.getArtist().trim().isEmpty() && !audioObject.getArtist().equals(I18nUtils.getString("UNKNOWN_ARTIST"))) {
                 lyrics = LyricsService.getInstance().getLyrics(audioObject.getArtist().trim(), audioObject.getTitle().trim());
             }
         }

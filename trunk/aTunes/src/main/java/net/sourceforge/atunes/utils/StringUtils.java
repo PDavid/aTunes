@@ -95,9 +95,9 @@ public final class StringUtils {
 
         String hoursMinutesSeconds = StringUtils.getString(hours, ":", (minutes < 10 ? "0" : ""), minutes, ":", (seconds < 10 ? "0" : ""), seconds);
         if (days == 1) {
-            return StringUtils.getString(days, " ", LanguageTool.getString("DAY"), " ", hoursMinutesSeconds);
+            return StringUtils.getString(days, " ", I18nUtils.getString("DAY"), " ", hoursMinutesSeconds);
         } else if (days > 1) {
-            return StringUtils.getString(days, " ", LanguageTool.getString("DAYS"), " ", hoursMinutesSeconds);
+            return StringUtils.getString(days, " ", I18nUtils.getString("DAYS"), " ", hoursMinutesSeconds);
         } else {
             return hoursMinutesSeconds;
         }
@@ -206,7 +206,7 @@ public final class StringUtils {
      * Checks if a String is empty.
      * 
      * @param s
-     *            A String
+     *            a String
      * 
      * @return If the specified String is empty
      */
@@ -275,5 +275,50 @@ public final class StringUtils {
         }
 
         return result;
+    }
+
+    /**
+     * Return a string representation of a given amount of microseconds.
+     * 
+     * @param micros
+     *            the microseconds
+     * 
+     * @return the string
+     */
+    public static String microseconds2String(long micros) {
+        long aux = micros / 1000000;
+        int minutes = (int) aux / 60;
+        aux = aux % 60;
+        return getString(minutes, ":", (aux < 10 ? "0" : ""), aux);
+    }
+
+    /**
+     * Return a string representation of a given amount of milliseconds.
+     * 
+     * @param millis
+     *            the milliseconds
+     * 
+     * @return the string
+     */
+    public static String milliseconds2String(long millis) {
+        long aux = millis / 1000;
+        int minutes = (int) aux / 60;
+        aux = aux % 60;
+        return getString(minutes, ":", (aux < 10 ? "0" : ""), aux);
+    }
+
+    /**
+     * Return a string representation of a given amount of seconds.
+     * 
+     * @param s
+     *            seconds
+     * 
+     * @return the string
+     */
+    public static String seconds2String(long s) {
+        long seconds = s;
+        int minutes = (int) seconds / 60;
+        seconds = seconds % 60;
+        return getString(minutes, ":", (seconds < 10 ? "0" : ""), seconds);
     }
 }

@@ -35,7 +35,7 @@ import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jdesktop.swingx.JXTaskPane;
@@ -172,7 +172,7 @@ public abstract class ContextPanel {
 
             List<Component> options = content.getOptions();
             if (options != null && !options.isEmpty()) {
-                PopUpButton button = new PopUpButton(LanguageTool.getString("OPTIONS"), PopUpButton.TOP_RIGHT);
+                PopUpButton button = new PopUpButton(I18nUtils.getString("OPTIONS"), PopUpButton.TOP_RIGHT);
                 for (Component option : options) {
                     button.add(option);
                 }

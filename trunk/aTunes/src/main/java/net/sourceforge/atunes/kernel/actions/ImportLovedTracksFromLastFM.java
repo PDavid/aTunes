@@ -34,7 +34,7 @@ import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmLovedTrack;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class ImportLovedTracksFromLastFM extends Action {
@@ -42,7 +42,7 @@ public class ImportLovedTracksFromLastFM extends Action {
     private static final long serialVersionUID = 5620935204300321285L;
 
     ImportLovedTracksFromLastFM() {
-        super(LanguageTool.getString("IMPORT_LOVED_TRACKS_FROM_LASTFM"));
+        super(I18nUtils.getString("IMPORT_LOVED_TRACKS_FROM_LASTFM"));
     }
 
     @Override
@@ -81,11 +81,11 @@ public class ImportLovedTracksFromLastFM extends Action {
                 } catch (Exception e) {
                 }
                 VisualHandler.getInstance().showMessage(
-                        StringUtils.getString(LanguageTool.getString("LOVED_TRACKS_IMPORTED"), ": ", lovedTracks == null ? "0" : lovedTracks.size()));
+                        StringUtils.getString(I18nUtils.getString("LOVED_TRACKS_IMPORTED"), ": ", lovedTracks == null ? "0" : lovedTracks.size()));
 
             }
         };
-        VisualHandler.getInstance().showIndeterminateProgressDialog(LanguageTool.getString("GETTING_LOVED_TRACKS_FROM_LASTFM"));
+        VisualHandler.getInstance().showIndeterminateProgressDialog(I18nUtils.getString("GETTING_LOVED_TRACKS_FROM_LASTFM"));
         worker.execute();
     }
 }

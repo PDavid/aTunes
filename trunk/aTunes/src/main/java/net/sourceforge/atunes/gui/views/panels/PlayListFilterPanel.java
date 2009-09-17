@@ -29,7 +29,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The Class PlayListFilterPanel.
@@ -59,11 +59,11 @@ public class PlayListFilterPanel extends JPanel {
      * Adds the content.
      */
     private void addContent() {
-        filterLabel = new JLabel(LanguageTool.getString("FILTER"));
+        filterLabel = new JLabel(I18nUtils.getString("FILTER"));
         filterTextField = new JTextField();
-        filterTextField.setToolTipText(LanguageTool.getString("FILTER_TEXTFIELD_TOOLTIP"));
+        filterTextField.setToolTipText(I18nUtils.getString("FILTER_TEXTFIELD_TOOLTIP"));
         clearFilterButton = new JLabel(ImageLoader.getImage(ImageLoader.UNDO));
-        clearFilterButton.setToolTipText(LanguageTool.getString("CLEAR_FILTER_BUTTON_TOOLTIP"));
+        clearFilterButton.setToolTipText(I18nUtils.getString("CLEAR_FILTER_BUTTON_TOOLTIP"));
 
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;

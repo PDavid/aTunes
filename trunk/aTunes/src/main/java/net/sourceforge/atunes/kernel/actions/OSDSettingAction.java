@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * This action enables or disables OSD
@@ -37,8 +37,8 @@ public class OSDSettingAction extends Action {
     private static final long serialVersionUID = 646318992035897920L;
 
     OSDSettingAction() {
-        super(LanguageTool.getString("SHOW_OSD"), ImageLoader.getImage(ImageLoader.OSD));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("SHOW_OSD"));
+        super(I18nUtils.getString("SHOW_OSD"), ImageLoader.getImage(ImageLoader.OSD));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_OSD"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().isShowOSD());
     }
 

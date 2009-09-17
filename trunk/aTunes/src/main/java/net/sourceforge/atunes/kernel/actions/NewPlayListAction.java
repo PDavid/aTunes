@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Creates a new empty play list
@@ -39,8 +39,8 @@ public class NewPlayListAction extends Action {
     private static final long serialVersionUID = 3866441529401824151L;
 
     public NewPlayListAction() {
-        super(LanguageTool.getString("NEW_PLAYLIST"), ImageLoader.getImage(ImageLoader.NEW_PLAYLIST));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("NEW_PLAYLIST"));
+        super(I18nUtils.getString("NEW_PLAYLIST"), ImageLoader.getImage(ImageLoader.NEW_PLAYLIST));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("NEW_PLAYLIST"));
     }
 
     @Override

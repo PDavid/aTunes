@@ -49,7 +49,7 @@ import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.commons.io.FileUtils;
@@ -61,14 +61,14 @@ public class RemoveFromDiskAction extends Action {
     private Logger logger = new Logger();
 
     public RemoveFromDiskAction() {
-        super(LanguageTool.getString("REMOVE_FROM_DISK"), ImageLoader.getImage(ImageLoader.DELETE_FILE));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("REMOVE_FROM_DISK"));
+        super(I18nUtils.getString("REMOVE_FROM_DISK"), ImageLoader.getImage(ImageLoader.DELETE_FILE));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("REMOVE_FROM_DISK"));
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         // Show confirmation
-        if (VisualHandler.getInstance().showConfirmationDialog(LanguageTool.getString("REMOVE_CONFIRMATION"), LanguageTool.getString("CONFIRMATION")) == JOptionPane.OK_OPTION) {
+        if (VisualHandler.getInstance().showConfirmationDialog(I18nUtils.getString("REMOVE_CONFIRMATION"), I18nUtils.getString("CONFIRMATION")) == JOptionPane.OK_OPTION) {
 
             // Podcast view
             if (NavigationHandler.getInstance().getCurrentView() instanceof PodcastNavigationView) {
@@ -88,7 +88,7 @@ public class RemoveFromDiskAction extends Action {
     private void fromOtherViews() {
         final List<AudioFile> files = ControllerProxy.getInstance().getNavigationController().getFilesSelectedInNavigator();
         RepositoryHandler.getInstance().remove(files);
-        VisualHandler.getInstance().showIndeterminateProgressDialog(LanguageTool.getString("PLEASE_WAIT"));
+        VisualHandler.getInstance().showIndeterminateProgressDialog(I18nUtils.getString("PLEASE_WAIT"));
         new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() {
@@ -120,7 +120,7 @@ public class RemoveFromDiskAction extends Action {
             }
         }
         RepositoryHandler.getInstance().removeFolders(foldersToRemove);
-        VisualHandler.getInstance().showIndeterminateProgressDialog(LanguageTool.getString("PLEASE_WAIT"));
+        VisualHandler.getInstance().showIndeterminateProgressDialog(I18nUtils.getString("PLEASE_WAIT"));
         new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() {

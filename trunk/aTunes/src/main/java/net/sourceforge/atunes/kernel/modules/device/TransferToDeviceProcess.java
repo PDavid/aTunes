@@ -29,7 +29,7 @@ import net.sourceforge.atunes.kernel.modules.process.AudioFileTransferProcess;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.SystemProperties;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.commons.io.FileUtils;
@@ -52,7 +52,7 @@ public class TransferToDeviceProcess extends AudioFileTransferProcess {
 
     @Override
     public String getProgressDialogTitle() {
-        return LanguageTool.getString("COPYING_TO_DEVICE");
+        return I18nUtils.getString("COPYING_TO_DEVICE");
     }
 
     @Override

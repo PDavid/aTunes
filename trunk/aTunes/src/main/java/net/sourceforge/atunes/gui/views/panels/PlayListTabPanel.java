@@ -41,7 +41,7 @@ import net.sourceforge.atunes.kernel.actions.NewPlayListAction;
 import net.sourceforge.atunes.kernel.actions.RenamePlaylistAction;
 import net.sourceforge.atunes.kernel.actions.SynchronizeDeviceWithPlayListAction;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The Class PlayListTabPanel.
@@ -81,9 +81,9 @@ public class PlayListTabPanel extends JPanel {
      * Adds the content.
      */
     private void addContent() {
-        playListsPopUpButton = new PopUpButton(LanguageTool.getString("PLAYLIST"), PopUpButton.BOTTOM_RIGHT);
+        playListsPopUpButton = new PopUpButton(I18nUtils.getString("PLAYLIST"), PopUpButton.BOTTOM_RIGHT);
         newPlayListMenuItem = new JMenuItem(Actions.getAction(NewPlayListAction.class));
-        arrangeColumnsMenuItem = new JMenuItem(LanguageTool.getString("ARRANGE_COLUMNS"));
+        arrangeColumnsMenuItem = new JMenuItem(I18nUtils.getString("ARRANGE_COLUMNS"));
         playListTabbedPane = new JTabbedPane();
         playListTabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 

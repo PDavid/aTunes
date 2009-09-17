@@ -45,7 +45,7 @@ import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class DevicePanel extends PreferencesPanel {
 
@@ -91,20 +91,20 @@ public class DevicePanel extends PreferencesPanel {
      * Instantiates a new device panel.
      */
     public DevicePanel() {
-        super(LanguageTool.getString("DEVICE"));
-        JLabel label = new JLabel(LanguageTool.getString("DEVICE_DEFAULT_LOCATION"));
+        super(I18nUtils.getString("DEVICE"));
+        JLabel label = new JLabel(I18nUtils.getString("DEVICE_DEFAULT_LOCATION"));
         locationFileChooser = new CustomJFileChooser(this, 20, JFileChooser.DIRECTORIES_ONLY);
 
         JPanel fileNamePanel = new JPanel(new GridBagLayout());
-        fileNamePanel.setBorder(BorderFactory.createTitledBorder(LanguageTool.getString("FILE_NAME")));
-        fileNameNoChangeRadioButton = new JRadioButton(LanguageTool.getString("NO_CHANGE"));
+        fileNamePanel.setBorder(BorderFactory.createTitledBorder(I18nUtils.getString("FILE_NAME")));
+        fileNameNoChangeRadioButton = new JRadioButton(I18nUtils.getString("NO_CHANGE"));
         fileNameNoChangeRadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 fileNamePatternTextField.setEnabled(false);
             }
         });
-        fileNameCustomizedRadioButton = new JRadioButton(LanguageTool.getString("CUSTOM"));
+        fileNameCustomizedRadioButton = new JRadioButton(I18nUtils.getString("CUSTOM"));
         fileNameCustomizedRadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -117,15 +117,15 @@ public class DevicePanel extends PreferencesPanel {
         group.add(fileNameCustomizedRadioButton);
 
         JPanel folderPathPanel = new JPanel(new GridBagLayout());
-        folderPathPanel.setBorder(BorderFactory.createTitledBorder(LanguageTool.getString("FOLDER")));
-        folderPathNoChangeRadioButton = new JRadioButton(LanguageTool.getString("FLAT"));
+        folderPathPanel.setBorder(BorderFactory.createTitledBorder(I18nUtils.getString("FOLDER")));
+        folderPathNoChangeRadioButton = new JRadioButton(I18nUtils.getString("FLAT"));
         folderPathNoChangeRadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 folderPathPatternTextField.setEnabled(false);
             }
         });
-        folderPathCustomizedRadioButton = new JRadioButton(LanguageTool.getString("CUSTOM"));
+        folderPathCustomizedRadioButton = new JRadioButton(I18nUtils.getString("CUSTOM"));
         folderPathCustomizedRadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -169,16 +169,16 @@ public class DevicePanel extends PreferencesPanel {
 
             @Override
             public String getColumnName(int column) {
-                return column == 0 ? LanguageTool.getString("PATTERN") : LanguageTool.getString("VALUE");
+                return column == 0 ? I18nUtils.getString("PATTERN") : I18nUtils.getString("VALUE");
             }
         });
 
         JPanel patternsPanel = new JPanel(new BorderLayout());
         patternsPanel.setPreferredSize(new Dimension(250, 200));
-        patternsPanel.setBorder(BorderFactory.createTitledBorder(LanguageTool.getString("AVAILABLE_PATTERNS")));
+        patternsPanel.setBorder(BorderFactory.createTitledBorder(I18nUtils.getString("AVAILABLE_PATTERNS")));
         patternsPanel.add(new JScrollPane(availablePatternsTable), BorderLayout.CENTER);
 
-        copySameSongForDifferentAlbums = new JCheckBox(LanguageTool.getString("ALLOW_COPY_TO_DEVICE_SAME_SONG_FOR_DIFFERENT_ALBUMS"));
+        copySameSongForDifferentAlbums = new JCheckBox(I18nUtils.getString("ALLOW_COPY_TO_DEVICE_SAME_SONG_FOR_DIFFERENT_ALBUMS"));
 
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;

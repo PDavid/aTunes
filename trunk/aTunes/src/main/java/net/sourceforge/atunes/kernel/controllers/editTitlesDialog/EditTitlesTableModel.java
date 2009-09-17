@@ -30,7 +30,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The Class EditTitlesTableModel.
@@ -88,9 +88,9 @@ public class EditTitlesTableModel extends AbstractTableModel {
     @Override
     public String getColumnName(int column) {
         if (column == 0) {
-            return LanguageTool.getString("FILE");
+            return I18nUtils.getString("FILE");
         }
-        return LanguageTool.getString("TITLE");
+        return I18nUtils.getString("TITLE");
     }
 
     /**

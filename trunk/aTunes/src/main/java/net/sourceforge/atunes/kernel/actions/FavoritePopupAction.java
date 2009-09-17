@@ -27,7 +27,7 @@ import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * This action is responsible of handle favorite popup state
@@ -41,7 +41,7 @@ public class FavoritePopupAction extends Action {
 
     FavoritePopupAction() {
         super(null, ImageLoader.getImage(ImageLoader.FAVORITE));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("FAVORITE_TOOLTIP"));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("FAVORITE_TOOLTIP"));
         setEnabled(false);
     }
 

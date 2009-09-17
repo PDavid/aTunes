@@ -38,7 +38,7 @@ import javax.swing.WindowConstants;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.views.controls.CustomFrame;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The Class ProgressDialog.
@@ -98,7 +98,7 @@ public class ProgressDialog extends CustomFrame {
         currentLabel = new JLabel();
         separatorLabel = new JLabel(" / ");
         totalLabel = new JLabel();
-        cancelButton = new JButton(LanguageTool.getString("CANCEL"));
+        cancelButton = new JButton(I18nUtils.getString("CANCEL"));
 
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;

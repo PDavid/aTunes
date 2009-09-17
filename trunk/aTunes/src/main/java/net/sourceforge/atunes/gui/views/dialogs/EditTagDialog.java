@@ -47,7 +47,7 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jvnet.substance.SubstanceLookAndFeel;
 import org.jvnet.substance.api.SubstanceConstants.FocusKind;
@@ -97,14 +97,14 @@ public class EditTagDialog extends CustomModalDialog {
      */
     public EditTagDialog(JFrame owner) {
         super(owner, 500, 600, true);
-        setTitle(LanguageTool.getString("EDIT_TAG"));
+        setTitle(I18nUtils.getString("EDIT_TAG"));
         setResizable(false);
 
         setLayout(new BorderLayout());
 
         add(tabbedPane, BorderLayout.CENTER);
-        tabbedPane.addTab(LanguageTool.getString("TAGS"), getTagEditTab());
-        tabbedPane.addTab(LanguageTool.getString("COVER"), getCoverTab());
+        tabbedPane.addTab(I18nUtils.getString("TAGS"), getTagEditTab());
+        tabbedPane.addTab(I18nUtils.getString("COVER"), getCoverTab());
 
         add(getOKAndCancelButtonPanel(), BorderLayout.SOUTH);
 
@@ -215,8 +215,8 @@ public class EditTagDialog extends CustomModalDialog {
         cover.setPreferredSize(new Dimension(Constants.DIALOG_LARGE_IMAGE_WIDTH, Constants.DIALOG_LARGE_IMAGE_HEIGHT));
         cover.setMinimumSize(new Dimension(Constants.DIALOG_LARGE_IMAGE_WIDTH, Constants.DIALOG_LARGE_IMAGE_HEIGHT));
         cover.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        coverButton = new JButton(LanguageTool.getString("EDIT_COVER"));
-        removeCoverButton = new JButton(LanguageTool.getString("REMOVE_COVER"));
+        coverButton = new JButton(I18nUtils.getString("EDIT_COVER"));
+        removeCoverButton = new JButton(I18nUtils.getString("REMOVE_COVER"));
         JPanel coverButtonsPanel = new JPanel(new GridLayout(1, 2, 20, 0));
         coverButtonsPanel.add(coverButton);
         coverButtonsPanel.add(removeCoverButton);
@@ -244,7 +244,7 @@ public class EditTagDialog extends CustomModalDialog {
         JPanel panel = new JPanel(new GridBagLayout());
         titleCheckBox = new JCheckBox();
         titleCheckBox.putClientProperty(SubstanceLookAndFeel.FOCUS_KIND, FocusKind.NONE);
-        JLabel titleLabel = new JLabel(LanguageTool.getString("TITLE"));
+        JLabel titleLabel = new JLabel(I18nUtils.getString("TITLE"));
         titleTextField = new JTextField();
         titleCheckBox.addActionListener(new ActionListener() {
             @Override
@@ -255,7 +255,7 @@ public class EditTagDialog extends CustomModalDialog {
         titleCheckBox.setSelected(true);
         albumCheckBox = new JCheckBox();
         albumCheckBox.putClientProperty(SubstanceLookAndFeel.FOCUS_KIND, FocusKind.NONE);
-        JLabel albumLabel = new JLabel(LanguageTool.getString("ALBUM"));
+        JLabel albumLabel = new JLabel(I18nUtils.getString("ALBUM"));
         albumTextField = new JComboBox();
         albumTextField.setEditable(true);
         albumCheckBox.addActionListener(new ActionListener() {
@@ -267,7 +267,7 @@ public class EditTagDialog extends CustomModalDialog {
         albumCheckBox.setSelected(true);
         artistCheckBox = new JCheckBox();
         artistCheckBox.putClientProperty(SubstanceLookAndFeel.FOCUS_KIND, FocusKind.NONE);
-        JLabel artistLabel = new JLabel(LanguageTool.getString("ARTIST"));
+        JLabel artistLabel = new JLabel(I18nUtils.getString("ARTIST"));
         artistTextField = new JComboBox();
         artistTextField.setEditable(true);
         artistCheckBox.addActionListener(new ActionListener() {
@@ -279,7 +279,7 @@ public class EditTagDialog extends CustomModalDialog {
         artistCheckBox.setSelected(true);
         yearCheckBox = new JCheckBox();
         yearCheckBox.putClientProperty(SubstanceLookAndFeel.FOCUS_KIND, FocusKind.NONE);
-        JLabel yearLabel = new JLabel(LanguageTool.getString("YEAR"));
+        JLabel yearLabel = new JLabel(I18nUtils.getString("YEAR"));
         yearTextField = new JTextField();
         yearCheckBox.addActionListener(new ActionListener() {
             @Override
@@ -290,7 +290,7 @@ public class EditTagDialog extends CustomModalDialog {
         yearCheckBox.setSelected(true);
         genreCheckBox = new JCheckBox();
         genreCheckBox.putClientProperty(SubstanceLookAndFeel.FOCUS_KIND, FocusKind.NONE);
-        JLabel genreLabel = new JLabel(LanguageTool.getString("GENRE"));
+        JLabel genreLabel = new JLabel(I18nUtils.getString("GENRE"));
         genreComboBox = new JComboBox();
         genreCheckBox.addActionListener(new ActionListener() {
             @Override
@@ -302,7 +302,7 @@ public class EditTagDialog extends CustomModalDialog {
 
         commentCheckBox = new JCheckBox();
         commentCheckBox.putClientProperty(SubstanceLookAndFeel.FOCUS_KIND, FocusKind.NONE);
-        JLabel commentLabel = new JLabel(LanguageTool.getString("COMMENT"));
+        JLabel commentLabel = new JLabel(I18nUtils.getString("COMMENT"));
         commentTextArea = new JTextArea();
         commentTextArea.setBorder(BorderFactory.createEmptyBorder());
         commentCheckBox.addActionListener(new ActionListener() {
@@ -315,7 +315,7 @@ public class EditTagDialog extends CustomModalDialog {
         JScrollPane scrollPane = new JScrollPane(commentTextArea);
         lyricsCheckBox = new JCheckBox();
         lyricsCheckBox.putClientProperty(SubstanceLookAndFeel.FOCUS_KIND, FocusKind.NONE);
-        JLabel lyricsLabel = new JLabel(LanguageTool.getString("LYRICS"));
+        JLabel lyricsLabel = new JLabel(I18nUtils.getString("LYRICS"));
         lyricsTextArea = new JTextArea();
         lyricsTextArea.setBorder(BorderFactory.createEmptyBorder());
         lyricsCheckBox.addActionListener(new ActionListener() {
@@ -328,7 +328,7 @@ public class EditTagDialog extends CustomModalDialog {
         JScrollPane scrollPane2 = new JScrollPane(lyricsTextArea);
         trackNumberCheckBox = new JCheckBox();
         trackNumberCheckBox.putClientProperty(SubstanceLookAndFeel.FOCUS_KIND, FocusKind.NONE);
-        JLabel trackNumberLabel = new JLabel(LanguageTool.getString("TRACK"));
+        JLabel trackNumberLabel = new JLabel(I18nUtils.getString("TRACK"));
         trackNumberTextField = new JTextField();
         trackNumberCheckBox.addActionListener(new ActionListener() {
             @Override
@@ -340,7 +340,7 @@ public class EditTagDialog extends CustomModalDialog {
         trackNumberCheckBox.setSelected(true);
         discNumberCheckBox = new JCheckBox();
         discNumberCheckBox.putClientProperty(SubstanceLookAndFeel.FOCUS_KIND, FocusKind.NONE);
-        JLabel discNumberLabel = new JLabel(LanguageTool.getString("DISC_NUMBER"));
+        JLabel discNumberLabel = new JLabel(I18nUtils.getString("DISC_NUMBER"));
         discNumberTextField = new JTextField();
         discNumberCheckBox.addActionListener(new ActionListener() {
             @Override
@@ -352,7 +352,7 @@ public class EditTagDialog extends CustomModalDialog {
         discNumberCheckBox.setSelected(true);
         composerCheckBox = new JCheckBox();
         composerCheckBox.putClientProperty(SubstanceLookAndFeel.FOCUS_KIND, FocusKind.NONE);
-        JLabel composerLabel = new JLabel(LanguageTool.getString("COMPOSER"));
+        JLabel composerLabel = new JLabel(I18nUtils.getString("COMPOSER"));
         composerTextField = new JTextField();
         composerCheckBox.addActionListener(new ActionListener() {
             @Override
@@ -363,7 +363,7 @@ public class EditTagDialog extends CustomModalDialog {
         composerCheckBox.setSelected(true);
         albumArtistCheckBox = new JCheckBox();
         albumArtistCheckBox.putClientProperty(SubstanceLookAndFeel.FOCUS_KIND, FocusKind.NONE);
-        JLabel albumArtistLabel = new JLabel(LanguageTool.getString("ALBUM_ARTIST"));
+        JLabel albumArtistLabel = new JLabel(I18nUtils.getString("ALBUM_ARTIST"));
         albumArtistTextField = new JTextField();
         albumArtistCheckBox.addActionListener(new ActionListener() {
             @Override
@@ -373,8 +373,8 @@ public class EditTagDialog extends CustomModalDialog {
         });
         albumArtistCheckBox.setSelected(true);
 
-        okButton = new CustomButton(null, LanguageTool.getString("OK"));
-        cancelButton = new CustomButton(null, LanguageTool.getString("CANCEL"));
+        okButton = new CustomButton(null, I18nUtils.getString("OK"));
+        cancelButton = new CustomButton(null, I18nUtils.getString("CANCEL"));
 
         GridBagConstraints c = new GridBagConstraints();
 

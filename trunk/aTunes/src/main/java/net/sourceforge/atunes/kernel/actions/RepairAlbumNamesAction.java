@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.kernel.modules.repository.tags.writer.TagEditionOperations;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * This action invokes process to repair album names in repository
@@ -36,7 +36,7 @@ public class RepairAlbumNamesAction extends Action {
     private static final long serialVersionUID = -7828819966696617838L;
 
     RepairAlbumNamesAction() {
-        super(LanguageTool.getString("REPAIR_ALBUM_NAMES"));
+        super(I18nUtils.getString("REPAIR_ALBUM_NAMES"));
     }
 
     @Override

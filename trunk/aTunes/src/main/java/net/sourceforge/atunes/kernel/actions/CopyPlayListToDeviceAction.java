@@ -26,7 +26,7 @@ import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Copies current selected play list to device
@@ -39,8 +39,8 @@ public class CopyPlayListToDeviceAction extends Action {
     private static final long serialVersionUID = 5899793232403738425L;
 
     CopyPlayListToDeviceAction() {
-        super(LanguageTool.getString("COPY_PLAYLIST_TO_DEVICE"), ImageLoader.getImage(ImageLoader.DEVICE));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("COPY_PLAYLIST_TO_DEVICE"));
+        super(I18nUtils.getString("COPY_PLAYLIST_TO_DEVICE"), ImageLoader.getImage(ImageLoader.DEVICE));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("COPY_PLAYLIST_TO_DEVICE"));
         setEnabled(false);
     }
 

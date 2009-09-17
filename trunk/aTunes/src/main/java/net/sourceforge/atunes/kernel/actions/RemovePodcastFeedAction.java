@@ -30,15 +30,15 @@ import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class RemovePodcastFeedAction extends ActionOverSelectedObjects<PodcastFeedEntry> {
 
     private static final long serialVersionUID = -7470658878101801512L;
 
     RemovePodcastFeedAction() {
-        super(LanguageTool.getString("REMOVE_PODCAST_FEED"), ImageLoader.getImage(ImageLoader.DELETE_FILE), PodcastFeedEntry.class);
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("REMOVE_PODCAST_FEED"));
+        super(I18nUtils.getString("REMOVE_PODCAST_FEED"), ImageLoader.getImage(ImageLoader.DELETE_FILE), PodcastFeedEntry.class);
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("REMOVE_PODCAST_FEED"));
     }
 
     @Override

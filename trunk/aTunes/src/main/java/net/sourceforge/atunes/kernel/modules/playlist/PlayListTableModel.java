@@ -30,7 +30,7 @@ import javax.swing.table.TableModel;
 import net.sourceforge.atunes.gui.views.controls.playList.Column;
 import net.sourceforge.atunes.kernel.modules.columns.PlayListColumns;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The Class PlayListTableModel.
@@ -101,7 +101,7 @@ public class PlayListTableModel implements TableModel {
      */
     @Override
     public String getColumnName(int colIndex) {
-        return LanguageTool.getString(PlayListColumns.getColumn(PlayListColumns.getColumnId(colIndex)).getHeaderText());
+        return I18nUtils.getString(PlayListColumns.getColumn(PlayListColumns.getColumnId(colIndex)).getHeaderText());
     }
 
     /**

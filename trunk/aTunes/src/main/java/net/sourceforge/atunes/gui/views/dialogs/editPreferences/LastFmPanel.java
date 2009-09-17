@@ -34,7 +34,7 @@ import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddBannedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The preferences panel for Last.fm settings.
@@ -58,13 +58,13 @@ public class LastFmPanel extends PreferencesPanel {
      */
     public LastFmPanel() {
         super("Last.fm");
-        JLabel lastFmLabel = new JLabel(LanguageTool.getString("LASTFM_PREFERENCES"));
-        lastFmEnabled = new JCheckBox(LanguageTool.getString("LASTFM_ENABLED"));
-        JLabel userLabel = new JLabel(LanguageTool.getString("LASTFM_USER"));
+        JLabel lastFmLabel = new JLabel(I18nUtils.getString("LASTFM_PREFERENCES"));
+        lastFmEnabled = new JCheckBox(I18nUtils.getString("LASTFM_ENABLED"));
+        JLabel userLabel = new JLabel(I18nUtils.getString("LASTFM_USER"));
         lastFmUser = new JTextField(15);
-        JLabel passwordLabel = new JLabel(LanguageTool.getString("LASTFM_PASSWORD"));
+        JLabel passwordLabel = new JLabel(I18nUtils.getString("LASTFM_PASSWORD"));
         lastFmPassword = new JPasswordField(15);
-        autoLoveFavoriteSongs = new JCheckBox(LanguageTool.getString("AUTOMATICALLY_LOVE_IN_LASTFM_FAVORITE_SONGS"));
+        autoLoveFavoriteSongs = new JCheckBox(I18nUtils.getString("AUTOMATICALLY_LOVE_IN_LASTFM_FAVORITE_SONGS"));
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;

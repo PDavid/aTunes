@@ -56,7 +56,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.updates.ApplicationVersion;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The multiple winfow frame
@@ -174,7 +174,7 @@ public class MultipleFrame implements Frame {
 
         addContentToFrame();
 
-        navigatorDialog = getNewDialog(frame, LanguageTool.getString("NAVIGATOR"), navigatorDimension.width, navigatorDimension.height, frame, WEST, navigatorDimension);
+        navigatorDialog = getNewDialog(frame, I18nUtils.getString("NAVIGATOR"), navigatorDimension.width, navigatorDimension.height, frame, WEST, navigatorDimension);
         addContentToNavigator();
         navigatorDialog.addWindowListener(new WindowAdapter() {
             @Override
@@ -185,7 +185,7 @@ public class MultipleFrame implements Frame {
             }
         });
 
-        filePropertiesDialog = getNewDialog(frame, LanguageTool.getString("PROPERTIES"), filePropertiesDimension.width, filePropertiesDimension.height, frame, SOUTH,
+        filePropertiesDialog = getNewDialog(frame, I18nUtils.getString("PROPERTIES"), filePropertiesDimension.width, filePropertiesDimension.height, frame, SOUTH,
                 filePropertiesDimension);
         addContentToFileProperties();
         filePropertiesDialog.addWindowListener(new WindowAdapter() {
@@ -197,7 +197,7 @@ public class MultipleFrame implements Frame {
             }
         });
 
-        contextDialog = getNewDialog(frame, LanguageTool.getString("CONTEXT_INFORMATION"), contextDimension.width, contextDimension.height, frame, EAST, contextDimension);
+        contextDialog = getNewDialog(frame, I18nUtils.getString("CONTEXT_INFORMATION"), contextDimension.width, contextDimension.height, frame, EAST, contextDimension);
         addContentToContext();
         contextDialog.addWindowListener(new WindowAdapter() {
             @Override
@@ -394,7 +394,7 @@ public class MultipleFrame implements Frame {
     @Override
     public void showNewPodcastFeedEntriesInfo(boolean show) {
         if (show) {
-            JOptionPane.showMessageDialog(frame, LanguageTool.getString("NEW_PODCAST_ENTRIES"));
+            JOptionPane.showMessageDialog(frame, I18nUtils.getString("NEW_PODCAST_ENTRIES"));
         }
     }
 

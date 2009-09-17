@@ -28,7 +28,7 @@ import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.tags.writer.ClearTagsProcess;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class ClearTagAction extends ActionOverSelectedObjects<AudioFile> {
 
@@ -38,8 +38,8 @@ public class ClearTagAction extends ActionOverSelectedObjects<AudioFile> {
     public static final String NAVIGATOR = "NAVIGATOR";
 
     ClearTagAction() {
-        super(LanguageTool.getString("CLEAR_TAG"), ImageLoader.getImage(ImageLoader.DELETE_TAG), AudioFile.class);
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("CLEAR_TAG"));
+        super(I18nUtils.getString("CLEAR_TAG"), ImageLoader.getImage(ImageLoader.DELETE_TAG), AudioFile.class);
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("CLEAR_TAG"));
     }
 
     @Override

@@ -28,29 +28,29 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class FillDeviceWithRandomSongsAction extends Action {
 
     private static final long serialVersionUID = -201250351035880261L;
 
     FillDeviceWithRandomSongsAction() {
-        super(LanguageTool.getString("FILL_DEVICE_WITH_RANDOM_SONGS"), ImageLoader.getImage(ImageLoader.SHUFFLE_PLAYLIST));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("FILL_DEVICE_WITH_RANDOM_SONGS"));
+        super(I18nUtils.getString("FILL_DEVICE_WITH_RANDOM_SONGS"), ImageLoader.getImage(ImageLoader.SHUFFLE_PLAYLIST));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("FILL_DEVICE_WITH_RANDOM_SONGS"));
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         String freeMemory = "20";
         // Ask how much memory should be left free
-        freeMemory = VisualHandler.getInstance().showInputDialog(LanguageTool.getString("MEMORY_TO_LEAVE_FREE"), freeMemory, ImageLoader.getImage(ImageLoader.DEVICE).getImage());
+        freeMemory = VisualHandler.getInstance().showInputDialog(I18nUtils.getString("MEMORY_TO_LEAVE_FREE"), freeMemory, ImageLoader.getImage(ImageLoader.DEVICE).getImage());
         long result;
         try {
             result = Long.parseLong(freeMemory.trim());
             DeviceHandler.getInstance().fillWithRandomSongs(result);
         } catch (Exception e2) {
             // User did not enter numerical value. Show error dialog
-            VisualHandler.getInstance().showErrorDialog(LanguageTool.getString("ERROR_NO_NUMERICAL_VALUE"));
+            VisualHandler.getInstance().showErrorDialog(I18nUtils.getString("ERROR_NO_NUMERICAL_VALUE"));
         }
     }
 

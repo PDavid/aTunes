@@ -25,7 +25,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * This action lowers volume
@@ -38,7 +38,7 @@ public class VolumeDownAction extends Action {
     private static final long serialVersionUID = 8731458163463902477L;
 
     VolumeDownAction() {
-        super(LanguageTool.getString("VOLUME_DOWN"));
+        super(I18nUtils.getString("VOLUME_DOWN"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke('-'));
 
     }

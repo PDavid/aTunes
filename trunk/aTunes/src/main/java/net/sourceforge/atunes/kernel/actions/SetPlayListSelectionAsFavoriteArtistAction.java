@@ -33,7 +33,7 @@ import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * This action adds selected rows in play list to favorite artists
@@ -46,7 +46,7 @@ public class SetPlayListSelectionAsFavoriteArtistAction extends Action {
     private static final long serialVersionUID = 3403777999793279297L;
 
     SetPlayListSelectionAsFavoriteArtistAction() {
-        super(LanguageTool.getString("SET_FAVORITE_ARTIST"), ImageLoader.getImage(ImageLoader.ARTIST_FAVORITE));
+        super(I18nUtils.getString("SET_FAVORITE_ARTIST"), ImageLoader.getImage(ImageLoader.ARTIST_FAVORITE));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0));
     }
 

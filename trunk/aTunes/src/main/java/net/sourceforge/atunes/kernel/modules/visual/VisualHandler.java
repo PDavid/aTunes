@@ -110,9 +110,8 @@ import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
-import net.sourceforge.atunes.utils.TimeUtils;
 
 public final class VisualHandler extends Handler implements PlaybackStateListener {
 
@@ -825,7 +824,7 @@ public final class VisualHandler extends Handler implements PlaybackStateListene
      *            the message
      */
     public void showErrorDialog(String message) {
-        JOptionPane.showMessageDialog(frame.getFrame(), message, LanguageTool.getString("ERROR"), JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(frame.getFrame(), message, I18nUtils.getString("ERROR"), JOptionPane.ERROR_MESSAGE);
     }
 
     /**
@@ -837,7 +836,7 @@ public final class VisualHandler extends Handler implements PlaybackStateListene
      *            the parent
      */
     public void showErrorDialog(String message, Component parent) {
-        JOptionPane.showMessageDialog(parent, message, LanguageTool.getString("ERROR"), JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(parent, message, I18nUtils.getString("ERROR"), JOptionPane.ERROR_MESSAGE);
     }
 
     /**
@@ -876,7 +875,7 @@ public final class VisualHandler extends Handler implements PlaybackStateListene
 
     public void showNewPodcastFeedEntriesInfo() {
         if (!ApplicationState.getInstance().isShowStatusBar()) {
-            showMessage(LanguageTool.getString("NEW_PODCAST_ENTRIES"));
+            showMessage(I18nUtils.getString("NEW_PODCAST_ENTRIES"));
         } else {
             frame.showNewPodcastFeedEntriesInfo(true);
         }
@@ -1044,34 +1043,34 @@ public final class VisualHandler extends Handler implements PlaybackStateListene
         int audioObjects = playList.size();
 
         Object[] strs = new Object[20];
-        strs[0] = LanguageTool.getString("PLAYLIST");
+        strs[0] = I18nUtils.getString("PLAYLIST");
         strs[1] = ": ";
         strs[2] = audioObjects;
         strs[3] = " ";
-        strs[4] = LanguageTool.getString("SONGS");
+        strs[4] = I18nUtils.getString("SONGS");
         strs[5] = " (";
         strs[6] = playList.getLength();
         strs[7] = ") ";
         strs[8] = " - ";
         strs[9] = audioFiles;
         strs[10] = " ";
-        strs[11] = LanguageTool.getString("SONGS");
+        strs[11] = I18nUtils.getString("SONGS");
         strs[12] = " / ";
         strs[13] = radios;
         strs[14] = " ";
-        strs[15] = LanguageTool.getString("RADIOS");
+        strs[15] = I18nUtils.getString("RADIOS");
         strs[16] = " / ";
         strs[17] = podcastFeedEntries;
         strs[18] = " ";
         // Check if differenciation is required (needed by some slavic languages)
-        if (LanguageTool.getString("PODCAST_ENTRIES_COUNTER").isEmpty()) {
-            strs[19] = LanguageTool.getString("PODCAST_ENTRIES");
+        if (I18nUtils.getString("PODCAST_ENTRIES_COUNTER").isEmpty()) {
+            strs[19] = I18nUtils.getString("PODCAST_ENTRIES");
         } else {
-            strs[19] = LanguageTool.getString("PODCAST_ENTRIES_COUNTER");
+            strs[19] = I18nUtils.getString("PODCAST_ENTRIES_COUNTER");
         }
 
         Object[] strs2 = new Object[9];
-        strs2[0] = LanguageTool.getString("PLAYLIST");
+        strs2[0] = I18nUtils.getString("PLAYLIST");
         strs2[1] = ": ";
         strs2[2] = audioObjects;
         strs2[3] = " - ";
@@ -1130,14 +1129,14 @@ public final class VisualHandler extends Handler implements PlaybackStateListene
 
     public void showRepositoryAudioFileNumber(long size, long sizeInBytes, long duration) {
         // Check if differenciation is required (needed by some slavic languages)
-        if (LanguageTool.getString("SONGS_IN_REPOSITORY").isEmpty()) {
-            String text = StringUtils.getString(LanguageTool.getString("REPOSITORY"), ": ", size, " ", LanguageTool.getString("SONGS"));
-            String toolTip = StringUtils.getString(LanguageTool.getString("REPOSITORY"), ": ", size, " ", LanguageTool.getString("SONGS"), " - ", StringUtils
+        if (I18nUtils.getString("SONGS_IN_REPOSITORY").isEmpty()) {
+            String text = StringUtils.getString(I18nUtils.getString("REPOSITORY"), ": ", size, " ", I18nUtils.getString("SONGS"));
+            String toolTip = StringUtils.getString(I18nUtils.getString("REPOSITORY"), ": ", size, " ", I18nUtils.getString("SONGS"), " - ", StringUtils
                     .fromByteToMegaOrGiga(sizeInBytes), " - ", StringUtils.fromSecondsToHoursAndDays(duration));
             setCenterStatusBarText(text, toolTip);
         } else {
-            String text = StringUtils.getString(LanguageTool.getString("REPOSITORY"), ": ", size, " ", LanguageTool.getString("SONGS_IN_REPOSITORY"));
-            String toolTip = StringUtils.getString(LanguageTool.getString("REPOSITORY"), ": ", size, " ", LanguageTool.getString("SONGS_IN_REPOSITORY"), " - ", StringUtils
+            String text = StringUtils.getString(I18nUtils.getString("REPOSITORY"), ": ", size, " ", I18nUtils.getString("SONGS_IN_REPOSITORY"));
+            String toolTip = StringUtils.getString(I18nUtils.getString("REPOSITORY"), ": ", size, " ", I18nUtils.getString("SONGS_IN_REPOSITORY"), " - ", StringUtils
                     .fromByteToMegaOrGiga(sizeInBytes), " - ", StringUtils.fromSecondsToHoursAndDays(duration));
             setCenterStatusBarText(text, toolTip);
         }
@@ -1261,7 +1260,7 @@ public final class VisualHandler extends Handler implements PlaybackStateListene
     public void updateStatusBar(AudioObject song) {
         if (!(song instanceof Radio || song instanceof PodcastFeedEntry)) {
             if (GuiUtils.getComponentOrientation().isLeftToRight()) {
-                String text = StringUtils.getString(LanguageTool.getString("PLAYING"), ": ");
+                String text = StringUtils.getString(I18nUtils.getString("PLAYING"), ": ");
                 if (song instanceof Radio || song instanceof PodcastFeedEntry || ((AudioFile) song).getTag() == null) {
                     text = StringUtils.getString(text, song.getTitleOrFileName());
                 } else {
@@ -1275,7 +1274,7 @@ public final class VisualHandler extends Handler implements PlaybackStateListene
                     } else {
                         text = StringUtils.getString(text, ((AudioFile) song).getTag().getArtist(), " ");
                     }
-                    text = StringUtils.getString(text, "(", TimeUtils.seconds2String(song.getDuration()), ")");
+                    text = StringUtils.getString(text, "(", StringUtils.seconds2String(song.getDuration()), ")");
                 }
                 setLeftStatusBarText(text, text);
             } else {
@@ -1283,7 +1282,7 @@ public final class VisualHandler extends Handler implements PlaybackStateListene
                 if (song instanceof Radio || song instanceof PodcastFeedEntry || ((AudioFile) song).getTag() == null) {
                     text = StringUtils.getString(song.getTitleOrFileName());
                 } else {
-                    text = StringUtils.getString("(", TimeUtils.seconds2String(song.getDuration()), ") ");
+                    text = StringUtils.getString("(", StringUtils.seconds2String(song.getDuration()), ") ");
                     if (((AudioFile) song).getTag().getArtist() == null || ((AudioFile) song).getTag().getArtist().equals("")) {
                         text = StringUtils.getString(text, Artist.getUnknownArtist(), " ");
                     } else {
@@ -1295,11 +1294,11 @@ public final class VisualHandler extends Handler implements PlaybackStateListene
                         text = StringUtils.getString(text, " - ", ((AudioFile) song).getTag().getTitle());
                     }
                 }
-                text = StringUtils.getString(text, " :", LanguageTool.getString("PLAYING"));
+                text = StringUtils.getString(text, " :", I18nUtils.getString("PLAYING"));
                 setLeftStatusBarText(text, text);
             }
         } else {
-            updateStatusBar(StringUtils.getString("<html>", LanguageTool.getString("BUFFERING"), " <b>", song.getTitle(), "</b>...</html>"));
+            updateStatusBar(StringUtils.getString("<html>", I18nUtils.getString("BUFFERING"), " <b>", song.getTitle(), "</b>...</html>"));
         }
     }
 
@@ -1342,7 +1341,7 @@ public final class VisualHandler extends Handler implements PlaybackStateListene
                 strBuilder.append(song.getAlbum());
             }
             strBuilder.append(" (");
-            strBuilder.append(TimeUtils.seconds2String(song.getDuration()));
+            strBuilder.append(StringUtils.seconds2String(song.getDuration()));
             strBuilder.append(")");
             setTitleBar(strBuilder.toString());
         } else {
@@ -1355,7 +1354,7 @@ public final class VisualHandler extends Handler implements PlaybackStateListene
         if (newState == PlaybackState.PAUSED) {
             // Pause
             setPlaying(false);
-            updateStatusBar(LanguageTool.getString("PAUSED"));
+            updateStatusBar(I18nUtils.getString("PAUSED"));
             setTitleBar("");
             getPlayListTable().setPlayState(PlayState.PAUSED);
 
@@ -1376,7 +1375,7 @@ public final class VisualHandler extends Handler implements PlaybackStateListene
         } else if (newState == PlaybackState.STOPPED) {
             // Stop
             setPlaying(false);
-            updateStatusBar(LanguageTool.getString("STOPPED"));
+            updateStatusBar(I18nUtils.getString("STOPPED"));
             setTitleBar("");
             getPlayListTable().setPlayState(PlayState.STOPPED);
         }

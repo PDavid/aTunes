@@ -31,7 +31,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.ImageUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Data Source for basic album object information Retrieves basic information
@@ -131,7 +131,7 @@ public class ArtistInfoDataSource implements ContextInformationDataSource {
      * @return
      */
     private String getWikiText(AudioObject audioObject) {
-        if (!audioObject.getArtist().equals(LanguageTool.getString("UNKNOWN_ARTIST"))) {
+        if (!audioObject.getArtist().equals(I18nUtils.getString("UNKNOWN_ARTIST"))) {
             return LastFmService.getInstance().getWikiText(audioObject.getArtist());
         }
         return null;
@@ -144,7 +144,7 @@ public class ArtistInfoDataSource implements ContextInformationDataSource {
      * @return
      */
     private String getWikiUrl(AudioObject audioObject) {
-        if (!audioObject.getArtist().equals(LanguageTool.getString("UNKNOWN_ARTIST"))) {
+        if (!audioObject.getArtist().equals(I18nUtils.getString("UNKNOWN_ARTIST"))) {
             return LastFmService.getInstance().getWikiURL(audioObject.getArtist());
         }
         return null;
@@ -157,7 +157,7 @@ public class ArtistInfoDataSource implements ContextInformationDataSource {
      * @return
      */
     private AlbumListInfo getAlbumList(AudioObject audioObject) {
-        if (!audioObject.getArtist().equals(LanguageTool.getString("UNKNOWN_ARTIST"))) {
+        if (!audioObject.getArtist().equals(I18nUtils.getString("UNKNOWN_ARTIST"))) {
             return LastFmService.getInstance().getAlbumList(audioObject.getArtist(), ApplicationState.getInstance().isHideVariousArtistsAlbums(),
                     ApplicationState.getInstance().getMinimumSongNumberPerAlbum());
         }

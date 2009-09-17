@@ -67,7 +67,7 @@ import net.sourceforge.atunes.kernel.modules.repository.model.Genre;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jvnet.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
@@ -90,18 +90,18 @@ public final class DeviceNavigationView extends NavigationView {
 
     @Override
     public String getTitle() {
-        return LanguageTool.getString("DEVICE");
+        return I18nUtils.getString("DEVICE");
     }
 
     @Override
     public String getTooltip() {
-        return LanguageTool.getString("DEVICE_TAB_TOOLTIP");
+        return I18nUtils.getString("DEVICE_TAB_TOOLTIP");
     }
 
     @Override
     public JTree getTree() {
         if (deviceTree == null) {
-            deviceTree = new NavigationTree(new DefaultTreeModel(new DefaultMutableTreeNode(LanguageTool.getString("DEVICE"))));
+            deviceTree = new NavigationTree(new DefaultTreeModel(new DefaultMutableTreeNode(I18nUtils.getString("DEVICE"))));
             deviceTree.setToggleClickCount(0);
             deviceTree.setCellRenderer(getTreeRenderer());
         }
@@ -406,9 +406,9 @@ public final class DeviceNavigationView extends NavigationView {
     private void refreshFolderView(Map<String, Folder> data, DefaultMutableTreeNode root, List<TreeObject> objectsSelected, List<DefaultMutableTreeNode> nodesToSelect, List<DefaultMutableTreeNode> nodesToExpand, List<TreeObject> objectsExpanded, DefaultTreeModel treeModel) {
         List<String> rootFolderKeys = new ArrayList<String>(data.keySet());
         if (rootFolderKeys.isEmpty()) {
-            root.setUserObject(LanguageTool.getString("DEVICE"));
+            root.setUserObject(I18nUtils.getString("DEVICE"));
         } else {
-            root.setUserObject(StringUtils.getString(LanguageTool.getString("DEVICE"), " (", rootFolderKeys.get(0), ")"));
+            root.setUserObject(StringUtils.getString(I18nUtils.getString("DEVICE"), " (", rootFolderKeys.get(0), ")"));
             Folder rootFolder = data.get(rootFolderKeys.get(0));
             RefreshUtils.addFolderNodes(rootFolder.getFolders(), root, null, comparator);
         }
@@ -477,9 +477,9 @@ public final class DeviceNavigationView extends NavigationView {
         case 0:
             return "";
         case 1:
-            return LanguageTool.getString("FILE");
+            return I18nUtils.getString("FILE");
         case 2:
-            return LanguageTool.getString("DURATION");
+            return I18nUtils.getString("DURATION");
         default:
             return "";
         }

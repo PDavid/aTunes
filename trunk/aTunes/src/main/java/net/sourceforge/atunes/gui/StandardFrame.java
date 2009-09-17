@@ -67,7 +67,7 @@ import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jdesktop.swingx.JXStatusBar;
 
@@ -372,7 +372,7 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
      */
     private JLabel getLeftStatusBar() {
         if (leftStatusBar == null) {
-            leftStatusBar = new JLabel(LanguageTool.getString("STOPPED"));
+            leftStatusBar = new JLabel(I18nUtils.getString("STOPPED"));
         }
         return leftStatusBar;
     }
@@ -505,7 +505,7 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
     private JLabel getStatusBarNewPodcastEntriesLabel() {
         if (statusBarNewPodcastEntriesLabel == null) {
             statusBarNewPodcastEntriesLabel = new JLabel(ImageLoader.getImage(ImageLoader.RSS_LITTLE));
-            statusBarNewPodcastEntriesLabel.setToolTipText(LanguageTool.getString("NEW_PODCAST_ENTRIES"));
+            statusBarNewPodcastEntriesLabel.setToolTipText(I18nUtils.getString("NEW_PODCAST_ENTRIES"));
             statusBarNewPodcastEntriesLabel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -520,7 +520,7 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
     JLabel getStatusBarNewVersionLabel() {
         if (statusBarNewVersionLabel == null) {
             statusBarNewVersionLabel = new JLabel(ImageLoader.getImage(ImageLoader.CHECK_FOR_UPDATES));
-            statusBarNewVersionLabel.setToolTipText(LanguageTool.getString("NEW_VERSION_AVAILABLE"));
+            statusBarNewVersionLabel.setToolTipText(I18nUtils.getString("NEW_VERSION_AVAILABLE"));
             statusBarNewVersionLabel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {

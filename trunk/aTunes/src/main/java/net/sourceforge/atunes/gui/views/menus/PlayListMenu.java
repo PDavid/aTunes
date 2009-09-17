@@ -56,7 +56,7 @@ import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
 import net.sourceforge.atunes.kernel.actions.TogglePlayListFilterAction;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class PlayListMenu {
 
@@ -121,7 +121,7 @@ public class PlayListMenu {
         objects.add(new JSeparator());
         objects.add(Actions.getAction(ShufflePlayListAction.class));
         objects.add(new JSeparator());
-        JMenu smartPlayList = new JMenu(LanguageTool.getString("SMART_PLAYLIST"));
+        JMenu smartPlayList = new JMenu(I18nUtils.getString("SMART_PLAYLIST"));
         smartPlayList.add(Actions.getAction(AddRandomSongsAction.class, AddRandomSongsAction.INSTANCE_10));
         smartPlayList.add(Actions.getAction(AddRandomSongsAction.class, AddRandomSongsAction.INSTANCE_50));
         smartPlayList.add(Actions.getAction(AddRandomSongsAction.class, AddRandomSongsAction.INSTANCE_100));

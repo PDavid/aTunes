@@ -36,7 +36,7 @@ import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
 import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.DesktopUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
@@ -58,7 +58,7 @@ public class ArtistAlbumsContent extends ContextPanelContent {
 
     @Override
     protected String getContentName() {
-        return LanguageTool.getString("ALBUMS");
+        return I18nUtils.getString("ALBUMS");
     }
 
     @Override

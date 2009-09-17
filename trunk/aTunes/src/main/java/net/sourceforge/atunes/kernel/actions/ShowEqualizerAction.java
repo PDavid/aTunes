@@ -26,7 +26,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * This action displays equalizer window
@@ -39,7 +39,7 @@ public class ShowEqualizerAction extends Action {
     private static final long serialVersionUID = 2511199136727155747L;
 
     ShowEqualizerAction() {
-        super(LanguageTool.getString("EQUALIZER"));
+        super(I18nUtils.getString("EQUALIZER"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
     }
 

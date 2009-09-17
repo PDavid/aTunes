@@ -31,7 +31,7 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Handler for global hotkeys keys.
@@ -64,16 +64,16 @@ public final class HotkeyHandler extends Handler implements HotkeyListener {
     static {
         // Create Hotkey objects
         DEFAULT_HOTKEYS_CONFIG = new HotkeysConfig();
-        DEFAULT_HOTKEYS_CONFIG.putHotkey(new Hotkey(HOTKEY_NEXT, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK, RIGHT_ARROW, LanguageTool.getString("NEXT")));
-        DEFAULT_HOTKEYS_CONFIG.putHotkey(new Hotkey(HOTKEY_PREVIOUS, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK, LEFT_ARROW, LanguageTool.getString("PREVIOUS")));
-        DEFAULT_HOTKEYS_CONFIG.putHotkey(new Hotkey(HOTKEY_VOLUME_UP, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK, UP_ARROW, LanguageTool.getString("VOLUME_UP")));
-        DEFAULT_HOTKEYS_CONFIG.putHotkey(new Hotkey(HOTKEY_VOLUME_DOWN, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK, DOWN_ARROW, LanguageTool.getString("VOLUME_DOWN")));
-        DEFAULT_HOTKEYS_CONFIG.putHotkey(new Hotkey(HOTKEY_PAUSE, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK, 'P', LanguageTool.getString("PAUSE")));
-        DEFAULT_HOTKEYS_CONFIG.putHotkey(new Hotkey(HOTKEY_STOP, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK, 'S', LanguageTool.getString("STOP")));
-        DEFAULT_HOTKEYS_CONFIG.putHotkey(new Hotkey(HOTKEY_TOGGLE_WINDOW_VISIBILITY, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK, 'W', LanguageTool
+        DEFAULT_HOTKEYS_CONFIG.putHotkey(new Hotkey(HOTKEY_NEXT, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK, RIGHT_ARROW, I18nUtils.getString("NEXT")));
+        DEFAULT_HOTKEYS_CONFIG.putHotkey(new Hotkey(HOTKEY_PREVIOUS, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK, LEFT_ARROW, I18nUtils.getString("PREVIOUS")));
+        DEFAULT_HOTKEYS_CONFIG.putHotkey(new Hotkey(HOTKEY_VOLUME_UP, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK, UP_ARROW, I18nUtils.getString("VOLUME_UP")));
+        DEFAULT_HOTKEYS_CONFIG.putHotkey(new Hotkey(HOTKEY_VOLUME_DOWN, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK, DOWN_ARROW, I18nUtils.getString("VOLUME_DOWN")));
+        DEFAULT_HOTKEYS_CONFIG.putHotkey(new Hotkey(HOTKEY_PAUSE, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK, 'P', I18nUtils.getString("PAUSE")));
+        DEFAULT_HOTKEYS_CONFIG.putHotkey(new Hotkey(HOTKEY_STOP, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK, 'S', I18nUtils.getString("STOP")));
+        DEFAULT_HOTKEYS_CONFIG.putHotkey(new Hotkey(HOTKEY_TOGGLE_WINDOW_VISIBILITY, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK, 'W', I18nUtils
                 .getString("TOGGLE_WINDOW_VISIBILITY")));
-        DEFAULT_HOTKEYS_CONFIG.putHotkey(new Hotkey(HOTKEY_MUTE, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK, 'M', LanguageTool.getString("MUTE")));
-        DEFAULT_HOTKEYS_CONFIG.putHotkey(new Hotkey(HOTKEY_SHOW_OSD, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK, 'I', LanguageTool.getString("SHOW_OSD")));
+        DEFAULT_HOTKEYS_CONFIG.putHotkey(new Hotkey(HOTKEY_MUTE, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK, 'M', I18nUtils.getString("MUTE")));
+        DEFAULT_HOTKEYS_CONFIG.putHotkey(new Hotkey(HOTKEY_SHOW_OSD, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK, 'I', I18nUtils.getString("SHOW_OSD")));
     }
 
     /**
@@ -188,7 +188,7 @@ public final class HotkeyHandler extends Handler implements HotkeyListener {
                 ApplicationState.getInstance().setEnableHotkeys(false);
 
                 // Show an error message
-                VisualHandler.getInstance().showErrorDialog(LanguageTool.getString("HOTKEYS_ACTIVATION_ERROR_MESSAGE"));
+                VisualHandler.getInstance().showErrorDialog(I18nUtils.getString("HOTKEYS_ACTIVATION_ERROR_MESSAGE"));
                 getLogger().error(LogCategories.HOTKEYS, "Hotkeys were not activated successfully");
             }
         }

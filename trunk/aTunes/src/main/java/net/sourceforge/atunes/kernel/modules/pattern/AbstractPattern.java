@@ -28,7 +28,7 @@ import java.util.Map.Entry;
 
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.EditTagInfo;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -229,7 +229,7 @@ public abstract class AbstractPattern {
      * @return the description of this pattern
      */
     public String getDescription() {
-        return LanguageTool.getString(name);
+        return I18nUtils.getString(name);
     }
 
     /**

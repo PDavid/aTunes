@@ -55,7 +55,7 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListTableModel;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The play list table.
@@ -159,7 +159,7 @@ public class PlayListTable extends JTable implements DragSourceListener, DragGes
         im.put(f2, "none");
 
         rightMenu = new JPopupMenu();
-        arrangeColumns = new JMenuItem(LanguageTool.getString("ARRANGE_COLUMNS"));
+        arrangeColumns = new JMenuItem(I18nUtils.getString("ARRANGE_COLUMNS"));
         rightMenu.add(arrangeColumns);
 
         // Popup menu

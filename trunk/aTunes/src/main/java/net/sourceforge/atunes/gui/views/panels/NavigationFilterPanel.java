@@ -36,7 +36,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Filter panel class for navigator: to use for trees and table
@@ -70,11 +70,11 @@ public class NavigationFilterPanel extends JPanel {
         super(new GridBagLayout());
 
         // Filter controls
-        JLabel filterLabel = new JLabel(LanguageTool.getString("FILTER"));
+        JLabel filterLabel = new JLabel(I18nUtils.getString("FILTER"));
         filterTextField = new JTextField();
-        filterTextField.setToolTipText(LanguageTool.getString("FILTER_TEXTFIELD_TOOLTIP"));
+        filterTextField.setToolTipText(I18nUtils.getString("FILTER_TEXTFIELD_TOOLTIP"));
         clearFilterLabel = new JLabel(ImageLoader.getImage(ImageLoader.UNDO));
-        clearFilterLabel.setToolTipText(LanguageTool.getString("CLEAR_FILTER_BUTTON_TOOLTIP"));
+        clearFilterLabel.setToolTipText(I18nUtils.getString("CLEAR_FILTER_BUTTON_TOOLTIP"));
 
         GridBagConstraints c = new GridBagConstraints();
 

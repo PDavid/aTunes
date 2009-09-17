@@ -25,7 +25,7 @@ import java.awt.event.ActionEvent;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Shows or hides status bar
@@ -38,8 +38,8 @@ public class ShowStatusBarAction extends Action {
     private static final long serialVersionUID = 2303076465024539635L;
 
     ShowStatusBarAction() {
-        super(LanguageTool.getString("SHOW_STATUS_BAR"), ImageLoader.getImage(ImageLoader.STATUS_BAR));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("SHOW_STATUS_BAR"));
+        super(I18nUtils.getString("SHOW_STATUS_BAR"), ImageLoader.getImage(ImageLoader.STATUS_BAR));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_STATUS_BAR"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().isShowStatusBar());
     }
 

@@ -45,9 +45,9 @@ import net.sourceforge.atunes.Constants;
  * 
  * @author fleax
  */
-public final class LanguageTool {
+public final class I18nUtils {
 
-    private LanguageTool() {
+    private I18nUtils() {
     }
 
     /** The Constant BUNDLE_NAME. */

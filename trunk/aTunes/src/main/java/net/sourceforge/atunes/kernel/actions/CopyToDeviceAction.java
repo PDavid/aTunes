@@ -32,15 +32,15 @@ import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class CopyToDeviceAction extends ActionOverSelectedObjects<AudioObject> {
 
     private static final long serialVersionUID = -7689483210176624995L;
 
     CopyToDeviceAction() {
-        super(LanguageTool.getString("COPY_TO_DEVICE"), ImageLoader.getImage(ImageLoader.DEVICE), AudioObject.class);
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("COPY_TO_DEVICE"));
+        super(I18nUtils.getString("COPY_TO_DEVICE"), ImageLoader.getImage(ImageLoader.DEVICE), AudioObject.class);
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("COPY_TO_DEVICE"));
     }
 
     @Override

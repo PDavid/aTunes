@@ -32,15 +32,15 @@ import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class CopyToRepositoryAction extends ActionOverSelectedObjects<AudioFile> {
 
     private static final long serialVersionUID = 2416674807979541242L;
 
     CopyToRepositoryAction() {
-        super(LanguageTool.getString("COPY_TO_REPOSITORY"), ImageLoader.getImage(ImageLoader.EXPORT), AudioFile.class);
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("COPY_TO_REPOSITORY"));
+        super(I18nUtils.getString("COPY_TO_REPOSITORY"), ImageLoader.getImage(ImageLoader.EXPORT), AudioFile.class);
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("COPY_TO_REPOSITORY"));
     }
 
     @Override
@@ -57,7 +57,7 @@ public class CopyToRepositoryAction extends ActionOverSelectedObjects<AudioFile>
                     @Override
                     public void run() {
                         if (!ok) {
-                            VisualHandler.getInstance().showErrorDialog(LanguageTool.getString("ERRORS_IN_COPYING_PROCESS"));
+                            VisualHandler.getInstance().showErrorDialog(I18nUtils.getString("ERRORS_IN_COPYING_PROCESS"));
                         }
                         // Force a refresh of repository to add new songs
                         RepositoryHandler.getInstance().refreshRepository();

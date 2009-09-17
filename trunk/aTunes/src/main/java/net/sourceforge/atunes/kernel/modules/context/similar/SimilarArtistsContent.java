@@ -36,7 +36,7 @@ import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.context.SimilarArtistsInfo;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.DesktopUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
@@ -52,7 +52,7 @@ public class SimilarArtistsContent extends ContextPanelContent {
 
     @Override
     protected String getContentName() {
-        return LanguageTool.getString("SIMILAR");
+        return I18nUtils.getString("SIMILAR");
     }
 
     @Override
@@ -89,7 +89,7 @@ public class SimilarArtistsContent extends ContextPanelContent {
             public Component getTableCellRendererComponent(JTable table, Object value, boolean arg2, boolean arg3, int arg4, int arg5) {
                 Color backgroundColor = super.getTableCellRendererComponent(table, value, arg2, arg3, arg4, arg5).getBackground();
                 return getPanelForTableRenderer(((ArtistInfo) value).getImage(), StringUtils.getString("<html><br>", ((ArtistInfo) value).getName(), "<br>", ((ArtistInfo) value)
-                        .getMatch(), "%<br>", ((ArtistInfo) value).isAvailable() ? LanguageTool.getString("AVAILABLE_IN_REPOSITORY") : "", "</html>"), backgroundColor,
+                        .getMatch(), "%<br>", ((ArtistInfo) value).isAvailable() ? I18nUtils.getString("AVAILABLE_IN_REPOSITORY") : "", "</html>"), backgroundColor,
                         Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT);
             }
         });

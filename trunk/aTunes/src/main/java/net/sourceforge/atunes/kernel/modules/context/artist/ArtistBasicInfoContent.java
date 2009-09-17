@@ -39,7 +39,7 @@ import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.ImageUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jdesktop.swingx.border.DropShadowBorder;
 
@@ -64,7 +64,7 @@ public class ArtistBasicInfoContent extends ContextPanelContent {
 
     @Override
     protected String getContentName() {
-        return LanguageTool.getString("INFO");
+        return I18nUtils.getString("INFO");
     }
 
     @Override
@@ -95,7 +95,7 @@ public class ArtistBasicInfoContent extends ContextPanelContent {
         }
         String wikiUrl = (String) result.get(ArtistInfoDataSource.OUTPUT_WIKI_URL);
         if (wikiUrl != null) {
-            artistWikiReadMore.setText(LanguageTool.getString("READ_MORE"), wikiUrl);
+            artistWikiReadMore.setText(I18nUtils.getString("READ_MORE"), wikiUrl);
         }
     }
 

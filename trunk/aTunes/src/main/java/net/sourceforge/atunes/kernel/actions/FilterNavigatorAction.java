@@ -29,15 +29,15 @@ import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.views.panels.NavigationFilterPanel;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class FilterNavigatorAction extends Action {
 
     private static final long serialVersionUID = 8983724480558125905L;
 
     FilterNavigatorAction() {
-        super(LanguageTool.getString("FILTER"), ImageLoader.getImage(ImageLoader.SEARCH));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("FILTER"));
+        super(I18nUtils.getString("FILTER"), ImageLoader.getImage(ImageLoader.SEARCH));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("FILTER"));
     }
 
     @Override

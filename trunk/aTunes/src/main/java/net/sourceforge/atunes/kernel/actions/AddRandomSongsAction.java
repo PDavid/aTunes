@@ -26,7 +26,7 @@ import java.util.Properties;
 
 import net.sourceforge.atunes.kernel.modules.playlist.SmartPlayListHandler;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class AddRandomSongsAction extends Action {
 
@@ -40,8 +40,8 @@ public class AddRandomSongsAction extends Action {
 
     @Override
     protected void initialize() {
-        putValue(NAME, LanguageTool.getString(actionId));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString(actionId));
+        putValue(NAME, I18nUtils.getString(actionId));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString(actionId));
     }
 
     @Override

@@ -31,7 +31,7 @@ import net.sourceforge.atunes.kernel.modules.search.RawSearchResult;
 import net.sourceforge.atunes.kernel.modules.search.SearchResult;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class FavoritesSearchableObject extends CommonAudioFileSearchableObject {
@@ -68,7 +68,7 @@ public class FavoritesSearchableObject extends CommonAudioFileSearchableObject {
      */
     @Override
     public String getSearchableObjectName() {
-        return LanguageTool.getString("FAVORITES");
+        return I18nUtils.getString("FAVORITES");
     }
 
     /*

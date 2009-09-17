@@ -28,7 +28,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeResultEntry;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Table model used in YouTube panel
@@ -106,7 +106,7 @@ public class YoutubeResultTableModel implements TableModel {
 
     @Override
     public String getColumnName(int arg0) {
-        return LanguageTool.getString("YOUTUBE_VIDEOS");
+        return I18nUtils.getString("YOUTUBE_VIDEOS");
     }
 
     @Override

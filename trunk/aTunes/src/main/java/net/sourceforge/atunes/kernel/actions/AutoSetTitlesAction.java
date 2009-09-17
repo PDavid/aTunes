@@ -27,7 +27,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.tags.writer.EditTitlesProcess;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Calls process to set title automatically
@@ -40,8 +40,8 @@ public class AutoSetTitlesAction extends ActionOverSelectedObjects<AudioFile> {
     private static final long serialVersionUID = 7230329972815239426L;
 
     AutoSetTitlesAction() {
-        super(LanguageTool.getString("AUTO_SET_TITLE"), AudioFile.class);
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("AUTO_SET_TITLE"));
+        super(I18nUtils.getString("AUTO_SET_TITLE"), AudioFile.class);
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("AUTO_SET_TITLE"));
     }
 
     @Override

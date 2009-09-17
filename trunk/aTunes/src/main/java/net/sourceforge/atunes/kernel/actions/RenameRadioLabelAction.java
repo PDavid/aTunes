@@ -32,15 +32,15 @@ import net.sourceforge.atunes.kernel.modules.navigator.RadioNavigationView;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class RenameRadioLabelAction extends Action {
 
     private static final long serialVersionUID = -606790181321223318L;
 
     RenameRadioLabelAction() {
-        super(LanguageTool.getString("RENAME_LABEL"), ImageLoader.getImage(ImageLoader.EDIT_ALBUM));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("RENAME_LABEL"));
+        super(I18nUtils.getString("RENAME_LABEL"), ImageLoader.getImage(ImageLoader.EDIT_ALBUM));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("RENAME_LABEL"));
     }
 
     @Override
@@ -49,7 +49,7 @@ public class RenameRadioLabelAction extends Action {
         Object o = ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
         if (o instanceof String) {
             String label = (String) o;
-            String result = VisualHandler.getInstance().showInputDialog(LanguageTool.getString("RENAME_LABEL"), label, ImageLoader.getImage(ImageLoader.RADIO_LITTLE).getImage());
+            String result = VisualHandler.getInstance().showInputDialog(I18nUtils.getString("RENAME_LABEL"), label, ImageLoader.getImage(ImageLoader.RADIO_LITTLE).getImage());
             if (result != null) {
                 List<Radio> radios = RadioHandler.getInstance().getRadios(label);
                 RadioHandler.getInstance().setLabel(radios, result);
@@ -57,7 +57,7 @@ public class RenameRadioLabelAction extends Action {
             }
         } else if (o instanceof Radio) {
             Radio radio = (Radio) o;
-            String result = VisualHandler.getInstance().showInputDialog(LanguageTool.getString("RENAME_LABEL"), radio.getLabel(),
+            String result = VisualHandler.getInstance().showInputDialog(I18nUtils.getString("RENAME_LABEL"), radio.getLabel(),
                     ImageLoader.getImage(ImageLoader.RADIO_LITTLE).getImage());
             if (result != null) {
                 radio.setLabel(result);

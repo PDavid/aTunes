@@ -30,7 +30,7 @@ import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Opens edit tag dialog
@@ -46,8 +46,8 @@ public class EditTagAction extends ActionOverSelectedObjects<AudioFile> {
     public static final String NAVIGATOR = "NAVIGATOR";
 
     EditTagAction() {
-        super(LanguageTool.getString("EDIT_TAG"), ImageLoader.getImage(ImageLoader.TAG), AudioFile.class);
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("EDIT_TAG"));
+        super(I18nUtils.getString("EDIT_TAG"), ImageLoader.getImage(ImageLoader.TAG), AudioFile.class);
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("EDIT_TAG"));
     }
 
     @Override

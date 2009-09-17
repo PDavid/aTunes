@@ -45,7 +45,7 @@ import net.sourceforge.atunes.kernel.modules.search.SearchHandler.LogicalOperato
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
 
@@ -130,7 +130,7 @@ public class CustomSearchController extends DialogController<CustomSearchDialog>
             // Translate attributes to locale
             List<String> translatedAttributesList = new ArrayList<String>();
             for (String attr : attributes) {
-                String translatedAttribute = LanguageTool.getString(attr.toUpperCase());
+                String translatedAttribute = I18nUtils.getString(attr.toUpperCase());
                 translatedAttributesList.add(translatedAttribute);
                 translatedAttributes.put(translatedAttribute, attr);
             }
@@ -379,20 +379,20 @@ public class CustomSearchController extends DialogController<CustomSearchDialog>
 
                 // If no matches found show a message
                 if (result.isEmpty()) {
-                    VisualHandler.getInstance().showMessage(LanguageTool.getString("NO_MATCHES_FOUND"));
+                    VisualHandler.getInstance().showMessage(I18nUtils.getString("NO_MATCHES_FOUND"));
                 } else {
                     // Show result
                     showSearchResults(selectedSearchableObject, result);
                 }
             } catch (SearchIndexNotAvailableException e) {
                 // Thrown when an attribute does not exist on index
-                VisualHandler.getInstance().showErrorDialog(LanguageTool.getString("INVALID_SEARCH_RULE"));
+                VisualHandler.getInstance().showErrorDialog(I18nUtils.getString("INVALID_SEARCH_RULE"));
             } catch (SearchQuerySyntaxException e) {
                 // Thrown when query has invalid syntax
-                VisualHandler.getInstance().showErrorDialog(LanguageTool.getString("INVALID_SEARCH_RULE"));
+                VisualHandler.getInstance().showErrorDialog(I18nUtils.getString("INVALID_SEARCH_RULE"));
             }
         } else {
-            VisualHandler.getInstance().showMessage(LanguageTool.getString("NO_MATCHES_FOUND"));
+            VisualHandler.getInstance().showMessage(I18nUtils.getString("NO_MATCHES_FOUND"));
         }
     }
 

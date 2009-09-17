@@ -36,7 +36,7 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.views.controls.CustomFrame;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -77,7 +77,7 @@ public class StatsDialog extends CustomFrame {
      * Instantiates a new stats dialog.
      */
     public StatsDialog(Component owner) {
-        super(StringUtils.getString(LanguageTool.getString("STATS"), " - ", Constants.APP_NAME, " ", Constants.VERSION.toShortString()), 750, 750, owner);
+        super(StringUtils.getString(I18nUtils.getString("STATS"), " - ", Constants.APP_NAME, " ", Constants.VERSION.toShortString()), 750, 750, owner);
         setResizable(false);
         add(getContent());
         GuiUtils.applyComponentOrientation(this);
@@ -216,10 +216,10 @@ public class StatsDialog extends CustomFrame {
         artistPanel.add(artistsChart, c);
 
         tabbedPane = new JTabbedPane();
-        tabbedPane.addTab(LanguageTool.getString("GENERAL"), ImageLoader.getImage(ImageLoader.INFO), generalPanel);
-        tabbedPane.addTab(LanguageTool.getString("SONG"), ImageLoader.getImage(ImageLoader.FILE), songPanel);
-        tabbedPane.addTab(LanguageTool.getString("ALBUM"), ImageLoader.getImage(ImageLoader.ALBUM), albumPanel);
-        tabbedPane.addTab(LanguageTool.getString("ARTIST"), ImageLoader.getImage(ImageLoader.ARTIST), artistPanel);
+        tabbedPane.addTab(I18nUtils.getString("GENERAL"), ImageLoader.getImage(ImageLoader.INFO), generalPanel);
+        tabbedPane.addTab(I18nUtils.getString("SONG"), ImageLoader.getImage(ImageLoader.FILE), songPanel);
+        tabbedPane.addTab(I18nUtils.getString("ALBUM"), ImageLoader.getImage(ImageLoader.ALBUM), albumPanel);
+        tabbedPane.addTab(I18nUtils.getString("ARTIST"), ImageLoader.getImage(ImageLoader.ARTIST), artistPanel);
         panel.add(tabbedPane, BorderLayout.CENTER);
         return panel;
     }

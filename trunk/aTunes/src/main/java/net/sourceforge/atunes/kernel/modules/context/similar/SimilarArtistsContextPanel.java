@@ -30,7 +30,7 @@ import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Panel to show similar artists
@@ -54,7 +54,7 @@ public class SimilarArtistsContextPanel extends ContextPanel {
 
     @Override
     protected String getContextPanelTitle(AudioObject audioObject) {
-        return LanguageTool.getString("SIMILAR");
+        return I18nUtils.getString("SIMILAR");
     }
 
     @Override

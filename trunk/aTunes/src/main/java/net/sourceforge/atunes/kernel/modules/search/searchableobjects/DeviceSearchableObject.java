@@ -32,7 +32,7 @@ import net.sourceforge.atunes.kernel.modules.search.RawSearchResult;
 import net.sourceforge.atunes.kernel.modules.search.SearchResult;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class DeviceSearchableObject extends CommonAudioFileSearchableObject {
@@ -69,7 +69,7 @@ public class DeviceSearchableObject extends CommonAudioFileSearchableObject {
      */
     @Override
     public String getSearchableObjectName() {
-        return LanguageTool.getString("DEVICE");
+        return I18nUtils.getString("DEVICE");
     }
 
     /*

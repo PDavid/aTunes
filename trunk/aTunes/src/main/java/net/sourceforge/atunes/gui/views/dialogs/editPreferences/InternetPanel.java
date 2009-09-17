@@ -41,7 +41,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The preferences panel for internet settings.
@@ -67,28 +67,28 @@ public class InternetPanel extends PreferencesPanel {
      * Instantiates a new internet panel.
      */
     public InternetPanel() {
-        super(LanguageTool.getString("INTERNET"));
+        super(I18nUtils.getString("INTERNET"));
 
         GridBagConstraints c = new GridBagConstraints();
         c.weightx = 1;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.insets = new Insets(10, 0, 10, 10);
 
-        noProxyRadioButton = new JRadioButton(LanguageTool.getString("NO_PROXY"));
+        noProxyRadioButton = new JRadioButton(I18nUtils.getString("NO_PROXY"));
         noProxyRadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 enableProxySettings(false);
             }
         });
-        httpProxyRadioButton = new JRadioButton(LanguageTool.getString("HTTP_PROXY"));
+        httpProxyRadioButton = new JRadioButton(I18nUtils.getString("HTTP_PROXY"));
         httpProxyRadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 enableProxySettings(true);
             }
         });
-        socksProxyRadioButton = new JRadioButton(LanguageTool.getString("SOCKS_PROXY"));
+        socksProxyRadioButton = new JRadioButton(I18nUtils.getString("SOCKS_PROXY"));
         socksProxyRadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -101,21 +101,21 @@ public class InternetPanel extends PreferencesPanel {
         group.add(httpProxyRadioButton);
         group.add(socksProxyRadioButton);
 
-        proxyURLLabel = new JLabel(LanguageTool.getString("HOST"));
+        proxyURLLabel = new JLabel(I18nUtils.getString("HOST"));
         proxyURLLabel.setEnabled(false);
         proxyURL = new JTextField(15);
 
-        proxyPortLabel = new JLabel(LanguageTool.getString("PORT"));
+        proxyPortLabel = new JLabel(I18nUtils.getString("PORT"));
         proxyPortLabel.setEnabled(false);
         proxyPort = new JTextField(15);
         proxyPort.setEnabled(false);
 
-        proxyUserLabel = new JLabel(LanguageTool.getString("USER"));
+        proxyUserLabel = new JLabel(I18nUtils.getString("USER"));
         proxyUserLabel.setEnabled(false);
         proxyUser = new JTextField(15);
         proxyUser.setEnabled(false);
 
-        proxyPasswordLabel = new JLabel(LanguageTool.getString("PASSWORD"));
+        proxyPasswordLabel = new JLabel(I18nUtils.getString("PASSWORD"));
         proxyPasswordLabel.setEnabled(false);
         proxyPassword = new JPasswordField(15);
         proxyPassword.setEnabled(false);
@@ -264,7 +264,7 @@ public class InternetPanel extends PreferencesPanel {
             }
             return true;
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, LanguageTool.getString("INCORRECT_PORT"));
+            JOptionPane.showMessageDialog(this, I18nUtils.getString("INCORRECT_PORT"));
             return false;
         }
     }

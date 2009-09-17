@@ -39,7 +39,7 @@ import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -142,7 +142,7 @@ public class RepositoryProgressDialog extends CustomModalDialog {
      * Clear.
      */
     private void clear() {
-        getLabel().setText(StringUtils.getString(LanguageTool.getString("LOADING"), "..."));
+        getLabel().setText(StringUtils.getString(I18nUtils.getString("LOADING"), "..."));
         getFolderLabel().setText(" ");
         getProgressBar().setValue(0);
         getProgressLabel().setText("");
@@ -175,7 +175,7 @@ public class RepositoryProgressDialog extends CustomModalDialog {
     private JPanel getContent() {
         JPanel panel = new JPanel(new GridBagLayout());
         pictureLabel = new JLabel(ImageLoader.getImage(ImageLoader.APP_ICON_BIG));
-        label = new JLabel(StringUtils.getString(LanguageTool.getString("LOADING"), "..."));
+        label = new JLabel(StringUtils.getString(I18nUtils.getString("LOADING"), "..."));
         Font f = label.getFont().deriveFont(Font.PLAIN);
         label.setFont(f);
         progressLabel = new JLabel();
@@ -191,7 +191,7 @@ public class RepositoryProgressDialog extends CustomModalDialog {
         folderLabel.setFont(f);
         remainingTimeLabel = new JLabel(" ");
         remainingTimeLabel.setFont(f);
-        cancelButton = new CustomButton(null, LanguageTool.getString("CANCEL"));
+        cancelButton = new CustomButton(null, I18nUtils.getString("CANCEL"));
         cancelButton.setFont(f);
 
         GridBagConstraints c = new GridBagConstraints();

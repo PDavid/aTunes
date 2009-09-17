@@ -43,7 +43,7 @@ import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService;
 import net.sourceforge.atunes.misc.ClipboardFacade;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.DesktopUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Lyrics information
@@ -123,7 +123,7 @@ public class LyricsContent extends ContextPanelContent {
 
     @Override
     protected String getContentName() {
-        return LanguageTool.getString("LYRICS");
+        return I18nUtils.getString("LYRICS");
     }
 
     @Override
@@ -138,7 +138,7 @@ public class LyricsContent extends ContextPanelContent {
     @Override
     protected List<Component> getOptions() {
         List<Component> options = new ArrayList<Component>();
-        copyLyrics = new JMenuItem(new AbstractAction(LanguageTool.getString("COPY_TO_CLIPBOARD")) {
+        copyLyrics = new JMenuItem(new AbstractAction(I18nUtils.getString("COPY_TO_CLIPBOARD")) {
 
             private static final long serialVersionUID = -851267486478098295L;
 
@@ -153,10 +153,10 @@ public class LyricsContent extends ContextPanelContent {
         });
         options.add(copyLyrics);
 
-        addLyrics = new JMenu(LanguageTool.getString("ADD_LYRICS"));
+        addLyrics = new JMenu(I18nUtils.getString("ADD_LYRICS"));
         options.add(addLyrics);
 
-        openLyrics = new JMenuItem(new AbstractAction(LanguageTool.getString("OPEN_LYRICS_SOURCE")) {
+        openLyrics = new JMenuItem(new AbstractAction(I18nUtils.getString("OPEN_LYRICS_SOURCE")) {
 
             private static final long serialVersionUID = 9043861642969889713L;
 

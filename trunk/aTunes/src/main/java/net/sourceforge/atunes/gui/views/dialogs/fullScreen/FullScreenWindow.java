@@ -81,9 +81,8 @@ import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
-import net.sourceforge.atunes.utils.TimeUtils;
 
 /**
  * The Class FullScreenWindow.
@@ -358,13 +357,13 @@ public class FullScreenWindow extends CustomWindow {
         panel.setBackground(Color.black);
         add(panel);
 
-        options = new JPopupMenu(LanguageTool.getString("OPTIONS"));
+        options = new JPopupMenu(I18nUtils.getString("OPTIONS"));
         options.addKeyListener(keyAdapter);
         options.addMouseListener(clickListener);
 
         panel.addMouseListener(showMenuListener);
 
-        selectBackground = new JMenuItem(LanguageTool.getString("SELECT_BACKGROUND"));
+        selectBackground = new JMenuItem(I18nUtils.getString("SELECT_BACKGROUND"));
 
         selectBackground.addActionListener(new ActionListener() {
             @Override
@@ -383,7 +382,7 @@ public class FullScreenWindow extends CustomWindow {
 
                     @Override
                     public String getDescription() {
-                        return LanguageTool.getString("IMAGES");
+                        return I18nUtils.getString("IMAGES");
                     }
                 });
                 if (fileChooser.showOpenDialog(FullScreenWindow.this) == JFileChooser.APPROVE_OPTION) {
@@ -395,7 +394,7 @@ public class FullScreenWindow extends CustomWindow {
             }
         });
 
-        removeBackground = new JMenuItem(LanguageTool.getString("REMOVE_BACKGROUND"));
+        removeBackground = new JMenuItem(I18nUtils.getString("REMOVE_BACKGROUND"));
         removeBackground.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -405,7 +404,7 @@ public class FullScreenWindow extends CustomWindow {
                 FullScreenWindow.this.repaint();
             }
         });
-        exitFullScreen = new JMenuItem(LanguageTool.getString("CLOSE"));
+        exitFullScreen = new JMenuItem(I18nUtils.getString("CLOSE"));
         exitFullScreen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -472,7 +471,7 @@ public class FullScreenWindow extends CustomWindow {
             }
         });
         progressBar.addKeyListener(keyAdapter);
-        progressBar.setToolTipText(LanguageTool.getString("CLICK_TO_SEEK"));
+        progressBar.setToolTipText(I18nUtils.getString("CLICK_TO_SEEK"));
         progressBar.setMinimum(0);
         progressBar.setValue(0);
         progressBar.setFocusable(false);
@@ -580,12 +579,12 @@ public class FullScreenWindow extends CustomWindow {
     public void setCurrentAudioObjectPlayedTime(long time, long totalTime) {
         long remainingTime1 = totalTime - time;
         if (time == 0) {
-            this.remainingTime.setText(TimeUtils.milliseconds2String(time));
+            this.remainingTime.setText(StringUtils.milliseconds2String(time));
         } else {
-            this.remainingTime.setText(remainingTime1 > 0 ? StringUtils.getString("- ", TimeUtils.milliseconds2String(remainingTime1)) : "-");
+            this.remainingTime.setText(remainingTime1 > 0 ? StringUtils.getString("- ", StringUtils.milliseconds2String(remainingTime1)) : "-");
         }
 
-        this.time.setText(TimeUtils.milliseconds2String(time));
+        this.time.setText(StringUtils.milliseconds2String(time));
         progressBar.setValue((int) time);
     }
 

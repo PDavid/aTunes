@@ -27,7 +27,7 @@ import javax.swing.Timer;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * This action enables or disables karaoke mode
@@ -42,8 +42,8 @@ public class KaraokeModeAction extends Action {
     Timer timer;
 
     KaraokeModeAction() {
-        super(LanguageTool.getString("KARAOKE"), ImageLoader.getImage(ImageLoader.KARAOKE));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("KARAOKE"));
+        super(I18nUtils.getString("KARAOKE"), ImageLoader.getImage(ImageLoader.KARAOKE));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("KARAOKE"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().isKaraoke());
 
         timer = new Timer(1000, new ActionListener() {

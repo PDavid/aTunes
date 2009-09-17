@@ -41,7 +41,7 @@ import net.sourceforge.atunes.kernel.modules.repository.tags.tag.ImageInfo;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.ImageUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The listener interface for receiving editTagDialogAction events.
@@ -88,7 +88,7 @@ public class EditTagDialogActionListener implements ActionListener {
 
                 @Override
                 public String getDescription() {
-                    return LanguageTool.getString("IMAGES");
+                    return I18nUtils.getString("IMAGES");
                 }
             });
             fc.setCurrentDirectory(getCommonDirectoryForAudioFiles());

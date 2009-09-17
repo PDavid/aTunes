@@ -71,7 +71,7 @@ import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.CryptoUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.NetworkUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -862,7 +862,7 @@ public class LastFmService {
                             SwingUtilities.invokeLater(new Runnable() {
                                 @Override
                                 public void run() {
-                                    VisualHandler.getInstance().showErrorDialog(LanguageTool.getString("LASTFM_USER_ERROR"));
+                                    VisualHandler.getInstance().showErrorDialog(I18nUtils.getString("LASTFM_USER_ERROR"));
                                     // Disable service by deleting password
                                     ApplicationState.getInstance().setLastFmEnabled(false);
                                 }
@@ -927,7 +927,7 @@ public class LastFmService {
                             SwingUtilities.invokeLater(new Runnable() {
                                 @Override
                                 public void run() {
-                                    VisualHandler.getInstance().showErrorDialog(LanguageTool.getString("LASTFM_USER_ERROR"));
+                                    VisualHandler.getInstance().showErrorDialog(I18nUtils.getString("LASTFM_USER_ERROR"));
                                     // Disable service by deleting password
                                     ApplicationState.getInstance().setLastFmEnabled(false);
                                 }

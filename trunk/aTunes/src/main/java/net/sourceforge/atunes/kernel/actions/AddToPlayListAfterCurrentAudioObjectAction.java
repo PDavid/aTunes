@@ -27,15 +27,15 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class AddToPlayListAfterCurrentAudioObjectAction extends ActionOverSelectedObjects<AudioObject> {
 
     private static final long serialVersionUID = 1625697867534974341L;
 
     AddToPlayListAfterCurrentAudioObjectAction() {
-        super(LanguageTool.getString("ADD_TO_ACTIVE_PLAYLIST_AFTER_CURRENT_AUDIO_OBJECT"), ImageLoader.getImage(ImageLoader.ADD), AudioObject.class);
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("ADD_TO_ACTIVE_PLAYLIST_AFTER_CURRENT_AUDIO_OBJECT"));
+        super(I18nUtils.getString("ADD_TO_ACTIVE_PLAYLIST_AFTER_CURRENT_AUDIO_OBJECT"), ImageLoader.getImage(ImageLoader.ADD), AudioObject.class);
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("ADD_TO_ACTIVE_PLAYLIST_AFTER_CURRENT_AUDIO_OBJECT"));
     }
 
     @Override

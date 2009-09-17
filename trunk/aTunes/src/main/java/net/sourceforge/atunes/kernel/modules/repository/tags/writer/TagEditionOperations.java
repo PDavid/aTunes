@@ -32,7 +32,7 @@ import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The Class TagEditionOperations.
@@ -149,7 +149,7 @@ public final class TagEditionOperations {
      */
     public static void repairAlbumNames() {
         // Show confirmation dialog
-        if (VisualHandler.getInstance().showConfirmationDialog(LanguageTool.getString("REPAIR_ALBUM_NAMES_MESSAGE"), LanguageTool.getString("REPAIR_ALBUM_NAMES")) == JOptionPane.OK_OPTION) {
+        if (VisualHandler.getInstance().showConfirmationDialog(I18nUtils.getString("REPAIR_ALBUM_NAMES_MESSAGE"), I18nUtils.getString("REPAIR_ALBUM_NAMES")) == JOptionPane.OK_OPTION) {
 
             // Get all repository audio files
             List<AudioFile> repositoryAudioFiles = RepositoryHandler.getInstance().getAudioFiles();
@@ -172,7 +172,7 @@ public final class TagEditionOperations {
      */
     public static void repairGenres() {
         // Show confirmation dialog
-        if (VisualHandler.getInstance().showConfirmationDialog(LanguageTool.getString("REPAIR_GENRES_MESSAGE"), LanguageTool.getString("REPAIR_GENRES")) == JOptionPane.OK_OPTION) {
+        if (VisualHandler.getInstance().showConfirmationDialog(I18nUtils.getString("REPAIR_GENRES_MESSAGE"), I18nUtils.getString("REPAIR_GENRES")) == JOptionPane.OK_OPTION) {
 
             // Get all repository audio files
             List<AudioFile> repositoryAudioFiles = RepositoryHandler.getInstance().getAudioFiles();
@@ -196,7 +196,7 @@ public final class TagEditionOperations {
      */
     public static void repairTrackNumbers() {
         // Show confirmation dialog
-        if (VisualHandler.getInstance().showConfirmationDialog(LanguageTool.getString("REPAIR_TRACK_NUMBERS_MESSAGE"), LanguageTool.getString("REPAIR_TRACK_NUMBERS")) == JOptionPane.OK_OPTION) {
+        if (VisualHandler.getInstance().showConfirmationDialog(I18nUtils.getString("REPAIR_TRACK_NUMBERS_MESSAGE"), I18nUtils.getString("REPAIR_TRACK_NUMBERS")) == JOptionPane.OK_OPTION) {
 
             // Get all repository audio files
             List<AudioFile> repositoryAudioFiles = RepositoryHandler.getInstance().getAudioFiles();

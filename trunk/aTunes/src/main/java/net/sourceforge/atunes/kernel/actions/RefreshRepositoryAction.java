@@ -27,7 +27,7 @@ import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * This action refreshes repository
@@ -40,8 +40,8 @@ public class RefreshRepositoryAction extends Action {
     private static final long serialVersionUID = -5708270585764283210L;
 
     RefreshRepositoryAction() {
-        super(LanguageTool.getString("REFRESH_REPOSITORY"), ImageLoader.getImage(ImageLoader.REFRESH));
-        putValue(SHORT_DESCRIPTION, LanguageTool.getString("REFRESH_REPOSITORY"));
+        super(I18nUtils.getString("REFRESH_REPOSITORY"), ImageLoader.getImage(ImageLoader.REFRESH));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("REFRESH_REPOSITORY"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
     }
 

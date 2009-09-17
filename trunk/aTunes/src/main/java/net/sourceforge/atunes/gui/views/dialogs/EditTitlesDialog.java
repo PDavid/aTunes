@@ -33,7 +33,7 @@ import javax.swing.JTable;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.LanguageTool;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The Class EditTitlesDialog.
@@ -98,9 +98,9 @@ public class EditTitlesDialog extends CustomModalDialog {
         table = new JTable();
         table.setOpaque(false);
         JScrollPane scrollPane = new JScrollPane(table);
-        retrieveFromAmazon = new CustomButton(null, LanguageTool.getString("GET_TITLES_FROM_AMAZON"));
-        okButton = new CustomButton(null, LanguageTool.getString("OK"));
-        cancelButton = new CustomButton(null, LanguageTool.getString("CANCEL"));
+        retrieveFromAmazon = new CustomButton(null, I18nUtils.getString("GET_TITLES_FROM_AMAZON"));
+        okButton = new CustomButton(null, I18nUtils.getString("OK"));
+        cancelButton = new CustomButton(null, I18nUtils.getString("CANCEL"));
 
         GridBagConstraints c = new GridBagConstraints();
 
