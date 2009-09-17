@@ -31,6 +31,7 @@ aTunes 1.13.4
 -------------
 - Lyricsfly engine update
 - FIX: Images with alpha channel are displayed wrong
+- FIX: Windows 7 ready application icon
 
 aTunes 1.13.3
 -------------
