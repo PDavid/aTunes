@@ -28,6 +28,10 @@
 - FIX: Too much memory needed when retrieving artist images from Last.fm with original size
 - FIX: Deleting many files from device freezes aTunes gui for some seconds [2855962]
 
+aTunes 1.14.0
+-------------
+- Lyricsfly engine update
+
 aTunes 1.13.3
 -------------
 - FIX: LyricWiki XML API is offline
