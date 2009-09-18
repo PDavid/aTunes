@@ -63,12 +63,12 @@ public class LanguageSelector {
                 }
                 ApplicationState.getInstance().setNagDialogCounter(ApplicationState.getInstance().getNagDialogCounter() + 1);
             }
-            I18nUtils.setLanguage(locale.getLocale());
+            I18nUtils.setLocale(locale.getLocale());
             logger.info(LogCategories.START, StringUtils.getString("Setting language: ", locale.getLocale()));
         } else {
             logger.info(LogCategories.START, "Language not configured; using default language");
-            I18nUtils.setLanguage(null);
-            ApplicationState.getInstance().setLocale(new LocaleBean(I18nUtils.getLanguageSelected()));
+            I18nUtils.setLocale(null);
+            ApplicationState.getInstance().setLocale(new LocaleBean(I18nUtils.getSelectedLocale()));
         }
         // Set Locale for DateUtils
         DateUtils.setLocale(ApplicationState.getInstance().getLocale().getLocale());

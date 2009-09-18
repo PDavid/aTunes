@@ -309,7 +309,7 @@ public class GeneralPanel extends PreferencesPanel {
     public void updatePanel(ApplicationState state) {
         setShowTitle(state.isShowTitle());
         setWindowType(state.isMultipleWindow() ? I18nUtils.getString("MULTIPLE_WINDOW") : I18nUtils.getString("STANDARD_WINDOW"));
-        setLanguage(I18nUtils.getLanguageSelected());
+        setLanguage(I18nUtils.getSelectedLocale());
         setShowIconTray(state.isShowSystemTray());
         setShowTrayPlayer(state.isShowTrayPlayer());
         setTheme(state.getSkin());
