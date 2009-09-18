@@ -53,7 +53,7 @@ public final class PodcastFeedEntry implements AudioObject, Serializable, Compar
     private String author;
     private String url;
     private String description;
-    private long duration;
+    private int duration;
     private Date date;
     private PodcastFeed podcastFeed;
     private boolean listened;
@@ -78,7 +78,7 @@ public final class PodcastFeedEntry implements AudioObject, Serializable, Compar
      * @param podcastFeed
      *            the corresponding podcast feed of the podcast feed entry
      */
-    public PodcastFeedEntry(String title, String author, String url, String description, Date date, long duration, PodcastFeed podcastFeed) {
+    public PodcastFeedEntry(String title, String author, String url, String description, Date date, int duration, PodcastFeed podcastFeed) {
         this.title = title;
         this.author = author;
         this.url = url;
@@ -168,7 +168,7 @@ public final class PodcastFeedEntry implements AudioObject, Serializable, Compar
     }
 
     @Override
-    public long getDuration() {
+    public int getDuration() {
         return duration;
     }
 
@@ -222,7 +222,7 @@ public final class PodcastFeedEntry implements AudioObject, Serializable, Compar
     }
 
     @Override
-    public Integer getTrackNumber() {
+    public int getTrackNumber() {
         return 0;
     }
 
@@ -238,6 +238,11 @@ public final class PodcastFeedEntry implements AudioObject, Serializable, Compar
             calendar.setTime(date);
             return String.valueOf(calendar.get(Calendar.YEAR));
         }
+        return "";
+    }
+
+    @Override
+    public String getComment() {
         return "";
     }
 
@@ -354,7 +359,7 @@ public final class PodcastFeedEntry implements AudioObject, Serializable, Compar
     }
 
     @Override
-    public Integer getDiscNumber() {
+    public int getDiscNumber() {
         return 0;
     }
 

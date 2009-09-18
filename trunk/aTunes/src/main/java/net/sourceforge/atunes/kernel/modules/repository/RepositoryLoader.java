@@ -49,42 +49,19 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class RepositoryLoader extends Thread {
 
-    /** The logger. */
     private static Logger logger = new Logger();
 
     // Some attributes to speed up populate info process
-
-    /** The listener. */
     LoaderListener listener;
-
-    /** The folders. */
     private List<File> folders;
-
-    /** The refresh. */
     private boolean refresh;
-
-    /** The interrupt. */
     private boolean interrupt;
-
-    /** Used for refreshing. */
     private Repository oldRepository;
-
-    /** The repository. */
     private Repository repository;
-
-    /** The total files to load. */
     int totalFilesToLoad;
-
-    /** The files loaded. */
     private int filesLoaded;
-
-    /** The start read time. */
     private long startReadTime;
-
-    /** The fast repository path. */
     private String fastRepositoryPath;
-
-    /** The fast first char. */
     private int fastFirstChar;
 
     /**

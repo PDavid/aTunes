@@ -261,7 +261,6 @@ class AudioFilePropertiesDialog extends PropertiesDialog {
     /**
      * Sets the content.
      */
-
     private void setContent() {
         fillPicture();
         songLabel.setText(getHtmlFormatted(I18nUtils.getString("SONG"), StringUtils.isEmpty(file.getTitle()) ? "-" : file.getTitle()));
@@ -271,8 +270,8 @@ class AudioFilePropertiesDialog extends PropertiesDialog {
         fileNameLabel.setText(getHtmlFormatted(I18nUtils.getString("FILE"), file.getFile().getName()));
         pathLabel.setText(getHtmlFormatted(I18nUtils.getString("LOCATION"), file.getFile().getParent()));
         durationLabel.setText(getHtmlFormatted(I18nUtils.getString("DURATION"), StringUtils.seconds2String(file.getDuration())));
-        trackLabel.setText(getHtmlFormatted(I18nUtils.getString("TRACK"), file.getTrackNumber() > 0 ? file.getTrackNumber().toString() : "-"));
-        discNumberLabel.setText(getHtmlFormatted(I18nUtils.getString("DISC_NUMBER"), file.getDiscNumber() > 0 ? file.getDiscNumber().toString() : "-"));
+        trackLabel.setText(getHtmlFormatted(I18nUtils.getString("TRACK"), file.getTrackNumber() > 0 ? String.valueOf(file.getTrackNumber()) : "-"));
+        discNumberLabel.setText(getHtmlFormatted(I18nUtils.getString("DISC_NUMBER"), file.getDiscNumber() > 0 ? String.valueOf(file.getDiscNumber()) : "-"));
         genreLabel.setText(getHtmlFormatted(I18nUtils.getString("GENRE"), StringUtils.isEmpty(file.getGenre()) ? "-" : file.getGenre()));
         yearLabel.setText(getHtmlFormatted(I18nUtils.getString("YEAR"), StringUtils.getNumberOrZero(file.getYear()) > 0 ? file.getYear() : "-"));
         composerLabel.setText(getHtmlFormatted(I18nUtils.getString("COMPOSER"), StringUtils.isEmpty(file.getComposer()) ? "-" : file.getComposer()));

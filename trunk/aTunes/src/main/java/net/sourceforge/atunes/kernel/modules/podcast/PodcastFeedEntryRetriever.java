@@ -95,7 +95,7 @@ public class PodcastFeedEntryRetriever implements Runnable {
                     String author = "";
                     String description = "";
                     Date date = null;
-                    long duration = 0;
+                    int duration = 0;
 
                     // Check if audio podcast feed entry
                     Node typeNode = XMLUtils.evaluateXPathExpressionAndReturnNode(feedType.getTypeXPath(), entries.item(i));
@@ -156,7 +156,7 @@ public class PodcastFeedEntryRetriever implements Runnable {
                             String[] result = durationText.split(":");
                             try {
                                 for (int j = result.length - 1; j >= 0; j--) {
-                                    duration = duration + Integer.parseInt(result[j]) * (long) Math.pow(60, result.length - 1 - j);
+                                    duration = duration + Integer.parseInt(result[j]) * (int) Math.pow(60, result.length - 1 - j);
                                 }
                             } catch (NumberFormatException e) {
                                 duration = 0;

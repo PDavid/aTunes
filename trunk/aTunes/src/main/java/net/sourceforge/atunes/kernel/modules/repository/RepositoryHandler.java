@@ -105,12 +105,12 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
      */
     private RepositoryHandler() {
     }
-    
+
     @Override
     public void applicationStateChanged(ApplicationState newState) {
-    	
+
     }
-    
+
     @Override
     protected void initHandler() {
         // Add itself as listener
@@ -1000,14 +1000,14 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
                         int rc = p.exitValue();
                         getLogger().info(LogCategories.START, StringUtils.getString("Command '", command, "' return code: ", rc));
                     } catch (Exception e) {
-                    	getLogger().error(LogCategories.START, e);
+                        getLogger().error(LogCategories.START, e);
                     }
                 }
                 repositoryRetrievedFromCache = ApplicationStateHandler.getInstance().retrieveRepositoryCache();
             }
         };
     }
-    
+
     /**
      * Sets the repository.
      */
@@ -1274,7 +1274,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
             Arrays.sort(array, new Comparator<AudioObject>() {
                 @Override
                 public int compare(AudioObject a1, AudioObject a2) {
-                    return a1.getTrackNumber().compareTo(a2.getTrackNumber());
+                    return Integer.valueOf(a1.getTrackNumber()).compareTo(a2.getTrackNumber());
                 }
             });
         } else if (type == SortType.BY_ARTIST_AND_ALBUM) {
@@ -1309,12 +1309,12 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
                     }
 
                     // Sort by disc number
-                    int c4 = a1.getDiscNumber().compareTo(a2.getDiscNumber());
+                    int c4 = Integer.valueOf(a1.getDiscNumber()).compareTo(a2.getDiscNumber());
                     if (c4 != 0) {
                         return c4;
                     }
 
-                    return a1.getTrackNumber().compareTo(a2.getTrackNumber());
+                    return Integer.valueOf(a1.getTrackNumber()).compareTo(a2.getTrackNumber());
                 }
             });
         } else if (type == SortType.BY_TITLE) {

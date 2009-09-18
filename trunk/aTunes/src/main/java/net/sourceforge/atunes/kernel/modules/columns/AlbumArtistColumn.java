@@ -24,9 +24,7 @@ import net.sourceforge.atunes.model.AudioObject;
 
 public class AlbumArtistColumn extends Column {
 
-    /**
-     * 
-     */
+ 
     private static final long serialVersionUID = -1105793722315426353L;
 
     public AlbumArtistColumn() {
@@ -37,7 +35,7 @@ public class AlbumArtistColumn extends Column {
     @Override
     protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
         if (ao1.getAlbumArtist().equals(ao2.getAlbumArtist())) {
-            return ao1.getTrackNumber().compareTo(ao2.getTrackNumber());
+            return Integer.valueOf(ao1.getTrackNumber()).compareTo(ao2.getTrackNumber());
         }
         return ao1.getAlbumArtist().compareTo(ao2.getAlbumArtist());
     }

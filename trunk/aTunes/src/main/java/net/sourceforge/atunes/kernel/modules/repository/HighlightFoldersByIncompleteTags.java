@@ -36,8 +36,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 public class HighlightFoldersByIncompleteTags {
 
     /**
-     * Returns a hashmap with default attributes setted to true for highlight
-     * folders
+     * Returns a list with default attributes to highlight folders
      * 
      * @return
      */
@@ -101,7 +100,7 @@ public class HighlightFoldersByIncompleteTags {
                 return false;
             }
 
-            if (ta == TagAttribute.COMMENT && (audioFile.getComment() == null || audioFile.getTag().getComment().isEmpty())) {
+            if (ta == TagAttribute.COMMENT && (audioFile.getComment().isEmpty())) {
                 return false;
             }
 
@@ -121,7 +120,7 @@ public class HighlightFoldersByIncompleteTags {
                 return false;
             }
 
-            if (ta == TagAttribute.TRACK && audioFile.getTrackNumber().intValue() <= 0) {
+            if (ta == TagAttribute.TRACK && audioFile.getTrackNumber() <= 0) {
                 return false;
             }
 

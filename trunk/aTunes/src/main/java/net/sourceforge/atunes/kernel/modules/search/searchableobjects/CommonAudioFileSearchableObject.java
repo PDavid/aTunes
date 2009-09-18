@@ -117,12 +117,6 @@ public abstract class CommonAudioFileSearchableObject implements SearchableObjec
         return result;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seenet.sourceforge.atunes.kernel.modules.search.SearchableObject#
-     * getDocumentForElement(net.sourceforge.atunes.model.AudioObject)
-     */
     @Override
     public Document getDocumentForElement(AudioObject audioObject) {
         AudioFile audioFile = (AudioFile) audioObject;
@@ -130,7 +124,7 @@ public abstract class CommonAudioFileSearchableObject implements SearchableObjec
         Document d = new Document();
 
         d.add(new Field(INDEX_FIELD_TITLE, audioFile.getTitle(), Field.Store.YES, Field.Index.ANALYZED));
-        d.add(new Field(INDEX_FIELD_TRACK_NUMBER, audioFile.getTrackNumber().toString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+        d.add(new Field(INDEX_FIELD_TRACK_NUMBER, String.valueOf(audioFile.getTrackNumber()), Field.Store.YES, Field.Index.NOT_ANALYZED));
         d.add(new Field(INDEX_FIELD_ARTIST, audioFile.getArtist(), Field.Store.YES, Field.Index.ANALYZED));
         d.add(new Field(INDEX_FIELD_ALBUM_ARTIST, audioFile.getAlbumArtist(), Field.Store.YES, Field.Index.ANALYZED));
         d.add(new Field(INDEX_FIELD_ALBUM, audioFile.getAlbum(), Field.Store.YES, Field.Index.ANALYZED));
