@@ -47,11 +47,6 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
-/**
- * The Class NavigationPanel.
- * 
- * @author fleax
- */
 public class NavigationPanel extends JPanel {
 
     private static final long serialVersionUID = -2900418193013495812L;
@@ -178,8 +173,8 @@ public class NavigationPanel extends JPanel {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component comp;
-                if (((Long) value) > 0) {
-                    comp = super.getTableCellRendererComponent(table, StringUtils.seconds2String((Long) value), isSelected, hasFocus, row, column);
+                if (((Integer) value) > 0) {
+                    comp = super.getTableCellRendererComponent(table, StringUtils.seconds2String((Integer) value), isSelected, hasFocus, row, column);
                     ((JLabel) comp).setHorizontalAlignment(SwingConstants.RIGHT);
                 } else {
                     comp = super.getTableCellRendererComponent(table, "-", isSelected, hasFocus, row, column);

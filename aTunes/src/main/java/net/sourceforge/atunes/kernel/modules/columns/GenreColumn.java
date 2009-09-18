@@ -24,9 +24,6 @@ import net.sourceforge.atunes.model.AudioObject;
 
 public class GenreColumn extends Column {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = 1420893111015572964L;
 
     public GenreColumn() {
@@ -39,7 +36,7 @@ public class GenreColumn extends Column {
         if (ao1.getGenre().equals(ao2.getGenre())) {
             if (ao1.getArtist().equals(ao2.getArtist())) {
                 if (ao1.getAlbum().equals(ao2.getAlbum())) {
-                    return ao1.getTrackNumber().compareTo(ao2.getTrackNumber());
+                    return Integer.valueOf(ao1.getTrackNumber()).compareTo(ao2.getTrackNumber());
                 }
                 return ao1.getAlbum().compareTo(ao2.getAlbum());
             }

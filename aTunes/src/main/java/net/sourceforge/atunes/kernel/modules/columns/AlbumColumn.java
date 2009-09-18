@@ -42,10 +42,10 @@ public class AlbumColumn extends Column {
     @Override
     protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
         if (ao1.getAlbum().equals(ao2.getAlbum())) {
-            if (ao1.getDiscNumber().equals(ao2.getDiscNumber())) {
-                return ao1.getTrackNumber().compareTo(ao2.getTrackNumber());
+            if (ao1.getDiscNumber()==ao2.getDiscNumber()) {
+                return Integer.valueOf(ao1.getTrackNumber()).compareTo(ao2.getTrackNumber());
             }
-            return ao1.getDiscNumber().compareTo(ao2.getDiscNumber());
+            return Integer.valueOf(ao1.getDiscNumber()).compareTo(ao2.getDiscNumber());
         }
         return ao1.getAlbum().compareTo(ao2.getAlbum());
     }

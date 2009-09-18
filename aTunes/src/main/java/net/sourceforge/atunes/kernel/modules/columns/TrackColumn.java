@@ -26,9 +26,6 @@ import net.sourceforge.atunes.model.AudioObject;
 
 public class TrackColumn extends Column {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = 6114834986452693757L;
 
     public TrackColumn() {
@@ -40,7 +37,7 @@ public class TrackColumn extends Column {
 
     @Override
     protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
-        return ao1.getTrackNumber().compareTo(ao2.getTrackNumber());
+        return Integer.valueOf(ao1.getTrackNumber()).compareTo(ao2.getTrackNumber());
     }
 
     @Override

@@ -100,7 +100,7 @@ public final class ApplicationStateHandler extends Handler implements AudioFiles
     @Override
     public void applicationStarted() {
     }
-    
+
     /**
      * Adds a new ApplicationStateChangeListener. This listener will be notified
      * when application state is changed
@@ -129,17 +129,17 @@ public final class ApplicationStateHandler extends Handler implements AudioFiles
 
     @Override
     public void applicationStateChanged(ApplicationState newState) {
-    	// Nothing to do
+        // Nothing to do
     }
-    
+
     /**
      * Notifies all listeners of an application state change
      */
     public void notifyApplicationStateChanged() {
-    	for (ApplicationStateChangeListener listener : stateChangeListeners) {
-    		getLogger().debug(LogCategories.HANDLER, StringUtils.getString("Call to ApplicationStateChangeListener: ", listener.getClass().getName()));
-    		listener.applicationStateChanged(ApplicationState.getInstance());
-    	}
+        for (ApplicationStateChangeListener listener : stateChangeListeners) {
+            getLogger().debug(LogCategories.HANDLER, StringUtils.getString("Call to ApplicationStateChangeListener: ", listener.getClass().getName()));
+            listener.applicationStateChanged(ApplicationState.getInstance());
+        }
     }
 
     @Override
@@ -570,7 +570,6 @@ public final class ApplicationStateHandler extends Handler implements AudioFiles
      * 
      * @return The retrieved repository
      */
-
     public Repository retrieveRepositoryCache() {
         getLogger().debug(LogCategories.HANDLER);
 

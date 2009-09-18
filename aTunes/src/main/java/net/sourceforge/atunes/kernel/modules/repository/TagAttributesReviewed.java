@@ -169,7 +169,7 @@ public class TagAttributesReviewed {
             tagAttributes.add(new TagAttributeReviewed("DISC_NUMBER") {
                 @Override
                 String getValue(AudioFile audioFile) {
-                    return audioFile.getDiscNumber() > 0 ? audioFile.getDiscNumber().toString() : "";
+                    return audioFile.getDiscNumber() > 0 ? String.valueOf(audioFile.getDiscNumber()) : "";
                 }
 
                 @Override

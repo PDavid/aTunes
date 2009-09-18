@@ -58,17 +58,17 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
 
     private static final long serialVersionUID = -1139001443603556703L;
 
-    private static transient Logger logger = new Logger();
+    private transient Logger logger = new Logger();
 
+    private Tag tag;
+    private List<File> externalPictures;
+    private int duration;
+    private long bitrate;
+    private int frequency;
+    private long readTime;
+    private int stars;
     /** The file on disk. */
     private File file;
-    protected Tag tag;
-    private List<File> externalPictures;
-    protected long duration;
-    protected long bitrate;
-    protected int frequency;
-    protected long readTime;
-    private int stars = 0;
 
     /**
      * Instantiates a new audio file.
@@ -91,7 +91,7 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
         // Don't read from formats not supported by Jaudiotagger
         if (!isApeFile(file) && !isMPCFile(file)) {
             introspectTags();
-            readAudioProperties(this);
+            readAudioProperties();
         }
         this.readTime = System.currentTimeMillis();
     }
@@ -284,12 +284,12 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
      * @param audioFile
      *            the audio file
      */
-    private static void readAudioProperties(AudioFile audioFile) {
+    private void readAudioProperties() {
         try {
-            org.jaudiotagger.audio.AudioFile af = AudioFileIO.read(audioFile.getFile());
-            audioFile.duration = af.getAudioHeader().getTrackLength();
-            audioFile.bitrate = af.getAudioHeader().getBitRateAsNumber();
-            audioFile.frequency = af.getAudioHeader().getSampleRateAsNumber();
+            org.jaudiotagger.audio.AudioFile af = AudioFileIO.read(this.getFile());
+            duration = af.getAudioHeader().getTrackLength();
+            bitrate = af.getAudioHeader().getBitRateAsNumber();
+            frequency = af.getAudioHeader().getSampleRateAsNumber();
         } catch (Exception e) {
             logger.error(LogCategories.FILE_READ, e.getMessage());
         }
@@ -372,7 +372,7 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
     }
 
     @Override
-    public long getDuration() {
+    public int getDuration() {
         return duration;
     }
 
@@ -432,6 +432,7 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
      * 
      * @return
      */
+    @Override
     public String getComment() {
         if (tag != null && tag.getComment() != null) {
             return tag.getComment();
@@ -496,7 +497,7 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
     }
 
     @Override
-    public Integer getTrackNumber() {
+    public int getTrackNumber() {
         if (tag != null) {
             if (tag instanceof DefaultTag) {
                 return ((DefaultTag) tag).getTrackNumber() > 0 ? ((DefaultTag) tag).getTrackNumber() : 0;
@@ -652,7 +653,7 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
     }
 
     @Override
-    public Integer getDiscNumber() {
+    public int getDiscNumber() {
         if (tag != null && tag.getDiscNumber() >= 1) {
             return tag.getDiscNumber();
         }

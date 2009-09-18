@@ -36,7 +36,6 @@ import net.sourceforge.atunes.utils.StringUtils;
  * file or folder names
  * 
  * @author fleax
- * 
  */
 public abstract class AbstractPattern {
 
@@ -97,7 +96,7 @@ public abstract class AbstractPattern {
             patterns.add(new AbstractPattern('N', "TRACK", true, false) {
                 @Override
                 public String getAudioFileStringValue(AudioFile audioFile) {
-                    String track = audioFile.getTrackNumber().toString();
+                    String track = String.valueOf(audioFile.getTrackNumber());
                     return track.length() < 2 ? StringUtils.getString("0", track) : track;
                 }
             });
@@ -128,7 +127,7 @@ public abstract class AbstractPattern {
             patterns.add(new AbstractPattern('D', "DISC_NUMBER", true, true) {
                 @Override
                 public String getAudioFileStringValue(AudioFile audioFile) {
-                    return audioFile.getDiscNumber().toString();
+                    return String.valueOf(audioFile.getDiscNumber());
                 }
             });
         }

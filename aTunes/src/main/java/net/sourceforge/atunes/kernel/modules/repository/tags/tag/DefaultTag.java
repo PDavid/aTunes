@@ -98,7 +98,7 @@ public class DefaultTag extends Tag {
         setLyrics(tag.getFirst(org.jaudiotagger.tag.TagFieldKey.LYRICS));
         setComposer(tag.getFirst(org.jaudiotagger.tag.TagFieldKey.COMPOSER));
         setAlbumArtist(tag.getFirst(org.jaudiotagger.tag.TagFieldKey.ALBUM_ARTIST));
-        setInternalImage(tag.getArtworkList() != null && !tag.getArtworkList().isEmpty());
+        setInternalImage(tag.hasField(org.jaudiotagger.tag.TagFieldKey.COVER_ART.name()));
 
         // Disc Number
         String discNumberStr = tag.getFirst(TagFieldKey.DISC_NO);

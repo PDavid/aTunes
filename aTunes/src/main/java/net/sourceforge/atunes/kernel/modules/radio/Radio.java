@@ -160,7 +160,7 @@ public final class Radio implements AudioObject, Serializable, TreeObject, Compa
     }
 
     @Override
-    public long getDuration() {
+    public int getDuration() {
         return 0;
     }
 
@@ -207,7 +207,7 @@ public final class Radio implements AudioObject, Serializable, TreeObject, Compa
     }
 
     @Override
-    public Integer getTrackNumber() {
+    public int getTrackNumber() {
         return 0;
     }
 
@@ -406,8 +406,13 @@ public final class Radio implements AudioObject, Serializable, TreeObject, Compa
     }
 
     @Override
-    public Integer getDiscNumber() {
+    public int getDiscNumber() {
         return 0;
+    }
+
+    @Override
+    public String getComment() {
+        return "";
     }
 
     @Override

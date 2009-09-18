@@ -67,7 +67,7 @@ public interface AudioObject {
      * 
      * @return the duration
      */
-    public long getDuration();
+    public int getDuration();
 
     /**
      * Gets the frequency.
@@ -116,7 +116,7 @@ public interface AudioObject {
      * 
      * @return the track number
      */
-    public Integer getTrackNumber();
+    public int getTrackNumber();
 
     /**
      * Gets the url.
@@ -131,6 +131,13 @@ public interface AudioObject {
      * @return the year
      */
     public String getYear();
+
+    /**
+     * Gets the comment
+     * 
+     * @return the comment
+     */
+    public String getComment();
 
     /**
      * Sets the stars.
@@ -152,7 +159,7 @@ public interface AudioObject {
      * 
      * @return
      */
-    public Integer getDiscNumber();
+    public int getDiscNumber();
 
     /**
      * Returns a generic image for this audio object.

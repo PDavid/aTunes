@@ -26,9 +26,6 @@ import net.sourceforge.atunes.model.AudioObject;
 
 public class DiscNumberColumn extends Column {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = -6226391762384061708L;
 
     public DiscNumberColumn() {
@@ -40,7 +37,7 @@ public class DiscNumberColumn extends Column {
 
     @Override
     protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
-        return ao1.getDiscNumber().compareTo(ao2.getDiscNumber());
+        return Integer.valueOf(ao1.getDiscNumber()).compareTo(ao2.getDiscNumber());
     }
 
     @Override
