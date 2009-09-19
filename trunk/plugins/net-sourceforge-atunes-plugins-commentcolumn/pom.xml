@@ -1,53 +1,53 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<parent>
-		<artifactId>atunes-plugins</artifactId>
-		<groupId>net.sourceforge.atunes.plugins</groupId>
-		<version>0.1</version>
-	</parent>
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>net.sourceforge.atunes.plugins</groupId>
-	<artifactId>net-sourceforge-atunes-plugins-commentcolumn</artifactId>
-	<name>commentcolumn</name>
-	<version>0.1.0</version>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-					<archive>
-						<manifestSections>
-							<manifestSection>
-								<name>Comment Column</name>
-								<manifestEntries>
-									<Plugin-Class>net.sourceforge.atunes.plugins.columns.CommentColumn</Plugin-Class>
-									<Plugin-Author>aTunes Team</Plugin-Author>
-									<Plugin-Url>http://www.atunes.org</Plugin-Url>
-									<Plugin-Version>${version}</Plugin-Version>
-								</manifestEntries>
-							</manifestSection>
-						</manifestSections>
-					</archive>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<configuration>
-					<descriptors>
-						<descriptor>../src/main/assembly/bin.xml</descriptor>
-					</descriptors>
-				</configuration>
-				<executions>
-					<execution>
-						<id>make-assembly</id>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
+    <artifactId>atunes-plugins</artifactId>
+    <groupId>net.sourceforge.atunes.plugins</groupId>
+    <version>0.1</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>net.sourceforge.atunes.plugins</groupId>
+  <artifactId>net-sourceforge-atunes-plugins-commentcolumn</artifactId>
+  <name>Comment Column</name>
+  <version>0.1.0</version>
+  <build>
+  <plugins>
+	<plugin>
+ 	  <groupId>org.apache.maven.plugins</groupId>
+  	  <artifactId>maven-jar-plugin</artifactId>
+  	  <configuration>
+  	    <archive>
+          <manifestSections>            
+            <manifestSection>
+              <name>Comment Column</name>
+              <manifestEntries>
+                <Plugin-Class>net.sourceforge.atunes.plugins.columns.CommentColumn</Plugin-Class>
+                <Plugin-Author>aTunes Team</Plugin-Author>
+                <Plugin-Url>http://www.atunes.org</Plugin-Url>
+                <Plugin-Version>${version}</Plugin-Version>
+              </manifestEntries>
+            </manifestSection>
+          </manifestSections>
+        </archive>
+      </configuration>
+	</plugin>
+    <plugin>
+  	  <artifactId>maven-assembly-plugin</artifactId>
+  	  <configuration>
+  	    <descriptors>
+  	      <descriptor>../src/main/assembly/bin.xml</descriptor>
+  		</descriptors>
+  	    <appendAssemblyId>no</appendAssemblyId>
+  	  </configuration>
+  	  <executions>
+  	    <execution>
+  		  <id>make-assembly</id>
+  			<phase>package</phase>
+  			<goals>
+  			  <goal>single</goal>
+  			</goals>
+  		</execution>
+  	  </executions>
+  	</plugin>
+  </plugins>
+  </build>
 </project>
