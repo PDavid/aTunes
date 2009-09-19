@@ -33,6 +33,7 @@ aTunes 1.13.4
 - FIX: Images with alpha channel are displayed wrong
 - FIX: Windows 7 ready application icon
 - FIX: Too much memory needed when retrieving artist images from Last.fm with original size
+- FIX: Gui may freeze if audio files are on a remote storage device and the connection speed is slow
 
 aTunes 1.13.3
 -------------
