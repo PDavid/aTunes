@@ -31,15 +31,9 @@ import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-/**
- * The Class ContextTracksTableModel.
- */
 public class ContextTracksTableModel implements TableModel {
 
-    /** The album. */
     private AlbumInfo album;
-
-    /** The listeners. */
     private List<TableModelListener> listeners;
 
     /**
@@ -53,53 +47,26 @@ public class ContextTracksTableModel implements TableModel {
         listeners = new ArrayList<TableModelListener>();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * javax.swing.table.TableModel#addTableModelListener(javax.swing.event.
-     * TableModelListener)
-     */
     @Override
     public void addTableModelListener(TableModelListener l) {
         listeners.add(l);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.table.TableModel#getColumnClass(int)
-     */
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         return columnIndex == 0 ? Integer.class : String.class;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.table.TableModel#getColumnCount()
-     */
     @Override
     public int getColumnCount() {
         return 2;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.table.TableModel#getColumnName(int)
-     */
     @Override
     public String getColumnName(int columnIndex) {
         return columnIndex != 0 ? I18nUtils.getString("SONGS") : "";
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.table.TableModel#getRowCount()
-     */
     @Override
     public int getRowCount() {
         return album != null ? album.getTracks().size() : 0;
@@ -117,12 +84,6 @@ public class ContextTracksTableModel implements TableModel {
         return album != null ? album.getTracks().get(index) : null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.table.TableModel#getValueAt(int, int)
-     */
-
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         if (columnIndex == 0) {
@@ -131,32 +92,15 @@ public class ContextTracksTableModel implements TableModel {
         return album != null ? album.getTracks().get(rowIndex).getTitle() : "";
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.table.TableModel#isCellEditable(int, int)
-     */
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * javax.swing.table.TableModel#removeTableModelListener(javax.swing.event
-     * .TableModelListener)
-     */
     public void removeTableModelListener(TableModelListener l) {
         listeners.remove(l);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.table.TableModel#setValueAt(java.lang.Object, int, int)
-     */
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         // Nothing to do
     }
