@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui;
+package net.sourceforge.atunes.gui.frame;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -43,6 +43,7 @@ import javax.swing.JProgressBar;
 import javax.swing.Timer;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.views.bars.ToolBar;
 import net.sourceforge.atunes.gui.views.controls.CustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomFrame;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;

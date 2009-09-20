@@ -27,7 +27,7 @@ import java.util.Map;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.StandardFrame;
+import net.sourceforge.atunes.gui.frame.StandardFrame;
 import net.sourceforge.atunes.gui.views.controls.playList.ColumnBean;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;

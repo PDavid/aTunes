@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui;
+package net.sourceforge.atunes.gui.views.bars;
 
 import javax.swing.JButton;
 import javax.swing.JToggleButton;
@@ -35,38 +35,18 @@ import net.sourceforge.atunes.kernel.actions.ShowContextAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowStatsAction;
 
-/**
- * The Class ToolBar.
- */
 public class ToolBar extends JToolBar {
 
     private static final long serialVersionUID = 3146746580753998589L;
 
-    /** The select repository. */
     private JButton selectRepository;
-
-    /** The refresh repository. */
     private JButton refreshRepository;
-
-    /** The preferences. */
     private JButton preferences;
-
-    /** The show navigator. */
     private JToggleButton showNavigator;
-
-    /** The show file properties. */
     private JToggleButton showFileProperties;
-
-    /** The show audio scrobbler. */
     private JToggleButton showContext;
-
-    /** The stats. */
     private JButton stats;
-
-    /** The rip cd. */
     private JButton ripCD;
-
-    /** The search. */
     private JButton search;
 
     /**
@@ -133,21 +113,21 @@ public class ToolBar extends JToolBar {
     /**
      * @return the showNavigator
      */
-    JToggleButton getShowNavigator() {
+    public JToggleButton getShowNavigator() {
         return showNavigator;
     }
 
     /**
      * @return the showFileProperties
      */
-    JToggleButton getShowFileProperties() {
+    public JToggleButton getShowFileProperties() {
         return showFileProperties;
     }
 
     /**
      * @return the showContext
      */
-    JToggleButton getShowContext() {
+    public JToggleButton getShowContext() {
         return showContext;
     }
 

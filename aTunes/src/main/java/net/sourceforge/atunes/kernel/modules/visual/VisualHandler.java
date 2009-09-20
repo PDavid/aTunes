@@ -39,11 +39,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.Frame;
-import net.sourceforge.atunes.gui.MultipleFrame;
-import net.sourceforge.atunes.gui.StandardFrame;
-import net.sourceforge.atunes.gui.ToolBar;
+import net.sourceforge.atunes.gui.frame.Frame;
+import net.sourceforge.atunes.gui.frame.MultipleFrame;
+import net.sourceforge.atunes.gui.frame.StandardFrame;
 import net.sourceforge.atunes.gui.popup.FadingPopupFactory;
+import net.sourceforge.atunes.gui.views.bars.ToolBar;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListColumnSelector;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable.PlayState;

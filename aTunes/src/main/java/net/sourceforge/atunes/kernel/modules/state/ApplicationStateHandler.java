@@ -41,7 +41,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.StandardFrame;
+import net.sourceforge.atunes.gui.frame.StandardFrame;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.Kernel;
