@@ -25,6 +25,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 
 import javax.swing.JFrame;
+import javax.swing.JProgressBar;
 
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.menus.ApplicationMenuBar;
@@ -128,6 +129,12 @@ public interface Frame {
      * @return the tool bar
      */
     public ToolBar getToolBar();
+    
+    /**
+     * Gets the progress bar
+     * @return
+     */
+    public JProgressBar getProgressBar();
 
     /**
      * Checks if is visible.
@@ -251,16 +258,6 @@ public interface Frame {
      *            the show
      */
     public void showNavigationTable(boolean show);
-
-    /**
-     * Show progress bar.
-     * 
-     * @param visible
-     *            the visible
-     * @param tooltip
-     *            the tooltip
-     */
-    public void showProgressBar(boolean visible, String tooltip);
 
     /**
      * Show song properties.

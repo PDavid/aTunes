@@ -430,10 +430,10 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
      * 
      * @return the progress bar
      */
-    private JProgressBar getProgressBar() {
+    @Override
+    public JProgressBar getProgressBar() {
         if (progressBar == null) {
             progressBar = new JProgressBar();
-            progressBar.setIndeterminate(true);
             progressBar.setBorder(BorderFactory.createEmptyBorder());
         }
         return progressBar;
@@ -486,6 +486,8 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
             statusBar.add(getCenterStatusBar(), c);
             c = new JXStatusBar.Constraint(JXStatusBar.Constraint.ResizeBehavior.FILL);
             statusBar.add(getRightStatusBar(), c);
+            c = new JXStatusBar.Constraint(JXStatusBar.Constraint.ResizeBehavior.FIXED);
+            statusBar.add(getProgressBar(), c);
         }
         return statusBar;
     }
@@ -705,19 +707,6 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
             ApplicationState.getInstance().setLeftHorizontalSplitPaneDividerLocation(getNavigationPanel().getSplitPane().getDividerLocation());
             getNavigationPanel().getSplitPane().setDividerSize(0);
         }
-    }
-
-    @Override
-    public void showProgressBar(boolean visible, String tooltip) {
-        if (visible) {
-            JXStatusBar.Constraint c = new JXStatusBar.Constraint(JXStatusBar.Constraint.ResizeBehavior.FIXED);
-            statusBar.add(getProgressBar(), c);
-        } else {
-            statusBar.remove(getProgressBar());
-        }
-        getProgressBar().setToolTipText(tooltip);
-        getProgressBar().setVisible(visible);
-        statusBar.validate();
     }
 
     @Override

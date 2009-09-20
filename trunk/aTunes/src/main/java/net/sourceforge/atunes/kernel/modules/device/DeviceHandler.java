@@ -77,7 +77,6 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
     private static DeviceHandler instance = new DeviceHandler();
 
     private Repository deviceRepository;
-    private Repository tempDeviceRepository;
     private RepositoryLoader currentLoader;
     private File devicePath;
     /**
@@ -455,7 +454,7 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
      */
     private void notifyDeviceReload(RepositoryLoader loader) {
         if (ControllerProxy.getInstance().getNavigationController() != null) {
-            VisualHandler.getInstance().showProgressBar(false, null);
+            VisualHandler.getInstance().hideProgressBar();
             ControllerProxy.getInstance().getNavigationController().notifyDeviceReload();
 
             Actions.getAction(ConnectDeviceAction.class).setEnabled(loader == null);
@@ -488,7 +487,6 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
 
     @Override
     public void notifyFinishRead(RepositoryLoader loader) {
-        deviceRepository = loader.getRepository();
         getLogger().info(LogCategories.REPOSITORY, "Device read");
         notifyDeviceReload(loader);
 
@@ -513,11 +511,6 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
 
     @Override
     public void notifyFinishRefresh(RepositoryLoader loader) {
-        if (loader != null) {
-            tempDeviceRepository = loader.getRepository();
-        }
-        deviceRepository = tempDeviceRepository;
-        tempDeviceRepository = null;
         notifyDeviceReload(loader);
 
         // Enable action to copy to device
@@ -529,6 +522,11 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
     public void notifyRemainingTime(long time) {
         // Nothing to do
     }
+    
+    @Override
+    public void notifyReadProgress() {
+        // Nothing to do
+    }
 
     /**
      * Refresh device.
@@ -536,9 +534,10 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
     public void refreshDevice() {
         VisualHandler.getInstance().showProgressBar(true, null);
         getLogger().info(LogCategories.REPOSITORY, "Refreshing device");
-        currentLoader = new RepositoryLoader(deviceRepository.getFolders(), true);
+        Repository oldDeviceRepository = deviceRepository;
+        deviceRepository = new Repository(oldDeviceRepository.getFolders());
+        currentLoader = new RepositoryLoader(oldDeviceRepository.getFolders(), oldDeviceRepository, deviceRepository, true);
         currentLoader.addRepositoryLoaderListener(this);
-        currentLoader.setOldRepository(deviceRepository);
         currentLoader.start();
     }
 
@@ -567,7 +566,8 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
 
         List<File> folders = new ArrayList<File>();
         folders.add(path);
-        currentLoader = new RepositoryLoader(folders, false);
+        deviceRepository = new Repository(folders);
+        currentLoader = new RepositoryLoader(folders, null, deviceRepository, false);
         currentLoader.addRepositoryLoaderListener(this);
         currentLoader.start();
     }
