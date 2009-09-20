@@ -115,6 +115,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
     private MouseListener progressBarMouseAdapter = new MouseAdapter() {
     	public void mouseClicked(java.awt.event.MouseEvent e) {
 			backgroundLoad = false;
+			currentLoader.setPriority(Thread.MAX_PRIORITY);
 			VisualHandler.getInstance().hideProgressBar();
 			if (progressDialog != null) {
 				progressDialog.showProgressDialog();
