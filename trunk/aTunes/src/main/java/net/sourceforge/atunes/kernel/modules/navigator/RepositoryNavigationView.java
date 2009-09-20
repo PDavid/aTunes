@@ -80,7 +80,7 @@ import org.jvnet.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
 
 public class RepositoryNavigationView extends NavigationView {
 
-    private static JTree tree;
+    private JTree tree;
 
     private JPopupMenu treePopupMenu;
 
