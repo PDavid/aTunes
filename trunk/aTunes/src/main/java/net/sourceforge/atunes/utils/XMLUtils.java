@@ -221,7 +221,7 @@ public final class XMLUtils {
      *         couldn't be parsed
      */
     public static Document getXMLDocument(String xml) {
-        if ((null != xml) && (xml.length() != 0)) {
+        if ((null != xml) && (!xml.isEmpty())) {
             try {
                 DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
                 return parser.parse(new InputSource(new StringReader(xml)));
