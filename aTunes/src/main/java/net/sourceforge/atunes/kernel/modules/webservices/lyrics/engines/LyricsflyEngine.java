@@ -96,11 +96,15 @@ public class LyricsflyEngine extends LyricsEngine {
     }
 
     private String extractStatus(Document xmlDocument) {
-        String status = XMLUtils.evaluateXPathExpressionAndReturnString("//status/text()", xmlDocument);
-        if (status != null) {
-            status = status.trim();
+        if (xmlDocument == null) {
+            return "-1";
+        } else {
+            String status = XMLUtils.evaluateXPathExpressionAndReturnString("//status/text()", xmlDocument);
+            if (status != null) {
+                status = status.trim();
+            }
+            return status;
         }
-        return status;
     }
 
     private String getUrl(String artist, String title) throws GeneralSecurityException, IOException {

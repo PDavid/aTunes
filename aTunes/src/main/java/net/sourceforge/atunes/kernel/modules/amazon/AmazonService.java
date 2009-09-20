@@ -89,7 +89,11 @@ public class AmazonService implements ApplicationStateChangeListener {
             String urlString = searchURL.replace(ARTIST_WILDCARD, NetworkUtils.encodeString(artist)).replace(ALBUM_WILDCARD, NetworkUtils.encodeString(album));
             // read xml
             Document xml = XMLUtils.getXMLDocument(NetworkUtils.readURL(NetworkUtils.getConnection(urlString, proxy)));
-            return AmazonAlbum.getAlbum(xml);
+            if (xml == null) {
+                return null;
+            } else {
+                return AmazonAlbum.getAlbum(xml);
+            }
         } catch (Exception e) {
             getLogger().internalError(e);
         }

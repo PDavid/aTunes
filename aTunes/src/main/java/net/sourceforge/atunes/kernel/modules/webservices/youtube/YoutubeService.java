@@ -139,8 +139,12 @@ public class YoutubeService {
             //get the XML dom; very very nice API, I like it.		
             Document xml = XMLUtils.getXMLDocument(NetworkUtils.readURL(NetworkUtils.getConnection(url, proxy)));
 
-            // parse xml and construct result structure
-            return analyzeResultXml(startIndex, xml);
+            if (xml == null) {
+                return Collections.emptyList();
+            } else {
+                // parse xml and construct result structure
+                return analyzeResultXml(startIndex, xml);
+            }
         } catch (Exception e) {
             logger.error(LogCategories.SERVICE, e);
         }
@@ -255,9 +259,12 @@ public class YoutubeService {
         }
 
         // Add processed title
-        // Titles often contain chars between parentheses, brackets, etc.
-        // In this cases search at YouTube can have no results as search string contains information that does not match any video
-        // So remove this chars and its content
+        /*
+         * Titles often contain chars between parentheses, brackets, etc. In
+         * this cases search at YouTube can have no results as search string
+         * contains information that does not match any video. So remove this
+         * chars and its content
+         */
         String title = ao.getTitle();
         if (title != null && !title.trim().equals("")) {
             // Remove () {} []
@@ -266,7 +273,7 @@ public class YoutubeService {
             title = title.replaceAll("\\[.*\\]", "");
 
             // ... but if we replaced all title then use original string as maybe we have removed too much ;)
-            if (title.trim().equals("")) {
+            if (title.trim().isEmpty()) {
                 title = ao.getTitle();
             }
 
