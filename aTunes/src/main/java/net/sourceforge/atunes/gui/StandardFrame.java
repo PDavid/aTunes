@@ -247,6 +247,9 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
 
     @Override
     public ApplicationMenuBar getAppMenuBar() {
+        if (appMenuBar == null) {
+            appMenuBar = new ApplicationMenuBar();
+        }
         return appMenuBar;
     }
 
@@ -288,8 +291,7 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
         leftVerticalSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 
         // Create menu bar
-        appMenuBar = new ApplicationMenuBar();
-        setJMenuBar(appMenuBar);
+        setJMenuBar(getAppMenuBar());
 
         GridBagConstraints c = new GridBagConstraints();
 
@@ -339,11 +341,9 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
             rightVerticalSplitPane.setResizeWeight(0.2);
         }
 
-        toolBar = new ToolBar();
-
         c.gridx = 0;
         c.gridy = 0;
-        panel.add(toolBar, c);
+        panel.add(getToolBar(), c);
 
         c.gridx = 0;
         c.gridy = 1;
@@ -537,6 +537,9 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
 
     @Override
     public ToolBar getToolBar() {
+        if (toolBar == null) {
+            toolBar = new ToolBar();
+        }
         return toolBar;
     }
 
