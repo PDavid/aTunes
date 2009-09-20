@@ -38,12 +38,12 @@ import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.modules.updates.ApplicationVersion;
 
 /**
- * The Interface Frame.
+ * The interface for all frames
  */
 public interface Frame {
 
     /**
-     * Creates the.
+     * Creates the frame.
      */
     public void create();
 
