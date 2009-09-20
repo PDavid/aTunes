@@ -22,6 +22,7 @@ package net.sourceforge.atunes.gui.images;
 
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.ImageIcon;
 
@@ -180,7 +181,7 @@ public class ImageLoader {
     /**
      * cache of images
      */
-    private static HashMap<String, ImageIcon> images = new HashMap<String, ImageIcon>();
+    private static Map<String, ImageIcon> images = new HashMap<String, ImageIcon>();
 
     /**
      * Returns an image.
