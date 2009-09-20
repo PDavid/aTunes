@@ -124,7 +124,7 @@ public class Repository implements Serializable {
      * @return the folders
      */
     public List<File> getFolders() {
-        return folders;
+        return new ArrayList<File>(folders);
     }
 
     /**

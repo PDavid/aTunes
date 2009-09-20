@@ -39,6 +39,7 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.Timer;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
@@ -367,8 +368,9 @@ public class MultipleFrame implements Frame {
     }
 
     @Override
-    public void showProgressBar(boolean visible, String tooltip) {
+    public JProgressBar getProgressBar() {
         // Nothing to do
+    	return null;
     }
 
     @Override

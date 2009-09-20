@@ -20,10 +20,11 @@
 
 package net.sourceforge.atunes.gui.views.dialogs;
 
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -38,6 +39,7 @@ import javax.swing.WindowConstants;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
+import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -77,6 +79,9 @@ public class RepositoryProgressDialog extends CustomModalDialog {
 
     /** The cancel button. */
     private JButton cancelButton;
+    
+    /** The background button */
+    private JButton backgroundButton;
 
     /** The listener. */
     private MouseListener listener = new MouseListener() {
@@ -116,6 +121,7 @@ public class RepositoryProgressDialog extends CustomModalDialog {
         super(parent, 400, 150, false);
         setContent(getContent());
         GuiUtils.applyComponentOrientation(this);
+        backgroundButton.setVisible(false);
         cancelButton.setVisible(false);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
     }
@@ -139,32 +145,10 @@ public class RepositoryProgressDialog extends CustomModalDialog {
     }
 
     /**
-     * Clear.
-     */
-    private void clear() {
-        getLabel().setText(StringUtils.getString(I18nUtils.getString("LOADING"), "..."));
-        getFolderLabel().setText(" ");
-        getProgressBar().setValue(0);
-        getProgressLabel().setText("");
-        getTotalFilesLabel().setText("");
-        getProgressBar().setIndeterminate(true);
-        getRemainingTimeLabel().setText(" ");
-    }
-
-    /**
      * Deactivate glass pane.
      */
     public void deactivateGlassPane() {
         ((JFrame) getParent()).getGlassPane().removeMouseListener(listener);
-    }
-
-    /**
-     * Gets the cancel button.
-     * 
-     * @return the cancel button
-     */
-    public JButton getCancelButton() {
-        return cancelButton;
     }
 
     /**
@@ -176,23 +160,31 @@ public class RepositoryProgressDialog extends CustomModalDialog {
         JPanel panel = new JPanel(new GridBagLayout());
         pictureLabel = new JLabel(ImageLoader.getImage(ImageLoader.APP_ICON_BIG));
         label = new JLabel(StringUtils.getString(I18nUtils.getString("LOADING"), "..."));
-        Font f = label.getFont().deriveFont(Font.PLAIN);
-        label.setFont(f);
         progressLabel = new JLabel();
-        progressLabel.setFont(f);
         separatorLabel = new JLabel(" / ");
-        separatorLabel.setFont(f);
         totalFilesLabel = new JLabel();
-        totalFilesLabel.setFont(f);
         progressBar = new JProgressBar();
-        progressBar.setIndeterminate(true);
         progressBar.setBorder(BorderFactory.createEmptyBorder());
         folderLabel = new JLabel(" ");
-        folderLabel.setFont(f);
         remainingTimeLabel = new JLabel(" ");
-        remainingTimeLabel.setFont(f);
+        backgroundButton = new CustomButton(null, I18nUtils.getString("DO_IN_BACKGROUND"));
+        backgroundButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				RepositoryHandler.getInstance().doInBackground();
+			}
+		});
         cancelButton = new CustomButton(null, I18nUtils.getString("CANCEL"));
-        cancelButton.setFont(f);
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                RepositoryHandler.getInstance().notifyCancel();
+            }
+        });
+
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.add(backgroundButton);
+        buttonsPanel.add(cancelButton);
 
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
@@ -239,7 +231,7 @@ public class RepositoryProgressDialog extends CustomModalDialog {
         c.gridy = 4;
         c.fill = GridBagConstraints.NONE;
         c.anchor = GridBagConstraints.CENTER;
-        panel.add(cancelButton, c);
+        panel.add(buttonsPanel, c);
         return panel;
     }
 
@@ -298,23 +290,25 @@ public class RepositoryProgressDialog extends CustomModalDialog {
     }
 
     /**
-     * Sets the cancel button enabled.
+     * Enable buttons
      * 
      * @param enabled
-     *            the new cancel button enabled
+     *           
      */
-    public void setCancelButtonEnabled(boolean enabled) {
+    public void setButtonsEnabled(boolean enabled) {
         cancelButton.setEnabled(enabled);
+        backgroundButton.setEnabled(enabled);
     }
 
     /**
-     * Sets the cancel button visible.
+     * Show buttons
      * 
      * @param visible
-     *            the new cancel button visible
+     *            
      */
-    public void setCancelButtonVisible(boolean visible) {
+    public void setButtonsVisible(boolean visible) {
         cancelButton.setVisible(visible);
+        backgroundButton.setVisible(visible);
     }
 
     /*
@@ -326,8 +320,20 @@ public class RepositoryProgressDialog extends CustomModalDialog {
     public void setVisible(final boolean b) {
         setLocationRelativeTo(getParent());
         super.setVisible(b);
-
-        clear();
     }
 
+    public void showProgressDialog() {
+    	setTitle(I18nUtils.getString("PLEASE_WAIT"));
+        setVisible(true);
+        activateGlassPane();
+        setButtonsVisible(true);
+        setButtonsEnabled(true);
+    }
+    
+    public void hideProgressDialog() {
+		setVisible(false);
+		deactivateGlassPane();
+//		setButtonsVisible(false);
+//		setButtonsEnabled(true);
+    }
 }

@@ -72,10 +72,11 @@ public class RepositoryLoader extends Thread {
      * @param refresh
      *            the refresh
      */
-    public RepositoryLoader(List<File> folders, boolean refresh) {
+    public RepositoryLoader(List<File> folders, Repository oldRepository, Repository repository, boolean refresh) {
         this.refresh = refresh;
         this.folders = folders;
-        repository = new Repository(folders);
+        this.oldRepository = oldRepository;
+        this.repository = repository;
         setPriority(Thread.MAX_PRIORITY);
     }
 
@@ -702,15 +703,6 @@ public class RepositoryLoader extends Thread {
     }
 
     /**
-     * Gets the repository.
-     * 
-     * @return the repository
-     */
-    public Repository getRepository() {
-        return repository;
-    }
-
-    /**
      * Interrupt load.
      */
     public void interruptLoad() {
@@ -852,6 +844,14 @@ public class RepositoryLoader extends Thread {
                                     listener.notifyRemainingTime(remainingTime);
                                 }
                             });
+                            if (!refresh) {
+                            	SwingUtilities.invokeLater(new Runnable() {
+                            		@Override
+                            		public void run() {
+                            			listener.notifyReadProgress();
+                            		}
+                            	});
+                            }
                         }
                     }
                 }
@@ -908,13 +908,10 @@ public class RepositoryLoader extends Thread {
         }
     }
 
-    /**
-     * Sets the old repository.
-     * 
-     * @param oldRepository
-     *            the oldRepository to set
-     */
-    public void setOldRepository(Repository oldRepository) {
-        this.oldRepository = oldRepository;
-    }
+	/**
+	 * @return the oldRepository
+	 */
+	protected Repository getOldRepository() {
+		return oldRepository;
+	}
 }

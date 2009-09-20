@@ -33,6 +33,7 @@ import javax.swing.Action;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
@@ -119,7 +120,6 @@ public final class VisualHandler extends Handler implements PlaybackStateListene
 
     Frame frame;
     private OSDDialog osdDialog;
-    private RepositoryProgressDialog progressDialog;
     private EditTagDialog editTagDialog;
     private ExportOptionsDialog exportDialog;
     private StatsDialog statsDialog;
@@ -393,21 +393,12 @@ public final class VisualHandler extends Handler implements PlaybackStateListene
     }
 
     /**
-     * Gets the progress dialog.
+     * Gets a progress dialog for repository load
      * 
      * @return the progress dialog
      */
     public RepositoryProgressDialog getProgressDialog() {
-        if (progressDialog == null) {
-            progressDialog = new RepositoryProgressDialog(frame.getFrame());
-            progressDialog.getCancelButton().addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    RepositoryHandler.getInstance().notifyCancel();
-                }
-            });
-        }
-        return progressDialog;
+        return new RepositoryProgressDialog(frame.getFrame());
     }
 
     /**
@@ -1086,17 +1077,13 @@ public final class VisualHandler extends Handler implements PlaybackStateListene
     }
 
     /**
-     * Show progress bar.
-     * 
-     * @param show
-     *            the show
-     * @param tooltip
-     *            the tooltip
+     * Returns progress bar
+     * @return
      */
-    public void showProgressBar(boolean show, String tooltip) {
-        frame.showProgressBar(show, tooltip);
+    public JProgressBar getProgressBar() {
+    	return frame.getProgressBar();
     }
-
+    
     /**
      * Show properties dialog.
      * 
@@ -1215,6 +1202,32 @@ public final class VisualHandler extends Handler implements PlaybackStateListene
         frame.showToolBar(show);
         repaint();
     }
+    
+    /**
+     * Sets progress bar visible and with given tooltip
+     * @param indeterminate
+     * @param text
+     */
+    public void showProgressBar(boolean indeterminate, String text) {
+    	if (frame.getProgressBar() != null) {
+    		frame.getProgressBar().setVisible(true);
+    		frame.getProgressBar().setIndeterminate(indeterminate);
+    		if (!indeterminate) {
+    			frame.getProgressBar().setMinimum(0);
+    			frame.getProgressBar().setValue(0);
+    		}
+    		frame.getProgressBar().setToolTipText(text);
+    	}
+    }
+    
+    /**
+     * Hides progress bar
+     */
+    public void hideProgressBar() {
+    	if (frame.getProgressBar() != null) {
+    		frame.getProgressBar().setVisible(false);
+    	}
+    }
 
     /**
      * Start visualization.
@@ -1235,7 +1248,7 @@ public final class VisualHandler extends Handler implements PlaybackStateListene
 
         new PlayListToDeviceDragAndDropListener();
 
-        showProgressBar(false, null);
+        getProgressBar().setVisible(false);
         hideDeviceInfoOnStatusBar();
 
         //SwingUtilities.updateComponentTreeUI(getFrame().getFrame());
