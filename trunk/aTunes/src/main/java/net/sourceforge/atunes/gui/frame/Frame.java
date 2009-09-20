@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui;
+package net.sourceforge.atunes.gui.frame;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -27,6 +27,7 @@ import java.awt.Point;
 import javax.swing.JFrame;
 import javax.swing.JProgressBar;
 
+import net.sourceforge.atunes.gui.views.bars.ToolBar;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.menus.ApplicationMenuBar;
 import net.sourceforge.atunes.gui.views.panels.AudioObjectPropertiesPanel;

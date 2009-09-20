@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui;
+package net.sourceforge.atunes.gui.frame;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -47,7 +47,9 @@ import javax.swing.JProgressBar;
 import javax.swing.JSplitPane;
 import javax.swing.Timer;
 
+import net.sourceforge.atunes.gui.OSXAdapter;
 import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.views.bars.ToolBar;
 import net.sourceforge.atunes.gui.views.controls.CustomFrame;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.dialogs.UpdateDialog;
@@ -74,7 +76,7 @@ import org.jdesktop.swingx.JXStatusBar;
 /**
  * The standard frame
  */
-public class StandardFrame extends CustomFrame implements net.sourceforge.atunes.gui.Frame {
+public class StandardFrame extends CustomFrame implements net.sourceforge.atunes.gui.frame.Frame {
 
     private static final long serialVersionUID = 1L;
 
