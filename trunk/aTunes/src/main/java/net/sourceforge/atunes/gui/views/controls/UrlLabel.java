@@ -26,9 +26,6 @@ import javax.swing.UIManager;
 
 import org.jdesktop.swingx.JXHyperlink;
 
-/**
- * The Class UrlLabel.
- */
 public class UrlLabel extends JXHyperlink {
 
     private static final long serialVersionUID = -8368596300673361747L;
