@@ -301,6 +301,9 @@ public class PluginsPanel extends PreferencesPanel {
             }
         } catch (PluginSystemException e) {
             logger.error(LogCategories.PLUGINS, e);
+            if (e.getCause() != null) {
+            	logger.error(LogCategories.PLUGINS, e.getCause());
+            }
         }
         return restartNeeded;
     }
