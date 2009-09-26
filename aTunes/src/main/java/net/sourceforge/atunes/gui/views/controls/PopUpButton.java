@@ -36,7 +36,7 @@ import javax.swing.JSeparator;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
- * The Class PopUpButton.
+ * A button with a popup menu.
  * 
  * @author fleax
  */
@@ -44,34 +44,16 @@ public class PopUpButton extends JButton {
 
     private static final long serialVersionUID = 5193978267971626102L;
 
-    /** The Constant TOP_LEFT. */
     public static final int TOP_LEFT = 0;
-
-    /** The Constant TOP_RIGHT. */
     public static final int TOP_RIGHT = 1;
-
-    /** The Constant BOTTOM_LEFT. */
     public static final int BOTTOM_LEFT = 3;
-
-    /** The Constant BOTTOM_RIGHT. */
     public static final int BOTTOM_RIGHT = 4;
 
-    /** The menu. */
     JPopupMenu menu;
-
-    /** The object. */
     PopUpButton object;
-
-    /** The location. */
     private int location;
-
-    /** The x location. */
     int xLocation;
-
-    /** The y location. */
     int yLocation;
-
-    /** The items. */
     private List<Component> items = new ArrayList<Component>();
 
     /**
@@ -118,11 +100,6 @@ public class PopUpButton extends JButton {
         GuiUtils.applyComponentOrientation(menu);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.awt.Container#add(java.awt.Component)
-     */
     @Override
     public Component add(Component item) {
         if (!(item instanceof JSeparator)) {

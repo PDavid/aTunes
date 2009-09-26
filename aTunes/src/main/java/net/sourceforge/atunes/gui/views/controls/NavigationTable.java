@@ -36,14 +36,10 @@ import javax.swing.table.TableModel;
 
 import net.sourceforge.atunes.gui.model.TransferableList;
 
-/**
- * The Class DragSourceTable.
- */
 public class NavigationTable extends JTable implements DragSourceListener, DragGestureListener {
 
     private static final long serialVersionUID = -607346309523708685L;
 
-    /** The drag source. */
     private DragSource dragSource;
 
     /**
@@ -66,47 +62,20 @@ public class NavigationTable extends JTable implements DragSourceListener, DragG
         setModel(model);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * java.awt.dnd.DragSourceListener#dragDropEnd(java.awt.dnd.DragSourceDropEvent
-     * )
-     */
     @Override
     public void dragDropEnd(DragSourceDropEvent dsde) {
         // Nothing to do
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * java.awt.dnd.DragSourceListener#dragEnter(java.awt.dnd.DragSourceDragEvent
-     * )
-     */
     @Override
     public void dragEnter(DragSourceDragEvent dsde) {
         // Nothing to do
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * java.awt.dnd.DragSourceListener#dragExit(java.awt.dnd.DragSourceEvent)
-     */
     @Override
     public void dragExit(DragSourceEvent dse) {
         // Nothing to do
     }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @seejava.awt.dnd.DragGestureListener#dragGestureRecognized(java.awt.dnd.
-     * DragGestureEvent)
-     */
 
     @Override
     public void dragGestureRecognized(DragGestureEvent dge) {
@@ -119,24 +88,11 @@ public class NavigationTable extends JTable implements DragSourceListener, DragG
         dragSource.startDrag(dge, DragSource.DefaultCopyDrop, items, this);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * java.awt.dnd.DragSourceListener#dragOver(java.awt.dnd.DragSourceDragEvent
-     * )
-     */
     @Override
     public void dragOver(DragSourceDragEvent dsde) {
         // Nothing to do
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seejava.awt.dnd.DragSourceListener#dropActionChanged(java.awt.dnd.
-     * DragSourceDragEvent)
-     */
     @Override
     public void dropActionChanged(DragSourceDragEvent dsde) {
         // Nothing to do
