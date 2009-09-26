@@ -94,6 +94,9 @@ public class PluginsHandler extends Handler implements PluginListener {
             getLogger().info(LogCategories.PLUGINS, StringUtils.getString("Found ", plugins, " plugins (", t.stop(), " seconds)"));            
         } catch (PluginSystemException e) {
             getLogger().error(LogCategories.PLUGINS, e);
+            if (e.getCause() != null) {
+            	getLogger().error(LogCategories.PLUGINS, e.getCause());
+            }
         }
     }
     
@@ -229,6 +232,9 @@ public class PluginsHandler extends Handler implements PluginListener {
             throw e;
         } catch (PluginSystemException e) {
             getLogger().error(LogCategories.PLUGINS, e);
+            if (e.getCause() != null) {
+            	getLogger().error(LogCategories.PLUGINS, e.getCause());
+            }
             throw e;
         }
     }
@@ -252,6 +258,9 @@ public class PluginsHandler extends Handler implements PluginListener {
                 throw e;
             } catch (PluginSystemException e) {
                 getLogger().error(LogCategories.PLUGINS, e);
+                if (e.getCause() != null) {
+                	getLogger().error(LogCategories.PLUGINS, e.getCause());
+                }
                 throw e;
             }
         }
@@ -272,6 +281,9 @@ public class PluginsHandler extends Handler implements PluginListener {
             }
         } catch (PluginSystemException e) {
             getLogger().error(LogCategories.PLUGINS, e);
+            if (e.getCause() != null) {
+            	getLogger().error(LogCategories.PLUGINS, e.getCause());
+            }
         }
     }
 
