@@ -1,5 +1,5 @@
 /*
- * aTunes 1.14.0
+ * aTunes 2.0.0
  * Copyright (C) 2006-2009 Alex Aranda, Sylvain Gaudard, Thomas Beckers and contributors
  *
  * See http://www.atunes.org/wiki/index.php?title=Contributing for information about contributors
@@ -17,7 +17,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package net.sourceforge.atunes.kernel.controllers.model;
 
 import javax.swing.JPanel;
