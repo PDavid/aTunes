@@ -157,4 +157,8 @@ public final class LookAndFeelSelector {
             logger.internalError(e);
         }
     }
+    
+    public static String getClassNameForLookAndFeelName(String lookAndFeelName){
+        return skins.get(lookAndFeelName);
+    }
 }
