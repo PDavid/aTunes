@@ -45,9 +45,6 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 
-/**
- * The Class EditPreferencesDialogController.
- */
 public class EditPreferencesDialogController extends DialogController<EditPreferencesDialog> {
 
     /** The panels. */

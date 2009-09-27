@@ -154,7 +154,9 @@ public class GeneralPanel extends PreferencesPanel {
             public void actionPerformed(ActionEvent e) {
                 String selectedTheme = (String) theme.getSelectedItem();
                 themePreview.setIcon(ThemePreviewLoader.getImage(selectedTheme));
-                GuiUtils.applyTheme(selectedTheme);
+                if (!LookAndFeelSelector.getClassNameForLookAndFeelName(selectedTheme).equals(UIManager.getLookAndFeel().getClass().getName())) {
+                    GuiUtils.applyTheme(selectedTheme);
+                }
             }
 
         });
