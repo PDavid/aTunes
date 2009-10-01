@@ -74,13 +74,6 @@ public class ButtonTabComponent extends JPanel {
             //setIcon(ImageLoader.CLOSE_TAB);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent
-         * )
-         */
         @Override
         public void actionPerformed(ActionEvent e) {
             int i = pane.indexOfTabComponent(ButtonTabComponent.this);
@@ -90,11 +83,6 @@ public class ButtonTabComponent extends JPanel {
         }
 
         // paint the cross
-        /*
-         * (non-Javadoc)
-         * 
-         * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
-         */
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
@@ -108,11 +96,6 @@ public class ButtonTabComponent extends JPanel {
         }
 
         // we don't want to update UI for this button
-        /*
-         * (non-Javadoc)
-         * 
-         * @see javax.swing.JButton#updateUI()
-         */
         @Override
         public void updateUI() {
             // Nothing to do
