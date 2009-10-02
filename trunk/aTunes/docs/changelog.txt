@@ -22,6 +22,7 @@
 - Gui theme can be changed without restart
 - Allow repository load in background
 - Allow reordering of playlist tabs
+- Cover navigator window should be resizable
 - INTERNAL: Avoid unnecessary refresh view operations
 - INTERNAL: Share actions between play list and navigation tree and table
 - INTERNAL: Refactoring of play list

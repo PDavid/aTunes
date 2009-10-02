@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.controllers.coverNavigator;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -57,19 +56,16 @@ import org.jdesktop.swingx.border.DropShadowBorder;
 public class CoverNavigatorController extends FrameController<CoverNavigatorFrame> {
 
     private static final int COVER_PANEL_WIDTH = Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize() + 20;
-
     private static final int COVER_PANEL_HEIGHT = Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize() + 40;
 
     private static class IntermediateResult {
 
         private Album album;
         private ImageIcon cover;
-        private GridBagConstraints gridBagConstraints;
 
-        public IntermediateResult(Album album, ImageIcon cover, GridBagConstraints gridBagConstraints) {
+        public IntermediateResult(Album album, ImageIcon cover) {
             this.album = album;
             this.cover = cover;
-            this.gridBagConstraints = gridBagConstraints;
         }
 
         public Album getAlbum() {
@@ -80,9 +76,6 @@ public class CoverNavigatorController extends FrameController<CoverNavigatorFram
             return cover;
         }
 
-        public GridBagConstraints getGridBagConstraints() {
-            return gridBagConstraints;
-        }
     }
 
     /**
@@ -211,34 +204,11 @@ public class CoverNavigatorController extends FrameController<CoverNavigatorFram
                 final List<Album> albums = new ArrayList<Album>(artistSelected.getAlbums().values());
                 Collections.sort(albums);
 
-                int colNumber = getFrameControlled().getCoversScrollPaneWidth() / COVER_PANEL_WIDTH;
-
-                int coversOfLastRow = albums.size() % colNumber;
-                if (coversOfLastRow == 0) {
-                    coversOfLastRow = colNumber;
-                }
                 int coversAdded = 0;
-                GridBagConstraints c = new GridBagConstraints();
-                c.gridx = 0;
-                c.gridy = 0;
                 for (Album album : albums) {
-                    if (coversAdded == albums.size() - coversOfLastRow) {
-                        c.weighty = 1;
-                        c.fill = GridBagConstraints.BOTH;
-                    }
-                    if (albums.size() < colNumber && coversAdded == albums.size() - 1) {
-                        c.weightx = 1;
-                        c.fill = GridBagConstraints.NONE;
-                        c.anchor = GridBagConstraints.NORTHWEST;
-                    }
                     ImageIcon cover = album.getPicture(Constants.COVER_NAVIGATOR_IMAGE_SIZE);
-                    publish(new IntermediateResult(album, cover, (GridBagConstraints) c.clone()));
+                    publish(new IntermediateResult(album, cover));
                     coversAdded++;
-                    c.gridx++;
-                    if (c.gridx == colNumber) {
-                        c.gridx = 0;
-                        c.gridy++;
-                    }
                 }
                 return null;
             }
@@ -253,10 +223,10 @@ public class CoverNavigatorController extends FrameController<CoverNavigatorFram
             @Override
             protected void process(List<IntermediateResult> intermediateResults) {
                 for (IntermediateResult intermediateResult : intermediateResults) {
-                    getFrameControlled().getCoversPanel().add(getPanelForAlbum(intermediateResult.getAlbum(), intermediateResult.getCover()),
-                            intermediateResult.getGridBagConstraints());
+                    getFrameControlled().getCoversPanel().add(getPanelForAlbum(intermediateResult.getAlbum(), intermediateResult.getCover()));
                     getFrameControlled().getCoversPanel().revalidate();
                     getFrameControlled().getCoversPanel().repaint();
+                    getFrameControlled().getCoversPanel().validate();
                 }
             }
         };
