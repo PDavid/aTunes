@@ -122,7 +122,17 @@ public class LyricWikiEngine extends LyricsEngine {
         List<Element> elements = source.getAllElements(LYRICS_ELEMENT);
         for (Element element : elements) {
             if (LYRICS_ELEMENT_ATTRIBUTE_VALUE.equals(element.getAttributeValue(LYRICS_ELEMENT_ATTRIBUTE))) {
+            	// Get all content
                 lyrics = element.getRenderer().toString();
+            	List<Element> subElements = element.getChildElements();
+            	for (Element element2 : subElements) {
+            		// Remove ring tones links
+            		// element toString is slightly different from main element toString (it contains a white space after ">" so
+            		// in order to remove ocurrences from main element we must first replace "> " with ">"
+            		if ("rtMatcher".equals(element2.getAttributeValue(LYRICS_ELEMENT_ATTRIBUTE))) {
+           				lyrics = lyrics.replace(element2.getRenderer().toString().replaceAll("> ", ">"), "");
+            		}
+            	}
                 return lyrics;
             }
         }
