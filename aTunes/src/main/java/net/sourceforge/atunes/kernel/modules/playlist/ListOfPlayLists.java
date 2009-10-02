@@ -37,7 +37,7 @@ public class ListOfPlayLists implements Serializable {
     private List<PlayList> playLists;
 
     /** The selected play list. */
-    private int selectedPlayList;
+    private int selectedPlayListIndex;
 
     /**
      * Returns a list of playlists with an empty playlist.
@@ -74,7 +74,7 @@ public class ListOfPlayLists implements Serializable {
      * @return the selectedPlayList
      */
     int getSelectedPlayList() {
-        return selectedPlayList;
+        return selectedPlayListIndex;
     }
 
     /**
@@ -94,7 +94,7 @@ public class ListOfPlayLists implements Serializable {
      *            the selectedPlayList to set
      */
     void setSelectedPlayList(int selectedPlayList) {
-        this.selectedPlayList = selectedPlayList;
+        this.selectedPlayListIndex = selectedPlayList;
     }
 
 }

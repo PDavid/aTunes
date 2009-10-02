@@ -1,4 +1,4 @@
-﻿aTunes 1.14.0
+﻿aTunes 2.0.0
 -------------
 - Support for libnotify (Gnome)
 - File chooser in tag dialog should open in directory of the audio file (feature request [2786730])
@@ -21,6 +21,7 @@
 - Context panel redesign
 - Gui theme can be changed without restart
 - Allow repository load in background
+- Allow reordering of playlist tabs
 - INTERNAL: Avoid unnecessary refresh view operations
 - INTERNAL: Share actions between play list and navigation tree and table
 - INTERNAL: Refactoring of play list

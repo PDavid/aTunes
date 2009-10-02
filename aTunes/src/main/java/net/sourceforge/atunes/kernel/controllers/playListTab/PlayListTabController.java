@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 
 import net.sourceforge.atunes.gui.views.panels.ButtonTabComponent;
 import net.sourceforge.atunes.gui.views.panels.PlayListTabPanel;
@@ -121,7 +122,7 @@ public class PlayListTabController extends PanelController<PlayListTabPanel> {
      * @return the names of play lists
      */
     public List<String> getNamesOfPlayLists() {
-        ArrayList<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<String>();
         for (int i = 0; i < getPanelControlled().getPlayListTabbedPane().getTabCount(); i++) {
             result.add(getPanelControlled().getPlayListTabbedPane().getTitleAt(i));
         }
@@ -145,5 +146,14 @@ public class PlayListTabController extends PanelController<PlayListTabPanel> {
      */
     public String getPlayListName(int index) {
         return getPanelControlled().getPlayListTabbedPane().getTitleAt(index);
+    }
+
+    public void switchPlayListTabs(int draggedTabIndex, int targetTabIndex) {
+        JTabbedPane tabPane = getPanelControlled().getPlayListTabbedPane();
+        boolean isForwardDrag = targetTabIndex > draggedTabIndex;
+        int index = isForwardDrag ? targetTabIndex + 1 : targetTabIndex;
+        String titleAt = tabPane.getTitleAt(draggedTabIndex);
+        tabPane.insertTab(titleAt, tabPane.getIconAt(draggedTabIndex), tabPane.getComponentAt(draggedTabIndex), tabPane.getToolTipTextAt(draggedTabIndex), index);
+        tabPane.setTabComponentAt(targetTabIndex, new ButtonTabComponent(titleAt, tabPane));
     }
 }

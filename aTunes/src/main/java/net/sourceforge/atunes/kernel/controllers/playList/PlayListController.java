@@ -42,9 +42,6 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 
-/**
- * The Class PlayListController.
- */
 public class PlayListController extends PanelController<PlayListPanel> implements PlayListColumnClickedListener {
 
     /** The visible rect. */
@@ -62,12 +59,6 @@ public class PlayListController extends PanelController<PlayListPanel> implement
         addStateBindings();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.kernel.controllers.model.Controller#addBindings()
-     */
     @Override
     protected void addBindings() {
         final PlayListTable table = getPanelControlled().getPlayListTable();
@@ -84,13 +75,6 @@ public class PlayListController extends PanelController<PlayListPanel> implement
         table.getSelectionModel().addListSelectionListener(listener);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.kernel.controllers.model.Controller#addStateBindings
-     * ()
-     */
     @Override
     protected void addStateBindings() {
         // Nothing to do
@@ -216,12 +200,6 @@ public class PlayListController extends PanelController<PlayListPanel> implement
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.kernel.controllers.model.Controller#notifyReload()
-     */
     @Override
     protected void notifyReload() {
         // Nothing to do

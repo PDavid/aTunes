@@ -52,7 +52,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The Class PlayListHandler.
  */
-public final class PlayListHandler extends Handler implements AudioFilesRemovedListener, PlayListEventListener  {
+public final class PlayListHandler extends Handler implements AudioFilesRemovedListener, PlayListEventListener {
 
     /** Singleton instance. */
     private static PlayListHandler instance = new PlayListHandler();
@@ -74,7 +74,7 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
 
     /** Stores original play list without filter. */
     private static PlayList nonFilteredPlayList;
-    
+
     /** Play lists stored */
     private static ListOfPlayLists playListsRetrievedFromCache;
 
@@ -83,7 +83,7 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
      */
     private PlayListHandler() {
     }
-    
+
     @Override
     protected void initHandler() {
         // Add audio file removed listener
@@ -291,7 +291,7 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
 
         setPlayList(newSelectedPlayList);
         // Update table model
-        ((PlayListTableModel)VisualHandler.getInstance().getPlayListTable().getModel()).setVisiblePlayList(getCurrentPlayList(true));
+        ((PlayListTableModel) VisualHandler.getInstance().getPlayListTable().getModel()).setVisiblePlayList(getCurrentPlayList(true));
         ControllerProxy.getInstance().getPlayListController().refreshPlayList();
 
         // If playlist is active then perform an auto scroll
@@ -530,14 +530,14 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
 
     @Override
     protected Runnable getPreviousInitializationTask() {
-    	return new Runnable() {
-    		@Override
-    		public void run() {
-    			playListsRetrievedFromCache = ApplicationStateHandler.getInstance().retrievePlayListCache();
-    		}
-    	};
+        return new Runnable() {
+            @Override
+            public void run() {
+                playListsRetrievedFromCache = ApplicationStateHandler.getInstance().retrievePlayListCache();
+            }
+        };
     }
-    
+
     /**
      * Retrieves stored play list and loads it. This method is used when opening
      * application, to load play list of previous execution
@@ -590,12 +590,12 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
         }
 
         // Update table model
-        ((PlayListTableModel)VisualHandler.getInstance().getPlayListTable().getModel()).setVisiblePlayList(getCurrentPlayList(true));
-        
+        ((PlayListTableModel) VisualHandler.getInstance().getPlayListTable().getModel()).setVisiblePlayList(getCurrentPlayList(true));
+
         // Refresh play list
         // For some strange reason, this is needed even if play list is empty
         ControllerProxy.getInstance().getPlayListController().refreshPlayList();
-        
+
         playListsRetrievedFromCache = null;
     }
 
@@ -1088,5 +1088,14 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
         if (newState.isAutoScrollPlayListEnabled()) {
             ControllerProxy.getInstance().getPlayListController().scrollPlayList(true);
         }
+    }
+
+    public void movePlaylistToPosition(int from, int to) {
+        PlayList activePlayList = playLists.get(activePlayListIndex);
+        PlayList visiblePlayList = playLists.get(visiblePlayListIndex);
+        PlayList playList = playLists.remove(from);
+        playLists.add(to, playList);
+        activePlayListIndex = playLists.indexOf(activePlayList);
+        visiblePlayListIndex = playLists.indexOf(visiblePlayList);
     }
 }
