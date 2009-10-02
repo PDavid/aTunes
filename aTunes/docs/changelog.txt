@@ -30,6 +30,7 @@
 - INTERNAL: Update search indexes only if user is going to perform a search
 - INTERNAL: Don't update navigation table if it's not visible
 - FIX: Deleting many files from device freezes aTunes gui for some seconds [2855962]
+- FIX: LyricWiki engine returned lyrics with URLs
 
 aTunes 1.13.4
 -------------
