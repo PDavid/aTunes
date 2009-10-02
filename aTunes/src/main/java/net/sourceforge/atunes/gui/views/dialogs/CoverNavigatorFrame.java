@@ -20,6 +20,7 @@
 package net.sourceforge.atunes.gui.views.dialogs;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -106,6 +107,7 @@ public class CoverNavigatorFrame extends CustomFrame {
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         JScrollPane listScrollPane = new JScrollPane(list);
+        listScrollPane.setMinimumSize(new Dimension(200, 0));
 
         JScrollPane coversScrollPane = new JScrollPane(coversPanel);
         coversScrollPane.setBorder(BorderFactory.createLineBorder(GuiUtils.getBorderColor()));
