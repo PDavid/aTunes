@@ -185,6 +185,7 @@ public class LyricsService implements ApplicationStateChangeListener {
             lyricsEnginesInfo.add(new LyricsEngineInfo("Lyricsfly", "net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsflyEngine", true));
             lyricsEnginesInfo.add(new LyricsEngineInfo("LyricsDirectory", "net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsDirectoryEngine", false));
             lyricsEnginesInfo.add(new LyricsEngineInfo("LyrcEngine", "net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyrcEngine", false));
+            lyricsEnginesInfo.add(new LyricsEngineInfo("Winampcn", "net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.WinampcnEngine", false));
         } else {
             lyricsEnginesInfo = new ArrayList<LyricsEngineInfo>(lyricsEnginesInfo);
         }
