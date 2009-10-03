@@ -110,6 +110,7 @@
 					</mapping>
 					<properties>
 						<year>2009</year>
+						<version>${project.version}</version>
 					</properties>
 				</configuration>
 			</plugin>
