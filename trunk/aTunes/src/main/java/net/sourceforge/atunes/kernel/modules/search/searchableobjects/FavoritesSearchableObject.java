@@ -19,6 +19,8 @@
  */
 package net.sourceforge.atunes.kernel.modules.search.searchableobjects;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,12 +35,17 @@ import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
+import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.store.SimpleFSDirectory;
+
 public class FavoritesSearchableObject extends CommonAudioFileSearchableObject {
 
     /**
      * Singleton instance of this class
      */
     private static FavoritesSearchableObject instance;
+
+    private FSDirectory indexDirectory;
 
     /**
      * Default constructor
@@ -59,36 +66,19 @@ public class FavoritesSearchableObject extends CommonAudioFileSearchableObject {
         return instance;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seenet.sourceforge.atunes.kernel.modules.search.SearchableObject#
-     * getSearchableObjectName()
-     */
     @Override
     public String getSearchableObjectName() {
         return I18nUtils.getString("FAVORITES");
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.kernel.modules.search.SearchableObject#getPathToIndex
-     * ()
-     */
     @Override
-    public String getPathToIndex() {
-        return StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.FAVORITES_INDEX_DIR);
+    public FSDirectory getIndexDirectory() throws IOException {
+        if (indexDirectory == null) {
+            indexDirectory = new SimpleFSDirectory(new File(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.FAVORITES_INDEX_DIR)));
+        }
+        return indexDirectory;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.kernel.modules.search.SearchableObject#getSearchResult
-     * (java.util.List)
-     */
     @Override
     public List<SearchResult> getSearchResult(List<RawSearchResult> rawSearchResults) {
         List<SearchResult> result = new ArrayList<SearchResult>();
@@ -101,12 +91,6 @@ public class FavoritesSearchableObject extends CommonAudioFileSearchableObject {
         return result;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seenet.sourceforge.atunes.kernel.modules.search.SearchableObject#
-     * getElementsToIndex()
-     */
     @Override
     public List<AudioObject> getElementsToIndex() {
         return new ArrayList<AudioObject>(FavoritesHandler.getInstance().getFavoriteSongsMap().values());
