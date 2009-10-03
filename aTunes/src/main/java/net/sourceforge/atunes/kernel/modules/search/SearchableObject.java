@@ -19,11 +19,13 @@
  */
 package net.sourceforge.atunes.kernel.modules.search;
 
+import java.io.IOException;
 import java.util.List;
 
 import net.sourceforge.atunes.model.AudioObject;
 
 import org.apache.lucene.document.Document;
+import org.apache.lucene.store.FSDirectory;
 
 /**
  * This interface represents objects that can be searched with Lucene.
@@ -45,11 +47,11 @@ public interface SearchableObject {
     public List<String> getSearchableAttributes();
 
     /**
-     * Returns path to index.
+     * Returns the index directory.
      * 
-     * @return the path to index
+     * @return the index directory
      */
-    public String getPathToIndex();
+    public FSDirectory getIndexDirectory() throws IOException;
 
     /**
      * Returns result from hits.

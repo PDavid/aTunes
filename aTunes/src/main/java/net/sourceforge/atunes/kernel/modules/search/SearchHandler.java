@@ -19,7 +19,6 @@
  */
 package net.sourceforge.atunes.kernel.modules.search;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,9 +52,6 @@ import org.apache.lucene.search.Searcher;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.LockObtainFailedException;
 
-/**
- * The Class SearchHandler.
- */
 public final class SearchHandler extends Handler {
 
     /** Default lucene field. */
@@ -71,15 +67,7 @@ public final class SearchHandler extends Handler {
      * Logical operators used to create complex rules.
      */
     public enum LogicalOperator {
-
-        /** The AND. */
-        AND,
-
-        /** The OR. */
-        OR,
-
-        /** The NOT. */
-        NOT
+        AND, OR, NOT
     }
 
     /** List of searchable objects available. */
@@ -102,20 +90,19 @@ public final class SearchHandler extends Handler {
      */
     private SearchHandler() {
     }
-    
+
     @Override
     public void applicationFinish() {
     }
-    
+
     @Override
     public void applicationStateChanged(ApplicationState newState) {
     }
-    
+
     @Override
     public void applicationStarted() {
     }
 
-    
     @Override
     protected void initHandler() {
         currentIndexingWorks = new HashMap<SearchableObject, Boolean>();
@@ -203,7 +190,7 @@ public final class SearchHandler extends Handler {
             String queryString = applyQueryTransformations(queryStr);
 
             Query query = new QueryParser(DEFAULT_INDEX, new SimpleAnalyzer()).parse(queryString);
-            Searcher searcher = new IndexSearcher(searchableObject.getPathToIndex());
+            Searcher searcher = new IndexSearcher(searchableObject.getIndexDirectory(), true);
             TopDocs topDocs = searcher.search(query, 1000);
             List<RawSearchResult> rawSearchResults = new ArrayList<RawSearchResult>();
             for (ScoreDoc scoreDoc : topDocs.scoreDocs) {
@@ -286,8 +273,8 @@ public final class SearchHandler extends Handler {
             private void initSearchIndex() {
                 getLogger().info(LogCategories.HANDLER, "Updating index for " + searchableObject.getClass());
                 try {
-                    FileUtils.deleteDirectory(new File(searchableObject.getPathToIndex()));
-                    indexWriter = new IndexWriter(searchableObject.getPathToIndex(), new SimpleAnalyzer(), IndexWriter.MaxFieldLength.UNLIMITED);
+                    FileUtils.deleteDirectory(searchableObject.getIndexDirectory().getFile());
+                    indexWriter = new IndexWriter(searchableObject.getIndexDirectory(), new SimpleAnalyzer(), IndexWriter.MaxFieldLength.UNLIMITED);
                 } catch (CorruptIndexException e) {
                     getLogger().error(LogCategories.HANDLER, e);
                 } catch (LockObtainFailedException e) {
