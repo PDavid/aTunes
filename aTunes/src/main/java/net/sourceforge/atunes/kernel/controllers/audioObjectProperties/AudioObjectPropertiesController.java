@@ -29,7 +29,7 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.views.panels.AudioObjectPropertiesPanel;
-import net.sourceforge.atunes.kernel.controllers.model.Controller;
+import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
@@ -47,7 +47,7 @@ import org.jdesktop.swingx.border.DropShadowBorder;
  * 
  * @author fleax
  */
-public class AudioObjectPropertiesController extends Controller<AudioObjectPropertiesPanel> {
+public class AudioObjectPropertiesController extends SimpleController<AudioObjectPropertiesPanel> {
 
     /** The current audio object. */
     AudioObject currentAudioObject;

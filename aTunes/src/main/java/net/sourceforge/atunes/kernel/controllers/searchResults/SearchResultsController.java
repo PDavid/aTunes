@@ -26,7 +26,7 @@ import javax.swing.JTable;
 import javax.swing.table.TableRowSorter;
 
 import net.sourceforge.atunes.gui.views.dialogs.SearchResultsDialog;
-import net.sourceforge.atunes.kernel.controllers.model.Controller;
+import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.search.SearchResult;
 import net.sourceforge.atunes.kernel.modules.search.SearchResultTableModel;
@@ -37,7 +37,7 @@ import net.sourceforge.atunes.model.AudioObject;
 /**
  * Controller for the search result dialog.
  */
-public class SearchResultsController extends Controller<SearchResultsDialog> {
+public class SearchResultsController extends SimpleController<SearchResultsDialog> {
 
     private List<SearchResult> results;
 

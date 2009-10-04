@@ -32,7 +32,7 @@ import javax.swing.table.DefaultTableModel;
 
 import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.views.dialogs.StatsDialog;
-import net.sourceforge.atunes.kernel.controllers.model.Controller;
+import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -53,7 +53,7 @@ import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 /**
  * The Class StatsDialogController.
  */
-public class StatsDialogController extends Controller<StatsDialog> {
+public class StatsDialogController extends SimpleController<StatsDialog> {
 
     /**
      * Instantiates a new stats dialog controller.

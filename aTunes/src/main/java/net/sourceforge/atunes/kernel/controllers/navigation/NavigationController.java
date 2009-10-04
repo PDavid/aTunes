@@ -55,7 +55,7 @@ import net.sourceforge.atunes.kernel.actions.ShowAlbumsInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowArtistsInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowFoldersInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowGenresInNavigatorAction;
-import net.sourceforge.atunes.kernel.controllers.model.Controller;
+import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
 import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
 import net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
@@ -76,7 +76,7 @@ import net.sourceforge.atunes.model.TreeObject;
  * 
  * @author fleax
  */
-public class NavigationController extends Controller<NavigationPanel> implements AudioFilesRemovedListener {
+public class NavigationController extends SimpleController<NavigationPanel> implements AudioFilesRemovedListener {
 
     public enum ViewMode {
 

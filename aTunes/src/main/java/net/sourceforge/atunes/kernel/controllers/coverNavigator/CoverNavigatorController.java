@@ -41,7 +41,7 @@ import javax.swing.event.ListSelectionListener;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.dialogs.CoverNavigatorFrame;
-import net.sourceforge.atunes.kernel.controllers.model.Controller;
+import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
 import net.sourceforge.atunes.kernel.modules.amazon.GetCoversFromAmazonProcess;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.model.Album;
@@ -50,10 +50,7 @@ import net.sourceforge.atunes.utils.GuiUtils;
 
 import org.jdesktop.swingx.border.DropShadowBorder;
 
-/**
- * The cover navigator controller.
- */
-public class CoverNavigatorController extends Controller<CoverNavigatorFrame> {
+public class CoverNavigatorController extends SimpleController<CoverNavigatorFrame> {
 
     private static final int COVER_PANEL_WIDTH = Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize() + 20;
     private static final int COVER_PANEL_HEIGHT = Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize() + 40;

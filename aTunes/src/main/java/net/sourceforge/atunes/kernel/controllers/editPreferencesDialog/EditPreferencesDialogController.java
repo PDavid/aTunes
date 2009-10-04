@@ -40,12 +40,12 @@ import net.sourceforge.atunes.gui.views.dialogs.editPreferences.PodcastFeedPanel
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.PreferencesPanel;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.RadioPanel;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.RepositoryPanel;
-import net.sourceforge.atunes.kernel.controllers.model.Controller;
+import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 
-public class EditPreferencesDialogController extends Controller<EditPreferencesDialog> {
+public class EditPreferencesDialogController extends SimpleController<EditPreferencesDialog> {
 
     /** The panels. */
     PreferencesPanel[] panels = new PreferencesPanel[] { getGeneralPanel(), getRepositoryPanel(), getPlayerPanel(), getNavigatorPanel(), getPlayListPrefPanel(), getOSDPanel(),
@@ -61,12 +61,6 @@ public class EditPreferencesDialogController extends Controller<EditPreferencesD
         addBindings();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.kernel.controllers.model.Controller#addBindings()
-     */
     @Override
     protected void addBindings() {
         EditPreferencesDialogListener listener = new EditPreferencesDialogListener(getComponentControlled(), this);
@@ -92,13 +86,6 @@ public class EditPreferencesDialogController extends Controller<EditPreferencesD
         });
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.kernel.controllers.model.Controller#addStateBindings
-     * ()
-     */
     @Override
     protected void addStateBindings() {
         // Nothing to do
