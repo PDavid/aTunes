@@ -24,7 +24,7 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.views.controls.playList.Column;
-import net.sourceforge.atunes.kernel.modules.favorites.FavoritesHandler;
+import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.model.AudioObject;
 
 public class AlbumColumn extends Column {
