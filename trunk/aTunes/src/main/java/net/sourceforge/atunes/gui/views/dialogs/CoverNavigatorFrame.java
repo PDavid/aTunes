@@ -101,7 +101,9 @@ public class CoverNavigatorFrame extends CustomFrame {
         JPanel panel = new JPanel(new GridBagLayout());
 
         coversPanel = new ScrollableFlowPanel();
-        coversPanel.setLayout(new FlowLayout());
+        FlowLayout flowLayout = new FlowLayout();
+        flowLayout.setAlignment(FlowLayout.LEADING);
+        coversPanel.setLayout(flowLayout);
 
         list = new JList(artists.toArray());
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
