@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel.modules.webservices.lyrics;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,14 +42,24 @@ import net.sourceforge.atunes.misc.log.Logger;
  */
 public class LyricsService implements ApplicationStateChangeListener {
 
-    /** Logger */
-    private static Logger logger;
+    private static final List<LyricsEngineInfo> DEFAULT_LYRICS_ENGINES;
+    static {
+        List<LyricsEngineInfo> list = new ArrayList<LyricsEngineInfo>();
+        list.add(new LyricsEngineInfo("LyricWiki", "net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricWikiEngine", true));
+        list.add(new LyricsEngineInfo("Lyricsfly", "net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsflyEngine", true));
+        list.add(new LyricsEngineInfo("LyricsDirectory", "net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsDirectoryEngine", false));
+        list.add(new LyricsEngineInfo("LyrcEngine", "net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyrcEngine", false));
+        list.add(new LyricsEngineInfo("Winampcn", "net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.WinampcnEngine", false));
+        DEFAULT_LYRICS_ENGINES = Collections.unmodifiableList(list);
+    }
+
+    private Logger logger;
 
     /** Contains a list of LyricsEngine to get lyrics. */
     private List<LyricsEngine> lyricsEngines;
 
     /** Cache */
-    private static LyricsCache lyricsCache = new LyricsCache();
+    private LyricsCache lyricsCache = new LyricsCache();
 
     /**
      * Singleton instance
@@ -111,8 +122,8 @@ public class LyricsService implements ApplicationStateChangeListener {
                 }
             }
             if (lyric != null) {
-            	lyric.setLyrics(lyric.getLyrics().replaceAll("'", "\'"));
-            	lyric.setLyrics(lyric.getLyrics().replaceAll("\n\n", "\n"));
+                lyric.setLyrics(lyric.getLyrics().replaceAll("'", "\'"));
+                lyric.setLyrics(lyric.getLyrics().replaceAll("\n\n", "\n"));
             }
             lyricsCache.storeLyric(artist, song, lyric);
         }
@@ -179,15 +190,14 @@ public class LyricsService implements ApplicationStateChangeListener {
         }
 
         if (loadDefault) {
-            lyricsEnginesInfo = new ArrayList<LyricsEngineInfo>();
-            // default lyrics engines
-            lyricsEnginesInfo.add(new LyricsEngineInfo("LyricWiki", "net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricWikiEngine", true));
-            lyricsEnginesInfo.add(new LyricsEngineInfo("Lyricsfly", "net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsflyEngine", true));
-            lyricsEnginesInfo.add(new LyricsEngineInfo("LyricsDirectory", "net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsDirectoryEngine", false));
-            lyricsEnginesInfo.add(new LyricsEngineInfo("LyrcEngine", "net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyrcEngine", false));
-            lyricsEnginesInfo.add(new LyricsEngineInfo("Winampcn", "net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.WinampcnEngine", false));
+            lyricsEnginesInfo = new ArrayList<LyricsEngineInfo>(DEFAULT_LYRICS_ENGINES);
         } else {
             lyricsEnginesInfo = new ArrayList<LyricsEngineInfo>(lyricsEnginesInfo);
+            for (LyricsEngineInfo defaultLyricsEngine : DEFAULT_LYRICS_ENGINES) {
+                if (!lyricsEnginesInfo.contains(defaultLyricsEngine)) {
+                    lyricsEnginesInfo.add(defaultLyricsEngine);
+                }
+            }
         }
         ApplicationState.getInstance().setLyricsEnginesInfo(lyricsEnginesInfo);
 

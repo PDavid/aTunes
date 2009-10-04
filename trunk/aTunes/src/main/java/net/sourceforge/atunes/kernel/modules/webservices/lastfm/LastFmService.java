@@ -79,8 +79,6 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class LastFmService {
 
-    private static Logger logger = new Logger();
-
     /*
      * DO NOT USE THESE KEYS FOR OTHER APPLICATIONS THAN aTunes!
      */
@@ -99,8 +97,9 @@ public class LastFmService {
     private static final String VARIOUS_ARTISTS = "Various Artists";
 
     private static final int MIN_DURATION_TO_SUBMIT = 30;
-
     private static final int MAX_SUBMISSIONS = 50;
+
+    private static Logger logger = new Logger();
 
     private Proxy proxy;
 
@@ -946,15 +945,17 @@ public class LastFmService {
     }
 
     /**
-     * Returns events of an artist
-     * TODO: This is a convenience method to allow plugins access last fm services without opening access to api key outside this class 
+     * Returns events of an artist TODO: This is a convenience method to allow
+     * plugins access last fm services without opening access to api key outside
+     * this class
+     * 
      * @param artist
      * @return
      */
     public Collection<Event> getArtistEvents(String artist) {
-    	return Artist.getEvents(artist, getApiKey());
+        return Artist.getEvents(artist, getApiKey());
     }
-     
+
     private static String getApiKey() {
         try {
             return new String(CryptoUtils.decrypt(API_KEY));

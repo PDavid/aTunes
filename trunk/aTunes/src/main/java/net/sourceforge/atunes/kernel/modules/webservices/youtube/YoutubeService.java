@@ -49,10 +49,6 @@ import org.w3c.dom.NodeList;
  * @author Tobias Melcher
  */
 public class YoutubeService {
-    /**
-     * Logger for this class
-     */
-    private static Logger logger = new Logger();
 
     /**
      * Query string wildcard
@@ -75,6 +71,11 @@ public class YoutubeService {
      */
     private static final String SEARCH_URL = StringUtils.getString("http://gdata.youtube.com/feeds/api/videos?vq=", QUERY_STRING_WILDCARD, "&max-results=", Integer
             .toString(MAX_RESULTS), "&start-index=", START_INDEX_WILDCARD);
+
+    /**
+     * Logger for this class
+     */
+    private Logger logger = new Logger();
 
     /**
      * The proxy
