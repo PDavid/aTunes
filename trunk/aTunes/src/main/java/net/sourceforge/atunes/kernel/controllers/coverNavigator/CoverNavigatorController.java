@@ -41,7 +41,7 @@ import javax.swing.event.ListSelectionListener;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.dialogs.CoverNavigatorFrame;
-import net.sourceforge.atunes.kernel.controllers.model.FrameController;
+import net.sourceforge.atunes.kernel.controllers.model.Controller;
 import net.sourceforge.atunes.kernel.modules.amazon.GetCoversFromAmazonProcess;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.model.Album;
@@ -53,7 +53,7 @@ import org.jdesktop.swingx.border.DropShadowBorder;
 /**
  * The cover navigator controller.
  */
-public class CoverNavigatorController extends FrameController<CoverNavigatorFrame> {
+public class CoverNavigatorController extends Controller<CoverNavigatorFrame> {
 
     private static final int COVER_PANEL_WIDTH = Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize() + 20;
     private static final int COVER_PANEL_HEIGHT = Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize() + 40;
@@ -91,7 +91,7 @@ public class CoverNavigatorController extends FrameController<CoverNavigatorFram
 
     @Override
     protected void addBindings() {
-        final CoverNavigatorFrame frame = getFrameControlled();
+        final CoverNavigatorFrame frame = getComponentControlled();
         frame.getList().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -106,7 +106,7 @@ public class CoverNavigatorController extends FrameController<CoverNavigatorFram
             public void actionPerformed(ActionEvent e) {
                 Artist selectedArtist = (Artist) frame.getList().getSelectedValue();
                 if (selectedArtist != null) {
-                    GetCoversFromAmazonProcess process = new GetCoversFromAmazonProcess(selectedArtist, getFrameControlled());
+                    GetCoversFromAmazonProcess process = new GetCoversFromAmazonProcess(selectedArtist, getComponentControlled());
                     process.addProcessListener(new ProcessListener() {
                         @Override
                         public void processCanceled() {
@@ -186,16 +186,16 @@ public class CoverNavigatorController extends FrameController<CoverNavigatorFram
      * Update covers.
      */
     public void updateCovers() {
-        final Artist artistSelected = (Artist) getFrameControlled().getList().getSelectedValue();
+        final Artist artistSelected = (Artist) getComponentControlled().getList().getSelectedValue();
         if (artistSelected == null) {
             return;
         }
 
-        getFrameControlled().getCoversPanel().removeAll();
+        getComponentControlled().getCoversPanel().removeAll();
 
-        getFrameControlled().getList().setEnabled(false);
-        getFrameControlled().getCoversButton().setEnabled(false);
-        getFrameControlled().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        getComponentControlled().getList().setEnabled(false);
+        getComponentControlled().getCoversButton().setEnabled(false);
+        getComponentControlled().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
         SwingWorker<Void, IntermediateResult> generateAndShowAlbumPanels = new SwingWorker<Void, IntermediateResult>() {
             @Override
@@ -215,30 +215,22 @@ public class CoverNavigatorController extends FrameController<CoverNavigatorFram
 
             @Override
             protected void done() {
-                getFrameControlled().setCursor(Cursor.getDefaultCursor());
-                getFrameControlled().getList().setEnabled(true);
-                getFrameControlled().getCoversButton().setEnabled(true);
+                getComponentControlled().setCursor(Cursor.getDefaultCursor());
+                getComponentControlled().getList().setEnabled(true);
+                getComponentControlled().getCoversButton().setEnabled(true);
             }
 
             @Override
             protected void process(List<IntermediateResult> intermediateResults) {
                 for (IntermediateResult intermediateResult : intermediateResults) {
-                    getFrameControlled().getCoversPanel().add(getPanelForAlbum(intermediateResult.getAlbum(), intermediateResult.getCover()));
-                    getFrameControlled().getCoversPanel().revalidate();
-                    getFrameControlled().getCoversPanel().repaint();
-                    getFrameControlled().getCoversPanel().validate();
+                    getComponentControlled().getCoversPanel().add(getPanelForAlbum(intermediateResult.getAlbum(), intermediateResult.getCover()));
+                    getComponentControlled().getCoversPanel().revalidate();
+                    getComponentControlled().getCoversPanel().repaint();
+                    getComponentControlled().getCoversPanel().validate();
                 }
             }
         };
         generateAndShowAlbumPanels.execute();
-    }
-
-    /**
-     * Returns frame controlled
-     */
-    @Override
-    protected CoverNavigatorFrame getFrameControlled() {
-        return super.getFrameControlled();
     }
 
 }

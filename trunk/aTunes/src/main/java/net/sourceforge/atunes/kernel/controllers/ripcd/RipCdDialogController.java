@@ -28,7 +28,7 @@ import javax.swing.DefaultComboBoxModel;
 
 import net.sourceforge.atunes.gui.autocomplete.AutoCompleteDecorator;
 import net.sourceforge.atunes.gui.views.dialogs.RipCdDialog;
-import net.sourceforge.atunes.kernel.controllers.model.DialogController;
+import net.sourceforge.atunes.kernel.controllers.model.Controller;
 import net.sourceforge.atunes.kernel.modules.cdripper.CdRipper;
 import net.sourceforge.atunes.kernel.modules.cdripper.RipperHandler;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
@@ -42,42 +42,22 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
 
-/**
- * The Class RipCdDialogController.
- */
-public class RipCdDialogController extends DialogController<RipCdDialog> {
+public class RipCdDialogController extends Controller<RipCdDialog> {
 
     // Encoder options and file name patterns. Add here for more options
-
-    /** The Constant FILENAMEPATTERN. */
     public static final String[] FILENAMEPATTERN = { StringUtils.getString(CdRipper.TRACK_NUMBER, " - ", CdRipper.TITLE_PATTERN),
             StringUtils.getString(CdRipper.ARTIST_PATTERN, " - ", CdRipper.ALBUM_PATTERN, " - ", CdRipper.TRACK_NUMBER, " - ", CdRipper.TITLE_PATTERN),
             StringUtils.getString(CdRipper.ARTIST_PATTERN, " - ", CdRipper.TITLE_PATTERN) };
 
     // Default encoder "quality" settings.
 
-    /** The folder name edited. */
     private boolean folderNameEdited;
-
-    /** The cancelled. */
     private boolean cancelled;
-
-    /** The encoder setting changed. */
     private boolean encoderSettingChanged;
-
-    /** The artist. */
     private String artist;
-
-    /** The album. */
     private String album;
-
-    /** The year. */
     private int year;
-
-    /** The genre. */
     private String genre;
-
-    /** The folder. */
     private String folder;
 
     /** The error correction setting for cd ripping */
@@ -105,7 +85,7 @@ public class RipCdDialogController extends DialogController<RipCdDialog> {
         // Add genres combo box items
         List<String> genresSorted = Arrays.asList(Tag.genres);
         Collections.sort(genresSorted);
-        getDialogControlled().getGenreComboBox().setModel(new ListComboBoxModel<String>(genresSorted));
+        getComponentControlled().getGenreComboBox().setModel(new ListComboBoxModel<String>(genresSorted));
 
         // Get the encoders
         Map<String, Encoder> encoders = RipperHandler.getInstance().getAvailableEncoders();
@@ -113,21 +93,21 @@ public class RipCdDialogController extends DialogController<RipCdDialog> {
         // We must process "List encoderList" to display it correctly in the dropdown menu. Encoders don't work otherwise.
         String[] avaibleEncoders = encoders.keySet().toArray(new String[encoders.size()]);
 
-        getDialogControlled().getFormat().setModel(new DefaultComboBoxModel(avaibleEncoders));
+        getComponentControlled().getFormat().setModel(new DefaultComboBoxModel(avaibleEncoders));
 
         // Add autocompletion
-        AutoCompleteDecorator.decorate(getDialogControlled().getGenreComboBox());
+        AutoCompleteDecorator.decorate(getComponentControlled().getGenreComboBox());
 
-        RipCdDialogListener listener = new RipCdDialogListener(getDialogControlled(), this);
-        getDialogControlled().getOk().addActionListener(listener);
-        getDialogControlled().getCancel().addActionListener(listener);
-        getDialogControlled().getFolderSelectionButton().addActionListener(listener);
-        getDialogControlled().getFormat().addActionListener(listener);
-        getDialogControlled().getFilePattern().addActionListener(listener);
-        getDialogControlled().getFolderName().addKeyListener(listener);
-        getDialogControlled().getAmazonButton().addActionListener(listener);
-        getDialogControlled().getArtistTextField().addKeyListener(listener);
-        getDialogControlled().getAlbumTextField().addKeyListener(listener);
+        RipCdDialogListener listener = new RipCdDialogListener(getComponentControlled(), this);
+        getComponentControlled().getOk().addActionListener(listener);
+        getComponentControlled().getCancel().addActionListener(listener);
+        getComponentControlled().getFolderSelectionButton().addActionListener(listener);
+        getComponentControlled().getFormat().addActionListener(listener);
+        getComponentControlled().getFilePattern().addActionListener(listener);
+        getComponentControlled().getFolderName().addKeyListener(listener);
+        getComponentControlled().getAmazonButton().addActionListener(listener);
+        getComponentControlled().getArtistTextField().addKeyListener(listener);
+        getComponentControlled().getAlbumTextField().addKeyListener(listener);
     }
 
     /*
@@ -315,31 +295,31 @@ public class RipCdDialogController extends DialogController<RipCdDialog> {
      */
     public void showCdInfo(CDInfo cdInfo, String path) {
         setArtist(cdInfo.getArtist());
-        getDialogControlled().getArtistTextField().setText(cdInfo.getArtist());
+        getComponentControlled().getArtistTextField().setText(cdInfo.getArtist());
         setAlbum(cdInfo.getAlbum());
-        getDialogControlled().getAlbumTextField().setText(cdInfo.getAlbum());
+        getComponentControlled().getAlbumTextField().setText(cdInfo.getAlbum());
         setYear(DateUtils.getCurrentYear());
-        getDialogControlled().getYearTextField().setText(Integer.toString(DateUtils.getCurrentYear()));
-        setGenre(getDialogControlled().getGenreComboBox().getSelectedItem().toString());
+        getComponentControlled().getYearTextField().setText(Integer.toString(DateUtils.getCurrentYear()));
+        setGenre(getComponentControlled().getGenreComboBox().getSelectedItem().toString());
         // Creates folders when information is coming from cdda2wav
         if (cdInfo.getArtist() != null && cdInfo.getAlbum() != null) {
-            getDialogControlled().getFolderName().setText(
+            getComponentControlled().getFolderName().setText(
                     StringUtils.getString(RepositoryHandler.getInstance().getRepositoryPath(), SystemProperties.FILE_SEPARATOR, cdInfo.getArtist(),
                             SystemProperties.FILE_SEPARATOR, cdInfo.getAlbum()));
         } else {
-            getDialogControlled().getFolderName().setText(path);
+            getComponentControlled().getFolderName().setText(path);
         }
-        getDialogControlled().getAmazonButton().setEnabled(false);
-        getDialogControlled().getFormat().setSelectedItem(RipperHandler.getInstance().getEncoder());
-        getDialogControlled().getQualityComboBox().setSelectedItem(RipperHandler.getInstance().getEncoderQuality());
-        getDialogControlled().getUseCdErrorCorrection().setSelected(RipperHandler.getInstance().getCdErrorCorrection());
-        getDialogControlled().getFilePattern().setSelectedItem(RipperHandler.getInstance().getFileNamePattern());
+        getComponentControlled().getAmazonButton().setEnabled(false);
+        getComponentControlled().getFormat().setSelectedItem(RipperHandler.getInstance().getEncoder());
+        getComponentControlled().getQualityComboBox().setSelectedItem(RipperHandler.getInstance().getEncoderQuality());
+        getComponentControlled().getUseCdErrorCorrection().setSelected(RipperHandler.getInstance().getCdErrorCorrection());
+        getComponentControlled().getFilePattern().setSelectedItem(RipperHandler.getInstance().getFileNamePattern());
         setFolder(null);
-        getDialogControlled().setTableData(cdInfo);
-        getDialogControlled().updateTrackNames(cdInfo.getTitles());
-        getDialogControlled().updateArtistNames(cdInfo);
-        getDialogControlled().updateComposerNames(cdInfo.getComposers());
-        getDialogControlled().setVisible(true);
+        getComponentControlled().setTableData(cdInfo);
+        getComponentControlled().updateTrackNames(cdInfo.getTitles());
+        getComponentControlled().updateArtistNames(cdInfo);
+        getComponentControlled().updateComposerNames(cdInfo.getComposers());
+        getComponentControlled().setVisible(true);
     }
 
 }

@@ -29,7 +29,7 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.views.panels.AudioObjectPropertiesPanel;
-import net.sourceforge.atunes.kernel.controllers.model.PanelController;
+import net.sourceforge.atunes.kernel.controllers.model.Controller;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
@@ -47,7 +47,7 @@ import org.jdesktop.swingx.border.DropShadowBorder;
  * 
  * @author fleax
  */
-public class AudioObjectPropertiesController extends PanelController<AudioObjectPropertiesPanel> {
+public class AudioObjectPropertiesController extends Controller<AudioObjectPropertiesPanel> {
 
     /** The current audio object. */
     AudioObject currentAudioObject;
@@ -66,7 +66,7 @@ public class AudioObjectPropertiesController extends PanelController<AudioObject
 
     @Override
     protected void addBindings() {
-        getPanelControlled().getPictureLabel().addMouseListener(new MouseAdapter() {
+        getComponentControlled().getPictureLabel().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 VisualHandler.getInstance().showImageDialog(currentAudioObject);
@@ -84,9 +84,9 @@ public class AudioObjectPropertiesController extends PanelController<AudioObject
      */
     public void clear() {
         currentAudioObject = null;
-        getPanelControlled().getPictureLabel().setIcon(null);
-        getPanelControlled().getPictureLabel().setVisible(false);
-        getPanelControlled().getMainPanel().setVisible(false);
+        getComponentControlled().getPictureLabel().setIcon(null);
+        getComponentControlled().getPictureLabel().setVisible(false);
+        getComponentControlled().getMainPanel().setVisible(false);
     }
 
     /**
@@ -94,13 +94,13 @@ public class AudioObjectPropertiesController extends PanelController<AudioObject
      */
     void fillFileProperties() {
         if (currentAudioObject != null) {
-            getPanelControlled().getBitrateLabel().setText(
+            getComponentControlled().getBitrateLabel().setText(
                     StringUtils.getString("<html><b>", I18nUtils.getString("BITRATE"), ":</b>    ", currentAudioObject.getBitrate(), " Kbps"));
-            getPanelControlled().getFrequencyLabel().setText(
+            getComponentControlled().getFrequencyLabel().setText(
                     StringUtils.getString("<html><b>", I18nUtils.getString("FREQUENCY"), ":</b>    ", currentAudioObject.getFrequency(), " Hz"));
         } else {
-            getPanelControlled().getBitrateLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("BITRATE"), ":</b>    "));
-            getPanelControlled().getFrequencyLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("FREQUENCY"), ":</b>    "));
+            getComponentControlled().getBitrateLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("BITRATE"), ":</b>    "));
+            getComponentControlled().getFrequencyLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("FREQUENCY"), ":</b>    "));
         }
 
     }
@@ -128,16 +128,16 @@ public class AudioObjectPropertiesController extends PanelController<AudioObject
                     try {
                         ImageIcon imageIcon = get();
                         if (imageIcon != null) {
-                            getPanelControlled().getPictureLabel().setIcon(imageIcon);
-                            getPanelControlled().getPictureLabel().setVisible(true);
+                            getComponentControlled().getPictureLabel().setIcon(imageIcon);
+                            getComponentControlled().getPictureLabel().setVisible(true);
                         } else {
-                            getPanelControlled().getPictureLabel().setIcon(null);
-                            getPanelControlled().getPictureLabel().setVisible(false);
+                            getComponentControlled().getPictureLabel().setIcon(null);
+                            getComponentControlled().getPictureLabel().setVisible(false);
                         }
                         if (shadowBorder) {
-                            getPanelControlled().getPictureLabel().setBorder(new DropShadowBorder());
+                            getComponentControlled().getPictureLabel().setBorder(new DropShadowBorder());
                         } else {
-                            getPanelControlled().getPictureLabel().setBorder(BorderFactory.createEmptyBorder());
+                            getComponentControlled().getPictureLabel().setBorder(BorderFactory.createEmptyBorder());
                         }
                     } catch (InterruptedException e) {
                         getLogger().internalError(e);
@@ -165,43 +165,44 @@ public class AudioObjectPropertiesController extends PanelController<AudioObject
         if (currentAudioObject != null) {
 
             // \u202D is Unicode symbol for orientation override to LTR. 
-            getPanelControlled().getUrlLabel().setText(
+            getComponentControlled().getUrlLabel().setText(
                     StringUtils.getString("<html><b>", I18nUtils.getString("FILE"), ":</b>    ", "\u202D", currentAudioObject.getUrl(), " \u202C </html>"));
 
-            getPanelControlled().getTitleLabel().setText(
+            getComponentControlled().getTitleLabel().setText(
                     StringUtils.getString("<html><b>", I18nUtils.getString("SONG"), ":</b>    ", currentAudioObject.getTitleOrFileName(), " - ", currentAudioObject.getArtist(),
                             " - ", currentAudioObject.getAlbum(), "\u202D (", StringUtils.seconds2String(currentAudioObject.getDuration()), ") \u202C </html>"));
 
             if (currentAudioObject.getTrackNumber() > 0) {
-                getPanelControlled().getTrackLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("TRACK"), ":</b>    ", currentAudioObject.getTrackNumber()));
+                getComponentControlled().getTrackLabel()
+                        .setText(StringUtils.getString("<html><b>", I18nUtils.getString("TRACK"), ":</b>    ", currentAudioObject.getTrackNumber()));
             } else {
-                getPanelControlled().getTrackLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("TRACK"), ":"));
+                getComponentControlled().getTrackLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("TRACK"), ":"));
             }
 
             if (currentAudioObject.getYear().isEmpty()) {
-                getPanelControlled().getYearLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("YEAR"), ":</b>    ", currentAudioObject.getYear()));
+                getComponentControlled().getYearLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("YEAR"), ":</b>    ", currentAudioObject.getYear()));
             } else {
-                getPanelControlled().getYearLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("YEAR"), ":"));
+                getComponentControlled().getYearLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("YEAR"), ":"));
             }
 
             if (currentAudioObject.getDiscNumber() > 0) {
-                getPanelControlled().getDiscNumberLabel().setText(
+                getComponentControlled().getDiscNumberLabel().setText(
                         StringUtils.getString("<html><b>", I18nUtils.getString("DISC_NUMBER"), ":</b>    ", currentAudioObject.getDiscNumber()));
             } else {
-                getPanelControlled().getDiscNumberLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("DISC_NUMBER"), ":"));
+                getComponentControlled().getDiscNumberLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("DISC_NUMBER"), ":"));
             }
 
-            getPanelControlled().getGenreLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("GENRE"), ":</b>    ", currentAudioObject.getGenre()));
+            getComponentControlled().getGenreLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("GENRE"), ":</b>    ", currentAudioObject.getGenre()));
 
             // Favorite icons
             refreshFavoriteIcons();
         } else {
-            getPanelControlled().getUrlLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("FILE"), ":</b>    "));
-            getPanelControlled().getTitleLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("SONG"), ":</b>    "));
-            getPanelControlled().getTrackLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("TRACK"), ":</b>    "));
-            getPanelControlled().getYearLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("YEAR"), ":</b>    "));
-            getPanelControlled().getGenreLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("GENRE"), ":</b>    "));
-            getPanelControlled().getDiscNumberLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("DISC_NUMBER"), ":</b>    "));
+            getComponentControlled().getUrlLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("FILE"), ":</b>    "));
+            getComponentControlled().getTitleLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("SONG"), ":</b>    "));
+            getComponentControlled().getTrackLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("TRACK"), ":</b>    "));
+            getComponentControlled().getYearLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("YEAR"), ":</b>    "));
+            getComponentControlled().getGenreLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("GENRE"), ":</b>    "));
+            getComponentControlled().getDiscNumberLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("DISC_NUMBER"), ":</b>    "));
         }
     }
 
@@ -221,7 +222,7 @@ public class AudioObjectPropertiesController extends PanelController<AudioObject
         fillFileProperties();
         // Picture
         fillPicture();
-        getPanelControlled().getMainPanel().setVisible(true);
+        getComponentControlled().getMainPanel().setVisible(true);
     }
 
     /**
@@ -233,7 +234,7 @@ public class AudioObjectPropertiesController extends PanelController<AudioObject
                     || FavoritesHandler.getInstance().getFavoriteArtistsInfo().containsKey(currentAudioObject.getArtist())
                     || FavoritesHandler.getInstance().getFavoriteAlbumsInfo().containsKey(currentAudioObject.getAlbum());
 
-            getPanelControlled().getTitleLabel().setIcon(favorite ? ImageLoader.getImage(ImageLoader.FAVORITE) : null);
+            getComponentControlled().getTitleLabel().setIcon(favorite ? ImageLoader.getImage(ImageLoader.FAVORITE) : null);
         }
     }
 
@@ -261,15 +262,10 @@ public class AudioObjectPropertiesController extends PanelController<AudioObject
             fillFileProperties();
             // Picture
             fillPicture();
-            getPanelControlled().getMainPanel().setVisible(true);
+            getComponentControlled().getMainPanel().setVisible(true);
         } else {
             clear();
         }
-    }
-
-    @Override
-    protected AudioObjectPropertiesPanel getPanelControlled() {
-        return super.getPanelControlled();
     }
 
 }

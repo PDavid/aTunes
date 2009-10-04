@@ -33,7 +33,7 @@ import net.sourceforge.atunes.gui.views.controls.playList.PlayListColumnSelector
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.panels.PlayListControlsPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
-import net.sourceforge.atunes.kernel.controllers.model.PanelController;
+import net.sourceforge.atunes.kernel.controllers.model.Controller;
 import net.sourceforge.atunes.kernel.modules.columns.PlayListColumns;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
@@ -42,7 +42,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 
-public class PlayListController extends PanelController<PlayListPanel> implements PlayListColumnClickedListener {
+public class PlayListController extends Controller<PlayListPanel> implements PlayListColumnClickedListener {
 
     /** The visible rect. */
     Rectangle visibleRect;
@@ -61,7 +61,7 @@ public class PlayListController extends PanelController<PlayListPanel> implement
 
     @Override
     protected void addBindings() {
-        final PlayListTable table = getPanelControlled().getPlayListTable();
+        final PlayListTable table = getComponentControlled().getPlayListTable();
         table.addPlayListColumnClickedListener(this);
 
         // Set key listener for table
@@ -90,7 +90,7 @@ public class PlayListController extends PanelController<PlayListPanel> implement
         selector.setVisible(true);
 
         // Apply changes
-        ((PlayListColumnModel) getPanelControlled().getPlayListTable().getColumnModel()).arrangeColumns(true);
+        ((PlayListColumnModel) getComponentControlled().getPlayListTable().getColumnModel()).arrangeColumns(true);
 
     }
 
@@ -116,7 +116,7 @@ public class PlayListController extends PanelController<PlayListPanel> implement
         PlayListTable table = VisualHandler.getInstance().getPlayListTable();
         int[] rows = table.getSelectedRows();
         if (rows.length > 0) {
-            getPanelControlled().getPlayListTable().getSelectionModel().clearSelection();
+            getComponentControlled().getPlayListTable().getSelectionModel().clearSelection();
             PlayListHandler.getInstance().removeAudioObjects(rows);
         }
     }
@@ -127,7 +127,7 @@ public class PlayListController extends PanelController<PlayListPanel> implement
      * @return the main play list scroll pane
      */
     public JScrollPane getMainPlayListScrollPane() {
-        return getPanelControlled().getPlayListTableScroll();
+        return getComponentControlled().getPlayListTableScroll();
     }
 
     /**
@@ -136,7 +136,7 @@ public class PlayListController extends PanelController<PlayListPanel> implement
      * @return the main play list table
      */
     public PlayListTable getMainPlayListTable() {
-        return getPanelControlled().getPlayListTable();
+        return getComponentControlled().getPlayListTable();
     }
 
     /**
@@ -150,7 +150,7 @@ public class PlayListController extends PanelController<PlayListPanel> implement
         if (rows.length > 0 && rows[rows.length - 1] < table.getRowCount() - 1) {
             PlayListHandler.getInstance().moveDown(rows);
             refreshPlayList();
-            getPanelControlled().getPlayListTable().getSelectionModel().setSelectionInterval(rows[0] + 1, rows[rows.length - 1] + 1);
+            getComponentControlled().getPlayListTable().getSelectionModel().setSelectionInterval(rows[0] + 1, rows[rows.length - 1] + 1);
         }
     }
 
@@ -165,8 +165,8 @@ public class PlayListController extends PanelController<PlayListPanel> implement
         if (rows.length > 0 && rows[rows.length - 1] < table.getRowCount() - 1) {
             PlayListHandler.getInstance().moveToBottom(rows);
             refreshPlayList();
-            getPanelControlled().getPlayListTable().getSelectionModel().setSelectionInterval(getPanelControlled().getPlayListTable().getRowCount() - rows.length,
-                    getPanelControlled().getPlayListTable().getRowCount() - 1);
+            getComponentControlled().getPlayListTable().getSelectionModel().setSelectionInterval(getComponentControlled().getPlayListTable().getRowCount() - rows.length,
+                    getComponentControlled().getPlayListTable().getRowCount() - 1);
         }
     }
 
@@ -181,7 +181,7 @@ public class PlayListController extends PanelController<PlayListPanel> implement
         if (rows.length > 0 && rows[0] > 0) {
             PlayListHandler.getInstance().moveToTop(rows);
             refreshPlayList();
-            getPanelControlled().getPlayListTable().getSelectionModel().setSelectionInterval(0, rows.length - 1);
+            getComponentControlled().getPlayListTable().getSelectionModel().setSelectionInterval(0, rows.length - 1);
         }
     }
 
@@ -196,7 +196,7 @@ public class PlayListController extends PanelController<PlayListPanel> implement
         if (rows.length > 0 && rows[0] > 0) {
             PlayListHandler.getInstance().moveUp(rows);
             refreshPlayList();
-            getPanelControlled().getPlayListTable().getSelectionModel().setSelectionInterval(rows[0] - 1, rows[rows.length - 1] - 1);
+            getComponentControlled().getPlayListTable().getSelectionModel().setSelectionInterval(rows[0] - 1, rows[rows.length - 1] - 1);
         }
     }
 
@@ -210,7 +210,7 @@ public class PlayListController extends PanelController<PlayListPanel> implement
      * 
      */
     public void playSelectedAudioObject() {
-        int audioObject = getPanelControlled().getPlayListTable().getSelectedRow();
+        int audioObject = getComponentControlled().getPlayListTable().getSelectedRow();
         PlayListHandler.getInstance().setPositionToPlayInVisiblePlayList(audioObject);
         PlayerHandler.getInstance().playCurrentAudioObject(false);
     }
@@ -246,10 +246,10 @@ public class PlayListController extends PanelController<PlayListPanel> implement
         getLogger().debug(LogCategories.CONTROLLER, "Scrolling PlayList");
 
         // Get visible rectangle
-        visibleRect = (Rectangle) getPanelControlled().getPlayListTable().getVisibleRect().clone();
+        visibleRect = (Rectangle) getComponentControlled().getPlayListTable().getVisibleRect().clone();
 
         // Get cell height
-        int heightOfRow = getPanelControlled().getPlayListTable().getCellRect(audioObject, 0, true).height;
+        int heightOfRow = getComponentControlled().getPlayListTable().getCellRect(audioObject, 0, true).height;
 
         // Do calculation
         if (visibleRect.height == 0) {
@@ -269,23 +269,15 @@ public class PlayListController extends PanelController<PlayListPanel> implement
         Timer t = new Timer(250, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                getPanelControlled().getPlayListTable().scrollRectToVisible(visibleRect);
+                getComponentControlled().getPlayListTable().scrollRectToVisible(visibleRect);
             }
         });
         t.setRepeats(false);
         t.start();
     }
 
-    /**
-     * Returns panel controlled
-     */
-    @Override
-    protected PlayListPanel getPanelControlled() {
-        return super.getPanelControlled();
-    }
-
     public PlayListControlsPanel getPlayListControlsPanel() {
-        return getPanelControlled().getPlayListControls();
+        return getComponentControlled().getPlayListControls();
     }
 
     public void refreshPlayList() {

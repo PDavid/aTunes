@@ -26,7 +26,7 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.gui.model.RadioBrowserTreeTableModel;
 import net.sourceforge.atunes.gui.views.dialogs.RadioBrowserDialog;
-import net.sourceforge.atunes.kernel.controllers.model.FrameController;
+import net.sourceforge.atunes.kernel.controllers.model.Controller;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
@@ -35,7 +35,7 @@ import net.sourceforge.atunes.misc.log.Logger;
 /**
  * The Class RadioBrowserDialogController.
  */
-public class RadioBrowserDialogController extends FrameController<RadioBrowserDialog> {
+public class RadioBrowserDialogController extends Controller<RadioBrowserDialog> {
 
     /** The logger. */
     static Logger logger = new Logger();
@@ -57,7 +57,7 @@ public class RadioBrowserDialogController extends FrameController<RadioBrowserDi
      */
     public void showRadioBrowser() {
         retrieveData();
-        getFrameControlled().setVisible(true);
+        getComponentControlled().setVisible(true);
     }
 
     /**
@@ -76,7 +76,7 @@ public class RadioBrowserDialogController extends FrameController<RadioBrowserDi
             protected void done() {
                 try {
                     List<Radio> radios = get();
-                    getFrameControlled().getTreeTable().setTreeTableModel(new RadioBrowserTreeTableModel(radios));
+                    getComponentControlled().getTreeTable().setTreeTableModel(new RadioBrowserTreeTableModel(radios));
                 } catch (InterruptedException e) {
                     logger.error(LogCategories.CONTROLLER, e);
                 } catch (ExecutionException e) {
@@ -89,44 +89,17 @@ public class RadioBrowserDialogController extends FrameController<RadioBrowserDi
         }.execute();
     }
 
-    /**
-     * Returns the frame controlled
-     */
-    @Override
-    protected RadioBrowserDialog getFrameControlled() {
-        return super.getFrameControlled();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.kernel.controllers.model.Controller#addBindings()
-     */
     @Override
     protected void addBindings() {
-        RadioBrowserDialogListener listener = new RadioBrowserDialogListener(getFrameControlled());
-        getFrameControlled().getTreeTable().addMouseListener(listener);
+        RadioBrowserDialogListener listener = new RadioBrowserDialogListener(getComponentControlled());
+        getComponentControlled().getTreeTable().addMouseListener(listener);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.kernel.controllers.model.Controller#addStateBindings
-     * ()
-     */
     @Override
     protected void addStateBindings() {
         //getFrameControlled().getTreeTable().setRowSorter(new TableRowSorter<RadioBrowserTreeTableModel>(model));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.kernel.controllers.model.Controller#notifyReload()
-     */
     @Override
     protected void notifyReload() {
         // Nothing to do

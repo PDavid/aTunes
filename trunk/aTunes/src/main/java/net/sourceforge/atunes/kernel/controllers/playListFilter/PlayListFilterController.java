@@ -24,14 +24,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import net.sourceforge.atunes.gui.views.panels.PlayListFilterPanel;
-import net.sourceforge.atunes.kernel.controllers.model.PanelController;
+import net.sourceforge.atunes.kernel.controllers.model.Controller;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 
 /**
  * The Class PlayListFilterController.
  */
-public class PlayListFilterController extends PanelController<PlayListFilterPanel> {
+public class PlayListFilterController extends Controller<PlayListFilterPanel> {
 
     /**
      * Instantiates a new play list filter controller.
@@ -53,40 +53,25 @@ public class PlayListFilterController extends PanelController<PlayListFilterPane
      */
     @Override
     protected void addBindings() {
-        getPanelControlled().getFilterTextField().addActionListener(new ActionListener() {
+        getComponentControlled().getFilterTextField().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
-                String text = getPanelControlled().getFilterTextField().getText();
+                String text = getComponentControlled().getFilterTextField().getText();
                 if (text.equals("")) {
                     text = null;
                 }
                 PlayListHandler.getInstance().setFilter(text);
             }
         });
-        getPanelControlled().getClearFilterButton().addMouseListener(new MouseAdapter() {
+        getComponentControlled().getClearFilterButton().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                getPanelControlled().getFilterTextField().setText("");
+                getComponentControlled().getFilterTextField().setText("");
                 PlayListHandler.getInstance().setFilter(null);
             }
         });
     }
 
-    /**
-     * Return panel controlled
-     */
-    @Override
-    protected PlayListFilterPanel getPanelControlled() {
-        return super.getPanelControlled();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.kernel.controllers.model.Controller#addStateBindings
-     * ()
-     */
     @Override
     protected void addStateBindings() {
         // Nothing to do
@@ -98,15 +83,9 @@ public class PlayListFilterController extends PanelController<PlayListFilterPane
     public void emptyFilter() {
         getLogger().debug(LogCategories.CONTROLLER);
 
-        getPanelControlled().getFilterTextField().setText("");
+        getComponentControlled().getFilterTextField().setText("");
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.kernel.controllers.model.Controller#notifyReload()
-     */
     @Override
     protected void notifyReload() {
         // Nothing to do
@@ -119,7 +98,7 @@ public class PlayListFilterController extends PanelController<PlayListFilterPane
         getLogger().debug(LogCategories.CONTROLLER);
 
         if (PlayListHandler.getInstance().isFiltered()) {
-            PlayListHandler.getInstance().setFilter(getPanelControlled().getFilterTextField().getText());
+            PlayListHandler.getInstance().setFilter(getComponentControlled().getFilterTextField().getText());
         }
     }
 }

@@ -37,7 +37,7 @@ import javax.swing.SwingWorker;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.autocomplete.AutoCompleteDecorator;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
-import net.sourceforge.atunes.kernel.controllers.model.DialogController;
+import net.sourceforge.atunes.kernel.controllers.model.Controller;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.model.Album;
@@ -56,7 +56,7 @@ import org.jdesktop.swingx.combobox.ListComboBoxModel;
 /**
  * The Class EditTagDialogController.
  */
-public class EditTagDialogController extends DialogController<EditTagDialog> {
+public class EditTagDialogController extends Controller<EditTagDialog> {
 
     Logger logger = new Logger();
 
@@ -82,16 +82,16 @@ public class EditTagDialogController extends DialogController<EditTagDialog> {
         // Add genres combo box items
         List<String> genresSorted = Arrays.asList(Tag.genres);
         Collections.sort(genresSorted);
-        getDialogControlled().getGenreComboBox().setModel(new ListComboBoxModel<String>(genresSorted));
+        getComponentControlled().getGenreComboBox().setModel(new ListComboBoxModel<String>(genresSorted));
         // Add autocompletion
-        AutoCompleteDecorator.decorate(getDialogControlled().getGenreComboBox());
+        AutoCompleteDecorator.decorate(getComponentControlled().getGenreComboBox());
 
-        EditTagDialogActionListener actionListener = new EditTagDialogActionListener(this, getDialogControlled());
-        getDialogControlled().getOkButton().addActionListener(actionListener);
-        getDialogControlled().getCancelButton().addActionListener(actionListener);
+        EditTagDialogActionListener actionListener = new EditTagDialogActionListener(this, getComponentControlled());
+        getComponentControlled().getOkButton().addActionListener(actionListener);
+        getComponentControlled().getCancelButton().addActionListener(actionListener);
 
-        getDialogControlled().getCoverButton().addActionListener(actionListener);
-        getDialogControlled().getRemoveCoverButton().addActionListener(actionListener);
+        getComponentControlled().getCoverButton().addActionListener(actionListener);
+        getComponentControlled().getRemoveCoverButton().addActionListener(actionListener);
     }
 
     @Override
@@ -112,9 +112,9 @@ public class EditTagDialogController extends DialogController<EditTagDialog> {
 
         audioFilesEditing = audioFiles;
 
-        getDialogControlled().getCover().setIcon(null);
-        getDialogControlled().getCoverButton().setEnabled(false);
-        getDialogControlled().getRemoveCoverButton().setEnabled(false);
+        getComponentControlled().getCover().setIcon(null);
+        getComponentControlled().getCoverButton().setEnabled(false);
+        getComponentControlled().getRemoveCoverButton().setEnabled(false);
         newCover = null;
         coverEdited = false;
 
@@ -124,9 +124,9 @@ public class EditTagDialogController extends DialogController<EditTagDialog> {
         for (Artist a : artistList) {
             artistNames.add(a.getName());
         }
-        getDialogControlled().getArtistTextField().setModel(new ListComboBoxModel<String>(artistNames));
+        getComponentControlled().getArtistTextField().setModel(new ListComboBoxModel<String>(artistNames));
         // Activate autocompletion of artists
-        AutoCompleteDecorator.decorate(getDialogControlled().getArtistTextField());
+        AutoCompleteDecorator.decorate(getComponentControlled().getArtistTextField());
 
         // Load albums into combo box
         List<Album> albumList = RepositoryHandler.getInstance().getAlbums();
@@ -137,22 +137,22 @@ public class EditTagDialogController extends DialogController<EditTagDialog> {
                 albumNames.add(alb.getName());
             }
         }
-        getDialogControlled().getAlbumTextField().setModel(new ListComboBoxModel<String>(albumNames));
+        getComponentControlled().getAlbumTextField().setModel(new ListComboBoxModel<String>(albumNames));
         // Active autocompletion of albums
-        AutoCompleteDecorator.decorate(getDialogControlled().getAlbumTextField());
+        AutoCompleteDecorator.decorate(getComponentControlled().getAlbumTextField());
 
-        getDialogControlled().setTitleSelected(false);
-        getDialogControlled().setCoverSelected(false);
-        getDialogControlled().setAlbumArtistSelected(false);
-        getDialogControlled().setArtistSelected(false);
-        getDialogControlled().setTrackNumberSelected(false);
-        getDialogControlled().setDiscNumberSelected(false);
-        getDialogControlled().setYearSelected(false);
-        getDialogControlled().setGenreSelected(false);
-        getDialogControlled().setCommentSelected(false);
-        getDialogControlled().setLyricsSelected(false);
-        getDialogControlled().setAlbumSelected(false);
-        getDialogControlled().setComposerSelected(false);
+        getComponentControlled().setTitleSelected(false);
+        getComponentControlled().setCoverSelected(false);
+        getComponentControlled().setAlbumArtistSelected(false);
+        getComponentControlled().setArtistSelected(false);
+        getComponentControlled().setTrackNumberSelected(false);
+        getComponentControlled().setDiscNumberSelected(false);
+        getComponentControlled().setYearSelected(false);
+        getComponentControlled().setGenreSelected(false);
+        getComponentControlled().setCommentSelected(false);
+        getComponentControlled().setLyricsSelected(false);
+        getComponentControlled().setAlbumSelected(false);
+        getComponentControlled().setComposerSelected(false);
 
         // Check if at least one audio file supports internal pictures
         boolean supportsInternalPicture = false;
@@ -164,23 +164,23 @@ public class EditTagDialogController extends DialogController<EditTagDialog> {
         }
 
         if (audioFiles.size() == 1) {
-            getDialogControlled().getTitleCheckBox().setEnabled(false);
-            getDialogControlled().getAlbumArtistCheckBox().setEnabled(false);
-            getDialogControlled().getArtistCheckBox().setEnabled(false);
-            getDialogControlled().getTrackNumberCheckBox().setEnabled(false);
-            getDialogControlled().getYearCheckBox().setEnabled(false);
-            getDialogControlled().getDiscNumberCheckBox().setEnabled(false);
-            getDialogControlled().getGenreCheckBox().setEnabled(false);
-            getDialogControlled().getCommentCheckBox().setEnabled(false);
-            getDialogControlled().getLyricsCheckBox().setEnabled(false);
-            getDialogControlled().getAlbumCheckBox().setEnabled(false);
-            getDialogControlled().getComposerCheckBox().setEnabled(false);
-            getDialogControlled().getCoverCheckBox().setEnabled(false);
-            getDialogControlled().getCoverCheckBox().setEnabled(false);
+            getComponentControlled().getTitleCheckBox().setEnabled(false);
+            getComponentControlled().getAlbumArtistCheckBox().setEnabled(false);
+            getComponentControlled().getArtistCheckBox().setEnabled(false);
+            getComponentControlled().getTrackNumberCheckBox().setEnabled(false);
+            getComponentControlled().getYearCheckBox().setEnabled(false);
+            getComponentControlled().getDiscNumberCheckBox().setEnabled(false);
+            getComponentControlled().getGenreCheckBox().setEnabled(false);
+            getComponentControlled().getCommentCheckBox().setEnabled(false);
+            getComponentControlled().getLyricsCheckBox().setEnabled(false);
+            getComponentControlled().getAlbumCheckBox().setEnabled(false);
+            getComponentControlled().getComposerCheckBox().setEnabled(false);
+            getComponentControlled().getCoverCheckBox().setEnabled(false);
+            getComponentControlled().getCoverCheckBox().setEnabled(false);
 
             if (supportsInternalPicture) {
                 getEditTagDialog().getOkButton().setEnabled(false);
-                getDialogControlled().getCoverCheckBox().setSelected(true);
+                getComponentControlled().getCoverCheckBox().setSelected(true);
 
                 new SwingWorker<ImageIcon, Void>() {
                     @Override
@@ -209,19 +209,19 @@ public class EditTagDialogController extends DialogController<EditTagDialog> {
             }
 
         } else {
-            getDialogControlled().getTitleCheckBox().setEnabled(true);
-            getDialogControlled().getAlbumArtistCheckBox().setEnabled(true);
-            getDialogControlled().getArtistCheckBox().setEnabled(true);
-            getDialogControlled().getTrackNumberCheckBox().setEnabled(true);
-            getDialogControlled().getYearCheckBox().setEnabled(true);
-            getDialogControlled().getDiscNumberCheckBox().setEnabled(true);
-            getDialogControlled().getGenreCheckBox().setEnabled(true);
-            getDialogControlled().getCommentCheckBox().setEnabled(true);
-            getDialogControlled().getLyricsCheckBox().setEnabled(true);
-            getDialogControlled().getAlbumCheckBox().setEnabled(true);
-            getDialogControlled().getComposerCheckBox().setEnabled(true);
-            getDialogControlled().getCoverCheckBox().setEnabled(true);
-            getDialogControlled().getCoverCheckBox().setEnabled(supportsInternalPicture);
+            getComponentControlled().getTitleCheckBox().setEnabled(true);
+            getComponentControlled().getAlbumArtistCheckBox().setEnabled(true);
+            getComponentControlled().getArtistCheckBox().setEnabled(true);
+            getComponentControlled().getTrackNumberCheckBox().setEnabled(true);
+            getComponentControlled().getYearCheckBox().setEnabled(true);
+            getComponentControlled().getDiscNumberCheckBox().setEnabled(true);
+            getComponentControlled().getGenreCheckBox().setEnabled(true);
+            getComponentControlled().getCommentCheckBox().setEnabled(true);
+            getComponentControlled().getLyricsCheckBox().setEnabled(true);
+            getComponentControlled().getAlbumCheckBox().setEnabled(true);
+            getComponentControlled().getComposerCheckBox().setEnabled(true);
+            getComponentControlled().getCoverCheckBox().setEnabled(true);
+            getComponentControlled().getCoverCheckBox().setEnabled(supportsInternalPicture);
         }
 
         Set<String> titles = new HashSet<String>();
@@ -253,93 +253,93 @@ public class EditTagDialogController extends DialogController<EditTagDialog> {
         }
 
         if (titles.size() == 1 && !titles.contains("")) {
-            getDialogControlled().getTitleTextField().setText(titles.iterator().next());
-            getDialogControlled().setTitleSelected(true);
+            getComponentControlled().getTitleTextField().setText(titles.iterator().next());
+            getComponentControlled().setTitleSelected(true);
         } else {
-            getDialogControlled().getTitleTextField().setText("");
-            getDialogControlled().setTitleSelected(audioFiles.size() == 1);
+            getComponentControlled().getTitleTextField().setText("");
+            getComponentControlled().setTitleSelected(audioFiles.size() == 1);
         }
 
         if (trackNumbers.size() == 1 && !trackNumbers.contains(0)) {
-            getDialogControlled().getTrackNumberTextField().setText(trackNumbers.iterator().next().toString());
-            getDialogControlled().setTrackNumberSelected(true);
+            getComponentControlled().getTrackNumberTextField().setText(trackNumbers.iterator().next().toString());
+            getComponentControlled().setTrackNumberSelected(true);
         } else {
-            getDialogControlled().getTrackNumberTextField().setText("");
-            getDialogControlled().setTrackNumberSelected(audioFiles.size() == 1);
+            getComponentControlled().getTrackNumberTextField().setText("");
+            getComponentControlled().setTrackNumberSelected(audioFiles.size() == 1);
         }
 
         if (discNumbers.size() == 1 && !discNumbers.contains(0)) {
-            getDialogControlled().getDiscNumberTextField().setText(discNumbers.iterator().next().toString());
-            getDialogControlled().setDiscNumberSelected(true);
+            getComponentControlled().getDiscNumberTextField().setText(discNumbers.iterator().next().toString());
+            getComponentControlled().setDiscNumberSelected(true);
         } else {
-            getDialogControlled().getDiscNumberTextField().setText("");
-            getDialogControlled().setDiscNumberSelected(audioFiles.size() == 1);
+            getComponentControlled().getDiscNumberTextField().setText("");
+            getComponentControlled().setDiscNumberSelected(audioFiles.size() == 1);
         }
 
         if (artists.size() == 1 && !artists.contains("")) {
-            getDialogControlled().getArtistTextField().getEditor().setItem(artists.iterator().next());
-            getDialogControlled().setArtistSelected(true);
+            getComponentControlled().getArtistTextField().getEditor().setItem(artists.iterator().next());
+            getComponentControlled().setArtistSelected(true);
         } else {
-            getDialogControlled().getArtistTextField().getEditor().setItem("");
-            getDialogControlled().setArtistSelected(audioFiles.size() == 1);
+            getComponentControlled().getArtistTextField().getEditor().setItem("");
+            getComponentControlled().setArtistSelected(audioFiles.size() == 1);
         }
 
         if (albums.size() == 1 && !albums.contains("")) {
-            getDialogControlled().getAlbumTextField().getEditor().setItem(albums.iterator().next());
-            getDialogControlled().setAlbumSelected(true);
+            getComponentControlled().getAlbumTextField().getEditor().setItem(albums.iterator().next());
+            getComponentControlled().setAlbumSelected(true);
         } else {
-            getDialogControlled().getAlbumTextField().getEditor().setItem("");
-            getDialogControlled().setAlbumSelected(audioFiles.size() == 1);
+            getComponentControlled().getAlbumTextField().getEditor().setItem("");
+            getComponentControlled().setAlbumSelected(audioFiles.size() == 1);
         }
 
         if (years.size() == 1 && !years.contains(0)) {
-            getDialogControlled().getYearTextField().setText(String.valueOf(years.iterator().next()));
-            getDialogControlled().setYearSelected(true);
+            getComponentControlled().getYearTextField().setText(String.valueOf(years.iterator().next()));
+            getComponentControlled().setYearSelected(true);
         } else {
-            getDialogControlled().getYearTextField().setText("");
-            getDialogControlled().setYearSelected(audioFiles.size() == 1);
+            getComponentControlled().getYearTextField().setText("");
+            getComponentControlled().setYearSelected(audioFiles.size() == 1);
         }
 
         if (comments.size() == 1 && !comments.contains("")) {
-            getDialogControlled().getCommentTextArea().setText(comments.iterator().next());
-            getDialogControlled().getCommentTextArea().setCaretPosition(0);
-            getDialogControlled().setCommentSelected(true);
+            getComponentControlled().getCommentTextArea().setText(comments.iterator().next());
+            getComponentControlled().getCommentTextArea().setCaretPosition(0);
+            getComponentControlled().setCommentSelected(true);
         } else {
-            getDialogControlled().getCommentTextArea().setText("");
-            getDialogControlled().setCommentSelected(audioFiles.size() == 1);
+            getComponentControlled().getCommentTextArea().setText("");
+            getComponentControlled().setCommentSelected(audioFiles.size() == 1);
         }
 
         if (genres.size() == 1 && !genres.contains("")) {
-            getDialogControlled().getGenreComboBox().getEditor().setItem(genres.iterator().next());
-            getDialogControlled().setGenreSelected(true);
+            getComponentControlled().getGenreComboBox().getEditor().setItem(genres.iterator().next());
+            getComponentControlled().setGenreSelected(true);
         } else {
-            getDialogControlled().getGenreComboBox().getEditor().setItem("");
-            getDialogControlled().setGenreSelected(audioFiles.size() == 1);
+            getComponentControlled().getGenreComboBox().getEditor().setItem("");
+            getComponentControlled().setGenreSelected(audioFiles.size() == 1);
         }
 
         if (lyrics.size() == 1 && !lyrics.contains("")) {
-            getDialogControlled().getLyricsTextArea().setText(lyrics.iterator().next());
-            getDialogControlled().getLyricsTextArea().setCaretPosition(0);
-            getDialogControlled().setLyricsSelected(true);
+            getComponentControlled().getLyricsTextArea().setText(lyrics.iterator().next());
+            getComponentControlled().getLyricsTextArea().setCaretPosition(0);
+            getComponentControlled().setLyricsSelected(true);
         } else {
-            getDialogControlled().getLyricsTextArea().setText("");
-            getDialogControlled().setLyricsSelected(audioFiles.size() == 1);
+            getComponentControlled().getLyricsTextArea().setText("");
+            getComponentControlled().setLyricsSelected(audioFiles.size() == 1);
         }
 
         if (composers.size() == 1 && !composers.contains("")) {
-            getDialogControlled().getComposerTextField().setText(composers.iterator().next());
-            getDialogControlled().setComposerSelected(true);
+            getComponentControlled().getComposerTextField().setText(composers.iterator().next());
+            getComponentControlled().setComposerSelected(true);
         } else {
-            getDialogControlled().getComposerTextField().setText("");
-            getDialogControlled().setComposerSelected(audioFiles.size() == 1);
+            getComponentControlled().getComposerTextField().setText("");
+            getComponentControlled().setComposerSelected(audioFiles.size() == 1);
         }
 
         if (albumArtists.size() == 1 && !albumArtists.contains("")) {
-            getDialogControlled().getAlbumArtistTextField().setText(albumArtists.iterator().next());
-            getDialogControlled().setAlbumArtistSelected(true);
+            getComponentControlled().getAlbumArtistTextField().setText(albumArtists.iterator().next());
+            getComponentControlled().setAlbumArtistSelected(true);
         } else {
-            getDialogControlled().getAlbumArtistTextField().setText("");
-            getDialogControlled().setAlbumArtistSelected(audioFiles.size() == 1);
+            getComponentControlled().getAlbumArtistTextField().setText("");
+            getComponentControlled().setAlbumArtistSelected(audioFiles.size() == 1);
         }
 
         // If there is only one file add a help to complete title from file name
@@ -386,12 +386,12 @@ public class EditTagDialogController extends DialogController<EditTagDialog> {
             }
         });
 
-        getDialogControlled().setVisible(true);
+        getComponentControlled().setVisible(true);
 
     }
 
     EditTagDialog getDialog() {
-        return getDialogControlled();
+        return getComponentControlled();
     }
 
     /**
@@ -401,7 +401,7 @@ public class EditTagDialogController extends DialogController<EditTagDialog> {
      * @return
      */
     EditTagDialog getEditTagDialog() {
-        return getDialogControlled();
+        return getComponentControlled();
     }
 
     /**
@@ -410,50 +410,50 @@ public class EditTagDialogController extends DialogController<EditTagDialog> {
     protected void editTag() {
         getLogger().debug(LogCategories.CONTROLLER);
 
-        getDialogControlled().setVisible(false);
+        getComponentControlled().setVisible(false);
 
         // Build editor props
         EditTagInfo editTagInfo = new EditTagInfo();
 
-        if (!getDialogControlled().getTitleCheckBox().isEnabled() || getDialogControlled().getTitleCheckBox().isSelected()) {
-            editTagInfo.put("TITLE", getDialogControlled().getTitleTextField().getText());
+        if (!getComponentControlled().getTitleCheckBox().isEnabled() || getComponentControlled().getTitleCheckBox().isSelected()) {
+            editTagInfo.put("TITLE", getComponentControlled().getTitleTextField().getText());
         }
-        if (!getDialogControlled().getArtistCheckBox().isEnabled() || getDialogControlled().getArtistCheckBox().isSelected()) {
-            editTagInfo.put("ARTIST", getDialogControlled().getArtistTextField().getSelectedItem());
+        if (!getComponentControlled().getArtistCheckBox().isEnabled() || getComponentControlled().getArtistCheckBox().isSelected()) {
+            editTagInfo.put("ARTIST", getComponentControlled().getArtistTextField().getSelectedItem());
         }
-        if (!getDialogControlled().getAlbumCheckBox().isEnabled() || getDialogControlled().getAlbumCheckBox().isSelected()) {
-            editTagInfo.put("ALBUM", getDialogControlled().getAlbumTextField().getSelectedItem());
+        if (!getComponentControlled().getAlbumCheckBox().isEnabled() || getComponentControlled().getAlbumCheckBox().isSelected()) {
+            editTagInfo.put("ALBUM", getComponentControlled().getAlbumTextField().getSelectedItem());
         }
-        if (!getDialogControlled().getYearCheckBox().isEnabled() || getDialogControlled().getYearCheckBox().isSelected()) {
-            editTagInfo.put("YEAR", getDialogControlled().getYearTextField().getText());
+        if (!getComponentControlled().getYearCheckBox().isEnabled() || getComponentControlled().getYearCheckBox().isSelected()) {
+            editTagInfo.put("YEAR", getComponentControlled().getYearTextField().getText());
         }
-        if (!getDialogControlled().getCommentCheckBox().isEnabled() || getDialogControlled().getCommentCheckBox().isSelected()) {
-            editTagInfo.put("COMMENT", getDialogControlled().getCommentTextArea().getText());
+        if (!getComponentControlled().getCommentCheckBox().isEnabled() || getComponentControlled().getCommentCheckBox().isSelected()) {
+            editTagInfo.put("COMMENT", getComponentControlled().getCommentTextArea().getText());
         }
-        if (!getDialogControlled().getGenreCheckBox().isEnabled() || getDialogControlled().getGenreCheckBox().isSelected()) {
-            editTagInfo.put("GENRE", getDialogControlled().getGenreComboBox().getSelectedItem());
+        if (!getComponentControlled().getGenreCheckBox().isEnabled() || getComponentControlled().getGenreCheckBox().isSelected()) {
+            editTagInfo.put("GENRE", getComponentControlled().getGenreComboBox().getSelectedItem());
         }
-        if (!getDialogControlled().getLyricsCheckBox().isEnabled() || getDialogControlled().getLyricsCheckBox().isSelected()) {
+        if (!getComponentControlled().getLyricsCheckBox().isEnabled() || getComponentControlled().getLyricsCheckBox().isSelected()) {
             // Text area line breaks are \n so in some OS (Windows) is not a correct line break -> Replace with OS line terminator
-            String lyrics = getDialogControlled().getLyricsTextArea().getText();
+            String lyrics = getComponentControlled().getLyricsTextArea().getText();
             if (SystemProperties.OS.equals(OperatingSystem.WINDOWS)) {
                 lyrics = lyrics.replaceAll("\n", "\r\n");
             }
             editTagInfo.put("LYRICS", lyrics);
         }
-        if (!getDialogControlled().getComposerCheckBox().isEnabled() || getDialogControlled().getComposerCheckBox().isSelected()) {
-            editTagInfo.put("COMPOSER", getDialogControlled().getComposerTextField().getText());
+        if (!getComponentControlled().getComposerCheckBox().isEnabled() || getComponentControlled().getComposerCheckBox().isSelected()) {
+            editTagInfo.put("COMPOSER", getComponentControlled().getComposerTextField().getText());
         }
-        if (!getDialogControlled().getAlbumArtistCheckBox().isEnabled() || getDialogControlled().getAlbumArtistCheckBox().isSelected()) {
-            editTagInfo.put("ALBUM_ARTIST", getDialogControlled().getAlbumArtistTextField().getText());
+        if (!getComponentControlled().getAlbumArtistCheckBox().isEnabled() || getComponentControlled().getAlbumArtistCheckBox().isSelected()) {
+            editTagInfo.put("ALBUM_ARTIST", getComponentControlled().getAlbumArtistTextField().getText());
         }
-        if (!getDialogControlled().getTrackNumberCheckBox().isEnabled() || getDialogControlled().getTrackNumberCheckBox().isSelected()) {
-            editTagInfo.put("TRACK", getDialogControlled().getTrackNumberTextField().getText());
+        if (!getComponentControlled().getTrackNumberCheckBox().isEnabled() || getComponentControlled().getTrackNumberCheckBox().isSelected()) {
+            editTagInfo.put("TRACK", getComponentControlled().getTrackNumberTextField().getText());
         }
-        if (!getDialogControlled().getDiscNumberCheckBox().isEnabled() || getDialogControlled().getDiscNumberCheckBox().isSelected()) {
-            editTagInfo.put("DISC_NUMBER", getDialogControlled().getDiscNumberTextField().getText());
+        if (!getComponentControlled().getDiscNumberCheckBox().isEnabled() || getComponentControlled().getDiscNumberCheckBox().isSelected()) {
+            editTagInfo.put("DISC_NUMBER", getComponentControlled().getDiscNumberTextField().getText());
         }
-        if ((!getDialogControlled().getCoverCheckBox().isEnabled() || getDialogControlled().getCoverCheckBox().isSelected()) && coverEdited) {
+        if ((!getComponentControlled().getCoverCheckBox().isEnabled() || getComponentControlled().getCoverCheckBox().isSelected()) && coverEdited) {
             editTagInfo.put("COVER", newCover);
         }
 

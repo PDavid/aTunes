@@ -26,7 +26,7 @@ import javax.swing.JTable;
 import javax.swing.table.TableRowSorter;
 
 import net.sourceforge.atunes.gui.views.dialogs.SearchResultsDialog;
-import net.sourceforge.atunes.kernel.controllers.model.DialogController;
+import net.sourceforge.atunes.kernel.controllers.model.Controller;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.search.SearchResult;
 import net.sourceforge.atunes.kernel.modules.search.SearchResultTableModel;
@@ -37,7 +37,7 @@ import net.sourceforge.atunes.model.AudioObject;
 /**
  * Controller for the search result dialog.
  */
-public class SearchResultsController extends DialogController<SearchResultsDialog> {
+public class SearchResultsController extends Controller<SearchResultsDialog> {
 
     private List<SearchResult> results;
 
@@ -57,17 +57,17 @@ public class SearchResultsController extends DialogController<SearchResultsDialo
     public void showSearchResults(SearchableObject searchableObject, List<SearchResult> resultsList) {
         this.results = resultsList;
         SearchResultTableModel model = searchableObject.getSearchResultsTableModel(resultsList);
-        getDialogControlled().getSearchResultsTable().setModel(model);
-        getDialogControlled().getSearchResultsTable().setRowSorter(new TableRowSorter<SearchResultTableModel>(model));
-        getDialogControlled().setVisible(true);
+        getComponentControlled().getSearchResultsTable().setModel(model);
+        getComponentControlled().getSearchResultsTable().setRowSorter(new TableRowSorter<SearchResultTableModel>(model));
+        getComponentControlled().setVisible(true);
     }
 
     @Override
     protected void addBindings() {
-        SearchResultsListener listener = new SearchResultsListener(this, getDialogControlled());
-        getDialogControlled().getShowElementInfo().addActionListener(listener);
-        getDialogControlled().getAddToCurrentPlayList().addActionListener(listener);
-        getDialogControlled().getAddToNewPlayList().addActionListener(listener);
+        SearchResultsListener listener = new SearchResultsListener(this, getComponentControlled());
+        getComponentControlled().getShowElementInfo().addActionListener(listener);
+        getComponentControlled().getAddToCurrentPlayList().addActionListener(listener);
+        getComponentControlled().getAddToNewPlayList().addActionListener(listener);
 
     }
 
@@ -110,12 +110,12 @@ public class SearchResultsController extends DialogController<SearchResultsDialo
      * @return the selected results
      */
     private List<AudioObject> getSelectedResults() {
-        int[] selectedRows = getDialogControlled().getSearchResultsTable().getSelectedRows();
+        int[] selectedRows = getComponentControlled().getSearchResultsTable().getSelectedRows();
         if (selectedRows.length == 0) {
             return null;
         }
         List<AudioObject> selectedResults = new ArrayList<AudioObject>();
-        JTable table = getDialogControlled().getSearchResultsTable();
+        JTable table = getComponentControlled().getSearchResultsTable();
         for (int element : selectedRows) {
             selectedResults.add(results.get(table.convertRowIndexToModel(element)).getAudioObject());
         }

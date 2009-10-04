@@ -27,7 +27,7 @@ import javax.swing.JSlider;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
-import net.sourceforge.atunes.kernel.controllers.model.PanelController;
+import net.sourceforge.atunes.kernel.controllers.model.Controller;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -35,7 +35,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The Class PlayerControlsController.
  */
-public class PlayerControlsController extends PanelController<PlayerControlsPanel> {
+public class PlayerControlsController extends Controller<PlayerControlsPanel> {
 
     private static final int SECONDS_10 = 10000;
     private static final int SECONDS_30 = 30000;
@@ -59,11 +59,11 @@ public class PlayerControlsController extends PanelController<PlayerControlsPane
 
     @Override
     protected void addBindings() {
-        PlayerControlsListener listener = new PlayerControlsListener(getPanelControlled(), this);
+        PlayerControlsListener listener = new PlayerControlsListener(getComponentControlled(), this);
 
-        getPanelControlled().getProgressBar().addMouseListener(listener);
+        getComponentControlled().getProgressBar().addMouseListener(listener);
         //bind a mouse wheel listener
-        getPanelControlled().getVolumeSlider().addMouseWheelListener(listener);
+        getComponentControlled().getVolumeSlider().addMouseWheelListener(listener);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class PlayerControlsController extends PanelController<PlayerControlsPane
     public void setAudioObjectLength(long length) {
         getLogger().debug(LogCategories.CONTROLLER, Long.toString(length));
 
-        getPanelControlled().getProgressBar().setMaximum((int) length);
+        getComponentControlled().getProgressBar().setMaximum((int) length);
         setupProgressTicks(length);
     }
 
@@ -96,7 +96,7 @@ public class PlayerControlsController extends PanelController<PlayerControlsPane
      *            the new playing
      */
     public void setPlaying(boolean playing) {
-        getPanelControlled().setPlaying(playing);
+        getComponentControlled().setPlaying(playing);
     }
 
     /**
@@ -106,7 +106,7 @@ public class PlayerControlsController extends PanelController<PlayerControlsPane
      *            the new slidable
      */
     public void setSlidable(boolean slidable) {
-        getPanelControlled().getProgressBar().setEnabled(slidable);
+        getComponentControlled().getProgressBar().setEnabled(slidable);
     }
 
     /**
@@ -120,13 +120,13 @@ public class PlayerControlsController extends PanelController<PlayerControlsPane
     public void setCurrentAudioObjectTimePlayed(long timePlayed, long totalTime) {
         long remainingTime = totalTime - timePlayed;
         if (timePlayed == 0) {
-            getPanelControlled().getRemainingTime().setText(StringUtils.milliseconds2String(timePlayed));
+            getComponentControlled().getRemainingTime().setText(StringUtils.milliseconds2String(timePlayed));
         } else {
-            getPanelControlled().getRemainingTime().setText(remainingTime > 0 ? StringUtils.getString("- ", StringUtils.milliseconds2String(remainingTime)) : "-");
+            getComponentControlled().getRemainingTime().setText(remainingTime > 0 ? StringUtils.getString("- ", StringUtils.milliseconds2String(remainingTime)) : "-");
         }
 
-        getPanelControlled().getTime().setText(StringUtils.milliseconds2String(timePlayed));
-        getPanelControlled().getProgressBar().setValue((int) timePlayed);
+        getComponentControlled().getTime().setText(StringUtils.milliseconds2String(timePlayed));
+        getComponentControlled().getProgressBar().setValue((int) timePlayed);
     }
 
     /**
@@ -136,15 +136,15 @@ public class PlayerControlsController extends PanelController<PlayerControlsPane
      *            the new volume
      */
     public void setVolume(int value) {
-        getPanelControlled().getVolumeSlider().setValue(value);
-        getPanelControlled().getVolumeLevel().setText(StringUtils.getString(String.valueOf(value), " %"));
+        getComponentControlled().getVolumeSlider().setValue(value);
+        getComponentControlled().getVolumeLevel().setText(StringUtils.getString(String.valueOf(value), " %"));
     }
 
     /**
      * Gets the position in percent.
      */
     public float getPostionInPercent() {
-        JSlider progressBar = getPanelControlled().getProgressBar();
+        JSlider progressBar = getComponentControlled().getProgressBar();
         int max = progressBar.getMaximum();
         int pos = progressBar.getValue();
 
@@ -176,7 +176,7 @@ public class PlayerControlsController extends PanelController<PlayerControlsPane
             majorTickSpacing = MINUTES_5;
         }
 
-        JSlider progressBar = getPanelControlled().getProgressBar();
+        JSlider progressBar = getComponentControlled().getProgressBar();
 
         //avoid NullPointerException 
         progressBar.setLabelTable(null);
@@ -220,7 +220,7 @@ public class PlayerControlsController extends PanelController<PlayerControlsPane
                 }
             }
         }
-        JSlider progressBar = getPanelControlled().getProgressBar();
+        JSlider progressBar = getComponentControlled().getProgressBar();
         progressBar.setPaintLabels(ApplicationState.getInstance().isShowTicks() && ticksLabels.size() > 0);
         if (ticksLabels.size() > 0) {
             progressBar.setLabelTable(ticksLabels);

@@ -32,7 +32,7 @@ import javax.swing.tree.DefaultTreeModel;
 
 import net.sourceforge.atunes.gui.views.dialogs.CustomSearchDialog;
 import net.sourceforge.atunes.kernel.ControllerProxy;
-import net.sourceforge.atunes.kernel.controllers.model.DialogController;
+import net.sourceforge.atunes.kernel.controllers.model.Controller;
 import net.sourceforge.atunes.kernel.modules.search.EmptyRule;
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
 import net.sourceforge.atunes.kernel.modules.search.SearchIndexNotAvailableException;
@@ -51,7 +51,7 @@ import org.jdesktop.swingx.combobox.ListComboBoxModel;
 /**
  * CustomSearchDialog controller.
  */
-public class CustomSearchController extends DialogController<CustomSearchDialog> {
+public class CustomSearchController extends Controller<CustomSearchDialog> {
 
     /** List of searchable objects. */
     private List<SearchableObject> searchableObjects;
@@ -74,13 +74,13 @@ public class CustomSearchController extends DialogController<CustomSearchDialog>
      * Shows dialog (previous values are cleared).
      */
     public void showSearchDialog() {
-        ((DefaultTreeModel) getDialogControlled().getComplexRulesTree().getModel()).setRoot(null);
-        getDialogControlled().getSimpleRulesComboBox().setSelectedIndex(0);
-        getDialogControlled().getSimpleRulesTextField().setText("");
-        getDialogControlled().getAdvancedSearchCheckBox().setSelected(ApplicationState.getInstance().isEnableAdvancedSearch());
+        ((DefaultTreeModel) getComponentControlled().getComplexRulesTree().getModel()).setRoot(null);
+        getComponentControlled().getSimpleRulesComboBox().setSelectedIndex(0);
+        getComponentControlled().getSimpleRulesTextField().setText("");
+        getComponentControlled().getAdvancedSearchCheckBox().setSelected(ApplicationState.getInstance().isEnableAdvancedSearch());
         enableAdvancedSearch(ApplicationState.getInstance().isEnableAdvancedSearch());
-        getDialogControlled().getAdvancedSearchTextField().setText("");
-        getDialogControlled().setVisible(true);
+        getComponentControlled().getAdvancedSearchTextField().setText("");
+        getComponentControlled().setVisible(true);
     }
 
     /**
@@ -96,11 +96,11 @@ public class CustomSearchController extends DialogController<CustomSearchDialog>
             for (SearchableObject o : sObjects) {
                 names.add(o.getSearchableObjectName());
             }
-            getDialogControlled().getSearchAtComboBox().setModel(new ListComboBoxModel<String>(names));
+            getComponentControlled().getSearchAtComboBox().setModel(new ListComboBoxModel<String>(names));
             this.searchableObjects = sObjects;
 
             // Fire select event
-            getDialogControlled().getSearchAtComboBox().setSelectedIndex(0);
+            getComponentControlled().getSearchAtComboBox().setSelectedIndex(0);
         }
     }
 
@@ -111,7 +111,7 @@ public class CustomSearchController extends DialogController<CustomSearchDialog>
      *            the operators
      */
     public void setListOfOperators(List<String> operators) {
-        getDialogControlled().getSimpleRulesComboBox().setModel(new DefaultComboBoxModel(operators.toArray()));
+        getComponentControlled().getSimpleRulesComboBox().setModel(new DefaultComboBoxModel(operators.toArray()));
     }
 
     /**
@@ -120,7 +120,7 @@ public class CustomSearchController extends DialogController<CustomSearchDialog>
     public void updateAttributesList() {
         if (searchableObjects != null) {
             // Get selected searchable object
-            SearchableObject selectedSearchableObject = searchableObjects.get(getDialogControlled().getSearchAtComboBox().getSelectedIndex());
+            SearchableObject selectedSearchableObject = searchableObjects.get(getComponentControlled().getSearchAtComboBox().getSelectedIndex());
 
             // Get attributes
             List<String> attributes = selectedSearchableObject.getSearchableAttributes();
@@ -135,7 +135,7 @@ public class CustomSearchController extends DialogController<CustomSearchDialog>
             }
 
             // Set attributes list
-            getDialogControlled().getSimpleRulesList().setListData(translatedAttributesList.toArray());
+            getComponentControlled().getSimpleRulesList().setListData(translatedAttributesList.toArray());
         }
     }
 
@@ -144,16 +144,16 @@ public class CustomSearchController extends DialogController<CustomSearchDialog>
      */
     public void createSimpleRule() {
         // Get simple rule data: attribute, operator and value
-        String attribute = (String) getDialogControlled().getSimpleRulesList().getSelectedValue();
-        String operator = (String) getDialogControlled().getSimpleRulesComboBox().getSelectedItem();
-        String value = getDialogControlled().getSimpleRulesTextField().getText();
+        String attribute = (String) getComponentControlled().getSimpleRulesList().getSelectedValue();
+        String operator = (String) getComponentControlled().getSimpleRulesComboBox().getSelectedItem();
+        String value = getComponentControlled().getSimpleRulesTextField().getText();
 
         // Create object
         SimpleRule simpleRule = new SimpleRule(attribute, operator, value);
 
         // Add simple rule to tree
-        DefaultTreeModel model = ((DefaultTreeModel) getDialogControlled().getComplexRulesTree().getModel());
-        DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) getDialogControlled().getComplexRulesTree().getModel().getRoot();
+        DefaultTreeModel model = ((DefaultTreeModel) getComponentControlled().getComplexRulesTree().getModel());
+        DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) getComponentControlled().getComplexRulesTree().getModel().getRoot();
 
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(simpleRule);
 
@@ -162,7 +162,7 @@ public class CustomSearchController extends DialogController<CustomSearchDialog>
             model.setRoot(node);
         } else {
             // Rule is not empty, get selected node
-            DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) getDialogControlled().getComplexRulesTree().getSelectionPath().getLastPathComponent();
+            DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) getComponentControlled().getComplexRulesTree().getSelectionPath().getLastPathComponent();
 
             // If selected node is an empty rule replace it
             if (selectedNode.getUserObject() instanceof EmptyRule) {
@@ -180,7 +180,7 @@ public class CustomSearchController extends DialogController<CustomSearchDialog>
         updateAdvancedSearchTextField();
 
         // Expand complex rules tree to display full rule
-        GuiUtils.expandTree(getDialogControlled().getComplexRulesTree());
+        GuiUtils.expandTree(getComponentControlled().getComplexRulesTree());
     }
 
     /**
@@ -212,8 +212,8 @@ public class CustomSearchController extends DialogController<CustomSearchDialog>
      */
     private void addLogicalOperator(LogicalOperator operator) {
         // Get selected node and parent
-        DefaultTreeModel model = ((DefaultTreeModel) getDialogControlled().getComplexRulesTree().getModel());
-        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) getDialogControlled().getComplexRulesTree().getSelectionPath().getLastPathComponent();
+        DefaultTreeModel model = ((DefaultTreeModel) getComponentControlled().getComplexRulesTree().getModel());
+        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) getComponentControlled().getComplexRulesTree().getSelectionPath().getLastPathComponent();
         DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) selectedNode.getParent();
 
         // Create node
@@ -245,19 +245,19 @@ public class CustomSearchController extends DialogController<CustomSearchDialog>
         updateAdvancedSearchTextField();
 
         // Expand complex rules tree to display full rule
-        GuiUtils.expandTree(getDialogControlled().getComplexRulesTree());
+        GuiUtils.expandTree(getComponentControlled().getComplexRulesTree());
     }
 
     /**
      * Updated advanced search text field with rule tree content.
      */
     private void updateAdvancedSearchTextField() {
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode) getDialogControlled().getComplexRulesTree().getModel().getRoot();
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) getComponentControlled().getComplexRulesTree().getModel().getRoot();
         String query = "";
         if (node != null) {
             query = createQuery(node);
         }
-        getDialogControlled().getAdvancedSearchTextField().setText(query);
+        getComponentControlled().getAdvancedSearchTextField().setText(query);
     }
 
     /**
@@ -300,15 +300,15 @@ public class CustomSearchController extends DialogController<CustomSearchDialog>
      */
     public void removeRuleNode() {
         // Get selected node and parent
-        DefaultTreeModel model = ((DefaultTreeModel) getDialogControlled().getComplexRulesTree().getModel());
-        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) getDialogControlled().getComplexRulesTree().getSelectionPath().getLastPathComponent();
+        DefaultTreeModel model = ((DefaultTreeModel) getComponentControlled().getComplexRulesTree().getModel());
+        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) getComponentControlled().getComplexRulesTree().getSelectionPath().getLastPathComponent();
         DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) selectedNode.getParent();
 
         // If it's root, remove it
         if (selectedNode.isRoot()) {
             model.setRoot(null);
             // Allow user to add more simple rules
-            getDialogControlled().getSimpleRulesAddButton().setEnabled(true);
+            getComponentControlled().getSimpleRulesAddButton().setEnabled(true);
         } else {
             // If it's not root, if parent has more than 2 children, then remove it (to keep binary operators with 2 childs at least)
             if (parentNode.getChildCount() > 2) {
@@ -329,7 +329,7 @@ public class CustomSearchController extends DialogController<CustomSearchDialog>
         updateAdvancedSearchTextField();
 
         // Expand complex rules tree to display full rule
-        GuiUtils.expandTree(getDialogControlled().getComplexRulesTree());
+        GuiUtils.expandTree(getComponentControlled().getComplexRulesTree());
     }
 
     /**
@@ -364,10 +364,10 @@ public class CustomSearchController extends DialogController<CustomSearchDialog>
     public void search() {
         if (searchableObjects != null) {
             // Get searchable object
-            SearchableObject selectedSearchableObject = searchableObjects.get(getDialogControlled().getSearchAtComboBox().getSelectedIndex());
+            SearchableObject selectedSearchableObject = searchableObjects.get(getComponentControlled().getSearchAtComboBox().getSelectedIndex());
 
             // Get query: as advanced search text field is updated with tree rules, we can always get query from this text field
-            String query = getDialogControlled().getAdvancedSearchTextField().getText();
+            String query = getComponentControlled().getAdvancedSearchTextField().getText();
 
             // Translate query to internal attribute names
             query = translateQuery(query);
@@ -405,7 +405,7 @@ public class CustomSearchController extends DialogController<CustomSearchDialog>
      */
     private void showSearchResults(SearchableObject searchableObject, List<SearchResult> result) {
         // Hide search dialog
-        getDialogControlled().setVisible(false);
+        getComponentControlled().setVisible(false);
         // Open search results dialog
         ControllerProxy.getInstance().getSearchResultsController().showSearchResults(searchableObject, result);
     }
@@ -417,16 +417,16 @@ public class CustomSearchController extends DialogController<CustomSearchDialog>
      *            the enable
      */
     public void enableAdvancedSearch(boolean enable) {
-        getDialogControlled().getSimpleRulesAddButton().setEnabled(!enable);
-        getDialogControlled().getSimpleRulesComboBox().setEnabled(!enable);
-        getDialogControlled().getSimpleRulesList().setEnabled(!enable);
-        getDialogControlled().getSimpleRulesTextField().setEnabled(!enable);
-        getDialogControlled().getComplexRulesAndButton().setEnabled(!enable);
-        getDialogControlled().getComplexRulesOrButton().setEnabled(!enable);
-        getDialogControlled().getComplexRulesNotButton().setEnabled(!enable);
-        getDialogControlled().getComplexRulesRemoveButton().setEnabled(!enable);
-        getDialogControlled().getComplexRulesTree().setEnabled(!enable);
-        getDialogControlled().getAdvancedSearchTextField().setEnabled(enable);
+        getComponentControlled().getSimpleRulesAddButton().setEnabled(!enable);
+        getComponentControlled().getSimpleRulesComboBox().setEnabled(!enable);
+        getComponentControlled().getSimpleRulesList().setEnabled(!enable);
+        getComponentControlled().getSimpleRulesTextField().setEnabled(!enable);
+        getComponentControlled().getComplexRulesAndButton().setEnabled(!enable);
+        getComponentControlled().getComplexRulesOrButton().setEnabled(!enable);
+        getComponentControlled().getComplexRulesNotButton().setEnabled(!enable);
+        getComponentControlled().getComplexRulesRemoveButton().setEnabled(!enable);
+        getComponentControlled().getComplexRulesTree().setEnabled(!enable);
+        getComponentControlled().getAdvancedSearchTextField().setEnabled(enable);
     }
 
     /*
@@ -437,20 +437,20 @@ public class CustomSearchController extends DialogController<CustomSearchDialog>
      */
     @Override
     protected void addBindings() {
-        CustomSearchListener listener = new CustomSearchListener(getDialogControlled());
-        getDialogControlled().getSearchAtComboBox().addActionListener(listener);
-        getDialogControlled().getSimpleRulesAddButton().addActionListener(listener);
-        getDialogControlled().getComplexRulesTree().setModel(new DefaultTreeModel(null));
-        getDialogControlled().getComplexRulesAndButton().addActionListener(listener);
-        getDialogControlled().getComplexRulesOrButton().addActionListener(listener);
-        getDialogControlled().getComplexRulesNotButton().addActionListener(listener);
-        getDialogControlled().getComplexRulesRemoveButton().addActionListener(listener);
-        getDialogControlled().getAdvancedSearchCheckBox().addActionListener(listener);
-        getDialogControlled().getSearchButton().addActionListener(listener);
-        ComplexTreeSelectionListener selListener = new ComplexTreeSelectionListener(getDialogControlled(), getDialogControlled().getComplexRulesTree());
-        getDialogControlled().getComplexRulesTree().addTreeSelectionListener(selListener);
-        getDialogControlled().getCancelButton().addActionListener(listener);
-        getDialogControlled().getAdvancedSearchTextField().addActionListener(listener);
+        CustomSearchListener listener = new CustomSearchListener(getComponentControlled());
+        getComponentControlled().getSearchAtComboBox().addActionListener(listener);
+        getComponentControlled().getSimpleRulesAddButton().addActionListener(listener);
+        getComponentControlled().getComplexRulesTree().setModel(new DefaultTreeModel(null));
+        getComponentControlled().getComplexRulesAndButton().addActionListener(listener);
+        getComponentControlled().getComplexRulesOrButton().addActionListener(listener);
+        getComponentControlled().getComplexRulesNotButton().addActionListener(listener);
+        getComponentControlled().getComplexRulesRemoveButton().addActionListener(listener);
+        getComponentControlled().getAdvancedSearchCheckBox().addActionListener(listener);
+        getComponentControlled().getSearchButton().addActionListener(listener);
+        ComplexTreeSelectionListener selListener = new ComplexTreeSelectionListener(getComponentControlled(), getComponentControlled().getComplexRulesTree());
+        getComponentControlled().getComplexRulesTree().addTreeSelectionListener(selListener);
+        getComponentControlled().getCancelButton().addActionListener(listener);
+        getComponentControlled().getAdvancedSearchTextField().addActionListener(listener);
     }
 
     /*

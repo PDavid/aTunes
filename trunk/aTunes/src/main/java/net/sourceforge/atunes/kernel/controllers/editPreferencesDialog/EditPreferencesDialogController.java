@@ -40,12 +40,12 @@ import net.sourceforge.atunes.gui.views.dialogs.editPreferences.PodcastFeedPanel
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.PreferencesPanel;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.RadioPanel;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.RepositoryPanel;
-import net.sourceforge.atunes.kernel.controllers.model.DialogController;
+import net.sourceforge.atunes.kernel.controllers.model.Controller;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 
-public class EditPreferencesDialogController extends DialogController<EditPreferencesDialog> {
+public class EditPreferencesDialogController extends Controller<EditPreferencesDialog> {
 
     /** The panels. */
     PreferencesPanel[] panels = new PreferencesPanel[] { getGeneralPanel(), getRepositoryPanel(), getPlayerPanel(), getNavigatorPanel(), getPlayListPrefPanel(), getOSDPanel(),
@@ -56,7 +56,7 @@ public class EditPreferencesDialogController extends DialogController<EditPrefer
      */
     public EditPreferencesDialogController() {
         super(VisualHandler.getInstance().getEditPreferencesDialog());
-        getDialogControlled().setPanels(panels);
+        getComponentControlled().setPanels(panels);
         buildList();
         addBindings();
     }
@@ -69,11 +69,11 @@ public class EditPreferencesDialogController extends DialogController<EditPrefer
      */
     @Override
     protected void addBindings() {
-        EditPreferencesDialogListener listener = new EditPreferencesDialogListener(getDialogControlled(), this);
-        getDialogControlled().getList().addListSelectionListener(listener);
-        getDialogControlled().getCancel().addActionListener(listener);
-        getDialogControlled().getOk().addActionListener(listener);
-        getDialogControlled().addComponentListener(new ComponentAdapter() {
+        EditPreferencesDialogListener listener = new EditPreferencesDialogListener(getComponentControlled(), this);
+        getComponentControlled().getList().addListSelectionListener(listener);
+        getComponentControlled().getCancel().addActionListener(listener);
+        getComponentControlled().getOk().addActionListener(listener);
+        getComponentControlled().addComponentListener(new ComponentAdapter() {
             @Override
             public void componentShown(ComponentEvent e) {
                 // Call dialogVisibilityChanged
@@ -114,7 +114,7 @@ public class EditPreferencesDialogController extends DialogController<EditPrefer
             listModel.addElement(p);
         }
 
-        getDialogControlled().setListModel(listModel);
+        getComponentControlled().setListModel(listModel);
     }
 
     /**
@@ -298,7 +298,7 @@ public class EditPreferencesDialogController extends DialogController<EditPrefer
             panel.dialogVisibilityChanged(true);
         }
 
-        getDialogControlled().getList().setSelectedIndex(0);
-        getDialogControlled().setVisible(true);
+        getComponentControlled().getList().setSelectedIndex(0);
+        getComponentControlled().setVisible(true);
     }
 }
