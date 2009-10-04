@@ -25,24 +25,16 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.gui.views.dialogs.EditTitlesDialog;
-import net.sourceforge.atunes.kernel.controllers.model.Controller;
+import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.model.Album;
 import net.sourceforge.atunes.kernel.modules.repository.tags.writer.EditTitlesProcess;
 import net.sourceforge.atunes.misc.log.LogCategories;
 
-/**
- * The Class EditTitlesDialogController.
- */
-public class EditTitlesDialogController extends Controller<EditTitlesDialog> {
+public class EditTitlesDialogController extends SimpleController<EditTitlesDialog> {
 
-    /** The files to edit. */
     private List<AudioFile> filesToEdit;
-
-    /** The album. */
     private Album album;
-
-    /** The model. */
     private EditTitlesTableModel model;
 
     /**
@@ -56,12 +48,6 @@ public class EditTitlesDialogController extends Controller<EditTitlesDialog> {
         addBindings();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.kernel.controllers.model.Controller#addBindings()
-     */
     @Override
     protected void addBindings() {
         EditTitlesDialogActionListener actionListener = new EditTitlesDialogActionListener(getComponentControlled(), this);
@@ -70,13 +56,6 @@ public class EditTitlesDialogController extends Controller<EditTitlesDialog> {
         getComponentControlled().getCancelButton().addActionListener(actionListener);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.kernel.controllers.model.Controller#addStateBindings
-     * ()
-     */
     @Override
     protected void addStateBindings() {
         // Nothing to do

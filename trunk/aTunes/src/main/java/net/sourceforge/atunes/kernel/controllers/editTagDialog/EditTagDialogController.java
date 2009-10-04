@@ -37,7 +37,7 @@ import javax.swing.SwingWorker;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.autocomplete.AutoCompleteDecorator;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
-import net.sourceforge.atunes.kernel.controllers.model.Controller;
+import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.model.Album;
@@ -53,10 +53,7 @@ import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
 
-/**
- * The Class EditTagDialogController.
- */
-public class EditTagDialogController extends Controller<EditTagDialog> {
+public class EditTagDialogController extends SimpleController<EditTagDialog> {
 
     Logger logger = new Logger();
 

@@ -28,7 +28,7 @@ import javax.swing.DefaultComboBoxModel;
 
 import net.sourceforge.atunes.gui.autocomplete.AutoCompleteDecorator;
 import net.sourceforge.atunes.gui.views.dialogs.RipCdDialog;
-import net.sourceforge.atunes.kernel.controllers.model.Controller;
+import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
 import net.sourceforge.atunes.kernel.modules.cdripper.CdRipper;
 import net.sourceforge.atunes.kernel.modules.cdripper.RipperHandler;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
@@ -42,7 +42,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
 
-public class RipCdDialogController extends Controller<RipCdDialog> {
+public class RipCdDialogController extends SimpleController<RipCdDialog> {
 
     // Encoder options and file name patterns. Add here for more options
     public static final String[] FILENAMEPATTERN = { StringUtils.getString(CdRipper.TRACK_NUMBER, " - ", CdRipper.TITLE_PATTERN),

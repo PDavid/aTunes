@@ -32,7 +32,7 @@ import javax.swing.tree.DefaultTreeModel;
 
 import net.sourceforge.atunes.gui.views.dialogs.CustomSearchDialog;
 import net.sourceforge.atunes.kernel.ControllerProxy;
-import net.sourceforge.atunes.kernel.controllers.model.Controller;
+import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
 import net.sourceforge.atunes.kernel.modules.search.EmptyRule;
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
 import net.sourceforge.atunes.kernel.modules.search.SearchIndexNotAvailableException;
@@ -48,10 +48,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
 
-/**
- * CustomSearchDialog controller.
- */
-public class CustomSearchController extends Controller<CustomSearchDialog> {
+public class CustomSearchController extends SimpleController<CustomSearchDialog> {
 
     /** List of searchable objects. */
     private List<SearchableObject> searchableObjects;

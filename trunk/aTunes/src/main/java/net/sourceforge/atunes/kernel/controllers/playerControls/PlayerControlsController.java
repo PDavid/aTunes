@@ -27,7 +27,7 @@ import javax.swing.JSlider;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
-import net.sourceforge.atunes.kernel.controllers.model.Controller;
+import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -35,7 +35,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The Class PlayerControlsController.
  */
-public class PlayerControlsController extends Controller<PlayerControlsPanel> {
+public class PlayerControlsController extends SimpleController<PlayerControlsPanel> {
 
     private static final int SECONDS_10 = 10000;
     private static final int SECONDS_30 = 30000;

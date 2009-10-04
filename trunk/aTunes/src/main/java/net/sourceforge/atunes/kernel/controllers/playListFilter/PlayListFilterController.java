@@ -24,14 +24,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import net.sourceforge.atunes.gui.views.panels.PlayListFilterPanel;
-import net.sourceforge.atunes.kernel.controllers.model.Controller;
+import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 
 /**
  * The Class PlayListFilterController.
  */
-public class PlayListFilterController extends Controller<PlayListFilterPanel> {
+public class PlayListFilterController extends SimpleController<PlayListFilterPanel> {
 
     /**
      * Instantiates a new play list filter controller.

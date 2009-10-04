@@ -33,7 +33,7 @@ import net.sourceforge.atunes.gui.views.controls.playList.PlayListColumnSelector
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.panels.PlayListControlsPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
-import net.sourceforge.atunes.kernel.controllers.model.Controller;
+import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
 import net.sourceforge.atunes.kernel.modules.columns.PlayListColumns;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
@@ -42,7 +42,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 
-public class PlayListController extends Controller<PlayListPanel> implements PlayListColumnClickedListener {
+public class PlayListController extends SimpleController<PlayListPanel> implements PlayListColumnClickedListener {
 
     /** The visible rect. */
     Rectangle visibleRect;
