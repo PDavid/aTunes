@@ -55,7 +55,7 @@ import net.sourceforge.atunes.kernel.actions.ShowAlbumsInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowArtistsInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowFoldersInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowGenresInNavigatorAction;
-import net.sourceforge.atunes.kernel.controllers.model.PanelController;
+import net.sourceforge.atunes.kernel.controllers.model.Controller;
 import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
 import net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
@@ -76,7 +76,7 @@ import net.sourceforge.atunes.model.TreeObject;
  * 
  * @author fleax
  */
-public class NavigationController extends PanelController<NavigationPanel> implements AudioFilesRemovedListener {
+public class NavigationController extends Controller<NavigationPanel> implements AudioFilesRemovedListener {
 
     public enum ViewMode {
 
@@ -141,8 +141,8 @@ public class NavigationController extends PanelController<NavigationPanel> imple
 
     @Override
     protected void addBindings() {
-        getPanelControlled().getNavigationTable().setModel(new NavigationTableModel());
-        getPanelControlled().getNavigationTable().setColumnModel(new NavigationTableColumnModel());
+        getComponentControlled().getNavigationTable().setModel(new NavigationTableModel());
+        getComponentControlled().getNavigationTable().setColumnModel(new NavigationTableColumnModel());
 
         // Add tree selection listeners to all views
         for (NavigationView view : NavigationHandler.getInstance().getNavigationViews()) {
@@ -165,11 +165,11 @@ public class NavigationController extends PanelController<NavigationPanel> imple
             view.getTreeScrollPane().addMouseWheelListener(tooltipListener);
         }
 
-        getPanelControlled().getNavigationTable().addMouseListener(new NavigationTableMouseListener(this, getPanelControlled()));
-        getPanelControlled().getTabbedPane().addChangeListener(new ChangeListener() {
+        getComponentControlled().getNavigationTable().addMouseListener(new NavigationTableMouseListener(this, getComponentControlled()));
+        getComponentControlled().getTabbedPane().addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                int view = getPanelControlled().getTabbedPane().getSelectedIndex();
+                int view = getComponentControlled().getTabbedPane().getSelectedIndex();
                 // Maybe tabbed pane is empty so set navigation only if it contains tabs
                 if (view != -1) {
                     if (view != NavigationHandler.getInstance().indexOf(NavigationHandler.getInstance().getViewByName(ApplicationState.getInstance().getNavigationView()))) {
@@ -179,34 +179,29 @@ public class NavigationController extends PanelController<NavigationPanel> imple
             }
         });
 
-        getPanelControlled().getTreeFilterPanel().addListener(new NavigationFilterListener() {
+        getComponentControlled().getTreeFilterPanel().addListener(new NavigationFilterListener() {
             @Override
             public void filterChanged(String newFilter) {
                 if (newFilter == null) {
-                    getPanelControlled().getTreeFilterPanel().setVisible(false);
+                    getComponentControlled().getTreeFilterPanel().setVisible(false);
                 }
                 NavigationHandler.getInstance().refreshCurrentView();
             }
         });
 
-        getPanelControlled().getTableFilterPanel().addListener(new NavigationFilterListener() {
+        getComponentControlled().getTableFilterPanel().addListener(new NavigationFilterListener() {
             @Override
             public void filterChanged(String newFilter) {
                 if (newFilter == null) {
-                    getPanelControlled().getTableFilterPanel().setVisible(false);
+                    getComponentControlled().getTableFilterPanel().setVisible(false);
                 }
                 updateTableContent(NavigationHandler.getInstance().getCurrentView().getTree());
             }
         });
     }
 
-    @Override
-    protected NavigationPanel getPanelControlled() {
-        return super.getPanelControlled();
-    }
-
     public NavigationPanel getNavigationPanel() {
-        return getPanelControlled();
+        return getComponentControlled();
     }
 
     @Override
@@ -242,8 +237,8 @@ public class NavigationController extends PanelController<NavigationPanel> imple
     public List<AudioFile> getFilesSelectedInNavigator() {
         List<AudioObject> files = new ArrayList<AudioObject>();
         if (getPopupMenuCaller() instanceof JTable) {
-            int[] rows = getPanelControlled().getNavigationTable().getSelectedRows();
-            files.addAll(((NavigationTableModel) getPanelControlled().getNavigationTable().getModel()).getAudioObjectsAt(rows));
+            int[] rows = getComponentControlled().getNavigationTable().getSelectedRows();
+            files.addAll(((NavigationTableModel) getComponentControlled().getNavigationTable().getModel()).getAudioObjectsAt(rows));
         } else if (getPopupMenuCaller() instanceof JTree) {
             TreePath[] paths = NavigationHandler.getInstance().getCurrentView().getTree().getSelectionPaths();
             for (TreePath path : paths) {
@@ -290,12 +285,12 @@ public class NavigationController extends PanelController<NavigationPanel> imple
      * @return the song in navigation table
      */
     public AudioObject getSongInNavigationTable(int row) {
-        return ((NavigationTableModel) getPanelControlled().getNavigationTable().getModel()).getSongAt(row);
+        return ((NavigationTableModel) getComponentControlled().getNavigationTable().getModel()).getSongAt(row);
     }
 
     public List<AudioObject> getAudioObjectsForTreeNode(Class<? extends NavigationView> navigationViewClass, DefaultMutableTreeNode node) {
         List<AudioObject> audioObjects = NavigationHandler.getInstance().getView(navigationViewClass).getAudioObjectForTreeNode(node, ApplicationState.getInstance().getViewMode(),
-                getPanelControlled().getTreeFilterPanel().getFilter());
+                getComponentControlled().getTreeFilterPanel().getFilter());
         if (NavigationHandler.getInstance().getView(navigationViewClass).isAudioObjectsFromNodeNeedSort()) {
             return RepositoryHandler.getInstance().sort(audioObjects, ApplicationState.getInstance().getSortType());
         }
@@ -307,7 +302,7 @@ public class NavigationController extends PanelController<NavigationPanel> imple
      */
     public void notifyDeviceReload() {
         NavigationHandler.getInstance().getView(DeviceNavigationView.class).refreshView(ApplicationState.getInstance().getViewMode(),
-                getPanelControlled().getTreeFilterPanel().getFilter());
+                getComponentControlled().getTreeFilterPanel().getFilter());
     }
 
     @Override
@@ -319,7 +314,7 @@ public class NavigationController extends PanelController<NavigationPanel> imple
      * Refresh table.
      */
     public void refreshTable() {
-        ((NavigationTableModel) getPanelControlled().getNavigationTable().getModel()).refresh();
+        ((NavigationTableModel) getComponentControlled().getNavigationTable().getModel()).refresh();
     }
 
     /**
@@ -348,13 +343,13 @@ public class NavigationController extends PanelController<NavigationPanel> imple
         }
         ApplicationState.getInstance().setNavigationView(navigationView.getName());
 
-        int currentView = getPanelControlled().getTabbedPane().getSelectedIndex();
+        int currentView = getComponentControlled().getTabbedPane().getSelectedIndex();
         int newView = NavigationHandler.getInstance().indexOf(navigationView);
         // If current view is equals to the new view then don't change tabbed pane selected index
         // This can happen when this method is called from a stateChanged method of tabbed pane listener when user
         // changes selected tab
-        if (currentView != newView && newView < getPanelControlled().getTabbedPane().getTabCount()) {
-            getPanelControlled().getTabbedPane().setSelectedIndex(newView);
+        if (currentView != newView && newView < getComponentControlled().getTabbedPane().getTabCount()) {
+            getComponentControlled().getTabbedPane().setSelectedIndex(newView);
         }
 
         boolean viewModeSupported = NavigationHandler.getInstance().getView(navigationView).isViewModeSupported();
@@ -364,18 +359,18 @@ public class NavigationController extends PanelController<NavigationPanel> imple
         Actions.getAction(ShowGenresInNavigatorAction.class).setEnabled(viewModeSupported);
 
         // Clear tree filter
-        getPanelControlled().getTreeFilterPanel().setFilter(null);
-        getPanelControlled().getTreeFilterPanel().setVisible(false);
+        getComponentControlled().getTreeFilterPanel().setFilter(null);
+        getComponentControlled().getTreeFilterPanel().setVisible(false);
         NavigationHandler.getInstance().refreshCurrentView();
 
         // Clear table filter
-        getPanelControlled().getTableFilterPanel().setFilter(null);
-        getPanelControlled().getTableFilterPanel().setVisible(false);
+        getComponentControlled().getTableFilterPanel().setFilter(null);
+        getComponentControlled().getTableFilterPanel().setVisible(false);
 
         JTree tree = NavigationHandler.getInstance().getCurrentView().getTree();
 
         if (tree.getSelectionPath() != null) {
-            ((NavigationTableModel) getPanelControlled().getNavigationTable().getModel()).setSongs(getAudioObjectsForTreeNode(navigationView, (DefaultMutableTreeNode) (tree
+            ((NavigationTableModel) getComponentControlled().getNavigationTable().getModel()).setSongs(getAudioObjectsForTreeNode(navigationView, (DefaultMutableTreeNode) (tree
                     .getSelectionPath().getLastPathComponent())));
         }
     }
@@ -423,7 +418,7 @@ public class NavigationController extends PanelController<NavigationPanel> imple
 
             songs = filterNavigationTable(songs);
 
-            ((NavigationTableModel) getPanelControlled().getNavigationTable().getModel()).setSongs(songs);
+            ((NavigationTableModel) getComponentControlled().getNavigationTable().getModel()).setSongs(songs);
         }
     }
 
@@ -434,7 +429,7 @@ public class NavigationController extends PanelController<NavigationPanel> imple
      * @return
      */
     private List<AudioObject> filterNavigationTable(List<AudioObject> audioObjects) {
-        if (getPanelControlled().getTableFilterPanel().getFilter() == null) {
+        if (getComponentControlled().getTableFilterPanel().getFilter() == null) {
             return audioObjects;
         }
 
@@ -442,7 +437,7 @@ public class NavigationController extends PanelController<NavigationPanel> imple
             return audioObjects;
         }
 
-        return NavigationHandler.getInstance().getCurrentView().filterNavigatorTable(audioObjects, getPanelControlled().getTableFilterPanel().getFilter());
+        return NavigationHandler.getInstance().getCurrentView().filterNavigatorTable(audioObjects, getComponentControlled().getTableFilterPanel().getFilter());
     }
 
     /**

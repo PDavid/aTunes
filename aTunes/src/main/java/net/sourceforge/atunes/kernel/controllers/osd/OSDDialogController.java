@@ -31,7 +31,7 @@ import javax.swing.Timer;
 
 import net.sourceforge.atunes.gui.WindowFader;
 import net.sourceforge.atunes.gui.views.dialogs.OSDDialog;
-import net.sourceforge.atunes.kernel.controllers.model.WindowController;
+import net.sourceforge.atunes.kernel.controllers.model.Controller;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.model.AudioObject;
@@ -42,7 +42,7 @@ import net.sourceforge.atunes.utils.GuiUtils;
 /**
  * The Class OSDDialogController.
  */
-public class OSDDialogController extends WindowController<OSDDialog> {
+public class OSDDialogController extends Controller<OSDDialog> {
 
     WindowFader windowFader;
     private Point location;
@@ -62,18 +62,13 @@ public class OSDDialogController extends WindowController<OSDDialog> {
 
     @Override
     protected void addBindings() {
-        MouseListener listener = new OSDDialogMouseListener(getWindowControlled(), this);
-        getWindowControlled().addMouseListener(listener);
+        MouseListener listener = new OSDDialogMouseListener(getComponentControlled(), this);
+        getComponentControlled().addMouseListener(listener);
     }
 
     @Override
     protected void addStateBindings() {
         // Nothing to do
-    }
-
-    @Override
-    protected OSDDialog getWindowControlled() {
-        return super.getWindowControlled();
     }
 
     /**
@@ -107,7 +102,7 @@ public class OSDDialogController extends WindowController<OSDDialog> {
         // If the OSD is already visible stop animation
         stopAnimation();
 
-        windowFader = new WindowFader(getWindowControlled(), 50);
+        windowFader = new WindowFader(getComponentControlled(), 50);
 
         int x = 0;
         if (ApplicationState.getInstance().getOsdHorizontalAlignment() == SwingConstants.CENTER) {
@@ -121,35 +116,35 @@ public class OSDDialogController extends WindowController<OSDDialog> {
 
         int y = 0;
         if (ApplicationState.getInstance().getOsdVerticalAlignment() == SwingConstants.CENTER) {
-            y = Toolkit.getDefaultToolkit().getScreenSize().height / 2 - getWindowControlled().getHeight() / 2;
+            y = Toolkit.getDefaultToolkit().getScreenSize().height / 2 - getComponentControlled().getHeight() / 2;
         } else if (ApplicationState.getInstance().getOsdVerticalAlignment() == SwingConstants.TOP) {
             y = 20;
         } else {
-            y = Toolkit.getDefaultToolkit().getScreenSize().height - 20 - getWindowControlled().getHeight();
+            y = Toolkit.getDefaultToolkit().getScreenSize().height - 20 - getComponentControlled().getHeight();
         }
 
         location = new Point(x, y);
 
         // By default OSD image has shadow, unless it's a generic image
-        getWindowControlled().setShadowBorder(true);
+        getComponentControlled().setShadowBorder(true);
 
         ImageIcon i = audioObject.getImage(ImageSize.SIZE_MAX);
         if (i == null) {
             i = audioObject.getGenericImage(GenericImageSize.MEDIUM);
-            getWindowControlled().setShadowBorder(false);
+            getComponentControlled().setShadowBorder(false);
         }
-        getWindowControlled().setImage(i);
-        getWindowControlled().setLine1(audioObject.getTitleOrFileName());
-        getWindowControlled().setLine2(audioObject.getAlbum());
-        getWindowControlled().setLine3(audioObject.getArtist());
+        getComponentControlled().setImage(i);
+        getComponentControlled().setLine1(audioObject.getTitleOrFileName());
+        getComponentControlled().setLine2(audioObject.getAlbum());
+        getComponentControlled().setLine3(audioObject.getArtist());
 
-        getWindowControlled().setLocation(location);
-        GuiUtils.setWindowOpacity(getWindowControlled(), 0);
-        getWindowControlled().setRoundedBorders(true);
+        getComponentControlled().setLocation(location);
+        GuiUtils.setWindowOpacity(getComponentControlled(), 0);
+        getComponentControlled().setRoundedBorders(true);
 
-        getWindowControlled().setVisible(true);
+        getComponentControlled().setVisible(true);
         // see bug 1864517
-        getWindowControlled().repaint();
+        getComponentControlled().repaint();
 
         windowFader.fadeIn();
         timer = new Timer(ApplicationState.getInstance().getOsdDuration() * 1000, new ActionListener() {

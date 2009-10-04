@@ -28,12 +28,12 @@ import javax.swing.JTabbedPane;
 
 import net.sourceforge.atunes.gui.views.panels.ButtonTabComponent;
 import net.sourceforge.atunes.gui.views.panels.PlayListTabPanel;
-import net.sourceforge.atunes.kernel.controllers.model.PanelController;
+import net.sourceforge.atunes.kernel.controllers.model.Controller;
 
 /**
  * The Class PlayListTabController.
  */
-public class PlayListTabController extends PanelController<PlayListTabPanel> {
+public class PlayListTabController extends Controller<PlayListTabPanel> {
 
     /**
      * Instantiates a new play list tab controller.
@@ -49,11 +49,11 @@ public class PlayListTabController extends PanelController<PlayListTabPanel> {
 
     @Override
     protected void addBindings() {
-        PlayListTabListener listener = new PlayListTabListener(getPanelControlled());
-        getPanelControlled().getArrangeColumnsMenuItem().addActionListener(listener);
-        getPanelControlled().getPlayListTabbedPane().addChangeListener(listener);
-        getPanelControlled().getPlayListTabbedPane().addMouseListener(listener);
-        getPanelControlled().getPlayListsPopUpButton().addActionListener(listener);
+        PlayListTabListener listener = new PlayListTabListener(getComponentControlled());
+        getComponentControlled().getArrangeColumnsMenuItem().addActionListener(listener);
+        getComponentControlled().getPlayListTabbedPane().addChangeListener(listener);
+        getComponentControlled().getPlayListTabbedPane().addMouseListener(listener);
+        getComponentControlled().getPlayListsPopUpButton().addActionListener(listener);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class PlayListTabController extends PanelController<PlayListTabPanel> {
      *            the index
      */
     public void deletePlayList(int index) {
-        getPanelControlled().getPlayListTabbedPane().removeTabAt(index);
+        getComponentControlled().getPlayListTabbedPane().removeTabAt(index);
     }
 
     /**
@@ -78,7 +78,7 @@ public class PlayListTabController extends PanelController<PlayListTabPanel> {
      *            the index
      */
     public void forceSwitchTo(int index) {
-        getPanelControlled().getPlayListTabbedPane().setSelectedIndex(index);
+        getComponentControlled().getPlayListTabbedPane().setSelectedIndex(index);
     }
 
     /**
@@ -91,11 +91,11 @@ public class PlayListTabController extends PanelController<PlayListTabPanel> {
         JPanel emptyPanel = new JPanel();
         emptyPanel.setPreferredSize(new Dimension(0, 0));
         emptyPanel.setSize(0, 0);
-        getPanelControlled().getPlayListTabbedPane().addTab(name, emptyPanel);
-        getPanelControlled().getPlayListTabbedPane().setTabComponentAt(getPanelControlled().getPlayListTabbedPane().indexOfComponent(emptyPanel),
-                new ButtonTabComponent(name, getPanelControlled().getPlayListTabbedPane()));
+        getComponentControlled().getPlayListTabbedPane().addTab(name, emptyPanel);
+        getComponentControlled().getPlayListTabbedPane().setTabComponentAt(getComponentControlled().getPlayListTabbedPane().indexOfComponent(emptyPanel),
+                new ButtonTabComponent(name, getComponentControlled().getPlayListTabbedPane()));
         // Force size of tabbed pane to avoid increasing height
-        getPanelControlled().getPlayListTabbedPane().setPreferredSize(new Dimension(0, PlayListTabPanel.TAB_HEIGHT));
+        getComponentControlled().getPlayListTabbedPane().setPreferredSize(new Dimension(0, PlayListTabPanel.TAB_HEIGHT));
     }
 
     @Override
@@ -112,8 +112,8 @@ public class PlayListTabController extends PanelController<PlayListTabPanel> {
      *            the new name
      */
     public void renamePlayList(int index, String newName) {
-        getPanelControlled().getPlayListTabbedPane().setTitleAt(index, newName);
-        ((ButtonTabComponent) getPanelControlled().getPlayListTabbedPane().getTabComponentAt(index)).getLabel().setText(newName);
+        getComponentControlled().getPlayListTabbedPane().setTitleAt(index, newName);
+        ((ButtonTabComponent) getComponentControlled().getPlayListTabbedPane().getTabComponentAt(index)).getLabel().setText(newName);
     }
 
     /**
@@ -123,8 +123,8 @@ public class PlayListTabController extends PanelController<PlayListTabPanel> {
      */
     public List<String> getNamesOfPlayLists() {
         List<String> result = new ArrayList<String>();
-        for (int i = 0; i < getPanelControlled().getPlayListTabbedPane().getTabCount(); i++) {
-            result.add(getPanelControlled().getPlayListTabbedPane().getTitleAt(i));
+        for (int i = 0; i < getComponentControlled().getPlayListTabbedPane().getTabCount(); i++) {
+            result.add(getComponentControlled().getPlayListTabbedPane().getTitleAt(i));
         }
         return result;
     }
@@ -135,7 +135,7 @@ public class PlayListTabController extends PanelController<PlayListTabPanel> {
      * @return
      */
     public int getSelectedTabIndex() {
-        return getPanelControlled().getPlayListTabbedPane().getSelectedIndex();
+        return getComponentControlled().getPlayListTabbedPane().getSelectedIndex();
     }
 
     /**
@@ -145,11 +145,11 @@ public class PlayListTabController extends PanelController<PlayListTabPanel> {
      * @return
      */
     public String getPlayListName(int index) {
-        return getPanelControlled().getPlayListTabbedPane().getTitleAt(index);
+        return getComponentControlled().getPlayListTabbedPane().getTitleAt(index);
     }
 
     public void switchPlayListTabs(int draggedTabIndex, int targetTabIndex) {
-        JTabbedPane tabPane = getPanelControlled().getPlayListTabbedPane();
+        JTabbedPane tabPane = getComponentControlled().getPlayListTabbedPane();
         boolean isForwardDrag = targetTabIndex > draggedTabIndex;
         int index = isForwardDrag ? targetTabIndex + 1 : targetTabIndex;
         String titleAt = tabPane.getTitleAt(draggedTabIndex);

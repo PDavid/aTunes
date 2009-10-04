@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.gui.views.dialogs.EditTitlesDialog;
-import net.sourceforge.atunes.kernel.controllers.model.DialogController;
+import net.sourceforge.atunes.kernel.controllers.model.Controller;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.model.Album;
 import net.sourceforge.atunes.kernel.modules.repository.tags.writer.EditTitlesProcess;
@@ -34,7 +34,7 @@ import net.sourceforge.atunes.misc.log.LogCategories;
 /**
  * The Class EditTitlesDialogController.
  */
-public class EditTitlesDialogController extends DialogController<EditTitlesDialog> {
+public class EditTitlesDialogController extends Controller<EditTitlesDialog> {
 
     /** The files to edit. */
     private List<AudioFile> filesToEdit;
@@ -64,10 +64,10 @@ public class EditTitlesDialogController extends DialogController<EditTitlesDialo
      */
     @Override
     protected void addBindings() {
-        EditTitlesDialogActionListener actionListener = new EditTitlesDialogActionListener(getDialogControlled(), this);
-        getDialogControlled().getRetrieveFromAmazon().addActionListener(actionListener);
-        getDialogControlled().getOkButton().addActionListener(actionListener);
-        getDialogControlled().getCancelButton().addActionListener(actionListener);
+        EditTitlesDialogActionListener actionListener = new EditTitlesDialogActionListener(getComponentControlled(), this);
+        getComponentControlled().getRetrieveFromAmazon().addActionListener(actionListener);
+        getComponentControlled().getOkButton().addActionListener(actionListener);
+        getComponentControlled().getCancelButton().addActionListener(actionListener);
     }
 
     /*
@@ -86,7 +86,7 @@ public class EditTitlesDialogController extends DialogController<EditTitlesDialo
      * Edits the files.
      */
     protected void editFiles() {
-        Map<AudioFile, String> filesAndTitles = ((EditTitlesTableModel) getDialogControlled().getTable().getModel()).getNewValues();
+        Map<AudioFile, String> filesAndTitles = ((EditTitlesTableModel) getComponentControlled().getTable().getModel()).getNewValues();
         EditTitlesProcess process = new EditTitlesProcess(new ArrayList<AudioFile>(filesAndTitles.keySet()));
         process.setFilesAndTitles(filesAndTitles);
         process.execute();
@@ -105,8 +105,8 @@ public class EditTitlesDialogController extends DialogController<EditTitlesDialo
         filesToEdit = alb.getAudioFiles();
         Collections.sort(filesToEdit);
         model = new EditTitlesTableModel(filesToEdit);
-        getDialogControlled().getTable().setModel(model);
-        getDialogControlled().setVisible(true);
+        getComponentControlled().getTable().setModel(model);
+        getComponentControlled().setVisible(true);
     }
 
     /**
@@ -137,6 +137,6 @@ public class EditTitlesDialogController extends DialogController<EditTitlesDialo
      */
     protected void setTitles(List<String> tracks) {
         model.setTitles(tracks);
-        getDialogControlled().getTable().repaint();
+        getComponentControlled().getTable().repaint();
     }
 }

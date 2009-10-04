@@ -19,25 +19,28 @@
  */
 package net.sourceforge.atunes.kernel.controllers.model;
 
+import java.awt.Component;
+
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
-/**
- * The Class Controller.
- * 
- * @author fleax
- */
-public abstract class Controller {
+public abstract class Controller<T extends Component> {
 
-    /** The logger. */
     private static Logger logger = new Logger();
+
+    private T componentControlled;
 
     /**
      * Instantiates a new controller.
      */
-    public Controller() {
+    public Controller(T componentControlled) {
+        this.componentControlled = componentControlled;
         logger.debug(LogCategories.CONTROLLER, StringUtils.getString("Creating ", this.getClass().getSimpleName()));
+    }
+
+    public T getComponentControlled() {
+        return componentControlled;
     }
 
     /**

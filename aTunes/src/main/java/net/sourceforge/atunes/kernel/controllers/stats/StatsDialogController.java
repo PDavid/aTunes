@@ -32,7 +32,7 @@ import javax.swing.table.DefaultTableModel;
 
 import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.views.dialogs.StatsDialog;
-import net.sourceforge.atunes.kernel.controllers.model.FrameController;
+import net.sourceforge.atunes.kernel.controllers.model.Controller;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -53,7 +53,7 @@ import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 /**
  * The Class StatsDialogController.
  */
-public class StatsDialogController extends FrameController<StatsDialog> {
+public class StatsDialogController extends Controller<StatsDialog> {
 
     /**
      * Instantiates a new stats dialog controller.
@@ -65,24 +65,11 @@ public class StatsDialogController extends FrameController<StatsDialog> {
         super(frame);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.kernel.controllers.model.Controller#addBindings()
-     */
     @Override
     protected void addBindings() {
         // Nothing to do
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.kernel.controllers.model.Controller#addStateBindings
-     * ()
-     */
     @Override
     protected void addStateBindings() {
         // Nothing to do
@@ -141,7 +128,7 @@ public class StatsDialogController extends FrameController<StatsDialog> {
         chart.getCategoryPlot().getRangeAxis().setTickLabelPaint(GuiUtils.getForegroundColor());
         chart.getPlot().setBackgroundPaint(GuiUtils.getBackgroundColor());
 
-        getFrameControlled().getAlbumsChart().setIcon(new ImageIcon(chart.createBufferedImage(710, 250)));
+        getComponentControlled().getAlbumsChart().setIcon(new ImageIcon(chart.createBufferedImage(710, 250)));
     }
 
     /**
@@ -162,7 +149,7 @@ public class StatsDialogController extends FrameController<StatsDialog> {
                     content[i][2] = 0;
                 }
             }
-            setTable(getFrameControlled().getAlbumsTable(), headers, content);
+            setTable(getComponentControlled().getAlbumsTable(), headers, content);
         }
     }
 
@@ -189,7 +176,7 @@ public class StatsDialogController extends FrameController<StatsDialog> {
         chart.getCategoryPlot().getRangeAxis().setTickLabelPaint(GuiUtils.getForegroundColor());
         chart.getPlot().setBackgroundPaint(GuiUtils.getBackgroundColor());
 
-        getFrameControlled().getArtistsChart().setIcon(new ImageIcon(chart.createBufferedImage(710, 250)));
+        getComponentControlled().getArtistsChart().setIcon(new ImageIcon(chart.createBufferedImage(710, 250)));
     }
 
     /**
@@ -210,7 +197,7 @@ public class StatsDialogController extends FrameController<StatsDialog> {
                     content[i][2] = 0;
                 }
             }
-            setTable(getFrameControlled().getArtistsTable(), headers, content);
+            setTable(getComponentControlled().getArtistsTable(), headers, content);
         }
     }
 
@@ -235,7 +222,7 @@ public class StatsDialogController extends FrameController<StatsDialog> {
         ((PiePlot3D) chart.getPlot()).setLabelFont(Fonts.CHART_TICK_LABEL_FONT);
         ((PiePlot3D) chart.getPlot()).setOutlineVisible(false);
         ((PiePlot3D) chart.getPlot()).setBackgroundPaint(GuiUtils.getBackgroundColor());
-        getFrameControlled().getGeneralChart().setIcon(new ImageIcon(chart.createBufferedImage(710, 250)));
+        getComponentControlled().getGeneralChart().setIcon(new ImageIcon(chart.createBufferedImage(710, 250)));
     }
 
     /**
@@ -256,7 +243,7 @@ public class StatsDialogController extends FrameController<StatsDialog> {
             content[1][0] = I18nUtils.getString("SONGS_NEVER_PLAYED");
             content[1][1] = total - different;
             content[1][2] = StringUtils.toString((float) (total - different) / (float) total * 100, 2);
-            setTable(getFrameControlled().getGeneralTable(), headers, content);
+            setTable(getComponentControlled().getGeneralTable(), headers, content);
         }
     }
 
@@ -283,7 +270,7 @@ public class StatsDialogController extends FrameController<StatsDialog> {
         chart.getCategoryPlot().getRangeAxis().setTickLabelPaint(GuiUtils.getForegroundColor());
         chart.getPlot().setBackgroundPaint(GuiUtils.getBackgroundColor());
 
-        getFrameControlled().getSongsChart().setIcon(new ImageIcon(chart.createBufferedImage(710, 250)));
+        getComponentControlled().getSongsChart().setIcon(new ImageIcon(chart.createBufferedImage(710, 250)));
     }
 
     /**
@@ -304,7 +291,7 @@ public class StatsDialogController extends FrameController<StatsDialog> {
                     content[i][2] = 0;
                 }
             }
-            setTable(getFrameControlled().getSongsTable(), headers, content);
+            setTable(getComponentControlled().getSongsTable(), headers, content);
         }
     }
 
@@ -370,7 +357,7 @@ public class StatsDialogController extends FrameController<StatsDialog> {
         getLogger().debug(LogCategories.CONTROLLER);
 
         updateStats();
-        StatsDialog frame = getFrameControlled();
+        StatsDialog frame = getComponentControlled();
         frame.setVisible(true);
     }
 
