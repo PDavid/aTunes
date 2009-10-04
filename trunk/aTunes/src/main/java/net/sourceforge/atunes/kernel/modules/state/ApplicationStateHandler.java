@@ -46,7 +46,6 @@ import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.amazon.AmazonService;
 import net.sourceforge.atunes.kernel.modules.columns.PlayListColumns;
-import net.sourceforge.atunes.kernel.modules.favorites.Favorites;
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeyHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.player.Volume;
@@ -58,6 +57,7 @@ import net.sourceforge.atunes.kernel.modules.repository.AudioFilesRemovedListene
 import net.sourceforge.atunes.kernel.modules.repository.Repository;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.favorites.Favorites;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.kernel.modules.tray.SystemTrayHandler;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;

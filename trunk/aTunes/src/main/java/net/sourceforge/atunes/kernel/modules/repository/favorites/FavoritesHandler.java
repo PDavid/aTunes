@@ -17,7 +17,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package net.sourceforge.atunes.kernel.modules.favorites;
+package net.sourceforge.atunes.kernel.modules.repository.favorites;
 
 import java.util.List;
 import java.util.Map;
