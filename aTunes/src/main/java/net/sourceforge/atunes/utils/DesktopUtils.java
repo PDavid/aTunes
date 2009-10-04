@@ -27,6 +27,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
@@ -65,10 +66,8 @@ public final class DesktopUtils {
     public static void openSearch(Search search, String query) {
         if (search != null && isDesktopSupported) {
             try {
-                desktop.browse(search.getURL(query).toURI());
+                browse(search.getURL(query).toURI());
             } catch (MalformedURLException e) {
-                logger.error(LogCategories.DESKTOP, e);
-            } catch (IOException e) {
                 logger.error(LogCategories.DESKTOP, e);
             } catch (URISyntaxException e) {
                 logger.error(LogCategories.DESKTOP, e);
@@ -84,12 +83,22 @@ public final class DesktopUtils {
      */
     public static void openURI(URI uri) {
         if (isDesktopSupported) {
-            try {
-                desktop.browse(uri);
-            } catch (IOException e) {
-                logger.error(LogCategories.DESKTOP, e);
-            }
+            browse(uri);
         }
+    }
+
+    private static void browse(final URI uri) {
+        SwingUtilities.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    desktop.browse(uri);
+                } catch (IOException e) {
+                    logger.error(LogCategories.DESKTOP, e);
+                }
+            }
+        });
     }
 
     /**
