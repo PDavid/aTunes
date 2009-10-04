@@ -296,7 +296,7 @@ public final class FileNameUtils {
      * @return File/Path in 8.3 format
      */
     public static String getShortPathNameW(String longPathName) {
-        if (!(SystemProperties.OS == OperatingSystem.WINDOWS)) {
+        if (SystemProperties.OS != OperatingSystem.WINDOWS) {
             return longPathName;
         }
         WString pathname = new WString(longPathName);
