@@ -70,10 +70,10 @@ public class MPlayerEngine extends PlayerEngine {
      */
     private static final String SOLARIS_COMMAND = "mplayer";
 
-    /** The Constant SOLARISOPTAO. */
     private static final String SOLARISOPTAO = "-ao";
-    /** The Constant SOLARISOPTTYPE. */
     private static final String SOLARISOPTTYPE = "sun"; // Arguments for mplayer
+    private static final String WINOPTPRIORITY = "-priority";
+    private static final String WINOPTPRIORITY_DEFAULT = "abovenormal";
     /** Argument to not display more information than needed. */
     private static final String QUIET = "-quiet";
     /** Argument to control mplayer through commands. */
@@ -216,7 +216,7 @@ public class MPlayerEngine extends PlayerEngine {
             if (currentFadeAwayRunnable != null) {
                 currentFadeAwayRunnable.finish();
             } else {
-            	// This is already called from fade away runnable when finishing
+                // This is already called from fade away runnable when finishing
                 process = null;
                 mPlayerErrorReader = null;
                 mPlayerOutputReader = null;
@@ -323,6 +323,9 @@ public class MPlayerEngine extends PlayerEngine {
         if (SystemProperties.OS == OperatingSystem.SOLARIS) {
             command.add(SOLARISOPTAO);
             command.add(SOLARISOPTTYPE);
+        } else if (SystemProperties.OS == OperatingSystem.WINDOWS) {
+            command.add(WINOPTPRIORITY);
+            command.add(WINOPTPRIORITY_DEFAULT);
         }
         command.add(QUIET);
         command.add(SLAVE);
