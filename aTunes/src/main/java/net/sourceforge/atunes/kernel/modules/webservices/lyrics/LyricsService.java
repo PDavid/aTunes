@@ -85,7 +85,6 @@ public class LyricsService implements ApplicationStateChangeListener {
      * @param lyricsCache
      */
     private LyricsService() {
-        ApplicationStateHandler.getInstance().addStateChangeListener(this);
         this.lyricsEngines = loadEngines(ApplicationState.getInstance().getProxy());
     }
 

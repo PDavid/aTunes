@@ -197,6 +197,11 @@ public class ContextPanel extends PreferencesPanel {
      * Text field to set minimum song number for each album
      */
     JTextField minimumSongNumber;
+    
+    /**
+     * Checkbox to select if want to show albums in a grid
+     */
+    JCheckBox showAlbumsInGrid;
 
     /** The info label. */
     private JLabel info;
@@ -236,6 +241,8 @@ public class ContextPanel extends PreferencesPanel {
         minimumSongNumberBox.add(minimumSongNumber);
         minimumSongNumberBox.add(Box.createHorizontalGlue());
         minimumSongNumber.setMinimumSize(new Dimension(50, 20));
+        showAlbumsInGrid = new JCheckBox(I18nUtils.getString("SHOW_ALBUMS_IN_GRID"));
+        
         activateContext.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -311,25 +318,27 @@ public class ContextPanel extends PreferencesPanel {
         c.gridy = 4;
         // c.fill = GridBagConstraints.HORIZONTAL;
         add(minimumSongNumberBox, c);
-        c.fill = GridBagConstraints.NONE;
         c.gridy = 5;
+        add(showAlbumsInGrid, c);
+        c.fill = GridBagConstraints.NONE;
+        c.gridy = 6;
         c.insets = new Insets(10, 0, 10, 0);
         add(clearCache, c);
-        c.gridy = 6;
+        c.gridy = 7;
         c.insets = new Insets(0, 0, 5, 0);
         c.anchor = GridBagConstraints.FIRST_LINE_START;
         add(enginesTableLabel, c);
-        c.gridy = 7;
+        c.gridy = 8;
         c.insets = new Insets(0, 10, 0, 0);
         add(enginesScrollPane, c);
-        c.gridy = 8;
+        c.gridy = 9;
         c.gridheight = 1;
         c.insets = new Insets(0, 0, 0, 0);
         JPanel p = new JPanel(new FlowLayout());
         p.add(upButton);
         p.add(downButton);
         add(p, c);
-        c.gridy = 9;
+        c.gridy = 10;
         c.insets = new Insets(20, 0, 0, 0);
         c.weighty = 1;
         add(info, c);
@@ -343,7 +352,9 @@ public class ContextPanel extends PreferencesPanel {
         state.setHideVariousArtistsAlbums(hideVariousArtistsAlbums.isSelected());
         state.setMinimumSongNumberPerAlbum(minimumSongNumberPerAlbum.isSelected() ? Integer.parseInt(minimumSongNumber.getText()) : 0);
         state.setLyricsEnginesInfo(((LyricsEnginesTableModel) enginesTable.getModel()).getLyricsEnginesInfo());
-        return false;
+        boolean showAlbumsInGridPreviousValue = state.isShowContextAlbumsInGrid();
+        state.setShowContextAlbumsInGrid(showAlbumsInGrid.isSelected());
+        return showAlbumsInGridPreviousValue != showAlbumsInGrid.isSelected();
     }
 
     /**
@@ -407,6 +418,14 @@ public class ContextPanel extends PreferencesPanel {
         ((LyricsEnginesTableModel) enginesTable.getModel()).setLyricsEnginesInfo(copy);
     }
 
+    /**
+     * Sets the show albums in grid check box
+     * @param show
+     */
+    private void setShowAlbumsInGrid(boolean show) {
+    	showAlbumsInGrid.setSelected(show);
+    }
+    
     @Override
     public void updatePanel(ApplicationState state) {
         setActivateContext(state.isUseContext());
@@ -415,6 +434,7 @@ public class ContextPanel extends PreferencesPanel {
         setHideVariousArtistsAlbums(state.isHideVariousArtistsAlbums());
         setMinimumSongNumberPerAlbum(state.getMinimumSongNumberPerAlbum());
         setLyricsEnginesInfo(state.getLyricsEnginesInfo());
+        setShowAlbumsInGrid(state.isShowContextAlbumsInGrid());
     }
 
     @Override
