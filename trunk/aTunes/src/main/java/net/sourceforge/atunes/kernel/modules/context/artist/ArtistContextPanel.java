@@ -29,6 +29,7 @@ import net.sourceforge.atunes.kernel.modules.context.ContextPanel;
 import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -64,7 +65,7 @@ public class ArtistContextPanel extends ContextPanel {
         if (contents == null) {
             contents = new ArrayList<ContextPanelContent>();
             contents.add(new ArtistBasicInfoContent());
-            contents.add(new ArtistAlbumsContent());
+            contents.add(ApplicationState.getInstance().isShowContextAlbumsInGrid() ? new ArtistAlbumsFlowContent() : new ArtistAlbumsContent());
         }
         return contents;
     }

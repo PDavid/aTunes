@@ -135,10 +135,14 @@ public final class ApplicationStateHandler extends Handler implements AudioFiles
      * Notifies all listeners of an application state change
      */
     public void notifyApplicationStateChanged() {
+    	try {
         for (ApplicationStateChangeListener listener : stateChangeListeners) {
             getLogger().debug(LogCategories.HANDLER, StringUtils.getString("Call to ApplicationStateChangeListener: ", listener.getClass().getName()));
             listener.applicationStateChanged(ApplicationState.getInstance());
         }
+    	} catch (Throwable t) {
+    		t.printStackTrace();
+    	}
     }
 
     @Override

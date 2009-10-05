@@ -460,6 +460,8 @@ public class ApplicationState {
     private String commandAfterAccessRepository;
 
     private boolean useLibnotify = false;
+    
+    private boolean showContextAlbumsInGrid;
 
     //////////////////////////////////////////////////////////// END OF ATTRIBUTES /////////////////////////////////////////////////////////////
 
@@ -2435,5 +2437,19 @@ public class ApplicationState {
     public void setFontSettings(FontSettings fontSettings) {
         this.fontSettings = fontSettings;
     }
+
+	/**
+	 * @return the showContextAlbumsInGrid
+	 */
+	public boolean isShowContextAlbumsInGrid() {
+		return showContextAlbumsInGrid;
+	}
+
+	/**
+	 * @param showContextAlbumsInGrid the showContextAlbumsInGrid to set
+	 */
+	public void setShowContextAlbumsInGrid(boolean showContextAlbumsInGrid) {
+		this.showContextAlbumsInGrid = showContextAlbumsInGrid;
+	}
 
 }
