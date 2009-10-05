@@ -33,6 +33,10 @@
 - FIX: LyricWiki engine returned lyrics with URLs
 - FIX: Opening web browser does not work on Ubuntu
 
+aTunes 1.13.5
+-------------
+- FIX: MPlayer priority on Windows should be higher (patch by Ray Barlow)
+
 aTunes 1.13.4
 -------------
 - Lyricsfly engine update
