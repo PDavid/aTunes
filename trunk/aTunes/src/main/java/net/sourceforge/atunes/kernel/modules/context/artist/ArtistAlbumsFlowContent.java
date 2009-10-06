@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import net.sourceforge.atunes.Constants;
@@ -22,7 +21,6 @@ import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.ImageUtils;
 
 import org.jdesktop.swingx.border.DropShadowBorder;
 
@@ -57,11 +55,14 @@ public class ArtistAlbumsFlowContent extends ContextPanelContent {
 
 	@Override
 	protected void updateContentWithDataSourceResult(Map<String, ?> result) {
-        if (result.containsKey(ArtistInfoDataSource.OUTPUT_ALBUMS)) {
+        if (result != null && result.containsKey(ArtistInfoDataSource.OUTPUT_ALBUMS)) {
         	List<AlbumInfo> albums = (List<AlbumInfo>) result.get(ArtistInfoDataSource.OUTPUT_ALBUMS);
         	for (AlbumInfo album : albums) {
                 coversPanel.add(getLabelForAlbum(album));
         	}
+        	coversPanel.revalidate();
+        	coversPanel.repaint();
+        	coversPanel.validate();
         }
 	}
 	
