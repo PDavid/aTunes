@@ -105,7 +105,7 @@ public class ArtistInfoDataSource implements ContextInformationDataSource {
                 result.put(OUTPUT_WIKI_URL, getWikiUrl(audioObject));
 
                 AlbumListInfo albumList = getAlbumList(audioObject);
-                if (!albumList.getAlbums().isEmpty()) {
+                if (albumList != null && !albumList.getAlbums().isEmpty()) {
                     result.put(OUTPUT_ARTIST_NAME, albumList.getAlbums().get(0).getArtist());
                     result.put(OUTPUT_ARTIST_URL, albumList.getAlbums().get(0).getArtistUrl());
                 }
@@ -113,7 +113,7 @@ public class ArtistInfoDataSource implements ContextInformationDataSource {
             } else {
                 // Albums list and images
                 AlbumListInfo albumList = getAlbumList(audioObject);
-                if (!albumList.getAlbums().isEmpty()) {
+                if (albumList != null && !albumList.getAlbums().isEmpty()) {
                     for (AlbumInfo album : albumList.getAlbums()) {
                         album.setCover(ImageUtils.scaleImageBicubic(getAlbumImage(album), Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT));
                     }
