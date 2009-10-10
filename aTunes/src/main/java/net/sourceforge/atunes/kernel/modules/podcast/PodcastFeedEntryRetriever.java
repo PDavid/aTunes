@@ -20,7 +20,6 @@
 package net.sourceforge.atunes.kernel.modules.podcast;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -168,27 +167,17 @@ public class PodcastFeedEntryRetriever implements Runnable {
                         newEntries.add(new PodcastFeedEntry(title, author, url, description, date, duration, podcastFeed));
                     }
 
-                    SwingUtilities.invokeAndWait(new Runnable() {
-                        @Override
-                        public void run() {
-                            podcastFeed.addEntries(newEntries, removePodcastFeedEntriesRemovedFromPodcastFeed);
-                            if (podcastFeed.hasNewEntries()) {
-                                podcastFeedsWithNewEntries.add(podcastFeed);
-                            }
-                        }
-                    });
-                }
+                    podcastFeed.addEntries(newEntries, removePodcastFeedEntriesRemovedFromPodcastFeed);
+                    if (podcastFeed.hasNewEntries()) {
+                        podcastFeedsWithNewEntries.add(podcastFeed);
+                    }
 
+                }
             } catch (DOMException e) {
                 logger.error(LogCategories.PODCAST, StringUtils.getString("Could not retrieve podcast feed entries from ", podcastFeed, ": ", e));
             } catch (IOException e) {
                 logger.error(LogCategories.PODCAST, StringUtils.getString("Could not retrieve podcast feed entries from ", podcastFeed, ": ", e));
-            } catch (InterruptedException e) {
-                logger.error(LogCategories.PODCAST, StringUtils.getString("podcast feed entries retrieval interrupted", e));
-            } catch (InvocationTargetException e) {
-                logger.error(LogCategories.PODCAST, StringUtils.getString("Could not retrieve podcast feed entries from ", podcastFeed, ": ", e));
             }
-
         }
 
         return podcastFeedsWithNewEntries;

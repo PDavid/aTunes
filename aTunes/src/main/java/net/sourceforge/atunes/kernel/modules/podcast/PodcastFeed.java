@@ -44,7 +44,6 @@ public class PodcastFeed implements TreeObject, Serializable {
     /** The logger. */
     private static Logger logger = new Logger();
 
-    /** The comparator. */
     private static Comparator<PodcastFeed> comparator = new Comparator<PodcastFeed>() {
         @Override
         public int compare(PodcastFeed o1, PodcastFeed o2) {
@@ -52,21 +51,11 @@ public class PodcastFeed implements TreeObject, Serializable {
         }
     };
 
-    /** The name. */
     String name;
-
-    /** The url. */
     private String url;
-
-    /** The feed type. */
     private FeedType feedType;
-
-    /** The podcast feed entries. */
     private List<PodcastFeedEntry> podcastFeedEntries;
-
-    /** The has new entries. */
     private boolean hasNewEntries;
-
     /** If the name should be retrieved from the feed */
     private boolean retrieveNameFromFeed;
 
@@ -93,11 +82,6 @@ public class PodcastFeed implements TreeObject, Serializable {
         return comparator;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object o) {
         if (o == null || !(o instanceof PodcastFeed)) {
@@ -107,13 +91,8 @@ public class PodcastFeed implements TreeObject, Serializable {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.model.TreeObject#getAudioObjects()
-     */
     @Override
-    public List<AudioObject> getAudioObjects() {
+    public synchronized List<AudioObject> getAudioObjects() {
         return new ArrayList<AudioObject>(podcastFeedEntries);
     }
 
@@ -140,7 +119,7 @@ public class PodcastFeed implements TreeObject, Serializable {
      * 
      * @return the podcast feed entries
      */
-    public List<PodcastFeedEntry> getPodcastFeedEntries() {
+    public synchronized List<PodcastFeedEntry> getPodcastFeedEntries() {
         return new ArrayList<PodcastFeedEntry>(podcastFeedEntries);
     }
 
@@ -185,7 +164,7 @@ public class PodcastFeed implements TreeObject, Serializable {
     /**
      * Marks the entries of this podcast feed as listened.
      */
-    public void markEntriesAsListened() {
+    public synchronized void markEntriesAsListened() {
         for (PodcastFeedEntry entry : podcastFeedEntries) {
             entry.setListened(true);
         }
@@ -207,7 +186,7 @@ public class PodcastFeed implements TreeObject, Serializable {
      * @param removeOld
      *            If old entries should be removed
      */
-    public void addEntries(List<? extends PodcastFeedEntry> entries, boolean removeOld) {
+    public synchronized void addEntries(List<? extends PodcastFeedEntry> entries, boolean removeOld) {
         logger.debug(LogCategories.PODCAST);
 
         List<? extends PodcastFeedEntry> newEntries = new ArrayList<PodcastFeedEntry>(entries);
@@ -237,7 +216,7 @@ public class PodcastFeed implements TreeObject, Serializable {
      * @param podcastFeedEntry
      *            The Podcast feed entr that should be removed
      */
-    public void removeEntry(PodcastFeedEntry podcastFeedEntry) {
+    public synchronized void removeEntry(PodcastFeedEntry podcastFeedEntry) {
         podcastFeedEntries.remove(podcastFeedEntry);
     }
 
@@ -286,7 +265,7 @@ public class PodcastFeed implements TreeObject, Serializable {
      * 
      * @return
      */
-    public int getNewEntriesCount() {
+    public synchronized int getNewEntriesCount() {
         int newEntries = 0;
         for (PodcastFeedEntry entry : podcastFeedEntries) {
             if (!entry.isListened()) {
@@ -317,7 +296,7 @@ public class PodcastFeed implements TreeObject, Serializable {
     }
 
     @Override
-    public void setExtendedToolTip(ExtendedToolTip toolTip) {
+    public synchronized void setExtendedToolTip(ExtendedToolTip toolTip) {
         toolTip.setLine1(name);
         toolTip.setLine2(StringUtils.getString(I18nUtils.getString("PODCAST_ENTRIES"), ": ", podcastFeedEntries.size()));
         toolTip.setLine3(StringUtils.getString(I18nUtils.getString("NEW_PODCAST_ENTRIES_TOOLTIP"), ": ", getNewEntriesCount()));
