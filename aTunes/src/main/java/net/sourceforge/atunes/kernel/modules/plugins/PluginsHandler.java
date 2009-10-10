@@ -223,11 +223,8 @@ public class PluginsHandler extends Handler implements PluginListener {
         File pluginLocation = new File(plugin.getPluginLocation());
         if (pluginLocation.getParent().equals(new File(getUserPluginsFolder()).getAbsolutePath())) {
             try {
-                FileUtils.deleteDirectory(pluginLocation);
+                factory.uninstallPlugin(plugin);
                 factory.refresh();
-            } catch (IOException e) {
-                getLogger().error(LogCategories.PLUGINS, e);
-                throw e;
             } catch (PluginSystemException e) {
                 getLogger().error(LogCategories.PLUGINS, e);
                 if (e.getCause() != null) {
