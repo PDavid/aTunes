@@ -32,6 +32,8 @@ import java.net.URLEncoder;
 
 import javax.imageio.ImageIO;
 
+import org.commonjukebox.plugins.PluginApi;
+
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -39,6 +41,7 @@ import net.sourceforge.atunes.misc.log.Logger;
 /**
  * Utility methods for network access.
  */
+@PluginApi
 public final class NetworkUtils {
 
     private static Logger logger = new Logger();

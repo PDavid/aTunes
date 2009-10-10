@@ -44,7 +44,6 @@ import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.ZipUtils;
 
-import org.apache.commons.io.FileUtils;
 import org.commonjukebox.plugins.Plugin;
 import org.commonjukebox.plugins.PluginInfo;
 import org.commonjukebox.plugins.PluginListener;
@@ -88,7 +87,7 @@ public class PluginsHandler extends Handler implements PluginListener {
             factory.addPluginsFolder(getUserPluginsFolder());
 
             addPluginListeners();
-            int plugins = factory.start(getPluginClassNames());
+            int plugins = factory.start(getPluginClassNames(), true, "net.sourceforge.atunes");
             getLogger().info(LogCategories.PLUGINS, StringUtils.getString("Found ", plugins, " plugins (", t.stop(), " seconds)"));            
         } catch (PluginSystemException e) {
             getLogger().error(LogCategories.PLUGINS, e);
