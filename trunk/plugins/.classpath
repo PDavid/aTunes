@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" output="net-sourceforge-atunes-plugins-instantmessaging/target/classes" path="net-sourceforge-atunes-plugins-instantmessaging/src/main/java"/>
-	<classpathentry kind="src" path="net-sourceforge-atunes-plugins-favoritesview/src/main/java"/>
 	<classpathentry excluding="**" kind="src" output="net-sourceforge-atunes-plugins-instantmessaging/target/classes" path="net-sourceforge-atunes-plugins-instantmessaging/src/main/resources"/>
 	<classpathentry kind="src" output="net-sourceforge-atunes-plugins-commentcolumn/target/classes" path="net-sourceforge-atunes-plugins-commentcolumn/src/main/java"/>
 	<classpathentry kind="src" output="net-sourceforge-atunes-plugins-lyricscolumn/target/classes" path="net-sourceforge-atunes-plugins-lyricscolumn/src/main/java"/>
