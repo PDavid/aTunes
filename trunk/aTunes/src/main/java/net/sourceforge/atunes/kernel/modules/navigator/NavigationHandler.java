@@ -78,6 +78,7 @@ public class NavigationHandler extends Handler implements PluginListener {
             navigationViews = new ArrayList<NavigationView>();
             // TODO: Dynamic load of navigation views, possibly from a config file
             navigationViews.add(new RepositoryNavigationView());
+            navigationViews.add(new FavoritesNavigationView());
             navigationViews.add(new DeviceNavigationView());
             navigationViews.add(new RadioNavigationView());
             navigationViews.add(new PodcastNavigationView());
