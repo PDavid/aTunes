@@ -41,7 +41,6 @@ public class PodcastFeed implements TreeObject, Serializable {
 
     private static final long serialVersionUID = 1416452911272034086L;
 
-    /** The logger. */
     private static Logger logger = new Logger();
 
     private static Comparator<PodcastFeed> comparator = new Comparator<PodcastFeed>() {
@@ -83,7 +82,7 @@ public class PodcastFeed implements TreeObject, Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public synchronized boolean equals(Object o) {
         if (o == null || !(o instanceof PodcastFeed)) {
             return false;
         }
@@ -110,7 +109,7 @@ public class PodcastFeed implements TreeObject, Serializable {
      * 
      * @return the name of the podcast feed
      */
-    public String getName() {
+    public synchronized String getName() {
         return name;
     }
 
@@ -132,13 +131,8 @@ public class PodcastFeed implements TreeObject, Serializable {
         return url;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
     @Override
-    public int hashCode() {
+    public synchronized int hashCode() {
         return (name + url).hashCode();
     }
 
@@ -236,7 +230,7 @@ public class PodcastFeed implements TreeObject, Serializable {
      * @param name
      *            the name of the podcast feed to set
      */
-    public void setName(String name) {
+    public synchronized void setName(String name) {
         this.name = name;
     }
 
@@ -275,18 +269,13 @@ public class PodcastFeed implements TreeObject, Serializable {
         return newEntries;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
     @Override
-    public String toString() {
+    public synchronized String toString() {
         return name;
     }
 
     @Override
-    public String getToolTip() {
+    public synchronized String getToolTip() {
         return name;
     }
 

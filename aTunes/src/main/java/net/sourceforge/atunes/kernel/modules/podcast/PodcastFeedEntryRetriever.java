@@ -231,13 +231,8 @@ public class PodcastFeedEntryRetriever implements Runnable {
     private void retrieveNameFromFeed(final PodcastFeed podcastFeed, Document feed) {
         Node node = XMLUtils.evaluateXPathExpressionAndReturnNode(podcastFeed.getFeedType().getNameXPath(), feed);
         if (node != null) {
-            final String name = node.getTextContent();
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    podcastFeed.setName(name == null ? "" : name);
-                }
-            });
+            String name = node.getTextContent();
+            podcastFeed.setName(name == null ? "" : name);
         }
     }
 
