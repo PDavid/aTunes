@@ -130,7 +130,6 @@
 				<os family="mac" />
 			</symlink>
 			<file src="license.txt" targetdir="$INSTALL_PATH" />
-			<file src="core_plugins" targetdir="$INSTALL_PATH" />
 		</pack>
 		<pack name="Base tools for Windows" id="win_tools_base.package" required="yes">
 			<description>Required base tools for Windows (mplayer and cdda2wav)</description>

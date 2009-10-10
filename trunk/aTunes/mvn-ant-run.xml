@@ -12,7 +12,6 @@
 	<property name="translations" location="${basedir}/src/main/resources/translations" />
 	<property name="settings" location="${basedir}/src/main/resources/settings" />
 	<property name="images" location="${basedir}/src/main/resources/images" />
-	<property name="core_plugins" location="${basedir}/core_plugins" />
 	<property name="src" location="${basedir}/src/main/java" />
 	<property name="debug_folder" value="${basedir}/debug" />
 
@@ -90,10 +89,6 @@
 
 		<copy todir="${deploy_folder}" file="${build_tools}/shortcutSpec.xml" />
 		
-		<copy todir="${deploy_folder}/core_plugins">
-			<fileset dir="${core_plugins}" includes="**/" />
-		</copy>
-
 	</target>
 
 
