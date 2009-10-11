@@ -448,6 +448,11 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
      */
     @Override
     public void clear() {
+        // Update context information
+        if (ApplicationState.getInstance().isUseContext()) {
+            ContextHandler.getInstance().retrieveInfoAndShowInPanel(null);
+        }
+
         // Next actions must be done ONLY if stopPlayerWhenPlayListClear is enabled
         // New actions added to this method might be called with property enabled or disabled
         if (ApplicationState.getInstance().isStopPlayerOnPlayListClear()) {

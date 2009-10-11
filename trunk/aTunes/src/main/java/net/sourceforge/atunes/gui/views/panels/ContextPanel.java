@@ -90,14 +90,20 @@ public class ContextPanel extends JPanel {
     }
 
     public void enableContextTabs() {
-        int i = 0;
         for (net.sourceforge.atunes.kernel.modules.context.ContextPanel panel : ContextHandler.getInstance().getContextPanels()) {
-            tabbedPane.setEnabledAt(i, panel.isEnabled());
-            tabbedPane.getComponentAt(i).setEnabled(panel.isEnabled());
-            i++;
+        	enableContextTab(panel);
         }
     }
 
+    /**
+     * Enables or disables the given panel
+     * @param panel
+     */
+    private void enableContextTab(net.sourceforge.atunes.kernel.modules.context.ContextPanel panel) {
+        tabbedPane.setEnabledAt(panelsIndexes.get(panel), panel.isEnabled());
+        tabbedPane.getComponentAt(panelsIndexes.get(panel)).setEnabled(panel.isEnabled());
+    }
+    
     /**
      * Selects given tab index
      * 
@@ -124,6 +130,7 @@ public class ContextPanel extends JPanel {
     public void addContextPanel(net.sourceforge.atunes.kernel.modules.context.ContextPanel panel) {
         tabbedPane.addTab(panel.getTitle(), panel.getIcon(), panel.getUIComponent());
         panelsIndexes.put(panel, tabbedPane.getTabCount() - 1);
+        enableContextTab(panel);
     }
 
     /**

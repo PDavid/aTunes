@@ -141,6 +141,10 @@ public final class ContextHandler extends Handler implements PluginListener {
             panel.clearContextPanel();
         }
         currentAudioObject = null;
+        
+        // Select first tab
+        ApplicationState.getInstance().setSelectedContextTab(0);
+        VisualHandler.getInstance().getContextPanel().setSelectedIndex(ApplicationState.getInstance().getSelectedContextTab());
     }
 
     /**

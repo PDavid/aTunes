@@ -85,7 +85,7 @@ public class AudioObjectContextPanel extends ContextPanel {
 
     @Override
     protected boolean isPanelEnabledForAudioObject(AudioObject audioObject) {
-        return true;
+        return audioObject != null;
     }
 
 }
