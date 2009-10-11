@@ -1,8 +1,10 @@
 package net.sourceforge.atunes.plugins.context;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import org.commonjukebox.plugins.Plugin;
@@ -31,8 +33,11 @@ public class LastFmEventContextPanel extends ContextPanel implements Plugin {
 
 	@Override
 	protected ImageIcon getContextPanelIcon(AudioObject audioObject) {
-		// TODO: Calendar icon ?
-		return null;
+		try {
+			return new ImageIcon(ImageIO.read(getClass().getResourceAsStream("calendar.png")));
+		} catch (IOException e) {
+			return null;
+		}
 	}
 
 	@Override
