@@ -28,6 +28,8 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
+import org.commonjukebox.plugins.PluginApi;
+
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
@@ -40,6 +42,7 @@ import net.sourceforge.atunes.utils.NetworkUtils;
 /**
  * A radio station.
  */
+@PluginApi
 public final class Radio implements AudioObject, Serializable, TreeObject, Comparable<Radio> {
 
     private static final long serialVersionUID = 3295941106814718559L;

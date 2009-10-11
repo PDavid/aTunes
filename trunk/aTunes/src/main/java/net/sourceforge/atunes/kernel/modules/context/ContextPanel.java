@@ -38,6 +38,7 @@ import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
+import org.commonjukebox.plugins.PluginApi;
 import org.jdesktop.swingx.JXTaskPane;
 import org.jdesktop.swingx.JXTaskPaneContainer;
 
@@ -49,6 +50,7 @@ import org.jdesktop.swingx.JXTaskPaneContainer;
  * @author alex
  * 
  */
+@PluginApi
 public abstract class ContextPanel {
 
     private static final long serialVersionUID = 7870512266932745272L;

@@ -35,6 +35,7 @@ import javax.swing.SwingConstants;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.GuiUtils;
 
+import org.commonjukebox.plugins.PluginApi;
 import org.jdesktop.swingx.JXTaskPane;
 import org.jdesktop.swingx.border.DropShadowBorder;
 
@@ -46,6 +47,7 @@ import org.jdesktop.swingx.border.DropShadowBorder;
  * @author alex
  * 
  */
+@PluginApi
 public abstract class ContextPanelContent {
 
     private static final long serialVersionUID = 7059398864514654378L;

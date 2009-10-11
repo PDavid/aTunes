@@ -21,9 +21,12 @@ package net.sourceforge.atunes.model;
 
 import javax.swing.ImageIcon;
 
+import org.commonjukebox.plugins.PluginApi;
+
 /**
  * Interface for all audio objects (e.g. AudioFile, Radio, PodcastFeedEntry)
  */
+@PluginApi
 public interface AudioObject {
 
     /**
