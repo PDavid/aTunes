@@ -35,6 +35,8 @@ import java.util.concurrent.RejectedExecutionException;
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 
+import org.commonjukebox.plugins.PluginApi;
+
 import net.roarsoftware.lastfm.Album;
 import net.roarsoftware.lastfm.Artist;
 import net.roarsoftware.lastfm.Authenticator;
@@ -77,6 +79,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * This class is responsible of retrieve information from Last.fm web services.
  */
+@PluginApi
 public class LastFmService {
 
     /*

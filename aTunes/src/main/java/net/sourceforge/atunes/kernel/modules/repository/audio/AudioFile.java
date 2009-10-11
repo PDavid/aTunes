@@ -44,6 +44,7 @@ import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 
+import org.commonjukebox.plugins.PluginApi;
 import org.jaudiotagger.audio.AudioFileIO;
 
 /**
@@ -53,6 +54,7 @@ import org.jaudiotagger.audio.AudioFileIO;
  * 
  * @author fleax
  */
+@PluginApi
 public final class AudioFile implements AudioObject, Serializable, Comparable<AudioFile> {
 
     private static final long serialVersionUID = -1139001443603556703L;

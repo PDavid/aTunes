@@ -44,6 +44,8 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import org.commonjukebox.plugins.PluginApi;
+
 import net.sourceforge.atunes.gui.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -53,6 +55,7 @@ import net.sourceforge.atunes.misc.log.Logger;
 /**
  * GUI related utility methods.
  */
+@PluginApi
 public final class GuiUtils {
 
     private static Logger logger = new Logger();

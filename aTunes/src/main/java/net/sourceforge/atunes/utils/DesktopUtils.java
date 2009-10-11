@@ -30,6 +30,8 @@ import java.net.URL;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
+import org.commonjukebox.plugins.PluginApi;
+
 import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
@@ -39,6 +41,7 @@ import net.sourceforge.atunes.misc.log.Logger;
 /**
  * Desktop utility methods
  */
+@PluginApi
 public final class DesktopUtils {
 
     static Logger logger = new Logger();

@@ -28,6 +28,8 @@ import java.util.Map;
 
 import javax.swing.ImageIcon;
 
+import org.commonjukebox.plugins.PluginApi;
+
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
@@ -42,6 +44,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * 
  * @author fleax
  */
+@PluginApi
 public class Artist implements Serializable, TreeObject, Comparable<Artist> {
 
     private static final long serialVersionUID = -7981636660798555640L;

@@ -21,6 +21,8 @@ package net.sourceforge.atunes.kernel.modules.context;
 
 import java.util.Map;
 
+import org.commonjukebox.plugins.PluginApi;
+
 /**
  * This interface must be implemented by classes responsible of retrieve data
  * used by a context panel
@@ -28,6 +30,7 @@ import java.util.Map;
  * @author alex
  * 
  */
+@PluginApi
 public interface ContextInformationDataSource {
 
     /**
