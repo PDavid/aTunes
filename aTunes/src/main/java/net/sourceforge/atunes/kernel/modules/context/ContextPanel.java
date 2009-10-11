@@ -64,6 +64,12 @@ public abstract class ContextPanel {
      * Last AudioObject used to update context panel
      */
     private AudioObject audioObject;
+    
+    /**
+     * Time stamp when audio object was modified. Used to decide if context info
+     * must be updated
+     */
+    private long lastAudioObjectModificationTime;
 
     // BEGIN OF METHODS TO BE IMPLEMENTED BY CONCRETE CONTEXT PANELS
 
@@ -123,9 +129,9 @@ public abstract class ContextPanel {
      * 
      * @param audioObject
      */
-    public final void updateContextPanel(AudioObject audioObject) {
-        // If the AudioObject is the same as used before to update panel then do nothing
-        if (this.audioObject != null && this.audioObject.equals(audioObject)) {
+    protected final void updateContextPanel(AudioObject audioObject, boolean forceUpdate) {
+        // If the AudioObject is the same as used before to update panel then do nothing if forceUpdate is false
+        if (!forceUpdate && this.audioObject != null && this.audioObject.equals(audioObject)) {
             return;
         }
 

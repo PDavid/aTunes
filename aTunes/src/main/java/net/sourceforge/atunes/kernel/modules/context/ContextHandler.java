@@ -128,18 +128,16 @@ public final class ContextHandler extends Handler implements PluginListener {
     private void contextPanelChanged() {
         // Update selected tab
         ApplicationState.getInstance().setSelectedContextTab(VisualHandler.getInstance().getContextPanel().getSelectedIndex());
-        // Call to fill information
-        retrieveInfo(currentAudioObject);
+        // Call to fill information: Don't force update since audio object can be the same
+        retrieveInfo(currentAudioObject, false);
     }
 
     /**
      * Clears all context panels
+     * 
      */
     public void clear() {
-        // Clear all context panels
-        for (ContextPanel panel : getContextPanels()) {
-            panel.clearContextPanel();
-        }
+    	clearTabsContent();
         currentAudioObject = null;
         
         // Select first tab
@@ -148,17 +146,30 @@ public final class ContextHandler extends Handler implements PluginListener {
     }
 
     /**
+     * Clears tabs content
+     */
+    private void clearTabsContent() {
+        // Clear all context panels
+        for (ContextPanel panel : getContextPanels()) {
+            panel.clearContextPanel();
+        }
+    }
+    
+    /**
      * Updates panel with audio object information.
      * 
      * @param ao
      *            the audio object
      */
     public void retrieveInfoAndShowInPanel(AudioObject ao) {
+    	boolean audioObjectModified = false;
         // Avoid retrieve information about the same audio object twice except if is an AudioFile and has been recently changed
         if (currentAudioObject != null && currentAudioObject.equals(ao)) {
             if (ao instanceof AudioFile) {
                 if (((AudioFile) ao).getFile().lastModified() == lastAudioObjectModificationTime) {
                     return;
+                } else {
+                	audioObjectModified = true;
                 }
             } else if (!(ao instanceof Radio)) {
                 return;
@@ -187,8 +198,11 @@ public final class ContextHandler extends Handler implements PluginListener {
                 // Clear all tabs
                 clear();
             } else {
-                // Retrieve data for audio object
-                retrieveInfo(ao);
+            	if (audioObjectModified) {
+            		clearTabsContent();
+            	}
+                // Retrieve data for audio object. Force Update since audio file is different or has been modified
+                retrieveInfo(ao, true);
             }
         }
     }
@@ -198,8 +212,11 @@ public final class ContextHandler extends Handler implements PluginListener {
      * 
      * @param audioObject
      *            the audio object
+     * @param forceUpdate
+     * 			  If <code>true</code> data will be retrieved and shown even if the audio object is the same as before
+     *			  This is necessary when audio object is the same but has been modified so context data can be different
      */
-    private void retrieveInfo(AudioObject audioObject) {
+    private void retrieveInfo(AudioObject audioObject, boolean forceUpdate) {
         if (audioObject == null) {
             return;
         }
@@ -210,7 +227,7 @@ public final class ContextHandler extends Handler implements PluginListener {
         	selectedTab = 0;
         }
         // Update current context panel
-        getContextPanels().get(selectedTab).updateContextPanel(audioObject);
+        getContextPanels().get(selectedTab).updateContextPanel(audioObject, forceUpdate);
     }
 
     /**
