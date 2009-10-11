@@ -19,12 +19,15 @@
  */
 package net.sourceforge.atunes.kernel.modules.player;
 
+import org.commonjukebox.plugins.PluginApi;
+
 /**
  * This enum defined all possible states of player
  * 
  * @author fleax
  * 
  */
+@PluginApi
 public enum PlaybackState {
 
     PLAYING, RESUMING, PAUSED, STOPPED, PLAY_FINISHED, PLAY_INTERRUPTED
