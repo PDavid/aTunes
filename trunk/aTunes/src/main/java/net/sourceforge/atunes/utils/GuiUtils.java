@@ -32,6 +32,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Locale;
 
 import javax.swing.AbstractAction;
@@ -47,6 +48,7 @@ import javax.swing.UIManager;
 import org.commonjukebox.plugins.PluginApi;
 
 import net.sourceforge.atunes.gui.LookAndFeelSelector;
+import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
@@ -201,6 +203,11 @@ public final class GuiUtils {
         };
         rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(escape, "ESCAPE");
         rootPane.getActionMap().put("ESCAPE", disposeAction);
+    }
+
+    public static void addAppIcons(Window w) {
+        w.setIconImages(Arrays.asList(ImageLoader.getImage(ImageLoader.APP_ICON).getImage(), ImageLoader.getImage(ImageLoader.APP_ICON_MEDIUM).getImage(), ImageLoader.getImage(
+                ImageLoader.APP_ICON_BIG).getImage()));
     }
 
     /**
