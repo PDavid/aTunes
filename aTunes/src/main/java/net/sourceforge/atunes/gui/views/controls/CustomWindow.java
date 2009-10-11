@@ -22,7 +22,6 @@ package net.sourceforge.atunes.gui.views.controls;
 import javax.swing.JFrame;
 import javax.swing.JWindow;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 public abstract class CustomWindow extends JWindow {
@@ -33,7 +32,7 @@ public abstract class CustomWindow extends JWindow {
         super(owner);
         setSize(width, height);
         setLocationRelativeTo(owner);
-        setIconImage(ImageLoader.getImage(ImageLoader.APP_ICON).getImage());
+        GuiUtils.addAppIcons(this);
     }
 
     /**

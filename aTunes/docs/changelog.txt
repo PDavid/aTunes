@@ -36,6 +36,7 @@
 aTunes 1.13.5
 -------------
 - FIX: MPlayer priority on Windows should be higher (patch by Ray Barlow)
+- FIX: Windows Vista/7 ready application icons
 
 aTunes 1.13.4
 -------------

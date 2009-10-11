@@ -23,7 +23,6 @@ import java.awt.Component;
 
 import javax.swing.JFrame;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 public abstract class CustomFrame extends JFrame {
@@ -35,7 +34,7 @@ public abstract class CustomFrame extends JFrame {
      */
     public CustomFrame() {
         super();
-        setIconImage(ImageLoader.getImage(ImageLoader.APP_ICON_BIG).getImage());
+        GuiUtils.addAppIcons(this);
     }
 
     /**
@@ -50,7 +49,7 @@ public abstract class CustomFrame extends JFrame {
         super(title);
         setSize(width, height);
         setLocationRelativeTo(owner);
-        setIconImage(ImageLoader.getImage(ImageLoader.APP_ICON).getImage());
+        GuiUtils.addAppIcons(this);
     }
 
     /**

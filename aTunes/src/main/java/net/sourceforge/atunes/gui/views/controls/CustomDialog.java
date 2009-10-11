@@ -22,7 +22,6 @@ package net.sourceforge.atunes.gui.views.controls;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
@@ -42,7 +41,7 @@ public abstract class CustomDialog extends JDialog {
         super(owner);
         setSize(width, height);
         setLocationRelativeTo(owner);
-        setIconImage(ImageLoader.getImage(ImageLoader.APP_ICON).getImage());
+        GuiUtils.addAppIcons(this);
     }
 
     /**
