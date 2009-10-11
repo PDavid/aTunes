@@ -234,6 +234,10 @@ public abstract class ContextPanel {
      * @return
      */
     public final boolean isEnabled() {
+    	// If current audio object is null don't even ask panel
+    	if (ContextHandler.getInstance().getCurrentAudioObject() == null) {
+    		return false;
+    	}
         return isPanelEnabledForAudioObject(ContextHandler.getInstance().getCurrentAudioObject());
     }
 
