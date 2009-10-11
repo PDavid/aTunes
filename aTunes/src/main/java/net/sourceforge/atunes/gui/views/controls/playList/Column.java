@@ -25,6 +25,8 @@ import java.util.Comparator;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
+import org.commonjukebox.plugins.PluginApi;
+
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.GuiUtils;
 
@@ -33,6 +35,7 @@ import net.sourceforge.atunes.utils.GuiUtils;
  * 
  * @author fleax
  */
+@PluginApi
 public abstract class Column implements Comparable<Column>, Serializable {
 
     private static final long serialVersionUID = 7407756833207959017L;

@@ -19,8 +19,11 @@
  */
 package net.sourceforge.atunes.kernel.modules.player;
 
+import org.commonjukebox.plugins.PluginApi;
+
 import net.sourceforge.atunes.model.AudioObject;
 
+@PluginApi
 public interface PlaybackStateListener {
 
     /**
