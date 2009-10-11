@@ -25,6 +25,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.controls.playList.Column;
@@ -48,6 +50,7 @@ import org.commonjukebox.plugins.Plugin;
 import org.commonjukebox.plugins.PluginInfo;
 import org.commonjukebox.plugins.PluginListener;
 import org.commonjukebox.plugins.PluginSystemException;
+import org.commonjukebox.plugins.PluginSystemLogger;
 import org.commonjukebox.plugins.PluginsFactory;
 
 public class PluginsHandler extends Handler implements PluginListener {
@@ -83,6 +86,27 @@ public class PluginsHandler extends Handler implements PluginListener {
         	t.start();
             factory = new PluginsFactory();
 
+            PluginSystemLogger.addHandler(new java.util.logging.Handler() {
+				
+				@Override
+				public void publish(LogRecord record) {
+					if (record.getLevel().equals(Level.SEVERE)) {
+						getLogger().error(LogCategories.PLUGINS, record.getMessage());
+					} else {
+						getLogger().debug(LogCategories.PLUGINS, record.getMessage());
+					}
+				}
+				
+				@Override
+				public void flush() {
+				}
+				
+				@Override
+				public void close() throws SecurityException {
+				}
+			});
+            PluginSystemLogger.setLevel(Kernel.DEBUG ? Level.FINE : Level.OFF);
+            
             // User plugins folder
             factory.addPluginsFolder(getUserPluginsFolder());
 
