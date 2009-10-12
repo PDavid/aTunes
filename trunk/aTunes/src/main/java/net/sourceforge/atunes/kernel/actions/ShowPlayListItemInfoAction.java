@@ -26,6 +26,7 @@ import java.util.List;
 import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -50,12 +51,13 @@ public class ShowPlayListItemInfoAction extends Action {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        VisualHandler.getInstance().showInfo();
+        AudioObject audioObject = PlayListHandler.getInstance().getSelectedAudioObjects().get(0);
+        VisualHandler.getInstance().showPropertiesDialog(audioObject);
     }
 
     @Override
     public boolean isEnabledForPlayListSelection(List<AudioObject> selection) {
-        return !selection.isEmpty();
+        return selection.size() == 1;
     }
 
 }

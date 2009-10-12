@@ -93,6 +93,7 @@ class PodcastFeedEntryPropertiesDialog extends PropertiesDialog {
     PodcastFeedEntryPropertiesDialog(PodcastFeedEntry entry, Component owner) {
         super(getTitleText(entry), owner);
         this.entry = entry;
+        setAudioObject(entry);
         addContent();
 
         setContent();
