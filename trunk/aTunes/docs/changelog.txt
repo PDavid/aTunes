@@ -39,6 +39,7 @@ aTunes 1.13.5
 - FIX: Windows Vista/7 ready application icons
 - FIX: Show play list information enabled for more than one audio object [2786446]
 - FIX: Sort by file name option sorts audio object in folder view in wrong order [2807803]
+- FIX: Song info dialog not resizable [2824009]
 
 aTunes 1.13.4
 -------------

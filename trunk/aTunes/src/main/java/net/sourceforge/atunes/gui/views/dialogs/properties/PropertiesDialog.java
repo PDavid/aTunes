@@ -19,13 +19,14 @@
  */
 package net.sourceforge.atunes.gui.views.dialogs.properties;
 
-import java.awt.Component;
+import java.awt.Dimension;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import net.sourceforge.atunes.gui.views.controls.CustomFrame;
+import net.sourceforge.atunes.gui.views.controls.CustomDialog;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
@@ -35,7 +36,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The Class PropertiesDialog.
  */
-public class PropertiesDialog extends CustomFrame {
+public class PropertiesDialog extends CustomDialog {
 
     private static final long serialVersionUID = 6097305595858691246L;
 
@@ -49,10 +50,12 @@ public class PropertiesDialog extends CustomFrame {
      * @param title
      *            the title
      */
-    PropertiesDialog(String title, Component owner) {
-        super(title, 560, 480, owner);
+    PropertiesDialog(String title, JFrame owner) {
+        super(owner, 560, 480);
+        setMinimumSize(new Dimension(560, 480));
+        setTitle(title);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        setResizable(false);
+        setResizable(true);
         enableDisposeActionWithEscapeKey();
     }
 
@@ -87,7 +90,7 @@ public class PropertiesDialog extends CustomFrame {
      * 
      * @return the properties dialog
      */
-    public static PropertiesDialog newInstance(AudioObject a, Component owner) {
+    public static PropertiesDialog newInstance(AudioObject a, JFrame owner) {
     	if (getDialogsOpened().containsKey(a)) {
     		return getDialogsOpened().get(a);
     	} else {

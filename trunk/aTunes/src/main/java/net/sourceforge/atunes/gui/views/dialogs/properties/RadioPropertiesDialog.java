@@ -26,6 +26,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -70,7 +71,7 @@ class RadioPropertiesDialog extends PropertiesDialog {
      * @param radio
      *            the radio
      */
-    RadioPropertiesDialog(Radio radio, Component owner) {
+    RadioPropertiesDialog(Radio radio, JFrame owner) {
         super(getTitleText(radio), owner);
         this.radio = radio;
         setAudioObject(radio);

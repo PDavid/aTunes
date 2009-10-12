@@ -28,6 +28,7 @@ import java.util.concurrent.ExecutionException;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingWorker;
@@ -106,7 +107,7 @@ class AudioFilePropertiesDialog extends PropertiesDialog {
      * @param file
      *            the file
      */
-    AudioFilePropertiesDialog(AudioFile file, Component owner) {
+    AudioFilePropertiesDialog(AudioFile file, JFrame owner) {
         super(getTitleText(file), owner);
         this.file = file;
         setAudioObject(file);

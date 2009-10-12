@@ -19,7 +19,6 @@
  */
 package net.sourceforge.atunes.gui.views.dialogs.properties;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -28,6 +27,7 @@ import java.text.DateFormat;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -90,7 +90,7 @@ class PodcastFeedEntryPropertiesDialog extends PropertiesDialog {
      * @param entry
      *            the entry
      */
-    PodcastFeedEntryPropertiesDialog(PodcastFeedEntry entry, Component owner) {
+    PodcastFeedEntryPropertiesDialog(PodcastFeedEntry entry, JFrame owner) {
         super(getTitleText(entry), owner);
         this.entry = entry;
         setAudioObject(entry);
