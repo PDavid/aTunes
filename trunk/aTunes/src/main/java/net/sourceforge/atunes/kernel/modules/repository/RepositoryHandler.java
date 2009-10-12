@@ -1377,8 +1377,15 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
             });
         } else {
             // Sort audio objects by file name
-            // This call uses compareTo methods of every class 
-            Arrays.sort(array);
+            Arrays.sort(array, new Comparator<AudioObject>() {
+            	@Override
+            	public int compare(AudioObject o1, AudioObject o2) {
+                    if (o1 instanceof AudioFile && o2 instanceof AudioFile) {
+                        return ((AudioFile) o1).getFile().getName().compareTo(((AudioFile) o2).getFile().getName());
+                    }
+                    return 0;
+            	}
+            });
         }
 
         return Arrays.asList(array);

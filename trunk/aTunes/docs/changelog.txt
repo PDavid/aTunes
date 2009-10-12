@@ -38,6 +38,7 @@ aTunes 1.13.5
 - FIX: MPlayer priority on Windows should be higher (patch by Ray Barlow)
 - FIX: Windows Vista/7 ready application icons
 - FIX: Show play list information enabled for more than one audio object [2786446]
+- FIX: Sort by file name option sorts audio object in folder view in wrong order [2807803]
 
 aTunes 1.13.4
 -------------
