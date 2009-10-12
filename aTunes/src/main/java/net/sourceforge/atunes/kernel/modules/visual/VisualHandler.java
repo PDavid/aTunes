@@ -910,16 +910,6 @@ public final class VisualHandler extends Handler implements PlaybackStateListene
     }
 
     /**
-     * Show info.
-     */
-    public void showInfo() {
-        if (PlayListHandler.getInstance().getSelectedAudioObjects().size() == 1) {
-            AudioObject file = PlayListHandler.getInstance().getSelectedAudioObjects().get(0);
-            showPropertiesDialog(file);
-        }
-    }
-
-    /**
      * Show input dialog.
      * 
      * @param title
@@ -1086,12 +1076,16 @@ public final class VisualHandler extends Handler implements PlaybackStateListene
     /**
      * Show properties dialog.
      * 
-     * @param file
-     *            the file
+     * @param audioObject
+     *            the audio object
      */
-    public void showPropertiesDialog(AudioObject file) {
-        PropertiesDialog dialog = PropertiesDialog.newInstance(file, frame.getFrame());
-        dialog.setVisible(true);
+    public void showPropertiesDialog(AudioObject audioObject) {
+        PropertiesDialog dialog = PropertiesDialog.newInstance(audioObject, frame.getFrame());
+        if (dialog.isVisible()) {
+            dialog.toFront();
+        } else {
+        	dialog.setVisible(true);
+        }
     }
 
     /**

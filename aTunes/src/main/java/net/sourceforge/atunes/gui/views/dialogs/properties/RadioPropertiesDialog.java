@@ -73,6 +73,7 @@ class RadioPropertiesDialog extends PropertiesDialog {
     RadioPropertiesDialog(Radio radio, Component owner) {
         super(getTitleText(radio), owner);
         this.radio = radio;
+        setAudioObject(radio);
         addContent();
 
         setContent();

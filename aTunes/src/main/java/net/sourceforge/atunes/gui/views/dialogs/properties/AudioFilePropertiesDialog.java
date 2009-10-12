@@ -109,6 +109,7 @@ class AudioFilePropertiesDialog extends PropertiesDialog {
     AudioFilePropertiesDialog(AudioFile file, Component owner) {
         super(getTitleText(file), owner);
         this.file = file;
+        setAudioObject(file);
         addContent();
 
         setContent();

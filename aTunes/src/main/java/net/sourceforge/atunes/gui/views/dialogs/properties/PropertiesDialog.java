@@ -20,6 +20,8 @@
 package net.sourceforge.atunes.gui.views.dialogs.properties;
 
 import java.awt.Component;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.WindowConstants;
 
@@ -37,6 +39,10 @@ public class PropertiesDialog extends CustomFrame {
 
     private static final long serialVersionUID = 6097305595858691246L;
 
+    private static Map<AudioObject, PropertiesDialog> dialogsOpened;
+    
+    private AudioObject audioObject;
+    
     /**
      * Instantiates a new properties dialog.
      * 
@@ -64,6 +70,15 @@ public class PropertiesDialog extends CustomFrame {
         return StringUtils.getString("<html><b>", desc, ": </b>", text, "</html>");
     }
 
+    @Override
+    public void dispose() {
+    	getDialogsOpened().remove(getAudioObject());
+    	if (!getDialogsOpened().isEmpty()) {
+    		getDialogsOpened().values().iterator().next().toFront();
+    	}
+    	super.dispose();
+    }
+    
     /**
      * New instance.
      * 
@@ -73,12 +88,38 @@ public class PropertiesDialog extends CustomFrame {
      * @return the properties dialog
      */
     public static PropertiesDialog newInstance(AudioObject a, Component owner) {
-        if (a instanceof PodcastFeedEntry) {
-            return new PodcastFeedEntryPropertiesDialog((PodcastFeedEntry) a, owner);
-        } else if (a instanceof Radio) {
-            return new RadioPropertiesDialog((Radio) a, owner);
-        }
-        return new AudioFilePropertiesDialog((AudioFile) a, owner);
+    	if (getDialogsOpened().containsKey(a)) {
+    		return getDialogsOpened().get(a);
+    	} else {
+    		PropertiesDialog dialog = null;
+    		if (a instanceof PodcastFeedEntry) {
+    			dialog = new PodcastFeedEntryPropertiesDialog((PodcastFeedEntry) a, owner);
+    		} else if (a instanceof Radio) {
+    			dialog = new RadioPropertiesDialog((Radio) a, owner);
+    		} else {
+    			dialog = new AudioFilePropertiesDialog((AudioFile) a, owner);
+    		}
+    		getDialogsOpened().put(a, dialog);
+    		return dialog;
+    	}
     }
+    
+    private static Map<AudioObject, PropertiesDialog> getDialogsOpened() {
+    	if (dialogsOpened == null) {
+    		dialogsOpened = new HashMap<AudioObject, PropertiesDialog>();
+    	}
+    	return dialogsOpened;
+    }
+    
+    protected AudioObject getAudioObject() {
+    	return this.audioObject;
+    }
+
+	/**
+	 * @param audioObject the audioObject to set
+	 */
+	protected void setAudioObject(AudioObject audioObject) {
+		this.audioObject = audioObject;
+	}
 
 }
