@@ -26,6 +26,7 @@ import java.util.Map;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.SortType;
 import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -69,7 +70,7 @@ public class CreatePlayListWithSelectedArtistsAction extends ActionOverSelectedO
         // For every artist
         for (Artist artist : selectedArtists) {
             // Sort audio objects of artist with current sort options
-            List<AudioObject> audioObjects = RepositoryHandler.getInstance().sort(artist.getAudioObjects());
+            List<AudioObject> audioObjects = SortType.sort(artist.getAudioObjects());
 
             // Create a new play list with artist as name and audio objects selected
             PlayListHandler.getInstance().newPlayList(artist.getName(), audioObjects);
