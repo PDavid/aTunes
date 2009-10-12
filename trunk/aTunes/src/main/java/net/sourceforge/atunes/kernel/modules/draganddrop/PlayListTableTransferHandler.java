@@ -40,8 +40,8 @@ import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryLoader;
+import net.sourceforge.atunes.kernel.modules.repository.SortType;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
@@ -206,7 +206,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
             int dropRow = VisualHandler.getInstance().getPlayListTable().rowAtPoint(support.getDropLocation().getDropPoint());
 
             if (!audioObjectsToAdd.isEmpty()) {
-                List<AudioObject> songsSorted = RepositoryHandler.getInstance().sort(audioObjectsToAdd);
+                List<AudioObject> songsSorted = SortType.sort(audioObjectsToAdd);
                 PlayListHandler.getInstance().addToPlayList(dropRow, songsSorted, true);
                 // Keep selected rows: if drop row is the bottom of play list (-1) then select last row
                 if (dropRow == -1) {
@@ -328,7 +328,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
             int dropRow = VisualHandler.getInstance().getPlayListTable().rowAtPoint(support.getDropLocation().getDropPoint());
 
             if (!filesToAdd.isEmpty()) {
-                List<AudioObject> songsSorted = RepositoryHandler.getInstance().sort(filesToAdd);
+                List<AudioObject> songsSorted = SortType.sort(filesToAdd);
                 PlayListHandler.getInstance().addToPlayList(dropRow, songsSorted, true);
                 // Keep selected rows: if drop row is the bottom of play list (-1) then select last row
                 if (dropRow == -1) {

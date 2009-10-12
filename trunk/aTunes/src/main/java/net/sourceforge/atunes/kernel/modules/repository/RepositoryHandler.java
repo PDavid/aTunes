@@ -24,10 +24,8 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -67,7 +65,6 @@ import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.RankList;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
-import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -79,24 +76,6 @@ import org.apache.commons.io.FilenameUtils;
  * The repository handler
  */
 public final class RepositoryHandler extends Handler implements LoaderListener, AudioFilesRemovedListener {
-
-    public enum SortType {
-
-        /** by track sort order */
-        BY_TRACK_NUMBER,
-
-        /** by artist sort order */
-        BY_ARTIST_AND_ALBUM,
-
-        /** by title sort order */
-        BY_TITLE,
-
-        /** by file name sort order */
-        BY_FILE,
-
-        /** by modification date sort order */
-        BY_MODIFICATION_TIME
-    }
 
     private static RepositoryHandler instance = new RepositoryHandler();
 
@@ -1284,111 +1263,6 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
         if (repository != null) {
             RepositoryLoader.fillStats(repository, audioFile);
         }
-    }
-
-    /**
-     * Sort.
-     * 
-     * @param audioObjects
-     *            the audio objects
-     * 
-     * @return the list
-     */
-    public List<AudioObject> sort(List<? extends AudioObject> audioObjects) {
-        return sort(audioObjects, ApplicationState.getInstance().getSortType());
-    }
-
-    /**
-     * Sort.
-     * 
-     * @param audioObjects
-     *            the audio objects
-     * @param type
-     *            the type
-     * 
-     * @return the list
-     */
-    public List<AudioObject> sort(List<? extends AudioObject> audioObjects, SortType type) {
-        AudioObject[] array = audioObjects.toArray(new AudioObject[audioObjects.size()]);
-
-        if (type == SortType.BY_TRACK_NUMBER) {
-            Arrays.sort(array, new Comparator<AudioObject>() {
-                @Override
-                public int compare(AudioObject a1, AudioObject a2) {
-                    return Integer.valueOf(a1.getTrackNumber()).compareTo(a2.getTrackNumber());
-                }
-            });
-        } else if (type == SortType.BY_ARTIST_AND_ALBUM) {
-            Arrays.sort(array, new Comparator<AudioObject>() {
-                @Override
-                public int compare(AudioObject a1, AudioObject a2) {
-
-                    // Sort by album artist
-                    int c1 = a1.getAlbumArtist().compareTo(a2.getAlbumArtist());
-                    if (c1 != 0) {
-                        return c1;
-                    }
-
-                    /*
-                     * If album artist is "" in both audio objects (we just need
-                     * to check only one audio object since if execution reaches
-                     * this code both album artist fields are equal) then sort
-                     * by artist, album and track If album artist is not "",
-                     * then only sort by album and track
-                     */
-                    if (a1.getAlbumArtist().isEmpty()) {
-                        int c2 = a1.getArtist().compareTo(a2.getArtist());
-                        if (c2 != 0) {
-                            return c2;
-                        }
-                    }
-
-                    // Sort by album
-                    int c3 = a1.getAlbum().compareTo(a2.getAlbum());
-                    if (c3 != 0) {
-                        return c3;
-                    }
-
-                    // Sort by disc number
-                    int c4 = Integer.valueOf(a1.getDiscNumber()).compareTo(a2.getDiscNumber());
-                    if (c4 != 0) {
-                        return c4;
-                    }
-
-                    return Integer.valueOf(a1.getTrackNumber()).compareTo(a2.getTrackNumber());
-                }
-            });
-        } else if (type == SortType.BY_TITLE) {
-            Arrays.sort(array, new Comparator<AudioObject>() {
-                @Override
-                public int compare(AudioObject a0, AudioObject a1) {
-                    return a0.getTitleOrFileName().compareTo(a1.getTitleOrFileName());
-                }
-            });
-        } else if (type == SortType.BY_MODIFICATION_TIME) {
-            Arrays.sort(array, new Comparator<AudioObject>() {
-                @Override
-                public int compare(AudioObject o1, AudioObject o2) {
-                    if (o1 instanceof AudioFile && o2 instanceof AudioFile) {
-                        return Long.valueOf(((AudioFile) o1).getFile().lastModified()).compareTo(Long.valueOf(((AudioFile) o2).getFile().lastModified()));
-                    }
-                    return 0;
-                }
-            });
-        } else {
-            // Sort audio objects by file name
-            Arrays.sort(array, new Comparator<AudioObject>() {
-            	@Override
-            	public int compare(AudioObject o1, AudioObject o2) {
-                    if (o1 instanceof AudioFile && o2 instanceof AudioFile) {
-                        return ((AudioFile) o1).getFile().getName().compareTo(((AudioFile) o2).getFile().getName());
-                    }
-                    return 0;
-            	}
-            });
-        }
-
-        return Arrays.asList(array);
     }
 
     /**

@@ -63,7 +63,7 @@ import net.sourceforge.atunes.kernel.modules.navigator.NavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.RepositoryNavigationView;
 import net.sourceforge.atunes.kernel.modules.repository.AudioFilesRemovedListener;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler.SortType;
+import net.sourceforge.atunes.kernel.modules.repository.SortType;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
@@ -292,7 +292,7 @@ public class NavigationController extends SimpleController<NavigationPanel> impl
         List<AudioObject> audioObjects = NavigationHandler.getInstance().getView(navigationViewClass).getAudioObjectForTreeNode(node, ApplicationState.getInstance().getViewMode(),
                 getComponentControlled().getTreeFilterPanel().getFilter());
         if (NavigationHandler.getInstance().getView(navigationViewClass).isAudioObjectsFromNodeNeedSort()) {
-            return RepositoryHandler.getInstance().sort(audioObjects, ApplicationState.getInstance().getSortType());
+            return SortType.sort(audioObjects, ApplicationState.getInstance().getSortType());
         }
         return audioObjects;
     }
@@ -386,7 +386,7 @@ public class NavigationController extends SimpleController<NavigationPanel> impl
      * @return the list< audio object>
      */
     public List<AudioObject> sort(List<AudioObject> songs, SortType type) {
-        return RepositoryHandler.getInstance().sort(songs, type);
+        return SortType.sort(songs, type);
     }
 
     /**
