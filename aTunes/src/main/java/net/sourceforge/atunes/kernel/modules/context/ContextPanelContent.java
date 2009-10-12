@@ -110,6 +110,8 @@ public abstract class ContextPanelContent {
      */
     protected void clearContextPanelContent() {
    		parentTaskPane.setCollapsed(true);
+   		// Disable task pane so user can't expand it
+   		parentTaskPane.setEnabled(false);
         if (worker != null) {
             worker.cancel(true);
         }

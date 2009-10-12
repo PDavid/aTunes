@@ -81,6 +81,8 @@ class ContextInformationSwingWorker extends SwingWorker<Map<String, ?>, Void> {
         super.done();
         try {
             content.updateContentWithDataSourceResult(get());
+            // Enable task pane so user can expand or collapse
+            content.getParentTaskPane().setEnabled(true);
             // After update data expand content
             content.getParentTaskPane().setCollapsed(false);
         } catch (CancellationException e) {
