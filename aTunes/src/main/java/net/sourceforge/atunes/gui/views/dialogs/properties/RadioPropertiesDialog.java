@@ -19,7 +19,6 @@
  */
 package net.sourceforge.atunes.gui.views.dialogs.properties;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -38,31 +37,17 @@ import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
- * The Class RadioPropertiesDialog.
+ * The properties dialog for radios.
  */
 class RadioPropertiesDialog extends PropertiesDialog {
 
     private static final long serialVersionUID = -73744354419152730L;
-
-    /** The picture label. */
     private JLabel pictureLabel;
-
-    /** The title label. */
     private JLabel titleLabel;
-
-    /** The url label. */
     private JLabel urlLabel;
-
-    /** The label label. */
     private JLabel labelLabel;
-
-    /** The bitrate label. */
     private JLabel bitrateLabel;
-
-    /** The frequency label. */
     private JLabel frequencyLabel;
-
-    /** The radio. */
     private Radio radio;
 
     /**
@@ -164,8 +149,7 @@ class RadioPropertiesDialog extends PropertiesDialog {
         titleLabel.setText(getHtmlFormatted(I18nUtils.getString("NAME"), StringUtils.isEmpty(radio.getName()) ? "-" : radio.getName()));
         urlLabel.setText(getHtmlFormatted(I18nUtils.getString("URL"), radio.getUrl()));
         labelLabel.setText(getHtmlFormatted(I18nUtils.getString("LABEL"), StringUtils.isEmpty(radio.getLabel()) ? "-" : radio.getLabel()));
-        bitrateLabel
-                .setText(getHtmlFormatted(I18nUtils.getString("BITRATE"), radio.getBitrate() > 0 ? StringUtils.getString(String.valueOf(radio.getBitrate()), " kbps") : "-"));
+        bitrateLabel.setText(getHtmlFormatted(I18nUtils.getString("BITRATE"), radio.getBitrate() > 0 ? StringUtils.getString(String.valueOf(radio.getBitrate()), " kbps") : "-"));
         frequencyLabel.setText(getHtmlFormatted(I18nUtils.getString("FREQUENCY"), radio.getFrequency() > 0 ? StringUtils.getString(String.valueOf(radio.getFrequency()), " Hz")
                 : "-"));
     }

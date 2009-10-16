@@ -19,7 +19,6 @@
  */
 package net.sourceforge.atunes.gui.views.dialogs.properties;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -44,61 +43,29 @@ import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
- * The Class AudioFilePropertiesDialog.
+ * The properties dialog for audio files
  */
 class AudioFilePropertiesDialog extends PropertiesDialog {
 
     private static final long serialVersionUID = 7504320983331038543L;
 
-    /** The Constant logger. */
     static final Logger logger = new Logger();
 
-    /** The picture label. */
     JLabel pictureLabel;
-
-    /** The file name label. */
     private JLabel fileNameLabel;
-
-    /** The path label. */
     private JLabel pathLabel;
-
-    /** The song label. */
     private JLabel songLabel;
-
-    /** The artist label. */
     private JLabel artistLabel;
-
-    /** The album artist label. */
     private JLabel albumArtistLabel;
-
-    /** The composer label. */
     private JLabel composerLabel;
-
-    /** The album label. */
     private JLabel albumLabel;
-
-    /** The duration label. */
     private JLabel durationLabel;
-
-    /** The track label. */
     private JLabel trackLabel;
-
-    /** The disc number label. */
     private JLabel discNumberLabel;
-
-    /** The year label. */
     private JLabel yearLabel;
-
-    /** The genre label. */
     private JLabel genreLabel;
-
-    /** The bitrate label. */
     private JLabel bitrateLabel;
-
-    /** The frequency label. */
     private JLabel frequencyLabel;
-
-    /** The file. */
     AudioFile file;
 
     /**
