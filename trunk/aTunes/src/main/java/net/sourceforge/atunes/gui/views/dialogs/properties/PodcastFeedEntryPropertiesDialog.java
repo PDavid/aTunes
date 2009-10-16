@@ -32,6 +32,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.images.ImageLoader;
@@ -42,46 +43,23 @@ import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
- * The Class PodcastFeedEntryPropertiesDialog.
+ * The properties dialog for podcast feed entries.
  */
 class PodcastFeedEntryPropertiesDialog extends PropertiesDialog {
 
     private static final long serialVersionUID = -2472573171771586037L;
 
-    /** The picture label. */
     private JLabel pictureLabel;
-
-    /** The title label. */
     private JLabel titleLabel;
-
-    /** The artist label. */
     private JLabel artistLabel;
-
-    /** The url label. */
     private JLabel urlLabel;
-
-    /** The duration label. */
     private JLabel durationLabel;
-
-    /** The date label. */
     private JLabel dateLabel;
-
-    /** The podcast feed label. */
     private JLabel podcastFeedLabel;
-
-    /** The downloaded label. */
     private JLabel downloadedLabel;
-
-    /** The description label. */
     private JLabel descriptionLabel;
-
-    /** The description scroll pane. */
     private JScrollPane descriptionScrollPane;
-
-    /** The description text area. */
     private JTextArea descriptionTextArea;
-
-    /** The entry. */
     private PodcastFeedEntry entry;
 
     /**
@@ -228,7 +206,14 @@ class PodcastFeedEntryPropertiesDialog extends PropertiesDialog {
         downloadedLabel.setText(getHtmlFormatted(I18nUtils.getString("DOWNLOADED"), entry.isDownloaded() ? I18nUtils.getString("YES") : I18nUtils.getString("NO")));
         descriptionLabel.setText(getHtmlFormatted(I18nUtils.getString("DESCRIPTION"), ""));
         descriptionTextArea.setText(entry.getDescription());
-        descriptionTextArea.setCaretPosition(0);
+        SwingUtilities.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                descriptionTextArea.setCaretPosition(0);
+            }
+        });
+
     }
 
 }
