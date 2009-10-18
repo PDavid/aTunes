@@ -93,10 +93,7 @@ public class RepositorySearchableObject extends CommonAudioFileSearchableObject 
 
     @Override
     public List<AudioObject> getElementsToIndex() {
-        if (RepositoryHandler.getInstance().getRepository() != null) {
-            return new ArrayList<AudioObject>(RepositoryHandler.getInstance().getRepository().getAudioFilesList());
-        }
-        return new ArrayList<AudioObject>();
+        return new ArrayList<AudioObject>(RepositoryHandler.getInstance().getAudioFilesList());
     }
 
 }

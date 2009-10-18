@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel.controllers.stats;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Paint;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -34,6 +35,10 @@ import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.views.dialogs.StatsDialog;
 import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.model.Album;
+import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
+import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -109,7 +114,7 @@ public class StatsDialogController extends SimpleController<StatsDialog> {
      * Sets the albums chart.
      */
     private void setAlbumsChart() {
-        DefaultCategoryDataset dataset = getDataSet(RepositoryHandler.getInstance().getMostPlayedAlbumsInRanking(10));
+        DefaultCategoryDataset dataset = getDataSet(getMostPlayedAlbumsInRanking(10));
         JFreeChart chart = ChartFactory.createStackedBarChart3D(I18nUtils.getString("ALBUM_MOST_PLAYED"), null, null, dataset, PlotOrientation.HORIZONTAL, false, false, false);
         chart.getTitle().setFont(Fonts.CHART_TITLE_FONT);
         chart.setBackgroundPaint(Color.WHITE);
@@ -136,15 +141,15 @@ public class StatsDialogController extends SimpleController<StatsDialog> {
      */
 
     private void setAlbumsTable() {
-        List<Object[]> albums = RepositoryHandler.getInstance().getMostPlayedAlbumsInRanking(-1);
+        List<Object[]> albums = getMostPlayedAlbumsInRanking(-1);
         if (albums != null) {
             String[] headers = new String[] { I18nUtils.getString("ALBUM"), I18nUtils.getString("TIMES_PLAYED"), "%" };
             Object[][] content = new Object[albums.size()][3];
             for (int i = 0; i < albums.size(); i++) {
                 content[i][0] = albums.get(i)[0];
                 content[i][1] = albums.get(i)[1];
-                if (RepositoryHandler.getInstance().getTotalAudioFilesPlayed() != -1) {
-                    content[i][2] = StringUtils.toString(100.0 * (float) ((Integer) albums.get(i)[1]) / RepositoryHandler.getInstance().getTotalAudioFilesPlayed(), 2);
+                if (StatisticsHandler.getInstance().getTotalAudioFilesPlayed() != -1) {
+                    content[i][2] = StringUtils.toString(100.0 * (float) ((Integer) albums.get(i)[1]) / StatisticsHandler.getInstance().getTotalAudioFilesPlayed(), 2);
                 } else {
                     content[i][2] = 0;
                 }
@@ -152,12 +157,37 @@ public class StatsDialogController extends SimpleController<StatsDialog> {
             setTable(getComponentControlled().getAlbumsTable(), headers, content);
         }
     }
+    
+    /**
+     * Gets the most played albums in ranking.
+     * 
+     * @param n
+     *            the n
+     * 
+     * @return the most played albums in ranking
+     */
+    private List<Object[]> getMostPlayedAlbumsInRanking(int n) {
+    	List<Object[]> result = new ArrayList<Object[]>();
+    	List<Album> albums = StatisticsHandler.getInstance().getMostPlayedAlbums(n);
+    	List<Integer> count = StatisticsHandler.getInstance().getMostPlayedAlbumsCount(n);
+    	if (albums != null) {
+    		for (int i = 0; i < albums.size(); i++) {
+    			Object[] obj = new Object[2];
+    			obj[0] = albums.get(i).toString();
+    			obj[1] = count.get(i);
+    			result.add(obj);
+    		}
+    	}
+    	return result;
+    }
+
+
 
     /**
      * Sets the artists chart.
      */
     private void setArtistsChart() {
-        DefaultCategoryDataset dataset = getDataSet(RepositoryHandler.getInstance().getMostPlayedArtistsInRanking(10));
+        DefaultCategoryDataset dataset = getDataSet(getMostPlayedArtistsInRanking(10));
         JFreeChart chart = ChartFactory.createStackedBarChart3D(I18nUtils.getString("ARTIST_MOST_PLAYED"), null, null, dataset, PlotOrientation.HORIZONTAL, false, false, false);
         chart.getTitle().setFont(Fonts.CHART_TITLE_FONT);
         chart.setBackgroundPaint(Color.WHITE);
@@ -184,15 +214,15 @@ public class StatsDialogController extends SimpleController<StatsDialog> {
      */
 
     private void setArtistsTable() {
-        List<Object[]> artists = RepositoryHandler.getInstance().getMostPlayedArtistsInRanking(-1);
+        List<Object[]> artists = getMostPlayedArtistsInRanking(-1);
         if (artists != null) {
             String[] headers = new String[] { I18nUtils.getString("ARTIST"), I18nUtils.getString("TIMES_PLAYED"), "%" };
             Object[][] content = new Object[artists.size()][3];
             for (int i = 0; i < artists.size(); i++) {
                 content[i][0] = artists.get(i)[0];
                 content[i][1] = artists.get(i)[1];
-                if (RepositoryHandler.getInstance().getTotalAudioFilesPlayed() != -1) {
-                    content[i][2] = StringUtils.toString(100.0 * (float) ((Integer) artists.get(i)[1]) / RepositoryHandler.getInstance().getTotalAudioFilesPlayed(), 2);
+                if (StatisticsHandler.getInstance().getTotalAudioFilesPlayed() != -1) {
+                    content[i][2] = StringUtils.toString(100.0 * (float) ((Integer) artists.get(i)[1]) / StatisticsHandler.getInstance().getTotalAudioFilesPlayed(), 2);
                 } else {
                     content[i][2] = 0;
                 }
@@ -202,12 +232,36 @@ public class StatsDialogController extends SimpleController<StatsDialog> {
     }
 
     /**
+     * Gets the most played artists in ranking.
+     * 
+     * @param n
+     *            the n
+     * 
+     * @return the most played artists in ranking
+     */
+    private List<Object[]> getMostPlayedArtistsInRanking(int n) {
+    	List<Object[]> result = new ArrayList<Object[]>();
+    	List<Artist> artists = StatisticsHandler.getInstance().getMostPlayedArtists(n);
+    	List<Integer> count = StatisticsHandler.getInstance().getMostPlayedArtistsCount(n);
+    	if (artists != null) {
+    		for (int i = 0; i < artists.size(); i++) {
+    			Object[] obj = new Object[2];
+    			obj[0] = artists.get(i).toString();
+    			obj[1] = count.get(i);
+    			result.add(obj);
+    		}
+    	}
+    	return result;
+    }
+
+
+    /**
      * Sets the general chart.
      */
     private void setGeneralChart() {
         DefaultPieDataset dataset = new DefaultPieDataset();
-        int different = RepositoryHandler.getInstance().getDifferentAudioFilesPlayed();
-        int total = RepositoryHandler.getInstance().getAudioFiles().size();
+        int different = StatisticsHandler.getInstance().getDifferentAudioFilesPlayed();
+        int total = RepositoryHandler.getInstance().getAudioFilesList().size();
         dataset.setValue(I18nUtils.getString("SONGS_PLAYED"), different);
         dataset.setValue(I18nUtils.getString("SONGS_NEVER_PLAYED"), total - different);
         JFreeChart chart = ChartFactory.createPieChart3D(I18nUtils.getString("SONGS_PLAYED"), dataset, false, false, false);
@@ -230,8 +284,8 @@ public class StatsDialogController extends SimpleController<StatsDialog> {
      */
 
     private void setGeneralTable() {
-        int different = RepositoryHandler.getInstance().getDifferentAudioFilesPlayed();
-        int total = RepositoryHandler.getInstance().getAudioFiles().size();
+        int different = StatisticsHandler.getInstance().getDifferentAudioFilesPlayed();
+        int total = RepositoryHandler.getInstance().getAudioFilesList().size();
         if (total != 0) {
             String[] headers = new String[] { " ", I18nUtils.getString("COUNT"), "%" };
             Object[][] content = new Object[2][3];
@@ -251,7 +305,7 @@ public class StatsDialogController extends SimpleController<StatsDialog> {
      * Sets the songs chart.
      */
     private void setSongsChart() {
-        DefaultCategoryDataset dataset = getDataSet(RepositoryHandler.getInstance().getMostPlayedAudioFilesInRanking(10));
+        DefaultCategoryDataset dataset = getDataSet(getMostPlayedAudioFilesInRanking(10));
         JFreeChart chart = ChartFactory.createStackedBarChart3D(I18nUtils.getString("SONG_MOST_PLAYED"), null, null, dataset, PlotOrientation.HORIZONTAL, false, false, false);
         chart.getTitle().setFont(Fonts.CHART_TITLE_FONT);
         chart.setBackgroundPaint(Color.WHITE);
@@ -278,15 +332,15 @@ public class StatsDialogController extends SimpleController<StatsDialog> {
      */
 
     private void setSongsTable() {
-        List<Object[]> songs = RepositoryHandler.getInstance().getMostPlayedAudioFilesInRanking(-1);
+        List<Object[]> songs = getMostPlayedAudioFilesInRanking(-1);
         if (songs != null) {
             String[] headers = new String[] { I18nUtils.getString("SONG"), I18nUtils.getString("TIMES_PLAYED"), "%" };
             Object[][] content = new Object[songs.size()][3];
             for (int i = 0; i < songs.size(); i++) {
                 content[i][0] = songs.get(i)[0];
                 content[i][1] = songs.get(i)[1];
-                if (RepositoryHandler.getInstance().getTotalAudioFilesPlayed() != -1) {
-                    content[i][2] = StringUtils.toString(100.0 * (float) ((Integer) songs.get(i)[1]) / RepositoryHandler.getInstance().getTotalAudioFilesPlayed(), 2);
+                if (StatisticsHandler.getInstance().getTotalAudioFilesPlayed() != -1) {
+                    content[i][2] = StringUtils.toString(100.0 * (float) ((Integer) songs.get(i)[1]) / StatisticsHandler.getInstance().getTotalAudioFilesPlayed(), 2);
                 } else {
                     content[i][2] = 0;
                 }
@@ -294,6 +348,31 @@ public class StatsDialogController extends SimpleController<StatsDialog> {
             setTable(getComponentControlled().getSongsTable(), headers, content);
         }
     }
+
+    /**
+     * Gets the most played audio files in ranking.
+     * 
+     * @param n
+     *            the n
+     * 
+     * @return the most played audio files in ranking
+     */
+    private List<Object[]> getMostPlayedAudioFilesInRanking(int n) {
+    	List<Object[]> result = new ArrayList<Object[]>();
+    	List<AudioFile> audioFiles = StatisticsHandler.getInstance().getMostPlayedAudioFiles(n);
+    	List<Integer> count = StatisticsHandler.getInstance().getMostPlayedAudioFilesCount(n);
+    	if (audioFiles != null) {
+    		for (int i = 0; i < audioFiles.size(); i++) {
+    			Object[] obj = new Object[2];
+    			AudioFile audioFile = audioFiles.get(i);
+    			obj[0] = StringUtils.getString(audioFile.getTitleOrFileName(), " (", audioFile.getArtist(), ")");
+    			obj[1] = count.get(i);
+    			result.add(obj);
+    		}
+    	}
+    	return result;
+    }
+
 
     /**
      * Sets the table.

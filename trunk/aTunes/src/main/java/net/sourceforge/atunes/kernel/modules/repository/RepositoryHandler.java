@@ -62,7 +62,6 @@ import net.sourceforge.atunes.kernel.modules.search.searchableobjects.Repository
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
-import net.sourceforge.atunes.misc.RankList;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.utils.DateUtils;
@@ -161,7 +160,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
                 ApplicationStateHandler.getInstance().persistRepositoryCache(repository, false);
 
                 VisualHandler.getInstance().hideProgressBar();
-                VisualHandler.getInstance().showRepositoryAudioFileNumber(getAudioFiles().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
+                VisualHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
                 if (ControllerProxy.getInstance().getNavigationController() != null) {
                     ControllerProxy.getInstance().getNavigationController().notifyReload();
                 }
@@ -183,7 +182,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
      */
     public void addExternalPictureForAlbum(String artistName, String albumName, File picture) {
         if (repository != null) {
-            Artist artist = repository.getStructure().getTreeStructure().get(artistName);
+            Artist artist = repository.getStructure().getArtistStructure().get(artistName);
             if (artist == null) {
                 return;
             }
@@ -223,9 +222,9 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
             }
 
             // Remove from tree structure
-            Artist a = repository.getStructure().getTreeStructure().get(albumArtist);
+            Artist a = repository.getStructure().getArtistStructure().get(albumArtist);
             if (a == null) {
-                a = repository.getStructure().getTreeStructure().get(artist);
+                a = repository.getStructure().getArtistStructure().get(artist);
             }
             if (a != null) {
                 Album alb = a.getAlbum(album);
@@ -237,7 +236,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
                     }
 
                     if (a.getAudioObjects().size() <= 1) {
-                        repository.getStructure().getTreeStructure().remove(a.getName());
+                        repository.getStructure().getArtistStructure().remove(a.getName());
                     }
                 }
             }
@@ -306,24 +305,6 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
     }
 
     /**
-     * Gets the album most played.
-     * 
-     * @return the album most played
-     */
-
-    public Map<String, Integer> getAlbumMostPlayed() {
-        Map<String, Integer> result = new HashMap<String, Integer>();
-        if (repository != null && repository.getStats().getAlbumsRanking().size() > 0) {
-            String firstAlbum = repository.getStats().getAlbumsRanking().getNFirstElements(1).get(0).toString();
-            Integer count = repository.getStats().getAlbumsRanking().getNFirstElementCounts(1).get(0);
-            result.put(firstAlbum, count);
-        } else {
-            result.put(null, 0);
-        }
-        return result;
-    }
-
-    /**
      * Gets the albums.
      * 
      * @return the albums
@@ -331,7 +312,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
     public List<Album> getAlbums() {
         List<Album> result = new ArrayList<Album>();
         if (repository != null) {
-            Collection<Artist> artists = repository.getStructure().getTreeStructure().values();
+            Collection<Artist> artists = repository.getStructure().getArtistStructure().values();
             for (Artist a : artists) {
                 result.addAll(a.getAlbums().values());
             }
@@ -341,55 +322,15 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
     }
 
     /**
-     * Gets the album times played.
-     * 
-     * @param audioFile
-     *            the audio file
-     * 
-     * @return the album times played
-     */
-
-    public Integer getAlbumTimesPlayed(AudioFile audioFile) {
-        if (audioFile != null) {
-            if (repository != null) {
-                Album a = repository.getStructure().getTreeStructure().get(audioFile.getArtist()).getAlbum(audioFile.getAlbum());
-                if (repository.getStats().getAlbumsRanking().getCount(a) != null) {
-                    return repository.getStats().getAlbumsRanking().getCount(a);
-                }
-            }
-            return 0;
-        }
-        return null;
-    }
-
-    /**
      * Gets the artist and album structure.
      * 
      * @return the artist and album structure
      */
     public Map<String, Artist> getArtistStructure() {
         if (repository != null) {
-            return repository.getStructure().getTreeStructure();
+            return repository.getStructure().getArtistStructure();
         }
         return new HashMap<String, Artist>();
-    }
-
-    /**
-     * Gets the artist most played.
-     * 
-     * @return the artist most played
-     */
-
-    public Map<String, Integer> getArtistMostPlayed() {
-        Map<String, Integer> result = new HashMap<String, Integer>();
-        if (repository != null && repository.getStats().getArtistsRanking().size() > 0) {
-            String firstArtist = repository.getStats().getArtistsRanking().getNFirstElements(1).get(0).toString();
-            Integer count = repository.getStats().getArtistsRanking().getNFirstElementCounts(1).get(0);
-            result.put(firstArtist, count);
-        } else {
-            result.put(null, 0);
-        }
-        return result;
     }
 
     /**
@@ -400,40 +341,10 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
     public List<Artist> getArtists() {
         List<Artist> result = new ArrayList<Artist>();
         if (repository != null) {
-            result.addAll(repository.getStructure().getTreeStructure().values());
+            result.addAll(repository.getStructure().getArtistStructure().values());
             Collections.sort(result);
         }
         return result;
-    }
-
-    /**
-     * Gets the artist times played.
-     * 
-     * @param audioFile
-     *            the audio file
-     * 
-     * @return the artist times played
-     */
-
-    public Integer getArtistTimesPlayed(Artist artist) {
-        if (repository != null) {
-            if (repository.getStats().getArtistsRanking().getCount(artist) != null) {
-                return repository.getStats().getArtistsRanking().getCount(artist);
-            }
-        }
-        return 0;
-    }
-
-    /**
-     * Gets the different audio files played.
-     * 
-     * @return the different audio files played
-     */
-    public int getDifferentAudioFilesPlayed() {
-        if (repository != null) {
-            return repository.getStats().getDifferentAudioFilesPlayed();
-        }
-        return 0;
     }
 
     /**
@@ -512,7 +423,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
     public Map<String, Album> getAlbumStructure() {
         if (repository != null) {
             Map<String, Album> albumsStructure = new HashMap<String, Album>();
-            Collection<Artist> artistCollection = repository.getStructure().getTreeStructure().values();
+            Collection<Artist> artistCollection = repository.getStructure().getArtistStructure().values();
             for (Artist artist : artistCollection) {
                 for (Album album : artist.getAlbums().values()) {
                     albumsStructure.put(album.getNameAndArtist(), album);
@@ -522,140 +433,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
         }
         return new HashMap<String, Album>();
     }
-
-    /**
-     * Gets the most played albums.
-     * 
-     * @param n
-     *            the n
-     * 
-     * @return the most played albums
-     */
-    public List<Album> getMostPlayedAlbums(int n) {
-        if (repository != null) {
-            List<Album> albums = repository.getStats().getAlbumsRanking().getNFirstElements(n);
-            if (albums != null) {
-                return albums;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Gets the most played albums in ranking.
-     * 
-     * @param n
-     *            the n
-     * 
-     * @return the most played albums in ranking
-     */
-    public List<Object[]> getMostPlayedAlbumsInRanking(int n) {
-        if (repository != null) {
-            List<Object[]> result = new ArrayList<Object[]>();
-            List<Album> albums = repository.getStats().getAlbumsRanking().getNFirstElements(n);
-            List<Integer> count = repository.getStats().getAlbumsRanking().getNFirstElementCounts(n);
-            if (albums != null) {
-                for (int i = 0; i < albums.size(); i++) {
-                    Object[] obj = new Object[2];
-                    obj[0] = albums.get(i).toString();
-                    obj[1] = count.get(i);
-                    result.add(obj);
-                }
-            }
-            return result;
-        }
-        return null;
-    }
-
-    /**
-     * Gets the most played artists.
-     * 
-     * @param n
-     *            the n
-     * 
-     * @return the most played artists
-     */
-    public List<Artist> getMostPlayedArtists(int n) {
-        if (repository != null) {
-            List<Artist> artists = repository.getStats().getArtistsRanking().getNFirstElements(n);
-            if (artists != null) {
-                return artists;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Gets the most played artists in ranking.
-     * 
-     * @param n
-     *            the n
-     * 
-     * @return the most played artists in ranking
-     */
-    public List<Object[]> getMostPlayedArtistsInRanking(int n) {
-        if (repository != null) {
-            List<Object[]> result = new ArrayList<Object[]>();
-            List<Artist> artists = repository.getStats().getArtistsRanking().getNFirstElements(n);
-            List<Integer> count = repository.getStats().getArtistsRanking().getNFirstElementCounts(n);
-            if (artists != null) {
-                for (int i = 0; i < artists.size(); i++) {
-                    Object[] obj = new Object[2];
-                    obj[0] = artists.get(i).toString();
-                    obj[1] = count.get(i);
-                    result.add(obj);
-                }
-            }
-            return result;
-        }
-        return null;
-    }
-
-    /**
-     * Gets the most played audio files.
-     * 
-     * @param n
-     *            the n
-     * 
-     * @return the most played audio files
-     */
-    public List<AudioFile> getMostPlayedAudioFiles(int n) {
-        if (repository != null) {
-            List<AudioFile> audioFiles = repository.getStats().getAudioFilesRanking().getNFirstElements(n);
-            if (audioFiles != null) {
-                return audioFiles;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Gets the most played audio files in ranking.
-     * 
-     * @param n
-     *            the n
-     * 
-     * @return the most played audio files in ranking
-     */
-    public List<Object[]> getMostPlayedAudioFilesInRanking(int n) {
-        if (repository != null) {
-            List<Object[]> result = new ArrayList<Object[]>();
-            List<AudioFile> audioFiles = repository.getStats().getAudioFilesRanking().getNFirstElements(n);
-            List<Integer> count = repository.getStats().getAudioFilesRanking().getNFirstElementCounts(n);
-            if (audioFiles != null) {
-                for (int i = 0; i < audioFiles.size(); i++) {
-                    Object[] obj = new Object[2];
-                    AudioFile audioFile = audioFiles.get(i);
-                    obj[0] = StringUtils.getString(audioFile.getTitleOrFileName(), " (", audioFile.getArtist(), ")");
-                    obj[1] = count.get(i);
-                    result.add(obj);
-                }
-            }
-            return result;
-        }
-        return null;
-    }
-
+    
     /**
      * Gets the path for new audio files ripped.
      * 
@@ -671,7 +449,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
      * 
      * @return the repository
      */
-    public Repository getRepository() {
+    protected Repository getRepository() {
         return repository;
     }
 
@@ -712,23 +490,13 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
     public long getRepositoryTotalSize() {
         return repository != null ? repository.getTotalSizeInBytes() : 0;
     }
-
+    
     /**
-     * Gets the audio file most played.
-     * 
-     * @return the audio file most played
+     * Gets the number of files of repository
+     * @return
      */
-
-    public Map<AudioFile, Integer> getAudioFileMostPlayed() {
-        Map<AudioFile, Integer> result = new HashMap<AudioFile, Integer>();
-        if (repository != null && repository.getStats().getAudioFilesRanking().size() > 0) {
-            AudioFile firstAudioFile = repository.getStats().getAudioFilesRanking().getNFirstElements(1).get(0);
-            Integer count = repository.getStats().getAudioFilesRanking().getNFirstElementCounts(1).get(0);
-            result.put(firstAudioFile, count);
-        } else {
-            result.put(null, 0);
-        }
-        return result;
+    public int getNumberOfFiles() {
+    	return repository != null ? repository.countFiles() : 0;
     }
 
     /**
@@ -736,11 +504,22 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
      * 
      * @return the audio files
      */
-    public List<AudioFile> getAudioFiles() {
+    public List<AudioFile> getAudioFilesList() {
         if (repository != null) {
             return repository.getAudioFilesList();
         }
         return new ArrayList<AudioFile>();
+    }
+    
+    /**
+     * Gets the audio files.
+     * @return
+     */
+    public Map<String, AudioFile> getAudioFilesMap() {
+    	if (repository != null) {
+    		return repository.getAudioFiles();
+    	}    	
+    	return new HashMap<String, AudioFile>();
     }
 
     /**
@@ -773,60 +552,6 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
             result.addAll(entry.getValue().getAudioFiles());
         }
         return result;
-    }
-
-    /**
-     * Gets the audio files played.
-     * 
-     * @return the audio files played
-     */
-
-    public String getAudioFilesPlayed() {
-        if (repository != null) {
-            int totalPlays = repository.getStats().getDifferentAudioFilesPlayed();
-            int total = repository.countFiles();
-            float perCent = (float) totalPlays / (float) total * 100;
-            return StringUtils.getString(totalPlays, " / ", total, " (", StringUtils.toString(perCent, 2), "%)");
-        }
-        return "0 / 0 (0%)";
-    }
-
-    /**
-     * Gets the audio file statistics.
-     * 
-     * @param audioFile
-     *            the audio file
-     * 
-     * @return the audio file statistics
-     */
-    public AudioFileStats getAudioFileStatistics(AudioFile audioFile) {
-        if (repository != null) {
-            return repository.getStats().getStatsForAudioFile(audioFile);
-        }
-        return null;
-    }
-
-    /**
-     * Gets the total audio files played.
-     * 
-     * @return the total audio files played
-     */
-    public int getTotalAudioFilesPlayed() {
-        return repository != null ? repository.getStats().getTotalPlays() : -1;
-    }
-
-    /**
-     * Gets the unplayed audio files.
-     * 
-     * @return the unplayed audio files
-     */
-    public List<AudioFile> getUnplayedAudioFiles() {
-        if (repository != null) {
-            List<AudioFile> unplayedAudioFiles = repository.getAudioFilesList();
-            unplayedAudioFiles.removeAll(repository.getStats().getAudioFilesRanking().getNFirstElements(-1));
-            return unplayedAudioFiles;
-        }
-        return new ArrayList<AudioFile>();
     }
 
     /**
@@ -954,7 +679,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
     	enableRepositoryActions(true);
 
         VisualHandler.getInstance().hideProgressBar();
-        VisualHandler.getInstance().showRepositoryAudioFileNumber(getAudioFiles().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
+        VisualHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
         if (ControllerProxy.getInstance().getNavigationController() != null) {
             ControllerProxy.getInstance().getNavigationController().notifyReload();
         }
@@ -974,7 +699,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
     		progressDialog = null;
     	}
         ControllerProxy.getInstance().getNavigationController().notifyReload();
-        VisualHandler.getInstance().showRepositoryAudioFileNumber(getAudioFiles().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
+        VisualHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
         
         currentLoader = null;
     }
@@ -989,7 +714,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
     @Override
     public void notifyReadProgress() {
         ControllerProxy.getInstance().getNavigationController().notifyReload();
-        VisualHandler.getInstance().showRepositoryAudioFileNumber(getAudioFiles().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
+        VisualHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
     }
 
     @Override
@@ -1072,10 +797,6 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
     	backgroundLoad = false;
         Repository oldRepository = repository;
         repository = new Repository(folders);
-        // Save stats
-        if (oldRepository != null) {
-        	transferStatsFrom(oldRepository, repository);
-        }
         currentLoader = new RepositoryLoader(folders, oldRepository, repository, false);
         currentLoader.addRepositoryLoaderListener(this);
         currentLoader.start();
@@ -1089,17 +810,13 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
         filesLoaded = 0;
         Repository oldRepository = repository;
         repository = new Repository(oldRepository.getFolders());
-        // Save stats
-        if (oldRepository != null) {
-        	transferStatsFrom(oldRepository, repository);
-        }
         currentLoader = new RepositoryLoader(oldRepository.getFolders(), oldRepository, repository, true);
         currentLoader.addRepositoryLoaderListener(this);
         currentLoader.start();
     }
 
     /**
-     * Refresh file.
+     * Refreshes a file after being modified
      * 
      * @param file
      *            the file
@@ -1254,72 +971,11 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
     }
 
     /**
-     * Sets the audio file statistics.
-     * 
-     * @param audioFile
-     *            the new audio file statistics
-     */
-    public void setAudioFileStatistics(AudioFile audioFile) {
-        if (repository != null) {
-            RepositoryLoader.fillStats(repository, audioFile);
-        }
-    }
-
-    /**
-     * Gets stats from a repository.
-     * 
-     * @param oldRepository
-     *            the old repository
-     * @param newRepository
-     *            the new repository
-     */
-    private void transferStatsFrom(Repository newRepository, Repository oldRepository) {
-        // Total plays
-        newRepository.getStats().setTotalPlays(oldRepository.getStats().getTotalPlays());
-
-        // Different audio files played
-        newRepository.getStats().setDifferentAudioFilesPlayed(oldRepository.getStats().getDifferentAudioFilesPlayed());
-
-        // Audio file stats
-        newRepository.getStats().setAudioFilesStats(oldRepository.getStats().getAudioFilesStats());
-
-        // Audio files ranking
-        newRepository.getStats().setAudioFilesRanking(oldRepository.getStats().getAudioFilesRanking());
-
-        // Album ranking
-        RankList<Album> albumsRanking = oldRepository.getStats().getAlbumsRanking();
-        List<Album> albums = albumsRanking.getOrder();
-        for (int i = 0; i < albums.size(); i++) {
-            Album oldAlbum = albums.get(i);
-            Artist artist = newRepository.getStructure().getTreeStructure().get(oldAlbum.getArtist());
-            if (artist != null) {
-                Album newAlbum = artist.getAlbum(oldAlbum.getName());
-                if (newAlbum != null) {
-                    albumsRanking.replaceItem(oldAlbum, newAlbum);
-                }
-            }
-        }
-        newRepository.getStats().setAlbumsRanking(albumsRanking);
-
-        // Artist Ranking
-        RankList<Artist> artistsRanking = oldRepository.getStats().getArtistsRanking();
-        List<Artist> artists = artistsRanking.getOrder();
-        for (int i = 0; i < artists.size(); i++) {
-            Artist oldArtist = artists.get(i);
-            Artist newArtist = newRepository.getStructure().getTreeStructure().get(oldArtist.getName());
-            if (newArtist != null) {
-                artistsRanking.replaceItem(oldArtist, newArtist);
-            }
-        }
-        newRepository.getStats().setArtistsRanking(artistsRanking);
-    }
-
-    /**
      * Imports folders to repository
      */
     public void importFoldersToRepository() {
         // First check if repository is selected. If not, display a message
-        if (getRepository() == null) {
+        if (repository == null) {
             VisualHandler.getInstance().showErrorDialog(I18nUtils.getString("SELECT_REPOSITORY_BEFORE_IMPORT"));
             return;
         }
@@ -1335,10 +991,10 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
             if (!folders.isEmpty()) {
                 String path;
                 // If repository folders are more than one then user must select where to import songs
-                if (getRepository().getFolders().size() > 1) {
-                    String[] folderNames = new String[getRepository().getFolders().size()];
-                    for (int i = 0; i < getRepository().getFolders().size(); i++) {
-                        folderNames[i] = getRepository().getFolders().get(i).getAbsolutePath();
+                if (repository.getFolders().size() > 1) {
+                    String[] folderNames = new String[repository.getFolders().size()];
+                    for (int i = 0; i < repository.getFolders().size(); i++) {
+                        folderNames[i] = repository.getFolders().get(i).getAbsolutePath();
                     }
                     SelectorDialog selector = new SelectorDialog(VisualHandler.getInstance().getFrame().getFrame(), I18nUtils.getString("SELECT_REPOSITORY_FOLDER_TO_IMPORT"),
                             folderNames, null);
@@ -1441,7 +1097,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
     @Override
     public void audioFilesRemoved(List<AudioFile> audioFiles) {
         // Update status bar
-        VisualHandler.getInstance().showRepositoryAudioFileNumber(getAudioFiles().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
+        VisualHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
     }
 
 	/**

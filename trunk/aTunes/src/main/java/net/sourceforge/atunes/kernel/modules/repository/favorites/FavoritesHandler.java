@@ -80,7 +80,7 @@ public final class FavoritesHandler extends Handler implements AudioFilesRemoved
      *            the songs
      */
     public void addFavoriteAlbums(List<AudioFile> songs) {
-        Map<String, Artist> structure = RepositoryHandler.getInstance().getRepository().getStructure().getTreeStructure();
+        Map<String, Artist> structure = RepositoryHandler.getInstance().getArtistStructure();
         Map<String, Album> favAlbums = getFavorites().getFavoriteAlbums();
         for (int i = 0; i < songs.size(); i++) {
             AudioFile f = songs.get(i);
@@ -101,7 +101,7 @@ public final class FavoritesHandler extends Handler implements AudioFilesRemoved
      *            the songs
      */
     public void addFavoriteArtists(List<AudioFile> songs) {
-        Map<String, Artist> structure = RepositoryHandler.getInstance().getRepository().getStructure().getTreeStructure();
+        Map<String, Artist> structure = RepositoryHandler.getInstance().getArtistStructure();
         Map<String, Artist> favArtists = getFavorites().getFavoriteArtists();
         for (int i = 0; i < songs.size(); i++) {
             AudioFile f = songs.get(i);
@@ -255,11 +255,11 @@ public final class FavoritesHandler extends Handler implements AudioFilesRemoved
     		getFavorites().getFavoriteAudioFiles().remove(file.getUrl());
 
     		// If artist has been removed then remove it from favorites too
-    		if (!RepositoryHandler.getInstance().getRepository().getStructure().getTreeStructure().containsKey(file.getArtist())) {
+    		if (!RepositoryHandler.getInstance().getArtistStructure().containsKey(file.getArtist())) {
     			getFavorites().getFavoriteArtists().remove(file.getArtist());
     		} else {
     			// If album has been removed then remove it from favorites too
-    			if (RepositoryHandler.getInstance().getRepository().getStructure().getTreeStructure().get(file.getArtist()).getAlbum(file.getAlbum()) == null) {
+    			if (RepositoryHandler.getInstance().getArtistStructure().get(file.getArtist()).getAlbum(file.getAlbum()) == null) {
     				getFavorites().getFavoriteAlbums().remove(file.getAlbum());
     			}
     		}

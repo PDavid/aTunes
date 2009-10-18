@@ -126,7 +126,7 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
         getLogger().debug(LogCategories.HANDLER, new String[] { Long.toString(leaveFree) });
 
         // Get reference to Repository songs
-        List<AudioFile> songs = RepositoryHandler.getInstance().getAudioFiles();
+        List<AudioFile> songs = RepositoryHandler.getInstance().getAudioFilesList();
 
         // Songs selected
         Map<Integer, AudioFile> songsSelected = new HashMap<Integer, AudioFile>();
@@ -332,7 +332,7 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
      */
     public Map<String, Artist> getDeviceArtistStructure() {
         if (deviceRepository != null) {
-            return deviceRepository.getStructure().getTreeStructure();
+            return deviceRepository.getStructure().getArtistStructure();
         }
         return new HashMap<String, Artist>();
     }
@@ -345,7 +345,7 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
     public Map<String, Album> getDeviceAlbumStructure() {
         if (deviceRepository != null) {
             Map<String, Album> albumsStructure = new HashMap<String, Album>();
-            Collection<Artist> artistCollection = deviceRepository.getStructure().getTreeStructure().values();
+            Collection<Artist> artistCollection = deviceRepository.getStructure().getArtistStructure().values();
             for (Artist artist : artistCollection) {
                 for (Album album : artist.getAlbums().values()) {
                     albumsStructure.put(album.getNameAndArtist(), album);

@@ -25,8 +25,8 @@ import net.sourceforge.atunes.gui.views.controls.playList.Column;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.AudioFileStats;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
 import net.sourceforge.atunes.model.AudioObject;
 
 public class TimesPlayedColumn extends Column {
@@ -48,11 +48,11 @@ public class TimesPlayedColumn extends Column {
         int times1 = 0;
         int times2 = 0;
         if (ao1 instanceof AudioFile) {
-            AudioFileStats stats1 = RepositoryHandler.getInstance().getAudioFileStatistics((AudioFile) ao1);
+            AudioFileStats stats1 = StatisticsHandler.getInstance().getAudioFileStatistics((AudioFile) ao1);
             times1 = stats1 != null ? stats1.getTimesPlayed() : 0;
         }
         if (ao2 instanceof AudioFile) {
-            AudioFileStats stats2 = RepositoryHandler.getInstance().getAudioFileStatistics((AudioFile) ao2);
+            AudioFileStats stats2 = StatisticsHandler.getInstance().getAudioFileStatistics((AudioFile) ao2);
             times2 = stats2 != null ? stats2.getTimesPlayed() : 0;
         }
         return ((Integer) times1).compareTo(times2);
@@ -67,7 +67,7 @@ public class TimesPlayedColumn extends Column {
             return "";
         }
         // Return times played
-        AudioFileStats stats = RepositoryHandler.getInstance().getAudioFileStatistics((AudioFile) audioObject);
+        AudioFileStats stats = StatisticsHandler.getInstance().getAudioFileStatistics((AudioFile) audioObject);
         if (stats != null) {
             if (stats.getTimesPlayed() > 0) {
                 return Integer.toString(stats.getTimesPlayed());

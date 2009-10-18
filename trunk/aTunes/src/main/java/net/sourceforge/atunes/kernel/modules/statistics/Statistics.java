@@ -17,23 +17,22 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package net.sourceforge.atunes.kernel.modules.repository;
+package net.sourceforge.atunes.kernel.modules.statistics;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.sourceforge.atunes.kernel.modules.repository.AudioFileStats;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
-import net.sourceforge.atunes.kernel.modules.repository.model.Album;
-import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
 import net.sourceforge.atunes.misc.RankList;
 
 /**
  * The Class RepositoryStats.
  */
-public class RepositoryStats implements Serializable {
+public class Statistics implements Serializable {
 
-    private static final long serialVersionUID = -3603927907730394504L;
+    private static final long serialVersionUID = -3603927907730394505L;
 
     /** The total plays. */
     private int totalPlays;
@@ -41,14 +40,20 @@ public class RepositoryStats implements Serializable {
     /** The different audio files played. */
     private int differentAudioFilesPlayed;
 
-    /** The audio files ranking. */
-    private RankList<AudioFile> audioFilesRanking;
+    /** The audio files ranking. The ranking contains URL of every audio file
+     *  TODO: STATS: Ranking must be updated when an audio file changes location
+     */
+    private RankList<String> audioFilesRanking;
 
-    /** The albums ranking. */
-    private RankList<Album> albumsRanking;
+    /** The albums ranking.
+     *  TODO: STATS: Ranking must be updated when an album name is changed
+     */
+    private RankList<StatisticsAlbum> albumsRanking;
 
-    /** The artists ranking. */
-    private RankList<Artist> artistsRanking;
+    /** The artists ranking. The ranking contains names of artists
+     *  TODO: STATS: Ranking must be updated when an artist name is changed
+     */
+    private RankList<String> artistsRanking;
 
     /** The audio files stats. */
     private Map<String, AudioFileStats> audioFilesStats;
@@ -56,10 +61,10 @@ public class RepositoryStats implements Serializable {
     /**
      * Instantiates a new repository stats.
      */
-    protected RepositoryStats() {
-        audioFilesRanking = new RankList<AudioFile>();
-        albumsRanking = new RankList<Album>();
-        artistsRanking = new RankList<Artist>();
+    public Statistics() {
+        audioFilesRanking = new RankList<String>();
+        albumsRanking = new RankList<StatisticsAlbum>();
+        artistsRanking = new RankList<String>();
         audioFilesStats = new HashMap<String, AudioFileStats>();
     }
 
@@ -68,7 +73,7 @@ public class RepositoryStats implements Serializable {
      * 
      * @return the albums ranking
      */
-    public RankList<Album> getAlbumsRanking() {
+    public RankList<StatisticsAlbum> getAlbumsRanking() {
         return albumsRanking;
     }
 
@@ -77,7 +82,7 @@ public class RepositoryStats implements Serializable {
      * 
      * @return the artists ranking
      */
-    public RankList<Artist> getArtistsRanking() {
+    public RankList<String> getArtistsRanking() {
         return artistsRanking;
     }
 
@@ -95,7 +100,7 @@ public class RepositoryStats implements Serializable {
      * 
      * @return the audio files ranking
      */
-    public RankList<AudioFile> getAudioFilesRanking() {
+    public RankList<String> getAudioFilesRanking() {
         return audioFilesRanking;
     }
 
@@ -133,26 +138,6 @@ public class RepositoryStats implements Serializable {
     }
 
     /**
-     * Sets the albums ranking.
-     * 
-     * @param albumsRanking
-     *            the new albums ranking
-     */
-    public void setAlbumsRanking(RankList<Album> albumsRanking) {
-        this.albumsRanking = albumsRanking;
-    }
-
-    /**
-     * Sets the artists ranking.
-     * 
-     * @param artistsRanking
-     *            the new artists ranking
-     */
-    public void setArtistsRanking(RankList<Artist> artistsRanking) {
-        this.artistsRanking = artistsRanking;
-    }
-
-    /**
      * Sets the different audio files played.
      * 
      * @param differentAudioFilesPlayed
@@ -160,16 +145,6 @@ public class RepositoryStats implements Serializable {
      */
     public void setDifferentAudioFilesPlayed(int differentAudioFilesPlayed) {
         this.differentAudioFilesPlayed = differentAudioFilesPlayed;
-    }
-
-    /**
-     * Sets the audio files ranking.
-     * 
-     * @param audioFilesRanking
-     *            the new audio files ranking
-     */
-    public void setAudioFilesRanking(RankList<AudioFile> audioFilesRanking) {
-        this.audioFilesRanking = audioFilesRanking;
     }
 
     /**

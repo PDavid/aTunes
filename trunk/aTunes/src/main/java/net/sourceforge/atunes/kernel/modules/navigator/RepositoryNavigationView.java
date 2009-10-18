@@ -216,7 +216,7 @@ public class RepositoryNavigationView extends NavigationView {
         List<AudioObject> songs = new ArrayList<AudioObject>();
         if (node.isRoot()) {
             if (treeFilter == null) {
-                songs.addAll(RepositoryHandler.getInstance().getAudioFiles());
+                songs.addAll(RepositoryHandler.getInstance().getAudioFilesList());
             } else {
                 for (int i = 0; i < node.getChildCount(); i++) {
                     TreeObject obj = (TreeObject) ((DefaultMutableTreeNode) node.getChildAt(i)).getUserObject();
@@ -676,7 +676,7 @@ public class RepositoryNavigationView extends NavigationView {
      */
 
     static String getToolTipForRepository() {
-        int songs = RepositoryHandler.getInstance().getAudioFiles().size();
+        int songs = RepositoryHandler.getInstance().getAudioFilesList().size();
         return StringUtils.getString(I18nUtils.getString("REPOSITORY"), " (", songs, " ", (songs > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG")), ")");
     }
 }

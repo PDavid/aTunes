@@ -28,16 +28,16 @@ import java.util.Map;
 
 import javax.swing.ImageIcon;
 
-import org.commonjukebox.plugins.PluginApi;
-
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
+
+import org.commonjukebox.plugins.PluginApi;
 
 /**
  * This class represents an artist, with a name, and a list of albums.
@@ -205,7 +205,7 @@ public class Artist implements Serializable, TreeObject, Comparable<Artist> {
         toolTip.setLine1(name);
         int albumNumber = albums.size();
         toolTip.setLine2(StringUtils.getString(albumNumber, " ", (albumNumber > 1 ? I18nUtils.getString("ALBUMS") : I18nUtils.getString("ALBUM"))));
-        Integer timesPlayed = RepositoryHandler.getInstance().getArtistTimesPlayed(this);
+        Integer timesPlayed = StatisticsHandler.getInstance().getArtistTimesPlayed(this);
         toolTip.setLine3(StringUtils.getString(I18nUtils.getString("TIMES_PLAYED"), ": ", timesPlayed));
     }
 
