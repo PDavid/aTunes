@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.repository;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -222,54 +221,6 @@ public class RepositoryLoader extends Thread {
             files = files + countFiles(folder);
         }
         return files;
-    }
-
-    /**
-     * Fill stats.
-     * 
-     * @param repository
-     *            the repository
-     * @param song
-     *            the song
-     */
-    public static void fillStats(Repository repository, AudioFile song) {
-        String songPath = song.getUrl();
-        if (repository.getAudioFiles().containsKey(songPath)) {
-            repository.getStats().setTotalPlays(repository.getStats().getTotalPlays() + 1);
-
-            AudioFileStats stats = repository.getStats().getAudioFilesStats().get(songPath);
-            if (stats != null) {
-                stats.setLastPlayed(new Date());
-                stats.increaseTimesPlayed();
-            } else {
-                stats = new AudioFileStats();
-                repository.getStats().getAudioFilesStats().put(songPath, stats);
-                repository.getStats().setDifferentAudioFilesPlayed(repository.getStats().getDifferentAudioFilesPlayed() + 1);
-            }
-            repository.getStats().getAudioFilesRanking().addItem(song);
-
-            String artist = song.getArtist();
-
-            Artist a = repository.getStructure().getTreeStructure().get(artist);
-
-            // Unknown artist -> don't fill artist stats
-            if (a == null) {
-                return;
-            }
-
-            repository.getStats().getArtistsRanking().addItem(a);
-
-            String album = song.getAlbum();
-
-            Album alb = a.getAlbum(album);
-
-            // Unknown album -> don't fill album stats
-            if (alb == null) {
-                return;
-            }
-
-            repository.getStats().getAlbumsRanking().addItem(alb);
-        }
     }
 
     /**
@@ -520,8 +471,8 @@ public class RepositoryLoader extends Thread {
                 album = Album.getUnknownAlbum();
             }
 
-            if (repository.getStructure().getTreeStructure().containsKey(artist)) {
-                Artist a = repository.getStructure().getTreeStructure().get(artist);
+            if (repository.getStructure().getArtistStructure().containsKey(artist)) {
+                Artist a = repository.getStructure().getArtistStructure().get(artist);
                 Album alb = a.getAlbum(album);
                 if (alb != null) {
                     alb.addSong(audioFile);
@@ -537,7 +488,7 @@ public class RepositoryLoader extends Thread {
                 alb.addSong(audioFile);
                 alb.setArtist(a);
                 a.addAlbum(alb);
-                repository.getStructure().getTreeStructure().put(artist, a);
+                repository.getStructure().getArtistStructure().put(artist, a);
             }
         } catch (Exception e) {
             logger.error(LogCategories.FILE_READ, e.getMessage());
@@ -545,7 +496,7 @@ public class RepositoryLoader extends Thread {
     }
 
     /**
-     * Refresh navigator views.
+     * Refresh file
      * 
      * @param repository
      *            the repository
@@ -553,17 +504,17 @@ public class RepositoryLoader extends Thread {
      *            the file
      */
     public static void refreshFile(Repository repository, AudioFile file) {
-        try {
-            Tag tag = file.getTag();
+        try {        	
+            Tag oldTag = file.getTag();
             String albumArtist = null;
             String artist = null;
             String album = null;
             String genre = null;
-            if (tag != null) {
-                albumArtist = tag.getAlbumArtist();
-                artist = tag.getArtist();
-                album = tag.getAlbum();
-                genre = tag.getGenre();
+            if (oldTag != null) {
+                albumArtist = oldTag.getAlbumArtist();
+                artist = oldTag.getArtist();
+                album = oldTag.getAlbum();
+                genre = oldTag.getGenre();
             }
             if (artist == null || artist.equals("")) {
                 artist = Artist.getUnknownArtist();
@@ -577,9 +528,9 @@ public class RepositoryLoader extends Thread {
 
             // Remove from tree structure if necessary
             boolean albumArtistPresent = true;
-            Artist a = repository.getStructure().getTreeStructure().get(albumArtist);
+            Artist a = repository.getStructure().getArtistStructure().get(albumArtist);
             if (a == null) {
-                a = repository.getStructure().getTreeStructure().get(artist);
+                a = repository.getStructure().getArtistStructure().get(artist);
                 albumArtistPresent = false;
             }
             if (a != null) {
@@ -592,12 +543,12 @@ public class RepositoryLoader extends Thread {
                     }
 
                     if (a.getAudioObjects().size() <= 0) {
-                        repository.getStructure().getTreeStructure().remove(a.getName());
+                        repository.getStructure().getArtistStructure().remove(a.getName());
                     }
                 }
                 // If album artist field is present, audiofile might still be present under artist name so check
                 if (albumArtistPresent) {
-                    a = repository.getStructure().getTreeStructure().get(artist);
+                    a = repository.getStructure().getArtistStructure().get(artist);
                     if (a != null) {
                         alb = a.getAlbum(album);
                         if (alb != null) {
@@ -608,7 +559,7 @@ public class RepositoryLoader extends Thread {
                             }
                             // Maybe needs to be set to 0 in case node gets deleted
                             if (a.getAudioObjects().size() <= 1) {
-                                repository.getStructure().getTreeStructure().remove(a.getName());
+                                repository.getStructure().getArtistStructure().remove(a.getName());
                             }
                         }
                     }
@@ -639,7 +590,7 @@ public class RepositoryLoader extends Thread {
                 }
             }
 
-            // TODO: Why are we doing this??
+            // Update tag
             file.refreshTag();
 
             populateInfo(repository, file);

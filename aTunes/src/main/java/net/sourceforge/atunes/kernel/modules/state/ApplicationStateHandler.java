@@ -59,6 +59,7 @@ import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.Favorites;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
+import net.sourceforge.atunes.kernel.modules.statistics.Statistics;
 import net.sourceforge.atunes.kernel.modules.tray.SystemTrayHandler;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.SystemProperties;
@@ -264,6 +265,38 @@ public final class ApplicationStateHandler extends Handler implements AudioFiles
     }
 
     /**
+     * Stores statistics cache.
+     * 
+     * @param statistics
+     *            Statistics that should be persisted
+     */
+    public synchronized void persistStatisticsCache(Statistics statistics) {
+        getLogger().debug(LogCategories.HANDLER);
+
+        ObjectOutputStream stream = null;
+        try {
+            stream = new ObjectOutputStream(new FileOutputStream(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.CACHE_STATISTICS_NAME)));
+            getLogger().info(LogCategories.HANDLER, "Storing statistics information...");
+            stream.writeObject(statistics);
+        } catch (Exception e) {
+            getLogger().error(LogCategories.HANDLER, "Could not write statistics");
+            getLogger().debug(LogCategories.HANDLER, e);
+        } finally {
+            ClosingUtils.close(stream);
+        }
+
+        if (ApplicationState.getInstance().isSaveRepositoryAsXml()) {
+            try {
+                XMLUtils.writeObjectToFile(statistics, StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.XML_CACHE_STATISTICS_NAME));
+                getLogger().info(LogCategories.HANDLER, "Storing statistics information...");
+            } catch (Exception e) {
+                getLogger().error(LogCategories.HANDLER, "Could not write statistics");
+                getLogger().debug(LogCategories.HANDLER, e);
+            }
+        }
+    }
+
+    /**
      * Stores play lists.
      */
     public void persistPlayList() {
@@ -437,7 +470,7 @@ public final class ApplicationStateHandler extends Handler implements AudioFiles
     }
 
     /**
-     * Reads repository cache.
+     * Reads favorites cache.
      * 
      * @return The retrieved favorites
      */
@@ -468,6 +501,43 @@ public final class ApplicationStateHandler extends Handler implements AudioFiles
                 }
             }
             return new Favorites();
+        } finally {
+            ClosingUtils.close(stream);
+        }
+    }
+
+    /**
+     * Reads statistics cache.
+     * 
+     * @return The retrieved favorites
+     */
+    public Statistics retrieveStatisticsCache() {
+        getLogger().debug(LogCategories.HANDLER);
+
+        ObjectInputStream stream = null;
+        try {
+            stream = new ObjectInputStream(new FileInputStream(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.CACHE_FAVORITES_NAME)));
+            getLogger().info(LogCategories.HANDLER, "Reading serialized statistics cache");
+            Statistics result = (Statistics) stream.readObject();
+            return result;
+        } catch (InvalidClassException e) {
+            //TODO remove in next version
+            getLogger().error(LogCategories.HANDLER, e);
+            return new Statistics();
+        } catch (Exception e) {
+            getLogger().info(LogCategories.HANDLER, "No serialized statistics info found");
+            if (ApplicationState.getInstance().isSaveRepositoryAsXml()) {
+                try {
+                    getLogger().info(LogCategories.HANDLER, "Reading xml statistics cache");
+                    Statistics result = (Statistics) XMLUtils.readObjectFromFile(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/",
+                            Constants.XML_CACHE_STATISTICS_NAME));
+                    return result;
+                } catch (Exception e1) {
+                    getLogger().info(LogCategories.HANDLER, "No xml statistics info found");
+                    return new Statistics();
+                }
+            }
+            return new Statistics();
         } finally {
             ClosingUtils.close(stream);
         }

@@ -35,7 +35,7 @@ public class RepositoryStructure implements Serializable {
     private static final long serialVersionUID = -2230698137764691254L;
 
     /** The tree structure. */
-    private Map<String, Artist> treeStructure;
+    private Map<String, Artist> artistStructure;
 
     /** The folder structure. */
     private Map<String, Folder> folderStructure;
@@ -47,7 +47,7 @@ public class RepositoryStructure implements Serializable {
      * Instantiates a new repository structure.
      */
     protected RepositoryStructure() {
-        treeStructure = new HashMap<String, Artist>();
+        artistStructure = new HashMap<String, Artist>();
         folderStructure = new HashMap<String, Folder>();
         genreStructure = new HashMap<String, Genre>();
     }
@@ -75,7 +75,7 @@ public class RepositoryStructure implements Serializable {
      * 
      * @return the tree structure
      */
-    public Map<String, Artist> getTreeStructure() {
-        return treeStructure;
+    public Map<String, Artist> getArtistStructure() {
+        return artistStructure;
     }
 }

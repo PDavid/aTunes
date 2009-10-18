@@ -27,7 +27,6 @@ import java.util.List;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.search.RawSearchResult;
 import net.sourceforge.atunes.kernel.modules.search.SearchResult;
@@ -94,10 +93,7 @@ public class DeviceSearchableObject extends CommonAudioFileSearchableObject {
 
     @Override
     public List<AudioObject> getElementsToIndex() {
-        if (RepositoryHandler.getInstance().getRepository() != null) {
-            return new ArrayList<AudioObject>(DeviceHandler.getInstance().getAudioFilesList());
-        }
-        return new ArrayList<AudioObject>();
+        return new ArrayList<AudioObject>(DeviceHandler.getInstance().getAudioFilesList());
     }
 
 }

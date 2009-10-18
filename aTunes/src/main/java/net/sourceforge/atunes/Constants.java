@@ -93,6 +93,12 @@ public final class Constants {
     /** The Constant XML_CACHE_FAVORITES_NAME. */
     public static final String XML_CACHE_FAVORITES_NAME = "favorites.xml";
 
+    /** The Constant CACHE_STATISTICS_NAME. */
+    public static final String CACHE_STATISTICS_NAME = "statistics.dat";
+
+    /** The Constant XML_CACHE_STATISTICS_NAME. */
+    public static final String XML_CACHE_STATISTICS_NAME = "statistics.xml";
+
     /** Image size at audio object properties panel. */
     public static final ImageSize IMAGE_SIZE = ImageSize.SIZE_90;
 

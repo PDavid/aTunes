@@ -1,0 +1,361 @@
+package net.sourceforge.atunes.kernel.modules.statistics;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import net.sourceforge.atunes.kernel.Handler;
+import net.sourceforge.atunes.kernel.modules.repository.AudioFileStats;
+import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.model.Album;
+import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
+import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
+import net.sourceforge.atunes.utils.StringUtils;
+
+public class StatisticsHandler extends Handler {
+	
+	private static StatisticsHandler instance;
+	
+	private Statistics statistics;
+	
+	public static StatisticsHandler getInstance() {
+		if (instance == null) {
+			instance = new StatisticsHandler();
+		}
+		return instance;
+	}
+	
+	@Override
+	public void applicationFinish() {
+	}
+	
+	@Override
+	public void applicationStarted() {
+	}
+	
+	@Override
+	public void applicationStateChanged(ApplicationState newState) {
+	}
+	
+	@Override
+	protected void initHandler() {
+	}
+	
+	@Override
+	protected Runnable getPreviousInitializationTask() {
+		return new Runnable() {
+			@Override
+			public void run() {
+				statistics = ApplicationStateHandler.getInstance().retrieveStatisticsCache();
+			}
+		};
+	}
+	
+    /**
+     * Fill stats.
+     * 
+     * @param repository
+     *            the repository
+     * @param song
+     *            the song
+     */
+    private void fillStats(AudioFile song) {
+        String songPath = song.getUrl();
+        if (RepositoryHandler.getInstance().getAudioFilesMap().containsKey(songPath)) {
+            statistics.setTotalPlays(statistics.getTotalPlays() + 1);
+
+            AudioFileStats stats = statistics.getAudioFilesStats().get(songPath);
+            if (stats != null) {
+                stats.setLastPlayed(new Date());
+                stats.increaseTimesPlayed();
+            } else {
+                stats = new AudioFileStats();
+                statistics.getAudioFilesStats().put(songPath, stats);
+                statistics.setDifferentAudioFilesPlayed(statistics.getDifferentAudioFilesPlayed() + 1);
+            }
+            statistics.getAudioFilesRanking().addItem(song.getUrl());
+
+            String artist = song.getArtist();
+
+            Artist a = RepositoryHandler.getInstance().getArtistStructure().get(artist);
+
+            // Unknown artist -> don't fill artist stats
+            if (a == null) {
+                return;
+            }
+
+            statistics.getArtistsRanking().addItem(a.getName());
+
+            String album = song.getAlbum();
+
+            Album alb = a.getAlbum(album);
+
+            // Unknown album -> don't fill album stats
+            if (alb == null) {
+                return;
+            }
+
+            StatisticsAlbum statisticsAlbum = new StatisticsAlbum(artist, album);
+            statistics.getAlbumsRanking().addItem(statisticsAlbum);
+        }
+    }
+    
+    /**
+     * Gets the album most played.
+     * 
+     * @return the album most played
+     */
+
+    public Map<String, Integer> getAlbumMostPlayed() {
+        Map<String, Integer> result = new HashMap<String, Integer>();
+        if (statistics.getAlbumsRanking().size() > 0) {
+            String firstAlbum = statistics.getAlbumsRanking().getNFirstElements(1).get(0).toString();
+            Integer count = statistics.getAlbumsRanking().getNFirstElementCounts(1).get(0);
+            result.put(firstAlbum, count);
+        } else {
+            result.put(null, 0);
+        }
+        return result;
+    }
+
+    /**
+     * Gets the album times played.
+     * 
+     * @param audioFile
+     *            the audio file
+     * 
+     * @return the album times played
+     */
+
+    public Integer getAlbumTimesPlayed(AudioFile audioFile) {
+        if (audioFile != null) {
+        	if (statistics.getAlbumsRanking().getCount(new StatisticsAlbum(audioFile.getArtist(), audioFile.getAlbum())) != null) {
+        		return statistics.getAlbumsRanking().getCount(new StatisticsAlbum(audioFile.getArtist(), audioFile.getAlbum()));
+        	}
+        }
+        return 0;
+    }
+    
+    /**
+     * Gets the artist most played.
+     * 
+     * @return the artist most played
+     */
+
+    public Map<String, Integer> getArtistMostPlayed() {
+        Map<String, Integer> result = new HashMap<String, Integer>();
+        if (statistics.getArtistsRanking().size() > 0) {
+            String firstArtist = statistics.getArtistsRanking().getNFirstElements(1).get(0).toString();
+            Integer count = statistics.getArtistsRanking().getNFirstElementCounts(1).get(0);
+            result.put(firstArtist, count);
+        } else {
+            result.put(null, 0);
+        }
+        return result;
+    }
+
+    /**
+     * Gets the artist times played.
+     * 
+     * @param audioFile
+     *            the audio file
+     * 
+     * @return the artist times played
+     */
+
+    public Integer getArtistTimesPlayed(Artist artist) {
+    	if (statistics.getArtistsRanking().getCount(artist.getName()) != null) {
+    		return statistics.getArtistsRanking().getCount(artist.getName());
+    	}
+        return 0;
+    }
+
+    /**
+     * Gets the different audio files played.
+     * 
+     * @return the different audio files played
+     */
+    public int getDifferentAudioFilesPlayed() {
+        return statistics.getDifferentAudioFilesPlayed();
+    }
+
+    /**
+     * Gets the most played albums.
+     * 
+     * @param n
+     *            the n
+     * 
+     * @return the most played albums
+     */
+    public List<Album> getMostPlayedAlbums(int n) {
+    	List<StatisticsAlbum> statisticsAlbums = statistics.getAlbumsRanking().getNFirstElements(n);
+    	if (statisticsAlbums != null) {
+    		List<Album> albums = new ArrayList<Album>();
+    		for (StatisticsAlbum statisticAlbum : statisticsAlbums) {
+    			Album album = RepositoryHandler.getInstance().getArtistStructure().get(statisticAlbum.getArtist()).getAlbum(statisticAlbum.getAlbum());
+    			albums.add(album);
+    		}
+    		return albums;
+    	}
+        return null;
+    }
+    
+    /**
+     * Gets the most played albums count
+     * @param n
+     * @return
+     */
+    public List<Integer> getMostPlayedAlbumsCount(int n) {
+    	return statistics.getAlbumsRanking().getNFirstElementCounts(n);
+    }
+    
+    /**
+     * Gets the most played artists.
+     * 
+     * @param n
+     *            the n
+     * 
+     * @return the most played artists
+     */
+    public List<Artist> getMostPlayedArtists(int n) {
+    	List<String> artistsNames = statistics.getArtistsRanking().getNFirstElements(n);
+    	if (artistsNames != null) {
+    		List<Artist> artists = new ArrayList<Artist>();
+    		for (String artistName : artistsNames) {
+    			artists.add(RepositoryHandler.getInstance().getArtistStructure().get(artistName));
+    		}
+    		return artists;
+    	}
+        return null;
+    }
+
+    /**
+     * Gets the most played artists count
+     * @param n
+     * @return
+     */
+    public List<Integer> getMostPlayedArtistsCount(int n) {
+    	return statistics.getArtistsRanking().getNFirstElementCounts(n);
+    }
+
+    /**
+     * Gets the most played audio files.
+     * 
+     * @param n
+     *            the n
+     * 
+     * @return the most played audio files
+     */
+    public List<AudioFile> getMostPlayedAudioFiles(int n) {
+    	List<String> audioFilesUrls = statistics.getAudioFilesRanking().getNFirstElements(n);
+    	if (audioFilesUrls != null) {
+    		List<AudioFile> audioFiles = new ArrayList<AudioFile>();
+    		for (String audioFileUrl : audioFilesUrls) {
+    			audioFiles.add(RepositoryHandler.getInstance().getFileIfLoaded(audioFileUrl));
+    		}
+    		return audioFiles;
+    	}
+        return null;
+    }
+    
+    /**
+     * Gets the most played audio files count
+     * @param n
+     * @return
+     */
+    public List<Integer> getMostPlayedAudioFilesCount(int n) {
+    	return statistics.getAudioFilesRanking().getNFirstElementCounts(n);
+    }
+
+    /**
+     * Gets the audio file most played.
+     * 
+     * @return the audio file most played
+     */
+
+    public Map<AudioFile, Integer> getAudioFileMostPlayed() {
+        Map<AudioFile, Integer> result = new HashMap<AudioFile, Integer>();
+        if (statistics.getAudioFilesRanking().size() > 0) {
+            AudioFile firstAudioFile = getMostPlayedAudioFiles(1).get(0);
+            Integer count = statistics.getAudioFilesRanking().getNFirstElementCounts(1).get(0);
+            result.put(firstAudioFile, count);
+        } else {
+            result.put(null, 0);
+        }
+        return result;
+    }
+
+    /**
+     * Gets the audio files played.
+     * 
+     * @return the audio files played
+     */
+
+    public String getAudioFilesPlayed() {
+    	int totalPlays = statistics.getDifferentAudioFilesPlayed();
+    	int total = RepositoryHandler.getInstance().getNumberOfFiles();
+    	float perCent = total == 0 ? 0 : (float) totalPlays / (float) total * 100;
+    	return StringUtils.getString(totalPlays, " / ", total, " (", StringUtils.toString(perCent, 2), "%)");
+    }
+
+    /**
+     * Gets the audio file statistics.
+     * 
+     * @param audioFile
+     *            the audio file
+     * 
+     * @return the audio file statistics
+     */
+    public AudioFileStats getAudioFileStatistics(AudioFile audioFile) {
+        return statistics.getStatsForAudioFile(audioFile);
+    }
+
+    /**
+     * Gets the total audio files played.
+     * 
+     * @return the total audio files played
+     */
+    public int getTotalAudioFilesPlayed() {
+        return statistics.getTotalPlays();
+    }
+
+    /**
+     * Gets the unplayed audio files.
+     * 
+     * @return the unplayed audio files
+     */
+    public List<AudioFile> getUnplayedAudioFiles() {
+    	List<AudioFile> unplayedAudioFiles = RepositoryHandler.getInstance().getAudioFilesList();
+    	unplayedAudioFiles.removeAll(statistics.getAudioFilesRanking().getNFirstElements(-1));
+    	return unplayedAudioFiles;
+    }
+
+    /**
+     * Sets the audio file statistics.
+     * 
+     * @param audioFile
+     *            the new audio file statistics
+     */
+    public void setAudioFileStatistics(AudioFile audioFile) {
+        fillStats(audioFile);
+        // Store stats
+        Thread t = new Thread() {
+        	public void run() {
+                ApplicationStateHandler.getInstance().persistStatisticsCache(statistics);
+        	};
+        };
+        t.setPriority(Thread.MIN_PRIORITY);
+        t.start();        
+    }
+
+
+
+
+
+
+
+}

@@ -44,7 +44,6 @@ import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.AudioFileStats;
 import net.sourceforge.atunes.kernel.modules.repository.Repository;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryStats;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryStructure;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.Favorites;
@@ -53,6 +52,8 @@ import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.model.Folder;
 import net.sourceforge.atunes.kernel.modules.repository.model.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.DefaultTag;
+import net.sourceforge.atunes.kernel.modules.statistics.Statistics;
+import net.sourceforge.atunes.kernel.modules.statistics.StatisticsAlbum;
 import net.sourceforge.atunes.misc.RankList;
 
 import org.w3c.dom.Document;
@@ -81,10 +82,11 @@ public final class XMLUtils {
     private static XStream xStream = new XStream();
     static {
         xStream.alias("Repository", Repository.class);
-        xStream.alias("RepositoryStats", RepositoryStats.class);
+        xStream.alias("RepositoryStats", Statistics.class);
         xStream.alias("RepositoryStructure", RepositoryStructure.class);
         xStream.alias("SongStats", AudioFileStats.class);
         xStream.alias("RankList", RankList.class);
+        xStream.alias("StatisticsAlbum", StatisticsAlbum.class);
         xStream.alias("AudioFile", AudioFile.class);
         xStream.alias("Radio", Radio.class);
         xStream.alias("PodcastFeed", PodcastFeed.class);

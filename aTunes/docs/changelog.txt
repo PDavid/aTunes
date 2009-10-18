@@ -29,6 +29,7 @@
 - INTERNAL: Refactoring of play list
 - INTERNAL: Update search indexes only if user is going to perform a search
 - INTERNAL: Don't update navigation table if it's not visible
+- INTERNAL: Statistics refactoring [2875945]
 - FIX: Deleting many files from device freezes aTunes gui for some seconds [2855962]
 - FIX: LyricWiki engine returned lyrics with URLs
 - FIX: Opening web browser does not work on Ubuntu

@@ -52,9 +52,6 @@ public class Repository implements Serializable {
     /** The structure. */
     private RepositoryStructure structure;
 
-    /** The stats. */
-    private RepositoryStats stats;
-
     /**
      * Instantiates a new repository.
      * 
@@ -65,7 +62,6 @@ public class Repository implements Serializable {
         this.folders = folders;
         files = new HashMap<String, AudioFile>();
         structure = new RepositoryStructure();
-        stats = new RepositoryStats();
     }
 
     /**
@@ -124,15 +120,6 @@ public class Repository implements Serializable {
      */
     public List<File> getFolders() {
         return new ArrayList<File>(folders);
-    }
-
-    /**
-     * Gets the stats.
-     * 
-     * @return the stats
-     */
-    public RepositoryStats getStats() {
-        return stats;
     }
 
     /**

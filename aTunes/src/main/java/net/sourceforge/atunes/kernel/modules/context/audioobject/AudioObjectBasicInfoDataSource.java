@@ -33,13 +33,13 @@ import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.AudioFileStats;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.DateUtils;
-import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -133,7 +133,7 @@ public class AudioObjectBasicInfoDataSource implements ContextInformationDataSou
      */
     private String getLastPlayDate(AudioObject audioObject) {
         // Get last date played
-        AudioFileStats stats = RepositoryHandler.getInstance().getAudioFileStatistics((AudioFile) audioObject);
+        AudioFileStats stats = StatisticsHandler.getInstance().getAudioFileStatistics((AudioFile) audioObject);
         if (stats == null) {
             return I18nUtils.getString("SONG_NEVER_PLAYED");
         } else {

@@ -30,6 +30,7 @@ import net.sourceforge.atunes.kernel.modules.repository.SortType;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.model.Album;
 import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
+import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
@@ -75,7 +76,7 @@ public final class SmartPlayListHandler {
         logger.debug(LogCategories.HANDLER, new String[] { Integer.toString(n) });
 
         // Get n most played albums
-        List<Album> albums = RepositoryHandler.getInstance().getMostPlayedAlbums(n);
+        List<Album> albums = StatisticsHandler.getInstance().getMostPlayedAlbums(n);
 
         // Songs selected
         List<AudioObject> songsSelected = new ArrayList<AudioObject>();
@@ -102,7 +103,7 @@ public final class SmartPlayListHandler {
         logger.debug(LogCategories.HANDLER, new String[] { Integer.toString(n) });
 
         // Get n most played albums
-        List<Artist> artists = RepositoryHandler.getInstance().getMostPlayedArtists(n);
+        List<Artist> artists = StatisticsHandler.getInstance().getMostPlayedArtists(n);
 
         // Songs selected
         List<AudioFile> songsSelected = new ArrayList<AudioFile>();
@@ -129,7 +130,7 @@ public final class SmartPlayListHandler {
         logger.debug(LogCategories.HANDLER, new String[] { Integer.toString(n) });
 
         // Get reference to Repository songs
-        List<AudioFile> songs = RepositoryHandler.getInstance().getAudioFiles();
+        List<AudioFile> songs = RepositoryHandler.getInstance().getAudioFilesList();
 
         // Songs selected
         List<AudioObject> songsSelected = new ArrayList<AudioObject>();
@@ -163,7 +164,7 @@ public final class SmartPlayListHandler {
         logger.debug(LogCategories.HANDLER, new String[] { Integer.toString(n) });
 
         // Get songs
-        List<AudioFile> songsSelected = RepositoryHandler.getInstance().getMostPlayedAudioFiles(n);
+        List<AudioFile> songsSelected = StatisticsHandler.getInstance().getMostPlayedAudioFiles(n);
 
         // Sort
         List<AudioObject> songsSorted = SortType.sort(songsSelected);
@@ -182,7 +183,7 @@ public final class SmartPlayListHandler {
         logger.debug(LogCategories.HANDLER, Integer.toString(n));
 
         // Get unplayed files
-        List<AudioFile> unplayedSongs = RepositoryHandler.getInstance().getUnplayedAudioFiles();
+        List<AudioFile> unplayedSongs = StatisticsHandler.getInstance().getUnplayedAudioFiles();
         Collections.shuffle(unplayedSongs);
 
         // Add to playlist

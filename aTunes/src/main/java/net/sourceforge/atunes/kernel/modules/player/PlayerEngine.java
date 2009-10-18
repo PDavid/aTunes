@@ -28,9 +28,9 @@ import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.misc.TempFolder;
@@ -513,7 +513,7 @@ public abstract class PlayerEngine implements PlaybackStateListener {
     private void submitToLastFmAndUpdateStats() {
         if ((submissionState == SubmissionState.PENDING) && audioObject instanceof AudioFile) {
             LastFmService.getInstance().submitToLastFm((AudioFile) audioObject, currentAudioObjectPlayedTime / 1000);
-            RepositoryHandler.getInstance().setAudioFileStatistics((AudioFile) audioObject);
+            StatisticsHandler.getInstance().setAudioFileStatistics((AudioFile) audioObject);
             if (VisualHandler.getInstance().getStatsDialog().isVisible()) {
                 ControllerProxy.getInstance().getStatsDialogController().updateStats();
             }
