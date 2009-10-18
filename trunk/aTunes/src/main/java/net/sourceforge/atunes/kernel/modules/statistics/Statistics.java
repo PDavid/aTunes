@@ -45,14 +45,10 @@ public class Statistics implements Serializable {
      */
     private RankList<String> audioFilesRanking;
 
-    /** The albums ranking.
-     *  TODO: STATS: Ranking must be updated when an album name is changed
-     */
+    /** The albums ranking */
     private RankList<StatisticsAlbum> albumsRanking;
 
-    /** The artists ranking. The ranking contains names of artists
-     *  TODO: STATS: Ranking must be updated when an artist name is changed
-     */
+    /** The artists ranking. The ranking contains names of artists */
     private RankList<String> artistsRanking;
 
     /** The audio files stats. */
