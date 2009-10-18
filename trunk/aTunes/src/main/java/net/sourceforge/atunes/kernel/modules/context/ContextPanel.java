@@ -48,7 +48,6 @@ import org.jdesktop.swingx.JXTaskPaneContainer;
  * application
  * 
  * @author alex
- * 
  */
 @PluginApi
 public abstract class ContextPanel {
@@ -64,12 +63,12 @@ public abstract class ContextPanel {
      * Last AudioObject used to update context panel
      */
     private AudioObject audioObject;
-    
-    /**
-     * Time stamp when audio object was modified. Used to decide if context info
-     * must be updated
-     */
-    private long lastAudioObjectModificationTime;
+
+    //    /**
+    //     * Time stamp when audio object was modified. Used to decide if context info
+    //     * must be updated
+    //     */
+    //    private long lastAudioObjectModificationTime;
 
     // BEGIN OF METHODS TO BE IMPLEMENTED BY CONCRETE CONTEXT PANELS
 
@@ -167,19 +166,17 @@ public abstract class ContextPanel {
         container.setOpaque(false);
         for (ContextPanelContent content : getContents()) {
             JXTaskPane taskPane = new JXTaskPane() {
-            	/**
-				 * 
-				 */
-				private static final long serialVersionUID = 1569831509432974799L;
 
-				@Override
-            	public void setCollapsed(boolean collapsed) {
-            		// TODO: Currently JXTaskPane collapses or expands when user presses mouse button
-            		// So we override setCollapsed method to avoid collapsing or expanding task pane if it's disabled
-            		if (isEnabled()) {
-            			super.setCollapsed(collapsed);
-            		}
-            	}
+                private static final long serialVersionUID = 1569831509432974799L;
+
+                @Override
+                public void setCollapsed(boolean collapsed) {
+                    // TODO: Currently JXTaskPane collapses or expands when user presses mouse button
+                    // So we override setCollapsed method to avoid collapsing or expanding task pane if it's disabled
+                    if (isEnabled()) {
+                        super.setCollapsed(collapsed);
+                    }
+                }
             };
             content.setParentTaskPane(taskPane);
             taskPane.setTitle(content.getContentName());
@@ -254,10 +251,10 @@ public abstract class ContextPanel {
      * @return
      */
     public final boolean isEnabled() {
-    	// If current audio object is null don't even ask panel
-    	if (ContextHandler.getInstance().getCurrentAudioObject() == null) {
-    		return false;
-    	}
+        // If current audio object is null don't even ask panel
+        if (ContextHandler.getInstance().getCurrentAudioObject() == null) {
+            return false;
+        }
         return isPanelEnabledForAudioObject(ContextHandler.getInstance().getCurrentAudioObject());
     }
 

@@ -26,51 +26,52 @@ import org.jdesktop.swingx.border.DropShadowBorder;
 
 public class ArtistAlbumsFlowContent extends ContextPanelContent {
 
-	private ScrollableFlowPanel coversPanel;
-	
+    private ScrollableFlowPanel coversPanel;
+
     public ArtistAlbumsFlowContent() {
         super(new ArtistInfoDataSource());
     }
 
-	@Override
-	protected Component getComponent() {
+    @Override
+    protected Component getComponent() {
         coversPanel = new ScrollableFlowPanel();
         coversPanel.setOpaque(false);
         coversPanel.setLayout(new FlowLayout());
         return coversPanel;
-	}
+    }
 
-	@Override
-	protected String getContentName() {
-		return I18nUtils.getString("ALBUMS");
-	}
+    @Override
+    protected String getContentName() {
+        return I18nUtils.getString("ALBUMS");
+    }
 
-	@Override
-	protected Map<String, ?> getDataSourceParameters(AudioObject audioObject) {
+    @Override
+    protected Map<String, ?> getDataSourceParameters(AudioObject audioObject) {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put(ArtistInfoDataSource.INPUT_AUDIO_OBJECT, audioObject);
         parameters.put(ArtistInfoDataSource.INPUT_ALBUMS, true);
         return parameters;
-	}
+    }
 
-	@Override
-	protected void updateContentWithDataSourceResult(Map<String, ?> result) {
+    @SuppressWarnings("unchecked")
+    @Override
+    protected void updateContentWithDataSourceResult(Map<String, ?> result) {
         if (result != null && result.containsKey(ArtistInfoDataSource.OUTPUT_ALBUMS)) {
-        	List<AlbumInfo> albums = (List<AlbumInfo>) result.get(ArtistInfoDataSource.OUTPUT_ALBUMS);
-        	for (AlbumInfo album : albums) {
+            List<AlbumInfo> albums = (List<AlbumInfo>) result.get(ArtistInfoDataSource.OUTPUT_ALBUMS);
+            for (AlbumInfo album : albums) {
                 coversPanel.add(getLabelForAlbum(album));
-        	}
-        	coversPanel.revalidate();
-        	coversPanel.repaint();
-        	coversPanel.validate();
+            }
+            coversPanel.revalidate();
+            coversPanel.repaint();
+            coversPanel.validate();
         }
-	}
-	
-	protected void clearContextPanelContent() {
-		super.clearContextPanelContent();
-		coversPanel.removeAll();
-	};
-	
+    }
+
+    protected void clearContextPanelContent() {
+        super.clearContextPanelContent();
+        coversPanel.removeAll();
+    };
+
     /**
      * Gets the Label for album.
      * 
@@ -89,24 +90,23 @@ public class ArtistAlbumsFlowContent extends ContextPanelContent {
         }
 
         coverLabel.addMouseListener(new MouseAdapter() {
-        	@Override
-        	public void mouseEntered(MouseEvent e) {
-        		coverLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        	}
-        	
-        	@Override
-        	public void mouseExited(MouseEvent e) {
-        		coverLabel.setCursor(Cursor.getDefaultCursor());
-        	}
-        	
-        	@Override
-        	public void mouseClicked(MouseEvent e) {
-        		DesktopUtils.openURL(album.getUrl());
-        	}
-		});
-        
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                coverLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                coverLabel.setCursor(Cursor.getDefaultCursor());
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                DesktopUtils.openURL(album.getUrl());
+            }
+        });
+
         return coverLabel;
     }
-
 
 }
