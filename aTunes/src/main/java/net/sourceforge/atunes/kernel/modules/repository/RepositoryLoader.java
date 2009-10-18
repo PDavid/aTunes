@@ -36,6 +36,7 @@ import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.model.Folder;
 import net.sourceforge.atunes.kernel.modules.repository.model.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.Tag;
+import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
 import net.sourceforge.atunes.misc.Timer;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -592,9 +593,35 @@ public class RepositoryLoader extends Thread {
 
             // Update tag
             file.refreshTag();
-
             populateInfo(repository, file);
             populateGenreTree(repository, file);
+            
+            // Compare old tag with new tag
+            Tag newTag = file.getTag();            
+            if (newTag != null) {
+            	boolean artistChanged = !oldTag.getArtist().equals(newTag.getArtist());
+            	boolean albumChanged = !oldTag.getAlbum().equals(newTag.getAlbum());
+            	boolean oldArtistRemoved = false;
+            	if (artistChanged) {
+            		Artist oldArtist = repository.getStructure().getArtistStructure().get(oldTag.getArtist());
+            		if (oldArtist == null) {
+            			// Artist has been renamed -> Update statistics
+            			StatisticsHandler.getInstance().replaceArtist(oldTag.getArtist(), newTag.getArtist());
+            			oldArtistRemoved = true;
+            		}
+            	}
+            	if (albumChanged) {
+            		Artist artistWithOldAlbum = oldArtistRemoved ? repository.getStructure().getArtistStructure().get(newTag.getArtist()) :
+            													   repository.getStructure().getArtistStructure().get(oldTag.getArtist());
+            		Album oldAlbum = artistWithOldAlbum.getAlbum(oldTag.getAlbum());
+            		if (oldAlbum == null) {
+            			// Album has been renamed -> Update statistics
+            			StatisticsHandler.getInstance().replaceAlbum(artistWithOldAlbum.getName(), oldTag.getAlbum(), newTag.getAlbum());
+            		}
+            	}
+            }
+            
+            
         } catch (Exception e) {
             logger.error(LogCategories.FILE_READ, e.getMessage());
         }

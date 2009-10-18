@@ -1,7 +1,14 @@
 package net.sourceforge.atunes.kernel.modules.statistics;
 
-public class StatisticsAlbum {
+import java.io.Serializable;
+
+public class StatisticsAlbum implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5304107353617114945L;
+
 	private String artist;
 	
 	private String album;

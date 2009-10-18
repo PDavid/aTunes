@@ -14,6 +14,7 @@ import net.sourceforge.atunes.kernel.modules.repository.model.Album;
 import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
+import net.sourceforge.atunes.misc.RankList;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class StatisticsHandler extends Handler {
@@ -343,6 +344,10 @@ public class StatisticsHandler extends Handler {
     public void setAudioFileStatistics(AudioFile audioFile) {
         fillStats(audioFile);
         // Store stats
+        storeStatistics();
+    }
+    
+    private void storeStatistics() {
         Thread t = new Thread() {
         	public void run() {
                 ApplicationStateHandler.getInstance().persistStatisticsCache(statistics);
@@ -352,6 +357,40 @@ public class StatisticsHandler extends Handler {
         t.start();        
     }
 
+    /**
+     * Called to rename an artist
+     * @param oldArtist
+     * @param newArtist
+     */
+    public void replaceArtist(String oldArtist, String newArtist) {
+    	// Update artist ranking
+    	statistics.getArtistsRanking().replaceItem(oldArtist, newArtist);
+    	
+    	// Update album ranking
+    	RankList<StatisticsAlbum> albumsRanking = statistics.getAlbumsRanking();
+    	for (StatisticsAlbum album : albumsRanking.getOrder()) {
+    		if (album.getArtist().equals(oldArtist)) {
+    			statistics.getAlbumsRanking().replaceItem(album, new StatisticsAlbum(newArtist, album.getAlbum()));
+    		}
+    	}    	
+    	storeStatistics();
+    }
+    
+    /**
+     * Called to rename an album
+     * @param artist
+     * @param oldAlbum
+     * @param newAlbum
+     */
+    public void replaceAlbum(String artist, String oldAlbum, String newAlbum) {
+    	RankList<StatisticsAlbum> albumsRanking = statistics.getAlbumsRanking();
+    	for (StatisticsAlbum album : albumsRanking.getOrder()) {
+    		if (album.getArtist().equals(artist) && album.getAlbum().equals(oldAlbum)) {
+    			statistics.getAlbumsRanking().replaceItem(album, new StatisticsAlbum(artist, newAlbum));
+    		}
+    	}    	
+    	storeStatistics();
+    }
 
 
 
