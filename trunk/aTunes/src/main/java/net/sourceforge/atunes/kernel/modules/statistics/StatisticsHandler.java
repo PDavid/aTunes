@@ -347,6 +347,10 @@ public class StatisticsHandler extends Handler {
         storeStatistics();
     }
     
+    /**
+     * Stores statistics
+     * 
+     */
     private void storeStatistics() {
         Thread t = new Thread() {
         	public void run() {
@@ -358,11 +362,11 @@ public class StatisticsHandler extends Handler {
     }
 
     /**
-     * Called to rename an artist
+     * Called to update an artist
      * @param oldArtist
      * @param newArtist
      */
-    public void replaceArtist(String oldArtist, String newArtist) {
+    public void updateArtist(String oldArtist, String newArtist) {
     	// Update artist ranking
     	statistics.getArtistsRanking().replaceItem(oldArtist, newArtist);
     	
@@ -377,18 +381,30 @@ public class StatisticsHandler extends Handler {
     }
     
     /**
-     * Called to rename an album
+     * Called to update an album
      * @param artist
      * @param oldAlbum
      * @param newAlbum
      */
-    public void replaceAlbum(String artist, String oldAlbum, String newAlbum) {
+    public void updateAlbum(String artist, String oldAlbum, String newAlbum) {
     	RankList<StatisticsAlbum> albumsRanking = statistics.getAlbumsRanking();
     	for (StatisticsAlbum album : albumsRanking.getOrder()) {
     		if (album.getArtist().equals(artist) && album.getAlbum().equals(oldAlbum)) {
     			statistics.getAlbumsRanking().replaceItem(album, new StatisticsAlbum(artist, newAlbum));
     		}
     	}    	
+    	storeStatistics();
+    }
+    
+    /**
+     * Called to update a file name
+     * @param oldFileName
+     * @param newFileName
+     */
+    public void updateFileName(String oldFileName, String newFileName) {
+    	statistics.getAudioFilesRanking().replaceItem(oldFileName, newFileName);
+    	statistics.getAudioFilesStats().put(newFileName, statistics.getAudioFilesStats().get(oldFileName));
+    	statistics.getAudioFilesStats().remove(oldFileName);
     	storeStatistics();
     }
 

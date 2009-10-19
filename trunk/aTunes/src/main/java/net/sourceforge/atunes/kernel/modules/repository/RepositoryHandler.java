@@ -61,6 +61,7 @@ import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
 import net.sourceforge.atunes.kernel.modules.search.searchableobjects.RepositorySearchableObject;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
+import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
@@ -895,8 +896,9 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
         if (succeeded) {
             repository.getAudioFiles().remove(file.getAbsolutePath());
             audioFile.setFile(newFile);
-            repository.getAudioFiles().put(file.getAbsolutePath(), audioFile);
-            ControllerProxy.getInstance().getNavigationController().notifyReload();
+            repository.getAudioFiles().put(newFile.getAbsolutePath(), audioFile);
+            ControllerProxy.getInstance().getNavigationController().notifyReload();            
+            StatisticsHandler.getInstance().updateFileName(file.getAbsolutePath(), newFile.getAbsolutePath());
         }
     }
 
