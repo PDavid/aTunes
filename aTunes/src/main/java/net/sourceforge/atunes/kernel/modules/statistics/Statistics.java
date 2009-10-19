@@ -40,9 +40,7 @@ public class Statistics implements Serializable {
     /** The different audio files played. */
     private int differentAudioFilesPlayed;
 
-    /** The audio files ranking. The ranking contains URL of every audio file
-     *  TODO: STATS: Ranking must be updated when an audio file changes location
-     */
+    /** The audio files ranking. The ranking contains URL of every audio file */
     private RankList<String> audioFilesRanking;
 
     /** The albums ranking */

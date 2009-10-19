@@ -606,7 +606,7 @@ public class RepositoryLoader extends Thread {
             		Artist oldArtist = repository.getStructure().getArtistStructure().get(oldTag.getArtist());
             		if (oldArtist == null) {
             			// Artist has been renamed -> Update statistics
-            			StatisticsHandler.getInstance().replaceArtist(oldTag.getArtist(), newTag.getArtist());
+            			StatisticsHandler.getInstance().updateArtist(oldTag.getArtist(), newTag.getArtist());
             			oldArtistRemoved = true;
             		}
             	}
@@ -616,7 +616,7 @@ public class RepositoryLoader extends Thread {
             		Album oldAlbum = artistWithOldAlbum.getAlbum(oldTag.getAlbum());
             		if (oldAlbum == null) {
             			// Album has been renamed -> Update statistics
-            			StatisticsHandler.getInstance().replaceAlbum(artistWithOldAlbum.getName(), oldTag.getAlbum(), newTag.getAlbum());
+            			StatisticsHandler.getInstance().updateAlbum(artistWithOldAlbum.getName(), oldTag.getAlbum(), newTag.getAlbum());
             		}
             	}
             }
