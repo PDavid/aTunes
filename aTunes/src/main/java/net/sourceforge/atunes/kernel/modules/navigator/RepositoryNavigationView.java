@@ -164,7 +164,7 @@ public class RepositoryNavigationView extends NavigationView {
             tablePopupMenu.add(new JSeparator());
             tablePopupMenu.add(getMenuItemForAction(CopyToDeviceAction.class));
             tablePopupMenu.add(new JSeparator());
-            tablePopupMenu.add(Actions.getAction(SetFavoriteSongFromNavigatorAction.class));
+            tablePopupMenu.add(getMenuItemForAction(SetFavoriteSongFromNavigatorAction.class));
             tablePopupMenu.add(new JSeparator());
             tablePopupMenu.add(Actions.getAction(FilterNavigatorAction.class));
         }
