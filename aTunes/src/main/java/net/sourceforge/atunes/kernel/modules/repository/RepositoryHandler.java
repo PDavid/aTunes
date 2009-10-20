@@ -30,7 +30,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.StringTokenizer;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.JOptionPane;
@@ -50,7 +49,6 @@ import net.sourceforge.atunes.kernel.actions.ImportToRepositoryAction;
 import net.sourceforge.atunes.kernel.actions.RefreshRepositoryAction;
 import net.sourceforge.atunes.kernel.actions.RipCDAction;
 import net.sourceforge.atunes.kernel.actions.SelectRepositoryAction;
-import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.model.Album;
@@ -65,6 +63,7 @@ import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -157,9 +156,6 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
             @Override
             protected void done() {
                 super.done();
-                // Persist
-                ApplicationStateHandler.getInstance().persistRepositoryCache(repository, false);
-
                 VisualHandler.getInstance().hideProgressBar();
                 VisualHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
                 if (ControllerProxy.getInstance().getNavigationController() != null) {
@@ -182,103 +178,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
      *            the picture
      */
     public void addExternalPictureForAlbum(String artistName, String albumName, File picture) {
-        if (repository != null) {
-            Artist artist = repository.getStructure().getArtistStructure().get(artistName);
-            if (artist == null) {
-                return;
-            }
-            Album album = artist.getAlbum(albumName);
-            if (album == null) {
-                return;
-            }
-            List<AudioFile> audioFiles = album.getAudioFiles();
-            for (AudioFile af : audioFiles) {
-                af.addExternalPicture(picture);
-            }
-        }
-    }
-
-    /**
-     * Permanently deletes an audio file from the repository metainformation
-     * 
-     * @param file
-     *            File to be removed permanently
-     */
-    private void deleteFile(AudioFile file) {
-        String albumArtist = file.getAlbumArtist();
-        String artist = file.getArtist();
-        String album = file.getAlbum();
-        String genre = file.getGenre();
-
-        // Only do this if file is in repository
-        if (getFolderForFile(file) != null) {
-            // Remove from file structure
-            Folder f = getFolderForFile(file);
-            if (f != null) {
-                f.removeFile(file);
-                // If folder is empty, remove too
-                if (f.isEmpty()) {
-                    f.getParentFolder().removeFolder(f);
-                }
-            }
-
-            // Remove from tree structure
-            Artist a = repository.getStructure().getArtistStructure().get(albumArtist);
-            if (a == null) {
-                a = repository.getStructure().getArtistStructure().get(artist);
-            }
-            if (a != null) {
-                Album alb = a.getAlbum(album);
-                if (alb != null) {
-                    if (alb.getAudioObjects().size() == 1) {
-                        a.removeAlbum(alb);
-                    } else {
-                        alb.removeAudioFile(file);
-                    }
-
-                    if (a.getAudioObjects().size() <= 1) {
-                        repository.getStructure().getArtistStructure().remove(a.getName());
-                    }
-                }
-            }
-
-            // Remove from genre structure
-            Genre g = repository.getStructure().getGenreStructure().get(genre);
-            if (g != null) {
-                Artist art = g.getArtist(artist);
-                if (art != null) {
-                    Album alb = art.getAlbum(album);
-                    if (alb != null) {
-                        if (alb.getAudioObjects().size() == 1) {
-                            art.removeAlbum(alb);
-                        } else {
-                            alb.removeAudioFile(file);
-                        }
-                    }
-
-                    if (art.getAudioObjects().size() <= 1) {
-                        g.removeArtist(art);
-                    }
-                }
-
-                if (g.getAudioObjects().size() <= 1) {
-                    repository.getStructure().getGenreStructure().remove(genre);
-                }
-            }
-
-            // Remove from file list
-            repository.getAudioFiles().remove(file.getUrl());
-
-            // Update repository size
-            repository.setTotalSizeInBytes(repository.getTotalSizeInBytes() - file.getFile().length());
-
-            // Update repository duration
-            repository.removeDurationInSeconds(file.getDuration());
-        }
-        // File is on a device
-        else if (DeviceHandler.getInstance().isDevicePath(file.getUrl())) {
-            getLogger().info(LogCategories.REPOSITORY, StringUtils.getString("Deleted file ", file, " from device"));
-        }
+    	RepositoryLoader.addExternalPictureForAlbum(repository, artistName, albumName, picture);
     }
 
     /**
@@ -288,7 +188,12 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
         if (repositoryRefresher != null) {
             repositoryRefresher.interrupt();
         }
-        ApplicationStateHandler.getInstance().persistRepositoryCache(repository, true);
+        // Only store repository if it's dirty
+        if (repository.isDirty()) {
+        	ApplicationStateHandler.getInstance().persistRepositoryCache(repository, true);
+        } else {
+        	getLogger().info(LogCategories.REPOSITORY, "Repository is clean");
+        }
 
         // Execute command after last access to repository
         String command = ApplicationState.getInstance().getCommandAfterAccessRepository();
@@ -358,38 +263,6 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
      */
     public AudioFile getFileIfLoaded(String fileName) {
         return repository == null ? null : repository.getFile(fileName);
-    }
-
-    /**
-     * Finds folder that contains file.
-     * 
-     * @param file
-     *            Audio file for which the folder is wanted
-     * 
-     * @return Either folder or null if file is not in repository
-     */
-    private Folder getFolderForFile(AudioFile file) {
-        // Get repository folder where file is
-        File repositoryFolder = getRepositoryFolderContainingFile(file);
-        // If the file is not in the repository, return null
-        if (repositoryFolder == null) {
-            return null;
-        }
-
-        // Get root folder
-        Folder rootFolder = repository.getStructure().getFolderStructure().get(repositoryFolder.getAbsolutePath());
-
-        // Now navigate through folder until find folder that contains file
-        String path = file.getFile().getParentFile().getAbsolutePath();
-        path = path.replace(repositoryFolder.getAbsolutePath(), "");
-
-        Folder f = rootFolder;
-        StringTokenizer st = new StringTokenizer(path, SystemProperties.FILE_SEPARATOR);
-        while (st.hasMoreTokens()) {
-            String folderName = st.nextToken();
-            f = f.getFolder(folderName);
-        }
-        return f;
     }
 
     /**
@@ -674,9 +547,6 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
      */
     @Override
     public void notifyFinishRefresh(RepositoryLoader loader) {
-        // Persist
-        ApplicationStateHandler.getInstance().persistRepositoryCache(repository, false);
-
     	enableRepositoryActions(true);
 
         VisualHandler.getInstance().hideProgressBar();
@@ -871,7 +741,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
         }
 
         for (AudioFile fileToRemove : filesToRemove) {
-            deleteFile(fileToRemove);
+            RepositoryLoader.deleteFile(fileToRemove);
         }
 
         // Notify listeners
@@ -894,9 +764,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
         File newFile = new File(StringUtils.getString(file.getParentFile().getAbsolutePath() + "/" + FileNameUtils.getValidFileName(name) + "." + extension));
         boolean succeeded = file.renameTo(newFile);
         if (succeeded) {
-            repository.getAudioFiles().remove(file.getAbsolutePath());
-            audioFile.setFile(newFile);
-            repository.getAudioFiles().put(newFile.getAbsolutePath(), audioFile);
+            RepositoryLoader.renameFile(audioFile, file, newFile);
             ControllerProxy.getInstance().getNavigationController().notifyReload();            
             StatisticsHandler.getInstance().updateFileName(file.getAbsolutePath(), newFile.getAbsolutePath());
         }
@@ -1102,13 +970,6 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
         VisualHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
     }
 
-	/**
-	 * @param repository the repository to set
-	 */
-	protected void setRepository(Repository repository) {
-		this.repository = repository;
-	}
-	
 	public void doInBackground() {
 		if (currentLoader != null) {
 			backgroundLoad = true;
@@ -1141,5 +1002,13 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
 	 */
 	protected boolean isLoaderWorking() {
 		return currentLoader != null;
+	}
+	
+	/**
+	 * Brings access to logger to all classes of this package
+	 * @return
+	 */
+	protected static Logger getRepositoryHandlerLogger() {
+		return getLogger();
 	}
 }
