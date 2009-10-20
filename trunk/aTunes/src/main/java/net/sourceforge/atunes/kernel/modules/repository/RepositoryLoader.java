@@ -30,6 +30,7 @@ import java.util.StringTokenizer;
 
 import javax.swing.SwingUtilities;
 
+import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.model.Album;
 import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
@@ -37,6 +38,7 @@ import net.sourceforge.atunes.kernel.modules.repository.model.Folder;
 import net.sourceforge.atunes.kernel.modules.repository.model.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.Tag;
 import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
+import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.Timer;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -87,7 +89,10 @@ public class RepositoryLoader extends Thread {
      * @param files
      *            Files to add
      */
-    public static void addToRepository(Repository rep, List<File> files) {
+    protected static void addToRepository(Repository rep, List<File> files) {
+    	// This operation changes repository, so mark it as dirty
+    	rep.setDirty(true);
+    	
         // Get folders where files are
         Set<File> folders = new HashSet<File>();
         for (File file : files) {
@@ -118,7 +123,6 @@ public class RepositoryLoader extends Thread {
                     audioFile = new AudioFile(f.getAbsolutePath());
                     audioFile.setExternalPictures(pictures);
                     repositoryFiles.put(audioFile.getUrl(), audioFile);
-                    populateInfo(rep, audioFile);
 
                     String pathToFile = audioFile.getUrl().replace('\\', '/');
                     int lastChar = pathToFile.lastIndexOf('/') + 1;
@@ -128,45 +132,15 @@ public class RepositoryLoader extends Thread {
                     } else {
                         relativePath = ".";
                     }
+
+                    populateInfo(rep, audioFile);
                     populateFolderTree(rep, getRepositoryFolderContaining(rep, folder), relativePath, audioFile);
-                    rep.setTotalSizeInBytes(rep.getTotalSizeInBytes() + audioFile.getFile().length());
+                    populateGenreTree(rep, audioFile);
+                    
+                    rep.setTotalSizeInBytes(rep.getTotalSizeInBytes() + audioFile.getFile().length());                    
                     rep.addDurationInSeconds(audioFile.getDuration());
                 }
             }
-        }
-    }
-
-    /**
-     * Add AudioFiles to repository.
-     * 
-     * @param rep
-     *            Repository to which files should be added
-     * @param files
-     *            Files to add
-     */
-    public static void addAudioFilesToRepository(Repository rep, List<AudioFile> files) {
-        Map<String, AudioFile> repositoryFiles = rep.getAudioFiles();
-        for (AudioFile f : files) {
-            String repositoryPath = getRepositoryFolderContaining(rep, f.getFile().getParentFile()).getAbsolutePath().replace('\\', '/');
-            if (repositoryPath.endsWith("/")) {
-                repositoryPath = repositoryPath.substring(0, repositoryPath.length() - 2);
-            }
-            int firstChar = repositoryPath.length() + 1;
-
-            repositoryFiles.put(f.getUrl(), f);
-            populateInfo(rep, f);
-
-            String pathToFile = f.getUrl().replace('\\', '/');
-            int lastChar = pathToFile.lastIndexOf('/') + 1;
-            String relativePath;
-            if (firstChar < lastChar) {
-                relativePath = pathToFile.substring(firstChar, lastChar);
-            } else {
-                relativePath = ".";
-            }
-            populateFolderTree(rep, getRepositoryFolderContaining(rep, f.getFile().getParentFile()), relativePath, f);
-            rep.setTotalSizeInBytes(rep.getTotalSizeInBytes() + f.getFile().length());
-            rep.addDurationInSeconds(f.getDuration());
         }
     }
 
@@ -202,24 +176,10 @@ public class RepositoryLoader extends Thread {
      * 
      * @return the int
      */
-    public static int countFilesInRepository(Repository rep) {
+    protected static int countFilesInRepository(Repository rep) {
         int files = 0;
         for (File dir : rep.getFolders()) {
             files = files + countFiles(dir);
-        }
-        return files;
-    }
-
-    /**
-     * Count files in a given folder
-     * 
-     * @param folder
-     * @return
-     */
-    public static int countFilesInFolders(List<File> folders) {
-        int files = 0;
-        for (File folder : folders) {
-            files = files + countFiles(folder);
         }
         return files;
     }
@@ -504,7 +464,10 @@ public class RepositoryLoader extends Thread {
      * @param file
      *            the file
      */
-    public static void refreshFile(Repository repository, AudioFile file) {
+    protected static void refreshFile(Repository repository, AudioFile file) {
+    	// This operation changes repository, so mark it as dirty
+    	repository.setDirty(true);
+
         try {        	
             Tag oldTag = file.getTag();
             String albumArtist = null;
@@ -595,6 +558,7 @@ public class RepositoryLoader extends Thread {
             file.refreshTag();
             populateInfo(repository, file);
             populateGenreTree(repository, file);
+            // There is no need to update folder as audio file is in the same folder
             
             // Compare old tag with new tag
             Tag newTag = file.getTag();            
@@ -682,7 +646,7 @@ public class RepositoryLoader extends Thread {
     /**
      * Interrupt load.
      */
-    public void interruptLoad() {
+    protected void interruptLoad() {
         logger.info(LogCategories.REPOSITORY, "Load interrupted");
         interrupt = true;
     }
@@ -844,6 +808,9 @@ public class RepositoryLoader extends Thread {
      * Notify finish.
      */
     private void notifyFinish() {
+    	// After every read or refresh mark repository as dirty
+    	repository.setDirty(true);
+    	
         if (listener == null) {
             return;
         }
@@ -891,4 +858,169 @@ public class RepositoryLoader extends Thread {
 	protected Repository getOldRepository() {
 		return oldRepository;
 	}
+	
+    /**
+     * Adds the external picture for album.
+     * 
+     * @param artistName
+     *            the artist name
+     * @param albumName
+     *            the album name
+     * @param picture
+     *            the picture
+     */
+	protected static void addExternalPictureForAlbum(Repository repository, String artistName, String albumName, File picture) {    	
+        if (repository != null) {        	
+            Artist artist = repository.getStructure().getArtistStructure().get(artistName);
+            if (artist == null) {
+                return;
+            }
+            Album album = artist.getAlbum(albumName);
+            if (album == null) {
+                return;
+            }
+            
+        	// This operation changes repository, so mark it as dirty
+            repository.setDirty(true);
+            
+            List<AudioFile> audioFiles = album.getAudioFiles();
+            for (AudioFile af : audioFiles) {
+                af.addExternalPicture(picture);
+            }
+        }
+    }
+	
+    /**
+     * Permanently deletes an audio file from the repository metainformation
+     * 
+     * @param file
+     *            File to be removed permanently
+     */
+    protected static void deleteFile(AudioFile file) {
+        String albumArtist = file.getAlbumArtist();
+        String artist = file.getArtist();
+        String album = file.getAlbum();
+        String genre = file.getGenre();
+
+        // Only do this if file is in repository
+        if (getFolderForFile(file) != null) {
+        	// This operation changes repository, so mark it as dirty
+            RepositoryHandler.getInstance().getRepository().setDirty(true);
+
+            // Remove from file structure
+            Folder f = getFolderForFile(file);
+            if (f != null) {
+                f.removeFile(file);
+                // If folder is empty, remove too
+                if (f.isEmpty()) {
+                    f.getParentFolder().removeFolder(f);
+                }
+            }
+
+            // Remove from tree structure
+            Artist a = RepositoryHandler.getInstance().getArtistStructure().get(albumArtist);
+            if (a == null) {
+                a = RepositoryHandler.getInstance().getArtistStructure().get(artist);
+            }
+            if (a != null) {
+                Album alb = a.getAlbum(album);
+                if (alb != null) {
+                    if (alb.getAudioObjects().size() == 1) {
+                        a.removeAlbum(alb);
+                    } else {
+                        alb.removeAudioFile(file);
+                    }
+
+                    if (a.getAudioObjects().size() <= 1) {
+                    	RepositoryHandler.getInstance().getArtistStructure().remove(a.getName());
+                    }
+                }
+            }
+
+            // Remove from genre structure
+            Genre g = RepositoryHandler.getInstance().getGenreStructure().get(genre);
+            if (g != null) {
+                Artist art = g.getArtist(artist);
+                if (art != null) {
+                    Album alb = art.getAlbum(album);
+                    if (alb != null) {
+                        if (alb.getAudioObjects().size() == 1) {
+                            art.removeAlbum(alb);
+                        } else {
+                            alb.removeAudioFile(file);
+                        }
+                    }
+
+                    if (art.getAudioObjects().size() <= 1) {
+                        g.removeArtist(art);
+                    }
+                }
+
+                if (g.getAudioObjects().size() <= 1) {
+                	RepositoryHandler.getInstance().getGenreStructure().remove(genre);
+                }
+            }
+
+            // Remove from file list
+            RepositoryHandler.getInstance().getRepository().getAudioFiles().remove(file.getUrl());
+
+            // Update repository size
+            RepositoryHandler.getInstance().getRepository().setTotalSizeInBytes(RepositoryHandler.getInstance().getRepository().getTotalSizeInBytes() - file.getFile().length());
+
+            // Update repository duration
+            RepositoryHandler.getInstance().getRepository().removeDurationInSeconds(file.getDuration());
+        }
+        // File is on a device
+        else if (DeviceHandler.getInstance().isDevicePath(file.getUrl())) {
+        	RepositoryHandler.getRepositoryHandlerLogger().info(LogCategories.REPOSITORY, StringUtils.getString("Deleted file ", file, " from device"));
+        }
+    }
+
+    /**
+     * Finds folder that contains file.
+     * 
+     * @param file
+     *            Audio file for which the folder is wanted
+     * 
+     * @return Either folder or null if file is not in repository
+     */
+    private static Folder getFolderForFile(AudioFile file) {
+        // Get repository folder where file is
+        File repositoryFolder = RepositoryHandler.getInstance().getRepositoryFolderContainingFile(file);
+        // If the file is not in the repository, return null
+        if (repositoryFolder == null) {
+            return null;
+        }
+
+        // Get root folder
+        Folder rootFolder = RepositoryHandler.getInstance().getRepository().getStructure().getFolderStructure().get(repositoryFolder.getAbsolutePath());
+
+        // Now navigate through folder until find folder that contains file
+        String path = file.getFile().getParentFile().getAbsolutePath();
+        path = path.replace(repositoryFolder.getAbsolutePath(), "");
+
+        Folder f = rootFolder;
+        StringTokenizer st = new StringTokenizer(path, SystemProperties.FILE_SEPARATOR);
+        while (st.hasMoreTokens()) {
+            String folderName = st.nextToken();
+            f = f.getFolder(folderName);
+        }
+        return f;
+    }
+
+    /**
+     * Renames a file in repository
+     * @param audioFile
+     * @param oldFile
+     * @param newFile
+     */
+    protected static void renameFile(AudioFile audioFile, File oldFile, File newFile) {
+    	// This operation changes repository, so mark it as dirty
+    	RepositoryHandler.getInstance().getRepository().setDirty(true);
+
+    	audioFile.setFile(newFile);
+    	RepositoryHandler.getInstance().getRepository().getAudioFiles().remove(oldFile.getAbsolutePath());
+        RepositoryHandler.getInstance().getRepository().getAudioFiles().put(newFile.getAbsolutePath(), audioFile);
+    }
+
 }
