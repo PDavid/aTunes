@@ -289,6 +289,11 @@ public class DevicePanel extends PreferencesPanel {
     }
 
     @Override
+    public void resetImmediateChanges(ApplicationState state) {
+        // Do nothing
+    }
+
+    @Override
     public boolean validatePanel() {
         return true;
     }

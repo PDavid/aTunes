@@ -94,6 +94,11 @@ public class RadioPanel extends PreferencesPanel {
     }
 
     @Override
+    public void resetImmediateChanges(ApplicationState state) {
+        // Do nothing
+    }
+
+    @Override
     public boolean validatePanel() {
         return true;
     }

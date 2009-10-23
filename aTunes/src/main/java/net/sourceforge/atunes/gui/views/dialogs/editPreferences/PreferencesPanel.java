@@ -26,9 +26,6 @@ import javax.swing.JPanel;
 
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 
-/**
- * The Class PreferencesPanel.
- */
 public abstract class PreferencesPanel extends JPanel {
 
     private static final long serialVersionUID = -6163144955354757264L;
@@ -79,6 +76,15 @@ public abstract class PreferencesPanel extends JPanel {
      *         apply the change
      */
     public abstract boolean applyPreferences(ApplicationState state);
+
+    /**
+     * Called if user cancels preference dialog. This method should reset
+     * changes that were made immediately without waiting if user cancels dialog
+     * or not.
+     * 
+     * @param state
+     */
+    public abstract void resetImmediateChanges(ApplicationState state);
 
     /**
      * Called when preferences dialog is shown or hidden Useful to execute code

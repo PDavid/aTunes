@@ -230,12 +230,6 @@ public class EditPreferencesDialogController extends SimpleController<EditPrefer
         return new PluginsPanel();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.kernel.controllers.model.Controller#notifyReload()
-     */
     @Override
     protected void notifyReload() {
         // Nothing to do
@@ -267,6 +261,15 @@ public class EditPreferencesDialogController extends SimpleController<EditPrefer
             needRestart = needRestart || p.applyPreferences(ApplicationState.getInstance());
         }
         return needRestart;
+    }
+
+    /**
+     * reset immediate changes of panels
+     */
+    void resetImmediateChanges() {
+        for (PreferencesPanel p : panels) {
+            p.resetImmediateChanges(ApplicationState.getInstance());
+        }
     }
 
     /**

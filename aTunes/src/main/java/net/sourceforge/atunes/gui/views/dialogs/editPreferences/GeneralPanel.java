@@ -318,6 +318,13 @@ public class GeneralPanel extends PreferencesPanel {
     }
 
     @Override
+    public void resetImmediateChanges(ApplicationState state) {
+        if (!LookAndFeelSelector.getClassNameForLookAndFeelName(state.getSkin()).equals(UIManager.getLookAndFeel().getClass().getName())) {
+            GuiUtils.applyTheme(state.getSkin());
+        }
+    }
+
+    @Override
     public boolean validatePanel() {
         return true;
     }

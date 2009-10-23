@@ -37,10 +37,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class EditPreferencesDialogListener implements ListSelectionListener, ActionListener {
 
-    /** The edit preferences dialog. */
     private EditPreferencesDialog editPreferencesDialog;
-
-    /** The edit preferences dialog controller. */
     private EditPreferencesDialogController editPreferencesDialogController;
 
     /**
@@ -73,18 +70,12 @@ public class EditPreferencesDialogListener implements ListSelectionListener, Act
                 }
             }
         } else if (e.getSource() == editPreferencesDialog.getCancel()) {
+            editPreferencesDialogController.resetImmediateChanges();
             editPreferencesDialog.setVisible(false);
         }
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event
-     * .ListSelectionEvent)
-     */
     @Override
     public void valueChanged(ListSelectionEvent e) {
         if (e.getSource() == editPreferencesDialog.getList()) {

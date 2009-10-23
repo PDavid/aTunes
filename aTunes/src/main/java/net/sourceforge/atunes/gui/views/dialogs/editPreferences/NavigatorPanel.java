@@ -456,6 +456,11 @@ public class NavigatorPanel extends PreferencesPanel {
     }
 
     @Override
+    public void resetImmediateChanges(ApplicationState state) {
+        // Do nothing
+    }
+
+    @Override
     public ImageIcon getIcon() {
         return ImageLoader.getImage(ImageLoader.NAVIGATE);
     }

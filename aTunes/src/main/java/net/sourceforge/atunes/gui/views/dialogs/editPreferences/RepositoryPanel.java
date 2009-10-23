@@ -172,4 +172,9 @@ public class RepositoryPanel extends PreferencesPanel {
         return ImageLoader.getImage(ImageLoader.AUDIO_FILE_LITTLE);
     }
 
+    @Override
+    public void resetImmediateChanges(ApplicationState state) {
+        // Do nothing
+    }
+
 }
