@@ -160,7 +160,7 @@ public class GeneralPanel extends PreferencesPanel {
             }
 
         });
-        themePreview = new JLabel(I18nUtils.getString("PREVIEW"));
+        themePreview = new JLabel();
         themePreview.setVerticalTextPosition(SwingConstants.TOP);
         themePreview.setHorizontalTextPosition(SwingConstants.CENTER);
 
