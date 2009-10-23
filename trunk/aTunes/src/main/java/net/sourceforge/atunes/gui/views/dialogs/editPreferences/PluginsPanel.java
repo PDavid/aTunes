@@ -61,8 +61,8 @@ import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.commonjukebox.plugins.PluginConfiguration;
@@ -301,7 +301,7 @@ public class PluginsPanel extends PreferencesPanel {
         } catch (PluginSystemException e) {
             logger.error(LogCategories.PLUGINS, e);
             if (e.getCause() != null) {
-            	logger.error(LogCategories.PLUGINS, e.getCause());
+                logger.error(LogCategories.PLUGINS, e.getCause());
             }
         }
         return restartNeeded;
@@ -315,6 +315,11 @@ public class PluginsPanel extends PreferencesPanel {
         if (!plugins.isEmpty()) {
             pluginsTable.getSelectionModel().setSelectionInterval(0, 0);
         }
+    }
+
+    @Override
+    public void resetImmediateChanges(ApplicationState state) {
+        // Do nothing
     }
 
     @Override
@@ -443,9 +448,6 @@ public class PluginsPanel extends PreferencesPanel {
 
     private class PluginConfigurationPanel extends JPanel {
 
-        /**
-         * 
-         */
         private static final long serialVersionUID = 8063088904049173181L;
 
         private PluginConfiguration configuration;
@@ -459,9 +461,7 @@ public class PluginsPanel extends PreferencesPanel {
         private void addContent() {
             JTable table = new JTable();
             table.setColumnModel(new DefaultTableColumnModel() {
-                /**
-                 * 
-                 */
+
                 private static final long serialVersionUID = -2883977670543989394L;
 
                 @Override

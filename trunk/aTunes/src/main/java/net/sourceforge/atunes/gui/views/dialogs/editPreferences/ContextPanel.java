@@ -60,9 +60,6 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
-/**
- * The Class ContextPanel.
- */
 public class ContextPanel extends PreferencesPanel {
 
     private class LyricsEnginesTableModel implements TableModel {
@@ -197,7 +194,7 @@ public class ContextPanel extends PreferencesPanel {
      * Text field to set minimum song number for each album
      */
     JTextField minimumSongNumber;
-    
+
     /**
      * Checkbox to select if want to show albums in a grid
      */
@@ -242,7 +239,7 @@ public class ContextPanel extends PreferencesPanel {
         minimumSongNumberBox.add(Box.createHorizontalGlue());
         minimumSongNumber.setMinimumSize(new Dimension(50, 20));
         showAlbumsInGrid = new JCheckBox(I18nUtils.getString("SHOW_ALBUMS_IN_GRID"));
-        
+
         activateContext.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -420,12 +417,13 @@ public class ContextPanel extends PreferencesPanel {
 
     /**
      * Sets the show albums in grid check box
+     * 
      * @param show
      */
     private void setShowAlbumsInGrid(boolean show) {
-    	showAlbumsInGrid.setSelected(show);
+        showAlbumsInGrid.setSelected(show);
     }
-    
+
     @Override
     public void updatePanel(ApplicationState state) {
         setActivateContext(state.isUseContext());
@@ -435,6 +433,11 @@ public class ContextPanel extends PreferencesPanel {
         setMinimumSongNumberPerAlbum(state.getMinimumSongNumberPerAlbum());
         setLyricsEnginesInfo(state.getLyricsEnginesInfo());
         setShowAlbumsInGrid(state.isShowContextAlbumsInGrid());
+    }
+
+    @Override
+    public void resetImmediateChanges(ApplicationState state) {
+        // Do nothing
     }
 
     @Override

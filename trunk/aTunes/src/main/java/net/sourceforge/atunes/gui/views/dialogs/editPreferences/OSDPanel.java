@@ -216,7 +216,11 @@ public class OSDPanel extends PreferencesPanel {
         setOSDHorizontalAlignment(state.getOsdHorizontalAlignment());
         setOSDVerticalAlignment(state.getOsdVerticalAlignment());
         setUseLibnotify(state.isUseLibnotify());
+    }
 
+    @Override
+    public void resetImmediateChanges(ApplicationState state) {
+        // Do nothing
     }
 
     @Override

@@ -28,9 +28,6 @@ import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-/**
- * The Class RadioPanel.
- */
 public class PlayListPrefPanel extends PreferencesPanel {
 
     private static final long serialVersionUID = -7814272907267661918L;
@@ -41,19 +38,8 @@ public class PlayListPrefPanel extends PreferencesPanel {
 
     public static final String PROP_AUTO_SCROLL_PLAYLIST = "AUTO_SCROLL_PLAYLIST";
 
-    /**
-	 * 
-	 */
     private JCheckBox stopSongWhenSwitching;
-
-    /**
-	 * 
-	 */
     private JCheckBox stopSongWhenClearing;
-
-    /**
-	 * 
-	 */
     private JCheckBox autoScrollPlayList;
 
     /**
@@ -116,6 +102,11 @@ public class PlayListPrefPanel extends PreferencesPanel {
         setStopSongWhenSwitching(state.isStopPlayerOnPlayListSwitch());
         setStopSongWhenClearing(state.isStopPlayerOnPlayListClear());
         setAutoScrollPlayList(state.isAutoScrollPlayListEnabled());
+    }
+
+    @Override
+    public void resetImmediateChanges(ApplicationState state) {
+        // Do nothing
     }
 
     @Override

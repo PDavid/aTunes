@@ -274,6 +274,11 @@ public class InternetPanel extends PreferencesPanel {
     }
 
     @Override
+    public void resetImmediateChanges(ApplicationState state) {
+        // Do nothing
+    }
+
+    @Override
     public void dialogVisibilityChanged(boolean visible) {
         // Do nothing
     }
