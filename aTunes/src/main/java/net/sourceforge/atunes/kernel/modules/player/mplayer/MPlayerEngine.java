@@ -98,14 +98,6 @@ public class MPlayerEngine extends PlayerEngine {
     private MPlayerPositionThread mPlayerPositionThread;
     /** The current fade away process running */
     private FadeAwayRunnable currentFadeAwayRunnable = null;
-    /** A cue track is playing (different computation required) */
-    private boolean isCueTrack = false;
-    /** The start position of the cue track */
-    private int cueTrackStartPosition;
-    /** The duration of the cue track */
-    private long cueTrackDuration;
-    /** The total time of the audio file (to which the cue sheet links) */
-    private long audioFileDuration;
 
     public MPlayerEngine() {
         commandWriter = new MPlayerCommandWriter(null);
@@ -257,11 +249,7 @@ public class MPlayerEngine extends PlayerEngine {
 
     @Override
     protected void seekTo(double position) {
-        double p = position;
-        if (isCueTrack) {
-            p = (cueTrackStartPosition + (cueTrackDuration * position)) / audioFileDuration;
-        }
-        commandWriter.sendSeekCommand(p);
+        commandWriter.sendSeekCommand(position);
     }
 
     @Override
