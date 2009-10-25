@@ -41,7 +41,7 @@ public class LyricWikiTest {
     public void testGetLyricsFor() {
         Lyrics lyrics = testedObject.getLyricsFor("Louis Armstrong", "We Have All The Time In The World");
         Assert.assertNotNull(lyrics);
-        Assert.assertTrue(lyrics.getUrl().contains("lyricwiki.org"));
+        Assert.assertTrue(lyrics.getUrl().contains("lyrics.wikia.com"));
         Assert.assertTrue(lyrics.getLyrics().toLowerCase().contains("Time enough for life to unfold".toLowerCase()));
     }
 

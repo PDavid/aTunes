@@ -44,7 +44,7 @@ public class LyricWikiEngine extends LyricsEngine {
     /**
      * URL pattern to retrieve lyrics
      */
-    private static final String URL = "http://lyricwiki.org/" + ARTIST_PATTERN + ":" + TITLE_PATTERN;
+    private static final String URL = "http://lyrics.wikia.com/" + ARTIST_PATTERN + ":" + TITLE_PATTERN;
     private static final String LYRICS_ELEMENT = "div";
     private static final String LYRICS_ELEMENT_ATTRIBUTE = "class";
     private static final String LYRICS_ELEMENT_ATTRIBUTE_VALUE = "lyricbox";
