@@ -20,6 +20,7 @@
 package net.sourceforge.atunes.kernel.modules.player.mplayer;
 
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.audio.Format;
 import net.sourceforge.atunes.misc.log.LogCategories;
 
 /**
@@ -45,7 +46,7 @@ class AudioFileMPlayerOutputReader extends MPlayerOutputReader {
         super(engine, process);
         this.audioFile = audioFile;
         // Check audio file type only once and use calculated value in read method
-        this.isMp3File = AudioFile.isMp3File(audioFile.getFile());
+        this.isMp3File = AudioFile.isValidAudioFile(audioFile.getFile(), Format.MP3);
     }
 
     @Override

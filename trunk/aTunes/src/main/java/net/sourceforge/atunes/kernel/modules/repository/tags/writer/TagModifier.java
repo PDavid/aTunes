@@ -28,6 +28,7 @@ import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.audio.Format;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.ImageInfo;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.Tag;
 import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
@@ -193,7 +194,7 @@ public class TagModifier {
             org.jaudiotagger.audio.AudioFile audioFile = org.jaudiotagger.audio.AudioFileIO.read(file.getFile());
             org.jaudiotagger.tag.Tag newTag = audioFile.getTagOrCreateAndSetDefault();
 
-            if (AudioFile.isMp3File(file.getFile())) {
+            if (AudioFile.isValidAudioFile(file.getFile(), Format.MP3)) {
                 org.jaudiotagger.audio.mp3.MP3File mp3file = (org.jaudiotagger.audio.mp3.MP3File) audioFile;
                 if (mp3file.hasID3v1Tag() && !mp3file.hasID3v2Tag()) {
                     deleteTags(file);
@@ -224,7 +225,7 @@ public class TagModifier {
             }
 
             // Workaround for mp4 files - strings outside genre list might not be written otherwise
-            if (AudioFile.isMp4File(file.getFile())) {
+            if (AudioFile.isValidAudioFile(file.getFile(), Format.MP4_1, Format.MP4_2)) {
                 newTag.deleteTagField(org.jaudiotagger.tag.TagFieldKey.GENRE);
             }
 

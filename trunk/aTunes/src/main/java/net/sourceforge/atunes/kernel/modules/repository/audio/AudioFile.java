@@ -90,7 +90,7 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
     private void readFile(File file) {
         this.file = file;
         // Don't read from formats not supported by Jaudiotagger
-        if (!isApeFile(file) && !isMPCFile(file)) {
+        if (!isValidAudioFile(file, Format.APE, Format.MPC)) {
             introspectTags();
             readAudioProperties();
         }
@@ -146,90 +146,6 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
     }
 
     /**
-     * Checks if is ape file.
-     * 
-     * @param file
-     *            the file
-     * 
-     * @return true, if is ape file
-     */
-    public static boolean isApeFile(File file) {
-        return file.getAbsolutePath().toLowerCase().endsWith(Format.APE.getExtension()) || file.getAbsolutePath().toLowerCase().endsWith(Format.MAC.getExtension());
-    }
-
-    /**
-     * Checks if is flac file.
-     * 
-     * @param file
-     *            the file
-     * 
-     * @return true, if is flac file
-     */
-    public static boolean isFlacFile(File file) {
-        return file.getAbsolutePath().toLowerCase().endsWith(Format.FLAC.getExtension());
-    }
-
-    /**
-     * Checks if is mp3 file.
-     * 
-     * @param file
-     *            the file
-     * 
-     * @return true, if is mp3 file
-     */
-    public static boolean isMp3File(File file) {
-        return file.getAbsolutePath().toLowerCase().endsWith(Format.MP3.getExtension());
-    }
-
-    /**
-     * Checks if is mp4 file.
-     * 
-     * @param file
-     *            the file
-     * 
-     * @return true, if is mp4 file
-     */
-    public static boolean isMp4File(File file) {
-        return file.getAbsolutePath().toLowerCase().endsWith(Format.MP4_1.getExtension()) || file.getAbsolutePath().toLowerCase().endsWith(Format.MP4_2.getExtension());
-    }
-
-    /**
-     * Checks if is mpc file.
-     * 
-     * @param file
-     *            the file
-     * 
-     * @return true, if is mpc file
-     */
-    public static boolean isMPCFile(File file) {
-        return file.getAbsolutePath().toLowerCase().endsWith(Format.MPC.getExtension()) || file.getAbsolutePath().toLowerCase().endsWith(Format.MPPLUS.getExtension());
-    }
-
-    /**
-     * Checks if is ogg file.
-     * 
-     * @param file
-     *            the file
-     * 
-     * @return true, if is ogg file
-     */
-    public static boolean isOggFile(File file) {
-        return file.getAbsolutePath().toLowerCase().endsWith(Format.OGG.getExtension());
-    }
-
-    /**
-     * Checks if is real audio file.
-     * 
-     * @param file
-     *            the file
-     * 
-     * @return true, if is real audio file
-     */
-    public static boolean isRealAudioFile(File file) {
-        return file.getAbsolutePath().toLowerCase().endsWith(Format.REAL_1.getExtension()) || file.getAbsolutePath().toLowerCase().endsWith(Format.REAL_2.getExtension());
-    }
-
-    /**
      * Checks if is valid audio file.
      * 
      * @param file
@@ -239,7 +155,27 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
      */
     public static boolean isValidAudioFile(File file) {
         return !file.isDirectory()
-                && (isMp3File(file) || isOggFile(file) || isMp4File(file) || isWavFile(file) || isWmaFile(file) || isFlacFile(file) || isRealAudioFile(file) || isApeFile(file) || isMPCFile(file));
+                && isValidAudioFile(file, Format.MP3, Format.OGG, Format.MP4_1, Format.MP4_2, Format.WAV, Format.WMA, Format.FLAC, Format.REAL_1, Format.REAL_2, Format.APE,
+                        Format.MPC);
+    }
+
+    /**
+     * Checks if a file is a valid audio file
+     * 
+     * @param file
+     *            the file to check
+     * @param formats
+     *            the allowed formats
+     * @return if the file is a valid audio file
+     */
+    public static boolean isValidAudioFile(File file, Format... formats) {
+        String path = file.getAbsolutePath().toLowerCase();
+        for (Format format : formats) {
+            if (path.endsWith(format.getExtension())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -253,30 +189,6 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
     public static boolean isValidAudioFile(String file) {
         File f = new File(file);
         return f.exists() && isValidAudioFile(f);
-    }
-
-    /**
-     * Checks if is wav file.
-     * 
-     * @param file
-     *            the file
-     * 
-     * @return true, if is wav file
-     */
-    public static boolean isWavFile(File file) {
-        return file.getAbsolutePath().toLowerCase().endsWith(Format.WAV.getExtension());
-    }
-
-    /**
-     * Checks if is wma file.
-     * 
-     * @param file
-     *            the file
-     * 
-     * @return true, if is wma file
-     */
-    public static boolean isWmaFile(File file) {
-        return file.getAbsolutePath().toLowerCase().endsWith(Format.WMA.getExtension());
     }
 
     /**
@@ -544,9 +456,7 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
      * @return if the tag of this audio file does support internal images
      */
     public final boolean supportsInternalPicture() {
-        if (isFlacFile(file) || isMp3File(file) || isMp4File(file) || isOggFile(file) || isWmaFile(file))
-            return true;
-        return false;
+        return isValidAudioFile(getFile(), Format.FLAC, Format.MP3, Format.MP4_1, Format.MP4_2, Format.OGG, Format.WMA);
     }
 
     /**
