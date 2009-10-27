@@ -100,6 +100,8 @@ public class PlayerControlsPanel extends JPanel {
     protected VolumeLevel volumeLevel;
     boolean playing;
     ProgressSlider progressSlider;
+    
+    private JPanel secondaryControls;
 
     /**
      * Instantiates a new player controls panel.
@@ -271,27 +273,41 @@ public class PlayerControlsPanel extends JPanel {
     }
 
     private JPanel getSecondaryControls() {
-        shuffleButton = new ShuffleButton();
-        repeatButton = new RepeatButton();
-        karaokeButton = new KaraokeButton();
-        normalizeButton = new NormalizationButton();
+    	if (secondaryControls == null) {
+    		shuffleButton = new ShuffleButton();
+    		repeatButton = new RepeatButton();
+    		karaokeButton = new KaraokeButton();
+    		normalizeButton = new NormalizationButton();
 
-        JPanel panel = new JPanel(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.insets = new Insets(0, 5, 0, 0);
-        panel.add(shuffleButton, c);
-        c.gridx = 1;
-        c.insets = new Insets(0, 1, 0, 0);
-        panel.add(repeatButton, c);
-        c.gridx = 2;
-        panel.add(karaokeButton, c);
-        c.gridx = 3;
-        panel.add(normalizeButton, c);
-
-        return panel;
+    		secondaryControls = new JPanel(new GridBagLayout());
+    		GridBagConstraints c = new GridBagConstraints();
+    		c.gridx = 0;
+    		c.gridy = 0;
+    		c.insets = new Insets(0, 5, 0, 0);
+    		secondaryControls.add(shuffleButton, c);
+    		c.gridx = 1;
+    		c.insets = new Insets(0, 1, 0, 0);
+    		secondaryControls.add(repeatButton, c);
+    		c.gridx = 2;
+    		secondaryControls.add(karaokeButton, c);
+    		c.gridx = 3;
+    		secondaryControls.add(normalizeButton, c);
+    	}
+        return secondaryControls;
     }
+    
+    /**
+     * Adds a secondary control
+     * @param button
+     */
+    public void addSecondaryControl(JToggleButton button) {
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = getSecondaryControls().getComponentCount();
+		c.gridy = 0;
+		c.insets = new Insets(0, 1, 0, 0);
+    	getSecondaryControls().add(button, c);
+    }
+
 
     static class ProgressSlider extends JPanel {
 
@@ -353,4 +369,5 @@ public class PlayerControlsPanel extends JPanel {
 
         }
     }
+    
 }
