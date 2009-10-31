@@ -40,39 +40,21 @@ import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomFrame;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-/**
- * The Class RipperProgressDialog.
- */
 public class RipperProgressDialog extends CustomFrame {
 
     private static final long serialVersionUID = -3891515847607545757L;
 
-    /** The cover. */
     private JLabel cover;
-
-    /** The total progress bar. */
     private JProgressBar totalProgressBar;
-
-    /** The total progress value label. */
     private JLabel totalProgressValueLabel;
-
-    /** The decode progress bar. */
     private JProgressBar decodeProgressBar;
-
-    /** The decode progress value label. */
     private JLabel decodeProgressValueLabel;
-
-    /** The encode progress bar. */
     private JProgressBar encodeProgressBar;
-
-    /** The encode progress value label. */
     private JLabel encodeProgressValueLabel;
-
-    /** The cancel button. */
     private JButton cancelButton;
 
     /**
@@ -97,12 +79,13 @@ public class RipperProgressDialog extends CustomFrame {
     }
 
     /**
-     * Gets the cancel button.
+     * Adds a cancel action to the cancel button.
      * 
-     * @return the cancel button
+     * @param action
+     *            The action that should be added
      */
-    public JButton getCancelButton() {
-        return cancelButton;
+    public void addCancelAction(ActionListener action) {
+        cancelButton.addActionListener(action);
     }
 
     /**

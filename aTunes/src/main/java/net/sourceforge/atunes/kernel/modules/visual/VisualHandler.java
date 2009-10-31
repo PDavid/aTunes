@@ -453,7 +453,7 @@ public final class VisualHandler extends Handler implements PlaybackStateListene
     public RipperProgressDialog getRipperProgressDialog() {
         if (ripperProgressDialog == null) {
             ripperProgressDialog = new RipperProgressDialog(frame.getFrame());
-            ripperProgressDialog.getCancelButton().addActionListener(new ActionListener() {
+            ripperProgressDialog.addCancelAction(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     RipperHandler.getInstance().cancelProcess();
@@ -1067,12 +1067,13 @@ public final class VisualHandler extends Handler implements PlaybackStateListene
 
     /**
      * Returns progress bar
+     * 
      * @return
      */
     public JProgressBar getProgressBar() {
-    	return frame.getProgressBar();
+        return frame.getProgressBar();
     }
-    
+
     /**
      * Show properties dialog.
      * 
@@ -1084,7 +1085,7 @@ public final class VisualHandler extends Handler implements PlaybackStateListene
         if (dialog.isVisible()) {
             dialog.toFront();
         } else {
-        	dialog.setVisible(true);
+            dialog.setVisible(true);
         }
     }
 
@@ -1195,31 +1196,32 @@ public final class VisualHandler extends Handler implements PlaybackStateListene
         frame.showToolBar(show);
         repaint();
     }
-    
+
     /**
      * Sets progress bar visible and with given tooltip
+     * 
      * @param indeterminate
      * @param text
      */
     public void showProgressBar(boolean indeterminate, String text) {
-    	if (frame.getProgressBar() != null) {
-    		frame.getProgressBar().setVisible(true);
-    		frame.getProgressBar().setIndeterminate(indeterminate);
-    		if (!indeterminate) {
-    			frame.getProgressBar().setMinimum(0);
-    			frame.getProgressBar().setValue(0);
-    		}
-    		frame.getProgressBar().setToolTipText(text);
-    	}
+        if (frame.getProgressBar() != null) {
+            frame.getProgressBar().setVisible(true);
+            frame.getProgressBar().setIndeterminate(indeterminate);
+            if (!indeterminate) {
+                frame.getProgressBar().setMinimum(0);
+                frame.getProgressBar().setValue(0);
+            }
+            frame.getProgressBar().setToolTipText(text);
+        }
     }
-    
+
     /**
      * Hides progress bar
      */
     public void hideProgressBar() {
-    	if (frame.getProgressBar() != null) {
-    		frame.getProgressBar().setVisible(false);
-    	}
+        if (frame.getProgressBar() != null) {
+            frame.getProgressBar().setVisible(false);
+        }
     }
 
     /**
