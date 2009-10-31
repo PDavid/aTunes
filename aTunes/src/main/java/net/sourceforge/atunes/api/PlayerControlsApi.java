@@ -13,7 +13,7 @@ public class PlayerControlsApi {
 	 * Adds a secondary button in player controls
 	 * @param button
 	 */
-	public static void addSecondaryControl(JToggleButton button) {
+	public static final void addSecondaryControl(JToggleButton button) {
 		VisualHandler.getInstance().getPlayerControls().addSecondaryControl(button);
 	}
 }

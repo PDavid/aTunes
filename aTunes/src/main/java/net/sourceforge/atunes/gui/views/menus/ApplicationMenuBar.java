@@ -355,4 +355,14 @@ public class ApplicationMenuBar extends JMenuBar {
         add(getToolsMenu());
         add(getCustomHelpMenu());
     }
+    
+    /**
+     * Adds a menu before "Help" menu
+     * @param newMenu
+     */
+    public void addMenu(JMenu newMenu) {
+    	remove(getComponentCount()-1);
+    	add(newMenu);
+    	add(getCustomHelpMenu());
+    }
 }
