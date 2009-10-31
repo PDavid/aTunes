@@ -29,9 +29,6 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -147,7 +144,7 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
         if (windowLocation != null) {
             setLocation(windowLocation);
         } else {
-            GuiUtils.setLocation(this);
+            setLocationRelativeTo(null);
         }
 
         // Mac OS -code
@@ -166,8 +163,6 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
         addWindowStateListener(getWindowStateListener());
         addWindowFocusListener(getWindowStateListener());
 
-        addComponentListener(getStandardWindowListener());
-
         // Create frame content
         setContentPane(getContentPanel());
 
@@ -183,24 +178,15 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
     private WindowAdapter getWindowStateListener() {
         if (fullFrameStateListener == null) {
             fullFrameStateListener = new WindowAdapter() {
-                @Override
-                public void windowGainedFocus(WindowEvent e) {
-                    logger.debug(LogCategories.DESKTOP, "Window Gained Focus");
-                }
-
-                @Override
-                public void windowLostFocus(WindowEvent e) {
-                    logger.debug(LogCategories.DESKTOP, "Window Focus Lost");
-                }
 
                 @Override
                 public void windowStateChanged(WindowEvent e) {
-                    if (e.getNewState() == java.awt.Frame.ICONIFIED) {
+                    if (e.getNewState() == Frame.ICONIFIED) {
                         if (ApplicationState.getInstance().isShowSystemTray()) {
                             StandardFrame.this.setVisible(false);
                         }
                         logger.debug(LogCategories.DESKTOP, "Window Iconified");
-                    } else if (e.getNewState() != java.awt.Frame.ICONIFIED) {
+                    } else if (e.getNewState() != Frame.ICONIFIED) {
                         logger.debug(LogCategories.DESKTOP, "Window Deiconified");
                         ControllerProxy.getInstance().getPlayListController().scrollPlayList(false);
                     }
@@ -208,29 +194,6 @@ public class StandardFrame extends CustomFrame implements net.sourceforge.atunes
             };
         }
         return fullFrameStateListener;
-    }
-
-    /**
-     * Gets the standard window listener.
-     * 
-     * @return the standard window listener
-     */
-    private ComponentListener getStandardWindowListener() {
-        final int minHeight = 410;
-        return new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                JFrame f = StandardFrame.this.getFrame();
-
-                if (StandardFrame.this.getPlayListPanel().getSize().width < StandardFrame.PLAY_LIST_PANEL_WIDTH) {
-                    f.setSize(f.getWidth() + (StandardFrame.PLAY_LIST_PANEL_WIDTH - StandardFrame.this.getPlayListPanel().getSize().width + 10), f.getHeight());
-                }
-
-                if (f.getHeight() < minHeight) {
-                    f.setSize(f.getWidth(), minHeight);
-                }
-            }
-        };
     }
 
     @Override
