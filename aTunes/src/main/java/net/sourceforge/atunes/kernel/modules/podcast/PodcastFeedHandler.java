@@ -64,6 +64,12 @@ public final class PodcastFeedHandler extends Handler {
     public static final long DEFAULT_PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL = 180000;
 
     private List<PodcastFeed> podcastFeeds;
+    
+    /**
+     * Flag indicating if podcast list needs to be written to disk
+     */
+    private boolean podcastFeedsDirty;
+    
     /**
      * Podcast Feed Entry downloading
      */
@@ -129,6 +135,7 @@ public final class PodcastFeedHandler extends Handler {
         if (!added) {
             getPodcastFeeds().add(podcastFeed);
         }
+        podcastFeedsDirty = true;
     }
 
     /**
@@ -144,7 +151,12 @@ public final class PodcastFeedHandler extends Handler {
             }
         }
         podcastFeedEntryDownloadCheckerExecutorService.shutdownNow();
-        ApplicationStateHandler.getInstance().persistPodcastFeedCache(getPodcastFeeds());
+        if (podcastFeedsDirty) {
+        	ApplicationStateHandler.getInstance().persistPodcastFeedCache(getPodcastFeeds());
+        } else {
+        	getLogger().info(LogCategories.PODCAST, "Podcast list is clean");
+        }
+        
     }
 
     @Override
@@ -188,6 +200,7 @@ public final class PodcastFeedHandler extends Handler {
     public void removePodcastFeed(PodcastFeed podcastFeed) {
         getLogger().info(LogCategories.HANDLER, "Removing podcast feed");
         getPodcastFeeds().remove(podcastFeed);
+        podcastFeedsDirty = true;
         NavigationHandler.getInstance().refreshView(PodcastNavigationView.class);
     }
 
