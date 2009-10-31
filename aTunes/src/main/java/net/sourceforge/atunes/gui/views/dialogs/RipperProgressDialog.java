@@ -79,7 +79,7 @@ public class RipperProgressDialog extends CustomFrame {
      * Instantiates a new ripper progress dialog.
      */
     public RipperProgressDialog(Component owner) {
-        super(I18nUtils.getString("RIPPING_CD"), 420, 180, owner);
+        super(I18nUtils.getString("RIPPING_CD"), 420, 200, owner);
         setResizable(false);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setContent();
