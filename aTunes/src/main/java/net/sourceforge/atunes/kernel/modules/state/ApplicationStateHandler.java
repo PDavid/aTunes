@@ -57,6 +57,7 @@ import net.sourceforge.atunes.kernel.modules.repository.AudioFilesRemovedListene
 import net.sourceforge.atunes.kernel.modules.repository.Repository;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.exception.InconsistentRepositoryException;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.Favorites;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.kernel.modules.statistics.Statistics;
@@ -654,6 +655,15 @@ public final class ApplicationStateHandler extends Handler implements AudioFiles
             Timer timer = new Timer();
             timer.start();
             Repository result = (Repository) ois.readObject();
+            // check repository integrity
+            if (result.getAudioFiles() == null ||
+            		result.getFolders() == null ||
+            		result.getStructure().getArtistStructure() == null ||
+            		result.getStructure().getFolderStructure() == null ||
+            		result.getStructure().getGenreStructure() == null) {
+            	throw new  InconsistentRepositoryException();
+            }
+            
             getLogger().info(LogCategories.HANDLER, StringUtils.getString("Reading repository cache done (", timer.stop(), " seconds)"));
             return result;
         } catch (InvalidClassException e) {

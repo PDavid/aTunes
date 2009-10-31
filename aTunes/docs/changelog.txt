@@ -34,6 +34,7 @@
 - FIX: Deleting many files from device freezes aTunes gui for some seconds [2855962]
 - FIX: LyricWiki engine returned lyrics with URLs
 - FIX: Opening web browser does not work on Ubuntu
+- FIX: Validate repository content when loading it (patch from Laurent Cathala)
 
 aTunes 1.13.5
 -------------
