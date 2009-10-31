@@ -155,4 +155,7 @@ public class LogCategories {
 
     /** The Constant CONTEXT. */
     public static final String CONTEXT = "CONTEXT     ";
+    
+    /** The Constant FAVORITES. */
+    public static final String FAVORITES = "FAVORITES   ";
 }
