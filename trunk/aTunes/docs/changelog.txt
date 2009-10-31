@@ -33,6 +33,7 @@
 - INTERNAL: Write repository to disk when closing application only if repository has been modified or refreshed
 - INTERNAL: Write favorites to disk when closing application only if favorites have been modified
 - INTERNAL: Write radio list to disk when closing application only if have been modified
+- INTERNAL: Write podcast list to disk when closing application only if have been modified
 - FIX: Deleting many files from device freezes aTunes gui for some seconds [2855962]
 - FIX: LyricWiki engine returned lyrics with URLs
 - FIX: Opening web browser does not work on Ubuntu
