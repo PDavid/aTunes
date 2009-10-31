@@ -45,7 +45,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The properties dialog for podcast feed entries.
  */
-class PodcastFeedEntryPropertiesDialog extends PropertiesDialog {
+final class PodcastFeedEntryPropertiesDialog extends PropertiesDialog {
 
     private static final long serialVersionUID = -2472573171771586037L;
 

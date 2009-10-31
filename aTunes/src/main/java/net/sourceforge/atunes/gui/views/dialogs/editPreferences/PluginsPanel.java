@@ -71,10 +71,7 @@ import org.commonjukebox.plugins.PluginProperty;
 import org.commonjukebox.plugins.PluginSystemException;
 import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
-/**
- * The Class PluginsPanel.
- */
-public class PluginsPanel extends PreferencesPanel {
+public final class PluginsPanel extends PreferencesPanel {
 
     private static final long serialVersionUID = 8611795969151425262L;
 

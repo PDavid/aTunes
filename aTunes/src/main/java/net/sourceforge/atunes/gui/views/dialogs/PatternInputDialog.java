@@ -62,7 +62,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * 
  * @author fleax
  */
-public class PatternInputDialog extends CustomModalDialog {
+public final class PatternInputDialog extends CustomModalDialog {
 
     private static final long serialVersionUID = -5789081662254435503L;
 

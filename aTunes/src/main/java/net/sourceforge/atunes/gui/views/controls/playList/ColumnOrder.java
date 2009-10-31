@@ -22,7 +22,7 @@ package net.sourceforge.atunes.gui.views.controls.playList;
 /**
  * The Class ColumnOrder.
  */
-public class ColumnOrder {
+public final class ColumnOrder {
 
     /** The order. */
     private static int order = 0;

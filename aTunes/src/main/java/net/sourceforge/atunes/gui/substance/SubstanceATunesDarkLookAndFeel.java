@@ -21,7 +21,7 @@ package net.sourceforge.atunes.gui.substance;
 
 import org.jvnet.substance.SubstanceLookAndFeel;
 
-public class SubstanceATunesDarkLookAndFeel extends SubstanceLookAndFeel {
+public final class SubstanceATunesDarkLookAndFeel extends SubstanceLookAndFeel {
 
     private static final long serialVersionUID = -3907225219153995877L;
 

@@ -29,11 +29,8 @@ import javax.swing.event.ChangeListener;
 
 import net.sourceforge.atunes.kernel.modules.player.Volume;
 
-public class VolumeSlider extends JSlider {
+public final class VolumeSlider extends JSlider {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = -7802263658163323018L;
 
     public VolumeSlider() {

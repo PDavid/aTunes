@@ -59,7 +59,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
-public class PlayerPanel extends PreferencesPanel {
+public final class PlayerPanel extends PreferencesPanel {
 
     class HotkeyTableModel extends AbstractTableModel {
 

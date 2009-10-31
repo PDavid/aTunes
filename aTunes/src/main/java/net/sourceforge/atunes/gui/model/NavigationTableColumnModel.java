@@ -25,20 +25,10 @@ import javax.swing.table.TableColumn;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 
-/**
- * The Class NavigationTableColumnModel.
- */
-public class NavigationTableColumnModel extends DefaultTableColumnModel {
+public final class NavigationTableColumnModel extends DefaultTableColumnModel {
 
     private static final long serialVersionUID = 1071222881574684439L;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * javax.swing.table.DefaultTableColumnModel#addColumn(javax.swing.table
-     * .TableColumn)
-     */
     @Override
     public void addColumn(TableColumn aColumn) {
         super.addColumn(aColumn);

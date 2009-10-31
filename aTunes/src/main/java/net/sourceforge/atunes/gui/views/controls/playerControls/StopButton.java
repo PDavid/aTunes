@@ -37,7 +37,7 @@ import org.jvnet.substance.SubstanceLookAndFeel;
 /**
  * The Class StopButton.
  */
-public class StopButton extends JButton {
+public final class StopButton extends JButton {
 
     private static final long serialVersionUID = 6007885049773560874L;
 

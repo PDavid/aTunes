@@ -47,7 +47,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * 
  * @author sylvain
  */
-public class EqualizerDialog extends CustomModalFrame {
+public final class EqualizerDialog extends CustomModalFrame {
 
     private static final long serialVersionUID = 7295438534550341824L;
 

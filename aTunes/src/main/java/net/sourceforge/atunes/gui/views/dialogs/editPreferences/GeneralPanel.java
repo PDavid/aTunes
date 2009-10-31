@@ -60,7 +60,7 @@ import org.jvnet.substance.api.renderers.SubstanceDefaultListCellRenderer;
 /**
  * The preferences panel for general settings.
  */
-public class GeneralPanel extends PreferencesPanel {
+public final class GeneralPanel extends PreferencesPanel {
 
     private static final long serialVersionUID = -9216216930198145476L;
 

@@ -33,7 +33,7 @@ import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class PodcastFeedPanel extends PreferencesPanel {
+public final class PodcastFeedPanel extends PreferencesPanel {
 
     private static final long serialVersionUID = -1298749333908609956L;
 

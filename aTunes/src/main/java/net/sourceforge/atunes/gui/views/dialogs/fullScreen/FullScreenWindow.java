@@ -83,10 +83,7 @@ import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-/**
- * The Class FullScreenWindow.
- */
-public class FullScreenWindow extends CustomWindow {
+public final class FullScreenWindow extends CustomWindow {
 
     private static final long serialVersionUID = 3422799994808333945L;
 

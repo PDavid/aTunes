@@ -43,7 +43,7 @@ import org.jdesktop.swingx.JXTreeTable;
 /**
  * The Class RadioBrowserDialog.
  */
-public class RadioBrowserDialog extends CustomFrame {
+public final class RadioBrowserDialog extends CustomFrame {
 
     private static final long serialVersionUID = 8523236886848649698L;
 

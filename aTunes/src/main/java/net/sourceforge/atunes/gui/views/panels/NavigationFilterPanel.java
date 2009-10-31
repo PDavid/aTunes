@@ -40,7 +40,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 /**
  * Filter panel class for navigator: to use for trees and table
  */
-public class NavigationFilterPanel extends JPanel {
+public final class NavigationFilterPanel extends JPanel {
 
     /**
 	 * 

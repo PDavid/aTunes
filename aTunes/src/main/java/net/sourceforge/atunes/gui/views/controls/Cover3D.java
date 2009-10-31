@@ -36,7 +36,7 @@ import com.jhlabs.image.PerspectiveFilter;
 /**
  * A three dimensional cover.
  */
-public class Cover3D extends JPanel {
+public final class Cover3D extends JPanel {
 
     private static final long serialVersionUID = -3836270786764203330L;
 

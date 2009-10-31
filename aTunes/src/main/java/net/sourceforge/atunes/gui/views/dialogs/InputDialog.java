@@ -40,7 +40,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 /**
  * The Class InputDialog.
  */
-public class InputDialog extends CustomModalDialog {
+public final class InputDialog extends CustomModalDialog {
 
     private static final long serialVersionUID = -5789081662254435503L;
 

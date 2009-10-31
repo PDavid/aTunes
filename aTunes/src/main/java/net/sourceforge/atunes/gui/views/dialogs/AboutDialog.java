@@ -58,10 +58,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
-/**
- * The Class AboutDialog.
- */
-public class AboutDialog extends CustomModalDialog {
+public final class AboutDialog extends CustomModalDialog {
 
     /*
      * Static attributes with inmutable data to be shown in properties table

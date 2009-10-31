@@ -33,10 +33,7 @@ import org.jvnet.substance.SubstanceLookAndFeel;
 /*
  * based on code from Xtreme Media Player
  */
-/**
- * The Class KaraokeButton.
- */
-public class KaraokeButton extends JToggleButton {
+public final class KaraokeButton extends JToggleButton {
 
     private static final long serialVersionUID = 6007885049773560874L;
 

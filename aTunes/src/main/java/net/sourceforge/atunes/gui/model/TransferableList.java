@@ -27,10 +27,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.misc.log.Logger;
 
-/**
- * The Class TransferableList.
- */
-public class TransferableList<T> implements Transferable {
+public final class TransferableList<T> implements Transferable {
 
     /** The logger. */
     private static Logger logger = new Logger();

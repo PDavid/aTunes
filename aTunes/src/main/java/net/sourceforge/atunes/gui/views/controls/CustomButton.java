@@ -25,10 +25,7 @@ import javax.swing.JButton;
 
 import net.sourceforge.atunes.gui.Fonts;
 
-/**
- * The Class CustomButton.
- */
-public class CustomButton extends JButton {
+public final class CustomButton extends JButton {
 
     private static final long serialVersionUID = 1L;
 

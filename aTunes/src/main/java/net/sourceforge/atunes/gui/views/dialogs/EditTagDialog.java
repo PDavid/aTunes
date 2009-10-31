@@ -54,7 +54,7 @@ import org.jvnet.substance.api.SubstanceConstants.FocusKind;
 /**
  * The dialog for tag editing
  */
-public class EditTagDialog extends CustomModalDialog {
+public final class EditTagDialog extends CustomModalDialog {
 
     private static final long serialVersionUID = 3395292301087643037L;
 

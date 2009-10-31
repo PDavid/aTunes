@@ -31,10 +31,7 @@ import org.jvnet.substance.SubstanceLookAndFeel;
 /*
  * based on code from Xtreme Media Player
  */
-/**
- * The Class ShuffleButton.
- */
-public class ShuffleButton extends JToggleButton {
+public final class ShuffleButton extends JToggleButton {
 
     private static final long serialVersionUID = 6007885049773560874L;
 

@@ -40,7 +40,7 @@ import javax.swing.event.PopupMenuListener;
 /**
  * Tray icon with a Swing popup menu.
  */
-public class JTrayIcon extends TrayIcon {
+public final class JTrayIcon extends TrayIcon {
 
     /**
      * This special JPopupMenu prevents the user from removing the popup menu

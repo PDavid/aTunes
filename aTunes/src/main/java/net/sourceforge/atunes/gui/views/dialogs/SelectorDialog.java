@@ -43,7 +43,7 @@ import net.sourceforge.atunes.utils.GuiUtils;
 /**
  * This is the dialog shown to select values.
  */
-public class SelectorDialog extends JDialog {
+public final class SelectorDialog extends JDialog {
 
     private static final long serialVersionUID = 8846024391499257859L;
 

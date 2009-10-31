@@ -67,7 +67,7 @@ import org.jvnet.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
  * The Class MultiFolderSelectionDialog. Allows the selection of the repository
  * folders.
  */
-public class MultiFolderSelectionDialog extends CustomModalDialog {
+public final class MultiFolderSelectionDialog extends CustomModalDialog {
 
     /**
      * Width of a check box. This is used to calculate if user pressed mouse

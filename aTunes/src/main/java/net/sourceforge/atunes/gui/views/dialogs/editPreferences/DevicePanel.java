@@ -46,7 +46,7 @@ import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class DevicePanel extends PreferencesPanel {
+public final class DevicePanel extends PreferencesPanel {
 
     private static final long serialVersionUID = 3331810461314007217L;
 

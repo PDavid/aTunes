@@ -50,7 +50,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * 
  * @author fleax
  */
-public class ExportOptionsDialog extends CustomModalDialog {
+public final class ExportOptionsDialog extends CustomModalDialog {
 
     private static final long serialVersionUID = 4403091324599627762L;
 

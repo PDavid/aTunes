@@ -58,7 +58,7 @@ import org.jdesktop.swingx.JXTreeTable;
 /**
  * The Class ReviewImportDialog.
  */
-public class ReviewImportDialog extends CustomModalDialog {
+public final class ReviewImportDialog extends CustomModalDialog {
 
     private static final long serialVersionUID = 8523236886848649698L;
 

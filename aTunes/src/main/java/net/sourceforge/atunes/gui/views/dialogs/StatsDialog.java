@@ -41,7 +41,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The Class StatsDialog.
  */
-public class StatsDialog extends CustomFrame {
+public final class StatsDialog extends CustomFrame {
 
     private static final long serialVersionUID = -7822497871738495670L;
 

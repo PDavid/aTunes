@@ -31,7 +31,7 @@ import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
 /**
  * A factory for creating FadingPopup objects.
  */
-public class FadingPopupFactory extends PopupFactory {
+public final class FadingPopupFactory extends PopupFactory {
 
     /** The popup factory. */
     private static PopupFactory popupFactory;

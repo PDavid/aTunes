@@ -60,7 +60,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
-public class ContextPanel extends PreferencesPanel {
+public final class ContextPanel extends PreferencesPanel {
 
     private class LyricsEnginesTableModel implements TableModel {
 

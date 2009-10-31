@@ -50,7 +50,7 @@ import net.sourceforge.atunes.kernel.modules.state.beans.FontBean;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class FontChooserDialog extends CustomModalDialog {
+public final class FontChooserDialog extends CustomModalDialog {
 
     public static class FontSettings {
 

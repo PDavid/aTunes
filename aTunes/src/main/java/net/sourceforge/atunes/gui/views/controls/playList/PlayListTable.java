@@ -59,7 +59,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 /**
  * The play list table.
  */
-public class PlayListTable extends JTable implements DragSourceListener, DragGestureListener, AudioObjectsSource {
+public final class PlayListTable extends JTable implements DragSourceListener, DragGestureListener, AudioObjectsSource {
 
     /**
      * The play state of the playlist.

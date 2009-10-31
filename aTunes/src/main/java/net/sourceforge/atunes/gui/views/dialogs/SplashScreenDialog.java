@@ -38,7 +38,7 @@ import org.jvnet.substance.SubstanceLookAndFeel;
 /**
  * The Class SplashScreenDialog.
  */
-public class SplashScreenDialog extends CustomWindow {
+public final class SplashScreenDialog extends CustomWindow {
 
     private static final long serialVersionUID = -7279259267018738903L;
 

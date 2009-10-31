@@ -36,7 +36,7 @@ import net.sourceforge.atunes.model.AudioObject;
  * 
  * @author fleax
  */
-public class NavigationTableModel implements TableModel {
+public final class NavigationTableModel implements TableModel {
 
     /**
      * Enum for properties

@@ -28,7 +28,7 @@ import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class PlayListPrefPanel extends PreferencesPanel {
+public final class PlayListPrefPanel extends PreferencesPanel {
 
     private static final long serialVersionUID = -7814272907267661918L;
 

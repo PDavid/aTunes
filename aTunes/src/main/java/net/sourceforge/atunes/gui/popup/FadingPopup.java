@@ -34,7 +34,7 @@ import org.jvnet.lafwidget.utils.ShadowPopupBorder;
 /**
  * Based on a fading popup with shadow border by Kirill Grouchnikov.
  */
-class FadingPopup extends Popup {
+final class FadingPopup extends Popup {
 
     JWindow popupWindow;
     int currOpacity;

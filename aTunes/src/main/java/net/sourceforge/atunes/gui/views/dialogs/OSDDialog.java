@@ -38,7 +38,7 @@ import org.jdesktop.swingx.border.DropShadowBorder;
 /**
  * The Class OSDDialog.
  */
-public class OSDDialog extends CustomWindow {
+public final class OSDDialog extends CustomWindow {
 
     private static final long serialVersionUID = 8991547440913162267L;
     private static final int IMAGE_SIZE = 80;

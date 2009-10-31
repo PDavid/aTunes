@@ -45,7 +45,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * http://weblogs.java.net/blog/alexfromsun/archive/2005/11/tabcomponents_i_1.
  * html
  */
-public class ButtonTabComponent extends JPanel {
+public final class ButtonTabComponent extends JPanel {
 
     /**
      * The Class TabButton.

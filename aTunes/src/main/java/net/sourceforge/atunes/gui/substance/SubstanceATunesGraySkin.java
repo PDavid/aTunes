@@ -37,7 +37,7 @@ import org.jvnet.substance.watermark.SubstanceNullWatermark;
 /**
  * The Class SubstanceATunesSkin.
  */
-public class SubstanceATunesGraySkin extends SubstanceSkin {
+public final class SubstanceATunesGraySkin extends SubstanceSkin {
 
     static class GrayColorScheme extends BaseDarkColorScheme {
 

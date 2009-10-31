@@ -60,9 +60,9 @@ import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
- * The multiple winfow frame
+ * The multiple window frame
  */
-public class MultipleFrame implements Frame {
+public final class MultipleFrame implements Frame {
 
     private static final int STICKY_INSET = 30;
 
@@ -370,7 +370,7 @@ public class MultipleFrame implements Frame {
     @Override
     public JProgressBar getProgressBar() {
         // Nothing to do
-    	return null;
+        return null;
     }
 
     @Override

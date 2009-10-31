@@ -33,10 +33,7 @@ import org.jvnet.substance.painter.gradient.GlassGradientPainter;
 import org.jvnet.substance.painter.highlight.ClassicHighlightPainter;
 import org.jvnet.substance.shaper.ClassicButtonShaper;
 
-/**
- * The Class SubstanceATunesSkin.
- */
-public class SubstanceATunesBlueSkin extends SubstanceSkin {
+public final class SubstanceATunesBlueSkin extends SubstanceSkin {
 
     static class BlueColorScheme extends BaseLightColorScheme {
 

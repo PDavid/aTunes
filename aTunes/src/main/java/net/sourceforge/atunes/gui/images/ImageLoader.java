@@ -32,7 +32,7 @@ import net.sourceforge.atunes.misc.SystemProperties;
  * 
  * @author fleax
  */
-public class ImageLoader {
+public final class ImageLoader {
 
     // Every time a image is added, an attribute must be added
     public static final String ADD = "add.png";

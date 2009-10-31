@@ -72,7 +72,7 @@ import org.jdesktop.swingx.JXStatusBar;
 /**
  * The standard frame
  */
-public class StandardFrame extends CustomFrame implements net.sourceforge.atunes.gui.frame.Frame {
+public final class StandardFrame extends CustomFrame implements net.sourceforge.atunes.gui.frame.Frame {
 
     private static final long serialVersionUID = 1L;
 

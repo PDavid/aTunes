@@ -34,7 +34,7 @@ import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
  * 
  * @author fleax
  */
-public class PlayListPanel extends JPanel {
+public final class PlayListPanel extends JPanel {
 
     private static final long serialVersionUID = -1886323054505118303L;
 

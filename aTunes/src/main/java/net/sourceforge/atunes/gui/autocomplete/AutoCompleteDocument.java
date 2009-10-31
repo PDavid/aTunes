@@ -32,7 +32,7 @@ import org.jdesktop.swingx.autocomplete.ObjectToStringConverter;
  * completion. It finds and selects matching items using any implementation of
  * the AbstractAutoCompleteAdaptor.
  */
-public class AutoCompleteDocument extends PlainDocument {
+public final class AutoCompleteDocument extends PlainDocument {
 
     private static final long serialVersionUID = -4353609211147483101L;
 

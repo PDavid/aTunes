@@ -40,7 +40,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 /**
  * The Class RepositorySelectionInfoDialog.
  */
-public class RepositorySelectionInfoDialog extends CustomModalDialog {
+public final class RepositorySelectionInfoDialog extends CustomModalDialog {
 
     private static final long serialVersionUID = 4369595555397951445L;
 

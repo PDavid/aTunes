@@ -31,10 +31,7 @@ import org.jvnet.substance.SubstanceLookAndFeel;
 /*
  * based on code from Xtreme Media Player
  */
-/**
- * The Class RepeatButton.
- */
-public class RepeatButton extends JToggleButton {
+public final class RepeatButton extends JToggleButton {
 
     private static final long serialVersionUID = 6007885049773560874L;
 

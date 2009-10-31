@@ -44,7 +44,7 @@ import org.jvnet.substance.api.renderers.SubstanceDefaultListCellRenderer;
 /**
  * General characteristics of the preference dialog
  */
-public class EditPreferencesDialog extends CustomModalDialog {
+public final class EditPreferencesDialog extends CustomModalDialog {
 
     private static final long serialVersionUID = -4759149194433605946L;
 

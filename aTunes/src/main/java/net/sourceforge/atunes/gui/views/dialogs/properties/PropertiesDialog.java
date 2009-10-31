@@ -33,9 +33,6 @@ import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.StringUtils;
 
-/**
- * The Class PropertiesDialog.
- */
 public class PropertiesDialog extends CustomDialog {
 
     private static final long serialVersionUID = 6097305595858691246L;

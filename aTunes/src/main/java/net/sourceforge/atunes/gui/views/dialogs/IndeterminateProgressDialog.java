@@ -42,7 +42,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * 
  * @author fleax
  */
-public class IndeterminateProgressDialog extends CustomModalDialog {
+public final class IndeterminateProgressDialog extends CustomModalDialog {
 
     private static final long serialVersionUID = -3071934230042256578L;
 

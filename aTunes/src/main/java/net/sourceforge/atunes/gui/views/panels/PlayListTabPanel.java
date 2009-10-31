@@ -49,7 +49,7 @@ import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class PlayListTabPanel extends JPanel {
+public final class PlayListTabPanel extends JPanel {
 
     public class TabReorderer extends MouseInputAdapter {
 

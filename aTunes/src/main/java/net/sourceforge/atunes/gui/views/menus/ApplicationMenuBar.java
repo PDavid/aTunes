@@ -91,7 +91,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 /**
  * The Class ApplicationMenuBar.
  */
-public class ApplicationMenuBar extends JMenuBar {
+public final class ApplicationMenuBar extends JMenuBar {
 
     private static final long serialVersionUID = 234977404080329591L;
 

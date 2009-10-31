@@ -25,7 +25,7 @@ package net.sourceforge.atunes.gui.views.controls.playList;
  * 
  * @author alex
  */
-public class ColumnBean {
+public final class ColumnBean {
 
     /** The order. */
     private int order;

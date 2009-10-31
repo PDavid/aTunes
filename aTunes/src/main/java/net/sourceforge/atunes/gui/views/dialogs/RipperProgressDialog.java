@@ -44,7 +44,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public class RipperProgressDialog extends CustomFrame {
+public final class RipperProgressDialog extends CustomFrame {
 
     private static final long serialVersionUID = -3891515847607545757L;
 

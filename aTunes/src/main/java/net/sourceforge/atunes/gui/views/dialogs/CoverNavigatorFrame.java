@@ -42,7 +42,7 @@ import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class CoverNavigatorFrame extends CustomFrame {
+public final class CoverNavigatorFrame extends CustomFrame {
 
     private static final long serialVersionUID = -1744765531225480303L;
 

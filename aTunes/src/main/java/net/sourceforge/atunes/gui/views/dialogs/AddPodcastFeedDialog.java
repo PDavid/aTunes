@@ -41,7 +41,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 /**
  * The Class AddPodcastFeedDialog.
  */
-public class AddPodcastFeedDialog extends CustomModalDialog {
+public final class AddPodcastFeedDialog extends CustomModalDialog {
 
     private static final long serialVersionUID = 7295438534550341824L;
 

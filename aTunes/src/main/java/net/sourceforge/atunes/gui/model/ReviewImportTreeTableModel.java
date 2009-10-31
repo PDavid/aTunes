@@ -38,7 +38,7 @@ import org.jdesktop.swingx.treetable.DefaultMutableTreeTableNode;
 /**
  * The Class ReviewImportTreeTableModel.
  */
-public class ReviewImportTreeTableModel extends AbstractTreeTableModel {
+public final class ReviewImportTreeTableModel extends AbstractTreeTableModel {
 
     private static final long serialVersionUID = 1997644065009669746L;
 

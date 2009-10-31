@@ -45,7 +45,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public class ImportExportPanel extends PreferencesPanel {
+public final class ImportExportPanel extends PreferencesPanel {
 
     private static final long serialVersionUID = 3331810461314007217L;
 

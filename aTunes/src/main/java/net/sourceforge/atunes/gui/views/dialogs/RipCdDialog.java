@@ -54,7 +54,7 @@ import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 /**
  * The dialog for ripping cds
  */
-public class RipCdDialog extends CustomModalDialog {
+public final class RipCdDialog extends CustomModalDialog {
 
     /**
      * The model for cd info

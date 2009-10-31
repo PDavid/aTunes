@@ -34,7 +34,7 @@ import net.sourceforge.atunes.kernel.actions.ShowContextAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowStatsAction;
 
-public class ToolBar extends JToolBar {
+public final class ToolBar extends JToolBar {
 
     private static final long serialVersionUID = 3146746580753998589L;
 
