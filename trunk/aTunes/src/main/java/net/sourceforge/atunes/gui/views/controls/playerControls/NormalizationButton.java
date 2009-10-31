@@ -33,10 +33,7 @@ import org.jvnet.substance.SubstanceLookAndFeel;
 /*
  * based on code from Xtreme Media Player
  */
-/**
- * The Class NormalizeButton.
- */
-public class NormalizationButton extends JToggleButton {
+public final class NormalizationButton extends JToggleButton {
 
     private static final long serialVersionUID = 6007885049773560874L;
 

@@ -38,7 +38,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 /**
  * The preferences panel for Last.fm settings.
  */
-public class LastFmPanel extends PreferencesPanel {
+public final class LastFmPanel extends PreferencesPanel {
 
     private static final long serialVersionUID = -9216216930198145476L;
 

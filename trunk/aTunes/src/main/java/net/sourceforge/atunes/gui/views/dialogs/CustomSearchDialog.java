@@ -44,7 +44,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 /**
  * The Class CustomSearchDialog.
  */
-public class CustomSearchDialog extends CustomDialog {
+public final class CustomSearchDialog extends CustomDialog {
 
     private static final long serialVersionUID = -7447583622785097610L;
 

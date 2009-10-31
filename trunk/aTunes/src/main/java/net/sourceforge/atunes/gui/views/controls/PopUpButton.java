@@ -39,7 +39,7 @@ import net.sourceforge.atunes.utils.GuiUtils;
  * 
  * @author fleax
  */
-public class PopUpButton extends JButton {
+public final class PopUpButton extends JButton {
 
     private static final long serialVersionUID = 5193978267971626102L;
 

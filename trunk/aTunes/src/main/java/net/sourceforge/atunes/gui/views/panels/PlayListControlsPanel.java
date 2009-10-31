@@ -55,7 +55,7 @@ import net.sourceforge.atunes.utils.GuiUtils;
 /**
  * The Class PlayListControlsPanel.
  */
-public class PlayListControlsPanel extends JPanel {
+public final class PlayListControlsPanel extends JPanel {
 
     private static final long serialVersionUID = -1966827894270243002L;
 

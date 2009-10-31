@@ -34,7 +34,7 @@ import org.jdesktop.swingx.treetable.DefaultMutableTreeTableNode;
 /**
  * The Class RadioBrowserTableModel.
  */
-public class RadioBrowserTreeTableModel extends AbstractTreeTableModel {
+public final class RadioBrowserTreeTableModel extends AbstractTreeTableModel {
 
     private static final long serialVersionUID = 1997644065009669746L;
 

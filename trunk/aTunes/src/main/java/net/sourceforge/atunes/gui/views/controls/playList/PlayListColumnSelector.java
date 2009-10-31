@@ -52,7 +52,7 @@ import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 /**
  * The selector for play list columns.
  */
-public class PlayListColumnSelector extends CustomModalDialog {
+public final class PlayListColumnSelector extends CustomModalDialog {
 
     private class ColumnsTableModel implements TableModel {
 

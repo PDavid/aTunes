@@ -45,11 +45,8 @@ import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 
-public class CoverFlow extends JPanel {
+public final class CoverFlow extends JPanel {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = -5982158797052430789L;
 
     static Logger logger = new Logger();

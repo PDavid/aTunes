@@ -60,7 +60,7 @@ import org.jvnet.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
 /**
  * The Class FileSelectionDialog.
  */
-public class FileSelectionDialog extends CustomModalDialog {
+public final class FileSelectionDialog extends CustomModalDialog {
 
     /**
      * The Class Directory.

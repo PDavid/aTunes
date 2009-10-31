@@ -33,7 +33,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 /**
  * The Class PlayListFilterPanel.
  */
-public class PlayListFilterPanel extends JPanel {
+public final class PlayListFilterPanel extends JPanel {
 
     private static final long serialVersionUID = 795619869506188088L;
 

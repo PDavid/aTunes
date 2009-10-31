@@ -31,7 +31,7 @@ import net.sourceforge.atunes.Constants;
  * >https://substance.dev.java.net/servlets/ProjectForumMessageView?messageID=
  * 22522&forumID=1484</a>
  */
-public class SubstanceContextImageJTable extends JTable {
+public final class SubstanceContextImageJTable extends JTable {
 
     private static final long serialVersionUID = 339974237840854168L;
 

@@ -45,7 +45,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The properties dialog for audio files
  */
-class AudioFilePropertiesDialog extends PropertiesDialog {
+final class AudioFilePropertiesDialog extends PropertiesDialog {
 
     private static final long serialVersionUID = 7504320983331038543L;
 

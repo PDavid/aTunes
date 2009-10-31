@@ -35,7 +35,7 @@ import net.sourceforge.atunes.kernel.actions.ClearTagAction;
 import net.sourceforge.atunes.kernel.actions.EditTagAction;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class EditTagMenu extends JMenu {
+public final class EditTagMenu extends JMenu {
 
     private static final long serialVersionUID = -8235925186759302907L;
 

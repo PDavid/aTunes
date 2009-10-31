@@ -35,7 +35,7 @@ import javax.swing.table.TableModel;
 
 import net.sourceforge.atunes.gui.model.TransferableList;
 
-public class NavigationTable extends JTable implements DragSourceListener, DragGestureListener {
+public final class NavigationTable extends JTable implements DragSourceListener, DragGestureListener {
 
     private static final long serialVersionUID = -607346309523708685L;
 

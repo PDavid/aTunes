@@ -36,7 +36,7 @@ import net.sourceforge.atunes.gui.Fonts;
 /**
  * The audio object properties panel.
  */
-public class AudioObjectPropertiesPanel extends JPanel {
+public final class AudioObjectPropertiesPanel extends JPanel {
 
     private static final long serialVersionUID = 6097305595858691246L;
 

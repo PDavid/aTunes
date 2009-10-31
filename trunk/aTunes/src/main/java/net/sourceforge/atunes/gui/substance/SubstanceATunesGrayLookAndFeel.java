@@ -24,7 +24,7 @@ import org.jvnet.substance.SubstanceLookAndFeel;
 /**
  * The Class SubstanceATunesLookAndFeel.
  */
-public class SubstanceATunesGrayLookAndFeel extends SubstanceLookAndFeel {
+public final class SubstanceATunesGrayLookAndFeel extends SubstanceLookAndFeel {
 
     private static final long serialVersionUID = -3907225219153995877L;
 

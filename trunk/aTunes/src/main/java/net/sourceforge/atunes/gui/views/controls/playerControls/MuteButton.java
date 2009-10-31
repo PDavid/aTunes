@@ -32,10 +32,7 @@ import org.jvnet.substance.SubstanceLookAndFeel;
 /*
  * based on code from Xtreme Media Player
  */
-/**
- * The Class MuteButton.
- */
-public class MuteButton extends JToggleButton {
+public final class MuteButton extends JToggleButton {
 
     private static final long serialVersionUID = 6007885049773560874L;
 

@@ -31,8 +31,7 @@ import javax.swing.AbstractButton;
 /*
  * based on code from Xtreme Media Player
  */
-
-public class LeftConcaveButtonShaper extends ButtonShaper {
+public final class LeftConcaveButtonShaper extends ButtonShaper {
 
     private int concaveDiameter;
 

@@ -41,7 +41,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 /**
  * The Class AddRadioDialog.
  */
-public class AddRadioDialog extends CustomModalDialog {
+public final class AddRadioDialog extends CustomModalDialog {
 
     private static final long serialVersionUID = 7295438534550341824L;
 

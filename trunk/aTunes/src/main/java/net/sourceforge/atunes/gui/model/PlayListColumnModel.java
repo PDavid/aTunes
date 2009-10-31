@@ -40,7 +40,7 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListTableModel;
 /**
  * The Class PlayListColumnModel.
  */
-public class PlayListColumnModel extends DefaultTableColumnModel {
+public final class PlayListColumnModel extends DefaultTableColumnModel {
 
     private static final long serialVersionUID = -2211160302611944001L;
 

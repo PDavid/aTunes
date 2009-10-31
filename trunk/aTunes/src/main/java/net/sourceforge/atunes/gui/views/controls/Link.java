@@ -28,7 +28,7 @@ import net.sourceforge.atunes.utils.DesktopUtils;
 /**
  * A link for url labels
  */
-class Link extends AbstractAction {
+final class Link extends AbstractAction {
 
     private static final long serialVersionUID = -3784927498125973809L;
 

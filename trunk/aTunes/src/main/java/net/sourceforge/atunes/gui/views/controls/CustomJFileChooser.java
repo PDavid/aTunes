@@ -38,7 +38,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 /**
  * A custom file chooser with text field and button that opens the chooser.
  */
-public class CustomJFileChooser extends JPanel {
+public final class CustomJFileChooser extends JPanel {
 
     private static final long serialVersionUID = 4713483251093570020L;
 

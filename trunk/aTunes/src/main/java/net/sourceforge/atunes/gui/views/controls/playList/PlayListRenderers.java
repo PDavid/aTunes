@@ -42,7 +42,7 @@ import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 /**
  * The Class PlayListRenderers.
  */
-public class PlayListRenderers {
+public final class PlayListRenderers {
 
     /**
      * Add renderers to PlayList.

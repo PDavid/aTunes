@@ -39,9 +39,6 @@ import net.sourceforge.atunes.gui.views.controls.CustomFrame;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-/**
- * The Class ProgressDialog.
- */
 public class ProgressDialog extends CustomFrame {
 
     private static final long serialVersionUID = 5792663290880992661L;

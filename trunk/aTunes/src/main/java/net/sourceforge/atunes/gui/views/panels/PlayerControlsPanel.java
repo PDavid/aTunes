@@ -52,7 +52,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 /**
  * The Class PlayerControlsPanel.
  */
-public class PlayerControlsPanel extends JPanel {
+public final class PlayerControlsPanel extends JPanel {
 
     private static final long serialVersionUID = -8647737014195638177L;
 

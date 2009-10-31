@@ -48,7 +48,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * 
  * @author fleax
  */
-public class RepositoryProgressDialog extends CustomModalDialog {
+public final class RepositoryProgressDialog extends CustomModalDialog {
 
     private static final long serialVersionUID = -3071934230042256578L;
 
@@ -78,7 +78,7 @@ public class RepositoryProgressDialog extends CustomModalDialog {
 
     /** The cancel button. */
     private JButton cancelButton;
-    
+
     /** The background button */
     private JButton backgroundButton;
 
@@ -168,11 +168,11 @@ public class RepositoryProgressDialog extends CustomModalDialog {
         remainingTimeLabel = new JLabel(" ");
         backgroundButton = new CustomButton(null, I18nUtils.getString("DO_IN_BACKGROUND"));
         backgroundButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				RepositoryHandler.getInstance().doInBackground();
-			}
-		});
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                RepositoryHandler.getInstance().doInBackground();
+            }
+        });
         cancelButton = new CustomButton(null, I18nUtils.getString("CANCEL"));
         cancelButton.addActionListener(new ActionListener() {
             @Override
@@ -292,7 +292,7 @@ public class RepositoryProgressDialog extends CustomModalDialog {
      * Enable buttons
      * 
      * @param enabled
-     *           
+     * 
      */
     public void setButtonsEnabled(boolean enabled) {
         cancelButton.setEnabled(enabled);
@@ -303,7 +303,7 @@ public class RepositoryProgressDialog extends CustomModalDialog {
      * Show buttons
      * 
      * @param visible
-     *            
+     * 
      */
     public void setButtonsVisible(boolean visible) {
         cancelButton.setVisible(visible);
@@ -322,17 +322,17 @@ public class RepositoryProgressDialog extends CustomModalDialog {
     }
 
     public void showProgressDialog() {
-    	setTitle(I18nUtils.getString("PLEASE_WAIT"));
+        setTitle(I18nUtils.getString("PLEASE_WAIT"));
         setVisible(true);
         activateGlassPane();
         setButtonsVisible(true);
         setButtonsEnabled(true);
     }
-    
+
     public void hideProgressDialog() {
-		setVisible(false);
-		deactivateGlassPane();
-//		setButtonsVisible(false);
-//		setButtonsEnabled(true);
+        setVisible(false);
+        deactivateGlassPane();
+        //		setButtonsVisible(false);
+        //		setButtonsEnabled(true);
     }
 }

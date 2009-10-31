@@ -42,7 +42,7 @@ import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 /**
  * The search results dialog.
  */
-public class SearchResultsDialog extends CustomDialog {
+public final class SearchResultsDialog extends CustomDialog {
 
     private static final long serialVersionUID = 7219089044964361102L;
 

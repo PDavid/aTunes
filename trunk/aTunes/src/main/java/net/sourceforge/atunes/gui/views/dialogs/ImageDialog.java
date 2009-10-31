@@ -43,8 +43,8 @@ import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -52,7 +52,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * 
  * @author fleax
  */
-public class ImageDialog extends CustomFrame {
+public final class ImageDialog extends CustomFrame {
 
     private static final long serialVersionUID = -5163960681035103913L;
 

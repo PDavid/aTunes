@@ -39,7 +39,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The properties dialog for radios.
  */
-class RadioPropertiesDialog extends PropertiesDialog {
+final class RadioPropertiesDialog extends PropertiesDialog {
 
     private static final long serialVersionUID = -73744354419152730L;
     private JLabel pictureLabel;

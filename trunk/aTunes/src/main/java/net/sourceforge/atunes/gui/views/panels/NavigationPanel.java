@@ -46,7 +46,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
-public class NavigationPanel extends JPanel {
+public final class NavigationPanel extends JPanel {
 
     private static final long serialVersionUID = -2900418193013495812L;
 

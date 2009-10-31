@@ -29,7 +29,7 @@ import javax.swing.AbstractButton;
 /*
  * based on code from Xtreme Media Player
  */
-public class CircleButtonShaper extends ButtonShaper {
+public final class CircleButtonShaper extends ButtonShaper {
 
     @Override
     public String getDisplayName() {

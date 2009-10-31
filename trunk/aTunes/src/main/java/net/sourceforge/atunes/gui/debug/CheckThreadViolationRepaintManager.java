@@ -49,7 +49,7 @@ import javax.swing.SwingUtilities;
  * 
  *         https://swinghelper.dev.java.net/
  */
-public class CheckThreadViolationRepaintManager extends RepaintManager {
+public final class CheckThreadViolationRepaintManager extends RepaintManager {
 
     /** The test. */
     static JButton test;

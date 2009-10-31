@@ -37,10 +37,7 @@ import org.jvnet.substance.SubstanceLookAndFeel;
 /*
  * based on code from Xtreme Media Player
  */
-/**
- * The Class NextButton.
- */
-public class NextButton extends JButton {
+public final class NextButton extends JButton {
 
     private static final long serialVersionUID = -4939372038840047335L;
 

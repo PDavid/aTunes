@@ -7,13 +7,14 @@ import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import org.commonjukebox.plugins.PluginApi;
 
 @PluginApi
-public class PlayerControlsApi {
+public final class PlayerControlsApi {
 
-	/**
-	 * Adds a secondary button in player controls
-	 * @param button
-	 */
-	public static final void addSecondaryControl(JToggleButton button) {
-		VisualHandler.getInstance().getPlayerControls().addSecondaryControl(button);
-	}
+    /**
+     * Adds a secondary button in player controls
+     * 
+     * @param button
+     */
+    public static void addSecondaryControl(JToggleButton button) {
+        VisualHandler.getInstance().getPlayerControls().addSecondaryControl(button);
+    }
 }

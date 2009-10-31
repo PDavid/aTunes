@@ -37,7 +37,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 /**
  * The Class EditTitlesDialog.
  */
-public class EditTitlesDialog extends CustomModalDialog {
+public final class EditTitlesDialog extends CustomModalDialog {
 
     private static final long serialVersionUID = -7937735545263913179L;
 

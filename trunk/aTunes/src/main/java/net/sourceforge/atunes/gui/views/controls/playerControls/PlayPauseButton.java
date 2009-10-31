@@ -34,10 +34,7 @@ import org.jvnet.substance.SubstanceLookAndFeel;
 /*
  * based on code from Xtreme Media Player
  */
-/**
- * The Class PlayPauseButton.
- */
-public class PlayPauseButton extends JButton {
+public final class PlayPauseButton extends JButton {
 
     private static final long serialVersionUID = 4348041346542204394L;
 

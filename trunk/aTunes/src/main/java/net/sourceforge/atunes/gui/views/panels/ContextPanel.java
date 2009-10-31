@@ -29,7 +29,7 @@ import javax.swing.JTabbedPane;
 
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 
-public class ContextPanel extends JPanel {
+public final class ContextPanel extends JPanel {
 
     private static final long serialVersionUID = 707242790413122482L;
 

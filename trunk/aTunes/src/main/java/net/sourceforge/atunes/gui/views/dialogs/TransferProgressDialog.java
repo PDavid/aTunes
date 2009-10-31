@@ -26,7 +26,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The Class TransferProgressDialog.
  */
-public class TransferProgressDialog extends ProgressDialog {
+public final class TransferProgressDialog extends ProgressDialog {
 
     /**
 	 * 

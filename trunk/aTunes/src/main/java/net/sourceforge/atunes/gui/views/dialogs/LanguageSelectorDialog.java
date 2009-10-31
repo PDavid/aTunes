@@ -50,7 +50,7 @@ import org.jvnet.substance.api.renderers.SubstanceDefaultListCellRenderer;
 /**
  * This is the dialog shown to select language.
  */
-public class LanguageSelectorDialog extends JDialog {
+public final class LanguageSelectorDialog extends JDialog {
 
     private static final long serialVersionUID = 8846024391499257859L;
 

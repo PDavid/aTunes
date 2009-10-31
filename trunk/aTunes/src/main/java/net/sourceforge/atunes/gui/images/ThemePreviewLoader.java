@@ -25,10 +25,7 @@ import java.util.Map;
 
 import javax.swing.ImageIcon;
 
-/**
- * The Class ThemePreviewLoader.
- */
-public class ThemePreviewLoader {
+public final class ThemePreviewLoader {
 
     /** Map of skin names and name of the image files */
     private static Map<String, String> preview = new HashMap<String, String>();

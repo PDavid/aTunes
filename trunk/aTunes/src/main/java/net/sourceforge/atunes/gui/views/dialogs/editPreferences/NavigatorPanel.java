@@ -50,7 +50,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
-public class NavigatorPanel extends PreferencesPanel {
+public final class NavigatorPanel extends PreferencesPanel {
 
     private static final long serialVersionUID = -4315748284461119970L;
 

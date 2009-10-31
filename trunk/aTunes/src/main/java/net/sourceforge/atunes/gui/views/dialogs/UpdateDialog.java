@@ -42,7 +42,7 @@ import net.sourceforge.atunes.kernel.modules.updates.ApplicationVersion;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class UpdateDialog extends CustomFrame {
+public final class UpdateDialog extends CustomFrame {
 
     private static final long serialVersionUID = -778226654176158965L;
 

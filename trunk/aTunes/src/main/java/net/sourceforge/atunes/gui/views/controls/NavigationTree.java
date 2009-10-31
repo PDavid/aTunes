@@ -37,7 +37,7 @@ import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.gui.model.TransferableList;
 
-public class NavigationTree extends JTree implements DragSourceListener, DragGestureListener {
+public final class NavigationTree extends JTree implements DragSourceListener, DragGestureListener {
 
     private static final long serialVersionUID = 5130815364968225924L;
 

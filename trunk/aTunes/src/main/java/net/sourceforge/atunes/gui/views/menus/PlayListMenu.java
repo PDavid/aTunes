@@ -58,7 +58,7 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class PlayListMenu {
+public final class PlayListMenu {
 
     /**
      * Fills a pop up with play list menu items
