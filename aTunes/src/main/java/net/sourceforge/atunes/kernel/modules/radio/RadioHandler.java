@@ -53,6 +53,11 @@ public final class RadioHandler extends Handler {
     private List<Radio> presetRadios;
     List<Radio> retrievedPresetRadios = new ArrayList<Radio>();
     boolean noNewStations = true;
+    
+    /**
+     * Flag indicating if radio information must be stored to disk
+     */
+    boolean radioListDirty = false;
 
     /**
      * Instantiates a new radio handler.
@@ -101,6 +106,7 @@ public final class RadioHandler extends Handler {
         getLogger().info(LogCategories.HANDLER, "Adding radio");
         if (radio != null && !getRadios().contains(radio)) {
             getRadios().add(radio);
+            radioListDirty = true;
         }
         Collections.sort(getRadios(), Radio.getComparator());
         NavigationHandler.getInstance().refreshView(RadioNavigationView.class);
@@ -110,11 +116,15 @@ public final class RadioHandler extends Handler {
      * Write stations to xml files.
      */
     public void applicationFinish() {
-        ApplicationStateHandler.getInstance().persistRadioCache(getRadios());
-        // Only write preset list if new stations were added
-        if (!noNewStations) {
-            ApplicationStateHandler.getInstance().persistPresetRadioCache(presetRadios);
-        }
+    	if (radioListDirty) {
+    		ApplicationStateHandler.getInstance().persistRadioCache(getRadios());
+    		// Only write preset list if new stations were added
+    		if (!noNewStations) {
+    			ApplicationStateHandler.getInstance().persistPresetRadioCache(presetRadios);
+    		}
+    	} else {
+    		getLogger().info(LogCategories.HANDLER, "Radio list is clean");
+    	}
     }
 
     @Override
@@ -240,6 +250,7 @@ public final class RadioHandler extends Handler {
                 getRadios().add(newRadio);
             }
         }
+        radioListDirty = true;
         NavigationHandler.getInstance().refreshView(RadioNavigationView.class);
     }
 
