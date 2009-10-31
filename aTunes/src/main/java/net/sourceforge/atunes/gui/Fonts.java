@@ -119,35 +119,42 @@ public final class Fonts {
             @Override
             public FontSet getFontSet(String arg0, UIDefaults arg1) {
                 return new FontSet() {
-                	
+
+                    private FontUIResource windowTitleFont = new FontUIResource(baseFont.deriveFont(Font.BOLD, baseFont.getSize() + 1f));
+                    private FontUIResource titleFont = new FontUIResource(baseFont.deriveFont((float) baseFont.getSize()));
+                    private FontUIResource smallFont = new FontUIResource(baseFont.deriveFont(baseFont.getSize() - 1f));
+                    private FontUIResource messageFont = new FontUIResource(baseFont.deriveFont(baseFont.getSize() - 1f));
+                    private FontUIResource menuFont = new FontUIResource(baseFont.deriveFont((float) baseFont.getSize()));
+                    private FontUIResource controlFont = new FontUIResource(baseFont.deriveFont((float) baseFont.getSize()));
+
                     @Override
                     public FontUIResource getWindowTitleFont() {
-                        return new FontUIResource(baseFont.deriveFont(Font.BOLD, baseFont.getSize() + 1f));
+                        return windowTitleFont;
                     }
 
                     @Override
                     public FontUIResource getTitleFont() {
-                        return new FontUIResource(baseFont.deriveFont((float) baseFont.getSize()));
+                        return titleFont;
                     }
 
                     @Override
                     public FontUIResource getSmallFont() {
-                        return new FontUIResource(baseFont.deriveFont(baseFont.getSize() - 1f));
+                        return smallFont;
                     }
 
                     @Override
                     public FontUIResource getMessageFont() {
-                        return new FontUIResource(baseFont.deriveFont(baseFont.getSize() - 1f));
+                        return messageFont;
                     }
 
                     @Override
                     public FontUIResource getMenuFont() {
-                        return new FontUIResource(baseFont.deriveFont((float) baseFont.getSize()));
+                        return menuFont;
                     }
 
                     @Override
                     public FontUIResource getControlFont() {
-                        return new FontUIResource(baseFont.deriveFont((float) baseFont.getSize()));
+                        return controlFont;
                     }
                 };
             }
