@@ -36,6 +36,7 @@ import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
 import net.sourceforge.atunes.kernel.modules.search.searchableobjects.FavoritesSearchableObject;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
+import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.TreeObject;
 
 /**
@@ -137,7 +138,12 @@ public final class FavoritesHandler extends Handler implements AudioFilesRemoved
      * Finish.
      */
     public void applicationFinish() {
-        ApplicationStateHandler.getInstance().persistFavoritesCache(getFavorites());
+        // Only store repository if it's dirty
+        if (getFavorites().isDirty()) {
+        	ApplicationStateHandler.getInstance().persistFavoritesCache(getFavorites());
+        } else {
+        	getLogger().info(LogCategories.FAVORITES, "Favorites are clean");
+        }        
     }
 
     /**
@@ -238,6 +244,9 @@ public final class FavoritesHandler extends Handler implements AudioFilesRemoved
      * Actions to do after a favorite change (add, remove)
      */
     private void callActionsAfterFavoritesChange() {
+    	// Mark favorites information as dirty
+    	getFavorites().setDirty(true);
+    	
         // Update playlist to remove favorite icon
         ControllerProxy.getInstance().getPlayListController().refreshPlayList();
 
@@ -264,6 +273,6 @@ public final class FavoritesHandler extends Handler implements AudioFilesRemoved
     			}
     		}
     	}
-
+    	callActionsAfterFavoritesChange();
     }
 }

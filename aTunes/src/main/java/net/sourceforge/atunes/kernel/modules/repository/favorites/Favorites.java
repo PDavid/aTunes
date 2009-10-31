@@ -44,6 +44,11 @@ public class Favorites implements Serializable {
 
     /** The favorite artists. */
     private Map<String, Artist> favoriteArtists;
+    
+    /**
+     * Flag indicating if favorites information needs to be written to disk
+     */
+    private transient boolean dirty;
 
     /**
      * Instantiates a new favorites.
@@ -138,4 +143,18 @@ public class Favorites implements Serializable {
     public void setFavoriteSongs(Map<String, AudioFile> favoriteSongs) {
         this.favoriteSongs = favoriteSongs;
     }
+
+	/**
+	 * @return the dirty
+	 */
+	protected boolean isDirty() {
+		return dirty;
+	}
+
+	/**
+	 * @param dirty the dirty to set
+	 */
+	protected void setDirty(boolean dirty) {
+		this.dirty = dirty;
+	}
 }
