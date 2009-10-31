@@ -45,14 +45,14 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import org.commonjukebox.plugins.PluginApi;
-
 import net.sourceforge.atunes.gui.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
+
+import org.commonjukebox.plugins.PluginApi;
 
 /**
  * GUI related utility methods.
@@ -120,16 +120,6 @@ public final class GuiUtils {
      */
     public static int getDeviceHeight() {
         return mainDeviceBounds.height;
-    }
-
-    /**
-     * Sets location of a window centered in main screen device. Window must
-     * have size different of (0,0)
-     * 
-     * @param window
-     */
-    public static void setLocation(Window window) {
-        window.setLocation(mainDeviceBounds.width / 2 - window.getWidth() / 2, mainDeviceBounds.height / 2 - window.getHeight() / 2);
     }
 
     /**
