@@ -55,6 +55,11 @@ public class PlayList implements Serializable, Cloneable {
      * Name of play list as shown on play list tabs.
      */
     private String name;
+    
+    /**
+     * Flag indicating if this playlist contents need to be written to disk
+     */
+    private transient boolean dirty;
 
     /**
      * Pointed List of audio objects of this play list
@@ -257,6 +262,9 @@ public class PlayList implements Serializable, Cloneable {
      */
     protected void sort(Comparator<AudioObject> c) {
         this.audioObjects.sort(c);
+        updateUI();
+        // Mark as dirty
+        setDirty(true);
     }
 
     /**
@@ -265,6 +273,8 @@ public class PlayList implements Serializable, Cloneable {
     protected void shuffle() {
         this.audioObjects.shuffle();
         updateUI();
+        // Mark as dirty
+        setDirty(true);
     }
 
     //////////////////////////////////////////////////////////////// OTHER OPERATIONS /////////////////////////////////////////////////////////////
@@ -484,6 +494,9 @@ public class PlayList implements Serializable, Cloneable {
         }
         // Notify mode too
         getMode().audioObjectsAdded(playListAudioObjects);
+        
+        // Mark as dirty
+        setDirty(true);
     }
 
     /**
@@ -497,6 +510,9 @@ public class PlayList implements Serializable, Cloneable {
         }
         // Notify mode too
         getMode().audioObjectsRemoved(audioObjectList);
+        
+        // Mark as dirty
+        setDirty(true);
     }
 
     /**
@@ -508,6 +524,9 @@ public class PlayList implements Serializable, Cloneable {
         }
         // Notify mode too
         getMode().audioObjectsRemovedAll();
+
+        // Mark as dirty
+        setDirty(true);
     }
 
     private List<PlayListChangedListener> getListeners() {
@@ -544,4 +563,28 @@ public class PlayList implements Serializable, Cloneable {
     void addToPlaybackHistory(AudioObject object) {
         this.mode.addToPlaybackHistory(object);
     }
+
+	/**
+	 * @return the dirty
+	 */
+	protected boolean isDirty() {
+		return dirty;
+	}
+
+	/**
+	 * @param dirty the dirty to set
+	 */
+	protected void setDirty(boolean dirty) {
+		this.dirty = dirty;
+	}
+	
+	/**
+	 * Used when setting content to a play list read from disk
+	 * @param content
+	 */
+	protected void setContent(List<AudioObject> content) {
+		this.audioObjects.setContent(content);
+        // As this method is used when reading from disk playlist can't be dirty
+        setDirty(false);
+	}
 }

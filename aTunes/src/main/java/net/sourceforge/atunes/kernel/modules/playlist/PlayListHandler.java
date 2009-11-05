@@ -77,6 +77,11 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
 
     /** Play lists stored */
     private static ListOfPlayLists playListsRetrievedFromCache;
+    
+    /**
+     * Flag indicating if playlists have changed (removed or created)
+     */
+    private boolean playListsChanged;
 
     /**
      * Private constructor.
@@ -125,6 +130,7 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
         if (playLists.size() <= 1) {
             return;
         }
+        playListsChanged = true;
         // remove tab and playlist
         // NOTE: removing visible tab play list calls automatically to switchToPlayList method
         if (index != visiblePlayListIndex) {
@@ -171,7 +177,7 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
      * 
      * @return the list of play lists
      */
-    public ListOfPlayLists getListOfPlayLists() {
+    private ListOfPlayLists getListOfPlayLists() {
         ListOfPlayLists l = new ListOfPlayLists();
 
         // Clone play lists to make changes in returned list if current play list is filtered
@@ -247,6 +253,7 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
         newPlayList.setName(nameOfNewPlayList);
         playLists.add(newPlayList);
         ControllerProxy.getInstance().getPlayListTabController().newPlayList(nameOfNewPlayList);
+        playListsChanged = true;
     }
 
     /**
@@ -528,9 +535,20 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
      * Called by kernel when application is finishing.
      */
     public void applicationFinish() {
-        getLogger().debug(LogCategories.HANDLER);
-        // Store play list
-        ApplicationStateHandler.getInstance().persistPlayList();
+        // Store play list definition
+        ApplicationStateHandler.getInstance().persistPlayListsDefinition(getListOfPlayLists());
+        
+        // Store contents if play lists are dirty or list of play lists have changed
+        boolean playListsDirty = false;
+        for (PlayList playList : playLists) {
+        	playListsDirty = playListsDirty || playList.isDirty();
+        }
+        
+        if (playListsDirty || playListsChanged) {
+        	ApplicationStateHandler.getInstance().persistPlayListsContents(getPlayListsContents());
+        } else {
+        	getLogger().info(LogCategories.PLAYLIST, "Playlists contents are clean");
+        }
     }
 
     @Override
@@ -538,7 +556,7 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
         return new Runnable() {
             @Override
             public void run() {
-                playListsRetrievedFromCache = ApplicationStateHandler.getInstance().retrievePlayListCache();
+                playListsRetrievedFromCache = ApplicationStateHandler.getInstance().retrievePlayListsCache();
             }
         };
     }
@@ -1102,5 +1120,17 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
         playLists.add(to, playList);
         activePlayListIndex = playLists.indexOf(activePlayList);
         visiblePlayListIndex = playLists.indexOf(visiblePlayList);
+    }
+    
+    /**
+     * Returns content of all play lists
+     * @return
+     */
+    private List<List<AudioObject>> getPlayListsContents() {
+    	List<List<AudioObject>> result = new ArrayList<List<AudioObject>>(playLists.size());
+    	for (PlayList playList : playLists) {
+    		result.add(playList.getAudioObjects());
+    	}
+    	return result;
     }
 }

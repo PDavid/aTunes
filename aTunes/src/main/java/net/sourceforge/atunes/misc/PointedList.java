@@ -53,7 +53,7 @@ public class PointedList<T> implements Serializable {
      * @param pointedList
      */
     public PointedList(PointedList<? extends T> pointedList) {
-        this.list = new ArrayList<T>(pointedList.list);
+        this.list = new ArrayList<T>(pointedList.getList());
         this.pointer = Integer.valueOf(pointedList.pointer);
     }
 
@@ -115,7 +115,7 @@ public class PointedList<T> implements Serializable {
             return;
         }
         T currentObject = getCurrentObject();
-        Collections.sort(this.list, c);
+        Collections.sort(getList(), c);
         setPointer(indexOf(currentObject));
     }
 
@@ -127,23 +127,23 @@ public class PointedList<T> implements Serializable {
             return;
         }
         T currentObject = getCurrentObject();
-        Collections.shuffle(this.list);
+        Collections.shuffle(getList());
         setPointer(indexOf(currentObject));
     }
 
     public void add(T element) {
-        add(this.list.size(), element);
+        add(getList().size(), element);
     }
 
     public void add(int index, T element) {
-        this.list.add(index, element);
+    	getList().add(index, element);
         if (size() > 1 && this.pointer != null && index <= this.pointer) {
             this.pointer++;
         }
     }
 
     public boolean addAll(int index, Collection<? extends T> c) {
-        boolean result = this.list.addAll(index, c);
+        boolean result = getList().addAll(index, c);
         if (size() > 1 && this.pointer != null && index <= this.pointer) {
             this.pointer = this.pointer + c.size();
         }
@@ -151,7 +151,7 @@ public class PointedList<T> implements Serializable {
     }
 
     public T remove(int index) {
-        if (index < 0 || this.list.size() <= index) {
+        if (index < 0 || getList().size() <= index) {
             return null;
         }
 
@@ -168,21 +168,21 @@ public class PointedList<T> implements Serializable {
                 }
             }
         }
-        return this.list.remove(index);
+        return getList().remove(index);
     }
 
     public void clear() {
         this.pointer = 0;
-        this.list.clear();
+        getList().clear();
     }
 
     public void replace(int index, T newObject) {
-        if (index < 0 || this.list.size() <= index || newObject == null) {
+        if (index < 0 || getList().size() <= index || newObject == null) {
             return;
         }
 
-        this.list.remove(index);
-        this.list.add(index, newObject);
+        getList().remove(index);
+        getList().add(index, newObject);
     }
 
     /**
@@ -280,7 +280,7 @@ public class PointedList<T> implements Serializable {
      * @return
      */
     public int size() {
-        return this.list.size();
+        return getList().size();
     }
 
     /**
@@ -289,7 +289,7 @@ public class PointedList<T> implements Serializable {
      * @return
      */
     public boolean isEmpty() {
-        return this.list.isEmpty();
+        return getList().isEmpty();
     }
 
     /**
@@ -299,8 +299,8 @@ public class PointedList<T> implements Serializable {
      * @return
      */
     public T get(int index) {
-        if (index >= 0 && this.list.size() > index) {
-            return this.list.get(index);
+        if (index >= 0 && getList().size() > index) {
+            return getList().get(index);
         }
         return null;
     }
@@ -312,18 +312,28 @@ public class PointedList<T> implements Serializable {
      * @return
      */
     public int indexOf(T object) {
-        return this.list.indexOf(object);
+        return getList().indexOf(object);
     }
 
     /**
      * @return the list
      */
     public List<T> getList() {
+    	if (this.list == null) {
+    		this.list = new ArrayList<T>();
+    	}
         return this.list;
     }
 
     public boolean contains(T object) {
-        return this.list.contains(object);
+        return getList().contains(object);
     }
 
+	/**
+	 * Set content without changing pointer
+	 * @param content
+	 */
+    public void setContent(List<T> content) {
+    	getList().addAll(content);
+    }
 }
