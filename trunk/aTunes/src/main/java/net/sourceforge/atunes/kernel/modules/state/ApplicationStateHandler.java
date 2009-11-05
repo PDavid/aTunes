@@ -50,13 +50,9 @@ import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeyHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.player.Volume;
 import net.sourceforge.atunes.kernel.modules.playlist.ListOfPlayLists;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
-import net.sourceforge.atunes.kernel.modules.repository.AudioFilesRemovedListener;
 import net.sourceforge.atunes.kernel.modules.repository.Repository;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.exception.InconsistentRepositoryException;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.Favorites;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
@@ -66,6 +62,7 @@ import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.Timer;
 import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.CryptoUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -75,7 +72,7 @@ import net.sourceforge.atunes.utils.XMLUtils;
  * This class is responsible of read, write and apply application state, and
  * caches.
  */
-public final class ApplicationStateHandler extends Handler implements AudioFilesRemovedListener {
+public final class ApplicationStateHandler extends Handler {
 
     /** The instance. */
     private static ApplicationStateHandler instance = new ApplicationStateHandler();
@@ -86,7 +83,6 @@ public final class ApplicationStateHandler extends Handler implements AudioFiles
     private Set<ApplicationStateChangeListener> stateChangeListeners;
 
     protected void initHandler() {
-        RepositoryHandler.getInstance().addAudioFilesRemovedListener(this);
     }
 
     /**
@@ -298,32 +294,36 @@ public final class ApplicationStateHandler extends Handler implements AudioFiles
     }
 
     /**
-     * Stores play lists.
+     * Stores play lists definition
      */
-    public void persistPlayList() {
+    public void persistPlayListsDefinition(ListOfPlayLists listOfPlayLists) {
         getLogger().debug(LogCategories.HANDLER);
 
-        //		try {
-        //			XMLUtils.writeObjectToFile(p, StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.LAST_PLAYLIST_FILE));
-        //			getLogger().info(LogCategories.HANDLER, "Play list saved");
-        //		} catch (Exception e) {
-        //			getLogger().error(LogCategories.HANDLER, "Could not persist playlist");
-        //			getLogger().debug(LogCategories.HANDLER, e);
-        //		}
-
-        ListOfPlayLists listOfPlayLists = PlayListHandler.getInstance().getListOfPlayLists();
-
-        ObjectOutputStream stream = null;
         try {
-            stream = new ObjectOutputStream(new FileOutputStream(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.LAST_PLAYLIST_FILE)));
-            stream.writeObject(listOfPlayLists);
-            getLogger().info(LogCategories.HANDLER, "Play lists saved");
+        	XMLUtils.writeObjectToFile(listOfPlayLists, StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.PLAYLISTS_FILE));
+        	getLogger().info(LogCategories.HANDLER, "Playlists definition saved");
         } catch (Exception e) {
-            getLogger().error(LogCategories.HANDLER, "Could not persist playlists");
-            getLogger().debug(LogCategories.HANDLER, e);
-        } finally {
-            ClosingUtils.close(stream);
+        	getLogger().error(LogCategories.HANDLER, "Could not persist playlists definition");
+        	getLogger().debug(LogCategories.HANDLER, e);
         }
+    }
+    
+    /**
+     * Stores play lists contents
+     * @param playListsContents
+     */
+    public void persistPlayListsContents(List<List<AudioObject>> playListsContents) {
+    	ObjectOutputStream stream = null;
+    	try {
+    		stream = new ObjectOutputStream(new FileOutputStream(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.PLAYLISTS_CONTENTS_FILE)));
+    		stream.writeObject(playListsContents);
+    		getLogger().info(LogCategories.HANDLER, "Playlists contents saved");
+    	} catch (Exception e) {
+    		getLogger().error(LogCategories.HANDLER, "Could not persist playlists contents");
+    		getLogger().debug(LogCategories.HANDLER, e);
+    	} finally {
+    		ClosingUtils.close(stream);
+    	}
     }
 
     /**
@@ -545,32 +545,29 @@ public final class ApplicationStateHandler extends Handler implements AudioFiles
     }
 
     /**
-     * Reads play list cache.
+     * Reads playlists cache.
      * 
-     * @return The retrieved play list
+     * @return The retrieved playlists
      */
 
-    public ListOfPlayLists retrievePlayListCache() {
+    public ListOfPlayLists retrievePlayListsCache() {
         getLogger().debug(LogCategories.HANDLER);
-
-        //		try {
-        //			PlayList obj = (PlayList) XMLUtils.readObjectFromFile(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.LAST_PLAYLIST_FILE));
-        //			getLogger().info(LogCategories.HANDLER, StringUtils.getString("Play list loaded (", obj.size(), " songs)"));
-        //			return obj;
-        //		} catch (Exception e) {
-        //			return new PlayList();
-        //		}
 
         ObjectInputStream stream = null;
         try {
-            stream = new ObjectInputStream(new FileInputStream(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.LAST_PLAYLIST_FILE)));
-            ListOfPlayLists obj = (ListOfPlayLists) stream.readObject();
-            getLogger().info(LogCategories.HANDLER, StringUtils.getString("Play lists loaded (", obj.getPlayLists().size(), " playlists)"));
-            if (obj.getPlayLists().size() == 0) {
-                return ListOfPlayLists.getEmptyPlayList();
-            } else {
-                return obj;
+        	// First get list of playlists
+        	ListOfPlayLists listOfPlayLists = (ListOfPlayLists) XMLUtils.readObjectFromFile(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.PLAYLISTS_FILE));
+        	getLogger().info(LogCategories.HANDLER, StringUtils.getString("List of playlists loaded"));
+
+        	// Then read contents
+            stream = new ObjectInputStream(new FileInputStream(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.PLAYLISTS_CONTENTS_FILE)));
+            List<List<AudioObject>> contents = (List<List<AudioObject>>) stream.readObject();
+            getLogger().info(LogCategories.HANDLER, StringUtils.getString("Playlists contents loaded"));
+            if (contents.size() == listOfPlayLists.getPlayLists().size()) {
+            	listOfPlayLists.setContents(contents);
             }
+            
+            return listOfPlayLists;
         } catch (FileNotFoundException e) {
             getLogger().info(LogCategories.HANDLER, "No playlist information found");
             return ListOfPlayLists.getEmptyPlayList();
@@ -800,8 +797,4 @@ public final class ApplicationStateHandler extends Handler implements AudioFiles
         }
     }
 
-    @Override
-    public void audioFilesRemoved(List<AudioFile> audioFiles) {
-        persistPlayList();
-    }
 }

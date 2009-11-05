@@ -129,8 +129,11 @@ public final class Constants {
     /** File where application configuracion is stored. */
     public static final String PROPERTIES_FILE = "aTunesConfig.xml";
 
-    /** File where last playlist is stored. */
-    public static final String LAST_PLAYLIST_FILE = "playList.dat";
+    /** File where playlists are stored. */
+    public static final String PLAYLISTS_FILE = "playLists.xml";
+
+    /** File where playlists contents are stored. */
+    public static final String PLAYLISTS_CONTENTS_FILE = "playListsContents.dat";
 
     /** Directory where Windows binaries are found (i.e. mplayer, lame, etc) */
     public static final String WINDOWS_TOOLS_DIR = "win_tools";

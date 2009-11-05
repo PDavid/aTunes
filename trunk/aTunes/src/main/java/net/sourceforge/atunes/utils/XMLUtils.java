@@ -54,6 +54,7 @@ import net.sourceforge.atunes.kernel.modules.repository.model.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.DefaultTag;
 import net.sourceforge.atunes.kernel.modules.statistics.Statistics;
 import net.sourceforge.atunes.kernel.modules.statistics.StatisticsAlbum;
+import net.sourceforge.atunes.misc.PointedList;
 import net.sourceforge.atunes.misc.RankList;
 
 import org.w3c.dom.Document;
@@ -102,6 +103,8 @@ public final class XMLUtils {
         xStream.omitField(Radio.class, "title");
         xStream.omitField(Radio.class, "artist");
         xStream.omitField(Radio.class, "songInfoAvailable");
+        
+        xStream.omitField(PointedList.class, "list");
     }
 
     /**
