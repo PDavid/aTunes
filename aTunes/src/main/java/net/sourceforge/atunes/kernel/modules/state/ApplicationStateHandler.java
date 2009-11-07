@@ -133,14 +133,14 @@ public final class ApplicationStateHandler extends Handler {
      * Notifies all listeners of an application state change
      */
     public void notifyApplicationStateChanged() {
-    	try {
-        for (ApplicationStateChangeListener listener : stateChangeListeners) {
-            getLogger().debug(LogCategories.HANDLER, StringUtils.getString("Call to ApplicationStateChangeListener: ", listener.getClass().getName()));
-            listener.applicationStateChanged(ApplicationState.getInstance());
+        try {
+            for (ApplicationStateChangeListener listener : stateChangeListeners) {
+                getLogger().debug(LogCategories.HANDLER, StringUtils.getString("Call to ApplicationStateChangeListener: ", listener.getClass().getName()));
+                listener.applicationStateChanged(ApplicationState.getInstance());
+            }
+        } catch (Throwable t) {
+            t.printStackTrace();
         }
-    	} catch (Throwable t) {
-    		t.printStackTrace();
-    	}
     }
 
     @Override
@@ -300,30 +300,31 @@ public final class ApplicationStateHandler extends Handler {
         getLogger().debug(LogCategories.HANDLER);
 
         try {
-        	XMLUtils.writeObjectToFile(listOfPlayLists, StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.PLAYLISTS_FILE));
-        	getLogger().info(LogCategories.HANDLER, "Playlists definition saved");
+            XMLUtils.writeObjectToFile(listOfPlayLists, StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.PLAYLISTS_FILE));
+            getLogger().info(LogCategories.HANDLER, "Playlists definition saved");
         } catch (Exception e) {
-        	getLogger().error(LogCategories.HANDLER, "Could not persist playlists definition");
-        	getLogger().debug(LogCategories.HANDLER, e);
+            getLogger().error(LogCategories.HANDLER, "Could not persist playlists definition");
+            getLogger().debug(LogCategories.HANDLER, e);
         }
     }
-    
+
     /**
      * Stores play lists contents
+     * 
      * @param playListsContents
      */
     public void persistPlayListsContents(List<List<AudioObject>> playListsContents) {
-    	ObjectOutputStream stream = null;
-    	try {
-    		stream = new ObjectOutputStream(new FileOutputStream(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.PLAYLISTS_CONTENTS_FILE)));
-    		stream.writeObject(playListsContents);
-    		getLogger().info(LogCategories.HANDLER, "Playlists contents saved");
-    	} catch (Exception e) {
-    		getLogger().error(LogCategories.HANDLER, "Could not persist playlists contents");
-    		getLogger().debug(LogCategories.HANDLER, e);
-    	} finally {
-    		ClosingUtils.close(stream);
-    	}
+        ObjectOutputStream stream = null;
+        try {
+            stream = new ObjectOutputStream(new FileOutputStream(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.PLAYLISTS_CONTENTS_FILE)));
+            stream.writeObject(playListsContents);
+            getLogger().info(LogCategories.HANDLER, "Playlists contents saved");
+        } catch (Exception e) {
+            getLogger().error(LogCategories.HANDLER, "Could not persist playlists contents");
+            getLogger().debug(LogCategories.HANDLER, e);
+        } finally {
+            ClosingUtils.close(stream);
+        }
     }
 
     /**
@@ -550,23 +551,25 @@ public final class ApplicationStateHandler extends Handler {
      * @return The retrieved playlists
      */
 
+    @SuppressWarnings("unchecked")
     public ListOfPlayLists retrievePlayListsCache() {
         getLogger().debug(LogCategories.HANDLER);
 
         ObjectInputStream stream = null;
         try {
-        	// First get list of playlists
-        	ListOfPlayLists listOfPlayLists = (ListOfPlayLists) XMLUtils.readObjectFromFile(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.PLAYLISTS_FILE));
-        	getLogger().info(LogCategories.HANDLER, StringUtils.getString("List of playlists loaded"));
+            // First get list of playlists
+            ListOfPlayLists listOfPlayLists = (ListOfPlayLists) XMLUtils.readObjectFromFile(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/",
+                    Constants.PLAYLISTS_FILE));
+            getLogger().info(LogCategories.HANDLER, StringUtils.getString("List of playlists loaded"));
 
-        	// Then read contents
+            // Then read contents
             stream = new ObjectInputStream(new FileInputStream(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.PLAYLISTS_CONTENTS_FILE)));
             List<List<AudioObject>> contents = (List<List<AudioObject>>) stream.readObject();
             getLogger().info(LogCategories.HANDLER, StringUtils.getString("Playlists contents loaded"));
             if (contents.size() == listOfPlayLists.getPlayLists().size()) {
-            	listOfPlayLists.setContents(contents);
+                listOfPlayLists.setContents(contents);
             }
-            
+
             return listOfPlayLists;
         } catch (FileNotFoundException e) {
             getLogger().info(LogCategories.HANDLER, "No playlist information found");
@@ -653,14 +656,11 @@ public final class ApplicationStateHandler extends Handler {
             timer.start();
             Repository result = (Repository) ois.readObject();
             // check repository integrity
-            if (result.getAudioFiles() == null ||
-            		result.getFolders() == null ||
-            		result.getStructure().getArtistStructure() == null ||
-            		result.getStructure().getFolderStructure() == null ||
-            		result.getStructure().getGenreStructure() == null) {
-            	throw new  InconsistentRepositoryException();
+            if (result.getAudioFiles() == null || result.getFolders() == null || result.getStructure().getArtistStructure() == null
+                    || result.getStructure().getFolderStructure() == null || result.getStructure().getGenreStructure() == null) {
+                throw new InconsistentRepositoryException();
             }
-            
+
             getLogger().info(LogCategories.HANDLER, StringUtils.getString("Reading repository cache done (", timer.stop(), " seconds)"));
             return result;
         } catch (InvalidClassException e) {
