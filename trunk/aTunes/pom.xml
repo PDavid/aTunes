@@ -281,16 +281,16 @@
 			<version>4.6</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.swinglabs</groupId>
+			<artifactId>swingx</artifactId>
+			<version>1.6</version>
+		</dependency>
 		<!-- dependencies that are not in the central Maven repository -->
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>1.5-custom</version>
-		</dependency>
-		<dependency>
-			<groupId>org.swinglabs</groupId>
-			<artifactId>swingx</artifactId>
-			<version>1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>substance</groupId>
