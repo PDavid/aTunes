@@ -46,6 +46,7 @@ import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.amazon.AmazonService;
 import net.sourceforge.atunes.kernel.modules.columns.PlayListColumns;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeyHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.player.Volume;
@@ -58,7 +59,6 @@ import net.sourceforge.atunes.kernel.modules.repository.favorites.Favorites;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.kernel.modules.statistics.Statistics;
 import net.sourceforge.atunes.kernel.modules.tray.SystemTrayHandler;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.Timer;
 import net.sourceforge.atunes.misc.log.LogCategories;
@@ -164,7 +164,7 @@ public final class ApplicationStateHandler extends Handler {
         if (ApplicationState.getInstance().isShowSystemTray()) {
             SystemTrayHandler.getInstance().initTrayIcon();
         } else {
-            VisualHandler.getInstance().setFrameDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            GuiHandler.getInstance().setFrameDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         }
 
         // Hotkeys
@@ -175,22 +175,22 @@ public final class ApplicationStateHandler extends Handler {
         }
 
         // Tool Bar
-        VisualHandler.getInstance().showToolBar(ApplicationState.getInstance().isShowToolBar());
+        GuiHandler.getInstance().showToolBar(ApplicationState.getInstance().isShowToolBar());
 
         // Status Bar
-        VisualHandler.getInstance().showStatusBar(ApplicationState.getInstance().isShowStatusBar());
+        GuiHandler.getInstance().showStatusBar(ApplicationState.getInstance().isShowStatusBar());
 
         // Song properties visible
-        VisualHandler.getInstance().showSongProperties(ApplicationState.getInstance().isShowAudioObjectProperties(), false);
+        GuiHandler.getInstance().showSongProperties(ApplicationState.getInstance().isShowAudioObjectProperties(), false);
 
         // Show navigation panel
-        VisualHandler.getInstance().showNavigationPanel(ApplicationState.getInstance().isShowNavigationPanel(), false);
+        GuiHandler.getInstance().showNavigationPanel(ApplicationState.getInstance().isShowNavigationPanel(), false);
 
         // Show Context
-        VisualHandler.getInstance().showContextPanel(ApplicationState.getInstance().isUseContext(), false);
+        GuiHandler.getInstance().showContextPanel(ApplicationState.getInstance().isUseContext(), false);
 
         // Show navigation table
-        VisualHandler.getInstance().showNavigationTable(ApplicationState.getInstance().isShowNavigationTable());
+        GuiHandler.getInstance().showNavigationTable(ApplicationState.getInstance().isShowNavigationTable());
 
         // Navigation Panel View
         ControllerProxy.getInstance().getNavigationController().setNavigationView(ApplicationState.getInstance().getNavigationView());
@@ -201,14 +201,14 @@ public final class ApplicationStateHandler extends Handler {
         // Mute
         PlayerHandler.getInstance().applyMuteState(ApplicationState.getInstance().isMuteEnabled());
 
-        if (!VisualHandler.getInstance().isMultipleWindow()) {
+        if (!GuiHandler.getInstance().isMultipleWindow()) {
             // Split panes divider location
             if (ApplicationState.getInstance().getLeftVerticalSplitPaneDividerLocation() != 0) {
-                ((StandardFrame) VisualHandler.getInstance().getFrame()).setLeftVerticalSplitPaneDividerLocationAndSetWindowSize(ApplicationState.getInstance()
+                ((StandardFrame) GuiHandler.getInstance().getFrame()).setLeftVerticalSplitPaneDividerLocationAndSetWindowSize(ApplicationState.getInstance()
                         .getLeftVerticalSplitPaneDividerLocation());
             }
             if (ApplicationState.getInstance().getRightVerticalSplitPaneDividerLocation() != 0) {
-                ((StandardFrame) VisualHandler.getInstance().getFrame()).setRightVerticalSplitPaneDividerLocationAndSetWindowSize(ApplicationState.getInstance()
+                ((StandardFrame) GuiHandler.getInstance().getFrame()).setRightVerticalSplitPaneDividerLocationAndSetWindowSize(ApplicationState.getInstance()
                         .getRightVerticalSplitPaneDividerLocation());
             }
         }
@@ -723,30 +723,30 @@ public final class ApplicationStateHandler extends Handler {
     private void storeState() {
         getLogger().debug(LogCategories.HANDLER);
 
-        if (!VisualHandler.getInstance().isMultipleWindow()) {
+        if (!GuiHandler.getInstance().isMultipleWindow()) {
             // Set window location on state
-            ApplicationState.getInstance().setWindowXPosition(VisualHandler.getInstance().getWindowLocation().x);
-            ApplicationState.getInstance().setWindowYPosition(VisualHandler.getInstance().getWindowLocation().y);
+            ApplicationState.getInstance().setWindowXPosition(GuiHandler.getInstance().getWindowLocation().x);
+            ApplicationState.getInstance().setWindowYPosition(GuiHandler.getInstance().getWindowLocation().y);
             // Window full maximized
-            ApplicationState.getInstance().setMaximized(VisualHandler.getInstance().isMaximized());
+            ApplicationState.getInstance().setMaximized(GuiHandler.getInstance().isMaximized());
             // Set window size
-            ApplicationState.getInstance().setWindowWidth(VisualHandler.getInstance().getWindowSize().width);
-            ApplicationState.getInstance().setWindowHeight(VisualHandler.getInstance().getWindowSize().height);
+            ApplicationState.getInstance().setWindowWidth(GuiHandler.getInstance().getWindowSize().width);
+            ApplicationState.getInstance().setWindowHeight(GuiHandler.getInstance().getWindowSize().height);
             // Set split panes divider location
             ApplicationState.getInstance().setLeftVerticalSplitPaneDividerLocation(
-                    ((StandardFrame) VisualHandler.getInstance().getFrame()).getLeftVerticalSplitPane().getDividerLocation());
+                    ((StandardFrame) GuiHandler.getInstance().getFrame()).getLeftVerticalSplitPane().getDividerLocation());
             ApplicationState.getInstance().setRightVerticalSplitPaneDividerLocation(
-                    ((StandardFrame) VisualHandler.getInstance().getFrame()).getRightVerticalSplitPane().getDividerLocation());
+                    ((StandardFrame) GuiHandler.getInstance().getFrame()).getRightVerticalSplitPane().getDividerLocation());
         } else {
             // Set window location on state
-            ApplicationState.getInstance().setMultipleViewXPosition(VisualHandler.getInstance().getWindowLocation().x);
-            ApplicationState.getInstance().setMultipleViewYPosition(VisualHandler.getInstance().getWindowLocation().y);
+            ApplicationState.getInstance().setMultipleViewXPosition(GuiHandler.getInstance().getWindowLocation().x);
+            ApplicationState.getInstance().setMultipleViewYPosition(GuiHandler.getInstance().getWindowLocation().y);
             // Set window size
-            ApplicationState.getInstance().setMultipleViewWidth(VisualHandler.getInstance().getWindowSize().width);
-            ApplicationState.getInstance().setMultipleViewHeight(VisualHandler.getInstance().getWindowSize().height);
+            ApplicationState.getInstance().setMultipleViewWidth(GuiHandler.getInstance().getWindowSize().width);
+            ApplicationState.getInstance().setMultipleViewHeight(GuiHandler.getInstance().getWindowSize().height);
         }
         // Set horizontal split pane divider location
-        ApplicationState.getInstance().setLeftHorizontalSplitPaneDividerLocation(VisualHandler.getInstance().getFrame().getNavigationPanel().getSplitPane().getDividerLocation());
+        ApplicationState.getInstance().setLeftHorizontalSplitPaneDividerLocation(GuiHandler.getInstance().getFrame().getNavigationPanel().getSplitPane().getDividerLocation());
 
         // Equalizer
         ApplicationState.getInstance().setEqualizerSettings(PlayerHandler.getInstance().getEqualizer().getEqualizerValues());

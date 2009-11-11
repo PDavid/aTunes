@@ -49,18 +49,15 @@ import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.CdToWavConverter;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.NoCdListener;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
 import net.sourceforge.atunes.kernel.modules.cdripper.encoders.Encoder;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
-import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-/**
- * The Class RipperHandler.
- */
 public final class RipperHandler extends Handler {
 
     private static RipperHandler instance = new RipperHandler();
@@ -113,28 +110,28 @@ public final class RipperHandler extends Handler {
 
     @Override
     public void applicationFinish() {
-    	// TODO Auto-generated method stub
-    	
+        // TODO Auto-generated method stub
+
     }
-    
+
     @Override
     public void applicationStateChanged(ApplicationState newState) {
-    	// TODO Auto-generated method stub
-    	
+        // TODO Auto-generated method stub
+
     }
-    
+
     @Override
     public void applicationStarted() {
-    	// TODO Auto-generated method stub
-    	
+        // TODO Auto-generated method stub
+
     }
 
     @Override
     protected void initHandler() {
-    	// TODO Auto-generated method stub
-    	
+        // TODO Auto-generated method stub
+
     }
-    
+
     /**
      * Add files to existing repository if destiny folder is in repository. This
      * method is used after an import operation
@@ -168,8 +165,8 @@ public final class RipperHandler extends Handler {
      *            the album
      */
     public void fillSongsFromAmazon(final String artist, final String album) {
-        VisualHandler.getInstance().getRipCdDialog().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        VisualHandler.getInstance().getRipCdDialog().getAmazonButton().setEnabled(false);
+        GuiHandler.getInstance().getRipCdDialog().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        GuiHandler.getInstance().getRipCdDialog().getAmazonButton().setEnabled(false);
         new SwingWorker<AmazonAlbum, Void>() {
             @Override
             protected AmazonAlbum doInBackground() throws Exception {
@@ -185,15 +182,15 @@ public final class RipperHandler extends Handler {
                         for (AmazonDisc disc : get().getDiscs()) {
                             tracks.addAll(disc.getTracks());
                         }
-                        VisualHandler.getInstance().getRipCdDialog().updateTrackNames(tracks);
+                        GuiHandler.getInstance().getRipCdDialog().updateTrackNames(tracks);
                     }
                 } catch (InterruptedException e) {
                     getLogger().internalError(e);
                 } catch (ExecutionException e) {
                     getLogger().error(LogCategories.RIPPER, e);
                 } finally {
-                    VisualHandler.getInstance().getRipCdDialog().setCursor(Cursor.getDefaultCursor());
-                    VisualHandler.getInstance().getRipCdDialog().getAmazonButton().setEnabled(true);
+                    GuiHandler.getInstance().getRipCdDialog().setCursor(Cursor.getDefaultCursor());
+                    GuiHandler.getInstance().getRipCdDialog().getAmazonButton().setEnabled(true);
                 }
             }
         }.execute();
@@ -376,7 +373,7 @@ public final class RipperHandler extends Handler {
         ripper.setGenre(genre);
         ripper.setFileNamePattern(getFileNamePattern());
 
-        final RipperProgressDialog dialog = VisualHandler.getInstance().getRipperProgressDialog();
+        final RipperProgressDialog dialog = GuiHandler.getInstance().getRipperProgressDialog();
 
         // Get image from amazon if necessary
         if (albumCoverURL != null) {
@@ -466,7 +463,7 @@ public final class RipperHandler extends Handler {
      *            the folder
      */
     public void notifyFinishImport(final List<File> filesImported, final File folder) {
-        VisualHandler.getInstance().getRipperProgressDialog().setVisible(false);
+        GuiHandler.getInstance().getRipperProgressDialog().setVisible(false);
         if (interrupted) { // If process is interrupted delete all imported files
             Runnable deleter = new Runnable() {
                 @Override
@@ -558,8 +555,8 @@ public final class RipperHandler extends Handler {
      */
     public void startCdRipper() {
         interrupted = false;
-        final RipCdDialog dialog = VisualHandler.getInstance().getRipCdDialog();
-        VisualHandler.getInstance().showIndeterminateProgressDialog("");
+        final RipCdDialog dialog = GuiHandler.getInstance().getRipCdDialog();
+        GuiHandler.getInstance().showIndeterminateProgressDialog("");
 
         SwingWorker<CDInfo, Void> getCdInfoAndStartRipping = new SwingWorker<CDInfo, Void>() {
             @Override
@@ -576,8 +573,8 @@ public final class RipperHandler extends Handler {
                         SwingUtilities.invokeLater(new Runnable() {
                             @Override
                             public void run() {
-                                VisualHandler.getInstance().hideIndeterminateProgressDialog();
-                                VisualHandler.getInstance().showErrorDialog(I18nUtils.getString("NO_CD_INSERTED"));
+                                GuiHandler.getInstance().hideIndeterminateProgressDialog();
+                                GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("NO_CD_INSERTED"));
                             }
                         });
                     }
@@ -587,7 +584,7 @@ public final class RipperHandler extends Handler {
 
             @Override
             protected void done() {
-                VisualHandler.getInstance().hideIndeterminateProgressDialog();
+                GuiHandler.getInstance().hideIndeterminateProgressDialog();
                 CDInfo cdInfo;
                 try {
                     cdInfo = get();
@@ -617,10 +614,10 @@ public final class RipperHandler extends Handler {
                         }
                     }
                 } catch (InterruptedException e) {
-                    VisualHandler.getInstance().getRipCdDialog().setVisible(false);
+                    GuiHandler.getInstance().getRipCdDialog().setVisible(false);
                     getLogger().internalError(e);
                 } catch (ExecutionException e) {
-                    VisualHandler.getInstance().getRipCdDialog().setVisible(false);
+                    GuiHandler.getInstance().getRipCdDialog().setVisible(false);
                     getLogger().internalError(e);
                 }
             }
@@ -637,7 +634,7 @@ public final class RipperHandler extends Handler {
     boolean testTools() {
         if (!CdToWavConverter.testTool()) {
             getLogger().error(LogCategories.RIPPER, "Error testing \"cdda2wav\" or \"cdparanoia\". Check program is installed");
-            VisualHandler.getInstance().showErrorDialog(I18nUtils.getString("CDDA2WAV_NOT_FOUND"));
+            GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("CDDA2WAV_NOT_FOUND"));
             return false;
         }
         return true;

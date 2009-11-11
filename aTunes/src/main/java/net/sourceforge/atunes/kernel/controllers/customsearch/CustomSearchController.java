@@ -33,6 +33,7 @@ import javax.swing.tree.DefaultTreeModel;
 import net.sourceforge.atunes.gui.views.dialogs.CustomSearchDialog;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.search.EmptyRule;
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
 import net.sourceforge.atunes.kernel.modules.search.SearchIndexNotAvailableException;
@@ -42,7 +43,6 @@ import net.sourceforge.atunes.kernel.modules.search.SearchableObject;
 import net.sourceforge.atunes.kernel.modules.search.SimpleRule;
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler.LogicalOperator;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -375,20 +375,20 @@ public class CustomSearchController extends SimpleController<CustomSearchDialog>
 
                 // If no matches found show a message
                 if (result.isEmpty()) {
-                    VisualHandler.getInstance().showMessage(I18nUtils.getString("NO_MATCHES_FOUND"));
+                    GuiHandler.getInstance().showMessage(I18nUtils.getString("NO_MATCHES_FOUND"));
                 } else {
                     // Show result
                     showSearchResults(selectedSearchableObject, result);
                 }
             } catch (SearchIndexNotAvailableException e) {
                 // Thrown when an attribute does not exist on index
-                VisualHandler.getInstance().showErrorDialog(I18nUtils.getString("INVALID_SEARCH_RULE"));
+                GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("INVALID_SEARCH_RULE"));
             } catch (SearchQuerySyntaxException e) {
                 // Thrown when query has invalid syntax
-                VisualHandler.getInstance().showErrorDialog(I18nUtils.getString("INVALID_SEARCH_RULE"));
+                GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("INVALID_SEARCH_RULE"));
             }
         } else {
-            VisualHandler.getInstance().showMessage(I18nUtils.getString("NO_MATCHES_FOUND"));
+            GuiHandler.getInstance().showMessage(I18nUtils.getString("NO_MATCHES_FOUND"));
         }
     }
 
@@ -426,12 +426,6 @@ public class CustomSearchController extends SimpleController<CustomSearchDialog>
         getComponentControlled().getAdvancedSearchTextField().setEnabled(enable);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.kernel.controllers.model.Controller#addBindings()
-     */
     @Override
     protected void addBindings() {
         CustomSearchListener listener = new CustomSearchListener(getComponentControlled());
@@ -450,24 +444,11 @@ public class CustomSearchController extends SimpleController<CustomSearchDialog>
         getComponentControlled().getAdvancedSearchTextField().addActionListener(listener);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.kernel.controllers.model.Controller#addStateBindings
-     * ()
-     */
     @Override
     protected void addStateBindings() {
         // Nothing to do
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.kernel.controllers.model.Controller#notifyReload()
-     */
     @Override
     protected void notifyReload() {
         // Nothing to do

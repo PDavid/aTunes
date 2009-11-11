@@ -31,9 +31,6 @@ import javax.swing.table.AbstractTableModel;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-/**
- * The Class EditTitlesTableModel.
- */
 public class EditTitlesTableModel extends AbstractTableModel {
 
     private static final long serialVersionUID = -4440078678648669115L;
@@ -79,11 +76,6 @@ public class EditTitlesTableModel extends AbstractTableModel {
         return 2;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.table.AbstractTableModel#getColumnName(int)
-     */
     @Override
     public String getColumnName(int column) {
         if (column == 0) {
@@ -101,21 +93,11 @@ public class EditTitlesTableModel extends AbstractTableModel {
         return newValues;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.table.TableModel#getRowCount()
-     */
     @Override
     public int getRowCount() {
         return files.size();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.table.TableModel#getValueAt(int, int)
-     */
     @Override
     public String getValueAt(int rowIndex, int columnIndex) {
         AudioFile file = files.get(rowIndex);
@@ -128,11 +110,6 @@ public class EditTitlesTableModel extends AbstractTableModel {
         return file.getTitle();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.table.AbstractTableModel#isCellEditable(int, int)
-     */
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return columnIndex == 1;

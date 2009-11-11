@@ -19,8 +19,8 @@
  */
 package net.sourceforge.atunes.kernel.modules.player.mplayer;
 
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 
 /**
  * The Class PodcastFeedEntryMPlayerOutputReader.
@@ -57,7 +57,7 @@ class PodcastFeedEntryMPlayerOutputReader extends MPlayerOutputReader {
 
         // When starting playback, update status bar
         if (line.startsWith("Starting playback")) {
-            VisualHandler.getInstance().updateStatusBar(podcastFeedEntry);
+            GuiHandler.getInstance().updateStatusBar(podcastFeedEntry);
             if (!started) {
                 engine.notifyRadioOrPodcastFeedEntry();
                 started = true;

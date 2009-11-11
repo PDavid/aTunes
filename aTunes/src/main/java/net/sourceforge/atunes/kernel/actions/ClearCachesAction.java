@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.SwingWorker;
 
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -59,12 +59,12 @@ public class ClearCachesAction extends Action {
 
             @Override
             protected void done() {
-                VisualHandler.getInstance().getEditPreferencesDialog().setCursor(Cursor.getDefaultCursor());
+                GuiHandler.getInstance().getEditPreferencesDialog().setCursor(Cursor.getDefaultCursor());
                 setEnabled(true);
             }
         };
         setEnabled(false);
-        VisualHandler.getInstance().getEditPreferencesDialog().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        GuiHandler.getInstance().getEditPreferencesDialog().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         clearCaches.execute();
     }
 

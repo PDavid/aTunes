@@ -22,8 +22,8 @@ package net.sourceforge.atunes.kernel.actions;
 import java.util.List;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -40,7 +40,7 @@ public class ExtractPictureAction extends ActionOverSelectedObjects<AudioFile> {
     @Override
     protected void performAction(List<AudioFile> objects) {
         // Export only first picture
-        AudioFilePictureUtils.exportPicture(objects.get(0), VisualHandler.getInstance().getFrame().getFrame());
+        AudioFilePictureUtils.exportPicture(objects.get(0), GuiHandler.getInstance().getFrame().getFrame());
     }
 
     @Override

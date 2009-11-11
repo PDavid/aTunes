@@ -47,6 +47,7 @@ import net.sourceforge.atunes.kernel.actions.CopyPlayListToDeviceAction;
 import net.sourceforge.atunes.kernel.actions.DisconnectDeviceAction;
 import net.sourceforge.atunes.kernel.actions.RefreshDeviceAction;
 import net.sourceforge.atunes.kernel.actions.SynchronizeDeviceWithPlayListAction;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
@@ -64,7 +65,6 @@ import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
 import net.sourceforge.atunes.kernel.modules.search.searchableobjects.DeviceSearchableObject;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.AudioObject;
@@ -145,7 +145,7 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
         // Not enough space avaible
         if (leaveFree > deviceFreeSpace) {
             getLogger().debug(LogCategories.HANDLER, I18nUtils.getString("NOT_ENOUGH_SPACE_ON_DEVICE"));
-            VisualHandler.getInstance().showErrorDialog(I18nUtils.getString("NOT_ENOUGH_SPACE_ON_DEVICE"));
+            GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("NOT_ENOUGH_SPACE_ON_DEVICE"));
             return;
         }
 
@@ -169,13 +169,13 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
      * Connect device.
      */
     public void connectDevice() {
-        FileSelectionDialog dialog = VisualHandler.getInstance().getFileSelectionDialog(true);
+        FileSelectionDialog dialog = GuiHandler.getInstance().getFileSelectionDialog(true);
         dialog.setTitle(I18nUtils.getString("SELECT_DEVICE"));
         dialog.startDialog();
         if (!dialog.isCanceled()) {
             File dir = dialog.getSelectedDir();
 
-            VisualHandler.getInstance().showProgressBar(true, null);
+            GuiHandler.getInstance().showProgressBar(true, null);
             this.retrieveDevice(dir);
         }
     }
@@ -213,7 +213,7 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
 
         // Check if there is enough free space on device
         if (size > deviceFreeSpace) {
-            VisualHandler.getInstance().showErrorDialog(I18nUtils.getString("NOT_ENOUGH_SPACE_ON_DEVICE"));
+            GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("NOT_ENOUGH_SPACE_ON_DEVICE"));
             return;
         }
 
@@ -232,7 +232,7 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
                         refreshDevice();
                         filesCopiedToDevice = process.getFilesTransferred().size();
                         if (!ok) {
-                            VisualHandler.getInstance().showErrorDialog(I18nUtils.getString("ERRORS_IN_EXPORT_PROCESS"));
+                            GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("ERRORS_IN_EXPORT_PROCESS"));
                         }
                     }
                 });
@@ -253,8 +253,8 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
      */
     @Override
     public void deviceConnected(String location) {
-        if (VisualHandler.getInstance().showConfirmationDialog(I18nUtils.getString("DEVICE_CONNECT_CONFIRMATION"), I18nUtils.getString("DEVICE_DETECTED")) == JOptionPane.OK_OPTION) {
-            VisualHandler.getInstance().showProgressBar(true, null);
+        if (GuiHandler.getInstance().showConfirmationDialog(I18nUtils.getString("DEVICE_CONNECT_CONFIRMATION"), I18nUtils.getString("DEVICE_DETECTED")) == JOptionPane.OK_OPTION) {
+            GuiHandler.getInstance().showProgressBar(true, null);
             this.retrieveDevice(new File(location));
         }
     }
@@ -267,7 +267,7 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
      */
     @Override
     public void deviceDisconnected(String location) {
-        VisualHandler.getInstance().showMessage(I18nUtils.getString("DEVICE_DISCONNECTION_DETECTED"));
+        GuiHandler.getInstance().showMessage(I18nUtils.getString("DEVICE_DISCONNECTION_DETECTED"));
         disconnectDevice();
 
         // Start device connection monitor
@@ -281,7 +281,7 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
         // Persist device metadata
         ApplicationStateHandler.getInstance().persistDeviceCache(deviceId, deviceRepository);
 
-        VisualHandler.getInstance().hideDeviceInfoOnStatusBar();
+        GuiHandler.getInstance().hideDeviceInfoOnStatusBar();
 
         List<Integer> songsToRemove = new ArrayList<Integer>();
         for (AudioObject ao : PlayListHandler.getInstance().getCurrentPlayList(true).getObjectsOfType(AudioFile.class)) {
@@ -298,7 +298,7 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
         if (indexes.length > 0) {
             //			PlayListTable table = VisualHandler.getInstance().getPlayListTable();
             //			((PlayListTableModel) table.getModel()).removeAudioObjects(indexes);
-            VisualHandler.getInstance().getPlayListPanel().getPlayListTable().getSelectionModel().clearSelection();
+            GuiHandler.getInstance().getPlayListPanel().getPlayListTable().getSelectionModel().clearSelection();
             PlayListHandler.getInstance().removeAudioObjects(indexes);
         }
 
@@ -453,7 +453,7 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
      */
     private void notifyDeviceReload(RepositoryLoader loader) {
         if (ControllerProxy.getInstance().getNavigationController() != null) {
-            VisualHandler.getInstance().hideProgressBar();
+            GuiHandler.getInstance().hideProgressBar();
             ControllerProxy.getInstance().getNavigationController().notifyDeviceReload();
 
             Actions.getAction(ConnectDeviceAction.class).setEnabled(loader == null);
@@ -462,9 +462,9 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
 
             // Update status bar info
             if (loader != null) {
-                VisualHandler.getInstance().showDeviceInfoOnStatusBar(getDeviceData());
+                GuiHandler.getInstance().showDeviceInfoOnStatusBar(getDeviceData());
             } else {
-                VisualHandler.getInstance().hideDeviceInfoOnStatusBar();
+                GuiHandler.getInstance().hideDeviceInfoOnStatusBar();
             }
 
             if (loader != null) {
@@ -531,7 +531,7 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
      * Refresh device.
      */
     public void refreshDevice() {
-        VisualHandler.getInstance().showProgressBar(true, null);
+        GuiHandler.getInstance().showProgressBar(true, null);
         getLogger().info(LogCategories.REPOSITORY, "Refreshing device");
         Repository oldDeviceRepository = deviceRepository;
         deviceRepository = new Repository(oldDeviceRepository.getFolders());

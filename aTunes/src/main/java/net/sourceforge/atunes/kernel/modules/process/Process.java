@@ -30,7 +30,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.views.dialogs.ProgressDialog;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -214,7 +214,7 @@ public abstract class Process {
      */
     protected ProgressDialog getProgressDialog() {
         if (progressDialog == null) {
-            progressDialog = VisualHandler.getInstance().getNewProgressDialog(getProgressDialogTitle(), owner);
+            progressDialog = GuiHandler.getInstance().getNewProgressDialog(getProgressDialogTitle(), owner);
             progressDialog.setInfoText(getProgressDialogInformation());
             progressDialog.setCurrentProgress(0);
             progressDialog.setProgressBarValue(0);

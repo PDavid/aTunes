@@ -29,8 +29,8 @@ import java.util.Map;
 import net.sourceforge.atunes.gui.model.PlayListColumnModel;
 import net.sourceforge.atunes.gui.views.controls.playList.Column;
 import net.sourceforge.atunes.gui.views.controls.playList.ColumnBean;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
@@ -280,7 +280,7 @@ public class PlayListColumns implements PluginListener {
      * deactivated
      */
     private void refreshColumns() {
-        ((PlayListColumnModel) VisualHandler.getInstance().getPlayListTable().getColumnModel()).arrangeColumns(false);
+        ((PlayListColumnModel) GuiHandler.getInstance().getPlayListTable().getColumnModel()).arrangeColumns(false);
     }
 
 }

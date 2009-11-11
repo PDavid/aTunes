@@ -73,12 +73,6 @@ public class RipCdDialogController extends SimpleController<RipCdDialog> {
         addBindings();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.kernel.controllers.model.Controller#addBindings()
-     */
     @Override
     protected void addBindings() {
 
@@ -110,13 +104,6 @@ public class RipCdDialogController extends SimpleController<RipCdDialog> {
         getComponentControlled().getAlbumTextField().addKeyListener(listener);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.kernel.controllers.model.Controller#addStateBindings
-     * ()
-     */
     @Override
     protected void addStateBindings() {
         // Nothing to to

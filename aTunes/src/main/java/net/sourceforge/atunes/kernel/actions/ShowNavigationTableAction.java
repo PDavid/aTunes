@@ -23,9 +23,9 @@ import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.ControllerProxy;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -47,7 +47,7 @@ public class ShowNavigationTableAction extends Action {
     @Override
     public void actionPerformed(ActionEvent e) {
         ApplicationState.getInstance().setShowNavigationTable((Boolean) getValue(SELECTED_KEY));
-        VisualHandler.getInstance().showNavigationTable((Boolean) getValue(SELECTED_KEY));
+        GuiHandler.getInstance().showNavigationTable((Boolean) getValue(SELECTED_KEY));
         ControllerProxy.getInstance().getNavigationController().updateTableContent(NavigationHandler.getInstance().getCurrentView().getTree());
     }
 }

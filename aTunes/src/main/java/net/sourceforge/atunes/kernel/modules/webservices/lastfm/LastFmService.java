@@ -59,11 +59,11 @@ import net.sourceforge.atunes.kernel.modules.context.AlbumListInfo;
 import net.sourceforge.atunes.kernel.modules.context.ArtistInfo;
 import net.sourceforge.atunes.kernel.modules.context.SimilarArtistsInfo;
 import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmAlbum;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmAlbumList;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmLovedTrack;
@@ -863,7 +863,7 @@ public class LastFmService {
                             SwingUtilities.invokeLater(new Runnable() {
                                 @Override
                                 public void run() {
-                                    VisualHandler.getInstance().showErrorDialog(I18nUtils.getString("LASTFM_USER_ERROR"));
+                                    GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("LASTFM_USER_ERROR"));
                                     // Disable service by deleting password
                                     ApplicationState.getInstance().setLastFmEnabled(false);
                                 }
@@ -928,7 +928,7 @@ public class LastFmService {
                             SwingUtilities.invokeLater(new Runnable() {
                                 @Override
                                 public void run() {
-                                    VisualHandler.getInstance().showErrorDialog(I18nUtils.getString("LASTFM_USER_ERROR"));
+                                    GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("LASTFM_USER_ERROR"));
                                     // Disable service by deleting password
                                     ApplicationState.getInstance().setLastFmEnabled(false);
                                 }

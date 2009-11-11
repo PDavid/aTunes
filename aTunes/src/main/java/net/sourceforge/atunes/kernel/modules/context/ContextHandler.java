@@ -32,10 +32,10 @@ import net.sourceforge.atunes.kernel.modules.context.artist.ArtistContextPanel;
 import net.sourceforge.atunes.kernel.modules.context.audioobject.AudioObjectContextPanel;
 import net.sourceforge.atunes.kernel.modules.context.similar.SimilarArtistsContextPanel;
 import net.sourceforge.atunes.kernel.modules.context.youtube.YoutubeContextPanel;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeService;
@@ -81,10 +81,10 @@ public final class ContextHandler extends Handler implements PluginListener {
         // Set previous selected tab
         // IMPORTANT: this method must be called before adding change listener to avoid firing events when
         // UI is being created
-        VisualHandler.getInstance().getContextPanel().setSelectedIndex(ApplicationState.getInstance().getSelectedContextTab());
+        GuiHandler.getInstance().getContextPanel().setSelectedIndex(ApplicationState.getInstance().getSelectedContextTab());
 
         // Add listener for tab changes
-        VisualHandler.getInstance().getContextPanel().getTabbedPane().addChangeListener(new ChangeListener() {
+        GuiHandler.getInstance().getContextPanel().getTabbedPane().addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
                 contextPanelChanged();
@@ -127,7 +127,7 @@ public final class ContextHandler extends Handler implements PluginListener {
      */
     private void contextPanelChanged() {
         // Update selected tab
-        ApplicationState.getInstance().setSelectedContextTab(VisualHandler.getInstance().getContextPanel().getSelectedIndex());
+        ApplicationState.getInstance().setSelectedContextTab(GuiHandler.getInstance().getContextPanel().getSelectedIndex());
         // Call to fill information: Don't force update since audio object can be the same
         retrieveInfo(currentAudioObject, false);
     }
@@ -142,7 +142,7 @@ public final class ContextHandler extends Handler implements PluginListener {
         
         // Select first tab
         ApplicationState.getInstance().setSelectedContextTab(0);
-        VisualHandler.getInstance().getContextPanel().setSelectedIndex(ApplicationState.getInstance().getSelectedContextTab());
+        GuiHandler.getInstance().getContextPanel().setSelectedIndex(ApplicationState.getInstance().getSelectedContextTab());
     }
 
     /**
@@ -186,13 +186,13 @@ public final class ContextHandler extends Handler implements PluginListener {
 
         if (ApplicationState.getInstance().isUseContext()) {
             // Updates titles
-            VisualHandler.getInstance().getContextPanel().updateContextTabsText();
+            GuiHandler.getInstance().getContextPanel().updateContextTabsText();
 
             // Update icons
-            VisualHandler.getInstance().getContextPanel().updateContextTabsIcons();
+            GuiHandler.getInstance().getContextPanel().updateContextTabsIcons();
 
             // Enable or disable tabs
-            VisualHandler.getInstance().getContextPanel().enableContextTabs();
+            GuiHandler.getInstance().getContextPanel().enableContextTabs();
 
             if (ao == null) {
                 // Clear all tabs
@@ -259,7 +259,7 @@ public final class ContextHandler extends Handler implements PluginListener {
     	try {
     		ContextPanel newPanel = (ContextPanel) plugin.getInstance();
     		getContextPanels().add(newPanel);
-    		VisualHandler.getInstance().getContextPanel().addContextPanel(newPanel);
+    		GuiHandler.getInstance().getContextPanel().addContextPanel(newPanel);
     	} catch (PluginSystemException e) {
     		getLogger().error(LogCategories.PLUGINS, e);
     	}
@@ -269,7 +269,7 @@ public final class ContextHandler extends Handler implements PluginListener {
     public void pluginDeactivated(PluginInfo plugin, Collection<Plugin> createdInstances) {
     	for (Plugin instance : createdInstances) {
     		getContextPanels().remove((ContextPanel)instance);
-    		VisualHandler.getInstance().getContextPanel().removeContextPanel((ContextPanel)instance);
+    		GuiHandler.getInstance().getContextPanel().removeContextPanel((ContextPanel)instance);
     	}
     }
 }

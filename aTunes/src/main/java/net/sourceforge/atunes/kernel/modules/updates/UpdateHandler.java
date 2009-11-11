@@ -30,10 +30,10 @@ import javax.swing.SwingWorker;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.Kernel;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.NetworkUtils;
@@ -103,9 +103,9 @@ public final class UpdateHandler extends Handler {
                 try {
                     ApplicationVersion version = get();
                     if (version != null && version.compareTo(Constants.VERSION) == 1) {
-                        VisualHandler.getInstance().showNewVersionInfo(version, alwaysInDialog);
+                        GuiHandler.getInstance().showNewVersionInfo(version, alwaysInDialog);
                     } else if (showNoNewVersion) {
-                        VisualHandler.getInstance().showMessage(I18nUtils.getString("NOT_NEW_VERSION"));
+                        GuiHandler.getInstance().showMessage(I18nUtils.getString("NOT_NEW_VERSION"));
                     }
                 } catch (InterruptedException e) {
                     getLogger().internalError(e);

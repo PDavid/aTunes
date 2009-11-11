@@ -70,11 +70,11 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.StopButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeLevel;
 import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
@@ -538,7 +538,7 @@ public final class FullScreenWindow extends CustomWindow {
             }
         } else {
             // Get in which screen is application and set full screen in that screen
-            GraphicsDevice graphicsDevice = GuiUtils.getGraphicsDeviceForLocation(VisualHandler.getInstance().getFrame().getLocation());
+            GraphicsDevice graphicsDevice = GuiUtils.getGraphicsDeviceForLocation(GuiHandler.getInstance().getFrame().getLocation());
             graphicsDevice.setFullScreenWindow(fullscreen ? this : null);
         }
     }

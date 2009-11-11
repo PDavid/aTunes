@@ -29,12 +29,12 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -69,7 +69,7 @@ public class SynchronizeDeviceWithPlayListAction extends Action {
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
                     public void run() {
-                        VisualHandler.getInstance().showMessage(
+                        GuiHandler.getInstance().showMessage(
                                 StringUtils.getString(I18nUtils.getString("SYNCHRONIZATION_FINISHED"), " ", I18nUtils.getString("ADDED"), ": ", added ? DeviceHandler
                                         .getInstance().getFilesCopiedToDevice() : 0, " ", I18nUtils.getString("REMOVED"), ": ", filesRemoved));
                     }
@@ -120,7 +120,7 @@ public class SynchronizeDeviceWithPlayListAction extends Action {
                 try {
                     Map<String, List<AudioFile>> files = get();
 
-                    VisualHandler.getInstance().hideIndeterminateProgressDialog();
+                    GuiHandler.getInstance().hideIndeterminateProgressDialog();
 
                     // Remove elements from device
                     final List<AudioFile> filesToRemove = files.get("REMOVE");
@@ -157,7 +157,7 @@ public class SynchronizeDeviceWithPlayListAction extends Action {
             }
         };
         worker.execute();
-        VisualHandler.getInstance().showIndeterminateProgressDialog(I18nUtils.getString("PLEASE_WAIT"));
+        GuiHandler.getInstance().showIndeterminateProgressDialog(I18nUtils.getString("PLEASE_WAIT"));
     }
 
 }

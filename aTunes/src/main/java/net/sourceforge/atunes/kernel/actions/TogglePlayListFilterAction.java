@@ -26,7 +26,7 @@ import java.util.List;
 import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -48,7 +48,7 @@ public class TogglePlayListFilterAction extends Action {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        VisualHandler.getInstance().togglePlayListFiler();
+        GuiHandler.getInstance().togglePlayListFiler();
     }
 
     @Override

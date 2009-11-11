@@ -43,11 +43,11 @@ import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.views.dialogs.TransferProgressDialog;
 import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.Kernel;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.utils.FileNameUtils;
@@ -106,7 +106,7 @@ public final class PodcastFeedHandler extends Handler {
      * Adds a Podcast Feed.
      */
     public void addPodcastFeed() {
-        PodcastFeed podcastFeed = VisualHandler.getInstance().showAddPodcastFeedDialog();
+        PodcastFeed podcastFeed = GuiHandler.getInstance().showAddPodcastFeedDialog();
         if (podcastFeed != null) {
             addPodcastFeed(podcastFeed);
             NavigationHandler.getInstance().refreshView(PodcastNavigationView.class);
@@ -268,7 +268,7 @@ public final class PodcastFeedHandler extends Handler {
         if (isDownloading(podcastFeedEntry)) {
             return;
         }
-        final TransferProgressDialog d = VisualHandler.getInstance().getNewTransferProgressDialog(I18nUtils.getString("PODCAST_FEED_ENTRY_DOWNLOAD"), null);
+        final TransferProgressDialog d = GuiHandler.getInstance().getNewTransferProgressDialog(I18nUtils.getString("PODCAST_FEED_ENTRY_DOWNLOAD"), null);
         d.setIcon(ImageLoader.getImage(ImageLoader.RSS));
         final PodcastFeedEntryDownloader downloadPodcastFeedEntry = new PodcastFeedEntryDownloader(podcastFeedEntry);
         synchronized (runningDownloads) {
@@ -423,7 +423,7 @@ public final class PodcastFeedHandler extends Handler {
                 try {
                     if (get()) {
                         podcastFeedEntry.setDownloaded(false);
-                        VisualHandler.getInstance().getNavigationPanel().getNavigationTable().repaint();
+                        GuiHandler.getInstance().getNavigationPanel().getNavigationTable().repaint();
                     }
                 } catch (InterruptedException e) {
                     getLogger().error(LogCategories.PODCAST, e);

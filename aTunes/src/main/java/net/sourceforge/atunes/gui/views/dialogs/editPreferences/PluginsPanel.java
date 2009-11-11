@@ -55,9 +55,9 @@ import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -208,7 +208,7 @@ public final class PluginsPanel extends PreferencesPanel {
                 int row = pluginsTable.getSelectedRow();
                 PluginInfo plugin = ((PluginsTableModel) pluginsTable.getModel()).getPluginAt(row);
                 PluginConfiguration configuration = ((PluginsTableModel) pluginsTable.getModel()).getPluginConfigurationAt(row);
-                PluginEditorDialog dialog = new PluginEditorDialog(VisualHandler.getInstance().getEditPreferencesDialog(), plugin, configuration);
+                PluginEditorDialog dialog = new PluginEditorDialog(GuiHandler.getInstance().getEditPreferencesDialog(), plugin, configuration);
                 dialog.setVisible(true);
                 configuration = dialog.getConfiguration();
                 if (configuration != null) {
@@ -237,14 +237,14 @@ public final class PluginsPanel extends PreferencesPanel {
                     }
                 };
                 fileChooser.setFileFilter(filter);
-                if (fileChooser.showOpenDialog(VisualHandler.getInstance().getFrame().getFrame()) == JFileChooser.APPROVE_OPTION) {
+                if (fileChooser.showOpenDialog(GuiHandler.getInstance().getFrame().getFrame()) == JFileChooser.APPROVE_OPTION) {
                     File zipFile = fileChooser.getSelectedFile();
                     try {
                         PluginsHandler.getInstance().installPlugin(zipFile);
                         // Update panel after installing a new plugin
                         updatePanel(null);
                     } catch (Exception e1) {
-                        VisualHandler.getInstance().showErrorDialog(e1.getMessage());
+                        GuiHandler.getInstance().showErrorDialog(e1.getMessage());
                         logger.error(LogCategories.PLUGINS, e1);
                     }
                 }
@@ -266,7 +266,7 @@ public final class PluginsPanel extends PreferencesPanel {
                     // Update panel after uninstalling a plugin
                     updatePanel(null);
                 } catch (Exception e1) {
-                    VisualHandler.getInstance().showErrorDialog(e1.getMessage());
+                    GuiHandler.getInstance().showErrorDialog(e1.getMessage());
                     logger.error(LogCategories.PLUGINS, e1);
                 }
             }

@@ -41,9 +41,9 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.substance.SubstanceContextImageJTable;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.internetsearch.SearchFactory;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeResultEntry;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeService;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeVideoDownloader;
@@ -208,7 +208,7 @@ public class YoutubeContent extends ContextPanelContent {
             File defaultFileName = new File(FileNameUtils
                     .getValidFileName(entry.getName().replace("\\", "\\\\").replace("$", "\\$").replace('[', ' ').replace(']', ' ').toString()));
             dialog.setSelectedFile(defaultFileName);
-            int returnValue = dialog.showSaveDialog(VisualHandler.getInstance().getFrame().getFrame());
+            int returnValue = dialog.showSaveDialog(GuiHandler.getInstance().getFrame().getFrame());
             File selectedFile = dialog.getSelectedFile();
             if (selectedFile != null && JFileChooser.APPROVE_OPTION == returnValue) {
                 downloadYoutubeVideo(entry, selectedFile);

@@ -24,9 +24,9 @@ import java.util.List;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.ControllerProxy;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -45,7 +45,7 @@ public class RenameAudioFileInNavigationTableAction extends Action {
     public void actionPerformed(ActionEvent e) {
         List<AudioFile> audioFiles = ControllerProxy.getInstance().getNavigationController().getFilesSelectedInNavigator();
         if (audioFiles.size() == 1) {
-            String name = VisualHandler.getInstance().showInputDialog(I18nUtils.getString("RENAME_AUDIO_FILE_NAME"),
+            String name = GuiHandler.getInstance().showInputDialog(I18nUtils.getString("RENAME_AUDIO_FILE_NAME"),
                     FilenameUtils.getBaseName(audioFiles.get(0).getFile().getAbsolutePath()), ImageLoader.getImage(ImageLoader.FILE_NAME).getImage());
             if (name != null && !name.isEmpty()) {
                 RepositoryHandler.getInstance().rename(audioFiles.get(0), name);

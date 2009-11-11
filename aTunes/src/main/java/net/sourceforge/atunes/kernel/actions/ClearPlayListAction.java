@@ -27,8 +27,8 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -49,7 +49,7 @@ public class ClearPlayListAction extends Action {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        int returnValue = JOptionPane.showConfirmDialog(VisualHandler.getInstance().getFrame().getFrame(), I18nUtils.getString("CLEAR_PLAYLIST_WARNING"), I18nUtils
+        int returnValue = JOptionPane.showConfirmDialog(GuiHandler.getInstance().getFrame().getFrame(), I18nUtils.getString("CLEAR_PLAYLIST_WARNING"), I18nUtils
                 .getString("CLEAR"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (JOptionPane.YES_OPTION == returnValue) {
             PlayListHandler.getInstance().clearPlayList();

@@ -27,12 +27,12 @@ import java.util.EnumSet;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
 import net.sourceforge.atunes.misc.log.LogCategories;
@@ -146,8 +146,8 @@ public class XineEngine extends PlayerEngine {
                             setTime(prevPosition);
                             //if ((audioObjectToPlay instanceof PodcastFeedEntry || audioObjectToPlay instanceof Radio) && s < 1000) {
                             if (s < 1000) {
-                                VisualHandler.getInstance().updateStatusBar(audioObjectToPlay);
-                                VisualHandler.getInstance().updateTitleBar(audioObjectToPlay);
+                                GuiHandler.getInstance().updateStatusBar(audioObjectToPlay);
+                                GuiHandler.getInstance().updateTitleBar(audioObjectToPlay);
                             }
                         }
                     }

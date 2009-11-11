@@ -31,9 +31,9 @@ import java.util.concurrent.ExecutionException;
 
 import javax.swing.SwingWorker;
 
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -202,7 +202,7 @@ public class PodcastFeedEntryDownloader extends SwingWorker<Boolean, Void> {
             if (!isCancelled() && get()) {
                 logger.info(LogCategories.PODCAST, "Download of " + podcastFeedEntry.getUrl() + " finished.");
                 podcastFeedEntry.setDownloaded(true);
-                VisualHandler.getInstance().getNavigationPanel().getNavigationTable().repaint();
+                GuiHandler.getInstance().getNavigationPanel().getNavigationTable().repaint();
             }
         } catch (InterruptedException e) {
             logger.error(LogCategories.PODCAST, e);

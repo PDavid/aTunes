@@ -24,7 +24,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
 
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -44,7 +44,7 @@ public class ShowEqualizerAction extends Action {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        VisualHandler.getInstance().getEqualizerDialog().setVisible(true);
+        GuiHandler.getInstance().getEqualizerDialog().setVisible(true);
     }
 
 }

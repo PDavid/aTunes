@@ -35,6 +35,7 @@ import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
@@ -44,7 +45,6 @@ import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.model.Folder;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
@@ -67,7 +67,7 @@ public class RemoveFromDiskAction extends Action {
     @Override
     public void actionPerformed(ActionEvent e) {
         // Show confirmation
-        if (VisualHandler.getInstance().showConfirmationDialog(I18nUtils.getString("REMOVE_CONFIRMATION"), I18nUtils.getString("CONFIRMATION")) == JOptionPane.OK_OPTION) {
+        if (GuiHandler.getInstance().showConfirmationDialog(I18nUtils.getString("REMOVE_CONFIRMATION"), I18nUtils.getString("CONFIRMATION")) == JOptionPane.OK_OPTION) {
 
             // Podcast view
             if (NavigationHandler.getInstance().getCurrentView() instanceof PodcastNavigationView) {
@@ -87,7 +87,7 @@ public class RemoveFromDiskAction extends Action {
     private void fromOtherViews() {
         final List<AudioFile> files = ControllerProxy.getInstance().getNavigationController().getFilesSelectedInNavigator();
         RepositoryHandler.getInstance().remove(files);
-        VisualHandler.getInstance().showIndeterminateProgressDialog(I18nUtils.getString("PLEASE_WAIT"));
+        GuiHandler.getInstance().showIndeterminateProgressDialog(I18nUtils.getString("PLEASE_WAIT"));
         new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() {
@@ -102,7 +102,7 @@ public class RemoveFromDiskAction extends Action {
 
             @Override
             protected void done() {
-                VisualHandler.getInstance().hideIndeterminateProgressDialog();
+                GuiHandler.getInstance().hideIndeterminateProgressDialog();
             }
         }.execute();
     }
@@ -119,7 +119,7 @@ public class RemoveFromDiskAction extends Action {
             }
         }
         RepositoryHandler.getInstance().removeFolders(foldersToRemove);
-        VisualHandler.getInstance().showIndeterminateProgressDialog(I18nUtils.getString("PLEASE_WAIT"));
+        GuiHandler.getInstance().showIndeterminateProgressDialog(I18nUtils.getString("PLEASE_WAIT"));
         new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() {
@@ -136,7 +136,7 @@ public class RemoveFromDiskAction extends Action {
 
             @Override
             protected void done() {
-                VisualHandler.getInstance().hideIndeterminateProgressDialog();
+                GuiHandler.getInstance().hideIndeterminateProgressDialog();
             }
         }.execute();
     }

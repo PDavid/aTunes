@@ -37,13 +37,13 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.gui.model.TransferableList;
 import net.sourceforge.atunes.kernel.ControllerProxy;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryLoader;
 import net.sourceforge.atunes.kernel.modules.repository.SortType;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
@@ -203,7 +203,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
                 }
             }
 
-            int dropRow = VisualHandler.getInstance().getPlayListTable().rowAtPoint(support.getDropLocation().getDropPoint());
+            int dropRow = GuiHandler.getInstance().getPlayListTable().rowAtPoint(support.getDropLocation().getDropPoint());
 
             if (!audioObjectsToAdd.isEmpty()) {
                 List<AudioObject> songsSorted = SortType.sort(audioObjectsToAdd);
@@ -212,7 +212,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
                 if (dropRow == -1) {
                     dropRow = PlayListHandler.getInstance().getCurrentPlayList(true).size() - audioObjectsToAdd.size();
                 }
-                VisualHandler.getInstance().getPlayListTable().getSelectionModel().addSelectionInterval(dropRow, dropRow + audioObjectsToAdd.size() - 1);
+                GuiHandler.getInstance().getPlayListTable().getSelectionModel().addSelectionInterval(dropRow, dropRow + audioObjectsToAdd.size() - 1);
             }
         } catch (Exception e) {
             logger.internalError(e);
@@ -266,7 +266,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
 
         // Set dragged rows as selected
         for (Integer rowToKeepSelected : rowsToKeepSelected) {
-            VisualHandler.getInstance().getPlayListTable().getSelectionModel().addSelectionInterval(rowToKeepSelected, rowToKeepSelected);
+            GuiHandler.getInstance().getPlayListTable().getSelectionModel().addSelectionInterval(rowToKeepSelected, rowToKeepSelected);
         }
 
         return true;
@@ -325,7 +325,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
                     filesToAdd.addAll(PlayListIO.getFilesFromList(f));
                 }
             }
-            int dropRow = VisualHandler.getInstance().getPlayListTable().rowAtPoint(support.getDropLocation().getDropPoint());
+            int dropRow = GuiHandler.getInstance().getPlayListTable().rowAtPoint(support.getDropLocation().getDropPoint());
 
             if (!filesToAdd.isEmpty()) {
                 List<AudioObject> songsSorted = SortType.sort(filesToAdd);
@@ -334,7 +334,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
                 if (dropRow == -1) {
                     dropRow = PlayListHandler.getInstance().getCurrentPlayList(true).size() - filesToAdd.size();
                 }
-                VisualHandler.getInstance().getPlayListTable().getSelectionModel().addSelectionInterval(dropRow, dropRow + filesToAdd.size() - 1);
+                GuiHandler.getInstance().getPlayListTable().getSelectionModel().addSelectionInterval(dropRow, dropRow + filesToAdd.size() - 1);
             }
             return true;
         }

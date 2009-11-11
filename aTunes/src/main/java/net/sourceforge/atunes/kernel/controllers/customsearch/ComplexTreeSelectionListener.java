@@ -53,13 +53,6 @@ public class ComplexTreeSelectionListener implements TreeSelectionListener {
         this.tree = tree;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * javax.swing.event.TreeSelectionListener#valueChanged(javax.swing.event
-     * .TreeSelectionEvent)
-     */
     @Override
     public void valueChanged(TreeSelectionEvent e) {
         // Get selected tree path

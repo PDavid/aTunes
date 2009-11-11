@@ -49,6 +49,7 @@ import net.sourceforge.atunes.kernel.actions.ImportToRepositoryAction;
 import net.sourceforge.atunes.kernel.actions.RefreshRepositoryAction;
 import net.sourceforge.atunes.kernel.actions.RipCDAction;
 import net.sourceforge.atunes.kernel.actions.SelectRepositoryAction;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.model.Album;
@@ -60,7 +61,6 @@ import net.sourceforge.atunes.kernel.modules.search.searchableobjects.Repository
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -93,11 +93,11 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
     	public void mouseClicked(java.awt.event.MouseEvent e) {
 			backgroundLoad = false;
 			currentLoader.setPriority(Thread.MAX_PRIORITY);
-			VisualHandler.getInstance().hideProgressBar();
+			GuiHandler.getInstance().hideProgressBar();
 			if (progressDialog != null) {
 				progressDialog.showProgressDialog();
 			}
-	        VisualHandler.getInstance().getProgressBar().removeMouseListener(progressBarMouseAdapter);
+	        GuiHandler.getInstance().getProgressBar().removeMouseListener(progressBarMouseAdapter);
     	};
 	};
     
@@ -143,7 +143,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                VisualHandler.getInstance().showProgressBar(true, StringUtils.getString(I18nUtils.getString("REFRESHING"), "..."));
+                GuiHandler.getInstance().showProgressBar(true, StringUtils.getString(I18nUtils.getString("REFRESHING"), "..."));
             }
         });
         SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
@@ -156,8 +156,8 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
             @Override
             protected void done() {
                 super.done();
-                VisualHandler.getInstance().hideProgressBar();
-                VisualHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
+                GuiHandler.getInstance().hideProgressBar();
+                GuiHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
                 if (ControllerProxy.getInstance().getNavigationController() != null) {
                     ControllerProxy.getInstance().getNavigationController().notifyReload();
                 }
@@ -484,7 +484,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
         	progressDialog.getProgressLabel().setText(Integer.toString(filesLoaded));
         	progressDialog.getProgressBar().setValue(filesLoaded);
         }
-        VisualHandler.getInstance().getProgressBar().setValue(filesLoaded);
+        GuiHandler.getInstance().getProgressBar().setValue(filesLoaded);
     }
 
     /*
@@ -503,8 +503,8 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
         	progressDialog.getTotalFilesLabel().setText(StringUtils.getString(totalFiles));
         	progressDialog.getProgressBar().setMaximum(totalFiles);
         }
-        VisualHandler.getInstance().getProgressBar().setIndeterminate(false);
-    	VisualHandler.getInstance().getProgressBar().setMaximum(totalFiles);
+        GuiHandler.getInstance().getProgressBar().setIndeterminate(false);
+    	GuiHandler.getInstance().getProgressBar().setMaximum(totalFiles);
     }
 
     /*
@@ -532,7 +532,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
         ApplicationState.getInstance().setLastRepositoryFolders(repositoryFolders);
 
         if (backgroundLoad) {
-        	VisualHandler.getInstance().hideProgressBar();
+        	GuiHandler.getInstance().hideProgressBar();
         }
         
         notifyFinishRepositoryRead();
@@ -549,8 +549,8 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
     public void notifyFinishRefresh(RepositoryLoader loader) {
     	enableRepositoryActions(true);
 
-        VisualHandler.getInstance().hideProgressBar();
-        VisualHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
+        GuiHandler.getInstance().hideProgressBar();
+        GuiHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
         if (ControllerProxy.getInstance().getNavigationController() != null) {
             ControllerProxy.getInstance().getNavigationController().notifyReload();
         }
@@ -570,7 +570,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
     		progressDialog = null;
     	}
         ControllerProxy.getInstance().getNavigationController().notifyReload();
-        VisualHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
+        GuiHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
         
         currentLoader = null;
     }
@@ -585,7 +585,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
     @Override
     public void notifyReadProgress() {
         ControllerProxy.getInstance().getNavigationController().notifyReload();
-        VisualHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
+        GuiHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
     }
 
     @Override
@@ -622,7 +622,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
                 Object selection = null;
                 // Test if repository exists and show message until repository exists or user doesn't press "RETRY"
                 do {
-                    selection = VisualHandler.getInstance().showMessage(StringUtils.getString(I18nUtils.getString("REPOSITORY_NOT_FOUND"), ": ", rep.getFolders().get(0)),
+                    selection = GuiHandler.getInstance().showMessage(StringUtils.getString(I18nUtils.getString("REPOSITORY_NOT_FOUND"), ": ", rep.getFolders().get(0)),
                             I18nUtils.getString("REPOSITORY_NOT_FOUND"), JOptionPane.WARNING_MESSAGE,
                             new String[] { I18nUtils.getString("RETRY"), I18nUtils.getString("SELECT_REPOSITORY") });
                 } while (I18nUtils.getString("RETRY").equals(selection) && !rep.exists());
@@ -648,12 +648,12 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
                 for (String f : lastRepositoryFolders) {
                     foldersToRead.add(new File(f));
                 }
-                VisualHandler.getInstance().showMessage(I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"));
+                GuiHandler.getInstance().showMessage(I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"));
                 retrieve(foldersToRead);
                 return;
             }
 
-            VisualHandler.getInstance().showRepositorySelectionInfoDialog();
+            GuiHandler.getInstance().showRepositorySelectionInfoDialog();
             selectRepository();
         }
     }
@@ -702,7 +702,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
     public void refreshRepository() {
         if (!repositoryIsNull()) {
             String text = StringUtils.getString(I18nUtils.getString("REFRESHING"), "...");
-            VisualHandler.getInstance().showProgressBar(true, text);
+            GuiHandler.getInstance().showProgressBar(true, text);
             enableRepositoryActions(false);
             refresh();
         }
@@ -789,11 +789,11 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
      */
     public boolean retrieve(List<File> folders) {
     	enableRepositoryActions(false);
-    	progressDialog = VisualHandler.getInstance().getProgressDialog();
+    	progressDialog = GuiHandler.getInstance().getProgressDialog();
     	// Start with indeterminate dialog
         progressDialog.showProgressDialog();
         progressDialog.getProgressBar().setIndeterminate(true);
-        VisualHandler.getInstance().getProgressBar().setIndeterminate(true);
+        GuiHandler.getInstance().getProgressBar().setIndeterminate(true);
         filesLoaded = 0;
         try {
             if (folders == null || folders.isEmpty()) {
@@ -827,7 +827,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
      * @return true, if successful
      */
     public boolean selectRepository(boolean repositoryNotFound) {
-        MultiFolderSelectionDialog dialog = VisualHandler.getInstance().getMultiFolderSelectionDialog();
+        MultiFolderSelectionDialog dialog = GuiHandler.getInstance().getMultiFolderSelectionDialog();
         dialog.setText(I18nUtils.getString("SELECT_REPOSITORY_FOLDERS"));
         dialog.startDialog((repository != null && !repositoryNotFound) ? repository.getFolders() : null);
         if (!dialog.isCancelled()) {
@@ -846,12 +846,12 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
     public void importFoldersToRepository() {
         // First check if repository is selected. If not, display a message
         if (repository == null) {
-            VisualHandler.getInstance().showErrorDialog(I18nUtils.getString("SELECT_REPOSITORY_BEFORE_IMPORT"));
+            GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("SELECT_REPOSITORY_BEFORE_IMPORT"));
             return;
         }
 
         // Now show dialog to select folders
-        MultiFolderSelectionDialog dialog = VisualHandler.getInstance().getMultiFolderSelectionDialog();
+        MultiFolderSelectionDialog dialog = GuiHandler.getInstance().getMultiFolderSelectionDialog();
         dialog.setTitle(I18nUtils.getString("IMPORT"));
         dialog.setText(I18nUtils.getString("SELECT_FOLDERS_TO_IMPORT"));
         dialog.startDialog(null);
@@ -866,7 +866,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
                     for (int i = 0; i < repository.getFolders().size(); i++) {
                         folderNames[i] = repository.getFolders().get(i).getAbsolutePath();
                     }
-                    SelectorDialog selector = new SelectorDialog(VisualHandler.getInstance().getFrame().getFrame(), I18nUtils.getString("SELECT_REPOSITORY_FOLDER_TO_IMPORT"),
+                    SelectorDialog selector = new SelectorDialog(GuiHandler.getInstance().getFrame().getFrame(), I18nUtils.getString("SELECT_REPOSITORY_FOLDER_TO_IMPORT"),
                             folderNames, null);
                     selector.setVisible(true);
                     path = selector.getSelection();
@@ -892,14 +892,14 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
         SwingWorker<List<AudioFile>, Void> worker = new SwingWorker<List<AudioFile>, Void>() {
             @Override
             protected List<AudioFile> doInBackground() throws Exception {
-                VisualHandler.getInstance().showIndeterminateProgressDialog(StringUtils.getString(I18nUtils.getString("READING_FILES_TO_IMPORT"), "..."));
+                GuiHandler.getInstance().showIndeterminateProgressDialog(StringUtils.getString(I18nUtils.getString("READING_FILES_TO_IMPORT"), "..."));
                 return RepositoryLoader.getSongsForFolders(folders);
             }
 
             @Override
             protected void done() {
                 super.done();
-                VisualHandler.getInstance().hideIndeterminateProgressDialog();
+                GuiHandler.getInstance().hideIndeterminateProgressDialog();
 
                 try {
                     final List<AudioFile> filesToLoad = get();
@@ -907,7 +907,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
                     TagAttributesReviewed tagAttributesReviewed = null;
                     // Review tags if selected in settings
                     if (ApplicationState.getInstance().isReviewTagsBeforeImport()) {
-                        ReviewImportDialog reviewImportDialog = VisualHandler.getInstance().getReviewImportDialog();
+                        ReviewImportDialog reviewImportDialog = GuiHandler.getInstance().getReviewImportDialog();
                         reviewImportDialog.show(folders, filesToLoad);
                         if (reviewImportDialog.isDialogCancelled()) {
                             return;
@@ -929,7 +929,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
                                     SwingUtilities.invokeAndWait(new Runnable() {
                                         @Override
                                         public void run() {
-                                            VisualHandler.getInstance().showErrorDialog(I18nUtils.getString("ERRORS_IN_IMPORT_PROCESS"));
+                                            GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("ERRORS_IN_IMPORT_PROCESS"));
                                         }
                                     });
                                 } catch (InterruptedException e) {
@@ -967,7 +967,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
     @Override
     public void audioFilesRemoved(List<AudioFile> audioFiles) {
         // Update status bar
-        VisualHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
+        GuiHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
     }
 
 	public void doInBackground() {
@@ -977,8 +977,8 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
 			if (progressDialog != null) {
 				progressDialog.hideProgressDialog();
 			}
-            VisualHandler.getInstance().showProgressBar(false, StringUtils.getString(I18nUtils.getString("LOADING"), "..."));
-            VisualHandler.getInstance().getProgressBar().addMouseListener(progressBarMouseAdapter);
+            GuiHandler.getInstance().showProgressBar(false, StringUtils.getString(I18nUtils.getString("LOADING"), "..."));
+            GuiHandler.getInstance().getProgressBar().addMouseListener(progressBarMouseAdapter);
 		}
         
 	}

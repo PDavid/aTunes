@@ -41,8 +41,8 @@ import net.sourceforge.atunes.gui.views.dialogs.editPreferences.PreferencesPanel
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.RadioPanel;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.RepositoryPanel;
 import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 
 public class EditPreferencesDialogController extends SimpleController<EditPreferencesDialog> {
@@ -55,7 +55,7 @@ public class EditPreferencesDialogController extends SimpleController<EditPrefer
      * Instantiates a new edits the preferences dialog controller.
      */
     public EditPreferencesDialogController() {
-        super(VisualHandler.getInstance().getEditPreferencesDialog());
+        super(GuiHandler.getInstance().getEditPreferencesDialog());
         getComponentControlled().setPanels(panels);
         buildList();
         addBindings();

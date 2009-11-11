@@ -71,11 +71,6 @@ import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 
-/**
- * The Class NavigationController.
- * 
- * @author fleax
- */
 public class NavigationController extends SimpleController<NavigationPanel> implements AudioFilesRemovedListener {
 
     public enum ViewMode {

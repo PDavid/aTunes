@@ -27,11 +27,11 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.Kernel;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.notify.NotifyHandler;
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.xine.XineEngine;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -342,7 +342,7 @@ public final class PlayerHandler extends Handler implements PluginListener {
 
                 // Add core playback listeners
                 instance.playerEngine.addPlaybackStateListener(instance.playerEngine);
-                instance.playerEngine.addPlaybackStateListener(VisualHandler.getInstance());
+                instance.playerEngine.addPlaybackStateListener(GuiHandler.getInstance());
                 instance.playerEngine.addPlaybackStateListener(NotifyHandler.getInstance());
             }
 
@@ -372,7 +372,7 @@ public final class PlayerHandler extends Handler implements PluginListener {
     private static void handlePlayerError(Throwable t) {
         getLogger().error(LogCategories.PLAYER, StringUtils.getString("Player Error: ", t));
         getLogger().error(LogCategories.PLAYER, t);
-        VisualHandler.getInstance().showErrorDialog(t.getMessage());
+        GuiHandler.getInstance().showErrorDialog(t.getMessage());
     }
 
     /**

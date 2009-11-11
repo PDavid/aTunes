@@ -27,12 +27,12 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.views.dialogs.ExportOptionsDialog;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.ExportFilesProcess;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -53,7 +53,7 @@ public class ExportAction extends Action {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        ExportOptionsDialog dialog = VisualHandler.getInstance().getExportDialog();
+        ExportOptionsDialog dialog = GuiHandler.getInstance().getExportDialog();
         dialog.startDialog();
 
         // If user didn't cancel dialog...
@@ -66,7 +66,7 @@ public class ExportAction extends Action {
 
                 // If path does not exist, then ask user to create it
                 if (!pathExists) {
-                    if (VisualHandler.getInstance().showConfirmationDialog(I18nUtils.getString("DIR_NO_EXISTS"), I18nUtils.getString("INFO")) == JOptionPane.OK_OPTION) {
+                    if (GuiHandler.getInstance().showConfirmationDialog(I18nUtils.getString("DIR_NO_EXISTS"), I18nUtils.getString("INFO")) == JOptionPane.OK_OPTION) {
                         pathExists = new File(path).mkdir();
                         userWantsToCreate = true;
                     }
@@ -96,7 +96,7 @@ public class ExportAction extends Action {
                                 @Override
                                 public void run() {
                                     if (!ok) {
-                                        VisualHandler.getInstance().showErrorDialog(I18nUtils.getString("ERRORS_IN_EXPORT_PROCESS"));
+                                        GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("ERRORS_IN_EXPORT_PROCESS"));
                                     }
                                 }
                             });
@@ -105,10 +105,10 @@ public class ExportAction extends Action {
                     process.execute();
                 } else if (userWantsToCreate) {
                     // If path does not exist and app is not able to create it show an error dialog
-                    VisualHandler.getInstance().showErrorDialog(I18nUtils.getString("COULD_NOT_CREATE_DIR"));
+                    GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("COULD_NOT_CREATE_DIR"));
                 }
             } else {
-                VisualHandler.getInstance().showErrorDialog(I18nUtils.getString("INCORRECT_EXPORT_PATH"));
+                GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("INCORRECT_EXPORT_PATH"));
             }
         }
     }

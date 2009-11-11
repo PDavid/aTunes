@@ -61,12 +61,6 @@ public class RipCdDialogListener extends KeyAdapter implements ActionListener {
         this.ripCdDialogController = ripCdDialogController;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == ripCdDialog.getOk()) {
@@ -104,11 +98,6 @@ public class RipCdDialogListener extends KeyAdapter implements ActionListener {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.awt.event.KeyAdapter#keyTyped(java.awt.event.KeyEvent)
-     */
     @Override
     public void keyTyped(KeyEvent e) {
         if (e.getSource() == ripCdDialog.getFolderName() || e.getSource() == ripCdDialog.getAlbumTextField()) {

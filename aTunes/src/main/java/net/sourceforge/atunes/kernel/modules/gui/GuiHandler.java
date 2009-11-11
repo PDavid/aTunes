@@ -17,7 +17,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package net.sourceforge.atunes.kernel.modules.visual;
+package net.sourceforge.atunes.kernel.modules.gui;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -113,9 +113,9 @@ import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public final class VisualHandler extends Handler implements PlaybackStateListener {
+public final class GuiHandler extends Handler implements PlaybackStateListener {
 
-    private static VisualHandler instance = new VisualHandler();
+    private static GuiHandler instance = new GuiHandler();
 
     Frame frame;
     private OSDDialog osdDialog;
@@ -140,7 +140,7 @@ public final class VisualHandler extends Handler implements PlaybackStateListene
     /**
      * Instantiates a new visual handler.
      */
-    private VisualHandler() {
+    private GuiHandler() {
     }
 
     @Override
@@ -152,7 +152,7 @@ public final class VisualHandler extends Handler implements PlaybackStateListene
      * 
      * @return single instance of VisualHandler
      */
-    public static VisualHandler getInstance() {
+    public static GuiHandler getInstance() {
         return instance;
     }
 
@@ -674,7 +674,7 @@ public final class VisualHandler extends Handler implements PlaybackStateListene
      */
     private void setPlaying(boolean playing) {
         ControllerProxy.getInstance().getPlayerControlsController().setPlaying(playing);
-        VisualHandler.getInstance().getFullScreenWindow().setPlaying(playing);
+        GuiHandler.getInstance().getFullScreenWindow().setPlaying(playing);
         SystemTrayHandler.getInstance().setPlaying(playing);
     }
 

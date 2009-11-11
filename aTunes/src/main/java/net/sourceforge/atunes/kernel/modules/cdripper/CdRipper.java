@@ -39,9 +39,6 @@ import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-/**
- * The Class CdRipper.
- */
 public class CdRipper {
 
     public static final String ARTIST_PATTERN = "%A";
@@ -104,7 +101,6 @@ public class CdRipper {
      * 
      * @return the file name
      */
-
     private String getFileName(List<String> titles, int trackNumber, String extension) {
         DecimalFormat df = new DecimalFormat("00");
         if (fileNamePattern == null) {

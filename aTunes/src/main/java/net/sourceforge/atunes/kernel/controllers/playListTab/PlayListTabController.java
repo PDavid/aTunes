@@ -30,9 +30,6 @@ import net.sourceforge.atunes.gui.views.panels.ButtonTabComponent;
 import net.sourceforge.atunes.gui.views.panels.PlayListTabPanel;
 import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
 
-/**
- * The Class PlayListTabController.
- */
 public class PlayListTabController extends SimpleController<PlayListTabPanel> {
 
     /**

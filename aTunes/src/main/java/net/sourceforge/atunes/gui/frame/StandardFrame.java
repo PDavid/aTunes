@@ -56,10 +56,10 @@ import net.sourceforge.atunes.gui.views.panels.NavigationPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.ControllerProxy;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.updates.ApplicationVersion;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
 import net.sourceforge.atunes.misc.log.LogCategories;
@@ -198,7 +198,7 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
 
     @Override
     public void dispose() {
-        VisualHandler.getInstance().finish();
+        GuiHandler.getInstance().finish();
         super.dispose();
     }
 
@@ -206,7 +206,7 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
      * This method is called from the OSXAdapter
      */
     public void about() {
-        VisualHandler.getInstance().showAboutDialog();
+        GuiHandler.getInstance().showAboutDialog();
     }
 
     @Override

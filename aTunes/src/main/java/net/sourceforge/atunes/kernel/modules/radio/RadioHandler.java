@@ -29,13 +29,13 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.Handler;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.RadioNavigationView;
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.utils.NetworkUtils;
 import net.sourceforge.atunes.utils.XMLUtils;
@@ -90,7 +90,7 @@ public final class RadioHandler extends Handler {
      * Add the radio station from the add radio dialog.
      */
     public void addRadio() {
-        Radio radio = VisualHandler.getInstance().showAddRadioDialog();
+        Radio radio = GuiHandler.getInstance().showAddRadioDialog();
         if (radio != null) {
             addRadio(radio);
         }

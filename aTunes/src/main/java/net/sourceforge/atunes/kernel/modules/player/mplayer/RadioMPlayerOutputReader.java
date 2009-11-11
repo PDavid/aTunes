@@ -23,10 +23,10 @@ import java.util.regex.Pattern;
 
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 
 /**
@@ -70,7 +70,7 @@ class RadioMPlayerOutputReader extends MPlayerOutputReader {
 
         // When starting playback, update status bar
         if (line.startsWith("Starting playback")) {
-            VisualHandler.getInstance().updateStatusBar(radio);
+            GuiHandler.getInstance().updateStatusBar(radio);
             if (!started) {
                 engine.notifyRadioOrPodcastFeedEntry();
                 started = true;

@@ -47,11 +47,6 @@ public class RadioBrowserDialogListener extends MouseAdapter {
         this.radioBrowserDialog = radioBrowserDialog;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.awt.event.MouseAdapter#mousePressed(java.awt.event.MouseEvent)
-     */
     @Override
     public void mousePressed(MouseEvent e) {
         if (e.getSource() == radioBrowserDialog.getTreeTable()) {

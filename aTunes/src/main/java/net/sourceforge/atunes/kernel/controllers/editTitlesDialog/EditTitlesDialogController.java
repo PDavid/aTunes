@@ -97,12 +97,6 @@ public class EditTitlesDialogController extends SimpleController<EditTitlesDialo
         return album;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.kernel.controllers.model.Controller#notifyReload()
-     */
     @Override
     protected void notifyReload() {
         // Nothing to do

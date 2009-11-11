@@ -46,9 +46,9 @@ import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.images.ThemePreviewLoader;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -134,11 +134,11 @@ public final class GeneralPanel extends PreferencesPanel {
             public void actionPerformed(ActionEvent e) {
                 FontChooserDialog fontChooserDialog;
                 if (currentFontSettings != null) {
-                    fontChooserDialog = new FontChooserDialog(VisualHandler.getInstance().getFrame().getFrame(), 300, 300, currentFontSettings.getFont().toFont(),
+                    fontChooserDialog = new FontChooserDialog(GuiHandler.getInstance().getFrame().getFrame(), 300, 300, currentFontSettings.getFont().toFont(),
                             currentFontSettings.isUseFontSmoothing(), currentFontSettings.isUseFontSmoothingSettingsFromOs(), ApplicationState.getInstance().getLocale()
                                     .getLocale());
                 } else {
-                    fontChooserDialog = new FontChooserDialog(VisualHandler.getInstance().getFrame().getFrame(), 300, 300, SubstanceLookAndFeel.getFontPolicy().getFontSet(
+                    fontChooserDialog = new FontChooserDialog(GuiHandler.getInstance().getFrame().getFrame(), 300, 300, SubstanceLookAndFeel.getFontPolicy().getFontSet(
                             "Substance", UIManager.getDefaults()).getControlFont(), true, false, ApplicationState.getInstance().getLocale().getLocale());
                 }
                 fontChooserDialog.setVisible(true);
