@@ -24,10 +24,10 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.gui.views.dialogs.PatternInputDialog;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.tags.writer.EditTagFromFileNamePatternProcess;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -50,7 +50,7 @@ public class AutoSetTagFromFileNamePatternAction extends ActionOverSelectedObjec
     @Override
     protected void performAction(List<AudioFile> objects) {
         // Show pattern input dialog
-        PatternInputDialog inputDialog = new PatternInputDialog(VisualHandler.getInstance().getFrame().getFrame(), false);
+        PatternInputDialog inputDialog = new PatternInputDialog(GuiHandler.getInstance().getFrame().getFrame(), false);
         inputDialog.show(AbstractPattern.getRecognitionPatterns(), objects.get(0).getNameWithoutExtension());
         String pattern = inputDialog.getResult();
 

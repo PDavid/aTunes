@@ -31,6 +31,7 @@ import net.sourceforge.atunes.kernel.modules.cdripper.RipperHandler;
 import net.sourceforge.atunes.kernel.modules.command.CommandHandler;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeyHandler;
 import net.sourceforge.atunes.kernel.modules.instances.MultipleInstancesHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
@@ -47,7 +48,6 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationStateChangeListene
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
 import net.sourceforge.atunes.kernel.modules.updates.UpdateHandler;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -84,7 +84,7 @@ public abstract class Handler implements ApplicationStartListener, ApplicationFi
         handlerClasses.add(RepositoryHandler.class);
         handlerClasses.add(SearchHandler.class);
         handlerClasses.add(UpdateHandler.class);
-        handlerClasses.add(VisualHandler.class);
+        handlerClasses.add(GuiHandler.class);
         handlerClasses.add(StatisticsHandler.class);
     }
 

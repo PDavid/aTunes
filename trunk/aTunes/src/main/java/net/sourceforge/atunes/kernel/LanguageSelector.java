@@ -20,9 +20,9 @@
 package net.sourceforge.atunes.kernel;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.DateUtils;
@@ -51,8 +51,8 @@ public class LanguageSelector {
             if (locale.getLocale().getISO3Language().equals("zho") || locale.getLocale().getISO3Language().equals("jpn") || locale.getLocale().getISO3Language().equals("tur")) {
                 logger.info(LogCategories.START, StringUtils.getString("Outdated locale: ", locale.getLocale()));
                 if (ApplicationState.getInstance().getNagDialogCounter() > 6) {
-                    VisualHandler.getInstance().hideSplashScreen();
-                    VisualHandler
+                    GuiHandler.getInstance().hideSplashScreen();
+                    GuiHandler
                             .getInstance()
                             .showMessage(
                                     StringUtils

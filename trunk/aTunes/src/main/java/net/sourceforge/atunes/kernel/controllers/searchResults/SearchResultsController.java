@@ -27,11 +27,11 @@ import javax.swing.table.TableRowSorter;
 
 import net.sourceforge.atunes.gui.views.dialogs.SearchResultsDialog;
 import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.search.SearchResult;
 import net.sourceforge.atunes.kernel.modules.search.SearchResultTableModel;
 import net.sourceforge.atunes.kernel.modules.search.SearchableObject;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.model.AudioObject;
 
 /**
@@ -79,7 +79,7 @@ public class SearchResultsController extends SimpleController<SearchResultsDialo
         if (selectedResults == null) {
             return;
         }
-        VisualHandler.getInstance().showPropertiesDialog(selectedResults.get(0));
+        GuiHandler.getInstance().showPropertiesDialog(selectedResults.get(0));
     }
 
     /**

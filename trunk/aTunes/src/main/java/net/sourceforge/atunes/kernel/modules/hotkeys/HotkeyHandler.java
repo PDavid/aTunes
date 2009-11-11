@@ -24,11 +24,11 @@ import java.awt.event.InputEvent;
 import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.notify.NotifyHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -187,7 +187,7 @@ public final class HotkeyHandler extends Handler implements HotkeyListener {
                 ApplicationState.getInstance().setEnableHotkeys(false);
 
                 // Show an error message
-                VisualHandler.getInstance().showErrorDialog(I18nUtils.getString("HOTKEYS_ACTIVATION_ERROR_MESSAGE"));
+                GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("HOTKEYS_ACTIVATION_ERROR_MESSAGE"));
                 getLogger().error(LogCategories.HOTKEYS, "Hotkeys were not activated successfully");
             }
         }
@@ -244,7 +244,7 @@ public final class HotkeyHandler extends Handler implements HotkeyListener {
             break;
         }
         case HOTKEY_TOGGLE_WINDOW_VISIBILITY: {
-            VisualHandler.getInstance().toggleWindowVisibility();
+            GuiHandler.getInstance().toggleWindowVisibility();
             break;
         }
         case HOTKEY_MUTE: {

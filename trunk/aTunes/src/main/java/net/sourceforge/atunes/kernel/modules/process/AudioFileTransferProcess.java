@@ -33,9 +33,9 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.views.dialogs.ProgressDialog;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -64,7 +64,7 @@ public abstract class AudioFileTransferProcess extends Process {
     protected AudioFileTransferProcess(Collection<AudioFile> collection) {
         this.filesToTransfer = collection;
         this.filesTransferred = new ArrayList<File>();
-        setOwner(VisualHandler.getInstance().getFrame().getFrame());
+        setOwner(GuiHandler.getInstance().getFrame().getFrame());
     }
 
     @Override
@@ -81,7 +81,7 @@ public abstract class AudioFileTransferProcess extends Process {
     protected ProgressDialog getProgressDialog() {
         if (progressDialog == null) {
             // Use a TransferProgressDialog
-            progressDialog = VisualHandler.getInstance().getNewTransferProgressDialog(getProgressDialogTitle(), owner);
+            progressDialog = GuiHandler.getInstance().getNewTransferProgressDialog(getProgressDialogTitle(), owner);
             progressDialog.setInfoText(getProgressDialogInformation());
             progressDialog.setCurrentProgress(0);
             progressDialog.setProgressBarValue(0);
@@ -117,7 +117,7 @@ public abstract class AudioFileTransferProcess extends Process {
                         SwingUtilities.invokeAndWait(new Runnable() {
                             @Override
                             public void run() {
-                                userSelectionWhenErrors = (String) VisualHandler.getInstance().showMessage(
+                                userSelectionWhenErrors = (String) GuiHandler.getInstance().showMessage(
                                         StringUtils.getString(I18nUtils.getString("ERROR"), ": ", thrownExceptions.get(0).getMessage()), I18nUtils.getString("ERROR"),
                                         JOptionPane.ERROR_MESSAGE,
                                         new String[] { I18nUtils.getString("IGNORE"), I18nUtils.getString("IGNORE_ALL"), I18nUtils.getString("CANCEL") });

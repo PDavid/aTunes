@@ -27,7 +27,7 @@ import java.util.Map.Entry;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
@@ -66,7 +66,7 @@ public class PodcastFeedEntryDownloadChecker implements Runnable {
                 for (Entry<PodcastFeedEntry, Boolean> entry : downloaded.entrySet()) {
                     entry.getKey().setDownloaded(entry.getValue());
                 }
-                VisualHandler.getInstance().getNavigationPanel().getNavigationTable().repaint();
+                GuiHandler.getInstance().getNavigationPanel().getNavigationTable().repaint();
             }
         });
     }

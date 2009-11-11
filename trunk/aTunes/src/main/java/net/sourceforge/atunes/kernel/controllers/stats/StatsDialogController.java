@@ -55,9 +55,6 @@ import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.ui.RectangleInsets;
 import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
-/**
- * The Class StatsDialogController.
- */
 public class StatsDialogController extends SimpleController<StatsDialog> {
 
     /**
@@ -99,12 +96,6 @@ public class StatsDialogController extends SimpleController<StatsDialog> {
         return result;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.kernel.controllers.model.Controller#notifyReload()
-     */
     @Override
     protected void notifyReload() {
         // Nothing to do
@@ -139,7 +130,6 @@ public class StatsDialogController extends SimpleController<StatsDialog> {
     /**
      * Sets the albums table.
      */
-
     private void setAlbumsTable() {
         List<Object[]> albums = getMostPlayedAlbumsInRanking(-1);
         if (albums != null) {
@@ -157,7 +147,7 @@ public class StatsDialogController extends SimpleController<StatsDialog> {
             setTable(getComponentControlled().getAlbumsTable(), headers, content);
         }
     }
-    
+
     /**
      * Gets the most played albums in ranking.
      * 
@@ -167,21 +157,19 @@ public class StatsDialogController extends SimpleController<StatsDialog> {
      * @return the most played albums in ranking
      */
     private List<Object[]> getMostPlayedAlbumsInRanking(int n) {
-    	List<Object[]> result = new ArrayList<Object[]>();
-    	List<Album> albums = StatisticsHandler.getInstance().getMostPlayedAlbums(n);
-    	List<Integer> count = StatisticsHandler.getInstance().getMostPlayedAlbumsCount(n);
-    	if (albums != null) {
-    		for (int i = 0; i < albums.size(); i++) {
-    			Object[] obj = new Object[2];
-    			obj[0] = albums.get(i).toString();
-    			obj[1] = count.get(i);
-    			result.add(obj);
-    		}
-    	}
-    	return result;
+        List<Object[]> result = new ArrayList<Object[]>();
+        List<Album> albums = StatisticsHandler.getInstance().getMostPlayedAlbums(n);
+        List<Integer> count = StatisticsHandler.getInstance().getMostPlayedAlbumsCount(n);
+        if (albums != null) {
+            for (int i = 0; i < albums.size(); i++) {
+                Object[] obj = new Object[2];
+                obj[0] = albums.get(i).toString();
+                obj[1] = count.get(i);
+                result.add(obj);
+            }
+        }
+        return result;
     }
-
-
 
     /**
      * Sets the artists chart.
@@ -240,20 +228,19 @@ public class StatsDialogController extends SimpleController<StatsDialog> {
      * @return the most played artists in ranking
      */
     private List<Object[]> getMostPlayedArtistsInRanking(int n) {
-    	List<Object[]> result = new ArrayList<Object[]>();
-    	List<Artist> artists = StatisticsHandler.getInstance().getMostPlayedArtists(n);
-    	List<Integer> count = StatisticsHandler.getInstance().getMostPlayedArtistsCount(n);
-    	if (artists != null) {
-    		for (int i = 0; i < artists.size(); i++) {
-    			Object[] obj = new Object[2];
-    			obj[0] = artists.get(i).toString();
-    			obj[1] = count.get(i);
-    			result.add(obj);
-    		}
-    	}
-    	return result;
+        List<Object[]> result = new ArrayList<Object[]>();
+        List<Artist> artists = StatisticsHandler.getInstance().getMostPlayedArtists(n);
+        List<Integer> count = StatisticsHandler.getInstance().getMostPlayedArtistsCount(n);
+        if (artists != null) {
+            for (int i = 0; i < artists.size(); i++) {
+                Object[] obj = new Object[2];
+                obj[0] = artists.get(i).toString();
+                obj[1] = count.get(i);
+                result.add(obj);
+            }
+        }
+        return result;
     }
-
 
     /**
      * Sets the general chart.
@@ -358,21 +345,20 @@ public class StatsDialogController extends SimpleController<StatsDialog> {
      * @return the most played audio files in ranking
      */
     private List<Object[]> getMostPlayedAudioFilesInRanking(int n) {
-    	List<Object[]> result = new ArrayList<Object[]>();
-    	List<AudioFile> audioFiles = StatisticsHandler.getInstance().getMostPlayedAudioFiles(n);
-    	List<Integer> count = StatisticsHandler.getInstance().getMostPlayedAudioFilesCount(n);
-    	if (audioFiles != null) {
-    		for (int i = 0; i < audioFiles.size(); i++) {
-    			Object[] obj = new Object[2];
-    			AudioFile audioFile = audioFiles.get(i);
-    			obj[0] = StringUtils.getString(audioFile.getTitleOrFileName(), " (", audioFile.getArtist(), ")");
-    			obj[1] = count.get(i);
-    			result.add(obj);
-    		}
-    	}
-    	return result;
+        List<Object[]> result = new ArrayList<Object[]>();
+        List<AudioFile> audioFiles = StatisticsHandler.getInstance().getMostPlayedAudioFiles(n);
+        List<Integer> count = StatisticsHandler.getInstance().getMostPlayedAudioFilesCount(n);
+        if (audioFiles != null) {
+            for (int i = 0; i < audioFiles.size(); i++) {
+                Object[] obj = new Object[2];
+                AudioFile audioFile = audioFiles.get(i);
+                obj[0] = StringUtils.getString(audioFile.getTitleOrFileName(), " (", audioFile.getArtist(), ")");
+                obj[1] = count.get(i);
+                result.add(obj);
+            }
+        }
+        return result;
     }
-
 
     /**
      * Sets the table.

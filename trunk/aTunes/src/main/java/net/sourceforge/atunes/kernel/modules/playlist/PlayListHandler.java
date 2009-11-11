@@ -35,6 +35,7 @@ import net.sourceforge.atunes.kernel.actions.SavePlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
 import net.sourceforge.atunes.kernel.modules.columns.PlayListColumns;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
@@ -43,7 +44,6 @@ import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -294,11 +294,11 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
         PlayList newSelectedPlayList = playLists.get(index);
 
         // Set selection interval to none
-        VisualHandler.getInstance().getPlayListTable().getSelectionModel().clearSelection();
+        GuiHandler.getInstance().getPlayListTable().getSelectionModel().clearSelection();
 
         setPlayList(newSelectedPlayList);
         // Update table model
-        ((PlayListTableModel) VisualHandler.getInstance().getPlayListTable().getModel()).setVisiblePlayList(getCurrentPlayList(true));
+        ((PlayListTableModel) GuiHandler.getInstance().getPlayListTable().getModel()).setVisiblePlayList(getCurrentPlayList(true));
         ControllerProxy.getInstance().getPlayListController().refreshPlayList();
 
         // If playlist is active then perform an auto scroll
@@ -316,7 +316,7 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
     private static void setPlayList(PlayList playList) {
         Actions.getAction(SavePlayListAction.class).setEnabled(!instance.getCurrentPlayList(true).isEmpty());
         Actions.getAction(ShufflePlayListAction.class).setEnabled(!instance.getCurrentPlayList(true).isEmpty());
-        VisualHandler.getInstance().showPlayListInformation(playList);
+        GuiHandler.getInstance().showPlayListInformation(playList);
         if (getInstance().isActivePlayListVisible()) {
             getInstance().selectedAudioObjectChanged(playList.getCurrentAudioObject());
         }
@@ -437,7 +437,7 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
         Actions.getAction(ShufflePlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
 
         // Update play list number in status bar
-        VisualHandler.getInstance().showPlayListInformation(playList);
+        GuiHandler.getInstance().showPlayListInformation(playList);
 
         // Update play list table
         ControllerProxy.getInstance().getPlayListController().refreshPlayList();
@@ -474,7 +474,7 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
             }
 
             // Remove audio object information from full screen mode
-            VisualHandler.getInstance().getFullScreenWindow().setAudioObjects(null);
+            GuiHandler.getInstance().getFullScreenWindow().setAudioObjects(null);
         }
     }
 
@@ -488,7 +488,7 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
         setFilter(null);
 
         // Set selection interval to none
-        VisualHandler.getInstance().getPlayListTable().getSelectionModel().clearSelection();
+        GuiHandler.getInstance().getPlayListTable().getSelectionModel().clearSelection();
 
         PlayList playList = getCurrentPlayList(true);
         if (!playList.isEmpty()) {
@@ -508,15 +508,15 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
             Actions.getAction(ShufflePlayListAction.class).setEnabled(false);
 
             // Update audio object number
-            VisualHandler.getInstance().showPlayListInformation(playList);
+            GuiHandler.getInstance().showPlayListInformation(playList);
 
             // hide the ticks and labels
             if (!ApplicationState.getInstance().isStopPlayerOnPlayListClear()) {
-                VisualHandler.getInstance().getPlayerControls().getProgressBar().setEnabled(false);
+                GuiHandler.getInstance().getPlayerControls().getProgressBar().setEnabled(false);
             } else {
-                VisualHandler.getInstance().getPlayerControls().setShowTicksAndLabels(false);
+                GuiHandler.getInstance().getPlayerControls().setShowTicksAndLabels(false);
             }
-            VisualHandler.getInstance().getPlayListPanel().repaint();
+            GuiHandler.getInstance().getPlayListPanel().repaint();
 
             // Refresh play list
             ControllerProxy.getInstance().getPlayListController().refreshPlayList();
@@ -613,7 +613,7 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
         }
 
         // Update table model
-        ((PlayListTableModel) VisualHandler.getInstance().getPlayListTable().getModel()).setVisiblePlayList(getCurrentPlayList(true));
+        ((PlayListTableModel) GuiHandler.getInstance().getPlayListTable().getModel()).setVisiblePlayList(getCurrentPlayList(true));
 
         // Refresh play list
         // For some strange reason, this is needed even if play list is empty
@@ -630,7 +630,7 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
         JFileChooser fileChooser = new JFileChooser(ApplicationState.getInstance().getLoadPlaylistPath());
         FileFilter filter = PlayListIO.getPlaylistFileFilter();
         // Open file chooser
-        if (VisualHandler.getInstance().showOpenDialog(fileChooser, filter) == JFileChooser.APPROVE_OPTION) {
+        if (GuiHandler.getInstance().showOpenDialog(fileChooser, filter) == JFileChooser.APPROVE_OPTION) {
             // Get selected file
             File file = fileChooser.getSelectedFile();
 
@@ -645,7 +645,7 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
                     process.execute();
                 }
             } else {
-                VisualHandler.getInstance().showErrorDialog(I18nUtils.getString("FILE_NOT_FOUND"));
+                GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("FILE_NOT_FOUND"));
             }
         }
     }
@@ -801,9 +801,9 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
         if (currentPlayList.isEmpty()) {
             Actions.getAction(SavePlayListAction.class).setEnabled(false);
             Actions.getAction(ShufflePlayListAction.class).setEnabled(false);
-            VisualHandler.getInstance().getPlayerControls().setShowTicksAndLabels(false);
+            GuiHandler.getInstance().getPlayerControls().setShowTicksAndLabels(false);
         }
-        VisualHandler.getInstance().showPlayListInformation(currentPlayList);
+        GuiHandler.getInstance().showPlayListInformation(currentPlayList);
         getLogger().info(LogCategories.HANDLER, StringUtils.getString(rows.length, " objects removed from play list"));
     }
 
@@ -839,7 +839,7 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
         objects.add(getCurrentPlayList(false).getNextAudioObject(1));
         objects.add(getCurrentPlayList(false).getNextAudioObject(2));
 
-        VisualHandler.getInstance().getFullScreenWindow().setAudioObjects(objects);
+        GuiHandler.getInstance().getFullScreenWindow().setAudioObjects(objects);
 
         // Disable slider if audio object is a radio or podcast feed entry
         boolean b = audioObject.isSeekable();
@@ -1016,7 +1016,7 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
 
             removeAudioObjects(rowsToRemoveArray);
         }
-        VisualHandler.getInstance().showPlayListInformation(currentPlayList);
+        GuiHandler.getInstance().showPlayListInformation(currentPlayList);
     }
 
     /**
@@ -1064,7 +1064,7 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
      */
     public List<AudioObject> getSelectedAudioObjects() {
         List<AudioObject> audioObjects = new ArrayList<AudioObject>();
-        int[] selectedRows = VisualHandler.getInstance().getPlayListTable().getSelectedRows();
+        int[] selectedRows = GuiHandler.getInstance().getPlayListTable().getSelectedRows();
         if (selectedRows.length > 0) {
             for (int element : selectedRows) {
                 AudioObject file = PlayListHandler.getInstance().getCurrentPlayList(true).get(element);
@@ -1103,7 +1103,7 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
             pl.remove(audioObjects);
         }
         // Update status bar
-        VisualHandler.getInstance().showPlayListInformation(getCurrentPlayList(true));
+        GuiHandler.getInstance().showPlayListInformation(getCurrentPlayList(true));
     }
 
     @Override

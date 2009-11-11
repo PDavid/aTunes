@@ -35,11 +35,11 @@ import net.sourceforge.atunes.gui.views.panels.PlayListControlsPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
 import net.sourceforge.atunes.kernel.modules.columns.PlayListColumns;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListTableModel;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 
 public class PlayListController extends SimpleController<PlayListPanel> implements PlayListColumnClickedListener {
@@ -85,7 +85,7 @@ public class PlayListController extends SimpleController<PlayListPanel> implemen
      */
     public void arrangeColumns() {
         // Show column selector
-        PlayListColumnSelector selector = VisualHandler.getInstance().getPlayListColumnSelector();
+        PlayListColumnSelector selector = GuiHandler.getInstance().getPlayListColumnSelector();
         selector.setColumns(PlayListColumns.getColumnsForSelection());
         selector.setVisible(true);
 
@@ -113,7 +113,7 @@ public class PlayListController extends SimpleController<PlayListPanel> implemen
     public void deleteSelection() {
         getLogger().debug(LogCategories.CONTROLLER);
 
-        PlayListTable table = VisualHandler.getInstance().getPlayListTable();
+        PlayListTable table = GuiHandler.getInstance().getPlayListTable();
         int[] rows = table.getSelectedRows();
         if (rows.length > 0) {
             getComponentControlled().getPlayListTable().getSelectionModel().clearSelection();
@@ -145,7 +145,7 @@ public class PlayListController extends SimpleController<PlayListPanel> implemen
     public void moveDown() {
         getLogger().debug(LogCategories.CONTROLLER);
 
-        PlayListTable table = VisualHandler.getInstance().getPlayListTable();
+        PlayListTable table = GuiHandler.getInstance().getPlayListTable();
         int[] rows = table.getSelectedRows();
         if (rows.length > 0 && rows[rows.length - 1] < table.getRowCount() - 1) {
             PlayListHandler.getInstance().moveDown(rows);
@@ -160,7 +160,7 @@ public class PlayListController extends SimpleController<PlayListPanel> implemen
     public void moveToBottom() {
         getLogger().debug(LogCategories.CONTROLLER);
 
-        PlayListTable table = VisualHandler.getInstance().getPlayListTable();
+        PlayListTable table = GuiHandler.getInstance().getPlayListTable();
         int[] rows = table.getSelectedRows();
         if (rows.length > 0 && rows[rows.length - 1] < table.getRowCount() - 1) {
             PlayListHandler.getInstance().moveToBottom(rows);
@@ -176,7 +176,7 @@ public class PlayListController extends SimpleController<PlayListPanel> implemen
     public void moveToTop() {
         getLogger().debug(LogCategories.CONTROLLER);
 
-        PlayListTable table = VisualHandler.getInstance().getPlayListTable();
+        PlayListTable table = GuiHandler.getInstance().getPlayListTable();
         int[] rows = table.getSelectedRows();
         if (rows.length > 0 && rows[0] > 0) {
             PlayListHandler.getInstance().moveToTop(rows);
@@ -191,7 +191,7 @@ public class PlayListController extends SimpleController<PlayListPanel> implemen
     public void moveUp() {
         getLogger().debug(LogCategories.CONTROLLER);
 
-        PlayListTable table = VisualHandler.getInstance().getPlayListTable();
+        PlayListTable table = GuiHandler.getInstance().getPlayListTable();
         int[] rows = table.getSelectedRows();
         if (rows.length > 0 && rows[0] > 0) {
             PlayListHandler.getInstance().moveUp(rows);
@@ -281,11 +281,11 @@ public class PlayListController extends SimpleController<PlayListPanel> implemen
     }
 
     public void refreshPlayList() {
-        int[] selectedRows = VisualHandler.getInstance().getPlayListTable().getSelectedRows();
-        ((PlayListTableModel) VisualHandler.getInstance().getPlayListTable().getModel()).refresh();
+        int[] selectedRows = GuiHandler.getInstance().getPlayListTable().getSelectedRows();
+        ((PlayListTableModel) GuiHandler.getInstance().getPlayListTable().getModel()).refresh();
         // Select previous selected rows
         for (int i = 0; i < selectedRows.length; i++) {
-            VisualHandler.getInstance().getPlayListTable().getSelectionModel().addSelectionInterval(selectedRows[i], selectedRows[i]);
+            GuiHandler.getInstance().getPlayListTable().getSelectionModel().addSelectionInterval(selectedRows[i], selectedRows[i]);
         }
     }
 }

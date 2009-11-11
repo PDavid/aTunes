@@ -26,11 +26,11 @@ import java.util.List;
 
 import javax.swing.SwingWorker;
 
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmLovedTrack;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -70,7 +70,7 @@ public class ImportLovedTracksFromLastFM extends Action {
 
             @Override
             protected void done() {
-                VisualHandler.getInstance().hideIndeterminateProgressDialog();
+                GuiHandler.getInstance().hideIndeterminateProgressDialog();
                 List<AudioFile> lovedTracks = null;
                 try {
                     // Get loved tracks
@@ -79,12 +79,12 @@ public class ImportLovedTracksFromLastFM extends Action {
                     FavoritesHandler.getInstance().addFavoriteSongs(lovedTracks);
                 } catch (Exception e) {
                 }
-                VisualHandler.getInstance().showMessage(
+                GuiHandler.getInstance().showMessage(
                         StringUtils.getString(I18nUtils.getString("LOVED_TRACKS_IMPORTED"), ": ", lovedTracks == null ? "0" : lovedTracks.size()));
 
             }
         };
-        VisualHandler.getInstance().showIndeterminateProgressDialog(I18nUtils.getString("GETTING_LOVED_TRACKS_FROM_LASTFM"));
+        GuiHandler.getInstance().showIndeterminateProgressDialog(I18nUtils.getString("GETTING_LOVED_TRACKS_FROM_LASTFM"));
         worker.execute();
     }
 }

@@ -32,6 +32,7 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.LookAndFeelSelector;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
@@ -39,7 +40,6 @@ import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.Timer;
@@ -169,7 +169,7 @@ public class Kernel {
             SwingUtilities.invokeAndWait(new Runnable() {
                 @Override
                 public void run() {
-                    VisualHandler.getInstance().showSplashScreen();
+                    GuiHandler.getInstance().showSplashScreen();
                 }
             });
         } catch (Exception e) {
@@ -267,9 +267,9 @@ public class Kernel {
 
             ApplicationStateHandler.getInstance().applyState();
 
-            VisualHandler.getInstance().setFullFrameVisible(true);
+            GuiHandler.getInstance().setFullFrameVisible(true);
             //Hide title dialog
-            VisualHandler.getInstance().hideSplashScreen();
+            GuiHandler.getInstance().hideSplashScreen();
 
             // Just after all events in EDT are done set repository and play lists, then call post-init actions
             SwingUtilities.invokeLater(new Runnable() {
@@ -334,14 +334,14 @@ public class Kernel {
 
         startVisualization();
         startControllers();
-        VisualHandler.getInstance().setTitleBar("");
+        GuiHandler.getInstance().setTitleBar("");
     }
 
     /**
      * Starts visual objects.
      */
     private void startVisualization() {
-        VisualHandler.getInstance().startVisualization();
+        GuiHandler.getInstance().startVisualization();
     }
 
     /**

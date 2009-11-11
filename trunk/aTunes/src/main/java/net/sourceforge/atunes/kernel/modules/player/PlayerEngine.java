@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.ControllerProxy;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
@@ -31,7 +32,6 @@ import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.misc.TempFolder;
 import net.sourceforge.atunes.misc.log.LogCategories;
@@ -431,7 +431,7 @@ public abstract class PlayerEngine implements PlaybackStateListener {
     public final void handlePlayerEngineError(Exception e) {
         logger.error(LogCategories.PLAYER, StringUtils.getString("Player Error: ", e));
         logger.error(LogCategories.PLAYER, e);
-        VisualHandler.getInstance().showErrorDialog(e.getMessage());
+        GuiHandler.getInstance().showErrorDialog(e.getMessage());
     }
 
     /**
@@ -486,7 +486,7 @@ public abstract class PlayerEngine implements PlaybackStateListener {
         this.currentAudioObjectLength = currentLength;
         // Update sliders with max length
         ControllerProxy.getInstance().getPlayerControlsController().setAudioObjectLength(currentLength);
-        VisualHandler.getInstance().getFullScreenWindow().setAudioObjectLength(currentLength);
+        GuiHandler.getInstance().getFullScreenWindow().setAudioObjectLength(currentLength);
     }
 
     /**
@@ -500,7 +500,7 @@ public abstract class PlayerEngine implements PlaybackStateListener {
         long actualPlayedTime = playedTime;
         this.currentAudioObjectPlayedTime = actualPlayedTime;
         ControllerProxy.getInstance().getPlayerControlsController().setCurrentAudioObjectTimePlayed(actualPlayedTime, currentAudioObjectLength);
-        VisualHandler.getInstance().getFullScreenWindow().setCurrentAudioObjectPlayedTime(actualPlayedTime, currentAudioObjectLength);
+        GuiHandler.getInstance().getFullScreenWindow().setCurrentAudioObjectPlayedTime(actualPlayedTime, currentAudioObjectLength);
 
         if ((submissionState == SubmissionState.NOT_SUBMITTED) && (actualPlayedTime > currentAudioObjectLength / 2 || actualPlayedTime >= 240000)) {
             submissionState = SubmissionState.PENDING;
@@ -514,7 +514,7 @@ public abstract class PlayerEngine implements PlaybackStateListener {
         if ((submissionState == SubmissionState.PENDING) && audioObject instanceof AudioFile) {
             LastFmService.getInstance().submitToLastFm((AudioFile) audioObject, currentAudioObjectPlayedTime / 1000);
             StatisticsHandler.getInstance().setAudioFileStatistics((AudioFile) audioObject);
-            if (VisualHandler.getInstance().getStatsDialog().isVisible()) {
+            if (GuiHandler.getInstance().getStatsDialog().isVisible()) {
                 ControllerProxy.getInstance().getStatsDialogController().updateStats();
             }
             submissionState = SubmissionState.SUBMITTED;

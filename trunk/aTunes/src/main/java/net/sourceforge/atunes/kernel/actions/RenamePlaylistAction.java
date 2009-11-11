@@ -22,8 +22,8 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.kernel.ControllerProxy;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class RenamePlaylistAction extends Action {
@@ -42,7 +42,7 @@ public class RenamePlaylistAction extends Action {
     public void actionPerformed(ActionEvent e) {
         int selectedPlaylist = ControllerProxy.getInstance().getPlayListTabController().getSelectedTabIndex();
         String currentName = ControllerProxy.getInstance().getPlayListTabController().getPlayListName(selectedPlaylist);
-        String newName = VisualHandler.getInstance().showInputDialog(I18nUtils.getString("RENAME_PLAYLIST"), currentName);
+        String newName = GuiHandler.getInstance().showInputDialog(I18nUtils.getString("RENAME_PLAYLIST"), currentName);
         if (newName != null) {
             PlayListHandler.getInstance().renamePlayList(selectedPlaylist, newName);
         }

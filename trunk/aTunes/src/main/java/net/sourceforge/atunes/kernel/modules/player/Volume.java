@@ -22,8 +22,8 @@ package net.sourceforge.atunes.kernel.modules.player;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 
 public class Volume {
 
@@ -36,7 +36,7 @@ public class Volume {
         ApplicationState.getInstance().setVolume(volume);
         PlayerHandler.getInstance().setVolume(volume);
         ControllerProxy.getInstance().getPlayerControlsController().setVolume(volume);
-        VisualHandler.getInstance().getFullScreenWindow().setVolume(volume);
+        GuiHandler.getInstance().getFullScreenWindow().setVolume(volume);
 
         ((MuteAction) Actions.getAction(MuteAction.class)).updateIcon();
     }

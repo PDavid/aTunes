@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -41,7 +41,7 @@ public class ShowToolbarAction extends Action {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        VisualHandler.getInstance().showToolBar((Boolean) getValue(SELECTED_KEY));
+        GuiHandler.getInstance().showToolBar((Boolean) getValue(SELECTED_KEY));
     }
 
 }

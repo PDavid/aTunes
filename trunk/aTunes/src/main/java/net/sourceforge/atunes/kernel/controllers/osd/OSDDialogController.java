@@ -32,16 +32,13 @@ import javax.swing.Timer;
 import net.sourceforge.atunes.gui.WindowFader;
 import net.sourceforge.atunes.gui.views.dialogs.OSDDialog;
 import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.GuiUtils;
 
-/**
- * The Class OSDDialogController.
- */
 public class OSDDialogController extends SimpleController<OSDDialog> {
 
     WindowFader windowFader;
@@ -95,7 +92,7 @@ public class OSDDialogController extends SimpleController<OSDDialog> {
      */
     public void showOSD(AudioObject audioObject) {
 
-        if (audioObject == null || VisualHandler.getInstance().getFullScreenWindow().isVisible()) {
+        if (audioObject == null || GuiHandler.getInstance().getFullScreenWindow().isVisible()) {
             return;
         }
 

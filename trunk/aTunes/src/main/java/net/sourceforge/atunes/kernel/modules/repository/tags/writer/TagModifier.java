@@ -25,13 +25,13 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.kernel.ControllerProxy;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.audio.Format;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.ImageInfo;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.Tag;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -95,7 +95,7 @@ public class TagModifier {
                         PlayListHandler.getInstance().selectedAudioObjectChanged(audioFilesEditing.get(i));
 
                         if (PlayerHandler.getInstance().isEnginePlaying()) {
-                            VisualHandler.getInstance().updateTitleBar(audioFilesEditing.get(i));
+                            GuiHandler.getInstance().updateTitleBar(audioFilesEditing.get(i));
                         }
                     }
                 }

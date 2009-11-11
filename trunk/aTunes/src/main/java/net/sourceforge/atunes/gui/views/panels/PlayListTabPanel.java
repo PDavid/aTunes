@@ -43,9 +43,9 @@ import net.sourceforge.atunes.kernel.actions.CopyPlayListToDeviceAction;
 import net.sourceforge.atunes.kernel.actions.NewPlayListAction;
 import net.sourceforge.atunes.kernel.actions.RenamePlaylistAction;
 import net.sourceforge.atunes.kernel.actions.SynchronizeDeviceWithPlayListAction;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListTableModel;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -83,7 +83,7 @@ public final class PlayListTabPanel extends JPanel {
                 ControllerProxy.getInstance().getPlayListTabController().switchPlayListTabs(draggedTabIndex, targetTabIndex);
                 PlayListHandler.getInstance().movePlaylistToPosition(draggedTabIndex, targetTabIndex);
 
-                ((PlayListTableModel) VisualHandler.getInstance().getPlayListTable().getModel()).setVisiblePlayList(PlayListHandler.getInstance().getCurrentPlayList(true));
+                ((PlayListTableModel) GuiHandler.getInstance().getPlayListTable().getModel()).setVisiblePlayList(PlayListHandler.getInstance().getCurrentPlayList(true));
                 ControllerProxy.getInstance().getPlayListTabController().forceSwitchTo(targetTabIndex);
 
                 draggedTabIndex = -1;

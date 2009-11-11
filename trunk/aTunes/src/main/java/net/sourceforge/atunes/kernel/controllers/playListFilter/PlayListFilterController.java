@@ -28,9 +28,6 @@ import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 
-/**
- * The Class PlayListFilterController.
- */
 public class PlayListFilterController extends SimpleController<PlayListFilterPanel> {
 
     /**
@@ -45,12 +42,6 @@ public class PlayListFilterController extends SimpleController<PlayListFilterPan
         addStateBindings();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.kernel.controllers.model.Controller#addBindings()
-     */
     @Override
     protected void addBindings() {
         getComponentControlled().getFilterTextField().addActionListener(new ActionListener() {

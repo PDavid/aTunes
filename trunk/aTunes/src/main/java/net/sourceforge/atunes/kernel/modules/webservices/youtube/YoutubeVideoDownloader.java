@@ -30,9 +30,9 @@ import java.util.List;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.gui.views.dialogs.TransferProgressDialog;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -102,7 +102,7 @@ public class YoutubeVideoDownloader extends SwingWorker<Void, String> {
             f = new File(StringUtils.getString(file.getAbsolutePath(), ".flv"));
         }
         this.file = f;
-        this.progressDialog = VisualHandler.getInstance().getNewTransferProgressDialog(entry.getName(), null);
+        this.progressDialog = GuiHandler.getInstance().getNewTransferProgressDialog(entry.getName(), null);
         this.progressDialog.setIcon(entry.getImage());
         this.progressDialog.setInfoText(I18nUtils.getString("DOWNLOADING"));
         this.progressDialog.addCancelButtonActionListener(new ActionListener() {

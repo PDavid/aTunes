@@ -32,9 +32,6 @@ import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
-/**
- * The Class RadioBrowserDialogController.
- */
 public class RadioBrowserDialogController extends SimpleController<RadioBrowserDialog> {
 
     /** The logger. */

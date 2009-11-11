@@ -41,7 +41,7 @@ import net.sourceforge.atunes.kernel.controllers.radioBrowser.RadioBrowserDialog
 import net.sourceforge.atunes.kernel.controllers.ripcd.RipCdDialogController;
 import net.sourceforge.atunes.kernel.controllers.searchResults.SearchResultsController;
 import net.sourceforge.atunes.kernel.controllers.stats.StatsDialogController;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
@@ -143,7 +143,7 @@ public class ControllerProxy {
      */
     public EditTagDialogController getEditTagDialogController() {
         if (editTagDialogController == null) {
-            editTagDialogController = new EditTagDialogController(VisualHandler.getInstance().getEditTagDialog());
+            editTagDialogController = new EditTagDialogController(GuiHandler.getInstance().getEditTagDialog());
         }
         return editTagDialogController;
     }
@@ -155,7 +155,7 @@ public class ControllerProxy {
      */
     public EditTitlesDialogController getEditTitlesDialogController() {
         if (editTitlesDialogController == null) {
-            EditTitlesDialog dialog = VisualHandler.getInstance().getEditTitlesDialog();
+            EditTitlesDialog dialog = GuiHandler.getInstance().getEditTitlesDialog();
             editTitlesDialogController = new EditTitlesDialogController(dialog);
         }
         return editTitlesDialogController;
@@ -168,7 +168,7 @@ public class ControllerProxy {
      */
     public AudioObjectPropertiesController getFilePropertiesController() {
         if (filePropertiesController == null) {
-            AudioObjectPropertiesPanel panel = VisualHandler.getInstance().getPropertiesPanel();
+            AudioObjectPropertiesPanel panel = GuiHandler.getInstance().getPropertiesPanel();
             filePropertiesController = new AudioObjectPropertiesController(panel);
         }
         return filePropertiesController;
@@ -181,7 +181,7 @@ public class ControllerProxy {
      */
     public NavigationController getNavigationController() {
         if (navigationController == null) {
-            NavigationPanel panel = VisualHandler.getInstance().getNavigationPanel();
+            NavigationPanel panel = GuiHandler.getInstance().getNavigationPanel();
             navigationController = new NavigationController(panel);
         }
         return navigationController;
@@ -194,7 +194,7 @@ public class ControllerProxy {
      */
     public OSDDialogController getOSDDialogController() {
         if (osdDialogController == null) {
-            osdDialogController = new OSDDialogController(VisualHandler.getInstance().getOSDDialog());
+            osdDialogController = new OSDDialogController(GuiHandler.getInstance().getOSDDialog());
         }
         return osdDialogController;
     }
@@ -207,7 +207,7 @@ public class ControllerProxy {
     public PlayerControlsController getPlayerControlsController() {
         if (playerControlsController == null) {
             PlayerControlsPanel panel = null;
-            panel = VisualHandler.getInstance().getPlayerControls();
+            panel = GuiHandler.getInstance().getPlayerControls();
             playerControlsController = new PlayerControlsController(panel);
         }
         return playerControlsController;
@@ -221,7 +221,7 @@ public class ControllerProxy {
     public PlayListController getPlayListController() {
         if (playListController == null) {
             PlayListPanel panel = null;
-            panel = VisualHandler.getInstance().getPlayListPanel();
+            panel = GuiHandler.getInstance().getPlayListPanel();
             playListController = new PlayListController(panel);
         }
         return playListController;
@@ -234,7 +234,7 @@ public class ControllerProxy {
      */
     public PlayListFilterController getPlayListFilterController() {
         if (playListFilterController == null) {
-            PlayListFilterPanel panel = VisualHandler.getInstance().getPlayListPanel().getPlayListFilter();
+            PlayListFilterPanel panel = GuiHandler.getInstance().getPlayListPanel().getPlayListFilter();
             playListFilterController = new PlayListFilterController(panel);
         }
         return playListFilterController;
@@ -247,7 +247,7 @@ public class ControllerProxy {
      */
     public PlayListTabController getPlayListTabController() {
         if (playListTabController == null) {
-            PlayListTabPanel panel = VisualHandler.getInstance().getPlayListPanel().getPlayListTabPanel();
+            PlayListTabPanel panel = GuiHandler.getInstance().getPlayListPanel().getPlayListTabPanel();
             playListTabController = new PlayListTabController(panel);
         }
         return playListTabController;
@@ -260,7 +260,7 @@ public class ControllerProxy {
      */
     public RipCdDialogController getRipCdDialogController() {
         if (ripCdDialogController == null) {
-            ripCdDialogController = new RipCdDialogController(VisualHandler.getInstance().getRipCdDialog());
+            ripCdDialogController = new RipCdDialogController(GuiHandler.getInstance().getRipCdDialog());
         }
         return ripCdDialogController;
     }
@@ -272,7 +272,7 @@ public class ControllerProxy {
      */
     public StatsDialogController getStatsDialogController() {
         if (statsDialogController == null) {
-            statsDialogController = new StatsDialogController(VisualHandler.getInstance().getStatsDialog());
+            statsDialogController = new StatsDialogController(GuiHandler.getInstance().getStatsDialog());
         }
         return statsDialogController;
     }
@@ -284,7 +284,7 @@ public class ControllerProxy {
      */
     public CustomSearchController getCustomSearchController() {
         if (customSearchController == null) {
-            customSearchController = new CustomSearchController(VisualHandler.getInstance().getCustomSearchDialog());
+            customSearchController = new CustomSearchController(GuiHandler.getInstance().getCustomSearchDialog());
         }
         return customSearchController;
     }
@@ -296,7 +296,7 @@ public class ControllerProxy {
      */
     public SearchResultsController getSearchResultsController() {
         if (searchResultsController == null) {
-            searchResultsController = new SearchResultsController(VisualHandler.getInstance().getSearchResultsDialog());
+            searchResultsController = new SearchResultsController(GuiHandler.getInstance().getSearchResultsDialog());
         }
         return searchResultsController;
     }
@@ -308,7 +308,7 @@ public class ControllerProxy {
      */
     public RadioBrowserDialogController getRadioBrowserController() {
         if (radioBrowserController == null) {
-            radioBrowserController = new RadioBrowserDialogController(VisualHandler.getInstance().getRadioBrowserDialog());
+            radioBrowserController = new RadioBrowserDialogController(GuiHandler.getInstance().getRadioBrowserDialog());
         }
         return radioBrowserController;
     }

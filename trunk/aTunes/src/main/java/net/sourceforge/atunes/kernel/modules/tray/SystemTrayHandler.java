@@ -44,9 +44,9 @@ import net.sourceforge.atunes.kernel.actions.OSDSettingAction;
 import net.sourceforge.atunes.kernel.actions.RepeatModeAction;
 import net.sourceforge.atunes.kernel.actions.ShowAboutAction;
 import net.sourceforge.atunes.kernel.actions.ShuffleModeAction;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.visual.VisualHandler;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
 import net.sourceforge.atunes.misc.log.LogCategories;
@@ -220,11 +220,11 @@ public final class SystemTrayHandler extends Handler {
                 @Override
                 public void mousePressed(MouseEvent e) {
                     if (e.getButton() == MouseEvent.BUTTON1) {
-                        VisualHandler.getInstance().toggleWindowVisibility();
+                        GuiHandler.getInstance().toggleWindowVisibility();
                     }
                 }
             });
-            VisualHandler.getInstance().setFrameDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+            GuiHandler.getInstance().setFrameDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         } else {
             getLogger().error(LogCategories.TRAY, "No system tray supported");
         }
@@ -347,7 +347,7 @@ public final class SystemTrayHandler extends Handler {
         } else {
             if (!visible && trayIconVisible) {
                 tray.remove(trayIcon);
-                VisualHandler.getInstance().setFrameDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                GuiHandler.getInstance().setFrameDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
                 trayIconVisible = false;
             }
         }
