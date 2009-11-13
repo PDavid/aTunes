@@ -39,6 +39,7 @@
 - FIX: LyricWiki engine returned lyrics with URLs
 - FIX: Opening web browser does not work on Ubuntu
 - FIX: Validate repository content when loading it (patch from Laurent Cathala)
+- FIX: Podcast file renaming is not possible [2897134]
 
 aTunes 1.13.5
 -------------
