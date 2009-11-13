@@ -40,27 +40,18 @@ import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.NetworkUtils;
 
 /**
- * The Class PodcastFeedEntryDownloader.
- * 
- * @author redbrain
+ * The podcast feed entry downloader downloads podcast feed entries from the
+ * internet to a local file.
  */
 public class PodcastFeedEntryDownloader extends SwingWorker<Boolean, Void> {
 
-    /** The logger. */
-    private static Logger logger = new Logger();
+    private Logger logger = new Logger();
 
-    /** The podcast feed entry. */
     private PodcastFeedEntry podcastFeedEntry;
     /*
      * Additional Bean properties
-     */
-    /** The total bytes. */
-    private volatile long totalBytes;
-
-    /** The byte progress. */
+     */private volatile long totalBytes;
     private volatile long byteProgress;
-
-    /** The failed. */
     private volatile boolean failed;
 
     /**
@@ -72,12 +63,6 @@ public class PodcastFeedEntryDownloader extends SwingWorker<Boolean, Void> {
     public PodcastFeedEntryDownloader(PodcastFeedEntry podcastFeedEntry) {
         this.podcastFeedEntry = podcastFeedEntry;
     }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.SwingWorker#doInBackground()
-     */
 
     @Override
     protected Boolean doInBackground() throws Exception {
@@ -189,12 +174,6 @@ public class PodcastFeedEntryDownloader extends SwingWorker<Boolean, Void> {
     public long getTotalBytes() {
         return totalBytes;
     }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.SwingWorker#done()
-     */
 
     @Override
     protected void done() {

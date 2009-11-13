@@ -24,6 +24,8 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -64,12 +66,12 @@ public final class PodcastFeedHandler extends Handler {
     public static final long DEFAULT_PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL = 180000;
 
     private List<PodcastFeed> podcastFeeds;
-    
+
     /**
      * Flag indicating if podcast list needs to be written to disk
      */
     private boolean podcastFeedsDirty;
-    
+
     /**
      * Podcast Feed Entry downloading
      */
@@ -152,11 +154,11 @@ public final class PodcastFeedHandler extends Handler {
         }
         podcastFeedEntryDownloadCheckerExecutorService.shutdownNow();
         if (podcastFeedsDirty) {
-        	ApplicationStateHandler.getInstance().persistPodcastFeedCache(getPodcastFeeds());
+            ApplicationStateHandler.getInstance().persistPodcastFeedCache(getPodcastFeeds());
         } else {
-        	getLogger().info(LogCategories.PODCAST, "Podcast list is clean");
+            getLogger().info(LogCategories.PODCAST, "Podcast list is clean");
         }
-        
+
     }
 
     @Override
@@ -374,7 +376,8 @@ public final class PodcastFeedHandler extends Handler {
         }
 
         // Check if subfolder exists and otherwise create
-        File podcastFeedDownloadFolder = new File(podcastFeedsDownloadFolder.toString() + "/" + FileNameUtils.getValidFileName(podcastFeedEntry.getPodcastFeed().getName()));
+        File podcastFeedDownloadFolder = new File(podcastFeedsDownloadFolder, FileNameUtils
+                .getValidFileName(String.valueOf(podcastFeedEntry.getPodcastFeed().getName().hashCode())));
         if (!podcastFeedDownloadFolder.exists()) {
             boolean check = podcastFeedDownloadFolder.mkdir();
             if (!check) {
@@ -382,10 +385,22 @@ public final class PodcastFeedHandler extends Handler {
                 return "";
             }
         }
-        String[] elements = podcastFeedEntry.getUrl().split("/");
-        if (elements.length > 0) {
-            String filename = elements[elements.length - 1];
-            return podcastFeedDownloadFolder.toString() + "/" + FileNameUtils.getValidFileName(filename);
+
+        try {
+            String url = new URI(podcastFeedEntry.getUrl()).getPath();
+            String[] elements = url.split("/");
+            if (elements.length > 0) {
+                String filename = elements[elements.length - 1];
+                int index = filename.lastIndexOf('.');
+                if (index != -1) {
+                    filename = filename.hashCode() + "." + filename.substring(index, filename.length());
+                } else {
+                    filename = String.valueOf(filename.hashCode());
+                }
+                return podcastFeedDownloadFolder.toString() + "/" + FileNameUtils.getValidFileName(filename);
+            }
+        } catch (URISyntaxException e) {
+            getLogger().error(LogCategories.PODCAST, e);
         }
         throw new IllegalArgumentException();
     }
@@ -414,7 +429,7 @@ public final class PodcastFeedHandler extends Handler {
         new SwingWorker<Boolean, Void>() {
 
             @Override
-            protected Boolean doInBackground() throws Exception {
+            protected Boolean doInBackground() {
                 return f.delete();
             }
 
