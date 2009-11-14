@@ -27,6 +27,7 @@ import java.awt.Insets;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -35,6 +36,7 @@ import javax.swing.JSlider;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 
+import net.sourceforge.atunes.gui.substance.RoundRectButtonShaper;
 import net.sourceforge.atunes.gui.views.controls.playerControls.KaraokeButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.NextButton;
@@ -48,6 +50,8 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeLevel;
 import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
+
+import org.jvnet.substance.SubstanceLookAndFeel;
 
 /**
  * The Class PlayerControlsPanel.
@@ -300,11 +304,16 @@ public final class PlayerControlsPanel extends JPanel {
      * Adds a secondary control
      * @param button
      */
-    public void addSecondaryControl(JToggleButton button) {
+    public void addSecondaryControl(Action action) {
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = getSecondaryControls().getComponentCount();
 		c.gridy = 0;
 		c.insets = new Insets(0, 1, 0, 0);
+		JToggleButton button = new JToggleButton(action);
+        button.setText(null);
+        button.setPreferredSize(PlayerControlsPanel.OTHER_BUTTONS_SIZE);
+        button.setFocusable(false);
+        button.putClientProperty(SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY, new RoundRectButtonShaper());
     	getSecondaryControls().add(button, c);
     }
 

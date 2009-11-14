@@ -23,6 +23,9 @@ import java.io.Serializable;
 
 import javax.swing.ImageIcon;
 
+import org.commonjukebox.plugins.PluginApi;
+
+@PluginApi
 public interface ArtistInfo extends Serializable {
 
     /**

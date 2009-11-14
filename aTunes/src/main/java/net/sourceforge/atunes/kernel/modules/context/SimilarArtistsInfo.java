@@ -22,6 +22,9 @@ package net.sourceforge.atunes.kernel.modules.context;
 import java.io.Serializable;
 import java.util.List;
 
+import org.commonjukebox.plugins.PluginApi;
+
+@PluginApi
 public interface SimilarArtistsInfo extends Serializable {
 
     /**
