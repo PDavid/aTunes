@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" output="net-sourceforge-atunes-plugins-instantmessaging/target/classes" path="net-sourceforge-atunes-plugins-instantmessaging/src/main/java"/>
-	<classpathentry excluding="**" kind="src" output="net-sourceforge-atunes-plugins-instantmessaging/target/classes" path="net-sourceforge-atunes-plugins-instantmessaging/src/main/resources"/>
-	<classpathentry kind="src" output="net-sourceforge-atunes-plugins-commentcolumn/target/classes" path="net-sourceforge-atunes-plugins-commentcolumn/src/main/java"/>
-	<classpathentry kind="src" output="net-sourceforge-atunes-plugins-lyricscolumn/target/classes" path="net-sourceforge-atunes-plugins-lyricscolumn/src/main/java"/>
-	<classpathentry kind="src" path="net-sourceforge-atunes-plugins-lastfmevents/src/main/java"/>
-	<classpathentry kind="src" path="net-sourceforge-atunes-plugins-lastfmevents/src/main/resources"/>
+	<classpathentry kind="src" output="instantmessaging/target/classes" path="instantmessaging/src/main/java"/>
+	<classpathentry excluding="**" kind="src" output="instantmessaging/target/classes" path="instantmessaging/src/main/resources"/>
+	<classpathentry kind="src" output="commentcolumn/target/classes" path="commentcolumn/src/main/java"/>
+	<classpathentry kind="src" output="lyricscolumn/target/classes" path="lyricscolumn/src/main/java"/>
+	<classpathentry kind="src" output="lastfmevents/target/classes" path="lastfmevents/src/main/java"/>
+	<classpathentry excluding="**" kind="src" output="lastfmevents/target/classes" path="lastfmevents/src/main/resources"/>
+	<classpathentry kind="src" output="lastfmevents/target/test-classes" path="lastfmevents/src/test/java"/>
+	<classpathentry excluding="**" kind="src" output="lastfmevents/target/test-classes" path="lastfmevents/src/test/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="con" path="org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER"/>
 	<classpathentry kind="output" path="target/classes"/>
