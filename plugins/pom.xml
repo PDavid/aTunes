@@ -4,13 +4,13 @@
 	<groupId>net.sourceforge.atunes.plugins</groupId>
 	<artifactId>atunes-plugins</artifactId>
 	<name>atunes plugins</name>
-	<version>0.1</version>
+	<version>1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<modules>
-		<module>net-sourceforge-atunes-plugins-instantmessaging</module>
-		<module>net-sourceforge-atunes-plugins-commentcolumn</module>
-		<module>net-sourceforge-atunes-plugins-lyricscolumn</module>
-		<module>net-sourceforge-atunes-plugins-lastfmevents</module>
+		<module>instantmessaging</module>
+		<module>commentcolumn</module>
+		<module>lyricscolumn</module>
+		<module>lastfmevents</module>
 	</modules>
 	<dependencies>
 		<dependency>
