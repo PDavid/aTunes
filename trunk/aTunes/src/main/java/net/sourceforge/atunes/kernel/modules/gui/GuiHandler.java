@@ -138,7 +138,7 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
     private FullScreenWindow fullScreenWindow;
 
     /**
-     * Instantiates a new visual handler.
+     * Instantiates a new gui handler.
      */
     private GuiHandler() {
     }
@@ -148,9 +148,9 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
     }
 
     /**
-     * Gets the single instance of VisualHandler.
+     * Gets the single instance of this class.
      * 
-     * @return single instance of VisualHandler
+     * @return single instance of this class
      */
     public static GuiHandler getInstance() {
         return instance;
