@@ -1,6 +1,6 @@
 package net.sourceforge.atunes.api;
 
-import javax.swing.JToggleButton;
+import javax.swing.Action;
 
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 
@@ -10,11 +10,11 @@ import org.commonjukebox.plugins.PluginApi;
 public final class PlayerControlsApi {
 
     /**
-     * Adds a secondary button in player controls
+     * Adds a secondary toggle button in player controls
      * 
      * @param button
      */
-    public static void addSecondaryControl(JToggleButton button) {
-        GuiHandler.getInstance().getPlayerControls().addSecondaryControl(button);
+    public static void addSecondaryControl(Action action) {
+        GuiHandler.getInstance().getPlayerControls().addSecondaryControl(action);
     }
 }
