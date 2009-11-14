@@ -701,6 +701,7 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
         }
         getStatusBarDeviceLabel().setVisible(show);
         statusBar.validate();
+        statusBar.repaint();
     }
 
     @Override
@@ -716,6 +717,7 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
         }
         getStatusBarNewPodcastEntriesLabel().setVisible(show);
         statusBar.validate();
+        statusBar.repaint();
     }
 
     @Override
@@ -738,6 +740,7 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
         }
         getStatusBarNewVersionLabel().setVisible(show);
         statusBar.validate();
+        statusBar.repaint();
     }
 
 }
