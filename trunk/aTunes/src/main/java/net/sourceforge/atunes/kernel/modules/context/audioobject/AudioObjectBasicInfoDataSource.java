@@ -29,7 +29,6 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.modules.context.ContextInformationDataSource;
-import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.AudioFileStats;
@@ -137,14 +136,7 @@ public class AudioObjectBasicInfoDataSource implements ContextInformationDataSou
         if (stats == null) {
             return I18nUtils.getString("SONG_NEVER_PLAYED");
         } else {
-            // If song is playing, take previous play, if not, take last
-            Date date;
-            if (PlayerHandler.getInstance().isEnginePlaying()) {
-                date = stats.getPreviousPlayed();
-            } else {
-                date = stats.getLastPlayed();
-            }
-
+            Date date = stats.getLastPlayed();
             // If date is null -> never played
             if (date == null) {
                 return I18nUtils.getString("SONG_NEVER_PLAYED");

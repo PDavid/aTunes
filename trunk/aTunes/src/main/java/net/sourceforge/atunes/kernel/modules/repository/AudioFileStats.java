@@ -23,14 +23,11 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * The Class SongStats.
+ * The playing stats of an audio file.
  */
 public class AudioFileStats implements Serializable {
 
     private static final long serialVersionUID = -2392613471327847012L;
-
-    /** The previous played. */
-    private Date previousPlayed;
 
     /** The last played. */
     private Date lastPlayed;
@@ -42,7 +39,6 @@ public class AudioFileStats implements Serializable {
      * Instantiates a new audio file stats object.
      */
     public AudioFileStats() {
-        previousPlayed = null;
         lastPlayed = new Date();
         timesPlayed = 1;
     }
@@ -54,15 +50,6 @@ public class AudioFileStats implements Serializable {
      */
     public Date getLastPlayed() {
         return new Date(lastPlayed.getTime());
-    }
-
-    /**
-     * Gets the previous played.
-     * 
-     * @return the previous played
-     */
-    public Date getPreviousPlayed() {
-        return previousPlayed != null ? new Date(previousPlayed.getTime()) : null;
     }
 
     /**
@@ -85,7 +72,6 @@ public class AudioFileStats implements Serializable {
      * Reset.
      */
     public void reset() {
-        previousPlayed = null;
         lastPlayed = null;
         timesPlayed = 0;
     }
@@ -97,7 +83,6 @@ public class AudioFileStats implements Serializable {
      *            the new last played
      */
     public void setLastPlayed(Date lastPlayed) {
-        this.previousPlayed = this.lastPlayed;
         this.lastPlayed = new Date(lastPlayed.getTime());
     }
 }

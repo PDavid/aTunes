@@ -265,9 +265,10 @@ public abstract class PlayerEngine implements PlaybackStateListener {
 
     @Override
     public void playbackStateChanged(PlaybackState newState, AudioObject currentAudioObject) {
-        if (newState == PlaybackState.PLAY_FINISHED || newState == PlaybackState.PLAY_INTERRUPTED) {
+        if (newState == PlaybackState.PLAY_FINISHED || newState == PlaybackState.PLAY_INTERRUPTED || newState == PlaybackState.STOPPED) {
             submitToLastFmAndUpdateStats();
-        } else if (newState == PlaybackState.STOPPED) {
+        }
+        if (newState == PlaybackState.STOPPED) {
             setCurrentAudioObjectPlayedTime(0);
         }
     }
@@ -494,7 +495,6 @@ public abstract class PlayerEngine implements PlaybackStateListener {
      * 
      * @param playedTime
      *            played time in milliseconds (ms)
-     * 
      */
     protected final void setCurrentAudioObjectPlayedTime(long playedTime) {
         long actualPlayedTime = playedTime;
