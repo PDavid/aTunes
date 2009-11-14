@@ -61,11 +61,11 @@ public class StatisticsHandler extends Handler {
      * 
      * @param repository
      *            the repository
-     * @param song
-     *            the song
+     * @param audioFile
+     *            the audio file
      */
-    private void fillStats(AudioFile song) {
-        String songPath = song.getUrl();
+    private void fillStats(AudioFile audioFile) {
+        String songPath = audioFile.getUrl();
         if (RepositoryHandler.getInstance().getAudioFilesMap().containsKey(songPath)) {
             statistics.setTotalPlays(statistics.getTotalPlays() + 1);
 
@@ -78,9 +78,9 @@ public class StatisticsHandler extends Handler {
                 statistics.getAudioFilesStats().put(songPath, stats);
                 statistics.setDifferentAudioFilesPlayed(statistics.getDifferentAudioFilesPlayed() + 1);
             }
-            statistics.getAudioFilesRanking().addItem(song.getUrl());
+            statistics.getAudioFilesRanking().addItem(audioFile.getUrl());
 
-            String artist = song.getArtist();
+            String artist = audioFile.getArtist();
 
             Artist a = RepositoryHandler.getInstance().getArtistStructure().get(artist);
 
@@ -91,7 +91,7 @@ public class StatisticsHandler extends Handler {
 
             statistics.getArtistsRanking().addItem(a.getName());
 
-            String album = song.getAlbum();
+            String album = audioFile.getAlbum();
 
             Album alb = a.getAlbum(album);
 
