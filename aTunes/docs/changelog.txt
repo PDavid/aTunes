@@ -49,6 +49,7 @@ aTunes 1.13.5
 - FIX: Sort by file name option sorts audio object in folder view in wrong order [2807803]
 - FIX: Song info dialog not resizable [2824009]
 - FIX: After renaming an audio file, repository keeps reference to old name
+- FIX: Web browser does not open
 
 aTunes 1.13.4
 -------------
