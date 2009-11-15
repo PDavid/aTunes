@@ -360,10 +360,10 @@ public class RepositoryLoader extends Thread {
                 // Artist not present in genre list, so lets add him
                 if (art == null && !"".equals(albumArtist)) {
                     art = new Artist(albumArtist);
-                    g.addArtist(art);
+                    g.addArtist(art.getName());
                 } else if (art == null && artist != null && !artist.equals("")) {
                     art = new Artist(artist);
-                    g.addArtist(art);
+                    g.addArtist(art.getName());
                 }
                 if (art != null) {
                     Album alb = art.getAlbum(album);
@@ -381,7 +381,7 @@ public class RepositoryLoader extends Thread {
                     alb.addSong(audioFile);
                     alb.setArtist(art);
                     art.addAlbum(alb);
-                    g.addArtist(art);
+                    g.addArtist(art.getName());
                 }
             } else {
                 Genre g = new Genre(genre);
@@ -395,7 +395,7 @@ public class RepositoryLoader extends Thread {
                 alb.addSong(audioFile);
                 alb.setArtist(a);
                 a.addAlbum(alb);
-                g.addArtist(a);
+                g.addArtist(a.getName());
                 repository.getStructure().getGenreStructure().put(genre, g);
             }
         } catch (Exception e) {

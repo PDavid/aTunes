@@ -21,14 +21,12 @@ package net.sourceforge.atunes.kernel.modules.repository.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -45,8 +43,8 @@ public class Genre implements Serializable, TreeObject {
     /** Name of the genre. */
     private String name;
 
-    /** Artists of this genre, indexed by artist name. */
-    private Map<String, Artist> artists;
+    /** Artists of this genre */
+    private List<String> artists;
 
     /**
      * Constructor.
@@ -56,7 +54,7 @@ public class Genre implements Serializable, TreeObject {
      */
     public Genre(String name) {
         this.name = name;
-        artists = new HashMap<String, Artist>();
+        artists = new ArrayList<String>();
     }
 
     /**
@@ -65,8 +63,8 @@ public class Genre implements Serializable, TreeObject {
      * @param a
      *            the a
      */
-    public void addArtist(Artist a) {
-        artists.put(a.getName(), a);
+    public void addArtist(String a) {
+        artists.add(a);
     }
 
     /*
@@ -91,29 +89,11 @@ public class Genre implements Serializable, TreeObject {
      * @return the artist
      */
     public Artist getArtist(String a) {
-        return artists.get(a);
-    }
-
-    /**
-     * Returns artists of this genre.
-     * 
-     * @return the artists
-     */
-    public Map<String, Artist> getArtists() {
-        return artists;
-    }
-
-    /**
-     * Gets the audio files.
-     * 
-     * @return the audio files
-     */
-    public List<AudioFile> getAudioFiles() {
-        List<AudioFile> songs = new ArrayList<AudioFile>();
-        for (Artist art : artists.values()) {
-            songs.addAll(art.getAudioFiles());
-        }
-        return songs;
+    	if (artists.contains(a)) {
+    		return RepositoryHandler.getInstance().getArtistStructure().get(a);
+    	} else {
+    		return null;
+    	}
     }
 
     /**
@@ -124,8 +104,8 @@ public class Genre implements Serializable, TreeObject {
     @Override
     public List<AudioObject> getAudioObjects() {
         List<AudioObject> songs = new ArrayList<AudioObject>();
-        for (Artist art : artists.values()) {
-            songs.addAll(art.getAudioObjects());
+        for (String artist : artists) {
+            songs.addAll(getArtist(artist).getAudioObjects());
         }
         return songs;
     }
@@ -171,7 +151,7 @@ public class Genre implements Serializable, TreeObject {
 
     @Override
     public String getToolTip() {
-        int artistNumber = getArtists().size();
+        int artistNumber = artists.size();
         int songs = getAudioObjects().size();
         return StringUtils.getString(getName(), " (", I18nUtils.getString("ARTISTS"), ": ", artistNumber, ", ", I18nUtils.getString("SONGS"), ": ", songs, ")");
     }
@@ -228,5 +208,12 @@ public class Genre implements Serializable, TreeObject {
     public static boolean isUnknownGenre(String genre) {
         return getUnknownGenre().equalsIgnoreCase(genre);
     }
+
+	/**
+	 * @return the artists
+	 */
+	public List<String> getArtists() {
+		return artists;
+	}
 
 }

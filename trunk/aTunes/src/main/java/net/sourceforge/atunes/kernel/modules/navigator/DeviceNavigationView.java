@@ -357,7 +357,7 @@ public final class DeviceNavigationView extends NavigationView {
                 if (objectsExpanded.contains(genreNode.getUserObject())) {
                     nodesToExpand.add(genreNode);
                 }
-                artistNamesList = new ArrayList<String>(genre.getArtists().keySet());
+                artistNamesList = new ArrayList<String>(genre.getArtists());
                 Collections.sort(artistNamesList);
                 for (int j = 0; j < artistNamesList.size(); j++) {
                     Artist artist = genre.getArtist(artistNamesList.get(j));
