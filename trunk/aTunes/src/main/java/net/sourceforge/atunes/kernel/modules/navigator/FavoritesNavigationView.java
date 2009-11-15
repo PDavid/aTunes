@@ -57,6 +57,7 @@ import net.sourceforge.atunes.kernel.actions.SearchArtistAtAction;
 import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
+import net.sourceforge.atunes.kernel.modules.repository.Repository;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
@@ -233,7 +234,7 @@ public final class FavoritesNavigationView extends NavigationView implements Plu
             songs.addAll(FavoritesHandler.getInstance().getFavoriteSongsInfo().values());
         } else {
             if (node.getUserObject() instanceof TreeObject) {
-                songs = ((TreeObject) node.getUserObject()).getAudioObjects();
+                songs = ((TreeObject) node.getUserObject()).getAudioObjects(getSourceRepository());
             } else {
                 songs = new ArrayList<AudioObject>();
                 if (node.getUserObject().toString().equals(I18nUtils.getString("ARTISTS"))) {
@@ -452,5 +453,10 @@ public final class FavoritesNavigationView extends NavigationView implements Plu
     @Override
     public void setPluginInfo(PluginInfo arg0) {
         // No info needed
+    }
+    
+    @Override
+    public Repository getSourceRepository() {
+    	return RepositoryHandler.getInstance().getRepository();
     }
 }

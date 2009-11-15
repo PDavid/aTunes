@@ -323,7 +323,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
      * 
      * @return the repository
      */
-    protected Repository getRepository() {
+    public Repository getRepository() {
         return repository;
     }
 

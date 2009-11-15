@@ -27,6 +27,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
+import net.sourceforge.atunes.kernel.modules.repository.Repository;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
@@ -91,7 +92,7 @@ public class PodcastFeed implements TreeObject, Serializable {
     }
 
     @Override
-    public synchronized List<AudioObject> getAudioObjects() {
+    public synchronized List<AudioObject> getAudioObjects(Repository repository) {
         return new ArrayList<AudioObject>(podcastFeedEntries);
     }
 
@@ -275,7 +276,7 @@ public class PodcastFeed implements TreeObject, Serializable {
     }
 
     @Override
-    public synchronized String getToolTip() {
+    public synchronized String getToolTip(Repository repository) {
         return name;
     }
 
@@ -285,7 +286,7 @@ public class PodcastFeed implements TreeObject, Serializable {
     }
 
     @Override
-    public synchronized void setExtendedToolTip(ExtendedToolTip toolTip) {
+    public synchronized void setExtendedToolTip(ExtendedToolTip toolTip, Repository repository) {
         toolTip.setLine1(name);
         toolTip.setLine2(StringUtils.getString(I18nUtils.getString("PODCAST_ENTRIES"), ": ", podcastFeedEntries.size()));
         toolTip.setLine3(StringUtils.getString(I18nUtils.getString("NEW_PODCAST_ENTRIES_TOOLTIP"), ": ", getNewEntriesCount()));

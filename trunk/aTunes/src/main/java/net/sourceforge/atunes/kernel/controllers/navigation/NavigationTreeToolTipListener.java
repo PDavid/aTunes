@@ -89,7 +89,7 @@ public class NavigationTreeToolTipListener extends MouseAdapter implements Mouse
                     controller.getExtendedToolTip().setLocation((int) NavigationHandler.getInstance().getCurrentView().getTree().getLocationOnScreen().getX() + e.getX(),
                             (int) NavigationHandler.getInstance().getCurrentView().getTree().getLocationOnScreen().getY() + e.getY() + 20);
 
-                    controller.getExtendedToolTip().setToolTipContent(content);
+                    controller.getExtendedToolTip().setToolTipContent(content, NavigationHandler.getInstance().getCurrentView().getSourceRepository());
                     controller.setCurrentExtendedToolTipContent(content);
                 } else {
                     controller.setCurrentExtendedToolTipContent(null);

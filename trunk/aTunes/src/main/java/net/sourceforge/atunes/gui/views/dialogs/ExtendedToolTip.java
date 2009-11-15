@@ -32,6 +32,7 @@ import javax.swing.JPanel;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.views.controls.CustomWindow;
+import net.sourceforge.atunes.kernel.modules.repository.Repository;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
@@ -161,14 +162,14 @@ public final class ExtendedToolTip extends CustomWindow {
     /**
      * Fills tool tip with data from object
      * 
-     * @param toolTip
      * @param obj
+     * @param repository
      */
-    public void setToolTipContent(Object obj) {
+    public void setToolTipContent(Object obj, Repository repository) {
         // Picture is set asynchronously 
         setImage(null);
         if (obj instanceof TreeObject) {
-            ((TreeObject) obj).setExtendedToolTip(this);
+            ((TreeObject) obj).setExtendedToolTip(this, repository);
         }
     }
 

@@ -62,6 +62,7 @@ import net.sourceforge.atunes.kernel.actions.SetFavoriteSongFromNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
 import net.sourceforge.atunes.kernel.modules.repository.HighlightFoldersByIncompleteTags;
+import net.sourceforge.atunes.kernel.modules.repository.Repository;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
@@ -220,12 +221,12 @@ public class RepositoryNavigationView extends NavigationView {
             } else {
                 for (int i = 0; i < node.getChildCount(); i++) {
                     TreeObject obj = (TreeObject) ((DefaultMutableTreeNode) node.getChildAt(i)).getUserObject();
-                    songs.addAll(obj.getAudioObjects());
+                    songs.addAll(obj.getAudioObjects(getSourceRepository()));
                 }
             }
         } else {
             TreeObject obj = (TreeObject) node.getUserObject();
-            songs = obj.getAudioObjects();
+            songs = obj.getAudioObjects(getSourceRepository());
         }
         return songs;
     }
@@ -405,7 +406,7 @@ public class RepositoryNavigationView extends NavigationView {
                 List<String> artistNamesList = new ArrayList<String>(genre.getArtists());
                 Collections.sort(artistNamesList);
                 for (int j = 0; j < artistNamesList.size(); j++) {
-                    Artist artist = genre.getArtist(artistNamesList.get(j));
+                    Artist artist = RepositoryHandler.getInstance().getArtistStructure().get(artistNamesList.get(j));
                     DefaultMutableTreeNode artistNode = new DefaultMutableTreeNode(artist);
                     List<String> albumNamesList = new ArrayList<String>(artist.getAlbums().keySet());
                     Collections.sort(albumNamesList);
@@ -650,7 +651,7 @@ public class RepositoryNavigationView extends NavigationView {
 
                 if (!ApplicationState.getInstance().isShowExtendedTooltip() || !ExtendedToolTip.canObjectBeShownInExtendedToolTip(content)) {
                     if (content instanceof TreeObject) {
-                        label.setToolTipText(((TreeObject) content).getToolTip());
+                        label.setToolTipText(((TreeObject) content).getToolTip(getSourceRepository()));
                     } else {
                         label.setToolTipText(content.toString());
                     }
@@ -678,5 +679,10 @@ public class RepositoryNavigationView extends NavigationView {
     static String getToolTipForRepository() {
         int songs = RepositoryHandler.getInstance().getAudioFilesList().size();
         return StringUtils.getString(I18nUtils.getString("REPOSITORY"), " (", songs, " ", (songs > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG")), ")");
+    }
+    
+    @Override
+    public Repository getSourceRepository() {
+    	return RepositoryHandler.getInstance().getRepository();
     }
 }

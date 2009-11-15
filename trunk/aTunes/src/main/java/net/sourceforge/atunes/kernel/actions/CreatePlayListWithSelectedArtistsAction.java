@@ -20,6 +20,7 @@
 package net.sourceforge.atunes.kernel.actions;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -70,7 +71,7 @@ public class CreatePlayListWithSelectedArtistsAction extends ActionOverSelectedO
         // For every artist
         for (Artist artist : selectedArtists) {
             // Sort audio objects of artist with current sort options
-            List<AudioObject> audioObjects = SortType.sort(artist.getAudioObjects());
+            List<AudioObject> audioObjects = SortType.sort(RepositoryHandler.getInstance().getAudioFilesForArtists(Collections.singletonMap(artist.getName(), artist)));
 
             // Create a new play list with artist as name and audio objects selected
             PlayListHandler.getInstance().newPlayList(artist.getName(), audioObjects);

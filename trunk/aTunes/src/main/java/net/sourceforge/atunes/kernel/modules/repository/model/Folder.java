@@ -29,6 +29,7 @@ import java.util.Map;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
+import net.sourceforge.atunes.kernel.modules.repository.Repository;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.model.AudioObject;
@@ -139,12 +140,12 @@ public class Folder implements Serializable, TreeObject {
      * @return the audio objects
      */
     @Override
-    public List<AudioObject> getAudioObjects() {
+    public List<AudioObject> getAudioObjects(Repository repository) {
         List<AudioObject> result = new ArrayList<AudioObject>();
         result.addAll(files);
         for (String string : folders.keySet()) {
             Folder f = folders.get(string);
-            result.addAll(f.getAudioObjects());
+            result.addAll(f.getAudioObjects(repository));
         }
         return result;
     }
@@ -299,7 +300,7 @@ public class Folder implements Serializable, TreeObject {
     }
 
     @Override
-    public String getToolTip() {
+    public String getToolTip(Repository repository) {
         int songs = getAudioFiles().size();
         return StringUtils.getString(getName(), " (", songs, " ", (songs > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG")), ")");
     }
@@ -310,7 +311,7 @@ public class Folder implements Serializable, TreeObject {
     }
 
     @Override
-    public void setExtendedToolTip(ExtendedToolTip toolTip) {
+    public void setExtendedToolTip(ExtendedToolTip toolTip, Repository repository) {
         toolTip.setLine1(name);
         int folderNumber = folders.size();
         if (folderNumber > 0) {
@@ -318,7 +319,7 @@ public class Folder implements Serializable, TreeObject {
         } else {
             toolTip.setLine2(null);
         }
-        int songs = getAudioObjects().size();
+        int songs = getAudioObjects(repository).size();
         toolTip.setLine3(StringUtils.getString(songs, " ", (songs > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG"))));
     }
 
