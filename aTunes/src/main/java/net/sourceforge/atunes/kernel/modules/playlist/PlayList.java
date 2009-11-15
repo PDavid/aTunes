@@ -584,6 +584,7 @@ public class PlayList implements Serializable, Cloneable {
 	 */
 	protected void setContent(List<AudioObject> content) {
 		this.audioObjects.setContent(content);
+		notifyAudioObjectsAdded(0, content);
         // As this method is used when reading from disk playlist can't be dirty
         setDirty(false);
 	}
