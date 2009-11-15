@@ -187,7 +187,7 @@ public class RepositoryNavigationView extends NavigationView {
     @SuppressWarnings("unchecked")
     @Override
     protected void refreshTree(ViewMode viewMode, String treeFilter) {
-        debug("Refreshing " + this.getClass().getName());
+        debug("Refreshing ", this.getClass().getName());
 
         // Get model and root
         DefaultTreeModel treeModel = (DefaultTreeModel) getTree().getModel();

@@ -50,7 +50,6 @@ import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
 import net.sourceforge.atunes.kernel.modules.updates.UpdateHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.utils.StringUtils;
 
 public abstract class Handler implements ApplicationStartListener, ApplicationFinishListener, ApplicationStateChangeListener {
 
@@ -153,7 +152,7 @@ public abstract class Handler implements ApplicationStartListener, ApplicationFi
         // Register handlers
         for (Handler handler : handlers) {
             registerHandler(handler);
-            getLogger().debug(LogCategories.HANDLER, StringUtils.getString("Registered handler: ", handler.getClass().getName()));
+            getLogger().debug(LogCategories.HANDLER, "Registered handler: ", handler.getClass().getName());
         }
 
         // Execute previous initialization tasks
@@ -180,7 +179,7 @@ public abstract class Handler implements ApplicationStartListener, ApplicationFi
         // Initialize handlers
         for (Handler handler : handlers) {
             handler.initHandler();
-            getLogger().debug(LogCategories.HANDLER, StringUtils.getString("Initialized handler: ", handler.getClass().getName()));
+            getLogger().debug(LogCategories.HANDLER, "Initialized handler: ", handler.getClass().getName());
         }
 
     }

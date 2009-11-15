@@ -203,7 +203,7 @@ public class Cdda2wav extends CdToWavConverter {
             /* Check that we've got somewhere to write the track to */
             fileName.getParentFile().mkdirs();
 
-            logger.debug(LogCategories.CDDA2WAV, command.toArray(new String[command.size()]));
+            logger.debugMethodCall(LogCategories.CDDA2WAV, command.toArray(new String[command.size()]));
 
             process = new ProcessBuilder(command).start();
             stdInput = new BufferedReader(new InputStreamReader(process.getErrorStream()));
@@ -275,7 +275,7 @@ public class Cdda2wav extends CdToWavConverter {
                 command.add(SCANDEVICES);
                 command.add(NO_INFO_FILE);
 
-                logger.debug(LogCategories.CDDA2WAV, command.toArray(new String[command.size()]));
+                logger.debugMethodCall(LogCategories.CDDA2WAV, command.toArray(new String[command.size()]));
 
                 process = new ProcessBuilder(command).start();
                 stdInput = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -325,7 +325,7 @@ public class Cdda2wav extends CdToWavConverter {
                 command.add(SCAN_BUS);
                 command.add(NO_INFO_FILE);
 
-                logger.debug(LogCategories.CDDA2WAV, command.toArray(new String[command.size()]));
+                logger.debugMethodCall(LogCategories.CDDA2WAV, command.toArray(new String[command.size()]));
 
                 process = new ProcessBuilder(command).start();
                 // Icedax and cdda2wav seem to behave differently
@@ -405,7 +405,7 @@ public class Cdda2wav extends CdToWavConverter {
                 command.add(ATA);
                 command.add(NO_INFO_FILE);
 
-                logger.debug(LogCategories.CDDA2WAV, command.toArray(new String[command.size()]));
+                logger.debugMethodCall(LogCategories.CDDA2WAV, command.toArray(new String[command.size()]));
 
                 process = new ProcessBuilder(command).start();
                 // Icedax and cdda2wav seem to behave differently
@@ -522,7 +522,7 @@ public class Cdda2wav extends CdToWavConverter {
             command.add(NO_INFO_FILE);
             command.add(CDDB);
 
-            logger.debug(LogCategories.CDDA2WAV, command.toArray(new String[command.size()]));
+            logger.debugMethodCall(LogCategories.CDDA2WAV, command.toArray(new String[command.size()]));
 
             process = new ProcessBuilder(command).start();
             cdLoaded = false;

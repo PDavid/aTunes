@@ -123,7 +123,7 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
      */
     public void fillWithRandomSongs(long leaveFreeLong) {
         long leaveFree = leaveFreeLong;
-        getLogger().debug(LogCategories.HANDLER, new String[] { Long.toString(leaveFree) });
+        getLogger().debugMethodCall(LogCategories.HANDLER, new String[] { Long.toString(leaveFree) });
 
         // Get reference to Repository songs
         List<AudioFile> songs = RepositoryHandler.getInstance().getAudioFilesList();

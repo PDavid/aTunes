@@ -25,12 +25,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.commonjukebox.plugins.PluginApi;
-
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.EditTagInfo;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
+
+import org.commonjukebox.plugins.PluginApi;
 
 /**
  * Defines patterns based on AudioFile properties to get strings to be used in

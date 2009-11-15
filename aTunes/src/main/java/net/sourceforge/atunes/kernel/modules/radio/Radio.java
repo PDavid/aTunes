@@ -28,8 +28,6 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
-import org.commonjukebox.plugins.PluginApi;
-
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
@@ -38,6 +36,8 @@ import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.NetworkUtils;
+
+import org.commonjukebox.plugins.PluginApi;
 
 /**
  * A radio station.

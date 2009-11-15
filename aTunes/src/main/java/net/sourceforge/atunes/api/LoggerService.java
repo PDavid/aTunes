@@ -1,9 +1,9 @@
 package net.sourceforge.atunes.api;
 
-import org.commonjukebox.plugins.PluginApi;
-
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
+
+import org.commonjukebox.plugins.PluginApi;
 
 @PluginApi
 public class LoggerService {

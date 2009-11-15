@@ -97,7 +97,7 @@ public class Cdparanoia extends CdToWavConverter {
             command.add(String.valueOf(track));
             command.add(file.getAbsolutePath());
 
-            logger.debug(LogCategories.CDPARANOIA, command.toArray(new String[command.size()]));
+            logger.debugMethodCall(LogCategories.CDPARANOIA, command.toArray(new String[command.size()]));
             process = new ProcessBuilder(command).start();
 
             SwingUtilities.invokeLater(new Runnable() {
@@ -146,7 +146,7 @@ public class Cdparanoia extends CdToWavConverter {
             command.add(CDPARANOIA_COMMAND_STRING);
             command.add(QUERY);
 
-            logger.debug(LogCategories.CDPARANOIA, command.toArray(new String[command.size()]));
+            logger.debugMethodCall(LogCategories.CDPARANOIA, command.toArray(new String[command.size()]));
 
             process = new ProcessBuilder(command).start();
 

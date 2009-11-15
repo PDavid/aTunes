@@ -179,7 +179,7 @@ public final class DeviceNavigationView extends NavigationView {
     @SuppressWarnings("unchecked")
     @Override
     protected void refreshTree(ViewMode viewMode, String treeFilter) {
-        debug("Refreshing " + this.getClass().getName());
+        debug("Refreshing ", this.getClass().getName());
 
         Map<String, ?> data = getViewData(viewMode);
 

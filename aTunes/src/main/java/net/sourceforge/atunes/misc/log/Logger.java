@@ -92,11 +92,7 @@ public class Logger {
         className = className.substring(className.lastIndexOf('.') + 1);
         String methodName = s[1].getMethodName();
 
-        // Build string
-        StringBuilder sb = new StringBuilder();
-        sb.append("--> ").append(className).append('.').append(methodName).append(" [").append(LoggerTimer.getTimer()).append("]");
-
-        this.debug(cat, sb.toString());
+        this.debug(cat, "--> ", className, '.', methodName, " [", LoggerTimer.getTimer(), "]");
     }
 
     /**
@@ -104,10 +100,10 @@ public class Logger {
      * 
      * @param cat
      *            the cat
-     * @param arg0
-     *            the arg0
+     * @param objects
+     *            the objects to show in log
      */
-    public void debug(String cat, Object arg0) {
+    public void debug(String cat, Object... objects) {
         if (!Kernel.DEBUG) {
             return;
         }
@@ -117,19 +113,22 @@ public class Logger {
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append('[').append(cat).append("] ").append(arg0);
+        sb.append('[').append(cat).append("] ");
+        for (Object object : objects) {
+        	sb.append(object);
+        }
         logger.debug(sb.toString());
     }
 
     /**
-     * Logs a debug event.
+     * Logs a debug event. This method is specially designed to be called at the beginning of a method to log the execution of the method
      * 
      * @param cat
      *            the cat
      * @param args
      *            the args
      */
-    public void debug(String cat, String... args) {
+    public void debugMethodCall(String cat, String... args) {
         if (!Kernel.DEBUG) {
             return;
         }

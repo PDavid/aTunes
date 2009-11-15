@@ -30,8 +30,8 @@ import net.sourceforge.atunes.kernel.modules.context.ContextInformationDataSourc
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.ImageUtils;
 
 /**
  * Data Source for basic album object information Retrieves basic information

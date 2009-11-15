@@ -279,8 +279,7 @@ public final class PluginsPanel extends PreferencesPanel {
         try {
             // if any plugin has been modified then write configuration
             for (PluginInfo plugin : pluginsModified.keySet()) {
-                logger.debug(LogCategories.PLUGINS, StringUtils.getString("Writting configuration of plugin: ", plugin.getName()));
-                logger.debug(LogCategories.PLUGINS, pluginsModified.get(plugin));
+                logger.debug(LogCategories.PLUGINS, "Writting configuration of plugin: ", plugin.getName());
                 PluginConfiguration.setConfiguration(plugin, pluginsModified.get(plugin));
 
                 restartNeeded = restartNeeded || PluginsHandler.getInstance().pluginNeedsRestart(plugin);

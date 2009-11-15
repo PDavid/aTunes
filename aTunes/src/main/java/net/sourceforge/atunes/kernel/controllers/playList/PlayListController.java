@@ -101,7 +101,7 @@ public class PlayListController extends SimpleController<PlayListPanel> implemen
      *            the column clicked
      */
     public void columnClicked(Column columnClicked) {
-        getLogger().debug(LogCategories.CONTROLLER, new String[] { columnClicked.getColumnName() });
+        getLogger().debugMethodCall(LogCategories.CONTROLLER, new String[] { columnClicked.getColumnName() });
 
         // Sort play list
         PlayListHandler.getInstance().sortPlayList(columnClicked.getComparator());

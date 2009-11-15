@@ -49,7 +49,7 @@ public final class VlcTelnetClient {
         }
 
         // Connect to the specified server
-        logger.debug(LogCategories.NETWORK, "VlcTelnetClient : Connecting to port : " + newPort + " on server : " + newServer);
+        logger.debug(LogCategories.NETWORK, "VlcTelnetClient : Connecting to port : ", newPort, " on server : ", newServer);
 
         try {
             telnet.connect(newServer, newPort);

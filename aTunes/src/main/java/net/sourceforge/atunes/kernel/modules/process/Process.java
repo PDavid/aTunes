@@ -194,7 +194,7 @@ public abstract class Process {
      * 
      * @param o
      */
-    protected final void addDebugLog(Object o) {
+    protected final void addDebugLog(Object... o) {
         logger.debug(LogCategories.PROCESS, o);
     }
 

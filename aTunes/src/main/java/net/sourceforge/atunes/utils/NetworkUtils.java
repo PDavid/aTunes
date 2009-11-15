@@ -32,11 +32,11 @@ import java.net.URLEncoder;
 
 import javax.imageio.ImageIO;
 
-import org.commonjukebox.plugins.PluginApi;
-
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
+
+import org.commonjukebox.plugins.PluginApi;
 
 /**
  * Utility methods for network access.
@@ -79,7 +79,7 @@ public final class NetworkUtils {
      *             If an IO exception occurs
      */
     public static URLConnection getConnection(String urlString, Proxy proxy) throws IOException {
-        logger.debug(LogCategories.NETWORK, StringUtils.getString("Opening Connection With: ", urlString));
+        logger.debug(LogCategories.NETWORK, "Opening Connection With: ", urlString);
 
         URL url = new URL(urlString);
 

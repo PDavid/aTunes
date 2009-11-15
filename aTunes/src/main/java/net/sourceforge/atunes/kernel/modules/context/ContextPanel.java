@@ -36,7 +36,6 @@ import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.StringUtils;
 
 import org.commonjukebox.plugins.PluginApi;
 import org.jdesktop.swingx.JXTaskPane;
@@ -134,7 +133,7 @@ public abstract class ContextPanel {
             return;
         }
 
-        getLogger().debug(LogCategories.CONTEXT, StringUtils.getString("Updating panel: ", getContextPanelName()));
+        getLogger().debug(LogCategories.CONTEXT, "Updating panel: ", getContextPanelName());
         for (ContextPanelContent content : getContents()) {
             content.clearContextPanelContent();
             content.updateContextPanelContent(audioObject);
@@ -149,7 +148,7 @@ public abstract class ContextPanel {
      * tab showing this panel method updateContextPanel must be called again
      */
     public final void clearContextPanel() {
-        getLogger().debug(LogCategories.CONTEXT, StringUtils.getString("Clearing panel: ", getContextPanelName()));
+        getLogger().debug(LogCategories.CONTEXT, "Clearing panel: ", getContextPanelName());
         for (ContextPanelContent content : getContents()) {
             content.clearContextPanelContent();
         }

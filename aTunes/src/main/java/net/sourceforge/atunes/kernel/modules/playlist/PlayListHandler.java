@@ -1092,7 +1092,7 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
 
     public void addToPlaybackHistory(AudioObject object) {
         getCurrentPlayList(false).addToPlaybackHistory(object);
-        getLogger().debug(LogCategories.PLAYLIST, StringUtils.getString("Added to history: ", object.getTitle()));
+        getLogger().debug(LogCategories.PLAYLIST, "Added to history: ", object.getTitle());
     }
 
     @Override
