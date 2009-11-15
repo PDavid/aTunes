@@ -31,6 +31,7 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
+import net.sourceforge.atunes.kernel.modules.repository.Repository;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.ImageSize;
@@ -145,7 +146,7 @@ public final class Radio implements AudioObject, Serializable, TreeObject, Compa
     }
 
     @Override
-    public List<AudioObject> getAudioObjects() {
+    public List<AudioObject> getAudioObjects(Repository repository) {
         List<AudioObject> songs = new ArrayList<AudioObject>();
         songs.add(this);
         return songs;
@@ -418,7 +419,7 @@ public final class Radio implements AudioObject, Serializable, TreeObject, Compa
     }
 
     @Override
-    public String getToolTip() {
+    public String getToolTip(Repository repository) {
         return name;
     }
 
@@ -428,7 +429,7 @@ public final class Radio implements AudioObject, Serializable, TreeObject, Compa
     }
 
     @Override
-    public void setExtendedToolTip(ExtendedToolTip toolTip) {
+    public void setExtendedToolTip(ExtendedToolTip toolTip, Repository repository) {
     }
 
     @Override

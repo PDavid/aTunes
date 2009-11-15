@@ -26,7 +26,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.Repository;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -81,31 +81,15 @@ public class Genre implements Serializable, TreeObject {
     }
 
     /**
-     * Returns an Artist for a given artist name.
-     * 
-     * @param a
-     *            the a
-     * 
-     * @return the artist
-     */
-    public Artist getArtist(String a) {
-    	if (artists.contains(a)) {
-    		return RepositoryHandler.getInstance().getArtistStructure().get(a);
-    	} else {
-    		return null;
-    	}
-    }
-
-    /**
-     * Returns all songs of this genre (all songs of all artists).
+     * Returns all songs of this genre (all songs of all artists) from the given repository
      * 
      * @return the audio objects
      */
     @Override
-    public List<AudioObject> getAudioObjects() {
+    public List<AudioObject> getAudioObjects(Repository repository) {
         List<AudioObject> songs = new ArrayList<AudioObject>();
         for (String artist : artists) {
-            songs.addAll(getArtist(artist).getAudioObjects());
+            songs.addAll(repository.getStructure().getArtistStructure().get(artist).getAudioObjects(repository));
         }
         return songs;
     }
@@ -150,9 +134,9 @@ public class Genre implements Serializable, TreeObject {
     }
 
     @Override
-    public String getToolTip() {
+    public String getToolTip(Repository repository) {
         int artistNumber = artists.size();
-        int songs = getAudioObjects().size();
+        int songs = getAudioObjects(repository).size();
         return StringUtils.getString(getName(), " (", I18nUtils.getString("ARTISTS"), ": ", artistNumber, ", ", I18nUtils.getString("SONGS"), ": ", songs, ")");
     }
 
@@ -162,11 +146,11 @@ public class Genre implements Serializable, TreeObject {
     }
 
     @Override
-    public void setExtendedToolTip(ExtendedToolTip toolTip) {
+    public void setExtendedToolTip(ExtendedToolTip toolTip, Repository repository) {
         toolTip.setLine1(name);
         int artistNumber = artists.size();
         toolTip.setLine2(StringUtils.getString(artistNumber, " ", (artistNumber > 1 ? I18nUtils.getString("ARTISTS") : I18nUtils.getString("ARTIST"))));
-        int songs = getAudioObjects().size();
+        int songs = getAudioObjects(repository).size();
         toolTip.setLine3(StringUtils.getString(songs, " ", (songs > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG"))));
     }
 

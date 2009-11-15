@@ -24,6 +24,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
+import net.sourceforge.atunes.kernel.modules.repository.Repository;
 
 /**
  * All objects that can be shown in Navigator tree must implement this
@@ -32,18 +33,18 @@ import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 public interface TreeObject {
 
     /**
-     * Returns the audio objects of this tree object.
+     * Returns the audio objects of this tree object from the given repository
      * 
      * @return The audio objects of this object
      */
-    public List<AudioObject> getAudioObjects();
+    public List<AudioObject> getAudioObjects(Repository repository);
 
     /**
-     * Returns a string to be shown as tool tip when object is used
+     * Returns a string to be shown as tool tip when object is used for the given repository
      * 
      * @return ToolTip
      */
-    public String getToolTip();
+    public String getToolTip(Repository repository);
 
     /**
      * Returns <code>true</code> if this object supports extended tool tip
@@ -53,11 +54,11 @@ public interface TreeObject {
     public boolean isExtendedToolTipSupported();
 
     /**
-     * Fills tool tip with object data
+     * Fills tool tip with object data for the given repository
      * 
      * @param toolTip
      */
-    public void setExtendedToolTip(ExtendedToolTip toolTip);
+    public void setExtendedToolTip(ExtendedToolTip toolTip, Repository repository);
 
     /**
      * Returns <code>true</code> if this object supports image in extended tool

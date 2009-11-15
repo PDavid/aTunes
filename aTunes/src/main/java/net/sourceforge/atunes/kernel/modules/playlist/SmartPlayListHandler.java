@@ -83,7 +83,7 @@ public final class SmartPlayListHandler {
 
         // Add album songs
         for (Album a : albums) {
-            songsSelected.addAll(a.getAudioObjects());
+            songsSelected.addAll(RepositoryHandler.getInstance().getAudioFilesForAlbums(Collections.singletonMap(a.getName(), a)));
         }
 
         // Sort
