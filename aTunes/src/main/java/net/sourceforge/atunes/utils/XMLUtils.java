@@ -73,39 +73,7 @@ public final class XMLUtils {
     private XMLUtils() {
     }
 
-    private static ThreadLocal<XPath> xPath = new ThreadLocal<XPath>() {
-        @Override
-        protected XPath initialValue() {
-            return XPathFactory.newInstance().newXPath();
-        }
-    };
-
-    private static XStream xStream = new XStream();
-    static {
-        xStream.alias("Repository", Repository.class);
-        xStream.alias("RepositoryStats", Statistics.class);
-        xStream.alias("RepositoryStructure", RepositoryStructure.class);
-        xStream.alias("SongStats", AudioFileStats.class);
-        xStream.alias("RankList", RankList.class);
-        xStream.alias("StatisticsAlbum", StatisticsAlbum.class);
-        xStream.alias("AudioFile", AudioFile.class);
-        xStream.alias("Radio", Radio.class);
-        xStream.alias("PodcastFeed", PodcastFeed.class);
-        xStream.alias("PodcastFeedEntry", PodcastFeedEntry.class);
-        xStream.alias("Artist", Artist.class);
-        xStream.alias("Album", Album.class);
-        xStream.alias("Folder", Folder.class);
-        xStream.alias("Genre", Genre.class);
-        xStream.alias("DefaultTag", DefaultTag.class);
-        xStream.alias("PlayList", PlayList.class);
-        xStream.alias("Favorites", Favorites.class);
-
-        xStream.omitField(Radio.class, "title");
-        xStream.omitField(Radio.class, "artist");
-        xStream.omitField(Radio.class, "songInfoAvailable");
-        
-        xStream.omitField(PointedList.class, "list");
-    }
+    private static ThreadLocal<XPath> xPath;
 
     /**
      * Evaluates a XPath expression from a XML node, returning a Node object.
@@ -120,7 +88,7 @@ public final class XMLUtils {
      */
     public static Node evaluateXPathExpressionAndReturnNode(String expression, Node node) {
         try {
-            return (Node) xPath.get().evaluate(expression, node, XPathConstants.NODE);
+            return (Node) getXPath().get().evaluate(expression, node, XPathConstants.NODE);
         } catch (XPathExpressionException e) {
             return null;
         }
@@ -139,7 +107,7 @@ public final class XMLUtils {
      */
     public static String evaluateXPathExpressionAndReturnString(String expression, Node node) {
         try {
-            return (String) xPath.get().evaluate(expression, node, XPathConstants.STRING);
+            return (String) getXPath().get().evaluate(expression, node, XPathConstants.STRING);
         } catch (XPathExpressionException e) {
             return null;
         }
@@ -158,7 +126,7 @@ public final class XMLUtils {
      */
     public static NodeList evaluateXPathExpressionAndReturnNodeList(String expression, Node node) {
         try {
-            return (NodeList) xPath.get().evaluate(expression, node, XPathConstants.NODESET);
+            return (NodeList) getXPath().get().evaluate(expression, node, XPathConstants.NODESET);
         } catch (XPathExpressionException e) {
             return null;
         }
@@ -273,7 +241,7 @@ public final class XMLUtils {
         InputStreamReader inputStreamReader = null;
         try {
             inputStreamReader = new InputStreamReader(new FileInputStream(filename), "UTF-8");
-            return xStream.fromXML(inputStreamReader);
+            return getXStream().fromXML(inputStreamReader);
         } finally {
             ClosingUtils.close(inputStreamReader);
         }
@@ -283,7 +251,7 @@ public final class XMLUtils {
         InputStreamReader inputStreamReader = null;
         try {
             inputStreamReader = new InputStreamReader(inputStream);
-            return xStream.fromXML(inputStreamReader);
+            return getXStream().fromXML(inputStreamReader);
         } finally {
             ClosingUtils.close(inputStreamReader);
         }
@@ -298,7 +266,7 @@ public final class XMLUtils {
      * @return The object read from the xml string
      */
     public static Object readObjectFromString(String string) {
-        return xStream.fromXML(string);
+        return getXStream().fromXML(string);
     }
 
     /**
@@ -337,10 +305,52 @@ public final class XMLUtils {
         OutputStreamWriter outputStreamWriter = null;
         try {
             outputStreamWriter = new OutputStreamWriter(new FileOutputStream(filename), "UTF-8");
-            xStream.toXML(object, outputStreamWriter);
+            getXStream().toXML(object, outputStreamWriter);
         } finally {
             ClosingUtils.close(outputStreamWriter);
         }
+    }
+    
+    private static XStream getXStream() {
+    	XStream xStream = new XStream();
+    	
+        xStream.alias("Repository", Repository.class);
+        xStream.alias("RepositoryStats", Statistics.class);
+        xStream.alias("RepositoryStructure", RepositoryStructure.class);
+        xStream.alias("SongStats", AudioFileStats.class);
+        xStream.alias("RankList", RankList.class);
+        xStream.alias("StatisticsAlbum", StatisticsAlbum.class);
+        xStream.alias("AudioFile", AudioFile.class);
+        xStream.alias("Radio", Radio.class);
+        xStream.alias("PodcastFeed", PodcastFeed.class);
+        xStream.alias("PodcastFeedEntry", PodcastFeedEntry.class);
+        xStream.alias("Artist", Artist.class);
+        xStream.alias("Album", Album.class);
+        xStream.alias("Folder", Folder.class);
+        xStream.alias("Genre", Genre.class);
+        xStream.alias("DefaultTag", DefaultTag.class);
+        xStream.alias("PlayList", PlayList.class);
+        xStream.alias("Favorites", Favorites.class);
+
+        xStream.omitField(Radio.class, "title");
+        xStream.omitField(Radio.class, "artist");
+        xStream.omitField(Radio.class, "songInfoAvailable");
+        
+        xStream.omitField(PointedList.class, "list");
+        
+        return xStream;
+    }
+    
+    private static ThreadLocal<XPath> getXPath() {
+    	if (xPath == null) {
+    		xPath = new ThreadLocal<XPath>() {
+    			@Override
+    			protected XPath initialValue() {
+    				return XPathFactory.newInstance().newXPath();
+    			}
+    		};
+    	}
+    	return xPath;
     }
 
 }
