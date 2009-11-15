@@ -402,7 +402,7 @@ public class RepositoryNavigationView extends NavigationView {
                 if (objectsExpanded.contains(genreNode.getUserObject())) {
                     nodesToExpand.add(genreNode);
                 }
-                List<String> artistNamesList = new ArrayList<String>(genre.getArtists().keySet());
+                List<String> artistNamesList = new ArrayList<String>(genre.getArtists());
                 Collections.sort(artistNamesList);
                 for (int j = 0; j < artistNamesList.size(); j++) {
                     Artist artist = genre.getArtist(artistNamesList.get(j));
