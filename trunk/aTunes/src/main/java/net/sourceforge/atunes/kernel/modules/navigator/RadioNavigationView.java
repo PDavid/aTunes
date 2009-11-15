@@ -148,7 +148,7 @@ public final class RadioNavigationView extends NavigationView {
     @Override
     @SuppressWarnings("unchecked")
     protected void refreshTree(ViewMode viewMode, String treeFilter) {
-        debug("Refreshing " + this.getClass().getName());
+        debug("Refreshing ", this.getClass().getName());
 
         Map<String, ?> data = getViewData(viewMode);
 

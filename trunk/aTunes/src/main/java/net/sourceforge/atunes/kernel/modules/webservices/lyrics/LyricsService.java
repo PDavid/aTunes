@@ -103,7 +103,7 @@ public class LyricsService implements ApplicationStateChangeListener {
      * @return the lyrics
      */
     public Lyrics getLyrics(String artist, String song) {
-        getLogger().debug(LogCategories.SERVICE, artist, song);
+        getLogger().debugMethodCall(LogCategories.SERVICE, artist, song);
 
         // Try to get from cache
         Lyrics lyric = lyricsCache.retrieveLyric(artist, song);

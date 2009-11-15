@@ -177,7 +177,7 @@ public final class FavoritesNavigationView extends NavigationView implements Plu
     @Override
     @SuppressWarnings("unchecked")
     protected void refreshTree(ViewMode viewMode, String treeFilter) {
-        debug("Refreshing " + this.getClass().getName());
+        debug("Refreshing ", this.getClass().getName());
 
         DefaultTreeModel treeModel = (DefaultTreeModel) getTree().getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();

@@ -197,7 +197,7 @@ public final class SearchHandler extends Handler {
                 rawSearchResults.add(new RawSearchResult(searcher.doc(scoreDoc.doc), scoreDoc.score));
             }
             List<SearchResult> result = searchableObject.getSearchResult(rawSearchResults);
-            getLogger().debug(LogCategories.REPOSITORY, "Query: " + queryString + " (" + result.size() + " search results)");
+            getLogger().debug(LogCategories.REPOSITORY, "Query: ", queryString, " (", result.size(), " search results)");
             return result;
         } catch (IOException e) {
             throw new SearchIndexNotAvailableException();

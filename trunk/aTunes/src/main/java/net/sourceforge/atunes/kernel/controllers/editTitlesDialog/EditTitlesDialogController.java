@@ -78,7 +78,7 @@ public class EditTitlesDialogController extends SimpleController<EditTitlesDialo
      *            the alb
      */
     public void editFiles(Album alb) {
-        getLogger().debug(LogCategories.CONTROLLER, new String[] { alb.getName() });
+        getLogger().debugMethodCall(LogCategories.CONTROLLER, new String[] { alb.getName() });
 
         this.album = alb;
         filesToEdit = alb.getAudioFiles();

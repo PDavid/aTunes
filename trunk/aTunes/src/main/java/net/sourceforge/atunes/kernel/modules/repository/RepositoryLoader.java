@@ -693,7 +693,7 @@ public class RepositoryLoader extends Thread {
      *             the file not found exception
      */
     private void navigateDir(File relativeTo, File dir) throws FileNotFoundException {
-        logger.debug(LogCategories.REPOSITORY, StringUtils.getString("Reading dir ", dir.getAbsolutePath()));
+        logger.debug(LogCategories.REPOSITORY, "Reading dir ", dir.getAbsolutePath());
 
         if (!interrupt) {
             String pathToFile = dir.getAbsolutePath().replace('\\', '/');

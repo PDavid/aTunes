@@ -265,7 +265,7 @@ public class MPlayerEngine extends PlayerEngine {
 
     @Override
     public void applyMuteState(boolean mute) {
-        logger.debug(LogCategories.PLAYER, Boolean.toString(mute));
+        logger.debugMethodCall(LogCategories.PLAYER, Boolean.toString(mute));
 
         commandWriter.sendMuteCommand();
 
@@ -403,7 +403,7 @@ public class MPlayerEngine extends PlayerEngine {
             command.add(KARAOKE);
         }
 
-        logger.debug(LogCategories.PLAYER, command.toArray(new String[command.size()]));
+        logger.debugMethodCall(LogCategories.PLAYER, command.toArray(new String[command.size()]));
         return pb.command(command).start();
     }
 

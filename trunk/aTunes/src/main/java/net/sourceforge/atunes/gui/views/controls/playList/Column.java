@@ -25,10 +25,10 @@ import java.util.Comparator;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
-import org.commonjukebox.plugins.PluginApi;
-
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.GuiUtils;
+
+import org.commonjukebox.plugins.PluginApi;
 
 /**
  * This class represents a column of Play List.

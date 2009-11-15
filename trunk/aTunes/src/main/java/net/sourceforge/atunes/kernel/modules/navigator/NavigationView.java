@@ -400,10 +400,10 @@ public abstract class NavigationView implements AudioObjectsSource {
     /**
      * Method to log debug messages
      * 
-     * @param message
+     * @param objects
      */
-    protected final void debug(String message) {
-        logger.debug(LogCategories.VIEW, message);
+    protected final void debug(Object... objects) {
+        logger.debug(LogCategories.VIEW, objects);
     }
 
     /**

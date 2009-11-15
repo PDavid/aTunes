@@ -38,8 +38,8 @@ import net.sourceforge.atunes.gui.views.controls.CustomTextPane;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.ImageUtils;
 
 import org.jdesktop.swingx.border.DropShadowBorder;
 

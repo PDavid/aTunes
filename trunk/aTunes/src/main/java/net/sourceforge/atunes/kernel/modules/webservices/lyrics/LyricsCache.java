@@ -23,7 +23,6 @@ import net.sf.ehcache.Element;
 import net.sourceforge.atunes.misc.AbstractCache;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.utils.StringUtils;
 
 public class LyricsCache extends AbstractCache {
 
@@ -86,7 +85,7 @@ public class LyricsCache extends AbstractCache {
         }
         Element element = new Element(artist + title, lyric);
         getCache(LYRICS).put(element);
-        logger.debug(LogCategories.CACHE, StringUtils.getString("Stored lyric for ", title));
+        logger.debug(LogCategories.CACHE, "Stored lyric for ", title);
     }
 
     public void shutdown() {

@@ -73,7 +73,7 @@ public final class SmartPlayListHandler {
      *            the n
      */
     public void addAlbumsMostPlayed(int n) {
-        logger.debug(LogCategories.HANDLER, new String[] { Integer.toString(n) });
+        logger.debugMethodCall(LogCategories.HANDLER, new String[] { Integer.toString(n) });
 
         // Get n most played albums
         List<Album> albums = StatisticsHandler.getInstance().getMostPlayedAlbums(n);
@@ -100,7 +100,7 @@ public final class SmartPlayListHandler {
      *            the n
      */
     public void addArtistsMostPlayed(int n) {
-        logger.debug(LogCategories.HANDLER, new String[] { Integer.toString(n) });
+        logger.debugMethodCall(LogCategories.HANDLER, new String[] { Integer.toString(n) });
 
         // Get n most played albums
         List<Artist> artists = StatisticsHandler.getInstance().getMostPlayedArtists(n);
@@ -127,7 +127,7 @@ public final class SmartPlayListHandler {
      *            the n
      */
     public void addRandomSongs(int n) {
-        logger.debug(LogCategories.HANDLER, new String[] { Integer.toString(n) });
+        logger.debugMethodCall(LogCategories.HANDLER, new String[] { Integer.toString(n) });
 
         // Get reference to Repository songs
         List<AudioFile> songs = RepositoryHandler.getInstance().getAudioFilesList();
@@ -161,7 +161,7 @@ public final class SmartPlayListHandler {
      *            the n
      */
     public void addSongsMostPlayed(int n) {
-        logger.debug(LogCategories.HANDLER, new String[] { Integer.toString(n) });
+        logger.debugMethodCall(LogCategories.HANDLER, new String[] { Integer.toString(n) });
 
         // Get songs
         List<AudioFile> songsSelected = StatisticsHandler.getInstance().getMostPlayedAudioFiles(n);
@@ -180,7 +180,7 @@ public final class SmartPlayListHandler {
      *            the n
      */
     public void addUnplayedSongs(int n) {
-        logger.debug(LogCategories.HANDLER, Integer.toString(n));
+        logger.debugMethodCall(LogCategories.HANDLER, Integer.toString(n));
 
         // Get unplayed files
         List<AudioFile> unplayedSongs = StatisticsHandler.getInstance().getUnplayedAudioFiles();

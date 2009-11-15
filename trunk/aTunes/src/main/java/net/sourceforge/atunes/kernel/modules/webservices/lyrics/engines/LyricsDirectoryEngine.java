@@ -29,7 +29,6 @@ import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.utils.StringUtils;
 
 public class LyricsDirectoryEngine extends LyricsEngine {
 
@@ -67,7 +66,7 @@ public class LyricsDirectoryEngine extends LyricsEngine {
             logger.error(LogCategories.SERVICE, e);
             return null;
         } catch (IOException e) {
-            logger.debug(LogCategories.SERVICE, StringUtils.getString("No lyrics found at ", BASE_URL, " for ", artist, " - ", title));
+            logger.debug(LogCategories.SERVICE, "No lyrics found at ", BASE_URL, " for ", artist, " - ", title);
             return null;
         }
     }

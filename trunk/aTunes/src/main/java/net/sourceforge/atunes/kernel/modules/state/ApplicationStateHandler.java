@@ -135,7 +135,7 @@ public final class ApplicationStateHandler extends Handler {
     public void notifyApplicationStateChanged() {
         try {
             for (ApplicationStateChangeListener listener : stateChangeListeners) {
-                getLogger().debug(LogCategories.HANDLER, StringUtils.getString("Call to ApplicationStateChangeListener: ", listener.getClass().getName()));
+                getLogger().debug(LogCategories.HANDLER, "Call to ApplicationStateChangeListener: ", listener.getClass().getName());
                 listener.applicationStateChanged(ApplicationState.getInstance());
             }
         } catch (Throwable t) {

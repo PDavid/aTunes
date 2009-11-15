@@ -19,13 +19,6 @@
  */
 package net.sourceforge.atunes.test.amazon;
 
-import java.awt.Image;
-
-import net.sourceforge.atunes.kernel.modules.amazon.AmazonAlbum;
-import net.sourceforge.atunes.kernel.modules.amazon.AmazonDisc;
-import net.sourceforge.atunes.kernel.modules.amazon.AmazonService;
-
-import org.junit.Assert;
 import org.junit.Test;
 
 public class AmazonTest {

@@ -31,6 +31,7 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * Handler for global hotkeys keys.
@@ -217,7 +218,7 @@ public final class HotkeyHandler extends Handler implements HotkeyListener {
 
     @Override
     public void onHotKey(final int id) {
-        getLogger().debug(LogCategories.HANDLER, "Hotkey " + id);
+        getLogger().debug(LogCategories.HANDLER, "Hotkey ", id);
         switch (id) {
         case HOTKEY_NEXT: {
             PlayerHandler.getInstance().playNextAudioObject();
@@ -256,7 +257,7 @@ public final class HotkeyHandler extends Handler implements HotkeyListener {
             break;
         }
         default: {
-            getLogger().error(LogCategories.HOTKEYS, "unknown hotkey id: " + id);
+            getLogger().error(LogCategories.HOTKEYS, StringUtils.getString("Unknown hotkey id: ", id));
         }
         }
     }

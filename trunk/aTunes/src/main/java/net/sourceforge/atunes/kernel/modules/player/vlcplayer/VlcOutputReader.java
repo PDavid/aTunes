@@ -55,7 +55,7 @@ class VlcOutputReader extends Thread {
     }
 
     protected void read(String line) {
-        logger.debug(LogCategories.PLAYER, "VLC Debug Stream read : " + line);
+        logger.debug(LogCategories.PLAYER, "VLC Debug Stream read : ", line);
 
         if (line.indexOf(ACCESS_HTTP_DEBUG) > 0) {
             //System.out.println("Stream info : " + line);

@@ -330,7 +330,7 @@ public class NavigationController extends SimpleController<NavigationPanel> impl
      *            the new navigation view
      */
     public void setNavigationView(String view) {
-        getLogger().debug(LogCategories.CONTROLLER, new String[] { view });
+        getLogger().debugMethodCall(LogCategories.CONTROLLER, new String[] { view });
 
         Class<? extends NavigationView> navigationView = NavigationHandler.getInstance().getViewByName(view);
         if (navigationView == null) {

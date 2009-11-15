@@ -270,7 +270,7 @@ public class LastFmCache extends AbstractCache {
 
         Element element = new Element(album, cover);
         getCache(ALBUM_COVER).put(element);
-        logger.debug(LogCategories.CACHE, StringUtils.getString("Stored album Cover for album ", album.getTitle()));
+        logger.debug(LogCategories.CACHE, "Stored album Cover for album ", album.getTitle());
     }
 
     /**
@@ -290,7 +290,7 @@ public class LastFmCache extends AbstractCache {
 
         Element element = new Element(artist + album, albumObject);
         getCache(ALBUM_INFO).put(element);
-        logger.debug(LogCategories.CACHE, StringUtils.getString("Stored album info for album ", artist, " ", album));
+        logger.debug(LogCategories.CACHE, "Stored album info for album ", artist, " ", album);
     }
 
     /**
@@ -308,7 +308,7 @@ public class LastFmCache extends AbstractCache {
 
         Element element = new Element(artist, image);
         getCache(ARTIST_IMAGE).put(element);
-        logger.debug(LogCategories.CACHE, StringUtils.getString("Stored artist image for ", artist));
+        logger.debug(LogCategories.CACHE, "Stored artist image for ", artist);
     }
 
     /**
@@ -326,7 +326,7 @@ public class LastFmCache extends AbstractCache {
 
         Element element = new Element(artist, list);
         getCache(ALBUM_LIST).put(element);
-        logger.debug(LogCategories.CACHE, StringUtils.getString("Stored album list for ", artist));
+        logger.debug(LogCategories.CACHE, "Stored album list for ", artist);
     }
 
     /**
@@ -344,7 +344,7 @@ public class LastFmCache extends AbstractCache {
 
         Element element = new Element(artist, similar);
         getCache(ARTIST_SIMILAR).put(element);
-        logger.debug(LogCategories.CACHE, StringUtils.getString("Stored artist similar for ", artist));
+        logger.debug(LogCategories.CACHE, "Stored artist similar for ", artist);
     }
 
     /**
@@ -362,7 +362,7 @@ public class LastFmCache extends AbstractCache {
 
         Element element = new Element(artist, image);
         getCache(ARTIST_THUMB).put(element);
-        logger.debug(LogCategories.CACHE, StringUtils.getString("Stored artist thumb for ", artist.getName()));
+        logger.debug(LogCategories.CACHE, "Stored artist thumb for ", artist.getName());
     }
 
     /**
@@ -380,7 +380,7 @@ public class LastFmCache extends AbstractCache {
 
         Element element = new Element(artist, wikiText);
         getCache(ARTIST_WIKI).put(element);
-        logger.debug(LogCategories.CACHE, StringUtils.getString("Stored artist wiki for ", artist));
+        logger.debug(LogCategories.CACHE, "Stored artist wiki for ", artist);
     }
 
     public synchronized void addSubmissionData(SubmissionData submissionData) {
@@ -396,7 +396,7 @@ public class LastFmCache extends AbstractCache {
             String path = getFileNameForSubmissionCache();
             if (path != null) {
                 XMLUtils.writeObjectToFile(submissionDataList, path);
-                logger.debug(LogCategories.CACHE, StringUtils.getString("Stored submission data: " + submissionData));
+                logger.debug(LogCategories.CACHE, "Stored submission data: ", submissionData);
             }
         } catch (IOException e) {
             logger.error(LogCategories.CACHE, e);

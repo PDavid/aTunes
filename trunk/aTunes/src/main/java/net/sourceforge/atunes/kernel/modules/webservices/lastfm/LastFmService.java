@@ -35,8 +35,6 @@ import java.util.concurrent.RejectedExecutionException;
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 
-import org.commonjukebox.plugins.PluginApi;
-
 import net.roarsoftware.lastfm.Album;
 import net.roarsoftware.lastfm.Artist;
 import net.roarsoftware.lastfm.Authenticator;
@@ -75,6 +73,8 @@ import net.sourceforge.atunes.utils.CryptoUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.NetworkUtils;
 import net.sourceforge.atunes.utils.StringUtils;
+
+import org.commonjukebox.plugins.PluginApi;
 
 /**
  * This class is responsible of retrieve information from Last.fm web services.
@@ -779,7 +779,7 @@ public class LastFmService {
      */
     private boolean checkDuration(AudioObject ao) {
         if (ao.getDuration() < MIN_DURATION_TO_SUBMIT) {
-            logger.debug(LogCategories.SERVICE, StringUtils.getString("Don't submit to Last.fm: Lenght < ", MIN_DURATION_TO_SUBMIT));
+            logger.debug(LogCategories.SERVICE, "Don't submit to Last.fm: Lenght < ", MIN_DURATION_TO_SUBMIT);
             return false;
         }
         return true;
