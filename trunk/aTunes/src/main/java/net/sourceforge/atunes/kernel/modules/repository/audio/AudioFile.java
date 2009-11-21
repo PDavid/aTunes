@@ -215,7 +215,10 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
      *            the picture
      */
     public void addExternalPicture(File picture) {
-        if (externalPictures != null && !externalPictures.contains(picture)) {
+    	if (externalPictures == null) {
+    		externalPictures = new ArrayList<File>();
+    	}
+        if (!externalPictures.contains(picture)) {
             externalPictures.add(0, picture);
         }
     }

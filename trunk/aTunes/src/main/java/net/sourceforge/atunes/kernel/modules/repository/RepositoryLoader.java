@@ -496,98 +496,76 @@ public class RepositoryLoader extends Thread {
             }
 
             if (listener != null) {
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        listener.notifyCurrentPath(relativePath);
-                    }
-                });
+            	listener.notifyCurrentPath(relativePath);
             }
 
             File[] list = dir.listFiles();
-            List<File> pictures = new ArrayList<File>();
-            List<File> audioFiles = new ArrayList<File>();
-            List<File> dirs = new ArrayList<File>();
+            List<File> pictures = null;
+            List<File> audioFiles = null;
             if (list != null) {
-                //First find pictures, audio and files
                 for (File element : list) {
                     if (element.isDirectory()) {
-                        dirs.add(element);
+                        navigateDir(relativeTo, element);
                     } else if (AudioFile.isValidAudioFile(element)) {
+                    	if (audioFiles == null) {
+                    		audioFiles = new ArrayList<File>();
+                    	}
                         audioFiles.add(element);
                     } else if (AudioFilePictureUtils.isValidPicture(element)) {
+                    	if (pictures == null) {
+                    		pictures = new ArrayList<File>();
+                    	}
                         pictures.add(element);
                     }
                 }
 
-                Map<String, AudioFile> repositoryFiles = repository.getAudioFiles();
-                // Use a List<AudioFile> here to deal with more than one cue track found within one cue sheet file
-                List<AudioFile> audioFilesList = new ArrayList<AudioFile>();
-                for (int i = 0; i < audioFiles.size() && !interrupt; i++) {
-                    AudioFile audio = null;
+                if (audioFiles != null) {                
+                	// Use a List<AudioFile> here to deal with more than one cue track found within one cue sheet file
+                	List<AudioFile> audioFilesList = new ArrayList<AudioFile>();
+                	for (int i = 0; i < audioFiles.size() && !interrupt; i++) {
+                		AudioFile audio = null;
 
-                    // If a previous repository exists, check if file already was loaded.
-                    // If so, compare modification date. If modification date is equal to last repository load
-                    // don't read file again
+                		// If a previous repository exists, check if file already was loaded.
+                		// If so, compare modification date. If modification date is equal to last repository load
+                		// don't read file again
 
-                    if (oldRepository != null) {
-                        AudioFile oldAudioFile = oldRepository.getFile(audioFiles.get(i).getAbsolutePath());
-                        if (oldAudioFile != null && oldAudioFile.isUpToDate()) {
-                            audio = oldAudioFile;
-                            audioFilesList.add(audio);
-                        } else {
-                            audio = new AudioFile(audioFiles.get(i).getAbsolutePath());
-                            audioFilesList.add(audio);
-                        }
-                    } else {
-                        audio = new AudioFile(audioFiles.get(i).getAbsolutePath());
-                        audioFilesList.add(audio);
-                    }
-                }
+                		if (oldRepository != null) {
+                			AudioFile oldAudioFile = oldRepository.getFile(audioFiles.get(i).getAbsolutePath());
+                			if (oldAudioFile != null && oldAudioFile.isUpToDate()) {
+                				audio = oldAudioFile;
+                			} else {
+                				audio = new AudioFile(audioFiles.get(i).getAbsolutePath());
+                			}
+                		} else {
+                			audio = new AudioFile(audioFiles.get(i).getAbsolutePath());
+                		}
+        				audioFilesList.add(audio);
+                	}
 
-                for (AudioFile audioFile : audioFilesList) {
-                    audioFile.setExternalPictures(pictures);
-                    if (listener != null) {
-                        SwingUtilities.invokeLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                listener.notifyFileLoaded();
-                            }
-                        });
-                    }
-                    filesLoaded++;
-                    repositoryFiles.put(audioFile.getUrl(), audioFile);
-                    RepositoryFiller.addToArtistStructure(repository, audioFile);
-                    RepositoryFiller.addToFolderStructure(repository, relativeTo, relativePath, audioFile);
-                    RepositoryFiller.addToGenreStructure(repository, audioFile);
-                    repository.setTotalSizeInBytes(repository.getTotalSizeInBytes() + audioFile.getFile().length());
-                    repository.addDurationInSeconds(audioFile.getDuration());
+                	for (AudioFile audioFile : audioFilesList) {
+                		audioFile.setExternalPictures(pictures);
+                		if (listener != null) {
+                			listener.notifyFileLoaded();
+                		}
+                		filesLoaded++;
+                		RepositoryFiller.addToRepository(repository, audioFile);
+                		RepositoryFiller.addToArtistStructure(repository, audioFile);
+                		RepositoryFiller.addToFolderStructure(repository, relativeTo, relativePath, audioFile);
+                		RepositoryFiller.addToGenreStructure(repository, audioFile);
 
-                    if (filesLoaded % 25 == 0) {
-                        long t1 = System.currentTimeMillis();
-                        final long remainingTime = filesLoaded != 0 ? (totalFilesToLoad - filesLoaded) * (t1 - startReadTime) / filesLoaded : 0;
+                		// Update remaining time every 50 files
+                		if (filesLoaded % 50 == 0) {
+                			long t1 = System.currentTimeMillis();
+                			final long remainingTime = filesLoaded != 0 ? (totalFilesToLoad - filesLoaded) * (t1 - startReadTime) / filesLoaded : 0;
 
-                        if (listener != null) {
-                            SwingUtilities.invokeLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    listener.notifyRemainingTime(remainingTime);
-                                }
-                            });
-                            if (!refresh) {
-                            	SwingUtilities.invokeLater(new Runnable() {
-                            		@Override
-                            		public void run() {
-                            			listener.notifyReadProgress();
-                            		}
-                            	});
-                            }
-                        }
-                    }
-                }
-
-                for (int i = 0; i < dirs.size(); i++) {
-                    navigateDir(relativeTo, dirs.get(i));
+                			if (listener != null) {
+           						listener.notifyRemainingTime(remainingTime);
+                				if (!refresh) {
+           							listener.notifyReadProgress();
+                				}
+                			}
+                		}
+                	}
                 }
             }
         }
