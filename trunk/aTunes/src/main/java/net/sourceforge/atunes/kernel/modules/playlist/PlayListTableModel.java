@@ -32,20 +32,19 @@ import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
- * The Class PlayListTableModel.
+ * The playlist table model.
  * 
  * @author fleax
  */
 public class PlayListTableModel implements TableModel {
 
-    /** The listeners. */
     private List<TableModelListener> listeners;
 
     /**
      * Reference to the visible play list
      */
     private PlayList visiblePlayList = null;
-    
+
     /**
      * Constructor.
      * 
@@ -178,7 +177,7 @@ public class PlayListTableModel implements TableModel {
     }
 
     /**
-     * Sets value for a cell. Does nothing as cells are not editable
+     * Sets value for a cell
      * 
      * @param aValue
      *            the a value
@@ -199,10 +198,11 @@ public class PlayListTableModel implements TableModel {
         PlayListColumns.getColumn(c).setValueFor(file, aValue);
     }
 
-	/**
-	 * @param visiblePlayList the visiblePlayList to set
-	 */
-	public void setVisiblePlayList(PlayList visiblePlayList) {
-		this.visiblePlayList = visiblePlayList;
-	}
+    /**
+     * @param visiblePlayList
+     *            the visiblePlayList to set
+     */
+    public void setVisiblePlayList(PlayList visiblePlayList) {
+        this.visiblePlayList = visiblePlayList;
+    }
 }
