@@ -657,4 +657,11 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
         }
     }
 
+    /**
+     * Returns album artist or artist
+     * @return
+     */
+    public String getAlbumArtistOrArtist() {
+    	return getAlbumArtist().equals("") ? getArtist() : getAlbumArtist();
+    }
 }
