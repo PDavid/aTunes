@@ -57,7 +57,6 @@ import net.sourceforge.atunes.kernel.actions.SearchArtistAtAction;
 import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
-import net.sourceforge.atunes.kernel.modules.repository.Repository;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.kernel.modules.repository.model.Album;
@@ -442,12 +441,12 @@ public final class DeviceNavigationView extends NavigationView {
                 songs = new ArrayList<AudioObject>();
                 for (int i = 0; i < node.getChildCount(); i++) {
                     TreeObject obj = (TreeObject) ((DefaultMutableTreeNode) node.getChildAt(i)).getUserObject();
-                    songs.addAll(obj.getAudioObjects(getSourceRepository()));
+                    songs.addAll(obj.getAudioObjects());
                 }
             }
         } else {
             TreeObject obj = (TreeObject) node.getUserObject();
-            songs = obj.getAudioObjects(getSourceRepository());
+            songs = obj.getAudioObjects();
         }
         return songs;
     }
@@ -566,10 +565,5 @@ public final class DeviceNavigationView extends NavigationView {
                 return label;
             }
         };
-    }
-    
-    @Override
-    public Repository getSourceRepository() {
-    	return DeviceHandler.getInstance().getDeviceRepository();
     }
 }

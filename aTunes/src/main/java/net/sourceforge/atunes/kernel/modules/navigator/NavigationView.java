@@ -51,7 +51,6 @@ import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.actions.ActionOverSelectedObjects;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
-import net.sourceforge.atunes.kernel.modules.repository.Repository;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -102,12 +101,6 @@ public abstract class NavigationView implements AudioObjectsSource {
      * @return the tree popup menu of this view
      */
     public abstract JPopupMenu getTreePopupMenu();
-
-    /**
-     * Returns the repository used to get data to show in the view
-     * @return
-     */
-    public abstract Repository getSourceRepository();
 
     /**
      * 

@@ -57,7 +57,6 @@ import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
-import net.sourceforge.atunes.kernel.modules.repository.Repository;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -187,17 +186,17 @@ public final class PodcastNavigationView extends NavigationView {
             if (treeFilter == null) {
                 List<PodcastFeed> podcastFeeds = PodcastFeedHandler.getInstance().getPodcastFeeds();
                 for (PodcastFeed pf : podcastFeeds) {
-                    songs.addAll(pf.getAudioObjects(getSourceRepository()));
+                    songs.addAll(pf.getAudioObjects());
                 }
             } else {
                 for (int i = 0; i < node.getChildCount(); i++) {
                     PodcastFeed obj = (PodcastFeed) ((DefaultMutableTreeNode) node.getChildAt(i)).getUserObject();
-                    songs.addAll(obj.getAudioObjects(getSourceRepository()));
+                    songs.addAll(obj.getAudioObjects());
                 }
             }
         } else {
             PodcastFeed obj = (PodcastFeed) node.getUserObject();
-            songs = obj.getAudioObjects(getSourceRepository());
+            songs = obj.getAudioObjects();
         }
         return songs;
     }
@@ -325,10 +324,5 @@ public final class PodcastNavigationView extends NavigationView {
                 return icon;
             }
         };
-    }
-    
-    @Override
-    public Repository getSourceRepository() {
-    	return null;
     }
 }

@@ -29,7 +29,6 @@ import java.util.Map;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
-import net.sourceforge.atunes.kernel.modules.repository.Repository;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
@@ -143,10 +142,10 @@ public class Artist implements Serializable, TreeObject, Comparable<Artist> {
      * @return the audio objects
      */
     @Override
-    public List<AudioObject> getAudioObjects(Repository repository) {
+    public List<AudioObject> getAudioObjects() {
         List<AudioObject> songs = new ArrayList<AudioObject>();
         for (Album album : albums.values()) {
-            songs.addAll(album.getAudioObjects(repository));
+            songs.addAll(album.getAudioObjects());
         }
         return songs;
     }
@@ -191,7 +190,7 @@ public class Artist implements Serializable, TreeObject, Comparable<Artist> {
     }
 
     @Override
-    public String getToolTip(Repository repository) {
+    public String getToolTip() {
         int albums = getAlbums().size();
         return StringUtils.getString(getName(), " (", albums, " ", (albums > 1 ? I18nUtils.getString("ALBUMS") : I18nUtils.getString("ALBUM")), ")");
     }
@@ -202,7 +201,7 @@ public class Artist implements Serializable, TreeObject, Comparable<Artist> {
     }
 
     @Override
-    public void setExtendedToolTip(ExtendedToolTip toolTip, Repository repository) {
+    public void setExtendedToolTip(ExtendedToolTip toolTip) {
         toolTip.setLine1(name);
         int albumNumber = albums.size();
         toolTip.setLine2(StringUtils.getString(albumNumber, " ", (albumNumber > 1 ? I18nUtils.getString("ALBUMS") : I18nUtils.getString("ALBUM"))));

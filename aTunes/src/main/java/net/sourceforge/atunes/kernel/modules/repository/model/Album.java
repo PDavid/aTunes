@@ -27,7 +27,6 @@ import java.util.List;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
-import net.sourceforge.atunes.kernel.modules.repository.Repository;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.ImageSize;
@@ -125,7 +124,7 @@ public class Album implements Serializable, TreeObject, Comparable<Album> {
      * @return the audio objects
      */
     @Override
-    public List<AudioObject> getAudioObjects(Repository repository) {
+    public List<AudioObject> getAudioObjects() {
         return new ArrayList<AudioObject>(songs);
     }
 
@@ -211,8 +210,8 @@ public class Album implements Serializable, TreeObject, Comparable<Album> {
     }
 
     @Override
-    public String getToolTip(Repository repository) {
-        int songs = getAudioObjects(repository).size();
+    public String getToolTip() {
+        int songs = getAudioObjects().size();
         return StringUtils.getString(getName(), " - ", getArtist(), " (", songs, " ", (songs > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG")), ")");
     }
 
@@ -222,7 +221,7 @@ public class Album implements Serializable, TreeObject, Comparable<Album> {
     }
 
     @Override
-    public void setExtendedToolTip(ExtendedToolTip toolTip, Repository repository) {
+    public void setExtendedToolTip(ExtendedToolTip toolTip) {
         toolTip.setLine1(name);
         toolTip.setLine2(artist.getName());
         int songNumber = songs.size();
