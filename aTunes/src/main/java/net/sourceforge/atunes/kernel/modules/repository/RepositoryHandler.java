@@ -467,7 +467,12 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
     @Override
     public void notifyCurrentPath(final String dir) {
     	if (progressDialog != null) {
-    		progressDialog.getFolderLabel().setText(dir);
+    		SwingUtilities.invokeLater(new Runnable() {
+    			@Override
+    			public void run() {
+    	    		progressDialog.getFolderLabel().setText(dir);
+    			}
+    		});
     	}
     }
 
@@ -480,11 +485,19 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
     @Override
     public void notifyFileLoaded() {
         this.filesLoaded++;
-        if (progressDialog != null) {
-        	progressDialog.getProgressLabel().setText(Integer.toString(filesLoaded));
-        	progressDialog.getProgressBar().setValue(filesLoaded);
+        // Update GUI every 25 files
+        if (this.filesLoaded % 25 == 0) {
+        	SwingUtilities.invokeLater(new Runnable() {
+        		@Override
+        		public void run() {
+        			if (progressDialog != null) {
+        				progressDialog.getProgressLabel().setText(Integer.toString(filesLoaded));
+        				progressDialog.getProgressBar().setValue(filesLoaded);
+        			}
+        			GuiHandler.getInstance().getProgressBar().setValue(filesLoaded);
+        		}
+        	});
         }
-        GuiHandler.getInstance().getProgressBar().setValue(filesLoaded);
     }
 
     /*
@@ -578,14 +591,24 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
     @Override
     public void notifyRemainingTime(final long millis) {
     	if (progressDialog != null) {
-    		progressDialog.getRemainingTimeLabel().setText(StringUtils.getString(I18nUtils.getString("REMAINING_TIME"), ":   ", StringUtils.milliseconds2String(millis)));
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					progressDialog.getRemainingTimeLabel().setText(StringUtils.getString(I18nUtils.getString("REMAINING_TIME"), ":   ", StringUtils.milliseconds2String(millis)));
+				}
+			});
     	}
     }
     
     @Override
     public void notifyReadProgress() {
-        ControllerProxy.getInstance().getNavigationController().notifyReload();
-        GuiHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
+    	SwingUtilities.invokeLater(new Runnable() {
+    		@Override
+    		public void run() {
+    			ControllerProxy.getInstance().getNavigationController().notifyReload();
+    			GuiHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
+    		}
+    	});
     }
 
     @Override

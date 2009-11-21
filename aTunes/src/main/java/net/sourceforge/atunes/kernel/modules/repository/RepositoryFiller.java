@@ -12,10 +12,24 @@ import net.sourceforge.atunes.misc.log.Logger;
 
 public class RepositoryFiller {
 
+	/**
+	 * Logger
+	 */
     private static Logger logger;
 
     /**
-     * Add given audio file to artist structure of given repository
+     * Adds basic information of given audio file to repository
+     * @param repository
+     * @param audioFile
+     */
+    protected static void addToRepository(Repository repository, AudioFile audioFile) {
+		repository.getAudioFiles().put(audioFile.getUrl(), audioFile);
+		repository.setTotalSizeInBytes(repository.getTotalSizeInBytes() + audioFile.getFile().length());
+		repository.addDurationInSeconds(audioFile.getDuration());
+    }
+    
+    /**
+     * Adds given audio file to artist structure of given repository
      * 
      * @param repository
      *            Repository to use
@@ -47,7 +61,7 @@ public class RepositoryFiller {
     }
 
     /**
-     * Add given audio file to genre structure of given repository
+     * Adds given audio file to genre structure of given repository
      * 
      * @param repository
      *            the repository
@@ -71,7 +85,7 @@ public class RepositoryFiller {
     }
     
     /**
-     * Add given audio file to folder structure of given repository.
+     * Adds given audio file to folder structure of given repository.
      * 
      * @param repository
      *            the repository

@@ -19,6 +19,7 @@
  */
 package net.sourceforge.atunes.utils;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -171,16 +172,9 @@ public final class StringUtils {
      * @return string with a given number of decimal digits
      */
     public static String toString(double value, int numberOfDecimals) {
-        String result = Double.toString(value);
-        if (result.contains(".")) {
-            int nDecimals = Math.min(numberOfDecimals, result.length() - result.indexOf('.'));
-            if (result.indexOf('.') + nDecimals + 1 < result.length()) {
-                return result.substring(0, result.indexOf('.') + nDecimals + 1);
-            }
-            return result.substring(0, result.length());
-
-        }
-        return result;
+    	DecimalFormat df = new DecimalFormat("#.#");
+    	df.setMinimumFractionDigits(numberOfDecimals);
+    	return df.format(value);    	    	
     }
 
     /**
