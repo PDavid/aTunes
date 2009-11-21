@@ -403,10 +403,11 @@ public class RepositoryNavigationView extends NavigationView {
                 if (objectsExpanded.contains(genreNode.getUserObject())) {
                     nodesToExpand.add(genreNode);
                 }
-                List<String> artistNamesList = new ArrayList<String>(genre.getArtists());
+                List<String> artistNamesList = new ArrayList<String>(genre.getArtistSet());
                 Collections.sort(artistNamesList);
+                Map<String, Artist> genreArtists = genre.getArtistObjects();
                 for (int j = 0; j < artistNamesList.size(); j++) {
-                    Artist artist = RepositoryHandler.getInstance().getArtistStructure().get(artistNamesList.get(j));
+                    Artist artist = genreArtists.get(artistNamesList.get(j));
                     DefaultMutableTreeNode artistNode = new DefaultMutableTreeNode(artist);
                     List<String> albumNamesList = new ArrayList<String>(artist.getAlbums().keySet());
                     Collections.sort(albumNamesList);

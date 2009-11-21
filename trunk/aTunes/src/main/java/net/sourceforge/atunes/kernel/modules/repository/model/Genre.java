@@ -21,12 +21,17 @@ package net.sourceforge.atunes.kernel.modules.repository.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.kernel.modules.repository.Repository;
+import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -43,8 +48,8 @@ public class Genre implements Serializable, TreeObject {
     /** Name of the genre. */
     private String name;
 
-    /** Artists of this genre */
-    private List<String> artists;
+    /** List of songs of this genre. */
+    private List<AudioFile> songs;
 
     /**
      * Constructor.
@@ -54,17 +59,17 @@ public class Genre implements Serializable, TreeObject {
      */
     public Genre(String name) {
         this.name = name;
-        artists = new ArrayList<String>();
+        songs = new ArrayList<AudioFile>();
     }
 
     /**
-     * Adds an artist to this genre.
+     * Adds an audio file
      * 
      * @param a
      *            the a
      */
-    public void addArtist(String a) {
-        artists.add(a);
+    public void addSong(AudioFile a) {
+        songs.add(a);
     }
 
     /*
@@ -87,11 +92,11 @@ public class Genre implements Serializable, TreeObject {
      */
     @Override
     public List<AudioObject> getAudioObjects(Repository repository) {
-        List<AudioObject> songs = new ArrayList<AudioObject>();
-        for (String artist : artists) {
-            songs.addAll(repository.getStructure().getArtistStructure().get(artist).getAudioObjects(repository));
-        }
-        return songs;
+    	List<AudioObject> result = new ArrayList<AudioObject>();
+    	for (AudioFile song : songs) {
+    		result.add(song);
+    	}
+    	return result;
     }
 
     /**
@@ -119,8 +124,8 @@ public class Genre implements Serializable, TreeObject {
      * @param a
      *            the a
      */
-    public void removeArtist(Artist a) {
-        artists.remove(a.getName());
+    public void removeSong(AudioFile a) {
+        songs.remove(a);
     }
 
     /**
@@ -135,7 +140,7 @@ public class Genre implements Serializable, TreeObject {
 
     @Override
     public String getToolTip(Repository repository) {
-        int artistNumber = artists.size();
+        int artistNumber = getArtistSet().size();
         int songs = getAudioObjects(repository).size();
         return StringUtils.getString(getName(), " (", I18nUtils.getString("ARTISTS"), ": ", artistNumber, ", ", I18nUtils.getString("SONGS"), ": ", songs, ")");
     }
@@ -148,7 +153,7 @@ public class Genre implements Serializable, TreeObject {
     @Override
     public void setExtendedToolTip(ExtendedToolTip toolTip, Repository repository) {
         toolTip.setLine1(name);
-        int artistNumber = artists.size();
+        int artistNumber = getArtistSet().size();
         toolTip.setLine2(StringUtils.getString(artistNumber, " ", (artistNumber > 1 ? I18nUtils.getString("ARTISTS") : I18nUtils.getString("ARTIST"))));
         int songs = getAudioObjects(repository).size();
         toolTip.setLine3(StringUtils.getString(songs, " ", (songs > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG"))));
@@ -194,9 +199,38 @@ public class Genre implements Serializable, TreeObject {
     }
 
 	/**
+	 * Returns an structure of artists and albums containing songs of this genre
 	 * @return the artists
 	 */
-	public List<String> getArtists() {
+    public Map<String, Artist> getArtistObjects() {
+    	Map<String, Artist> structure = new HashMap<String, Artist>();
+    	for (AudioFile song : songs) {
+    		String artist = !song.getAlbumArtist().equals("") ? song.getAlbumArtist() : song.getArtist();    		
+    		if (!structure.containsKey(artist)) {
+    			structure.put(artist, new Artist(artist));
+    		}
+    		if (!structure.get(artist).getAlbums().containsKey(song.getAlbum())) {
+    			Album album = new Album(song.getAlbum());
+    			album.setArtist(structure.get(artist));
+    			structure.get(artist).addAlbum(album);
+    		}
+    		structure.get(artist).getAlbum(song.getAlbum()).addSong(song);
+    	}
+    	return structure;
+    }
+    
+    /**
+     * Returns all artists of this genre
+     */
+    public Set<String> getArtistSet() {
+		Set<String> artists = new HashSet<String>();
+		for (AudioFile song : songs) {
+			if (!song.getAlbumArtist().equals("")) {
+				artists.add(song.getAlbumArtist());
+			} else {
+				artists.add(song.getArtist());
+			}
+		}
 		return artists;
 	}
 
