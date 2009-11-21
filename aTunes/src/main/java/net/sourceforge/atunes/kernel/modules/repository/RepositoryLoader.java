@@ -320,82 +320,21 @@ public class RepositoryLoader extends Thread {
     private static void populateGenreTree(Repository repository, AudioFile audioFile) {
         try {
             Tag tag = audioFile.getTag();
-            String albumArtist = null;
-            String artist = null;
-            String album = null;
             String genre = null;
             if (tag != null) {
-                albumArtist = tag.getAlbumArtist();
-                artist = tag.getArtist();
-                album = tag.getAlbum();
                 genre = tag.getGenre();
             }
 
-            /*
-             * FIX: Bug 1894536. Some formats do not support album artist field
-             * and can cause problems. If album artist field does not contain
-             * expected data just set it to following to avoid issues.
-             */
-            if (albumArtist == null || albumArtist.isEmpty() || albumArtist.length() == 0) {
-                albumArtist = "";
-            }
-            if ((artist == null || artist.equals("")) && albumArtist.equals("")) {
-                artist = Artist.getUnknownArtist();
-            }
-            if (album == null || album.equals("")) {
-                album = Album.getUnknownAlbum();
-            }
             if (genre == null || genre.equals("") || genre.isEmpty() || genre.length() == 0) {
                 genre = Genre.getUnknownGenre();
             }
 
             if (repository.getStructure().getGenreStructure().containsKey(genre)) {
                 Genre g = repository.getStructure().getGenreStructure().get(genre);
-                Artist art = null;
-                art = repository.getStructure().getArtistStructure().get(albumArtist);
-                if (art == null) {
-                    art = repository.getStructure().getArtistStructure().get(artist);
-                }
-
-                // Artist not present in genre list, so lets add him
-                if (art == null && !"".equals(albumArtist)) {
-                    art = new Artist(albumArtist);
-                    g.addArtist(art.getName());
-                } else if (art == null && artist != null && !artist.equals("")) {
-                    art = new Artist(artist);
-                    g.addArtist(art.getName());
-                }
-                if (art != null) {
-                    Album alb = art.getAlbum(album);
-                    if (alb != null) {
-                        alb.addSong(audioFile);
-                    } else {
-                        alb = new Album(album);
-                        alb.addSong(audioFile);
-                        alb.setArtist(art);
-                        art.addAlbum(alb);
-                    }
-                } else {
-                    art = new Artist(albumArtist);
-                    Album alb = new Album(album);
-                    alb.addSong(audioFile);
-                    alb.setArtist(art);
-                    art.addAlbum(alb);
-                    g.addArtist(art.getName());
-                }
+                g.addSong(audioFile);
             } else {
                 Genre g = new Genre(genre);
-                Artist a = null;
-                if (albumArtist.equals("")) {
-                    a = new Artist(artist);
-                } else {
-                    a = new Artist(albumArtist);
-                }
-                Album alb = new Album(album);
-                alb.addSong(audioFile);
-                alb.setArtist(a);
-                a.addAlbum(alb);
-                g.addArtist(a.getName());
+                g.addSong(audioFile);
                 repository.getStructure().getGenreStructure().put(genre, g);
             }
         } catch (Exception e) {
@@ -533,21 +472,7 @@ public class RepositoryLoader extends Thread {
             // Remove from genre structure if necessary
             Genre g = repository.getStructure().getGenreStructure().get(genre);
             if (g != null) {
-                Artist art = repository.getStructure().getArtistStructure().get(artist);
-                if (art != null) {
-                    Album alb = art.getAlbum(album);
-                    if (alb != null) {
-                        if (alb.getAudioObjects(repository).size() == 1) {
-                            art.removeAlbum(alb);
-                        } else {
-                            alb.removeAudioFile(file);
-                        }
-                    }
-
-                    if (art.getAudioObjects(repository).size() <= 1) {
-                        g.removeArtist(art);
-                    }
-                }
+                g.removeSong(file);
 
                 if (g.getAudioObjects(repository).size() <= 1) {
                     repository.getStructure().getGenreStructure().remove(genre);
@@ -940,22 +865,7 @@ public class RepositoryLoader extends Thread {
             // Remove from genre structure
             Genre g = RepositoryHandler.getInstance().getGenreStructure().get(genre);
             if (g != null) {
-                Artist art = RepositoryHandler.getInstance().getArtistStructure().get(artist);
-                if (art != null) {
-                    Album alb = art.getAlbum(album);
-                    if (alb != null) {
-                        if (alb.getAudioObjects(RepositoryHandler.getInstance().getRepository()).size() == 1) {
-                            art.removeAlbum(alb);
-                        } else {
-                            alb.removeAudioFile(file);
-                        }
-                    }
-
-                    if (art.getAudioObjects(RepositoryHandler.getInstance().getRepository()).size() <= 1) {
-                        g.removeArtist(art);
-                    }
-                }
-
+            	g.removeSong(file);
                 if (g.getAudioObjects(RepositoryHandler.getInstance().getRepository()).size() <= 1) {
                 	RepositoryHandler.getInstance().getGenreStructure().remove(genre);
                 }
