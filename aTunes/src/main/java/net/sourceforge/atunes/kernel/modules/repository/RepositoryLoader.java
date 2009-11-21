@@ -133,9 +133,9 @@ public class RepositoryLoader extends Thread {
                         relativePath = ".";
                     }
 
-                    populateInfo(rep, audioFile);
-                    populateFolderTree(rep, getRepositoryFolderContaining(rep, folder), relativePath, audioFile);
-                    populateGenreTree(rep, audioFile);
+                    RepositoryFiller.addToArtistStructure(rep, audioFile);
+                    RepositoryFiller.addToFolderStructure(rep, getRepositoryFolderContaining(rep, folder), relativePath, audioFile);
+                    RepositoryFiller.addToGenreStructure(rep, audioFile);
                     
                     rep.setTotalSizeInBytes(rep.getTotalSizeInBytes() + audioFile.getFile().length());                    
                     rep.addDurationInSeconds(audioFile.getDuration());
@@ -260,142 +260,6 @@ public class RepositoryLoader extends Thread {
     }
 
     /**
-     * Populate folder tree.
-     * 
-     * @param repository
-     *            the repository
-     * @param relativeTo
-     *            the relative to
-     * @param relativePath
-     *            the relative path
-     * @param file
-     *            the file
-     */
-    private static void populateFolderTree(Repository repository, File relativeTo, String relativePath, AudioFile file) {
-        Folder relativeFolder = null;
-        if (repository.getStructure().getFolderStructure().containsKey(relativeTo.getAbsolutePath())) {
-            relativeFolder = repository.getStructure().getFolderStructure().get(relativeTo.getAbsolutePath());
-        } else {
-            relativeFolder = new Folder(relativeTo.getAbsolutePath());
-            repository.getStructure().getFolderStructure().put(relativeFolder.getName(), relativeFolder);
-        }
-
-        StringTokenizer st = new StringTokenizer(relativePath, "/");
-        Folder parentFolder = relativeFolder;
-        while (st.hasMoreTokens()) {
-            String folderName = st.nextToken();
-            Folder f;
-            if (parentFolder != null) {
-                if (parentFolder.containsFolder(folderName)) {
-                    f = parentFolder.getFolder(folderName);
-                } else {
-                    f = new Folder(folderName);
-                    parentFolder.addFolder(f);
-                }
-            } else {
-                if (repository.getStructure().getFolderStructure().containsKey(folderName)) {
-                    f = repository.getStructure().getFolderStructure().get(folderName);
-                } else {
-                    f = new Folder(folderName);
-                    repository.getStructure().getFolderStructure().put(f.getName(), f);
-                }
-            }
-            parentFolder = f;
-        }
-        if (parentFolder == null) {
-            parentFolder = new Folder(".");
-        }
-        parentFolder.addFile(file);
-
-    }
-
-    /**
-     * Populate genre tree.
-     * 
-     * @param repository
-     *            the repository
-     * @param audioFile
-     *            the audio file
-     */
-    private static void populateGenreTree(Repository repository, AudioFile audioFile) {
-        try {
-            Tag tag = audioFile.getTag();
-            String genre = null;
-            if (tag != null) {
-                genre = tag.getGenre();
-            }
-
-            if (genre == null || genre.equals("") || genre.isEmpty() || genre.length() == 0) {
-                genre = Genre.getUnknownGenre();
-            }
-
-            if (repository.getStructure().getGenreStructure().containsKey(genre)) {
-                Genre g = repository.getStructure().getGenreStructure().get(genre);
-                g.addSong(audioFile);
-            } else {
-                Genre g = new Genre(genre);
-                g.addSong(audioFile);
-                repository.getStructure().getGenreStructure().put(genre, g);
-            }
-        } catch (Exception e) {
-            logger.error(LogCategories.FILE_READ, e.getMessage());
-        }
-    }
-
-    /**
-     * Organizes the tag view.
-     * 
-     * @param repository
-     *            Repository to use
-     * @param audioFile
-     *            AudioFile to display
-     */
-    private static void populateInfo(Repository repository, AudioFile audioFile) {
-        try {
-            Tag tag = audioFile.getTag();
-            String artist = null;
-            String album = null;
-            if (tag != null) {
-                // First see if album artist is present
-                artist = tag.getAlbumArtist();
-                if (artist == null || artist.equals("")) {
-                    // If not, use artist field
-                    artist = tag.getArtist();
-                }
-                album = tag.getAlbum();
-            }
-            if (artist == null || artist.equals("")) {
-                artist = Artist.getUnknownArtist();
-            }
-            if (album == null || album.equals("")) {
-                album = Album.getUnknownAlbum();
-            }
-
-            if (repository.getStructure().getArtistStructure().containsKey(artist)) {
-                Artist a = repository.getStructure().getArtistStructure().get(artist);
-                Album alb = a.getAlbum(album);
-                if (alb != null) {
-                    alb.addSong(audioFile);
-                } else {
-                    alb = new Album(album);
-                    alb.addSong(audioFile);
-                    alb.setArtist(a);
-                    a.addAlbum(alb);
-                }
-            } else {
-                Artist a = new Artist(artist);
-                Album alb = new Album(album);
-                alb.addSong(audioFile);
-                alb.setArtist(a);
-                a.addAlbum(alb);
-                repository.getStructure().getArtistStructure().put(artist, a);
-            }
-        } catch (Exception e) {
-            logger.error(LogCategories.FILE_READ, e.getMessage());
-        }
-    }
-
-    /**
      * Refresh file
      * 
      * @param repository
@@ -481,8 +345,8 @@ public class RepositoryLoader extends Thread {
 
             // Update tag
             file.refreshTag();
-            populateInfo(repository, file);
-            populateGenreTree(repository, file);
+            RepositoryFiller.addToArtistStructure(repository, file);
+            RepositoryFiller.addToGenreStructure(repository, file);
             // There is no need to update folder as audio file is in the same folder
             
             // Compare old tag with new tag
@@ -693,9 +557,9 @@ public class RepositoryLoader extends Thread {
                     }
                     filesLoaded++;
                     repositoryFiles.put(audioFile.getUrl(), audioFile);
-                    populateInfo(repository, audioFile);
-                    populateFolderTree(repository, relativeTo, relativePath, audioFile);
-                    populateGenreTree(repository, audioFile);
+                    RepositoryFiller.addToArtistStructure(repository, audioFile);
+                    RepositoryFiller.addToFolderStructure(repository, relativeTo, relativePath, audioFile);
+                    RepositoryFiller.addToGenreStructure(repository, audioFile);
                     repository.setTotalSizeInBytes(repository.getTotalSizeInBytes() + audioFile.getFile().length());
                     repository.addDurationInSeconds(audioFile.getDuration());
 
