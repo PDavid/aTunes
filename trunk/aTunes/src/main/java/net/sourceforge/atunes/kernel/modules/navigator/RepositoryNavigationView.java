@@ -62,7 +62,6 @@ import net.sourceforge.atunes.kernel.actions.SetFavoriteSongFromNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
 import net.sourceforge.atunes.kernel.modules.repository.HighlightFoldersByIncompleteTags;
-import net.sourceforge.atunes.kernel.modules.repository.Repository;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
@@ -221,12 +220,12 @@ public class RepositoryNavigationView extends NavigationView {
             } else {
                 for (int i = 0; i < node.getChildCount(); i++) {
                     TreeObject obj = (TreeObject) ((DefaultMutableTreeNode) node.getChildAt(i)).getUserObject();
-                    songs.addAll(obj.getAudioObjects(getSourceRepository()));
+                    songs.addAll(obj.getAudioObjects());
                 }
             }
         } else {
             TreeObject obj = (TreeObject) node.getUserObject();
-            songs = obj.getAudioObjects(getSourceRepository());
+            songs = obj.getAudioObjects();
         }
         return songs;
     }
@@ -652,7 +651,7 @@ public class RepositoryNavigationView extends NavigationView {
 
                 if (!ApplicationState.getInstance().isShowExtendedTooltip() || !ExtendedToolTip.canObjectBeShownInExtendedToolTip(content)) {
                     if (content instanceof TreeObject) {
-                        label.setToolTipText(((TreeObject) content).getToolTip(getSourceRepository()));
+                        label.setToolTipText(((TreeObject) content).getToolTip());
                     } else {
                         label.setToolTipText(content.toString());
                     }
@@ -680,10 +679,5 @@ public class RepositoryNavigationView extends NavigationView {
     static String getToolTipForRepository() {
         int songs = RepositoryHandler.getInstance().getAudioFilesList().size();
         return StringUtils.getString(I18nUtils.getString("REPOSITORY"), " (", songs, " ", (songs > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG")), ")");
-    }
-    
-    @Override
-    public Repository getSourceRepository() {
-    	return RepositoryHandler.getInstance().getRepository();
-    }
+    }    
 }

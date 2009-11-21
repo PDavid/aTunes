@@ -30,7 +30,6 @@ import java.util.Set;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
-import net.sourceforge.atunes.kernel.modules.repository.Repository;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
@@ -91,7 +90,7 @@ public class Genre implements Serializable, TreeObject {
      * @return the audio objects
      */
     @Override
-    public List<AudioObject> getAudioObjects(Repository repository) {
+    public List<AudioObject> getAudioObjects() {
     	List<AudioObject> result = new ArrayList<AudioObject>();
     	for (AudioFile song : songs) {
     		result.add(song);
@@ -139,9 +138,9 @@ public class Genre implements Serializable, TreeObject {
     }
 
     @Override
-    public String getToolTip(Repository repository) {
+    public String getToolTip() {
         int artistNumber = getArtistSet().size();
-        int songs = getAudioObjects(repository).size();
+        int songs = getAudioObjects().size();
         return StringUtils.getString(getName(), " (", I18nUtils.getString("ARTISTS"), ": ", artistNumber, ", ", I18nUtils.getString("SONGS"), ": ", songs, ")");
     }
 
@@ -151,11 +150,11 @@ public class Genre implements Serializable, TreeObject {
     }
 
     @Override
-    public void setExtendedToolTip(ExtendedToolTip toolTip, Repository repository) {
+    public void setExtendedToolTip(ExtendedToolTip toolTip) {
         toolTip.setLine1(name);
         int artistNumber = getArtistSet().size();
         toolTip.setLine2(StringUtils.getString(artistNumber, " ", (artistNumber > 1 ? I18nUtils.getString("ARTISTS") : I18nUtils.getString("ARTIST"))));
-        int songs = getAudioObjects(repository).size();
+        int songs = getAudioObjects().size();
         toolTip.setLine3(StringUtils.getString(songs, " ", (songs > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG"))));
     }
 

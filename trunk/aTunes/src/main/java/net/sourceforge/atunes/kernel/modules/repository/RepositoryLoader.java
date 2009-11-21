@@ -439,13 +439,13 @@ public class RepositoryLoader extends Thread {
             if (a != null) {
                 Album alb = a.getAlbum(album);
                 if (alb != null) {
-                    if (alb.getAudioObjects(repository).size() == 1) {
+                    if (alb.getAudioObjects().size() == 1) {
                         a.removeAlbum(alb);
                     } else {
                         alb.removeAudioFile(file);
                     }
 
-                    if (a.getAudioObjects(repository).size() <= 0) {
+                    if (a.getAudioObjects().size() <= 0) {
                         repository.getStructure().getArtistStructure().remove(a.getName());
                     }
                 }
@@ -455,13 +455,13 @@ public class RepositoryLoader extends Thread {
                     if (a != null) {
                         alb = a.getAlbum(album);
                         if (alb != null) {
-                            if (alb.getAudioObjects(repository).size() == 1) {
+                            if (alb.getAudioObjects().size() == 1) {
                                 a.removeAlbum(alb);
                             } else {
                                 alb.removeAudioFile(file);
                             }
                             // Maybe needs to be set to 0 in case node gets deleted
-                            if (a.getAudioObjects(repository).size() <= 1) {
+                            if (a.getAudioObjects().size() <= 1) {
                                 repository.getStructure().getArtistStructure().remove(a.getName());
                             }
                         }
@@ -474,7 +474,7 @@ public class RepositoryLoader extends Thread {
             if (g != null) {
                 g.removeSong(file);
 
-                if (g.getAudioObjects(repository).size() <= 1) {
+                if (g.getAudioObjects().size() <= 1) {
                     repository.getStructure().getGenreStructure().remove(genre);
                 }
             }
@@ -850,13 +850,13 @@ public class RepositoryLoader extends Thread {
             if (a != null) {
                 Album alb = a.getAlbum(album);
                 if (alb != null) {
-                    if (alb.getAudioObjects(RepositoryHandler.getInstance().getRepository()).size() == 1) {
+                    if (alb.getAudioObjects().size() == 1) {
                         a.removeAlbum(alb);
                     } else {
                         alb.removeAudioFile(file);
                     }
 
-                    if (a.getAudioObjects(RepositoryHandler.getInstance().getRepository()).size() <= 1) {
+                    if (a.getAudioObjects().size() <= 1) {
                     	RepositoryHandler.getInstance().getArtistStructure().remove(a.getName());
                     }
                 }
@@ -866,7 +866,7 @@ public class RepositoryLoader extends Thread {
             Genre g = RepositoryHandler.getInstance().getGenreStructure().get(genre);
             if (g != null) {
             	g.removeSong(file);
-                if (g.getAudioObjects(RepositoryHandler.getInstance().getRepository()).size() <= 1) {
+                if (g.getAudioObjects().size() <= 1) {
                 	RepositoryHandler.getInstance().getGenreStructure().remove(genre);
                 }
             }
