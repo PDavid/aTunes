@@ -209,23 +209,24 @@ public class RepositoryLoader extends Thread {
      * 
      * @param folder
      *            the dir
+     *            
+     * @param listener
      * 
      * @return the songs for dir
      */
-    public static List<AudioFile> getSongsForFolder(File folder) {
+    public static List<AudioFile> getSongsForFolder(File folder, LoaderListener listener) {
         List<AudioFile> result = new ArrayList<AudioFile>();
 
         File[] list = folder.listFiles();
         List<File> pictures = new ArrayList<File>();
         List<File> files = new ArrayList<File>();
-        List<File> dirs = new ArrayList<File>();
         if (list != null) {
             //First find pictures, audio and files
             for (File element : list) {
                 if (AudioFile.isValidAudioFile(element)) {
                     files.add(element);
                 } else if (element.isDirectory()) {
-                    dirs.add(element);
+                	result.addAll(getSongsForFolder(element, listener));
                 } else if (element.getName().toUpperCase().endsWith("JPG")) {
                     pictures.add(element);
                 }
@@ -236,25 +237,35 @@ public class RepositoryLoader extends Thread {
                 mp3 = new AudioFile(files.get(i).getAbsolutePath());
                 mp3.setExternalPictures(pictures);
                 result.add(mp3);
-            }
-
-            for (int i = 0; i < dirs.size(); i++) {
-                result.addAll(getSongsForFolder(dirs.get(i)));
+                if (listener != null) {
+                	listener.notifyFileLoaded();
+                }
             }
         }
         return result;
     }
 
     /**
-     * Gets the songs of a list of folders
+     * Gets the songs of a list of folders. Used in import
      * 
-     * @param folers
+     * @param folders
+     * @param listener
      * @return
      */
-    public static List<AudioFile> getSongsForFolders(List<File> folders) {
+    public static List<AudioFile> getSongsForFolders(List<File> folders, LoaderListener listener) {
+        int filesCount = 0;
+        for (File folder : folders) {
+            filesCount = filesCount + countFiles(folder);
+        }
+        if (listener != null) {
+        	listener.notifyFilesInRepository(filesCount);
+        }
         List<AudioFile> result = new ArrayList<AudioFile>();
         for (File folder : folders) {
-            result.addAll(getSongsForFolder(folder));
+            result.addAll(getSongsForFolder(folder, listener));
+        }
+        if (listener != null) {
+        	listener.notifyFinishRead(null);
         }
         return result;
     }
