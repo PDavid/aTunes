@@ -107,7 +107,7 @@ public class LyricsflyEngine extends LyricsEngine {
     }
 
     private String getUrl(String artist, String title) throws GeneralSecurityException, IOException {
-        return StringUtils.getString("http://lyricsfly.com/api/api.php?i=" + new String(CryptoUtils.decrypt(C)), "&a=", encodeString(artist), "&t=", encodeString(title));
+        return StringUtils.getString("http://api.lyricsfly.com/api/api.php?i=" + new String(CryptoUtils.decrypt(C)), "&a=", encodeString(artist), "&t=", encodeString(title));
     }
 
     @Override
