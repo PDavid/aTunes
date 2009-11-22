@@ -317,7 +317,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
             List<AudioObject> filesToAdd = new ArrayList<AudioObject>();
             for (File f : files) {
                 if (f.isDirectory()) {
-                    filesToAdd.addAll(RepositoryLoader.getSongsForFolder(f));
+                    filesToAdd.addAll(RepositoryLoader.getSongsForFolder(f, null));
                 } else if (AudioFile.isValidAudioFile(f)) {
                     AudioFile song = new AudioFile(f.getAbsolutePath());
                     filesToAdd.add(song);

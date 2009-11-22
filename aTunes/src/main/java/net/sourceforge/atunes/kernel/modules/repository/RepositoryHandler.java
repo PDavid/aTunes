@@ -37,9 +37,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.gui.views.dialogs.MultiFolderSelectionDialog;
+import net.sourceforge.atunes.gui.views.dialogs.ProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RepositoryProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ReviewImportDialog;
-import net.sourceforge.atunes.gui.views.dialogs.SelectorDialog;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.actions.Actions;
@@ -210,6 +210,13 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
         }
     }
 
+    public List<File> getFolders() {
+    	if (repository != null) {
+    		return repository.getFolders();
+    	}
+    	return Collections.EMPTY_LIST;
+    }
+    
     /**
      * Gets the albums.
      * 
@@ -309,6 +316,17 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
     }
     
     /**
+     * Returns number of root folders of repository
+     * @return
+     */
+    public int getFoldersCount() {
+    	if (repository != null) {
+    		return repository.getFolders().size();
+    	}
+    	return 0;
+    }
+    
+    /**
      * Gets the path for new audio files ripped.
      * 
      * @return the path for new audio files ripped
@@ -353,6 +371,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
      * @return the repository path
      */
     public String getRepositoryPath() {
+    	// TODO: Remove this method as now more than one folder can be added to repository
         return repository != null ? repository.getFolders().get(0).getAbsolutePath() : "";
     }
 
@@ -867,42 +886,6 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
      * Imports folders to repository
      */
     public void importFoldersToRepository() {
-        // First check if repository is selected. If not, display a message
-        if (repository == null) {
-            GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("SELECT_REPOSITORY_BEFORE_IMPORT"));
-            return;
-        }
-
-        // Now show dialog to select folders
-        MultiFolderSelectionDialog dialog = GuiHandler.getInstance().getMultiFolderSelectionDialog();
-        dialog.setTitle(I18nUtils.getString("IMPORT"));
-        dialog.setText(I18nUtils.getString("SELECT_FOLDERS_TO_IMPORT"));
-        dialog.startDialog(null);
-        if (!dialog.isCancelled()) {
-            List<File> folders = dialog.getSelectedFolders();
-            // If user selected folders...
-            if (!folders.isEmpty()) {
-                String path;
-                // If repository folders are more than one then user must select where to import songs
-                if (repository.getFolders().size() > 1) {
-                    String[] folderNames = new String[repository.getFolders().size()];
-                    for (int i = 0; i < repository.getFolders().size(); i++) {
-                        folderNames[i] = repository.getFolders().get(i).getAbsolutePath();
-                    }
-                    SelectorDialog selector = new SelectorDialog(GuiHandler.getInstance().getFrame().getFrame(), I18nUtils.getString("SELECT_REPOSITORY_FOLDER_TO_IMPORT"),
-                            folderNames, null);
-                    selector.setVisible(true);
-                    path = selector.getSelection();
-                    // If user closed dialog then select first entry
-                    if (path == null) {
-                        path = getRepositoryPath();
-                    }
-                } else {
-                    path = getRepositoryPath();
-                }
-                this.importFolders(folders, path);
-            }
-        }
     }
 
     /**
@@ -911,12 +894,63 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
      * @param folders
      * @param path
      */
-    private void importFolders(final List<File> folders, final String path) {
+    public void importFolders(final List<File> folders, final String path) {
+    	final ProgressDialog progressDialog = GuiHandler.getInstance().getNewProgressDialog(StringUtils.getString(I18nUtils.getString("READING_FILES_TO_IMPORT"), "..."), GuiHandler.getInstance().getFrame().getFrame());
+    	progressDialog.disableCancelButton();
+    	progressDialog.setVisible(true);
         SwingWorker<List<AudioFile>, Void> worker = new SwingWorker<List<AudioFile>, Void>() {
             @Override
             protected List<AudioFile> doInBackground() throws Exception {
-                GuiHandler.getInstance().showIndeterminateProgressDialog(StringUtils.getString(I18nUtils.getString("READING_FILES_TO_IMPORT"), "..."));
-                return RepositoryLoader.getSongsForFolders(folders);
+                return RepositoryLoader.getSongsForFolders(folders, new LoaderListener() {
+					
+                	private int filesLoaded = 0;
+                	
+                	private int totalFiles;
+                	
+					@Override
+					public void notifyRemainingTime(long time) {
+					}
+					
+					@Override
+					public void notifyReadProgress() {
+					}
+					
+					@Override
+					public void notifyFinishRefresh(RepositoryLoader loader) {
+					}
+					
+					@Override
+					public void notifyFinishRead(RepositoryLoader loader) {
+						progressDialog.setVisible(false);
+					}
+					
+					@Override
+					public void notifyFilesInRepository(final int files) {
+						this.totalFiles = files;
+						SwingUtilities.invokeLater(new Runnable() {
+							@Override
+							public void run() {
+					        	progressDialog.setTotalProgress(files);
+							}
+						});
+					}
+					
+					@Override
+					public void notifyFileLoaded() {
+						this.filesLoaded++;
+						SwingUtilities.invokeLater(new Runnable() {
+							@Override
+							public void run() {
+								progressDialog.setCurrentProgress(filesLoaded);
+								progressDialog.setProgressBarValue((int) (filesLoaded * 100.0 / totalFiles));
+							}
+						});
+					}
+					
+					@Override
+					public void notifyCurrentPath(String path) {
+					}
+				});
             }
 
             @Override
