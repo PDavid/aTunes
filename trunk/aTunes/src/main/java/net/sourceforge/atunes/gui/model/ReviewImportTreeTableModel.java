@@ -236,8 +236,8 @@ public final class ReviewImportTreeTableModel extends AbstractTreeTableModel {
         recursiveFolderChange(column, folder, (String) value);
         // If folder has childs then update UI to show recursive changes
         if (!foldersMap.get(folder).isEmpty()) {
-            System.out.println(folder);
-            treeTable.updateUI();
+        	// Use repaint instead of updateUI since there are problems when using with combo box cell editors
+            treeTable.repaint();
         }
     }
 
