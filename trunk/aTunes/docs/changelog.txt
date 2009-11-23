@@ -41,6 +41,11 @@
 - FIX: Validate repository content when loading it (patch from Laurent Cathala)
 - FIX: Podcast file renaming is not possible [2897134]
 
+aTunes 1.13.6
+-------------
+- FIX: ClassCastException when stopping radios/podcast feed entries
+- INTERNAL: Updated Lyricsfly URL
+
 aTunes 1.13.5
 -------------
 - FIX: MPlayer priority on Windows should be higher (patch by Ray Barlow)
