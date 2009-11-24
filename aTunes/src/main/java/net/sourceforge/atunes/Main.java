@@ -99,6 +99,9 @@ public final class Main {
             // Set custom config folder if passed as argument
             SystemProperties.setCustomConfigFolder(ApplicationArguments.getUserConfigFolder(arguments));
 
+            // Set custom repository config folder if passed as argument
+            SystemProperties.setCustomRepositoryConfigFolder(ApplicationArguments.getRepositoryConfigFolder(arguments));
+
             // Set log4j properties
             Log4jPropertiesLoader.loadProperties(Kernel.DEBUG);
 
