@@ -561,8 +561,7 @@ public class LastFmService {
         }
 
         logger.info(LogCategories.SERVICE, StringUtils.getString("Trying to submit loved song to Last.fm: ", song.getArtist(), " - ", song.getTitle()));
-        Session s = Authenticator.getMobileSession(user, password, getApiKey(), getApiSecret());
-        Result r = Track.love(song.getArtist(), song.getTitle(), s);
+        Result r = Track.love(song.getArtist(), song.getTitle(), getSession());
         if (r.getStatus().equals(Status.OK)) {
             logger.info(LogCategories.SERVICE, StringUtils.getString("Loved song submitted OK"));
         } else {
@@ -584,8 +583,7 @@ public class LastFmService {
         }
 
         logger.info(LogCategories.SERVICE, StringUtils.getString("Trying to submit banned song to Last.fm: ", song.getArtist(), " - ", song.getTitle()));
-        Session s = Authenticator.getMobileSession(user, password, getApiKey(), getApiSecret());
-        Result r = Track.ban(song.getArtist(), song.getTitle(), s);
+        Result r = Track.ban(song.getArtist(), song.getTitle(), getSession());
         if (r.getStatus().equals(Status.OK)) {
             logger.info(LogCategories.SERVICE, StringUtils.getString("Banned song submitted OK"));
         } else {
@@ -958,6 +956,15 @@ public class LastFmService {
     public Collection<Event> getArtistEvents(String artist) {
         return Artist.getEvents(artist, getApiKey());
     }
+    
+    /**
+     * Test if given user and password are correct to login at last.fm 
+     * @param user
+     * @param password
+     */
+    public boolean testLogin(String user, String password) {
+    	return Authenticator.getMobileSession(user, password, getApiKey(), getApiSecret()) != null;
+    }
 
     private static String getApiKey() {
         try {
@@ -979,5 +986,13 @@ public class LastFmService {
             logger.internalError(e);
         }
         return "";
+    }
+    
+    /**
+     * Returns session
+     * @return
+     */
+    private Session getSession() {
+    	return Authenticator.getMobileSession(user, password, getApiKey(), getApiSecret());    	
     }
 }

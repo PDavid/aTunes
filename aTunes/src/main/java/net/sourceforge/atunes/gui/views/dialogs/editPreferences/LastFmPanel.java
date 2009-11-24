@@ -21,8 +21,11 @@ package net.sourceforge.atunes.gui.views.dialogs.editPreferences;
 
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
@@ -32,7 +35,9 @@ import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddBannedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -45,6 +50,7 @@ public final class LastFmPanel extends PreferencesPanel {
     private JCheckBox lastFmEnabled;
     private JTextField lastFmUser;
     private JPasswordField lastFmPassword;
+    private JButton testLogin;
 
     /**
      * Checkbox to select if application must send a love request when user adds
@@ -64,6 +70,31 @@ public final class LastFmPanel extends PreferencesPanel {
         JLabel passwordLabel = new JLabel(I18nUtils.getString("LASTFM_PASSWORD"));
         lastFmPassword = new JPasswordField(15);
         autoLoveFavoriteSongs = new JCheckBox(I18nUtils.getString("AUTOMATICALLY_LOVE_IN_LASTFM_FAVORITE_SONGS"));
+        testLogin = new JButton(I18nUtils.getString("TEST_LOGIN"));
+        
+        testLogin.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				testLogin.setEnabled(false);
+				boolean loginSuccessful = LastFmService.getInstance().testLogin(lastFmUser.getText(), String.valueOf(lastFmPassword.getPassword()));
+				testLogin.setEnabled(true);
+				if (loginSuccessful) {
+					GuiHandler.getInstance().showMessage(I18nUtils.getString("LOGIN_SUCCESSFUL"));
+				} else {
+					GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("LOGIN_FAILED"));
+				}
+			}
+		});
+        
+        lastFmEnabled.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				enableControls();
+			}
+		});
+        
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
@@ -92,8 +123,12 @@ public final class LastFmPanel extends PreferencesPanel {
         c.gridx = 1;
         c.weightx = 1;
         add(lastFmPassword, c);
-        c.gridx = 0;
+        c.gridx = 1;
         c.gridy = 4;
+        c.weightx = 0;
+        add(testLogin, c);
+        c.gridx = 0;
+        c.gridy = 5;
         c.weighty = 1;
         c.gridwidth = 2;
         c.anchor = GridBagConstraints.FIRST_LINE_START;
@@ -156,6 +191,18 @@ public final class LastFmPanel extends PreferencesPanel {
         setLastFmPassword(state.getLastFmPassword());
         setLastFmEnabled(state.isLastFmEnabled());
         setAutoLoveFavoriteSong(state.isAutoLoveFavoriteSong());
+        enableControls();
+    }
+    
+    /**
+     * Enables all controls if main checkbox is selected
+     */
+    protected void enableControls() {
+    	boolean enabled = lastFmEnabled.isSelected();
+		lastFmUser.setEnabled(enabled);
+		lastFmPassword.setEnabled(enabled);
+		autoLoveFavoriteSongs.setEnabled(enabled);
+		testLogin.setEnabled(enabled);
     }
 
     @Override
