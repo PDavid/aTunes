@@ -23,6 +23,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -30,6 +31,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.kernel.actions.Actions;
@@ -38,6 +40,8 @@ import net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
+import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -46,6 +50,8 @@ import net.sourceforge.atunes.utils.I18nUtils;
 public final class LastFmPanel extends PreferencesPanel {
 
     private static final long serialVersionUID = -9216216930198145476L;
+
+    private Logger logger = new Logger();
 
     private JCheckBox lastFmEnabled;
     private JTextField lastFmUser;
@@ -71,30 +77,48 @@ public final class LastFmPanel extends PreferencesPanel {
         lastFmPassword = new JPasswordField(15);
         autoLoveFavoriteSongs = new JCheckBox(I18nUtils.getString("AUTOMATICALLY_LOVE_IN_LASTFM_FAVORITE_SONGS"));
         testLogin = new JButton(I18nUtils.getString("TEST_LOGIN"));
-        
+
         testLogin.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				testLogin.setEnabled(false);
-				boolean loginSuccessful = LastFmService.getInstance().testLogin(lastFmUser.getText(), String.valueOf(lastFmPassword.getPassword()));
-				testLogin.setEnabled(true);
-				if (loginSuccessful) {
-					GuiHandler.getInstance().showMessage(I18nUtils.getString("LOGIN_SUCCESSFUL"));
-				} else {
-					GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("LOGIN_FAILED"));
-				}
-			}
-		});
-        
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                testLogin.setEnabled(false);
+                new SwingWorker<Boolean, Void>() {
+                    @Override
+                    protected Boolean doInBackground() {
+                        return LastFmService.getInstance().testLogin(lastFmUser.getText(), String.valueOf(lastFmPassword.getPassword()));
+                    }
+
+                    @Override
+                    protected void done() {
+                        try {
+                            boolean loginSuccessful;
+                            loginSuccessful = get();
+                            if (loginSuccessful) {
+                                GuiHandler.getInstance().showMessage(I18nUtils.getString("LOGIN_SUCCESSFUL"));
+                            } else {
+                                GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("LOGIN_FAILED"));
+                            }
+                        } catch (InterruptedException e) {
+                            logger.error(LogCategories.SERVICE, e);
+                        } catch (ExecutionException e) {
+                            logger.error(LogCategories.SERVICE, e);
+                        } finally {
+                            testLogin.setEnabled(true);
+                        }
+                    }
+                }.execute();
+            }
+        });
+
         lastFmEnabled.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				enableControls();
-			}
-		});
-        
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                enableControls();
+            }
+        });
+
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
@@ -193,16 +217,16 @@ public final class LastFmPanel extends PreferencesPanel {
         setAutoLoveFavoriteSong(state.isAutoLoveFavoriteSong());
         enableControls();
     }
-    
+
     /**
      * Enables all controls if main checkbox is selected
      */
     protected void enableControls() {
-    	boolean enabled = lastFmEnabled.isSelected();
-		lastFmUser.setEnabled(enabled);
-		lastFmPassword.setEnabled(enabled);
-		autoLoveFavoriteSongs.setEnabled(enabled);
-		testLogin.setEnabled(enabled);
+        boolean enabled = lastFmEnabled.isSelected();
+        lastFmUser.setEnabled(enabled);
+        lastFmPassword.setEnabled(enabled);
+        autoLoveFavoriteSongs.setEnabled(enabled);
+        testLogin.setEnabled(enabled);
     }
 
     @Override
