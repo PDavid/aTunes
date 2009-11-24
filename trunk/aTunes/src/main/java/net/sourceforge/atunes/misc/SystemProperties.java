@@ -35,6 +35,9 @@ public final class SystemProperties {
     /** Path to config folder as passed as argument to app. */
     private static String customConfigFolder = null;
 
+    /** Path to repository config folder as passed as argument to app. */
+    private static String customRepositoryConfigFolder = null;
+
     /**
      * Operating Systems Enum.
      */
@@ -244,6 +247,16 @@ public final class SystemProperties {
     }
 
     /**
+     * Sets the custom repository config folder.
+     * 
+     * @param customRepositoryConfigFolder
+     *            the customRepositoryConfigFolder to set
+     */
+    public static void setCustomRepositoryConfigFolder(String customRepositoryConfigFolder) {
+        SystemProperties.customRepositoryConfigFolder = customRepositoryConfigFolder;
+    }
+
+    /**
      * Return path to temp folder, which is inside user config folder.
      * 
      * @return the temp folder
@@ -268,5 +281,12 @@ public final class SystemProperties {
     public static String getWorkingDirectory() {
         return System.getProperty("user.dir");
     }
+
+	/**
+	 * @return the customRepositoryConfigFolder
+	 */
+	public static String getCustomRepositoryConfigFolder() {
+		return customRepositoryConfigFolder;
+	}
 
 }

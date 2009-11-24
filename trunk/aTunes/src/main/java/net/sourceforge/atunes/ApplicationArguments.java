@@ -46,8 +46,14 @@ public final class ApplicationArguments {
 
     /** Argument to define a custom folder from which to read configuration. */
     public static final String USE_CONFIG_FOLDER = "use-config-folder=";
+    
+    /** 
+     * Argument to define a custom folder from which to read repository configuration (useful to share a repository configuration)
+     * This parameter has priority over USE_CONFIG_FOLDER 
+     * */ 
+    public static final String USE_REPOSITORY_CONFIG_FOLDER = "use-repository-config-folder=";
 
-    /** Do not try to update the application (usefull for Linux packages). */
+    /** Do not try to update the application (useful for Linux packages). */
     public static final String NO_UPDATE = "no-update";
 
     /**
@@ -76,6 +82,26 @@ public final class ApplicationArguments {
     }
 
     /**
+     * Finds USE_REPOSITORY_CONFIG_FOLDER at argument list and gets value.
+     * 
+     * @param args
+     *            the args
+     * 
+     * @return the repository config folder
+     */
+    public static String getRepositoryConfigFolder(List<String> args) {
+        String configFolder = null;
+
+        for (String arg : args) {
+            if (arg.toLowerCase().startsWith(USE_REPOSITORY_CONFIG_FOLDER)) {
+                configFolder = arg.substring(USE_REPOSITORY_CONFIG_FOLDER.length());
+            }
+        }
+
+        return configFolder;
+    }
+
+    /**
      * Save arguments. All arguments defined in this class must be saved.
      * Commands are also saved but used separately
      * 
@@ -86,6 +112,7 @@ public final class ApplicationArguments {
         checkAndSave(arguments, IGNORE_LOOK_AND_FEEL);
         checkAndSave(arguments, ALLOW_MULTIPLE_INSTANCE);
         checkAndSave(arguments, USE_CONFIG_FOLDER);
+        checkAndSave(arguments, USE_REPOSITORY_CONFIG_FOLDER);
         checkAndSave(arguments, NO_UPDATE);
         checkAndSave(arguments, CommandHandler.COMMAND_PREFIX);
     }

@@ -54,6 +54,7 @@ import net.sourceforge.atunes.kernel.modules.playlist.ListOfPlayLists;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.Repository;
+import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.exception.InconsistentRepositoryException;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.Favorites;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
@@ -388,9 +389,11 @@ public final class ApplicationStateHandler extends Handler {
     public void persistRepositoryCache(Repository repository, boolean asXmlIfEnabled) {
         getLogger().debug(LogCategories.HANDLER);
 
+        String folder = RepositoryHandler.getInstance().getRepositoryConfigurationFolder();
+        
         ObjectOutputStream oos = null;
         try {
-            FileOutputStream fout = new FileOutputStream(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.CACHE_REPOSITORY_NAME));
+            FileOutputStream fout = new FileOutputStream(StringUtils.getString(folder, "/", Constants.CACHE_REPOSITORY_NAME));
             oos = new ObjectOutputStream(fout);
             getLogger().info(LogCategories.HANDLER, "Serialize repository information...");
             Timer timer = new Timer();
@@ -409,7 +412,7 @@ public final class ApplicationStateHandler extends Handler {
                 getLogger().info(LogCategories.HANDLER, "Storing repository information as xml...");
                 Timer timer = new Timer();
                 timer.start();
-                XMLUtils.writeObjectToFile(repository, StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.XML_CACHE_REPOSITORY_NAME));
+                XMLUtils.writeObjectToFile(repository, StringUtils.getString(folder, "/", Constants.XML_CACHE_REPOSITORY_NAME));
                 getLogger().info(LogCategories.HANDLER, StringUtils.getString("DONE (", timer.stop(), " seconds)"));
             } catch (Exception e) {
                 getLogger().error(LogCategories.HANDLER, "Could not write repository as xml");
@@ -647,9 +650,11 @@ public final class ApplicationStateHandler extends Handler {
     public Repository retrieveRepositoryCache() {
         getLogger().debug(LogCategories.HANDLER);
 
+        String folder = RepositoryHandler.getInstance().getRepositoryConfigurationFolder();
+        
         ObjectInputStream ois = null;
         try {
-            FileInputStream fis = new FileInputStream(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.CACHE_REPOSITORY_NAME));
+            FileInputStream fis = new FileInputStream(StringUtils.getString(folder, "/", Constants.CACHE_REPOSITORY_NAME));
             ois = new ObjectInputStream(fis);
             getLogger().info(LogCategories.HANDLER, "Reading serialized repository cache");
             Timer timer = new Timer();
@@ -673,8 +678,7 @@ public final class ApplicationStateHandler extends Handler {
                 try {
                     getLogger().info(LogCategories.HANDLER, "Reading xml repository cache");
                     long t0 = System.currentTimeMillis();
-                    Repository repository = (Repository) XMLUtils.readObjectFromFile(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/",
-                            Constants.XML_CACHE_REPOSITORY_NAME));
+                    Repository repository = (Repository) XMLUtils.readObjectFromFile(StringUtils.getString(folder, "/", Constants.XML_CACHE_REPOSITORY_NAME));
                     long t1 = System.currentTimeMillis();
                     getLogger().info(LogCategories.HANDLER, StringUtils.getString("Reading repository cache done (", (t1 - t0) / 1000.0, " seconds)"));
                     return repository;
