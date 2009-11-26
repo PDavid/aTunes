@@ -35,6 +35,7 @@ import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.commons.io.FileUtils;
@@ -51,6 +52,7 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.Searcher;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.LockObtainFailedException;
+import org.apache.lucene.util.Version;
 
 public final class SearchHandler extends Handler {
 
@@ -184,13 +186,14 @@ public final class SearchHandler extends Handler {
      */
     public List<SearchResult> search(SearchableObject searchableObject, String queryStr) throws SearchIndexNotAvailableException, SearchQuerySyntaxException {
         ReadWriteLock searchIndexLock = indexLocks.get(searchableObject);
+        Searcher searcher = null;
         try {
             searchIndexLock.readLock().lock();
 
             String queryString = applyQueryTransformations(queryStr);
 
-            Query query = new QueryParser(DEFAULT_INDEX, new SimpleAnalyzer()).parse(queryString);
-            Searcher searcher = new IndexSearcher(searchableObject.getIndexDirectory(), true);
+            Query query = new QueryParser(Version.LUCENE_CURRENT, DEFAULT_INDEX, new SimpleAnalyzer()).parse(queryString);
+            searcher = new IndexSearcher(searchableObject.getIndexDirectory(), true);
             TopDocs topDocs = searcher.search(query, 1000);
             List<RawSearchResult> rawSearchResults = new ArrayList<RawSearchResult>();
             for (ScoreDoc scoreDoc : topDocs.scoreDocs) {
@@ -204,6 +207,7 @@ public final class SearchHandler extends Handler {
         } catch (ParseException e) {
             throw new SearchQuerySyntaxException();
         } finally {
+            ClosingUtils.close(searcher);
             searchIndexLock.readLock().unlock();
         }
     }
