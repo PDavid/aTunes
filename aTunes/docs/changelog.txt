@@ -45,6 +45,7 @@
 aTunes 1.13.6
 -------------
 - FIX: ClassCastException when stopping radios/podcast feed entries
+- FIX: Some Lucene resources were not closed
 - INTERNAL: Updated Lyricsfly URL
 
 aTunes 1.13.5

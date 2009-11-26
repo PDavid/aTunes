@@ -249,7 +249,6 @@ public final class SearchHandler extends Handler {
      * @param searchableObject
      *            the searchable object
      */
-
     private void updateSearchIndex(final SearchableObject searchableObject) {
         SwingWorker<Void, Void> refreshSearchIndex = new SwingWorker<Void, Void>() {
             private IndexWriter indexWriter;
@@ -265,6 +264,7 @@ public final class SearchHandler extends Handler {
                     return null;
                 } finally {
                     searchIndexLock.writeLock().unlock();
+                    ClosingUtils.close(indexWriter);
                     currentIndexingWorks.put(searchableObject, Boolean.FALSE);
                 }
             }
