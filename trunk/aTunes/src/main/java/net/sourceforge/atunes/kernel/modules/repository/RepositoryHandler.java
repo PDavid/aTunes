@@ -215,7 +215,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
     	if (repository != null) {
     		return repository.getFolders();
     	}
-    	return Collections.EMPTY_LIST;
+    	return Collections.emptyList();
     }
     
     /**
