@@ -22,13 +22,12 @@ package net.sourceforge.atunes.kernel.modules.player.mplayer;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 
-/**
- * The Class PodcastFeedEntryMPlayerOutputReader.
- */
 class PodcastFeedEntryMPlayerOutputReader extends MPlayerOutputReader {
 
     /** The podcast feed entry. */
     private PodcastFeedEntry podcastFeedEntry;
+    
+    private boolean started;
 
     /**
      * Instantiates a new podcast feed entry m player output reader.
@@ -48,7 +47,7 @@ class PodcastFeedEntryMPlayerOutputReader extends MPlayerOutputReader {
     @Override
     protected void init() {
         super.init();
-        engine.setCurrentLength(podcastFeedEntry.getDuration() * 1000);
+        getEngine().setCurrentLength(podcastFeedEntry.getDuration() * 1000);
     }
 
     @Override
@@ -59,7 +58,7 @@ class PodcastFeedEntryMPlayerOutputReader extends MPlayerOutputReader {
         if (line.startsWith("Starting playback")) {
             GuiHandler.getInstance().updateStatusBar(podcastFeedEntry);
             if (!started) {
-                engine.notifyRadioOrPodcastFeedEntry();
+                getEngine().notifyRadioOrPodcastFeedEntry();
                 started = true;
             }
         }
