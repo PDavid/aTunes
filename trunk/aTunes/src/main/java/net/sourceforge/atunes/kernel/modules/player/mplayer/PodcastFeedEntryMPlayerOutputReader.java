@@ -26,11 +26,11 @@ class PodcastFeedEntryMPlayerOutputReader extends MPlayerOutputReader {
 
     /** The podcast feed entry. */
     private PodcastFeedEntry podcastFeedEntry;
-    
+
     private boolean started;
 
     /**
-     * Instantiates a new podcast feed entry m player output reader.
+     * Instantiates a new podcast feed entry mplayer output reader.
      * 
      * @param engine
      *            the engine
@@ -45,14 +45,10 @@ class PodcastFeedEntryMPlayerOutputReader extends MPlayerOutputReader {
     }
 
     @Override
-    protected void init() {
-        super.init();
-        getEngine().setCurrentLength(podcastFeedEntry.getDuration() * 1000);
-    }
-
-    @Override
     protected void read(String line) {
         super.read(line);
+
+        readAndApplyLength(podcastFeedEntry, line, false);
 
         // When starting playback, update status bar
         if (line.startsWith("Starting playback")) {

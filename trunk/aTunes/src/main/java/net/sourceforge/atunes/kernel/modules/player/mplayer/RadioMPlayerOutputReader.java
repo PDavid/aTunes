@@ -37,7 +37,6 @@ class RadioMPlayerOutputReader extends MPlayerOutputReader {
     private Radio radio;
     private String lastArtist = "";
     private String lastTitle = "";
-
     private boolean started;
 
     /**
