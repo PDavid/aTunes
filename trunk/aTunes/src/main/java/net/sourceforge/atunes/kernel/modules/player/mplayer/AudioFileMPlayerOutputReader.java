@@ -23,9 +23,6 @@ import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.audio.Format;
 import net.sourceforge.atunes.misc.log.LogCategories;
 
-/**
- * The Class AudioFileMPlayerOutputReader.
- */
 class AudioFileMPlayerOutputReader extends MPlayerOutputReader {
 
     private AudioFile audioFile;
@@ -62,21 +59,21 @@ class AudioFileMPlayerOutputReader extends MPlayerOutputReader {
             // Length still inaccurate with mp3 VBR files!
             // Apply workaround to get length from audio file properties (read by jaudiotagger) instead of mplayer
             if (isMp3File) {
-                length = (int) (audioFile.getDuration() * 1000);
+                setLength((int) (audioFile.getDuration() * 1000));
             } else {
-                length = (int) (Float.parseFloat(line.substring(line.indexOf('=') + 1)) * 1000.0);
-                if (length == 0) {
+                setLength((int) (Float.parseFloat(line.substring(line.indexOf('=') + 1)) * 1000.0));
+                if (getLength() == 0) {
                     // Length zero is unlikely, so try if tagging library did not do a better job
-                    length = (int) (audioFile.getDuration() * 1000);
+                    setLength((int) (audioFile.getDuration() * 1000));
                 }
             }
-            engine.setCurrentLength(length);
+            getEngine().setCurrentLength(getLength());
         }
 
         // MPlayer bug: Workaround (for audio files) for "mute bug" [1868482] 
-        if (engine.isMute() && length > 0 && length - time < 2000) {
-            logger.debug(LogCategories.PLAYER, "MPlayer 'mute bug' workaround applied");
-            engine.currentAudioObjectFinished();
+        if (getEngine().isMute() && getLength() > 0 && getLength() - getTime() < 2000) {
+            getLogger().debug(LogCategories.PLAYER, "MPlayer 'mute bug' workaround applied");
+            getEngine().currentAudioObjectFinished();
             interrupt();
         }
     }

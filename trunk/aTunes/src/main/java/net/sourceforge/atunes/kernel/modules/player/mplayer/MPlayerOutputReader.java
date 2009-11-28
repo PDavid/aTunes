@@ -33,22 +33,17 @@ import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.ClosingUtils;
 
-/**
- * The Class MPlayerOutputReader.
- */
 abstract class MPlayerOutputReader extends Thread {
 
-    protected static final Logger logger = new Logger();
-
-    protected MPlayerEngine engine;
-    protected BufferedReader in;
-    protected boolean submitted;
-    protected boolean started;
-    protected int length;
-    protected int time;
-
     /** Pattern of end of play back */
-    private static final Pattern endPattern = Pattern.compile(".*\\x2e\\x2e\\x2e\\x20\\(.*\\x20.*\\).*");
+    private static final Pattern END_PATTERN = Pattern.compile(".*\\x2e\\x2e\\x2e\\x20\\(.*\\x20.*\\).*");
+
+    private Logger logger = new Logger();
+
+    private MPlayerEngine engine;
+    private BufferedReader in;
+    private int length;
+    private int time;
 
     /**
      * Instantiates a new mplayer output reader.
@@ -104,13 +99,13 @@ abstract class MPlayerOutputReader extends Thread {
         // Read progress			
         // MPlayer bug: Duration still inaccurate with mp3 VBR files! Flac duration bug
         if (line.contains("ANS_TIME_POSITION")) {
-            time = (int) (Float.parseFloat(line.substring(line.indexOf("=") + 1)) * 1000.0);
-            engine.setTime(time);
+            setTime((int) (Float.parseFloat(line.substring(line.indexOf("=") + 1)) * 1000.0));
+            getEngine().setTime(getTime());
         }
 
         // End
-        if (endPattern.matcher(line).matches()) {
-            engine.currentAudioObjectFinished();
+        if (END_PATTERN.matcher(line).matches()) {
+            getEngine().currentAudioObjectFinished();
         }
     }
 
@@ -137,12 +132,36 @@ abstract class MPlayerOutputReader extends Thread {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    engine.handlePlayerEngineError(e);
+                    getEngine().handlePlayerEngineError(e);
                 }
             });
         } finally {
             ClosingUtils.close(in);
         }
+    }
+
+    protected final Logger getLogger() {
+        return logger;
+    }
+
+    protected final void setTime(int time) {
+        this.time = time;
+    }
+
+    protected final int getTime() {
+        return time;
+    }
+
+    protected final void setLength(int length) {
+        this.length = length;
+    }
+
+    protected final int getLength() {
+        return length;
+    }
+
+    protected final MPlayerEngine getEngine() {
+        return engine;
     }
 
 }

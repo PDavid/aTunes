@@ -29,18 +29,16 @@ import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 
-/**
- * The Class RadioMPlayerOutputReader.
- */
 class RadioMPlayerOutputReader extends MPlayerOutputReader {
 
-    /** The radio. */
+    /** Pattern of end of play back */
+    private static final Pattern END_PATTERN = Pattern.compile(".*\\x2e\\x2e\\x2e.*\\(.*\\).*");
+
     private Radio radio;
     private String lastArtist = "";
     private String lastTitle = "";
 
-    /** Pattern of end of play back */
-    private static final Pattern endPattern = Pattern.compile(".*\\x2e\\x2e\\x2e.*\\(.*\\).*");
+    private boolean started;
 
     /**
      * Instantiates a new radio m player output reader.
@@ -61,7 +59,7 @@ class RadioMPlayerOutputReader extends MPlayerOutputReader {
     protected void init() {
         super.init();
 
-        engine.setCurrentLength(radio.getDuration() * 1000);
+        getEngine().setCurrentLength(radio.getDuration() * 1000);
     }
 
     @Override
@@ -72,7 +70,7 @@ class RadioMPlayerOutputReader extends MPlayerOutputReader {
         if (line.startsWith("Starting playback")) {
             GuiHandler.getInstance().updateStatusBar(radio);
             if (!started) {
-                engine.notifyRadioOrPodcastFeedEntry();
+                getEngine().notifyRadioOrPodcastFeedEntry();
                 started = true;
             }
         }
@@ -84,14 +82,14 @@ class RadioMPlayerOutputReader extends MPlayerOutputReader {
                 try {
                     radio.setFrequency(Integer.parseInt(s[1]));
                 } catch (NumberFormatException e) {
-                    logger.info(LogCategories.PLAYER, "Could not read radio frequency");
+                    getLogger().info(LogCategories.PLAYER, "Could not read radio frequency");
                 }
             }
             if (s.length >= 7) {
                 try {
                     radio.setBitrate((long) Double.parseDouble(s[6]));
                 } catch (NumberFormatException e) {
-                    logger.info(LogCategories.PLAYER, "Could not read radio bitrate");
+                    getLogger().info(LogCategories.PLAYER, "Could not read radio bitrate");
                 }
             }
             ControllerProxy.getInstance().getPlayListController().refreshPlayList();
@@ -116,12 +114,12 @@ class RadioMPlayerOutputReader extends MPlayerOutputReader {
                 lastArtist = artist;
                 lastTitle = title;
             } catch (IndexOutOfBoundsException e) {
-                logger.info(LogCategories.PLAYER, "Could not read song info from radio");
+                getLogger().info(LogCategories.PLAYER, "Could not read song info from radio");
             }
         }
 
         // End (Quit)
-        if (endPattern.matcher(line).matches()) {
+        if (END_PATTERN.matcher(line).matches()) {
             radio.deleteSongInfo();
             ControllerProxy.getInstance().getPlayListController().refreshPlayList();
         }
