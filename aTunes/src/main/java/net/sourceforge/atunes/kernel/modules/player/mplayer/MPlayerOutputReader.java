@@ -61,8 +61,8 @@ abstract class MPlayerOutputReader extends Thread {
     /**
      * New instance.
      * 
-     * @param handler
-     *            the handler
+     * @param engine
+     *            the engine
      * @param process
      *            the process
      * @param ao
@@ -70,13 +70,13 @@ abstract class MPlayerOutputReader extends Thread {
      * 
      * @return the mplayer output reader
      */
-    static MPlayerOutputReader newInstance(MPlayerEngine handler, Process process, AudioObject ao) {
+    static MPlayerOutputReader newInstance(MPlayerEngine engine, Process process, AudioObject ao) {
         if (ao instanceof AudioFile) {
-            return new AudioFileMPlayerOutputReader(handler, process, (AudioFile) ao);
+            return new AudioFileMPlayerOutputReader(engine, process, (AudioFile) ao);
         } else if (ao instanceof Radio) {
-            return new RadioMPlayerOutputReader(handler, process, (Radio) ao);
+            return new RadioMPlayerOutputReader(engine, process, (Radio) ao);
         } else if (ao instanceof PodcastFeedEntry) {
-            return new PodcastFeedEntryMPlayerOutputReader(handler, process, (PodcastFeedEntry) ao);
+            return new PodcastFeedEntryMPlayerOutputReader(engine, process, (PodcastFeedEntry) ao);
         } else {
             throw new IllegalArgumentException("audio object is not from type AudioFile, Radio or PodcastFeedEntry");
         }
@@ -137,6 +137,23 @@ abstract class MPlayerOutputReader extends Thread {
             });
         } finally {
             ClosingUtils.close(in);
+        }
+    }
+
+    protected void readAndApplyLength(AudioObject audioObject, String line, boolean readOnlyFromTags) {
+        if (line.contains("ANS_LENGTH")) {
+            // Length still inaccurate with mp3 VBR files!
+            // Apply workaround to get length from audio file properties (read by jaudiotagger) instead of mplayer
+            if (readOnlyFromTags) {
+                setLength((int) (audioObject.getDuration() * 1000));
+            } else {
+                setLength((int) (Float.parseFloat(line.substring(line.indexOf('=') + 1)) * 1000.0));
+                if (getLength() == 0) {
+                    // Length zero is unlikely, so try if tagging library did not do a better job
+                    setLength((int) (audioObject.getDuration() * 1000));
+                }
+            }
+            getEngine().setCurrentLength(getLength());
         }
     }
 

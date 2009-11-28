@@ -55,20 +55,7 @@ class AudioFileMPlayerOutputReader extends MPlayerOutputReader {
     protected void read(String line) {
         super.read(line);
 
-        if (line.contains("ANS_LENGTH")) {
-            // Length still inaccurate with mp3 VBR files!
-            // Apply workaround to get length from audio file properties (read by jaudiotagger) instead of mplayer
-            if (isMp3File) {
-                setLength((int) (audioFile.getDuration() * 1000));
-            } else {
-                setLength((int) (Float.parseFloat(line.substring(line.indexOf('=') + 1)) * 1000.0));
-                if (getLength() == 0) {
-                    // Length zero is unlikely, so try if tagging library did not do a better job
-                    setLength((int) (audioFile.getDuration() * 1000));
-                }
-            }
-            getEngine().setCurrentLength(getLength());
-        }
+        readAndApplyLength(audioFile, line, isMp3File);
 
         // MPlayer bug: Workaround (for audio files) for "mute bug" [1868482] 
         if (getEngine().isMute() && getLength() > 0 && getLength() - getTime() < 2000) {
@@ -77,4 +64,5 @@ class AudioFileMPlayerOutputReader extends MPlayerOutputReader {
             interrupt();
         }
     }
+
 }
