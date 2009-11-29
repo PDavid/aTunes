@@ -48,9 +48,9 @@ import net.sourceforge.atunes.utils.I18nUtils;
 public final class ButtonTabComponent extends JPanel {
 
     /**
-     * The Class TabButton.
+     * The button for tabbed panes.
      */
-    private class TabButton extends JButton implements ActionListener {
+    private final class TabButton extends JButton implements ActionListener {
 
         private static final long serialVersionUID = -2196619151804754334L;
 

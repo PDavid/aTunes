@@ -32,7 +32,7 @@ import net.sourceforge.atunes.utils.GuiUtils;
 /**
  * The listener interface for receiving playerControls events.
  */
-public class PlayerControlsListener extends MouseAdapter {
+public final class PlayerControlsListener extends MouseAdapter {
 
     private PlayerControlsPanel panel;
 

@@ -36,7 +36,7 @@ import org.commonjukebox.plugins.PluginInfo;
 import org.commonjukebox.plugins.PluginListener;
 import org.commonjukebox.plugins.PluginSystemException;
 
-public class NavigationHandler extends Handler implements PluginListener {
+public final class NavigationHandler extends Handler implements PluginListener {
 
     /**
      * Singleton instance

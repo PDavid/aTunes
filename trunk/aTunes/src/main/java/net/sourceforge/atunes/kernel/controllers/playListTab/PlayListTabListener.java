@@ -40,7 +40,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The listener interface for receiving playListTab events.
  */
-class PlayListTabListener extends MouseAdapter implements ActionListener, ChangeListener {
+final class PlayListTabListener extends MouseAdapter implements ActionListener, ChangeListener {
 
     private PlayListTabPanel panel;
 

@@ -33,7 +33,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * This class is responsible of setting the language.
  */
-public class LanguageSelector {
+final class LanguageSelector {
 
     /** Logger. */
     private static Logger logger = new Logger();
@@ -43,7 +43,7 @@ public class LanguageSelector {
      * used. If not, a dialog is shown to let the user choose. The language
      * selected is used and stored in state
      */
-    public static void setLanguage() {
+    static void setLanguage() {
         LocaleBean locale = ApplicationState.getInstance().getLocale();
         if (locale != null) {
             //TODO: Update languages that are outdated. This triggers a nag screen, so only use if no translation update was avaible for a long time for the language you add to the list.

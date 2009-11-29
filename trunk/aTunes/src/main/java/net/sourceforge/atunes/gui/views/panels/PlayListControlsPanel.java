@@ -52,9 +52,6 @@ import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
 import net.sourceforge.atunes.kernel.actions.TogglePlayListFilterAction;
 import net.sourceforge.atunes.utils.GuiUtils;
 
-/**
- * The Class PlayListControlsPanel.
- */
 public final class PlayListControlsPanel extends JPanel {
 
     private static final long serialVersionUID = -1966827894270243002L;

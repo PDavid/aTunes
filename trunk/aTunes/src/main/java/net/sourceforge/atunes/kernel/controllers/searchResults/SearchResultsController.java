@@ -37,7 +37,7 @@ import net.sourceforge.atunes.model.AudioObject;
 /**
  * Controller for the search result dialog.
  */
-public class SearchResultsController extends SimpleController<SearchResultsDialog> {
+public final class SearchResultsController extends SimpleController<SearchResultsDialog> {
 
     private List<SearchResult> results;
 
@@ -116,8 +116,8 @@ public class SearchResultsController extends SimpleController<SearchResultsDialo
         }
         List<AudioObject> selectedResults = new ArrayList<AudioObject>();
         JTable table = getComponentControlled().getSearchResultsTable();
-        for (int element : selectedRows) {
-            selectedResults.add(results.get(table.convertRowIndexToModel(element)).getAudioObject());
+        for (int row : selectedRows) {
+            selectedResults.add(results.get(table.convertRowIndexToModel(row)).getAudioObject());
         }
         return selectedResults;
     }

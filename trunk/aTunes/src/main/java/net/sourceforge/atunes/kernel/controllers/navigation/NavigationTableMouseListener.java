@@ -33,7 +33,7 @@ import net.sourceforge.atunes.model.AudioObject;
 /**
  * The listener interface for receiving navigationTableMouse events.
  */
-public class NavigationTableMouseListener extends MouseAdapter {
+public final class NavigationTableMouseListener extends MouseAdapter {
 
     private NavigationController controller;
     private NavigationPanel panel;

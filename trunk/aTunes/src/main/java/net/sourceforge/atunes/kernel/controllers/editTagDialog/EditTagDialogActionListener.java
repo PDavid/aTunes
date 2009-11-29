@@ -45,7 +45,7 @@ import net.sourceforge.atunes.utils.ImageUtils;
 /**
  * The listener interface for receiving editTagDialogAction events.
  */
-public class EditTagDialogActionListener implements ActionListener {
+public final class EditTagDialogActionListener implements ActionListener {
 
     private static Logger logger = new Logger();
 

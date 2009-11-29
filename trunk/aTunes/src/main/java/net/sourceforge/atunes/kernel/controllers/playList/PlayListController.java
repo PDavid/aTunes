@@ -42,7 +42,7 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListTableModel;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 
-public class PlayListController extends SimpleController<PlayListPanel> implements PlayListColumnClickedListener {
+public final class PlayListController extends SimpleController<PlayListPanel> implements PlayListColumnClickedListener {
 
     /** The visible rect. */
     Rectangle visibleRect;

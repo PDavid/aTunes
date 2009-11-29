@@ -31,7 +31,7 @@ import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
- * The Class PlayListFilterPanel.
+ * The playlist filter panel.
  */
 public final class PlayListFilterPanel extends JPanel {
 

@@ -53,7 +53,7 @@ import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
 
-public class EditTagDialogController extends SimpleController<EditTagDialog> {
+public final class EditTagDialogController extends SimpleController<EditTagDialog> {
 
     Logger logger = new Logger();
 

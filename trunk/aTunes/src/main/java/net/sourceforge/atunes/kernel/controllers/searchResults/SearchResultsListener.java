@@ -27,7 +27,7 @@ import net.sourceforge.atunes.gui.views.dialogs.SearchResultsDialog;
 /**
  * The listener interface for receiving searchResults events.
  */
-public class SearchResultsListener implements ActionListener {
+public final class SearchResultsListener implements ActionListener {
 
     /** The controller. */
     private SearchResultsController controller;

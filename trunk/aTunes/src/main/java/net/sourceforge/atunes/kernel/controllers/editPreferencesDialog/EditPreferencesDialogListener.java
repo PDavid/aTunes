@@ -35,7 +35,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 /**
  * The listener interface for receiving editPreferencesDialog events.
  */
-public class EditPreferencesDialogListener implements ListSelectionListener, ActionListener {
+public final class EditPreferencesDialogListener implements ListSelectionListener, ActionListener {
 
     private EditPreferencesDialog editPreferencesDialog;
     private EditPreferencesDialogController editPreferencesDialogController;

@@ -32,7 +32,7 @@ import net.sourceforge.atunes.kernel.modules.search.SearchHandler.LogicalOperato
 /**
  * This class controls selection events in complex rules tree.
  */
-public class ComplexTreeSelectionListener implements TreeSelectionListener {
+public final class ComplexTreeSelectionListener implements TreeSelectionListener {
 
     /** Dialog controlled. */
     private CustomSearchDialog dialog;

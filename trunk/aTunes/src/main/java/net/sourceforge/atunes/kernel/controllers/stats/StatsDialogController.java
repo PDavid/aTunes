@@ -55,7 +55,7 @@ import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.ui.RectangleInsets;
 import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
-public class StatsDialogController extends SimpleController<StatsDialog> {
+public final class StatsDialogController extends SimpleController<StatsDialog> {
 
     /**
      * Instantiates a new stats dialog controller.

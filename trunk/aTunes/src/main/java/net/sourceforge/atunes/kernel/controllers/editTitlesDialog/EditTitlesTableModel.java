@@ -31,7 +31,7 @@ import javax.swing.table.AbstractTableModel;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class EditTitlesTableModel extends AbstractTableModel {
+public final class EditTitlesTableModel extends AbstractTableModel {
 
     private static final long serialVersionUID = -4440078678648669115L;
 

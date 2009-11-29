@@ -54,7 +54,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 import org.jvnet.substance.SubstanceLookAndFeel;
 
 /**
- * The Class PlayerControlsPanel.
+ * The player controls panel.
  */
 public final class PlayerControlsPanel extends JPanel {
 

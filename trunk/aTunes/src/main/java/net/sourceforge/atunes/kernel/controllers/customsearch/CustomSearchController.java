@@ -48,7 +48,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
 
-public class CustomSearchController extends SimpleController<CustomSearchDialog> {
+public final class CustomSearchController extends SimpleController<CustomSearchDialog> {
 
     /** List of searchable objects. */
     private List<SearchableObject> searchableObjects;

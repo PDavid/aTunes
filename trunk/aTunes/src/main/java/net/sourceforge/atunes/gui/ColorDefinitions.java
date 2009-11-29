@@ -32,13 +32,8 @@ import net.sourceforge.atunes.utils.GuiUtils;
  */
 public class ColorDefinitions {
 
-    /** The Constant TITLE_DIALOG_FONT_COLOR. */
     public static final Color TITLE_DIALOG_FONT_COLOR = Color.WHITE;
-
-    /** The Constant WARNING_COLOR. */
     public static final Color WARNING_COLOR = Color.RED;
-
-    /** The Constant GENERAL_UNKNOWN_ELEMENT_FOREGROUND_COLOR. */
     public static final Color GENERAL_UNKNOWN_ELEMENT_FOREGROUND_COLOR = Color.RED;
 
     /**

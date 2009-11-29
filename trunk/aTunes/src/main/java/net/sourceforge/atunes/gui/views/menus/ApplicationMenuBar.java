@@ -89,7 +89,7 @@ import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
- * The Class ApplicationMenuBar.
+ * The application menu bar.
  */
 public final class ApplicationMenuBar extends JMenuBar {
 
@@ -355,14 +355,15 @@ public final class ApplicationMenuBar extends JMenuBar {
         add(getToolsMenu());
         add(getCustomHelpMenu());
     }
-    
+
     /**
      * Adds a menu before "Help" menu
+     * 
      * @param newMenu
      */
     public void addMenu(JMenu newMenu) {
-    	remove(getComponentCount()-1);
-    	add(newMenu);
-    	add(getCustomHelpMenu());
+        remove(getComponentCount() - 1);
+        add(newMenu);
+        add(getCustomHelpMenu());
     }
 }

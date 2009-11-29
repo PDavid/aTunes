@@ -32,7 +32,7 @@ import org.jdesktop.swingx.treetable.DefaultMutableTreeTableNode;
 /**
  * The listener interface for receiving radioBrowserDialog events.
  */
-public class RadioBrowserDialogListener extends MouseAdapter {
+public final class RadioBrowserDialogListener extends MouseAdapter {
 
     /** The radio browser dialog. */
     private RadioBrowserDialog radioBrowserDialog;
