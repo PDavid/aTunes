@@ -194,7 +194,7 @@ public final class EditTagDialog extends CustomModalDialog {
      * 
      * @return cover tab
      */
-    public JPanel getCoverTab() {
+    private JPanel getCoverTab() {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
