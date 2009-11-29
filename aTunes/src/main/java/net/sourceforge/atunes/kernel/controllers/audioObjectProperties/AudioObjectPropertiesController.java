@@ -47,7 +47,7 @@ import org.jdesktop.swingx.border.DropShadowBorder;
  * 
  * @author fleax
  */
-public class AudioObjectPropertiesController extends SimpleController<AudioObjectPropertiesPanel> {
+public final class AudioObjectPropertiesController extends SimpleController<AudioObjectPropertiesPanel> {
 
     /** The current audio object. */
     AudioObject currentAudioObject;

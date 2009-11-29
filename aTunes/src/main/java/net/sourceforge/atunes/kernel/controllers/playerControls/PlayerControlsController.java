@@ -32,7 +32,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public class PlayerControlsController extends SimpleController<PlayerControlsPanel> {
+public final class PlayerControlsController extends SimpleController<PlayerControlsPanel> {
 
     private static final int SECONDS_10 = 10000;
     private static final int SECONDS_30 = 30000;

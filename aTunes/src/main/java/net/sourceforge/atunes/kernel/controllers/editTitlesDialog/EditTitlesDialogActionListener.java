@@ -32,7 +32,7 @@ import net.sourceforge.atunes.kernel.modules.amazon.AmazonService;
 /**
  * The listener interface for receiving editTitlesDialogAction events.
  */
-public class EditTitlesDialogActionListener implements ActionListener {
+public final class EditTitlesDialogActionListener implements ActionListener {
 
     /** The dialog. */
     private EditTitlesDialog dialog;

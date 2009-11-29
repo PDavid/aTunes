@@ -39,7 +39,7 @@ import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.GuiUtils;
 
-public class OSDDialogController extends SimpleController<OSDDialog> {
+public final class OSDDialogController extends SimpleController<OSDDialog> {
 
     WindowFader windowFader;
     private Point location;

@@ -42,7 +42,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
 
-public class RipCdDialogController extends SimpleController<RipCdDialog> {
+public final class RipCdDialogController extends SimpleController<RipCdDialog> {
 
     // Encoder options and file name patterns. Add here for more options
     public static final String[] FILENAMEPATTERN = { StringUtils.getString(CdRipper.TRACK_NUMBER, " - ", CdRipper.TITLE_PATTERN),

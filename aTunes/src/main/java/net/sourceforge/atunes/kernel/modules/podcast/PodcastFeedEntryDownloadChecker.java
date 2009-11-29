@@ -32,11 +32,11 @@ import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
 /**
- * The Class PodcastFeedEntryDownloadChecker.
+ * Checks if podcasts are downloaded.
  */
 public class PodcastFeedEntryDownloadChecker implements Runnable {
 
-    private static Logger logger = new Logger();
+    private Logger logger = new Logger();
 
     @Override
     public void run() {

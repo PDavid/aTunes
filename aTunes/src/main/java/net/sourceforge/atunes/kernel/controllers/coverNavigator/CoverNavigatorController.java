@@ -50,7 +50,7 @@ import net.sourceforge.atunes.utils.GuiUtils;
 
 import org.jdesktop.swingx.border.DropShadowBorder;
 
-public class CoverNavigatorController extends SimpleController<CoverNavigatorFrame> {
+public final class CoverNavigatorController extends SimpleController<CoverNavigatorFrame> {
 
     private static final int COVER_PANEL_WIDTH = Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize() + 20;
     private static final int COVER_PANEL_HEIGHT = Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize() + 40;

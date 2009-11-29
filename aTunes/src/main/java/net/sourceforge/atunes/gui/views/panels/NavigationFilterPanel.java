@@ -42,9 +42,6 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public final class NavigationFilterPanel extends JPanel {
 
-    /**
-	 * 
-	 */
     private static final long serialVersionUID = 2037911468888688438L;
 
     /**

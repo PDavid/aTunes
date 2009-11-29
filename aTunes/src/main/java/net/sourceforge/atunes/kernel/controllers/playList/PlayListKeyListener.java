@@ -27,7 +27,7 @@ import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 /**
  * The listener interface for receiving playList key events.
  */
-public class PlayListKeyListener extends KeyAdapter {
+public final class PlayListKeyListener extends KeyAdapter {
 
     //	/**
     //	 * Play list controller

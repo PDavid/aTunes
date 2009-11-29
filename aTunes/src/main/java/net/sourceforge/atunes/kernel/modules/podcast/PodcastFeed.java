@@ -41,8 +41,6 @@ public class PodcastFeed implements TreeObject, Serializable {
 
     private static final long serialVersionUID = 1416452911272034086L;
 
-    private static Logger logger = new Logger();
-
     private static Comparator<PodcastFeed> comparator = new Comparator<PodcastFeed>() {
         @Override
         public int compare(PodcastFeed o1, PodcastFeed o2) {
@@ -50,6 +48,8 @@ public class PodcastFeed implements TreeObject, Serializable {
         }
     };
 
+    private Logger logger = new Logger();
+    
     String name;
     private String url;
     private FeedType feedType;

@@ -28,7 +28,7 @@ import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 
-public class PlayListFilterController extends SimpleController<PlayListFilterPanel> {
+public final class PlayListFilterController extends SimpleController<PlayListFilterPanel> {
 
     /**
      * Instantiates a new play list filter controller.

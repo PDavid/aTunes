@@ -36,7 +36,7 @@ import net.sourceforge.atunes.misc.log.Logger;
 /**
  * The listener interface for receiving navigationTreeToolTip events.
  */
-public class NavigationTreeToolTipListener extends MouseAdapter implements MouseMotionListener, MouseWheelListener {
+public final class NavigationTreeToolTipListener extends MouseAdapter implements MouseMotionListener, MouseWheelListener {
 
     static final Logger logger = new Logger();
 

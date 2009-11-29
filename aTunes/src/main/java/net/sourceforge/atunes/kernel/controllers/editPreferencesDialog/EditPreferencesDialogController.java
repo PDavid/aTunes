@@ -45,11 +45,12 @@ import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 
-public class EditPreferencesDialogController extends SimpleController<EditPreferencesDialog> {
+public final class EditPreferencesDialogController extends SimpleController<EditPreferencesDialog> {
 
-    /** The panels. */
-    PreferencesPanel[] panels = new PreferencesPanel[] { getGeneralPanel(), getRepositoryPanel(), getPlayerPanel(), getNavigatorPanel(), getPlayListPrefPanel(), getOSDPanel(),
-            getContextPanel(), getInternetPanel(), getLastFmPanel(), getDevicePanel(), getRadioPanel(), getPodcastFeedPanel(), getImportExportPanel(), getPluginsPanel() };
+    /** The panels of the edit preferences dialog */
+    PreferencesPanel[] panels = new PreferencesPanel[] { new GeneralPanel(), new RepositoryPanel(), new PlayerPanel(), new NavigatorPanel(), new PlayListPrefPanel(),
+            new OSDPanel(), new ContextPanel(), new InternetPanel(), new LastFmPanel(), new DevicePanel(), new RadioPanel(), new PodcastFeedPanel(), new ImportExportPanel(),
+            new PluginsPanel() };
 
     /**
      * Instantiates a new edits the preferences dialog controller.
@@ -102,132 +103,6 @@ public class EditPreferencesDialogController extends SimpleController<EditPrefer
         }
 
         getComponentControlled().setListModel(listModel);
-    }
-
-    /**
-     * Gets the audio scrobbler panel.
-     * 
-     * @return the audio scrobbler panel
-     */
-    private PreferencesPanel getContextPanel() {
-        return new ContextPanel();
-    }
-
-    /**
-     * Gets the device panel.
-     * 
-     * @return the device panel
-     */
-    private DevicePanel getDevicePanel() {
-        return new DevicePanel();
-    }
-
-    /**
-     * Gets the general panel.
-     * 
-     * @return the general panel
-     */
-    private PreferencesPanel getGeneralPanel() {
-        return new GeneralPanel();
-    }
-
-    /**
-     * Gets the internet panel.
-     * 
-     * @return the internet panel
-     */
-    private PreferencesPanel getInternetPanel() {
-        return new InternetPanel();
-    }
-
-    /**
-     * Gets the last fm panel.
-     * 
-     * @return the last fm panel
-     */
-    private PreferencesPanel getLastFmPanel() {
-        return new LastFmPanel();
-    }
-
-    /**
-     * Gets the navigator panel.
-     * 
-     * @return the navigator panel
-     */
-    private PreferencesPanel getNavigatorPanel() {
-        return new NavigatorPanel();
-    }
-
-    /**
-     * Gets the oSD panel.
-     * 
-     * @return the oSD panel
-     */
-    private PreferencesPanel getOSDPanel() {
-        return new OSDPanel();
-    }
-
-    /**
-     * Gets the player panel.
-     * 
-     * @return the player panel
-     */
-    private PreferencesPanel getPlayerPanel() {
-        return new PlayerPanel();
-    }
-
-    /**
-     * Gets the podcast feed panel.
-     * 
-     * @return the podcast feed panel
-     */
-    private PodcastFeedPanel getPodcastFeedPanel() {
-        return new PodcastFeedPanel();
-    }
-
-    /**
-     * Gets the radio panel.
-     * 
-     * @return the radio panel
-     */
-    private RadioPanel getRadioPanel() {
-        return new RadioPanel();
-    }
-
-    /**
-     * Gets the repository panel.
-     * 
-     * @return the repository panel
-     */
-    private PreferencesPanel getRepositoryPanel() {
-        return new RepositoryPanel();
-    }
-
-    /**
-     * Gets the playlist panel.
-     * 
-     * @return the playlist panel
-     */
-    private PreferencesPanel getPlayListPrefPanel() {
-        return new PlayListPrefPanel();
-    }
-
-    /**
-     * Gets the import export panel
-     * 
-     * @return the import export panel
-     */
-    private ImportExportPanel getImportExportPanel() {
-        return new ImportExportPanel();
-    }
-
-    /**
-     * Gets the plugins panel
-     * 
-     * @return the plugins panel
-     */
-    private PluginsPanel getPluginsPanel() {
-        return new PluginsPanel();
     }
 
     @Override

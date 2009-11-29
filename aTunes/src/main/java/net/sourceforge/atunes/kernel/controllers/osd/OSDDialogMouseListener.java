@@ -27,7 +27,7 @@ import net.sourceforge.atunes.gui.views.dialogs.OSDDialog;
 /**
  * The listener interface for receiving OSDDialogMouse events.
  */
-public class OSDDialogMouseListener extends MouseAdapter {
+public final class OSDDialogMouseListener extends MouseAdapter {
 
     /** The osd dialog. */
     private OSDDialog osdDialog;

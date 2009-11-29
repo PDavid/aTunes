@@ -30,7 +30,7 @@ import javax.swing.JScrollPane;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 
 /**
- * The Class PlayListPanel.
+ * The playlist panel.
  * 
  * @author fleax
  */

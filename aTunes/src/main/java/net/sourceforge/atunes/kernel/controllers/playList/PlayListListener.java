@@ -33,7 +33,7 @@ import net.sourceforge.atunes.gui.views.menus.PlayListMenu;
 /**
  * The listener interface for receiving play list events.
  */
-public class PlayListListener extends MouseAdapter implements ActionListener, ListSelectionListener {
+public final class PlayListListener extends MouseAdapter implements ActionListener, ListSelectionListener {
 
     private PlayListTable table;
     private PlayListController controller;

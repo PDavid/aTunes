@@ -31,7 +31,7 @@ import net.sourceforge.atunes.kernel.modules.repository.model.Album;
 import net.sourceforge.atunes.kernel.modules.repository.tags.writer.EditTitlesProcess;
 import net.sourceforge.atunes.misc.log.LogCategories;
 
-public class EditTitlesDialogController extends SimpleController<EditTitlesDialog> {
+public final class EditTitlesDialogController extends SimpleController<EditTitlesDialog> {
 
     private List<AudioFile> filesToEdit;
     private Album album;

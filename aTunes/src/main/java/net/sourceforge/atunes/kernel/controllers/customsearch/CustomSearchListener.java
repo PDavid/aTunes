@@ -29,7 +29,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 /**
  * Listener of CustomSearchDialog controls.
  */
-public class CustomSearchListener implements ActionListener {
+public final class CustomSearchListener implements ActionListener {
 
     /** Dialog controlled. */
     private CustomSearchDialog dialog;
