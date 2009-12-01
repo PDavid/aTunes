@@ -1,0 +1,140 @@
+package net.sourceforge.atunes.gui.views.dialogs;
+
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+
+import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
+import net.sourceforge.atunes.utils.GuiUtils;
+import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.StringUtils;
+
+import org.commonjukebox.plugins.PluginConfiguration;
+import org.commonjukebox.plugins.PluginInfo;
+import org.commonjukebox.plugins.PluginProperty;
+
+public class PluginEditorDialog extends CustomModalDialog {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -2629422819919724654L;
+
+    PluginConfiguration configuration;
+
+    public PluginEditorDialog(Window owner, PluginInfo plugin, PluginConfiguration configuration) {
+        super(owner, GuiUtils.getComponentWidthForResolution(1280, 500), GuiUtils.getComponentHeightForResolution(1024, 300), true);
+        this.configuration = configuration;
+        setResizable(true);
+        setTitle(StringUtils.getString(I18nUtils.getString("PLUGIN_PROPERTIES_EDITOR"), ": ", plugin.getName()));
+        add(getContent());
+        GuiUtils.applyComponentOrientation(this);
+        enableCloseActionWithEscapeKey();
+    }
+
+    private JPanel getContent() {
+        JPanel panel = new JPanel(new BorderLayout());
+        PluginConfigurationPanel configPanel = new PluginConfigurationPanel(configuration);
+        panel.add(new JScrollPane(configPanel), BorderLayout.CENTER);
+        JButton okButton = new JButton(I18nUtils.getString("OK"));
+        okButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PluginEditorDialog.this.setVisible(false);
+            }
+        });
+        JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // User canceled edition so set configuration to null
+                PluginEditorDialog.this.configuration = null;
+                PluginEditorDialog.this.setVisible(false);
+            }
+        });
+        JPanel buttonsPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 0;
+        c.weightx = 1;
+        c.anchor = GridBagConstraints.EAST;
+        c.insets = new Insets(10, 5, 10, 5);
+        buttonsPanel.add(okButton, c);
+        c.gridx = 1;
+        c.weightx = 0;
+        c.anchor = GridBagConstraints.CENTER;
+        buttonsPanel.add(cancelButton, c);
+        panel.add(buttonsPanel, BorderLayout.SOUTH);
+
+        return panel;
+    }
+
+    /**
+     * @return the configuration
+     */
+    public PluginConfiguration getConfiguration() {
+        return configuration;
+    }
+    
+    private class PluginConfigurationPanel extends JPanel {
+
+        private static final long serialVersionUID = 8063088904049173181L;
+
+        private PluginConfiguration configuration;
+
+        public PluginConfigurationPanel(PluginConfiguration configuration) {
+            super(new GridBagLayout());
+            this.configuration = configuration;
+            addContent();
+        }
+
+        private void addContent() {
+        	GridBagConstraints c = new GridBagConstraints();
+        	c.gridx = 0;
+        	c.gridy = 0;
+        	c.weightx = 0.5;
+        	c.fill = GridBagConstraints.HORIZONTAL;
+        	c.anchor = GridBagConstraints.WEST;
+        	c.insets = new Insets(10, 10, 0, 10);
+        	for (String property : this.configuration.getPropertiesNames()) {
+        		PluginProperty<?> pluginProperty = this.configuration.getProperty(property);
+        		JLabel propertyLabel = getPropertyLabel(pluginProperty);
+        		JComponent propertyValue = getPropertyEditor(pluginProperty);
+        		
+        		// When last component is added set weighty = 1
+        		if (c.gridy == this.configuration.getPropertiesCount() - 1) {
+        			c.weighty = 1;
+        			c.anchor = GridBagConstraints.NORTHWEST;
+        		}
+
+        		c.gridx = 0;
+        		this.add(propertyLabel, c);
+        		c.gridx = 1;
+        		this.add(propertyValue, c);
+        		
+        		c.gridy++;
+        	}
+        }
+        
+        private JLabel getPropertyLabel(PluginProperty<?> property) {
+        	return new JLabel(property.getDescription());
+        }
+        
+        private JComponent getPropertyEditor(PluginProperty<?> property) {
+        	return new JTextField(property.getValue().toString());
+        }
+    }
+
+}
+
