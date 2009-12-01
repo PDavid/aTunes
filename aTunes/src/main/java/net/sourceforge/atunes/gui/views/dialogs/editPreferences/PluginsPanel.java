@@ -19,7 +19,6 @@
  */
 package net.sourceforge.atunes.gui.views.dialogs.editPreferences;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -53,14 +52,13 @@ import javax.swing.table.TableModel;
 
 import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.images.ImageLoader;
-import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
+import net.sourceforge.atunes.gui.views.dialogs.PluginEditorDialog;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -440,192 +438,6 @@ public final class PluginsPanel extends PreferencesPanel {
             return this.plugins.get(row);
         }
 
-    }
-
-    private class PluginConfigurationPanel extends JPanel {
-
-        private static final long serialVersionUID = 8063088904049173181L;
-
-        private PluginConfiguration configuration;
-
-        public PluginConfigurationPanel(PluginConfiguration configuration) {
-            super(new GridBagLayout());
-            this.configuration = configuration;
-            addContent();
-        }
-
-        private void addContent() {
-            JTable table = new JTable();
-            table.setColumnModel(new DefaultTableColumnModel() {
-
-                private static final long serialVersionUID = -2883977670543989394L;
-
-                @Override
-                public void addColumn(TableColumn column) {
-                    super.addColumn(column);
-                    if (column.getModelIndex() == 0) {
-                        column.setMaxWidth(200);
-                    }
-                }
-            });
-            table.setModel(new PluginConfigurationTableModel(configuration));
-
-            table.setDefaultRenderer(PluginProperty.class, new SubstanceDefaultTableCellRenderer() {
-                private static final long serialVersionUID = -3718138141911631700L;
-
-                @Override
-                public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                    Component c = super.getTableCellRendererComponent(table, ((PluginProperty<?>) value).getName(), isSelected, hasFocus, row, column);
-                    ((JLabel) c).setToolTipText(((PluginProperty<?>) value).getDescription());
-                    return c;
-                }
-
-            });
-
-            JScrollPane scrollPane = new JScrollPane(table);
-            GridBagConstraints c = new GridBagConstraints();
-            c.gridx = 0;
-            c.gridy = 0;
-            c.weightx = 1;
-            c.weighty = 1;
-            c.fill = GridBagConstraints.BOTH;
-            c.insets = new Insets(5, 5, 5, 5);
-            add(scrollPane, c);
-        }
-
-    }
-
-    private class PluginConfigurationTableModel implements TableModel {
-
-        private PluginConfiguration configuration;
-
-        private List<String> propertiesNames;
-
-        private List<TableModelListener> listeners = new ArrayList<TableModelListener>();
-
-        PluginConfigurationTableModel(PluginConfiguration configuration) {
-            this.configuration = configuration;
-            this.propertiesNames = configuration.getPropertiesNames();
-        }
-
-        @Override
-        public void addTableModelListener(TableModelListener l) {
-            listeners.add(l);
-        }
-
-        @Override
-        public Class<?> getColumnClass(int columnIndex) {
-            if (columnIndex == 0) {
-                return PluginProperty.class;
-            }
-            return String.class;
-        }
-
-        @Override
-        public int getColumnCount() {
-            return 2;
-        }
-
-        @Override
-        public String getColumnName(int columnIndex) {
-            if (columnIndex == 0) {
-                return I18nUtils.getString("NAME");
-            }
-            return I18nUtils.getString("VALUE");
-        }
-
-        @Override
-        public int getRowCount() {
-            return this.configuration.getPropertiesCount();
-        }
-
-        @Override
-        public Object getValueAt(int rowIndex, int columnIndex) {
-            if (columnIndex == 0) {
-                return this.configuration.getProperty(this.propertiesNames.get(rowIndex));
-            }
-            return this.configuration.getProperty(this.propertiesNames.get(rowIndex)).getValue();
-        }
-
-        @Override
-        public boolean isCellEditable(int rowIndex, int columnIndex) {
-            return columnIndex != 0;
-        }
-
-        @Override
-        public void removeTableModelListener(TableModelListener l) {
-            listeners.remove(l);
-        }
-
-        @Override
-        public void setValueAt(Object value, int rowIndex, int columnIndex) {
-            this.configuration.getProperty(this.propertiesNames.get(rowIndex)).setValue(value);
-        }
-
-    }
-
-    private class PluginEditorDialog extends CustomModalDialog {
-
-        /**
-         * 
-         */
-        private static final long serialVersionUID = -2629422819919724654L;
-
-        PluginConfiguration configuration;
-
-        PluginEditorDialog(EditPreferencesDialog owner, PluginInfo plugin, PluginConfiguration configuration) {
-            super(owner, GuiUtils.getComponentWidthForResolution(1280, 500), GuiUtils.getComponentHeightForResolution(1024, 300), true);
-            this.configuration = configuration;
-            setResizable(true);
-            setTitle(StringUtils.getString(I18nUtils.getString("PLUGIN_PROPERTIES_EDITOR"), ": ", plugin.getName()));
-            add(getContent());
-            GuiUtils.applyComponentOrientation(this);
-            enableCloseActionWithEscapeKey();
-        }
-
-        private JPanel getContent() {
-            JPanel panel = new JPanel(new BorderLayout());
-            PluginConfigurationPanel configPanel = new PluginConfigurationPanel(configuration);
-            panel.add(configPanel, BorderLayout.CENTER);
-            JButton okButton = new JButton(I18nUtils.getString("OK"));
-            okButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    PluginEditorDialog.this.setVisible(false);
-                }
-            });
-            JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
-            cancelButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    // User canceled edition so set configuration to null
-                    PluginEditorDialog.this.configuration = null;
-                    PluginEditorDialog.this.setVisible(false);
-                }
-            });
-            JPanel buttonsPanel = new JPanel(new GridBagLayout());
-            GridBagConstraints c = new GridBagConstraints();
-            c.gridx = 0;
-            c.gridy = 0;
-            c.weightx = 1;
-            c.anchor = GridBagConstraints.EAST;
-            c.insets = new Insets(10, 5, 10, 5);
-            buttonsPanel.add(okButton, c);
-            c.gridx = 1;
-            c.weightx = 0;
-            c.anchor = GridBagConstraints.CENTER;
-            buttonsPanel.add(cancelButton, c);
-            panel.add(buttonsPanel, BorderLayout.SOUTH);
-
-            return panel;
-        }
-
-        /**
-         * @return the configuration
-         */
-        public PluginConfiguration getConfiguration() {
-            return configuration;
-        }
     }
 
     @Override
