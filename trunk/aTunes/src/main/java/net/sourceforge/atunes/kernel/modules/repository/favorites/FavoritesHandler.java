@@ -37,6 +37,7 @@ import net.sourceforge.atunes.kernel.modules.search.searchableobjects.FavoritesS
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 
 /**
@@ -232,9 +233,9 @@ public final class FavoritesHandler extends Handler implements AudioFilesRemoved
      * @param files
      *            the files
      */
-    public void removeSongsFromFavorites(List<AudioFile> files) {
-        for (AudioFile file : files) {
-        	getFavorites().getFavoriteAudioFiles().remove(file.getUrl());
+    public void removeSongsFromFavorites(List<AudioObject> files) {
+        for (AudioObject file : files) {
+       		getFavorites().getFavoriteAudioFiles().remove(file.getUrl());
         }
 
         callActionsAfterFavoritesChange();

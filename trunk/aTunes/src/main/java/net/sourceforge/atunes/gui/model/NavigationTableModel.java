@@ -27,7 +27,6 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
 
@@ -77,7 +76,6 @@ public final class NavigationTableModel implements TableModel {
      *            the controller
      */
     public NavigationTableModel() {
-        songs = new ArrayList<AudioObject>();
         listeners = new ArrayList<TableModelListener>();
     }
 
@@ -133,7 +131,7 @@ public final class NavigationTableModel implements TableModel {
      */
     @Override
     public int getRowCount() {
-        return songs.size();
+        return songs != null ? songs.size() : 0;
     }
 
     /**
@@ -145,7 +143,7 @@ public final class NavigationTableModel implements TableModel {
      * @return the song at
      */
     public AudioObject getSongAt(int row) {
-        return songs.get(row);
+        return songs != null ? songs.get(row) : null;
     }
 
     /**
@@ -154,7 +152,7 @@ public final class NavigationTableModel implements TableModel {
      * @return the songs
      */
     public List<AudioObject> getSongs() {
-        return new ArrayList<AudioObject>(songs);
+        return songs;
     }
 
     /**
@@ -173,24 +171,6 @@ public final class NavigationTableModel implements TableModel {
         return result;
     }
 
-    /**
-     * Gets the audio files at.
-     * 
-     * @param rows
-     *            the rows
-     * 
-     * @return the songs at
-     */
-    public List<AudioFile> getAudioFilesAt(int[] rows) {
-        List<AudioFile> result = new ArrayList<AudioFile>();
-        for (int element : rows) {
-            if (getSongAt(element) instanceof AudioFile) {
-                result.add((AudioFile) getSongAt(element));
-            }
-        }
-        return result;
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -199,11 +179,13 @@ public final class NavigationTableModel implements TableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        AudioObject audioObject = songs.get(rowIndex);
+        AudioObject audioObject = getSongAt(rowIndex);
 
-        return NavigationHandler.getInstance().getView(NavigationHandler.getInstance().getViewByName(ApplicationState.getInstance().getNavigationView())).getNavigatorTableValueAt(
-                audioObject, columnIndex);
-
+        if (audioObject == null) {
+        	return null;
+        }
+        
+        return NavigationHandler.getInstance().getView(NavigationHandler.getInstance().getViewByName(ApplicationState.getInstance().getNavigationView())).getNavigatorTableValueAt(audioObject, columnIndex);
     }
 
     /*
