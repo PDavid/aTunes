@@ -21,7 +21,6 @@ package net.sourceforge.atunes.gui.views.dialogs.editPreferences;
 
 import java.awt.Component;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -65,7 +64,6 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 import org.commonjukebox.plugins.PluginConfiguration;
 import org.commonjukebox.plugins.PluginInfo;
-import org.commonjukebox.plugins.PluginProperty;
 import org.commonjukebox.plugins.PluginSystemException;
 import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
