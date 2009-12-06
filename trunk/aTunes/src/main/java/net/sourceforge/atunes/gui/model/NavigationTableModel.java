@@ -23,19 +23,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
 
+import net.sourceforge.atunes.kernel.modules.columns.NavigatorColumnSet;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.kernel.modules.navigator.NavigationView;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The Class NavigationTableModel.
  * 
  * @author fleax
  */
-public final class NavigationTableModel implements TableModel {
+public final class NavigationTableModel extends CommonTableModel {
 
     /**
      * Enum for properties
@@ -66,9 +66,6 @@ public final class NavigationTableModel implements TableModel {
     /** The songs. */
     private List<AudioObject> songs;
 
-    /** The listeners. */
-    private List<TableModelListener> listeners;
-
     /**
      * Instantiates a new navigation table model.
      * 
@@ -76,19 +73,7 @@ public final class NavigationTableModel implements TableModel {
      *            the controller
      */
     public NavigationTableModel() {
-        listeners = new ArrayList<TableModelListener>();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * javax.swing.table.TableModel#addTableModelListener(javax.swing.event.
-     * TableModelListener)
-     */
-    @Override
-    public void addTableModelListener(TableModelListener l) {
-        listeners.add(l);
+    	super();
     }
 
     /*
@@ -98,8 +83,14 @@ public final class NavigationTableModel implements TableModel {
      */
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        return NavigationHandler.getInstance().getView(NavigationHandler.getInstance().getViewByName(ApplicationState.getInstance().getNavigationView()))
-                .getNavigatorTableColumnClass(columnIndex);
+    	NavigationView view = NavigationHandler.getInstance().getCurrentView();
+    	
+    	// Use default navigator columns or custom defined by view
+    	if (view.isUseDefaultNavigatorColumns()) {
+    		return NavigatorColumnSet.getInstance().getColumn(NavigatorColumnSet.getInstance().getColumnId(columnIndex)).getColumnClass();
+    	} else {
+    		return view.getNavigatorTableColumnClass(columnIndex);
+    	}
     }
 
     /*
@@ -109,8 +100,14 @@ public final class NavigationTableModel implements TableModel {
      */
     @Override
     public int getColumnCount() {
-        return NavigationHandler.getInstance().getView(NavigationHandler.getInstance().getViewByName(ApplicationState.getInstance().getNavigationView()))
-                .getNavigatorTableColumnCount();
+    	NavigationView view = NavigationHandler.getInstance().getCurrentView();
+    	
+    	// Use default navigator columns or custom defined by view
+    	if (view.isUseDefaultNavigatorColumns()) {
+    		return NavigatorColumnSet.getInstance().getVisibleColumnCount();
+    	} else {
+    		return view.getNavigatorTableColumnCount();
+    	}    	
     }
 
     /*
@@ -120,8 +117,14 @@ public final class NavigationTableModel implements TableModel {
      */
     @Override
     public String getColumnName(int columnIndex) {
-        return NavigationHandler.getInstance().getView(NavigationHandler.getInstance().getViewByName(ApplicationState.getInstance().getNavigationView()))
-                .getNavigatorTableColumnName(columnIndex);
+    	NavigationView view = NavigationHandler.getInstance().getCurrentView();
+    	
+    	// Use default navigator columns or custom defined by view
+    	if (view.isUseDefaultNavigatorColumns()) {
+    		return I18nUtils.getString(NavigatorColumnSet.getInstance().getColumn(NavigatorColumnSet.getInstance().getColumnId(columnIndex)).getHeaderText());
+    	} else {
+    		return view.getNavigatorTableColumnName(columnIndex);
+    	}    	    	
     }
 
     /*
@@ -185,7 +188,14 @@ public final class NavigationTableModel implements TableModel {
         	return null;
         }
         
-        return NavigationHandler.getInstance().getView(NavigationHandler.getInstance().getViewByName(ApplicationState.getInstance().getNavigationView())).getNavigatorTableValueAt(audioObject, columnIndex);
+    	NavigationView view = NavigationHandler.getInstance().getCurrentView();
+    	
+    	// Use default navigator columns or custom defined by view
+    	if (view.isUseDefaultNavigatorColumns()) {
+    		return NavigatorColumnSet.getInstance().getColumn(NavigatorColumnSet.getInstance().getColumnId(columnIndex)).getValueFor(audioObject);
+    	} else {
+    		return view.getNavigatorTableValueAt(audioObject, columnIndex);
+    	}
     }
 
     /*
@@ -199,28 +209,6 @@ public final class NavigationTableModel implements TableModel {
     }
 
     /**
-     * Refresh.
-     */
-    public void refresh() {
-        TableModelEvent event = new TableModelEvent(this, 0, this.getRowCount() - 1, TableModelEvent.ALL_COLUMNS, TableModelEvent.UPDATE);
-        for (int i = 0; i < listeners.size(); i++) {
-            listeners.get(i).tableChanged(event);
-        }
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * javax.swing.table.TableModel#removeTableModelListener(javax.swing.event
-     * .TableModelListener)
-     */
-    @Override
-    public void removeTableModelListener(TableModelListener l) {
-        listeners.remove(l);
-    }
-
-    /**
      * Sets the songs.
      * 
      * @param songs
@@ -228,10 +216,7 @@ public final class NavigationTableModel implements TableModel {
      */
     public void setSongs(List<AudioObject> songs) {
         this.songs = songs;
-        TableModelEvent event = new TableModelEvent(this, -1, this.getRowCount() - 1, TableModelEvent.ALL_COLUMNS, TableModelEvent.INSERT);
-        for (int i = 0; i < listeners.size(); i++) {
-            listeners.get(i).tableChanged(event);
-        }
+        refresh(TableModelEvent.INSERT);
     }
 
     /*

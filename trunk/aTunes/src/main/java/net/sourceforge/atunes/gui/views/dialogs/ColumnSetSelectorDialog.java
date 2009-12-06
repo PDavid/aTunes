@@ -17,7 +17,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package net.sourceforge.atunes.gui.views.controls.playList;
+package net.sourceforge.atunes.gui.views.dialogs;
 
 import java.awt.Component;
 import java.awt.GridBagConstraints;
@@ -44,15 +44,17 @@ import javax.swing.table.TableModel;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
+import net.sourceforge.atunes.kernel.modules.columns.Column;
+import net.sourceforge.atunes.kernel.modules.columns.ColumnSet;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
 /**
- * The selector for play list columns.
+ * Dialog to select column set
  */
-public final class PlayListColumnSelector extends CustomModalDialog {
+public final class ColumnSetSelectorDialog extends CustomModalDialog {
 
     private class ColumnsTableModel implements TableModel {
 
@@ -202,9 +204,10 @@ public final class PlayListColumnSelector extends CustomModalDialog {
      * @param owner
      *            the owner
      */
-    public PlayListColumnSelector(JFrame owner) {
+    public ColumnSetSelectorDialog(JFrame owner) {
         super(owner, 250, 300, true);
         setContent(getContent());
+        setTitle(I18nUtils.getString("ARRANGE_COLUMNS"));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         GuiUtils.applyComponentOrientation(this);
     }
@@ -216,7 +219,7 @@ public final class PlayListColumnSelector extends CustomModalDialog {
      *            the arguments
      */
     public static void main(String[] args) {
-        new PlayListColumnSelector(null).setVisible(true);
+        new ColumnSetSelectorDialog(null).setVisible(true);
     }
 
     /**
@@ -254,7 +257,7 @@ public final class PlayListColumnSelector extends CustomModalDialog {
         okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                PlayListColumnSelector.this.dispose();
+                ColumnSetSelectorDialog.this.dispose();
             }
         });
 
@@ -321,13 +324,13 @@ public final class PlayListColumnSelector extends CustomModalDialog {
     }
 
     /**
-     * Sets the columns.
+     * Sets the columns set to be changed
      * 
-     * @param columns
-     *            the new columns
+     * @param column set
+     *            
      */
-    public void setColumns(List<Column> columns) {
-        model.setColumns(columns);
+    public void setColumnSet(ColumnSet columnSet) {
+        model.setColumns(columnSet.getColumnsForSelection());
     }
 
 }

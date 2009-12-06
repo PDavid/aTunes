@@ -29,10 +29,10 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.views.controls.playList.Column;
 import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.Kernel;
-import net.sourceforge.atunes.kernel.modules.columns.PlayListColumns;
+import net.sourceforge.atunes.kernel.modules.columns.Column;
+import net.sourceforge.atunes.kernel.modules.columns.ColumnSets;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.context.ContextPanel;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
@@ -154,7 +154,7 @@ public class PluginsHandler extends Handler implements PluginListener {
         if (pluginTypes == null) {
             pluginTypes = new HashSet<PluginType>();
             pluginTypes.add(new PluginType(PlaybackStateListener.class.getName(), PlayerHandler.getInstance(), false));
-            pluginTypes.add(new PluginType(Column.class.getName(), PlayListColumns.getInstance(), false));
+            pluginTypes.add(new PluginType(Column.class.getName(), ColumnSets.getInstance(), false));
             pluginTypes.add(new PluginType(NavigationView.class.getName(), NavigationHandler.getInstance(), false));
             pluginTypes.add(new PluginType(ContextPanel.class.getName(), ContextHandler.getInstance(), false));
         }

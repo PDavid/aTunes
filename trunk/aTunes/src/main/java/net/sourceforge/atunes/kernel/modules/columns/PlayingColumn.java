@@ -19,7 +19,6 @@
  */
 package net.sourceforge.atunes.kernel.modules.columns;
 
-import net.sourceforge.atunes.gui.views.controls.playList.Column;
 import net.sourceforge.atunes.model.AudioObject;
 
 public class PlayingColumn extends Column {
@@ -49,6 +48,11 @@ public class PlayingColumn extends Column {
     @Override
     public String getHeaderText() {
         return "";
+    }
+    
+    @Override
+    public boolean isPlayListExclusive() {
+    	return true;
     }
 
 }

@@ -37,7 +37,6 @@ import javax.swing.tree.TreeCellRenderer;
 
 import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.gui.images.ImageLoader;
-import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.gui.views.menus.EditTagMenu;
 import net.sourceforge.atunes.kernel.actions.Actions;
@@ -62,17 +61,13 @@ import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.kernel.modules.repository.model.Album;
 import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-import org.commonjukebox.plugins.Plugin;
-import org.commonjukebox.plugins.PluginConfiguration;
-import org.commonjukebox.plugins.PluginInfo;
 import org.jvnet.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
 
-public final class FavoritesNavigationView extends NavigationView implements Plugin {
+public final class FavoritesNavigationView extends NavigationView {
 
     private JTree favoritesTree;
 
@@ -314,61 +309,39 @@ public final class FavoritesNavigationView extends NavigationView implements Plu
     }
 
     @Override
+    public boolean isUseDefaultNavigatorColumns() {
+    	return true;
+    }
+
+    
+    @Override
     public Class<?> getNavigatorTableColumnClass(int columnIndex) {
-        switch (columnIndex) {
-        case 0:
-            return Property.class;
-        case 1:
-            return String.class;
-        case 2:
-            return Long.class;
-        default:
-            return Long.class;
-        }
+    	// Not used since isUseDefaultNavigatorColumns returns true
+    	return null;
     }
 
     @Override
     public int getNavigatorTableColumnCount() {
-        return 3;
+    	// Not used since isUseDefaultNavigatorColumns returns true
+    	return 0;
     }
 
     @Override
     public String getNavigatorTableColumnName(int columnIndex) {
-        switch (columnIndex) {
-        case 0:
-            return "";
-        case 1:
-            return I18nUtils.getString("TITLE");
-        case 2:
-            return I18nUtils.getString("DURATION");
-        default:
-            return "";
-        }
+    	// Not used since isUseDefaultNavigatorColumns returns true
+    	return null;
     }
 
     @Override
     public Object getNavigatorTableValueAt(AudioObject audioObject, int columnIndex) {
-        if (audioObject instanceof AudioFile) {
-            if (columnIndex == 0) {
-                return ApplicationState.getInstance().isShowFavoritesInNavigator() && FavoritesHandler.getInstance().getFavoriteSongs().contains(audioObject) ? Property.FAVORITE
-                        : Property.NO_PROPERTIES;
-            } else if (columnIndex == 1) {
-                return audioObject.getTitleOrFileName();
-            } else if (columnIndex == 2) {
-                return audioObject.getDuration();
-            }
-        }
-        return "";
+    	// Not used since isUseDefaultNavigatorColumns returns true
+    	return null;
     }
 
     @Override
     public int getNavigatorTableMaxWidthForColumn(int columnIndex) {
-        if (columnIndex == 0) {
-            return 20;
-        } else if (columnIndex == 2) {
-            return 50;
-        }
-        return -1;
+    	// Not used since isUseDefaultNavigatorColumns returns true
+    	return 0;
     }
 
     @Override
@@ -433,25 +406,4 @@ public final class FavoritesNavigationView extends NavigationView implements Plu
         };
     }
 
-    @Override
-    public void configurationChanged(PluginConfiguration arg0) {
-        // No configuration
-    }
-
-    @Override
-    public PluginConfiguration getDefaultConfiguration() {
-        // No configuration
-        return null;
-    }
-
-    @Override
-    public void setConfiguration(PluginConfiguration arg0) {
-        // No configuration
-    }
-
-    @Override
-    public void setPluginInfo(PluginInfo arg0) {
-        // No info needed
-    }
-    
 }

@@ -43,7 +43,6 @@ import net.sourceforge.atunes.gui.frame.MultipleFrame;
 import net.sourceforge.atunes.gui.frame.StandardFrame;
 import net.sourceforge.atunes.gui.popup.FadingPopupFactory;
 import net.sourceforge.atunes.gui.views.bars.ToolBar;
-import net.sourceforge.atunes.gui.views.controls.playList.PlayListColumnSelector;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable.PlayState;
 import net.sourceforge.atunes.gui.views.dialogs.AboutDialog;
@@ -61,6 +60,7 @@ import net.sourceforge.atunes.gui.views.dialogs.IndeterminateProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.InputDialog;
 import net.sourceforge.atunes.gui.views.dialogs.MultiFolderSelectionDialog;
 import net.sourceforge.atunes.gui.views.dialogs.OSDDialog;
+import net.sourceforge.atunes.gui.views.dialogs.ColumnSetSelectorDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RadioBrowserDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RepositoryProgressDialog;
@@ -365,12 +365,12 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
     }
 
     /**
-     * Gets the play list column selector.
+     * Gets the dialog to select columns
      * 
      * @return the play list column selector
      */
-    public PlayListColumnSelector getPlayListColumnSelector() {
-        return new PlayListColumnSelector(frame.getFrame());
+    public ColumnSetSelectorDialog getColumnSelector() {
+        return new ColumnSetSelectorDialog(frame.getFrame());
     }
 
     /**

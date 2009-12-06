@@ -33,7 +33,7 @@ import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.SavePlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
-import net.sourceforge.atunes.kernel.modules.columns.PlayListColumns;
+import net.sourceforge.atunes.kernel.modules.columns.PlayListColumnSet;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
@@ -957,24 +957,7 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
             }
 
             // Create a new play list by filtering elements
-            // Filter is applied to title, artist and album, if viewable
-            PlayList newPlayList = new PlayList();
-            boolean filterArtist = PlayListColumns.isArtistVisible();
-            boolean filterAlbum = PlayListColumns.isAlbumVisible();
-
-            //TODO: generalize to all visible volumns
-
-            filterText = filterText.toLowerCase();
-
-            for (AudioObject f : nonFilteredPlayList.getAudioObjects()) {
-                if (f.getTitleOrFileName().toLowerCase().contains(filterText) || // Match title
-                        (filterArtist && f.getArtist().toLowerCase().contains(filterText)) || // Match artist
-                        (filterAlbum && f.getAlbum().toLowerCase().contains(filterText))) {
-                    // If macthes, add to filtered play list
-                    newPlayList.add(f);
-                }
-            }
-
+            PlayList newPlayList = new PlayList(PlayListColumnSet.getInstance().filterAudioObjects(nonFilteredPlayList.getAudioObjects(), filterText));
             setPlayListAfterFiltering(newPlayList);
         }
     }

@@ -342,6 +342,11 @@ public final class RadioNavigationView extends NavigationView {
         }
 
     }
+    
+    @Override
+    public boolean isUseDefaultNavigatorColumns() {
+    	return false;
+    }
 
     @Override
     public Class<?> getNavigatorTableColumnClass(int columnIndex) {
@@ -350,14 +355,16 @@ public final class RadioNavigationView extends NavigationView {
             return Property.class;
         case 1:
             return String.class;
+        case 2:
+            return String.class;
         default:
-            return Long.class;
+            return String.class;
         }
     }
 
     @Override
     public int getNavigatorTableColumnCount() {
-        return 2;
+        return 3;
     }
 
     @Override
@@ -366,6 +373,8 @@ public final class RadioNavigationView extends NavigationView {
         case 0:
             return "";
         case 1:
+            return I18nUtils.getString("NAME");
+        case 2:
             return I18nUtils.getString("URL");
         default:
             return "";
@@ -378,6 +387,8 @@ public final class RadioNavigationView extends NavigationView {
             if (columnIndex == 0) {
                 return Property.NO_PROPERTIES;
             } else if (columnIndex == 1) {
+                return ((Radio)audioObject).getName();
+            } else if (columnIndex == 2) {
                 return audioObject.getUrl();
             }
         }
@@ -388,8 +399,10 @@ public final class RadioNavigationView extends NavigationView {
     public int getNavigatorTableMaxWidthForColumn(int columnIndex) {
         if (columnIndex == 0) {
             return 20;
+        } else if (columnIndex == 1) {
+            return 150;
         } else if (columnIndex == 2) {
-            return 50;
+            return 400;
         }
         return -1;
     }

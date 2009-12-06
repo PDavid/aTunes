@@ -19,6 +19,8 @@
  */
 package net.sourceforge.atunes.gui.views.controls.playList;
 
+import net.sourceforge.atunes.kernel.modules.columns.Column;
+
 /**
  * The listener interface for receiving playListColumnClicked events.
  */

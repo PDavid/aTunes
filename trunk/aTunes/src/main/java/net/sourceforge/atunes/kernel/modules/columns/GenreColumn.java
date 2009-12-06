@@ -19,7 +19,6 @@
  */
 package net.sourceforge.atunes.kernel.modules.columns;
 
-import net.sourceforge.atunes.gui.views.controls.playList.Column;
 import net.sourceforge.atunes.model.AudioObject;
 
 public class GenreColumn extends Column {
@@ -29,6 +28,7 @@ public class GenreColumn extends Column {
     public GenreColumn() {
         super("GENRE", String.class);
         setVisible(true);
+        setUsedForFilter(true);
     }
 
     @Override
@@ -51,4 +51,8 @@ public class GenreColumn extends Column {
         return audioObject.getGenre();
     }
 
+    @Override
+    public String getValueForFilter(AudioObject audioObject) {
+    	return audioObject.getGenre();
+    }
 }

@@ -17,17 +17,20 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package net.sourceforge.atunes.gui.views.controls.playList;
+package net.sourceforge.atunes.kernel.modules.columns;
 
 import java.awt.Component;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.images.ImageLoader;
-import net.sourceforge.atunes.gui.model.PlayListColumnModel;
+import net.sourceforge.atunes.gui.model.CommonColumnModel;
+import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
+import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable.PlayState;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.repository.AudioFileStats;
@@ -40,39 +43,55 @@ import net.sourceforge.atunes.utils.I18nUtils;
 import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
 /**
- * The Class PlayListRenderers.
+ * Common renderers for columns
+ * @author fleax
+ *
  */
-public final class PlayListRenderers {
+public final class ColumnRenderers {
 
     /**
-     * Add renderers to PlayList.
+     * Add renderers to table
      * 
-     * @param playlist
+     * @param jtable
      *            the playlist
+     * 
+     * @param model
      */
-    static void addRenderers(final PlayListTable playlist) {
+    public static void addRenderers(final JTable jtable, final CommonColumnModel model) {
         // INTEGER renderer
-        playlist.setDefaultRenderer(Integer.class, new SubstanceDefaultTableCellRenderer() {
+        jtable.setDefaultRenderer(Integer.class, new SubstanceDefaultTableCellRenderer() {
             private static final long serialVersionUID = 4027676693367876748L;
 
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                Component c = super.getTableCellRendererComponent(table, "", isSelected, hasFocus, row, column);
-                if (PlayListHandler.getInstance().isCurrentVisibleRowPlaying(row)) {
-                    ((JLabel) c).setIcon(PlayState.getPlayStateIcon(playlist.getPlayState()));
-                } else {
-                    ((JLabel) c).setIcon(ImageLoader.getImage(ImageLoader.EMPTY));
-                }
+            	if (table instanceof PlayListTable) {
+            		Component c = super.getTableCellRendererComponent(table, "", isSelected, hasFocus, row, column);
+            		if (PlayListHandler.getInstance().isCurrentVisibleRowPlaying(row)) {
+            			((JLabel) c).setIcon(PlayState.getPlayStateIcon(((PlayListTable)jtable).getPlayState()));
+            		} else {
+            			((JLabel) c).setIcon(ImageLoader.getImage(ImageLoader.EMPTY));
+            		}
 
-                // Get alignment from model
-                ((JLabel) c).setHorizontalAlignment(((PlayListColumnModel) table.getColumnModel()).getColumnObject(column).getAlignment());
-                return c;
-
+            		// Get alignment from model
+            		((JLabel) c).setHorizontalAlignment(model.getColumnAlignment(column));
+            		return c;
+            	} else {
+            		Integer intValue = (Integer) value;
+            		String stringValue;
+            		if (intValue <= 0) {
+            			stringValue = "";
+            		} else {
+            			stringValue = String.valueOf(intValue);
+            		}
+            		Component comp = super.getTableCellRendererComponent(table, stringValue, isSelected, hasFocus, row, column);
+            		((JLabel) comp).setHorizontalAlignment(SwingConstants.CENTER);
+            		return comp;
+            	}
             }
         });
 
         // ImageIcon renderer
-        playlist.setDefaultRenderer(ImageIcon.class, new SubstanceDefaultTableCellRenderer() {
+        jtable.setDefaultRenderer(ImageIcon.class, new SubstanceDefaultTableCellRenderer() {
             private static final long serialVersionUID = 62797739155426672L;
 
             @Override
@@ -81,61 +100,90 @@ public final class PlayListRenderers {
                 ((JLabel) c).setIcon((ImageIcon) value);
 
                 // Get alignment from model
-                ((JLabel) c).setHorizontalAlignment(((PlayListColumnModel) table.getColumnModel()).getColumnObject(column).getAlignment());
+                ((JLabel) c).setHorizontalAlignment(model.getColumnAlignment(column));
                 return c;
 
             }
         });
 
         // AUDIOBJECT renderer
-        playlist.setDefaultRenderer(AudioObject.class, new SubstanceDefaultTableCellRenderer() {
+        jtable.setDefaultRenderer(AudioObject.class, new SubstanceDefaultTableCellRenderer() {
             private static final long serialVersionUID = 7305230546936745766L;
 
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component c = super.getTableCellRendererComponent(table, ((AudioObject) value).getTitleOrFileName(), isSelected, hasFocus, row, column);
-                setFontForRow((JLabel) c, row);
-                //TODO: Extend navigator tooltips to play list
-                //((JLabel) c).setToolTipText(getToolTipForAudioObject((AudioObject) value));
+                if (table instanceof PlayListTable) {
+                	setFontForRow((JLabel) c, row);
+                }
 
                 // Get alignment from model
-                ((JLabel) c).setHorizontalAlignment(((PlayListColumnModel) table.getColumnModel()).getColumnObject(column).getAlignment());
+                ((JLabel) c).setHorizontalAlignment(model.getColumnAlignment(column));
                 return c;
             }
         });
 
         // STRING renderer
-        playlist.setDefaultRenderer(String.class, new SubstanceDefaultTableCellRenderer() {
+        jtable.setDefaultRenderer(String.class, new SubstanceDefaultTableCellRenderer() {
             private static final long serialVersionUID = 7305230546936745766L;
 
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                setFontForRow((JLabel) c, row);
+                if (table instanceof PlayListTable) {
+                	setFontForRow((JLabel) c, row);
+                }
 
                 // Get alignment from model
-                ((JLabel) c).setHorizontalAlignment(((PlayListColumnModel) table.getColumnModel()).getColumnObject(column).getAlignment());
+                ((JLabel) c).setHorizontalAlignment(model.getColumnAlignment(column));
                 return c;
             }
         });
 
         // JLabel renderer
-        playlist.setDefaultRenderer(JLabel.class, new SubstanceDefaultTableCellRenderer() {
+        jtable.setDefaultRenderer(JLabel.class, new SubstanceDefaultTableCellRenderer() {
             private static final long serialVersionUID = 0L;
 
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                setFontForRow((JLabel) c, row);
+                if (table instanceof PlayListTable) {
+                	setFontForRow((JLabel) c, row);
+                }
                 ((JLabel) c).setText(((JLabel) value).getText());
                 ((JLabel) c).setIcon(((JLabel) value).getIcon());
                 ((JLabel) c).setHorizontalAlignment(((JLabel) value).getHorizontalAlignment());
                 // Get alignment from model
-                ((JLabel) c).setHorizontalAlignment(((PlayListColumnModel) table.getColumnModel()).getColumnObject(column).getAlignment());
+                ((JLabel) c).setHorizontalAlignment(model.getColumnAlignment(column));
 
                 return c;
             }
         });
+        
+        // Property renderer
+        jtable.setDefaultRenderer(Property.class, new SubstanceDefaultTableCellRenderer() {
+        	private static final long serialVersionUID = 1337377851290885658L;
+
+        	@Override
+        	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        		Component comp = super.getTableCellRendererComponent(table, "", isSelected, hasFocus, row, column);
+        		ImageIcon icon = ImageLoader.getImage(ImageLoader.EMPTY);
+        		Property val = (Property) value;
+        		if (val == Property.FAVORITE) {
+        			icon = ImageLoader.getImage(ImageLoader.FAVORITE);
+        		} else if (val == Property.NOT_LISTENED_ENTRY) {
+        			icon = ImageLoader.getImage(ImageLoader.NEW_PODCAST_ENTRY);
+        		} else if (val == Property.DOWNLOADED_ENTRY) {
+        			icon = ImageLoader.getImage(ImageLoader.DOWNLOAD_PODCAST);
+        		} else if (val == Property.OLD_ENTRY) {
+        			icon = ImageLoader.getImage(ImageLoader.REMOVE);
+        		}
+        		((JLabel) comp).setIcon(icon);
+        		return comp;
+
+        	}
+        });
+
     }
 
     /**
