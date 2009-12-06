@@ -25,16 +25,17 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JScrollPane;
 import javax.swing.Timer;
+import javax.swing.event.TableModelEvent;
 
 import net.sourceforge.atunes.gui.model.PlayListColumnModel;
-import net.sourceforge.atunes.gui.views.controls.playList.Column;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListColumnClickedListener;
-import net.sourceforge.atunes.gui.views.controls.playList.PlayListColumnSelector;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
+import net.sourceforge.atunes.gui.views.dialogs.ColumnSetSelectorDialog;
 import net.sourceforge.atunes.gui.views.panels.PlayListControlsPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
-import net.sourceforge.atunes.kernel.modules.columns.PlayListColumns;
+import net.sourceforge.atunes.kernel.modules.columns.Column;
+import net.sourceforge.atunes.kernel.modules.columns.PlayListColumnSet;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
@@ -85,13 +86,12 @@ public final class PlayListController extends SimpleController<PlayListPanel> im
      */
     public void arrangeColumns() {
         // Show column selector
-        PlayListColumnSelector selector = GuiHandler.getInstance().getPlayListColumnSelector();
-        selector.setColumns(PlayListColumns.getColumnsForSelection());
+        ColumnSetSelectorDialog selector = GuiHandler.getInstance().getColumnSelector();
+        selector.setColumnSet(PlayListColumnSet.getInstance());
         selector.setVisible(true);
 
         // Apply changes
         ((PlayListColumnModel) getComponentControlled().getPlayListTable().getColumnModel()).arrangeColumns(true);
-
     }
 
     /**
@@ -282,7 +282,7 @@ public final class PlayListController extends SimpleController<PlayListPanel> im
 
     public void refreshPlayList() {
         int[] selectedRows = GuiHandler.getInstance().getPlayListTable().getSelectedRows();
-        ((PlayListTableModel) GuiHandler.getInstance().getPlayListTable().getModel()).refresh();
+        ((PlayListTableModel) GuiHandler.getInstance().getPlayListTable().getModel()).refresh(TableModelEvent.UPDATE);
         // Select previous selected rows
         for (int i = 0; i < selectedRows.length; i++) {
             GuiHandler.getInstance().getPlayListTable().getSelectionModel().addSelectionInterval(selectedRows[i], selectedRows[i]);

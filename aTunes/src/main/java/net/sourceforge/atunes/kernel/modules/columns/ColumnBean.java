@@ -17,7 +17,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package net.sourceforge.atunes.gui.views.controls.playList;
+package net.sourceforge.atunes.kernel.modules.columns;
 
 /**
  * This class represents information about a column to be saved into application

@@ -19,15 +19,9 @@
  */
 package net.sourceforge.atunes.kernel.modules.playlist;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
-
-import net.sourceforge.atunes.gui.views.controls.playList.Column;
-import net.sourceforge.atunes.kernel.modules.columns.PlayListColumns;
+import net.sourceforge.atunes.gui.model.CommonTableModel;
+import net.sourceforge.atunes.kernel.modules.columns.Column;
+import net.sourceforge.atunes.kernel.modules.columns.PlayListColumnSet;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -36,9 +30,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * 
  * @author fleax
  */
-public class PlayListTableModel implements TableModel {
-
-    private List<TableModelListener> listeners;
+public class PlayListTableModel extends CommonTableModel {
 
     /**
      * Reference to the visible play list
@@ -52,18 +44,7 @@ public class PlayListTableModel implements TableModel {
      *            the table
      */
     public PlayListTableModel() {
-        listeners = new ArrayList<TableModelListener>();
-    }
-
-    /**
-     * Adds a listener.
-     * 
-     * @param l
-     *            the l
-     */
-    @Override
-    public void addTableModelListener(TableModelListener l) {
-        listeners.add(l);
+        super();
     }
 
     /**
@@ -76,7 +57,7 @@ public class PlayListTableModel implements TableModel {
      */
     @Override
     public Class<?> getColumnClass(int colIndex) {
-        return PlayListColumns.getColumn(PlayListColumns.getColumnId(colIndex)).getColumnClass();
+        return PlayListColumnSet.getInstance().getColumn(PlayListColumnSet.getInstance().getColumnId(colIndex)).getColumnClass();
     }
 
     /**
@@ -86,7 +67,7 @@ public class PlayListTableModel implements TableModel {
      */
     @Override
     public int getColumnCount() {
-        return PlayListColumns.getVisibleColumnCount();
+        return PlayListColumnSet.getInstance().getVisibleColumnCount();
     }
 
     /**
@@ -99,7 +80,7 @@ public class PlayListTableModel implements TableModel {
      */
     @Override
     public String getColumnName(int colIndex) {
-        return I18nUtils.getString(PlayListColumns.getColumn(PlayListColumns.getColumnId(colIndex)).getHeaderText());
+        return I18nUtils.getString(PlayListColumnSet.getInstance().getColumn(PlayListColumnSet.getInstance().getColumnId(colIndex)).getHeaderText());
     }
 
     /**
@@ -129,7 +110,7 @@ public class PlayListTableModel implements TableModel {
     public Object getValueAt(int rowIndex, int colIndex) {
         // Call Column method to get value from AudioFile
         if (visiblePlayList != null) {
-            return PlayListColumns.getColumn(PlayListColumns.getColumnId(colIndex)).getValueFor(visiblePlayList.get(rowIndex));
+            return PlayListColumnSet.getInstance().getColumn(PlayListColumnSet.getInstance().getColumnId(colIndex)).getValueFor(visiblePlayList.get(rowIndex));
         }
         return null;
     }
@@ -147,33 +128,10 @@ public class PlayListTableModel implements TableModel {
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         // Column ID
-        Class<? extends Column> c = PlayListColumns.getColumnId(columnIndex);
+        Class<? extends Column> c = PlayListColumnSet.getInstance().getColumnId(columnIndex);
 
         // Call Column method to see if is editable
-        return PlayListColumns.getColumn(c).isEditable();
-    }
-
-    /**
-     * Refresh table.
-     */
-    public void refresh() {
-        TableModelEvent event;
-        event = new TableModelEvent(this, -1, -1, TableModelEvent.ALL_COLUMNS, TableModelEvent.UPDATE);
-
-        for (int i = 0; i < listeners.size(); i++) {
-            listeners.get(i).tableChanged(event);
-        }
-    }
-
-    /**
-     * Removes a listener.
-     * 
-     * @param l
-     *            the l
-     */
-    @Override
-    public void removeTableModelListener(TableModelListener l) {
-        listeners.remove(l);
+        return PlayListColumnSet.getInstance().getColumn(c).isEditable();
     }
 
     /**
@@ -192,10 +150,10 @@ public class PlayListTableModel implements TableModel {
         AudioObject file = visiblePlayList.get(rowIndex);
 
         // Column ID
-        Class<? extends Column> c = PlayListColumns.getColumnId(columnIndex);
+        Class<? extends Column> c = PlayListColumnSet.getInstance().getColumnId(columnIndex);
 
         // Call column set value
-        PlayListColumns.getColumn(c).setValueFor(file, aValue);
+        PlayListColumnSet.getInstance().getColumn(c).setValueFor(file, aValue);
     }
 
     /**

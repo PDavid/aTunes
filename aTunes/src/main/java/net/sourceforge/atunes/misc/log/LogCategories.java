@@ -135,6 +135,9 @@ public class LogCategories {
     /** The Constant VIEW. */
     public static final String VIEW = "VIEW        ";
 
+    /** The Constant COLUMNS. */
+    public static final String COLUMNS = "COLUMNS     ";
+
     /** The Constant COMMAND. */
     public static final String COMMAND = "COMMAND     ";
 

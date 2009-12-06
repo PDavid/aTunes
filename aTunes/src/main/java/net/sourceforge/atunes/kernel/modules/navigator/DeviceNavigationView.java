@@ -38,7 +38,6 @@ import javax.swing.tree.TreeNode;
 
 import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.gui.images.ImageLoader;
-import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.gui.views.menus.EditTagMenu;
 import net.sourceforge.atunes.kernel.actions.Actions;
@@ -57,8 +56,6 @@ import net.sourceforge.atunes.kernel.actions.SearchArtistAtAction;
 import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
-import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.kernel.modules.repository.model.Album;
 import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.model.Folder;
@@ -451,65 +448,40 @@ public final class DeviceNavigationView extends NavigationView {
         return songs;
     }
 
+    
+    @Override
+    public boolean isUseDefaultNavigatorColumns() {
+    	return true;
+    }
+
     @Override
     public Class<?> getNavigatorTableColumnClass(int columnIndex) {
-        switch (columnIndex) {
-        case 0:
-            return Property.class;
-        case 1:
-            return String.class;
-        case 2:
-            return Long.class;
-        default:
-            return Long.class;
-        }
+    	// Not used since isUseDefaultNavigatorColumns returns true
+    	return null;
     }
 
     @Override
     public int getNavigatorTableColumnCount() {
-        return 3;
+    	// Not used since isUseDefaultNavigatorColumns returns true
+    	return 0;
     }
 
     @Override
     public String getNavigatorTableColumnName(int columnIndex) {
-        switch (columnIndex) {
-        case 0:
-            return "";
-        case 1:
-            return I18nUtils.getString("FILE");
-        case 2:
-            return I18nUtils.getString("DURATION");
-        default:
-            return "";
-        }
+    	// Not used since isUseDefaultNavigatorColumns returns true
+    	return null;
     }
 
     @Override
     public Object getNavigatorTableValueAt(AudioObject audioObject, int columnIndex) {
-        if (audioObject instanceof AudioFile) {
-            if (columnIndex == 0) {
-                return ApplicationState.getInstance().isShowFavoritesInNavigator() && FavoritesHandler.getInstance().getFavoriteSongs().contains(audioObject) ? Property.FAVORITE
-                        : Property.NO_PROPERTIES;
-            } else if (columnIndex == 1) {
-                if (ApplicationState.getInstance().getViewMode() != ViewMode.FOLDER) {
-                    return audioObject.getTitleOrFileName();
-                }
-                return ((AudioFile) audioObject).getFile().getName();
-            } else if (columnIndex == 2) {
-                return audioObject.getDuration();
-            }
-        }
-        return "";
+    	// Not used since isUseDefaultNavigatorColumns returns true
+    	return null;
     }
 
     @Override
     public int getNavigatorTableMaxWidthForColumn(int columnIndex) {
-        if (columnIndex == 0) {
-            return 20;
-        } else if (columnIndex == 2) {
-            return 50;
-        }
-        return -1;
+    	// Not used since isUseDefaultNavigatorColumns returns true
+    	return 0;
     }
 
     @Override

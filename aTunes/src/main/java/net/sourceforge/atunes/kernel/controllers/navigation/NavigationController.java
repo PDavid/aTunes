@@ -21,6 +21,8 @@ package net.sourceforge.atunes.kernel.controllers.navigation;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,11 +40,13 @@ import javax.swing.SwingWorker;
 import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.TableModelEvent;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
+import net.sourceforge.atunes.gui.model.CommonColumnModel;
 import net.sourceforge.atunes.gui.model.NavigationTableColumnModel;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
@@ -51,11 +55,14 @@ import net.sourceforge.atunes.gui.views.panels.NavigationPanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationFilterPanel.NavigationFilterListener;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.actions.Actions;
+import net.sourceforge.atunes.kernel.actions.ArrangeNavigationTableColumns;
 import net.sourceforge.atunes.kernel.actions.ShowAlbumsInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowArtistsInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowFoldersInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowGenresInNavigatorAction;
 import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
+import net.sourceforge.atunes.kernel.modules.columns.ColumnRenderers;
+import net.sourceforge.atunes.kernel.modules.columns.NavigatorColumnSet;
 import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
 import net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
@@ -88,6 +95,9 @@ public final class NavigationController extends SimpleController<NavigationPanel
 
     /** The popupmenu caller. */
     private JComponent popupMenuCaller;
+    
+    /** The column model */
+    private CommonColumnModel columnModel;
 
     /** The timer. */
     private Timer timer = new Timer(0, new ActionListener() {
@@ -137,7 +147,20 @@ public final class NavigationController extends SimpleController<NavigationPanel
     @Override
     protected void addBindings() {
         getComponentControlled().getNavigationTable().setModel(new NavigationTableModel());
-        getComponentControlled().getNavigationTable().setColumnModel(new NavigationTableColumnModel());
+        columnModel = new NavigationTableColumnModel(getComponentControlled().getNavigationTable());
+        getComponentControlled().getNavigationTable().setColumnModel(columnModel);
+        ColumnRenderers.addRenderers(getComponentControlled().getNavigationTable(), columnModel);
+
+        getComponentControlled().getNavigationTable().getTableHeader().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Use right button to arrange columns
+                if (e.getButton() == MouseEvent.BUTTON3) {
+                	getComponentControlled().getNavigationTableHeaderMenu().show(getComponentControlled().getNavigationTable().getTableHeader(), e.getX(), e.getY());
+                }
+            }
+        });
+
 
         // Add tree selection listeners to all views
         for (NavigationView view : NavigationHandler.getInstance().getNavigationViews()) {
@@ -309,7 +332,7 @@ public final class NavigationController extends SimpleController<NavigationPanel
      * Refresh table.
      */
     public void refreshTable() {
-        ((NavigationTableModel) getComponentControlled().getNavigationTable().getModel()).refresh();
+        ((NavigationTableModel) getComponentControlled().getNavigationTable().getModel()).refresh(TableModelEvent.UPDATE);
     }
 
     /**
@@ -332,6 +355,9 @@ public final class NavigationController extends SimpleController<NavigationPanel
     public void setNavigationView(String view) {
         getLogger().debugMethodCall(LogCategories.CONTROLLER, new String[] { view });
 
+        // Disable column listeners before change navigation view
+        ((NavigationTableColumnModel) getComponentControlled().getNavigationTable().getColumnModel()).enableColumnChange(false);
+        
         Class<? extends NavigationView> navigationView = NavigationHandler.getInstance().getViewByName(view);
         if (navigationView == null) {
             navigationView = RepositoryNavigationView.class;
@@ -358,10 +384,16 @@ public final class NavigationController extends SimpleController<NavigationPanel
         getComponentControlled().getTreeFilterPanel().setVisible(false);
         NavigationHandler.getInstance().refreshCurrentView();
 
+        boolean useDefaultNavigatorColumns = NavigationHandler.getInstance().getView(navigationView).isUseDefaultNavigatorColumns();
+        // Allow arrange columns if view uses default column set
+        Actions.getAction(ArrangeNavigationTableColumns.class).setEnabled(useDefaultNavigatorColumns);
+        // Enable column change
+        ((NavigationTableColumnModel) getComponentControlled().getNavigationTable().getColumnModel()).enableColumnChange(useDefaultNavigatorColumns);
+        
         // Clear table filter
         getComponentControlled().getTableFilterPanel().setFilter(null);
         getComponentControlled().getTableFilterPanel().setVisible(false);
-
+        
         JTree tree = NavigationHandler.getInstance().getCurrentView().getTree();
 
         if (tree.getSelectionPath() != null) {
@@ -432,7 +464,13 @@ public final class NavigationController extends SimpleController<NavigationPanel
             return audioObjects;
         }
 
-        return NavigationHandler.getInstance().getCurrentView().filterNavigatorTable(audioObjects, getComponentControlled().getTableFilterPanel().getFilter());
+        if (NavigationHandler.getInstance().getCurrentView().isUseDefaultNavigatorColumns()) {
+        	// Use column set filtering
+        	return NavigatorColumnSet.getInstance().filterAudioObjects(audioObjects, getComponentControlled().getTableFilterPanel().getFilter());
+        } else {
+        	// Use custom filter
+        	return NavigationHandler.getInstance().getCurrentView().filterNavigatorTable(audioObjects, getComponentControlled().getTableFilterPanel().getFilter());
+        }
     }
 
     /**
@@ -469,5 +507,5 @@ public final class NavigationController extends SimpleController<NavigationPanel
     @Override
     public void audioFilesRemoved(List<AudioFile> audioFiles) {
         notifyReload();
-    }
+    }    
 }

@@ -23,7 +23,6 @@ import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
-import net.sourceforge.atunes.gui.views.controls.playList.Column;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
@@ -39,7 +38,7 @@ public class TypeColumn extends Column {
     public TypeColumn() {
         super("TYPE", ImageIcon.class);
         setResizable(false);
-        setWidth(16);
+        setWidth(20);
         setVisible(true);
         setAlignment(SwingConstants.CENTER);
     }

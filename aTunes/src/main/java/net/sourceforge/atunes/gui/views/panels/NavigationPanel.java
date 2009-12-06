@@ -20,14 +20,12 @@
 package net.sourceforge.atunes.gui.views.panels;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
@@ -35,16 +33,13 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
-import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.gui.views.controls.NavigationTable;
+import net.sourceforge.atunes.kernel.actions.Actions;
+import net.sourceforge.atunes.kernel.actions.ArrangeNavigationTableColumns;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationView;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.StringUtils;
-
-import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
 public final class NavigationPanel extends JPanel {
 
@@ -64,7 +59,10 @@ public final class NavigationPanel extends JPanel {
 
     /** The split pane. */
     private JSplitPane splitPane;
-
+    
+    /** Popup menu for header of navigation table */
+    private JPopupMenu navigationTableHeaderMenu;
+    
     /**
      * The tree filter
      */
@@ -107,81 +105,14 @@ public final class NavigationPanel extends JPanel {
         treeFilterPanel.setVisible(false);
 
         navigationTable = new NavigationTable();
-        navigationTable.getTableHeader().setResizingAllowed(false);
-        navigationTable.getTableHeader().setReorderingAllowed(false);
         navigationTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
-        navigationTable.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
+        // Disable autoresize, as we will control it
+        navigationTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        
+        navigationTableHeaderMenu = new JPopupMenu();
+        navigationTableHeaderMenu.add(Actions.getAction(ArrangeNavigationTableColumns.class));
 
-        navigationTable.setDefaultRenderer(Property.class, new SubstanceDefaultTableCellRenderer() {
-            private static final long serialVersionUID = 1337377851290885658L;
-
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                Component comp = super.getTableCellRendererComponent(table, "", isSelected, hasFocus, row, column);
-                ImageIcon icon = ImageLoader.getImage(ImageLoader.EMPTY);
-                Property val = (Property) value;
-                if (val == Property.FAVORITE) {
-                    icon = ImageLoader.getImage(ImageLoader.FAVORITE);
-                } else if (val == Property.NOT_LISTENED_ENTRY) {
-                    icon = ImageLoader.getImage(ImageLoader.NEW_PODCAST_ENTRY);
-                } else if (val == Property.DOWNLOADED_ENTRY) {
-                    icon = ImageLoader.getImage(ImageLoader.DOWNLOAD_PODCAST);
-                } else if (val == Property.OLD_ENTRY) {
-                    icon = ImageLoader.getImage(ImageLoader.REMOVE);
-                }
-                ((JLabel) comp).setIcon(icon);
-                return comp;
-
-            }
-        });
-
-        navigationTable.setDefaultRenderer(Integer.class, new SubstanceDefaultTableCellRenderer() {
-            private static final long serialVersionUID = 8693307342964711167L;
-
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                Integer intValue = (Integer) value;
-                String stringValue;
-                if (intValue <= 0) {
-                    stringValue = "";
-                } else {
-                    stringValue = String.valueOf(intValue);
-                }
-                Component comp = super.getTableCellRendererComponent(table, stringValue, isSelected, hasFocus, row, column);
-                ((JLabel) comp).setHorizontalAlignment(SwingConstants.CENTER);
-                return comp;
-            }
-        });
-
-        navigationTable.setDefaultRenderer(String.class, new SubstanceDefaultTableCellRenderer() {
-            private static final long serialVersionUID = 8693307342964711167L;
-
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                ((JLabel) comp).setToolTipText((String) value);
-                GuiUtils.applyComponentOrientation(((JLabel) comp));
-                return comp;
-            }
-        });
-
-        navigationTable.setDefaultRenderer(Long.class, new SubstanceDefaultTableCellRenderer() {
-            private static final long serialVersionUID = 7614440163302045553L;
-
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                Component comp;
-                if (((Integer) value) > 0) {
-                    comp = super.getTableCellRendererComponent(table, StringUtils.seconds2String((Integer) value), isSelected, hasFocus, row, column);
-                    ((JLabel) comp).setHorizontalAlignment(SwingConstants.RIGHT);
-                } else {
-                    comp = super.getTableCellRendererComponent(table, "-", isSelected, hasFocus, row, column);
-                    ((JLabel) comp).setHorizontalAlignment(SwingConstants.CENTER);
-                }
-                return comp;
-            }
-        });
 
         JScrollPane scrollPane2 = new JScrollPane(navigationTable);
         //scrollPane2.setBorder(BorderFactory.createEmptyBorder());
@@ -304,4 +235,11 @@ public final class NavigationPanel extends JPanel {
     public NavigationFilterPanel getTableFilterPanel() {
         return tableFilterPanel;
     }
+
+	/**
+	 * @return the navigationTableHeaderMenu
+	 */
+	public JPopupMenu getNavigationTableHeaderMenu() {
+		return navigationTableHeaderMenu;
+	}
 }

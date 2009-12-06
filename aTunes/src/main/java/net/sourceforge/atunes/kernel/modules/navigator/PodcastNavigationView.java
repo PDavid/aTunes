@@ -59,6 +59,7 @@ import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jvnet.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
 
@@ -223,6 +224,11 @@ public final class PodcastNavigationView extends NavigationView {
             }
         }
     }
+    
+    @Override
+    public boolean isUseDefaultNavigatorColumns() {
+    	return false;
+    }
 
     @Override
     public Class<?> getNavigatorTableColumnClass(int columnIndex) {
@@ -236,9 +242,9 @@ public final class PodcastNavigationView extends NavigationView {
         case 3:
             return String.class;
         case 4:
-            return Long.class;
+            return String.class;
         default:
-            return Long.class;
+            return String.class;
         }
     }
 
@@ -277,7 +283,7 @@ public final class PodcastNavigationView extends NavigationView {
             } else if (columnIndex == 3) {
                 return audioObject.getTitleOrFileName();
             } else if (columnIndex == 4) {
-                return audioObject.getDuration();
+                return StringUtils.seconds2String(audioObject.getDuration());
             }
         }
         return "";
@@ -290,9 +296,11 @@ public final class PodcastNavigationView extends NavigationView {
         } else if (columnIndex == 1) {
             return 20;
         } else if (columnIndex == 2) {
-            return 18;
+            return 20;
+        } else if (columnIndex == 3) {
+        	return 300;
         } else if (columnIndex == 4) {
-            return 50;
+            return 60;
         }
         return -1;
     }

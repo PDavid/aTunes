@@ -23,7 +23,6 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
-import net.sourceforge.atunes.gui.views.controls.playList.Column;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.model.AudioObject;
 
@@ -37,6 +36,7 @@ public class AlbumColumn extends Column {
     public AlbumColumn() {
         super("ALBUM", JLabel.class);
         setVisible(true);
+        setUsedForFilter(true);
     }
 
     @Override
@@ -55,6 +55,11 @@ public class AlbumColumn extends Column {
         // Return album
         return new JLabel(audioObject.getAlbum(), !FavoritesHandler.getInstance().getFavoriteAlbumsInfo().containsKey(audioObject.getAlbum()) ? null : ImageLoader
                 .getImage(ImageLoader.ALBUM_FAVORITE), SwingConstants.LEFT);
+    }
+    
+    @Override
+    public String getValueForFilter(AudioObject audioObject) {
+    	return audioObject.getAlbum();
     }
 
 }

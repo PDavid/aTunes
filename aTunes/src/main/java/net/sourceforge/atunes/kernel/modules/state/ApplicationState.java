@@ -27,9 +27,9 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.frame.StandardFrame;
-import net.sourceforge.atunes.gui.views.controls.playList.ColumnBean;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
+import net.sourceforge.atunes.kernel.modules.columns.ColumnBean;
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeysConfig;
 import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
 import net.sourceforge.atunes.kernel.modules.internetsearch.SearchFactory;
@@ -270,8 +270,11 @@ public class ApplicationState {
     private String cdRipperFileNamePattern;
 
     // Columns config
-    /** The columns. */
+    /** The columns of play list. */
     private Map<String, ColumnBean> columns;
+    
+    /** The columns of navigator. */
+    private Map<String, ColumnBean> navigatorColumns;
 
     // Split panes divider location
     /** The left vertical split pane divider location. */
@@ -2450,6 +2453,20 @@ public class ApplicationState {
 	 */
 	public void setShowContextAlbumsInGrid(boolean showContextAlbumsInGrid) {
 		this.showContextAlbumsInGrid = showContextAlbumsInGrid;
+	}
+
+	/**
+	 * @return the navigatorColumns
+	 */
+	public Map<String, ColumnBean> getNavigatorColumns() {
+		return navigatorColumns;
+	}
+
+	/**
+	 * @param navigatorColumns the navigatorColumns to set
+	 */
+	public void setNavigatorColumns(Map<String, ColumnBean> navigatorColumns) {
+		this.navigatorColumns = navigatorColumns;
 	}
 
 }

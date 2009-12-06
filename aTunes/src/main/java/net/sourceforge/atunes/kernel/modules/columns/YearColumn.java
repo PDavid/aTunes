@@ -21,7 +21,6 @@ package net.sourceforge.atunes.kernel.modules.columns;
 
 import javax.swing.SwingConstants;
 
-import net.sourceforge.atunes.gui.views.controls.playList.Column;
 import net.sourceforge.atunes.model.AudioObject;
 
 public class YearColumn extends Column {
@@ -36,6 +35,7 @@ public class YearColumn extends Column {
         setWidth(100);
         setAlignment(SwingConstants.CENTER);
         setVisible(false);
+        setUsedForFilter(true);
     }
 
     @Override
@@ -47,6 +47,11 @@ public class YearColumn extends Column {
     public Object getValueFor(AudioObject audioObject) {
         // Return year
         return audioObject.getYear();
+    }
+    
+    @Override
+    public String getValueForFilter(AudioObject audioObject) {
+    	return audioObject.getYear();
     }
 
 }

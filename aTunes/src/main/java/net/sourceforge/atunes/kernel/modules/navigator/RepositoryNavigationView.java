@@ -38,7 +38,6 @@ import javax.swing.tree.TreeNode;
 
 import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.gui.images.ImageLoader;
-import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.gui.views.menus.EditTagMenu;
@@ -63,7 +62,6 @@ import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
 import net.sourceforge.atunes.kernel.modules.repository.HighlightFoldersByIncompleteTags;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.kernel.modules.repository.model.Album;
 import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
@@ -487,104 +485,38 @@ public class RepositoryNavigationView extends NavigationView {
     }
 
     @Override
+    public boolean isUseDefaultNavigatorColumns() {
+    	return true;
+    }
+    
+    @Override
     public Class<?> getNavigatorTableColumnClass(int columnIndex) {
-        if (columnIndex == 0) {
-            return Property.class;
-        } else if (columnIndex == 1) {
-            if (ApplicationState.getInstance().getViewMode() != ViewMode.FOLDER) {
-                return Integer.class;
-            }
-            return String.class;
-        } else if (columnIndex == 2) {
-            if (ApplicationState.getInstance().getViewMode() != ViewMode.FOLDER) {
-                return String.class;
-            }
-            return Long.class;
-        } else if (columnIndex == 3) {
-            return Long.class;
-        } else {
-            return Long.class;
-        }
+    	// Not used since isUseDefaultNavigatorColumns returns true
+    	return null;
     }
 
     @Override
     public int getNavigatorTableColumnCount() {
-        if (ApplicationState.getInstance().getViewMode() != ViewMode.FOLDER) {
-            return 4;
-        }
-        return 3;
+    	// Not used since isUseDefaultNavigatorColumns returns true
+    	return 0;
     }
 
     @Override
     public String getNavigatorTableColumnName(int columnIndex) {
-        if (ApplicationState.getInstance().getViewMode() == ViewMode.FOLDER) {
-            switch (columnIndex) {
-            case 0:
-                return "";
-            case 1:
-                return I18nUtils.getString("FILE");
-            case 2:
-                return I18nUtils.getString("DURATION");
-            }
-        } else {
-            switch (columnIndex) {
-            case 0:
-                return "";
-            case 1:
-                return "";
-            case 2:
-                return I18nUtils.getString("TITLE");
-            case 3:
-                return I18nUtils.getString("DURATION");
-            }
-        }
-        return "";
+    	// Not used since isUseDefaultNavigatorColumns returns true
+    	return null;
     }
 
     @Override
     public Object getNavigatorTableValueAt(AudioObject audioObject, int columnIndex) {
-        if (audioObject instanceof AudioFile) {
-            if (columnIndex == 0) {
-                return ApplicationState.getInstance().isShowFavoritesInNavigator() && FavoritesHandler.getInstance().getFavoriteSongs().contains(audioObject) ? Property.FAVORITE
-                        : Property.NO_PROPERTIES;
-            } else if (columnIndex == 1) {
-                if (ApplicationState.getInstance().getViewMode() != ViewMode.FOLDER) {
-                    return audioObject.getTrackNumber();
-                }
-                return ((AudioFile) audioObject).getFile().getName();
-            } else if (columnIndex == 2) {
-                if (ApplicationState.getInstance().getViewMode() != ViewMode.FOLDER) {
-                    return audioObject.getTitleOrFileName();
-                }
-                return audioObject.getDuration();
-            } else {
-                return audioObject.getDuration();
-            }
-        }
-        return "";
+    	// Not used since isUseDefaultNavigatorColumns returns true
+    	return null;
     }
 
     @Override
     public int getNavigatorTableMaxWidthForColumn(int columnIndex) {
-        if (columnIndex == 0) {
-            return 20;
-        } else if (columnIndex == 1) {
-            if (ApplicationState.getInstance().getViewMode() == ViewMode.FOLDER) {
-                return -1;
-            }
-            return 25;
-        } else if (columnIndex == 2) {
-            if (ApplicationState.getInstance().getViewMode() != ViewMode.FOLDER) {
-                return -1;
-            }
-            return 50;
-        } else if (columnIndex == 3) {
-            if (ApplicationState.getInstance().getViewMode() == ViewMode.FOLDER) {
-                return -1;
-            }
-            return 50;
-        }
-        return -1;
+    	// Not used since isUseDefaultNavigatorColumns returns true
+    	return 0;
     }
 
     @Override

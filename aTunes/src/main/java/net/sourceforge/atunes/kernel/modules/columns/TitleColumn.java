@@ -19,7 +19,6 @@
  */
 package net.sourceforge.atunes.kernel.modules.columns;
 
-import net.sourceforge.atunes.gui.views.controls.playList.Column;
 import net.sourceforge.atunes.model.AudioObject;
 
 public class TitleColumn extends Column {
@@ -32,6 +31,7 @@ public class TitleColumn extends Column {
     public TitleColumn() {
         super("TITLE", AudioObject.class);
         setVisible(true);
+        setUsedForFilter(true);
     }
 
     @Override
@@ -43,6 +43,11 @@ public class TitleColumn extends Column {
     public Object getValueFor(AudioObject audioObject) {
         // Return the file
         return audioObject;
+    }
+    
+    @Override
+    public String getValueForFilter(AudioObject audioObject) {
+    	return audioObject.getTitle();
     }
 
 }

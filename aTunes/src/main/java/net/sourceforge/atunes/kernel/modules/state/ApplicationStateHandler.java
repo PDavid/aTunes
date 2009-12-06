@@ -45,7 +45,7 @@ import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.amazon.AmazonService;
-import net.sourceforge.atunes.kernel.modules.columns.PlayListColumns;
+import net.sourceforge.atunes.kernel.modules.columns.ColumnSets;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeyHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
@@ -756,7 +756,7 @@ public final class ApplicationStateHandler extends Handler {
         ApplicationState.getInstance().setEqualizerSettings(PlayerHandler.getInstance().getEqualizer().getEqualizerValues());
 
         // Save column settings
-        PlayListColumns.storeCurrentColumnSettings();
+        ColumnSets.storeColumnSettings();
 
         // Encrypt passwords
         try {

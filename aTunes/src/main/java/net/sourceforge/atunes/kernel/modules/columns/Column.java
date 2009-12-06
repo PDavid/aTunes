@@ -17,7 +17,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package net.sourceforge.atunes.gui.views.controls.playList;
+package net.sourceforge.atunes.kernel.modules.columns;
 
 import java.io.Serializable;
 import java.util.Comparator;
@@ -31,7 +31,7 @@ import net.sourceforge.atunes.utils.GuiUtils;
 import org.commonjukebox.plugins.PluginApi;
 
 /**
- * This class represents a column of Play List.
+ * This class represents a column
  * 
  * @author fleax
  */
@@ -70,6 +70,9 @@ public abstract class Column implements Comparable<Column>, Serializable {
 
     /** Editable flag. */
     private boolean editable = false;
+    
+    /** Indicates if this column can be used to filter objects */
+    private boolean usedForFilter = false;
 
     /**
      * Last sort order used for this column
@@ -89,7 +92,6 @@ public abstract class Column implements Comparable<Column>, Serializable {
     public Column(String name, Class<?> columnClass) {
         this.columnName = name;
         this.columnClass = columnClass;
-        this.order = ColumnOrder.getOrder();
     }
 
     /**
@@ -210,6 +212,14 @@ public abstract class Column implements Comparable<Column>, Serializable {
      * @return the value for
      */
     public abstract Object getValueFor(AudioObject audioObject);
+    
+    /**
+     * Returns if this column can be shown only in play list. By default <code>false</code>
+     * @return
+     */
+    public boolean isPlayListExclusive() {
+    	return false;
+    }
 
     /**
      * Gets the width.
@@ -375,5 +385,28 @@ public abstract class Column implements Comparable<Column>, Serializable {
             };
         }
     }
+
+	/**
+	 * @return the usedForFilter
+	 */
+	public boolean isUsedForFilter() {
+		return usedForFilter;
+	}
+
+	/**
+	 * @param usedForFilter the usedForFilter to set
+	 */
+	public void setUsedForFilter(boolean usedForFilter) {
+		this.usedForFilter = usedForFilter;
+	}
+	
+	/**
+	 * Returns string used to filter by this column. If usedForFilter is <code>true</code> this method must be overrided
+	 * @param audioObject
+	 * @return
+	 */
+	public String getValueForFilter(AudioObject audioObject) {
+		return null;
+	}
 
 }

@@ -35,7 +35,7 @@ class ShufflePointedList extends PointedList<Integer> {
             add(plao.getPosition());
         }
 
-        int currentPointer = getPointer();
+        int currentPointer = getPointer() != null ? getPointer() : 0;
         Integer pointedObject = getCurrentObject();
 
         // Shuffle
