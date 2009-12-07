@@ -27,9 +27,6 @@ import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.model.Folder;
 import net.sourceforge.atunes.kernel.modules.repository.model.Genre;
 
-/**
- * The Class RepositoryStructure.
- */
 public class RepositoryStructure implements Serializable {
 
     private static final long serialVersionUID = -2230698137764691254L;

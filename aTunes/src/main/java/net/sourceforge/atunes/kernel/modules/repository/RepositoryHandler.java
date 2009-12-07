@@ -20,6 +20,7 @@
 package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -32,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import javax.swing.Action;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
@@ -45,6 +47,7 @@ import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ConnectDeviceAction;
+import net.sourceforge.atunes.kernel.actions.ExitAction;
 import net.sourceforge.atunes.kernel.actions.ExportAction;
 import net.sourceforge.atunes.kernel.actions.ImportToRepositoryAction;
 import net.sourceforge.atunes.kernel.actions.RefreshRepositoryAction;
@@ -73,7 +76,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 import org.apache.commons.io.FilenameUtils;
 
 /**
- * The repository handler
+ * The repository handler.
  */
 public final class RepositoryHandler extends Handler implements LoaderListener, AudioFilesRemovedListener {
 
@@ -87,21 +90,21 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
     Repository repositoryRetrievedFromCache = null;
     /** Listeners notified when an audio file is removed */
     private List<AudioFilesRemovedListener> audioFilesRemovedListeners = new ArrayList<AudioFilesRemovedListener>();
-    
+
     private RepositoryProgressDialog progressDialog;
 
     private MouseListener progressBarMouseAdapter = new MouseAdapter() {
-    	public void mouseClicked(java.awt.event.MouseEvent e) {
-			backgroundLoad = false;
-			currentLoader.setPriority(Thread.MAX_PRIORITY);
-			GuiHandler.getInstance().hideProgressBar();
-			if (progressDialog != null) {
-				progressDialog.showProgressDialog();
-			}
-	        GuiHandler.getInstance().getProgressBar().removeMouseListener(progressBarMouseAdapter);
-    	};
-	};
-    
+        public void mouseClicked(MouseEvent e) {
+            backgroundLoad = false;
+            currentLoader.setPriority(Thread.MAX_PRIORITY);
+            GuiHandler.getInstance().hideProgressBar();
+            if (progressDialog != null) {
+                progressDialog.showProgressDialog();
+            }
+            GuiHandler.getInstance().getProgressBar().removeMouseListener(progressBarMouseAdapter);
+        };
+    };
+
     /**
      * Instantiates a new repository handler.
      */
@@ -149,14 +152,13 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
         });
         SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
             @Override
-            protected Void doInBackground() throws Exception {
+            protected Void doInBackground() {
                 RepositoryLoader.addToRepository(repository, files);
                 return null;
             }
 
             @Override
             protected void done() {
-                super.done();
                 GuiHandler.getInstance().hideProgressBar();
                 GuiHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
                 if (ControllerProxy.getInstance().getNavigationController() != null) {
@@ -179,7 +181,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
      *            the picture
      */
     public void addExternalPictureForAlbum(String artistName, String albumName, File picture) {
-    	RepositoryLoader.addExternalPictureForAlbum(repository, artistName, albumName, picture);
+        RepositoryLoader.addExternalPictureForAlbum(repository, artistName, albumName, picture);
     }
 
     /**
@@ -189,35 +191,37 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
         if (repositoryRefresher != null) {
             repositoryRefresher.interrupt();
         }
-        // Only store repository if it's dirty
-        if (repository.isDirty()) {
-        	ApplicationStateHandler.getInstance().persistRepositoryCache(repository, true);
-        } else {
-        	getLogger().info(LogCategories.REPOSITORY, "Repository is clean");
-        }
+        if (repository != null) {
+            // Only store repository if it's dirty
+            if (repository.isDirty()) {
+                ApplicationStateHandler.getInstance().persistRepositoryCache(repository, true);
+            } else {
+                getLogger().info(LogCategories.REPOSITORY, "Repository is clean");
+            }
 
-        // Execute command after last access to repository
-        String command = ApplicationState.getInstance().getCommandAfterAccessRepository();
-        if (command != null && !command.trim().equals("")) {
-            try {
-                Process p = Runtime.getRuntime().exec(command);
-                // Wait process to end
-                p.waitFor();
-                int rc = p.exitValue();
-                getLogger().info(LogCategories.END, StringUtils.getString("Command '", command, "' return code: ", rc));
-            } catch (Exception e) {
-                getLogger().error(LogCategories.END, e);
+            // Execute command after last access to repository
+            String command = ApplicationState.getInstance().getCommandAfterAccessRepository();
+            if (command != null && !command.trim().isEmpty()) {
+                try {
+                    Process p = Runtime.getRuntime().exec(command);
+                    // Wait process to end
+                    p.waitFor();
+                    int rc = p.exitValue();
+                    getLogger().info(LogCategories.END, StringUtils.getString("Command '", command, "' return code: ", rc));
+                } catch (Exception e) {
+                    getLogger().error(LogCategories.END, e);
+                }
             }
         }
     }
 
     public List<File> getFolders() {
-    	if (repository != null) {
-    		return repository.getFolders();
-    	}
-    	return Collections.emptyList();
+        if (repository != null) {
+            return repository.getFolders();
+        }
+        return Collections.emptyList();
     }
-    
+
     /**
      * Gets the albums.
      * 
@@ -226,7 +230,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
     public List<Album> getAlbums() {
         List<Album> result = new ArrayList<Album>();
         if (repository != null) {
-            Collection<Artist> artists = repository.getStructure().getArtistStructure().values();
+            Collection<Artist> artists = repository.getArtistStructure().values();
             for (Artist a : artists) {
                 result.addAll(a.getAlbums().values());
             }
@@ -242,7 +246,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
      */
     public Map<String, Artist> getArtistStructure() {
         if (repository != null) {
-            return repository.getStructure().getArtistStructure();
+            return repository.getArtistStructure();
         }
         return new HashMap<String, Artist>();
     }
@@ -255,7 +259,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
     public List<Artist> getArtists() {
         List<Artist> result = new ArrayList<Artist>();
         if (repository != null) {
-            result.addAll(repository.getStructure().getArtistStructure().values());
+            result.addAll(repository.getArtistStructure().values());
             Collections.sort(result);
         }
         return result;
@@ -280,7 +284,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
      */
     public Map<String, Folder> getFolderStructure() {
         if (repository != null) {
-            return repository.getStructure().getFolderStructure();
+            return repository.getFolderStructure();
         }
         return new HashMap<String, Folder>();
     }
@@ -292,7 +296,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
      */
     public Map<String, Genre> getGenreStructure() {
         if (repository != null) {
-            return repository.getStructure().getGenreStructure();
+            return repository.getGenreStructure();
         }
         return new HashMap<String, Genre>();
     }
@@ -305,7 +309,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
     public Map<String, Album> getAlbumStructure() {
         if (repository != null) {
             Map<String, Album> albumsStructure = new HashMap<String, Album>();
-            Collection<Artist> artistCollection = repository.getStructure().getArtistStructure().values();
+            Collection<Artist> artistCollection = repository.getArtistStructure().values();
             for (Artist artist : artistCollection) {
                 for (Album album : artist.getAlbums().values()) {
                     albumsStructure.put(album.getNameAndArtist(), album);
@@ -315,18 +319,19 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
         }
         return new HashMap<String, Album>();
     }
-    
+
     /**
      * Returns number of root folders of repository
+     * 
      * @return
      */
     public int getFoldersCount() {
-    	if (repository != null) {
-    		return repository.getFolders().size();
-    	}
-    	return 0;
+        if (repository != null) {
+            return repository.getFolders().size();
+        }
+        return 0;
     }
-    
+
     /**
      * Gets the path for new audio files ripped.
      * 
@@ -372,7 +377,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
      * @return the repository path
      */
     public String getRepositoryPath() {
-    	// TODO: Remove this method as now more than one folder can be added to repository
+        // TODO: Remove this method as now more than one folder can be added to repository
         return repository != null ? repository.getFolders().get(0).getAbsolutePath() : "";
     }
 
@@ -384,13 +389,14 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
     public long getRepositoryTotalSize() {
         return repository != null ? repository.getTotalSizeInBytes() : 0;
     }
-    
+
     /**
      * Gets the number of files of repository
+     * 
      * @return
      */
     public int getNumberOfFiles() {
-    	return repository != null ? repository.countFiles() : 0;
+        return repository != null ? repository.countFiles() : 0;
     }
 
     /**
@@ -404,16 +410,17 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
         }
         return new ArrayList<AudioFile>();
     }
-    
+
     /**
      * Gets the audio files.
+     * 
      * @return
      */
     public Map<String, AudioFile> getAudioFilesMap() {
-    	if (repository != null) {
-    		return repository.getAudioFiles();
-    	}    	
-    	return new HashMap<String, AudioFile>();
+        if (repository != null) {
+            return repository.getAudioFiles();
+        }
+        return new HashMap<String, AudioFile>();
     }
 
     /**
@@ -478,84 +485,58 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
         notifyFinishRepositoryRead();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seenet.sourceforge.atunes.kernel.modules.repository.LoaderListener#
-     * notifyCurrentPath(java.lang.String)
-     */
     @Override
     public void notifyCurrentPath(final String dir) {
-    	if (progressDialog != null) {
-    		SwingUtilities.invokeLater(new Runnable() {
-    			@Override
-    			public void run() {
-    	    		progressDialog.getFolderLabel().setText(dir);
-    			}
-    		});
-    	}
+        if (progressDialog != null) {
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    progressDialog.getFolderLabel().setText(dir);
+                }
+            });
+        }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seenet.sourceforge.atunes.kernel.modules.repository.LoaderListener#
-     * notifyFileLoaded()
-     */
     @Override
     public void notifyFileLoaded() {
         this.filesLoaded++;
         // Update GUI every 25 files
         if (this.filesLoaded % 25 == 0) {
-        	SwingUtilities.invokeLater(new Runnable() {
-        		@Override
-        		public void run() {
-        			if (progressDialog != null) {
-        				progressDialog.getProgressLabel().setText(Integer.toString(filesLoaded));
-        				progressDialog.getProgressBar().setValue(filesLoaded);
-        			}
-        			GuiHandler.getInstance().getProgressBar().setValue(filesLoaded);
-        		}
-        	});
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    if (progressDialog != null) {
+                        progressDialog.getProgressLabel().setText(Integer.toString(filesLoaded));
+                        progressDialog.getProgressBar().setValue(filesLoaded);
+                    }
+                    GuiHandler.getInstance().getProgressBar().setValue(filesLoaded);
+                }
+            });
         }
     }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @seenet.sourceforge.atunes.kernel.modules.repository.LoaderListener#
-     * notifyFilesInRepository(int)
-     */
 
     @Override
     public void notifyFilesInRepository(int totalFiles) {
         getLogger().debugMethodCall(LogCategories.REPOSITORY, new String[] { Integer.toString(totalFiles) });
         // When total files has been calculated change to determinate progress bar
         if (progressDialog != null) {
-        	progressDialog.getProgressBar().setIndeterminate(false);
-        	progressDialog.getTotalFilesLabel().setText(StringUtils.getString(totalFiles));
-        	progressDialog.getProgressBar().setMaximum(totalFiles);
+            progressDialog.getProgressBar().setIndeterminate(false);
+            progressDialog.getTotalFilesLabel().setText(StringUtils.getString(totalFiles));
+            progressDialog.getProgressBar().setMaximum(totalFiles);
         }
         GuiHandler.getInstance().getProgressBar().setIndeterminate(false);
-    	GuiHandler.getInstance().getProgressBar().setMaximum(totalFiles);
+        GuiHandler.getInstance().getProgressBar().setMaximum(totalFiles);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seenet.sourceforge.atunes.kernel.modules.repository.LoaderListener#
-     * notifyFinishRead
-     * (net.sourceforge.atunes.kernel.modules.repository.RepositoryLoader)
-     */
     @Override
     public void notifyFinishRead(RepositoryLoader loader) {
-    	if (progressDialog != null) {
-    		progressDialog.setButtonsEnabled(false);
-    		progressDialog.getLabel().setText(I18nUtils.getString("STORING_REPOSITORY_INFORMATION"));
-    		progressDialog.getProgressLabel().setText("");
-    		progressDialog.getTotalFilesLabel().setText("");
-    		progressDialog.getFolderLabel().setText(" ");
-    	}
+        if (progressDialog != null) {
+            progressDialog.setButtonsEnabled(false);
+            progressDialog.getLabel().setText(I18nUtils.getString("STORING_REPOSITORY_INFORMATION"));
+            progressDialog.getProgressLabel().setText("");
+            progressDialog.getTotalFilesLabel().setText("");
+            progressDialog.getFolderLabel().setText(" ");
+        }
 
         // Save folders: if repository config is lost application can reload data without asking user to select folders again
         List<String> repositoryFolders = new ArrayList<String>();
@@ -565,22 +546,15 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
         ApplicationState.getInstance().setLastRepositoryFolders(repositoryFolders);
 
         if (backgroundLoad) {
-        	GuiHandler.getInstance().hideProgressBar();
+            GuiHandler.getInstance().hideProgressBar();
         }
-        
+
         notifyFinishRepositoryRead();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seenet.sourceforge.atunes.kernel.modules.repository.LoaderListener#
-     * notifyFinishRefresh
-     * (net.sourceforge.atunes.kernel.modules.repository.RepositoryLoader)
-     */
     @Override
     public void notifyFinishRefresh(RepositoryLoader loader) {
-    	enableRepositoryActions(true);
+        enableRepositoryActions(true);
 
         GuiHandler.getInstance().hideProgressBar();
         GuiHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
@@ -588,7 +562,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
             ControllerProxy.getInstance().getNavigationController().notifyReload();
         }
         getLogger().info(LogCategories.REPOSITORY, "Repository refresh done");
-        
+
         currentLoader = null;
     }
 
@@ -596,39 +570,39 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
      * Notify finish repository read.
      */
     private void notifyFinishRepositoryRead() {
-    	enableRepositoryActions(true);
-    	if (progressDialog != null) {
-    		progressDialog.hideProgressDialog();
-    		progressDialog.dispose();
-    		progressDialog = null;
-    	}
+        enableRepositoryActions(true);
+        if (progressDialog != null) {
+            progressDialog.hideProgressDialog();
+            progressDialog.dispose();
+            progressDialog = null;
+        }
         ControllerProxy.getInstance().getNavigationController().notifyReload();
         GuiHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
-        
+
         currentLoader = null;
     }
 
     @Override
     public void notifyRemainingTime(final long millis) {
-    	if (progressDialog != null) {
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					progressDialog.getRemainingTimeLabel().setText(StringUtils.getString(I18nUtils.getString("REMAINING_TIME"), ":   ", StringUtils.milliseconds2String(millis)));
-				}
-			});
-    	}
+        if (progressDialog != null) {
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    progressDialog.getRemainingTimeLabel().setText(StringUtils.getString(I18nUtils.getString("REMAINING_TIME"), ":   ", StringUtils.milliseconds2String(millis)));
+                }
+            });
+        }
     }
-    
+
     @Override
     public void notifyReadProgress() {
-    	SwingUtilities.invokeLater(new Runnable() {
-    		@Override
-    		public void run() {
-    			ControllerProxy.getInstance().getNavigationController().notifyReload();
-    			GuiHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
-    		}
-    	});
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                ControllerProxy.getInstance().getNavigationController().notifyReload();
+                GuiHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
+            }
+        });
     }
 
     @Override
@@ -657,45 +631,72 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
     /**
      * Sets the repository.
      */
-    public void setRepository() {
+    public void applyRepository() {
         // Try to read repository cache. If fails or not exists, should be selected again
-        final Repository rep = repositoryRetrievedFromCache;
+        Repository rep = repositoryRetrievedFromCache;
         if (rep != null) {
             if (!rep.exists()) {
-                Object selection = null;
-                // Test if repository exists and show message until repository exists or user doesn't press "RETRY"
-                do {
-                    selection = GuiHandler.getInstance().showMessage(StringUtils.getString(I18nUtils.getString("REPOSITORY_NOT_FOUND"), ": ", rep.getFolders().get(0)),
-                            I18nUtils.getString("REPOSITORY_NOT_FOUND"), JOptionPane.WARNING_MESSAGE,
-                            new String[] { I18nUtils.getString("RETRY"), I18nUtils.getString("SELECT_REPOSITORY") });
-                } while (I18nUtils.getString("RETRY").equals(selection) && !rep.exists());
-
+                askUserForRepository(rep);
                 if (!rep.exists() && !selectRepository(true)) {
                     // select "old" repository if repository was not found and no new repository was selected
                     repository = rep;
                 } else if (rep.exists()) {
                     // repository exists
-                	repository = rep;
-                    notifyFinishRead(null);
+                    applyExistingRepository(rep);
                 }
             } else {
                 // repository exists
-            	repository = rep;
-                notifyFinishRead(null);
+                applyExistingRepository(rep);
             }
         } else {
-            // If any repository was loaded previously, try to reload folders
-            List<String> lastRepositoryFolders = ApplicationState.getInstance().getLastRepositoryFolders();
-            if (lastRepositoryFolders != null && !lastRepositoryFolders.isEmpty()) {
-                List<File> foldersToRead = new ArrayList<File>();
-                for (String f : lastRepositoryFolders) {
-                    foldersToRead.add(new File(f));
-                }
-                GuiHandler.getInstance().showMessage(I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"));
-                retrieve(foldersToRead);
-                return;
-            }
+            reloadExistingRepository();
+        }
+    }
 
+    /**
+     * Test if repository exists and show message until repository exists or
+     * user doesn't press "RETRY"
+     * 
+     * @param rep
+     */
+    private void askUserForRepository(final Repository rep) {
+        Object selection;
+        do {
+            String exitString = Actions.getAction(ExitAction.class).getValue(Action.NAME).toString();
+            selection = GuiHandler.getInstance().showMessage(StringUtils.getString(I18nUtils.getString("REPOSITORY_NOT_FOUND"), ": ", rep.getFolders().get(0)),
+                    I18nUtils.getString("REPOSITORY_NOT_FOUND"), JOptionPane.WARNING_MESSAGE,
+                    new String[] { I18nUtils.getString("RETRY"), I18nUtils.getString("SELECT_REPOSITORY"), exitString });
+
+            if (selection.equals(exitString)) {
+                SwingUtilities.invokeLater(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        Actions.getAction(ExitAction.class).actionPerformed(null);
+                    }
+                });
+            }
+        } while (I18nUtils.getString("RETRY").equals(selection) && !rep.exists());
+    }
+
+    private void applyExistingRepository(Repository rep) {
+        repository = rep;
+        notifyFinishRead(null);
+    }
+
+    /**
+     * If any repository was loaded previously, try to reload folders
+     */
+    private void reloadExistingRepository() {
+        List<String> lastRepositoryFolders = ApplicationState.getInstance().getLastRepositoryFolders();
+        if (lastRepositoryFolders != null && !lastRepositoryFolders.isEmpty()) {
+            List<File> foldersToRead = new ArrayList<File>();
+            for (String f : lastRepositoryFolders) {
+                foldersToRead.add(new File(f));
+            }
+            GuiHandler.getInstance().showMessage(I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"));
+            retrieve(foldersToRead);
+        } else {
             GuiHandler.getInstance().showRepositorySelectionInfoDialog();
             selectRepository();
         }
@@ -708,7 +709,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
      *            the folders
      */
     private void readRepository(List<File> folders) {
-    	backgroundLoad = false;
+        backgroundLoad = false;
         Repository oldRepository = repository;
         repository = new Repository(folders);
         currentLoader = new RepositoryLoader(folders, oldRepository, repository, false);
@@ -808,7 +809,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
         boolean succeeded = file.renameTo(newFile);
         if (succeeded) {
             RepositoryLoader.renameFile(audioFile, file, newFile);
-            ControllerProxy.getInstance().getNavigationController().notifyReload();            
+            ControllerProxy.getInstance().getNavigationController().notifyReload();
             StatisticsHandler.getInstance().updateFileName(file.getAbsolutePath(), newFile.getAbsolutePath());
         }
     }
@@ -831,9 +832,9 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
      * @return true, if successful
      */
     public boolean retrieve(List<File> folders) {
-    	enableRepositoryActions(false);
-    	progressDialog = GuiHandler.getInstance().getProgressDialog();
-    	// Start with indeterminate dialog
+        enableRepositoryActions(false);
+        progressDialog = GuiHandler.getInstance().getProgressDialog();
+        // Start with indeterminate dialog
         progressDialog.showProgressDialog();
         progressDialog.getProgressBar().setIndeterminate(true);
         GuiHandler.getInstance().getProgressBar().setIndeterminate(true);
@@ -869,7 +870,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
      * 
      * @return true, if successful
      */
-    public boolean selectRepository(boolean repositoryNotFound) {
+    private boolean selectRepository(boolean repositoryNotFound) {
         MultiFolderSelectionDialog dialog = GuiHandler.getInstance().getMultiFolderSelectionDialog();
         dialog.setText(I18nUtils.getString("SELECT_REPOSITORY_FOLDERS"));
         dialog.startDialog((repository != null && !repositoryNotFound) ? repository.getFolders() : null);
@@ -896,62 +897,63 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
      * @param path
      */
     public void importFolders(final List<File> folders, final String path) {
-    	final ProgressDialog progressDialog = GuiHandler.getInstance().getNewProgressDialog(StringUtils.getString(I18nUtils.getString("READING_FILES_TO_IMPORT"), "..."), GuiHandler.getInstance().getFrame().getFrame());
-    	progressDialog.disableCancelButton();
-    	progressDialog.setVisible(true);
+        final ProgressDialog progressDialog = GuiHandler.getInstance().getNewProgressDialog(StringUtils.getString(I18nUtils.getString("READING_FILES_TO_IMPORT"), "..."),
+                GuiHandler.getInstance().getFrame().getFrame());
+        progressDialog.disableCancelButton();
+        progressDialog.setVisible(true);
         SwingWorker<List<AudioFile>, Void> worker = new SwingWorker<List<AudioFile>, Void>() {
             @Override
             protected List<AudioFile> doInBackground() throws Exception {
                 return RepositoryLoader.getSongsForFolders(folders, new LoaderListener() {
-					
-                	private int filesLoaded = 0;
-                	
-                	private int totalFiles;
-                	
-					@Override
-					public void notifyRemainingTime(long time) {
-					}
-					
-					@Override
-					public void notifyReadProgress() {
-					}
-					
-					@Override
-					public void notifyFinishRefresh(RepositoryLoader loader) {
-					}
-					
-					@Override
-					public void notifyFinishRead(RepositoryLoader loader) {
-						progressDialog.setVisible(false);
-					}
-					
-					@Override
-					public void notifyFilesInRepository(final int files) {
-						this.totalFiles = files;
-						SwingUtilities.invokeLater(new Runnable() {
-							@Override
-							public void run() {
-					        	progressDialog.setTotalProgress(files);
-							}
-						});
-					}
-					
-					@Override
-					public void notifyFileLoaded() {
-						this.filesLoaded++;
-						SwingUtilities.invokeLater(new Runnable() {
-							@Override
-							public void run() {
-								progressDialog.setCurrentProgress(filesLoaded);
-								progressDialog.setProgressBarValue((int) (filesLoaded * 100.0 / totalFiles));
-							}
-						});
-					}
-					
-					@Override
-					public void notifyCurrentPath(String path) {
-					}
-				});
+
+                    private int filesLoaded = 0;
+
+                    private int totalFiles;
+
+                    @Override
+                    public void notifyRemainingTime(long time) {
+                    }
+
+                    @Override
+                    public void notifyReadProgress() {
+                    }
+
+                    @Override
+                    public void notifyFinishRefresh(RepositoryLoader loader) {
+                    }
+
+                    @Override
+                    public void notifyFinishRead(RepositoryLoader loader) {
+                        progressDialog.setVisible(false);
+                    }
+
+                    @Override
+                    public void notifyFilesInRepository(final int files) {
+                        this.totalFiles = files;
+                        SwingUtilities.invokeLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                progressDialog.setTotalProgress(files);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void notifyFileLoaded() {
+                        this.filesLoaded++;
+                        SwingUtilities.invokeLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                progressDialog.setCurrentProgress(filesLoaded);
+                                progressDialog.setProgressBarValue((int) (filesLoaded * 100.0 / totalFiles));
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void notifyCurrentPath(String path) {
+                    }
+                });
             }
 
             @Override
@@ -1028,54 +1030,60 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
         GuiHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
     }
 
-	public void doInBackground() {
-		if (currentLoader != null) {
-			backgroundLoad = true;
-			currentLoader.setPriority(Thread.MIN_PRIORITY);
-			if (progressDialog != null) {
-				progressDialog.hideProgressDialog();
-			}
+    public void doInBackground() {
+        if (currentLoader != null) {
+            backgroundLoad = true;
+            currentLoader.setPriority(Thread.MIN_PRIORITY);
+            if (progressDialog != null) {
+                progressDialog.hideProgressDialog();
+            }
             GuiHandler.getInstance().showProgressBar(false, StringUtils.getString(I18nUtils.getString("LOADING"), "..."));
             GuiHandler.getInstance().getProgressBar().addMouseListener(progressBarMouseAdapter);
-		}
-        
-	}
+        }
 
-	/**
-	 * Enables or disables actions that can't be performed while loading repository
-	 * @param enable
-	 */
-	private void enableRepositoryActions(boolean enable) {
-    	Actions.getAction(SelectRepositoryAction.class).setEnabled(enable);
-    	Actions.getAction(RefreshRepositoryAction.class).setEnabled(enable);
-    	Actions.getAction(ImportToRepositoryAction.class).setEnabled(enable);
-    	Actions.getAction(ExportAction.class).setEnabled(enable);
-    	Actions.getAction(ConnectDeviceAction.class).setEnabled(enable);
-    	Actions.getAction(RipCDAction.class).setEnabled(enable);
-	}
-	
-	/**
-	 * Returns <code>true</code>if there is a loader reading or refreshing repository
-	 * @return
-	 */
-	protected boolean isLoaderWorking() {
-		return currentLoader != null;
-	}
-	
-	/**
-	 * Brings access to logger to all classes of this package
-	 * @return
-	 */
-	protected static Logger getRepositoryHandlerLogger() {
-		return getLogger();
-	}
-	
-	/**
-	 * Returns folder where repository configuration is stored
-	 * @return
-	 */
-	public String getRepositoryConfigurationFolder() {
-		String customRepositoryConfigFolder = SystemProperties.getCustomRepositoryConfigFolder();
-		return customRepositoryConfigFolder != null ? customRepositoryConfigFolder : SystemProperties.getUserConfigFolder(Kernel.DEBUG);
-	}
+    }
+
+    /**
+     * Enables or disables actions that can't be performed while loading
+     * repository
+     * 
+     * @param enable
+     */
+    private void enableRepositoryActions(boolean enable) {
+        Actions.getAction(SelectRepositoryAction.class).setEnabled(enable);
+        Actions.getAction(RefreshRepositoryAction.class).setEnabled(enable);
+        Actions.getAction(ImportToRepositoryAction.class).setEnabled(enable);
+        Actions.getAction(ExportAction.class).setEnabled(enable);
+        Actions.getAction(ConnectDeviceAction.class).setEnabled(enable);
+        Actions.getAction(RipCDAction.class).setEnabled(enable);
+    }
+
+    /**
+     * Returns <code>true</code>if there is a loader reading or refreshing
+     * repository
+     * 
+     * @return
+     */
+    protected boolean isLoaderWorking() {
+        return currentLoader != null;
+    }
+
+    /**
+     * Brings access to logger to all classes of this package
+     * 
+     * @return
+     */
+    protected static Logger getRepositoryHandlerLogger() {
+        return getLogger();
+    }
+
+    /**
+     * Returns folder where repository configuration is stored
+     * 
+     * @return
+     */
+    public String getRepositoryConfigurationFolder() {
+        String customRepositoryConfigFolder = SystemProperties.getCustomRepositoryConfigFolder();
+        return customRepositoryConfigFolder != null ? customRepositoryConfigFolder : SystemProperties.getUserConfigFolder(Kernel.DEBUG);
+    }
 }

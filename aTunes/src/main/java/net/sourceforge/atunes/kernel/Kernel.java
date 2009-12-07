@@ -76,7 +76,7 @@ public class Kernel {
      * List of start listeners
      */
     private List<ApplicationStartListener> startListeners;
-    
+
     /**
      * List of finish listeners
      */
@@ -86,7 +86,7 @@ public class Kernel {
      * Constructor of Kernel.
      */
     protected Kernel() {
-    	startListeners = new ArrayList<ApplicationStartListener>();
+        startListeners = new ArrayList<ApplicationStartListener>();
         finishListeners = new ArrayList<ApplicationFinishListener>();
     }
 
@@ -101,8 +101,8 @@ public class Kernel {
 
     /**
      * Adds a start listener to list of listeners. All classes that implements
-     * ApplicationStartListener must call this method in order to be notified
-     * by Kernel when application has started
+     * ApplicationStartListener must call this method in order to be notified by
+     * Kernel when application has started
      * 
      * @param listener
      */
@@ -132,7 +132,7 @@ public class Kernel {
         logger.debug(LogCategories.START, "Starting Kernel");
 
         instance = new Kernel();
-        
+
         try {
             SwingUtilities.invokeAndWait(new Runnable() {
                 @Override
@@ -176,10 +176,9 @@ public class Kernel {
             logger.error(LogCategories.START, e);
             logger.error(LogCategories.START, e.getCause());
         }
-        
+
         Handler.registerHandlers();
 
-        
         // Find for audio files on arguments
         final List<String> songs = new ArrayList<String>();
         for (String arg : args) {
@@ -195,7 +194,7 @@ public class Kernel {
                 @Override
                 public void run() {
                     // Start component creation
-                    instance.startCreation();                    
+                    instance.startCreation();
                 }
             });
         } catch (Exception e) {
@@ -207,8 +206,8 @@ public class Kernel {
             SwingUtilities.invokeAndWait(new Runnable() {
                 @Override
                 public void run() {
-                	// Start bussiness
-                	instance.start(PlayListIO.getAudioObjectsFromFileNamesList(songs));
+                    // Start bussiness
+                    instance.start(PlayListIO.getAudioObjectsFromFileNamesList(songs));
                 }
             });
         } catch (Exception e) {
@@ -260,7 +259,7 @@ public class Kernel {
      * @param playList
      *            the play list
      */
-    void start(final List<AudioObject> playList) {    	
+    void start(final List<AudioObject> playList) {
         try {
             Timer timer = new Timer();
             timer.start();
@@ -275,11 +274,11 @@ public class Kernel {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                	Handler.initHandlers();
+                    Handler.initHandlers();
 
-                    RepositoryHandler.getInstance().setRepository();
+                    RepositoryHandler.getInstance().applyRepository();
                     PlayListHandler.getInstance().setPlayLists();
-                    
+
                     if (!playList.isEmpty()) {
                         PlayListHandler.getInstance().addToPlayListAndPlay(playList);
                         ControllerProxy.getInstance().getPlayListController().refreshPlayList();
@@ -288,10 +287,10 @@ public class Kernel {
             });
 
             SwingUtilities.invokeLater(new Runnable() {
-            	@Override
-            	public void run() {
+                @Override
+                public void run() {
                     callActionsAfterStart();
-            	}
+                }
             });
 
             logger.info(LogCategories.START, StringUtils.getString("Application started (", StringUtils.toString(timer.stop(), 3), " seconds)"));
@@ -305,18 +304,18 @@ public class Kernel {
      * Call actions after start.
      */
     void callActionsAfterStart() {
-    	// Call all ApplicationStartListener instances to finish
-    	for (ApplicationStartListener startListener : startListeners) {
-    		try {
-    			if (startListener != null) {
-    				startListener.applicationStarted();
-    			}
-    		} catch (Exception e) {
-    			logger.error(LogCategories.START, e);
-    		}
-    	}
-    	// TODO: Move this to webservices handler
-    	LastFmService.getInstance().submitCacheToLastFm();
+        // Call all ApplicationStartListener instances to finish
+        for (ApplicationStartListener startListener : startListeners) {
+            try {
+                if (startListener != null) {
+                    startListener.applicationStarted();
+                }
+            } catch (Exception e) {
+                logger.error(LogCategories.START, e);
+            }
+        }
+        // TODO: Move this to webservices handler
+        LastFmService.getInstance().submitCacheToLastFm();
     }
 
     /**

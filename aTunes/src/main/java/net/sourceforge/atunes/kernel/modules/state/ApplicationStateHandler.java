@@ -390,7 +390,7 @@ public final class ApplicationStateHandler extends Handler {
         getLogger().debug(LogCategories.HANDLER);
 
         String folder = RepositoryHandler.getInstance().getRepositoryConfigurationFolder();
-        
+
         ObjectOutputStream oos = null;
         try {
             FileOutputStream fout = new FileOutputStream(StringUtils.getString(folder, "/", Constants.CACHE_REPOSITORY_NAME));
@@ -651,7 +651,7 @@ public final class ApplicationStateHandler extends Handler {
         getLogger().debug(LogCategories.HANDLER);
 
         String folder = RepositoryHandler.getInstance().getRepositoryConfigurationFolder();
-        
+
         ObjectInputStream ois = null;
         try {
             FileInputStream fis = new FileInputStream(StringUtils.getString(folder, "/", Constants.CACHE_REPOSITORY_NAME));
@@ -661,8 +661,8 @@ public final class ApplicationStateHandler extends Handler {
             timer.start();
             Repository result = (Repository) ois.readObject();
             // check repository integrity
-            if (result.getAudioFiles() == null || result.getFolders() == null || result.getStructure().getArtistStructure() == null
-                    || result.getStructure().getFolderStructure() == null || result.getStructure().getGenreStructure() == null) {
+            if (result.getAudioFiles() == null || result.getFolders() == null || result.getArtistStructure() == null || result.getFolderStructure() == null
+                    || result.getGenreStructure() == null) {
                 throw new InconsistentRepositoryException();
             }
 

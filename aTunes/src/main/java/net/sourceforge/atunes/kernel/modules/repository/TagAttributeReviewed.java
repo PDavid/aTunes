@@ -31,7 +31,6 @@ import net.sourceforge.atunes.kernel.modules.repository.tags.tag.Tag;
  * Keeps information about changes made in an attribute when importing
  * 
  * @author fleax
- * 
  */
 abstract class TagAttributeReviewed {
 
