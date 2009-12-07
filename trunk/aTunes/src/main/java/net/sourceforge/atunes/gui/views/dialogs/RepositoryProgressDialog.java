@@ -44,7 +44,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
- * The Class RepositoryProgressDialog.
+ * The repository progress dialog.
  * 
  * @author fleax
  */
@@ -52,37 +52,16 @@ public final class RepositoryProgressDialog extends CustomModalDialog {
 
     private static final long serialVersionUID = -3071934230042256578L;
 
-    /** The picture label. */
     private JLabel pictureLabel;
-
-    /** The label. */
     private JLabel label;
-
-    /** The progress label. */
     private JLabel progressLabel;
-
-    /** The separator label. */
     private JLabel separatorLabel;
-
-    /** The total files label. */
     private JLabel totalFilesLabel;
-
-    /** The progress bar. */
     private JProgressBar progressBar;
-
-    /** The folder label. */
     private JLabel folderLabel;
-
-    /** The remaining time label. */
     private JLabel remainingTimeLabel;
-
-    /** The cancel button. */
     private JButton cancelButton;
-
-    /** The background button */
     private JButton backgroundButton;
-
-    /** The listener. */
     private MouseListener listener = new MouseListener() {
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -310,11 +289,6 @@ public final class RepositoryProgressDialog extends CustomModalDialog {
         backgroundButton.setVisible(visible);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.awt.Dialog#setVisible(boolean)
-     */
     @Override
     public void setVisible(final boolean b) {
         setLocationRelativeTo(getParent());
@@ -332,7 +306,7 @@ public final class RepositoryProgressDialog extends CustomModalDialog {
     public void hideProgressDialog() {
         setVisible(false);
         deactivateGlassPane();
-        //		setButtonsVisible(false);
-        //		setButtonsEnabled(true);
+        //setButtonsVisible(false);
+        //setButtonsEnabled(true);
     }
 }
