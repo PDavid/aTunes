@@ -93,7 +93,7 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
      */
     private DeviceHandler() {
     }
-    
+
     @Override
     protected void initHandler() {
         RepositoryHandler.getInstance().addAudioFilesRemovedListener(this);
@@ -332,7 +332,7 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
      */
     public Map<String, Artist> getDeviceArtistStructure() {
         if (deviceRepository != null) {
-            return deviceRepository.getStructure().getArtistStructure();
+            return deviceRepository.getArtistStructure();
         }
         return new HashMap<String, Artist>();
     }
@@ -345,7 +345,7 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
     public Map<String, Album> getDeviceAlbumStructure() {
         if (deviceRepository != null) {
             Map<String, Album> albumsStructure = new HashMap<String, Album>();
-            Collection<Artist> artistCollection = deviceRepository.getStructure().getArtistStructure().values();
+            Collection<Artist> artistCollection = deviceRepository.getArtistStructure().values();
             for (Artist artist : artistCollection) {
                 for (Album album : artist.getAlbums().values()) {
                     albumsStructure.put(album.getNameAndArtist(), album);
@@ -363,7 +363,7 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
      */
     public Map<String, Genre> getDeviceGenreStructure() {
         if (deviceRepository != null) {
-            return deviceRepository.getStructure().getGenreStructure();
+            return deviceRepository.getGenreStructure();
         }
         return new HashMap<String, Genre>();
     }
@@ -390,7 +390,7 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
      */
     public Map<String, Folder> getDeviceFolderStructure() {
         if (deviceRepository != null) {
-            return deviceRepository.getStructure().getFolderStructure();
+            return deviceRepository.getFolderStructure();
         }
         return new HashMap<String, Folder>();
     }
@@ -521,7 +521,7 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
     public void notifyRemainingTime(long time) {
         // Nothing to do
     }
-    
+
     @Override
     public void notifyReadProgress() {
         // Nothing to do

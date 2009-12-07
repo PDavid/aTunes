@@ -30,7 +30,6 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * This action finishes application
  * 
  * @author fleax
- * 
  */
 public class ExitAction extends Action {
 

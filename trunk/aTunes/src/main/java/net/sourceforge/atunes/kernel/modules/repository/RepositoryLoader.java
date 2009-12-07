@@ -90,9 +90,9 @@ public class RepositoryLoader extends Thread {
      *            Files to add
      */
     protected static void addToRepository(Repository rep, List<File> files) {
-    	// This operation changes repository, so mark it as dirty
-    	rep.setDirty(true);
-    	
+        // This operation changes repository, so mark it as dirty
+        rep.setDirty(true);
+
         // Get folders where files are
         Set<File> folders = new HashSet<File>();
         for (File file : files) {
@@ -136,8 +136,8 @@ public class RepositoryLoader extends Thread {
                     RepositoryFiller.addToArtistStructure(rep, audioFile);
                     RepositoryFiller.addToFolderStructure(rep, getRepositoryFolderContaining(rep, folder), relativePath, audioFile);
                     RepositoryFiller.addToGenreStructure(rep, audioFile);
-                    
-                    rep.setTotalSizeInBytes(rep.getTotalSizeInBytes() + audioFile.getFile().length());                    
+
+                    rep.setTotalSizeInBytes(rep.getTotalSizeInBytes() + audioFile.getFile().length());
                     rep.addDurationInSeconds(audioFile.getDuration());
                 }
             }
@@ -209,7 +209,7 @@ public class RepositoryLoader extends Thread {
      * 
      * @param folder
      *            the dir
-     *            
+     * 
      * @param listener
      * 
      * @return the songs for dir
@@ -226,7 +226,7 @@ public class RepositoryLoader extends Thread {
                 if (AudioFile.isValidAudioFile(element)) {
                     files.add(element);
                 } else if (element.isDirectory()) {
-                	result.addAll(getSongsForFolder(element, listener));
+                    result.addAll(getSongsForFolder(element, listener));
                 } else if (element.getName().toUpperCase().endsWith("JPG")) {
                     pictures.add(element);
                 }
@@ -238,7 +238,7 @@ public class RepositoryLoader extends Thread {
                 mp3.setExternalPictures(pictures);
                 result.add(mp3);
                 if (listener != null) {
-                	listener.notifyFileLoaded();
+                    listener.notifyFileLoaded();
                 }
             }
         }
@@ -258,14 +258,14 @@ public class RepositoryLoader extends Thread {
             filesCount = filesCount + countFiles(folder);
         }
         if (listener != null) {
-        	listener.notifyFilesInRepository(filesCount);
+            listener.notifyFilesInRepository(filesCount);
         }
         List<AudioFile> result = new ArrayList<AudioFile>();
         for (File folder : folders) {
             result.addAll(getSongsForFolder(folder, listener));
         }
         if (listener != null) {
-        	listener.notifyFinishRead(null);
+            listener.notifyFinishRead(null);
         }
         return result;
     }
@@ -279,10 +279,10 @@ public class RepositoryLoader extends Thread {
      *            the file
      */
     protected static void refreshFile(Repository repository, AudioFile file) {
-    	// This operation changes repository, so mark it as dirty
-    	repository.setDirty(true);
+        // This operation changes repository, so mark it as dirty
+        repository.setDirty(true);
 
-        try {        	
+        try {
             Tag oldTag = file.getTag();
             String albumArtist = null;
             String artist = null;
@@ -306,9 +306,9 @@ public class RepositoryLoader extends Thread {
 
             // Remove from tree structure if necessary
             boolean albumArtistPresent = true;
-            Artist a = repository.getStructure().getArtistStructure().get(albumArtist);
+            Artist a = repository.getArtistStructure().get(albumArtist);
             if (a == null) {
-                a = repository.getStructure().getArtistStructure().get(artist);
+                a = repository.getArtistStructure().get(artist);
                 albumArtistPresent = false;
             }
             if (a != null) {
@@ -321,12 +321,12 @@ public class RepositoryLoader extends Thread {
                     }
 
                     if (a.getAudioObjects().size() <= 0) {
-                        repository.getStructure().getArtistStructure().remove(a.getName());
+                        repository.getArtistStructure().remove(a.getName());
                     }
                 }
                 // If album artist field is present, audiofile might still be present under artist name so check
                 if (albumArtistPresent) {
-                    a = repository.getStructure().getArtistStructure().get(artist);
+                    a = repository.getArtistStructure().get(artist);
                     if (a != null) {
                         alb = a.getAlbum(album);
                         if (alb != null) {
@@ -337,7 +337,7 @@ public class RepositoryLoader extends Thread {
                             }
                             // Maybe needs to be set to 0 in case node gets deleted
                             if (a.getAudioObjects().size() <= 1) {
-                                repository.getStructure().getArtistStructure().remove(a.getName());
+                                repository.getArtistStructure().remove(a.getName());
                             }
                         }
                     }
@@ -345,12 +345,12 @@ public class RepositoryLoader extends Thread {
             }
 
             // Remove from genre structure if necessary
-            Genre g = repository.getStructure().getGenreStructure().get(genre);
+            Genre g = repository.getGenreStructure().get(genre);
             if (g != null) {
                 g.removeSong(file);
 
                 if (g.getAudioObjects().size() <= 1) {
-                    repository.getStructure().getGenreStructure().remove(genre);
+                    repository.getGenreStructure().remove(genre);
                 }
             }
 
@@ -359,33 +359,32 @@ public class RepositoryLoader extends Thread {
             RepositoryFiller.addToArtistStructure(repository, file);
             RepositoryFiller.addToGenreStructure(repository, file);
             // There is no need to update folder as audio file is in the same folder
-            
+
             // Compare old tag with new tag
-            Tag newTag = file.getTag();            
+            Tag newTag = file.getTag();
             if (newTag != null) {
-            	boolean artistChanged = !oldTag.getArtist().equals(newTag.getArtist());
-            	boolean albumChanged = !oldTag.getAlbum().equals(newTag.getAlbum());
-            	boolean oldArtistRemoved = false;
-            	if (artistChanged) {
-            		Artist oldArtist = repository.getStructure().getArtistStructure().get(oldTag.getArtist());
-            		if (oldArtist == null) {
-            			// Artist has been renamed -> Update statistics
-            			StatisticsHandler.getInstance().updateArtist(oldTag.getArtist(), newTag.getArtist());
-            			oldArtistRemoved = true;
-            		}
-            	}
-            	if (albumChanged) {
-            		Artist artistWithOldAlbum = oldArtistRemoved ? repository.getStructure().getArtistStructure().get(newTag.getArtist()) :
-            													   repository.getStructure().getArtistStructure().get(oldTag.getArtist());
-            		Album oldAlbum = artistWithOldAlbum.getAlbum(oldTag.getAlbum());
-            		if (oldAlbum == null) {
-            			// Album has been renamed -> Update statistics
-            			StatisticsHandler.getInstance().updateAlbum(artistWithOldAlbum.getName(), oldTag.getAlbum(), newTag.getAlbum());
-            		}
-            	}
+                boolean artistChanged = !oldTag.getArtist().equals(newTag.getArtist());
+                boolean albumChanged = !oldTag.getAlbum().equals(newTag.getAlbum());
+                boolean oldArtistRemoved = false;
+                if (artistChanged) {
+                    Artist oldArtist = repository.getArtistStructure().get(oldTag.getArtist());
+                    if (oldArtist == null) {
+                        // Artist has been renamed -> Update statistics
+                        StatisticsHandler.getInstance().updateArtist(oldTag.getArtist(), newTag.getArtist());
+                        oldArtistRemoved = true;
+                    }
+                }
+                if (albumChanged) {
+                    Artist artistWithOldAlbum = oldArtistRemoved ? repository.getArtistStructure().get(newTag.getArtist()) : repository.getArtistStructure()
+                            .get(oldTag.getArtist());
+                    Album oldAlbum = artistWithOldAlbum.getAlbum(oldTag.getAlbum());
+                    if (oldAlbum == null) {
+                        // Album has been renamed -> Update statistics
+                        StatisticsHandler.getInstance().updateAlbum(artistWithOldAlbum.getName(), oldTag.getAlbum(), newTag.getAlbum());
+                    }
+                }
             }
-            
-            
+
         } catch (Exception e) {
             logger.error(LogCategories.FILE_READ, e.getMessage());
         }
@@ -507,7 +506,7 @@ public class RepositoryLoader extends Thread {
             }
 
             if (listener != null) {
-            	listener.notifyCurrentPath(relativePath);
+                listener.notifyCurrentPath(relativePath);
             }
 
             File[] list = dir.listFiles();
@@ -518,65 +517,65 @@ public class RepositoryLoader extends Thread {
                     if (element.isDirectory()) {
                         navigateDir(relativeTo, element);
                     } else if (AudioFile.isValidAudioFile(element)) {
-                    	if (audioFiles == null) {
-                    		audioFiles = new ArrayList<File>();
-                    	}
+                        if (audioFiles == null) {
+                            audioFiles = new ArrayList<File>();
+                        }
                         audioFiles.add(element);
                     } else if (AudioFilePictureUtils.isValidPicture(element)) {
-                    	if (pictures == null) {
-                    		pictures = new ArrayList<File>();
-                    	}
+                        if (pictures == null) {
+                            pictures = new ArrayList<File>();
+                        }
                         pictures.add(element);
                     }
                 }
 
-                if (audioFiles != null) {                
-                	// Use a List<AudioFile> here to deal with more than one cue track found within one cue sheet file
-                	List<AudioFile> audioFilesList = new ArrayList<AudioFile>();
-                	for (int i = 0; i < audioFiles.size() && !interrupt; i++) {
-                		AudioFile audio = null;
+                if (audioFiles != null) {
+                    // Use a List<AudioFile> here to deal with more than one cue track found within one cue sheet file
+                    List<AudioFile> audioFilesList = new ArrayList<AudioFile>();
+                    for (int i = 0; i < audioFiles.size() && !interrupt; i++) {
+                        AudioFile audio = null;
 
-                		// If a previous repository exists, check if file already was loaded.
-                		// If so, compare modification date. If modification date is equal to last repository load
-                		// don't read file again
+                        // If a previous repository exists, check if file already was loaded.
+                        // If so, compare modification date. If modification date is equal to last repository load
+                        // don't read file again
 
-                		if (oldRepository != null) {
-                			AudioFile oldAudioFile = oldRepository.getFile(audioFiles.get(i).getAbsolutePath());
-                			if (oldAudioFile != null && oldAudioFile.isUpToDate()) {
-                				audio = oldAudioFile;
-                			} else {
-                				audio = new AudioFile(audioFiles.get(i).getAbsolutePath());
-                			}
-                		} else {
-                			audio = new AudioFile(audioFiles.get(i).getAbsolutePath());
-                		}
-        				audioFilesList.add(audio);
-                	}
+                        if (oldRepository != null) {
+                            AudioFile oldAudioFile = oldRepository.getFile(audioFiles.get(i).getAbsolutePath());
+                            if (oldAudioFile != null && oldAudioFile.isUpToDate()) {
+                                audio = oldAudioFile;
+                            } else {
+                                audio = new AudioFile(audioFiles.get(i).getAbsolutePath());
+                            }
+                        } else {
+                            audio = new AudioFile(audioFiles.get(i).getAbsolutePath());
+                        }
+                        audioFilesList.add(audio);
+                    }
 
-                	for (AudioFile audioFile : audioFilesList) {
-                		audioFile.setExternalPictures(pictures);
-                		if (listener != null) {
-                			listener.notifyFileLoaded();
-                		}
-                		filesLoaded++;
-                		RepositoryFiller.addToRepository(repository, audioFile);
-                		RepositoryFiller.addToArtistStructure(repository, audioFile);
-                		RepositoryFiller.addToFolderStructure(repository, relativeTo, relativePath, audioFile);
-                		RepositoryFiller.addToGenreStructure(repository, audioFile);
+                    for (AudioFile audioFile : audioFilesList) {
+                        audioFile.setExternalPictures(pictures);
+                        if (listener != null) {
+                            listener.notifyFileLoaded();
+                        }
+                        filesLoaded++;
+                        RepositoryFiller.addToRepository(repository, audioFile);
+                        RepositoryFiller.addToArtistStructure(repository, audioFile);
+                        RepositoryFiller.addToFolderStructure(repository, relativeTo, relativePath, audioFile);
+                        RepositoryFiller.addToGenreStructure(repository, audioFile);
 
-                		// Update remaining time every 50 files
-                		if (filesLoaded % 50 == 0) {
-                			long t1 = System.currentTimeMillis();
-                			final long remainingTime = filesLoaded != 0 ? (totalFilesToLoad - filesLoaded) * (t1 - startReadTime) / filesLoaded : 0;
+                        // Update remaining time every 50 files
+                        if (filesLoaded % 50 == 0) {
+                            long t1 = System.currentTimeMillis();
+                            final long remainingTime = filesLoaded != 0 ? (totalFilesToLoad - filesLoaded) * (t1 - startReadTime) / filesLoaded : 0;
 
-                			if (listener != null) {
-           						listener.notifyRemainingTime(remainingTime);
-                				if (!refresh) {
-           							listener.notifyReadProgress();
-                				}
-                			}
-                		}
-                	}
+                            if (listener != null) {
+                                listener.notifyRemainingTime(remainingTime);
+                                if (!refresh) {
+                                    listener.notifyReadProgress();
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -586,9 +585,9 @@ public class RepositoryLoader extends Thread {
      * Notify finish.
      */
     private void notifyFinish() {
-    	// After every read or refresh mark repository as dirty
-    	repository.setDirty(true);
-    	
+        // After every read or refresh mark repository as dirty
+        repository.setDirty(true);
+
         if (listener == null) {
             return;
         }
@@ -630,13 +629,13 @@ public class RepositoryLoader extends Thread {
         }
     }
 
-	/**
-	 * @return the oldRepository
-	 */
-	protected Repository getOldRepository() {
-		return oldRepository;
-	}
-	
+    /**
+     * @return the oldRepository
+     */
+    protected Repository getOldRepository() {
+        return oldRepository;
+    }
+
     /**
      * Adds the external picture for album.
      * 
@@ -647,9 +646,9 @@ public class RepositoryLoader extends Thread {
      * @param picture
      *            the picture
      */
-	protected static void addExternalPictureForAlbum(Repository repository, String artistName, String albumName, File picture) {    	
-        if (repository != null) {        	
-            Artist artist = repository.getStructure().getArtistStructure().get(artistName);
+    protected static void addExternalPictureForAlbum(Repository repository, String artistName, String albumName, File picture) {
+        if (repository != null) {
+            Artist artist = repository.getArtistStructure().get(artistName);
             if (artist == null) {
                 return;
             }
@@ -657,17 +656,17 @@ public class RepositoryLoader extends Thread {
             if (album == null) {
                 return;
             }
-            
-        	// This operation changes repository, so mark it as dirty
+
+            // This operation changes repository, so mark it as dirty
             repository.setDirty(true);
-            
+
             List<AudioFile> audioFiles = album.getAudioFiles();
             for (AudioFile af : audioFiles) {
                 af.addExternalPicture(picture);
             }
         }
     }
-	
+
     /**
      * Permanently deletes an audio file from the repository metainformation
      * 
@@ -682,7 +681,7 @@ public class RepositoryLoader extends Thread {
 
         // Only do this if file is in repository
         if (getFolderForFile(file) != null) {
-        	// This operation changes repository, so mark it as dirty
+            // This operation changes repository, so mark it as dirty
             RepositoryHandler.getInstance().getRepository().setDirty(true);
 
             // Remove from file structure
@@ -710,7 +709,7 @@ public class RepositoryLoader extends Thread {
                     }
 
                     if (a.getAudioObjects().size() <= 1) {
-                    	RepositoryHandler.getInstance().getArtistStructure().remove(a.getName());
+                        RepositoryHandler.getInstance().getArtistStructure().remove(a.getName());
                     }
                 }
             }
@@ -718,9 +717,9 @@ public class RepositoryLoader extends Thread {
             // Remove from genre structure
             Genre g = RepositoryHandler.getInstance().getGenreStructure().get(genre);
             if (g != null) {
-            	g.removeSong(file);
+                g.removeSong(file);
                 if (g.getAudioObjects().size() <= 1) {
-                	RepositoryHandler.getInstance().getGenreStructure().remove(genre);
+                    RepositoryHandler.getInstance().getGenreStructure().remove(genre);
                 }
             }
 
@@ -735,7 +734,7 @@ public class RepositoryLoader extends Thread {
         }
         // File is on a device
         else if (DeviceHandler.getInstance().isDevicePath(file.getUrl())) {
-        	RepositoryHandler.getRepositoryHandlerLogger().info(LogCategories.REPOSITORY, StringUtils.getString("Deleted file ", file, " from device"));
+            RepositoryHandler.getRepositoryHandlerLogger().info(LogCategories.REPOSITORY, StringUtils.getString("Deleted file ", file, " from device"));
         }
     }
 
@@ -756,7 +755,7 @@ public class RepositoryLoader extends Thread {
         }
 
         // Get root folder
-        Folder rootFolder = RepositoryHandler.getInstance().getRepository().getStructure().getFolderStructure().get(repositoryFolder.getAbsolutePath());
+        Folder rootFolder = RepositoryHandler.getInstance().getRepository().getFolderStructure().get(repositoryFolder.getAbsolutePath());
 
         // Now navigate through folder until find folder that contains file
         String path = file.getFile().getParentFile().getAbsolutePath();
@@ -773,16 +772,17 @@ public class RepositoryLoader extends Thread {
 
     /**
      * Renames a file in repository
+     * 
      * @param audioFile
      * @param oldFile
      * @param newFile
      */
     protected static void renameFile(AudioFile audioFile, File oldFile, File newFile) {
-    	// This operation changes repository, so mark it as dirty
-    	RepositoryHandler.getInstance().getRepository().setDirty(true);
+        // This operation changes repository, so mark it as dirty
+        RepositoryHandler.getInstance().getRepository().setDirty(true);
 
-    	audioFile.setFile(newFile);
-    	RepositoryHandler.getInstance().getRepository().getAudioFiles().remove(oldFile.getAbsolutePath());
+        audioFile.setFile(newFile);
+        RepositoryHandler.getInstance().getRepository().getAudioFiles().remove(oldFile.getAbsolutePath());
         RepositoryHandler.getInstance().getRepository().getAudioFiles().put(newFile.getAbsolutePath(), audioFile);
     }
 

@@ -12,22 +12,23 @@ import net.sourceforge.atunes.misc.log.Logger;
 
 public class RepositoryFiller {
 
-	/**
-	 * Logger
-	 */
+    /**
+     * Logger
+     */
     private static Logger logger;
 
     /**
      * Adds basic information of given audio file to repository
+     * 
      * @param repository
      * @param audioFile
      */
     protected static void addToRepository(Repository repository, AudioFile audioFile) {
-		repository.getAudioFiles().put(audioFile.getUrl(), audioFile);
-		repository.setTotalSizeInBytes(repository.getTotalSizeInBytes() + audioFile.getFile().length());
-		repository.addDurationInSeconds(audioFile.getDuration());
+        repository.getAudioFiles().put(audioFile.getUrl(), audioFile);
+        repository.setTotalSizeInBytes(repository.getTotalSizeInBytes() + audioFile.getFile().length());
+        repository.addDurationInSeconds(audioFile.getDuration());
     }
-    
+
     /**
      * Adds given audio file to artist structure of given repository
      * 
@@ -38,23 +39,23 @@ public class RepositoryFiller {
      */
     protected static void addToArtistStructure(Repository repository, AudioFile audioFile) {
         try {
-        	String artist = audioFile.getAlbumArtistOrArtist();
+            String artist = audioFile.getAlbumArtistOrArtist();
             String album = audioFile.getAlbum();
 
-            Artist artistObject = repository.getStructure().getArtistStructure().get(artist);
+            Artist artistObject = repository.getArtistStructure().get(artist);
             if (artistObject == null) {
-            	artistObject = new Artist(artist);
-                repository.getStructure().getArtistStructure().put(artist, artistObject);
+                artistObject = new Artist(artist);
+                repository.getArtistStructure().put(artist, artistObject);
             }
-            
+
             Album albumObject = artistObject.getAlbum(album);
             if (albumObject == null) {
-            	albumObject = new Album(album);
+                albumObject = new Album(album);
                 albumObject.setArtist(artistObject);
                 artistObject.addAlbum(albumObject);
             }
-            
-            albumObject.addSong(audioFile);            
+
+            albumObject.addSong(audioFile);
         } catch (Exception e) {
             logger.error(LogCategories.FILE_READ, e.getMessage());
         }
@@ -70,20 +71,20 @@ public class RepositoryFiller {
      */
     protected static void addToGenreStructure(Repository repository, AudioFile audioFile) {
         try {
-        	String genre = audioFile.getGenre();    
-        	
-            Genre genreObject = repository.getStructure().getGenreStructure().get(genre);
+            String genre = audioFile.getGenre();
+
+            Genre genreObject = repository.getGenreStructure().get(genre);
             if (genreObject == null) {
                 genreObject = new Genre(genre);
-                repository.getStructure().getGenreStructure().put(genre, genreObject);
+                repository.getGenreStructure().put(genre, genreObject);
             }
-            
+
             genreObject.addSong(audioFile);
         } catch (Exception e) {
             getLogger().error(LogCategories.FILE_READ, e.getMessage());
         }
     }
-    
+
     /**
      * Adds given audio file to folder structure of given repository.
      * 
@@ -97,10 +98,10 @@ public class RepositoryFiller {
      *            the file
      */
     protected static void addToFolderStructure(Repository repository, File relativeTo, String relativePath, AudioFile file) {
-    	Folder relativeFolder = repository.getStructure().getFolderStructure().get(relativeTo.getAbsolutePath());
+        Folder relativeFolder = repository.getFolderStructure().get(relativeTo.getAbsolutePath());
         if (relativeFolder == null) {
             relativeFolder = new Folder(relativeTo.getAbsolutePath());
-            repository.getStructure().getFolderStructure().put(relativeFolder.getName(), relativeFolder);
+            repository.getFolderStructure().put(relativeFolder.getName(), relativeFolder);
         }
 
         String[] foldersInPath = relativePath.split("/");
@@ -108,16 +109,16 @@ public class RepositoryFiller {
         Folder f = null;
         for (String folderName : foldersInPath) {
             if (parentFolder != null) {
-            	f = parentFolder.getFolder(folderName);
+                f = parentFolder.getFolder(folderName);
                 if (f == null) {
                     f = new Folder(folderName);
                     parentFolder.addFolder(f);
                 }
             } else {
-            	f = repository.getStructure().getFolderStructure().get(folderName);
+                f = repository.getFolderStructure().get(folderName);
                 if (f == null) {
                     f = new Folder(folderName);
-                    repository.getStructure().getFolderStructure().put(f.getName(), f);
+                    repository.getFolderStructure().put(f.getName(), f);
                 }
             }
             parentFolder = f;
@@ -130,12 +131,13 @@ public class RepositoryFiller {
 
     /**
      * Private getter of logger
+     * 
      * @return
      */
     private static Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
-    } 
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
+    }
 }

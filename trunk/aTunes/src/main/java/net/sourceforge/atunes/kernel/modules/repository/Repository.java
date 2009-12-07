@@ -27,6 +27,9 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
+import net.sourceforge.atunes.kernel.modules.repository.model.Folder;
+import net.sourceforge.atunes.kernel.modules.repository.model.Genre;
 
 /**
  * The Class Repository.
@@ -51,7 +54,7 @@ public class Repository implements Serializable {
 
     /** The structure. */
     private RepositoryStructure structure;
-    
+
     /** Attribute to indicate if repository needs to be written to disk */
     private transient boolean dirty;
 
@@ -125,13 +128,16 @@ public class Repository implements Serializable {
         return new ArrayList<File>(folders);
     }
 
-    /**
-     * Gets the structure.
-     * 
-     * @return the structure
-     */
-    public RepositoryStructure getStructure() {
-        return structure;
+    public Map<String, Artist> getArtistStructure() {
+        return structure.getArtistStructure();
+    }
+
+    public Map<String, Folder> getFolderStructure() {
+        return structure.getFolderStructure();
+    }
+
+    public Map<String, Genre> getGenreStructure() {
+        return structure.getGenreStructure();
     }
 
     /**
@@ -181,18 +187,19 @@ public class Repository implements Serializable {
         return getFolders().get(0).exists();
     }
 
-	/**
-	 * @return the dirty
-	 */
-	protected boolean isDirty() {
-		return dirty;
-	}
+    /**
+     * @return the dirty
+     */
+    protected boolean isDirty() {
+        return dirty;
+    }
 
-	/**
-	 * @param dirty the dirty to set
-	 */
-	protected void setDirty(boolean dirty) {
-		this.dirty = dirty;
-	}
+    /**
+     * @param dirty
+     *            the dirty to set
+     */
+    protected void setDirty(boolean dirty) {
+        this.dirty = dirty;
+    }
 
 }
