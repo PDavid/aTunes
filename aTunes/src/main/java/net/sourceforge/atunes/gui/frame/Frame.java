@@ -43,8 +43,9 @@ public interface Frame {
 
     /**
      * Creates the frame.
+     * @param frameState
      */
-    public void create();
+    public void create(FrameState frameState);
 
     /**
      * Gets the app menu bar.
@@ -304,5 +305,7 @@ public interface Frame {
      * @param version
      */
     public void showNewVersionInfo(boolean show, ApplicationVersion version);
+    
+    public FrameState getFrameState();
 
 }

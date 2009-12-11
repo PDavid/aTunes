@@ -48,6 +48,7 @@ import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable.PlayStat
 import net.sourceforge.atunes.gui.views.dialogs.AboutDialog;
 import net.sourceforge.atunes.gui.views.dialogs.AddPodcastFeedDialog;
 import net.sourceforge.atunes.gui.views.dialogs.AddRadioDialog;
+import net.sourceforge.atunes.gui.views.dialogs.ColumnSetSelectorDialog;
 import net.sourceforge.atunes.gui.views.dialogs.CoverNavigatorFrame;
 import net.sourceforge.atunes.gui.views.dialogs.CustomSearchDialog;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
@@ -60,7 +61,6 @@ import net.sourceforge.atunes.gui.views.dialogs.IndeterminateProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.InputDialog;
 import net.sourceforge.atunes.gui.views.dialogs.MultiFolderSelectionDialog;
 import net.sourceforge.atunes.gui.views.dialogs.OSDDialog;
-import net.sourceforge.atunes.gui.views.dialogs.ColumnSetSelectorDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RadioBrowserDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RepositoryProgressDialog;
@@ -1234,7 +1234,7 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
             FadingPopupFactory.install();
         }
 
-        getFrame().create();
+        getFrame().create(ApplicationState.getInstance().getFrameState());
 
         // Create drag and drop listener
         PlayListTableTransferHandler playListTransferHandler = new PlayListTableTransferHandler();
@@ -1243,10 +1243,13 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
 
         new PlayListToDeviceDragAndDropListener();
 
-        getProgressBar().setVisible(false);
+        JProgressBar progressBar = getProgressBar();
+        if (progressBar != null) {
+            progressBar.setVisible(false);
+        }
+
         hideDeviceInfoOnStatusBar();
 
-        //SwingUtilities.updateComponentTreeUI(getFrame().getFrame());
         getLogger().debug(LogCategories.START, "Start visualization done");
     }
 

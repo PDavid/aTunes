@@ -33,6 +33,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Arrays;
 
 import javax.swing.BorderFactory;
@@ -87,6 +89,8 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
     private static final int SPLIT_PANE_DEFAULT_DIVIDER_SIZE = 10;
     public static final int MARGIN = 100;
 
+    private FrameState frameState;
+
     private JSplitPane leftVerticalSplitPane;
     private JSplitPane rightVerticalSplitPane;
     private JLabel leftStatusBar;
@@ -132,7 +136,9 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
     }
 
     @Override
-    public void create() {
+    public void create(FrameState frameState) {
+        this.frameState = frameState;
+
         // Set frame basic attributes
         setWindowSize();
 
@@ -165,6 +171,14 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
 
         // Create frame content
         setContentPane(getContentPanel());
+
+        // Split panes divider location
+        if (frameState.getLeftVerticalSplitPaneDividerLocation() != 0) {
+            setLeftVerticalSplitPaneDividerLocationAndSetWindowSize(frameState.getLeftVerticalSplitPaneDividerLocation());
+        }
+        if (frameState.getRightVerticalSplitPaneDividerLocation() != 0) {
+            setRightVerticalSplitPaneDividerLocationAndSetWindowSize(frameState.getRightVerticalSplitPaneDividerLocation());
+        }
 
         // Apply component orientation
         GuiUtils.applyComponentOrientation(this);
@@ -305,6 +319,22 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
             rightVerticalSplitPane.setResizeWeight(0.2);
         }
 
+        leftVerticalSplitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
+
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                frameState.setLeftVerticalSplitPaneDividerLocation((Integer) evt.getNewValue());
+            }
+        });
+
+        rightVerticalSplitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
+
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                frameState.setRightVerticalSplitPaneDividerLocation(((Integer) evt.getNewValue()));
+            }
+        });
+
         c.gridx = 0;
         c.gridy = 0;
         panel.add(getToolBar(), c);
@@ -341,15 +371,6 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
         return leftStatusBar;
     }
 
-    /**
-     * Gets the left vertical split pane.
-     * 
-     * @return the left vertical split pane
-     */
-    public JSplitPane getLeftVerticalSplitPane() {
-        return leftVerticalSplitPane;
-    }
-
     @Override
     public NavigationPanel getNavigationPanel() {
         if (navigationPanel == null) {
@@ -362,6 +383,15 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
             if (!ApplicationState.getInstance().isShowNavigationPanel()) {
                 navigationPanel.setVisible(false);
             }
+
+            navigationPanel.getSplitPane().addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
+
+                @Override
+                public void propertyChange(PropertyChangeEvent evt) {
+                    StandardFrame.this.frameState.setLeftHorizontalSplitPaneDividerLocation((Integer) evt.getNewValue());
+                }
+            });
+
         }
         return navigationPanel;
     }
@@ -425,15 +455,6 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
             rightStatusBar = new JLabel(" ");
         }
         return rightStatusBar;
-    }
-
-    /**
-     * Gets the right vertical split pane.
-     * 
-     * @return the right vertical split pane
-     */
-    public JSplitPane getRightVerticalSplitPane() {
-        return rightVerticalSplitPane;
     }
 
     /**
@@ -614,9 +635,9 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
         getContextPanel().setVisible(show);
         if (!wasVisible && show) {
             int panelWidth = playListPanel.getWidth();
-            int rightDividerLocation = ApplicationState.getInstance().getRightVerticalSplitPaneDividerLocation();
+            int rightDividerLocation = frameState.getRightVerticalSplitPaneDividerLocation();
             if (rightDividerLocation != 0 && rightDividerLocation < (panelWidth - StandardFrame.CONTEXT_PANEL_WIDTH)) {
-                rightVerticalSplitPane.setDividerLocation(ApplicationState.getInstance().getRightVerticalSplitPaneDividerLocation());
+                rightVerticalSplitPane.setDividerLocation(frameState.getRightVerticalSplitPaneDividerLocation());
             } else {
                 rightVerticalSplitPane.setDividerLocation(rightVerticalSplitPane.getSize().width - StandardFrame.CONTEXT_PANEL_WIDTH);
             }
@@ -633,7 +654,7 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
             }
         } else if (!show) {
             // Save panel width
-            ApplicationState.getInstance().setRightVerticalSplitPaneDividerLocation(getRightVerticalSplitPane().getDividerLocation());
+            frameState.setRightVerticalSplitPaneDividerLocation(rightVerticalSplitPane.getDividerLocation());
         }
         if (show) {
             rightVerticalSplitPane.setDividerSize(SPLIT_PANE_DEFAULT_DIVIDER_SIZE);
@@ -648,17 +669,17 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
         if (show) {
             int playListWidth = playListPanel.getWidth();
 
-            getLeftVerticalSplitPane().setDividerLocation(ApplicationState.getInstance().getLeftVerticalSplitPaneDividerLocation());
+            leftVerticalSplitPane.setDividerLocation(frameState.getLeftVerticalSplitPaneDividerLocation());
             playListWidth = playListWidth - StandardFrame.NAVIGATION_PANEL_WIDTH;
             if (playListWidth < PLAY_LIST_PANEL_WIDTH && changeSize) {
                 int diff = PLAY_LIST_PANEL_WIDTH - playListWidth;
                 setSize(getSize().width + diff, getSize().height);
             }
-            getLeftVerticalSplitPane().setDividerSize(SPLIT_PANE_DEFAULT_DIVIDER_SIZE);
+            leftVerticalSplitPane.setDividerSize(SPLIT_PANE_DEFAULT_DIVIDER_SIZE);
         } else {
             // Save panel width
-            ApplicationState.getInstance().setLeftVerticalSplitPaneDividerLocation(getLeftVerticalSplitPane().getDividerLocation());
-            getLeftVerticalSplitPane().setDividerSize(0);
+            frameState.setLeftVerticalSplitPaneDividerLocation(leftVerticalSplitPane.getDividerLocation());
+            leftVerticalSplitPane.setDividerSize(0);
         }
     }
 
@@ -667,11 +688,11 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
         getNavigationPanel().getNavigationTableContainer().setVisible(show);
         if (show) {
             super.setVisible(show);
-            getNavigationPanel().getSplitPane().setDividerLocation(ApplicationState.getInstance().getLeftHorizontalSplitPaneDividerLocation());
+            getNavigationPanel().getSplitPane().setDividerLocation(frameState.getLeftHorizontalSplitPaneDividerLocation());
             getNavigationPanel().getSplitPane().setDividerSize(SPLIT_PANE_DEFAULT_DIVIDER_SIZE);
         } else {
             // Save location
-            ApplicationState.getInstance().setLeftHorizontalSplitPaneDividerLocation(getNavigationPanel().getSplitPane().getDividerLocation());
+            frameState.setLeftHorizontalSplitPaneDividerLocation(getNavigationPanel().getSplitPane().getDividerLocation());
             getNavigationPanel().getSplitPane().setDividerSize(0);
         }
     }
@@ -743,4 +764,8 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
         statusBar.repaint();
     }
 
+    @Override
+    public FrameState getFrameState() {
+        return frameState;
+    }
 }
