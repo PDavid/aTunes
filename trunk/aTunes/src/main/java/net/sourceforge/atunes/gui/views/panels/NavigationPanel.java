@@ -59,10 +59,10 @@ public final class NavigationPanel extends JPanel {
 
     /** The split pane. */
     private JSplitPane splitPane;
-    
+
     /** Popup menu for header of navigation table */
     private JPopupMenu navigationTableHeaderMenu;
-    
+
     /**
      * The tree filter
      */
@@ -109,10 +109,9 @@ public final class NavigationPanel extends JPanel {
 
         // Disable autoresize, as we will control it
         navigationTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        
+
         navigationTableHeaderMenu = new JPopupMenu();
         navigationTableHeaderMenu.add(Actions.getAction(ArrangeNavigationTableColumns.class));
-
 
         JScrollPane scrollPane2 = new JScrollPane(navigationTable);
         //scrollPane2.setBorder(BorderFactory.createEmptyBorder());
@@ -236,10 +235,10 @@ public final class NavigationPanel extends JPanel {
         return tableFilterPanel;
     }
 
-	/**
-	 * @return the navigationTableHeaderMenu
-	 */
-	public JPopupMenu getNavigationTableHeaderMenu() {
-		return navigationTableHeaderMenu;
-	}
+    /**
+     * @return the navigationTableHeaderMenu
+     */
+    public JPopupMenu getNavigationTableHeaderMenu() {
+        return navigationTableHeaderMenu;
+    }
 }

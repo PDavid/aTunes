@@ -25,7 +25,7 @@ import java.util.Map;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.frame.StandardFrame;
+import net.sourceforge.atunes.gui.frame.FrameState;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnBean;
@@ -146,9 +146,7 @@ public class ApplicationState {
     private Map<String, ColumnBean> navigatorColumns;
 
     // Split panes divider location
-    private int leftVerticalSplitPaneDividerLocation = StandardFrame.NAVIGATION_PANEL_WIDTH;
-    private int rightVerticalSplitPaneDividerLocation;
-    private int leftHorizontalSplitPaneDividerLocation = StandardFrame.NAVIGATOR_SPLIT_PANE_DIVIDER_LOCATION;
+    private FrameState frameState = new FrameState();
 
     /**
      * Default location where device is plugged. Used to connect device
@@ -869,28 +867,12 @@ public class ApplicationState {
         this.navigatorColumns = navigatorColumns;
     }
 
-    public int getLeftVerticalSplitPaneDividerLocation() {
-        return leftVerticalSplitPaneDividerLocation;
+    public FrameState getFrameState() {
+        return frameState;
     }
 
-    public void setLeftVerticalSplitPaneDividerLocation(int leftVerticalSplitPaneDividerLocation) {
-        this.leftVerticalSplitPaneDividerLocation = leftVerticalSplitPaneDividerLocation;
-    }
-
-    public int getRightVerticalSplitPaneDividerLocation() {
-        return rightVerticalSplitPaneDividerLocation;
-    }
-
-    public void setRightVerticalSplitPaneDividerLocation(int rightVerticalSplitPaneDividerLocation) {
-        this.rightVerticalSplitPaneDividerLocation = rightVerticalSplitPaneDividerLocation;
-    }
-
-    public int getLeftHorizontalSplitPaneDividerLocation() {
-        return leftHorizontalSplitPaneDividerLocation;
-    }
-
-    public void setLeftHorizontalSplitPaneDividerLocation(int leftHorizontalSplitPaneDividerLocation) {
-        this.leftHorizontalSplitPaneDividerLocation = leftHorizontalSplitPaneDividerLocation;
+    public void setFrameState(FrameState frameState) {
+        this.frameState = frameState;
     }
 
     public String getDefaultDeviceLocation() {

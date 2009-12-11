@@ -40,7 +40,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.frame.StandardFrame;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.Kernel;
@@ -201,18 +200,6 @@ public final class ApplicationStateHandler extends Handler {
 
         // Mute
         PlayerHandler.getInstance().applyMuteState(ApplicationState.getInstance().isMuteEnabled());
-
-        if (!GuiHandler.getInstance().isMultipleWindow()) {
-            // Split panes divider location
-            if (ApplicationState.getInstance().getLeftVerticalSplitPaneDividerLocation() != 0) {
-                ((StandardFrame) GuiHandler.getInstance().getFrame()).setLeftVerticalSplitPaneDividerLocationAndSetWindowSize(ApplicationState.getInstance()
-                        .getLeftVerticalSplitPaneDividerLocation());
-            }
-            if (ApplicationState.getInstance().getRightVerticalSplitPaneDividerLocation() != 0) {
-                ((StandardFrame) GuiHandler.getInstance().getFrame()).setRightVerticalSplitPaneDividerLocationAndSetWindowSize(ApplicationState.getInstance()
-                        .getRightVerticalSplitPaneDividerLocation());
-            }
-        }
 
         // Proxy
         AmazonService.getInstance().setProxyBean(ApplicationState.getInstance().getProxy());
@@ -736,11 +723,6 @@ public final class ApplicationStateHandler extends Handler {
             // Set window size
             ApplicationState.getInstance().setWindowWidth(GuiHandler.getInstance().getWindowSize().width);
             ApplicationState.getInstance().setWindowHeight(GuiHandler.getInstance().getWindowSize().height);
-            // Set split panes divider location
-            ApplicationState.getInstance().setLeftVerticalSplitPaneDividerLocation(
-                    ((StandardFrame) GuiHandler.getInstance().getFrame()).getLeftVerticalSplitPane().getDividerLocation());
-            ApplicationState.getInstance().setRightVerticalSplitPaneDividerLocation(
-                    ((StandardFrame) GuiHandler.getInstance().getFrame()).getRightVerticalSplitPane().getDividerLocation());
         } else {
             // Set window location on state
             ApplicationState.getInstance().setMultipleViewXPosition(GuiHandler.getInstance().getWindowLocation().x);
@@ -749,8 +731,6 @@ public final class ApplicationStateHandler extends Handler {
             ApplicationState.getInstance().setMultipleViewWidth(GuiHandler.getInstance().getWindowSize().width);
             ApplicationState.getInstance().setMultipleViewHeight(GuiHandler.getInstance().getWindowSize().height);
         }
-        // Set horizontal split pane divider location
-        ApplicationState.getInstance().setLeftHorizontalSplitPaneDividerLocation(GuiHandler.getInstance().getFrame().getNavigationPanel().getSplitPane().getDividerLocation());
 
         // Equalizer
         ApplicationState.getInstance().setEqualizerSettings(PlayerHandler.getInstance().getEqualizer().getEqualizerValues());

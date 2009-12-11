@@ -32,6 +32,8 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +41,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.JSplitPane;
 import javax.swing.Timer;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
@@ -81,6 +84,8 @@ public final class MultipleFrame implements Frame {
     private static final Dimension contextDimension = new Dimension(300, 689);
 
     private CustomFrame frame;
+
+    private FrameState frameState;
 
     CustomDialog navigatorDialog;
     private CustomDialog filePropertiesDialog;
@@ -147,7 +152,9 @@ public final class MultipleFrame implements Frame {
     }
 
     @Override
-    public void create() {
+    public void create(FrameState frameState) {
+        this.frameState = frameState;
+
         menuBar = new ApplicationMenuBar();
         toolBar = new ToolBar();
 
@@ -183,6 +190,13 @@ public final class MultipleFrame implements Frame {
                 // When closing navigator dialog, perform the same actions as deselecting tool bar button
                 toolBar.getShowNavigator().setSelected(false);
                 toolBar.getShowNavigator().getAction().actionPerformed(null);
+            }
+        });
+        navigationPanel.getSplitPane().addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
+
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                MultipleFrame.this.frameState.setLeftHorizontalSplitPaneDividerLocation((Integer) evt.getNewValue());
             }
         });
 
@@ -360,10 +374,10 @@ public final class MultipleFrame implements Frame {
     public void showNavigationTable(boolean show) {
         navigationPanel.getNavigationTableContainer().setVisible(show);
         if (show) {
-            navigationPanel.getSplitPane().setDividerLocation(ApplicationState.getInstance().getLeftHorizontalSplitPaneDividerLocation());
+            navigationPanel.getSplitPane().setDividerLocation(frameState.getLeftHorizontalSplitPaneDividerLocation());
         } else {
             // Save location
-            ApplicationState.getInstance().setLeftHorizontalSplitPaneDividerLocation(navigationPanel.getSplitPane().getDividerLocation());
+            frameState.setLeftHorizontalSplitPaneDividerLocation(navigationPanel.getSplitPane().getDividerLocation());
         }
     }
 
@@ -570,6 +584,11 @@ public final class MultipleFrame implements Frame {
         if (x != window.getBounds().x || y != window.getBounds().y) {
             window.setLocation(x, y);
         }
+    }
+
+    @Override
+    public FrameState getFrameState() {
+        return frameState;
     }
 
 }
