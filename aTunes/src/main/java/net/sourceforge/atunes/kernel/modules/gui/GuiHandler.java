@@ -585,7 +585,7 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
      *            the tool tip
      */
     public void setCenterStatusBarText(String text, String toolTip) {
-        frame.setCenterStatusBar(text, toolTip);
+        frame.setCenterStatusBarText(text, toolTip);
     }
 
     /**
@@ -687,7 +687,7 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
      *            the tool tip
      */
     public void setRightStatusBarText(String text, String toolTip) {
-        frame.setRightStatusBar(text, toolTip);
+        frame.setRightStatusBarText(text, toolTip);
     }
 
     /**

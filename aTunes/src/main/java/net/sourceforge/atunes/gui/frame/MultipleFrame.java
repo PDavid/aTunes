@@ -285,7 +285,7 @@ public final class MultipleFrame implements Frame {
     }
 
     @Override
-    public void setCenterStatusBar(String text, String toolTip) {
+    public void setCenterStatusBarText(String text, String toolTip) {
         // Nothing to do
     }
 
@@ -318,7 +318,7 @@ public final class MultipleFrame implements Frame {
     }
 
     @Override
-    public void setRightStatusBar(String text, String toolTip) {
+    public void setRightStatusBarText(String text, String toolTip) {
         // Nothing to do
     }
 

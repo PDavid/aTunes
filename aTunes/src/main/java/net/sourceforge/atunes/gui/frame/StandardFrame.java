@@ -508,7 +508,7 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
     }
 
     @Override
-    public void setCenterStatusBar(String text, String toolTip) {
+    public void setCenterStatusBarText(String text, String toolTip) {
         getCenterStatusBar().setText(text);
         getCenterStatusBar().setToolTipText(toolTip);
     }
@@ -532,7 +532,7 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
     }
 
     @Override
-    public void setRightStatusBar(String text, String toolTip) {
+    public void setRightStatusBarText(String text, String toolTip) {
         getRightStatusBar().setText(text);
         getRightStatusBar().setToolTipText(toolTip);
     }

@@ -144,14 +144,14 @@ public interface Frame {
     public boolean isVisible();
 
     /**
-     * Sets the center status bar.
+     * Sets the text of the center status bar.
      * 
      * @param text
      *            the text
      * @param toolTip
      *            the tool tip
      */
-    public void setCenterStatusBar(String text, String toolTip);
+    public void setCenterStatusBarText(String text, String toolTip);
 
     /**
      * Sets the default close operation.
@@ -170,7 +170,7 @@ public interface Frame {
     public void setExtendedState(int state);
 
     /**
-     * Sets the left status bar text.
+     * Sets the test of the left status bar text.
      * 
      * @param text
      *            the text
@@ -196,14 +196,14 @@ public interface Frame {
     public void setLocationRelativeTo(Component c);
 
     /**
-     * Sets the right status bar.
+     * Sets the text of the right status bar.
      * 
      * @param text
      *            the text
      * @param toolTip
      *            the tool tip
      */
-    public void setRightStatusBar(String text, String toolTip);
+    public void setRightStatusBarText(String text, String toolTip);
 
     /**
      * Sets the status bar image label text.
