@@ -28,7 +28,7 @@ public class TrackColumn extends Column {
     private static final long serialVersionUID = 6114834986452693757L;
 
     public TrackColumn() {
-        super("TRACK", String.class);
+        super("TRACK", Integer.class);
         setWidth(40);
         setVisible(true);
         setAlignment(SwingConstants.CENTER);
@@ -43,7 +43,7 @@ public class TrackColumn extends Column {
     public Object getValueFor(AudioObject audioObject) {
         // Return track number or empty string
         int track = audioObject.getTrackNumber();
-        return track > 0 ? track : "";
+        return track;
     }
 
 }

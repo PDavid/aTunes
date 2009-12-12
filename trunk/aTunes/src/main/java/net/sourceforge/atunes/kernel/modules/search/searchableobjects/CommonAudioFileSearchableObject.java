@@ -24,11 +24,8 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
-import net.sourceforge.atunes.kernel.modules.search.SearchResult;
-import net.sourceforge.atunes.kernel.modules.search.SearchResultTableModel;
 import net.sourceforge.atunes.kernel.modules.search.SearchableObject;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.lucene.document.Document;
@@ -146,50 +143,4 @@ public abstract class CommonAudioFileSearchableObject implements SearchableObjec
 
         return d;
     }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @seenet.sourceforge.atunes.kernel.modules.search.SearchableObject#
-     * getSearchResultsTableModel(java.util.List)
-     */
-    public SearchResultTableModel getSearchResultsTableModel(final List<SearchResult> results) {
-        SearchResultTableModel tm = new SearchResultTableModel(results) {
-            @Override
-            public int getColumnCount() {
-                return 4;
-            }
-
-            @Override
-            public String getColumnName(int columnIndex) {
-                if (columnIndex == 0) {
-                    return I18nUtils.getString("TITLE");
-                } else if (columnIndex == 1) {
-                    return I18nUtils.getString("ARTIST");
-                } else if (columnIndex == 2) {
-                    return I18nUtils.getString("ALBUM");
-                } else if (columnIndex == 3) {
-                    return I18nUtils.getString("LOCATION");
-                }
-                return null;
-            }
-
-            @Override
-            public Object getValueAt(int rowIndex, int columnIndex) {
-                SearchResult sr = results.get(rowIndex);
-                if (columnIndex == 0) {
-                    return sr.getAudioObject().getTitleOrFileName();
-                } else if (columnIndex == 1) {
-                    return sr.getAudioObject().getArtist();
-                } else if (columnIndex == 2) {
-                    return sr.getAudioObject().getAlbum();
-                } else if (columnIndex == 3) {
-                    return sr.getAudioObject().getUrl();
-                }
-                return null;
-            }
-        };
-        return tm;
-    }
-
 }

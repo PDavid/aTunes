@@ -25,7 +25,6 @@ import java.awt.GridBagLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
@@ -34,8 +33,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.views.controls.NavigationTable;
-import net.sourceforge.atunes.kernel.actions.Actions;
-import net.sourceforge.atunes.kernel.actions.ArrangeNavigationTableColumns;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationView;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -59,9 +56,6 @@ public final class NavigationPanel extends JPanel {
 
     /** The split pane. */
     private JSplitPane splitPane;
-
-    /** Popup menu for header of navigation table */
-    private JPopupMenu navigationTableHeaderMenu;
 
     /**
      * The tree filter
@@ -109,9 +103,6 @@ public final class NavigationPanel extends JPanel {
 
         // Disable autoresize, as we will control it
         navigationTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-
-        navigationTableHeaderMenu = new JPopupMenu();
-        navigationTableHeaderMenu.add(Actions.getAction(ArrangeNavigationTableColumns.class));
 
         JScrollPane scrollPane2 = new JScrollPane(navigationTable);
         //scrollPane2.setBorder(BorderFactory.createEmptyBorder());
@@ -233,12 +224,5 @@ public final class NavigationPanel extends JPanel {
      */
     public NavigationFilterPanel getTableFilterPanel() {
         return tableFilterPanel;
-    }
-
-    /**
-     * @return the navigationTableHeaderMenu
-     */
-    public JPopupMenu getNavigationTableHeaderMenu() {
-        return navigationTableHeaderMenu;
     }
 }

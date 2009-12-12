@@ -106,23 +106,6 @@ public final class ColumnRenderers {
             }
         });
 
-        // AUDIOBJECT renderer
-        jtable.setDefaultRenderer(AudioObject.class, new SubstanceDefaultTableCellRenderer() {
-            private static final long serialVersionUID = 7305230546936745766L;
-
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                Component c = super.getTableCellRendererComponent(table, ((AudioObject) value).getTitleOrFileName(), isSelected, hasFocus, row, column);
-                if (table instanceof PlayListTable) {
-                	setFontForRow((JLabel) c, row);
-                }
-
-                // Get alignment from model
-                ((JLabel) c).setHorizontalAlignment(model.getColumnAlignment(column));
-                return c;
-            }
-        });
-
         // STRING renderer
         jtable.setDefaultRenderer(String.class, new SubstanceDefaultTableCellRenderer() {
             private static final long serialVersionUID = 7305230546936745766L;

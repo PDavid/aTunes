@@ -19,8 +19,6 @@
  */
 package net.sourceforge.atunes.kernel.controllers.playList;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -33,7 +31,7 @@ import net.sourceforge.atunes.gui.views.menus.PlayListMenu;
 /**
  * The listener interface for receiving play list events.
  */
-public final class PlayListListener extends MouseAdapter implements ActionListener, ListSelectionListener {
+public final class PlayListListener extends MouseAdapter implements ListSelectionListener {
 
     private PlayListTable table;
     private PlayListController controller;
@@ -49,13 +47,6 @@ public final class PlayListListener extends MouseAdapter implements ActionListen
     protected PlayListListener(PlayListTable table, PlayListController controller) {
         this.table = table;
         this.controller = controller;
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource().equals(table.getArrangeColumns())) {
-            controller.arrangeColumns();
-        }
     }
 
     @Override

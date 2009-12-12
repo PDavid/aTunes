@@ -29,7 +29,6 @@ import java.awt.dnd.DragSourceEvent;
 import java.awt.dnd.DragSourceListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +37,6 @@ import javax.swing.DropMode;
 import javax.swing.ImageIcon;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
-import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
@@ -48,15 +46,14 @@ import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.model.AudioObjectsSource;
 import net.sourceforge.atunes.gui.model.PlayListColumnModel;
 import net.sourceforge.atunes.gui.model.TransferableList;
+import net.sourceforge.atunes.gui.views.controls.ColumnSetPopupMenu;
 import net.sourceforge.atunes.gui.views.menus.PlayListMenu;
-import net.sourceforge.atunes.kernel.modules.columns.Column;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnRenderers;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListDragableRow;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListTableModel;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The play list table.
@@ -99,8 +96,6 @@ public final class PlayListTable extends JTable implements DragSourceListener, D
 
     private PlayState playState = PlayState.STOPPED;
     private JPopupMenu menu;
-    JPopupMenu rightMenu;
-    private JMenuItem arrangeColumns;
     List<PlayListColumnClickedListener> listeners = new ArrayList<PlayListColumnClickedListener>();
 
     /**
@@ -117,28 +112,6 @@ public final class PlayListTable extends JTable implements DragSourceListener, D
         setShowGrid(false);
         setDropMode(DropMode.ON);
 
-        // Add mouse click listener on table header
-        getTableHeader().addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                // Use left button to sort
-                if (e.getButton() == MouseEvent.BUTTON1) {
-                    PlayListColumnModel colModel = (PlayListColumnModel) getColumnModel();
-                    int column = colModel.getColumnIndexAtPosition(e.getX());
-                    if (column >= 0) {
-                        Column columnClicked = ((PlayListColumnModel) getColumnModel()).getColumnObject(column);
-                        for (int i = 0; i < listeners.size(); i++) {
-                            listeners.get(i).columnClicked(columnClicked);
-                        }
-                    }
-                }
-                // Use right button to arrange columns
-                else if (e.getButton() == MouseEvent.BUTTON3) {
-                    rightMenu.show(PlayListTable.this.getTableHeader(), e.getX(), e.getY());
-                }
-            }
-        });
-
         // Set table model
         setModel(new PlayListTableModel());
 
@@ -146,6 +119,9 @@ public final class PlayListTable extends JTable implements DragSourceListener, D
         PlayListColumnModel model = new PlayListColumnModel(this);
         setColumnModel(model);
 
+        // Bind column set popup menu
+        new ColumnSetPopupMenu(this, model);
+        
         // Disable autoresize, as we will control it
         setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -159,10 +135,6 @@ public final class PlayListTable extends JTable implements DragSourceListener, D
         InputMap im = getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         KeyStroke f2 = KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0);
         im.put(f2, "none");
-
-        rightMenu = new JPopupMenu();
-        arrangeColumns = new JMenuItem(I18nUtils.getString("ARRANGE_COLUMNS"));
-        rightMenu.add(arrangeColumns);
 
         // Popup menu
         menu = new JPopupMenu();
@@ -187,15 +159,6 @@ public final class PlayListTable extends JTable implements DragSourceListener, D
      */
     public void addPlayListColumnClickedListener(PlayListColumnClickedListener l) {
         listeners.add(l);
-    }
-
-    /**
-     * Gets the arrange columns.
-     * 
-     * @return the arrangeColumns
-     */
-    public JMenuItem getArrangeColumns() {
-        return arrangeColumns;
     }
 
     /**

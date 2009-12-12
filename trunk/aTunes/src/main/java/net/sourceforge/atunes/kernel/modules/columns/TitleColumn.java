@@ -29,7 +29,7 @@ public class TitleColumn extends Column {
     private static final long serialVersionUID = -4113331298039010230L;
 
     public TitleColumn() {
-        super("TITLE", AudioObject.class);
+        super("TITLE", String.class);
         setVisible(true);
         setUsedForFilter(true);
     }
@@ -41,8 +41,7 @@ public class TitleColumn extends Column {
 
     @Override
     public Object getValueFor(AudioObject audioObject) {
-        // Return the file
-        return audioObject;
+        return audioObject.getTitleOrFileName();
     }
     
     @Override

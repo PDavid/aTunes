@@ -21,8 +21,6 @@ package net.sourceforge.atunes.kernel.controllers.navigation;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -49,13 +47,13 @@ import javax.swing.tree.TreePath;
 import net.sourceforge.atunes.gui.model.CommonColumnModel;
 import net.sourceforge.atunes.gui.model.NavigationTableColumnModel;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
+import net.sourceforge.atunes.gui.views.controls.ColumnSetPopupMenu;
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.gui.views.dialogs.SearchDialog;
 import net.sourceforge.atunes.gui.views.panels.NavigationPanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationFilterPanel.NavigationFilterListener;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.actions.Actions;
-import net.sourceforge.atunes.kernel.actions.ArrangeNavigationTableColumns;
 import net.sourceforge.atunes.kernel.actions.ShowAlbumsInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowArtistsInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowFoldersInNavigatorAction;
@@ -98,6 +96,8 @@ public final class NavigationController extends SimpleController<NavigationPanel
     
     /** The column model */
     private CommonColumnModel columnModel;
+    
+    private ColumnSetPopupMenu columnSetPopupMenu;
 
     /** The timer. */
     private Timer timer = new Timer(0, new ActionListener() {
@@ -151,16 +151,8 @@ public final class NavigationController extends SimpleController<NavigationPanel
         getComponentControlled().getNavigationTable().setColumnModel(columnModel);
         ColumnRenderers.addRenderers(getComponentControlled().getNavigationTable(), columnModel);
 
-        getComponentControlled().getNavigationTable().getTableHeader().addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                // Use right button to arrange columns
-                if (e.getButton() == MouseEvent.BUTTON3) {
-                	getComponentControlled().getNavigationTableHeaderMenu().show(getComponentControlled().getNavigationTable().getTableHeader(), e.getX(), e.getY());
-                }
-            }
-        });
-
+        // Bind column set popup menu
+        columnSetPopupMenu = new ColumnSetPopupMenu(getComponentControlled().getNavigationTable(), columnModel);
 
         // Add tree selection listeners to all views
         for (NavigationView view : NavigationHandler.getInstance().getNavigationViews()) {
@@ -386,7 +378,7 @@ public final class NavigationController extends SimpleController<NavigationPanel
 
         boolean useDefaultNavigatorColumns = NavigationHandler.getInstance().getView(navigationView).isUseDefaultNavigatorColumns();
         // Allow arrange columns if view uses default column set
-        Actions.getAction(ArrangeNavigationTableColumns.class).setEnabled(useDefaultNavigatorColumns);
+        columnSetPopupMenu.enableArrangeColumns(useDefaultNavigatorColumns);        
         // Enable column change
         ((NavigationTableColumnModel) getComponentControlled().getNavigationTable().getColumnModel()).enableColumnChange(useDefaultNavigatorColumns);
         
