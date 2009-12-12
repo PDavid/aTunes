@@ -28,14 +28,13 @@ import net.sourceforge.atunes.kernel.modules.columns.NavigatorColumnSet;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationView;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The Class NavigationTableModel.
  * 
  * @author fleax
  */
-public final class NavigationTableModel extends CommonTableModel {
+public final class NavigationTableModel extends ColumnSetTableModel {
 
     /**
      * Enum for properties
@@ -73,7 +72,7 @@ public final class NavigationTableModel extends CommonTableModel {
      *            the controller
      */
     public NavigationTableModel() {
-    	super();
+    	super(NavigatorColumnSet.getInstance());
     }
 
     /*
@@ -87,7 +86,7 @@ public final class NavigationTableModel extends CommonTableModel {
     	
     	// Use default navigator columns or custom defined by view
     	if (view.isUseDefaultNavigatorColumns()) {
-    		return NavigatorColumnSet.getInstance().getColumn(NavigatorColumnSet.getInstance().getColumnId(columnIndex)).getColumnClass();
+    		return super.getColumnClass(columnIndex);
     	} else {
     		return view.getNavigatorTableColumnClass(columnIndex);
     	}
@@ -104,7 +103,7 @@ public final class NavigationTableModel extends CommonTableModel {
     	
     	// Use default navigator columns or custom defined by view
     	if (view.isUseDefaultNavigatorColumns()) {
-    		return NavigatorColumnSet.getInstance().getVisibleColumnCount();
+    		return super.getColumnCount();
     	} else {
     		return view.getNavigatorTableColumnCount();
     	}    	
@@ -121,7 +120,7 @@ public final class NavigationTableModel extends CommonTableModel {
     	
     	// Use default navigator columns or custom defined by view
     	if (view.isUseDefaultNavigatorColumns()) {
-    		return I18nUtils.getString(NavigatorColumnSet.getInstance().getColumn(NavigatorColumnSet.getInstance().getColumnId(columnIndex)).getHeaderText());
+    		return super.getColumnName(columnIndex);
     	} else {
     		return view.getNavigatorTableColumnName(columnIndex);
     	}    	    	
@@ -192,7 +191,7 @@ public final class NavigationTableModel extends CommonTableModel {
     	
     	// Use default navigator columns or custom defined by view
     	if (view.isUseDefaultNavigatorColumns()) {
-    		return NavigatorColumnSet.getInstance().getColumn(NavigatorColumnSet.getInstance().getColumnId(columnIndex)).getValueFor(audioObject);
+    		return getColumn(columnIndex).getValueFor(audioObject);
     	} else {
     		return view.getNavigatorTableValueAt(audioObject, columnIndex);
     	}

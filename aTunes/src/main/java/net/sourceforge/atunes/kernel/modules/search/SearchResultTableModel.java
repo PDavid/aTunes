@@ -19,78 +19,55 @@
  */
 package net.sourceforge.atunes.kernel.modules.search;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
+import net.sourceforge.atunes.gui.model.ColumnSetTableModel;
+import net.sourceforge.atunes.kernel.modules.columns.SearchResultsColumnSet;
 
 /**
  * The table model for search results.
  */
-public abstract class SearchResultTableModel implements TableModel {
+public class SearchResultTableModel extends ColumnSetTableModel {
 
-    /** Results to show. */
-    private List<SearchResult> results;
-    /** Listeners of this table model. */
-    private List<TableModelListener> listeners;
-
-    public SearchResultTableModel(List<SearchResult> results) {
-        this.results = results;
-        this.listeners = new ArrayList<TableModelListener>();
-    }
-
-    @Override
-    public final void addTableModelListener(TableModelListener l) {
-        listeners.add(l);
-    }
-
-    @Override
-    public final Class<?> getColumnClass(int columnIndex) {
-        // TODO: By now all columns in search results are string. Maybe in future we need to change this
-        return String.class;
+	private List<SearchResult> results;
+	
+    /**
+     * Constructor.
+     * 
+     * @param table
+     *            the table
+     */
+    public SearchResultTableModel() {
+        super(SearchResultsColumnSet.getInstance());
     }
 
     /**
-     * Return column count. This method must be abstract as any implementation
-     * of this class must add this information
+     * Return row count.
      * 
-     * @return the column count
+     * @return the row count
      */
     @Override
-    public abstract int getColumnCount();
-
-    /**
-     * Any implementation must give column names.
-     * 
-     * @param columnIndex
-     *            the column index
-     * 
-     * @return the column name
-     */
-    @Override
-    public abstract String getColumnName(int columnIndex);
-
-    @Override
-    public final int getRowCount() {
-        return results.size();
+    public int getRowCount() {
+        return results != null ? results.size() : 0;
     }
 
     /**
-     * Any implementation must give cells values.
+     * Returns value of a row and column.
      * 
      * @param rowIndex
      *            the row index
-     * @param columnIndex
-     *            the column index
+     * @param colIndex
+     *            the col index
      * 
      * @return the value at
      */
     @Override
-    public abstract Object getValueAt(int rowIndex, int columnIndex);
+    public Object getValueAt(int rowIndex, int colIndex) {
+    	return results != null ? getColumn(colIndex).getValueFor(results.get(rowIndex).getAudioObject()) : null;
+    }
 
     /**
-     * Returns true if cell is editable.
+     * Returns if a cell is editable.
      * 
      * @param rowIndex
      *            the row index
@@ -100,35 +77,29 @@ public abstract class SearchResultTableModel implements TableModel {
      * @return true, if checks if is cell editable
      */
     @Override
-    public final boolean isCellEditable(int rowIndex, int columnIndex) {
-        // TODO: By now all columns are not editable. Maybe in future we need to change this
-        return false;
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+    	return false;
     }
 
     /**
-     * Removes a table model listener.
+     * Sets value for a cell
      * 
-     * @param l
-     *            the l
-     */
-    @Override
-    public final void removeTableModelListener(TableModelListener l) {
-        listeners.remove(l);
-    }
-
-    /**
-     * Sets cell values.
-     * 
-     * @param value
-     *            the value
+     * @param aValue
+     *            the a value
      * @param rowIndex
      *            the row index
      * @param columnIndex
      *            the column index
      */
     @Override
-    public final void setValueAt(Object value, int rowIndex, int columnIndex) {
-        // As all columns are not editable, this method has no sense.
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+    	// Nothing to do
     }
 
+	/**
+	 * @param results the results to set
+	 */
+	public void setResults(List<SearchResult> results) {
+		this.results = results;
+	}
 }

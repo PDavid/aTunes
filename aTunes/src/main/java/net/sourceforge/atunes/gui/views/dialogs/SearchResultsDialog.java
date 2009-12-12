@@ -19,14 +19,12 @@
  */
 package net.sourceforge.atunes.gui.views.dialogs;
 
-import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -36,8 +34,6 @@ import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.views.controls.CustomDialog;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
-
-import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
 /**
  * The search results dialog.
@@ -86,18 +82,10 @@ public final class SearchResultsDialog extends CustomDialog {
     private JPanel getContent() {
         JPanel panel = new JPanel(new GridBagLayout());
         searchResultsTable = new JTable();
-        searchResultsTable.setDefaultRenderer(String.class, new SubstanceDefaultTableCellRenderer() {
-            private static final long serialVersionUID = 8864358368269039209L;
+        searchResultsTable.setShowGrid(false);
+        // Disable autoresize, as we will control it
+        searchResultsTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean arg2, boolean arg3, int arg4, int arg5) {
-                Component c = super.getTableCellRendererComponent(table, value, arg2, arg3, arg4, arg5);
-
-                GuiUtils.applyComponentOrientation((JLabel) c);
-
-                return c;
-            }
-        });
         tableScrollPane = new JScrollPane(searchResultsTable);
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;

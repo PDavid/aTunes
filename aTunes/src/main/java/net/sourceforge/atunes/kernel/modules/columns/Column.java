@@ -179,11 +179,11 @@ public abstract class Column implements Comparable<Column>, Serializable {
     }
 
     /**
-     * Compares two audio objects in ascending order
+     * Compares two objects in ascending order
      * 
      * @return
      */
-    protected abstract int ascendingCompare(AudioObject ao1, AudioObject ao2);
+    protected abstract int ascendingCompare(AudioObject o1, AudioObject o2);
 
     /**
      * Gets the header text.
@@ -237,6 +237,14 @@ public abstract class Column implements Comparable<Column>, Serializable {
      */
     public boolean isEditable() {
         return editable;
+    }
+    
+    /**
+     * Returns if this column can be sorted. All columns are sortable unless this method is overrided
+     * @return
+     */
+    public boolean isSortable() {
+    	return true;
     }
 
     /**
@@ -360,7 +368,7 @@ public abstract class Column implements Comparable<Column>, Serializable {
     }
 
     /**
-     * Return a comparator to sort playlist by this column. If last sort was
+     * Return a comparator to sort by this column. If last sort was
      * descending or not sort was done before, return ascending comparator If
      * las sort was ascending, return descending comparator
      * 

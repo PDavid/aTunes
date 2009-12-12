@@ -144,6 +144,7 @@ public class ApplicationState {
     // Columns config
     private Map<String, ColumnBean> columns;
     private Map<String, ColumnBean> navigatorColumns;
+    private Map<String, ColumnBean> searchResultsColumns;
 
     // Split panes divider location
     private FrameState frameState = new FrameState();
@@ -1194,5 +1195,19 @@ public class ApplicationState {
     public void setShowContextAlbumsInGrid(boolean showContextAlbumsInGrid) {
         this.showContextAlbumsInGrid = showContextAlbumsInGrid;
     }
+
+	/**
+	 * @return the searchResultsColumns
+	 */
+	public Map<String, ColumnBean> getSearchResultsColumns() {
+		return searchResultsColumns;
+	}
+
+	/**
+	 * @param searchResultsColumns the searchResultsColumns to set
+	 */
+	public void setSearchResultsColumns(Map<String, ColumnBean> searchResultsColumns) {
+		this.searchResultsColumns = searchResultsColumns;
+	}
 
 }

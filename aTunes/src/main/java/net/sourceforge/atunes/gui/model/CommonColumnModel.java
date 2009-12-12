@@ -10,6 +10,9 @@ import javax.swing.event.TableColumnModelEvent;
 import javax.swing.event.TableColumnModelListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableColumnModel;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.kernel.modules.columns.Column;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnSet;
@@ -243,5 +246,41 @@ public abstract class CommonColumnModel extends DefaultTableColumnModel {
      * Apply filter
      */
     protected abstract void reapplyFilter();
+    
+    /**
+     * Updates a column according to settings from column set
+     * @param aColumn
+     */
+    protected void updateColumnSettings(TableColumn aColumn) {
+        // Get column data
+        Column column = getColumnObject(aColumn.getModelIndex());
+
+        // Set width
+        aColumn.setPreferredWidth(column.getWidth());
+        aColumn.setWidth(column.getWidth());
+
+        // Set resizable
+        aColumn.setResizable(column.isResizable());
+
+        // If has cell editor, set cell editor
+        TableCellEditor cellEditor = column.getCellEditor();
+        if (cellEditor != null) {
+            aColumn.setCellEditor(cellEditor);
+        }
+
+        // If has renderer, set cell renderer
+        TableCellRenderer cellRenderer = column.getCellRenderer();
+        if (cellRenderer != null) {
+            aColumn.setCellRenderer(cellRenderer);
+        }
+    }
+
+	/**
+	 * @return the columnSet
+	 */
+	public ColumnSet getColumnSet() {
+		return columnSet;
+	}
+
     
 }

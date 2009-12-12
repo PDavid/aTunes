@@ -44,6 +44,11 @@ public class LengthColumn extends Column {
     protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
         return Long.valueOf(ao1.getDuration()).compareTo(Long.valueOf(ao2.getDuration()));
     }
+    
+    @Override
+    public boolean isSortable() {
+    	return false;
+    }
 
     @Override
     public Object getValueFor(AudioObject audioObject) {

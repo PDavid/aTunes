@@ -20,8 +20,6 @@
 package net.sourceforge.atunes.gui.model;
 
 import javax.swing.JTable;
-import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.kernel.ControllerProxy;
@@ -47,21 +45,7 @@ public final class NavigationTableColumnModel extends CommonColumnModel {
     		// Get column data
             Column column = NavigatorColumnSet.getInstance().getColumn(NavigatorColumnSet.getInstance().getColumnId(aColumn.getModelIndex()));
 
-            preferredWidth = column.getWidth();
-            
-            aColumn.setResizable(column.isResizable());
-            
-            // If has cell editor, set cell editor
-            TableCellEditor cellEditor = column.getCellEditor();
-            if (cellEditor != null) {
-                aColumn.setCellEditor(cellEditor);
-            }
-
-            // If has renderer, set cell renderer
-            TableCellRenderer cellRenderer = column.getCellRenderer();
-            if (cellRenderer != null) {
-                aColumn.setCellRenderer(cellRenderer);
-            }
+            updateColumnSettings(aColumn);
             
             preferredWidth = column.getWidth();
     	} else {

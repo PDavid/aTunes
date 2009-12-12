@@ -70,7 +70,6 @@ public final class PlayListController extends SimpleController<PlayListPanel> im
 
         PlayListListener listener = new PlayListListener(table, this);
 
-        table.getArrangeColumns().addActionListener(listener);
         table.addMouseListener(listener);
 
         table.getSelectionModel().addListSelectionListener(listener);

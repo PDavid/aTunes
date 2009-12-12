@@ -19,18 +19,16 @@
  */
 package net.sourceforge.atunes.kernel.modules.playlist;
 
-import net.sourceforge.atunes.gui.model.CommonTableModel;
-import net.sourceforge.atunes.kernel.modules.columns.Column;
+import net.sourceforge.atunes.gui.model.ColumnSetTableModel;
 import net.sourceforge.atunes.kernel.modules.columns.PlayListColumnSet;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The playlist table model.
  * 
  * @author fleax
  */
-public class PlayListTableModel extends CommonTableModel {
+public class PlayListTableModel extends ColumnSetTableModel {
 
     /**
      * Reference to the visible play list
@@ -44,43 +42,7 @@ public class PlayListTableModel extends CommonTableModel {
      *            the table
      */
     public PlayListTableModel() {
-        super();
-    }
-
-    /**
-     * Returns column data class.
-     * 
-     * @param colIndex
-     *            the col index
-     * 
-     * @return the column class
-     */
-    @Override
-    public Class<?> getColumnClass(int colIndex) {
-        return PlayListColumnSet.getInstance().getColumn(PlayListColumnSet.getInstance().getColumnId(colIndex)).getColumnClass();
-    }
-
-    /**
-     * Return column count.
-     * 
-     * @return the column count
-     */
-    @Override
-    public int getColumnCount() {
-        return PlayListColumnSet.getInstance().getVisibleColumnCount();
-    }
-
-    /**
-     * Return column name.
-     * 
-     * @param colIndex
-     *            the col index
-     * 
-     * @return the column name
-     */
-    @Override
-    public String getColumnName(int colIndex) {
-        return I18nUtils.getString(PlayListColumnSet.getInstance().getColumn(PlayListColumnSet.getInstance().getColumnId(colIndex)).getHeaderText());
+        super(PlayListColumnSet.getInstance());
     }
 
     /**
@@ -110,7 +72,7 @@ public class PlayListTableModel extends CommonTableModel {
     public Object getValueAt(int rowIndex, int colIndex) {
         // Call Column method to get value from AudioFile
         if (visiblePlayList != null) {
-            return PlayListColumnSet.getInstance().getColumn(PlayListColumnSet.getInstance().getColumnId(colIndex)).getValueFor(visiblePlayList.get(rowIndex));
+            return getColumn(colIndex).getValueFor(visiblePlayList.get(rowIndex));
         }
         return null;
     }
@@ -127,11 +89,7 @@ public class PlayListTableModel extends CommonTableModel {
      */
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        // Column ID
-        Class<? extends Column> c = PlayListColumnSet.getInstance().getColumnId(columnIndex);
-
-        // Call Column method to see if is editable
-        return PlayListColumnSet.getInstance().getColumn(c).isEditable();
+        return getColumn(columnIndex).isEditable();
     }
 
     /**
@@ -149,11 +107,8 @@ public class PlayListTableModel extends CommonTableModel {
         // AudioFile
         AudioObject file = visiblePlayList.get(rowIndex);
 
-        // Column ID
-        Class<? extends Column> c = PlayListColumnSet.getInstance().getColumnId(columnIndex);
-
         // Call column set value
-        PlayListColumnSet.getInstance().getColumn(c).setValueFor(file, aValue);
+        getColumn(columnIndex).setValueFor(file, aValue);
     }
 
     /**

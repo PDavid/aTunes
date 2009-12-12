@@ -80,14 +80,4 @@ public interface SearchableObject {
      * @return the document for element
      */
     public Document getDocumentForElement(AudioObject audioObject);
-
-    /**
-     * Returns a table model to show search results.
-     * 
-     * @param results
-     *            the results
-     * 
-     * @return the search results table model
-     */
-    public SearchResultTableModel getSearchResultsTableModel(List<SearchResult> results);
 }

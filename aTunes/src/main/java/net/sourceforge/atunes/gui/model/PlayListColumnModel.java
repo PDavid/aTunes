@@ -19,13 +19,10 @@
  */
 package net.sourceforge.atunes.gui.model;
 
-import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.kernel.ControllerProxy;
-import net.sourceforge.atunes.kernel.modules.columns.Column;
 import net.sourceforge.atunes.kernel.modules.columns.PlayListColumnSet;
 
 /**
@@ -54,27 +51,7 @@ public final class PlayListColumnModel extends CommonColumnModel {
     @Override
     public void addColumn(TableColumn aColumn) {
         super.addColumn(aColumn);
-
-        // Get column data
-        Column column = getColumnObject(aColumn.getModelIndex());
-
-        // Set preferred width
-        aColumn.setPreferredWidth(column.getWidth());
-
-        // Set resizable
-        aColumn.setResizable(column.isResizable());
-
-        // If has cell editor, set cell editor
-        TableCellEditor cellEditor = column.getCellEditor();
-        if (cellEditor != null) {
-            aColumn.setCellEditor(cellEditor);
-        }
-
-        // If has renderer, set cell renderer
-        TableCellRenderer cellRenderer = column.getCellRenderer();
-        if (cellRenderer != null) {
-            aColumn.setCellRenderer(cellRenderer);
-        }
+        updateColumnSettings(aColumn);
     }
-
+    
 }

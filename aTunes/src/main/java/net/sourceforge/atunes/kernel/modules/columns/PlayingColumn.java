@@ -39,6 +39,11 @@ public class PlayingColumn extends Column {
     protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
         return 0;
     }
+    
+    @Override
+    public boolean isSortable() {
+    	return false;
+    }
 
     @Override
     public Object getValueFor(AudioObject audioObject) {
