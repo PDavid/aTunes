@@ -38,11 +38,11 @@ import net.sourceforge.atunes.kernel.modules.search.EmptyRule;
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
 import net.sourceforge.atunes.kernel.modules.search.SearchIndexNotAvailableException;
 import net.sourceforge.atunes.kernel.modules.search.SearchQuerySyntaxException;
-import net.sourceforge.atunes.kernel.modules.search.SearchResult;
 import net.sourceforge.atunes.kernel.modules.search.SearchableObject;
 import net.sourceforge.atunes.kernel.modules.search.SimpleRule;
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler.LogicalOperator;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -371,7 +371,7 @@ public final class CustomSearchController extends SimpleController<CustomSearchD
 
             try {
                 // Invoke query
-                List<SearchResult> result = SearchHandler.getInstance().search(selectedSearchableObject, query);
+                List<AudioObject> result = SearchHandler.getInstance().search(selectedSearchableObject, query);
 
                 // If no matches found show a message
                 if (result.isEmpty()) {
@@ -400,7 +400,7 @@ public final class CustomSearchController extends SimpleController<CustomSearchD
      * @param result
      *            the result
      */
-    private void showSearchResults(SearchableObject searchableObject, List<SearchResult> result) {
+    private void showSearchResults(SearchableObject searchableObject, List<AudioObject> result) {
         // Hide search dialog
         getComponentControlled().setVisible(false);
         // Open search results dialog

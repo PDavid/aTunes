@@ -19,17 +19,20 @@
  */
 package net.sourceforge.atunes.kernel.modules.search;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import net.sourceforge.atunes.gui.model.ColumnSetTableModel;
 import net.sourceforge.atunes.kernel.modules.columns.SearchResultsColumnSet;
+import net.sourceforge.atunes.model.AudioObject;
 
 /**
  * The table model for search results.
  */
 public class SearchResultTableModel extends ColumnSetTableModel {
 
-	private List<SearchResult> results;
+	private List<AudioObject> results;
 	
     /**
      * Constructor.
@@ -63,7 +66,7 @@ public class SearchResultTableModel extends ColumnSetTableModel {
      */
     @Override
     public Object getValueAt(int rowIndex, int colIndex) {
-    	return results != null ? getColumn(colIndex).getValueFor(results.get(rowIndex).getAudioObject()) : null;
+    	return results != null ? getColumn(colIndex).getValueFor(results.get(rowIndex)) : null;
     }
 
     /**
@@ -99,7 +102,12 @@ public class SearchResultTableModel extends ColumnSetTableModel {
 	/**
 	 * @param results the results to set
 	 */
-	public void setResults(List<SearchResult> results) {
+	public void setResults(List<AudioObject> results) {
 		this.results = results;
+	}
+	
+	@Override
+	public void sort(Comparator<AudioObject> comparator) {
+		Collections.sort(this.results, comparator);
 	}
 }

@@ -97,7 +97,6 @@ public final class PlayListTable extends JTable implements DragSourceListener, D
 
     private PlayState playState = PlayState.STOPPED;
     private JPopupMenu menu;
-    List<PlayListColumnClickedListener> listeners = new ArrayList<PlayListColumnClickedListener>();
 
     /**
      * Drag source for this play list to drag songs to device
@@ -120,6 +119,9 @@ public final class PlayListTable extends JTable implements DragSourceListener, D
         // Set column model
         PlayListColumnModel columnModel = new PlayListColumnModel(this);
         setColumnModel(columnModel);
+        
+        // Set sorter
+        new ColumnSetRowSorter(this, model, columnModel);
         
         // Bind column set popup menu
         new ColumnSetPopupMenu(this, columnModel);
@@ -151,16 +153,6 @@ public final class PlayListTable extends JTable implements DragSourceListener, D
         if (getRowHeight() < 16) {
             setRowHeight(16);
         }
-    }
-
-    /**
-     * Adds the play list column clicked listener.
-     * 
-     * @param l
-     *            the l
-     */
-    public void addPlayListColumnClickedListener(PlayListColumnClickedListener l) {
-        listeners.add(l);
     }
 
     /**

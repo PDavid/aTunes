@@ -866,30 +866,6 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
     }
 
     /**
-     * Sorts play list with a given comparator.
-     * 
-     * @param comp
-     *            the comp
-     */
-    public void sortPlayList(Comparator<AudioObject> comp) {
-        // If comparator is null, do nothing
-        if (comp == null) {
-            return;
-        }
-
-        getLogger().debug(LogCategories.HANDLER);
-
-        PlayList currentPlaylist = getCurrentPlayList(true);
-
-        // If current play list is empty, don't sort
-        if (currentPlaylist.isEmpty()) {
-            return;
-        }
-
-        currentPlaylist.sort(comp);
-    }
-
-    /**
      * Checks if the active play list is visible (its tab is selected)
      * 
      * @return <code>true</code> if active play list is visible

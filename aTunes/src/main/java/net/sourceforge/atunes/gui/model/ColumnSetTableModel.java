@@ -1,7 +1,10 @@
 package net.sourceforge.atunes.gui.model;
 
+import java.util.Comparator;
+
 import net.sourceforge.atunes.kernel.modules.columns.Column;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnSet;
+import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public abstract class ColumnSetTableModel extends CommonTableModel {
@@ -58,7 +61,11 @@ public abstract class ColumnSetTableModel extends CommonTableModel {
     	return columnSet.getColumn(columnSet.getColumnId(colIndex));
     }
 
-
+    /**
+     * Abstract method to sort by the given comparator
+     * @param comparator
+     */
+    public abstract void sort(Comparator<AudioObject> comparator);
 	
 
 }

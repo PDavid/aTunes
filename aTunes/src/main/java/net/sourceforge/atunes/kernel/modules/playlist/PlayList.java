@@ -262,7 +262,6 @@ public class PlayList implements Serializable, Cloneable {
      */
     protected void sort(Comparator<AudioObject> c) {
         this.audioObjects.sort(c);
-        updateUI();
         // Mark as dirty
         setDirty(true);
     }
