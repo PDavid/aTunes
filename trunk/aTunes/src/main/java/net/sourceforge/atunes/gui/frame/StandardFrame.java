@@ -80,8 +80,6 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
     private static final long serialVersionUID = 1L;
 
     public static final int NAVIGATION_PANEL_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 280);
-    public static final int NAVIGATION_PANEL_MINIMUM_WIDTH = NAVIGATION_PANEL_WIDTH - 80;
-    public static final int NAVIGATION_PANEL_MAXIMUM_WIDTH = NAVIGATION_PANEL_WIDTH + 50;
     public static final int CONTEXT_PANEL_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 295);
     public static final int CONTEXT_PANEL_MINIMUM_WIDTH = CONTEXT_PANEL_WIDTH - 50;
     public static final int FILE_PROPERTIES_PANEL_HEIGHT = 100;
@@ -393,8 +391,6 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
         if (navigationTreePanel == null) {
             navigationTreePanel = new NavigationTreePanel();
             navigationTreePanel.setPreferredSize(new Dimension(NAVIGATION_PANEL_WIDTH, 1));
-            navigationTreePanel.setMinimumSize(new Dimension(NAVIGATION_PANEL_MINIMUM_WIDTH, 1));
-            navigationTreePanel.setMaximumSize(new Dimension(NAVIGATION_PANEL_MAXIMUM_WIDTH, 1));
 
             // If must be hidden, hide directly
             if (!ApplicationState.getInstance().isShowNavigationPanel()) {
@@ -409,8 +405,6 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
         if (navigationTablePanel == null) {
             navigationTablePanel = new NavigationTablePanel();
             navigationTablePanel.setPreferredSize(new Dimension(NAVIGATION_PANEL_WIDTH, 1));
-            navigationTablePanel.setMinimumSize(new Dimension(NAVIGATION_PANEL_MINIMUM_WIDTH, 1));
-            navigationTablePanel.setMaximumSize(new Dimension(NAVIGATION_PANEL_MAXIMUM_WIDTH, 1));
 
             // If must be hidden, hide directly
             if (!ApplicationState.getInstance().isShowNavigationPanel()) {

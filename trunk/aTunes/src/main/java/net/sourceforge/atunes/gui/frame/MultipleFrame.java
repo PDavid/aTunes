@@ -93,7 +93,7 @@ public final class MultipleFrame implements Frame {
     private CustomDialog contextDialog;
     private ApplicationMenuBar menuBar;
     ToolBar toolBar;
-    private JSplitPane navigatorSplitPane;
+    private JSplitPane navigationSplitPane;
     private NavigationTreePanel navigationTreePanel;
     private NavigationTablePanel navigationTablePanel;
     private PlayListPanel playListPanel;
@@ -142,9 +142,15 @@ public final class MultipleFrame implements Frame {
     private void addContentToNavigator() {
         navigationTreePanel = new NavigationTreePanel();
         navigationTablePanel = new NavigationTablePanel();
-        navigatorSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, navigationTreePanel, navigationTablePanel);
-        navigatorDialog.add(navigatorSplitPane);
-        GuiUtils.applyComponentOrientation(navigatorSplitPane);
+        navigatorDialog.add(getNavigatorSplitPane());
+        GuiUtils.applyComponentOrientation(getNavigatorSplitPane());
+    }
+
+    private JSplitPane getNavigatorSplitPane() {
+        if (navigationSplitPane == null) {
+            navigationSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, getNavigationTreePanel(), getNavigationTablePanel());
+        }
+        return navigationSplitPane;
     }
 
     @Override
@@ -213,7 +219,7 @@ public final class MultipleFrame implements Frame {
                 toolBar.getShowNavigator().getAction().actionPerformed(null);
             }
         });
-        navigatorSplitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
+        getNavigatorSplitPane().addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
 
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
@@ -390,10 +396,10 @@ public final class MultipleFrame implements Frame {
     public void showNavigationTable(boolean show) {
         navigationTablePanel.setVisible(show);
         if (show) {
-            navigatorSplitPane.setDividerLocation(frameState.getLeftHorizontalSplitPaneDividerLocation());
+            getNavigatorSplitPane().setDividerLocation(frameState.getLeftHorizontalSplitPaneDividerLocation());
         } else {
             // Save location
-            frameState.setLeftHorizontalSplitPaneDividerLocation(navigatorSplitPane.getDividerLocation());
+            frameState.setLeftHorizontalSplitPaneDividerLocation(getNavigatorSplitPane().getDividerLocation());
         }
     }
 
