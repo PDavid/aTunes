@@ -31,13 +31,7 @@ public class ColumnSetPopupMenu {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// Show column selector
-				ColumnSetSelectorDialog selector = GuiHandler.getInstance().getColumnSelector();
-				selector.setColumnSet(model.getColumnSet());
-				selector.setVisible(true);
-
-				// Apply changes
-				model.arrangeColumns(true);
+				selectColumns(model);
 			}
 		});
         
@@ -50,6 +44,20 @@ public class ColumnSetPopupMenu {
                 }
             }
         });
+	}
+	
+	/**
+	 * Opens selection dialog and updates model
+	 * @param model
+	 */
+	public static void selectColumns(CommonColumnModel model) {
+		// Show column selector
+		ColumnSetSelectorDialog selector = GuiHandler.getInstance().getColumnSelector();
+		selector.setColumnSet(model.getColumnSet());
+		selector.setVisible(true);
+
+		// Apply changes
+		model.arrangeColumns(true);
 	}
 	
 	public void enableArrangeColumns(boolean enable) {
