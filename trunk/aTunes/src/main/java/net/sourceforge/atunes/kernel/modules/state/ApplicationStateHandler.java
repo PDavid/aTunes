@@ -183,9 +183,6 @@ public final class ApplicationStateHandler extends Handler {
         // Song properties visible
         GuiHandler.getInstance().showSongProperties(ApplicationState.getInstance().isShowAudioObjectProperties(), false);
 
-        // Show navigation panel
-        GuiHandler.getInstance().showNavigationPanel(ApplicationState.getInstance().isShowNavigationPanel(), false);
-
         // Show Context
         GuiHandler.getInstance().showContextPanel(ApplicationState.getInstance().isUseContext(), false);
 

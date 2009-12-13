@@ -55,7 +55,6 @@ public class ApplicationState {
     private static ApplicationState instance;
 
     private boolean showAllRadioStations = true;
-    private boolean showNavigationPanel = true;
     private boolean showNavigationTable = true;
     private boolean showAudioObjectProperties;
     private boolean showStatusBar = true;
@@ -322,14 +321,6 @@ public class ApplicationState {
 
     public void setShowAllRadioStations(boolean showAllRadioStations) {
         this.showAllRadioStations = showAllRadioStations;
-    }
-
-    public boolean isShowNavigationPanel() {
-        return showNavigationPanel;
-    }
-
-    public void setShowNavigationPanel(boolean showNavigationPanel) {
-        this.showNavigationPanel = showNavigationPanel;
     }
 
     public boolean isShowNavigationTable() {
@@ -1196,18 +1187,19 @@ public class ApplicationState {
         this.showContextAlbumsInGrid = showContextAlbumsInGrid;
     }
 
-	/**
-	 * @return the searchResultsColumns
-	 */
-	public Map<String, ColumnBean> getSearchResultsColumns() {
-		return searchResultsColumns;
-	}
+    /**
+     * @return the searchResultsColumns
+     */
+    public Map<String, ColumnBean> getSearchResultsColumns() {
+        return searchResultsColumns;
+    }
 
-	/**
-	 * @param searchResultsColumns the searchResultsColumns to set
-	 */
-	public void setSearchResultsColumns(Map<String, ColumnBean> searchResultsColumns) {
-		this.searchResultsColumns = searchResultsColumns;
-	}
+    /**
+     * @param searchResultsColumns
+     *            the searchResultsColumns to set
+     */
+    public void setSearchResultsColumns(Map<String, ColumnBean> searchResultsColumns) {
+        this.searchResultsColumns = searchResultsColumns;
+    }
 
 }
