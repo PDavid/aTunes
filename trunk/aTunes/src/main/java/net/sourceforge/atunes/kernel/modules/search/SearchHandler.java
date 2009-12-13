@@ -184,7 +184,7 @@ public final class SearchHandler extends Handler {
      * @throws SearchQuerySyntaxException
      *             If the search query has invalid syntax
      */
-    public List<SearchResult> search(SearchableObject searchableObject, String queryStr) throws SearchIndexNotAvailableException, SearchQuerySyntaxException {
+    public List<AudioObject> search(SearchableObject searchableObject, String queryStr) throws SearchIndexNotAvailableException, SearchQuerySyntaxException {
         ReadWriteLock searchIndexLock = indexLocks.get(searchableObject);
         Searcher searcher = null;
         try {
@@ -199,7 +199,7 @@ public final class SearchHandler extends Handler {
             for (ScoreDoc scoreDoc : topDocs.scoreDocs) {
                 rawSearchResults.add(new RawSearchResult(searcher.doc(scoreDoc.doc), scoreDoc.score));
             }
-            List<SearchResult> result = searchableObject.getSearchResult(rawSearchResults);
+            List<AudioObject> result = searchableObject.getSearchResult(rawSearchResults);
             getLogger().debug(LogCategories.REPOSITORY, "Query: ", queryString, " (", result.size(), " search results)");
             return result;
         } catch (IOException e) {

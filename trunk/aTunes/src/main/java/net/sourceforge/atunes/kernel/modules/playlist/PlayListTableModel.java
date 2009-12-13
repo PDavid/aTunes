@@ -19,8 +19,11 @@
  */
 package net.sourceforge.atunes.kernel.modules.playlist;
 
+import java.util.Comparator;
+
 import net.sourceforge.atunes.gui.model.ColumnSetTableModel;
 import net.sourceforge.atunes.kernel.modules.columns.PlayListColumnSet;
+import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.AudioObject;
 
 /**
@@ -117,5 +120,20 @@ public class PlayListTableModel extends ColumnSetTableModel {
      */
     public void setVisiblePlayList(PlayList visiblePlayList) {
         this.visiblePlayList = visiblePlayList;
+    }
+    
+    @Override
+    public void sort(Comparator<AudioObject> comparator) {
+        // If comparator is null, do nothing
+        if (comparator == null) {
+            return;
+        }
+
+        // If current play list is empty, don't sort
+        if (visiblePlayList == null || visiblePlayList.isEmpty()) {
+            return;
+        }
+
+        visiblePlayList.sort(comparator);
     }
 }

@@ -33,7 +33,6 @@ import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnRenderers;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
-import net.sourceforge.atunes.kernel.modules.search.SearchResult;
 import net.sourceforge.atunes.kernel.modules.search.SearchResultTableModel;
 import net.sourceforge.atunes.kernel.modules.search.SearchableObject;
 import net.sourceforge.atunes.model.AudioObject;
@@ -43,7 +42,7 @@ import net.sourceforge.atunes.model.AudioObject;
  */
 public final class SearchResultsController extends SimpleController<SearchResultsDialog> {
 
-    private List<SearchResult> results;
+    private List<AudioObject> results;
 
     public SearchResultsController(SearchResultsDialog dialog) {
         super(dialog);
@@ -58,7 +57,7 @@ public final class SearchResultsController extends SimpleController<SearchResult
      * @param resultsList
      *            the results
      */
-    public void showSearchResults(SearchableObject searchableObject, List<SearchResult> resultsList) {
+    public void showSearchResults(SearchableObject searchableObject, List<AudioObject> resultsList) {
         this.results = resultsList;
         
         SearchResultTableModel tableModel = (SearchResultTableModel)getComponentControlled().getSearchResultsTable().getModel();
@@ -70,14 +69,15 @@ public final class SearchResultsController extends SimpleController<SearchResult
 
     @Override
     protected void addBindings() {    	
+    	JTable table = getComponentControlled().getSearchResultsTable();
     	SearchResultTableModel tableModel = new SearchResultTableModel();
-    	getComponentControlled().getSearchResultsTable().setModel(tableModel);
+    	table.setModel(tableModel);
     	
-    	SearchResultColumnModel columnModel = new SearchResultColumnModel(getComponentControlled().getSearchResultsTable());
-    	getComponentControlled().getSearchResultsTable().setColumnModel(columnModel);
+    	SearchResultColumnModel columnModel = new SearchResultColumnModel(table);
+    	table.setColumnModel(columnModel);
 
-    	ColumnSetRowSorter sorter = new ColumnSetRowSorter(tableModel, columnModel);    	
-    	getComponentControlled().getSearchResultsTable().setRowSorter(sorter);
+    	// Set sorter
+    	ColumnSetRowSorter sorter = new ColumnSetRowSorter(table, tableModel, columnModel);    	
     	
     	// Bind column set popup menu
     	new ColumnSetPopupMenu(getComponentControlled().getSearchResultsTable(), columnModel);
@@ -138,7 +138,7 @@ public final class SearchResultsController extends SimpleController<SearchResult
         List<AudioObject> selectedResults = new ArrayList<AudioObject>();
         JTable table = getComponentControlled().getSearchResultsTable();
         for (int row : selectedRows) {
-            selectedResults.add(results.get(table.convertRowIndexToModel(row)).getAudioObject());
+            selectedResults.add(results.get(table.convertRowIndexToModel(row)));
         }
         return selectedResults;
     }

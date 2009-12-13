@@ -29,7 +29,6 @@ import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.kernel.modules.search.RawSearchResult;
-import net.sourceforge.atunes.kernel.modules.search.SearchResult;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -80,12 +79,12 @@ public class FavoritesSearchableObject extends CommonAudioFileSearchableObject {
     }
 
     @Override
-    public List<SearchResult> getSearchResult(List<RawSearchResult> rawSearchResults) {
-        List<SearchResult> result = new ArrayList<SearchResult>();
+    public List<AudioObject> getSearchResult(List<RawSearchResult> rawSearchResults) {
+        List<AudioObject> result = new ArrayList<AudioObject>();
         for (RawSearchResult rawSearchResult : rawSearchResults) {
             AudioFile audioFile = FavoritesHandler.getInstance().getFavoriteSongsMap().get(rawSearchResult.getDocument().get("url"));
             if (audioFile != null) {
-                result.add(new SearchResult(audioFile, rawSearchResult.getScore()));
+                result.add(audioFile);
             }
         }
         return result;

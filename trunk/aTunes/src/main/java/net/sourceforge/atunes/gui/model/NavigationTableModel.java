@@ -20,6 +20,7 @@
 package net.sourceforge.atunes.gui.model;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.event.TableModelEvent;
@@ -228,4 +229,9 @@ public final class NavigationTableModel extends ColumnSetTableModel {
         // Nothing to do
     }
 
+    @Override
+    public void sort(Comparator<AudioObject> comparator) {
+    	// TODO Auto-generated method stub
+    	
+    }
 }

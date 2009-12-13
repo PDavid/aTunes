@@ -46,11 +46,6 @@ public class LengthColumn extends Column {
     }
     
     @Override
-    public boolean isSortable() {
-    	return false;
-    }
-
-    @Override
     public Object getValueFor(AudioObject audioObject) {
         // Return length
         if (audioObject instanceof Radio) {

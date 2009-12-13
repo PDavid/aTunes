@@ -62,7 +62,7 @@ public interface SearchableObject {
      * @return the search result
      * 
      */
-    public List<SearchResult> getSearchResult(List<RawSearchResult> rawSearchResults);
+    public List<AudioObject> getSearchResult(List<RawSearchResult> rawSearchResults);
 
     /**
      * Returns elements to index.

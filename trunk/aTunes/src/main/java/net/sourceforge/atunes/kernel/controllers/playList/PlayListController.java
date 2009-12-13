@@ -27,7 +27,6 @@ import javax.swing.JScrollPane;
 import javax.swing.Timer;
 import javax.swing.event.TableModelEvent;
 
-import net.sourceforge.atunes.gui.views.controls.playList.PlayListColumnClickedListener;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.panels.PlayListControlsPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
@@ -40,7 +39,7 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListTableModel;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 
-public final class PlayListController extends SimpleController<PlayListPanel> implements PlayListColumnClickedListener {
+public final class PlayListController extends SimpleController<PlayListPanel> {
 
     /** The visible rect. */
     Rectangle visibleRect;
@@ -60,7 +59,6 @@ public final class PlayListController extends SimpleController<PlayListPanel> im
     @Override
     protected void addBindings() {
         final PlayListTable table = getComponentControlled().getPlayListTable();
-        table.addPlayListColumnClickedListener(this);
 
         // Set key listener for table
         table.addKeyListener(new PlayListKeyListener(this));
@@ -75,19 +73,6 @@ public final class PlayListController extends SimpleController<PlayListPanel> im
     @Override
     protected void addStateBindings() {
         // Nothing to do
-    }
-
-    /**
-     * Notifies when user clicks on a column header.
-     * 
-     * @param columnClicked
-     *            the column clicked
-     */
-    public void columnClicked(Column columnClicked) {
-        getLogger().debugMethodCall(LogCategories.CONTROLLER, new String[] { columnClicked.getColumnName() });
-
-        // Sort play list
-        PlayListHandler.getInstance().sortPlayList(columnClicked.getComparator());
     }
 
     /**
