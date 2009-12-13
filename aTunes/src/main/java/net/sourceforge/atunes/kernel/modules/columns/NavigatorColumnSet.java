@@ -41,9 +41,9 @@ public class NavigatorColumnSet extends ColumnSet {
      * Private constructor
      */
     private NavigatorColumnSet() {
-    	super(false);
+        super(false);
     }
-    
+
     /**
      * Returns singleton instance
      * 
@@ -58,16 +58,16 @@ public class NavigatorColumnSet extends ColumnSet {
 
     @Override
     protected Map<String, ColumnBean> getColumnsConfiguration() {
-    	return ApplicationState.getInstance().getNavigatorColumns();
+        return ApplicationState.getInstance().getNavigatorColumns();
     }
-    
+
     @Override
     protected void setColumnsConfiguration(Map<String, ColumnBean> columnsConfiguration) {
         ApplicationState.getInstance().setNavigatorColumns(columnsConfiguration);
     }
-    
+
     @Override
     protected void refreshColumns() {
-    	((NavigationTableColumnModel) GuiHandler.getInstance().getNavigationPanel().getNavigationTable().getColumnModel()).arrangeColumns(false);
-    }    
+        ((NavigationTableColumnModel) GuiHandler.getInstance().getNavigationTablePanel().getNavigationTable().getColumnModel()).arrangeColumns(false);
+    }
 }

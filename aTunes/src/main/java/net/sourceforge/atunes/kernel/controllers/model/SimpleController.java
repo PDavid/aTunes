@@ -23,7 +23,7 @@ import java.awt.Component;
 
 import net.sourceforge.atunes.misc.log.LogCategories;
 
-public abstract class SimpleController<T extends Component> extends Controller<T> {
+public abstract class SimpleController<T extends Component> extends Controller {
 
     private T componentControlled;
 

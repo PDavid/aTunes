@@ -42,8 +42,8 @@ public class PlayNowAction extends Action {
     public void actionPerformed(ActionEvent e) {
         // Play now feature plays selected song inmediately. If song is added to play list, then is automatically selected.
         // If not, it's added to play list
-        int selectedRow = ControllerProxy.getInstance().getNavigationController().getNavigationPanel().getNavigationTable().getSelectedRow();
-        AudioObject song = ((NavigationTableModel) ControllerProxy.getInstance().getNavigationController().getNavigationPanel().getNavigationTable().getModel())
+        int selectedRow = ControllerProxy.getInstance().getNavigationController().getNavigationTablePanel().getNavigationTable().getSelectedRow();
+        AudioObject song = ((NavigationTableModel) ControllerProxy.getInstance().getNavigationController().getNavigationTablePanel().getNavigationTable().getModel())
                 .getSongAt(selectedRow);
         PlayListHandler.getInstance().playNow(song);
     }

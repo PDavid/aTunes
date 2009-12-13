@@ -41,11 +41,11 @@ public class FilterNavigatorAction extends Action {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        NavigationFilterPanel filterPanel = ControllerProxy.getInstance().getNavigationController().getNavigationPanel().getTreeFilterPanel();
+        NavigationFilterPanel filterPanel = ControllerProxy.getInstance().getNavigationController().getNavigationTreePanel().getTreeFilterPanel();
 
-        if (ControllerProxy.getInstance().getNavigationController().getPopupMenuCaller() == ControllerProxy.getInstance().getNavigationController().getNavigationPanel()
+        if (ControllerProxy.getInstance().getNavigationController().getPopupMenuCaller() == ControllerProxy.getInstance().getNavigationController().getNavigationTablePanel()
                 .getNavigationTable()) {
-            filterPanel = ControllerProxy.getInstance().getNavigationController().getNavigationPanel().getTableFilterPanel();
+            filterPanel = ControllerProxy.getInstance().getNavigationController().getNavigationTablePanel().getTableFilterPanel();
         }
 
         // Toggle visibility

@@ -66,7 +66,7 @@ public class PodcastFeedEntryDownloadChecker implements Runnable {
                 for (Entry<PodcastFeedEntry, Boolean> entry : downloaded.entrySet()) {
                     entry.getKey().setDownloaded(entry.getValue());
                 }
-                GuiHandler.getInstance().getNavigationPanel().getNavigationTable().repaint();
+                GuiHandler.getInstance().getNavigationTablePanel().getNavigationTable().repaint();
             }
         });
     }

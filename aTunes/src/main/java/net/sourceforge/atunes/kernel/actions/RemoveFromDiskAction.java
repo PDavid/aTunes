@@ -142,11 +142,11 @@ public class RemoveFromDiskAction extends Action {
     }
 
     private void fromPodcastView() {
-        int[] rows = ControllerProxy.getInstance().getNavigationController().getNavigationPanel().getNavigationTable().getSelectedRows();
+        int[] rows = ControllerProxy.getInstance().getNavigationController().getNavigationTablePanel().getNavigationTable().getSelectedRows();
         if (rows.length > 0) {
             List<AudioObject> songs = new ArrayList<AudioObject>();
             for (int element : rows) {
-                songs.add(((NavigationTableModel) ControllerProxy.getInstance().getNavigationController().getNavigationPanel().getNavigationTable().getModel()).getSongAt(element));
+                songs.add(((NavigationTableModel) ControllerProxy.getInstance().getNavigationController().getNavigationTablePanel().getNavigationTable().getModel()).getSongAt(element));
             }
             for (int i = 0; i < songs.size(); i++) {
                 PodcastFeedEntry podcastFeedEntry = (PodcastFeedEntry) songs.get(i);

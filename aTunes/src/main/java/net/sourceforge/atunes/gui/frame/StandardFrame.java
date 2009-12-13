@@ -54,7 +54,8 @@ import net.sourceforge.atunes.gui.views.dialogs.UpdateDialog;
 import net.sourceforge.atunes.gui.views.menus.ApplicationMenuBar;
 import net.sourceforge.atunes.gui.views.panels.AudioObjectPropertiesPanel;
 import net.sourceforge.atunes.gui.views.panels.ContextPanel;
-import net.sourceforge.atunes.gui.views.panels.NavigationPanel;
+import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
+import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.ControllerProxy;
@@ -93,6 +94,9 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
 
     private JSplitPane leftVerticalSplitPane;
     private JSplitPane rightVerticalSplitPane;
+    private JSplitPane navigatorSplitPane;
+    private NavigationTreePanel navigationTreePanel;
+    private NavigationTablePanel navigationTablePanel;
     private JLabel leftStatusBar;
     private JLabel centerStatusBar;
     private JLabel rightStatusBar;
@@ -102,7 +106,6 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
     UpdateDialog updateDialog;
     private JProgressBar progressBar;
     private ApplicationMenuBar appMenuBar;
-    private NavigationPanel navigationPanel;
     private PlayListPanel playListPanel;
     private AudioObjectPropertiesPanel propertiesPanel;
     private ContextPanel contextPanel;
@@ -182,6 +185,20 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
 
         // Apply component orientation
         GuiUtils.applyComponentOrientation(this);
+    }
+
+    private JSplitPane getNavigatorSplitPane() {
+        if (navigatorSplitPane == null) {
+            navigatorSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, getNavigationTreePanel(), getNavigationTablePanel());
+            navigatorSplitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
+
+                @Override
+                public void propertyChange(PropertyChangeEvent evt) {
+                    StandardFrame.this.frameState.setLeftHorizontalSplitPaneDividerLocation((Integer) evt.getNewValue());
+                }
+            });
+        }
+        return navigatorSplitPane;
     }
 
     /**
@@ -310,12 +327,12 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
         // JSplitPane does not support component orientation, so we must do this manually
         // -> http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4265389
         if (GuiUtils.getComponentOrientation().isLeftToRight()) {
-            leftVerticalSplitPane.add(getNavigationPanel());
+            leftVerticalSplitPane.add(getNavigatorSplitPane());
             leftVerticalSplitPane.add(nonNavigatorPanel);
             leftVerticalSplitPane.setResizeWeight(0.2);
         } else {
             leftVerticalSplitPane.add(nonNavigatorPanel);
-            leftVerticalSplitPane.add(getNavigationPanel());
+            leftVerticalSplitPane.add(getNavigatorSplitPane());
             rightVerticalSplitPane.setResizeWeight(0.2);
         }
 
@@ -372,28 +389,35 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
     }
 
     @Override
-    public NavigationPanel getNavigationPanel() {
-        if (navigationPanel == null) {
-            navigationPanel = new NavigationPanel();
-            navigationPanel.setPreferredSize(new Dimension(NAVIGATION_PANEL_WIDTH, 1));
-            navigationPanel.setMinimumSize(new Dimension(NAVIGATION_PANEL_MINIMUM_WIDTH, 1));
-            navigationPanel.setMaximumSize(new Dimension(NAVIGATION_PANEL_MAXIMUM_WIDTH, 1));
+    public NavigationTreePanel getNavigationTreePanel() {
+        if (navigationTreePanel == null) {
+            navigationTreePanel = new NavigationTreePanel();
+            navigationTreePanel.setPreferredSize(new Dimension(NAVIGATION_PANEL_WIDTH, 1));
+            navigationTreePanel.setMinimumSize(new Dimension(NAVIGATION_PANEL_MINIMUM_WIDTH, 1));
+            navigationTreePanel.setMaximumSize(new Dimension(NAVIGATION_PANEL_MAXIMUM_WIDTH, 1));
 
             // If must be hidden, hide directly
             if (!ApplicationState.getInstance().isShowNavigationPanel()) {
-                navigationPanel.setVisible(false);
+                navigationTreePanel.setVisible(false);
             }
-
-            navigationPanel.getSplitPane().addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
-
-                @Override
-                public void propertyChange(PropertyChangeEvent evt) {
-                    StandardFrame.this.frameState.setLeftHorizontalSplitPaneDividerLocation((Integer) evt.getNewValue());
-                }
-            });
-
         }
-        return navigationPanel;
+        return navigationTreePanel;
+    }
+
+    @Override
+    public NavigationTablePanel getNavigationTablePanel() {
+        if (navigationTablePanel == null) {
+            navigationTablePanel = new NavigationTablePanel();
+            navigationTablePanel.setPreferredSize(new Dimension(NAVIGATION_PANEL_WIDTH, 1));
+            navigationTablePanel.setMinimumSize(new Dimension(NAVIGATION_PANEL_MINIMUM_WIDTH, 1));
+            navigationTablePanel.setMaximumSize(new Dimension(NAVIGATION_PANEL_MAXIMUM_WIDTH, 1));
+
+            // If must be hidden, hide directly
+            if (!ApplicationState.getInstance().isShowNavigationPanel()) {
+                navigationTablePanel.setVisible(false);
+            }
+        }
+        return navigationTablePanel;
     }
 
     @Override
@@ -665,7 +689,7 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
 
     @Override
     public void showNavigationPanel(boolean show, boolean changeSize) {
-        getNavigationPanel().setVisible(show);
+        getNavigatorSplitPane().setVisible(show);
         if (show) {
             int playListWidth = playListPanel.getWidth();
 
@@ -685,15 +709,15 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
 
     @Override
     public void showNavigationTable(boolean show) {
-        getNavigationPanel().getNavigationTableContainer().setVisible(show);
+        getNavigationTablePanel().setVisible(show);
         if (show) {
             super.setVisible(show);
-            getNavigationPanel().getSplitPane().setDividerLocation(frameState.getLeftHorizontalSplitPaneDividerLocation());
-            getNavigationPanel().getSplitPane().setDividerSize(SPLIT_PANE_DEFAULT_DIVIDER_SIZE);
+            getNavigatorSplitPane().setDividerLocation(frameState.getLeftHorizontalSplitPaneDividerLocation());
+            getNavigatorSplitPane().setDividerSize(SPLIT_PANE_DEFAULT_DIVIDER_SIZE);
         } else {
             // Save location
-            frameState.setLeftHorizontalSplitPaneDividerLocation(getNavigationPanel().getSplitPane().getDividerLocation());
-            getNavigationPanel().getSplitPane().setDividerSize(0);
+            frameState.setLeftHorizontalSplitPaneDividerLocation(getNavigatorSplitPane().getDividerLocation());
+            getNavigatorSplitPane().setDividerSize(0);
         }
     }
 

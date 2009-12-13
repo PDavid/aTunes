@@ -53,7 +53,8 @@ import net.sourceforge.atunes.gui.views.dialogs.UpdateDialog;
 import net.sourceforge.atunes.gui.views.menus.ApplicationMenuBar;
 import net.sourceforge.atunes.gui.views.panels.AudioObjectPropertiesPanel;
 import net.sourceforge.atunes.gui.views.panels.ContextPanel;
-import net.sourceforge.atunes.gui.views.panels.NavigationPanel;
+import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
+import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
@@ -92,7 +93,9 @@ public final class MultipleFrame implements Frame {
     private CustomDialog contextDialog;
     private ApplicationMenuBar menuBar;
     ToolBar toolBar;
-    private NavigationPanel navigationPanel;
+    private JSplitPane navigatorSplitPane;
+    private NavigationTreePanel navigationTreePanel;
+    private NavigationTablePanel navigationTablePanel;
     private PlayListPanel playListPanel;
     private PlayerControlsPanel playerControlsPanel;
     private AudioObjectPropertiesPanel filePropertiesPanel;
@@ -137,9 +140,27 @@ public final class MultipleFrame implements Frame {
      * Adds the content to navigator.
      */
     private void addContentToNavigator() {
-        navigationPanel = new NavigationPanel();
-        navigatorDialog.add(navigationPanel);
-        GuiUtils.applyComponentOrientation(navigationPanel);
+        navigationTreePanel = new NavigationTreePanel();
+        navigationTablePanel = new NavigationTablePanel();
+        navigatorSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, navigationTreePanel, navigationTablePanel);
+        navigatorDialog.add(navigatorSplitPane);
+        GuiUtils.applyComponentOrientation(navigatorSplitPane);
+    }
+
+    @Override
+    public NavigationTreePanel getNavigationTreePanel() {
+        if (navigationTreePanel == null) {
+            navigationTreePanel = new NavigationTreePanel();
+        }
+        return navigationTreePanel;
+    }
+
+    @Override
+    public NavigationTablePanel getNavigationTablePanel() {
+        if (navigationTablePanel == null) {
+            navigationTablePanel = new NavigationTablePanel();
+        }
+        return navigationTablePanel;
     }
 
     /**
@@ -192,7 +213,7 @@ public final class MultipleFrame implements Frame {
                 toolBar.getShowNavigator().getAction().actionPerformed(null);
             }
         });
-        navigationPanel.getSplitPane().addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
+        navigatorSplitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
 
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
@@ -248,11 +269,6 @@ public final class MultipleFrame implements Frame {
     @Override
     public Point getLocation() {
         return frame.getLocation();
-    }
-
-    @Override
-    public NavigationPanel getNavigationPanel() {
-        return navigationPanel;
     }
 
     @Override
@@ -372,12 +388,12 @@ public final class MultipleFrame implements Frame {
 
     @Override
     public void showNavigationTable(boolean show) {
-        navigationPanel.getNavigationTableContainer().setVisible(show);
+        navigationTablePanel.setVisible(show);
         if (show) {
-            navigationPanel.getSplitPane().setDividerLocation(frameState.getLeftHorizontalSplitPaneDividerLocation());
+            navigatorSplitPane.setDividerLocation(frameState.getLeftHorizontalSplitPaneDividerLocation());
         } else {
             // Save location
-            frameState.setLeftHorizontalSplitPaneDividerLocation(navigationPanel.getSplitPane().getDividerLocation());
+            frameState.setLeftHorizontalSplitPaneDividerLocation(navigatorSplitPane.getDividerLocation());
         }
     }
 

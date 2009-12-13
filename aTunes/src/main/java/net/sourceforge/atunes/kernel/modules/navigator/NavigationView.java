@@ -234,7 +234,7 @@ public abstract class NavigationView implements AudioObjectsSource {
      * @return
      */
     public abstract boolean isNavigatorTableFilterSupported();
-        
+
     /**
      * Returns a filtered list of audio objects given the original list of audio
      * objects and the filter to apply
@@ -244,9 +244,11 @@ public abstract class NavigationView implements AudioObjectsSource {
      * @return
      */
     public abstract List<AudioObject> filterNavigatorTable(List<AudioObject> audioObjects, String filter);
-    
+
     /**
-     * Returns <code>true</code> if the view uses default navigator columns or <code>false</code> if defines its own column set
+     * Returns <code>true</code> if the view uses default navigator columns or
+     * <code>false</code> if defines its own column set
+     * 
      * @return
      */
     public abstract boolean isUseDefaultNavigatorColumns();
@@ -418,7 +420,7 @@ public abstract class NavigationView implements AudioObjectsSource {
      * @return
      */
     protected JTable getNavigationTable() {
-        return ControllerProxy.getInstance().getNavigationController().getNavigationPanel().getNavigationTable();
+        return ControllerProxy.getInstance().getNavigationController().getNavigationTablePanel().getNavigationTable();
     }
 
     /**
@@ -445,7 +447,7 @@ public abstract class NavigationView implements AudioObjectsSource {
      * @return
      */
     public String getCurrentTreeFilter() {
-        return ControllerProxy.getInstance().getNavigationController().getNavigationPanel().getTreeFilterPanel().getFilter();
+        return ControllerProxy.getInstance().getNavigationController().getNavigationTreePanel().getTreeFilterPanel().getFilter();
     }
 
     /**
@@ -625,5 +627,5 @@ public abstract class NavigationView implements AudioObjectsSource {
         }
 
         return viewAction;
-    }    
+    }
 }

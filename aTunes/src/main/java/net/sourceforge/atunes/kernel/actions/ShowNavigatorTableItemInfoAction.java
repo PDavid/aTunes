@@ -48,8 +48,8 @@ public class ShowNavigatorTableItemInfoAction extends Action {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        int selectedRow = ControllerProxy.getInstance().getNavigationController().getNavigationPanel().getNavigationTable().getSelectedRow();
-        AudioObject audioObject = ((NavigationTableModel) ControllerProxy.getInstance().getNavigationController().getNavigationPanel().getNavigationTable().getModel())
+        int selectedRow = ControllerProxy.getInstance().getNavigationController().getNavigationTablePanel().getNavigationTable().getSelectedRow();
+        AudioObject audioObject = ((NavigationTableModel) ControllerProxy.getInstance().getNavigationController().getNavigationTablePanel().getNavigationTable().getModel())
                 .getSongAt(selectedRow);
         GuiHandler.getInstance().showPropertiesDialog(audioObject);
     }

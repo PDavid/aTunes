@@ -24,7 +24,7 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
-import net.sourceforge.atunes.gui.views.panels.NavigationPanel;
+import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationView;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
@@ -36,7 +36,7 @@ import net.sourceforge.atunes.model.AudioObject;
 public final class NavigationTableMouseListener extends MouseAdapter {
 
     private NavigationController controller;
-    private NavigationPanel panel;
+    private NavigationTablePanel panel;
 
     /**
      * Instantiates a new navigation table mouse listener.
@@ -46,7 +46,7 @@ public final class NavigationTableMouseListener extends MouseAdapter {
      * @param panel
      *            the panel
      */
-    public NavigationTableMouseListener(NavigationController controller, NavigationPanel panel) {
+    public NavigationTableMouseListener(NavigationController controller, NavigationTablePanel panel) {
         this.controller = controller;
         this.panel = panel;
     }
