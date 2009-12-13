@@ -47,6 +47,7 @@ import net.sourceforge.atunes.gui.model.AudioObjectsSource;
 import net.sourceforge.atunes.gui.model.PlayListColumnModel;
 import net.sourceforge.atunes.gui.model.TransferableList;
 import net.sourceforge.atunes.gui.views.controls.ColumnSetPopupMenu;
+import net.sourceforge.atunes.gui.views.controls.ColumnSetRowSorter;
 import net.sourceforge.atunes.gui.views.menus.PlayListMenu;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnRenderers;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListDragableRow;
@@ -113,20 +114,21 @@ public final class PlayListTable extends JTable implements DragSourceListener, D
         setDropMode(DropMode.ON);
 
         // Set table model
-        setModel(new PlayListTableModel());
+        PlayListTableModel model = new PlayListTableModel();
+        setModel(model);
 
         // Set column model
-        PlayListColumnModel model = new PlayListColumnModel(this);
-        setColumnModel(model);
-
+        PlayListColumnModel columnModel = new PlayListColumnModel(this);
+        setColumnModel(columnModel);
+        
         // Bind column set popup menu
-        new ColumnSetPopupMenu(this, model);
+        new ColumnSetPopupMenu(this, columnModel);
         
         // Disable autoresize, as we will control it
         setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         // Set renderers
-        ColumnRenderers.addRenderers(this, model);
+        ColumnRenderers.addRenderers(this, columnModel);
 
         // Remove enter key event, which moves selection down
         getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "none");
