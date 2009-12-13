@@ -44,9 +44,9 @@ public class SortNavigatorByArtistAndAlbumAction extends Action {
     public void actionPerformed(ActionEvent e) {
         if (ApplicationState.getInstance().getSortType() != SortType.BY_ARTIST_AND_ALBUM) {
             ApplicationState.getInstance().setSortType(SortType.BY_ARTIST_AND_ALBUM);
-            List<AudioObject> songs = ((NavigationTableModel) ControllerProxy.getInstance().getNavigationController().getNavigationPanel().getNavigationTable().getModel())
+            List<AudioObject> songs = ((NavigationTableModel) ControllerProxy.getInstance().getNavigationController().getNavigationTablePanel().getNavigationTable().getModel())
                     .getSongs();
-            ((NavigationTableModel) ControllerProxy.getInstance().getNavigationController().getNavigationPanel().getNavigationTable().getModel()).setSongs(ControllerProxy
+            ((NavigationTableModel) ControllerProxy.getInstance().getNavigationController().getNavigationTablePanel().getNavigationTable().getModel()).setSongs(ControllerProxy
                     .getInstance().getNavigationController().sort(songs, SortType.BY_ARTIST_AND_ALBUM));
         }
     }

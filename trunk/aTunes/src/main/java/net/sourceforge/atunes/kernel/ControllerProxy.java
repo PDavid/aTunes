@@ -21,7 +21,8 @@ package net.sourceforge.atunes.kernel;
 
 import net.sourceforge.atunes.gui.views.dialogs.EditTitlesDialog;
 import net.sourceforge.atunes.gui.views.panels.AudioObjectPropertiesPanel;
-import net.sourceforge.atunes.gui.views.panels.NavigationPanel;
+import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
+import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListFilterPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListTabPanel;
@@ -181,8 +182,9 @@ public class ControllerProxy {
      */
     public NavigationController getNavigationController() {
         if (navigationController == null) {
-            NavigationPanel panel = GuiHandler.getInstance().getNavigationPanel();
-            navigationController = new NavigationController(panel);
+            NavigationTreePanel treePanel = GuiHandler.getInstance().getNavigationTreePanel();
+            NavigationTablePanel tablePanel = GuiHandler.getInstance().getNavigationTablePanel();
+            navigationController = new NavigationController(treePanel, tablePanel);
         }
         return navigationController;
     }

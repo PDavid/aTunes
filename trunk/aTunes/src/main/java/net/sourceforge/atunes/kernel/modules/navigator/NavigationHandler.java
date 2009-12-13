@@ -59,19 +59,18 @@ public final class NavigationHandler extends Handler implements PluginListener {
 
     private NavigationHandler() {
     }
-    
+
     @Override
     public void applicationFinish() {
     }
-    
+
     @Override
     protected void initHandler() {
     }
-    
+
     @Override
     public void applicationStarted() {
     }
-
 
     public List<NavigationView> getNavigationViews() {
         if (navigationViews == null) {
@@ -86,7 +85,6 @@ public final class NavigationHandler extends Handler implements PluginListener {
         return navigationViews;
     }
 
-    
     /**
      * Builds a map containing classes of navigation view as keys and references
      * to instances as values
@@ -118,7 +116,7 @@ public final class NavigationHandler extends Handler implements PluginListener {
      */
     public void refreshCurrentView() {
         getCurrentView().refreshView(ApplicationState.getInstance().getViewMode(),
-                ControllerProxy.getInstance().getNavigationController().getNavigationPanel().getTreeFilterPanel().getFilter());
+                ControllerProxy.getInstance().getNavigationController().getNavigationTreePanel().getTreeFilterPanel().getFilter());
     }
 
     /**
@@ -130,7 +128,7 @@ public final class NavigationHandler extends Handler implements PluginListener {
     public void refreshView(Class<? extends NavigationView> navigationViewClass) {
         if (getView(navigationViewClass).equals(getCurrentView())) {
             getView(navigationViewClass).refreshView(ApplicationState.getInstance().getViewMode(),
-                    ControllerProxy.getInstance().getNavigationController().getNavigationPanel().getTreeFilterPanel().getFilter());
+                    ControllerProxy.getInstance().getNavigationController().getNavigationTreePanel().getTreeFilterPanel().getFilter());
         }
     }
 
@@ -157,7 +155,7 @@ public final class NavigationHandler extends Handler implements PluginListener {
         try {
             getNavigationViews().add((NavigationView) plugin.getInstance());
             // Set tabs and text for navigator
-            ControllerProxy.getInstance().getNavigationController().getNavigationPanel().updateTabs();
+            ControllerProxy.getInstance().getNavigationController().getNavigationTreePanel().updateTabs();
         } catch (PluginSystemException e) {
             getLogger().error(LogCategories.PLUGINS, e);
         }

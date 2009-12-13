@@ -19,11 +19,9 @@
  */
 package net.sourceforge.atunes.kernel.controllers.model;
 
-import java.awt.Component;
-
 import net.sourceforge.atunes.misc.log.Logger;
 
-public abstract class Controller<T extends Component> {
+public abstract class Controller {
 
     private Logger logger = new Logger();
 

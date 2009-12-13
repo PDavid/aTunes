@@ -80,7 +80,8 @@ import net.sourceforge.atunes.gui.views.dialogs.properties.PropertiesDialog;
 import net.sourceforge.atunes.gui.views.menus.ApplicationMenuBar;
 import net.sourceforge.atunes.gui.views.panels.AudioObjectPropertiesPanel;
 import net.sourceforge.atunes.gui.views.panels.ContextPanel;
-import net.sourceforge.atunes.gui.views.panels.NavigationPanel;
+import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
+import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.ControllerProxy;
@@ -311,12 +312,21 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
     }
 
     /**
-     * Gets the navigation panel.
+     * Gets the navigation tree panel.
      * 
-     * @return the navigation panel
+     * @return the navigation tree panel
      */
-    public NavigationPanel getNavigationPanel() {
-        return frame.getNavigationPanel();
+    public NavigationTreePanel getNavigationTreePanel() {
+        return frame.getNavigationTreePanel();
+    }
+
+    /**
+     * Gets the navigation table panel.
+     * 
+     * @return the navigation table panel
+     */
+    public NavigationTablePanel getNavigationTablePanel() {
+        return frame.getNavigationTablePanel();
     }
 
     /**
@@ -1398,13 +1408,13 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
         showContextPanel(newState.isUseContext(), true);
 
         // Set location for navigator tabs (left or top)
-        getNavigationPanel().getTabbedPane().setTabPlacement(newState.isShowNavigatorTabsAtLeft() ? SwingConstants.LEFT : SwingConstants.TOP);
+        getNavigationTreePanel().getTabbedPane().setTabPlacement(newState.isShowNavigatorTabsAtLeft() ? SwingConstants.LEFT : SwingConstants.TOP);
 
         // Set OSD width
         getOSDDialog().setWidth(newState.getOsdWidth());
 
         // Set tabs and text for navigator
-        getNavigationPanel().updateTabs();
+        getNavigationTreePanel().updateTabs();
 
         // Set text for context tabs
         getContextPanel().updateContextTabsText();

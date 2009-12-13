@@ -438,7 +438,7 @@ public final class PodcastFeedHandler extends Handler {
                 try {
                     if (get()) {
                         podcastFeedEntry.setDownloaded(false);
-                        GuiHandler.getInstance().getNavigationPanel().getNavigationTable().repaint();
+                        GuiHandler.getInstance().getNavigationTablePanel().getNavigationTable().repaint();
                     }
                 } catch (InterruptedException e) {
                     getLogger().error(LogCategories.PODCAST, e);

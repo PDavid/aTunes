@@ -181,7 +181,7 @@ public class PodcastFeedEntryDownloader extends SwingWorker<Boolean, Void> {
             if (!isCancelled() && get()) {
                 logger.info(LogCategories.PODCAST, "Download of " + podcastFeedEntry.getUrl() + " finished.");
                 podcastFeedEntry.setDownloaded(true);
-                GuiHandler.getInstance().getNavigationPanel().getNavigationTable().repaint();
+                GuiHandler.getInstance().getNavigationTablePanel().getNavigationTable().repaint();
             }
         } catch (InterruptedException e) {
             logger.error(LogCategories.PODCAST, e);

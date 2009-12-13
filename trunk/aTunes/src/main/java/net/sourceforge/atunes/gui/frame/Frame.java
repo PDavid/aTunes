@@ -31,7 +31,8 @@ import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.menus.ApplicationMenuBar;
 import net.sourceforge.atunes.gui.views.panels.AudioObjectPropertiesPanel;
 import net.sourceforge.atunes.gui.views.panels.ContextPanel;
-import net.sourceforge.atunes.gui.views.panels.NavigationPanel;
+import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
+import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.modules.updates.ApplicationVersion;
@@ -43,6 +44,7 @@ public interface Frame {
 
     /**
      * Creates the frame.
+     * 
      * @param frameState
      */
     public void create(FrameState frameState);
@@ -83,11 +85,18 @@ public interface Frame {
     public Point getLocation();
 
     /**
-     * Gets the navigation panel.
+     * Gets the navigation tree panel.
      * 
-     * @return the navigation panel
+     * @return the navigation tree panel
      */
-    public NavigationPanel getNavigationPanel();
+    public NavigationTreePanel getNavigationTreePanel();
+
+    /**
+     * Gets the navigation table panel.
+     * 
+     * @return the navigation table panel
+     */
+    public NavigationTablePanel getNavigationTablePanel();
 
     /**
      * Gets the player controls.
@@ -130,9 +139,10 @@ public interface Frame {
      * @return the tool bar
      */
     public ToolBar getToolBar();
-    
+
     /**
      * Gets the progress bar
+     * 
      * @return
      */
     public JProgressBar getProgressBar();
@@ -305,7 +315,7 @@ public interface Frame {
      * @param version
      */
     public void showNewVersionInfo(boolean show, ApplicationVersion version);
-    
+
     public FrameState getFrameState();
 
 }
