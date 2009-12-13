@@ -371,7 +371,7 @@ public final class MultipleFrame implements Frame {
     @Override
     public void setVisible(boolean visible) {
         frame.setVisible(visible);
-        if (!visible || ApplicationState.getInstance().isShowNavigationPanel()) {
+        if (!visible) {
             navigatorDialog.setVisible(visible);
         }
         if (!visible || ApplicationState.getInstance().isShowAudioObjectProperties()) {
@@ -385,11 +385,6 @@ public final class MultipleFrame implements Frame {
     @Override
     public void showContextPanel(boolean show, boolean changeSize) {
         contextDialog.setVisible(show);
-    }
-
-    @Override
-    public void showNavigationPanel(boolean show, boolean changeSize) {
-        navigatorDialog.setVisible(show);
     }
 
     @Override

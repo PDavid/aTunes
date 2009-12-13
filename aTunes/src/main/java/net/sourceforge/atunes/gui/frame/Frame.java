@@ -78,6 +78,13 @@ public interface Frame {
     public JFrame getFrame();
 
     /**
+     * Returns the state of the frame.
+     * 
+     * @return the state of the frame
+     */
+    public FrameState getFrameState();
+
+    /**
      * Gets the location.
      * 
      * @return the location
@@ -253,16 +260,6 @@ public interface Frame {
     public void showContextPanel(boolean show, boolean changeSize);
 
     /**
-     * Show navigation panel.
-     * 
-     * @param show
-     *            the show
-     * @param changeSize
-     *            the change size
-     */
-    public void showNavigationPanel(boolean show, boolean changeSize);
-
-    /**
      * Show navigation table.
      * 
      * @param show
@@ -315,7 +312,5 @@ public interface Frame {
      * @param version
      */
     public void showNewVersionInfo(boolean show, ApplicationVersion version);
-
-    public FrameState getFrameState();
 
 }

@@ -84,7 +84,7 @@ public final class NavigationController extends Controller implements AudioFiles
         ARTIST, ALBUM, GENRE, FOLDER
     }
 
-    static Logger logger = new Logger();
+    Logger logger = new Logger();
 
     private NavigationTreePanel navigationTreePanel;
     private NavigationTablePanel navigationTablePanel;
@@ -140,7 +140,9 @@ public final class NavigationController extends Controller implements AudioFiles
      * Instantiates a new navigation controller.
      * 
      * @param treePanel
-     *            the panel
+     *            the tree panel
+     * @param tablePanel
+     *            the table panel
      */
     public NavigationController(NavigationTreePanel treePanel, NavigationTablePanel tablePanel) {
         this.navigationTreePanel = treePanel;

@@ -81,7 +81,6 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
 
     public static final int NAVIGATION_PANEL_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 280);
     public static final int CONTEXT_PANEL_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 295);
-    public static final int CONTEXT_PANEL_MINIMUM_WIDTH = CONTEXT_PANEL_WIDTH - 50;
     public static final int FILE_PROPERTIES_PANEL_HEIGHT = 100;
     public static final int PLAY_LIST_PANEL_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 490);
     public static final int NAVIGATOR_SPLIT_PANE_DIVIDER_LOCATION = GuiUtils.getComponentHeightForResolution(1024, 612);
@@ -251,7 +250,6 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
         if (contextPanel == null) {
             contextPanel = new ContextPanel();
             contextPanel.setPreferredSize(new Dimension(CONTEXT_PANEL_WIDTH, 1));
-            contextPanel.setMinimumSize(new Dimension(CONTEXT_PANEL_MINIMUM_WIDTH, 1));
             if (!ApplicationState.getInstance().isUseContext()) {
                 contextPanel.setVisible(false);
             }
@@ -391,11 +389,6 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
         if (navigationTreePanel == null) {
             navigationTreePanel = new NavigationTreePanel();
             navigationTreePanel.setPreferredSize(new Dimension(NAVIGATION_PANEL_WIDTH, 1));
-
-            // If must be hidden, hide directly
-            if (!ApplicationState.getInstance().isShowNavigationPanel()) {
-                navigationTreePanel.setVisible(false);
-            }
         }
         return navigationTreePanel;
     }
@@ -405,11 +398,6 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
         if (navigationTablePanel == null) {
             navigationTablePanel = new NavigationTablePanel();
             navigationTablePanel.setPreferredSize(new Dimension(NAVIGATION_PANEL_WIDTH, 1));
-
-            // If must be hidden, hide directly
-            if (!ApplicationState.getInstance().isShowNavigationPanel()) {
-                navigationTablePanel.setVisible(false);
-            }
         }
         return navigationTablePanel;
     }
@@ -678,26 +666,6 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
             rightVerticalSplitPane.setDividerSize(SPLIT_PANE_DEFAULT_DIVIDER_SIZE);
         } else {
             rightVerticalSplitPane.setDividerSize(0);
-        }
-    }
-
-    @Override
-    public void showNavigationPanel(boolean show, boolean changeSize) {
-        getNavigatorSplitPane().setVisible(show);
-        if (show) {
-            int playListWidth = playListPanel.getWidth();
-
-            leftVerticalSplitPane.setDividerLocation(frameState.getLeftVerticalSplitPaneDividerLocation());
-            playListWidth = playListWidth - StandardFrame.NAVIGATION_PANEL_WIDTH;
-            if (playListWidth < PLAY_LIST_PANEL_WIDTH && changeSize) {
-                int diff = PLAY_LIST_PANEL_WIDTH - playListWidth;
-                setSize(getSize().width + diff, getSize().height);
-            }
-            leftVerticalSplitPane.setDividerSize(SPLIT_PANE_DEFAULT_DIVIDER_SIZE);
-        } else {
-            // Save panel width
-            frameState.setLeftVerticalSplitPaneDividerLocation(leftVerticalSplitPane.getDividerLocation());
-            leftVerticalSplitPane.setDividerSize(0);
         }
     }
 

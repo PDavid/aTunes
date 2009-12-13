@@ -31,7 +31,6 @@ import net.sourceforge.atunes.kernel.actions.RipCDAction;
 import net.sourceforge.atunes.kernel.actions.SelectRepositoryAction;
 import net.sourceforge.atunes.kernel.actions.ShowAudioObjectPropertiesAction;
 import net.sourceforge.atunes.kernel.actions.ShowContextAction;
-import net.sourceforge.atunes.kernel.actions.ShowNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowStatsAction;
 
 public final class ToolBar extends JToolBar {
@@ -76,10 +75,6 @@ public final class ToolBar extends JToolBar {
         add(preferences);
 
         addSeparator();
-
-        showNavigator = new JToggleButton(Actions.getAction(ShowNavigatorAction.class));
-        showNavigator.setText(null);
-        add(showNavigator);
 
         showFileProperties = new JToggleButton(Actions.getAction(ShowAudioObjectPropertiesAction.class));
         showFileProperties.setText(null);

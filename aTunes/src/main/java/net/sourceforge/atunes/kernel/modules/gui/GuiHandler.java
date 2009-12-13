@@ -983,19 +983,6 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
     }
 
     /**
-     * Show navigation panel.
-     * 
-     * @param show
-     *            the show
-     * @param changeSize
-     *            the change size
-     */
-    public void showNavigationPanel(boolean show, boolean changeSize) {
-        ApplicationState.getInstance().setShowNavigationPanel(show);
-        frame.showNavigationPanel(show, changeSize);
-    }
-
-    /**
      * Show navigation table.
      * 
      * @param show
