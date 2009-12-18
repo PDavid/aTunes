@@ -417,4 +417,18 @@ public abstract class Column implements Comparable<Column>, Serializable {
 		return null;
 	}
 
+	/**
+	 * @param columnSort the columnSort to set
+	 */
+	public void setColumnSort(ColumnSort columnSort) {
+		this.columnSort = columnSort;
+	}
+
+	/**
+	 * @return the columnSort
+	 */
+	public ColumnSort getColumnSort() {
+		return columnSort;
+	}
+
 }
