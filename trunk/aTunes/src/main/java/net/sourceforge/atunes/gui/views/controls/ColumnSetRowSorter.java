@@ -18,6 +18,8 @@ public class ColumnSetRowSorter {
 	private ColumnSetTableModel model;
 	private CommonColumnModel columnModel;
 	
+	private Column lastColumnSorted;
+	
 	public ColumnSetRowSorter(JTable table, ColumnSetTableModel model, CommonColumnModel columnModel) {
 		this.table = table;
 		this.model = model;
@@ -34,6 +36,10 @@ public class ColumnSetRowSorter {
 					if (columnClickedIndex != -1) {
 						// Get column
 						Column columnClicked = ColumnSetRowSorter.this.columnModel.getColumnObject(columnClickedIndex);
+						if (lastColumnSorted != null && !lastColumnSorted.equals(columnClicked)) {
+							lastColumnSorted.setColumnSort(null);
+						}
+						lastColumnSorted = columnClicked;
 						if (columnClicked.isSortable()) {
 							sort(columnClicked.getComparator());
 						}
@@ -48,6 +54,7 @@ public class ColumnSetRowSorter {
 	 * @param comparator
 	 */
 	protected void sort(Comparator<AudioObject> comparator) {
+		
 		// Sort model
 		this.model.sort(comparator);
 		
