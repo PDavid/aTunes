@@ -43,7 +43,7 @@ public final class NavigationTablePanel extends JPanel {
     /**
      * The table filter
      */
-    private NavigationFilterPanel tableFilterPanel;
+    private FilterPanel tableFilterPanel;
 
     /**
      * Instantiates a new navigation panel.
@@ -68,7 +68,7 @@ public final class NavigationTablePanel extends JPanel {
 
         navigationTableButtonPanel = new JPanel(new GridBagLayout());
 
-        tableFilterPanel = new NavigationFilterPanel();
+        tableFilterPanel = new FilterPanel();
         tableFilterPanel.setVisible(false);
 
         GridBagConstraints c = new GridBagConstraints();
@@ -95,7 +95,7 @@ public final class NavigationTablePanel extends JPanel {
     /**
      * @return the tableFilterPanel
      */
-    public NavigationFilterPanel getTableFilterPanel() {
+    public FilterPanel getTableFilterPanel() {
         return tableFilterPanel;
     }
 }

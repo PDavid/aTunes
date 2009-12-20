@@ -42,7 +42,7 @@ public final class PlayListPanel extends JPanel {
     private PlayListTabPanel playListTabPanel;
 
     /** The play list filter. */
-    private PlayListFilterPanel playListFilter;
+    private FilterPanel playListFilter;
 
     /** The play list table. */
     private PlayListTable playListTable;
@@ -66,7 +66,7 @@ public final class PlayListPanel extends JPanel {
      */
     private void addContent() {
         playListTabPanel = new PlayListTabPanel();
-        playListFilter = new PlayListFilterPanel();
+        playListFilter = new FilterPanel();
         // Hide by default
         playListFilter.setVisible(false);
         playListTable = new PlayListTable();
@@ -112,7 +112,7 @@ public final class PlayListPanel extends JPanel {
      * 
      * @return the play list filter
      */
-    public PlayListFilterPanel getPlayListFilter() {
+    public FilterPanel getPlayListFilter() {
         return playListFilter;
     }
 

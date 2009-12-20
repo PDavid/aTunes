@@ -38,9 +38,9 @@ import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
- * Filter panel class for navigator: to use for trees and table
+ * Filter panel class: to use for trees and table
  */
-public final class NavigationFilterPanel extends JPanel {
+public final class FilterPanel extends JPanel {
 
     private static final long serialVersionUID = 2037911468888688438L;
 
@@ -57,12 +57,12 @@ public final class NavigationFilterPanel extends JPanel {
     /**
      * List of listeners
      */
-    List<NavigationFilterListener> listeners = new ArrayList<NavigationFilterListener>();
+    List<FilterListener> listeners = new ArrayList<FilterListener>();
 
     /**
      * Default constructor
      */
-    NavigationFilterPanel() {
+    FilterPanel() {
         super(new GridBagLayout());
 
         // Filter controls
@@ -108,11 +108,11 @@ public final class NavigationFilterPanel extends JPanel {
                         // Only clear filter if ESC pressed
                         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                             setFilter(null);
-                            for (NavigationFilterListener listener : listeners) {
+                            for (FilterListener listener : listeners) {
                                 listener.filterChanged(null);
                             }
                         } else {
-                            for (NavigationFilterListener listener : listeners) {
+                            for (FilterListener listener : listeners) {
                                 listener.filterChanged(getFilter());
                             }
                         }
@@ -125,7 +125,7 @@ public final class NavigationFilterPanel extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 setFilter(null);
-                for (NavigationFilterListener listener : listeners) {
+                for (FilterListener listener : listeners) {
                     listener.filterChanged(null);
                 }
             }
@@ -137,7 +137,7 @@ public final class NavigationFilterPanel extends JPanel {
      * 
      * @param listener
      */
-    public void addListener(NavigationFilterListener listener) {
+    public void addListener(FilterListener listener) {
         listeners.add(listener);
     }
 
@@ -146,7 +146,7 @@ public final class NavigationFilterPanel extends JPanel {
      * 
      * @param listener
      */
-    public void removeListener(NavigationFilterListener listener) {
+    public void removeListener(FilterListener listener) {
         listeners.remove(listener);
     }
 
@@ -197,7 +197,7 @@ public final class NavigationFilterPanel extends JPanel {
      * @author fleax
      * 
      */
-    public interface NavigationFilterListener {
+    public interface FilterListener {
         public void filterChanged(String newFilter);
     }
 }

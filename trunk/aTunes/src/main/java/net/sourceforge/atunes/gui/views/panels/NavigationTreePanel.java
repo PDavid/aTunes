@@ -42,7 +42,7 @@ public final class NavigationTreePanel extends JPanel {
     /**
      * The tree filter
      */
-    private NavigationFilterPanel treeFilterPanel;
+    private FilterPanel treeFilterPanel;
 
     /**
      * Instantiates a new navigation panel.
@@ -68,7 +68,7 @@ public final class NavigationTreePanel extends JPanel {
         // Set navigator tabs text based on configuration 
         setNavigatorTabsText(ApplicationState.getInstance().isShowNavigatorTabsText());
 
-        treeFilterPanel = new NavigationFilterPanel();
+        treeFilterPanel = new FilterPanel();
 
         treePanel.add(tabbedPane, BorderLayout.CENTER);
         treePanel.add(treeFilterPanel, BorderLayout.SOUTH);
@@ -139,7 +139,7 @@ public final class NavigationTreePanel extends JPanel {
     /**
      * @return the treeFilterPanel
      */
-    public NavigationFilterPanel getTreeFilterPanel() {
+    public FilterPanel getTreeFilterPanel() {
         return treeFilterPanel;
     }
 

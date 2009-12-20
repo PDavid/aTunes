@@ -25,7 +25,7 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
-import net.sourceforge.atunes.gui.views.panels.NavigationFilterPanel;
+import net.sourceforge.atunes.gui.views.panels.FilterPanel;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -41,7 +41,7 @@ public class FilterNavigatorAction extends Action {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        NavigationFilterPanel filterPanel = ControllerProxy.getInstance().getNavigationController().getNavigationTreePanel().getTreeFilterPanel();
+        FilterPanel filterPanel = ControllerProxy.getInstance().getNavigationController().getNavigationTreePanel().getTreeFilterPanel();
 
         if (ControllerProxy.getInstance().getNavigationController().getPopupMenuCaller() == ControllerProxy.getInstance().getNavigationController().getNavigationTablePanel()
                 .getNavigationTable()) {

@@ -52,7 +52,7 @@ import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.gui.views.dialogs.SearchDialog;
 import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
-import net.sourceforge.atunes.gui.views.panels.NavigationFilterPanel.NavigationFilterListener;
+import net.sourceforge.atunes.gui.views.panels.FilterPanel.FilterListener;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ShowAlbumsInNavigatorAction;
@@ -204,7 +204,7 @@ public final class NavigationController extends Controller implements AudioFiles
             }
         });
 
-        navigationTreePanel.getTreeFilterPanel().addListener(new NavigationFilterListener() {
+        navigationTreePanel.getTreeFilterPanel().addListener(new FilterListener() {
             @Override
             public void filterChanged(String newFilter) {
                 if (newFilter == null) {
@@ -214,7 +214,7 @@ public final class NavigationController extends Controller implements AudioFiles
             }
         });
 
-        navigationTablePanel.getTableFilterPanel().addListener(new NavigationFilterListener() {
+        navigationTablePanel.getTableFilterPanel().addListener(new FilterListener() {
             @Override
             public void filterChanged(String newFilter) {
                 if (newFilter == null) {
