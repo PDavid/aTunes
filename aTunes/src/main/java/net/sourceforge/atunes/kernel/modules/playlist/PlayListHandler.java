@@ -917,15 +917,6 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
                 setPlayListAfterFiltering(nonFilteredPlayList);
                 nonFilteredPlayList = null;
             }
-            // Empty filter text
-            ControllerProxy.getInstance().getPlayListFilterController().emptyFilter();
-            /*
-             * In order to avoid that the filter changes its visibility status
-             * (shown/hidden) uncommented the following line. The search filter
-             * stays in the status it is, which seems reasonable. If its hidden
-             * no problem, if its visible it means the user is using it. // Hide
-             * filter text VisualHandler.getInstance().showFilter(false);
-             */
         } else {
             // Store original play list without filter
             if (nonFilteredPlayList == null) {
@@ -945,37 +936,51 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
      *            the new play list after filtering
      */
     private void setPlayListAfterFiltering(PlayList playList) {
-        PlayList currentPlayList = getCurrentPlayList(true);
+    	playLists.remove(visiblePlayListIndex);
+    	playLists.add(visiblePlayListIndex, playList);
 
-        if (playList.size() > currentPlayList.size()) { // Removing filter
-            AudioObject selectedAudioObject = currentPlayList.getCurrentAudioObject();
-            int index = playList.indexOf(selectedAudioObject);
-            for (int i = 0; i < playList.size(); i++) {
-                currentPlayList.add(playList.get(i));
-            }
-            playLists.remove(visiblePlayListIndex);
-            playLists.add(visiblePlayListIndex, playList);
-            getCurrentPlayList(true).setCurrentAudioObjectIndex(index != -1 ? index : 0);
-            if (index == -1 && isActivePlayListVisible()) {
-                selectedAudioObjectChanged(currentPlayList.get(0));
-            }
-        } else {
-            // Remove from table 
-            List<Integer> rowsToRemove = new ArrayList<Integer>();
-            for (int i = 0; i < currentPlayList.size(); i++) {
-                AudioObject ao = currentPlayList.get(i);
-                if (!playList.contains(ao)) {
-                    rowsToRemove.add(i);
-                }
-            }
-            int[] rowsToRemoveArray = new int[rowsToRemove.size()];
-            for (int i = 0; i < rowsToRemove.size(); i++) {
-                rowsToRemoveArray[i] = rowsToRemove.get(i);
-            }
+    	// Set selection interval to none
+        GuiHandler.getInstance().getPlayListTable().getSelectionModel().clearSelection();
 
-            removeAudioObjects(rowsToRemoveArray);
-        }
-        GuiHandler.getInstance().showPlayListInformation(currentPlayList);
+        setPlayList(playList);
+        
+        // Update table model
+        ((PlayListTableModel) GuiHandler.getInstance().getPlayListTable().getModel()).setVisiblePlayList(playList);
+        ControllerProxy.getInstance().getPlayListController().refreshPlayList();
+
+        ControllerProxy.getInstance().getPlayListController().scrollPlayList(false);
+
+//        PlayList currentPlayList = getCurrentPlayList(true);
+//
+//        if (playList.size() > currentPlayList.size()) { // Removing filter
+//            AudioObject selectedAudioObject = currentPlayList.getCurrentAudioObject();
+//            int index = playList.indexOf(selectedAudioObject);
+//            for (int i = 0; i < playList.size(); i++) {
+//                currentPlayList.add(playList.get(i));
+//            }
+//            playLists.remove(visiblePlayListIndex);
+//            playLists.add(visiblePlayListIndex, playList);
+//            getCurrentPlayList(true).setCurrentAudioObjectIndex(index != -1 ? index : 0);
+//            if (index == -1 && isActivePlayListVisible()) {
+//                selectedAudioObjectChanged(currentPlayList.get(0));
+//            }
+//        } else {
+//            // Remove from table 
+//            List<Integer> rowsToRemove = new ArrayList<Integer>();
+//            for (int i = 0; i < currentPlayList.size(); i++) {
+//                AudioObject ao = currentPlayList.get(i);
+//                if (!playList.contains(ao)) {
+//                    rowsToRemove.add(i);
+//                }
+//            }
+//            int[] rowsToRemoveArray = new int[rowsToRemove.size()];
+//            for (int i = 0; i < rowsToRemove.size(); i++) {
+//                rowsToRemoveArray[i] = rowsToRemove.get(i);
+//            }
+//
+//            removeAudioObjects(rowsToRemoveArray);
+//        }
+//        GuiHandler.getInstance().showPlayListInformation(currentPlayList);
     }
 
     /**

@@ -64,9 +64,19 @@ public class PlayList implements Serializable, Cloneable {
     /**
      * Pointed List of audio objects of this play list
      */
-    private PointedList<AudioObject> audioObjects = new PointedList<AudioObject>() {
+    private PointedList<AudioObject> audioObjects = new PlayListPointedList();
+    
+    class PlayListPointedList extends PointedList<AudioObject> {
         private static final long serialVersionUID = -6966402482637754615L;
 
+        PlayListPointedList() {
+        	super();
+        }
+        
+        PlayListPointedList(PointedList<AudioObject> pointedList) {
+        	super(pointedList);
+        }
+        
         @Override
         public boolean isCyclic() {
             return ApplicationState.getInstance().isRepeat();
@@ -98,9 +108,9 @@ public class PlayList implements Serializable, Cloneable {
      * @param playList
      */
     private PlayList(PlayList playList) {
-        this.mode = playList.mode;
-        this.name = playList.name;
-        this.audioObjects = new PointedList<AudioObject>(playList.audioObjects);
+        this.name = playList.name == null ? null : new String(playList.name);
+        this.audioObjects = new PlayListPointedList(playList.audioObjects);
+        this.mode = PlayListMode.getPlayListMode(this);
     }
 
     //////////////////////////////////////////////////////////////// ADD OPERATIONS /////////////////////////////////////////////////////////

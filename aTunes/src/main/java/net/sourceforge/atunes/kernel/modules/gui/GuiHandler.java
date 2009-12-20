@@ -849,10 +849,7 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
             frame.getPlayListPanel().getPlayListFilter().setVisible(false);
         } else {
             frame.getPlayListPanel().getPlayListFilter().setVisible(true);
-        }
-        // If show, then set focus to text field
-        if (frame.getPlayListPanel().getPlayListFilter().isVisible()) {
-            frame.getPlayListPanel().getPlayListFilter().setFocusToTextField();
+            frame.getPlayListPanel().getPlayListFilter().requestFocus();
         }
     }
 

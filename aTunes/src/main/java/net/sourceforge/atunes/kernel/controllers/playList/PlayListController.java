@@ -30,8 +30,8 @@ import javax.swing.event.TableModelEvent;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.panels.PlayListControlsPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
+import net.sourceforge.atunes.gui.views.panels.FilterPanel.FilterListener;
 import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
-import net.sourceforge.atunes.kernel.modules.columns.Column;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
@@ -68,6 +68,17 @@ public final class PlayListController extends SimpleController<PlayListPanel> {
         table.addMouseListener(listener);
 
         table.getSelectionModel().addListSelectionListener(listener);
+        
+        getComponentControlled().getPlayListFilter().addListener(new FilterListener() {
+			
+			@Override
+			public void filterChanged(String newFilter) {
+                if (newFilter == null) {
+                	getComponentControlled().getPlayListFilter().setVisible(false);
+                }
+				PlayListHandler.getInstance().setFilter(newFilter);
+			}
+		});
     }
 
     @Override
@@ -256,4 +267,13 @@ public final class PlayListController extends SimpleController<PlayListPanel> {
             GuiHandler.getInstance().getPlayListTable().getSelectionModel().addSelectionInterval(selectedRows[i], selectedRows[i]);
         }
     }
+    
+    public void reapplyFilter() {
+        getLogger().debug(LogCategories.CONTROLLER);
+
+        if (PlayListHandler.getInstance().isFiltered()) {
+            PlayListHandler.getInstance().setFilter(getComponentControlled().getPlayListFilter().getFilter());
+        }
+    }
+
 }

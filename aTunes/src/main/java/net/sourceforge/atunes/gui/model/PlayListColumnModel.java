@@ -45,7 +45,7 @@ public final class PlayListColumnModel extends CommonColumnModel {
 
     @Override
     protected void reapplyFilter() {
-    	ControllerProxy.getInstance().getPlayListFilterController().reapplyFilter();    	
+    	ControllerProxy.getInstance().getPlayListController().reapplyFilter();    	
     }    
     
     @Override

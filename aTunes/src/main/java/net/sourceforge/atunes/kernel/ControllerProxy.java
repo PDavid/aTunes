@@ -23,7 +23,6 @@ import net.sourceforge.atunes.gui.views.dialogs.EditTitlesDialog;
 import net.sourceforge.atunes.gui.views.panels.AudioObjectPropertiesPanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
-import net.sourceforge.atunes.gui.views.panels.PlayListFilterPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListTabPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
@@ -35,7 +34,6 @@ import net.sourceforge.atunes.kernel.controllers.editTitlesDialog.EditTitlesDial
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController;
 import net.sourceforge.atunes.kernel.controllers.osd.OSDDialogController;
 import net.sourceforge.atunes.kernel.controllers.playList.PlayListController;
-import net.sourceforge.atunes.kernel.controllers.playListFilter.PlayListFilterController;
 import net.sourceforge.atunes.kernel.controllers.playListTab.PlayListTabController;
 import net.sourceforge.atunes.kernel.controllers.playerControls.PlayerControlsController;
 import net.sourceforge.atunes.kernel.controllers.radioBrowser.RadioBrowserDialogController;
@@ -63,9 +61,6 @@ public class ControllerProxy {
 
     /** The play list controller. */
     private PlayListController playListController;
-
-    /** The play list filter controller. */
-    private PlayListFilterController playListFilterController;
 
     /** The play list tab controller. */
     private PlayListTabController playListTabController;
@@ -109,7 +104,6 @@ public class ControllerProxy {
     private ControllerProxy() {
         logger.debug(LogCategories.CONTROLLER, "Creating ControllerProxy");
         // Force creation of non-autocreated controllers
-        getPlayListFilterController();
         getPlayListTabController();
     }
 
@@ -227,19 +221,6 @@ public class ControllerProxy {
             playListController = new PlayListController(panel);
         }
         return playListController;
-    }
-
-    /**
-     * Gets the play list filter controller.
-     * 
-     * @return the play list filter controller
-     */
-    public PlayListFilterController getPlayListFilterController() {
-        if (playListFilterController == null) {
-            PlayListFilterPanel panel = GuiHandler.getInstance().getPlayListPanel().getPlayListFilter();
-            playListFilterController = new PlayListFilterController(panel);
-        }
-        return playListFilterController;
     }
 
     /**
