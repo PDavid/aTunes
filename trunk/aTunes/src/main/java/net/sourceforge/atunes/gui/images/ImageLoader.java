@@ -110,7 +110,7 @@ public final class ImageLoader {
     public static final String NEXT = "next.png";
     public static final String NEXT_TRAY = SystemProperties.OS.isWindowsVista() ? "nextTrayVista.png" : "nextTray.png";
     public static final String NEXT_TRAY_MENU = "nextTrayMenu.png";
-    public static final String NO_COVER = "noCover.gif";
+    public static final String NO_COVER = "noCover.png";
     public static final String NO_COVER_AUDIOFILE_PROPERTIES = "noCover_AudioFileProperties.png";
     public static final String NORMALIZATION = "normalization.png";
     public static final String NUMBER = "tag_number.png";
