@@ -38,9 +38,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.gui.frame.DefaultSingleFrame;
 import net.sourceforge.atunes.gui.frame.Frame;
 import net.sourceforge.atunes.gui.frame.MultipleFrame;
-import net.sourceforge.atunes.gui.frame.StandardFrame;
 import net.sourceforge.atunes.gui.popup.FadingPopupFactory;
 import net.sourceforge.atunes.gui.views.bars.ToolBar;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
@@ -259,7 +259,7 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
     public Frame getFrame() {
         if (frame == null) {
             if (!ApplicationState.getInstance().isMultipleWindow()) {
-                frame = new StandardFrame();
+                frame = new DefaultSingleFrame();
             } else {
                 frame = new MultipleFrame();
             }
@@ -658,8 +658,8 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
 
         // Workaround fot setExtendedState bug: setExtendedState must be called after
         // setVisible in Linux systems
-        if (firstTimeShow && frame instanceof StandardFrame) {
-            ((StandardFrame) frame).setWindowSize();
+        if (firstTimeShow && frame instanceof DefaultSingleFrame) {
+            ((DefaultSingleFrame) frame).setWindowSize();
         }
         firstTimeShow = false;
     }

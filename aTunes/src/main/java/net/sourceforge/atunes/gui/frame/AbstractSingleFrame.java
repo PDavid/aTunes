@@ -19,12 +19,9 @@
  */
 package net.sourceforge.atunes.gui.frame;
 
-import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -33,16 +30,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.Arrays;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-import javax.swing.JSplitPane;
 import javax.swing.Timer;
 
 import net.sourceforge.atunes.gui.OSXAdapter;
@@ -75,7 +68,7 @@ import org.jdesktop.swingx.JXStatusBar;
 /**
  * The standard frame
  */
-public final class StandardFrame extends CustomFrame implements net.sourceforge.atunes.gui.frame.Frame {
+public abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforge.atunes.gui.frame.Frame {
 
     private static final long serialVersionUID = 1L;
 
@@ -84,15 +77,10 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
     public static final int FILE_PROPERTIES_PANEL_HEIGHT = 100;
     public static final int PLAY_LIST_PANEL_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 490);
     public static final int NAVIGATOR_SPLIT_PANE_DIVIDER_LOCATION = GuiUtils.getComponentHeightForResolution(1024, 612);
-    private static final int SPLIT_PANE_DEFAULT_DIVIDER_SIZE = 10;
     public static final int MARGIN = 100;
 
     private FrameState frameState;
 
-    private JSplitPane leftVerticalSplitPane;
-    private JSplitPane rightVerticalSplitPane;
-    private JSplitPane navigatorSplitPane;
-    
     private NavigationTreePanel navigationTreePanel;
     private NavigationTablePanel navigationTablePanel;
     private JLabel leftStatusBar;
@@ -132,7 +120,7 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
     /**
      * Instantiates a new standard frame.
      */
-    public StandardFrame() {
+    public AbstractSingleFrame() {
         super();
     }
 
@@ -173,31 +161,13 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
         // Create frame content
         setContentPane(getContentPanel());
 
-        // Split panes divider location
-        if (frameState.getLeftVerticalSplitPaneDividerLocation() != 0) {
-            setLeftVerticalSplitPaneDividerLocationAndSetWindowSize(frameState.getLeftVerticalSplitPaneDividerLocation());
-        }
-        if (frameState.getRightVerticalSplitPaneDividerLocation() != 0) {
-            setRightVerticalSplitPaneDividerLocationAndSetWindowSize(frameState.getRightVerticalSplitPaneDividerLocation());
-        }
+        setupSplitPaneDividerPosition(frameState);
 
         // Apply component orientation
         GuiUtils.applyComponentOrientation(this);
     }
 
-    private JSplitPane getNavigatorSplitPane() {
-        if (navigatorSplitPane == null) {
-            navigatorSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, getNavigationTreePanel(), getNavigationTablePanel());
-            navigatorSplitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
-
-                @Override
-                public void propertyChange(PropertyChangeEvent evt) {
-                    StandardFrame.this.frameState.setLeftHorizontalSplitPaneDividerLocation((Integer) evt.getNewValue());
-                }
-            });
-        }
-        return navigatorSplitPane;
-    }
+    protected abstract void setupSplitPaneDividerPosition(FrameState frameState);
 
     /**
      * Gets the window state listener.
@@ -212,7 +182,7 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
                 public void windowStateChanged(WindowEvent e) {
                     if (e.getNewState() == Frame.ICONIFIED) {
                         if (ApplicationState.getInstance().isShowSystemTray()) {
-                            StandardFrame.this.setVisible(false);
+                            AbstractSingleFrame.this.setVisible(false);
                         }
                         logger.debug(LogCategories.DESKTOP, "Window Iconified");
                     } else if (e.getNewState() != Frame.ICONIFIED) {
@@ -275,98 +245,7 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
      * 
      * @return the content panel
      */
-    private Container getContentPanel() {
-        // Main Container
-        JPanel panel = new JPanel(new GridBagLayout());
-
-        // Main Split Pane			
-        leftVerticalSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-
-        // Create menu bar
-        setJMenuBar(getAppMenuBar());
-
-        GridBagConstraints c = new GridBagConstraints();
-
-        // Play List, File Properties, Context panel
-        JPanel nonNavigatorPanel = new JPanel(new BorderLayout());
-        rightVerticalSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-        rightVerticalSplitPane.setBorder(BorderFactory.createEmptyBorder());
-        rightVerticalSplitPane.setResizeWeight(1);
-
-        JPanel centerPanel = new JPanel(new GridBagLayout());
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 1;
-        c.weighty = 1;
-        c.fill = GridBagConstraints.BOTH;
-        centerPanel.add(getPlayListPanel(), c);
-        c.gridy = 1;
-        c.weightx = 1;
-        c.weighty = 0;
-        c.fill = GridBagConstraints.BOTH;
-        centerPanel.add(getPropertiesPanel(), c);
-        c.gridy = 2;
-        centerPanel.add(getPlayerControls(), c);
-
-        // JSplitPane does not support component orientation, so we must do this manually
-        // -> http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4265389
-        if (GuiUtils.getComponentOrientation().isLeftToRight()) {
-            rightVerticalSplitPane.add(centerPanel);
-            rightVerticalSplitPane.add(getContextPanel());
-        } else {
-            rightVerticalSplitPane.add(getContextPanel());
-            rightVerticalSplitPane.add(centerPanel);
-        }
-
-        nonNavigatorPanel.add(rightVerticalSplitPane, BorderLayout.CENTER);
-
-        // Navigation Panel
-        // JSplitPane does not support component orientation, so we must do this manually
-        // -> http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4265389
-        if (GuiUtils.getComponentOrientation().isLeftToRight()) {
-            leftVerticalSplitPane.add(getNavigatorSplitPane());
-            leftVerticalSplitPane.add(nonNavigatorPanel);
-            leftVerticalSplitPane.setResizeWeight(0.2);
-        } else {
-            leftVerticalSplitPane.add(nonNavigatorPanel);
-            leftVerticalSplitPane.add(getNavigatorSplitPane());
-            rightVerticalSplitPane.setResizeWeight(0.2);
-        }
-
-        leftVerticalSplitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
-
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                frameState.setLeftVerticalSplitPaneDividerLocation((Integer) evt.getNewValue());
-            }
-        });
-
-        rightVerticalSplitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
-
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                frameState.setRightVerticalSplitPaneDividerLocation(((Integer) evt.getNewValue()));
-            }
-        });
-
-        c.gridx = 0;
-        c.gridy = 0;
-        panel.add(getToolBar(), c);
-
-        c.gridx = 0;
-        c.gridy = 1;
-        c.weightx = 1;
-        c.weighty = 1;
-        c.fill = GridBagConstraints.BOTH;
-        panel.add(leftVerticalSplitPane, c);
-
-        c.gridy = 2;
-        c.weighty = 0;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        panel.add(getStatusBar(), c);
-
-        return panel;
-    }
+    protected abstract Container getContentPanel();
 
     @Override
     public JFrame getFrame() {
@@ -469,7 +348,7 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
      * 
      * @return the status bar
      */
-    private JXStatusBar getStatusBar() {
+    protected final JXStatusBar getStatusBar() {
         if (statusBar == null) {
             statusBar = new JXStatusBar();
             JXStatusBar.Constraint c = new JXStatusBar.Constraint(JXStatusBar.Constraint.ResizeBehavior.FILL);
@@ -547,34 +426,10 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
         getLeftStatusBar().setToolTipText(toolTip);
     }
 
-    /**
-     * Sets the left vertical split pane divider location and set window size.
-     * 
-     * @param location
-     *            the new left vertical split pane divider location and set
-     *            window size
-     */
-    private void setLeftVerticalSplitPaneDividerLocationAndSetWindowSize(int location) {
-        leftVerticalSplitPane.setDividerLocation(location);
-        setWindowSize();
-    }
-
     @Override
     public void setRightStatusBarText(String text, String toolTip) {
         getRightStatusBar().setText(text);
         getRightStatusBar().setToolTipText(toolTip);
-    }
-
-    /**
-     * Sets the right vertical split pane divider location and set window size.
-     * 
-     * @param location
-     *            the new right vertical split pane divider location and set
-     *            window size
-     */
-    private void setRightVerticalSplitPaneDividerLocationAndSetWindowSize(int location) {
-        rightVerticalSplitPane.setDividerLocation(location);
-        setWindowSize();
     }
 
     @Override
@@ -634,54 +489,6 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
         Dimension screen = getToolkit().getScreenSize();
         setSize(screen.width - MARGIN, screen.height - MARGIN);
         setExtendedState(Frame.MAXIMIZED_BOTH);
-    }
-
-    @Override
-    public void showContextPanel(boolean show, boolean changeSize) {
-        boolean wasVisible = getContextPanel().isVisible();
-        getContextPanel().setVisible(show);
-        if (!wasVisible && show) {
-            int panelWidth = playListPanel.getWidth();
-            int rightDividerLocation = frameState.getRightVerticalSplitPaneDividerLocation();
-            if (rightDividerLocation != 0 && rightDividerLocation < (panelWidth - StandardFrame.CONTEXT_PANEL_WIDTH)) {
-                rightVerticalSplitPane.setDividerLocation(frameState.getRightVerticalSplitPaneDividerLocation());
-            } else {
-                rightVerticalSplitPane.setDividerLocation(rightVerticalSplitPane.getSize().width - StandardFrame.CONTEXT_PANEL_WIDTH);
-            }
-            panelWidth = panelWidth - StandardFrame.CONTEXT_PANEL_WIDTH;
-            if (panelWidth < PLAY_LIST_PANEL_WIDTH && changeSize) {
-                int diff = PLAY_LIST_PANEL_WIDTH - panelWidth;
-                // If window is almost as big as device, move left vertical split pane to the left
-                if (getSize().width + diff > GuiUtils.getDeviceWidth()) {
-                    leftVerticalSplitPane.setDividerLocation(leftVerticalSplitPane.getLocation().x - diff);
-                } else {
-                    // Resize window
-                    setSize(getSize().width + diff, getSize().height);
-                }
-            }
-        } else if (!show) {
-            // Save panel width
-            frameState.setRightVerticalSplitPaneDividerLocation(rightVerticalSplitPane.getDividerLocation());
-        }
-        if (show) {
-            rightVerticalSplitPane.setDividerSize(SPLIT_PANE_DEFAULT_DIVIDER_SIZE);
-        } else {
-            rightVerticalSplitPane.setDividerSize(0);
-        }
-    }
-
-    @Override
-    public void showNavigationTable(boolean show) {
-        getNavigationTablePanel().setVisible(show);
-        if (show) {
-            super.setVisible(show);
-            getNavigatorSplitPane().setDividerLocation(frameState.getLeftHorizontalSplitPaneDividerLocation());
-            getNavigatorSplitPane().setDividerSize(SPLIT_PANE_DEFAULT_DIVIDER_SIZE);
-        } else {
-            // Save location
-            frameState.setLeftHorizontalSplitPaneDividerLocation(getNavigatorSplitPane().getDividerLocation());
-            getNavigatorSplitPane().setDividerSize(0);
-        }
     }
 
     @Override
