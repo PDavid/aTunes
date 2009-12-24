@@ -1,6 +1,6 @@
 package net.sourceforge.atunes.plugins.columns;
 
-import net.sourceforge.atunes.gui.views.controls.playList.Column;
+import net.sourceforge.atunes.kernel.modules.columns.Column;
 import net.sourceforge.atunes.model.AudioObject;
 
 import org.commonjukebox.plugins.Plugin;
