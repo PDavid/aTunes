@@ -24,9 +24,9 @@ package net.sourceforge.atunes.gui.frame;
  */
 public class FrameState {
 
-    private int leftVerticalSplitPaneDividerLocation = StandardFrame.NAVIGATION_PANEL_WIDTH;
+    private int leftVerticalSplitPaneDividerLocation = AbstractSingleFrame.NAVIGATION_PANEL_WIDTH;
     private int rightVerticalSplitPaneDividerLocation;
-    private int leftHorizontalSplitPaneDividerLocation = StandardFrame.NAVIGATOR_SPLIT_PANE_DIVIDER_LOCATION;
+    private int leftHorizontalSplitPaneDividerLocation = AbstractSingleFrame.NAVIGATOR_SPLIT_PANE_DIVIDER_LOCATION;
 
     public FrameState() {
     }
