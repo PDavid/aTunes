@@ -92,6 +92,7 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
     private JSplitPane leftVerticalSplitPane;
     private JSplitPane rightVerticalSplitPane;
     private JSplitPane navigatorSplitPane;
+    
     private NavigationTreePanel navigationTreePanel;
     private NavigationTablePanel navigationTablePanel;
     private JLabel leftStatusBar;
@@ -468,7 +469,7 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
      * 
      * @return the status bar
      */
-    public JXStatusBar getStatusBar() {
+    private JXStatusBar getStatusBar() {
         if (statusBar == null) {
             statusBar = new JXStatusBar();
             JXStatusBar.Constraint c = new JXStatusBar.Constraint(JXStatusBar.Constraint.ResizeBehavior.FILL);
@@ -553,7 +554,7 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
      *            the new left vertical split pane divider location and set
      *            window size
      */
-    public void setLeftVerticalSplitPaneDividerLocationAndSetWindowSize(int location) {
+    private void setLeftVerticalSplitPaneDividerLocationAndSetWindowSize(int location) {
         leftVerticalSplitPane.setDividerLocation(location);
         setWindowSize();
     }
@@ -571,7 +572,7 @@ public final class StandardFrame extends CustomFrame implements net.sourceforge.
      *            the new right vertical split pane divider location and set
      *            window size
      */
-    public void setRightVerticalSplitPaneDividerLocationAndSetWindowSize(int location) {
+    private void setRightVerticalSplitPaneDividerLocationAndSetWindowSize(int location) {
         rightVerticalSplitPane.setDividerLocation(location);
         setWindowSize();
     }
