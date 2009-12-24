@@ -27,7 +27,6 @@ import javax.swing.event.TableModelEvent;
 
 import net.sourceforge.atunes.gui.model.SearchResultColumnModel;
 import net.sourceforge.atunes.gui.views.controls.ColumnSetPopupMenu;
-import net.sourceforge.atunes.gui.views.controls.ColumnSetRowSorter;
 import net.sourceforge.atunes.gui.views.dialogs.SearchResultsDialog;
 import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnRenderers;
@@ -59,8 +58,8 @@ public final class SearchResultsController extends SimpleController<SearchResult
      */
     public void showSearchResults(SearchableObject searchableObject, List<AudioObject> resultsList) {
         this.results = resultsList;
-        
-        SearchResultTableModel tableModel = (SearchResultTableModel)getComponentControlled().getSearchResultsTable().getModel();
+
+        SearchResultTableModel tableModel = (SearchResultTableModel) getComponentControlled().getSearchResultsTable().getModel();
 
         tableModel.setResults(resultsList);
         tableModel.refresh(TableModelEvent.UPDATE);
@@ -68,20 +67,20 @@ public final class SearchResultsController extends SimpleController<SearchResult
     }
 
     @Override
-    protected void addBindings() {    	
-    	JTable table = getComponentControlled().getSearchResultsTable();
-    	SearchResultTableModel tableModel = new SearchResultTableModel();
-    	table.setModel(tableModel);
-    	
-    	SearchResultColumnModel columnModel = new SearchResultColumnModel(table);
-    	table.setColumnModel(columnModel);
+    protected void addBindings() {
+        JTable table = getComponentControlled().getSearchResultsTable();
+        SearchResultTableModel tableModel = new SearchResultTableModel();
+        table.setModel(tableModel);
 
-    	// Set sorter
-    	ColumnSetRowSorter sorter = new ColumnSetRowSorter(table, tableModel, columnModel);    	
-    	
-    	// Bind column set popup menu
-    	new ColumnSetPopupMenu(getComponentControlled().getSearchResultsTable(), columnModel);
-    	
+        SearchResultColumnModel columnModel = new SearchResultColumnModel(table);
+        table.setColumnModel(columnModel);
+
+        // Set sorter
+        //ColumnSetRowSorter sorter = new ColumnSetRowSorter(table, tableModel, columnModel);
+
+        // Bind column set popup menu
+        new ColumnSetPopupMenu(getComponentControlled().getSearchResultsTable(), columnModel);
+
         // Set renderers
         ColumnRenderers.addRenderers(getComponentControlled().getSearchResultsTable(), columnModel);
 
