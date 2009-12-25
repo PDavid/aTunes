@@ -223,7 +223,7 @@ public final class MultipleFrame implements Frame {
 
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                MultipleFrame.this.frameState.setLeftHorizontalSplitPaneDividerLocation((Integer) evt.getNewValue());
+                MultipleFrame.this.frameState.setSplitPaneDividerLocation3((Integer) evt.getNewValue());
             }
         });
 
@@ -397,10 +397,10 @@ public final class MultipleFrame implements Frame {
     public void showNavigationTable(boolean show) {
         navigationTablePanel.setVisible(show);
         if (show) {
-            getNavigatorSplitPane().setDividerLocation(frameState.getLeftHorizontalSplitPaneDividerLocation());
+            getNavigatorSplitPane().setDividerLocation(frameState.getSplitPaneDividerLocation3());
         } else {
             // Save location
-            frameState.setLeftHorizontalSplitPaneDividerLocation(getNavigatorSplitPane().getDividerLocation());
+            frameState.setSplitPaneDividerLocation3(getNavigatorSplitPane().getDividerLocation());
         }
     }
 

@@ -33,10 +33,7 @@ import javax.swing.JSplitPane;
 import net.sourceforge.atunes.gui.views.controls.CustomSplitPane;
 import net.sourceforge.atunes.utils.GuiUtils;
 
-/**
- * The default frame.
- */
-public final class DefaultSingleFrame extends AbstractSingleFrame implements net.sourceforge.atunes.gui.frame.Frame {
+public final class EnhancedSingleFrame extends AbstractSingleFrame implements net.sourceforge.atunes.gui.frame.Frame {
 
     private static final long serialVersionUID = 1L;
 
@@ -44,7 +41,7 @@ public final class DefaultSingleFrame extends AbstractSingleFrame implements net
 
     private CustomSplitPane leftVerticalSplitPane;
     private CustomSplitPane rightVerticalSplitPane;
-    private CustomSplitPane navigatorSplitPane;
+    private CustomSplitPane playListSplitPane;
 
     /**
      * Gets the content panel.
@@ -63,7 +60,6 @@ public final class DefaultSingleFrame extends AbstractSingleFrame implements net
 
         GridBagConstraints c = new GridBagConstraints();
 
-        // Play List, File Properties, Context panel
         JPanel nonNavigatorPanel = new JPanel(new BorderLayout());
         rightVerticalSplitPane = new CustomSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         rightVerticalSplitPane.setBorder(BorderFactory.createEmptyBorder());
@@ -84,15 +80,10 @@ public final class DefaultSingleFrame extends AbstractSingleFrame implements net
         c.gridy = 2;
         centerPanel.add(getPlayerControls(), c);
 
-        rightVerticalSplitPane.setLeftComponent(centerPanel);
-        rightVerticalSplitPane.setRightComponent(getContextPanel());
-
-        nonNavigatorPanel.add(rightVerticalSplitPane, BorderLayout.CENTER);
-
-        navigatorSplitPane = new CustomSplitPane(JSplitPane.VERTICAL_SPLIT);
-        navigatorSplitPane.setLeftComponent(getNavigationTreePanel());
-        navigatorSplitPane.setRightComponent(getNavigationTablePanel());
-        navigatorSplitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
+        playListSplitPane = new CustomSplitPane(JSplitPane.VERTICAL_SPLIT);
+        playListSplitPane.setLeftComponent(getNavigationTablePanel());
+        playListSplitPane.setRightComponent(centerPanel);
+        playListSplitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
 
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
@@ -100,7 +91,12 @@ public final class DefaultSingleFrame extends AbstractSingleFrame implements net
             }
         });
 
-        leftVerticalSplitPane.setLeftComponent(navigatorSplitPane);
+        rightVerticalSplitPane.setLeftComponent(playListSplitPane);
+        rightVerticalSplitPane.setRightComponent(getContextPanel());
+
+        nonNavigatorPanel.add(rightVerticalSplitPane, BorderLayout.CENTER);
+
+        leftVerticalSplitPane.setLeftComponent(getNavigationTreePanel());
         leftVerticalSplitPane.setRightComponent(nonNavigatorPanel);
         leftVerticalSplitPane.setResizeWeight(0.2);
 
@@ -139,6 +135,7 @@ public final class DefaultSingleFrame extends AbstractSingleFrame implements net
         return panel;
     }
 
+    @Override
     protected void setupSplitPaneDividerPosition(FrameState frameState) {
         // Split panes divider location
         if (frameState.getSplitPaneDividerLocation1() != 0) {
@@ -150,8 +147,7 @@ public final class DefaultSingleFrame extends AbstractSingleFrame implements net
             setWindowSize();
         }
         if (frameState.getSplitPaneDividerLocation3() != 0) {
-            navigatorSplitPane.setDividerLocation(frameState.getSplitPaneDividerLocation3());
-            setWindowSize();
+            playListSplitPane.setDividerLocation((frameState.getSplitPaneDividerLocation3()));
         }
     }
 
@@ -192,16 +188,16 @@ public final class DefaultSingleFrame extends AbstractSingleFrame implements net
     // TODO Auto-generated method stub
     @Override
     public void showNavigationTable(boolean show) {
-        getNavigationTablePanel().setVisible(show);
-        if (show) {
-            super.setVisible(show);
-            navigatorSplitPane.setDividerLocation(getFrameState().getSplitPaneDividerLocation3());
-            navigatorSplitPane.setDividerSize(SPLIT_PANE_DEFAULT_DIVIDER_SIZE);
-        } else {
-            // Save location
-            getFrameState().setSplitPaneDividerLocation3(navigatorSplitPane.getDividerLocation());
-            navigatorSplitPane.setDividerSize(0);
-        }
+        //        getNavigationTablePanel().setVisible(show);
+        //        if (show) {
+        //            super.setVisible(show);
+        //            getNavigatorSplitPane().setDividerLocation(getFrameState().getLeftHorizontalSplitPaneDividerLocation());
+        //            getNavigatorSplitPane().setDividerSize(SPLIT_PANE_DEFAULT_DIVIDER_SIZE);
+        //        } else {
+        //            // Save location
+        //            getFrameState().setLeftHorizontalSplitPaneDividerLocation(getNavigatorSplitPane().getDividerLocation());
+        //            getNavigatorSplitPane().setDividerSize(0);
+        //        }
     }
 
     @Override

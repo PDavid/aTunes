@@ -68,15 +68,22 @@ import org.jdesktop.swingx.JXStatusBar;
 /**
  * The standard frame
  */
-public abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforge.atunes.gui.frame.Frame {
+abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforge.atunes.gui.frame.Frame {
 
     private static final long serialVersionUID = 1L;
 
-    public static final int NAVIGATION_PANEL_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 280);
+    public static final int NAVIGATION_TREE_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 280);
+    public static final int NAVIGATION_TREE_HEIGHT = GuiUtils.getComponentWidthForResolution(1280, 280);
+
+    public static final int NAVIGATION_TABLE_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 280);
+    public static final int NAVIGATION_TABLE_HEIGHT = GuiUtils.getComponentWidthForResolution(1280, 280);
+
     public static final int CONTEXT_PANEL_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 295);
+
     public static final int FILE_PROPERTIES_PANEL_HEIGHT = 100;
+
     public static final int PLAY_LIST_PANEL_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 490);
-    public static final int NAVIGATOR_SPLIT_PANE_DIVIDER_LOCATION = GuiUtils.getComponentHeightForResolution(1024, 612);
+
     public static final int MARGIN = 100;
 
     private FrameState frameState;
@@ -161,10 +168,10 @@ public abstract class AbstractSingleFrame extends CustomFrame implements net.sou
         // Create frame content
         setContentPane(getContentPanel());
 
-        setupSplitPaneDividerPosition(frameState);
-
         // Apply component orientation
         GuiUtils.applyComponentOrientation(this);
+
+        setupSplitPaneDividerPosition(frameState);
     }
 
     protected abstract void setupSplitPaneDividerPosition(FrameState frameState);
@@ -268,7 +275,7 @@ public abstract class AbstractSingleFrame extends CustomFrame implements net.sou
     public NavigationTreePanel getNavigationTreePanel() {
         if (navigationTreePanel == null) {
             navigationTreePanel = new NavigationTreePanel();
-            navigationTreePanel.setPreferredSize(new Dimension(NAVIGATION_PANEL_WIDTH, 1));
+            navigationTreePanel.setPreferredSize(new Dimension(NAVIGATION_TREE_WIDTH, NAVIGATION_TREE_HEIGHT));
         }
         return navigationTreePanel;
     }
@@ -277,7 +284,7 @@ public abstract class AbstractSingleFrame extends CustomFrame implements net.sou
     public NavigationTablePanel getNavigationTablePanel() {
         if (navigationTablePanel == null) {
             navigationTablePanel = new NavigationTablePanel();
-            navigationTablePanel.setPreferredSize(new Dimension(NAVIGATION_PANEL_WIDTH, 1));
+            navigationTablePanel.setPreferredSize(new Dimension(NAVIGATION_TABLE_WIDTH, NAVIGATION_TABLE_HEIGHT));
         }
         return navigationTablePanel;
     }

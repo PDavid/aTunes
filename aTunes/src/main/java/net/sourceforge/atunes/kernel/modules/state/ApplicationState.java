@@ -19,6 +19,7 @@
  */
 package net.sourceforge.atunes.kernel.modules.state;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -72,6 +73,8 @@ public class ApplicationState {
     private boolean useContext = true;
     private int selectedContextTab;
     private Class<? extends Frame> frameClass;
+    // Split panes divider location
+    private Map<Class<? extends Frame>, FrameState> frameStates = new HashMap<Class<? extends Frame>, FrameState>();
     private boolean showPlaylistControls = true;
     private ProxyBean proxy;
     private String skin = LookAndFeelSelector.DEFAULT_SKIN;
@@ -146,9 +149,6 @@ public class ApplicationState {
     private Map<String, ColumnBean> columns;
     private Map<String, ColumnBean> navigatorColumns;
     private Map<String, ColumnBean> searchResultsColumns;
-
-    // Split panes divider location
-    private FrameState frameState = new FrameState();
 
     /**
      * Default location where device is plugged. Used to connect device
@@ -869,12 +869,12 @@ public class ApplicationState {
         this.searchResultsColumns = searchResultsColumns;
     }
 
-    public FrameState getFrameState() {
-        return frameState;
+    public Map<Class<? extends Frame>, FrameState> getFrameStates() {
+        return frameStates;
     }
 
-    public void setFrameState(FrameState frameState) {
-        this.frameState = frameState;
+    public void setFrameStates(Map<Class<? extends Frame>, FrameState> frameStates) {
+        this.frameStates = frameStates;
     }
 
     public String getDefaultDeviceLocation() {
