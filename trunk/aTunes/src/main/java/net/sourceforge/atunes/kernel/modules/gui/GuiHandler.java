@@ -40,6 +40,7 @@ import javax.swing.filechooser.FileFilter;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.frame.DefaultSingleFrame;
 import net.sourceforge.atunes.gui.frame.Frame;
+import net.sourceforge.atunes.gui.frame.FrameState;
 import net.sourceforge.atunes.gui.frame.MultipleFrame;
 import net.sourceforge.atunes.gui.popup.FadingPopupFactory;
 import net.sourceforge.atunes.gui.views.bars.ToolBar;
@@ -1255,7 +1256,12 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
             FadingPopupFactory.install();
         }
 
-        getFrame().create(ApplicationState.getInstance().getFrameState());
+        FrameState frameState = ApplicationState.getInstance().getFrameStates().get(getFrame().getClass());
+        if (frameState == null) {
+            frameState = new FrameState();
+            ApplicationState.getInstance().getFrameStates().put(getFrame().getClass(), frameState);
+        }
+        getFrame().create(frameState);
 
         // Create drag and drop listener
         PlayListTableTransferHandler playListTransferHandler = new PlayListTableTransferHandler();

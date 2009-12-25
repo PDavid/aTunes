@@ -39,6 +39,7 @@ public final class Frames {
 
         add(I18nUtils.getString("STANDARD_WINDOW"), DefaultSingleFrame.class);
         add(I18nUtils.getString("MULTIPLE_WINDOW"), MultipleFrame.class);
+        add(I18nUtils.getString("ENHANCED_WINDOW"), EnhancedSingleFrame.class);
     }
 
     private static void add(String name, Class<? extends Frame> clazz) {

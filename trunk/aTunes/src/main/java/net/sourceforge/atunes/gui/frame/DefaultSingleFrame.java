@@ -30,6 +30,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
+import net.sourceforge.atunes.gui.views.controls.CustomSplitPane;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
@@ -41,9 +42,9 @@ public final class DefaultSingleFrame extends AbstractSingleFrame implements net
 
     private static final int SPLIT_PANE_DEFAULT_DIVIDER_SIZE = 10;
 
-    private JSplitPane leftVerticalSplitPane;
-    private JSplitPane rightVerticalSplitPane;
-    private JSplitPane navigatorSplitPane;
+    private CustomSplitPane leftVerticalSplitPane;
+    private CustomSplitPane rightVerticalSplitPane;
+    private CustomSplitPane navigatorSplitPane;
 
     /**
      * Gets the content panel.
@@ -55,7 +56,7 @@ public final class DefaultSingleFrame extends AbstractSingleFrame implements net
         JPanel panel = new JPanel(new GridBagLayout());
 
         // Main Split Pane          
-        leftVerticalSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+        leftVerticalSplitPane = new CustomSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 
         // Create menu bar
         setJMenuBar(getAppMenuBar());
@@ -64,7 +65,7 @@ public final class DefaultSingleFrame extends AbstractSingleFrame implements net
 
         // Play List, File Properties, Context panel
         JPanel nonNavigatorPanel = new JPanel(new BorderLayout());
-        rightVerticalSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+        rightVerticalSplitPane = new CustomSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         rightVerticalSplitPane.setBorder(BorderFactory.createEmptyBorder());
         rightVerticalSplitPane.setResizeWeight(1);
 
@@ -83,36 +84,31 @@ public final class DefaultSingleFrame extends AbstractSingleFrame implements net
         c.gridy = 2;
         centerPanel.add(getPlayerControls(), c);
 
-        // JSplitPane does not support component orientation, so we must do this manually
-        // -> http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4265389
-        if (GuiUtils.getComponentOrientation().isLeftToRight()) {
-            rightVerticalSplitPane.add(centerPanel);
-            rightVerticalSplitPane.add(getContextPanel());
-        } else {
-            rightVerticalSplitPane.add(getContextPanel());
-            rightVerticalSplitPane.add(centerPanel);
-        }
+        rightVerticalSplitPane.setLeftComponent(centerPanel);
+        rightVerticalSplitPane.setRightComponent(getContextPanel());
 
         nonNavigatorPanel.add(rightVerticalSplitPane, BorderLayout.CENTER);
 
-        // Navigation Panel
-        // JSplitPane does not support component orientation, so we must do this manually
-        // -> http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4265389
-        if (GuiUtils.getComponentOrientation().isLeftToRight()) {
-            leftVerticalSplitPane.add(getNavigatorSplitPane());
-            leftVerticalSplitPane.add(nonNavigatorPanel);
-            leftVerticalSplitPane.setResizeWeight(0.2);
-        } else {
-            leftVerticalSplitPane.add(nonNavigatorPanel);
-            leftVerticalSplitPane.add(getNavigatorSplitPane());
-            rightVerticalSplitPane.setResizeWeight(0.2);
-        }
+        navigatorSplitPane = new CustomSplitPane(JSplitPane.VERTICAL_SPLIT);
+        navigatorSplitPane.setLeftComponent(getNavigationTreePanel());
+        navigatorSplitPane.setRightComponent(getNavigationTablePanel());
+        navigatorSplitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
+
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                getFrameState().setSplitPaneDividerLocation3((Integer) evt.getNewValue());
+            }
+        });
+
+        leftVerticalSplitPane.setLeftComponent(navigatorSplitPane);
+        leftVerticalSplitPane.setRightComponent(nonNavigatorPanel);
+        leftVerticalSplitPane.setResizeWeight(0.2);
 
         leftVerticalSplitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
 
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                getFrameState().setLeftVerticalSplitPaneDividerLocation((Integer) evt.getNewValue());
+                getFrameState().setSplitPaneDividerLocation1((Integer) evt.getNewValue());
             }
         });
 
@@ -120,7 +116,7 @@ public final class DefaultSingleFrame extends AbstractSingleFrame implements net
 
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                getFrameState().setRightVerticalSplitPaneDividerLocation(((Integer) evt.getNewValue()));
+                getFrameState().setSplitPaneDividerLocation2(((Integer) evt.getNewValue()));
             }
         });
 
@@ -145,50 +141,18 @@ public final class DefaultSingleFrame extends AbstractSingleFrame implements net
 
     protected void setupSplitPaneDividerPosition(FrameState frameState) {
         // Split panes divider location
-        if (frameState.getLeftVerticalSplitPaneDividerLocation() != 0) {
-            setLeftVerticalSplitPaneDividerLocationAndSetWindowSize(frameState.getLeftVerticalSplitPaneDividerLocation());
+        if (frameState.getSplitPaneDividerLocation1() != 0) {
+            leftVerticalSplitPane.setDividerLocation(frameState.getSplitPaneDividerLocation1());
+            setWindowSize();
         }
-        if (frameState.getRightVerticalSplitPaneDividerLocation() != 0) {
-            setRightVerticalSplitPaneDividerLocationAndSetWindowSize(frameState.getRightVerticalSplitPaneDividerLocation());
+        if (frameState.getSplitPaneDividerLocation2() != 0) {
+            rightVerticalSplitPane.setDividerLocation(frameState.getSplitPaneDividerLocation2());
+            setWindowSize();
         }
-    }
-
-    /**
-     * Sets the right vertical split pane divider location and set window size.
-     * 
-     * @param location
-     *            the new right vertical split pane divider location and set
-     *            window size
-     */
-    private void setRightVerticalSplitPaneDividerLocationAndSetWindowSize(int location) {
-        rightVerticalSplitPane.setDividerLocation(location);
-        setWindowSize();
-    }
-
-    /**
-     * Sets the left vertical split pane divider location and set window size.
-     * 
-     * @param location
-     *            the new left vertical split pane divider location and set
-     *            window size
-     */
-    private void setLeftVerticalSplitPaneDividerLocationAndSetWindowSize(int location) {
-        leftVerticalSplitPane.setDividerLocation(location);
-        setWindowSize();
-    }
-
-    private JSplitPane getNavigatorSplitPane() {
-        if (navigatorSplitPane == null) {
-            navigatorSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, getNavigationTreePanel(), getNavigationTablePanel());
-            navigatorSplitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
-
-                @Override
-                public void propertyChange(PropertyChangeEvent evt) {
-                    DefaultSingleFrame.this.getFrameState().setLeftHorizontalSplitPaneDividerLocation((Integer) evt.getNewValue());
-                }
-            });
+        if (frameState.getSplitPaneDividerLocation3() != 0) {
+            navigatorSplitPane.setDividerLocation(frameState.getSplitPaneDividerLocation3());
+            setWindowSize();
         }
-        return navigatorSplitPane;
     }
 
     @Override
@@ -197,9 +161,9 @@ public final class DefaultSingleFrame extends AbstractSingleFrame implements net
         getContextPanel().setVisible(show);
         if (!wasVisible && show) {
             int panelWidth = getPlayListPanel().getWidth();
-            int rightDividerLocation = getFrameState().getRightVerticalSplitPaneDividerLocation();
+            int rightDividerLocation = getFrameState().getSplitPaneDividerLocation2();
             if (rightDividerLocation != 0 && rightDividerLocation < (panelWidth - AbstractSingleFrame.CONTEXT_PANEL_WIDTH)) {
-                rightVerticalSplitPane.setDividerLocation(getFrameState().getRightVerticalSplitPaneDividerLocation());
+                rightVerticalSplitPane.setDividerLocation(getFrameState().getSplitPaneDividerLocation2());
             } else {
                 rightVerticalSplitPane.setDividerLocation(rightVerticalSplitPane.getSize().width - AbstractSingleFrame.CONTEXT_PANEL_WIDTH);
             }
@@ -216,7 +180,7 @@ public final class DefaultSingleFrame extends AbstractSingleFrame implements net
             }
         } else if (!show) {
             // Save panel width
-            getFrameState().setRightVerticalSplitPaneDividerLocation(rightVerticalSplitPane.getDividerLocation());
+            getFrameState().setSplitPaneDividerLocation2(rightVerticalSplitPane.getDividerLocation());
         }
         if (show) {
             rightVerticalSplitPane.setDividerSize(SPLIT_PANE_DEFAULT_DIVIDER_SIZE);
@@ -231,12 +195,12 @@ public final class DefaultSingleFrame extends AbstractSingleFrame implements net
         getNavigationTablePanel().setVisible(show);
         if (show) {
             super.setVisible(show);
-            getNavigatorSplitPane().setDividerLocation(getFrameState().getLeftHorizontalSplitPaneDividerLocation());
-            getNavigatorSplitPane().setDividerSize(SPLIT_PANE_DEFAULT_DIVIDER_SIZE);
+            navigatorSplitPane.setDividerLocation(getFrameState().getSplitPaneDividerLocation3());
+            navigatorSplitPane.setDividerSize(SPLIT_PANE_DEFAULT_DIVIDER_SIZE);
         } else {
             // Save location
-            getFrameState().setLeftHorizontalSplitPaneDividerLocation(getNavigatorSplitPane().getDividerLocation());
-            getNavigatorSplitPane().setDividerSize(0);
+            getFrameState().setSplitPaneDividerLocation3(navigatorSplitPane.getDividerLocation());
+            navigatorSplitPane.setDividerSize(0);
         }
     }
 

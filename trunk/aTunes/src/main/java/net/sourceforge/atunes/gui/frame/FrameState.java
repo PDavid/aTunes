@@ -24,35 +24,35 @@ package net.sourceforge.atunes.gui.frame;
  */
 public class FrameState {
 
-    private int leftVerticalSplitPaneDividerLocation = AbstractSingleFrame.NAVIGATION_PANEL_WIDTH;
-    private int rightVerticalSplitPaneDividerLocation;
-    private int leftHorizontalSplitPaneDividerLocation = AbstractSingleFrame.NAVIGATOR_SPLIT_PANE_DIVIDER_LOCATION;
+    private int splitPaneDividerLocation1;
+    private int splitPaneDividerLocation2;
+    private int splitPaneDividerLocation3;
 
     public FrameState() {
     }
 
-    public int getLeftVerticalSplitPaneDividerLocation() {
-        return leftVerticalSplitPaneDividerLocation;
+    public int getSplitPaneDividerLocation1() {
+        return splitPaneDividerLocation1;
     }
 
-    public void setLeftVerticalSplitPaneDividerLocation(int leftVerticalSplitPaneDividerLocation) {
-        this.leftVerticalSplitPaneDividerLocation = leftVerticalSplitPaneDividerLocation;
+    public void setSplitPaneDividerLocation1(int splitPaneDividerLocation1) {
+        this.splitPaneDividerLocation1 = splitPaneDividerLocation1;
     }
 
-    public int getRightVerticalSplitPaneDividerLocation() {
-        return rightVerticalSplitPaneDividerLocation;
+    public int getSplitPaneDividerLocation2() {
+        return splitPaneDividerLocation2;
     }
 
-    public void setRightVerticalSplitPaneDividerLocation(int rightVerticalSplitPaneDividerLocation) {
-        this.rightVerticalSplitPaneDividerLocation = rightVerticalSplitPaneDividerLocation;
+    public void setSplitPaneDividerLocation2(int splitPaneDividerLocation2) {
+        this.splitPaneDividerLocation2 = splitPaneDividerLocation2;
     }
 
-    public int getLeftHorizontalSplitPaneDividerLocation() {
-        return leftHorizontalSplitPaneDividerLocation;
+    public int getSplitPaneDividerLocation3() {
+        return splitPaneDividerLocation3;
     }
 
-    public void setLeftHorizontalSplitPaneDividerLocation(int leftHorizontalSplitPaneDividerLocation) {
-        this.leftHorizontalSplitPaneDividerLocation = leftHorizontalSplitPaneDividerLocation;
+    public void setSplitPaneDividerLocation3(int splitPaneDividerLocation3) {
+        this.splitPaneDividerLocation3 = splitPaneDividerLocation3;
     }
 
 }
