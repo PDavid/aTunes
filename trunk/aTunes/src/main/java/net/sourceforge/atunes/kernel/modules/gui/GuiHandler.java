@@ -109,6 +109,7 @@ import net.sourceforge.atunes.kernel.modules.tray.SystemTrayHandler;
 import net.sourceforge.atunes.kernel.modules.updates.ApplicationVersion;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -117,6 +118,8 @@ import net.sourceforge.atunes.utils.StringUtils;
 public final class GuiHandler extends Handler implements PlaybackStateListener {
 
     private static GuiHandler instance = new GuiHandler();
+
+    private Logger logger = new Logger();
 
     Frame frame;
     private OSDDialog osdDialog;
@@ -258,13 +261,26 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
      */
     public Frame getFrame() {
         if (frame == null) {
-            if (!ApplicationState.getInstance().isMultipleWindow()) {
-                frame = new DefaultSingleFrame();
+            Class<? extends Frame> clazz = ApplicationState.getInstance().getFrameClass();
+            if (clazz != null) {
+                try {
+                    frame = clazz.newInstance();
+                } catch (InstantiationException e) {
+                    logger.error(LogCategories.HANDLER, e);
+                    constructDefaultFrame();
+                } catch (IllegalAccessException e) {
+                    logger.error(LogCategories.HANDLER, e);
+                    constructDefaultFrame();
+                }
             } else {
-                frame = new MultipleFrame();
+                constructDefaultFrame();
             }
         }
         return frame;
+    }
+
+    private void constructDefaultFrame() {
+        frame = new DefaultSingleFrame();
     }
 
     /**

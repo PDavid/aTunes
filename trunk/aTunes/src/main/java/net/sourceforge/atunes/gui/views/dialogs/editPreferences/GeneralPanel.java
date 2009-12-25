@@ -25,6 +25,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.Collator;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -42,6 +43,8 @@ import javax.swing.UIManager;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.LookAndFeelSelector;
+import net.sourceforge.atunes.gui.frame.Frame;
+import net.sourceforge.atunes.gui.frame.Frames;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.images.ThemePreviewLoader;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog;
@@ -84,7 +87,7 @@ public final class GeneralPanel extends PreferencesPanel {
         showTitle = new JCheckBox(I18nUtils.getString("SHOW_TITLE"));
         JLabel label = new JLabel(I18nUtils.getString("WINDOW_TYPE"));
         label.setFont(Fonts.GENERAL_FONT_BOLD);
-        windowType = new JComboBox(new String[] { I18nUtils.getString("STANDARD_WINDOW"), I18nUtils.getString("MULTIPLE_WINDOW") });
+        windowType = new JComboBox(new ListComboBoxModel<String>(new ArrayList<String>(Frames.getFrameNames())));
         JLabel label2 = new JLabel(I18nUtils.getString("LANGUAGE"));
         label2.setFont(Fonts.GENERAL_FONT_BOLD);
 
@@ -134,9 +137,8 @@ public final class GeneralPanel extends PreferencesPanel {
             public void actionPerformed(ActionEvent e) {
                 FontChooserDialog fontChooserDialog;
                 if (currentFontSettings != null) {
-                    fontChooserDialog = new FontChooserDialog(GuiHandler.getInstance().getFrame().getFrame(), 300, 300, currentFontSettings.getFont().toFont(),
-                            currentFontSettings.isUseFontSmoothing(), currentFontSettings.isUseFontSmoothingSettingsFromOs(), ApplicationState.getInstance().getLocale()
-                                    .getLocale());
+                    fontChooserDialog = new FontChooserDialog(GuiHandler.getInstance().getFrame().getFrame(), 300, 300, currentFontSettings.getFont().toFont(), currentFontSettings
+                            .isUseFontSmoothing(), currentFontSettings.isUseFontSmoothingSettingsFromOs(), ApplicationState.getInstance().getLocale().getLocale());
                 } else {
                     fontChooserDialog = new FontChooserDialog(GuiHandler.getInstance().getFrame().getFrame(), 300, 300, SubstanceLookAndFeel.getFontPolicy().getFontSet(
                             "Substance", UIManager.getDefaults()).getControlFont(), true, false, ApplicationState.getInstance().getLocale().getLocale());
@@ -216,10 +218,10 @@ public final class GeneralPanel extends PreferencesPanel {
 
         state.setShowTitle(showTitle.isSelected());
 
-        boolean oldMultipleWindow = state.isMultipleWindow();
-        boolean newMultipleWindow = windowType.getSelectedItem().equals(I18nUtils.getString("MULTIPLE_WINDOW"));
-        state.setMultipleWindow(newMultipleWindow);
-        if (oldMultipleWindow != newMultipleWindow) {
+        Class<? extends Frame> oldFrameClass = state.getFrameClass();
+        Class<? extends Frame> newFrameClass = Frames.getFrameClass((String) windowType.getSelectedItem());
+        state.setFrameClass(newFrameClass);
+        if (!oldFrameClass.equals(newFrameClass)) {
             needRestart = true;
         }
 
@@ -309,7 +311,7 @@ public final class GeneralPanel extends PreferencesPanel {
     @Override
     public void updatePanel(ApplicationState state) {
         setShowTitle(state.isShowTitle());
-        setWindowType(state.isMultipleWindow() ? I18nUtils.getString("MULTIPLE_WINDOW") : I18nUtils.getString("STANDARD_WINDOW"));
+        setWindowType(Frames.getFrameName(state.getFrameClass()));
         setLanguage(I18nUtils.getSelectedLocale());
         setShowIconTray(state.isShowSystemTray());
         setShowTrayPlayer(state.isShowTrayPlayer());
