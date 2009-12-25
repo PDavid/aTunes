@@ -88,17 +88,17 @@ public final class MultipleFrame implements Frame {
 
     private FrameState frameState;
 
-    CustomDialog navigatorDialog;
-    private CustomDialog filePropertiesDialog;
+    private CustomDialog navigatorDialog;
+    private CustomDialog audioObjectPropertiesDialog;
     private CustomDialog contextDialog;
     private ApplicationMenuBar menuBar;
-    ToolBar toolBar;
+    private ToolBar toolBar;
     private JSplitPane navigationSplitPane;
     private NavigationTreePanel navigationTreePanel;
     private NavigationTablePanel navigationTablePanel;
     private PlayListPanel playListPanel;
     private PlayerControlsPanel playerControlsPanel;
-    private AudioObjectPropertiesPanel filePropertiesPanel;
+    private AudioObjectPropertiesPanel audioObjectPropertiesPanel;
     private ContextPanel contextPanel;
 
     List<Window> windows;
@@ -111,12 +111,12 @@ public final class MultipleFrame implements Frame {
     }
 
     /**
-     * Adds the content to file properties.
+     * Adds the content to audio object properties.
      */
-    private void addContentToFileProperties() {
-        filePropertiesPanel = new AudioObjectPropertiesPanel();
-        filePropertiesDialog.add(filePropertiesPanel);
-        GuiUtils.applyComponentOrientation(filePropertiesPanel);
+    private void addContentToAudioObjectProperties() {
+        audioObjectPropertiesPanel = new AudioObjectPropertiesPanel();
+        audioObjectPropertiesDialog.add(audioObjectPropertiesPanel);
+        GuiUtils.applyComponentOrientation(audioObjectPropertiesPanel);
     }
 
     /**
@@ -227,15 +227,15 @@ public final class MultipleFrame implements Frame {
             }
         });
 
-        filePropertiesDialog = getNewDialog(frame, I18nUtils.getString("PROPERTIES"), filePropertiesDimension.width, filePropertiesDimension.height, frame, SOUTH,
+        audioObjectPropertiesDialog = getNewDialog(frame, I18nUtils.getString("PROPERTIES"), filePropertiesDimension.width, filePropertiesDimension.height, frame, SOUTH,
                 filePropertiesDimension);
-        addContentToFileProperties();
-        filePropertiesDialog.addWindowListener(new WindowAdapter() {
+        addContentToAudioObjectProperties();
+        audioObjectPropertiesDialog.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 // When closing navigator dialog, perform the same actions as deselecting tool bar button
-                toolBar.getShowFileProperties().setSelected(false);
-                toolBar.getShowFileProperties().getAction().actionPerformed(null);
+                toolBar.getShowAudioObjectProperties().setSelected(false);
+                toolBar.getShowAudioObjectProperties().getAction().actionPerformed(null);
             }
         });
 
@@ -297,7 +297,7 @@ public final class MultipleFrame implements Frame {
 
     @Override
     public AudioObjectPropertiesPanel getPropertiesPanel() {
-        return filePropertiesPanel;
+        return audioObjectPropertiesPanel;
     }
 
     @Override
@@ -329,7 +329,7 @@ public final class MultipleFrame implements Frame {
     public void setDefaultCloseOperation(int op) {
         frame.setDefaultCloseOperation(op);
         navigatorDialog.setDefaultCloseOperation(op);
-        filePropertiesDialog.setDefaultCloseOperation(op);
+        audioObjectPropertiesDialog.setDefaultCloseOperation(op);
         contextDialog.setDefaultCloseOperation(op);
     }
 
@@ -375,7 +375,7 @@ public final class MultipleFrame implements Frame {
             navigatorDialog.setVisible(visible);
         }
         if (!visible || ApplicationState.getInstance().isShowAudioObjectProperties()) {
-            filePropertiesDialog.setVisible(visible);
+            audioObjectPropertiesDialog.setVisible(visible);
         }
         if (!visible || ApplicationState.getInstance().isUseContext()) {
             contextDialog.setVisible(visible);
@@ -385,6 +385,11 @@ public final class MultipleFrame implements Frame {
     @Override
     public void showContextPanel(boolean show, boolean changeSize) {
         contextDialog.setVisible(show);
+    }
+
+    @Override
+    public void showNavigationTree(boolean show) {
+        // TODO Auto-generated method stub
     }
 
     @Override
@@ -406,7 +411,7 @@ public final class MultipleFrame implements Frame {
 
     @Override
     public void showSongProperties(boolean show) {
-        filePropertiesDialog.setVisible(show);
+        audioObjectPropertiesDialog.setVisible(show);
     }
 
     @Override
