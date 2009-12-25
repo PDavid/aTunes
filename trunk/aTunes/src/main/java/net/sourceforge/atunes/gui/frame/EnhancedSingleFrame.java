@@ -151,6 +151,7 @@ public final class EnhancedSingleFrame extends AbstractSingleFrame implements ne
         }
     }
 
+    // TODO
     @Override
     public void showContextPanel(boolean show, boolean changeSize) {
         boolean wasVisible = getContextPanel().isVisible();

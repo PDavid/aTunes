@@ -155,6 +155,7 @@ public final class DefaultSingleFrame extends AbstractSingleFrame implements net
         }
     }
 
+    // TODO
     @Override
     public void showContextPanel(boolean show, boolean changeSize) {
         boolean wasVisible = getContextPanel().isVisible();
