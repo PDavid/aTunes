@@ -239,4 +239,9 @@ public final class DefaultSingleFrame extends AbstractSingleFrame implements net
         }
     }
 
+    @Override
+    public void showNavigationTree(boolean show) {
+        // TODO Auto-generated method stub
+    }
+
 }

@@ -114,7 +114,7 @@ public final class ToolBar extends JToolBar {
     /**
      * @return the showFileProperties
      */
-    public JToggleButton getShowFileProperties() {
+    public JToggleButton getShowAudioObjectProperties() {
         return showFileProperties;
     }
 

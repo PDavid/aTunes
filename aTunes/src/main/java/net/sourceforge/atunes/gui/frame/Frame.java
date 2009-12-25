@@ -260,6 +260,14 @@ public interface Frame {
     public void showContextPanel(boolean show, boolean changeSize);
 
     /**
+     * Show navigation tree.
+     * 
+     * @param show
+     *            the show
+     */
+    public void showNavigationTree(boolean show);
+
+    /**
      * Show navigation table.
      * 
      * @param show
