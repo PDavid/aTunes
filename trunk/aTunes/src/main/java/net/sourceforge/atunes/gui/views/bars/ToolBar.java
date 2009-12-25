@@ -31,6 +31,8 @@ import net.sourceforge.atunes.kernel.actions.RipCDAction;
 import net.sourceforge.atunes.kernel.actions.SelectRepositoryAction;
 import net.sourceforge.atunes.kernel.actions.ShowAudioObjectPropertiesAction;
 import net.sourceforge.atunes.kernel.actions.ShowContextAction;
+import net.sourceforge.atunes.kernel.actions.ShowNavigationTableAction;
+import net.sourceforge.atunes.kernel.actions.ShowNavigationTreeAction;
 import net.sourceforge.atunes.kernel.actions.ShowStatsAction;
 
 public final class ToolBar extends JToolBar {
@@ -40,8 +42,9 @@ public final class ToolBar extends JToolBar {
     private JButton selectRepository;
     private JButton refreshRepository;
     private JButton preferences;
-    private JToggleButton showNavigator;
-    private JToggleButton showFileProperties;
+    private JToggleButton showNavigationTree;
+    private JToggleButton showNavigationTable;
+    private JToggleButton showAudioObjectProperties;
     private JToggleButton showContext;
     private JButton stats;
     private JButton ripCD;
@@ -76,9 +79,17 @@ public final class ToolBar extends JToolBar {
 
         addSeparator();
 
-        showFileProperties = new JToggleButton(Actions.getAction(ShowAudioObjectPropertiesAction.class));
-        showFileProperties.setText(null);
-        add(showFileProperties);
+        showNavigationTree = new JToggleButton(Actions.getAction(ShowNavigationTreeAction.class));
+        showNavigationTree.setText(null);
+        add(showNavigationTree);
+
+        showNavigationTable = new JToggleButton(Actions.getAction(ShowNavigationTableAction.class));
+        showNavigationTable.setText(null);
+        add(showNavigationTable);
+
+        showAudioObjectProperties = new JToggleButton(Actions.getAction(ShowAudioObjectPropertiesAction.class));
+        showAudioObjectProperties.setText(null);
+        add(showAudioObjectProperties);
 
         showContext = new JToggleButton(Actions.getAction(ShowContextAction.class));
         showContext.setText(null);
@@ -104,23 +115,18 @@ public final class ToolBar extends JToolBar {
 
     }
 
-    /**
-     * @return the showNavigator
-     */
-    public JToggleButton getShowNavigator() {
-        return showNavigator;
+    public JToggleButton getShowNavigationTree() {
+        return showNavigationTree;
     }
 
-    /**
-     * @return the showFileProperties
-     */
+    public JToggleButton getShowNavigationTable() {
+        return showNavigationTable;
+    }
+
     public JToggleButton getShowAudioObjectProperties() {
-        return showFileProperties;
+        return showAudioObjectProperties;
     }
 
-    /**
-     * @return the showContext
-     */
     public JToggleButton getShowContext() {
         return showContext;
     }

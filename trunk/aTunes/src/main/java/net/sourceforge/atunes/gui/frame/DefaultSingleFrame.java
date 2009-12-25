@@ -225,6 +225,7 @@ public final class DefaultSingleFrame extends AbstractSingleFrame implements net
         }
     }
 
+    // TODO Auto-generated method stub
     @Override
     public void showNavigationTable(boolean show) {
         getNavigationTablePanel().setVisible(show);

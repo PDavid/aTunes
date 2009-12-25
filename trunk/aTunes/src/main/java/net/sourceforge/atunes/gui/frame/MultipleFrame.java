@@ -215,8 +215,8 @@ public final class MultipleFrame implements Frame {
             @Override
             public void windowClosing(WindowEvent e) {
                 // When closing navigator dialog, perform the same actions as deselecting tool bar button
-                toolBar.getShowNavigator().setSelected(false);
-                toolBar.getShowNavigator().getAction().actionPerformed(null);
+                toolBar.getShowNavigationTree().setSelected(false);
+                toolBar.getShowNavigationTree().getAction().actionPerformed(null);
             }
         });
         getNavigatorSplitPane().addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
@@ -392,6 +392,7 @@ public final class MultipleFrame implements Frame {
         // TODO Auto-generated method stub
     }
 
+    // TODO Auto-generated method stub
     @Override
     public void showNavigationTable(boolean show) {
         navigationTablePanel.setVisible(show);

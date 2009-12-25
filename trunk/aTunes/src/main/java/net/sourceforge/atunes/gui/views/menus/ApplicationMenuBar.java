@@ -69,6 +69,7 @@ import net.sourceforge.atunes.kernel.actions.ShowFoldersInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowGenresInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowLogAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigationTableAction;
+import net.sourceforge.atunes.kernel.actions.ShowNavigationTreeAction;
 import net.sourceforge.atunes.kernel.actions.ShowPlayListControlsAction;
 import net.sourceforge.atunes.kernel.actions.ShowRadioBrowserAction;
 import net.sourceforge.atunes.kernel.actions.ShowStatsAction;
@@ -94,28 +95,13 @@ public final class ApplicationMenuBar extends JMenuBar {
 
     private static final long serialVersionUID = 234977404080329591L;
 
-    /** The file. */
     private JMenu file;
-
-    /** The edit. */
     private JMenu edit;
-
-    /** The view. */
     private JMenu view;
-
-    /** The navigator */
     private JMenu navigator;
-
-    /** The play list. */
     private JMenu playList;
-
-    /** The tools. */
     private JMenu tools;
-
-    /** The device. */
     private JMenu device;
-
-    /** The help. */
     private JMenu help;
 
     /**
@@ -193,6 +179,7 @@ public final class ApplicationMenuBar extends JMenuBar {
             view.add(new JCheckBoxMenuItem(Actions.getAction(ShowToolbarAction.class)));
             view.add(new JCheckBoxMenuItem(Actions.getAction(ShowStatusBarAction.class)));
             view.add(new JCheckBoxMenuItem(Actions.getAction(ShowPlayListControlsAction.class)));
+            view.add(new JCheckBoxMenuItem(Actions.getAction(ShowNavigationTreeAction.class)));
             view.add(new JCheckBoxMenuItem(Actions.getAction(ShowNavigationTableAction.class)));
             view.add(new JCheckBoxMenuItem(Actions.getAction(ShowAudioObjectPropertiesAction.class)));
             view.add(new JCheckBoxMenuItem(Actions.getAction(ShowContextAction.class)));
