@@ -80,7 +80,7 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
 
     public static final int CONTEXT_PANEL_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 295);
 
-    public static final int FILE_PROPERTIES_PANEL_HEIGHT = 100;
+    public static final int AUDIO_OBJECT_PROPERTIES_PANEL_HEIGHT = 100;
 
     public static final int PLAY_LIST_PANEL_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 490);
 
@@ -330,7 +330,7 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
     public AudioObjectPropertiesPanel getPropertiesPanel() {
         if (propertiesPanel == null) {
             propertiesPanel = new AudioObjectPropertiesPanel();
-            propertiesPanel.setPreferredSize(new Dimension(1, FILE_PROPERTIES_PANEL_HEIGHT));
+            propertiesPanel.setPreferredSize(new Dimension(1, AUDIO_OBJECT_PROPERTIES_PANEL_HEIGHT));
             if (!ApplicationState.getInstance().isShowAudioObjectProperties()) {
                 propertiesPanel.setVisible(false);
             }

@@ -140,15 +140,14 @@ public final class EnhancedSingleFrame extends AbstractSingleFrame implements ne
         // Split panes divider location
         if (frameState.getSplitPaneDividerLocation1() != 0) {
             leftVerticalSplitPane.setDividerLocation(frameState.getSplitPaneDividerLocation1());
-            setWindowSize();
         }
         if (frameState.getSplitPaneDividerLocation2() != 0) {
             rightVerticalSplitPane.setDividerLocation(frameState.getSplitPaneDividerLocation2());
-            setWindowSize();
         }
         if (frameState.getSplitPaneDividerLocation3() != 0) {
             playListSplitPane.setDividerLocation((frameState.getSplitPaneDividerLocation3()));
         }
+        setWindowSize();
     }
 
     // TODO
