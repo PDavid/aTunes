@@ -143,16 +143,14 @@ public final class DefaultSingleFrame extends AbstractSingleFrame implements net
         // Split panes divider location
         if (frameState.getSplitPaneDividerLocation1() != 0) {
             leftVerticalSplitPane.setDividerLocation(frameState.getSplitPaneDividerLocation1());
-            setWindowSize();
         }
         if (frameState.getSplitPaneDividerLocation2() != 0) {
             rightVerticalSplitPane.setDividerLocation(frameState.getSplitPaneDividerLocation2());
-            setWindowSize();
         }
         if (frameState.getSplitPaneDividerLocation3() != 0) {
             navigatorSplitPane.setDividerLocation(frameState.getSplitPaneDividerLocation3());
-            setWindowSize();
         }
+        setWindowSize();
     }
 
     // TODO
