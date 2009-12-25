@@ -32,8 +32,6 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +39,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-import javax.swing.JSplitPane;
 import javax.swing.Timer;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
@@ -80,7 +77,7 @@ public final class MultipleFrame implements Frame {
     private static final int EAST = 3;
 
     private static final Dimension frameDimension = new Dimension(500, 400);
-    private static final Dimension navigatorDimension = new Dimension(300, 689);
+    private static final Dimension navigatorDimension = new Dimension(300, 300);
     private static final Dimension filePropertiesDimension = new Dimension(500, 130);
     private static final Dimension contextDimension = new Dimension(300, 689);
 
@@ -88,13 +85,12 @@ public final class MultipleFrame implements Frame {
 
     private FrameState frameState;
 
-    // TODO
-    private CustomDialog navigatorDialog;
+    private CustomDialog navigationTreeDialog;
+    private CustomDialog navigationTableDialog;
     private CustomDialog audioObjectPropertiesDialog;
     private CustomDialog contextDialog;
     private ApplicationMenuBar menuBar;
     private ToolBar toolBar;
-    private JSplitPane navigationSplitPane;
     private NavigationTreePanel navigationTreePanel;
     private NavigationTablePanel navigationTablePanel;
     private PlayListPanel playListPanel;
@@ -135,23 +131,6 @@ public final class MultipleFrame implements Frame {
         GuiUtils.applyComponentOrientation(auxPanel);
 
         frame.add(auxPanel);
-    }
-
-    /**
-     * Adds the content to navigator.
-     */
-    private void addContentToNavigator() {
-        navigationTreePanel = new NavigationTreePanel();
-        navigationTablePanel = new NavigationTablePanel();
-        navigatorDialog.add(getNavigatorSplitPane());
-        GuiUtils.applyComponentOrientation(getNavigatorSplitPane());
-    }
-
-    private JSplitPane getNavigatorSplitPane() {
-        if (navigationSplitPane == null) {
-            navigationSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, getNavigationTreePanel(), getNavigationTablePanel());
-        }
-        return navigationSplitPane;
     }
 
     @Override
@@ -210,9 +189,11 @@ public final class MultipleFrame implements Frame {
 
         addContentToFrame();
 
-        navigatorDialog = getNewDialog(frame, I18nUtils.getString("NAVIGATOR"), navigatorDimension.width, navigatorDimension.height, frame, WEST, navigatorDimension);
-        addContentToNavigator();
-        navigatorDialog.addWindowListener(new WindowAdapter() {
+        navigationTreePanel = new NavigationTreePanel();
+        navigationTablePanel = new NavigationTablePanel();
+
+        navigationTreeDialog = getNewDialog(frame, I18nUtils.getString("NAVIGATION_TREE"), navigatorDimension.width, navigatorDimension.height, frame, WEST, navigatorDimension);
+        navigationTreeDialog.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 // When closing navigator dialog, perform the same actions as deselecting tool bar button
@@ -220,13 +201,20 @@ public final class MultipleFrame implements Frame {
                 toolBar.getShowNavigationTree().getAction().actionPerformed(null);
             }
         });
-        getNavigatorSplitPane().addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
+        navigationTreeDialog.add(navigationTreePanel);
+        GuiUtils.applyComponentOrientation(navigationTreeDialog);
 
+        navigationTableDialog = getNewDialog(frame, I18nUtils.getString("NAVIGATION_TABLE"), navigatorDimension.width, navigatorDimension.height, frame, SOUTH, navigatorDimension);
+        navigationTableDialog.addWindowListener(new WindowAdapter() {
             @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                MultipleFrame.this.frameState.setSplitPaneDividerLocation3((Integer) evt.getNewValue());
+            public void windowClosing(WindowEvent e) {
+                // When closing navigator dialog, perform the same actions as deselecting tool bar button
+                toolBar.getShowNavigationTable().setSelected(false);
+                toolBar.getShowNavigationTable().getAction().actionPerformed(null);
             }
         });
+        navigationTableDialog.add(navigationTablePanel);
+        GuiUtils.applyComponentOrientation(navigationTableDialog);
 
         audioObjectPropertiesDialog = getNewDialog(frame, I18nUtils.getString("PROPERTIES"), filePropertiesDimension.width, filePropertiesDimension.height, frame, SOUTH,
                 filePropertiesDimension);
@@ -311,11 +299,6 @@ public final class MultipleFrame implements Frame {
         return toolBar;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.sourceforge.atunes.gui.Frame#isVisible()
-     */
     @Override
     public boolean isVisible() {
         return frame.isVisible();
@@ -329,7 +312,8 @@ public final class MultipleFrame implements Frame {
     @Override
     public void setDefaultCloseOperation(int op) {
         frame.setDefaultCloseOperation(op);
-        navigatorDialog.setDefaultCloseOperation(op);
+        navigationTreeDialog.setDefaultCloseOperation(op);
+        navigationTableDialog.setDefaultCloseOperation(op);
         audioObjectPropertiesDialog.setDefaultCloseOperation(op);
         contextDialog.setDefaultCloseOperation(op);
     }
@@ -373,7 +357,8 @@ public final class MultipleFrame implements Frame {
     public void setVisible(boolean visible) {
         frame.setVisible(visible);
         if (!visible) {
-            navigatorDialog.setVisible(visible);
+            navigationTreeDialog.setVisible(visible);
+            navigationTableDialog.setVisible(visible);
         }
         if (!visible || ApplicationState.getInstance().isShowAudioObjectProperties()) {
             audioObjectPropertiesDialog.setVisible(visible);
@@ -390,19 +375,12 @@ public final class MultipleFrame implements Frame {
 
     @Override
     public void showNavigationTree(boolean show) {
-        // TODO Auto-generated method stub
+        navigationTreeDialog.setVisible(show);
     }
 
-    // TODO Auto-generated method stub
     @Override
     public void showNavigationTable(boolean show) {
-        navigationTablePanel.setVisible(show);
-        if (show) {
-            getNavigatorSplitPane().setDividerLocation(frameState.getSplitPaneDividerLocation3());
-        } else {
-            // Save location
-            frameState.setSplitPaneDividerLocation3(getNavigatorSplitPane().getDividerLocation());
-        }
+        navigationTableDialog.setVisible(show);
     }
 
     @Override
