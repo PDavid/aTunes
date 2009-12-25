@@ -25,6 +25,7 @@ import java.util.Map;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.LookAndFeelSelector;
+import net.sourceforge.atunes.gui.frame.Frame;
 import net.sourceforge.atunes.gui.frame.FrameState;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
@@ -69,7 +70,7 @@ public class ApplicationState {
     private String defaultSearch;
     private boolean useContext = true;
     private int selectedContextTab;
-    private boolean multipleWindow;
+    private Class<? extends Frame> frameClass;
     private boolean showPlaylistControls = true;
     private ProxyBean proxy;
     private String skin = LookAndFeelSelector.DEFAULT_SKIN;
@@ -435,12 +436,12 @@ public class ApplicationState {
         this.selectedContextTab = selectedContextTab;
     }
 
-    public boolean isMultipleWindow() {
-        return multipleWindow;
+    public Class<? extends Frame> getFrameClass() {
+        return frameClass;
     }
 
-    public void setMultipleWindow(boolean multipleWindow) {
-        this.multipleWindow = multipleWindow;
+    public void setFrameClass(Class<? extends Frame> frameClass) {
+        this.frameClass = frameClass;
     }
 
     public boolean isShowPlaylistControls() {
@@ -859,6 +860,14 @@ public class ApplicationState {
         this.navigatorColumns = navigatorColumns;
     }
 
+    public Map<String, ColumnBean> getSearchResultsColumns() {
+        return searchResultsColumns;
+    }
+
+    public void setSearchResultsColumns(Map<String, ColumnBean> searchResultsColumns) {
+        this.searchResultsColumns = searchResultsColumns;
+    }
+
     public FrameState getFrameState() {
         return frameState;
     }
@@ -1185,21 +1194,6 @@ public class ApplicationState {
 
     public void setShowContextAlbumsInGrid(boolean showContextAlbumsInGrid) {
         this.showContextAlbumsInGrid = showContextAlbumsInGrid;
-    }
-
-    /**
-     * @return the searchResultsColumns
-     */
-    public Map<String, ColumnBean> getSearchResultsColumns() {
-        return searchResultsColumns;
-    }
-
-    /**
-     * @param searchResultsColumns
-     *            the searchResultsColumns to set
-     */
-    public void setSearchResultsColumns(Map<String, ColumnBean> searchResultsColumns) {
-        this.searchResultsColumns = searchResultsColumns;
     }
 
 }
