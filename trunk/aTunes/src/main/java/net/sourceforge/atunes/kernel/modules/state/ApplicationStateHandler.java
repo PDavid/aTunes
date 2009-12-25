@@ -186,7 +186,8 @@ public final class ApplicationStateHandler extends Handler {
         // Show Context
         GuiHandler.getInstance().showContextPanel(ApplicationState.getInstance().isUseContext(), false);
 
-        // Show navigation table
+        // Show navigation table & tree
+        GuiHandler.getInstance().showNavigationTree(ApplicationState.getInstance().isShowNavigationTree());
         GuiHandler.getInstance().showNavigationTable(ApplicationState.getInstance().isShowNavigationTable());
 
         // Navigation Panel View
