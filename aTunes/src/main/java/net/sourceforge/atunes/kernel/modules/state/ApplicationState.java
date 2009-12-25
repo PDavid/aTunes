@@ -57,6 +57,7 @@ public class ApplicationState {
 
     private boolean showAllRadioStations = true;
     private boolean showNavigationTable = true;
+    private boolean showNavigationTree = true;
     private boolean showAudioObjectProperties;
     private boolean showStatusBar = true;
     private boolean showOSD;
@@ -1194,6 +1195,14 @@ public class ApplicationState {
 
     public void setShowContextAlbumsInGrid(boolean showContextAlbumsInGrid) {
         this.showContextAlbumsInGrid = showContextAlbumsInGrid;
+    }
+
+    public boolean isShowNavigationTree() {
+        return showNavigationTree;
+    }
+
+    public void setShowNavigationTree(boolean showNavigationTree) {
+        this.showNavigationTree = showNavigationTree;
     }
 
 }

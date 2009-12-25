@@ -996,6 +996,17 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
     }
 
     /**
+     * Show navigation tree.
+     * 
+     * @param show
+     *            the show
+     */
+    public void showNavigationTree(boolean show) {
+        ApplicationState.getInstance().setShowNavigationTree(show);
+        frame.showNavigationTree(show);
+    }
+
+    /**
      * Show navigation table.
      * 
      * @param show
