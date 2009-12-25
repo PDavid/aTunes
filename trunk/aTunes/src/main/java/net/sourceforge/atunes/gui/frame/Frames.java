@@ -30,8 +30,8 @@ public final class Frames {
     private Frames() {
     }
 
-    public static final Map<String, Class<? extends Frame>> nameToClassMap;
-    public static final Map<Class<? extends Frame>, String> classToNameMap;
+    private static final Map<String, Class<? extends Frame>> nameToClassMap;
+    private static final Map<Class<? extends Frame>, String> classToNameMap;
 
     static {
         nameToClassMap = new HashMap<String, Class<? extends Frame>>();
