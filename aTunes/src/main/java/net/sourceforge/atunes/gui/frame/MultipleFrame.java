@@ -88,6 +88,7 @@ public final class MultipleFrame implements Frame {
 
     private FrameState frameState;
 
+    // TODO
     private CustomDialog navigatorDialog;
     private CustomDialog audioObjectPropertiesDialog;
     private CustomDialog contextDialog;
