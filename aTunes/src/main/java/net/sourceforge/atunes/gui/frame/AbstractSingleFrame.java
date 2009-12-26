@@ -36,6 +36,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
+import javax.swing.JSplitPane;
 import javax.swing.Timer;
 
 import net.sourceforge.atunes.gui.OSXAdapter;
@@ -568,5 +569,13 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
     @Override
     public FrameState getFrameState() {
         return frameState;
+    }
+
+    protected static void applySplitPaneDividerPosition(JSplitPane splitPane, int location, double relPos) {
+        if (location != 0) {
+            splitPane.setDividerLocation(relPos);
+        } else {
+            splitPane.setDividerLocation(0.5);
+        }
     }
 }
