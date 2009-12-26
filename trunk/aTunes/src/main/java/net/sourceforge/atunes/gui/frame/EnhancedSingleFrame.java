@@ -151,7 +151,7 @@ public final class EnhancedSingleFrame extends AbstractSingleFrame implements ne
 
     @Override
     public void showNavigationTree(boolean show) {
-        applyVisibility(show, PLAYLIST_SPLIT_PANE, getNavigationTreePanel(), playListSplitPane);
+        applyVisibility(show, LEFT_VERTICAL_SPLIT_PANE, getNavigationTreePanel(), leftVerticalSplitPane);
     }
 
     @Override
