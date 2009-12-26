@@ -43,6 +43,6 @@ public class ShowContextAction extends Action {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        GuiHandler.getInstance().showContextPanel((Boolean) getValue(SELECTED_KEY), true);
+        GuiHandler.getInstance().showContextPanel((Boolean) getValue(SELECTED_KEY));
     }
 }

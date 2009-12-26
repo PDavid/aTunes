@@ -19,40 +19,33 @@
  */
 package net.sourceforge.atunes.gui.frame;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * State of aTunes main frame.
  */
 public class FrameState {
 
-    private int splitPaneDividerLocation1;
-    private int splitPaneDividerLocation2;
-    private int splitPaneDividerLocation3;
+    private Map<String, Integer> splitPaneDividerPositions;
 
     public FrameState() {
+        this.splitPaneDividerPositions = new HashMap<String, Integer>();
     }
 
-    public int getSplitPaneDividerLocation1() {
-        return splitPaneDividerLocation1;
+    public FrameState(FrameState frameState) {
+        this.splitPaneDividerPositions = new HashMap<String, Integer>(frameState.splitPaneDividerPositions);
     }
 
-    public void setSplitPaneDividerLocation1(int splitPaneDividerLocation1) {
-        this.splitPaneDividerLocation1 = splitPaneDividerLocation1;
+    public void putSplitPaneDividerPos(String s, int pos) {
+        splitPaneDividerPositions.put(s, pos);
     }
 
-    public int getSplitPaneDividerLocation2() {
-        return splitPaneDividerLocation2;
+    public int getSplitPaneDividerPos(String s) {
+        Integer value = splitPaneDividerPositions.get(s);
+        if (value == null) {
+            value = 0;
+        }
+        return value;
     }
-
-    public void setSplitPaneDividerLocation2(int splitPaneDividerLocation2) {
-        this.splitPaneDividerLocation2 = splitPaneDividerLocation2;
-    }
-
-    public int getSplitPaneDividerLocation3() {
-        return splitPaneDividerLocation3;
-    }
-
-    public void setSplitPaneDividerLocation3(int splitPaneDividerLocation3) {
-        this.splitPaneDividerLocation3 = splitPaneDividerLocation3;
-    }
-
 }

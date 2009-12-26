@@ -184,7 +184,7 @@ public final class ApplicationStateHandler extends Handler {
         GuiHandler.getInstance().showSongProperties(ApplicationState.getInstance().isShowAudioObjectProperties(), false);
 
         // Show Context
-        GuiHandler.getInstance().showContextPanel(ApplicationState.getInstance().isUseContext(), false);
+        GuiHandler.getInstance().showContextPanel(ApplicationState.getInstance().isUseContext());
 
         // Show navigation table & tree
         GuiHandler.getInstance().showNavigationTree(ApplicationState.getInstance().isShowNavigationTree());

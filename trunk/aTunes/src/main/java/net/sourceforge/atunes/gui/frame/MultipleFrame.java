@@ -369,7 +369,7 @@ public final class MultipleFrame implements Frame {
     }
 
     @Override
-    public void showContextPanel(boolean show, boolean changeSize) {
+    public void showContextPanel(boolean show) {
         contextDialog.setVisible(show);
     }
 

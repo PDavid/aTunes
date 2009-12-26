@@ -800,12 +800,10 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
      * 
      * @param show
      *            the show
-     * @param changeSize
-     *            the change size
      */
-    public void showContextPanel(boolean show, boolean changeSize) {
+    public void showContextPanel(boolean show) {
         ApplicationState.getInstance().setUseContext(show);
-        frame.showContextPanel(show, changeSize);
+        frame.showContextPanel(show);
         if (show) {
             ContextHandler.getInstance().retrieveInfoAndShowInPanel(PlayListHandler.getInstance().getCurrentAudioObjectFromVisiblePlayList());
         }
@@ -1422,7 +1420,7 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
     @Override
     public void applicationStateChanged(ApplicationState newState) {
         // Show or hide context panel
-        showContextPanel(newState.isUseContext(), true);
+        showContextPanel(newState.isUseContext());
 
         // Set location for navigator tabs (left or top)
         getNavigationTreePanel().getTabbedPane().setTabPlacement(newState.isShowNavigatorTabsAtLeft() ? SwingConstants.LEFT : SwingConstants.TOP);
