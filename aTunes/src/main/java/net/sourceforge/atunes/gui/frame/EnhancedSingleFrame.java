@@ -31,13 +31,14 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
 import net.sourceforge.atunes.gui.views.controls.CustomSplitPane;
-import net.sourceforge.atunes.utils.GuiUtils;
 
 public final class EnhancedSingleFrame extends AbstractSingleFrame implements net.sourceforge.atunes.gui.frame.Frame {
 
     private static final long serialVersionUID = 1L;
 
-    private static final int SPLIT_PANE_DEFAULT_DIVIDER_SIZE = 10;
+    private static final String RIGHT_VERTICAL_SPLIT_PANE = "2";
+    private static final String LEFT_VERTICAL_SPLIT_PANE = "1";
+    private static final String PLAYLIST_SPLIT_PANE = "3";
 
     private CustomSplitPane leftVerticalSplitPane;
     private CustomSplitPane rightVerticalSplitPane;
@@ -87,7 +88,7 @@ public final class EnhancedSingleFrame extends AbstractSingleFrame implements ne
 
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                getFrameState().setSplitPaneDividerLocation3((Integer) evt.getNewValue());
+                getFrameState().putSplitPaneDividerPos(PLAYLIST_SPLIT_PANE, (Integer) evt.getNewValue());
             }
         });
 
@@ -104,7 +105,7 @@ public final class EnhancedSingleFrame extends AbstractSingleFrame implements ne
 
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                getFrameState().setSplitPaneDividerLocation1((Integer) evt.getNewValue());
+                getFrameState().putSplitPaneDividerPos(LEFT_VERTICAL_SPLIT_PANE, (Integer) evt.getNewValue());
             }
         });
 
@@ -112,7 +113,7 @@ public final class EnhancedSingleFrame extends AbstractSingleFrame implements ne
 
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                getFrameState().setSplitPaneDividerLocation2(((Integer) evt.getNewValue()));
+                getFrameState().putSplitPaneDividerPos(RIGHT_VERTICAL_SPLIT_PANE, ((Integer) evt.getNewValue()));
             }
         });
 
@@ -137,65 +138,25 @@ public final class EnhancedSingleFrame extends AbstractSingleFrame implements ne
 
     @Override
     protected void setupSplitPaneDividerPosition(FrameState frameState) {
-        applySplitPaneDividerPosition(leftVerticalSplitPane, frameState.getSplitPaneDividerLocation1(), 0.5);
-        applySplitPaneDividerPosition(rightVerticalSplitPane, frameState.getSplitPaneDividerLocation2(), 0.5);
-        applySplitPaneDividerPosition(playListSplitPane, frameState.getSplitPaneDividerLocation3(), 0.5);
+        applySplitPaneDividerPosition(leftVerticalSplitPane, frameState.getSplitPaneDividerPos(LEFT_VERTICAL_SPLIT_PANE), 0.5);
+        applySplitPaneDividerPosition(rightVerticalSplitPane, frameState.getSplitPaneDividerPos(RIGHT_VERTICAL_SPLIT_PANE), 0.5);
+        applySplitPaneDividerPosition(playListSplitPane, frameState.getSplitPaneDividerPos(PLAYLIST_SPLIT_PANE), 0.5);
         setWindowSize();
     }
 
-    // TODO
     @Override
-    public void showContextPanel(boolean show, boolean changeSize) {
-        boolean wasVisible = getContextPanel().isVisible();
-        getContextPanel().setVisible(show);
-        if (!wasVisible && show) {
-            int panelWidth = getPlayListPanel().getWidth();
-            int rightDividerLocation = getFrameState().getSplitPaneDividerLocation2();
-            if (rightDividerLocation != 0 && rightDividerLocation < (panelWidth - AbstractSingleFrame.CONTEXT_PANEL_WIDTH)) {
-                rightVerticalSplitPane.setDividerLocation(getFrameState().getSplitPaneDividerLocation2());
-            } else {
-                rightVerticalSplitPane.setDividerLocation(rightVerticalSplitPane.getSize().width - AbstractSingleFrame.CONTEXT_PANEL_WIDTH);
-            }
-            panelWidth = panelWidth - AbstractSingleFrame.CONTEXT_PANEL_WIDTH;
-            if (panelWidth < PLAY_LIST_PANEL_WIDTH && changeSize) {
-                int diff = PLAY_LIST_PANEL_WIDTH - panelWidth;
-                // If window is almost as big as device, move left vertical split pane to the left
-                if (getSize().width + diff > GuiUtils.getDeviceWidth()) {
-                    leftVerticalSplitPane.setDividerLocation(leftVerticalSplitPane.getLocation().x - diff);
-                } else {
-                    // Resize window
-                    setSize(getSize().width + diff, getSize().height);
-                }
-            }
-        } else if (!show) {
-            // Save panel width
-            getFrameState().setSplitPaneDividerLocation2(rightVerticalSplitPane.getDividerLocation());
-        }
-        if (show) {
-            rightVerticalSplitPane.setDividerSize(SPLIT_PANE_DEFAULT_DIVIDER_SIZE);
-        } else {
-            rightVerticalSplitPane.setDividerSize(0);
-        }
-    }
-
-    // TODO Auto-generated method stub
-    @Override
-    public void showNavigationTable(boolean show) {
-        //        getNavigationTablePanel().setVisible(show);
-        //        if (show) {
-        //            super.setVisible(show);
-        //            getNavigatorSplitPane().setDividerLocation(getFrameState().getLeftHorizontalSplitPaneDividerLocation());
-        //            getNavigatorSplitPane().setDividerSize(SPLIT_PANE_DEFAULT_DIVIDER_SIZE);
-        //        } else {
-        //            // Save location
-        //            getFrameState().setLeftHorizontalSplitPaneDividerLocation(getNavigatorSplitPane().getDividerLocation());
-        //            getNavigatorSplitPane().setDividerSize(0);
-        //        }
+    public void showContextPanel(boolean show) {
+        applyVisibility(show, RIGHT_VERTICAL_SPLIT_PANE, getContextPanel(), rightVerticalSplitPane);
     }
 
     @Override
     public void showNavigationTree(boolean show) {
-        // TODO Auto-generated method stub
+        applyVisibility(show, PLAYLIST_SPLIT_PANE, getNavigationTreePanel(), playListSplitPane);
+    }
+
+    @Override
+    public void showNavigationTable(boolean show) {
+        applyVisibility(show, PLAYLIST_SPLIT_PANE, getNavigationTablePanel(), playListSplitPane);
     }
 
 }

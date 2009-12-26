@@ -254,10 +254,8 @@ public interface Frame {
      * 
      * @param show
      *            the show
-     * @param changeSize
-     *            the change size
      */
-    public void showContextPanel(boolean show, boolean changeSize);
+    public void showContextPanel(boolean show);
 
     /**
      * Show navigation tree.

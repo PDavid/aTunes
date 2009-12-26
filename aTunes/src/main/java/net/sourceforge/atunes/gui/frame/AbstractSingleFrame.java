@@ -19,6 +19,7 @@
  */
 package net.sourceforge.atunes.gui.frame;
 
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -88,6 +89,7 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
     public static final int MARGIN = 100;
 
     private FrameState frameState;
+    private FrameState oldFrameState;
 
     private NavigationTreePanel navigationTreePanel;
     private NavigationTablePanel navigationTablePanel;
@@ -135,6 +137,7 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
     @Override
     public void create(FrameState frameState) {
         this.frameState = frameState;
+        this.oldFrameState = new FrameState(frameState);
 
         // Set frame basic attributes
         setWindowSize();
@@ -571,11 +574,22 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
         return frameState;
     }
 
+    protected final void applyVisibility(boolean show, String s, Component c, JSplitPane sp) {
+        if (!show) {
+            oldFrameState.putSplitPaneDividerPos(s, getFrameState().getSplitPaneDividerPos(s));
+        }
+        boolean b = c.isVisible();
+        c.setVisible(show);
+        if (show && !b) {
+            applySplitPaneDividerPosition(sp, oldFrameState.getSplitPaneDividerPos(s), 0);
+        }
+    }
+
     protected static void applySplitPaneDividerPosition(JSplitPane splitPane, int location, double relPos) {
         if (location != 0) {
-            splitPane.setDividerLocation(relPos);
+            splitPane.setDividerLocation(location);
         } else {
-            splitPane.setDividerLocation(0.5);
+            splitPane.setDividerLocation(relPos);
         }
     }
 }
