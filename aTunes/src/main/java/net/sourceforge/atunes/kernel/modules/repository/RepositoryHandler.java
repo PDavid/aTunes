@@ -60,6 +60,7 @@ import net.sourceforge.atunes.kernel.modules.repository.model.Album;
 import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.model.Folder;
 import net.sourceforge.atunes.kernel.modules.repository.model.Genre;
+import net.sourceforge.atunes.kernel.modules.repository.tags.TagAttributesReviewed;
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
 import net.sourceforge.atunes.kernel.modules.search.searchableobjects.RepositorySearchableObject;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;

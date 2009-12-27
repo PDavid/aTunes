@@ -26,6 +26,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.process.AudioFileTransferProcess;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.tags.TagAttributesReviewed;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.DefaultTag;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.Tag;
 import net.sourceforge.atunes.kernel.modules.repository.tags.writer.TagEditionOperations;
