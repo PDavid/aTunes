@@ -47,9 +47,9 @@ public class EditTagsProcess extends ChangeTagProcess {
     }
 
     @Override
-    protected void changeTag(AudioFile file) {
-        Tag newTag = AudioFile.getNewTag(file, editTagInfo);
-        Tag oldTag = file.getTag();
+    protected void changeTag(AudioFile audioFile) {
+        Tag newTag = AudioFile.getNewTag(audioFile, editTagInfo);
+        Tag oldTag = audioFile.getTag();
 
         byte[] c = null;
         boolean shouldEditCover = editTagInfo.isTagEdited("COVER");
@@ -60,6 +60,7 @@ public class EditTagsProcess extends ChangeTagProcess {
             }
             newTag.setInternalImage((oldTag != null && oldTag.hasInternalImage() && !shouldEditCover) || (shouldEditCover && cover != null));
         }
-        TagModifier.setInfo(file, newTag, shouldEditCover, c);
+        TagModifier.setInfo(audioFile, newTag, shouldEditCover, c);
+        AudioFile.getImageCache().clear(audioFile);
     }
 }

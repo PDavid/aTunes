@@ -30,6 +30,7 @@ import java.util.Set;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.kernel.modules.repository.ImageCache;
 import net.sourceforge.atunes.kernel.modules.repository.model.Album;
 import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.model.Genre;
@@ -58,6 +59,8 @@ import org.jaudiotagger.audio.AudioFileIO;
 public final class AudioFile implements AudioObject, Serializable, Comparable<AudioFile> {
 
     private static final long serialVersionUID = -1139001443603556703L;
+
+    private static ImageCache imageCache = new ImageCache();
 
     private transient Logger logger = new Logger();
 
@@ -215,9 +218,9 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
      *            the picture
      */
     public void addExternalPicture(File picture) {
-    	if (externalPictures == null) {
-    		externalPictures = new ArrayList<File>();
-    	}
+        if (externalPictures == null) {
+            externalPictures = new ArrayList<File>();
+        }
         if (!externalPictures.contains(picture)) {
             externalPictures.add(0, picture);
         }
@@ -258,6 +261,11 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
             albumArtist = "";
         }
         return albumArtist;
+    }
+
+    @Override
+    public String getAlbumArtistOrArtist() {
+        return getAlbumArtist().isEmpty() ? getArtist() : getAlbumArtist();
     }
 
     @Override
@@ -634,9 +642,20 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
     @Override
     public ImageIcon getImage(ImageSize imageSize) {
         ImageIcon result = null;
-        result = AudioFilePictureUtils.getInsidePicture(this, imageSize.getSize(), imageSize.getSize());
+
+        result = imageCache.retrieveImage(this, imageSize);
+
         if (result == null) {
-            result = AudioFilePictureUtils.getExternalPicture(this, imageSize.getSize(), imageSize.getSize());
+            result = AudioFilePictureUtils.getInsidePicture(this, imageSize.getSize(), imageSize.getSize());
+            if (result == null) {
+                result = AudioFilePictureUtils.getExternalPicture(this, imageSize.getSize(), imageSize.getSize());
+            }
+        } else {
+            return result;
+        }
+
+        if (result != null) {
+            imageCache.storeImage(this, imageSize, result);
         }
 
         return result;
@@ -660,11 +679,8 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
         }
     }
 
-    /**
-     * Returns album artist or artist
-     * @return
-     */
-    public String getAlbumArtistOrArtist() {
-    	return getAlbumArtist().equals("") ? getArtist() : getAlbumArtist();
+    public static ImageCache getImageCache() {
+        return imageCache;
     }
+
 }

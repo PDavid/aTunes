@@ -214,6 +214,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
                 }
             }
         }
+        AudioFile.getImageCache().shutdown();
     }
 
     public List<File> getFolders() {

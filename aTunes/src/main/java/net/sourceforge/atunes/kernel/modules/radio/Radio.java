@@ -140,6 +140,11 @@ public final class Radio implements AudioObject, Serializable, TreeObject, Compa
     }
 
     @Override
+    public String getAlbumArtistOrArtist() {
+        return getAlbumArtist().isEmpty() ? getArtist() : getAlbumArtist();
+    }
+
+    @Override
     public String getArtist() {
         return artist == null ? "" : artist;
     }

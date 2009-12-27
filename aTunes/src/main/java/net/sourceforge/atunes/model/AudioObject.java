@@ -44,6 +44,13 @@ public interface AudioObject {
     public String getAlbumArtist();
 
     /**
+     * Returns album artist or artist
+     * 
+     * @return the artist or (if empty) the album artist
+     */
+    public String getAlbumArtistOrArtist();
+
+    /**
      * Gets the artist.
      * 
      * @return the artist

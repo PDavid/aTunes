@@ -587,6 +587,8 @@ public class RepositoryLoader extends Thread {
         // After every read or refresh mark repository as dirty
         repository.setDirty(true);
 
+        AudioFile.getImageCache().clearCache();
+
         if (listener == null) {
             return;
         }
