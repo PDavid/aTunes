@@ -134,6 +134,11 @@ public final class PodcastFeedEntry implements AudioObject, Serializable, Compar
     }
 
     @Override
+    public String getAlbumArtistOrArtist() {
+        return getAlbumArtist().isEmpty() ? getArtist() : getAlbumArtist();
+    }
+
+    @Override
     public String getArtist() {
         return author;
     }
