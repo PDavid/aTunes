@@ -393,11 +393,11 @@ public class RepositoryLoader extends Thread {
     /**
      * Adds the repository loader listener.
      * 
-     * @param l
-     *            the l
+     * @param listener
+     *            the listener
      */
-    public void addRepositoryLoaderListener(LoaderListener l) {
-        this.listener = l;
+    public void addRepositoryLoaderListener(LoaderListener listener) {
+        this.listener = listener;
     }
 
     /**
@@ -530,7 +530,6 @@ public class RepositoryLoader extends Thread {
                 }
 
                 if (audioFiles != null) {
-                    // Use a List<AudioFile> here to deal with more than one cue track found within one cue sheet file
                     List<AudioFile> audioFilesList = new ArrayList<AudioFile>();
                     for (int i = 0; i < audioFiles.size() && !interrupt; i++) {
                         AudioFile audio = null;
