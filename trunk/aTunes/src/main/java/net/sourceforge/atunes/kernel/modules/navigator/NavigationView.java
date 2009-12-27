@@ -51,6 +51,7 @@ import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.actions.ActionOverSelectedObjects;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
+import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -442,15 +443,6 @@ public abstract class NavigationView implements AudioObjectsSource {
     }
 
     /**
-     * Return current tree filter
-     * 
-     * @return
-     */
-    public String getCurrentTreeFilter() {
-        return ControllerProxy.getInstance().getNavigationController().getNavigationTreePanel().getTreeFilterPanel().getFilter();
-    }
-
-    /**
      * Return selected objects in this navigation view
      * 
      * @return
@@ -462,7 +454,9 @@ public abstract class NavigationView implements AudioObjectsSource {
             List<AudioObject> audioObjectsSelected = new ArrayList<AudioObject>();
             if (paths != null) {
                 for (TreePath path : paths) {
-                    audioObjectsSelected.addAll(getAudioObjectForTreeNode((DefaultMutableTreeNode) path.getLastPathComponent(), getCurrentViewMode(), getCurrentTreeFilter()));
+                    audioObjectsSelected.addAll(getAudioObjectForTreeNode((DefaultMutableTreeNode) path.getLastPathComponent(), getCurrentViewMode(), 
+                    		FilterHandler.getInstance().isFilterSelected(NavigationHandler.getInstance().getTreeFilter()) ? 
+                    				FilterHandler.getInstance().getFilter() : null ));
                 }
             }
             return audioObjectsSelected;

@@ -35,6 +35,7 @@ import net.sourceforge.atunes.kernel.actions.SavePlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
 import net.sourceforge.atunes.kernel.modules.columns.PlayListColumnSet;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
+import net.sourceforge.atunes.kernel.modules.filter.Filter;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
@@ -83,6 +84,28 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
      */
     private boolean playListsChanged;
 
+    /**
+     * Filter for play list
+     */
+    private Filter playListFilter = new Filter() {
+    	
+    	@Override
+    	public String getName() {
+    		return "PLAYLIST";
+    	};
+    	
+    	@Override
+    	public String getDescription() {
+    		return I18nUtils.getString("PLAYLIST");
+    	};
+    	
+    	@Override
+    	public void applyFilter(String filter) {
+    		setFilter(filter);
+    	}
+    	
+    };
+    
     /**
      * Private constructor.
      */
@@ -1097,4 +1120,11 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
     	}
     	return result;
     }
+
+	/**
+	 * @return the playListFilter
+	 */
+	public Filter getPlayListFilter() {
+		return playListFilter;
+	}
 }

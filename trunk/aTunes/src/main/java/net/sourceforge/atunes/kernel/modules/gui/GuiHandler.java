@@ -95,6 +95,8 @@ import net.sourceforge.atunes.kernel.modules.cdripper.RipperHandler;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListTableTransferHandler;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListToDeviceDragAndDropListener;
+import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlaybackState;
 import net.sourceforge.atunes.kernel.modules.player.PlaybackStateListener;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayList;
@@ -855,20 +857,6 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
     }
 
     /**
-     * Switches playlist filter on and off. It will just show (if hidden) or
-     * hide (if visible) the filter each time called.
-     * 
-     */
-    public void togglePlayListFiler() {
-        if (frame.getPlayListPanel().getPlayListFilter().isVisible()) {
-            frame.getPlayListPanel().getPlayListFilter().setVisible(false);
-        } else {
-            frame.getPlayListPanel().getPlayListFilter().setVisible(true);
-            frame.getPlayListPanel().getPlayListFilter().requestFocus();
-        }
-    }
-
-    /**
      * Show icon on status bar.
      * 
      * @param img
@@ -1003,6 +991,8 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
     public void showNavigationTree(boolean show) {
         ApplicationState.getInstance().setShowNavigationTree(show);
         frame.showNavigationTree(show);
+        // Depending if is visible or not filtering is allowed or not
+        FilterHandler.getInstance().setFilterEnabled(NavigationHandler.getInstance().getTreeFilter(), show);
     }
 
     /**
@@ -1013,6 +1003,8 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
      */
     public void showNavigationTable(boolean show) {
         frame.showNavigationTable(show);
+        // Depending if is visible or not filtering is allowed or not
+        FilterHandler.getInstance().setFilterEnabled(NavigationHandler.getInstance().getTableFilter(), show);
     }
 
     /**

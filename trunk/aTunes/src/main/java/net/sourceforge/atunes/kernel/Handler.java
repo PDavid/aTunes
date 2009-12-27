@@ -31,6 +31,7 @@ import net.sourceforge.atunes.kernel.modules.cdripper.RipperHandler;
 import net.sourceforge.atunes.kernel.modules.command.CommandHandler;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
+import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeyHandler;
 import net.sourceforge.atunes.kernel.modules.instances.MultipleInstancesHandler;
@@ -77,6 +78,7 @@ public abstract class Handler implements ApplicationStartListener, ApplicationFi
         handlerClasses.add(NavigationHandler.class);
         handlerClasses.add(NotifyHandler.class);
         handlerClasses.add(PlayerHandler.class);
+        handlerClasses.add(FilterHandler.class);
         handlerClasses.add(PlayListHandler.class);
         handlerClasses.add(PluginsHandler.class);
         handlerClasses.add(RadioHandler.class);
@@ -146,6 +148,7 @@ public abstract class Handler implements ApplicationStartListener, ApplicationFi
                 getLogger().error(LogCategories.HANDLER, e);
             } catch (InvocationTargetException e) {
                 getLogger().error(LogCategories.HANDLER, e);
+                getLogger().error(LogCategories.HANDLER, e.getCause());
             }
         }
 
