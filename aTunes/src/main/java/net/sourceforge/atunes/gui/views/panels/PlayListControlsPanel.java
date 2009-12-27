@@ -49,15 +49,11 @@ import net.sourceforge.atunes.kernel.actions.SetPlayListSelectionAsFavoriteArtis
 import net.sourceforge.atunes.kernel.actions.SetPlayListSelectionAsFavoriteSongAction;
 import net.sourceforge.atunes.kernel.actions.ShowPlayListItemInfoAction;
 import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
-import net.sourceforge.atunes.kernel.actions.TogglePlayListFilterAction;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 public final class PlayListControlsPanel extends JPanel {
 
     private static final long serialVersionUID = -1966827894270243002L;
-
-    /** The toggle filter button. */
-    private JButton toggleFilterButton;
 
     /** The save play list button. */
     private JButton savePlaylistButton;
@@ -126,9 +122,6 @@ public final class PlayListControlsPanel extends JPanel {
      * Adds the content.
      */
     private void addContent() {
-        toggleFilterButton = new CustomButton(Actions.getAction(TogglePlayListFilterAction.class));
-        toggleFilterButton.setText(null);
-
         savePlaylistButton = new CustomButton(Actions.getAction(SavePlayListAction.class));
         savePlaylistButton.setText(null);
 
@@ -184,76 +177,71 @@ public final class PlayListControlsPanel extends JPanel {
 
         c.gridx = 0;
         c.gridy = 0;
-        c.insets = new Insets(1, 0, 0, 10);
-        setButton(toggleFilterButton, c);
-
-        c.gridx = 1;
-        c.gridy = 0;
         c.insets = new Insets(1, 0, 0, 0);
         setButton(savePlaylistButton, c);
 
-        c.gridx = 2;
+        c.gridx = 1;
         c.gridy = 0;
         setButton(loadPlaylistButton, c);
 
-        c.gridx = 3;
+        c.gridx = 2;
         c.gridy = 0;
         c.weightx = 1;
         c.anchor = GridBagConstraints.EAST;
         c.insets = new Insets(1, 0, 0, 10);
         setButton(scrollPlaylistToCurrentSongButton, c);
 
-        c.gridx = 4;
+        c.gridx = 3;
         c.gridy = 0;
         c.weightx = 0;
         c.insets = new Insets(1, 0, 0, 0);
         setButton(artistButton, c);
 
-        c.gridx = 5;
+        c.gridx = 4;
         c.gridy = 0;
         c.weightx = 0;
         c.insets = new Insets(1, 0, 0, 10);
         setButton(albumButton, c);
 
-        c.gridx = 6;
+        c.gridx = 5;
         c.gridy = 0;
         c.insets = new Insets(1, 0, 0, 10);
         setButton(infoButton, c);
 
-        c.gridx = 7;
+        c.gridx = 6;
         c.gridy = 0;
         c.insets = new Insets(1, 0, 0, 0);
         setButton(deleteButton, c);
 
-        c.gridx = 8;
+        c.gridx = 7;
         c.gridy = 0;
         setButton(clearButton, c);
 
-        c.gridx = 9;
+        c.gridx = 8;
         c.gridy = 0;
         setButton(topButton, c);
 
-        c.gridx = 10;
+        c.gridx = 9;
         c.gridy = 0;
         setButton(upButton, c);
 
-        c.gridx = 11;
+        c.gridx = 10;
         c.gridy = 0;
         setButton(downButton, c);
 
-        c.gridx = 12;
+        c.gridx = 11;
         c.gridy = 0;
         c.weighty = 1;
         c.insets = new Insets(1, 0, 0, 10);
         setButton(bottomButton, c);
 
-        c.gridx = 13;
+        c.gridx = 12;
         c.gridy = 0;
         c.weighty = 1;
         c.insets = new Insets(1, 0, 0, 10);
         setButton(shufflePlaylist, c);
 
-        c.gridx = 14;
+        c.gridx = 13;
         c.gridy = 0;
         c.insets = new Insets(1, 0, 0, 0);
         setButton(favoritePopup, c);

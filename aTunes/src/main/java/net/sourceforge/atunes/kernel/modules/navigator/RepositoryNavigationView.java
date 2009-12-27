@@ -47,7 +47,6 @@ import net.sourceforge.atunes.kernel.actions.AddToPlayListAfterCurrentAudioObjec
 import net.sourceforge.atunes.kernel.actions.CopyToDeviceAction;
 import net.sourceforge.atunes.kernel.actions.EditTitlesAction;
 import net.sourceforge.atunes.kernel.actions.ExtractPictureAction;
-import net.sourceforge.atunes.kernel.actions.FilterNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.OpenFolderFromNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.PlayNowAction;
 import net.sourceforge.atunes.kernel.actions.RemoveFromDiskAction;
@@ -135,8 +134,6 @@ public class RepositoryNavigationView extends NavigationView {
             treePopupMenu.add(new JSeparator());
             treePopupMenu.add(Actions.getAction(SearchArtistAction.class));
             treePopupMenu.add(Actions.getAction(SearchArtistAtAction.class));
-            treePopupMenu.add(new JSeparator());
-            treePopupMenu.add(Actions.getAction(FilterNavigatorAction.class));
         }
         return treePopupMenu;
     }
@@ -163,8 +160,6 @@ public class RepositoryNavigationView extends NavigationView {
             tablePopupMenu.add(getMenuItemForAction(CopyToDeviceAction.class));
             tablePopupMenu.add(new JSeparator());
             tablePopupMenu.add(getMenuItemForAction(SetFavoriteSongFromNavigatorAction.class));
-            tablePopupMenu.add(new JSeparator());
-            tablePopupMenu.add(Actions.getAction(FilterNavigatorAction.class));
         }
         return tablePopupMenu;
     }

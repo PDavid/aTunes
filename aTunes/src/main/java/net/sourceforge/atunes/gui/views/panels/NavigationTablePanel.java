@@ -20,8 +20,6 @@
 package net.sourceforge.atunes.gui.views.panels;
 
 import java.awt.BorderLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -36,14 +34,6 @@ public final class NavigationTablePanel extends JPanel {
 
     /** The navigation table. */
     private NavigationTable navigationTable;
-
-    /** The navigation table button panel. */
-    private JPanel navigationTableButtonPanel;
-
-    /**
-     * The table filter
-     */
-    private FilterPanel tableFilterPanel;
 
     /**
      * Instantiates a new navigation panel.
@@ -63,24 +53,8 @@ public final class NavigationTablePanel extends JPanel {
 
         // Disable autoresize, as we will control it
         navigationTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-
         JScrollPane scrollPane2 = new JScrollPane(navigationTable);
-
-        navigationTableButtonPanel = new JPanel(new GridBagLayout());
-
-        tableFilterPanel = new FilterPanel();
-        tableFilterPanel.setVisible(false);
-
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.gridwidth = 2;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 1;
-        navigationTableButtonPanel.add(tableFilterPanel, c);
-
         add(scrollPane2, BorderLayout.CENTER);
-        add(navigationTableButtonPanel, BorderLayout.SOUTH);
     }
 
     /**
@@ -90,12 +64,5 @@ public final class NavigationTablePanel extends JPanel {
      */
     public JTable getNavigationTable() {
         return navigationTable;
-    }
-
-    /**
-     * @return the tableFilterPanel
-     */
-    public FilterPanel getTableFilterPanel() {
-        return tableFilterPanel;
     }
 }

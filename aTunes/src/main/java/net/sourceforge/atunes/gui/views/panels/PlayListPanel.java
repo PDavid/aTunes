@@ -41,9 +41,6 @@ public final class PlayListPanel extends JPanel {
     /** The play list tab panel. */
     private PlayListTabPanel playListTabPanel;
 
-    /** The play list filter. */
-    private FilterPanel playListFilter;
-
     /** The play list table. */
     private PlayListTable playListTable;
 
@@ -66,9 +63,6 @@ public final class PlayListPanel extends JPanel {
      */
     private void addContent() {
         playListTabPanel = new PlayListTabPanel();
-        playListFilter = new FilterPanel();
-        // Hide by default
-        playListFilter.setVisible(false);
         playListTable = new PlayListTable();
         playListTableScroll = new JScrollPane(playListTable);
         //playListTableScroll.setBorder(BorderFactory.createEmptyBorder());
@@ -80,14 +74,10 @@ public final class PlayListPanel extends JPanel {
 
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
-        c.gridy = 1;
-        c.weightx = 1;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.insets = new Insets(1, 1, 0, 1);
-        add(playListFilter, c);
-        c.gridx = 0;
         c.gridy = 0;
+        c.weightx = 1;
         c.weighty = 1;
+        c.insets = new Insets(1, 1, 0, 1);
         c.fill = GridBagConstraints.BOTH;
         add(auxPanel, c);
         c.gridx = 0;
@@ -105,15 +95,6 @@ public final class PlayListPanel extends JPanel {
      */
     public PlayListControlsPanel getPlayListControls() {
         return playListControls;
-    }
-
-    /**
-     * Gets the play list filter.
-     * 
-     * @return the play list filter
-     */
-    public FilterPanel getPlayListFilter() {
-        return playListFilter;
     }
 
     /**

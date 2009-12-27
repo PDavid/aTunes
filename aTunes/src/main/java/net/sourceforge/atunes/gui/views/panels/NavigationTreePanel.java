@@ -20,7 +20,6 @@
 package net.sourceforge.atunes.gui.views.panels;
 
 import java.awt.BorderLayout;
-import java.awt.GridBagConstraints;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -38,11 +37,6 @@ public final class NavigationTreePanel extends JPanel {
 
     /** The tabbed pane. */
     private JTabbedPane tabbedPane;
-
-    /**
-     * The tree filter
-     */
-    private FilterPanel treeFilterPanel;
 
     /**
      * Instantiates a new navigation panel.
@@ -68,19 +62,7 @@ public final class NavigationTreePanel extends JPanel {
         // Set navigator tabs text based on configuration 
         setNavigatorTabsText(ApplicationState.getInstance().isShowNavigatorTabsText());
 
-        treeFilterPanel = new FilterPanel();
-
         treePanel.add(tabbedPane, BorderLayout.CENTER);
-        treePanel.add(treeFilterPanel, BorderLayout.SOUTH);
-
-        treeFilterPanel.setVisible(false);
-
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.gridwidth = 2;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 1;
 
         add(treePanel);
 
@@ -135,12 +117,4 @@ public final class NavigationTreePanel extends JPanel {
             tabbedPane.setSelectedIndex(0);
         }
     }
-
-    /**
-     * @return the treeFilterPanel
-     */
-    public FilterPanel getTreeFilterPanel() {
-        return treeFilterPanel;
-    }
-
 }

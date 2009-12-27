@@ -47,7 +47,6 @@ import net.sourceforge.atunes.kernel.actions.CopyToRepositoryAction;
 import net.sourceforge.atunes.kernel.actions.EditTitlesAction;
 import net.sourceforge.atunes.kernel.actions.ExtractPictureAction;
 import net.sourceforge.atunes.kernel.actions.FillDeviceWithRandomSongsAction;
-import net.sourceforge.atunes.kernel.actions.FilterNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.OpenFolderFromNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.PlayNowAction;
 import net.sourceforge.atunes.kernel.actions.RemoveFromDiskAction;
@@ -128,8 +127,6 @@ public final class DeviceNavigationView extends NavigationView {
             deviceTreeMenu.add(new JSeparator());
             deviceTreeMenu.add(Actions.getAction(SearchArtistAction.class));
             deviceTreeMenu.add(Actions.getAction(SearchArtistAtAction.class));
-            deviceTreeMenu.add(new JSeparator());
-            deviceTreeMenu.add(new JMenuItem(Actions.getAction(FilterNavigatorAction.class)));
 
         }
         return deviceTreeMenu;
@@ -152,8 +149,6 @@ public final class DeviceNavigationView extends NavigationView {
             deviceTableMenu.add(new JMenuItem(Actions.getAction(RemoveFromDiskAction.class)));
             deviceTableMenu.add(new JSeparator());
             deviceTableMenu.add(getMenuItemForAction(CopyToRepositoryAction.class));
-            deviceTableMenu.add(new JSeparator());
-            deviceTableMenu.add(new JMenuItem(Actions.getAction(FilterNavigatorAction.class)));
         }
         return deviceTableMenu;
     }

@@ -23,6 +23,7 @@ import javax.swing.JButton;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 
+import net.sourceforge.atunes.gui.views.panels.ToolBarFilterPanel;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.CustomSearchAction;
 import net.sourceforge.atunes.kernel.actions.EditPreferencesAction;
@@ -49,6 +50,7 @@ public final class ToolBar extends JToolBar {
     private JButton stats;
     private JButton ripCD;
     private JButton search;
+    private ToolBarFilterPanel filterPanel;
 
     /**
      * Instantiates a new tool bar.
@@ -112,6 +114,10 @@ public final class ToolBar extends JToolBar {
         search = new JButton(Actions.getAction(CustomSearchAction.class));
         search.setText(null);
         add(search);
+        
+        filterPanel = new ToolBarFilterPanel();
+        add(filterPanel);
+
 
     }
 
@@ -130,5 +136,11 @@ public final class ToolBar extends JToolBar {
     public JToggleButton getShowContext() {
         return showContext;
     }
-
+    
+	/**
+	 * @return the filterPanel
+	 */
+	public ToolBarFilterPanel getFilterPanel() {
+		return filterPanel;
+	}
 }

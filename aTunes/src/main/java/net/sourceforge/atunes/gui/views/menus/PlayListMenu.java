@@ -53,7 +53,6 @@ import net.sourceforge.atunes.kernel.actions.SetPlayListSelectionAsFavoriteArtis
 import net.sourceforge.atunes.kernel.actions.SetPlayListSelectionAsFavoriteSongAction;
 import net.sourceforge.atunes.kernel.actions.ShowPlayListItemInfoAction;
 import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
-import net.sourceforge.atunes.kernel.actions.TogglePlayListFilterAction;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -149,8 +148,6 @@ public final class PlayListMenu {
         objects.add(new JSeparator());
         objects.add(Actions.getMenuItemForAction(CreatePlayListWithSelectedArtistsAction.class, table));
         objects.add(Actions.getMenuItemForAction(CreatePlayListWithSelectedAlbumsAction.class, table));
-        objects.add(new JSeparator());
-        objects.add(Actions.getAction(TogglePlayListFilterAction.class));
         return objects;
     }
 

@@ -42,7 +42,6 @@ import net.sourceforge.atunes.kernel.actions.EditPreferencesAction;
 import net.sourceforge.atunes.kernel.actions.ExitAction;
 import net.sourceforge.atunes.kernel.actions.ExpandTreesAction;
 import net.sourceforge.atunes.kernel.actions.ExportAction;
-import net.sourceforge.atunes.kernel.actions.FilterNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.FullScreenAction;
 import net.sourceforge.atunes.kernel.actions.GoToWebSiteAction;
 import net.sourceforge.atunes.kernel.actions.GoToWikiAction;
@@ -231,8 +230,6 @@ public final class ApplicationMenuBar extends JMenuBar {
             navigator.add(sortByTitle);
             navigator.add(sortByFile);
             navigator.add(sortByModificationTime);
-            navigator.add(new JSeparator());
-            navigator.add(Actions.getAction(FilterNavigatorAction.class));
         }
         return navigator;
     }

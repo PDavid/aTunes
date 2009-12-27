@@ -45,7 +45,6 @@ import net.sourceforge.atunes.kernel.actions.AddToPlayListAfterCurrentAudioObjec
 import net.sourceforge.atunes.kernel.actions.CopyToDeviceAction;
 import net.sourceforge.atunes.kernel.actions.EditTitlesAction;
 import net.sourceforge.atunes.kernel.actions.ExtractPictureAction;
-import net.sourceforge.atunes.kernel.actions.FilterNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.OpenFolderFromNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.PlayNowAction;
 import net.sourceforge.atunes.kernel.actions.RemoveFromDiskAction;
@@ -127,8 +126,6 @@ public final class FavoritesNavigationView extends NavigationView {
             favoriteTreeMenu.add(new JSeparator());
             favoriteTreeMenu.add(Actions.getAction(SearchArtistAction.class));
             favoriteTreeMenu.add(Actions.getAction(SearchArtistAtAction.class));
-            favoriteTreeMenu.add(new JSeparator());
-            favoriteTreeMenu.add(Actions.getAction(FilterNavigatorAction.class));
         }
         return favoriteTreeMenu;
     }
@@ -155,8 +152,6 @@ public final class FavoritesNavigationView extends NavigationView {
             favoriteTableMenu.add(getMenuItemForAction(CopyToDeviceAction.class));
             favoriteTableMenu.add(new JSeparator());
             favoriteTableMenu.add(Actions.getAction(RemoveFromFavoritesAction.class));
-            favoriteTableMenu.add(new JSeparator());
-            favoriteTableMenu.add(Actions.getAction(FilterNavigatorAction.class));
         }
         return favoriteTableMenu;
     }

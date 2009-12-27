@@ -28,8 +28,11 @@ import java.util.Map;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
+import net.sourceforge.atunes.kernel.modules.filter.Filter;
+import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.commonjukebox.plugins.Plugin;
 import org.commonjukebox.plugins.PluginInfo;
@@ -44,6 +47,49 @@ public final class NavigationHandler extends Handler implements PluginListener {
     private static NavigationHandler instance;
 
     private List<NavigationView> navigationViews;
+
+    /**
+     * Filter for navigation table
+     */
+    private Filter tableFilter = new Filter() {
+
+    	@Override
+    	public String getName() {
+    		return "NAVIGATION_TABLE";
+    	}
+    	
+    	@Override
+    	public String getDescription() {
+    		return I18nUtils.getString("NAVIGATION_TABLE");
+    	}
+    	
+    	@Override
+    	public void applyFilter(String filter) {
+    		ControllerProxy.getInstance().getNavigationController().updateTableContent(getCurrentView().getTree());
+    	}
+    };
+    
+    /**
+     * Filter for tree
+     */
+    private Filter treeFilter = new Filter() {
+    	
+    	@Override
+    	public String getName() {
+    		return "NAVIGATION_TREE";
+    	};
+    	
+    	@Override
+    	public String getDescription() {
+    		return I18nUtils.getString("NAVIGATOR");
+    	};
+    	
+    	@Override
+    	public void applyFilter(String filter) {
+    		refreshCurrentView();
+    	};
+    };
+
 
     /**
      * Getter of singleton instance
@@ -116,7 +162,7 @@ public final class NavigationHandler extends Handler implements PluginListener {
      */
     public void refreshCurrentView() {
         getCurrentView().refreshView(ApplicationState.getInstance().getViewMode(),
-                ControllerProxy.getInstance().getNavigationController().getNavigationTreePanel().getTreeFilterPanel().getFilter());
+        		FilterHandler.getInstance().isFilterSelected(getTreeFilter()) ? FilterHandler.getInstance().getFilter() : null);
     }
 
     /**
@@ -128,7 +174,7 @@ public final class NavigationHandler extends Handler implements PluginListener {
     public void refreshView(Class<? extends NavigationView> navigationViewClass) {
         if (getView(navigationViewClass).equals(getCurrentView())) {
             getView(navigationViewClass).refreshView(ApplicationState.getInstance().getViewMode(),
-                    ControllerProxy.getInstance().getNavigationController().getNavigationTreePanel().getTreeFilterPanel().getFilter());
+                    FilterHandler.getInstance().isFilterSelected(getTreeFilter()) ? FilterHandler.getInstance().getFilter() : null);
         }
     }
 
@@ -175,4 +221,18 @@ public final class NavigationHandler extends Handler implements PluginListener {
         refreshView(RadioNavigationView.class);
         refreshCurrentView();
     }
+
+	/**
+	 * @return the tableFilter
+	 */
+	public Filter getTableFilter() {
+		return tableFilter;
+	}
+
+	/**
+	 * @return the treeFilter
+	 */
+	public Filter getTreeFilter() {
+		return treeFilter;
+	}
 }

@@ -193,7 +193,6 @@ public class Logger {
             for (StackTraceElement element : trace) {
                 error(cat, className, methodName, timer, element);
             }
-
         }
     }
 
