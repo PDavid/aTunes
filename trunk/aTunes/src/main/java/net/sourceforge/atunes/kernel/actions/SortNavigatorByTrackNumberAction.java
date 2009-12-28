@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.repository.SortType;
@@ -35,7 +35,7 @@ public class SortNavigatorByTrackNumberAction extends Action {
     private static final long serialVersionUID = -5596356500000621446L;
 
     SortNavigatorByTrackNumberAction() {
-        super(I18nUtils.getString("SORT_BY_TRACK_NUMBER"), ImageLoader.getImage(ImageLoader.NUMBER));
+        super(I18nUtils.getString("SORT_BY_TRACK_NUMBER"), Images.getImage(Images.NUMBER));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SORT_BY_TRACK_NUMBER"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().getSortType() == SortType.BY_TRACK_NUMBER);
     }

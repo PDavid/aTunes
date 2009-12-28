@@ -21,7 +21,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
@@ -33,7 +33,7 @@ public class RemoveOldPodcastEntryAction extends ActionOverSelectedObjects<Podca
     private static final long serialVersionUID = -1499729879534990802L;
 
     RemoveOldPodcastEntryAction() {
-        super(I18nUtils.getString("REMOVE_OLD_PODCAST_ENTRY"), ImageLoader.getImage(ImageLoader.REMOVE), PodcastFeedEntry.class);
+        super(I18nUtils.getString("REMOVE_OLD_PODCAST_ENTRY"), Images.getImage(Images.REMOVE), PodcastFeedEntry.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("REMOVE_OLD_PODCAST_ENTRY"));
     }
 

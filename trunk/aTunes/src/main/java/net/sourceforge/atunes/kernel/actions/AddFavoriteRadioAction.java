@@ -23,7 +23,7 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.model.AudioObject;
@@ -34,7 +34,7 @@ public class AddFavoriteRadioAction extends ActionOverSelectedObjects<Radio> {
     private static final long serialVersionUID = 82199784140877040L;
 
     AddFavoriteRadioAction() {
-        super(I18nUtils.getString("ADD_FAVORITE_RADIO"), ImageLoader.getImage(ImageLoader.RADIO_FAVORITE), Radio.class);
+        super(I18nUtils.getString("ADD_FAVORITE_RADIO"), Images.getImage(Images.RADIO_FAVORITE), Radio.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("RADIO_VIEW_TOOLTIP"));
     }
 

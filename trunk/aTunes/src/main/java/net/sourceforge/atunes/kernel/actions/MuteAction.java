@@ -21,7 +21,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -59,17 +59,17 @@ public class MuteAction extends Action {
      */
     public void updateIcon() {
         if (ApplicationState.getInstance().isMuteEnabled()) {
-            putValue(SMALL_ICON, ImageLoader.getImage(ImageLoader.VOLUME_MUTE));
+            putValue(SMALL_ICON, Images.getImage(Images.VOLUME_MUTE));
         } else {
             int volume = ApplicationState.getInstance().getVolume();
             if (volume > 80) {
-                putValue(SMALL_ICON, ImageLoader.getImage(ImageLoader.VOlUME_MAX));
+                putValue(SMALL_ICON, Images.getImage(Images.VOlUME_MAX));
             } else if (volume > 40) {
-                putValue(SMALL_ICON, ImageLoader.getImage(ImageLoader.VOLUME_MED));
+                putValue(SMALL_ICON, Images.getImage(Images.VOLUME_MED));
             } else if (volume > 5) {
-                putValue(SMALL_ICON, ImageLoader.getImage(ImageLoader.VOLUME_MIN));
+                putValue(SMALL_ICON, Images.getImage(Images.VOLUME_MIN));
             } else {
-                putValue(SMALL_ICON, ImageLoader.getImage(ImageLoader.VOLUME_ZERO));
+                putValue(SMALL_ICON, Images.getImage(Images.VOLUME_ZERO));
             }
         }
     }

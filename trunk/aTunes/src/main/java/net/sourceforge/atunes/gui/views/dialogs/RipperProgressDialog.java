@@ -36,7 +36,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.WindowConstants;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomFrame;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -106,7 +106,7 @@ public final class RipperProgressDialog extends CustomFrame {
     private void setContent() {
         JPanel panel = new JPanel(new GridBagLayout());
 
-        cover = new JLabel(ImageLoader.getImage(ImageLoader.CD_AUDIO));
+        cover = new JLabel(Images.getImage(Images.CD_AUDIO));
 
         JLabel totalProgressLabel = new JLabel(I18nUtils.getString("TOTAL_PROGRESS"));
         totalProgressBar = new JProgressBar();

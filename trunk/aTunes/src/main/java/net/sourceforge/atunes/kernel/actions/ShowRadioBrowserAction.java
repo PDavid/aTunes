@@ -21,7 +21,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -36,7 +36,7 @@ public class ShowRadioBrowserAction extends Action {
     private static final long serialVersionUID = 531135150461152301L;
 
     ShowRadioBrowserAction() {
-        super(I18nUtils.getString("RADIO_BROWSER"), ImageLoader.getImage(ImageLoader.RADIO_LITTLE));
+        super(I18nUtils.getString("RADIO_BROWSER"), Images.getImage(Images.RADIO_LITTLE));
     }
 
     @Override

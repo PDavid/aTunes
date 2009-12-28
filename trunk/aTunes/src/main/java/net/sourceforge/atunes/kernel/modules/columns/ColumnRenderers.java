@@ -27,7 +27,7 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.Fonts;
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.model.CommonColumnModel;
 import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
@@ -69,7 +69,7 @@ public final class ColumnRenderers {
             		if (PlayListHandler.getInstance().isCurrentVisibleRowPlaying(row)) {
             			((JLabel) c).setIcon(PlayState.getPlayStateIcon(((PlayListTable)jtable).getPlayState()));
             		} else {
-            			((JLabel) c).setIcon(ImageLoader.getImage(ImageLoader.EMPTY));
+            			((JLabel) c).setIcon(Images.getImage(Images.EMPTY));
             		}
 
             		// Get alignment from model
@@ -150,16 +150,16 @@ public final class ColumnRenderers {
         	@Override
         	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         		Component comp = super.getTableCellRendererComponent(table, "", isSelected, hasFocus, row, column);
-        		ImageIcon icon = ImageLoader.getImage(ImageLoader.EMPTY);
+        		ImageIcon icon = Images.getImage(Images.EMPTY);
         		Property val = (Property) value;
         		if (val == Property.FAVORITE) {
-        			icon = ImageLoader.getImage(ImageLoader.FAVORITE);
+        			icon = Images.getImage(Images.FAVORITE);
         		} else if (val == Property.NOT_LISTENED_ENTRY) {
-        			icon = ImageLoader.getImage(ImageLoader.NEW_PODCAST_ENTRY);
+        			icon = Images.getImage(Images.NEW_PODCAST_ENTRY);
         		} else if (val == Property.DOWNLOADED_ENTRY) {
-        			icon = ImageLoader.getImage(ImageLoader.DOWNLOAD_PODCAST);
+        			icon = Images.getImage(Images.DOWNLOAD_PODCAST);
         		} else if (val == Property.OLD_ENTRY) {
-        			icon = ImageLoader.getImage(ImageLoader.REMOVE);
+        			icon = Images.getImage(Images.REMOVE);
         		}
         		((JLabel) comp).setIcon(icon);
         		return comp;

@@ -46,7 +46,7 @@ import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.frame.Frame;
 import net.sourceforge.atunes.gui.frame.Frames;
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.ByImageChoosingPanel;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
@@ -344,7 +344,7 @@ public final class GeneralPanel extends PreferencesPanel {
 
     @Override
     public ImageIcon getIcon() {
-        return ImageLoader.getImage(ImageLoader.PREFS);
+        return Images.getImage(Images.PREFS);
     }
 
 }

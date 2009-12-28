@@ -37,7 +37,7 @@ import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeNode;
 
 import net.sourceforge.atunes.gui.ColorDefinitions;
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.gui.views.menus.EditTagMenu;
 import net.sourceforge.atunes.kernel.actions.Actions;
@@ -80,7 +80,7 @@ public final class DeviceNavigationView extends NavigationView {
 
     @Override
     public ImageIcon getIcon() {
-        return ImageLoader.getImage(ImageLoader.DEVICE);
+        return Images.getImage(Images.DEVICE);
     }
 
     @Override
@@ -513,15 +513,15 @@ public final class DeviceNavigationView extends NavigationView {
 
                 JLabel label = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
                 if (content instanceof Artist) {
-                    label.setIcon(ImageLoader.getImage(ImageLoader.ARTIST));
+                    label.setIcon(Images.getImage(Images.ARTIST));
                 } else if (content instanceof Album) {
-                    label.setIcon(ImageLoader.getImage(ImageLoader.ALBUM));
+                    label.setIcon(Images.getImage(Images.ALBUM));
                 } else if (content instanceof Genre) {
-                    label.setIcon(ImageLoader.getImage(ImageLoader.GENRE));
+                    label.setIcon(Images.getImage(Images.GENRE));
                 } else if (content instanceof Folder) {
-                    label.setIcon(ImageLoader.getImage(ImageLoader.FOLDER));
+                    label.setIcon(Images.getImage(Images.FOLDER));
                 } else {
-                    label.setIcon(ImageLoader.getImage(ImageLoader.DEVICE));
+                    label.setIcon(Images.getImage(Images.DEVICE));
                 }
 
                 if (value.toString() != null) {

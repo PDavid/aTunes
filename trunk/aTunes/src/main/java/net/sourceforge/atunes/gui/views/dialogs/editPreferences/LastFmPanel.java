@@ -33,7 +33,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddBannedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction;
@@ -246,7 +246,7 @@ public final class LastFmPanel extends PreferencesPanel {
 
     @Override
     public ImageIcon getIcon() {
-        return ImageLoader.getImage(ImageLoader.LASTFM);
+        return Images.getImage(Images.LASTFM);
     }
 
 }

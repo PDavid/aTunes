@@ -35,7 +35,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.WindowConstants;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
@@ -136,7 +136,7 @@ public final class RepositoryProgressDialog extends CustomModalDialog {
      */
     private JPanel getContent() {
         JPanel panel = new JPanel(new GridBagLayout());
-        pictureLabel = new JLabel(ImageLoader.getImage(ImageLoader.APP_ICON_BIG));
+        pictureLabel = new JLabel(Images.getImage(Images.APP_ICON_BIG));
         label = new JLabel(StringUtils.getString(I18nUtils.getString("LOADING"), "..."));
         progressLabel = new JLabel();
         separatorLabel = new JLabel(" / ");

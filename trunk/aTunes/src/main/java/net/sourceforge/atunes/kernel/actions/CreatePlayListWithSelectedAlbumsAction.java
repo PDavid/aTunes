@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.SortType;
@@ -47,7 +47,7 @@ public class CreatePlayListWithSelectedAlbumsAction extends ActionOverSelectedOb
     private static final long serialVersionUID = -2917908051161952409L;
 
     CreatePlayListWithSelectedAlbumsAction() {
-        super(I18nUtils.getString("SET_ALBUM_AS_PLAYLIST"), ImageLoader.getImage(ImageLoader.ALBUM), AudioObject.class);
+        super(I18nUtils.getString("SET_ALBUM_AS_PLAYLIST"), Images.getImage(Images.ALBUM), AudioObject.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("ALBUM_BUTTON_TOOLTIP"));
         setEnabled(false);
     }

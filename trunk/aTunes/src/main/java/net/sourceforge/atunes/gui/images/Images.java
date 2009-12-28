@@ -32,7 +32,7 @@ import net.sourceforge.atunes.misc.SystemProperties;
  * 
  * @author fleax
  */
-public final class ImageLoader {
+public final class Images {
 
     // Every time a image is added, an attribute must be added
     public static final String ADD = "add.png";
@@ -192,7 +192,7 @@ public final class ImageLoader {
      */
     public static ImageIcon getImage(String imgName) {
         if (!images.containsKey(imgName)) {
-            URL imgURL = ImageLoader.class.getResource("/images/" + imgName);
+            URL imgURL = Images.class.getResource("/images/" + imgName);
             if (imgURL != null) {
                 images.put(imgName, new ImageIcon(imgURL));
             }

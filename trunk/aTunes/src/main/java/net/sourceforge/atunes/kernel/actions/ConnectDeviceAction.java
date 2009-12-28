@@ -21,7 +21,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -36,7 +36,7 @@ public class ConnectDeviceAction extends Action {
     private static final long serialVersionUID = -8571631451521817410L;
 
     public ConnectDeviceAction() {
-        super(I18nUtils.getString("CONNECT"), ImageLoader.getImage(ImageLoader.DEVICE_CONNECT));
+        super(I18nUtils.getString("CONNECT"), Images.getImage(Images.DEVICE_CONNECT));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("CONNECT"));
     }
 

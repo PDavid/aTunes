@@ -49,7 +49,7 @@ import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -97,7 +97,7 @@ public final class PatternInputDialog extends CustomModalDialog {
     public PatternInputDialog(Window owner, final boolean massiveRecognition) {
         super(owner, 550, 350, true);
         setResizable(false);
-        setIconImage(ImageLoader.getImage(ImageLoader.APP_ICON).getImage());
+        setIconImage(Images.getImage(Images.APP_ICON).getImage());
         setTitle(I18nUtils.getString("PATTERN_INPUT"));
 
         // Label with instructions

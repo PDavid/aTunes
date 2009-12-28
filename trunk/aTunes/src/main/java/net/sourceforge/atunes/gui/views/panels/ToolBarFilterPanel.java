@@ -7,7 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -39,7 +39,7 @@ public class ToolBarFilterPanel extends JPanel {
         c.gridy = 0;
         c.weightx = 0;
         add(filterTextField, c);
-        clearFilterButton = new JButton(ImageLoader.getImage(ImageLoader.UNDO));
+        clearFilterButton = new JButton(Images.getImage(Images.UNDO));
         clearFilterButton.setToolTipText(I18nUtils.getString("CLEAR_FILTER_BUTTON_TOOLTIP"));
         c.gridx = 2;
         add(clearFilterButton, c);

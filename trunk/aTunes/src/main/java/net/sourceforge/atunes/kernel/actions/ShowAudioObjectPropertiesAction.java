@@ -21,7 +21,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -37,7 +37,7 @@ public class ShowAudioObjectPropertiesAction extends Action {
     private static final long serialVersionUID = 7212419139147093739L;
 
     ShowAudioObjectPropertiesAction() {
-        super(I18nUtils.getString("SHOW_SONG_PROPERTIES"), ImageLoader.getImage(ImageLoader.INFO));
+        super(I18nUtils.getString("SHOW_SONG_PROPERTIES"), Images.getImage(Images.INFO));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_SONG_PROPERTIES"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().isShowAudioObjectProperties());
     }

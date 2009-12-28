@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
@@ -34,7 +34,7 @@ public class PlayNowAction extends Action {
     private static final long serialVersionUID = -2099290583376403144L;
 
     PlayNowAction() {
-        super(I18nUtils.getString("PLAY_NOW"), ImageLoader.getImage(ImageLoader.PLAY_MENU));
+        super(I18nUtils.getString("PLAY_NOW"), Images.getImage(Images.PLAY_MENU));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("PLAY_NOW"));
     }
 

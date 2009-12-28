@@ -25,7 +25,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.substance.RoundRectButtonShaper;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 
@@ -47,7 +47,7 @@ public final class StopButton extends JButton {
      * @param size
      */
     public StopButton(Dimension size) {
-        super(ImageLoader.getImage(ImageLoader.STOP));
+        super(Images.getImage(Images.STOP));
         // Force size
         setPreferredSize(size);
         setMinimumSize(size);

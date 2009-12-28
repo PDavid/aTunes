@@ -48,7 +48,7 @@ import javax.swing.table.AbstractTableModel;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.Fonts;
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
@@ -196,7 +196,7 @@ public final class AboutDialog extends CustomModalDialog {
         title.setFocusPainted(false);
         JLabel description = new JLabel(Constants.APP_DESCRIPTION);
 
-        JLabel icon = new JLabel(ImageLoader.getImage(ImageLoader.APP_ICON_BIG));
+        JLabel icon = new JLabel(Images.getImage(Images.APP_ICON_BIG));
 
         JTextArea license = new JTextArea(licenseText);
         license.setEditable(false);

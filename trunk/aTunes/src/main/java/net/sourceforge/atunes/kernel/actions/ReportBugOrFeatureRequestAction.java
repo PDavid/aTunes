@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -37,7 +37,7 @@ public class ReportBugOrFeatureRequestAction extends Action {
     private static final long serialVersionUID = -2614037760672140565L;
 
     ReportBugOrFeatureRequestAction() {
-        super(I18nUtils.getString("REPORT_BUG_OR_REQUEST_FEATURE"), ImageLoader.getImage(ImageLoader.REPORT_BUG_OR_REQUEST_FEATURE));
+        super(I18nUtils.getString("REPORT_BUG_OR_REQUEST_FEATURE"), Images.getImage(Images.REPORT_BUG_OR_REQUEST_FEATURE));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("REPORT_BUG_OR_REQUEST_FEATURE"));
     }
 

@@ -24,7 +24,7 @@ import java.awt.GridBagConstraints;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -110,7 +110,7 @@ public final class RadioPanel extends PreferencesPanel {
 
     @Override
     public ImageIcon getIcon() {
-        return ImageLoader.getImage(ImageLoader.RADIO_LITTLE);
+        return Images.getImage(Images.RADIO_LITTLE);
     }
 
 }

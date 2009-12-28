@@ -41,7 +41,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.Timer;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.bars.ToolBar;
 import net.sourceforge.atunes.gui.views.controls.CustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomFrame;
@@ -120,7 +120,7 @@ public final class MultipleFrame implements Frame {
      * Adds the content to frame.
      */
     private void addContentToFrame() {
-        frame.setIconImage(ImageLoader.getImage(ImageLoader.APP_ICON).getImage());
+        frame.setIconImage(Images.getImage(Images.APP_ICON).getImage());
         playerControlsPanel = new PlayerControlsPanel();
 
         JPanel auxPanel = new JPanel(new BorderLayout());

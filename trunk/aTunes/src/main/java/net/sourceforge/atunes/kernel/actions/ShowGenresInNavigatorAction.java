@@ -21,7 +21,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -32,7 +32,7 @@ public class ShowGenresInNavigatorAction extends Action {
     private static final long serialVersionUID = 8717980405436543347L;
 
     ShowGenresInNavigatorAction() {
-        super(I18nUtils.getString("SHOW_GENRE"), ImageLoader.getImage(ImageLoader.GENRE));
+        super(I18nUtils.getString("SHOW_GENRE"), Images.getImage(Images.GENRE));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_GENRE"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().getViewMode() == ViewMode.GENRE);
     }

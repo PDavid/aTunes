@@ -21,7 +21,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -36,7 +36,7 @@ public class ShowCoverNavigatorAction extends Action {
     private static final long serialVersionUID = 4927892497869144235L;
 
     ShowCoverNavigatorAction() {
-        super(I18nUtils.getString("COVER_NAVIGATOR"), ImageLoader.getImage(ImageLoader.CD_COVER));
+        super(I18nUtils.getString("COVER_NAVIGATOR"), Images.getImage(Images.CD_COVER));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("COVER_NAVIGATOR"));
     }
 

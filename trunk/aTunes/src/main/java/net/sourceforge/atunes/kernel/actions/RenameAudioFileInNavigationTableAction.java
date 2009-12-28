@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
@@ -37,7 +37,7 @@ public class RenameAudioFileInNavigationTableAction extends Action {
     private static final long serialVersionUID = 5607758675193509752L;
 
     public RenameAudioFileInNavigationTableAction() {
-        super(I18nUtils.getString("RENAME_AUDIO_FILE_NAME"), ImageLoader.getImage(ImageLoader.FILE_NAME));
+        super(I18nUtils.getString("RENAME_AUDIO_FILE_NAME"), Images.getImage(Images.FILE_NAME));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("RENAME_AUDIO_FILE_NAME"));
     }
 
@@ -46,7 +46,7 @@ public class RenameAudioFileInNavigationTableAction extends Action {
         List<AudioFile> audioFiles = ControllerProxy.getInstance().getNavigationController().getFilesSelectedInNavigator();
         if (audioFiles.size() == 1) {
             String name = GuiHandler.getInstance().showInputDialog(I18nUtils.getString("RENAME_AUDIO_FILE_NAME"),
-                    FilenameUtils.getBaseName(audioFiles.get(0).getFile().getAbsolutePath()), ImageLoader.getImage(ImageLoader.FILE_NAME).getImage());
+                    FilenameUtils.getBaseName(audioFiles.get(0).getFile().getAbsolutePath()), Images.getImage(Images.FILE_NAME).getImage());
             if (name != null && !name.isEmpty()) {
                 RepositoryHandler.getInstance().rename(audioFiles.get(0), name);
             }

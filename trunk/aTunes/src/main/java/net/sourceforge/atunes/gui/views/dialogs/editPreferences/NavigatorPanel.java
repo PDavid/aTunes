@@ -41,7 +41,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.repository.tags.HighlightFoldersByIncompleteTags;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.TagAttribute;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -462,7 +462,7 @@ public final class NavigatorPanel extends PreferencesPanel {
 
     @Override
     public ImageIcon getIcon() {
-        return ImageLoader.getImage(ImageLoader.NAVIGATE);
+        return Images.getImage(Images.NAVIGATE);
     }
 
 }

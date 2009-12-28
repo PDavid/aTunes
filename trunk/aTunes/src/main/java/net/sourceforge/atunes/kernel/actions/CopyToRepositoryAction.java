@@ -24,7 +24,7 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.device.TransferToRepositoryProcess;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
@@ -38,7 +38,7 @@ public class CopyToRepositoryAction extends ActionOverSelectedObjects<AudioFile>
     private static final long serialVersionUID = 2416674807979541242L;
 
     CopyToRepositoryAction() {
-        super(I18nUtils.getString("COPY_TO_REPOSITORY"), ImageLoader.getImage(ImageLoader.EXPORT), AudioFile.class);
+        super(I18nUtils.getString("COPY_TO_REPOSITORY"), Images.getImage(Images.EXPORT), AudioFile.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("COPY_TO_REPOSITORY"));
     }
 

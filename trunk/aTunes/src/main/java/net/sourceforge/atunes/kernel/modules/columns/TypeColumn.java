@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.modules.columns;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
@@ -56,11 +56,11 @@ public class TypeColumn extends Column {
     @Override
     public Object getValueFor(AudioObject audioObject) {
         if (audioObject instanceof AudioFile) {
-            return ImageLoader.getImage(ImageLoader.AUDIO_FILE_LITTLE);
+            return Images.getImage(Images.AUDIO_FILE_LITTLE);
         } else if (audioObject instanceof Radio) {
-            return ImageLoader.getImage(ImageLoader.RADIO_LITTLE);
+            return Images.getImage(Images.RADIO_LITTLE);
         } else if (audioObject instanceof PodcastFeedEntry) {
-            return ImageLoader.getImage(ImageLoader.RSS_LITTLE);
+            return Images.getImage(Images.RSS_LITTLE);
         } else {
             return null;
         }

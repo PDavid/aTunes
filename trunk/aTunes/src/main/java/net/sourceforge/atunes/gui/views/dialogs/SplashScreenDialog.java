@@ -28,7 +28,7 @@ import javax.swing.SwingConstants;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.gui.Fonts;
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.CustomWindow;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -72,7 +72,7 @@ public final class SplashScreenDialog extends CustomWindow {
         JPanel panel = new JPanel(null);
         panel.setOpaque(false);
 
-        JLabel image = new JLabel(ImageLoader.getImage(ImageLoader.APP_TITLE));
+        JLabel image = new JLabel(Images.getImage(Images.APP_TITLE));
         image.setSize(new Dimension(475, 200));
         image.setLocation(0, 0);
 

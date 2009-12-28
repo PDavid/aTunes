@@ -49,7 +49,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ClearCachesAction;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -249,7 +249,7 @@ public final class ContextPanel extends PreferencesPanel {
             }
         });
         JButton clearCache = new JButton(Actions.getAction(ClearCachesAction.class));
-        info = new JLabel(ImageLoader.getImage(ImageLoader.POWERED_BY_LAST_FM), GuiUtils.getComponentOrientationAsSwingConstant());
+        info = new JLabel(Images.getImage(Images.POWERED_BY_LAST_FM), GuiUtils.getComponentOrientationAsSwingConstant());
         info.addMouseListener((new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -276,7 +276,7 @@ public final class ContextPanel extends PreferencesPanel {
                 return c;
             }
         });
-        JButton upButton = new JButton(ImageLoader.getImage(ImageLoader.GO_UP));
+        JButton upButton = new JButton(Images.getImage(Images.GO_UP));
         upButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -286,7 +286,7 @@ public final class ContextPanel extends PreferencesPanel {
                 }
             }
         });
-        JButton downButton = new JButton(ImageLoader.getImage(ImageLoader.GO_DOWN));
+        JButton downButton = new JButton(Images.getImage(Images.GO_DOWN));
         downButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -452,6 +452,6 @@ public final class ContextPanel extends PreferencesPanel {
 
     @Override
     public ImageIcon getIcon() {
-        return ImageLoader.getImage(ImageLoader.CONTEXT);
+        return Images.getImage(Images.CONTEXT);
     }
 }

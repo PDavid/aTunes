@@ -34,7 +34,7 @@ import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomFrame;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
@@ -49,7 +49,7 @@ public final class UpdateDialog extends CustomFrame {
     public UpdateDialog(ApplicationVersion version, Component owner) {
         super(I18nUtils.getString("NEW_VERSION_AVAILABLE"), 400, 150, owner);
         setResizable(false);
-        setIconImage(ImageLoader.getImage(ImageLoader.APP_ICON).getImage());
+        setIconImage(Images.getImage(Images.APP_ICON).getImage());
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         JPanel panel = new JPanel(new GridBagLayout());
@@ -57,7 +57,7 @@ public final class UpdateDialog extends CustomFrame {
         text = text.replace("(%VERSION%)", Constants.VERSION.toShortString());
         text = text.replace("(%NEW_VERSION%)", version.toShortString());
 
-        JLabel img = new JLabel(ImageLoader.getImage(ImageLoader.APP_ICON_BIG));
+        JLabel img = new JLabel(Images.getImage(Images.APP_ICON_BIG));
 
         JTextArea text1 = new JTextArea(text);
         text1.setBorder(BorderFactory.createEmptyBorder());

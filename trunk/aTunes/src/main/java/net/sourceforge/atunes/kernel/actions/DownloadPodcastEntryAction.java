@@ -21,7 +21,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
 import net.sourceforge.atunes.model.AudioObject;
@@ -32,7 +32,7 @@ public class DownloadPodcastEntryAction extends ActionOverSelectedObjects<Podcas
     private static final long serialVersionUID = 1081237259786604605L;
 
     DownloadPodcastEntryAction() {
-        super(I18nUtils.getString("DOWNLOAD_PODCAST_ENTRY"), ImageLoader.getImage(ImageLoader.DOWNLOAD_PODCAST), PodcastFeedEntry.class);
+        super(I18nUtils.getString("DOWNLOAD_PODCAST_ENTRY"), Images.getImage(Images.DOWNLOAD_PODCAST), PodcastFeedEntry.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("DOWNLOAD_PODCAST_ENTRY"));
         setEnabled(false);
     }

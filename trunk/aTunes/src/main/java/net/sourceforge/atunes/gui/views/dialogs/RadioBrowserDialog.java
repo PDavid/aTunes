@@ -33,7 +33,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.CustomFrame;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -82,7 +82,7 @@ public final class RadioBrowserDialog extends CustomFrame {
         treeTable.setShowGrid(false);
         treeTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JPanel topPanel = new JPanel(new BorderLayout(10, 0));
-        radioIcon = new JLabel(ImageLoader.getImage(ImageLoader.RADIO));
+        radioIcon = new JLabel(Images.getImage(Images.RADIO));
         browserInstructions = new JLabel(I18nUtils.getString("RADIO_BROWSER_INSTRUCTIONS"));
         closeButton = new JButton(I18nUtils.getString("CLOSE"));
         closeButton.addActionListener(new ActionListener() {

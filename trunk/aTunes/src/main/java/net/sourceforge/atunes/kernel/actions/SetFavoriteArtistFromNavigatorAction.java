@@ -23,7 +23,7 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
@@ -37,7 +37,7 @@ public class SetFavoriteArtistFromNavigatorAction extends ActionOverSelectedObje
     private static final long serialVersionUID = -3551889307264609825L;
 
     SetFavoriteArtistFromNavigatorAction() {
-        super(I18nUtils.getString("SET_FAVORITE_ARTIST"), ImageLoader.getImage(ImageLoader.FAVORITE), AudioFile.class);
+        super(I18nUtils.getString("SET_FAVORITE_ARTIST"), Images.getImage(Images.FAVORITE), AudioFile.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SET_FAVORITE_ARTIST"));
     }
 

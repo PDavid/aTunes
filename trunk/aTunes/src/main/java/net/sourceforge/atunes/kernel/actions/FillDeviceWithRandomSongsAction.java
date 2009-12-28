@@ -24,7 +24,7 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -34,7 +34,7 @@ public class FillDeviceWithRandomSongsAction extends Action {
     private static final long serialVersionUID = -201250351035880261L;
 
     FillDeviceWithRandomSongsAction() {
-        super(I18nUtils.getString("FILL_DEVICE_WITH_RANDOM_SONGS"), ImageLoader.getImage(ImageLoader.SHUFFLE_PLAYLIST));
+        super(I18nUtils.getString("FILL_DEVICE_WITH_RANDOM_SONGS"), Images.getImage(Images.SHUFFLE_PLAYLIST));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("FILL_DEVICE_WITH_RANDOM_SONGS"));
     }
 
@@ -42,7 +42,7 @@ public class FillDeviceWithRandomSongsAction extends Action {
     public void actionPerformed(ActionEvent e) {
         String freeMemory = "20";
         // Ask how much memory should be left free
-        freeMemory = GuiHandler.getInstance().showInputDialog(I18nUtils.getString("MEMORY_TO_LEAVE_FREE"), freeMemory, ImageLoader.getImage(ImageLoader.DEVICE).getImage());
+        freeMemory = GuiHandler.getInstance().showInputDialog(I18nUtils.getString("MEMORY_TO_LEAVE_FREE"), freeMemory, Images.getImage(Images.DEVICE).getImage());
         long result;
         try {
             result = Long.parseLong(freeMemory.trim());

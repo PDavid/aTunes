@@ -25,7 +25,7 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.dialogs.SearchDialog;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
@@ -42,7 +42,7 @@ public class SearchArtistAction extends Action {
     private static final long serialVersionUID = -4695334457704311336L;
 
     SearchArtistAction() {
-        super(I18nUtils.getString("SEARCH_ARTIST"), ImageLoader.getImage(ImageLoader.SEARCH_ARTIST));
+        super(I18nUtils.getString("SEARCH_ARTIST"), Images.getImage(Images.SEARCH_ARTIST));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SEARCH_ARTIST"));
     }
 

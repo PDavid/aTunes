@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.repository.SortType;
@@ -35,7 +35,7 @@ public class SortNavigatorByFileNameAction extends Action {
     private static final long serialVersionUID = -8155000610794558158L;
 
     SortNavigatorByFileNameAction() {
-        super(I18nUtils.getString("SORT_BY_FILE_NAME"), ImageLoader.getImage(ImageLoader.FILE_NAME));
+        super(I18nUtils.getString("SORT_BY_FILE_NAME"), Images.getImage(Images.FILE_NAME));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SORT_BY_FILE_NAME"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().getSortType() == SortType.BY_FILE);
     }
