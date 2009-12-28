@@ -28,7 +28,7 @@ import javax.swing.JPanel;
 import javax.swing.Scrollable;
 import javax.swing.SwingConstants;
 
-public final class ScrollableFlowPanel extends JPanel implements Scrollable {
+public class ScrollableFlowPanel extends JPanel implements Scrollable {
 
     private static final long serialVersionUID = -6868667863386961211L;
 
