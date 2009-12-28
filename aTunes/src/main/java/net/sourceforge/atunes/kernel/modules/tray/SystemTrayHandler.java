@@ -33,7 +33,7 @@ import javax.swing.JSeparator;
 import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.JTrayIcon;
 import net.sourceforge.atunes.gui.views.controls.JTrayIcon.JTrayIconPopupMenu;
 import net.sourceforge.atunes.kernel.Handler;
@@ -112,7 +112,7 @@ public final class SystemTrayHandler extends Handler {
      * @return the j tray icon popup menu
      */
     private JTrayIconPopupMenu fillMenu(JTrayIconPopupMenu menu) {
-        playMenu = new JMenuItem(I18nUtils.getString("PLAY"), ImageLoader.getImage(ImageLoader.PLAY_TRAY_MENU));
+        playMenu = new JMenuItem(I18nUtils.getString("PLAY"), Images.getImage(Images.PLAY_TRAY_MENU));
         playMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -121,7 +121,7 @@ public final class SystemTrayHandler extends Handler {
         });
         menu.add(playMenu);
 
-        JMenuItem stop = new JMenuItem(I18nUtils.getString("STOP"), ImageLoader.getImage(ImageLoader.STOP_TRAY_MENU));
+        JMenuItem stop = new JMenuItem(I18nUtils.getString("STOP"), Images.getImage(Images.STOP_TRAY_MENU));
         stop.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -130,7 +130,7 @@ public final class SystemTrayHandler extends Handler {
         });
         menu.add(stop);
 
-        JMenuItem previous = new JMenuItem(I18nUtils.getString("PREVIOUS"), ImageLoader.getImage(ImageLoader.PREVIOUS_TRAY_MENU));
+        JMenuItem previous = new JMenuItem(I18nUtils.getString("PREVIOUS"), Images.getImage(Images.PREVIOUS_TRAY_MENU));
         previous.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -139,7 +139,7 @@ public final class SystemTrayHandler extends Handler {
         });
         menu.add(previous);
 
-        JMenuItem next = new JMenuItem(I18nUtils.getString("NEXT"), ImageLoader.getImage(ImageLoader.NEXT_TRAY_MENU));
+        JMenuItem next = new JMenuItem(I18nUtils.getString("NEXT"), Images.getImage(Images.NEXT_TRAY_MENU));
         next.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -150,7 +150,7 @@ public final class SystemTrayHandler extends Handler {
 
         menu.add(new JSeparator());
 
-        mute = new JCheckBoxMenuItem(I18nUtils.getString("MUTE"), ImageLoader.getImage(ImageLoader.VOLUME_MUTE_TRAY_MENU));
+        mute = new JCheckBoxMenuItem(I18nUtils.getString("MUTE"), Images.getImage(Images.VOLUME_MUTE_TRAY_MENU));
         mute.setAction(Actions.getAction(MuteAction.class));
         menu.add(mute);
 
@@ -205,7 +205,7 @@ public final class SystemTrayHandler extends Handler {
         initSystemTray();
         if (tray != null) {
             trayIconVisible = true;
-            trayIcon = new JTrayIcon(ImageLoader.getImage(ImageLoader.APP_ICON_TRAY).getImage(), SystemProperties.OS == OperatingSystem.LINUX);
+            trayIcon = new JTrayIcon(Images.getImage(Images.APP_ICON_TRAY).getImage(), SystemProperties.OS == OperatingSystem.LINUX);
             trayIcon.setToolTip(StringUtils.getString(Constants.APP_NAME, " ", Constants.VERSION.toShortString()));
             trayIcon.setJTrayIconJPopupMenu(fillMenu(trayIcon.new JTrayIconPopupMenu()));
             trayIcon.setImageAutoSize(true);
@@ -237,7 +237,7 @@ public final class SystemTrayHandler extends Handler {
         initSystemTray();
         if (tray != null) {
             trayPlayerVisible = true;
-            nextIcon = new TrayIcon(ImageLoader.getImage(ImageLoader.NEXT_TRAY).getImage());
+            nextIcon = new TrayIcon(Images.getImage(Images.NEXT_TRAY).getImage());
             nextIcon.setImageAutoSize(true);
             nextIcon.addMouseListener(new MouseAdapter() {
                 @Override
@@ -253,7 +253,7 @@ public final class SystemTrayHandler extends Handler {
                 getLogger().error(LogCategories.TRAY, e);
             }
 
-            stopIcon = new TrayIcon(ImageLoader.getImage(ImageLoader.STOP_TRAY).getImage());
+            stopIcon = new TrayIcon(Images.getImage(Images.STOP_TRAY).getImage());
             stopIcon.setImageAutoSize(true);
             stopIcon.addMouseListener(new MouseAdapter() {
                 @Override
@@ -269,7 +269,7 @@ public final class SystemTrayHandler extends Handler {
                 getLogger().error(LogCategories.TRAY, e);
             }
 
-            playIcon = new TrayIcon(ImageLoader.getImage(ImageLoader.PLAY_TRAY).getImage());
+            playIcon = new TrayIcon(Images.getImage(Images.PLAY_TRAY).getImage());
             playIcon.setImageAutoSize(true);
             playIcon.addMouseListener(new MouseAdapter() {
                 @Override
@@ -285,7 +285,7 @@ public final class SystemTrayHandler extends Handler {
                 getLogger().error(LogCategories.TRAY, e);
             }
 
-            previousIcon = new TrayIcon(ImageLoader.getImage(ImageLoader.PREVIOUS_TRAY).getImage());
+            previousIcon = new TrayIcon(Images.getImage(Images.PREVIOUS_TRAY).getImage());
             previousIcon.setImageAutoSize(true);
             previousIcon.addMouseListener(new MouseAdapter() {
                 @Override
@@ -315,18 +315,18 @@ public final class SystemTrayHandler extends Handler {
         if (playing) {
             if (trayIcon != null) {
                 playMenu.setText(I18nUtils.getString("PAUSE"));
-                playMenu.setIcon(ImageLoader.getImage(ImageLoader.PAUSE_TRAY_MENU));
+                playMenu.setIcon(Images.getImage(Images.PAUSE_TRAY_MENU));
             }
             if (playIcon != null) {
-                playIcon.setImage(ImageLoader.getImage(ImageLoader.PAUSE_TRAY).getImage());
+                playIcon.setImage(Images.getImage(Images.PAUSE_TRAY).getImage());
             }
         } else {
             if (trayIcon != null) {
                 playMenu.setText(I18nUtils.getString("PLAY"));
-                playMenu.setIcon(ImageLoader.getImage(ImageLoader.PLAY_TRAY_MENU));
+                playMenu.setIcon(Images.getImage(Images.PLAY_TRAY_MENU));
             }
             if (playIcon != null) {
-                playIcon.setImage(ImageLoader.getImage(ImageLoader.PLAY_TRAY).getImage());
+                playIcon.setImage(Images.getImage(Images.PLAY_TRAY).getImage());
             }
         }
 

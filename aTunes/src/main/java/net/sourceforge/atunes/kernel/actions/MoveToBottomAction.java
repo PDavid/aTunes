@@ -25,7 +25,7 @@ import java.util.List;
 
 import javax.swing.KeyStroke;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -41,7 +41,7 @@ public class MoveToBottomAction extends Action {
     private static final long serialVersionUID = 8200322913128575526L;
 
     MoveToBottomAction() {
-        super(I18nUtils.getString("MOVE_TO_BOTTOM"), ImageLoader.getImage(ImageLoader.GO_BOTTOM));
+        super(I18nUtils.getString("MOVE_TO_BOTTOM"), Images.getImage(Images.GO_BOTTOM));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("MOVE_BOTTOM_TOOLTIP"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_B, ActionEvent.ALT_MASK));
         setEnabled(false);

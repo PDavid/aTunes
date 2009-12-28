@@ -25,7 +25,7 @@ import java.awt.event.MouseListener;
 import javax.swing.JFrame;
 import javax.swing.JRootPane;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
@@ -53,7 +53,7 @@ public abstract class CustomModalFrame extends JFrame {
         super();
         setSize(width, height);
         getRootPane().setWindowDecorationStyle(JRootPane.PLAIN_DIALOG);
-        setIconImage(ImageLoader.getImage(ImageLoader.APP_ICON).getImage());
+        setIconImage(Images.getImage(Images.APP_ICON).getImage());
         setLocationRelativeTo(owner);
         this.owner = owner;
     }

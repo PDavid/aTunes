@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.modules.columns;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.model.AudioObject;
 
@@ -47,8 +47,8 @@ public class ArtistColumn extends Column {
     @Override
     public Object getValueFor(AudioObject audioObject) {
         // Return artist
-        return new JLabel(audioObject.getArtist(), !FavoritesHandler.getInstance().getFavoriteArtistsInfo().containsKey(audioObject.getArtist()) ? null : ImageLoader
-                .getImage(ImageLoader.ARTIST_FAVORITE), SwingConstants.LEFT);
+        return new JLabel(audioObject.getArtist(), !FavoritesHandler.getInstance().getFavoriteArtistsInfo().containsKey(audioObject.getArtist()) ? null : Images
+                .getImage(Images.ARTIST_FAVORITE), SwingConstants.LEFT);
     }
     
     @Override

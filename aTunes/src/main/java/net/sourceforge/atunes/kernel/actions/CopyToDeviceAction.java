@@ -23,7 +23,7 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
@@ -38,7 +38,7 @@ public class CopyToDeviceAction extends ActionOverSelectedObjects<AudioObject> {
     private static final long serialVersionUID = -7689483210176624995L;
 
     CopyToDeviceAction() {
-        super(I18nUtils.getString("COPY_TO_DEVICE"), ImageLoader.getImage(ImageLoader.DEVICE), AudioObject.class);
+        super(I18nUtils.getString("COPY_TO_DEVICE"), Images.getImage(Images.DEVICE), AudioObject.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("COPY_TO_DEVICE"));
     }
 

@@ -21,7 +21,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -36,7 +36,7 @@ public class ShuffleModeAction extends Action {
     private static final long serialVersionUID = 6841858742889010498L;
 
     ShuffleModeAction() {
-        super(I18nUtils.getString("SHUFFLE"), ImageLoader.getImage(ImageLoader.SHUFFLE));
+        super(I18nUtils.getString("SHUFFLE"), Images.getImage(Images.SHUFFLE));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHUFFLE"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().isShuffle());
 

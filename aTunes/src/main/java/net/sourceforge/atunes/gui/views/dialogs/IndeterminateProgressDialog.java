@@ -31,7 +31,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.WindowConstants;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -86,7 +86,7 @@ public final class IndeterminateProgressDialog extends CustomModalDialog {
      */
     private JPanel getContent() {
         JPanel panel = new JPanel(new GridBagLayout());
-        pictureLabel = new JLabel(ImageLoader.getImage(ImageLoader.APP_ICON_BIG));
+        pictureLabel = new JLabel(Images.getImage(Images.APP_ICON_BIG));
         label = new JLabel(StringUtils.getString(I18nUtils.getString("PLEASE_WAIT"), "..."));
         Font f = label.getFont().deriveFont(Font.PLAIN);
         label.setFont(f);

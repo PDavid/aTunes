@@ -33,7 +33,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.Cover3D;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
@@ -113,9 +113,9 @@ public final class CoverFlow extends JPanel {
             @Override
             protected Image doInBackground() throws Exception {
                 if (audioObject instanceof Radio) {
-                    return ImageLoader.getImage(ImageLoader.RADIO_BIG).getImage();
+                    return Images.getImage(Images.RADIO_BIG).getImage();
                 } else if (audioObject instanceof PodcastFeedEntry) {
-                    return ImageLoader.getImage(ImageLoader.RSS_BIG).getImage();
+                    return Images.getImage(Images.RSS_BIG).getImage();
                 }
                 if (cachedImages.containsKey(audioObject)) {
                     return cachedImages.get(audioObject);
@@ -155,7 +155,7 @@ public final class CoverFlow extends JPanel {
             }
         }
         if (result == null) {
-            result = ImageLoader.getImage(ImageLoader.NO_COVER).getImage();
+            result = Images.getImage(Images.NO_COVER).getImage();
         }
         return result;
     }
@@ -167,7 +167,7 @@ public final class CoverFlow extends JPanel {
         }
 
         if (object == null) {
-            cover.setImage(ImageUtils.scaleImageBicubic(ImageLoader.getImage(ImageLoader.NO_COVER).getImage(), getImageSize(covers.indexOf(cover)), getImageSize(covers
+            cover.setImage(ImageUtils.scaleImageBicubic(Images.getImage(Images.NO_COVER).getImage(), getImageSize(covers.indexOf(cover)), getImageSize(covers
                     .indexOf(cover))));
         } else {
             int size = getImageSize(covers.indexOf(cover));

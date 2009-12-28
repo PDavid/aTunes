@@ -26,7 +26,7 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.navigator.FavoritesNavigationView;
@@ -44,7 +44,7 @@ public class RemoveFromFavoritesAction extends Action {
     private static final long serialVersionUID = -4288879781314486222L;
 
     public RemoveFromFavoritesAction() {
-        super(I18nUtils.getString("REMOVE_FROM_FAVORITES"), ImageLoader.getImage(ImageLoader.DELETE_TAG));
+        super(I18nUtils.getString("REMOVE_FROM_FAVORITES"), Images.getImage(Images.DELETE_TAG));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("REMOVE_FROM_FAVORITES"));
     }
 

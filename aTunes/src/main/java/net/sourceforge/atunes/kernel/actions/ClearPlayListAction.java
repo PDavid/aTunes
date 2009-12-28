@@ -26,7 +26,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.model.AudioObject;
@@ -42,7 +42,7 @@ public class ClearPlayListAction extends Action {
     private static final long serialVersionUID = 7784228526804232608L;
 
     ClearPlayListAction() {
-        super(I18nUtils.getString("CLEAR"), ImageLoader.getImage(ImageLoader.CLEAR));
+        super(I18nUtils.getString("CLEAR"), Images.getImage(Images.CLEAR));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("CLEAR_TOOLTIP"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, ActionEvent.CTRL_MASK));
     }

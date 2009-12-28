@@ -27,7 +27,7 @@ import java.util.Map;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.context.ContextInformationDataSource;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
@@ -117,9 +117,9 @@ public class AudioObjectBasicInfoDataSource implements ContextInformationDataSou
             }
             return localImage;
         } else if (audioObject instanceof Radio) {
-            return ImageLoader.getImage(ImageLoader.RADIO);
+            return Images.getImage(Images.RADIO);
         } else if (audioObject instanceof PodcastFeedEntry) {
-            return ImageLoader.getImage(ImageLoader.RSS);
+            return Images.getImage(Images.RSS);
         }
         return null;
     }

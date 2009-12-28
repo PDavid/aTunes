@@ -23,7 +23,7 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.model.AudioObject;
@@ -34,7 +34,7 @@ public class RemoveRadioAction extends ActionOverSelectedObjects<Radio> {
     private static final long serialVersionUID = 8755385947718573969L;
 
     RemoveRadioAction() {
-        super(I18nUtils.getString("REMOVE_RADIO"), ImageLoader.getImage(ImageLoader.DELETE_FILE), Radio.class);
+        super(I18nUtils.getString("REMOVE_RADIO"), Images.getImage(Images.DELETE_FILE), Radio.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("REMOVE_RADIO"));
     }
 

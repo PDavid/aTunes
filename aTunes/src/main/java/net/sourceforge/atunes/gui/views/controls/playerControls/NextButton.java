@@ -25,7 +25,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.substance.LeftConcaveButtonShaper;
 import net.sourceforge.atunes.gui.substance.RightConcaveButtonShaper;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
@@ -47,7 +47,7 @@ public final class NextButton extends JButton {
      * @param size
      */
     public NextButton(Dimension size) {
-        super(ImageLoader.getImage(ImageLoader.NEXT));
+        super(Images.getImage(Images.NEXT));
         // Force size
         setPreferredSize(size);
         setMinimumSize(size);

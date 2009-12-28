@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.model.AudioObject;
@@ -39,7 +39,7 @@ public class FavoritePopupAction extends Action {
     private static final long serialVersionUID = -3225610033024437572L;
 
     FavoritePopupAction() {
-        super(null, ImageLoader.getImage(ImageLoader.FAVORITE));
+        super(null, Images.getImage(Images.FAVORITE));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("FAVORITE_TOOLTIP"));
         setEnabled(false);
     }

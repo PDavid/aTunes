@@ -21,7 +21,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
@@ -39,7 +39,7 @@ public class ShowNavigationTableAction extends Action {
     private static final long serialVersionUID = -3275592274940501407L;
 
     ShowNavigationTableAction() {
-        super(I18nUtils.getString("SHOW_NAVIGATION_TABLE"), ImageLoader.getImage(ImageLoader.NAVIGATION_TABLE));
+        super(I18nUtils.getString("SHOW_NAVIGATION_TABLE"), Images.getImage(Images.NAVIGATION_TABLE));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_NAVIGATION_TABLE"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().isShowNavigationTable());
     }

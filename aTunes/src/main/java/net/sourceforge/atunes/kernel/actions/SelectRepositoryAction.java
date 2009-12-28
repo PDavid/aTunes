@@ -21,7 +21,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -36,7 +36,7 @@ public class SelectRepositoryAction extends Action {
     private static final long serialVersionUID = 6921256152199287639L;
 
     SelectRepositoryAction() {
-        super(I18nUtils.getString("SELECT_REPOSITORY"), ImageLoader.getImage(ImageLoader.FOLDER));
+        super(I18nUtils.getString("SELECT_REPOSITORY"), Images.getImage(Images.FOLDER));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SELECT_REPOSITORY"));
     }
 

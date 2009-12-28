@@ -41,7 +41,7 @@ import javax.swing.JSplitPane;
 import javax.swing.Timer;
 
 import net.sourceforge.atunes.gui.OSXAdapter;
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.bars.ToolBar;
 import net.sourceforge.atunes.gui.views.controls.CustomFrame;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
@@ -117,9 +117,9 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
         @Override
         public void actionPerformed(ActionEvent e) {
             if (b) {
-                getStatusBarNewVersionLabel().setIcon(ImageLoader.getImage(ImageLoader.CHECK_FOR_UPDATES));
+                getStatusBarNewVersionLabel().setIcon(Images.getImage(Images.CHECK_FOR_UPDATES));
             } else {
-                getStatusBarNewVersionLabel().setIcon(ImageLoader.getImage(ImageLoader.CHECK_FOR_UPDATES_BW));
+                getStatusBarNewVersionLabel().setIcon(Images.getImage(Images.CHECK_FOR_UPDATES_BW));
             }
             b = !b;
         }
@@ -381,14 +381,14 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
      */
     private JLabel getStatusBarDeviceLabel() {
         if (statusBarDeviceLabel == null) {
-            statusBarDeviceLabel = new JLabel(ImageLoader.getImage(ImageLoader.DEVICE));
+            statusBarDeviceLabel = new JLabel(Images.getImage(Images.DEVICE));
         }
         return statusBarDeviceLabel;
     }
 
     private JLabel getStatusBarNewPodcastEntriesLabel() {
         if (statusBarNewPodcastEntriesLabel == null) {
-            statusBarNewPodcastEntriesLabel = new JLabel(ImageLoader.getImage(ImageLoader.RSS_LITTLE));
+            statusBarNewPodcastEntriesLabel = new JLabel(Images.getImage(Images.RSS_LITTLE));
             statusBarNewPodcastEntriesLabel.setToolTipText(I18nUtils.getString("NEW_PODCAST_ENTRIES"));
             statusBarNewPodcastEntriesLabel.addMouseListener(new MouseAdapter() {
                 @Override
@@ -403,7 +403,7 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
 
     JLabel getStatusBarNewVersionLabel() {
         if (statusBarNewVersionLabel == null) {
-            statusBarNewVersionLabel = new JLabel(ImageLoader.getImage(ImageLoader.CHECK_FOR_UPDATES));
+            statusBarNewVersionLabel = new JLabel(Images.getImage(Images.CHECK_FOR_UPDATES));
             statusBarNewVersionLabel.setToolTipText(I18nUtils.getString("NEW_VERSION_AVAILABLE"));
             statusBarNewVersionLabel.addMouseListener(new MouseAdapter() {
                 @Override

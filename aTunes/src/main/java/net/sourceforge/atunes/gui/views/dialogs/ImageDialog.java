@@ -35,7 +35,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.CustomFrame;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
@@ -73,11 +73,11 @@ public final class ImageDialog extends CustomFrame {
         ImageIcon[] thumbs;
 
         if (audioObject instanceof Radio) {
-            images = new ImageIcon[] { ImageLoader.getImage(ImageLoader.RADIO_BIG) };
-            thumbs = new ImageIcon[] { ImageLoader.getImage(ImageLoader.RADIO) };
+            images = new ImageIcon[] { Images.getImage(Images.RADIO_BIG) };
+            thumbs = new ImageIcon[] { Images.getImage(Images.RADIO) };
         } else if (audioObject instanceof PodcastFeedEntry) {
-            images = new ImageIcon[] { ImageLoader.getImage(ImageLoader.RSS_BIG) };
-            thumbs = new ImageIcon[] { ImageLoader.getImage(ImageLoader.RSS) };
+            images = new ImageIcon[] { Images.getImage(Images.RSS_BIG) };
+            thumbs = new ImageIcon[] { Images.getImage(Images.RSS) };
         } else {
             images = AudioFilePictureUtils.getPicturesForFile((AudioFile) audioObject, -1, -1);
             thumbs = AudioFilePictureUtils.getPicturesForFile((AudioFile) audioObject, Constants.IMAGE_SIZE.getSize(), Constants.IMAGE_SIZE.getSize());

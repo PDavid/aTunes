@@ -24,7 +24,7 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.context.ContextPanel;
 import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
@@ -43,7 +43,7 @@ public class YoutubeContextPanel extends ContextPanel {
 
     @Override
     protected ImageIcon getContextPanelIcon(AudioObject audioObject) {
-        return ImageLoader.getImage(ImageLoader.YOUTUBE);
+        return Images.getImage(Images.YOUTUBE);
     }
 
     @Override

@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.SortType;
@@ -46,7 +46,7 @@ public class CreatePlayListWithSelectedArtistsAction extends ActionOverSelectedO
     private static final long serialVersionUID = 242525309967706255L;
 
     CreatePlayListWithSelectedArtistsAction() {
-        super(I18nUtils.getString("SET_ARTIST_AS_PLAYLIST"), ImageLoader.getImage(ImageLoader.ARTIST), AudioObject.class);
+        super(I18nUtils.getString("SET_ARTIST_AS_PLAYLIST"), Images.getImage(Images.ARTIST), AudioObject.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("ARTIST_BUTTON_TOOLTIP"));
         setEnabled(false);
     }

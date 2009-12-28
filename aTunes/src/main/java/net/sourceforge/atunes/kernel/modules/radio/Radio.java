@@ -28,7 +28,7 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 import net.sourceforge.atunes.model.AudioObject;
@@ -455,13 +455,13 @@ public final class Radio implements AudioObject, Serializable, TreeObject, Compa
     public ImageIcon getGenericImage(GenericImageSize imageSize) {
         switch (imageSize) {
         case SMALL: {
-            return ImageLoader.getImage(ImageLoader.RADIO_LITTLE);
+            return Images.getImage(Images.RADIO_LITTLE);
         }
         case MEDIUM: {
-            return ImageLoader.getImage(ImageLoader.RADIO);
+            return Images.getImage(Images.RADIO);
         }
         case BIG: {
-            return ImageLoader.getImage(ImageLoader.RADIO_BIG);
+            return Images.getImage(Images.RADIO_BIG);
         }
         default: {
             throw new IllegalArgumentException("unknown image size");

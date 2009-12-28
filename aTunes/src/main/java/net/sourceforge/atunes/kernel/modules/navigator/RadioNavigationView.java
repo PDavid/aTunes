@@ -35,7 +35,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeCellRenderer;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.kernel.actions.Actions;
@@ -73,7 +73,7 @@ public final class RadioNavigationView extends NavigationView {
 
     @Override
     public ImageIcon getIcon() {
-        return ImageLoader.getImage(ImageLoader.RADIO_LITTLE);
+        return Images.getImage(Images.RADIO_LITTLE);
     }
 
     @Override
@@ -431,9 +431,9 @@ public final class RadioNavigationView extends NavigationView {
             public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
                 JLabel icon = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
                 if (leaf || row == 0) {
-                    icon.setIcon(ImageLoader.getImage(ImageLoader.RADIO_LITTLE));
+                    icon.setIcon(Images.getImage(Images.RADIO_LITTLE));
                 } else {
-                    icon.setIcon(ImageLoader.getImage(ImageLoader.FOLDER));
+                    icon.setIcon(Images.getImage(Images.FOLDER));
                 }
                 return icon;
             }

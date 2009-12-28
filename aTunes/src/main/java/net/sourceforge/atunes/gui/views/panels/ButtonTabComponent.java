@@ -33,7 +33,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.plaf.basic.BasicButtonUI;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -91,8 +91,8 @@ public final class ButtonTabComponent extends JPanel {
             if (getModel().isPressed()) {
                 g2.translate(1, 1);
             }
-            g2.drawImage(ImageLoader.getImage(ImageLoader.CLOSE_TAB).getImage(), 0, 0, ImageLoader.getImage(ImageLoader.CLOSE_TAB).getIconWidth(), ImageLoader.getImage(
-                    ImageLoader.CLOSE_TAB).getIconHeight(), null);
+            g2.drawImage(Images.getImage(Images.CLOSE_TAB).getImage(), 0, 0, Images.getImage(Images.CLOSE_TAB).getIconWidth(), Images.getImage(
+                    Images.CLOSE_TAB).getIconHeight(), null);
         }
 
         // we don't want to update UI for this button

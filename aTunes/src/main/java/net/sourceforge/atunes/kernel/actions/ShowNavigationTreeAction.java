@@ -25,7 +25,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -40,7 +40,7 @@ public class ShowNavigationTreeAction extends Action {
     private static final long serialVersionUID = 5137162733978906000L;
 
     ShowNavigationTreeAction() {
-        super(I18nUtils.getString("SHOW_NAVIGATION_TREE"), ImageLoader.getImage(ImageLoader.NAVIGATE));
+        super(I18nUtils.getString("SHOW_NAVIGATION_TREE"), Images.getImage(Images.NAVIGATE));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_NAVIGATION_TREE"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().isShowNavigationTree());
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));

@@ -29,7 +29,7 @@ import javax.swing.JTable;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.model.AudioObject;
 
@@ -63,22 +63,22 @@ public class ScoreColumn extends Column {
 
                 switch ((Integer) value) {
                 case 0:
-                    label.setIcon(ImageLoader.getImage(ImageLoader.EMPTY));
+                    label.setIcon(Images.getImage(Images.EMPTY));
                     break;
                 case 1:
-                    label.setIcon(ImageLoader.getImage(ImageLoader.ONE_STAR));
+                    label.setIcon(Images.getImage(Images.ONE_STAR));
                     break;
                 case 2:
-                    label.setIcon(ImageLoader.getImage(ImageLoader.TWO_STAR));
+                    label.setIcon(Images.getImage(Images.TWO_STAR));
                     break;
                 case 3:
-                    label.setIcon(ImageLoader.getImage(ImageLoader.THREE_STAR));
+                    label.setIcon(Images.getImage(Images.THREE_STAR));
                     break;
                 case 4:
-                    label.setIcon(ImageLoader.getImage(ImageLoader.FOUR_STAR));
+                    label.setIcon(Images.getImage(Images.FOUR_STAR));
                     break;
                 case 5:
-                    label.setIcon(ImageLoader.getImage(ImageLoader.FIVE_STAR));
+                    label.setIcon(Images.getImage(Images.FIVE_STAR));
                     break;
                 }
 
@@ -99,22 +99,22 @@ public class ScoreColumn extends Column {
                 JLabel label = (JLabel) super.getTableCellRendererComponent(arg0, "", arg2, arg3, arg4, arg5);
                 switch ((Integer) value) {
                 case 0:
-                    label.setIcon(ImageLoader.getImage(ImageLoader.EMPTY));
+                    label.setIcon(Images.getImage(Images.EMPTY));
                     break;
                 case 1:
-                    label.setIcon(ImageLoader.getImage(ImageLoader.ONE_STAR));
+                    label.setIcon(Images.getImage(Images.ONE_STAR));
                     break;
                 case 2:
-                    label.setIcon(ImageLoader.getImage(ImageLoader.TWO_STAR));
+                    label.setIcon(Images.getImage(Images.TWO_STAR));
                     break;
                 case 3:
-                    label.setIcon(ImageLoader.getImage(ImageLoader.THREE_STAR));
+                    label.setIcon(Images.getImage(Images.THREE_STAR));
                     break;
                 case 4:
-                    label.setIcon(ImageLoader.getImage(ImageLoader.FOUR_STAR));
+                    label.setIcon(Images.getImage(Images.FOUR_STAR));
                     break;
                 case 5:
-                    label.setIcon(ImageLoader.getImage(ImageLoader.FIVE_STAR));
+                    label.setIcon(Images.getImage(Images.FIVE_STAR));
                     break;
                 }
                 return label;

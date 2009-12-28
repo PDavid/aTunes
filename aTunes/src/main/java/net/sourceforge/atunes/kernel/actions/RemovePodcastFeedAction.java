@@ -25,7 +25,7 @@ import java.util.Set;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
@@ -36,7 +36,7 @@ public class RemovePodcastFeedAction extends ActionOverSelectedObjects<PodcastFe
     private static final long serialVersionUID = -7470658878101801512L;
 
     RemovePodcastFeedAction() {
-        super(I18nUtils.getString("REMOVE_PODCAST_FEED"), ImageLoader.getImage(ImageLoader.DELETE_FILE), PodcastFeedEntry.class);
+        super(I18nUtils.getString("REMOVE_PODCAST_FEED"), Images.getImage(Images.DELETE_FILE), PodcastFeedEntry.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("REMOVE_PODCAST_FEED"));
     }
 

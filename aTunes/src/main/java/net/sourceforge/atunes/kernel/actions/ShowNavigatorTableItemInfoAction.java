@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
@@ -41,7 +41,7 @@ public class ShowNavigatorTableItemInfoAction extends Action {
     private static final long serialVersionUID = -2006569851431046347L;
 
     ShowNavigatorTableItemInfoAction() {
-        super(I18nUtils.getString("INFO"), ImageLoader.getImage(ImageLoader.INFO));
+        super(I18nUtils.getString("INFO"), Images.getImage(Images.INFO));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("INFO_BUTTON_TOOLTIP"));
         setEnabled(false);
     }

@@ -50,7 +50,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 import net.sourceforge.atunes.gui.Fonts;
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.gui.views.dialogs.PluginEditorDialog;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
@@ -161,7 +161,7 @@ public final class PluginsPanel extends PreferencesPanel {
                 if (((PluginInfo) value).getIcon() != null) {
                     ((JLabel) c).setIcon(ImageUtils.scaleImageBicubic(((PluginInfo) value).getIcon(), CELL_HEIGHT - 5, CELL_HEIGHT - 5));
                 } else {
-                    ((JLabel) c).setIcon(ImageUtils.scaleImageBicubic(ImageLoader.getImage(ImageLoader.EMPTY).getImage(), CELL_HEIGHT - 5, CELL_HEIGHT - 5));
+                    ((JLabel) c).setIcon(ImageUtils.scaleImageBicubic(Images.getImage(Images.EMPTY).getImage(), CELL_HEIGHT - 5, CELL_HEIGHT - 5));
                 }
                 return c;
             }
@@ -440,7 +440,7 @@ public final class PluginsPanel extends PreferencesPanel {
 
     @Override
     public ImageIcon getIcon() {
-        return ImageLoader.getImage(ImageLoader.PLUGIN);
+        return Images.getImage(Images.PLUGIN);
     }
 
 }

@@ -21,7 +21,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -36,7 +36,7 @@ public class ShowStatsAction extends Action {
     private static final long serialVersionUID = -7828653987968794083L;
 
     ShowStatsAction() {
-        super(I18nUtils.getString("STATS"), ImageLoader.getImage(ImageLoader.STATS));
+        super(I18nUtils.getString("STATS"), Images.getImage(Images.STATS));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("STATS"));
     }
 

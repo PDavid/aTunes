@@ -21,7 +21,7 @@ package net.sourceforge.atunes.kernel.modules.columns;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
@@ -55,13 +55,13 @@ public class FavoriteColumn extends Column {
     public Object getValueFor(AudioObject audioObject) {
         // Return image
         if (audioObject instanceof Radio) {
-            return ImageLoader.getImage(ImageLoader.EMPTY);
+            return Images.getImage(Images.EMPTY);
         }
         if (audioObject instanceof PodcastFeedEntry) {
-            return ImageLoader.getImage(ImageLoader.EMPTY);
+            return Images.getImage(Images.EMPTY);
         }
-        return FavoritesHandler.getInstance().getFavoriteSongsInfo().containsValue(audioObject) ? ImageLoader.getImage(ImageLoader.FAVORITE) : ImageLoader
-                .getImage(ImageLoader.EMPTY);
+        return FavoritesHandler.getInstance().getFavoriteSongsInfo().containsValue(audioObject) ? Images.getImage(Images.FAVORITE) : Images
+                .getImage(Images.EMPTY);
     }
 
     @Override

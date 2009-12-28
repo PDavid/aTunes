@@ -60,7 +60,7 @@ import javax.swing.Timer;
 import javax.swing.filechooser.FileFilter;
 
 import net.sourceforge.atunes.gui.Fonts;
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.CustomWindow;
 import net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.NextButton;
@@ -230,7 +230,7 @@ public final class FullScreenWindow extends CustomWindow {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     controlsPanel.setVisible(false);
-                    setCursor(Toolkit.getDefaultToolkit().createCustomCursor(ImageLoader.getImage(ImageLoader.EMPTY).getImage(), new Point(0, 0), "invisibleCursor"));
+                    setCursor(Toolkit.getDefaultToolkit().createCustomCursor(Images.getImage(Images.EMPTY).getImage(), new Point(0, 0), "invisibleCursor"));
                     if (options.isVisible()) {
                         options.setVisible(false);
                     }

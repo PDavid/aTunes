@@ -40,7 +40,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -131,7 +131,7 @@ public final class LanguageSelectorDialog extends JDialog {
      */
     private static JFrame getFrame() {
         JFrame f = new JFrame();
-        f.setIconImage(ImageLoader.getImage(ImageLoader.LANGUAGE).getImage());
+        f.setIconImage(Images.getImage(Images.LANGUAGE).getImage());
         return f;
     }
 

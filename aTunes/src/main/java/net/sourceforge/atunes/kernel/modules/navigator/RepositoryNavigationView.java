@@ -37,7 +37,7 @@ import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeNode;
 
 import net.sourceforge.atunes.gui.ColorDefinitions;
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.gui.views.menus.EditTagMenu;
@@ -84,7 +84,7 @@ public class RepositoryNavigationView extends NavigationView {
 
     @Override
     public ImageIcon getIcon() {
-        return ImageLoader.getImage(ImageLoader.AUDIO_FILE_LITTLE);
+        return Images.getImage(Images.AUDIO_FILE_LITTLE);
     }
 
     @Override
@@ -550,28 +550,28 @@ public class RepositoryNavigationView extends NavigationView {
 
                 if (content instanceof Artist) {
                     if (!ApplicationState.getInstance().isShowFavoritesInNavigator() || !FavoritesHandler.getInstance().getFavoriteArtistsInfo().containsValue(content)) {
-                        label.setIcon(ImageLoader.getImage(ImageLoader.ARTIST));
+                        label.setIcon(Images.getImage(Images.ARTIST));
                     } else {
-                        label.setIcon(ImageLoader.getImage(ImageLoader.ARTIST_FAVORITE));
+                        label.setIcon(Images.getImage(Images.ARTIST_FAVORITE));
                     }
                 } else if (content instanceof Album) {
                     if (!ApplicationState.getInstance().isShowFavoritesInNavigator() || !FavoritesHandler.getInstance().getFavoriteAlbumsInfo().containsValue(content)) {
-                        label.setIcon(ImageLoader.getImage(ImageLoader.ALBUM));
+                        label.setIcon(Images.getImage(Images.ALBUM));
                     } else {
-                        label.setIcon(ImageLoader.getImage(ImageLoader.ALBUM_FAVORITE));
+                        label.setIcon(Images.getImage(Images.ALBUM_FAVORITE));
                     }
                 } else if (content instanceof Genre) {
-                    label.setIcon(ImageLoader.getImage(ImageLoader.GENRE));
+                    label.setIcon(Images.getImage(Images.GENRE));
                 } else if (content instanceof Folder) {
-                    label.setIcon(ImageLoader.getImage(ImageLoader.FOLDER));
+                    label.setIcon(Images.getImage(Images.FOLDER));
                     if (ApplicationState.getInstance().isHighlightIncompleteTagFolders() && HighlightFoldersByIncompleteTags.hasIncompleteTags((Folder) content)) {
                         label.setForeground(ColorDefinitions.GENERAL_UNKNOWN_ELEMENT_FOREGROUND_COLOR);
                     }
                 } else if (content instanceof String) {
                     if (((String) content).equals(I18nUtils.getString("REPOSITORY"))) {
-                        label.setIcon(ImageLoader.getImage(ImageLoader.AUDIO_FILE_LITTLE));
+                        label.setIcon(Images.getImage(Images.AUDIO_FILE_LITTLE));
                     } else {
-                        label.setIcon(ImageLoader.getImage(ImageLoader.FOLDER));
+                        label.setIcon(Images.getImage(Images.FOLDER));
                     }
                     label.setToolTipText(null);
                 }

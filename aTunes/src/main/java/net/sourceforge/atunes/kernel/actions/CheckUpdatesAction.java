@@ -21,7 +21,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.updates.UpdateHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -37,7 +37,7 @@ public class CheckUpdatesAction extends Action {
     private static final long serialVersionUID = 999420226547524484L;
 
     CheckUpdatesAction() {
-        super(I18nUtils.getString("CHECK_FOR_UPDATES"), ImageLoader.getImage(ImageLoader.CHECK_FOR_UPDATES));
+        super(I18nUtils.getString("CHECK_FOR_UPDATES"), Images.getImage(Images.CHECK_FOR_UPDATES));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("CHECK_FOR_UPDATES"));
     }
 

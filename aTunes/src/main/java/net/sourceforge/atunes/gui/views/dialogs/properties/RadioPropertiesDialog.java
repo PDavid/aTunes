@@ -30,7 +30,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import net.sourceforge.atunes.gui.Fonts;
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -135,7 +135,7 @@ final class RadioPropertiesDialog extends PropertiesDialog {
      * Fill picture.
      */
     private void fillPicture() {
-        ImageIcon picture = ImageLoader.getImage(ImageLoader.RADIO);
+        ImageIcon picture = Images.getImage(Images.RADIO);
         pictureLabel.setPreferredSize(new Dimension(picture.getIconWidth(), picture.getIconHeight()));
         pictureLabel.setIcon(picture);
         pictureLabel.setVisible(true);

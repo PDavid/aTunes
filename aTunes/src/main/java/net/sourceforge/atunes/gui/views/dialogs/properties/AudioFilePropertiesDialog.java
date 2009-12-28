@@ -34,7 +34,7 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.Fonts;
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -213,7 +213,7 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
                     if (cover != null) {
                         pictureLabel.setIcon(cover);
                     } else {
-                        pictureLabel.setIcon(ImageLoader.getImage(ImageLoader.NO_COVER_AUDIOFILE_PROPERTIES));
+                        pictureLabel.setIcon(Images.getImage(Images.NO_COVER_AUDIOFILE_PROPERTIES));
                     }
                     pictureLabel.setVisible(true);
                 } catch (InterruptedException e) {

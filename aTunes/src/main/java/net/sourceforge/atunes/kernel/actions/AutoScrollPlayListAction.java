@@ -21,7 +21,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -36,7 +36,7 @@ public class AutoScrollPlayListAction extends Action {
     private static final long serialVersionUID = -9039622325405324974L;
 
     AutoScrollPlayListAction() {
-        super(null, ImageLoader.getImage(ImageLoader.SCROLL_PLAYLIST));
+        super(null, Images.getImage(Images.SCROLL_PLAYLIST));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SCROLL_PLAYLIST_TO_CURRENT_SONG"));
     }
 

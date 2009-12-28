@@ -25,7 +25,7 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.RadioNavigationView;
@@ -38,7 +38,7 @@ public class RenameRadioLabelAction extends Action {
     private static final long serialVersionUID = -606790181321223318L;
 
     RenameRadioLabelAction() {
-        super(I18nUtils.getString("RENAME_LABEL"), ImageLoader.getImage(ImageLoader.EDIT_ALBUM));
+        super(I18nUtils.getString("RENAME_LABEL"), Images.getImage(Images.EDIT_ALBUM));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("RENAME_LABEL"));
     }
 
@@ -48,7 +48,7 @@ public class RenameRadioLabelAction extends Action {
         Object o = ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
         if (o instanceof String) {
             String label = (String) o;
-            String result = GuiHandler.getInstance().showInputDialog(I18nUtils.getString("RENAME_LABEL"), label, ImageLoader.getImage(ImageLoader.RADIO_LITTLE).getImage());
+            String result = GuiHandler.getInstance().showInputDialog(I18nUtils.getString("RENAME_LABEL"), label, Images.getImage(Images.RADIO_LITTLE).getImage());
             if (result != null) {
                 List<Radio> radios = RadioHandler.getInstance().getRadios(label);
                 RadioHandler.getInstance().setLabel(radios, result);
@@ -57,7 +57,7 @@ public class RenameRadioLabelAction extends Action {
         } else if (o instanceof Radio) {
             Radio radio = (Radio) o;
             String result = GuiHandler.getInstance().showInputDialog(I18nUtils.getString("RENAME_LABEL"), radio.getLabel(),
-                    ImageLoader.getImage(ImageLoader.RADIO_LITTLE).getImage());
+                    Images.getImage(Images.RADIO_LITTLE).getImage());
             if (result != null) {
                 radio.setLabel(result);
                 NavigationHandler.getInstance().refreshView(RadioNavigationView.class);

@@ -27,7 +27,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.SwingWorker;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.panels.AudioObjectPropertiesPanel;
 import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
@@ -234,7 +234,7 @@ public final class AudioObjectPropertiesController extends SimpleController<Audi
                     || FavoritesHandler.getInstance().getFavoriteArtistsInfo().containsKey(currentAudioObject.getArtist())
                     || FavoritesHandler.getInstance().getFavoriteAlbumsInfo().containsKey(currentAudioObject.getAlbum());
 
-            getComponentControlled().getTitleLabel().setIcon(favorite ? ImageLoader.getImage(ImageLoader.FAVORITE) : null);
+            getComponentControlled().getTitleLabel().setIcon(favorite ? Images.getImage(Images.FAVORITE) : null);
         }
     }
 

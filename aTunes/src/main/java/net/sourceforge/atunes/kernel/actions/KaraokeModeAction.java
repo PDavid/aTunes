@@ -24,7 +24,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -41,7 +41,7 @@ public class KaraokeModeAction extends Action {
     Timer timer;
 
     KaraokeModeAction() {
-        super(I18nUtils.getString("KARAOKE"), ImageLoader.getImage(ImageLoader.KARAOKE));
+        super(I18nUtils.getString("KARAOKE"), Images.getImage(Images.KARAOKE));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("KARAOKE"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().isKaraoke());
 
@@ -51,9 +51,9 @@ public class KaraokeModeAction extends Action {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if (showWarning) {
-                    putValue(SMALL_ICON, ImageLoader.getImage(ImageLoader.KARAOKE));
+                    putValue(SMALL_ICON, Images.getImage(Images.KARAOKE));
                 } else {
-                    putValue(SMALL_ICON, ImageLoader.getImage(ImageLoader.WARNING));
+                    putValue(SMALL_ICON, Images.getImage(Images.WARNING));
                 }
                 showWarning = !showWarning;
             }
@@ -69,7 +69,7 @@ public class KaraokeModeAction extends Action {
         ApplicationState.getInstance().setKaraoke((Boolean) getValue(SELECTED_KEY));
         if (timer.isRunning()) {
             timer.stop();
-            putValue(SMALL_ICON, ImageLoader.getImage(ImageLoader.KARAOKE));
+            putValue(SMALL_ICON, Images.getImage(Images.KARAOKE));
         } else {
             timer.start();
         }

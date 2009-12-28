@@ -21,7 +21,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -39,7 +39,7 @@ public class NewPlayListAction extends Action {
     private static final long serialVersionUID = 3866441529401824151L;
 
     public NewPlayListAction() {
-        super(I18nUtils.getString("NEW_PLAYLIST"), ImageLoader.getImage(ImageLoader.NEW_PLAYLIST));
+        super(I18nUtils.getString("NEW_PLAYLIST"), Images.getImage(Images.NEW_PLAYLIST));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("NEW_PLAYLIST"));
     }
 

@@ -25,7 +25,7 @@ import java.util.List;
 
 import javax.swing.KeyStroke;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.model.AudioObject;
@@ -43,7 +43,7 @@ public class ShowPlayListItemInfoAction extends Action {
     private static final long serialVersionUID = -2006569851431046347L;
 
     ShowPlayListItemInfoAction() {
-        super(I18nUtils.getString("INFO"), ImageLoader.getImage(ImageLoader.INFO));
+        super(I18nUtils.getString("INFO"), Images.getImage(Images.INFO));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("INFO_BUTTON_TOOLTIP"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
         setEnabled(false);

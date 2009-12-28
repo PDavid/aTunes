@@ -21,7 +21,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.cdripper.RipperHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -37,7 +37,7 @@ public class RipCDAction extends Action {
     private static final long serialVersionUID = -362457188090138933L;
 
     RipCDAction() {
-        super(StringUtils.getString(I18nUtils.getString("RIP_CD"), "..."), ImageLoader.getImage(ImageLoader.CD_AUDIO_TINY));
+        super(StringUtils.getString(I18nUtils.getString("RIP_CD"), "..."), Images.getImage(Images.CD_AUDIO_TINY));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("RIP_CD"));
     }
 

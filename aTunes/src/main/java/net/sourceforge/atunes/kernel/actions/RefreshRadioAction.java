@@ -24,7 +24,7 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -33,7 +33,7 @@ public class RefreshRadioAction extends Action {
     private static final long serialVersionUID = 2614238225399634969L;
 
     RefreshRadioAction() {
-        super(I18nUtils.getString("REFRESH"), ImageLoader.getImage(ImageLoader.REFRESH));
+        super(I18nUtils.getString("REFRESH"), Images.getImage(Images.REFRESH));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("REFRESH"));
     }
 

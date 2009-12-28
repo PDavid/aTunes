@@ -25,7 +25,7 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.RadioNavigationView;
@@ -38,7 +38,7 @@ public class RenameRadioAction extends Action {
     private static final long serialVersionUID = -922076985505834816L;
 
     RenameRadioAction() {
-        super(I18nUtils.getString("RENAME_RADIO"), ImageLoader.getImage(ImageLoader.EDIT_ALBUM));
+        super(I18nUtils.getString("RENAME_RADIO"), Images.getImage(Images.EDIT_ALBUM));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("RENAME_RADIO"));
     }
 
@@ -47,7 +47,7 @@ public class RenameRadioAction extends Action {
         TreePath path = NavigationHandler.getInstance().getView(RadioNavigationView.class).getTree().getSelectionPath();
         Radio radio = (Radio) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
         String result = GuiHandler.getInstance().showInputDialog(I18nUtils.getString("RENAME_RADIO"), radio.getName(),
-                ImageLoader.getImage(ImageLoader.RADIO_LITTLE).getImage());
+                Images.getImage(Images.RADIO_LITTLE).getImage());
         if (result != null) {
             RadioHandler.getInstance().setName(radio, result);
         }

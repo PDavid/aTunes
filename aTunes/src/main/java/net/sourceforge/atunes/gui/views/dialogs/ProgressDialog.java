@@ -34,7 +34,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JRootPane;
 import javax.swing.WindowConstants;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.CustomFrame;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -89,7 +89,7 @@ public class ProgressDialog extends CustomFrame {
         progressBar = new JProgressBar();
         progressBar.setBorder(BorderFactory.createEmptyBorder());
         progressBar.setStringPainted(true);
-        imagelabel = new JLabel(ImageLoader.getImage(ImageLoader.APP_ICON_BIG));
+        imagelabel = new JLabel(Images.getImage(Images.APP_ICON_BIG));
         infoLabel = new JLabel();
         currentLabel = new JLabel();
         separatorLabel = new JLabel(" / ");

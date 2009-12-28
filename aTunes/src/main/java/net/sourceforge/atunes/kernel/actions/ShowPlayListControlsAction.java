@@ -21,7 +21,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -31,7 +31,7 @@ public class ShowPlayListControlsAction extends Action {
     private static final long serialVersionUID = 4338048323889228870L;
 
     ShowPlayListControlsAction() {
-        super(I18nUtils.getString("SHOW_PLAYLIST_CONTROLS"), ImageLoader.getImage(ImageLoader.PLAY_LIST_CONTROLS));
+        super(I18nUtils.getString("SHOW_PLAYLIST_CONTROLS"), Images.getImage(Images.PLAY_LIST_CONTROLS));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_PLAYLIST_CONTROLS"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().isShowPlaylistControls());
         ControllerProxy.getInstance().getPlayListController().getPlayListControlsPanel().setVisible((Boolean) getValue(SELECTED_KEY));

@@ -41,7 +41,7 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.dialogs.TransferProgressDialog;
 import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.Kernel;
@@ -271,7 +271,7 @@ public final class PodcastFeedHandler extends Handler {
             return;
         }
         final TransferProgressDialog d = GuiHandler.getInstance().getNewTransferProgressDialog(I18nUtils.getString("PODCAST_FEED_ENTRY_DOWNLOAD"), null);
-        d.setIcon(ImageLoader.getImage(ImageLoader.RSS));
+        d.setIcon(Images.getImage(Images.RSS));
         final PodcastFeedEntryDownloader downloadPodcastFeedEntry = new PodcastFeedEntryDownloader(podcastFeedEntry);
         synchronized (runningDownloads) {
             runningDownloads.add(downloadPodcastFeedEntry);

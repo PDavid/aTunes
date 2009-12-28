@@ -32,7 +32,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -135,7 +135,7 @@ public final class AddPodcastFeedDialog extends CustomModalDialog {
         c.gridheight = 2;
         c.fill = GridBagConstraints.NONE;
         c.weightx = -1;
-        panel.add(new JLabel(ImageLoader.getImage(ImageLoader.RSS)), c);
+        panel.add(new JLabel(Images.getImage(Images.RSS)), c);
 
         JPanel auxPanel = new JPanel();
         auxPanel.add(okButton);

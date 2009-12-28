@@ -23,7 +23,7 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.tags.writer.ClearTagsProcess;
 import net.sourceforge.atunes.model.AudioObject;
@@ -37,7 +37,7 @@ public class ClearTagAction extends ActionOverSelectedObjects<AudioFile> {
     public static final String NAVIGATOR = "NAVIGATOR";
 
     ClearTagAction() {
-        super(I18nUtils.getString("CLEAR_TAG"), ImageLoader.getImage(ImageLoader.DELETE_TAG), AudioFile.class);
+        super(I18nUtils.getString("CLEAR_TAG"), Images.getImage(Images.DELETE_TAG), AudioFile.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("CLEAR_TAG"));
     }
 

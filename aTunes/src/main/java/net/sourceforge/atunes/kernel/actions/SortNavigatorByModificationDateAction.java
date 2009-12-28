@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.repository.SortType;
@@ -35,7 +35,7 @@ public class SortNavigatorByModificationDateAction extends Action {
     private static final long serialVersionUID = 1062000465102539985L;
 
     SortNavigatorByModificationDateAction() {
-        super(I18nUtils.getString("SORT_BY_MODIFICATION_DATE"), ImageLoader.getImage(ImageLoader.DATE));
+        super(I18nUtils.getString("SORT_BY_MODIFICATION_DATE"), Images.getImage(Images.DATE));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SORT_BY_MODIFICATION_DATE"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().getSortType() == SortType.BY_MODIFICATION_TIME);
     }

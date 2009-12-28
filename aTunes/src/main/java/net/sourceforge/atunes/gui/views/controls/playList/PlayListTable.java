@@ -42,7 +42,7 @@ import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.model.AudioObjectsSource;
 import net.sourceforge.atunes.gui.model.PlayListColumnModel;
 import net.sourceforge.atunes.gui.model.TransferableList;
@@ -80,15 +80,15 @@ public final class PlayListTable extends JTable implements DragSourceListener, D
         public static ImageIcon getPlayStateIcon(PlayState state) {
             switch (state) {
             case PLAYING:
-                return ImageLoader.getImage(ImageLoader.PLAY_TINY);
+                return Images.getImage(Images.PLAY_TINY);
             case STOPPED:
-                return ImageLoader.getImage(ImageLoader.STOP_TINY);
+                return Images.getImage(Images.STOP_TINY);
             case PAUSED:
-                return ImageLoader.getImage(ImageLoader.PAUSE_TINY);
+                return Images.getImage(Images.PAUSE_TINY);
             case NONE:
-                return ImageLoader.getImage(ImageLoader.EMPTY);
+                return Images.getImage(Images.EMPTY);
             default:
-                return ImageLoader.getImage(ImageLoader.EMPTY);
+                return Images.getImage(Images.EMPTY);
             }
         }
     }

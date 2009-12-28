@@ -36,7 +36,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeCellRenderer;
 
 import net.sourceforge.atunes.gui.ColorDefinitions;
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.gui.views.menus.EditTagMenu;
 import net.sourceforge.atunes.kernel.actions.Actions;
@@ -78,7 +78,7 @@ public final class FavoritesNavigationView extends NavigationView {
 
     @Override
     public ImageIcon getIcon() {
-        return ImageLoader.getImage(ImageLoader.FAVORITE);
+        return Images.getImage(Images.FAVORITE);
     }
 
     @Override
@@ -374,19 +374,19 @@ public final class FavoritesNavigationView extends NavigationView {
                 JLabel label = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
                 // Set custom icon for every type of node: artist, album, song...
                 if (content instanceof Artist) {
-                    label.setIcon(ImageLoader.getImage(ImageLoader.ARTIST));
+                    label.setIcon(Images.getImage(Images.ARTIST));
                 } else if (content instanceof Album) {
-                    label.setIcon(ImageLoader.getImage(ImageLoader.ALBUM));
+                    label.setIcon(Images.getImage(Images.ALBUM));
                 } else if (content instanceof String) {
                     String str = (String) content;
                     if (str.equals(I18nUtils.getString("ARTISTS"))) {
-                        label.setIcon(ImageLoader.getImage(ImageLoader.ARTIST));
+                        label.setIcon(Images.getImage(Images.ARTIST));
                     } else if (str.equals(I18nUtils.getString("ALBUMS"))) {
-                        label.setIcon(ImageLoader.getImage(ImageLoader.ALBUM));
+                        label.setIcon(Images.getImage(Images.ALBUM));
                     } else if (str.equals(I18nUtils.getString("SONGS"))) {
-                        label.setIcon(ImageLoader.getImage(ImageLoader.AUDIO_FILE_LITTLE));
+                        label.setIcon(Images.getImage(Images.AUDIO_FILE_LITTLE));
                     } else {
-                        label.setIcon(ImageLoader.getImage(ImageLoader.FAVORITE));
+                        label.setIcon(Images.getImage(Images.FAVORITE));
                     }
                 }
 

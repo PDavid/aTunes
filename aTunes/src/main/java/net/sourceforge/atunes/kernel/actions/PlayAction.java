@@ -25,7 +25,7 @@ import java.util.List;
 
 import javax.swing.KeyStroke;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -35,7 +35,7 @@ public class PlayAction extends Action {
     private static final long serialVersionUID = -1122746023245126869L;
 
     PlayAction() {
-        super(I18nUtils.getString("PLAY"), ImageLoader.getImage(ImageLoader.PLAY_MENU));
+        super(I18nUtils.getString("PLAY"), Images.getImage(Images.PLAY_MENU));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("PLAY"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0));
     }

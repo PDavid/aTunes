@@ -42,7 +42,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
 import net.sourceforge.atunes.kernel.modules.columns.Column;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnSet;
@@ -261,7 +261,7 @@ public final class ColumnSetSelectorDialog extends CustomModalDialog {
             }
         });
 
-        JButton upButton = new JButton(ImageLoader.getImage(ImageLoader.GO_UP));
+        JButton upButton = new JButton(Images.getImage(Images.GO_UP));
         upButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -273,7 +273,7 @@ public final class ColumnSetSelectorDialog extends CustomModalDialog {
             }
         });
 
-        JButton downButton = new JButton(ImageLoader.getImage(ImageLoader.GO_DOWN));
+        JButton downButton = new JButton(Images.getImage(Images.GO_DOWN));
         downButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

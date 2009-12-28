@@ -25,7 +25,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.substance.CircleButtonShaper;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 
@@ -48,7 +48,7 @@ public final class PlayPauseButton extends JButton {
      * @param height
      */
     public PlayPauseButton(Dimension size) {
-        super(ImageLoader.getImage(ImageLoader.PLAY));
+        super(Images.getImage(Images.PLAY));
         // Force size of button
         setPreferredSize(size);
         setMinimumSize(size);
@@ -73,9 +73,9 @@ public final class PlayPauseButton extends JButton {
      */
     public void setPlaying(boolean playing) {
         if (playing) {
-            setIcon(ImageLoader.getImage(ImageLoader.PAUSE));
+            setIcon(Images.getImage(Images.PAUSE));
         } else {
-            setIcon(ImageLoader.getImage(ImageLoader.PLAY));
+            setIcon(Images.getImage(Images.PLAY));
         }
         this.playing = playing;
     }

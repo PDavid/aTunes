@@ -29,7 +29,7 @@ import java.util.Set;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.repository.ImageCache;
 import net.sourceforge.atunes.kernel.modules.repository.model.Album;
 import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
@@ -665,13 +665,13 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
     public ImageIcon getGenericImage(GenericImageSize imageSize) {
         switch (imageSize) {
         case SMALL: {
-            return ImageLoader.getImage(ImageLoader.AUDIO_FILE_LITTLE);
+            return Images.getImage(Images.AUDIO_FILE_LITTLE);
         }
         case MEDIUM: {
-            return ImageLoader.getImage(ImageLoader.AUDIO_FILE);
+            return Images.getImage(Images.AUDIO_FILE);
         }
         case BIG: {
-            return ImageLoader.getImage(ImageLoader.AUDIO_FILE_BIG);
+            return Images.getImage(Images.AUDIO_FILE_BIG);
         }
         default: {
             throw new IllegalArgumentException("unknown image size");

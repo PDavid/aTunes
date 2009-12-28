@@ -32,7 +32,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.CustomFrame;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -215,10 +215,10 @@ public final class StatsDialog extends CustomFrame {
         artistPanel.add(artistsChart, c);
 
         tabbedPane = new JTabbedPane();
-        tabbedPane.addTab(I18nUtils.getString("GENERAL"), ImageLoader.getImage(ImageLoader.INFO), generalPanel);
-        tabbedPane.addTab(I18nUtils.getString("SONG"), ImageLoader.getImage(ImageLoader.FILE), songPanel);
-        tabbedPane.addTab(I18nUtils.getString("ALBUM"), ImageLoader.getImage(ImageLoader.ALBUM), albumPanel);
-        tabbedPane.addTab(I18nUtils.getString("ARTIST"), ImageLoader.getImage(ImageLoader.ARTIST), artistPanel);
+        tabbedPane.addTab(I18nUtils.getString("GENERAL"), Images.getImage(Images.INFO), generalPanel);
+        tabbedPane.addTab(I18nUtils.getString("SONG"), Images.getImage(Images.FILE), songPanel);
+        tabbedPane.addTab(I18nUtils.getString("ALBUM"), Images.getImage(Images.ALBUM), albumPanel);
+        tabbedPane.addTab(I18nUtils.getString("ARTIST"), Images.getImage(Images.ARTIST), artistPanel);
         panel.add(tabbedPane, BorderLayout.CENTER);
         return panel;
     }
