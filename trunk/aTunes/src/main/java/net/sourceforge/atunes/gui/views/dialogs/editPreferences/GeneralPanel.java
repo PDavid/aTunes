@@ -25,11 +25,12 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.Collator;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -37,7 +38,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.SwingConstants;
+import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 
 import net.sourceforge.atunes.Constants;
@@ -46,6 +47,7 @@ import net.sourceforge.atunes.gui.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.frame.Frame;
 import net.sourceforge.atunes.gui.frame.Frames;
 import net.sourceforge.atunes.gui.images.ImageLoader;
+import net.sourceforge.atunes.gui.views.controls.ByImageChoosingPanel;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
@@ -67,13 +69,12 @@ public final class GeneralPanel extends PreferencesPanel {
     private static final long serialVersionUID = -9216216930198145476L;
 
     private JCheckBox showTitle;
-    private JComboBox windowType;
     private JComboBox language;
     private JCheckBox showIconTray;
     private JCheckBox showTrayPlayer;
     private JButton fontSettings;
-    JComboBox theme;
-    JLabel windowTypePreview;
+    private JComboBox theme;
+    private ByImageChoosingPanel<Class<? extends Frame>> windowTypeChoosingPanel;
 
     FontSettings currentFontSettings;
 
@@ -85,7 +86,7 @@ public final class GeneralPanel extends PreferencesPanel {
         showTitle = new JCheckBox(I18nUtils.getString("SHOW_TITLE"));
         JLabel windowTypeLabel = new JLabel(I18nUtils.getString("WINDOW_TYPE"));
         windowTypeLabel.setFont(Fonts.GENERAL_FONT_BOLD);
-        windowType = new JComboBox(new ListComboBoxModel<String>(new ArrayList<String>(Frames.getFrameNames())));
+
         JLabel languageLabel = new JLabel(I18nUtils.getString("LANGUAGE"));
         languageLabel.setFont(Fonts.GENERAL_FONT_BOLD);
 
@@ -159,9 +160,11 @@ public final class GeneralPanel extends PreferencesPanel {
             }
 
         });
-        windowTypePreview = new JLabel();
-        windowTypePreview.setVerticalTextPosition(SwingConstants.TOP);
-        windowTypePreview.setHorizontalTextPosition(SwingConstants.CENTER);
+        Map<Class<? extends Frame>, ImageIcon> data = new HashMap<Class<? extends Frame>, ImageIcon>();
+        for (Class<? extends Frame> clazz : Frames.getClasses()) {
+            data.put(clazz, Frames.getImage(clazz));
+        }
+        windowTypeChoosingPanel = new ByImageChoosingPanel<Class<? extends Frame>>(data);
 
         GridBagConstraints c = new GridBagConstraints();
         c.gridy = 0;
@@ -184,13 +187,21 @@ public final class GeneralPanel extends PreferencesPanel {
         c.gridx = 0;
         c.gridy = 4;
         c.insets = new Insets(5, 0, 0, 0);
-        add(windowTypePreview, c);
-        c.gridx = 1;
-        c.insets = new Insets(40, 0, 0, 0);
-        add(windowType, c);
+        c.gridwidth = 2;
+        c.weightx = 1;
+        c.weighty = 1;
+        c.fill = GridBagConstraints.BOTH;
+        JScrollPane sp = new JScrollPane(windowTypeChoosingPanel);
+        sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        sp.getVerticalScrollBar().setUnitIncrement(20);
+        add(sp, c);
         c.gridx = 0;
         c.gridy = 5;
-        c.insets = new Insets(40, 0, 40, 0);
+        c.gridwidth = 1;
+        c.weightx = 0;
+        c.weighty = 0;
+        c.fill = GridBagConstraints.NONE;
+        c.insets = new Insets(20, 0, 20, 0);
         add(fontSettings, c);
         c.gridx = 0;
         c.gridy = 6;
@@ -199,7 +210,7 @@ public final class GeneralPanel extends PreferencesPanel {
         add(showTitle, c);
         c.gridx = 0;
         c.gridy = 7;
-        c.weighty = 1;
+        c.weighty = 0.2;
         c.insets = new Insets(5, 0, 0, 0);
         add(showTrayPlayer, c);
         c.gridx = 1;
@@ -215,7 +226,7 @@ public final class GeneralPanel extends PreferencesPanel {
         state.setShowTitle(showTitle.isSelected());
 
         Class<? extends Frame> oldFrameClass = state.getFrameClass();
-        Class<? extends Frame> newFrameClass = Frames.getFrameClass((String) windowType.getSelectedItem());
+        Class<? extends Frame> newFrameClass = windowTypeChoosingPanel.getSelectedItem();
         state.setFrameClass(newFrameClass);
         if (!oldFrameClass.equals(newFrameClass)) {
             needRestart = true;
@@ -299,14 +310,14 @@ public final class GeneralPanel extends PreferencesPanel {
      * @param type
      *            the new window type
      */
-    private void setWindowType(String type) {
-        windowType.setSelectedItem(type);
+    private void setWindowType(Class<? extends Frame> type) {
+        windowTypeChoosingPanel.setSelectedItem(type);
     }
 
     @Override
     public void updatePanel(ApplicationState state) {
         setShowTitle(state.isShowTitle());
-        setWindowType(Frames.getFrameName(state.getFrameClass()));
+        setWindowType(state.getFrameClass());
         setLanguage(I18nUtils.getSelectedLocale());
         setShowIconTray(state.isShowSystemTray());
         setShowTrayPlayer(state.isShowTrayPlayer());

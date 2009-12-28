@@ -20,60 +20,44 @@
 package net.sourceforge.atunes.gui.frame;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.swing.ImageIcon;
-
-import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class Frames {
 
     private Frames() {
     }
 
-    private static final Map<String, Class<? extends Frame>> nameToClassMap;
-    private static final Map<Class<? extends Frame>, String> classToNameMap;
+    private static final List<Class<? extends Frame>> classes;
 
-    private static Map<String, String> previewImages = new HashMap<String, String>();
+    private static Map<Class<? extends Frame>, String> previewImages = new HashMap<Class<? extends Frame>, String>();
 
     static {
-        nameToClassMap = new HashMap<String, Class<? extends Frame>>();
-        classToNameMap = new HashMap<Class<? extends Frame>, String>();
+        classes = new ArrayList<Class<? extends Frame>>();
 
-        add(I18nUtils.getString("STANDARD_WINDOW"), DefaultSingleFrame.class, "");
-        add(I18nUtils.getString("MULTIPLE_WINDOW"), MultipleFrame.class, "");
-        add(I18nUtils.getString("ENHANCED_WINDOW"), EnhancedSingleFrame.class, "");
+        add(DefaultSingleFrame.class, "1.png");
+        add(MultipleFrame.class, "2.png");
+        add(EnhancedSingleFrame.class, "3.png");
     }
 
-    private static void add(String name, Class<? extends Frame> clazz, String image) {
-        nameToClassMap.put(name, clazz);
-        classToNameMap.put(clazz, name);
-        previewImages.put(name, image);
+    private static void add(Class<? extends Frame> clazz, String image) {
+        classes.add(clazz);
+        previewImages.put(clazz, image);
     }
 
-    public static String getFrameName(Class<? extends Frame> clazz) {
-        return classToNameMap.get(clazz);
+    public static List<Class<? extends Frame>> getClasses() {
+        return classes;
     }
 
-    public static Class<? extends Frame> getFrameClass(String frameName) {
-        return nameToClassMap.get(frameName);
-    }
-
-    public static Set<String> getFrameNames() {
-        return nameToClassMap.keySet();
-    }
-
-    public static Set<Class<? extends Frame>> getFrameClass() {
-        return classToNameMap.keySet();
-    }
-
-    public static ImageIcon getImage(String name) {
-        if (!previewImages.containsKey(name)) {
+    public static ImageIcon getImage(Class<? extends Frame> clazz) {
+        if (clazz == null) {
             return null;
         }
-        URL imgURL = Frames.class.getResource("/images/windows/" + previewImages.get(name));
+        URL imgURL = Frames.class.getResource("/images/windows/" + previewImages.get(clazz));
         return imgURL != null ? new ImageIcon(imgURL) : null;
     }
 
