@@ -51,6 +51,20 @@ public class ToolBarFilterController extends SimpleController<ToolBarFilterPanel
                 });
             }
         });
+        
+        getComponentControlled().getClearFilterButton().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Disable filter
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						getComponentControlled().getFilterTextField().setText(null);
+						applyFilter(getFilter());
+					}
+				});
+			}
+		});
 	}
 
 	@Override
