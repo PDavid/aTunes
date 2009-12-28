@@ -80,7 +80,7 @@
 		</copy>
 
 		<copy todir="${deploy_folder}/temp">
-			<fileset dir="${images}/themes" includes="*.*" />
+			<fileset dir="${images}/windows" includes="*.*" />
 		</copy>
 
 		<delete dir="${deploy_folder}/temp" />
