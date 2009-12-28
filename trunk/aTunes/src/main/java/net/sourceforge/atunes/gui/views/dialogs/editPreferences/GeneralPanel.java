@@ -46,7 +46,6 @@ import net.sourceforge.atunes.gui.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.frame.Frame;
 import net.sourceforge.atunes.gui.frame.Frames;
 import net.sourceforge.atunes.gui.images.ImageLoader;
-import net.sourceforge.atunes.gui.images.ThemePreviewLoader;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
@@ -74,7 +73,7 @@ public final class GeneralPanel extends PreferencesPanel {
     private JCheckBox showTrayPlayer;
     private JButton fontSettings;
     JComboBox theme;
-    JLabel themePreview;
+    JLabel windowTypePreview;
 
     FontSettings currentFontSettings;
 
@@ -82,14 +81,13 @@ public final class GeneralPanel extends PreferencesPanel {
      * Instantiates a new general panel.
      */
     public GeneralPanel() {
-        // Titles are in bold. Label order has been changed, so number don't match any more
         super(I18nUtils.getString("GENERAL"));
         showTitle = new JCheckBox(I18nUtils.getString("SHOW_TITLE"));
-        JLabel label = new JLabel(I18nUtils.getString("WINDOW_TYPE"));
-        label.setFont(Fonts.GENERAL_FONT_BOLD);
+        JLabel windowTypeLabel = new JLabel(I18nUtils.getString("WINDOW_TYPE"));
+        windowTypeLabel.setFont(Fonts.GENERAL_FONT_BOLD);
         windowType = new JComboBox(new ListComboBoxModel<String>(new ArrayList<String>(Frames.getFrameNames())));
-        JLabel label2 = new JLabel(I18nUtils.getString("LANGUAGE"));
-        label2.setFont(Fonts.GENERAL_FONT_BOLD);
+        JLabel languageLabel = new JLabel(I18nUtils.getString("LANGUAGE"));
+        languageLabel.setFont(Fonts.GENERAL_FONT_BOLD);
 
         List<Locale> langs = I18nUtils.getLanguages();
         Locale[] array = langs.toArray(new Locale[langs.size()]);
@@ -127,8 +125,8 @@ public final class GeneralPanel extends PreferencesPanel {
 
         showIconTray = new JCheckBox(I18nUtils.getString("SHOW_TRAY_ICON"));
         showTrayPlayer = new JCheckBox(I18nUtils.getString("SHOW_TRAY_PLAYER"));
-        JLabel label3 = new JLabel(I18nUtils.getString("THEME"));
-        label3.setFont(Fonts.GENERAL_FONT_BOLD);
+        JLabel themeLabel = new JLabel(I18nUtils.getString("THEME"));
+        themeLabel.setFont(Fonts.GENERAL_FONT_BOLD);
 
         fontSettings = new JButton(I18nUtils.getString("CHANGE_FONT_SETTINGS"));
         fontSettings.addActionListener(new ActionListener() {
@@ -155,43 +153,41 @@ public final class GeneralPanel extends PreferencesPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String selectedTheme = (String) theme.getSelectedItem();
-                themePreview.setIcon(ThemePreviewLoader.getImage(selectedTheme));
                 if (!LookAndFeelSelector.getClassNameForLookAndFeelName(selectedTheme).equals(UIManager.getLookAndFeel().getClass().getName())) {
                     GuiUtils.applyTheme(selectedTheme);
                 }
             }
 
         });
-        themePreview = new JLabel();
-        themePreview.setVerticalTextPosition(SwingConstants.TOP);
-        themePreview.setHorizontalTextPosition(SwingConstants.CENTER);
+        windowTypePreview = new JLabel();
+        windowTypePreview.setVerticalTextPosition(SwingConstants.TOP);
+        windowTypePreview.setHorizontalTextPosition(SwingConstants.CENTER);
 
         GridBagConstraints c = new GridBagConstraints();
-        // First display language
         c.gridy = 0;
         c.anchor = GridBagConstraints.FIRST_LINE_START;
         c.insets = new Insets(5, 0, 0, 0);
-        add(label2, c);
+        add(languageLabel, c);
         c.gridx = 1;
         add(language, c);
         c.gridx = 0;
         c.gridy = 2;
         c.insets = new Insets(25, 0, 5, 0);
-        add(label, c);
+        add(themeLabel, c);
         c.gridx = 1;
         c.insets = new Insets(25, 0, 0, 0);
-        add(windowType, c);
+        add(theme, c);
         c.gridx = 0;
         c.gridy = 3;
         c.insets = new Insets(20, 0, 0, 0);
-        add(label3, c);
+        add(windowTypeLabel, c);
         c.gridx = 0;
         c.gridy = 4;
         c.insets = new Insets(5, 0, 0, 0);
-        add(themePreview, c);
+        add(windowTypePreview, c);
         c.gridx = 1;
         c.insets = new Insets(40, 0, 0, 0);
-        add(theme, c);
+        add(windowType, c);
         c.gridx = 0;
         c.gridy = 5;
         c.insets = new Insets(40, 0, 40, 0);
@@ -295,7 +291,6 @@ public final class GeneralPanel extends PreferencesPanel {
      */
     private void setTheme(String t) {
         theme.setSelectedItem(t);
-        themePreview.setIcon(ThemePreviewLoader.getImage(t));
     }
 
     /**
