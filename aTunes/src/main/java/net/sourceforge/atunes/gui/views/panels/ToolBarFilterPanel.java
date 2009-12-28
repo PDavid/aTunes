@@ -59,4 +59,11 @@ public class ToolBarFilterPanel extends JPanel {
         return filterTextField;
     }
 
+	/**
+	 * @return the clearFilterButton
+	 */
+	public JButton getClearFilterButton() {
+		return clearFilterButton;
+	}
+
 }
