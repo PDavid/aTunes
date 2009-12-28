@@ -19,9 +19,12 @@
  */
 package net.sourceforge.atunes.gui.frame;
 
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -33,18 +36,21 @@ public final class Frames {
     private static final Map<String, Class<? extends Frame>> nameToClassMap;
     private static final Map<Class<? extends Frame>, String> classToNameMap;
 
+    private static Map<String, String> previewImages = new HashMap<String, String>();
+
     static {
         nameToClassMap = new HashMap<String, Class<? extends Frame>>();
         classToNameMap = new HashMap<Class<? extends Frame>, String>();
 
-        add(I18nUtils.getString("STANDARD_WINDOW"), DefaultSingleFrame.class);
-        add(I18nUtils.getString("MULTIPLE_WINDOW"), MultipleFrame.class);
-        add(I18nUtils.getString("ENHANCED_WINDOW"), EnhancedSingleFrame.class);
+        add(I18nUtils.getString("STANDARD_WINDOW"), DefaultSingleFrame.class, "");
+        add(I18nUtils.getString("MULTIPLE_WINDOW"), MultipleFrame.class, "");
+        add(I18nUtils.getString("ENHANCED_WINDOW"), EnhancedSingleFrame.class, "");
     }
 
-    private static void add(String name, Class<? extends Frame> clazz) {
+    private static void add(String name, Class<? extends Frame> clazz, String image) {
         nameToClassMap.put(name, clazz);
         classToNameMap.put(clazz, name);
+        previewImages.put(name, image);
     }
 
     public static String getFrameName(Class<? extends Frame> clazz) {
@@ -62,5 +68,13 @@ public final class Frames {
     public static Set<Class<? extends Frame>> getFrameClass() {
         return classToNameMap.keySet();
     }
-    
+
+    public static ImageIcon getImage(String name) {
+        if (!previewImages.containsKey(name)) {
+            return null;
+        }
+        URL imgURL = Frames.class.getResource("/images/windows/" + previewImages.get(name));
+        return imgURL != null ? new ImageIcon(imgURL) : null;
+    }
+
 }
