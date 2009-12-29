@@ -362,8 +362,6 @@ public final class NavigationController extends Controller implements AudioFiles
         Actions.getAction(ShowFoldersInNavigatorAction.class).setEnabled(viewModeSupported);
         Actions.getAction(ShowGenresInNavigatorAction.class).setEnabled(viewModeSupported);
 
-        // Clear tree filter
-        // TODO: FILTER
         NavigationHandler.getInstance().refreshCurrentView();
 
         boolean useDefaultNavigatorColumns = NavigationHandler.getInstance().getView(navigationView).isUseDefaultNavigatorColumns();
@@ -371,9 +369,6 @@ public final class NavigationController extends Controller implements AudioFiles
         columnSetPopupMenu.enableArrangeColumns(useDefaultNavigatorColumns);
         // Enable column change
         ((NavigationTableColumnModel) navigationTablePanel.getNavigationTable().getColumnModel()).enableColumnChange(useDefaultNavigatorColumns);
-
-        // Clear table filter
-        // TODO: FILTER
 
         JTree tree = NavigationHandler.getInstance().getCurrentView().getTree();
 
