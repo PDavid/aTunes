@@ -34,30 +34,35 @@ public final class Frames {
 
     private static final List<Class<? extends Frame>> classes;
 
-    private static Map<Class<? extends Frame>, String> previewImages = new HashMap<Class<? extends Frame>, String>();
+    private static Map<Class<? extends Frame>, String> images = new HashMap<Class<? extends Frame>, String>();
 
     static {
         classes = new ArrayList<Class<? extends Frame>>();
 
         add(DefaultSingleFrame.class, "1.png");
-        add(MultipleFrame.class, "2.png");
-        add(EnhancedSingleFrame.class, "3.png");
+        add(EnhancedSingleFrame.class, "2.png");
+        add(MultipleFrame.class, "3.png");
     }
 
     private static void add(Class<? extends Frame> clazz, String image) {
         classes.add(clazz);
-        previewImages.put(clazz, image);
+        images.put(clazz, image);
     }
 
     public static List<Class<? extends Frame>> getClasses() {
-        return classes;
+        return new ArrayList<Class<? extends Frame>>(classes);
     }
 
     public static ImageIcon getImage(Class<? extends Frame> clazz) {
         if (clazz == null) {
             return null;
         }
-        URL imgURL = Frames.class.getResource("/images/windows/" + previewImages.get(clazz));
+        String string = images.get(clazz);
+        return getImage(string);
+    }
+
+    private static ImageIcon getImage(String string) {
+        URL imgURL = Frames.class.getResource("/images/windows/" + string);
         return imgURL != null ? new ImageIcon(imgURL) : null;
     }
 
