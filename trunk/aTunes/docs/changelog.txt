@@ -27,6 +27,8 @@
 - New option to store repository configuration in a custom folder
 - Some navigation views share common columns as play list
 - Filter redesign
+- New window layouts available
+- Cache for audio file images
 - Added translation to Catalan (thanks to perru002)
 - INTERNAL: Avoid unnecessary refresh view operations
 - INTERNAL: Share actions between play list and navigation tree and table
