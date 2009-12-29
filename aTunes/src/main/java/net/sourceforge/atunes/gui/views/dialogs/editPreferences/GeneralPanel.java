@@ -25,12 +25,11 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.Collator;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -48,6 +47,7 @@ import net.sourceforge.atunes.gui.frame.Frame;
 import net.sourceforge.atunes.gui.frame.Frames;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.ByImageChoosingPanel;
+import net.sourceforge.atunes.gui.views.controls.ByImageChoosingPanel.ImageEntry;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
@@ -160,9 +160,9 @@ public final class GeneralPanel extends PreferencesPanel {
             }
 
         });
-        Map<Class<? extends Frame>, ImageIcon> data = new HashMap<Class<? extends Frame>, ImageIcon>();
+        List<ImageEntry<Class<? extends Frame>>> data = new ArrayList<ImageEntry<Class<? extends Frame>>>();
         for (Class<? extends Frame> clazz : Frames.getClasses()) {
-            data.put(clazz, Frames.getImage(clazz));
+            data.add(new ImageEntry<Class<? extends Frame>>(clazz, Frames.getImage(clazz)));
         }
         windowTypeChoosingPanel = new ByImageChoosingPanel<Class<? extends Frame>>(data);
 
