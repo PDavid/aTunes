@@ -27,29 +27,17 @@ import net.sourceforge.atunes.kernel.modules.repository.AudioFileStats;
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.misc.RankList;
 
-/**
- * The Class RepositoryStats.
- */
 public class Statistics implements Serializable {
 
     private static final long serialVersionUID = -3603927907730394505L;
 
-    /** The total plays. */
     private int totalPlays;
-
-    /** The different audio files played. */
     private int differentAudioFilesPlayed;
-
     /** The audio files ranking. The ranking contains URL of every audio file */
     private RankList<String> audioFilesRanking;
-
-    /** The albums ranking */
     private RankList<StatisticsAlbum> albumsRanking;
-
     /** The artists ranking. The ranking contains names of artists */
     private RankList<String> artistsRanking;
-
-    /** The audio files stats. */
     private Map<String, AudioFileStats> audioFilesStats;
 
     /**
