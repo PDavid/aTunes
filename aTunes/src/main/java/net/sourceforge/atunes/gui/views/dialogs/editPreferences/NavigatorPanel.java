@@ -112,53 +112,26 @@ public final class NavigatorPanel extends PreferencesPanel {
             // Nothing to do
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * javax.swing.table.TableModel#addTableModelListener(javax.swing.event
-         * .TableModelListener)
-         */
         @Override
         public void addTableModelListener(TableModelListener l) {
             listeners.add(l);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see javax.swing.table.TableModel#getColumnClass(int)
-         */
         @Override
         public Class<?> getColumnClass(int columnIndex) {
             return columnIndex == 0 ? Boolean.class : String.class;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see javax.swing.table.TableModel#getColumnCount()
-         */
         @Override
         public int getColumnCount() {
             return 2;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see javax.swing.table.TableModel#getColumnName(int)
-         */
         @Override
         public String getColumnName(int column) {
             return "";
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see javax.swing.table.TableModel#getRowCount()
-         */
         @Override
         public int getRowCount() {
             if (this.tagAttributes != null) {
@@ -166,12 +139,6 @@ public final class NavigatorPanel extends PreferencesPanel {
             }
             return 0;
         }
-
-        /*
-         * (non-Javadoc)
-         * 
-         * @see javax.swing.table.TableModel#getValueAt(int, int)
-         */
 
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
@@ -181,23 +148,11 @@ public final class NavigatorPanel extends PreferencesPanel {
             return I18nUtils.getString(TagAttribute.values()[rowIndex].name());
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see javax.swing.table.TableModel#isCellEditable(int, int)
-         */
         @Override
         public boolean isCellEditable(int rowIndex, int columnIndex) {
             return columnIndex == 0;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * javax.swing.table.TableModel#removeTableModelListener(javax.swing
-         * .event.TableModelListener)
-         */
         @Override
         public void removeTableModelListener(TableModelListener l) {
             listeners.remove(l);
@@ -212,13 +167,6 @@ public final class NavigatorPanel extends PreferencesPanel {
         public void setTagAttributes(Map<TagAttribute, Boolean> attrs) {
             this.tagAttributes = attrs;
         }
-
-        /*
-         * (non-Javadoc)
-         * 
-         * @see javax.swing.table.TableModel#setValueAt(java.lang.Object, int,
-         * int)
-         */
 
         @Override
         public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
@@ -244,7 +192,6 @@ public final class NavigatorPanel extends PreferencesPanel {
     /**
      * Instantiates a new navigator panel.
      */
-
     public NavigatorPanel() {
         super(I18nUtils.getString("NAVIGATOR"));
         showFavorites = new JCheckBox(I18nUtils.getString("SHOW_FAVORITES"));
