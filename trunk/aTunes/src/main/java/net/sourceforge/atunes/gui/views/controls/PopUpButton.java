@@ -27,11 +27,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.Action;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
@@ -49,7 +49,6 @@ public final class PopUpButton extends JButton {
     public static final int BOTTOM_RIGHT = 4;
 
     JPopupMenu menu;
-    PopUpButton object;
     private int location;
     int xLocation;
     int yLocation;
@@ -73,20 +72,6 @@ public final class PopUpButton extends JButton {
     /**
      * Instantiates a new pop up button.
      * 
-     * @param image
-     *            the image
-     * @param location
-     *            the location
-     */
-    public PopUpButton(ImageIcon image, int location) {
-        super(null, image);
-        setPreferredSize(new Dimension(20, 20));
-        setButton(location);
-    }
-
-    /**
-     * Instantiates a new pop up button.
-     * 
      * @param text
      *            the text
      * @param location
@@ -94,9 +79,17 @@ public final class PopUpButton extends JButton {
      */
     public PopUpButton(String text, int location) {
         super(text, null);
-        //setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getFontMetrics(FontSingleton.GENERAL_FONT).stringWidth(text) + 20, 20));
         setButton(location);
+        setIcon(location);
         GuiUtils.applyComponentOrientation(menu);
+    }
+
+    private void setIcon(int location) {
+        if (location == TOP_LEFT || location == TOP_RIGHT) {
+            setIcon(Images.getImage(Images.POPUP_BUTTON_UP));
+        } else if (location == BOTTOM_LEFT || location == BOTTOM_RIGHT) {
+            setIcon(Images.getImage(Images.POPUP_BUTTON_DOWN));
+        }
     }
 
     @Override
@@ -133,14 +126,13 @@ public final class PopUpButton extends JButton {
      *            the new button
      */
     private void setButton(int location) {
-        object = this;
         this.location = location;
         menu = new JPopupMenu();
         addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 setMenuLocation(getLocationProperty());
-                menu.show(object, xLocation, yLocation);
+                menu.show(PopUpButton.this, xLocation, yLocation);
             }
         });
     }

@@ -10,7 +10,6 @@ import javax.swing.JTextField;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
 import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.StringUtils;
 
 public class ToolBarFilterPanel extends JPanel {
 
@@ -26,7 +25,7 @@ public class ToolBarFilterPanel extends JPanel {
     }
 
     private void addContent() {
-        filterButton = new PopUpButton(StringUtils.getString(I18nUtils.getString("FILTER"), "..."), PopUpButton.BOTTOM_RIGHT);
+        filterButton = new PopUpButton(I18nUtils.getString("FILTER"), PopUpButton.BOTTOM_RIGHT);
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
@@ -59,11 +58,11 @@ public class ToolBarFilterPanel extends JPanel {
         return filterTextField;
     }
 
-	/**
-	 * @return the clearFilterButton
-	 */
-	public JButton getClearFilterButton() {
-		return clearFilterButton;
-	}
+    /**
+     * @return the clearFilterButton
+     */
+    public JButton getClearFilterButton() {
+        return clearFilterButton;
+    }
 
 }
