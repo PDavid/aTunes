@@ -98,7 +98,7 @@ public class RepositoryFiller {
                 repository.getGenreStructure().put(genre, genreObject);
             }
 
-            genreObject.addSong(audioFile);
+            genreObject.addAudioFile(audioFile);
         } catch (Exception e) {
             getLogger().error(LogCategories.FILE_READ, e.getMessage());
         }
@@ -145,7 +145,7 @@ public class RepositoryFiller {
         if (parentFolder == null) {
             parentFolder = new Folder(".");
         }
-        parentFolder.addFile(file);
+        parentFolder.addAudioFile(file);
     }
 
     /**

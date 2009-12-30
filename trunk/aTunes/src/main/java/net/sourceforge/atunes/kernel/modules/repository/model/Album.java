@@ -51,7 +51,7 @@ public class Album implements Serializable, TreeObject, Comparable<Album> {
     private Artist artist;
 
     /** List of songs of this album. */
-    private List<AudioFile> songs;
+    private List<AudioFile> audioFiles;
 
     /**
      * Constructor.
@@ -61,7 +61,7 @@ public class Album implements Serializable, TreeObject, Comparable<Album> {
      */
     public Album(String name) {
         this.name = name;
-        songs = new ArrayList<AudioFile>();
+        audioFiles = new ArrayList<AudioFile>();
     }
 
     /**
@@ -71,7 +71,7 @@ public class Album implements Serializable, TreeObject, Comparable<Album> {
      *            the file
      */
     public void addSong(AudioFile file) {
-        songs.add(file);
+        audioFiles.add(file);
     }
 
     /**
@@ -87,11 +87,6 @@ public class Album implements Serializable, TreeObject, Comparable<Album> {
         return getNameAndArtist().compareTo(o.getNameAndArtist());
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object o) {
         if (o == null || !(o instanceof Album)) {
@@ -115,7 +110,7 @@ public class Album implements Serializable, TreeObject, Comparable<Album> {
      * @return the audio files
      */
     public List<AudioFile> getAudioFiles() {
-        return new ArrayList<AudioFile>(songs);
+        return new ArrayList<AudioFile>(audioFiles);
     }
 
     /**
@@ -125,7 +120,7 @@ public class Album implements Serializable, TreeObject, Comparable<Album> {
      */
     @Override
     public List<AudioObject> getAudioObjects() {
-        return new ArrayList<AudioObject>(songs);
+        return new ArrayList<AudioObject>(audioFiles);
     }
 
     /**
@@ -157,7 +152,7 @@ public class Album implements Serializable, TreeObject, Comparable<Album> {
      * @return the picture
      */
     public ImageIcon getPicture(ImageSize imageSize) {
-        return songs.get(0).getImage(imageSize);
+        return audioFiles.get(0).getImage(imageSize);
     }
 
     /**
@@ -166,14 +161,9 @@ public class Album implements Serializable, TreeObject, Comparable<Album> {
      * @return true, if checks for cover downloaded
      */
     public boolean hasCoverDownloaded() {
-        return new File(AudioFilePictureUtils.getFileNameForCover(songs.get(0))).exists();
+        return new File(AudioFilePictureUtils.getFileNameForCover(audioFiles.get(0))).exists();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         return StringUtils.getString(name, artist).hashCode();
@@ -186,7 +176,7 @@ public class Album implements Serializable, TreeObject, Comparable<Album> {
      *            the file
      */
     public void removeAudioFile(AudioFile file) {
-        songs.remove(file);
+        audioFiles.remove(file);
     }
 
     /**
@@ -224,7 +214,7 @@ public class Album implements Serializable, TreeObject, Comparable<Album> {
     public void setExtendedToolTip(ExtendedToolTip toolTip) {
         toolTip.setLine1(name);
         toolTip.setLine2(artist.getName());
-        int songNumber = songs.size();
+        int songNumber = audioFiles.size();
         toolTip.setLine3(StringUtils.getString(songNumber, " ", (songNumber > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG"))));
     }
 

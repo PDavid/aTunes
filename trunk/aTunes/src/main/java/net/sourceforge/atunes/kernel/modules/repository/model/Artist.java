@@ -89,11 +89,6 @@ public class Artist implements Serializable, TreeObject, Comparable<Artist> {
         return this.name.compareTo(o.name);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object o) {
         if (o == null || !(o instanceof Artist)) {
@@ -159,11 +154,6 @@ public class Artist implements Serializable, TreeObject, Comparable<Artist> {
         return name;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         return name.hashCode();
