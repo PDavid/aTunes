@@ -127,6 +127,8 @@ public final class Images {
     public static final String PLAY_TRAY_MENU = "playTrayMenu.png";
     public static final String PLAYLIST = "playlist.png";
     public static final String PLUGIN = "plugin.png";
+    public static final String POPUP_BUTTON_DOWN = "popupButtonDown.png";
+    public static final String POPUP_BUTTON_UP = "popupButtonUp.png";
     public static final String POWERED_BY_LAST_FM = "poweredByLastFm.png";
     public static final String PREFS = "prefs.png";
     public static final String PREVIOUS = "previous.png";
