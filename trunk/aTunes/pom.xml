@@ -109,7 +109,7 @@
 						<java>SLASHSTAR_STYLE</java>
 					</mapping>
 					<properties>
-						<year>2009</year>
+						<year>2010</year>
 						<version>${project.version}</version>
 					</properties>
 				</configuration>
