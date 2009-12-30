@@ -347,7 +347,7 @@ public class RepositoryLoader extends Thread {
             // Remove from genre structure if necessary
             Genre g = repository.getGenreStructure().get(genre);
             if (g != null) {
-                g.removeSong(file);
+                g.removeAudioFile(file);
 
                 if (g.getAudioObjects().size() <= 1) {
                     repository.getGenreStructure().remove(genre);
@@ -688,7 +688,7 @@ public class RepositoryLoader extends Thread {
             // Remove from file structure
             Folder f = getFolderForFile(file);
             if (f != null) {
-                f.removeFile(file);
+                f.removeAudioFile(file);
                 // If folder is empty, remove too
                 if (f.isEmpty()) {
                     f.getParentFolder().removeFolder(f);
@@ -718,7 +718,7 @@ public class RepositoryLoader extends Thread {
             // Remove from genre structure
             Genre g = RepositoryHandler.getInstance().getGenreStructure().get(genre);
             if (g != null) {
-                g.removeSong(file);
+                g.removeAudioFile(file);
                 if (g.getAudioObjects().size() <= 1) {
                     RepositoryHandler.getInstance().getGenreStructure().remove(genre);
                 }

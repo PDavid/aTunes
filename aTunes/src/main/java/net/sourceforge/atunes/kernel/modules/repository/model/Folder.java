@@ -50,7 +50,7 @@ public class Folder implements Serializable, TreeObject {
     private String name;
 
     /** List of files in this folder. */
-    private List<AudioFile> files;
+    private List<AudioFile> audioFiles;
 
     /** List of folders in this folder, indexed by name. */
     private Map<String, Folder> folders;
@@ -66,7 +66,7 @@ public class Folder implements Serializable, TreeObject {
      */
     public Folder(String name) {
         this.name = name;
-        this.files = new ArrayList<AudioFile>();
+        this.audioFiles = new ArrayList<AudioFile>();
         folders = new HashMap<String, Folder>();
     }
 
@@ -76,8 +76,8 @@ public class Folder implements Serializable, TreeObject {
      * @param file
      *            the file
      */
-    public void addFile(AudioFile file) {
-        files.add(file);
+    public void addAudioFile(AudioFile file) {
+        audioFiles.add(file);
     }
 
     /**
@@ -125,7 +125,7 @@ public class Folder implements Serializable, TreeObject {
      */
     public List<AudioFile> getAudioFiles() {
         List<AudioFile> result = new ArrayList<AudioFile>();
-        result.addAll(files);
+        result.addAll(audioFiles);
         for (String string : folders.keySet()) {
             Folder f = folders.get(string);
             result.addAll(f.getAudioFiles());
@@ -141,7 +141,7 @@ public class Folder implements Serializable, TreeObject {
     @Override
     public List<AudioObject> getAudioObjects() {
         List<AudioObject> result = new ArrayList<AudioObject>();
-        result.addAll(files);
+        result.addAll(audioFiles);
         for (String string : folders.keySet()) {
             Folder f = folders.get(string);
             result.addAll(f.getAudioObjects());
@@ -155,7 +155,7 @@ public class Folder implements Serializable, TreeObject {
      * @return the files
      */
     public List<AudioFile> getFiles() {
-        return files;
+        return audioFiles;
     }
 
     /**
@@ -203,7 +203,7 @@ public class Folder implements Serializable, TreeObject {
      * @return true, if checks if is empty
      */
     public boolean isEmpty() {
-        return files.isEmpty() && folders.isEmpty();
+        return audioFiles.isEmpty() && folders.isEmpty();
     }
 
     /**
@@ -212,8 +212,8 @@ public class Folder implements Serializable, TreeObject {
      * @param file
      *            the file
      */
-    public void removeFile(AudioFile file) {
-        files.remove(file);
+    public void removeAudioFile(AudioFile file) {
+        audioFiles.remove(file);
     }
 
     /**

@@ -48,7 +48,7 @@ public class Genre implements Serializable, TreeObject {
     private String name;
 
     /** List of songs of this genre. */
-    private List<AudioFile> songs;
+    private List<AudioFile> audioFiles;
 
     /**
      * Constructor.
@@ -58,7 +58,7 @@ public class Genre implements Serializable, TreeObject {
      */
     public Genre(String name) {
         this.name = name;
-        songs = new ArrayList<AudioFile>();
+        audioFiles = new ArrayList<AudioFile>();
     }
 
     /**
@@ -67,15 +67,10 @@ public class Genre implements Serializable, TreeObject {
      * @param a
      *            the a
      */
-    public void addSong(AudioFile a) {
-        songs.add(a);
+    public void addAudioFile(AudioFile a) {
+        audioFiles.add(a);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object o) {
         if (o == null || !(o instanceof Genre)) {
@@ -85,17 +80,18 @@ public class Genre implements Serializable, TreeObject {
     }
 
     /**
-     * Returns all songs of this genre (all songs of all artists) from the given repository
+     * Returns all songs of this genre (all songs of all artists) from the given
+     * repository
      * 
      * @return the audio objects
      */
     @Override
     public List<AudioObject> getAudioObjects() {
-    	List<AudioObject> result = new ArrayList<AudioObject>();
-    	for (AudioFile song : songs) {
-    		result.add(song);
-    	}
-    	return result;
+        List<AudioObject> result = new ArrayList<AudioObject>();
+        for (AudioFile song : audioFiles) {
+            result.add(song);
+        }
+        return result;
     }
 
     /**
@@ -107,11 +103,6 @@ public class Genre implements Serializable, TreeObject {
         return name;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         return name.hashCode();
@@ -123,8 +114,8 @@ public class Genre implements Serializable, TreeObject {
      * @param a
      *            the a
      */
-    public void removeSong(AudioFile a) {
-        songs.remove(a);
+    public void removeAudioFile(AudioFile a) {
+        audioFiles.remove(a);
     }
 
     /**
@@ -197,40 +188,41 @@ public class Genre implements Serializable, TreeObject {
         return getUnknownGenre().equalsIgnoreCase(genre);
     }
 
-	/**
-	 * Returns an structure of artists and albums containing songs of this genre
-	 * @return the artists
-	 */
+    /**
+     * Returns an structure of artists and albums containing songs of this genre
+     * 
+     * @return the artists
+     */
     public Map<String, Artist> getArtistObjects() {
-    	Map<String, Artist> structure = new HashMap<String, Artist>();
-    	for (AudioFile song : songs) {
-    		String artist = !song.getAlbumArtist().equals("") ? song.getAlbumArtist() : song.getArtist();    		
-    		if (!structure.containsKey(artist)) {
-    			structure.put(artist, new Artist(artist));
-    		}
-    		if (!structure.get(artist).getAlbums().containsKey(song.getAlbum())) {
-    			Album album = new Album(song.getAlbum());
-    			album.setArtist(structure.get(artist));
-    			structure.get(artist).addAlbum(album);
-    		}
-    		structure.get(artist).getAlbum(song.getAlbum()).addSong(song);
-    	}
-    	return structure;
+        Map<String, Artist> structure = new HashMap<String, Artist>();
+        for (AudioFile song : audioFiles) {
+            String artist = !song.getAlbumArtist().equals("") ? song.getAlbumArtist() : song.getArtist();
+            if (!structure.containsKey(artist)) {
+                structure.put(artist, new Artist(artist));
+            }
+            if (!structure.get(artist).getAlbums().containsKey(song.getAlbum())) {
+                Album album = new Album(song.getAlbum());
+                album.setArtist(structure.get(artist));
+                structure.get(artist).addAlbum(album);
+            }
+            structure.get(artist).getAlbum(song.getAlbum()).addSong(song);
+        }
+        return structure;
     }
-    
+
     /**
      * Returns all artists of this genre
      */
     public Set<String> getArtistSet() {
-		Set<String> artists = new HashSet<String>();
-		for (AudioFile song : songs) {
-			if (!song.getAlbumArtist().equals("")) {
-				artists.add(song.getAlbumArtist());
-			} else {
-				artists.add(song.getArtist());
-			}
-		}
-		return artists;
-	}
+        Set<String> artists = new HashSet<String>();
+        for (AudioFile song : audioFiles) {
+            if (!song.getAlbumArtist().equals("")) {
+                artists.add(song.getAlbumArtist());
+            } else {
+                artists.add(song.getArtist());
+            }
+        }
+        return artists;
+    }
 
 }
