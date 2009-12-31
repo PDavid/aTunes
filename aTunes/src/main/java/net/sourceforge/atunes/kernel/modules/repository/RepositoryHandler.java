@@ -308,6 +308,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
      * 
      * @return
      */
+    //TODO
     public Map<String, Album> getAlbumStructure() {
         if (repository != null) {
             Map<String, Album> albumsStructure = new HashMap<String, Album>();

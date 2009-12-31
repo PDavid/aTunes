@@ -29,7 +29,7 @@ import net.sourceforge.atunes.kernel.modules.repository.model.Genre;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
-public class RepositoryFiller {
+class RepositoryFiller {
 
     /**
      * Logger
@@ -42,7 +42,7 @@ public class RepositoryFiller {
      * @param repository
      * @param audioFile
      */
-    protected static void addToRepository(Repository repository, AudioFile audioFile) {
+    static void addToRepository(Repository repository, AudioFile audioFile) {
         repository.getAudioFiles().put(audioFile.getUrl(), audioFile);
         repository.setTotalSizeInBytes(repository.getTotalSizeInBytes() + audioFile.getFile().length());
         repository.addDurationInSeconds(audioFile.getDuration());
@@ -56,7 +56,7 @@ public class RepositoryFiller {
      * @param audioFile
      *            AudioFile to display
      */
-    protected static void addToArtistStructure(Repository repository, AudioFile audioFile) {
+    static void addToArtistStructure(Repository repository, AudioFile audioFile) {
         try {
             String artist = audioFile.getAlbumArtistOrArtist();
             String album = audioFile.getAlbum();
@@ -74,7 +74,7 @@ public class RepositoryFiller {
                 artistObject.addAlbum(albumObject);
             }
 
-            albumObject.addSong(audioFile);
+            albumObject.addAudioFile(audioFile);
         } catch (Exception e) {
             logger.error(LogCategories.FILE_READ, e.getMessage());
         }
@@ -88,7 +88,7 @@ public class RepositoryFiller {
      * @param audioFile
      *            the audio file
      */
-    protected static void addToGenreStructure(Repository repository, AudioFile audioFile) {
+    static void addToGenreStructure(Repository repository, AudioFile audioFile) {
         try {
             String genre = audioFile.getGenre();
 
@@ -116,7 +116,7 @@ public class RepositoryFiller {
      * @param file
      *            the file
      */
-    protected static void addToFolderStructure(Repository repository, File relativeTo, String relativePath, AudioFile file) {
+    static void addToFolderStructure(Repository repository, File relativeTo, String relativePath, AudioFile file) {
         Folder relativeFolder = repository.getFolderStructure().get(relativeTo.getAbsolutePath());
         if (relativeFolder == null) {
             relativeFolder = new Folder(relativeTo.getAbsolutePath());

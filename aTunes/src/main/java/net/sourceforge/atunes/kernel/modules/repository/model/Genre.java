@@ -205,7 +205,7 @@ public class Genre implements Serializable, TreeObject {
                 album.setArtist(structure.get(artist));
                 structure.get(artist).addAlbum(album);
             }
-            structure.get(artist).getAlbum(song.getAlbum()).addSong(song);
+            structure.get(artist).getAlbum(song.getAlbum()).addAudioFile(song);
         }
         return structure;
     }
