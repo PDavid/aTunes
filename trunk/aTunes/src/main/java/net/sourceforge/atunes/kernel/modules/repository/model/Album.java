@@ -70,7 +70,7 @@ public class Album implements Serializable, TreeObject, Comparable<Album> {
      * @param file
      *            the file
      */
-    public void addSong(AudioFile file) {
+    public void addAudioFile(AudioFile file) {
         audioFiles.add(file);
     }
 
