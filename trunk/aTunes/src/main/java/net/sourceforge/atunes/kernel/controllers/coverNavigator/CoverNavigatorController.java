@@ -44,8 +44,8 @@ import net.sourceforge.atunes.gui.views.dialogs.CoverNavigatorFrame;
 import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
 import net.sourceforge.atunes.kernel.modules.amazon.GetCoversFromAmazonProcess;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
-import net.sourceforge.atunes.kernel.modules.repository.model.Album;
-import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
+import net.sourceforge.atunes.kernel.modules.repository.data.Album;
+import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 import org.jdesktop.swingx.border.DropShadowBorder;

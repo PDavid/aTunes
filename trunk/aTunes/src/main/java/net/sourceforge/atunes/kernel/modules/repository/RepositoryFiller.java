@@ -21,11 +21,12 @@ package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.io.File;
 
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
-import net.sourceforge.atunes.kernel.modules.repository.model.Album;
-import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
-import net.sourceforge.atunes.kernel.modules.repository.model.Folder;
-import net.sourceforge.atunes.kernel.modules.repository.model.Genre;
+import net.sourceforge.atunes.kernel.modules.repository.data.Album;
+import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.data.Folder;
+import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
+import net.sourceforge.atunes.kernel.modules.repository.data.Repository;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
@@ -34,7 +35,7 @@ class RepositoryFiller {
     /**
      * Logger
      */
-    private static Logger logger;
+    private static Logger logger = new Logger();
 
     /**
      * Adds basic information of given audio file to repository
@@ -100,7 +101,7 @@ class RepositoryFiller {
 
             genreObject.addAudioFile(audioFile);
         } catch (Exception e) {
-            getLogger().error(LogCategories.FILE_READ, e.getMessage());
+            logger.error(LogCategories.FILE_READ, e.getMessage());
         }
     }
 
@@ -148,15 +149,4 @@ class RepositoryFiller {
         parentFolder.addAudioFile(file);
     }
 
-    /**
-     * Private getter of logger
-     * 
-     * @return
-     */
-    private static Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
-    }
 }

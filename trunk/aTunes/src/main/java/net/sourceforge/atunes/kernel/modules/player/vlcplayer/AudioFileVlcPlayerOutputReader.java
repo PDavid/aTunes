@@ -19,7 +19,7 @@
  */
 package net.sourceforge.atunes.kernel.modules.player.vlcplayer;
 
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 
 class AudioFileVlcPlayerOutputReader extends VlcPlayerOutputReader {
 

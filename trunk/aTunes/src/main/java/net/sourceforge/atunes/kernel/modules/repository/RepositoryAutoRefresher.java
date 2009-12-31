@@ -27,15 +27,10 @@ import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
-/**
- * The Class RepositoryAutoRefresher.
- */
-public class RepositoryAutoRefresher extends Thread {
+class RepositoryAutoRefresher extends Thread {
 
-    /** The logger. */
     private Logger logger = new Logger();
 
-    /** The handler. */
     private RepositoryHandler handler;
 
     /**

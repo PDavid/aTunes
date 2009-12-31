@@ -21,7 +21,7 @@ package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 
 public interface AudioFilesRemovedListener {
 

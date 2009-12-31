@@ -29,7 +29,7 @@ import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.modules.cdripper.EncoderProgressListener;
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.DefaultTag;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.Tag;
 import net.sourceforge.atunes.kernel.modules.repository.tags.writer.TagModifier;

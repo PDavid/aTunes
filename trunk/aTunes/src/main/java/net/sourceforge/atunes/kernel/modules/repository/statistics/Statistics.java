@@ -17,14 +17,13 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package net.sourceforge.atunes.kernel.modules.statistics;
+package net.sourceforge.atunes.kernel.modules.repository.statistics;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.repository.AudioFileStats;
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.RankList;
 
 public class Statistics implements Serializable {

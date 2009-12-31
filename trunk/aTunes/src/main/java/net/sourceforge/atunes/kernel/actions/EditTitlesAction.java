@@ -28,7 +28,7 @@ import javax.swing.tree.TreePath;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
-import net.sourceforge.atunes.kernel.modules.repository.model.Album;
+import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class EditTitlesAction extends Action {

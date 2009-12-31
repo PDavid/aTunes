@@ -17,7 +17,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package net.sourceforge.atunes.kernel.modules.repository;
+package net.sourceforge.atunes.kernel.modules.repository.data;
 
 import java.io.File;
 import java.io.Serializable;
@@ -26,35 +26,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
-import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
-import net.sourceforge.atunes.kernel.modules.repository.model.Folder;
-import net.sourceforge.atunes.kernel.modules.repository.model.Genre;
 
-/**
- * The Class Repository.
- * 
- * @author fleax
- */
 public class Repository implements Serializable {
 
     private static final long serialVersionUID = -8278937514875788175L;
 
-    /** The folders. */
     private List<File> folders;
-
-    /** The files. */
     private Map<String, AudioFile> files;
-
     /** The total size in bytes. */
     private long totalSizeInBytes;
-
     /** The total duration in seconds. */
     private long totalDurationInSeconds;
-
-    /** The structure. */
     private RepositoryStructure structure;
-
     /** Attribute to indicate if repository needs to be written to disk */
     private transient boolean dirty;
 
@@ -190,7 +173,7 @@ public class Repository implements Serializable {
     /**
      * @return the dirty
      */
-    protected boolean isDirty() {
+    public boolean isDirty() {
         return dirty;
     }
 
@@ -198,7 +181,7 @@ public class Repository implements Serializable {
      * @param dirty
      *            the dirty to set
      */
-    protected void setDirty(boolean dirty) {
+    public void setDirty(boolean dirty) {
         this.dirty = dirty;
     }
 

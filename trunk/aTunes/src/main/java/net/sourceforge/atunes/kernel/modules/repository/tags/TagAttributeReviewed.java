@@ -24,7 +24,7 @@ import java.util.HashMap;
 
 import javax.swing.table.TableCellEditor;
 
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.Tag;
 
 /**

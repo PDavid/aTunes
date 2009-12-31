@@ -17,12 +17,12 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package net.sourceforge.atunes.kernel.modules.repository;
+package net.sourceforge.atunes.kernel.modules.repository.processes;
 
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.process.AudioFileTransferProcess;
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**

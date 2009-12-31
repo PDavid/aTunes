@@ -23,7 +23,7 @@ import java.io.File;
 
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 
 class PodcastFeedEntryVlcPlayerOutputReader extends VlcPlayerOutputReader {
 

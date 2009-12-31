@@ -27,7 +27,7 @@ import java.util.Map;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.kernel.modules.repository.model.Folder;
+import net.sourceforge.atunes.kernel.modules.repository.data.Folder;
 import net.sourceforge.atunes.model.TreeObject;
 
 /**

@@ -26,7 +26,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.Kernel;
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.kernel.modules.search.RawSearchResult;
 import net.sourceforge.atunes.misc.SystemProperties;

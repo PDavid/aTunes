@@ -30,9 +30,9 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 
 import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
-import net.sourceforge.atunes.kernel.modules.repository.model.Album;
-import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
+import net.sourceforge.atunes.kernel.modules.repository.data.Album;
+import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.EditTagInfo;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.Tag;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;

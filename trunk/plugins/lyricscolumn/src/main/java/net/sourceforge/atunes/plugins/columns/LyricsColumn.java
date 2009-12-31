@@ -1,7 +1,7 @@
 package net.sourceforge.atunes.plugins.columns;
 
 import net.sourceforge.atunes.kernel.modules.columns.Column;
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.AudioObject;
 
 import org.commonjukebox.plugins.Plugin;
