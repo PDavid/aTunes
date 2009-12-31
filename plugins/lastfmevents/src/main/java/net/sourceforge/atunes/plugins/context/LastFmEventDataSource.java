@@ -6,7 +6,7 @@ import java.util.Map;
 
 import net.roarsoftware.lastfm.Event;
 import net.sourceforge.atunes.kernel.modules.context.ContextInformationDataSource;
-import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
+import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 
 public class LastFmEventDataSource implements ContextInformationDataSource {

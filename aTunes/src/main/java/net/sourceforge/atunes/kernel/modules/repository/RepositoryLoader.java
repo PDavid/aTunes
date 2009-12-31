@@ -31,13 +31,14 @@ import java.util.StringTokenizer;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
-import net.sourceforge.atunes.kernel.modules.repository.model.Album;
-import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
-import net.sourceforge.atunes.kernel.modules.repository.model.Folder;
-import net.sourceforge.atunes.kernel.modules.repository.model.Genre;
+import net.sourceforge.atunes.kernel.modules.repository.data.Album;
+import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.data.Folder;
+import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
+import net.sourceforge.atunes.kernel.modules.repository.data.Repository;
+import net.sourceforge.atunes.kernel.modules.repository.statistics.StatisticsHandler;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.Tag;
-import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.Timer;
 import net.sourceforge.atunes.misc.log.LogCategories;
@@ -46,7 +47,7 @@ import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
- * Class for loading audiofiles into repository.
+ * Class for loading audio files into repository.
  */
 public class RepositoryLoader extends Thread {
 
@@ -89,7 +90,7 @@ public class RepositoryLoader extends Thread {
      * @param files
      *            Files to add
      */
-    protected static void addToRepository(Repository rep, List<File> files) {
+    static void addToRepository(Repository rep, List<File> files) {
         // This operation changes repository, so mark it as dirty
         rep.setDirty(true);
 
@@ -176,7 +177,7 @@ public class RepositoryLoader extends Thread {
      * 
      * @return the int
      */
-    protected static int countFilesInRepository(Repository rep) {
+    static int countFilesInRepository(Repository rep) {
         int files = 0;
         for (File dir : rep.getFolders()) {
             files = files + countFiles(dir);
@@ -278,7 +279,7 @@ public class RepositoryLoader extends Thread {
      * @param file
      *            the file
      */
-    protected static void refreshFile(Repository repository, AudioFile file) {
+    static void refreshFile(Repository repository, AudioFile file) {
         // This operation changes repository, so mark it as dirty
         repository.setDirty(true);
 
@@ -445,7 +446,7 @@ public class RepositoryLoader extends Thread {
     /**
      * Interrupt load.
      */
-    protected void interruptLoad() {
+    void interruptLoad() {
         logger.info(LogCategories.REPOSITORY, "Load interrupted");
         interrupt = true;
     }
@@ -633,7 +634,7 @@ public class RepositoryLoader extends Thread {
     /**
      * @return the oldRepository
      */
-    protected Repository getOldRepository() {
+    Repository getOldRepository() {
         return oldRepository;
     }
 
@@ -647,7 +648,7 @@ public class RepositoryLoader extends Thread {
      * @param picture
      *            the picture
      */
-    protected static void addExternalPictureForAlbum(Repository repository, String artistName, String albumName, File picture) {
+    static void addExternalPictureForAlbum(Repository repository, String artistName, String albumName, File picture) {
         if (repository != null) {
             Artist artist = repository.getArtistStructure().get(artistName);
             if (artist == null) {
@@ -674,7 +675,7 @@ public class RepositoryLoader extends Thread {
      * @param file
      *            File to be removed permanently
      */
-    protected static void deleteFile(AudioFile file) {
+    static void deleteFile(AudioFile file) {
         String albumArtist = file.getAlbumArtist();
         String artist = file.getArtist();
         String album = file.getAlbum();
@@ -778,7 +779,7 @@ public class RepositoryLoader extends Thread {
      * @param oldFile
      * @param newFile
      */
-    protected static void renameFile(AudioFile audioFile, File oldFile, File newFile) {
+    static void renameFile(AudioFile audioFile, File oldFile, File newFile) {
         // This operation changes repository, so mark it as dirty
         RepositoryHandler.getInstance().getRepository().setDirty(true);
 

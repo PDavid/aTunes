@@ -14,8 +14,8 @@ import org.commonjukebox.plugins.PluginInfo;
 import net.sourceforge.atunes.kernel.modules.context.ContextPanel;
 import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
-import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
+import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.AudioObject;
 
 public class LastFmEventContextPanel extends ContextPanel implements Plugin {

@@ -25,7 +25,7 @@ import java.util.Collection;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.process.AudioFileTransferProcess;
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.utils.I18nUtils;

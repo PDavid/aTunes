@@ -31,8 +31,8 @@ import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
-import net.sourceforge.atunes.kernel.modules.repository.ExportFilesProcess;
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.processes.ExportFilesProcess;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 

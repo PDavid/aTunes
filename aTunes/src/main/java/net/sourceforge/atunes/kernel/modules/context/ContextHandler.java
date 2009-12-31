@@ -34,7 +34,7 @@ import net.sourceforge.atunes.kernel.modules.context.similar.SimilarArtistsConte
 import net.sourceforge.atunes.kernel.modules.context.youtube.YoutubeContextPanel;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService;

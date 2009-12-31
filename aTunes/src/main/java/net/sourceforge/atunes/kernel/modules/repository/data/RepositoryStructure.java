@@ -17,15 +17,12 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package net.sourceforge.atunes.kernel.modules.repository;
+package net.sourceforge.atunes.kernel.modules.repository.data;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
-import net.sourceforge.atunes.kernel.modules.repository.model.Folder;
-import net.sourceforge.atunes.kernel.modules.repository.model.Genre;
 
 public class RepositoryStructure implements Serializable {
 

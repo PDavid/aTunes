@@ -26,8 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.process.Process;
-import net.sourceforge.atunes.kernel.modules.repository.model.Album;
-import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
+import net.sourceforge.atunes.kernel.modules.repository.data.Album;
+import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;

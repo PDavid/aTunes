@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.modules.search.searchableobjects;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
 import net.sourceforge.atunes.kernel.modules.search.SearchableObject;
 import net.sourceforge.atunes.model.AudioObject;

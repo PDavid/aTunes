@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**

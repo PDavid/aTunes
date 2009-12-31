@@ -17,7 +17,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package net.sourceforge.atunes.kernel.modules.repository.model;
+package net.sourceforge.atunes.kernel.modules.repository.data;
 
 import java.io.File;
 import java.io.Serializable;
@@ -29,7 +29,6 @@ import java.util.Map;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;

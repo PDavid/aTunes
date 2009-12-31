@@ -27,10 +27,10 @@ import java.util.Random;
 
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.SortType;
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
-import net.sourceforge.atunes.kernel.modules.repository.model.Album;
-import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
-import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
+import net.sourceforge.atunes.kernel.modules.repository.data.Album;
+import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.statistics.StatisticsHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;

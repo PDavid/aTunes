@@ -28,9 +28,9 @@ import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.context.ContextPanel;
 import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
-import net.sourceforge.atunes.kernel.modules.repository.model.Album;
-import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
+import net.sourceforge.atunes.kernel.modules.repository.data.Album;
+import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 

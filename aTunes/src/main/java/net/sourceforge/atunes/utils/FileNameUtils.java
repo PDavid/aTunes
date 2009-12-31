@@ -20,7 +20,7 @@
 package net.sourceforge.atunes.utils;
 
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
 import net.sourceforge.atunes.misc.log.LogCategories;

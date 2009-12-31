@@ -23,9 +23,9 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
-import net.sourceforge.atunes.kernel.modules.repository.AudioFileStats;
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
-import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.statistics.AudioFileStats;
+import net.sourceforge.atunes.kernel.modules.repository.statistics.StatisticsHandler;
 import net.sourceforge.atunes.model.AudioObject;
 
 public class TimesPlayedColumn extends Column {

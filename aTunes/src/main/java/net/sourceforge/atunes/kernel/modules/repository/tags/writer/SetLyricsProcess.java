@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.modules.repository.tags.writer;
 import java.io.IOException;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
 
 /**

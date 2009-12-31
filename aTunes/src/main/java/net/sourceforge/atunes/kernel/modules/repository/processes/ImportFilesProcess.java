@@ -17,7 +17,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package net.sourceforge.atunes.kernel.modules.repository;
+package net.sourceforge.atunes.kernel.modules.repository.processes;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,7 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.process.AudioFileTransferProcess;
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.tags.TagAttributesReviewed;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.DefaultTag;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.Tag;

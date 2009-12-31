@@ -37,7 +37,7 @@ import javax.swing.text.StyleConstants;
 import net.sourceforge.atunes.gui.views.controls.CustomTextPane;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService;
 import net.sourceforge.atunes.misc.ClipboardFacade;

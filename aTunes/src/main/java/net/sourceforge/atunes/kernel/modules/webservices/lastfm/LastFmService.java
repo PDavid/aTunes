@@ -59,7 +59,7 @@ import net.sourceforge.atunes.kernel.modules.context.SimilarArtistsInfo;
 import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmAlbum;
@@ -748,7 +748,7 @@ public class LastFmService {
      * @return
      */
     private boolean checkArtist(AudioObject ao) {
-        if (net.sourceforge.atunes.kernel.modules.repository.model.Artist.isUnknownArtist(ao.getArtist())) {
+        if (net.sourceforge.atunes.kernel.modules.repository.data.Artist.isUnknownArtist(ao.getArtist())) {
             logger.debug(LogCategories.SERVICE, "Don't submit to Last.fm: Unknown artist");
             return false;
         }
@@ -800,8 +800,8 @@ public class LastFmService {
      */
     public String getTitleForFile(AudioFile f) {
         // If has valid artist name, album name, and track number...
-        if (!net.sourceforge.atunes.kernel.modules.repository.model.Artist.isUnknownArtist(f.getArtist())
-                && !net.sourceforge.atunes.kernel.modules.repository.model.Album.isUnknownAlbum(f.getAlbum()) && f.getTrackNumber() > 0) {
+        if (!net.sourceforge.atunes.kernel.modules.repository.data.Artist.isUnknownArtist(f.getArtist())
+                && !net.sourceforge.atunes.kernel.modules.repository.data.Album.isUnknownAlbum(f.getAlbum()) && f.getTrackNumber() > 0) {
             // Find album
             AlbumInfo albumRetrieved = getAlbum(f.getArtist(), f.getAlbum());
             if (albumRetrieved != null) {
@@ -822,8 +822,8 @@ public class LastFmService {
      */
     public int getTrackNumberForFile(AudioFile f) {
         // If has valid artist name, album name and title
-        if (!net.sourceforge.atunes.kernel.modules.repository.model.Artist.isUnknownArtist(f.getArtist())
-                && !net.sourceforge.atunes.kernel.modules.repository.model.Album.isUnknownAlbum(f.getAlbum()) && !StringUtils.isEmpty(f.getTitle())) {
+        if (!net.sourceforge.atunes.kernel.modules.repository.data.Artist.isUnknownArtist(f.getArtist())
+                && !net.sourceforge.atunes.kernel.modules.repository.data.Album.isUnknownAlbum(f.getAlbum()) && !StringUtils.isEmpty(f.getTitle())) {
             // Find album
             AlbumInfo albumRetrieved = getAlbum(f.getArtist(), f.getAlbum());
             if (albumRetrieved != null) {

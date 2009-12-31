@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.EditTagInfo;
 
 /**

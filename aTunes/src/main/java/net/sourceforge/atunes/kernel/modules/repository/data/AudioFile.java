@@ -17,7 +17,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package net.sourceforge.atunes.kernel.modules.repository.audio;
+package net.sourceforge.atunes.kernel.modules.repository.data;
 
 import java.io.File;
 import java.io.Serializable;
@@ -31,9 +31,6 @@ import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.repository.ImageCache;
-import net.sourceforge.atunes.kernel.modules.repository.model.Album;
-import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
-import net.sourceforge.atunes.kernel.modules.repository.model.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.tags.reader.TagDetector;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.DefaultTag;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.EditTagInfo;

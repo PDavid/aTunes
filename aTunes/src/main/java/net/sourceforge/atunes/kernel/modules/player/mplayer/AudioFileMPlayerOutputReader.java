@@ -19,8 +19,8 @@
  */
 package net.sourceforge.atunes.kernel.modules.player.mplayer;
 
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
-import net.sourceforge.atunes.kernel.modules.repository.audio.Format;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.data.Format;
 import net.sourceforge.atunes.misc.log.LogCategories;
 
 class AudioFileMPlayerOutputReader extends MPlayerOutputReader {

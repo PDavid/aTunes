@@ -28,8 +28,8 @@ import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.SortType;
-import net.sourceforge.atunes.kernel.modules.repository.model.Album;
-import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
+import net.sourceforge.atunes.kernel.modules.repository.data.Album;
+import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 

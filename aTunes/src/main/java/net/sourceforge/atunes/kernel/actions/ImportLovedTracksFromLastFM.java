@@ -28,9 +28,9 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
-import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmLovedTrack;
 import net.sourceforge.atunes.utils.I18nUtils;

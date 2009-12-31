@@ -26,8 +26,8 @@ import java.util.Map;
 
 import net.sourceforge.atunes.gui.views.dialogs.EditTitlesDialog;
 import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
-import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
-import net.sourceforge.atunes.kernel.modules.repository.model.Album;
+import net.sourceforge.atunes.kernel.modules.repository.data.Album;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.tags.writer.EditTitlesProcess;
 import net.sourceforge.atunes.misc.log.LogCategories;
 

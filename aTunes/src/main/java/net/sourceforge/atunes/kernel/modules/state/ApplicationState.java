@@ -26,6 +26,7 @@ import java.util.Map;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.LookAndFeelSelector;
+import net.sourceforge.atunes.gui.frame.DefaultSingleFrame;
 import net.sourceforge.atunes.gui.frame.Frame;
 import net.sourceforge.atunes.gui.frame.FrameState;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
@@ -72,7 +73,7 @@ public class ApplicationState {
     private String defaultSearch;
     private boolean useContext = true;
     private int selectedContextTab;
-    private Class<? extends Frame> frameClass;
+    private Class<? extends Frame> frameClass = DefaultSingleFrame.class;
     // Split panes divider location
     private Map<Class<? extends Frame>, FrameState> frameStates = new HashMap<Class<? extends Frame>, FrameState>();
     private boolean showPlaylistControls = true;

@@ -28,7 +28,7 @@ import net.sourceforge.atunes.kernel.modules.context.ArtistInfo;
 import net.sourceforge.atunes.kernel.modules.context.ContextInformationDataSource;
 import net.sourceforge.atunes.kernel.modules.context.SimilarArtistsInfo;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
+import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.ImageUtils;

@@ -38,7 +38,7 @@ import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.gui.views.controls.CustomFrame;
 import net.sourceforge.atunes.gui.views.controls.ScrollableFlowPanel;
-import net.sourceforge.atunes.kernel.modules.repository.model.Artist;
+import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
