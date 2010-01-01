@@ -23,7 +23,6 @@ import java.util.Comparator;
 
 import net.sourceforge.atunes.kernel.modules.columns.Column;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnSet;
-import net.sourceforge.atunes.kernel.modules.columns.Column.ColumnSort;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -69,8 +68,7 @@ public abstract class ColumnSetTableModel extends CommonTableModel {
      */
     @Override
     public String getColumnName(int colIndex) {
-    	ColumnSort columnSort = getColumn(colIndex).getColumnSort();
-        return I18nUtils.getString(getColumn(colIndex).getHeaderText()) + (columnSort == null ? "" : (columnSort.equals(ColumnSort.ASCENDING) ? " \u22C0" : " \u22C1"));
+        return I18nUtils.getString(getColumn(colIndex).getHeaderText());
     }
 
     /**
