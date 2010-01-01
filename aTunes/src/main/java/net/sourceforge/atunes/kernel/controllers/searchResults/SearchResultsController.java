@@ -27,6 +27,7 @@ import javax.swing.event.TableModelEvent;
 
 import net.sourceforge.atunes.gui.model.SearchResultColumnModel;
 import net.sourceforge.atunes.gui.views.controls.ColumnSetPopupMenu;
+import net.sourceforge.atunes.gui.views.controls.ColumnSetRowSorter;
 import net.sourceforge.atunes.gui.views.dialogs.SearchResultsDialog;
 import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnRenderers;
@@ -76,7 +77,7 @@ public final class SearchResultsController extends SimpleController<SearchResult
         table.setColumnModel(columnModel);
 
         // Set sorter
-        //ColumnSetRowSorter sorter = new ColumnSetRowSorter(table, tableModel, columnModel);
+        new ColumnSetRowSorter(table, tableModel, columnModel);
 
         // Bind column set popup menu
         new ColumnSetPopupMenu(getComponentControlled().getSearchResultsTable(), columnModel);
