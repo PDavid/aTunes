@@ -7,7 +7,7 @@
 <installation version="1.0">
 	<info>
 		<appname>aTunes</appname>
-		<appversion>1.14.0</appversion>
+		<appversion>2.0.0</appversion>
   		<url>http://www.atunes.org/</url>
 		<webdir>http://downloads.sourceforge.net/atunes</webdir>
 		<authors>
