@@ -48,6 +48,7 @@ import net.sourceforge.atunes.kernel.modules.repository.statistics.StatisticsHan
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateChangeListener;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
+import net.sourceforge.atunes.kernel.modules.tray.SystemTrayHandler;
 import net.sourceforge.atunes.kernel.modules.updates.UpdateHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -87,6 +88,7 @@ public abstract class Handler implements ApplicationStartListener, ApplicationFi
         handlerClasses.add(UpdateHandler.class);
         handlerClasses.add(GuiHandler.class);
         handlerClasses.add(StatisticsHandler.class);
+        handlerClasses.add(SystemTrayHandler.class);
     }
 
     private static List<Handler> handlers = new ArrayList<Handler>();
