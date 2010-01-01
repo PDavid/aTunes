@@ -284,6 +284,7 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
 
     private void constructDefaultFrame() {
         frame = new DefaultSingleFrame();
+        ApplicationState.getInstance().setFrameClass(frame.getClass());
     }
 
     /**

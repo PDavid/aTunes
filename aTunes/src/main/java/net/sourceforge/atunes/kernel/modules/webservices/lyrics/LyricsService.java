@@ -49,13 +49,13 @@ public class LyricsService implements ApplicationStateChangeListener {
         DEFAULT_LYRICS_ENGINES = Collections.unmodifiableList(list);
     }
 
+    /** Cache */
+    private static LyricsCache lyricsCache = new LyricsCache();
+
     private Logger logger;
 
     /** Contains a list of LyricsEngine to get lyrics. */
     private List<LyricsEngine> lyricsEngines;
-
-    /** Cache */
-    private LyricsCache lyricsCache = new LyricsCache();
 
     /**
      * Singleton instance
