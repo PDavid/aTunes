@@ -45,6 +45,8 @@ public final class Images {
     public static final String APP_ICON_MEDIUM = "appIconMedium.png";
     public static final String APP_ICON_TINY = "appIconTiny.png";
     public static final String APP_ICON_BIG = "appIconBig.png";
+    public static final String ARROW_UP = "arrowUp.png";
+    public static final String ARROW_DOWN = "arrowDown.png";
     public static final String ARTIST = "artist.png";
     public static final String ARTIST_FAVORITE = "artistFavorite.png";
     public static final String ARTIST_SIMILAR = "artistSimilar.png";
@@ -127,8 +129,6 @@ public final class Images {
     public static final String PLAY_TRAY_MENU = "playTrayMenu.png";
     public static final String PLAYLIST = "playlist.png";
     public static final String PLUGIN = "plugin.png";
-    public static final String POPUP_BUTTON_DOWN = "popupButtonDown.png";
-    public static final String POPUP_BUTTON_UP = "popupButtonUp.png";
     public static final String POWERED_BY_LAST_FM = "poweredByLastFm.png";
     public static final String PREFS = "prefs.png";
     public static final String PREVIOUS = "previous.png";

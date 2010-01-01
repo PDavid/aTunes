@@ -86,9 +86,9 @@ public final class PopUpButton extends JButton {
 
     private void setIcon(int location) {
         if (location == TOP_LEFT || location == TOP_RIGHT) {
-            setIcon(Images.getImage(Images.POPUP_BUTTON_UP));
+            setIcon(Images.getImage(Images.ARROW_UP));
         } else if (location == BOTTOM_LEFT || location == BOTTOM_RIGHT) {
-            setIcon(Images.getImage(Images.POPUP_BUTTON_DOWN));
+            setIcon(Images.getImage(Images.ARROW_DOWN));
         }
     }
 

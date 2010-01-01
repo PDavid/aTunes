@@ -19,10 +19,13 @@
  */
 package net.sourceforge.atunes.gui.model;
 
+import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.TableColumnModelEvent;
@@ -33,8 +36,12 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.columns.Column;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnSet;
+import net.sourceforge.atunes.kernel.modules.columns.Column.ColumnSort;
+
+import org.jvnet.substance.api.renderers.SubstanceDefaultTableHeaderCellRenderer;
 
 public abstract class CommonColumnModel extends DefaultTableColumnModel {
 
@@ -272,7 +279,7 @@ public abstract class CommonColumnModel extends DefaultTableColumnModel {
      */
     protected void updateColumnSettings(TableColumn aColumn) {
         // Get column data
-        Column column = getColumnObject(aColumn.getModelIndex());
+        final Column column = getColumnObject(aColumn.getModelIndex());
 
         // Set width
         aColumn.setPreferredWidth(column.getWidth());
@@ -292,8 +299,33 @@ public abstract class CommonColumnModel extends DefaultTableColumnModel {
         if (cellRenderer != null) {
             aColumn.setCellRenderer(cellRenderer);
         }
-    }
+        
+        // Set header renderer to sortable columns
+        if (column.isSortable()) {
+        	aColumn.setHeaderRenderer(new SubstanceDefaultTableHeaderCellRenderer() {
+        		private static final long serialVersionUID = -2882720841285248439L;
 
+        		@Override
+        		public Component getTableCellRendererComponent(JTable arg0, Object arg1, boolean arg2, boolean arg3, int arg4, int arg5) {
+        			Component c = super.getTableCellRendererComponent(arg0, arg1, arg2, arg3, arg4, arg5);
+        			
+        			ColumnSort columnSort = column.getColumnSort();
+        			
+        			if (columnSort != null) {
+        				((JLabel)c).setHorizontalTextPosition(SwingConstants.LEFT);
+        				if (columnSort.equals(ColumnSort.ASCENDING)) {
+        					((JLabel)c).setIcon(Images.getImage(Images.ARROW_UP));
+        				} else if (columnSort.equals(ColumnSort.DESCENDING)) {
+        					((JLabel)c).setIcon(Images.getImage(Images.ARROW_DOWN));
+        				}
+        			}
+        			
+        			return c;
+        		}
+        	});
+        }
+    }
+    
 	/**
 	 * @return the columnSet
 	 */
