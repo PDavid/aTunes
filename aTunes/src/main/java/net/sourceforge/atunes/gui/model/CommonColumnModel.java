@@ -279,7 +279,7 @@ public abstract class CommonColumnModel extends DefaultTableColumnModel {
      */
     protected void updateColumnSettings(TableColumn aColumn) {
         // Get column data
-        final Column column = getColumnObject(aColumn.getModelIndex());
+        Column column = getColumnObject(aColumn.getModelIndex());
 
         // Set width
         aColumn.setPreferredWidth(column.getWidth());
@@ -298,8 +298,17 @@ public abstract class CommonColumnModel extends DefaultTableColumnModel {
         TableCellRenderer cellRenderer = column.getCellRenderer();
         if (cellRenderer != null) {
             aColumn.setCellRenderer(cellRenderer);
-        }
-        
+        }        
+    }
+    
+    /**
+     * Updates a column header according to settings from column set
+     * @param aColumn
+     */
+    protected void updateColumnHeader(TableColumn aColumn) {
+        // Get column data
+        final Column column = getColumnObject(aColumn.getModelIndex());
+
         // Set header renderer to sortable columns
         if (column.isSortable()) {
         	aColumn.setHeaderRenderer(new SubstanceDefaultTableHeaderCellRenderer() {

@@ -47,6 +47,8 @@ public final class NavigationTableColumnModel extends CommonColumnModel {
 
             updateColumnSettings(aColumn);
             
+            updateColumnHeader(aColumn);
+            
             preferredWidth = column.getWidth();
     	} else {
         	preferredWidth = view.getNavigatorTableMaxWidthForColumn(aColumn.getModelIndex());
