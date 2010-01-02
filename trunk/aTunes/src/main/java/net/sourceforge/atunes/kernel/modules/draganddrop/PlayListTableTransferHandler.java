@@ -41,8 +41,8 @@ import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
+import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryLoader;
-import net.sourceforge.atunes.kernel.modules.repository.SortType;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -206,8 +206,8 @@ public class PlayListTableTransferHandler extends TransferHandler {
             int dropRow = GuiHandler.getInstance().getPlayListTable().rowAtPoint(support.getDropLocation().getDropPoint());
 
             if (!audioObjectsToAdd.isEmpty()) {
-                List<AudioObject> songsSorted = SortType.sort(audioObjectsToAdd);
-                PlayListHandler.getInstance().addToPlayList(dropRow, songsSorted, true);
+            	AudioObjectComparator.sort(audioObjectsToAdd);
+                PlayListHandler.getInstance().addToPlayList(dropRow, audioObjectsToAdd, true);
                 // Keep selected rows: if drop row is the bottom of play list (-1) then select last row
                 if (dropRow == -1) {
                     dropRow = PlayListHandler.getInstance().getCurrentPlayList(true).size() - audioObjectsToAdd.size();
@@ -328,8 +328,8 @@ public class PlayListTableTransferHandler extends TransferHandler {
             int dropRow = GuiHandler.getInstance().getPlayListTable().rowAtPoint(support.getDropLocation().getDropPoint());
 
             if (!filesToAdd.isEmpty()) {
-                List<AudioObject> songsSorted = SortType.sort(filesToAdd);
-                PlayListHandler.getInstance().addToPlayList(dropRow, songsSorted, true);
+            	AudioObjectComparator.sort(filesToAdd);
+                PlayListHandler.getInstance().addToPlayList(dropRow, filesToAdd, true);
                 // Keep selected rows: if drop row is the bottom of play list (-1) then select last row
                 if (dropRow == -1) {
                     dropRow = PlayListHandler.getInstance().getCurrentPlayList(true).size() - filesToAdd.size();

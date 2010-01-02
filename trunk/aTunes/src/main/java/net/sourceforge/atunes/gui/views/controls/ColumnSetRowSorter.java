@@ -60,7 +60,7 @@ public class ColumnSetRowSorter {
 						}
 						lastColumnSorted = columnClicked;
 						if (columnClicked.isSortable()) {
-							sort(columnClicked.getComparator());
+							sort(columnClicked.getComparator(true));
 						}
 					}
 				}

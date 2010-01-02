@@ -368,30 +368,27 @@ public abstract class Column implements Comparable<Column>, Serializable {
     }
 
     /**
-     * Return a comparator to sort by this column. If last sort was
-     * descending or not sort was done before, return ascending comparator If
-     * las sort was ascending, return descending comparator
+     * Return a comparator to sort by this column. Comparator order is changed or not according to value of <code>changeSort</code>
+     * If not sort has been done before ascending comparator is returned
      * 
+     * @param changeSort
      * @return
      */
-    public Comparator<AudioObject> getComparator() {
-        if (columnSort == null || columnSort == ColumnSort.DESCENDING) {
-            columnSort = ColumnSort.ASCENDING;
-            return new Comparator<AudioObject>() {
-                @Override
-                public int compare(AudioObject o1, AudioObject o2) {
-                    return ascendingCompare(o1, o2);
-                }
-            };
-        } else {
-            columnSort = ColumnSort.DESCENDING;
-            return new Comparator<AudioObject>() {
-                @Override
-                public int compare(AudioObject o1, AudioObject o2) {
-                    return -ascendingCompare(o1, o2);
-                }
-            };
-        }
+    public Comparator<AudioObject> getComparator(boolean changeSort) {
+    	if (columnSort == null) {
+    		columnSort = ColumnSort.ASCENDING;
+    	} else if (columnSort == ColumnSort.ASCENDING && changeSort) {
+    		columnSort = ColumnSort.DESCENDING;
+    	} else if (columnSort == ColumnSort.DESCENDING && changeSort) {
+    		columnSort = ColumnSort.ASCENDING;
+    	}
+    	
+    	return new Comparator<AudioObject>() {
+    		@Override
+    		public int compare(AudioObject o1, AudioObject o2) {
+    			return columnSort == ColumnSort.ASCENDING ? ascendingCompare(o1, o2) : - ascendingCompare(o1, o2);
+    		}
+    	};
     }
 
 	/**

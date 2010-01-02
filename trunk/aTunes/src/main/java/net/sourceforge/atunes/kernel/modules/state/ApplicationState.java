@@ -35,7 +35,6 @@ import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeysConfig;
 import net.sourceforge.atunes.kernel.modules.navigator.RepositoryNavigationView;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
-import net.sourceforge.atunes.kernel.modules.repository.SortType;
 import net.sourceforge.atunes.kernel.modules.repository.tags.HighlightFoldersByIncompleteTags;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.TagAttribute;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
@@ -202,10 +201,6 @@ public class ApplicationState {
      * Option to scroll automatically play list to current audio object
      */
     private boolean autoScrollPlayListEnabled = true;
-    /**
-     * Type of sort used for navigator and when adding to playlist
-     */
-    private SortType sortType = SortType.BY_ARTIST_AND_ALBUM;
     /**
      * List of folders of last loaded repository
      */
@@ -995,14 +990,6 @@ public class ApplicationState {
 
     public void setAutoScrollPlayListEnabled(boolean autoScrollPlayListEnabled) {
         this.autoScrollPlayListEnabled = autoScrollPlayListEnabled;
-    }
-
-    public SortType getSortType() {
-        return sortType;
-    }
-
-    public void setSortType(SortType sortType) {
-        this.sortType = sortType;
     }
 
     public List<String> getLastRepositoryFolders() {
