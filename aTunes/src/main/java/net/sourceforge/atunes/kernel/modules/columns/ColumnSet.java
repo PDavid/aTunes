@@ -275,6 +275,20 @@ public abstract class ColumnSet  {
     }
 
     /**
+     * Returns the column sorted (if any)
+     * @return
+     */
+    public Column getSortedColumn() {
+    	for (Class<? extends Column> columnClass : currentColumns) {
+    		Column column = getColumn(columnClass);
+    		if (column.getColumnSort() != null) {
+    			return column;
+    		}
+    	}
+    	return null;
+    }
+    
+    /**
      * Returns existing column configuration for this column set
      * @return
      */

@@ -24,6 +24,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -48,6 +49,7 @@ import net.sourceforge.atunes.gui.model.CommonColumnModel;
 import net.sourceforge.atunes.gui.model.NavigationTableColumnModel;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
 import net.sourceforge.atunes.gui.views.controls.ColumnSetPopupMenu;
+import net.sourceforge.atunes.gui.views.controls.ColumnSetRowSorter;
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.gui.views.dialogs.SearchDialog;
 import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
@@ -59,6 +61,7 @@ import net.sourceforge.atunes.kernel.actions.ShowArtistsInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowFoldersInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowGenresInNavigatorAction;
 import net.sourceforge.atunes.kernel.controllers.model.Controller;
+import net.sourceforge.atunes.kernel.modules.columns.Column;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnRenderers;
 import net.sourceforge.atunes.kernel.modules.columns.NavigatorColumnSet;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
@@ -69,7 +72,6 @@ import net.sourceforge.atunes.kernel.modules.navigator.NavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.RepositoryNavigationView;
 import net.sourceforge.atunes.kernel.modules.repository.AudioFilesRemovedListener;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.kernel.modules.repository.SortType;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
@@ -161,11 +163,14 @@ public final class NavigationController extends Controller implements AudioFiles
 
     @Override
     protected void addBindings() {
-        navigationTablePanel.getNavigationTable().setModel(new NavigationTableModel());
+    	NavigationTableModel model = new NavigationTableModel();
+        navigationTablePanel.getNavigationTable().setModel(model);
         columnModel = new NavigationTableColumnModel(navigationTablePanel.getNavigationTable());
         navigationTablePanel.getNavigationTable().setColumnModel(columnModel);
         ColumnRenderers.addRenderers(navigationTablePanel.getNavigationTable(), columnModel);
 
+        new ColumnSetRowSorter(navigationTablePanel.getNavigationTable(), model, columnModel);
+        
         // Bind column set popup menu
         columnSetPopupMenu = new ColumnSetPopupMenu(navigationTablePanel.getNavigationTable(), columnModel);
 
@@ -289,11 +294,20 @@ public final class NavigationController extends Controller implements AudioFiles
         return ((NavigationTableModel) navigationTablePanel.getNavigationTable().getModel()).getSongAt(row);
     }
 
+    /**
+     * Returns audio objects selected by the given node in the given navigation view
+     * @param navigationViewClass
+     * @param node
+     * @return
+     */
     public List<AudioObject> getAudioObjectsForTreeNode(Class<? extends NavigationView> navigationViewClass, DefaultMutableTreeNode node) {
         List<AudioObject> audioObjects = NavigationHandler.getInstance().getView(navigationViewClass).getAudioObjectForTreeNode(node, ApplicationState.getInstance().getViewMode(),
                 FilterHandler.getInstance().isFilterSelected(NavigationHandler.getInstance().getTreeFilter()) ? FilterHandler.getInstance().getFilter() : null);
         if (NavigationHandler.getInstance().getView(navigationViewClass).isAudioObjectsFromNodeNeedSort()) {
-            return SortType.sort(audioObjects, ApplicationState.getInstance().getSortType());
+        	Column columnSorted = NavigatorColumnSet.getInstance().getSortedColumn();
+        	if (columnSorted != null) {
+        		Collections.sort(audioObjects, columnSorted.getComparator(false));
+        	}
         }
         return audioObjects;
     }
@@ -376,20 +390,6 @@ public final class NavigationController extends Controller implements AudioFiles
             ((NavigationTableModel) navigationTablePanel.getNavigationTable().getModel()).setSongs(getAudioObjectsForTreeNode(navigationView, (DefaultMutableTreeNode) (tree
                     .getSelectionPath().getLastPathComponent())));
         }
-    }
-
-    /**
-     * Sort.
-     * 
-     * @param songs
-     *            the songs
-     * @param type
-     *            the type
-     * 
-     * @return the list< audio object>
-     */
-    public List<AudioObject> sort(List<AudioObject> songs, SortType type) {
-        return SortType.sort(songs, type);
     }
 
     /**

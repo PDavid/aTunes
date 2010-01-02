@@ -25,8 +25,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.kernel.modules.repository.SortType;
 import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
@@ -87,7 +87,7 @@ public final class SmartPlayListHandler {
         }
 
         // Sort
-        songsSelected = SortType.sort(songsSelected);
+        AudioObjectComparator.sort(songsSelected);
 
         // Add to playlist
         PlayListHandler.getInstance().addToPlayList(songsSelected);
@@ -114,7 +114,8 @@ public final class SmartPlayListHandler {
         }
 
         // Sort
-        List<AudioObject> songsSorted = SortType.sort(songsSelected);
+        List<AudioObject> songsSorted = AudioFile.getAudioObjects(songsSelected);
+        AudioObjectComparator.sort(songsSorted);
 
         // Add to playlist
         PlayListHandler.getInstance().addToPlayList(songsSorted);
@@ -148,8 +149,8 @@ public final class SmartPlayListHandler {
         }
 
         // Sort
-        songsSelected = SortType.sort(songsSelected);
-
+        AudioObjectComparator.sort(songsSelected);
+        
         // Add to playlist
         PlayListHandler.getInstance().addToPlayList(songsSelected);
     }
@@ -167,7 +168,8 @@ public final class SmartPlayListHandler {
         List<AudioFile> songsSelected = StatisticsHandler.getInstance().getMostPlayedAudioFiles(n);
 
         // Sort
-        List<AudioObject> songsSorted = SortType.sort(songsSelected);
+        List<AudioObject> songsSorted = AudioFile.getAudioObjects(songsSelected);
+        AudioObjectComparator.sort(songsSorted);
 
         // Add to playlist
         PlayListHandler.getInstance().addToPlayList(songsSorted);
@@ -189,7 +191,9 @@ public final class SmartPlayListHandler {
         // Add to playlist
         int count = Math.min(unplayedSongs.size(), n);
         if (count > 0) {
-            PlayListHandler.getInstance().addToPlayList(SortType.sort(new ArrayList<AudioObject>(unplayedSongs.subList(0, count))));
+        	List<AudioObject> audioObjects = new ArrayList<AudioObject>(unplayedSongs.subList(0, count));
+        	AudioObjectComparator.sort(audioObjects);
+            PlayListHandler.getInstance().addToPlayList(audioObjects);
         }
     }
 

@@ -74,11 +74,6 @@ import net.sourceforge.atunes.kernel.actions.ShowRadioBrowserAction;
 import net.sourceforge.atunes.kernel.actions.ShowStatsAction;
 import net.sourceforge.atunes.kernel.actions.ShowStatusBarAction;
 import net.sourceforge.atunes.kernel.actions.ShowToolbarAction;
-import net.sourceforge.atunes.kernel.actions.SortNavigatorByArtistAndAlbumAction;
-import net.sourceforge.atunes.kernel.actions.SortNavigatorByFileNameAction;
-import net.sourceforge.atunes.kernel.actions.SortNavigatorByModificationDateAction;
-import net.sourceforge.atunes.kernel.actions.SortNavigatorByTitleAction;
-import net.sourceforge.atunes.kernel.actions.SortNavigatorByTrackNumberAction;
 import net.sourceforge.atunes.kernel.actions.VolumeDownAction;
 import net.sourceforge.atunes.kernel.actions.VolumeUpAction;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
@@ -213,23 +208,6 @@ public final class ApplicationMenuBar extends JMenuBar {
             navigator.add(new JSeparator());
             navigator.add(Actions.getAction(ExpandTreesAction.class));
             navigator.add(Actions.getAction(CollapseTreesAction.class));
-            navigator.add(new JSeparator());
-            JRadioButtonMenuItem sortByTrack = new JRadioButtonMenuItem(Actions.getAction(SortNavigatorByTrackNumberAction.class));
-            JRadioButtonMenuItem sortByArtist = new JRadioButtonMenuItem(Actions.getAction(SortNavigatorByArtistAndAlbumAction.class));
-            JRadioButtonMenuItem sortByTitle = new JRadioButtonMenuItem(Actions.getAction(SortNavigatorByTitleAction.class));
-            JRadioButtonMenuItem sortByFile = new JRadioButtonMenuItem(Actions.getAction(SortNavigatorByFileNameAction.class));
-            JRadioButtonMenuItem sortByModificationTime = new JRadioButtonMenuItem(Actions.getAction(SortNavigatorByModificationDateAction.class));
-            ButtonGroup group2 = new ButtonGroup();
-            group2.add(sortByTrack);
-            group2.add(sortByArtist);
-            group2.add(sortByTitle);
-            group2.add(sortByFile);
-            group2.add(sortByModificationTime);
-            navigator.add(sortByTrack);
-            navigator.add(sortByArtist);
-            navigator.add(sortByTitle);
-            navigator.add(sortByFile);
-            navigator.add(sortByModificationTime);
         }
         return navigator;
     }
