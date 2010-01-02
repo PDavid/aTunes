@@ -67,15 +67,24 @@ public abstract class CommonColumnModel extends DefaultTableColumnModel {
     private ColumnModelListener columnModelListener;
 
     /**
+     * Instantiates a new column model
+     * @param table
+     * @param columnSet
+     */
+    public CommonColumnModel(JTable table, ColumnSet columnSet) {
+    	this(table);
+        this.columnSet = columnSet;
+    }
+    
+    /**
      * Instantiates a new column model.
      * 
      * @param table
      *            the play list
      */
-    public CommonColumnModel(JTable table, ColumnSet columnSet) {
+    public CommonColumnModel(JTable table) {
         super();
         this.table = table;
-        this.columnSet = columnSet;
         this.model = (CommonTableModel) this.table.getModel();
     }
 
@@ -340,6 +349,13 @@ public abstract class CommonColumnModel extends DefaultTableColumnModel {
 	 */
 	public ColumnSet getColumnSet() {
 		return columnSet;
+	}
+
+	/**
+	 * @param columnSet the columnSet to set
+	 */
+	public void setColumnSet(ColumnSet columnSet) {
+		this.columnSet = columnSet;
 	}
 
     

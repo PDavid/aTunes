@@ -44,14 +44,10 @@ public abstract class ColumnSet  {
     /** The current visible columns. */
     private List<Class<? extends Column>> currentColumns;
     
-    /** <code>true</code> for columns of play list */
-    private boolean playListExclusive;
-    
     /** Logger */
     private Logger logger;
     
-    public ColumnSet(boolean playListExclusive) {
-    	this.playListExclusive = playListExclusive;
+    public ColumnSet() {
     	ColumnSets.registerColumnSet(this);
 	}
     
@@ -76,7 +72,7 @@ public abstract class ColumnSet  {
             // Try to get configuration saved
             Map<String, ColumnBean> columnsBeans = getColumnsConfiguration();
 
-            availableColumns = Columns.getColumns(this.playListExclusive);
+            availableColumns = getAllowedColumns();
             columnMap = new HashMap<Class<? extends Column>, Column>();
             for (Column c : availableColumns) {
             	columnMap.put(c.getClass(), c);
@@ -94,6 +90,12 @@ public abstract class ColumnSet  {
         }
         return availableColumns;
     }
+    
+    /**
+     * Returns a list of columns allowed to be used in this column set
+     * @return
+     */
+    protected abstract List<Column> getAllowedColumns();
     
     /**
      * Store current column settings.
@@ -279,10 +281,12 @@ public abstract class ColumnSet  {
      * @return
      */
     public Column getSortedColumn() {
-    	for (Class<? extends Column> columnClass : currentColumns) {
-    		Column column = getColumn(columnClass);
-    		if (column.getColumnSort() != null) {
-    			return column;
+    	if (currentColumns != null) {
+    		for (Class<? extends Column> columnClass : currentColumns) {
+    			Column column = getColumn(columnClass);
+    			if (column.getColumnSort() != null) {
+    				return column;
+    			}
     		}
     	}
     	return null;

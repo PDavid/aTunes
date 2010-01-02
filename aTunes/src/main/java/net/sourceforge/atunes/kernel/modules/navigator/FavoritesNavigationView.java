@@ -55,6 +55,7 @@ import net.sourceforge.atunes.kernel.actions.SearchArtistAtAction;
 import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
+import net.sourceforge.atunes.kernel.modules.columns.ColumnSet;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
@@ -99,11 +100,6 @@ public final class FavoritesNavigationView extends NavigationView {
             favoritesTree.setCellRenderer(getTreeRenderer());
         }
         return favoritesTree;
-    }
-
-    @Override
-    public boolean isAudioObjectsFromNodeNeedSort() {
-        return true;
     }
 
     @Override
@@ -304,41 +300,16 @@ public final class FavoritesNavigationView extends NavigationView {
     }
 
     @Override
-    public boolean isUseDefaultNavigatorColumns() {
+    public boolean isUseDefaultNavigatorColumnSet() {
     	return true;
     }
 
+    @Override
+    public ColumnSet getCustomColumnSet() {
+    	// Returns null since uses default column set
+    	return null;
+    }
     
-    @Override
-    public Class<?> getNavigatorTableColumnClass(int columnIndex) {
-    	// Not used since isUseDefaultNavigatorColumns returns true
-    	return null;
-    }
-
-    @Override
-    public int getNavigatorTableColumnCount() {
-    	// Not used since isUseDefaultNavigatorColumns returns true
-    	return 0;
-    }
-
-    @Override
-    public String getNavigatorTableColumnName(int columnIndex) {
-    	// Not used since isUseDefaultNavigatorColumns returns true
-    	return null;
-    }
-
-    @Override
-    public Object getNavigatorTableValueAt(AudioObject audioObject, int columnIndex) {
-    	// Not used since isUseDefaultNavigatorColumns returns true
-    	return null;
-    }
-
-    @Override
-    public int getNavigatorTableMaxWidthForColumn(int columnIndex) {
-    	// Not used since isUseDefaultNavigatorColumns returns true
-    	return 0;
-    }
-
     @Override
     public boolean isViewModeSupported() {
         return false;

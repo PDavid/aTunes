@@ -34,7 +34,11 @@ public abstract class ColumnSetTableModel extends CommonTableModel {
 		super();
 		this.columnSet = columnSet;		
 	}
-	
+
+	public ColumnSetTableModel() {
+		super();
+	}
+
     /**
      * Returns column data class.
      * 
@@ -55,7 +59,7 @@ public abstract class ColumnSetTableModel extends CommonTableModel {
      */
     @Override
     public int getColumnCount() {
-        return columnSet.getVisibleColumnCount();
+        return columnSet != null ? columnSet.getVisibleColumnCount() : 0;
     }
 
     /**
@@ -77,7 +81,7 @@ public abstract class ColumnSetTableModel extends CommonTableModel {
      * @return
      */
     protected Column getColumn(int colIndex) {
-    	return columnSet.getColumn(columnSet.getColumnId(colIndex));
+    	return columnSet != null ? columnSet.getColumn(columnSet.getColumnId(colIndex)) : null;
     }
 
     /**
@@ -85,6 +89,13 @@ public abstract class ColumnSetTableModel extends CommonTableModel {
      * @param comparator
      */
     public abstract void sort(Comparator<AudioObject> comparator);
+
+	/**
+	 * @param columnSet the columnSet to set
+	 */
+	public void setColumnSet(ColumnSet columnSet) {
+		this.columnSet = columnSet;
+	}
 	
 
 }

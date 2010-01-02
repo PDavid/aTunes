@@ -19,6 +19,7 @@
  */
 package net.sourceforge.atunes.kernel.modules.columns;
 
+import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.gui.model.NavigationTableColumnModel;
@@ -41,8 +42,8 @@ public class NavigatorColumnSet extends ColumnSet {
      * Private constructor
      */
     private NavigatorColumnSet() {
-        super(false);
-    }
+        super();
+    }    
 
     /**
      * Returns singleton instance
@@ -57,13 +58,18 @@ public class NavigatorColumnSet extends ColumnSet {
     }
 
     @Override
+    protected List<Column> getAllowedColumns() {
+    	return Columns.getColumns(false);
+    }
+    
+    @Override
     protected Map<String, ColumnBean> getColumnsConfiguration() {
-        return ApplicationState.getInstance().getNavigatorColumns();
+        return ApplicationState.getInstance().getDefaultNavigatorColumns();
     }
 
     @Override
     protected void setColumnsConfiguration(Map<String, ColumnBean> columnsConfiguration) {
-        ApplicationState.getInstance().setNavigatorColumns(columnsConfiguration);
+        ApplicationState.getInstance().setDefaultNavigatorColumns(columnsConfiguration);
     }
 
     @Override

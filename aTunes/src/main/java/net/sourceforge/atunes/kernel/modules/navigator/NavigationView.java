@@ -51,6 +51,7 @@ import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.actions.ActionOverSelectedObjects;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
+import net.sourceforge.atunes.kernel.modules.columns.ColumnSet;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
@@ -173,55 +174,6 @@ public abstract class NavigationView implements AudioObjectsSource {
     public abstract List<AudioObject> getAudioObjectForTreeNode(DefaultMutableTreeNode node, ViewMode viewMode, String treeFilter);
 
     /**
-     * Returns <code>true</code> is audio objects associated to a tree node need
-     * to be sorted
-     * 
-     * @return
-     */
-    public abstract boolean isAudioObjectsFromNodeNeedSort();
-
-    /**
-     * Returns the class of a given table column in this view
-     * 
-     * @param columnIndex
-     * @return
-     */
-    public abstract Class<?> getNavigatorTableColumnClass(int columnIndex);
-
-    /**
-     * Returns the number of table columns in this view
-     * 
-     * @return
-     */
-    public abstract int getNavigatorTableColumnCount();
-
-    /**
-     * Returns the name of a given table column in this view
-     * 
-     * @param columnIndex
-     * @return
-     */
-    public abstract String getNavigatorTableColumnName(int columnIndex);
-
-    /**
-     * Returns the value of a table column given the audio object represented by
-     * the row in this view
-     * 
-     * @param audioObject
-     * @param columnIndex
-     * @return
-     */
-    public abstract Object getNavigatorTableValueAt(AudioObject audioObject, int columnIndex);
-
-    /**
-     * Returns the maximum with of the given column in this view
-     * 
-     * @param columnIndex
-     * @return
-     */
-    public abstract int getNavigatorTableMaxWidthForColumn(int columnIndex);
-
-    /**
      * Returns <code>true</code> if the view supports organize information in
      * different view modes
      * 
@@ -252,8 +204,15 @@ public abstract class NavigationView implements AudioObjectsSource {
      * 
      * @return
      */
-    public abstract boolean isUseDefaultNavigatorColumns();
+    public abstract boolean isUseDefaultNavigatorColumnSet();
 
+    /**
+     * If <code>isUseDefaultNavigatorColumns</code> returns <code>false</code> then this
+     * method must return a column set with columns
+     * @return
+     */
+    public abstract ColumnSet getCustomColumnSet();
+    
     /**
      * Enables or disables tree popup menu items of this view
      * 

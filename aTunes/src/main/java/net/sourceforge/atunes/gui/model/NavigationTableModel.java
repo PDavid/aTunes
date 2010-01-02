@@ -26,9 +26,6 @@ import java.util.List;
 
 import javax.swing.event.TableModelEvent;
 
-import net.sourceforge.atunes.kernel.modules.columns.NavigatorColumnSet;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationView;
 import net.sourceforge.atunes.model.AudioObject;
 
 /**
@@ -74,58 +71,7 @@ public final class NavigationTableModel extends ColumnSetTableModel {
      *            the controller
      */
     public NavigationTableModel() {
-    	super(NavigatorColumnSet.getInstance());
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.table.TableModel#getColumnClass(int)
-     */
-    @Override
-    public Class<?> getColumnClass(int columnIndex) {
-    	NavigationView view = NavigationHandler.getInstance().getCurrentView();
-    	
-    	// Use default navigator columns or custom defined by view
-    	if (view.isUseDefaultNavigatorColumns()) {
-    		return super.getColumnClass(columnIndex);
-    	} else {
-    		return view.getNavigatorTableColumnClass(columnIndex);
-    	}
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.table.TableModel#getColumnCount()
-     */
-    @Override
-    public int getColumnCount() {
-    	NavigationView view = NavigationHandler.getInstance().getCurrentView();
-    	
-    	// Use default navigator columns or custom defined by view
-    	if (view.isUseDefaultNavigatorColumns()) {
-    		return super.getColumnCount();
-    	} else {
-    		return view.getNavigatorTableColumnCount();
-    	}    	
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.table.TableModel#getColumnName(int)
-     */
-    @Override
-    public String getColumnName(int columnIndex) {
-    	NavigationView view = NavigationHandler.getInstance().getCurrentView();
-    	
-    	// Use default navigator columns or custom defined by view
-    	if (view.isUseDefaultNavigatorColumns()) {
-    		return super.getColumnName(columnIndex);
-    	} else {
-    		return view.getNavigatorTableColumnName(columnIndex);
-    	}    	    	
+    	super();
     }
 
     /*
@@ -184,19 +130,10 @@ public final class NavigationTableModel extends ColumnSetTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         AudioObject audioObject = getSongAt(rowIndex);
-
         if (audioObject == null) {
         	return null;
         }
-        
-    	NavigationView view = NavigationHandler.getInstance().getCurrentView();
-    	
-    	// Use default navigator columns or custom defined by view
-    	if (view.isUseDefaultNavigatorColumns()) {
-    		return getColumn(columnIndex).getValueFor(audioObject);
-    	} else {
-    		return view.getNavigatorTableValueAt(audioObject, columnIndex);
-    	}
+   		return getColumn(columnIndex).getValueFor(audioObject);
     }
 
     /*

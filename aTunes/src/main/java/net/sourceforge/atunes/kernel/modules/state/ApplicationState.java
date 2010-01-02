@@ -146,8 +146,9 @@ public class ApplicationState {
 
     // Columns config
     private Map<String, ColumnBean> columns;
-    private Map<String, ColumnBean> navigatorColumns;
+    private Map<String, ColumnBean> defaultNavigatorColumns;
     private Map<String, ColumnBean> searchResultsColumns;
+    private Map<String, Map<String, ColumnBean>> customNavigatorColumns;
 
     /**
      * Default location where device is plugged. Used to connect device
@@ -848,12 +849,12 @@ public class ApplicationState {
         this.columns = columns;
     }
 
-    public Map<String, ColumnBean> getNavigatorColumns() {
-        return navigatorColumns;
+    public Map<String, ColumnBean> getDefaultNavigatorColumns() {
+        return defaultNavigatorColumns;
     }
 
-    public void setNavigatorColumns(Map<String, ColumnBean> navigatorColumns) {
-        this.navigatorColumns = navigatorColumns;
+    public void setDefaultNavigatorColumns(Map<String, ColumnBean> navigatorColumns) {
+        this.defaultNavigatorColumns = navigatorColumns;
     }
 
     public Map<String, ColumnBean> getSearchResultsColumns() {
@@ -1191,5 +1192,20 @@ public class ApplicationState {
     public void setShowNavigationTree(boolean showNavigationTree) {
         this.showNavigationTree = showNavigationTree;
     }
+
+	/**
+	 * @return the customNavigatorColumns
+	 */
+	public Map<String, Map<String, ColumnBean>> getCustomNavigatorColumns() {
+		return customNavigatorColumns;
+	}
+
+	/**
+	 * @param customNavigatorColumns the customNavigatorColumns to set
+	 */
+	public void setCustomNavigatorColumns(
+			Map<String, Map<String, ColumnBean>> customNavigatorColumns) {
+		this.customNavigatorColumns = customNavigatorColumns;
+	}
 
 }
