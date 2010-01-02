@@ -23,52 +23,22 @@ import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.kernel.ControllerProxy;
-import net.sourceforge.atunes.kernel.modules.columns.Column;
-import net.sourceforge.atunes.kernel.modules.columns.NavigatorColumnSet;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationView;
-import net.sourceforge.atunes.utils.GuiUtils;
 
 public final class NavigationTableColumnModel extends CommonColumnModel {
 
     private static final long serialVersionUID = 1071222881574684439L;
 
     public NavigationTableColumnModel(JTable table) {
-    	super(table, NavigatorColumnSet.getInstance());
+    	super(table);
+    	enableColumnChange(true);
 	}
     
     @Override
     public void addColumn(TableColumn aColumn) {    	
-    	NavigationView view = NavigationHandler.getInstance().getCurrentView();
-    	int preferredWidth = -1;
-    	if (view.isUseDefaultNavigatorColumns()) {
-    		// Get column data
-            Column column = NavigatorColumnSet.getInstance().getColumn(NavigatorColumnSet.getInstance().getColumnId(aColumn.getModelIndex()));
-
-            updateColumnSettings(aColumn);
-            
-            updateColumnHeader(aColumn);
-            
-            preferredWidth = column.getWidth();
-    	} else {
-        	preferredWidth = view.getNavigatorTableMaxWidthForColumn(aColumn.getModelIndex());
-        	aColumn.setResizable(false);
-    	}
-    	
-    	if (preferredWidth != -1) {
-    		aColumn.setPreferredWidth(preferredWidth);
-    	}
+    	updateColumnSettings(aColumn);
+        updateColumnHeader(aColumn);
     	super.addColumn(aColumn);    	
-    }
-    
-    @Override
-    public int getColumnAlignment(int column) {
-    	NavigationView view = NavigationHandler.getInstance().getCurrentView();
-    	if (view.isUseDefaultNavigatorColumns()) {
-    		return super.getColumnAlignment(column);
-    	} else {
-    		return GuiUtils.getComponentOrientationAsSwingConstant();
-    	}
     }
     
     @Override

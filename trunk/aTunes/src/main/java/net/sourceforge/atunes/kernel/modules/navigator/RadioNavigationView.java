@@ -51,6 +51,8 @@ import net.sourceforge.atunes.kernel.actions.RenameRadioLabelAction;
 import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
+import net.sourceforge.atunes.kernel.modules.columns.Column;
+import net.sourceforge.atunes.kernel.modules.columns.ColumnSet;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -70,6 +72,9 @@ public final class RadioNavigationView extends NavigationView {
 
     /** The radio table menu. */
     private JPopupMenu radioTableMenu;
+    
+    /** The column set */
+    private ColumnSet columnSet;
 
     @Override
     public ImageIcon getIcon() {
@@ -95,11 +100,6 @@ public final class RadioNavigationView extends NavigationView {
             radioTree.setToolTipText(I18nUtils.getString("RADIO_VIEW_TOOLTIP"));
         }
         return radioTree;
-    }
-
-    @Override
-    public boolean isAudioObjectsFromNodeNeedSort() {
-        return false;
     }
 
     @Override
@@ -337,67 +337,87 @@ public final class RadioNavigationView extends NavigationView {
     }
     
     @Override
-    public boolean isUseDefaultNavigatorColumns() {
+    public boolean isUseDefaultNavigatorColumnSet() {
     	return false;
     }
-
+    
     @Override
-    public Class<?> getNavigatorTableColumnClass(int columnIndex) {
-        switch (columnIndex) {
-        case 0:
-            return Property.class;
-        case 1:
-            return String.class;
-        case 2:
-            return String.class;
-        default:
-            return String.class;
-        }
-    }
+    public ColumnSet getCustomColumnSet() {
+    	if (columnSet == null) {
+    		columnSet = new CustomNavigatorColumnSet(this.getClass().getName()) {
 
-    @Override
-    public int getNavigatorTableColumnCount() {
-        return 3;
-    }
+    			@Override
+    			protected List<Column> getAllowedColumns() {
+    				List<Column> columns = new ArrayList<Column>();
 
-    @Override
-    public String getNavigatorTableColumnName(int columnIndex) {
-        switch (columnIndex) {
-        case 0:
-            return "";
-        case 1:
-            return I18nUtils.getString("NAME");
-        case 2:
-            return I18nUtils.getString("URL");
-        default:
-            return "";
-        }
-    }
+    				Column property = new Column("", Property.class) {
+    					/**
+    					 * 
+    					 */
+    					private static final long serialVersionUID = 3613237620716484881L;
 
-    @Override
-    public Object getNavigatorTableValueAt(AudioObject audioObject, int columnIndex) {
-        if (audioObject instanceof Radio) {
-            if (columnIndex == 0) {
-                return Property.NO_PROPERTIES;
-            } else if (columnIndex == 1) {
-                return ((Radio)audioObject).getName();
-            } else if (columnIndex == 2) {
-                return audioObject.getUrl();
-            }
-        }
-        return "";
-    }
+    					@Override
+    					protected int ascendingCompare(AudioObject o1, AudioObject o2) {
+    						return 0;
+    					}
 
-    @Override
-    public int getNavigatorTableMaxWidthForColumn(int columnIndex) {
-        if (columnIndex == 0) {
-            return 20;
-        } else if (columnIndex == 1) {
-            return 150;
-        } else if (columnIndex == 2) {
-            return 400;
-        }
-        return -1;
+    					@Override
+    					public Object getValueFor(AudioObject audioObject) {
+    						return Property.NO_PROPERTIES;
+    					}
+    				};
+    				property.setVisible(true);
+    				property.setWidth(20);
+    				property.setResizable(false);
+    				columns.add(property);
+
+    				Column name = new Column("NAME", String.class) {
+
+    					/**
+    					 * 
+    					 */
+    					private static final long serialVersionUID = 3613237620716484881L;
+
+    					@Override
+    					public Object getValueFor(AudioObject audioObject) {
+    						return ((Radio)audioObject).getName();
+    					}
+
+    					@Override
+    					protected int ascendingCompare(AudioObject o1, AudioObject o2) {
+    						return ((Radio)o1).getName().compareTo(((Radio)o2).getName());
+    					}
+
+    				};
+    				name.setVisible(true);
+    				name.setWidth(150);
+    				columns.add(name);
+
+    				Column url = new Column("URL", String.class) {
+    					/**
+    					 * 
+    					 */
+    					private static final long serialVersionUID = -1615880013918017198L;
+
+    					@Override
+    					protected int ascendingCompare(AudioObject o1, AudioObject o2) {
+    						return o1.getUrl().compareTo(o2.getUrl());
+    					}
+
+    					@Override
+    					public Object getValueFor(AudioObject audioObject) {
+    						return audioObject.getUrl();
+    					}
+    				};
+    				url.setVisible(true);
+    				url.setWidth(400);
+    				columns.add(url);
+
+    				return columns;
+    			}
+    		};
+    	}
+    	return columnSet;
     }
 
     @Override

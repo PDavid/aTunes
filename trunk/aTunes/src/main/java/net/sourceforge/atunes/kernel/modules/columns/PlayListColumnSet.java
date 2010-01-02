@@ -19,6 +19,7 @@
  */
 package net.sourceforge.atunes.kernel.modules.columns;
 
+import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.gui.model.PlayListColumnModel;
@@ -41,7 +42,7 @@ public class PlayListColumnSet extends ColumnSet {
      * Private constructor
      */
     private PlayListColumnSet() {
-    	super(true);
+    	super();
     }
     
     /**
@@ -56,6 +57,11 @@ public class PlayListColumnSet extends ColumnSet {
         return instance;
     }
 
+    @Override
+    protected List<Column> getAllowedColumns() {
+    	return Columns.getColumns(true);
+    }
+    
     @Override
     protected Map<String, ColumnBean> getColumnsConfiguration() {
     	return ApplicationState.getInstance().getColumns();

@@ -54,6 +54,8 @@ import net.sourceforge.atunes.kernel.actions.RenamePodcastFeedAction;
 import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
+import net.sourceforge.atunes.kernel.modules.columns.Column;
+import net.sourceforge.atunes.kernel.modules.columns.ColumnSet;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
@@ -71,6 +73,9 @@ public final class PodcastNavigationView extends NavigationView {
     private JPopupMenu podcastFeedTreeMenu;
 
     private JPopupMenu podcastFeedTableMenu;
+    
+    /** The column set */
+    private ColumnSet columnSet;
 
     @Override
     public ImageIcon getIcon() {
@@ -96,11 +101,6 @@ public final class PodcastNavigationView extends NavigationView {
             podcastFeedTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         }
         return podcastFeedTree;
-    }
-
-    @Override
-    public boolean isAudioObjectsFromNodeNeedSort() {
-        return false;
     }
 
     @Override
@@ -226,85 +226,132 @@ public final class PodcastNavigationView extends NavigationView {
     }
     
     @Override
-    public boolean isUseDefaultNavigatorColumns() {
+    public boolean isUseDefaultNavigatorColumnSet() {
     	return false;
     }
 
     @Override
-    public Class<?> getNavigatorTableColumnClass(int columnIndex) {
-        switch (columnIndex) {
-        case 0:
-            return Property.class;
-        case 1:
-            return Property.class;
-        case 2:
-            return Property.class;
-        case 3:
-            return String.class;
-        case 4:
-            return String.class;
-        default:
-            return String.class;
-        }
-    }
+    public ColumnSet getCustomColumnSet() {
+    	if (columnSet == null) {
+    		columnSet = new CustomNavigatorColumnSet(this.getClass().getName()) {
+				
+				@Override
+				protected List<Column> getAllowedColumns() {
+					List<Column> columns = new ArrayList<Column>();
+					
+					Column property1 = new Column("", Property.class) {
+						/**
+						 * 
+						 */
+						private static final long serialVersionUID = 1L;
+						
+						@Override
+						public Object getValueFor(AudioObject audioObject) {
+							return ((PodcastFeedEntry) audioObject).isListened() ? Property.NO_PROPERTIES : Property.NOT_LISTENED_ENTRY;
+						}
+						
+						@Override
+						protected int ascendingCompare(AudioObject o1, AudioObject o2) {
+							return Boolean.valueOf(((PodcastFeedEntry) o1).isListened()).compareTo(Boolean.valueOf(((PodcastFeedEntry) o2).isListened()));
+						}
+					};
+					property1.setVisible(true);
+					property1.setWidth(20);
+					property1.setResizable(false);
+					columns.add(property1);
 
-    @Override
-    public int getNavigatorTableColumnCount() {
-        return 5;
-    }
+					Column property2 = new Column("", Property.class) {
+						/**
+						 * 
+						 */
+						private static final long serialVersionUID = 1L;
 
-    @Override
-    public String getNavigatorTableColumnName(int columnIndex) {
-        switch (columnIndex) {
-        case 0:
-            return "";
-        case 1:
-            return "";
-        case 2:
-            return "";
-        case 3:
-            return I18nUtils.getString("PODCAST_ENTRIES");
-        case 4:
-            return I18nUtils.getString("DURATION");
-        default:
-            return "";
-        }
-    }
+						@Override
+						public Object getValueFor(AudioObject audioObject) {
+							return ((PodcastFeedEntry) audioObject).isDownloaded() ? Property.DOWNLOADED_ENTRY : Property.NO_PROPERTIES;
+						}
+						
+						@Override
+						protected int ascendingCompare(AudioObject o1, AudioObject o2) {
+							return Boolean.valueOf(((PodcastFeedEntry) o1).isDownloaded()).compareTo(Boolean.valueOf(((PodcastFeedEntry) o2).isDownloaded()));
+						}
+					};
+					property2.setVisible(true);
+					property2.setWidth(20);
+					property2.setResizable(false);
+					columns.add(property2);
 
-    @Override
-    public Object getNavigatorTableValueAt(AudioObject audioObject, int columnIndex) {
-        if (audioObject instanceof PodcastFeedEntry) {
-            if (columnIndex == 0) {
-                return ((PodcastFeedEntry) audioObject).isListened() ? Property.NO_PROPERTIES : Property.NOT_LISTENED_ENTRY;
-            } else if (columnIndex == 1) {
-                return ((PodcastFeedEntry) audioObject).isDownloaded() ? Property.DOWNLOADED_ENTRY : Property.NO_PROPERTIES;
-            } else if (columnIndex == 2) {
-                return ((PodcastFeedEntry) audioObject).isOld() ? Property.OLD_ENTRY : Property.NO_PROPERTIES;
-            } else if (columnIndex == 3) {
-                return audioObject.getTitleOrFileName();
-            } else if (columnIndex == 4) {
-                return StringUtils.seconds2String(audioObject.getDuration());
-            }
-        }
-        return "";
-    }
+					Column property3 = new Column("", Property.class) {
+						/**
+						 * 
+						 */
+						private static final long serialVersionUID = 1L;
 
-    @Override
-    public int getNavigatorTableMaxWidthForColumn(int columnIndex) {
-        if (columnIndex == 0) {
-            return 20;
-        } else if (columnIndex == 1) {
-            return 20;
-        } else if (columnIndex == 2) {
-            return 20;
-        } else if (columnIndex == 3) {
-        	return 300;
-        } else if (columnIndex == 4) {
-            return 60;
-        }
-        return -1;
-    }
+						@Override
+						public Object getValueFor(AudioObject audioObject) {
+							return ((PodcastFeedEntry) audioObject).isOld() ? Property.OLD_ENTRY : Property.NO_PROPERTIES;
+						}
+						
+						@Override
+						protected int ascendingCompare(AudioObject o1, AudioObject o2) {
+							return Boolean.valueOf(((PodcastFeedEntry) o1).isOld()).compareTo(Boolean.valueOf(((PodcastFeedEntry) o2).isOld()));
+						}
+						
+					};
+					property3.setVisible(true);
+					property3.setWidth(20);
+					property3.setResizable(false);
+					columns.add(property3);
 
+					Column entries = new Column("PODCAST_ENTRIES", String.class) {
+						
+						/**
+						 * 
+						 */
+						private static final long serialVersionUID = -1788596965509543581L;
+
+						@Override
+						public Object getValueFor(AudioObject audioObject) {
+							return audioObject.getTitleOrFileName();
+						}
+						
+						@Override
+						protected int ascendingCompare(AudioObject o1, AudioObject o2) {
+							return o1.getTitleOrFileName().compareTo(o2.getTitleOrFileName());
+						}
+					};
+					entries.setVisible(true);
+					entries.setWidth(300);
+					columns.add(entries);
+					
+					Column duration = new Column("DURATION", String.class) {
+						
+						/**
+						 * 
+						 */
+						private static final long serialVersionUID = -5577224920500040774L;
+
+						@Override
+						public Object getValueFor(AudioObject audioObject) {
+							return StringUtils.seconds2String(audioObject.getDuration());
+						}
+						
+						@Override
+						protected int ascendingCompare(AudioObject o1, AudioObject o2) {
+							return Integer.valueOf(o1.getDuration()).compareTo(Integer.valueOf(o2.getDuration()));
+						}
+					};
+					duration.setVisible(true);
+					duration.setWidth(60);
+					columns.add(duration);
+					
+					return columns;
+				}
+			};
+    	}
+    	return columnSet;
+    }
+    
     @Override
     public boolean isViewModeSupported() {
         return false;

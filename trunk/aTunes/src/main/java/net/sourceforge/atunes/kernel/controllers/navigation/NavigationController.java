@@ -63,6 +63,7 @@ import net.sourceforge.atunes.kernel.actions.ShowGenresInNavigatorAction;
 import net.sourceforge.atunes.kernel.controllers.model.Controller;
 import net.sourceforge.atunes.kernel.modules.columns.Column;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnRenderers;
+import net.sourceforge.atunes.kernel.modules.columns.ColumnSet;
 import net.sourceforge.atunes.kernel.modules.columns.NavigatorColumnSet;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
@@ -303,11 +304,9 @@ public final class NavigationController extends Controller implements AudioFiles
     public List<AudioObject> getAudioObjectsForTreeNode(Class<? extends NavigationView> navigationViewClass, DefaultMutableTreeNode node) {
         List<AudioObject> audioObjects = NavigationHandler.getInstance().getView(navigationViewClass).getAudioObjectForTreeNode(node, ApplicationState.getInstance().getViewMode(),
                 FilterHandler.getInstance().isFilterSelected(NavigationHandler.getInstance().getTreeFilter()) ? FilterHandler.getInstance().getFilter() : null);
-        if (NavigationHandler.getInstance().getView(navigationViewClass).isAudioObjectsFromNodeNeedSort()) {
-        	Column columnSorted = NavigatorColumnSet.getInstance().getSortedColumn();
-        	if (columnSorted != null) {
-        		Collections.sort(audioObjects, columnSorted.getComparator(false));
-        	}
+        Column columnSorted = NavigatorColumnSet.getInstance().getSortedColumn();
+        if (columnSorted != null) {
+        	Collections.sort(audioObjects, columnSorted.getComparator(false));
         }
         return audioObjects;
     }
@@ -352,9 +351,6 @@ public final class NavigationController extends Controller implements AudioFiles
     public void setNavigationView(String view) {
         getLogger().debugMethodCall(LogCategories.CONTROLLER, new String[] { view });
 
-        // Disable column listeners before change navigation view
-        ((NavigationTableColumnModel) navigationTablePanel.getNavigationTable().getColumnModel()).enableColumnChange(false);
-
         Class<? extends NavigationView> navigationView = NavigationHandler.getInstance().getViewByName(view);
         if (navigationView == null) {
             navigationView = RepositoryNavigationView.class;
@@ -376,13 +372,22 @@ public final class NavigationController extends Controller implements AudioFiles
         Actions.getAction(ShowFoldersInNavigatorAction.class).setEnabled(viewModeSupported);
         Actions.getAction(ShowGenresInNavigatorAction.class).setEnabled(viewModeSupported);
 
-        NavigationHandler.getInstance().refreshCurrentView();
+        // Change column set
+        boolean useDefaultNavigatorColumns = NavigationHandler.getInstance().getView(navigationView).isUseDefaultNavigatorColumnSet();
+        ColumnSet columnSet = null;
+        if (useDefaultNavigatorColumns) {
+        	columnSet = NavigatorColumnSet.getInstance();
+        } else {
+        	columnSet = NavigationHandler.getInstance().getView(navigationView).getCustomColumnSet();
+        }
+        
+    	((NavigationTableModel) navigationTablePanel.getNavigationTable().getModel()).setColumnSet(columnSet);
+    	((NavigationTableColumnModel) navigationTablePanel.getNavigationTable().getColumnModel()).setColumnSet(columnSet);	
 
-        boolean useDefaultNavigatorColumns = NavigationHandler.getInstance().getView(navigationView).isUseDefaultNavigatorColumns();
+    	NavigationHandler.getInstance().refreshCurrentView();
+        
         // Allow arrange columns if view uses default column set
         columnSetPopupMenu.enableArrangeColumns(useDefaultNavigatorColumns);
-        // Enable column change
-        ((NavigationTableColumnModel) navigationTablePanel.getNavigationTable().getColumnModel()).enableColumnChange(useDefaultNavigatorColumns);
 
         JTree tree = NavigationHandler.getInstance().getCurrentView().getTree();
 
@@ -441,7 +446,7 @@ public final class NavigationController extends Controller implements AudioFiles
             return audioObjects;
         }
 
-        if (NavigationHandler.getInstance().getCurrentView().isUseDefaultNavigatorColumns()) {
+        if (NavigationHandler.getInstance().getCurrentView().isUseDefaultNavigatorColumnSet()) {
             // Use column set filtering
             return NavigatorColumnSet.getInstance().filterAudioObjects(audioObjects, FilterHandler.getInstance().getFilter());
         } else {

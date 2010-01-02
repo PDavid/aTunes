@@ -19,6 +19,7 @@
  */
 package net.sourceforge.atunes.kernel.modules.columns;
 
+import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.gui.model.SearchResultColumnModel;
@@ -41,7 +42,7 @@ public class SearchResultsColumnSet extends ColumnSet {
      * Private constructor
      */
     private SearchResultsColumnSet() {
-    	super(false);
+    	super();
     }
     
     /**
@@ -54,6 +55,11 @@ public class SearchResultsColumnSet extends ColumnSet {
             instance = new SearchResultsColumnSet();
         }
         return instance;
+    }
+    
+    @Override
+    protected List<Column> getAllowedColumns() {
+    	return Columns.getColumns(false);
     }
 
     @Override
