@@ -184,10 +184,10 @@ public final class RadioNavigationView extends NavigationView {
     public List<AudioObject> getAudioObjectForTreeNode(DefaultMutableTreeNode node, ViewMode viewMode, String treeFilter) {
         List<AudioObject> songs = new ArrayList<AudioObject>();
         if (node.isRoot()) {
-        	List<Radio> radios = RadioHandler.getInstance().getRadios();
-        	for (Radio r : radios) {
-        		songs.add(r);
-        	}
+        	// Add all radios in child nodes
+            for (int i = 0; i < node.getChildCount(); i++) {
+            	songs.addAll(getAudioObjectForTreeNode((DefaultMutableTreeNode) node.getChildAt(i), viewMode, treeFilter));
+            }
         } else {
             // A node in radio view can be a label or a radio
             Object obj = node.getUserObject();
