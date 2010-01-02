@@ -53,6 +53,7 @@ import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnSet;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
+import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -416,6 +417,7 @@ public abstract class NavigationView implements AudioObjectsSource {
                     audioObjectsSelected.addAll(getAudioObjectForTreeNode((DefaultMutableTreeNode) path.getLastPathComponent(), getCurrentViewMode(), 
                     		FilterHandler.getInstance().isFilterSelected(NavigationHandler.getInstance().getTreeFilter()) ? 
                     				FilterHandler.getInstance().getFilter() : null ));
+                    AudioObjectComparator.sort(audioObjectsSelected);
                 }
             }
             return audioObjectsSelected;

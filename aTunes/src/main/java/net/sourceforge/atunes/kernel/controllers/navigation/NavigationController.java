@@ -304,7 +304,13 @@ public final class NavigationController extends Controller implements AudioFiles
     public List<AudioObject> getAudioObjectsForTreeNode(Class<? extends NavigationView> navigationViewClass, DefaultMutableTreeNode node) {
         List<AudioObject> audioObjects = NavigationHandler.getInstance().getView(navigationViewClass).getAudioObjectForTreeNode(node, ApplicationState.getInstance().getViewMode(),
                 FilterHandler.getInstance().isFilterSelected(NavigationHandler.getInstance().getTreeFilter()) ? FilterHandler.getInstance().getFilter() : null);
-        Column columnSorted = NavigatorColumnSet.getInstance().getSortedColumn();
+        
+        ColumnSet columnSet = NavigationHandler.getInstance().getCurrentView().getCustomColumnSet();
+        if (columnSet == null) {
+        	columnSet = NavigatorColumnSet.getInstance();
+        }        
+        
+        Column columnSorted = columnSet.getSortedColumn();
         if (columnSorted != null) {
         	Collections.sort(audioObjects, columnSorted.getComparator(false));
         }
@@ -396,7 +402,7 @@ public final class NavigationController extends Controller implements AudioFiles
                     .getSelectionPath().getLastPathComponent())));
         }
     }
-
+    
     /**
      * Updates table contents when user selects a tree node or the table filter
      * changes
