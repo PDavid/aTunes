@@ -32,6 +32,8 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 import net.sourceforge.atunes.gui.Fonts;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
 import net.sourceforge.atunes.gui.views.dialogs.StatsDialog;
 import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
@@ -53,7 +55,6 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.ui.RectangleInsets;
-import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
 public final class StatsDialogController extends SimpleController<StatsDialog> {
 
@@ -381,38 +382,36 @@ public final class StatsDialogController extends SimpleController<StatsDialog> {
         });
         table.getColumnModel().getColumn(0).setPreferredWidth(420);
         table.getColumnModel().getColumn(0).setWidth(table.getColumnModel().getColumn(0).getWidth());
-        table.getColumnModel().getColumn(0).setCellRenderer(new SubstanceDefaultTableCellRenderer() {
-            private static final long serialVersionUID = 4539744679194918575L;
+        table.getColumnModel().getColumn(0).setCellRenderer(LookAndFeelSelector.getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
 
-            @Override
-            public Component getTableCellRendererComponent(JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                JLabel l = (JLabel) super.getTableCellRendererComponent(t, value, isSelected, hasFocus, row, column);
-                l.setHorizontalAlignment(GuiUtils.getComponentOrientationAsSwingConstant());
-                return l;
-            }
-        });
+        	@Override
+        	public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        		JLabel l = (JLabel) superComponent;
+        		l.setHorizontalAlignment(GuiUtils.getComponentOrientationAsSwingConstant());
+        		return l;
+        	}
+        }));
         table.getColumnModel().getColumn(2).setPreferredWidth(30);
         table.getColumnModel().getColumn(2).setWidth(table.getColumnModel().getColumn(2).getWidth());
-        table.getColumnModel().getColumn(1).setCellRenderer(new SubstanceDefaultTableCellRenderer() {
-            private static final long serialVersionUID = 4539744679194918575L;
 
-            @Override
-            public Component getTableCellRendererComponent(JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                JLabel l = (JLabel) super.getTableCellRendererComponent(t, value, isSelected, hasFocus, row, column);
+        table.getColumnModel().getColumn(1).setCellRenderer(LookAndFeelSelector.getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
+
+        	@Override
+        	public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                JLabel l = (JLabel) superComponent;
                 l.setHorizontalAlignment(SwingConstants.RIGHT);
                 return l;
             }
-        });
-        table.getColumnModel().getColumn(2).setCellRenderer(new SubstanceDefaultTableCellRenderer() {
-            private static final long serialVersionUID = -2444813781467459040L;
+        }));
+        table.getColumnModel().getColumn(2).setCellRenderer(LookAndFeelSelector.getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
 
-            @Override
-            public Component getTableCellRendererComponent(JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                JLabel l = (JLabel) super.getTableCellRendererComponent(t, value, isSelected, hasFocus, row, column);
+        	@Override
+        	public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                JLabel l = (JLabel) superComponent;
                 l.setHorizontalAlignment(SwingConstants.RIGHT);
                 return l;
             }
-        });
+        }));
     }
 
     /**

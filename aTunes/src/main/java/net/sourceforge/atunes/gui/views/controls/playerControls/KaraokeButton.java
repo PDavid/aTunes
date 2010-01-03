@@ -21,7 +21,7 @@ package net.sourceforge.atunes.gui.views.controls.playerControls;
 
 import javax.swing.JToggleButton;
 
-import net.sourceforge.atunes.gui.substance.RoundRectButtonShaper;
+import net.sourceforge.atunes.gui.lookandfeel.substance.RoundRectButtonShaper;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.KaraokeModeAction;

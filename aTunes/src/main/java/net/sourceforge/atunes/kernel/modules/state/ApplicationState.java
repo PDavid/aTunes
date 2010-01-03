@@ -25,9 +25,9 @@ import java.util.Map;
 
 import javax.swing.SwingConstants;
 
-import net.sourceforge.atunes.gui.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.frame.Frame;
 import net.sourceforge.atunes.gui.frame.FrameState;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelBean;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnBean;
@@ -76,7 +76,7 @@ public class ApplicationState {
     private Map<Class<? extends Frame>, FrameState> frameStates = new HashMap<Class<? extends Frame>, FrameState>();
     private boolean showPlaylistControls = true;
     private ProxyBean proxy;
-    private String skin = LookAndFeelSelector.DEFAULT_SKIN;
+    private LookAndFeelBean lookAndFeel;
     private FontSettings fontSettings;
     private boolean playAtStartup;
     private boolean cacheFilesBeforePlaying = false;
@@ -457,12 +457,12 @@ public class ApplicationState {
         this.proxy = proxy;
     }
 
-    public String getSkin() {
-        return skin;
+    public LookAndFeelBean getLookAndFeel() {
+        return lookAndFeel;
     }
 
-    public void setSkin(String skin) {
-        this.skin = skin;
+    public void setLookAndFeel(LookAndFeelBean lookAndFeel) {
+        this.lookAndFeel = lookAndFeel;
     }
 
     public FontSettings getFontSettings() {

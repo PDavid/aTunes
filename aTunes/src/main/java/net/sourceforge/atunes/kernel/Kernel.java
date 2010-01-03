@@ -31,7 +31,7 @@ import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.gui.Fonts;
-import net.sourceforge.atunes.gui.LookAndFeelSelector;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
@@ -150,8 +150,7 @@ public class Kernel {
                     // Set font smoothing
                     Fonts.setFontSmoothing();
                     // Set look and feel
-                    LookAndFeelSelector.initLookAndFeel();
-                    LookAndFeelSelector.setLookAndFeel(ApplicationState.getInstance().getSkin());
+                    LookAndFeelSelector.setLookAndFeel(ApplicationState.getInstance().getLookAndFeel());
                     ColorDefinitions.initColors();
                     // Set language
                     LanguageSelector.setLanguage();

@@ -36,7 +36,7 @@ import javax.swing.JSlider;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 
-import net.sourceforge.atunes.gui.substance.RoundRectButtonShaper;
+import net.sourceforge.atunes.gui.lookandfeel.substance.RoundRectButtonShaper;
 import net.sourceforge.atunes.gui.views.controls.playerControls.KaraokeButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.NextButton;

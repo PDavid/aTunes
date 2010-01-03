@@ -23,7 +23,7 @@ import java.awt.Dimension;
 
 import javax.swing.JToggleButton;
 
-import net.sourceforge.atunes.gui.substance.RoundRectButtonShaper;
+import net.sourceforge.atunes.gui.lookandfeel.substance.RoundRectButtonShaper;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
 

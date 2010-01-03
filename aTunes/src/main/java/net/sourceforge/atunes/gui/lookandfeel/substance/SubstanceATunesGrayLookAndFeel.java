@@ -17,34 +17,29 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package net.sourceforge.atunes.gui.substance;
+package net.sourceforge.atunes.gui.lookandfeel.substance;
 
-import java.awt.Insets;
-import java.awt.Shape;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.GeneralPath;
+import org.jvnet.substance.SubstanceLookAndFeel;
 
-import javax.swing.AbstractButton;
-
-/*
- * based on code from Xtreme Media Player
+/**
+ * The Class SubstanceATunesLookAndFeel.
  */
-public final class CircleButtonShaper extends ButtonShaper {
+public final class SubstanceATunesGrayLookAndFeel extends SubstanceLookAndFeel {
 
-    @Override
-    public String getDisplayName() {
-        return "Circle";
+    private static final long serialVersionUID = -3907225219153995877L;
+
+    public SubstanceATunesGrayLookAndFeel() {
+        super(new SubstanceATunesGraySkin());
     }
 
     @Override
-    public Shape getButtonOutline(AbstractButton button, Insets insets, int w, int h, boolean isInner) {
-        int width = w - 1;
-        int height = h - 1;
+    public String getID() {
+        return "Substance aTunes Gray";
+    }
 
-        Shape shape = new Ellipse2D.Double(0, 0, width, height);
-        GeneralPath generalPath = new GeneralPath(shape);
-
-        return generalPath;
+    @Override
+    public String getName() {
+        return "Substance aTunes Gray";
     }
 
 }

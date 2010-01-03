@@ -39,7 +39,7 @@ public final class ApplicationArguments {
      * Ignore look and feel constant This argument makes application use OS
      * default Look And Feel.
      */
-    public static final String IGNORE_LOOK_AND_FEEL = "ignore-theme";
+    public static final String IGNORE_LOOK_AND_FEEL = "ignore-look-and-feel";
 
     /** Disable multiple instances control. */
     public static final String ALLOW_MULTIPLE_INSTANCE = "multiple-instance";

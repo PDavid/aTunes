@@ -36,6 +36,8 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeCellRenderer;
 
 import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.gui.lookandfeel.TreeCellRendererCode;
 import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.kernel.actions.Actions;
@@ -59,8 +61,6 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
-
-import org.jvnet.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
 
 public final class RadioNavigationView extends NavigationView {
 
@@ -429,12 +429,11 @@ public final class RadioNavigationView extends NavigationView {
 
     @Override
     protected TreeCellRenderer getTreeRenderer() {
-        return new SubstanceDefaultTreeCellRenderer() {
-            private static final long serialVersionUID = 8184884292645176037L;
-
-            @Override
-            public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-                JLabel icon = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+    	return LookAndFeelSelector.getCurrentLookAndFeel().getTreeCellRenderer(new TreeCellRendererCode() {
+			
+			@Override
+			public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
+				JLabel icon = (JLabel) superComponent;
                 if (leaf || row == 0) {
                     icon.setIcon(Images.getImage(Images.RADIO_LITTLE));
                 } else {
@@ -442,6 +441,6 @@ public final class RadioNavigationView extends NavigationView {
                 }
                 return icon;
             }
-        };
+        });
     }    
 }

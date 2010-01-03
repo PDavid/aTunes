@@ -30,10 +30,11 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
 import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.lookandfeel.ListCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.model.AudioObject;
 
-import org.jvnet.substance.api.renderers.SubstanceDefaultComboBoxRenderer;
 import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
 public class ScoreColumn extends Column {
@@ -53,13 +54,12 @@ public class ScoreColumn extends Column {
     @Override
     public TableCellEditor getCellEditor() {
         JComboBox comboBox = new JComboBox(new Object[] { 0, 1, 2, 3, 4, 5 });
-        comboBox.setRenderer(new SubstanceDefaultComboBoxRenderer(comboBox) {
-            private static final long serialVersionUID = 0L;
-
-            @Override
-            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                label.setText("");
+        
+        comboBox.setRenderer(LookAndFeelSelector.getCurrentLookAndFeel().getListCellRenderer(new ListCellRendererCode() {
+        	@Override
+        	public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                JLabel label = (JLabel) superComponent;
+                label.setText(null);
 
                 switch ((Integer) value) {
                 case 0:
@@ -83,9 +83,9 @@ public class ScoreColumn extends Column {
                 }
 
                 return label;
-            }
-        });
-
+        	}
+        }));
+        
         return new DefaultCellEditor(comboBox);
     }
 

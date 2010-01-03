@@ -45,8 +45,8 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import net.sourceforge.atunes.gui.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
@@ -131,19 +131,6 @@ public final class GuiUtils {
     public static void setLocationInScreen(Window window, GraphicsDevice screen) {
         Rectangle screenBounds = screen.getDefaultConfiguration().getBounds();
         window.setLocation(screenBounds.width / 2 - window.getWidth() / 2 + screenBounds.x, screenBounds.height / 2 - window.getHeight() / 2 + screenBounds.y);
-    }
-
-    /**
-     * Updates the user interface to use a new theme
-     * 
-     * @param selectedTheme
-     *            The new theme
-     */
-    public static void applyTheme(String selectedTheme) {
-        LookAndFeelSelector.setLookAndFeel(selectedTheme);
-        for (Window window : Window.getWindows()) {
-            SwingUtilities.updateComponentTreeUI(window);
-        }
     }
 
     /**

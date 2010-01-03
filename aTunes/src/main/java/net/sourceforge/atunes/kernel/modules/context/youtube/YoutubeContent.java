@@ -38,7 +38,9 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.substance.SubstanceContextImageJTable;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceContextImageJTable;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
@@ -54,7 +56,6 @@ import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jfree.ui.ExtensionFileFilter;
-import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
 /**
  * Content to show videos from Youtube
@@ -105,17 +106,16 @@ public class YoutubeContent extends ContextPanelContent {
         youtubeResultTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         youtubeResultTable.setShowGrid(false);
         youtubeResultTable.getTableHeader().setReorderingAllowed(false);
-        youtubeResultTable.setDefaultRenderer(YoutubeResultEntry.class, new SubstanceDefaultTableCellRenderer() {
-            private static final long serialVersionUID = 620892562731682118L;
+        youtubeResultTable.setDefaultRenderer(YoutubeResultEntry.class, LookAndFeelSelector.getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
 
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean arg2, boolean arg3, int arg4, int arg5) {
-                Color backgroundColor = super.getTableCellRendererComponent(table, value, arg2, arg3, arg4, arg5).getBackground();
+        	@Override
+        	public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                Color backgroundColor = superComponent.getBackground();
 
                 return getPanelForTableRenderer(((YoutubeResultEntry) value).getImage(), StringUtils.getString("<html>", ((YoutubeResultEntry) value).getName(), "<br>(",
                         ((YoutubeResultEntry) value).getDuration(), ")</html>"), backgroundColor, Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT);
             }
-        });
+        }));
         youtubeResultTable.setColumnSelectionAllowed(false);
 
         JMenuItem playMenuItem = new JMenuItem(I18nUtils.getString("PLAY_VIDEO_AT_YOUTUBE"));

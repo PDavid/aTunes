@@ -42,10 +42,11 @@ import javax.swing.UIManager;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.Fonts;
-import net.sourceforge.atunes.gui.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.frame.Frame;
 import net.sourceforge.atunes.gui.frame.Frames;
 import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelBean;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.ByImageChoosingPanel;
 import net.sourceforge.atunes.gui.views.controls.ByImageChoosingPanel.ImageEntry;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog;
@@ -53,7 +54,6 @@ import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
-import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -73,7 +73,9 @@ public final class GeneralPanel extends PreferencesPanel {
     private JCheckBox showIconTray;
     private JCheckBox showTrayPlayer;
     private JButton fontSettings;
-    private JComboBox theme;
+    private JComboBox lookAndFeel;
+    private JLabel skinLabel;
+    private JComboBox skin;
     private ByImageChoosingPanel<Class<? extends Frame>> windowTypeChoosingPanel;
 
     FontSettings currentFontSettings;
@@ -126,8 +128,10 @@ public final class GeneralPanel extends PreferencesPanel {
 
         showIconTray = new JCheckBox(I18nUtils.getString("SHOW_TRAY_ICON"));
         showTrayPlayer = new JCheckBox(I18nUtils.getString("SHOW_TRAY_PLAYER"));
-        JLabel themeLabel = new JLabel(I18nUtils.getString("THEME"));
-        themeLabel.setFont(Fonts.GENERAL_FONT_BOLD);
+        JLabel lookAndFeelLabel = new JLabel(I18nUtils.getString("LOOK_AND_FEEL"));
+        lookAndFeelLabel.setFont(Fonts.GENERAL_FONT_BOLD);
+        skinLabel = new JLabel(I18nUtils.getString("THEME"));
+        skinLabel.setFont(Fonts.GENERAL_FONT_BOLD);
 
         fontSettings = new JButton(I18nUtils.getString("CHANGE_FONT_SETTINGS"));
         fontSettings.addActionListener(new ActionListener() {
@@ -149,14 +153,28 @@ public final class GeneralPanel extends PreferencesPanel {
             }
         });
 
-        theme = new JComboBox(new ListComboBoxModel<String>(LookAndFeelSelector.getListOfSkins()));
-        theme.addActionListener(new ActionListener() {
+        lookAndFeel = new JComboBox(new ListComboBoxModel<String>(LookAndFeelSelector.getAvailableLookAndFeels()));
+        lookAndFeel.addActionListener(new ActionListener() {
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		// Only allow select skin when look and feel is the current enabled
+        		boolean isCurrentLookAndFeel = LookAndFeelSelector.getCurrentLookAndFeelName().equals(lookAndFeel.getSelectedItem());
+        		skinLabel.setEnabled(isCurrentLookAndFeel);
+        		skin.setEnabled(isCurrentLookAndFeel);
+        		skin.setModel(isCurrentLookAndFeel ? new ListComboBoxModel<String>(LookAndFeelSelector.getAvailableSkins((String)lookAndFeel.getSelectedItem())) :
+        			new ListComboBoxModel<String>(new ArrayList<String>()));
+        	}
+        });
+        
+        skin = new JComboBox();
+        skin.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String selectedTheme = (String) theme.getSelectedItem();
-                if (!LookAndFeelSelector.getClassNameForLookAndFeelName(selectedTheme).equals(UIManager.getLookAndFeel().getClass().getName())) {
-                    GuiUtils.applyTheme(selectedTheme);
-                }
+                String selectedSkin = (String) skin.getSelectedItem();
+        		boolean isCurrentLookAndFeel = LookAndFeelSelector.getCurrentLookAndFeelName().equals(lookAndFeel.getSelectedItem());
+        		if (isCurrentLookAndFeel) {
+        			LookAndFeelSelector.applySkin(selectedSkin);
+        		}
             }
 
         });
@@ -176,16 +194,23 @@ public final class GeneralPanel extends PreferencesPanel {
         c.gridx = 0;
         c.gridy = 2;
         c.insets = new Insets(25, 0, 5, 0);
-        add(themeLabel, c);
+        add(lookAndFeelLabel, c);
         c.gridx = 1;
         c.insets = new Insets(25, 0, 0, 0);
-        add(theme, c);
+        add(lookAndFeel, c);
         c.gridx = 0;
         c.gridy = 3;
+        c.insets = new Insets(25, 0, 5, 0);
+        add(skinLabel, c);
+        c.gridx = 1;
+        c.insets = new Insets(25, 0, 0, 0);
+        add(skin, c);
+        c.gridx = 0;
+        c.gridy = 4;
         c.insets = new Insets(20, 0, 0, 0);
         add(windowTypeLabel, c);
         c.gridx = 0;
-        c.gridy = 4;
+        c.gridy = 5;
         c.insets = new Insets(5, 0, 0, 0);
         c.gridwidth = 2;
         c.weightx = 1;
@@ -196,7 +221,7 @@ public final class GeneralPanel extends PreferencesPanel {
         sp.getVerticalScrollBar().setUnitIncrement(20);
         add(sp, c);
         c.gridx = 0;
-        c.gridy = 5;
+        c.gridy = 6;
         c.gridwidth = 1;
         c.weightx = 0;
         c.weighty = 0;
@@ -204,17 +229,17 @@ public final class GeneralPanel extends PreferencesPanel {
         c.insets = new Insets(20, 0, 20, 0);
         add(fontSettings, c);
         c.gridx = 0;
-        c.gridy = 6;
+        c.gridy = 7;
         c.weightx = 1;
         c.insets = new Insets(5, 0, 0, 0);
         add(showTitle, c);
         c.gridx = 0;
-        c.gridy = 7;
+        c.gridy = 8;
         c.weighty = 0.2;
         c.insets = new Insets(5, 0, 0, 0);
         add(showTrayPlayer, c);
         c.gridx = 1;
-        c.gridy = 7;
+        c.gridy = 8;
         c.insets = new Insets(5, 0, 0, 0);
         add(showIconTray, c);
     }
@@ -248,8 +273,14 @@ public final class GeneralPanel extends PreferencesPanel {
         state.setShowSystemTray(showIconTray.isSelected());
         state.setShowTrayPlayer(showTrayPlayer.isSelected());
 
-        String newTheme = (String) theme.getSelectedItem();
-        state.setSkin(newTheme);
+        LookAndFeelBean oldLookAndFeel = state.getLookAndFeel();
+        LookAndFeelBean newLookAndFeel = new LookAndFeelBean();
+        newLookAndFeel.setName((String)lookAndFeel.getSelectedItem());
+        newLookAndFeel.setSkin((String)skin.getSelectedItem());
+        state.setLookAndFeel(newLookAndFeel);
+        if (!oldLookAndFeel.getName().equals(newLookAndFeel.getName())) {
+        	needRestart = true;
+        }
 
         return needRestart;
     }
@@ -295,13 +326,21 @@ public final class GeneralPanel extends PreferencesPanel {
     }
 
     /**
+     * Sets the look and feel
+     * @param lookAndFeel
+     */
+    private void setLookAndFeel(String lookAndFeel) {
+    	this.lookAndFeel.setSelectedItem(lookAndFeel);
+    }
+    
+    /**
      * Sets the theme.
      * 
      * @param t
      *            the new theme
      */
-    private void setTheme(String t) {
-        theme.setSelectedItem(t);
+    private void setSkin(String t) {
+        skin.setSelectedItem(t);
     }
 
     /**
@@ -321,14 +360,16 @@ public final class GeneralPanel extends PreferencesPanel {
         setLanguage(I18nUtils.getSelectedLocale());
         setShowIconTray(state.isShowSystemTray());
         setShowTrayPlayer(state.isShowTrayPlayer());
-        setTheme(state.getSkin());
+        setLookAndFeel(state.getLookAndFeel().getName());
+        updateSkins(state.getLookAndFeel().getName());
+        setSkin(state.getLookAndFeel().getSkin());
         currentFontSettings = state.getFontSettings();
     }
 
     @Override
     public void resetImmediateChanges(ApplicationState state) {
-        if (!LookAndFeelSelector.getClassNameForLookAndFeelName(state.getSkin()).equals(UIManager.getLookAndFeel().getClass().getName())) {
-            GuiUtils.applyTheme(state.getSkin());
+        if (state.getLookAndFeel().getSkin() == null || !state.getLookAndFeel().getSkin().equals(skin.getSelectedItem())) {
+            LookAndFeelSelector.applySkin(state.getLookAndFeel().getSkin());
         }
     }
 
@@ -345,6 +386,17 @@ public final class GeneralPanel extends PreferencesPanel {
     @Override
     public ImageIcon getIcon() {
         return Images.getImage(Images.PREFS);
+    }
+    
+    /**
+     * Updates skins combo for given look and feel
+     * @param selectedLookAndFeel
+     */
+    protected void updateSkins(String selectedLookAndFeel) {
+		boolean hasSkins = !LookAndFeelSelector.getAvailableSkins(selectedLookAndFeel).isEmpty();
+		skinLabel.setEnabled(hasSkins);
+		skin.setEnabled(hasSkins);
+		skin.setModel(new ListComboBoxModel<String>(LookAndFeelSelector.getAvailableSkins(selectedLookAndFeel)));
     }
 
 }

@@ -320,6 +320,7 @@ public abstract class CommonColumnModel extends DefaultTableColumnModel {
 
         // Set header renderer to sortable columns
         if (column.isSortable()) {
+        	// TODO: LAF
         	aColumn.setHeaderRenderer(new SubstanceDefaultTableHeaderCellRenderer() {
         		private static final long serialVersionUID = -2882720841285248439L;
 

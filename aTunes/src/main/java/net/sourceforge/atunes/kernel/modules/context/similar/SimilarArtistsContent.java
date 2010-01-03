@@ -30,7 +30,9 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.substance.SubstanceContextImageJTable;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceContextImageJTable;
 import net.sourceforge.atunes.kernel.modules.context.ArtistInfo;
 import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.context.SimilarArtistsInfo;
@@ -38,8 +40,6 @@ import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
-
-import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
 public class SimilarArtistsContent extends ContextPanelContent {
 
@@ -82,17 +82,16 @@ public class SimilarArtistsContent extends ContextPanelContent {
         similarArtistsTable = new SubstanceContextImageJTable();
         similarArtistsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         similarArtistsTable.setShowGrid(false);
-        similarArtistsTable.setDefaultRenderer(ArtistInfo.class, new SubstanceDefaultTableCellRenderer() {
-            private static final long serialVersionUID = 0L;
+        similarArtistsTable.setDefaultRenderer(ArtistInfo.class, LookAndFeelSelector.getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
 
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean arg2, boolean arg3, int arg4, int arg5) {
-                Color backgroundColor = super.getTableCellRendererComponent(table, value, arg2, arg3, arg4, arg5).getBackground();
+        	@Override
+        	public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                Color backgroundColor = superComponent.getBackground();
                 return getPanelForTableRenderer(((ArtistInfo) value).getImage(), StringUtils.getString("<html><br>", ((ArtistInfo) value).getName(), "<br>", ((ArtistInfo) value)
                         .getMatch(), "%<br>", ((ArtistInfo) value).isAvailable() ? I18nUtils.getString("AVAILABLE_IN_REPOSITORY") : "", "</html>"), backgroundColor,
                         Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT);
             }
-        });
+        }));
         similarArtistsTable.setColumnSelectionAllowed(false);
         similarArtistsTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
         similarArtistsTable.getTableHeader().setReorderingAllowed(false);

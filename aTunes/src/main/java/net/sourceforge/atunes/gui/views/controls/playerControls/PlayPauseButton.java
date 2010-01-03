@@ -26,7 +26,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.substance.CircleButtonShaper;
+import net.sourceforge.atunes.gui.lookandfeel.substance.CircleButtonShaper;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 
 import org.jvnet.substance.SubstanceLookAndFeel;

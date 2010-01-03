@@ -17,26 +17,26 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package net.sourceforge.atunes.gui.substance;
+package net.sourceforge.atunes.gui.lookandfeel.substance;
 
 import org.jvnet.substance.SubstanceLookAndFeel;
 
-public final class SubstanceATunesDarkLookAndFeel extends SubstanceLookAndFeel {
+public final class SubstanceATunesBlueLookAndFeel extends SubstanceLookAndFeel {
 
     private static final long serialVersionUID = -3907225219153995877L;
 
-    public SubstanceATunesDarkLookAndFeel() {
-        super(new SubstanceATunesDarkSkin());
+    public SubstanceATunesBlueLookAndFeel() {
+        super(new SubstanceATunesBlueSkin());
     }
 
     @Override
     public String getID() {
-        return "Substance aTunes Dark";
+        return "Substance aTunes Blue";
     }
 
     @Override
     public String getName() {
-        return "Substance aTunes Dark";
+        return "Substance aTunes Blue";
     }
 
 }
