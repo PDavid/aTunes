@@ -26,6 +26,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 public abstract class CustomModalDialog extends JDialog {
@@ -47,7 +48,7 @@ public abstract class CustomModalDialog extends JDialog {
     public CustomModalDialog(Window owner, int width, int height, boolean modal) {
         super(owner);
         setSize(width, height);
-        setUndecorated(true);
+        setUndecorated(LookAndFeelSelector.getCurrentLookAndFeel().isDialogUndecorated());
         setModalityType(modal ? ModalityType.APPLICATION_MODAL : ModalityType.MODELESS);
         setLocationRelativeTo(owner);
         setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);

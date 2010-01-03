@@ -17,7 +17,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package net.sourceforge.atunes.gui.substance;
+package net.sourceforge.atunes.gui.lookandfeel.substance;
 
 import java.awt.Insets;
 import java.awt.Shape;

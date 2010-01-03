@@ -1,0 +1,139 @@
+package net.sourceforge.atunes.gui.lookandfeel;
+
+import java.awt.Component;
+import java.util.List;
+
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JList;
+import javax.swing.JTable;
+import javax.swing.JTree;
+import javax.swing.ListCellRenderer;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreeCellRenderer;
+
+import net.sourceforge.atunes.misc.log.Logger;
+
+public abstract class LookAndFeel {
+	
+	/** Logger */
+    private static Logger logger;
+
+    /**
+     * Private getter for logger
+     * @return
+     */
+    protected static Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
+    }
+
+	/**
+	 * Returns name of the look and feel
+	 */
+	public abstract String getName();
+	
+	/**
+	 * Returns description to show to user
+	 */
+	public abstract String getDescription();
+	
+	/**
+	 * Steps needed to initialize look and feel
+	 */
+	public abstract void initializeLookAndFeel();
+	
+	/**
+	 * Steps needed to set up look and feel
+	 * @param skin
+	 */
+	public abstract void setLookAndFeel(String skin);
+	
+	/**
+	 * Returns default skin (if supported)
+	 * @return
+	 */
+	public abstract String getDefaultSkin();
+	
+	/**
+	 * Returns list of available skins for this look and feel (if supported)
+	 * @return
+	 */
+	public abstract List<String> getSkins();
+	
+	/**
+	 * Returns if dialogs must be undecorated
+	 * @return
+	 */
+	public boolean isDialogUndecorated() {
+		return false;
+	}
+	
+	
+	/**
+	 * Returns a new TreeCellRenderer executing given code (default implementation)
+	 * @param code
+	 * @return
+	 */
+	public TreeCellRenderer getTreeCellRenderer(final TreeCellRendererCode code) {
+		return new DefaultTreeCellRenderer() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 5424315832943108932L;
+
+			@Override
+			public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+				Component c = super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
+				return code.getComponent(c, tree, value, sel, expanded, leaf, row, hasFocus);
+			}
+		};
+	}
+	
+	
+	/**
+	 * Returns a new TableCellRenderer executing given code (default implementation)
+	 * @param code
+	 * @return
+	 */
+	public TableCellRenderer getTableCellRenderer(final TableCellRendererCode code) {
+		return new DefaultTableCellRenderer() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+				Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+				return code.getComponent(c, table, value, isSelected, hasFocus, row, column);
+			}
+		};		
+	}
+	
+	/**
+	 * Returns a new ListCellRendeder executing given code (default implementation)
+	 * @param code
+	 * @return
+	 */
+	public ListCellRenderer getListCellRenderer(final ListCellRendererCode code) {
+		return new DefaultListCellRenderer() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 2572603555660744197L;
+
+			@Override
+			public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+				Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+				return code.getComponent(c, list, value, index, isSelected, cellHasFocus);
+			}
+		};
+	}
+	
+	
+	
+}

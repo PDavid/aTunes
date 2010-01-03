@@ -38,6 +38,8 @@ import javax.swing.tree.TreeNode;
 
 import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.gui.lookandfeel.TreeCellRendererCode;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.gui.views.menus.EditTagMenu;
@@ -72,8 +74,6 @@ import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
-
-import org.jvnet.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
 
 public class RepositoryNavigationView extends NavigationView {
 
@@ -493,15 +493,15 @@ public class RepositoryNavigationView extends NavigationView {
 
     @Override
     protected TreeCellRenderer getTreeRenderer() {
-        return new SubstanceDefaultTreeCellRenderer() {
-            private static final long serialVersionUID = -7992021225213275134L;
-
-            @Override
-            public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
+    	return LookAndFeelSelector.getCurrentLookAndFeel().getTreeCellRenderer(new TreeCellRendererCode() {
+			
+			@Override
+			public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
+                JLabel label = (JLabel) superComponent;
+                
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
                 final Object content = node.getUserObject();
 
-                JLabel label = (JLabel) super.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, isHasFocus);
 
                 if (content instanceof Artist) {
                     if (!ApplicationState.getInstance().isShowFavoritesInNavigator() || !FavoritesHandler.getInstance().getFavoriteArtistsInfo().containsValue(content)) {
@@ -549,7 +549,7 @@ public class RepositoryNavigationView extends NavigationView {
                 }
                 return label;
             }
-        };
+        });
     }
 
     /**

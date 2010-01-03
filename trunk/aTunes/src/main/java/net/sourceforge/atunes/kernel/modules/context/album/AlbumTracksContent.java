@@ -31,6 +31,8 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
 
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
 import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
 import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
@@ -38,8 +40,6 @@ import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
-
-import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
 /**
  * Tracks of an album
@@ -88,26 +88,26 @@ public class AlbumTracksContent extends ContextPanelContent {
         tracksTable = new JTable();
         tracksTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tracksTable.setShowGrid(false);
-        tracksTable.setDefaultRenderer(String.class, new SubstanceDefaultTableCellRenderer() {
-            private static final long serialVersionUID = 6554520059295478131L;
-
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean arg2, boolean arg3, int arg4, int arg5) {
-                Component c = super.getTableCellRendererComponent(table, value, arg2, arg3, arg4, arg5);
+        tracksTable.setDefaultRenderer(String.class, LookAndFeelSelector.getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
+			
+			@Override
+			public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                Component c = superComponent;
+                GuiUtils.applyComponentOrientation((JLabel) c);
+                return c;
+			}
+		}));
+        
+        tracksTable.setDefaultRenderer(Integer.class, LookAndFeelSelector.getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
+			
+			@Override
+			public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                Component c = superComponent;
                 GuiUtils.applyComponentOrientation((JLabel) c);
                 return c;
             }
-        });
-        tracksTable.setDefaultRenderer(Integer.class, new SubstanceDefaultTableCellRenderer() {
-            private static final long serialVersionUID = 1328605998912553401L;
-
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean arg2, boolean arg3, int arg4, int arg5) {
-                Component c = super.getTableCellRendererComponent(table, value, arg2, arg3, arg4, arg5);
-                GuiUtils.applyComponentOrientation((JLabel) c);
-                return c;
-            }
-        });
+        }));
+        
         tracksTable.getTableHeader().setReorderingAllowed(true);
         tracksTable.getTableHeader().setResizingAllowed(false);
         tracksTable.setColumnModel(new DefaultTableColumnModel() {

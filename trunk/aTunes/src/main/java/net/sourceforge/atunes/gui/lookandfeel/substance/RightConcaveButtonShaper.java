@@ -17,10 +17,12 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package net.sourceforge.atunes.gui.substance;
+package net.sourceforge.atunes.gui.lookandfeel.substance;
 
 import java.awt.Insets;
 import java.awt.Shape;
+import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.RoundRectangle2D;
 
@@ -29,11 +31,18 @@ import javax.swing.AbstractButton;
 /*
  * based on code from Xtreme Media Player
  */
-public final class RoundRectButtonShaper extends ButtonShaper {
+public final class RightConcaveButtonShaper extends ButtonShaper {
+
+    private int concaveDiameter;
+
+    public RightConcaveButtonShaper(int concaveDiameter) {
+        super();
+        this.concaveDiameter = concaveDiameter;
+    }
 
     @Override
     public String getDisplayName() {
-        return "RoundRect";
+        return "RightConcave";
     }
 
     @Override
@@ -41,10 +50,12 @@ public final class RoundRectButtonShaper extends ButtonShaper {
         int width = w - 1;
         int height = h - 1;
 
-        Shape shape = new RoundRectangle2D.Double(0, 0, width, height, width / 3d, height / 3d);
-        GeneralPath generalPath = new GeneralPath(shape);
+        int z = concaveDiameter / 3;
 
-        return generalPath;
+        Shape shape = new Ellipse2D.Double(width - z, 0, z, height);
+        Area area = new Area(new RoundRectangle2D.Double(z / 2d, 0, width - z, height, z, z));
+        area.subtract(new Area(shape));
+
+        return new GeneralPath(area);
     }
-
 }

@@ -28,6 +28,8 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
 import net.sourceforge.atunes.gui.model.CommonColumnModel;
 import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
@@ -39,8 +41,6 @@ import net.sourceforge.atunes.kernel.modules.repository.statistics.StatisticsHan
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
-
-import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
 /**
  * Common renderers for columns
@@ -59,13 +59,13 @@ public final class ColumnRenderers {
      */
     public static void addRenderers(final JTable jtable, final CommonColumnModel model) {
         // INTEGER renderer
-        jtable.setDefaultRenderer(Integer.class, new SubstanceDefaultTableCellRenderer() {
-            private static final long serialVersionUID = 4027676693367876748L;
+        jtable.setDefaultRenderer(Integer.class, LookAndFeelSelector.getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
 
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        	@Override
+        	public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        		Component c = superComponent;
             	if (table instanceof PlayListTable) {
-            		Component c = super.getTableCellRendererComponent(table, "", isSelected, hasFocus, row, column);
+            		((JLabel) c).setText(null);
             		if (PlayListHandler.getInstance().isCurrentVisibleRowPlaying(row)) {
             			((JLabel) c).setIcon(PlayState.getPlayStateIcon(((PlayListTable)jtable).getPlayState()));
             		} else {
@@ -74,7 +74,6 @@ public final class ColumnRenderers {
 
             		// Get alignment from model
             		((JLabel) c).setHorizontalAlignment(model.getColumnAlignment(column));
-            		return c;
             	} else {
             		Integer intValue = (Integer) value;
             		String stringValue;
@@ -83,20 +82,20 @@ public final class ColumnRenderers {
             		} else {
             			stringValue = String.valueOf(intValue);
             		}
-            		Component comp = super.getTableCellRendererComponent(table, stringValue, isSelected, hasFocus, row, column);
-            		((JLabel) comp).setHorizontalAlignment(SwingConstants.CENTER);
-            		return comp;
+            		((JLabel) c).setText(stringValue);
+            		((JLabel) c).setHorizontalAlignment(SwingConstants.CENTER);
             	}
+        		return c;
             }
-        });
+        }));
 
         // ImageIcon renderer
-        jtable.setDefaultRenderer(ImageIcon.class, new SubstanceDefaultTableCellRenderer() {
-            private static final long serialVersionUID = 62797739155426672L;
+        jtable.setDefaultRenderer(ImageIcon.class, LookAndFeelSelector.getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
 
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                Component c = super.getTableCellRendererComponent(table, "", isSelected, hasFocus, row, column);
+        	@Override
+        	public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        		Component c = superComponent;
+        		((JLabel) c).setText(null);
                 ((JLabel) c).setIcon((ImageIcon) value);
 
                 // Get alignment from model
@@ -104,15 +103,14 @@ public final class ColumnRenderers {
                 return c;
 
             }
-        });
+        }));
 
         // STRING renderer
-        jtable.setDefaultRenderer(String.class, new SubstanceDefaultTableCellRenderer() {
-            private static final long serialVersionUID = 7305230546936745766L;
+        jtable.setDefaultRenderer(String.class, LookAndFeelSelector.getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
 
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        	@Override
+        	public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        		Component c = superComponent;
                 if (table instanceof PlayListTable) {
                 	setFontForRow((JLabel) c, row);
                 }
@@ -121,15 +119,14 @@ public final class ColumnRenderers {
                 ((JLabel) c).setHorizontalAlignment(model.getColumnAlignment(column));
                 return c;
             }
-        });
+        }));
 
         // JLabel renderer
-        jtable.setDefaultRenderer(JLabel.class, new SubstanceDefaultTableCellRenderer() {
-            private static final long serialVersionUID = 0L;
+        jtable.setDefaultRenderer(JLabel.class, LookAndFeelSelector.getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
 
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        	@Override
+        	public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        		Component c = superComponent;
                 if (table instanceof PlayListTable) {
                 	setFontForRow((JLabel) c, row);
                 }
@@ -141,15 +138,14 @@ public final class ColumnRenderers {
 
                 return c;
             }
-        });
+        }));
         
         // Property renderer
-        jtable.setDefaultRenderer(Property.class, new SubstanceDefaultTableCellRenderer() {
-        	private static final long serialVersionUID = 1337377851290885658L;
+        jtable.setDefaultRenderer(Property.class, LookAndFeelSelector.getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
 
         	@Override
-        	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        		Component comp = super.getTableCellRendererComponent(table, "", isSelected, hasFocus, row, column);
+        	public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        		Component comp = superComponent;
         		ImageIcon icon = Images.getImage(Images.EMPTY);
         		Property val = (Property) value;
         		if (val == Property.FAVORITE) {
@@ -162,10 +158,11 @@ public final class ColumnRenderers {
         			icon = Images.getImage(Images.REMOVE);
         		}
         		((JLabel) comp).setIcon(icon);
+        		((JLabel) comp).setText(null);
         		return comp;
 
         	}
-        });
+        }));
 
     }
 

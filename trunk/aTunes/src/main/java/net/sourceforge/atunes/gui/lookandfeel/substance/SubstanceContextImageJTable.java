@@ -17,29 +17,27 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package net.sourceforge.atunes.gui.substance;
+package net.sourceforge.atunes.gui.lookandfeel.substance;
 
-import org.jvnet.substance.SubstanceLookAndFeel;
+import javax.swing.JTable;
+
+import net.sourceforge.atunes.Constants;
 
 /**
- * The Class SubstanceATunesLookAndFeel.
+ * <p>
+ * This class is needed for Substance look and feel 4.1+
+ * </p>
+ * <a href ="https://substance.dev.java.net/servlets/ProjectForumMessageView?messageID=22522&forumID=1484"
+ * >https://substance.dev.java.net/servlets/ProjectForumMessageView?messageID=
+ * 22522&forumID=1484</a>
  */
-public final class SubstanceATunesGrayLookAndFeel extends SubstanceLookAndFeel {
+public final class SubstanceContextImageJTable extends JTable {
 
-    private static final long serialVersionUID = -3907225219153995877L;
-
-    public SubstanceATunesGrayLookAndFeel() {
-        super(new SubstanceATunesGraySkin());
-    }
+    private static final long serialVersionUID = 339974237840854168L;
 
     @Override
-    public String getID() {
-        return "Substance aTunes Gray";
-    }
-
-    @Override
-    public String getName() {
-        return "Substance aTunes Gray";
+    public void setRowHeight(int heigth) {
+        super.setRowHeight(Constants.CONTEXT_IMAGE_HEIGHT + 5);
     }
 
 }

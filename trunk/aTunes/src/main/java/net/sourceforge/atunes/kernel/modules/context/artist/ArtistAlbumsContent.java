@@ -31,7 +31,9 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.substance.SubstanceContextImageJTable;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceContextImageJTable;
 import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
 import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
 import net.sourceforge.atunes.model.AudioObject;
@@ -91,16 +93,16 @@ public class ArtistAlbumsContent extends ContextPanelContent {
         albumsTable.setShowGrid(false);
         albumsTable.getTableHeader().setReorderingAllowed(false);
         albumsTable.getTableHeader().setResizingAllowed(false);
-        albumsTable.setDefaultRenderer(AlbumInfo.class, new SubstanceDefaultTableCellRenderer() {
-            private static final long serialVersionUID = 620892562731682118L;
-
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean arg2, boolean arg3, int arg4, int arg5) {
-                Color backgroundColor = super.getTableCellRendererComponent(table, value, arg2, arg3, arg4, arg5).getBackground();
+        albumsTable.setDefaultRenderer(AlbumInfo.class, LookAndFeelSelector.getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
+			
+			@Override
+			public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                Component c = superComponent;
+                Color backgroundColor = c.getBackground();
                 return getPanelForTableRenderer(((AlbumInfo) value).getCover(), StringUtils.getString("<html>", ((AlbumInfo) value).getTitle(), "</html>"), backgroundColor,
                         Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT);
             }
-        });
+        }));
 
         albumsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override

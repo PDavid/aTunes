@@ -37,6 +37,8 @@ import javax.swing.tree.TreeCellRenderer;
 
 import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.gui.lookandfeel.TreeCellRendererCode;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.gui.views.menus.EditTagMenu;
 import net.sourceforge.atunes.kernel.actions.Actions;
@@ -64,8 +66,6 @@ import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandl
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
-
-import org.jvnet.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
 
 public final class FavoritesNavigationView extends NavigationView {
 
@@ -317,15 +317,15 @@ public final class FavoritesNavigationView extends NavigationView {
 
     @Override
     protected TreeCellRenderer getTreeRenderer() {
-        return new SubstanceDefaultTreeCellRenderer() {
-            private static final long serialVersionUID = 2880969518313022116L;
+    	return LookAndFeelSelector.getCurrentLookAndFeel().getTreeCellRenderer(new TreeCellRendererCode() {
+			
+			@Override
+			public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
+                JLabel label = (JLabel) superComponent;
 
-            @Override
-            public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
                 Object content = node.getUserObject();
 
-                JLabel label = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
                 // Set custom icon for every type of node: artist, album, song...
                 if (content instanceof Artist) {
                     label.setIcon(Images.getImage(Images.ARTIST));
@@ -352,7 +352,7 @@ public final class FavoritesNavigationView extends NavigationView {
 
                 return label;
             }
-        };
+        });
     }
 
 }

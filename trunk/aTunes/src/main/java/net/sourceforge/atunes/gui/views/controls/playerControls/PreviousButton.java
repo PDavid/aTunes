@@ -26,8 +26,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.substance.LeftConcaveButtonShaper;
-import net.sourceforge.atunes.gui.substance.RightConcaveButtonShaper;
+import net.sourceforge.atunes.gui.lookandfeel.substance.LeftConcaveButtonShaper;
+import net.sourceforge.atunes.gui.lookandfeel.substance.RightConcaveButtonShaper;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.utils.GuiUtils;
