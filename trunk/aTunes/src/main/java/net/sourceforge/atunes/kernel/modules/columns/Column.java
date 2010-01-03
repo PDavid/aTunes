@@ -104,6 +104,7 @@ public abstract class Column implements Comparable<Column>, Serializable {
         order = bean.getOrder();
         width = bean.getWidth();
         visible = bean.isVisible();
+        columnSort = bean.getSort();
     }
 
     /**
@@ -157,6 +158,7 @@ public abstract class Column implements Comparable<Column>, Serializable {
         bean.setOrder(order);
         bean.setWidth(width);
         bean.setVisible(visible);
+        bean.setSort(columnSort);
         return bean;
     }
 

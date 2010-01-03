@@ -37,8 +37,6 @@ public class ColumnSetRowSorter {
 	private ColumnSetTableModel model;
 	private CommonColumnModel columnModel;
 	
-	private Column lastColumnSorted;
-	
 	public ColumnSetRowSorter(JTable table, ColumnSetTableModel model, CommonColumnModel columnModel) {
 		this.table = table;
 		this.model = model;
@@ -55,10 +53,10 @@ public class ColumnSetRowSorter {
 					if (columnClickedIndex != -1) {
 						// Get column
 						Column columnClicked = ColumnSetRowSorter.this.columnModel.getColumnObject(columnClickedIndex);
+						Column lastColumnSorted = getColumnSorted();
 						if (lastColumnSorted != null && !lastColumnSorted.equals(columnClicked)) {
 							lastColumnSorted.setColumnSort(null);
 						}
-						lastColumnSorted = columnClicked;
 						if (columnClicked.isSortable()) {
 							sort(columnClicked.getComparator(true));
 						}
@@ -67,6 +65,19 @@ public class ColumnSetRowSorter {
 			}
 		});
 	}	
+	
+	/**
+	 * Returns the column sorted
+	 * @return
+	 */
+	private Column getColumnSorted() {
+		for (int i = 0; i < this.columnModel.getColumnCount(); i++) {
+			if (this.columnModel.getColumnObject(i).getColumnSort() != null) {
+				return this.columnModel.getColumnObject(i);
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * Method to sort a column set. It must sort the underlying data
