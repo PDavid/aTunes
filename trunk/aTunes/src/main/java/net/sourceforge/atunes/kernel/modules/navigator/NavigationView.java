@@ -183,23 +183,6 @@ public abstract class NavigationView implements AudioObjectsSource {
     public abstract boolean isViewModeSupported();
 
     /**
-     * Returns <code>true</code> if the view supports filter navigation table
-     * 
-     * @return
-     */
-    public abstract boolean isNavigatorTableFilterSupported();
-
-    /**
-     * Returns a filtered list of audio objects given the original list of audio
-     * objects and the filter to apply
-     * 
-     * @param audioObjects
-     * @param filter
-     * @return
-     */
-    public abstract List<AudioObject> filterNavigatorTable(List<AudioObject> audioObjects, String filter);
-
-    /**
      * Returns <code>true</code> if the view uses default navigator columns or
      * <code>false</code> if defines its own column set
      * 

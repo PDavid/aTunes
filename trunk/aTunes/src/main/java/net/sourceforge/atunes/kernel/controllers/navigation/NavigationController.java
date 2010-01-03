@@ -448,16 +448,12 @@ public final class NavigationController extends Controller implements AudioFiles
             return audioObjects;
         }
 
-        if (!NavigationHandler.getInstance().getCurrentView().isNavigatorTableFilterSupported()) {
-            return audioObjects;
-        }
-
         if (NavigationHandler.getInstance().getCurrentView().isUseDefaultNavigatorColumnSet()) {
             // Use column set filtering
             return NavigatorColumnSet.getInstance().filterAudioObjects(audioObjects, FilterHandler.getInstance().getFilter());
         } else {
             // Use custom filter
-            return NavigationHandler.getInstance().getCurrentView().filterNavigatorTable(audioObjects, FilterHandler.getInstance().getFilter());
+            return NavigationHandler.getInstance().getCurrentView().getCustomColumnSet().filterAudioObjects(audioObjects, FilterHandler.getInstance().getFilter());
         }
     }
 

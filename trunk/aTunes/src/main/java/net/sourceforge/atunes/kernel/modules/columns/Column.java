@@ -406,12 +406,12 @@ public abstract class Column implements Comparable<Column>, Serializable {
 	}
 	
 	/**
-	 * Returns string used to filter by this column. If usedForFilter is <code>true</code> this method must be overrided
+	 * Returns string used to filter by this column. By default it performs a <code>toString</code> over object returned by <code>getValueFor</code>
 	 * @param audioObject
 	 * @return
 	 */
 	public String getValueForFilter(AudioObject audioObject) {
-		return null;
+		return getValueFor(audioObject).toString();
 	}
 
 	/**

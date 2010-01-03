@@ -456,23 +456,6 @@ public final class DeviceNavigationView extends NavigationView {
     }
 
     @Override
-    public List<AudioObject> filterNavigatorTable(List<AudioObject> audioObjects, String filter) {
-        // Filter by title
-        List<AudioObject> filteredObjects = new ArrayList<AudioObject>();
-        for (AudioObject audioObject : audioObjects) {
-            if (audioObject.getTitleOrFileName().toLowerCase().contains(filter.toLowerCase())) {
-                filteredObjects.add(audioObject);
-            }
-        }
-        return filteredObjects;
-    }
-
-    @Override
-    public boolean isNavigatorTableFilterSupported() {
-        return true;
-    }
-
-    @Override
     protected TreeCellRenderer getTreeRenderer() {
         return new SubstanceDefaultTreeCellRenderer() {
             private static final long serialVersionUID = -7992021225213275134L;
