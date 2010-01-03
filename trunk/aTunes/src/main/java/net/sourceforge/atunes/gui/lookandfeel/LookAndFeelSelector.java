@@ -27,10 +27,12 @@ import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
+import net.sourceforge.atunes.gui.lookandfeel.nimbus.NimbusLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.system.SystemLookAndFeel;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.Logger;
 
 public final class LookAndFeelSelector {
@@ -54,6 +56,11 @@ public final class LookAndFeelSelector {
     	
     	SystemLookAndFeel system = new SystemLookAndFeel();
     	lookAndFeels.put(system.getName(), system);
+    	
+    	if (SystemProperties.IS_JAVA_6_UPDATE_10_OR_LATER) {
+    		NimbusLookAndFeel nimbus = new NimbusLookAndFeel();
+    		lookAndFeels.put(nimbus.getName(), nimbus);
+    	}
     }
 
     /**
