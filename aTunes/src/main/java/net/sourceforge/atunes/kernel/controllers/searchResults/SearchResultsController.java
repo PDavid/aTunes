@@ -20,6 +20,7 @@
 package net.sourceforge.atunes.kernel.controllers.searchResults;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JTable;
@@ -30,9 +31,12 @@ import net.sourceforge.atunes.gui.views.controls.ColumnSetPopupMenu;
 import net.sourceforge.atunes.gui.views.controls.ColumnSetRowSorter;
 import net.sourceforge.atunes.gui.views.dialogs.SearchResultsDialog;
 import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
+import net.sourceforge.atunes.kernel.modules.columns.Column;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnRenderers;
+import net.sourceforge.atunes.kernel.modules.columns.SearchResultsColumnSet;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
+import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
 import net.sourceforge.atunes.kernel.modules.search.SearchResultTableModel;
 import net.sourceforge.atunes.kernel.modules.search.SearchableObject;
 import net.sourceforge.atunes.model.AudioObject;
@@ -62,6 +66,13 @@ public final class SearchResultsController extends SimpleController<SearchResult
 
         SearchResultTableModel tableModel = (SearchResultTableModel) getComponentControlled().getSearchResultsTable().getModel();
 
+        Column sortedColumn = SearchResultsColumnSet.getInstance().getSortedColumn();
+        if (sortedColumn != null) {
+        	Collections.sort(resultsList, sortedColumn.getComparator(false));
+        } else {
+        	AudioObjectComparator.sort(resultsList);
+        }
+        
         tableModel.setResults(resultsList);
         tableModel.refresh(TableModelEvent.UPDATE);
         getComponentControlled().setVisible(true);

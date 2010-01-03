@@ -19,6 +19,8 @@
  */
 package net.sourceforge.atunes.kernel.modules.columns;
 
+import net.sourceforge.atunes.kernel.modules.columns.Column.ColumnSort;
+
 /**
  * This class represents information about a column to be saved into application
  * settings.
@@ -35,6 +37,9 @@ public final class ColumnBean {
 
     /** The width. */
     private int width;
+    
+    /** The sort */
+    private ColumnSort sort;
 
     /**
      * Gets the order.
@@ -92,4 +97,18 @@ public final class ColumnBean {
     public void setWidth(int width) {
         this.width = width;
     }
+
+	/**
+	 * @return the sort
+	 */
+	public ColumnSort getSort() {
+		return sort;
+	}
+
+	/**
+	 * @param sort the sort to set
+	 */
+	public void setSort(ColumnSort sort) {
+		this.sort = sort;
+	}
 }
