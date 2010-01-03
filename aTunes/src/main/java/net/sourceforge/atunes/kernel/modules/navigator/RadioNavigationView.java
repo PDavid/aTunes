@@ -391,6 +391,7 @@ public final class RadioNavigationView extends NavigationView {
     				};
     				name.setVisible(true);
     				name.setWidth(150);
+    				name.setUsedForFilter(true);
     				columns.add(name);
 
     				Column url = new Column("URL", String.class) {
@@ -411,6 +412,7 @@ public final class RadioNavigationView extends NavigationView {
     				};
     				url.setVisible(true);
     				url.setWidth(400);
+    				url.setUsedForFilter(true);
     				columns.add(url);
 
     				return columns;
@@ -422,16 +424,6 @@ public final class RadioNavigationView extends NavigationView {
 
     @Override
     public boolean isViewModeSupported() {
-        return false;
-    }
-
-    @Override
-    public List<AudioObject> filterNavigatorTable(List<AudioObject> audioObjects, String filter) {
-        return null;
-    }
-
-    @Override
-    public boolean isNavigatorTableFilterSupported() {
         return false;
     }
 

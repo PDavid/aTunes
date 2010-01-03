@@ -322,6 +322,7 @@ public final class PodcastNavigationView extends NavigationView {
 					};
 					entries.setVisible(true);
 					entries.setWidth(300);
+					entries.setUsedForFilter(true);
 					columns.add(entries);
 					
 					Column duration = new Column("DURATION", String.class) {
@@ -343,6 +344,7 @@ public final class PodcastNavigationView extends NavigationView {
 					};
 					duration.setVisible(true);
 					duration.setWidth(60);
+					duration.setUsedForFilter(true);
 					columns.add(duration);
 					
 					return columns;
@@ -354,16 +356,6 @@ public final class PodcastNavigationView extends NavigationView {
     
     @Override
     public boolean isViewModeSupported() {
-        return false;
-    }
-
-    @Override
-    public List<AudioObject> filterNavigatorTable(List<AudioObject> audioObjects, String filter) {
-        return null;
-    }
-
-    @Override
-    public boolean isNavigatorTableFilterSupported() {
         return false;
     }
 
