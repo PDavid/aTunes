@@ -26,10 +26,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.lookandfeel.substance.RoundRectButtonShaper;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
-
-import org.jvnet.substance.SubstanceLookAndFeel;
 
 /*
  * based on code from Xtreme Media Player
@@ -53,7 +51,7 @@ public final class StopButton extends JButton {
         setMinimumSize(size);
         setMaximumSize(size);
         setFocusable(false);
-        putClientProperty(SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY, new RoundRectButtonShaper());
+        LookAndFeelSelector.getCurrentLookAndFeel().putClientProperties(this);        
 
         // Add behaviour
         addActionListener(new ActionListener() {

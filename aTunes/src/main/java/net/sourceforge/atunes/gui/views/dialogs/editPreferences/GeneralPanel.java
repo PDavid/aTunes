@@ -45,6 +45,7 @@ import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.frame.Frame;
 import net.sourceforge.atunes.gui.frame.Frames;
 import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.lookandfeel.ListCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelBean;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.ByImageChoosingPanel;
@@ -59,7 +60,6 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
 import org.jvnet.substance.SubstanceLookAndFeel;
-import org.jvnet.substance.api.renderers.SubstanceDefaultListCellRenderer;
 
 /**
  * The preferences panel for general settings.
@@ -102,29 +102,30 @@ public final class GeneralPanel extends PreferencesPanel {
             }
         });
         language = new JComboBox(array);
-        language.setRenderer(new SubstanceDefaultListCellRenderer() {
-            private static final long serialVersionUID = 4124370361802581951L;
-
-            @Override
-            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        language.setRenderer(LookAndFeelSelector.getCurrentLookAndFeel().getListCellRenderer(new ListCellRendererCode() {
+			
+			@Override
+			public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 if (!(value instanceof Locale)) {
                     throw new IllegalArgumentException("Argument value must be instance of Locale");
                 }
 
+                Component c = superComponent;
+                
                 Locale displayingLocale = (Locale) value;
                 Locale currentLocale = ApplicationState.getInstance().getLocale().getLocale();
 
                 String name = displayingLocale.getDisplayName(currentLocale);
-                name = String.valueOf(name.charAt(0)).toUpperCase(currentLocale) + name.substring(1);
-                Component c = super.getListCellRendererComponent(list, name, index, isSelected, cellHasFocus);
+                name = StringUtils.getString(String.valueOf(name.charAt(0)).toUpperCase(currentLocale), name.substring(1));
+                ((JLabel)c).setText(name);
 
                 // The name of flag file should be flag_<locale>.png
                 // if the name of bundle is MainBundle_<locale>.properties
                 String flag = StringUtils.getString("flag_", displayingLocale.toString(), ".png");
                 ((JLabel) c).setIcon(new ImageIcon(GeneralPanel.class.getResource(StringUtils.getString("/", Constants.TRANSLATIONS_DIR, "/", flag))));
                 return c;
-            }
-        });
+			}
+		}));
 
         showIconTray = new JCheckBox(I18nUtils.getString("SHOW_TRAY_ICON"));
         showTrayPlayer = new JCheckBox(I18nUtils.getString("SHOW_TRAY_PLAYER"));

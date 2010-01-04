@@ -51,6 +51,8 @@ import javax.swing.table.TableModel;
 
 import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.gui.views.dialogs.PluginEditorDialog;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
@@ -65,7 +67,6 @@ import net.sourceforge.atunes.utils.StringUtils;
 import org.commonjukebox.plugins.PluginConfiguration;
 import org.commonjukebox.plugins.PluginInfo;
 import org.commonjukebox.plugins.PluginSystemException;
-import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
 public final class PluginsPanel extends PreferencesPanel {
 
@@ -151,22 +152,20 @@ public final class PluginsPanel extends PreferencesPanel {
         c.gridwidth = 2;
         add(pluginDetailPanel, c);
 
-        pluginsTable.setDefaultRenderer(PluginInfo.class, new SubstanceDefaultTableCellRenderer() {
-
-            private static final long serialVersionUID = -9147687375378503942L;
-
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                Component c = super.getTableCellRendererComponent(table, ((PluginInfo) value).getName(), isSelected, hasFocus, row, column);
+        pluginsTable.setDefaultRenderer(PluginInfo.class, LookAndFeelSelector.getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
+			
+			@Override
+			public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                Component c = superComponent;
+                ((JLabel)c).setText(((PluginInfo) value).getName());
                 if (((PluginInfo) value).getIcon() != null) {
                     ((JLabel) c).setIcon(ImageUtils.scaleImageBicubic(((PluginInfo) value).getIcon(), CELL_HEIGHT - 5, CELL_HEIGHT - 5));
                 } else {
                     ((JLabel) c).setIcon(ImageUtils.scaleImageBicubic(Images.getImage(Images.EMPTY).getImage(), CELL_HEIGHT - 5, CELL_HEIGHT - 5));
                 }
                 return c;
-            }
-
-        });
+			}
+        }));
 
         pluginsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override

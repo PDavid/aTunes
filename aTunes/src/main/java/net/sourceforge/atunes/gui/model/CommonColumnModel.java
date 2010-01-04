@@ -37,11 +37,11 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
 import net.sourceforge.atunes.kernel.modules.columns.Column;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnSet;
 import net.sourceforge.atunes.kernel.modules.columns.Column.ColumnSort;
-
-import org.jvnet.substance.api.renderers.SubstanceDefaultTableHeaderCellRenderer;
 
 public abstract class CommonColumnModel extends DefaultTableColumnModel {
 
@@ -320,13 +320,11 @@ public abstract class CommonColumnModel extends DefaultTableColumnModel {
 
         // Set header renderer to sortable columns
         if (column.isSortable()) {
-        	// TODO: LAF
-        	aColumn.setHeaderRenderer(new SubstanceDefaultTableHeaderCellRenderer() {
-        		private static final long serialVersionUID = -2882720841285248439L;
-
-        		@Override
-        		public Component getTableCellRendererComponent(JTable arg0, Object arg1, boolean arg2, boolean arg3, int arg4, int arg5) {
-        			Component c = super.getTableCellRendererComponent(arg0, arg1, arg2, arg3, arg4, arg5);
+        	aColumn.setHeaderRenderer(LookAndFeelSelector.getCurrentLookAndFeel().getTableHeaderCellRenderer(new TableCellRendererCode() {
+				
+				@Override
+				public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
+        			Component c = superComponent;
         			
         			ColumnSort columnSort = column.getColumnSort();
         			
@@ -340,8 +338,8 @@ public abstract class CommonColumnModel extends DefaultTableColumnModel {
         			}
         			
         			return c;
-        		}
-        	});
+				}
+			}));        			
         }
     }
     

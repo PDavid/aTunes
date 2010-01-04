@@ -23,11 +23,9 @@ import java.awt.Dimension;
 
 import javax.swing.JToggleButton;
 
-import net.sourceforge.atunes.gui.lookandfeel.substance.RoundRectButtonShaper;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
-
-import org.jvnet.substance.SubstanceLookAndFeel;
 
 /*
  * based on code from Xtreme Media Player
@@ -49,6 +47,7 @@ public final class MuteButton extends JToggleButton {
         setMinimumSize(size);
         setMaximumSize(size);
         setFocusable(false);
-        putClientProperty(SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY, new RoundRectButtonShaper());
+        
+        LookAndFeelSelector.getCurrentLookAndFeel().putClientProperties(this);        
     }
 }
