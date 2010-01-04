@@ -19,10 +19,6 @@
  */
 package net.sourceforge.atunes.gui.views.controls.playerControls;
 
-import javax.swing.JToggleButton;
-
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.NormalizeModeAction;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
@@ -31,7 +27,7 @@ import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 /*
  * based on code from Xtreme Media Player
  */
-public final class NormalizationButton extends JToggleButton {
+public final class NormalizationButton extends SecondaryControl {
 
     private static final long serialVersionUID = 6007885049773560874L;
 
@@ -40,12 +36,6 @@ public final class NormalizationButton extends JToggleButton {
      */
     public NormalizationButton() {
         super(Actions.getAction(NormalizeModeAction.class));
-        setText(null);
-        setPreferredSize(PlayerControlsPanel.OTHER_BUTTONS_SIZE);
-        setFocusable(false);
-
-        LookAndFeelSelector.getCurrentLookAndFeel().putClientProperties(this);        
-
         if (!PlayerHandler.getInstance().supportsCapability(PlayerEngineCapability.NORMALIZATION)) {
             setVisible(false);
         }

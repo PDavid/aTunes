@@ -36,6 +36,7 @@ import javax.swing.JSlider;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.lookandfeel.substance.RoundRectButtonShaper;
 import net.sourceforge.atunes.gui.views.controls.playerControls.KaraokeButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton;
@@ -62,14 +63,19 @@ public final class PlayerControlsPanel extends JPanel {
 
     /************************************************ PANEL CONSTANTS ******************************************************/
 
+    /**
+     * Size of main controls by standard layout (not Substance)
+     */
+    public static final Dimension DEFAULT_BUTTONS_SIZE = new Dimension(35, 35);
+    
     /** Size of play / pause button */
-    public static final Dimension PLAY_BUTTON_SIZE = new Dimension(45, 45);
+    public static final Dimension PLAY_BUTTON_SIZE = LookAndFeelSelector.getCurrentLookAndFeel().isCustomPlayerControlsSupported() ? new Dimension(45, 45) : DEFAULT_BUTTONS_SIZE;
 
     /** Size of previous and next buttons */
-    public static final Dimension PREVIOUS_NEXT_BUTTONS_SIZE = new Dimension(62, 30);
+    public static final Dimension PREVIOUS_NEXT_BUTTONS_SIZE = LookAndFeelSelector.getCurrentLookAndFeel().isCustomPlayerControlsSupported() ? new Dimension(62, 30) : DEFAULT_BUTTONS_SIZE;
 
     /** Size of stop and mute buttons */
-    public static final Dimension STOP_MUTE_BUTTONS_SIZE = new Dimension(30, 26);
+    public static final Dimension STOP_MUTE_BUTTONS_SIZE = LookAndFeelSelector.getCurrentLookAndFeel().isCustomPlayerControlsSupported() ? new Dimension(30, 26) : DEFAULT_BUTTONS_SIZE;
 
     /** Size of shuffle, repeat, ... buttons */
     public static final Dimension OTHER_BUTTONS_SIZE = new Dimension(25, 23);
@@ -239,6 +245,24 @@ public final class PlayerControlsPanel extends JPanel {
      * @return
      */
     public static JPanel getPanelWithPlayerControls(StopButton stopButton, PreviousButton previousButton, PlayPauseButton playButton, NextButton nextButton, MuteButton volumeButton, JSlider volumeSlider, JLabel volumeLevel) {
+    	return LookAndFeelSelector.getCurrentLookAndFeel().isCustomPlayerControlsSupported() ? 
+    			getCustomPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider, volumeLevel) :
+    			getStandardPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider, volumeLevel);
+    }
+
+    
+    /**
+     * Returns custom panel with controls (used by Substance LAF)
+     * @param stopButton
+     * @param previousButton
+     * @param playButton
+     * @param nextButton
+     * @param volumeButton
+     * @param volumeSlider
+     * @param volumeLevel
+     * @return
+     */
+    private static JPanel getCustomPlayerControls(StopButton stopButton, PreviousButton previousButton, PlayPauseButton playButton, NextButton nextButton, MuteButton volumeButton, JSlider volumeSlider, JLabel volumeLevel) {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setOpaque(false);
         GridBagConstraints c = new GridBagConstraints();
@@ -258,22 +282,71 @@ public final class PlayerControlsPanel extends JPanel {
         c.insets = new Insets(0, -16, 0, 0);
         setButton(panel, nextButton, c);
         if (volumeButton != null && volumeSlider != null && volumeLevel != null) {
-            c.gridx = 4;
-            c.insets = new Insets(0, -7, 0, 0);
-            panel.add(volumeButton, c);
-            c.gridx = 5;
-            c.weightx = 0;
-            c.fill = GridBagConstraints.NONE;
-            c.insets = new Insets(0, 0, 3, 0);
-            panel.add(volumeSlider, c);
-            c.gridy = 1;
-            c.gridx = 5;
-            c.fill = GridBagConstraints.NONE;
-            c.insets = new Insets(-20, 16, 0, 0);
-            c.anchor = GridBagConstraints.WEST;
-            panel.add(volumeLevel, c);
+        	c.gridx = 4;
+        	c.insets = new Insets(0, -7, 0, 0);
+        	panel.add(volumeButton, c);
+        	c.gridx = 5;
+        	c.weightx = 0;
+        	c.fill = GridBagConstraints.NONE;
+        	c.insets = new Insets(0, 0, 3, 0);
+        	panel.add(volumeSlider, c);
+        	c.gridy = 1;
+        	c.gridx = 5;
+        	c.fill = GridBagConstraints.NONE;
+        	c.insets = new Insets(-20, 16, 0, 0);
+        	c.anchor = GridBagConstraints.WEST;
+        	panel.add(volumeLevel, c);
         }
         return panel;
+    }
+
+    /**
+     * Returns standard panel with controls
+     * @param stopButton
+     * @param previousButton
+     * @param playButton
+     * @param nextButton
+     * @param volumeButton
+     * @param volumeSlider
+     * @param volumeLevel
+     * @return
+     */
+    private static JPanel getStandardPlayerControls(StopButton stopButton, PreviousButton previousButton, PlayPauseButton playButton, NextButton nextButton, MuteButton volumeButton, JSlider volumeSlider, JLabel volumeLevel) {
+    	JPanel panel = new JPanel(new GridBagLayout());
+    	panel.setOpaque(false);
+    	GridBagConstraints c = new GridBagConstraints();
+    	c.gridx = 0;
+    	c.gridy = 0;
+    	c.weightx = 0;
+    	c.fill = GridBagConstraints.NONE;
+    	c.insets = new Insets(0, 0, 0, 0);
+    	setButton(panel, stopButton, c);
+    	c.gridx = 1;
+    	c.insets = new Insets(0, 0, 0, 0);
+    	setButton(panel, previousButton, c);
+    	c.gridx = 2;
+    	c.insets = new Insets(0, 0, 0, 0);
+    	setButton(panel, playButton, c);
+    	c.gridx = 3;
+    	c.insets = new Insets(0, 0, 0, 0);
+    	setButton(panel, nextButton, c);
+    	if (volumeButton != null && volumeSlider != null && volumeLevel != null) {
+    		c.gridx = 4;
+    		c.insets = new Insets(0, 0, 0, 0);
+    		panel.add(volumeButton, c);
+    		c.gridx = 5;
+    		c.weightx = 0;
+    		c.fill = GridBagConstraints.NONE;
+    		c.insets = new Insets(0, 0, 0, 0);
+    		panel.add(volumeSlider, c);
+    		c.gridy = 1;
+    		c.gridx = 5;
+    		c.fill = GridBagConstraints.NONE;
+    		c.insets = new Insets(0, 0, 0, 0);
+    		c.anchor = GridBagConstraints.WEST;
+    		panel.add(volumeLevel, c);
+    	}
+    	return panel;
     }
 
     private JPanel getSecondaryControls() {

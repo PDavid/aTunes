@@ -24,14 +24,11 @@ import net.sourceforge.atunes.gui.lookandfeel.ListCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.TreeCellRendererCode;
-import net.sourceforge.atunes.gui.views.controls.playerControls.KaraokeButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.NextButton;
-import net.sourceforge.atunes.gui.views.controls.playerControls.NormalizationButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.PlayPauseButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.PreviousButton;
-import net.sourceforge.atunes.gui.views.controls.playerControls.RepeatButton;
-import net.sourceforge.atunes.gui.views.controls.playerControls.ShuffleButton;
+import net.sourceforge.atunes.gui.views.controls.playerControls.SecondaryControl;
 import net.sourceforge.atunes.gui.views.controls.playerControls.StopButton;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -240,11 +237,8 @@ public class SubstanceLookAndFeel extends LookAndFeel {
 	
 	@Override
 	public void putClientProperties(JComponent c) {
-		if (c instanceof KaraokeButton || 
-			c instanceof RepeatButton || 
+		if (c instanceof SecondaryControl || 
 			c instanceof MuteButton || 
-			c instanceof NormalizationButton || 
-			c instanceof ShuffleButton ||
 			c instanceof StopButton) {
 	        c.putClientProperty(org.jvnet.substance.SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY, new RoundRectButtonShaper());
 		} else if (c instanceof NextButton) {
@@ -258,5 +252,10 @@ public class SubstanceLookAndFeel extends LookAndFeel {
 	        		GuiUtils.getComponentOrientation().isLeftToRight() ? new RightConcaveButtonShaper(
 	                PlayerControlsPanel.PLAY_BUTTON_SIZE.height) : new LeftConcaveButtonShaper(PlayerControlsPanel.PLAY_BUTTON_SIZE.height));
 		}
+	}
+	
+	@Override
+	public boolean isCustomPlayerControlsSupported() {
+		return true;
 	}
 }

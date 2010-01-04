@@ -163,6 +163,13 @@ public abstract class LookAndFeel {
 		// No properties by default
 	}
 	
+	/** 
+	 * Returns if look and feel supports custom player controls (not by default)
+	 */
+	public boolean isCustomPlayerControlsSupported() {
+		return false;
+	}
+	
 	
 	
 }
