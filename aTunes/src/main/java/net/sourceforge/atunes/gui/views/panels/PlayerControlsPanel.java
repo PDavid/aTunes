@@ -319,30 +319,25 @@ public final class PlayerControlsPanel extends JPanel {
     	c.gridy = 0;
     	c.weightx = 0;
     	c.fill = GridBagConstraints.NONE;
-    	c.insets = new Insets(0, 0, 0, 0);
     	setButton(panel, stopButton, c);
     	c.gridx = 1;
-    	c.insets = new Insets(0, 0, 0, 0);
     	setButton(panel, previousButton, c);
     	c.gridx = 2;
-    	c.insets = new Insets(0, 0, 0, 0);
     	setButton(panel, playButton, c);
     	c.gridx = 3;
-    	c.insets = new Insets(0, 0, 0, 0);
     	setButton(panel, nextButton, c);
     	if (volumeButton != null && volumeSlider != null && volumeLevel != null) {
     		c.gridx = 4;
-    		c.insets = new Insets(0, 0, 0, 0);
     		panel.add(volumeButton, c);
     		c.gridx = 5;
     		c.weightx = 0;
     		c.fill = GridBagConstraints.NONE;
-    		c.insets = new Insets(0, 0, 0, 0);
+    		c.insets = new Insets(0, 10, 0, 0);
+    		volumeSlider.setMinimumSize(new Dimension(50, 20));
     		panel.add(volumeSlider, c);
     		c.gridy = 1;
     		c.gridx = 5;
     		c.fill = GridBagConstraints.NONE;
-    		c.insets = new Insets(0, 0, 0, 0);
     		c.anchor = GridBagConstraints.WEST;
     		panel.add(volumeLevel, c);
     	}
