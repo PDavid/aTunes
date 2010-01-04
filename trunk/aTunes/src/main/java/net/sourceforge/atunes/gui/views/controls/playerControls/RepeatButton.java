@@ -19,17 +19,13 @@
  */
 package net.sourceforge.atunes.gui.views.controls.playerControls;
 
-import javax.swing.JToggleButton;
-
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.RepeatModeAction;
 
 /*
  * based on code from Xtreme Media Player
  */
-public final class RepeatButton extends JToggleButton {
+public final class RepeatButton extends SecondaryControl {
 
     private static final long serialVersionUID = 6007885049773560874L;
 
@@ -38,9 +34,5 @@ public final class RepeatButton extends JToggleButton {
      */
     public RepeatButton() {
         super(Actions.getAction(RepeatModeAction.class));
-        setText(null);
-        setPreferredSize(PlayerControlsPanel.OTHER_BUTTONS_SIZE);
-        setFocusable(false);
-        LookAndFeelSelector.getCurrentLookAndFeel().putClientProperties(this);        
     }
 }
