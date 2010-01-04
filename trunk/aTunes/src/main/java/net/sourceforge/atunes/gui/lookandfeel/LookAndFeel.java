@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.util.List;
 
 import javax.swing.DefaultListCellRenderer;
+import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.JTable;
 import javax.swing.JTree;
@@ -113,7 +114,27 @@ public abstract class LookAndFeel {
 			}
 		};		
 	}
-	
+
+	/**
+	 * Returns a new TableCellRenderer executing given code (default implementation)
+	 * @param code
+	 * @return
+	 */
+	public TableCellRenderer getTableHeaderCellRenderer(final TableCellRendererCode code) {
+		return new DefaultTableCellRenderer() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+				Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+				return code.getComponent(c, table, value, isSelected, hasFocus, row, column);
+			}
+		};		
+	}
+
 	/**
 	 * Returns a new ListCellRendeder executing given code (default implementation)
 	 * @param code
@@ -132,6 +153,14 @@ public abstract class LookAndFeel {
 				return code.getComponent(c, list, value, index, isSelected, cellHasFocus);
 			}
 		};
+	}
+	
+	/**
+	 * Puts client properties in components
+	 * @param c
+	 */
+	public void putClientProperties(JComponent c) {
+		// No properties by default
 	}
 	
 	

@@ -34,12 +34,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListModel;
 
+import net.sourceforge.atunes.gui.lookandfeel.ListCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
-
-import org.jvnet.substance.api.renderers.SubstanceDefaultListCellRenderer;
 
 /**
  * General characteristics of the preference dialog
@@ -106,18 +106,16 @@ public final class EditPreferencesDialog extends CustomModalDialog {
         JPanel container = new JPanel(new GridBagLayout());
         container.setOpaque(false);
         list = new JList();
-        list.setCellRenderer(new SubstanceDefaultListCellRenderer() {
-
-            private static final long serialVersionUID = 2995773411601157488L;
-
-            @Override
-            public Component getListCellRendererComponent(JList arg0, Object value, int arg2, boolean arg3, boolean arg4) {
+        list.setCellRenderer(LookAndFeelSelector.getCurrentLookAndFeel().getListCellRenderer(new ListCellRendererCode() {
+			
+			@Override
+			public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                JLabel label = (JLabel) superComponent;
                 PreferencesPanel p = (PreferencesPanel) value;
-                JLabel label = (JLabel) super.getListCellRendererComponent(arg0, p.getTitle(), arg2, arg3, arg4);
                 label.setIcon(p.getIcon());
                 return label;
-            }
-        });
+			}
+		}));
         JScrollPane scrollPane = new JScrollPane(list);
         // Force minimum width of scroll pane to show items
         scrollPane.setMinimumSize(new Dimension(200, 0));

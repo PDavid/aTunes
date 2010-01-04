@@ -47,6 +47,8 @@ import javax.swing.table.AbstractTableModel;
 
 import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
 import net.sourceforge.atunes.kernel.modules.hotkeys.Hotkey;
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeyHandler;
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeysConfig;
@@ -56,8 +58,6 @@ import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
-
-import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
 public final class PlayerPanel extends PreferencesPanel {
 
@@ -165,12 +165,11 @@ public final class PlayerPanel extends PreferencesPanel {
         hotkeyTable.getTableHeader().setResizingAllowed(false);
         hotkeyTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         hotkeyTable.setEnabled(HotkeyHandler.getInstance().areHotkeysSupported());
-        hotkeyTable.setDefaultRenderer(Object.class, new SubstanceDefaultTableCellRenderer() {
-            private static final long serialVersionUID = 1111298953883261220L;
-
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean arg2, boolean arg3, int row, int arg5) {
-                Component c = super.getTableCellRendererComponent(table, value, arg2, arg3, row, arg5);
+        hotkeyTable.setDefaultRenderer(Object.class, LookAndFeelSelector.getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
+			
+			@Override
+			public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                Component c = superComponent;
                 GuiUtils.applyComponentOrientation((JLabel) c);
                 if (conflicts.contains(row) || notRecommendedKeys.contains(row)) {
                     ((JLabel) c).setForeground(ColorDefinitions.WARNING_COLOR);
@@ -187,8 +186,9 @@ public final class PlayerPanel extends PreferencesPanel {
                 }
                 ((JLabel) c).setToolTipText(keyWarnings.isEmpty() ? null : keyWarnings);
                 return c;
-            }
-        });
+			}
+		}));
+        
         hotkeyTable.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {

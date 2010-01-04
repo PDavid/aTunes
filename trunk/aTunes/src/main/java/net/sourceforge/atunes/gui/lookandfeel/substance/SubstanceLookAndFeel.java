@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JList;
@@ -23,6 +24,16 @@ import net.sourceforge.atunes.gui.lookandfeel.ListCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.TreeCellRendererCode;
+import net.sourceforge.atunes.gui.views.controls.playerControls.KaraokeButton;
+import net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton;
+import net.sourceforge.atunes.gui.views.controls.playerControls.NextButton;
+import net.sourceforge.atunes.gui.views.controls.playerControls.NormalizationButton;
+import net.sourceforge.atunes.gui.views.controls.playerControls.PlayPauseButton;
+import net.sourceforge.atunes.gui.views.controls.playerControls.PreviousButton;
+import net.sourceforge.atunes.gui.views.controls.playerControls.RepeatButton;
+import net.sourceforge.atunes.gui.views.controls.playerControls.ShuffleButton;
+import net.sourceforge.atunes.gui.views.controls.playerControls.StopButton;
+import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 import org.jvnet.lafwidget.LafWidget;
@@ -30,6 +41,7 @@ import org.jvnet.lafwidget.utils.LafConstants;
 import org.jvnet.substance.api.SubstanceConstants;
 import org.jvnet.substance.api.renderers.SubstanceDefaultListCellRenderer;
 import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
+import org.jvnet.substance.api.renderers.SubstanceDefaultTableHeaderCellRenderer;
 import org.jvnet.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
 
 
@@ -184,6 +196,27 @@ public class SubstanceLookAndFeel extends LookAndFeel {
 		};		
 	}
 	
+	/**
+	 * Returns a new TableCellRenderer executing given code (default implementation)
+	 * @param code
+	 * @return
+	 */
+	public TableCellRenderer getTableHeaderCellRenderer(final TableCellRendererCode code) {
+		return new SubstanceDefaultTableHeaderCellRenderer() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+				Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+				return code.getComponent(c, table, value, isSelected, hasFocus, row, column);
+			}
+		};		
+	}
+
+	
 	@Override
 	public ListCellRenderer getListCellRenderer(final ListCellRendererCode code) {
 		return new SubstanceDefaultListCellRenderer() {
@@ -203,5 +236,27 @@ public class SubstanceLookAndFeel extends LookAndFeel {
 	@Override
 	public boolean isDialogUndecorated() {
 		return true;
+	}
+	
+	@Override
+	public void putClientProperties(JComponent c) {
+		if (c instanceof KaraokeButton || 
+			c instanceof RepeatButton || 
+			c instanceof MuteButton || 
+			c instanceof NormalizationButton || 
+			c instanceof ShuffleButton ||
+			c instanceof StopButton) {
+	        c.putClientProperty(org.jvnet.substance.SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY, new RoundRectButtonShaper());
+		} else if (c instanceof NextButton) {
+	        c.putClientProperty(org.jvnet.substance.SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY, 
+	        		GuiUtils.getComponentOrientation().isLeftToRight() ? new LeftConcaveButtonShaper(
+	                PlayerControlsPanel.PLAY_BUTTON_SIZE.height) : new RightConcaveButtonShaper(PlayerControlsPanel.PLAY_BUTTON_SIZE.height));
+		} else if (c instanceof PlayPauseButton) {
+	        c.putClientProperty(org.jvnet.substance.SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY, new CircleButtonShaper());
+		} else if (c instanceof PreviousButton) {
+	        c.putClientProperty(org.jvnet.substance.SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY, 
+	        		GuiUtils.getComponentOrientation().isLeftToRight() ? new RightConcaveButtonShaper(
+	                PlayerControlsPanel.PLAY_BUTTON_SIZE.height) : new LeftConcaveButtonShaper(PlayerControlsPanel.PLAY_BUTTON_SIZE.height));
+		}
 	}
 }
