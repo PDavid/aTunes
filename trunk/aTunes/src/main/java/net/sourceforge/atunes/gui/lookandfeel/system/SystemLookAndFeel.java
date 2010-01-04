@@ -30,6 +30,9 @@ public class SystemLookAndFeel extends LookAndFeel {
 	public void initializeLookAndFeel() {
         JFrame.setDefaultLookAndFeelDecorated(true);
         JDialog.setDefaultLookAndFeelDecorated(true);
+
+        // There is a problem with GTKLookAndFeel which shows slider values so we disable it
+    	UIManager.put("Slider.paintValue", false);
 	}
 	
 	@Override

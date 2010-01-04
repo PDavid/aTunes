@@ -69,7 +69,7 @@ public final class LookAndFeelSelector {
      * @param theme
      *            the new look and feel
      */
-    public static void setLookAndFeel(LookAndFeelBean lookAndFeelBean) {
+    public static void setLookAndFeel(LookAndFeelBean lookAndFeelBean) {    	
         if (Kernel.IGNORE_LOOK_AND_FEEL) {
             return;
         }
