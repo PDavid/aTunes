@@ -37,7 +37,6 @@ import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.lookandfeel.substance.RoundRectButtonShaper;
 import net.sourceforge.atunes.gui.views.controls.playerControls.KaraokeButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.NextButton;
@@ -45,14 +44,13 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.NormalizationBut
 import net.sourceforge.atunes.gui.views.controls.playerControls.PlayPauseButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.PreviousButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.RepeatButton;
+import net.sourceforge.atunes.gui.views.controls.playerControls.SecondaryControl;
 import net.sourceforge.atunes.gui.views.controls.playerControls.ShuffleButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.StopButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeLevel;
 import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
-
-import org.jvnet.substance.SubstanceLookAndFeel;
 
 /**
  * The player controls panel.
@@ -377,11 +375,13 @@ public final class PlayerControlsPanel extends JPanel {
 		c.gridx = getSecondaryControls().getComponentCount();
 		c.gridy = 0;
 		c.insets = new Insets(0, 1, 0, 0);
-		JToggleButton button = new JToggleButton(action);
-        button.setText(null);
-        button.setPreferredSize(PlayerControlsPanel.OTHER_BUTTONS_SIZE);
-        button.setFocusable(false);
-        button.putClientProperty(SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY, new RoundRectButtonShaper());
+		JToggleButton button = new SecondaryControl(action) {
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 5271158500580807364L;
+		};
     	getSecondaryControls().add(button, c);
     }
 

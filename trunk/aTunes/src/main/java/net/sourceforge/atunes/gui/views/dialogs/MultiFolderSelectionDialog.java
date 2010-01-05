@@ -49,19 +49,19 @@ import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeWillExpandListener;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.ExpandVetoException;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
+import net.sourceforge.atunes.gui.lookandfeel.TreeCellRendererCode;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
-
-import org.jvnet.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
 
 /**
  * The Class MultiFolderSelectionDialog. Allows the selection of the repository
@@ -200,7 +200,7 @@ public final class MultiFolderSelectionDialog extends CustomModalDialog {
     /**
      * The Class CheckRenderer.
      */
-    private class CheckRenderer extends SubstanceDefaultTreeCellRenderer {
+    private class CheckRenderer extends DefaultTreeCellRenderer {
 
         private static final long serialVersionUID = 5564069979708271654L;
 
@@ -209,6 +209,8 @@ public final class MultiFolderSelectionDialog extends CustomModalDialog {
 
         /** The label. */
         protected JLabel label;
+        
+        private TreeCellRendererCode rendererCode;
 
         /**
          * Instantiates a new check renderer.
@@ -219,6 +221,35 @@ public final class MultiFolderSelectionDialog extends CustomModalDialog {
             check.setOpaque(false);
             add(check);
             add(label = new JLabel());
+            rendererCode = new TreeCellRendererCode() {
+				
+				@Override
+				public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
+		            String stringValue = value.toString();
+		            setEnabled(tree.isEnabled());
+		            if (value instanceof CheckNode) {
+		                check.setSelected(((CheckNode) value).isSelected());
+		                check.setEnabled(((CheckNode) value).isEnabled());
+		                label.setFont(tree.getFont());
+		                label.setText(stringValue);
+		                if (((CheckNode) value).getUserObject() instanceof Directory) {
+		                    Directory content = (Directory) ((CheckNode) value).getUserObject();
+		                    label.setIcon(((CheckNode) value).getIcon());
+		                    if (isInPathOfSelectedFolders(content.getFile()) || ((CheckNode) value).isSelected()) {
+		                        label.setFont(label.getFont().deriveFont(Font.BOLD));
+		                    }
+		                }
+		            } else if (value instanceof DefaultMutableTreeNode) {
+		                check.setEnabled(false);
+		                check.setSelected(false);
+		                label.setText(stringValue);
+		                label.setIcon(null);
+		                label.setFont(tree.getFont());
+		            }
+
+		            return CheckRenderer.this;
+				}
+			};
         }
 
         // TODO this method should be aware of component orientation
@@ -249,29 +280,8 @@ public final class MultiFolderSelectionDialog extends CustomModalDialog {
 
         @Override
         public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-            String stringValue = value.toString();
-            setEnabled(tree.isEnabled());
-            if (value instanceof CheckNode) {
-                check.setSelected(((CheckNode) value).isSelected());
-                check.setEnabled(((CheckNode) value).isEnabled());
-                label.setFont(tree.getFont());
-                label.setText(stringValue);
-                if (((CheckNode) value).getUserObject() instanceof Directory) {
-                    Directory content = (Directory) ((CheckNode) value).getUserObject();
-                    label.setIcon(((CheckNode) value).getIcon());
-                    if (isInPathOfSelectedFolders(content.getFile()) || ((CheckNode) value).isSelected()) {
-                        label.setFont(label.getFont().deriveFont(Font.BOLD));
-                    }
-                }
-            } else if (value instanceof DefaultMutableTreeNode) {
-                check.setEnabled(false);
-                check.setSelected(false);
-                label.setText(stringValue);
-                label.setIcon(null);
-                label.setFont(tree.getFont());
-            }
-
-            return this;
+        	Component superComponent = super.getTreeCellRendererComponent(tree, "", isSelected, expanded, leaf, row, hasFocus);
+        	return rendererCode.getComponent(superComponent, tree, value, isSelected, expanded, leaf, row, hasFocus);
         }
 
     }

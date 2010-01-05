@@ -33,8 +33,6 @@ import net.sourceforge.atunes.gui.views.controls.CustomWindow;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-import org.jvnet.substance.SubstanceLookAndFeel;
-
 /**
  * The Class SplashScreenDialog.
  */
@@ -47,8 +45,6 @@ public final class SplashScreenDialog extends CustomWindow {
      */
     public SplashScreenDialog() {
         super(null, 475, 200);
-        JPanel content = getContent();
-        content.putClientProperty(SubstanceLookAndFeel.COLORIZATION_FACTOR, Double.valueOf(1));
         add(getContent());
         GuiUtils.applyComponentOrientation(this);
     }
