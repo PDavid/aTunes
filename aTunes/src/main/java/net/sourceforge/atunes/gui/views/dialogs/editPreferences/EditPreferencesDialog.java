@@ -112,6 +112,7 @@ public final class EditPreferencesDialog extends CustomModalDialog {
 			public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 JLabel label = (JLabel) superComponent;
                 PreferencesPanel p = (PreferencesPanel) value;
+                label.setText(p.getTitle());
                 label.setIcon(p.getIcon());
                 return label;
 			}
