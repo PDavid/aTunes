@@ -19,7 +19,6 @@
  */
 package net.sourceforge.atunes.kernel.modules.context.artist;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.util.HashMap;
 import java.util.List;
@@ -95,10 +94,8 @@ public class ArtistAlbumsContent extends ContextPanelContent {
 			
 			@Override
 			public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                Component c = superComponent;
-                Color backgroundColor = c.getBackground();
-                return getPanelForTableRenderer(((AlbumInfo) value).getCover(), StringUtils.getString("<html>", ((AlbumInfo) value).getTitle(), "</html>"), backgroundColor,
-                        Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT);
+                return getPanelForTableRenderer(((AlbumInfo) value).getCover(), StringUtils.getString("<html>", ((AlbumInfo) value).getTitle(), "</html>"), 
+                		superComponent.getBackground(), Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT);
             }
         }));
 

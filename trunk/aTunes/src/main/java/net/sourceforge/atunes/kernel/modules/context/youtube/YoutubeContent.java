@@ -19,7 +19,6 @@
  */
 package net.sourceforge.atunes.kernel.modules.context.youtube;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -110,10 +109,8 @@ public class YoutubeContent extends ContextPanelContent {
 
         	@Override
         	public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                Color backgroundColor = superComponent.getBackground();
-
                 return getPanelForTableRenderer(((YoutubeResultEntry) value).getImage(), StringUtils.getString("<html>", ((YoutubeResultEntry) value).getName(), "<br>(",
-                        ((YoutubeResultEntry) value).getDuration(), ")</html>"), backgroundColor, Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT);
+                        ((YoutubeResultEntry) value).getDuration(), ")</html>"), superComponent.getBackground(), Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT);
             }
         }));
         youtubeResultTable.setColumnSelectionAllowed(false);
