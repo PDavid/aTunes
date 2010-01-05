@@ -33,15 +33,13 @@ import javax.swing.event.ListSelectionListener;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
-import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceContextImageJTable;
 import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
+import net.sourceforge.atunes.kernel.modules.context.ContextImageJTable;
 import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
-
-import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
 /**
  * Albums of an artist
@@ -52,7 +50,7 @@ import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 public class ArtistAlbumsContent extends ContextPanelContent {
 
     private static final long serialVersionUID = -5538266144953409867L;
-    private SubstanceContextImageJTable albumsTable;
+    private ContextImageJTable albumsTable;
 
     public ArtistAlbumsContent() {
         super(new ArtistInfoDataSource());
@@ -88,7 +86,7 @@ public class ArtistAlbumsContent extends ContextPanelContent {
     @Override
     protected Component getComponent() {
         // Create components
-        albumsTable = new SubstanceContextImageJTable();
+        albumsTable = new ContextImageJTable();
         albumsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         albumsTable.setShowGrid(false);
         albumsTable.getTableHeader().setReorderingAllowed(false);
