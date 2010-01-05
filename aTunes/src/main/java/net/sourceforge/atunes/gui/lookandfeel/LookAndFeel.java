@@ -9,6 +9,7 @@ import javax.swing.JList;
 import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.ListCellRenderer;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -168,6 +169,14 @@ public abstract class LookAndFeel {
 	 */
 	public boolean isCustomPlayerControlsSupported() {
 		return false;
+	}
+	
+	/**
+	 * Returns shadow border used by look and feel (none by default)
+	 * @return
+	 */
+	public Border getShadowBorder() {
+		return null;
 	}
 	
 	

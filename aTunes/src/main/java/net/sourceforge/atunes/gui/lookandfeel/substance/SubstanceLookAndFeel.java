@@ -17,6 +17,7 @@ import javax.swing.JTree;
 import javax.swing.ListCellRenderer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.border.Border;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
@@ -35,6 +36,7 @@ import net.sourceforge.atunes.utils.GuiUtils;
 
 import org.jvnet.lafwidget.LafWidget;
 import org.jvnet.lafwidget.utils.LafConstants;
+import org.jvnet.lafwidget.utils.ShadowPopupBorder;
 import org.jvnet.substance.api.SubstanceConstants;
 import org.jvnet.substance.api.renderers.SubstanceDefaultListCellRenderer;
 import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
@@ -257,5 +259,10 @@ public class SubstanceLookAndFeel extends LookAndFeel {
 	@Override
 	public boolean isCustomPlayerControlsSupported() {
 		return true;
+	}
+	
+	@Override
+	public Border getShadowBorder() {
+		return ShadowPopupBorder.getInstance();
 	}
 }
