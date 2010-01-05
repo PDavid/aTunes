@@ -410,7 +410,7 @@ public final class EditTagDialogController extends SimpleController<EditTagDialo
     protected void editTag() {
         getLogger().debug(LogCategories.CONTROLLER);
 
-        getComponentControlled().setVisible(false);
+        getComponentControlled().setVisible(true);
 
         // Build editor props
         EditTagInfo editTagInfo = new EditTagInfo();

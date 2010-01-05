@@ -73,6 +73,7 @@ public final class EditTagDialogActionListener implements ActionListener {
         if (e.getSource() == dialog.getOkButton()) {
             controller.editTag();
             controller.clear();
+            dialog.setVisible(false);
         } else if (e.getSource() == dialog.getNextButton()) {
             controller.editTag();
             controller.clear();
