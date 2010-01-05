@@ -32,8 +32,8 @@ import javax.swing.event.ListSelectionListener;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
-import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceContextImageJTable;
 import net.sourceforge.atunes.kernel.modules.context.ArtistInfo;
+import net.sourceforge.atunes.kernel.modules.context.ContextImageJTable;
 import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.context.SimilarArtistsInfo;
 import net.sourceforge.atunes.model.AudioObject;
@@ -44,7 +44,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 public class SimilarArtistsContent extends ContextPanelContent {
 
     private static final long serialVersionUID = 5041098100868186051L;
-    private SubstanceContextImageJTable similarArtistsTable;
+    private ContextImageJTable similarArtistsTable;
 
     public SimilarArtistsContent() {
         super(new SimilarArtistsDataSource());
@@ -79,7 +79,7 @@ public class SimilarArtistsContent extends ContextPanelContent {
     @Override
     protected Component getComponent() {
         // Create components
-        similarArtistsTable = new SubstanceContextImageJTable();
+        similarArtistsTable = new ContextImageJTable();
         similarArtistsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         similarArtistsTable.setShowGrid(false);
         similarArtistsTable.setDefaultRenderer(ArtistInfo.class, LookAndFeelSelector.getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {

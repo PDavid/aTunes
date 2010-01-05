@@ -17,7 +17,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package net.sourceforge.atunes.gui.lookandfeel.substance;
+package net.sourceforge.atunes.kernel.modules.context;
 
 import javax.swing.JTable;
 
@@ -31,7 +31,7 @@ import net.sourceforge.atunes.Constants;
  * >https://substance.dev.java.net/servlets/ProjectForumMessageView?messageID=
  * 22522&forumID=1484</a>
  */
-public final class SubstanceContextImageJTable extends JTable {
+public final class ContextImageJTable extends JTable {
 
     private static final long serialVersionUID = 339974237840854168L;
 

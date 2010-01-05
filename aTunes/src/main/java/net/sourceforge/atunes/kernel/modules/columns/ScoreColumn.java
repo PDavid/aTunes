@@ -32,10 +32,9 @@ import javax.swing.table.TableCellRenderer;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.ListCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.model.AudioObject;
-
-import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
 public class ScoreColumn extends Column {
 
@@ -56,70 +55,27 @@ public class ScoreColumn extends Column {
         JComboBox comboBox = new JComboBox(new Object[] { 0, 1, 2, 3, 4, 5 });
         
         comboBox.setRenderer(LookAndFeelSelector.getCurrentLookAndFeel().getListCellRenderer(new ListCellRendererCode() {
-        	@Override
-        	public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                JLabel label = (JLabel) superComponent;
-                label.setText(null);
-
-                switch ((Integer) value) {
-                case 0:
-                    label.setIcon(Images.getImage(Images.EMPTY));
-                    break;
-                case 1:
-                    label.setIcon(Images.getImage(Images.ONE_STAR));
-                    break;
-                case 2:
-                    label.setIcon(Images.getImage(Images.TWO_STAR));
-                    break;
-                case 3:
-                    label.setIcon(Images.getImage(Images.THREE_STAR));
-                    break;
-                case 4:
-                    label.setIcon(Images.getImage(Images.FOUR_STAR));
-                    break;
-                case 5:
-                    label.setIcon(Images.getImage(Images.FIVE_STAR));
-                    break;
-                }
-
-                return label;
-        	}
-        }));
+			
+			@Override
+			public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+				setLabel((JLabel)superComponent, (Integer)value);
+				return superComponent;
+			}
+		}));
         
         return new DefaultCellEditor(comboBox);
     }
 
     @Override
     public TableCellRenderer getCellRenderer() {
-        return new SubstanceDefaultTableCellRenderer() {
-            private static final long serialVersionUID = 0L;
-
-            @Override
-            public Component getTableCellRendererComponent(JTable arg0, Object value, boolean arg2, boolean arg3, int arg4, int arg5) {
-                JLabel label = (JLabel) super.getTableCellRendererComponent(arg0, "", arg2, arg3, arg4, arg5);
-                switch ((Integer) value) {
-                case 0:
-                    label.setIcon(Images.getImage(Images.EMPTY));
-                    break;
-                case 1:
-                    label.setIcon(Images.getImage(Images.ONE_STAR));
-                    break;
-                case 2:
-                    label.setIcon(Images.getImage(Images.TWO_STAR));
-                    break;
-                case 3:
-                    label.setIcon(Images.getImage(Images.THREE_STAR));
-                    break;
-                case 4:
-                    label.setIcon(Images.getImage(Images.FOUR_STAR));
-                    break;
-                case 5:
-                    label.setIcon(Images.getImage(Images.FIVE_STAR));
-                    break;
-                }
-                return label;
-            }
-        };
+        return LookAndFeelSelector.getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
+			
+			@Override
+			public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+				setLabel((JLabel)superComponent, (Integer)value);
+				return superComponent;
+			}
+		});
     }
 
     @Override
@@ -140,4 +96,33 @@ public class ScoreColumn extends Column {
         ControllerProxy.getInstance().getPlayListController().refreshPlayList();
     }
 
+    /**
+     * Sets proper icon and text
+     * @param label
+     * @param score
+     */
+    private void setLabel(JLabel label, int score) {
+    	label.setText(null);
+        switch (score) {
+        case 0:
+            label.setIcon(Images.getImage(Images.EMPTY));
+            break;
+        case 1:
+            label.setIcon(Images.getImage(Images.ONE_STAR));
+            break;
+        case 2:
+            label.setIcon(Images.getImage(Images.TWO_STAR));
+            break;
+        case 3:
+            label.setIcon(Images.getImage(Images.THREE_STAR));
+            break;
+        case 4:
+            label.setIcon(Images.getImage(Images.FOUR_STAR));
+            break;
+        case 5:
+            label.setIcon(Images.getImage(Images.FIVE_STAR));
+            break;
+        }
+    }
+    	
 }

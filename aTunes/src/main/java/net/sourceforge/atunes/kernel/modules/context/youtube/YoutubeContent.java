@@ -40,8 +40,8 @@ import javax.swing.ListSelectionModel;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
-import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceContextImageJTable;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
+import net.sourceforge.atunes.kernel.modules.context.ContextImageJTable;
 import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.internetsearch.SearchFactory;
@@ -67,7 +67,7 @@ public class YoutubeContent extends ContextPanelContent {
 
     private static final long serialVersionUID = 5041098100868186051L;
 
-    private SubstanceContextImageJTable youtubeResultTable;
+    private ContextImageJTable youtubeResultTable;
 
     public YoutubeContent() {
         super(new YoutubeDataSource());
@@ -102,7 +102,7 @@ public class YoutubeContent extends ContextPanelContent {
     @Override
     protected Component getComponent() {
         // Create components
-        youtubeResultTable = new SubstanceContextImageJTable();
+        youtubeResultTable = new ContextImageJTable();
         youtubeResultTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         youtubeResultTable.setShowGrid(false);
         youtubeResultTable.getTableHeader().setReorderingAllowed(false);
