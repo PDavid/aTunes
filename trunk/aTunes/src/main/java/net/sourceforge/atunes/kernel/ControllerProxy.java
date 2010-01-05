@@ -19,6 +19,9 @@
  */
 package net.sourceforge.atunes.kernel;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.sourceforge.atunes.gui.views.dialogs.EditTitlesDialog;
 import net.sourceforge.atunes.gui.views.panels.AudioObjectPropertiesPanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
@@ -26,6 +29,7 @@ import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListTabPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
+import net.sourceforge.atunes.kernel.actions.EditTagAction.EditTagSources;
 import net.sourceforge.atunes.kernel.controllers.audioObjectProperties.AudioObjectPropertiesController;
 import net.sourceforge.atunes.kernel.controllers.customsearch.CustomSearchController;
 import net.sourceforge.atunes.kernel.controllers.editPreferencesDialog.EditPreferencesDialogController;
@@ -73,7 +77,7 @@ public class ControllerProxy {
     private AudioObjectPropertiesController filePropertiesController;
 
     /** The edit tag dialog controller. */
-    private EditTagDialogController editTagDialogController;
+    private Map<EditTagSources, EditTagDialogController> editTagDialogControllerMap;
 
     /** The stats dialog controller. */
     private StatsDialogController statsDialogController;
@@ -101,7 +105,7 @@ public class ControllerProxy {
 
     /** The tool bar filter controller. */
     private ToolBarFilterController toolBarFilterController;
-    
+
     /**
      * Instantiates a new controller proxy.
      */
@@ -140,11 +144,16 @@ public class ControllerProxy {
      * 
      * @return the edits the tag dialog controller
      */
-    public EditTagDialogController getEditTagDialogController() {
-        if (editTagDialogController == null) {
-            editTagDialogController = new EditTagDialogController(GuiHandler.getInstance().getEditTagDialog());
+    public EditTagDialogController getEditTagDialogController(EditTagSources sourceOfEditTagDialog) {
+        if (editTagDialogControllerMap == null) {
+            editTagDialogControllerMap = new HashMap<EditTagSources, EditTagDialogController>();
         }
-        return editTagDialogController;
+
+        if (!editTagDialogControllerMap.containsKey(sourceOfEditTagDialog)) {
+            boolean arePrevNextButtonsShown = sourceOfEditTagDialog != EditTagSources.NAVIGATOR;
+            editTagDialogControllerMap.put(sourceOfEditTagDialog, new EditTagDialogController(GuiHandler.getInstance().getEditTagDialog(arePrevNextButtonsShown)));
+        }
+        return editTagDialogControllerMap.get(sourceOfEditTagDialog);
     }
 
     /**
@@ -299,16 +308,17 @@ public class ControllerProxy {
         }
         return radioBrowserController;
     }
-    
+
     /**
      * Gets the tool bar filter controller
+     * 
      * @return
      */
     public ToolBarFilterController getToolBarFilterController() {
-    	if (toolBarFilterController == null) {
-    		toolBarFilterController = new ToolBarFilterController(GuiHandler.getInstance().getToolBar().getFilterPanel());
-    	}
-    	return toolBarFilterController;
+        if (toolBarFilterController == null) {
+            toolBarFilterController = new ToolBarFilterController(GuiHandler.getInstance().getToolBar().getFilterPanel());
+        }
+        return toolBarFilterController;
     }
 
 }

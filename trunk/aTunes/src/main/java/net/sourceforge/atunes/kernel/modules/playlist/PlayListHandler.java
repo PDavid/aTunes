@@ -1045,6 +1045,37 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
     }
 
     /**
+     * Returns the index of an audio object in a playlist.
+     * 
+     * @param aObject The audio object you need the index of
+     * 
+     * @return The index of the audio object
+     */
+    public int getIndexOfAudioObject(AudioObject aObject) {
+    	return getCurrentPlayList(false).indexOf(aObject);
+    }
+
+    /**
+     * Returns the audio object at the given index in the playlist.
+     * 
+     * @param index The index of the audio object
+     * 
+     * @return The audio object
+     */
+    public AudioObject getAudioObjectAtIndex(int index) {
+    	return getCurrentPlayList(false).getNextAudioObject(index);
+    }
+
+    /**
+     * Moves the selected row in the play list to the position given in the index
+     * 
+     * @param index The index to move to
+     */
+    public void changeSelectedAudioObjectToIndex(int index) {
+    	GuiHandler.getInstance().getPlayListTable().changeSelection(index, 0, false, false);
+    }
+
+    /**
      * Gets the selected audio objects in current play list
      * 
      * @return the selected audio objects

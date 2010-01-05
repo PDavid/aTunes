@@ -28,6 +28,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
+import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -40,9 +41,12 @@ import net.sourceforge.atunes.utils.I18nUtils;
 public class EditTagAction extends ActionOverSelectedObjects<AudioFile> {
 
     private static final long serialVersionUID = -4310895355731333072L;
+    
+    private static Logger logger = new Logger();
 
-    public static final String PLAYLIST = "PLAYLIST";
-    public static final String NAVIGATOR = "NAVIGATOR";
+    public enum EditTagSources {
+        PLAYLIST, NAVIGATOR
+    };
 
     EditTagAction() {
         super(I18nUtils.getString("EDIT_TAG"), Images.getImage(Images.TAG), AudioFile.class);
@@ -51,7 +55,7 @@ public class EditTagAction extends ActionOverSelectedObjects<AudioFile> {
 
     @Override
     protected void initialize() {
-        if (PLAYLIST.equals(actionId)) {
+        if (EditTagSources.PLAYLIST.toString().equals(actionId)) {
             putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_INSERT, 0));
         }
     }
@@ -59,12 +63,19 @@ public class EditTagAction extends ActionOverSelectedObjects<AudioFile> {
     @Override
     protected void performAction(List<AudioFile> objects) {
         // Start edit by opening edit dialog
-        ControllerProxy.getInstance().getEditTagDialogController().editFiles(objects);
+        try {
+            EditTagSources editTagSource = EditTagSources.valueOf(actionId);
+            ControllerProxy.getInstance().getEditTagDialogController(editTagSource).editFiles(objects);
+        } catch (IllegalArgumentException iae) {
+            logger.error("The source that caused this action is not known. No further action initiated.", iae);
+        } catch (NullPointerException npe) {
+            logger.error("The source that caused this action is not set. No further action initiated.", npe);
+        }
     }
 
     @Override
     public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
-        if (NAVIGATOR.equals(actionId)) {
+        if (EditTagSources.NAVIGATOR.toString().equals(actionId)) {
             return !rootSelected && !selection.isEmpty();
         }
         return super.isEnabledForNavigationTreeSelection(rootSelected, selection);
@@ -72,9 +83,10 @@ public class EditTagAction extends ActionOverSelectedObjects<AudioFile> {
 
     @Override
     public boolean isEnabledForNavigationTableSelection(List<AudioObject> selection) {
-        if (NAVIGATOR.equals(actionId)) {
+        if (EditTagSources.NAVIGATOR.toString().equals(actionId)) {
             return !selection.isEmpty();
         }
         return super.isEnabledForNavigationTableSelection(selection);
     }
+
 }

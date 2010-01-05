@@ -126,7 +126,6 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
 
     Frame frame;
     private OSDDialog osdDialog;
-    private EditTagDialog editTagDialog;
     private ExportOptionsDialog exportDialog;
     private StatsDialog statsDialog;
     private SearchDialog searchDialog;
@@ -202,11 +201,9 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
      * 
      * @return the edits the tag dialog
      */
-    public EditTagDialog getEditTagDialog() {
-        if (editTagDialog == null) {
-            editTagDialog = new EditTagDialog(frame.getFrame());
-        }
-        return editTagDialog;
+    public EditTagDialog getEditTagDialog(boolean arePrevNextButtonsShown) {
+        // EditTagDialog does not need to be cached in a local variable. It is modal and therefore either shown or not.
+    	return new EditTagDialog(frame.getFrame(),arePrevNextButtonsShown);
     }
 
     /**
