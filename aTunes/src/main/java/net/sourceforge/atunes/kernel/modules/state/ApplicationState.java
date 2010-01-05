@@ -293,6 +293,8 @@ public class ApplicationState {
     private boolean useLibnotify = false;
     private boolean showContextAlbumsInGrid;
 
+    private boolean isSimilarArtistsMode;
+
     //////////////////////////////////////////////////////////// END OF ATTRIBUTES /////////////////////////////////////////////////////////////
 
     /**
@@ -1193,6 +1195,14 @@ public class ApplicationState {
         this.showNavigationTree = showNavigationTree;
     }
 
+    public boolean isSimilarArtistsMode() {
+        return isSimilarArtistsMode;
+    }
+
+    public void setSimilarArtistsMode(boolean isSimilarArtistsMode) {
+        this.isSimilarArtistsMode = isSimilarArtistsMode;
+    }
+
 	/**
 	 * @return the customNavigatorColumns
 	 */
@@ -1207,5 +1217,4 @@ public class ApplicationState {
 			Map<String, Map<String, ColumnBean>> customNavigatorColumns) {
 		this.customNavigatorColumns = customNavigatorColumns;
 	}
-
 }

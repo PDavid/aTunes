@@ -83,6 +83,8 @@ public final class EditTagDialog extends CustomModalDialog {
     private JTextField albumArtistTextField;
     private JButton okButton;
     private JButton cancelButton;
+    private JButton nextButton;
+    private JButton prevButton;
     private JTabbedPane tabbedPane = new JTabbedPane();
 
     /**
@@ -90,8 +92,9 @@ public final class EditTagDialog extends CustomModalDialog {
      * 
      * @param owner
      *            the owner
+     * @param arePrevNextButtonsShown
      */
-    public EditTagDialog(JFrame owner) {
+    public EditTagDialog(JFrame owner, boolean arePrevNextButtonsShown) {
         super(owner, 500, 600, true);
         setTitle(I18nUtils.getString("EDIT_TAG"));
         setResizable(false);
@@ -102,13 +105,13 @@ public final class EditTagDialog extends CustomModalDialog {
         tabbedPane.addTab(I18nUtils.getString("TAGS"), getTagEditTab());
         tabbedPane.addTab(I18nUtils.getString("COVER"), getCoverTab());
 
-        add(getOKAndCancelButtonPanel(), BorderLayout.SOUTH);
+        add(getOKAndCancelButtonPanel(arePrevNextButtonsShown), BorderLayout.SOUTH);
 
         GuiUtils.applyComponentOrientation(this);
         enableCloseActionWithEscapeKey();
     }
 
-    private JPanel getOKAndCancelButtonPanel() {
+    private JPanel getOKAndCancelButtonPanel(boolean arePrevNextButtonsShown) {
         JPanel panel = new JPanel();
         panel.setOpaque(false);
 
@@ -124,12 +127,15 @@ public final class EditTagDialog extends CustomModalDialog {
         c.gridx = 0;
         c.gridy = 1;
         panel.add(cancelButton, c);
-
+        if (arePrevNextButtonsShown) {
+            panel.add(prevButton, c);
+            panel.add(nextButton, c);
+        }
         return panel;
     }
 
     public static void main(String[] args) {
-        new EditTagDialog(null).setVisible(true);
+        new EditTagDialog(null, true).setVisible(true);
     }
 
     /**
@@ -360,6 +366,8 @@ public final class EditTagDialog extends CustomModalDialog {
 
         okButton = new CustomButton(null, I18nUtils.getString("OK"));
         cancelButton = new CustomButton(null, I18nUtils.getString("CANCEL"));
+        nextButton = new CustomButton(null, I18nUtils.getString("NEXT"));
+        prevButton = new CustomButton(null, I18nUtils.getString("PREVIOUS"));
 
         GridBagConstraints c = new GridBagConstraints();
 
@@ -672,6 +680,24 @@ public final class EditTagDialog extends CustomModalDialog {
      */
     public JButton getOkButton() {
         return okButton;
+    }
+
+    /**
+     * Gets the previous (song) button.
+     * 
+     * @return the previous (song) button
+     */
+    public JButton getPrevButton() {
+        return prevButton;
+    }
+
+    /**
+     * Gets the next (song) button.
+     * 
+     * @return the next (song) button
+     */
+    public JButton getNextButton() {
+        return nextButton;
     }
 
     /**

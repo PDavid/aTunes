@@ -87,6 +87,9 @@ public final class EditTagDialogController extends SimpleController<EditTagDialo
         getComponentControlled().getOkButton().addActionListener(actionListener);
         getComponentControlled().getCancelButton().addActionListener(actionListener);
 
+        getComponentControlled().getNextButton().addActionListener(actionListener);
+        getComponentControlled().getPrevButton().addActionListener(actionListener);
+
         getComponentControlled().getCoverButton().addActionListener(actionListener);
         getComponentControlled().getRemoveCoverButton().addActionListener(actionListener);
     }
