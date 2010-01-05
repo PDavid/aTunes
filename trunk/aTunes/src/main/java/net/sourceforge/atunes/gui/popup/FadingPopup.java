@@ -25,11 +25,11 @@ import java.awt.Component;
 import javax.swing.JComponent;
 import javax.swing.JWindow;
 import javax.swing.Popup;
+import javax.swing.border.Border;
 
 import net.sourceforge.atunes.gui.WindowFader;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.utils.GuiUtils;
-
-import org.jvnet.lafwidget.utils.ShadowPopupBorder;
 
 /**
  * Based on a fading popup with shadow border by Kirill Grouchnikov.
@@ -63,8 +63,10 @@ final class FadingPopup extends Popup {
         JComponent parent = (JComponent) contents.getParent();
         // set the shadow border
         if (shadowBorder) {
-        	// TODO: LAF
-            parent.setBorder(ShadowPopupBorder.getInstance());
+        	Border shadow = LookAndFeelSelector.getCurrentLookAndFeel().getShadowBorder();
+        	if (shadow != null) {
+        		parent.setBorder(shadow);
+        	}
         }
         this.windowFader = new WindowFader(popupWindow, 40) {
             @Override
