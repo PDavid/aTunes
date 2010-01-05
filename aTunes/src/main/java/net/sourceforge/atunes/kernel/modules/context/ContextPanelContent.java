@@ -189,13 +189,11 @@ public abstract class ContextPanelContent {
         textLabel.setOpaque(false);
         textLabel.setVerticalAlignment(SwingConstants.TOP);
 
+    	panel.setOpaque(false);
         if (backgroundColor != null) {
-            panel.setOpaque(true);
             textLabel.setBackground(backgroundColor);
             panel.setBackground(backgroundColor);
             imageLabel.setBackground(backgroundColor);
-        } else {
-        	panel.setOpaque(false);
         }
 
         c.gridx = 0;

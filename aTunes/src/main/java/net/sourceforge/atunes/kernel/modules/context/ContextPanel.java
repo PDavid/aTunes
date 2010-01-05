@@ -26,6 +26,7 @@ import java.awt.Insets;
 import java.util.List;
 
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -181,6 +182,9 @@ public abstract class ContextPanel {
             taskPane.setTitle(content.getContentName());
 
             Component componentToAdd = content.getComponent();
+            if (componentToAdd instanceof JComponent) {
+            	((JComponent)componentToAdd).setOpaque(false);
+            }
             if (content.isScrollNeeded()) {
                 JScrollPane scroll = new JScrollPane(componentToAdd);
                 scroll.setBorder(null);
@@ -195,6 +199,7 @@ public abstract class ContextPanel {
                     button.add(option);
                 }
                 JPanel panel = new JPanel(new GridBagLayout());
+                panel.setOpaque(false);
                 GridBagConstraints c = new GridBagConstraints();
                 c.weightx = 1;
                 c.weighty = 1;
