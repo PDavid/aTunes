@@ -48,9 +48,6 @@ import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-import org.jvnet.substance.SubstanceLookAndFeel;
-import org.jvnet.substance.api.SubstanceConstants.FocusKind;
-
 /**
  * The dialog for tag editing
  */
@@ -207,7 +204,6 @@ public final class EditTagDialog extends CustomModalDialog {
         infoPanel.setLayout(fl);
 
         coverCheckBox = new JCheckBox();
-        coverCheckBox.putClientProperty(SubstanceLookAndFeel.FOCUS_KIND, FocusKind.NONE);
         infoPanel.add(coverCheckBox);
         genreComboBox.setEditable(true);
         cover = new JLabel();
@@ -242,7 +238,7 @@ public final class EditTagDialog extends CustomModalDialog {
     private JPanel getTagEditTab() {
         JPanel panel = new JPanel(new GridBagLayout());
         titleCheckBox = new JCheckBox();
-        titleCheckBox.putClientProperty(SubstanceLookAndFeel.FOCUS_KIND, FocusKind.NONE);
+        titleCheckBox.setFocusable(false);
         JLabel titleLabel = new JLabel(I18nUtils.getString("TITLE"));
         titleTextField = new JTextField();
         titleCheckBox.addActionListener(new ActionListener() {
@@ -253,7 +249,6 @@ public final class EditTagDialog extends CustomModalDialog {
         });
         titleCheckBox.setSelected(true);
         albumCheckBox = new JCheckBox();
-        albumCheckBox.putClientProperty(SubstanceLookAndFeel.FOCUS_KIND, FocusKind.NONE);
         JLabel albumLabel = new JLabel(I18nUtils.getString("ALBUM"));
         albumTextField = new JComboBox();
         albumTextField.setEditable(true);
@@ -265,7 +260,6 @@ public final class EditTagDialog extends CustomModalDialog {
         });
         albumCheckBox.setSelected(true);
         artistCheckBox = new JCheckBox();
-        artistCheckBox.putClientProperty(SubstanceLookAndFeel.FOCUS_KIND, FocusKind.NONE);
         JLabel artistLabel = new JLabel(I18nUtils.getString("ARTIST"));
         artistTextField = new JComboBox();
         artistTextField.setEditable(true);
@@ -277,7 +271,6 @@ public final class EditTagDialog extends CustomModalDialog {
         });
         artistCheckBox.setSelected(true);
         yearCheckBox = new JCheckBox();
-        yearCheckBox.putClientProperty(SubstanceLookAndFeel.FOCUS_KIND, FocusKind.NONE);
         JLabel yearLabel = new JLabel(I18nUtils.getString("YEAR"));
         yearTextField = new JTextField();
         yearCheckBox.addActionListener(new ActionListener() {
@@ -288,7 +281,6 @@ public final class EditTagDialog extends CustomModalDialog {
         });
         yearCheckBox.setSelected(true);
         genreCheckBox = new JCheckBox();
-        genreCheckBox.putClientProperty(SubstanceLookAndFeel.FOCUS_KIND, FocusKind.NONE);
         JLabel genreLabel = new JLabel(I18nUtils.getString("GENRE"));
         genreComboBox = new JComboBox();
         genreCheckBox.addActionListener(new ActionListener() {
@@ -300,7 +292,6 @@ public final class EditTagDialog extends CustomModalDialog {
         genreCheckBox.setSelected(true);
 
         commentCheckBox = new JCheckBox();
-        commentCheckBox.putClientProperty(SubstanceLookAndFeel.FOCUS_KIND, FocusKind.NONE);
         JLabel commentLabel = new JLabel(I18nUtils.getString("COMMENT"));
         commentTextArea = new JTextArea();
         commentTextArea.setBorder(BorderFactory.createEmptyBorder());
@@ -313,7 +304,6 @@ public final class EditTagDialog extends CustomModalDialog {
         commentCheckBox.setSelected(true);
         JScrollPane scrollPane = new JScrollPane(commentTextArea);
         lyricsCheckBox = new JCheckBox();
-        lyricsCheckBox.putClientProperty(SubstanceLookAndFeel.FOCUS_KIND, FocusKind.NONE);
         JLabel lyricsLabel = new JLabel(I18nUtils.getString("LYRICS"));
         lyricsTextArea = new JTextArea();
         lyricsTextArea.setBorder(BorderFactory.createEmptyBorder());
@@ -326,7 +316,6 @@ public final class EditTagDialog extends CustomModalDialog {
         lyricsCheckBox.setSelected(true);
         JScrollPane scrollPane2 = new JScrollPane(lyricsTextArea);
         trackNumberCheckBox = new JCheckBox();
-        trackNumberCheckBox.putClientProperty(SubstanceLookAndFeel.FOCUS_KIND, FocusKind.NONE);
         JLabel trackNumberLabel = new JLabel(I18nUtils.getString("TRACK"));
         trackNumberTextField = new JTextField();
         trackNumberCheckBox.addActionListener(new ActionListener() {
@@ -338,7 +327,6 @@ public final class EditTagDialog extends CustomModalDialog {
         });
         trackNumberCheckBox.setSelected(true);
         discNumberCheckBox = new JCheckBox();
-        discNumberCheckBox.putClientProperty(SubstanceLookAndFeel.FOCUS_KIND, FocusKind.NONE);
         JLabel discNumberLabel = new JLabel(I18nUtils.getString("DISC_NUMBER"));
         discNumberTextField = new JTextField();
         discNumberCheckBox.addActionListener(new ActionListener() {
@@ -350,7 +338,6 @@ public final class EditTagDialog extends CustomModalDialog {
         });
         discNumberCheckBox.setSelected(true);
         composerCheckBox = new JCheckBox();
-        composerCheckBox.putClientProperty(SubstanceLookAndFeel.FOCUS_KIND, FocusKind.NONE);
         JLabel composerLabel = new JLabel(I18nUtils.getString("COMPOSER"));
         composerTextField = new JTextField();
         composerCheckBox.addActionListener(new ActionListener() {
@@ -361,7 +348,6 @@ public final class EditTagDialog extends CustomModalDialog {
         });
         composerCheckBox.setSelected(true);
         albumArtistCheckBox = new JCheckBox();
-        albumArtistCheckBox.putClientProperty(SubstanceLookAndFeel.FOCUS_KIND, FocusKind.NONE);
         JLabel albumArtistLabel = new JLabel(I18nUtils.getString("ALBUM_ARTIST"));
         albumArtistTextField = new JTextField();
         albumArtistCheckBox.addActionListener(new ActionListener() {

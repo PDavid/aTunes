@@ -41,11 +41,11 @@ import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.lookandfeel.ListCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.StringUtils;
-
-import org.jvnet.substance.api.renderers.SubstanceDefaultListCellRenderer;
 
 /**
  * This is the dialog shown to select language.
@@ -91,18 +91,17 @@ public final class LanguageSelectorDialog extends JDialog {
         c.fill = GridBagConstraints.BOTH;
         panel.add(scrollPane, c);
 
-        list.setCellRenderer(new SubstanceDefaultListCellRenderer() {
-            private static final long serialVersionUID = 4124370361802581951L;
-
-            @Override
-            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+        list.setCellRenderer(LookAndFeelSelector.getCurrentLookAndFeel().getListCellRenderer(new ListCellRendererCode() {
+			
+			@Override
+			public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                Component c = superComponent;
                 // Name of flag file should be <language_name>.png
                 String flag = StringUtils.getString(((String) value).toLowerCase(), ".png");
                 ((JLabel) c).setIcon(new ImageIcon(LanguageSelectorDialog.class.getResource(StringUtils.getString("/", Constants.TRANSLATIONS_DIR, "/", flag))));
                 return c;
-            }
-        });
+			}
+		}));
 
         JButton okButton = new CustomButton(null, "OK");
         okButton.addActionListener(new ActionListener() {

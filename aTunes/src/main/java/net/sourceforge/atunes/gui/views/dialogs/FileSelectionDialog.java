@@ -49,13 +49,13 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
+import net.sourceforge.atunes.gui.lookandfeel.ListCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.gui.lookandfeel.TreeCellRendererCode;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
-
-import org.jvnet.substance.api.renderers.SubstanceDefaultListCellRenderer;
-import org.jvnet.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
 
 /**
  * The Class FileSelectionDialog.
@@ -279,20 +279,18 @@ public final class FileSelectionDialog extends CustomModalDialog {
      * Sets the list renderer.
      */
     private void setListRenderer() {
-        fileSystemList.setCellRenderer(new SubstanceDefaultListCellRenderer() {
-            private static final long serialVersionUID = -9000934785599172292L;
-
-            @Override
-            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        fileSystemList.setCellRenderer(LookAndFeelSelector.getCurrentLookAndFeel().getListCellRenderer(new ListCellRendererCode() {
+			
+			@Override
+			public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                JLabel icon = (JLabel) superComponent;
                 File f = (File) value;
-
-                JLabel icon = (JLabel) super.getListCellRendererComponent(list, fsView.getSystemDisplayName(f), index, isSelected, cellHasFocus);
-                icon.setHorizontalAlignment(GuiUtils.getComponentOrientationAsSwingConstant());
-
+                icon.setText(fsView.getSystemDisplayName(f));
                 icon.setIcon(fsView.getSystemIcon(f));
+                icon.setHorizontalAlignment(GuiUtils.getComponentOrientationAsSwingConstant());
                 return icon;
-            }
-        });
+			}
+		}));
     }
 
     /**
@@ -420,24 +418,24 @@ public final class FileSelectionDialog extends CustomModalDialog {
      * Sets the tree renderer.
      */
     private void setTreeRenderer() {
-        fileSystemTree.setCellRenderer(new SubstanceDefaultTreeCellRenderer() {
-            private static final long serialVersionUID = -5929642375743958911L;
-
-            @Override
-            public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+        fileSystemTree.setCellRenderer(LookAndFeelSelector.getCurrentLookAndFeel().getTreeCellRenderer(new TreeCellRendererCode() {
+			
+			@Override
+			public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
 
                 if (node.getUserObject() instanceof String) {
-                    return super.getTreeCellRendererComponent(tree, "", selected, expanded, leaf, row, hasFocus);
+                	((JLabel)superComponent).setText(null);
+                    return superComponent;
                 }
 
                 Directory content = (Directory) node.getUserObject();
-                JLabel icon = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+                JLabel icon = (JLabel) superComponent;
                 icon.setIcon(fsView.getSystemIcon(content.file));
 
                 return icon;
-            }
-        });
+			}
+		}));
     }
 
     /**
