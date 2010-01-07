@@ -320,7 +320,7 @@ public abstract class CommonColumnModel extends DefaultTableColumnModel {
 
         // Set header renderer to sortable columns
         if (column.isSortable()) {
-        	aColumn.setHeaderRenderer(LookAndFeelSelector.getCurrentLookAndFeel().getTableHeaderCellRenderer(new TableCellRendererCode() {
+        	aColumn.setHeaderRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableHeaderCellRenderer(new TableCellRendererCode() {
 				
 				@Override
 				public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int col) {

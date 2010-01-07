@@ -348,7 +348,7 @@ public final class RipCdDialog extends CustomModalDialog {
         table.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(textfield2));
         table.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(textfield3));
 
-        table.setDefaultRenderer(String.class, LookAndFeelSelector.getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
+        table.setDefaultRenderer(String.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
 			
 			@Override
 			public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {

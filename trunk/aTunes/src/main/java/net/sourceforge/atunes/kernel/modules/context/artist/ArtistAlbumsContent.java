@@ -90,7 +90,7 @@ public class ArtistAlbumsContent extends ContextPanelContent {
         albumsTable.setShowGrid(false);
         albumsTable.getTableHeader().setReorderingAllowed(false);
         albumsTable.getTableHeader().setResizingAllowed(false);
-        albumsTable.setDefaultRenderer(AlbumInfo.class, LookAndFeelSelector.getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
+        albumsTable.setDefaultRenderer(AlbumInfo.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
 			
 			@Override
 			public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {

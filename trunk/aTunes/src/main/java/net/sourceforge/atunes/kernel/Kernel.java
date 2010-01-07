@@ -172,7 +172,7 @@ public class Kernel {
                     // Set font smoothing
                     Fonts.setFontSmoothing();
                     // Set look and feel
-                    LookAndFeelSelector.setLookAndFeel(ApplicationState.getInstance().getLookAndFeel());
+                    LookAndFeelSelector.getInstance().setLookAndFeel(ApplicationState.getInstance().getLookAndFeel());
                     ColorDefinitions.initColors();
                     // Set language
                     LanguageSelector.setLanguage();
@@ -280,8 +280,6 @@ public class Kernel {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    Handler.initHandlers();
-
                     RepositoryHandler.getInstance().applyRepository();
                     PlayListHandler.getInstance().setPlayLists();
 

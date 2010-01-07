@@ -105,7 +105,7 @@ public class YoutubeContent extends ContextPanelContent {
         youtubeResultTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         youtubeResultTable.setShowGrid(false);
         youtubeResultTable.getTableHeader().setReorderingAllowed(false);
-        youtubeResultTable.setDefaultRenderer(YoutubeResultEntry.class, LookAndFeelSelector.getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
+        youtubeResultTable.setDefaultRenderer(YoutubeResultEntry.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
 
         	@Override
         	public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {

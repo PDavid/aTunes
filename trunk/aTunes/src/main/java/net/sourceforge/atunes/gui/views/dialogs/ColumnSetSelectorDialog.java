@@ -238,7 +238,7 @@ public final class ColumnSetSelectorDialog extends CustomModalDialog {
         columnsList.getColumnModel().getColumn(0).setMaxWidth(20);
         columnsList.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JCheckBox()));
         columnsList.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        columnsList.setDefaultRenderer(String.class, LookAndFeelSelector.getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
+        columnsList.setDefaultRenderer(String.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
 			
 			@Override
 			public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {

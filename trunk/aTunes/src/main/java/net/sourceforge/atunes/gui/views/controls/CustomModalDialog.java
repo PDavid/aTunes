@@ -48,7 +48,7 @@ public abstract class CustomModalDialog extends JDialog {
     public CustomModalDialog(Window owner, int width, int height, boolean modal) {
         super(owner);
         setSize(width, height);
-        setUndecorated(LookAndFeelSelector.getCurrentLookAndFeel().isDialogUndecorated());
+        setUndecorated(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isDialogUndecorated());
         setModalityType(modal ? ModalityType.APPLICATION_MODAL : ModalityType.MODELESS);
         setLocationRelativeTo(owner);
         setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);

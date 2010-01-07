@@ -18,7 +18,7 @@ public abstract class SecondaryControl extends JToggleButton {
         setText(null);
         setPreferredSize(PlayerControlsPanel.OTHER_BUTTONS_SIZE);
         setFocusable(false);
-        LookAndFeelSelector.getCurrentLookAndFeel().putClientProperties(this);        
+        LookAndFeelSelector.getInstance().getCurrentLookAndFeel().putClientProperties(this);        
 	}
 
 }

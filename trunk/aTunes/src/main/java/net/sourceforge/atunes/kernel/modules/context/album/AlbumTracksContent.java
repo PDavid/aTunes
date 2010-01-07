@@ -88,7 +88,7 @@ public class AlbumTracksContent extends ContextPanelContent {
         tracksTable = new JTable();
         tracksTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tracksTable.setShowGrid(false);
-        tracksTable.setDefaultRenderer(String.class, LookAndFeelSelector.getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
+        tracksTable.setDefaultRenderer(String.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
 			
 			@Override
 			public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -98,7 +98,7 @@ public class AlbumTracksContent extends ContextPanelContent {
 			}
 		}));
         
-        tracksTable.setDefaultRenderer(Integer.class, LookAndFeelSelector.getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
+        tracksTable.setDefaultRenderer(Integer.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
 			
 			@Override
 			public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {

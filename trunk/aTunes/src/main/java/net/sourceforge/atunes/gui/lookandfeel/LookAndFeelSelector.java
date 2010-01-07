@@ -21,6 +21,7 @@ package net.sourceforge.atunes.gui.lookandfeel;
 
 import java.awt.Window;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,45 +34,96 @@ import net.sourceforge.atunes.gui.lookandfeel.system.SystemLookAndFeel;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.SystemProperties;
+import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.misc.log.Logger;
 
-public final class LookAndFeelSelector {
+import org.commonjukebox.plugins.Plugin;
+import org.commonjukebox.plugins.PluginInfo;
+import org.commonjukebox.plugins.PluginListener;
+import org.commonjukebox.plugins.PluginSystemException;
 
+public final class LookAndFeelSelector implements PluginListener {
+
+	/**
+	 * Singleton instance
+	 */
+	private static LookAndFeelSelector instance;
+
+	/**
+	 * Logger
+	 */
+	private Logger logger;
+	
     /**
      * Current look and feel
      */
-    private static LookAndFeel currentLookAndFeel;
+    private LookAndFeel currentLookAndFeel;
     
     /**
      * Map containing look and feels
      */
-    private static Map<String, LookAndFeel> lookAndFeels;
+    private Map<String, LookAndFeel> lookAndFeels;
     
     /**
      * Default look and feel
      */
     private static LookAndFeel defaultLookAndFeel = new SubstanceLookAndFeel();
     
-    static {
-    	lookAndFeels = new HashMap<String, LookAndFeel>();    	
+    /**
+     * Default constructor
+     */
+    private LookAndFeelSelector() {
+    	lookAndFeels = new HashMap<String, LookAndFeel>();
     	
+    	// Default look and feel
     	lookAndFeels.put(defaultLookAndFeel.getName(), defaultLookAndFeel);
-    	
+
+    	// System look and feel
     	SystemLookAndFeel system = new SystemLookAndFeel();
     	lookAndFeels.put(system.getName(), system);
     	
+    	// Nimbus look and feel (only 1.6.10 or later)
     	if (SystemProperties.IS_JAVA_6_UPDATE_10_OR_LATER) {
     		NimbusLookAndFeel nimbus = new NimbusLookAndFeel();
     		lookAndFeels.put(nimbus.getName(), nimbus);
-    	}
+    	}    	
     }
 
+    /**
+     * Returns singleton instance
+     * @return
+     */
+    public static LookAndFeelSelector getInstance() {
+    	if (instance == null) {
+    		instance = new LookAndFeelSelector();
+    	}
+    	return instance;
+    }
+    
+    @Override
+    public void pluginActivated(PluginInfo plugin) {
+    	try {
+    		LookAndFeel laf = (LookAndFeel) plugin.getInstance();
+    		lookAndFeels.put(laf.getName(), laf);
+    	} catch (PluginSystemException e) {
+    		getLogger().error(LogCategories.PLUGINS, e);
+    	}
+    }
+    
+    @Override
+    public void pluginDeactivated(PluginInfo arg0, Collection<Plugin> instances) {
+    	for (Plugin instance : instances) {
+    		lookAndFeels.remove(((LookAndFeel)instance).getName());
+    	}
+    }
+    
     /**
      * Sets the look and feel.
      * 
      * @param theme
      *            the new look and feel
      */
-    public static void setLookAndFeel(LookAndFeelBean lookAndFeelBean) {    	
+    public void setLookAndFeel(LookAndFeelBean lookAndFeelBean) {    	
         if (Kernel.IGNORE_LOOK_AND_FEEL) {
             return;
         }
@@ -97,7 +149,7 @@ public final class LookAndFeelSelector {
     /**
      * Returns available look and feels
      */
-    public static List<String> getAvailableLookAndFeels() {
+    public List<String> getAvailableLookAndFeels() {
     	return new ArrayList<String>(lookAndFeels.keySet());
     }
     
@@ -106,7 +158,7 @@ public final class LookAndFeelSelector {
      * @param lookAndFeelName
      * @return
      */
-    public static List<String> getAvailableSkins(String lookAndFeelName) {
+    public List<String> getAvailableSkins(String lookAndFeelName) {
     	LookAndFeel lookAndFeel = lookAndFeels.get(lookAndFeelName);
     	if (lookAndFeel != null) {
     		return lookAndFeel.getSkins() != null ? lookAndFeel.getSkins() : new ArrayList<String>();
@@ -118,7 +170,7 @@ public final class LookAndFeelSelector {
      * Returns the name of the current look and feel
      * @return
      */
-    public static String getCurrentLookAndFeelName() {
+    public String getCurrentLookAndFeelName() {
     	return currentLookAndFeel.getName();
     }
     
@@ -128,7 +180,7 @@ public final class LookAndFeelSelector {
      * @param selectedSkin
      *            The new skin
      */
-    public static void applySkin(String selectedSkin) {
+    public void applySkin(String selectedSkin) {
     	LookAndFeelBean bean = new LookAndFeelBean();
     	bean.setName(currentLookAndFeel.getName());
     	bean.setSkin(selectedSkin);
@@ -141,7 +193,7 @@ public final class LookAndFeelSelector {
 	/**
 	 * @return the currentLookAndFeel
 	 */
-	public static LookAndFeel getCurrentLookAndFeel() {
+	public LookAndFeel getCurrentLookAndFeel() {
 		return currentLookAndFeel;
 	}
 	
@@ -150,11 +202,22 @@ public final class LookAndFeelSelector {
 	 * @param lookAndFeelName
 	 * @return
 	 */
-	public static String getDefaultSkin(String lookAndFeelName) {
+	public String getDefaultSkin(String lookAndFeelName) {
 		LookAndFeel lookAndFeel = lookAndFeels.get(lookAndFeelName);
 		if (lookAndFeel != null) {
 			return lookAndFeel.getDefaultSkin();
 		}
 		return null;
+	}
+	
+	/**
+	 * Returns logger
+	 * @return
+	 */
+	private Logger getLogger() {
+		if (logger == null) {
+			logger = new Logger();
+		}
+		return logger;
 	}
 }

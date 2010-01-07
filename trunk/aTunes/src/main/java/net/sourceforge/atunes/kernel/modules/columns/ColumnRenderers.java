@@ -59,7 +59,7 @@ public final class ColumnRenderers {
      */
     public static void addRenderers(final JTable jtable, final CommonColumnModel model) {
         // INTEGER renderer
-        jtable.setDefaultRenderer(Integer.class, LookAndFeelSelector.getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
+        jtable.setDefaultRenderer(Integer.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
 
         	@Override
         	public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -90,7 +90,7 @@ public final class ColumnRenderers {
         }));
 
         // ImageIcon renderer
-        jtable.setDefaultRenderer(ImageIcon.class, LookAndFeelSelector.getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
+        jtable.setDefaultRenderer(ImageIcon.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
 
         	@Override
         	public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -106,7 +106,7 @@ public final class ColumnRenderers {
         }));
 
         // STRING renderer
-        jtable.setDefaultRenderer(String.class, LookAndFeelSelector.getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
+        jtable.setDefaultRenderer(String.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
 
         	@Override
         	public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -122,7 +122,7 @@ public final class ColumnRenderers {
         }));
 
         // JLabel renderer
-        jtable.setDefaultRenderer(JLabel.class, LookAndFeelSelector.getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
+        jtable.setDefaultRenderer(JLabel.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
 
         	@Override
         	public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -141,7 +141,7 @@ public final class ColumnRenderers {
         }));
         
         // Property renderer
-        jtable.setDefaultRenderer(Property.class, LookAndFeelSelector.getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
+        jtable.setDefaultRenderer(Property.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
 
         	@Override
         	public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {

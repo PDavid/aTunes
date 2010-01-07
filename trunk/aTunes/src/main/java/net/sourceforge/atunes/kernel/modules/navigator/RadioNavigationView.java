@@ -429,7 +429,7 @@ public final class RadioNavigationView extends NavigationView {
 
     @Override
     protected TreeCellRenderer getTreeRenderer() {
-    	return LookAndFeelSelector.getCurrentLookAndFeel().getTreeCellRenderer(new TreeCellRendererCode() {
+    	return LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTreeCellRenderer(new TreeCellRendererCode() {
 			
 			@Override
 			public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {

@@ -91,7 +91,7 @@ public final class LanguageSelectorDialog extends JDialog {
         c.fill = GridBagConstraints.BOTH;
         panel.add(scrollPane, c);
 
-        list.setCellRenderer(LookAndFeelSelector.getCurrentLookAndFeel().getListCellRenderer(new ListCellRendererCode() {
+        list.setCellRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListCellRenderer(new ListCellRendererCode() {
 			
 			@Override
 			public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {

@@ -70,7 +70,7 @@ public final class Fonts {
         FontSettings fontSettings = ApplicationState.getInstance().getFontSettings();
         if (fontSettings != null) {
             font = fontSettings.getFont().toFont();
-            LookAndFeelSelector.getCurrentLookAndFeel().initializeFonts(font);
+            LookAndFeelSelector.getInstance().getCurrentLookAndFeel().initializeFonts(font);
         } else {
             /*
              * Get appropriate font for the currently selected language. For
@@ -78,9 +78,9 @@ public final class Fonts {
              */
             if ("zh".equals(ApplicationState.getInstance().getLocale().getLanguage()) || "ja".equals(ApplicationState.getInstance().getLocale().getLanguage())) {
                 font = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
-                LookAndFeelSelector.getCurrentLookAndFeel().initializeFonts(font);
+                LookAndFeelSelector.getInstance().getCurrentLookAndFeel().initializeFonts(font);
             } else {
-                font = LookAndFeelSelector.getCurrentLookAndFeel().getDefaultFont();
+                font = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getDefaultFont();
             }
             ApplicationState.getInstance().setFontSettings(
                     new FontSettings(new FontBean(font), USE_FONT_SMOOTHING_DEFAULT_VALUE, USE_FONT_SMOOTHING_SETTINGS_FROM_OS_DEFAULT_VALUE));

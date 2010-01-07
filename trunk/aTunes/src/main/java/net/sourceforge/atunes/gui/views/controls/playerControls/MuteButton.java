@@ -48,6 +48,6 @@ public final class MuteButton extends JToggleButton {
         setMaximumSize(size);
         setFocusable(false);
         
-        LookAndFeelSelector.getCurrentLookAndFeel().putClientProperties(this);        
+        LookAndFeelSelector.getInstance().getCurrentLookAndFeel().putClientProperties(this);        
     }
 }

@@ -264,7 +264,7 @@ public final class ContextPanel extends PreferencesPanel {
         enginesTable.getColumnModel().getColumn(0).setMaxWidth(20);
         enginesTable.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JCheckBox()));
         enginesTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        enginesTable.setDefaultRenderer(String.class, LookAndFeelSelector.getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
+        enginesTable.setDefaultRenderer(String.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
 			
 			@Override
 			public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {

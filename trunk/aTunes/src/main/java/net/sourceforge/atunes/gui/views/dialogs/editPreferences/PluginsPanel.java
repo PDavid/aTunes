@@ -152,7 +152,7 @@ public final class PluginsPanel extends PreferencesPanel {
         c.gridwidth = 2;
         add(pluginDetailPanel, c);
 
-        pluginsTable.setDefaultRenderer(PluginInfo.class, LookAndFeelSelector.getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
+        pluginsTable.setDefaultRenderer(PluginInfo.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
 			
 			@Override
 			public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {

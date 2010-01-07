@@ -106,7 +106,7 @@ public final class EditPreferencesDialog extends CustomModalDialog {
         JPanel container = new JPanel(new GridBagLayout());
         container.setOpaque(false);
         list = new JList();
-        list.setCellRenderer(LookAndFeelSelector.getCurrentLookAndFeel().getListCellRenderer(new ListCellRendererCode() {
+        list.setCellRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListCellRenderer(new ListCellRendererCode() {
 			
 			@Override
 			public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {

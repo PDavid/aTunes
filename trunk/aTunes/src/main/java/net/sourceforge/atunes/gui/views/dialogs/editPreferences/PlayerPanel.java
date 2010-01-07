@@ -165,7 +165,7 @@ public final class PlayerPanel extends PreferencesPanel {
         hotkeyTable.getTableHeader().setResizingAllowed(false);
         hotkeyTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         hotkeyTable.setEnabled(HotkeyHandler.getInstance().areHotkeysSupported());
-        hotkeyTable.setDefaultRenderer(Object.class, LookAndFeelSelector.getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
+        hotkeyTable.setDefaultRenderer(Object.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
 			
 			@Override
 			public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
