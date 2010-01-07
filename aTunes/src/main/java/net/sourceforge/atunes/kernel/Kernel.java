@@ -131,8 +131,28 @@ public class Kernel {
     public static void startKernel(final List<String> args) {
         logger.debug(LogCategories.START, "Starting Kernel");
 
+        // Show title dialog
+        try {
+            SwingUtilities.invokeAndWait(new Runnable() {
+                @Override
+                public void run() {
+                    GuiHandler.getInstance().showSplashScreen();
+                }
+            });
+        } catch (Exception e) {
+            logger.error(LogCategories.START, e);
+            logger.error(LogCategories.START, e.getCause());
+        }
+
+        // Create kernel
         instance = new Kernel();
 
+        // Register handlers
+        Handler.registerHandlers();
+
+        // Initialize handlers
+        Handler.initHandlers();
+        
         try {
             SwingUtilities.invokeAndWait(new Runnable() {
                 @Override
@@ -147,6 +167,8 @@ public class Kernel {
                         logger.error(LogCategories.START, e);
                     }
 
+
+                    
                     // Set font smoothing
                     Fonts.setFontSmoothing();
                     // Set look and feel
@@ -162,21 +184,6 @@ public class Kernel {
             logger.error(LogCategories.START, e);
             logger.error(LogCategories.START, e.getCause());
         }
-
-        // Show title dialog
-        try {
-            SwingUtilities.invokeAndWait(new Runnable() {
-                @Override
-                public void run() {
-                    GuiHandler.getInstance().showSplashScreen();
-                }
-            });
-        } catch (Exception e) {
-            logger.error(LogCategories.START, e);
-            logger.error(LogCategories.START, e.getCause());
-        }
-
-        Handler.registerHandlers();
 
         // Find for audio files on arguments
         final List<String> songs = new ArrayList<String>();
