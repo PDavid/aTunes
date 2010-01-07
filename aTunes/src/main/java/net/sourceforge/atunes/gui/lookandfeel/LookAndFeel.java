@@ -1,6 +1,7 @@
 package net.sourceforge.atunes.gui.lookandfeel;
 
 import java.awt.Component;
+import java.awt.Font;
 import java.util.List;
 
 import javax.swing.DefaultListCellRenderer;
@@ -9,6 +10,7 @@ import javax.swing.JList;
 import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.ListCellRenderer;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
@@ -177,6 +179,21 @@ public abstract class LookAndFeel {
 	 */
 	public Border getShadowBorder() {
 		return null;
+	}
+	
+	/**
+	 * Initializes needed properties for fonts depending on given base font and look and feel (none by default)
+	 */
+	public void initializeFonts(Font baseFont) {
+		// Nothing to do
+	}
+	
+	/**
+	 * Returns default font
+	 * @return
+	 */
+	public Font getDefaultFont() {
+		return UIManager.getFont("Label.font");
 	}
 	
 	

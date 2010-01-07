@@ -38,7 +38,6 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
-import javax.swing.UIManager;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.Fonts;
@@ -59,7 +58,6 @@ import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
-import org.jvnet.substance.SubstanceLookAndFeel;
 
 /**
  * The preferences panel for general settings.
@@ -144,8 +142,8 @@ public final class GeneralPanel extends PreferencesPanel {
                     fontChooserDialog = new FontChooserDialog(GuiHandler.getInstance().getFrame().getFrame(), 300, 300, currentFontSettings.getFont().toFont(), currentFontSettings
                             .isUseFontSmoothing(), currentFontSettings.isUseFontSmoothingSettingsFromOs(), ApplicationState.getInstance().getLocale().getLocale());
                 } else {
-                    fontChooserDialog = new FontChooserDialog(GuiHandler.getInstance().getFrame().getFrame(), 300, 300, SubstanceLookAndFeel.getFontPolicy().getFontSet(
-                            "Substance", UIManager.getDefaults()).getControlFont(), true, false, ApplicationState.getInstance().getLocale().getLocale());
+                    fontChooserDialog = new FontChooserDialog(GuiHandler.getInstance().getFrame().getFrame(), 300, 300, LookAndFeelSelector.getCurrentLookAndFeel().getDefaultFont()
+                    		, true, false, ApplicationState.getInstance().getLocale().getLocale());
                 }
                 fontChooserDialog.setVisible(true);
                 if (fontChooserDialog.getSelectedFontSettings() != null) {
@@ -363,7 +361,7 @@ public final class GeneralPanel extends PreferencesPanel {
         setShowTrayPlayer(state.isShowTrayPlayer());
         setLookAndFeel(state.getLookAndFeel().getName());
         updateSkins(state.getLookAndFeel().getName());
-        setSkin(state.getLookAndFeel().getSkin());
+        setSkin(state.getLookAndFeel().getSkin() != null ? state.getLookAndFeel().getSkin() : LookAndFeelSelector.getDefaultSkin(state.getLookAndFeel().getName()));
         currentFontSettings = state.getFontSettings();
     }
 
@@ -398,6 +396,7 @@ public final class GeneralPanel extends PreferencesPanel {
 		skinLabel.setEnabled(hasSkins);
 		skin.setEnabled(hasSkins);
 		skin.setModel(new ListComboBoxModel<String>(LookAndFeelSelector.getAvailableSkins(selectedLookAndFeel)));
+		skin.setSelectedItem(LookAndFeelSelector.getDefaultSkin(selectedLookAndFeel));
     }
 
 }

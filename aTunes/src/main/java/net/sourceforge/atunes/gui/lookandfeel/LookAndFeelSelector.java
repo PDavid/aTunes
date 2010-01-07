@@ -33,20 +33,22 @@ import net.sourceforge.atunes.gui.lookandfeel.system.SystemLookAndFeel;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.SystemProperties;
-import net.sourceforge.atunes.misc.log.Logger;
 
 public final class LookAndFeelSelector {
 
-	/** Logger */
-    private static Logger logger;
-    
     /**
      * Current look and feel
      */
     private static LookAndFeel currentLookAndFeel;
     
+    /**
+     * Map containing look and feels
+     */
     private static Map<String, LookAndFeel> lookAndFeels;
     
+    /**
+     * Default look and feel
+     */
     private static LookAndFeel defaultLookAndFeel = new SubstanceLookAndFeel();
     
     static {
@@ -92,11 +94,6 @@ public final class LookAndFeelSelector {
         currentLookAndFeel.setLookAndFeel(lookAndFeelBean.getSkin());
     }
     
-//    public static String getClassNameForLookAndFeelName(String lookAndFeelName){
-//        return skins.get(lookAndFeelName);
-//    }
-    
-    
     /**
      * Returns available look and feels
      */
@@ -141,21 +138,23 @@ public final class LookAndFeelSelector {
         }
     }
     
-    /**
-     * Private getter for logger
-     * @return
-     */
-    private static Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
-    }
-
 	/**
 	 * @return the currentLookAndFeel
 	 */
 	public static LookAndFeel getCurrentLookAndFeel() {
 		return currentLookAndFeel;
+	}
+	
+	/**
+	 * Returns default skin for a given look and feel
+	 * @param lookAndFeelName
+	 * @return
+	 */
+	public static String getDefaultSkin(String lookAndFeelName) {
+		LookAndFeel lookAndFeel = lookAndFeels.get(lookAndFeelName);
+		if (lookAndFeel != null) {
+			return lookAndFeel.getDefaultSkin();
+		}
+		return null;
 	}
 }
