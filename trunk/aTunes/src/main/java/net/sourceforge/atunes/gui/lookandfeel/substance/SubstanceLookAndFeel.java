@@ -1,6 +1,7 @@
 package net.sourceforge.atunes.gui.lookandfeel.substance;
 
 import java.awt.Component;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -15,9 +16,11 @@ import javax.swing.JList;
 import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.ListCellRenderer;
+import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.Border;
+import javax.swing.plaf.FontUIResource;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
@@ -42,6 +45,8 @@ import org.jvnet.substance.api.renderers.SubstanceDefaultListCellRenderer;
 import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 import org.jvnet.substance.api.renderers.SubstanceDefaultTableHeaderCellRenderer;
 import org.jvnet.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
+import org.jvnet.substance.fonts.FontPolicy;
+import org.jvnet.substance.fonts.FontSet;
 
 
 public class SubstanceLookAndFeel extends LookAndFeel {
@@ -264,5 +269,59 @@ public class SubstanceLookAndFeel extends LookAndFeel {
 	@Override
 	public Border getShadowBorder() {
 		return ShadowPopupBorder.getInstance();
+	}
+	
+	@Override
+	public void initializeFonts(final Font baseFont) {
+        org.jvnet.substance.SubstanceLookAndFeel.setFontPolicy(new FontPolicy() {
+
+            @Override
+            public FontSet getFontSet(String arg0, UIDefaults arg1) {
+                return new FontSet() {
+
+                    private FontUIResource windowTitleFont = new FontUIResource(baseFont.deriveFont(Font.BOLD, baseFont.getSize() + 1f));
+                    private FontUIResource titleFont = new FontUIResource(baseFont.deriveFont((float) baseFont.getSize()));
+                    private FontUIResource smallFont = new FontUIResource(baseFont.deriveFont(baseFont.getSize() - 1f));
+                    private FontUIResource messageFont = new FontUIResource(baseFont.deriveFont(baseFont.getSize() - 1f));
+                    private FontUIResource menuFont = new FontUIResource(baseFont.deriveFont((float) baseFont.getSize()));
+                    private FontUIResource controlFont = new FontUIResource(baseFont.deriveFont((float) baseFont.getSize()));
+
+                    @Override
+                    public FontUIResource getWindowTitleFont() {
+                        return windowTitleFont;
+                    }
+
+                    @Override
+                    public FontUIResource getTitleFont() {
+                        return titleFont;
+                    }
+
+                    @Override
+                    public FontUIResource getSmallFont() {
+                        return smallFont;
+                    }
+
+                    @Override
+                    public FontUIResource getMessageFont() {
+                        return messageFont;
+                    }
+
+                    @Override
+                    public FontUIResource getMenuFont() {
+                        return menuFont;
+                    }
+
+                    @Override
+                    public FontUIResource getControlFont() {
+                        return controlFont;
+                    }
+                };
+            }
+        });
+	}
+	
+	@Override
+	public Font getDefaultFont() {
+        return org.jvnet.substance.SubstanceLookAndFeel.getFontPolicy().getFontSet("Substance", null).getControlFont();
 	}
 }

@@ -21,16 +21,10 @@ package net.sourceforge.atunes.gui;
 
 import java.awt.Font;
 
-import javax.swing.UIDefaults;
-import javax.swing.plaf.FontUIResource;
-
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.FontBean;
-
-import org.jvnet.substance.SubstanceLookAndFeel;
-import org.jvnet.substance.fonts.FontPolicy;
-import org.jvnet.substance.fonts.FontSet;
 
 /**
  * All fonts that are used and that are different from the default font.
@@ -76,7 +70,7 @@ public final class Fonts {
         FontSettings fontSettings = ApplicationState.getInstance().getFontSettings();
         if (fontSettings != null) {
             font = fontSettings.getFont().toFont();
-            setFontPolicy(font);
+            LookAndFeelSelector.getCurrentLookAndFeel().initializeFonts(font);
         } else {
             /*
              * Get appropriate font for the currently selected language. For
@@ -84,11 +78,9 @@ public final class Fonts {
              */
             if ("zh".equals(ApplicationState.getInstance().getLocale().getLanguage()) || "ja".equals(ApplicationState.getInstance().getLocale().getLanguage())) {
                 font = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
-                setFontPolicy(font);
+                LookAndFeelSelector.getCurrentLookAndFeel().initializeFonts(font);
             } else {
-                FontSet fs = SubstanceLookAndFeel.getFontPolicy().getFontSet("Substance", null);
-                FontUIResource controlFont = fs.getControlFont();
-                font = controlFont;
+                font = LookAndFeelSelector.getCurrentLookAndFeel().getDefaultFont();
             }
             ApplicationState.getInstance().setFontSettings(
                     new FontSettings(new FontBean(font), USE_FONT_SMOOTHING_DEFAULT_VALUE, USE_FONT_SMOOTHING_SETTINGS_FROM_OS_DEFAULT_VALUE));
@@ -111,54 +103,6 @@ public final class Fonts {
         OSD_LINE3_FONT = OSD_LINE2_FONT;
         FULL_SCREEN_LINE1_FONT = font.deriveFont(font.getSize() + 25f);
         FULL_SCREEN_LINE2_FONT = font.deriveFont(font.getSize() + 15f);
-    }
-
-    private static void setFontPolicy(final Font baseFont) {
-        SubstanceLookAndFeel.setFontPolicy(new FontPolicy() {
-
-            @Override
-            public FontSet getFontSet(String arg0, UIDefaults arg1) {
-                return new FontSet() {
-
-                    private FontUIResource windowTitleFont = new FontUIResource(baseFont.deriveFont(Font.BOLD, baseFont.getSize() + 1f));
-                    private FontUIResource titleFont = new FontUIResource(baseFont.deriveFont((float) baseFont.getSize()));
-                    private FontUIResource smallFont = new FontUIResource(baseFont.deriveFont(baseFont.getSize() - 1f));
-                    private FontUIResource messageFont = new FontUIResource(baseFont.deriveFont(baseFont.getSize() - 1f));
-                    private FontUIResource menuFont = new FontUIResource(baseFont.deriveFont((float) baseFont.getSize()));
-                    private FontUIResource controlFont = new FontUIResource(baseFont.deriveFont((float) baseFont.getSize()));
-
-                    @Override
-                    public FontUIResource getWindowTitleFont() {
-                        return windowTitleFont;
-                    }
-
-                    @Override
-                    public FontUIResource getTitleFont() {
-                        return titleFont;
-                    }
-
-                    @Override
-                    public FontUIResource getSmallFont() {
-                        return smallFont;
-                    }
-
-                    @Override
-                    public FontUIResource getMessageFont() {
-                        return messageFont;
-                    }
-
-                    @Override
-                    public FontUIResource getMenuFont() {
-                        return menuFont;
-                    }
-
-                    @Override
-                    public FontUIResource getControlFont() {
-                        return controlFont;
-                    }
-                };
-            }
-        });
     }
 
     public static void setFontSmoothing() {
