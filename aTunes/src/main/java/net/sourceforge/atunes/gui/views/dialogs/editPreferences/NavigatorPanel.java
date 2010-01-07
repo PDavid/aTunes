@@ -231,7 +231,7 @@ public final class NavigatorPanel extends PreferencesPanel {
         highlighTagAttributesTable.getColumnModel().getColumn(0).setMaxWidth(20);
         highlighTagAttributesTable.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JCheckBox()));
         highlighTagAttributesTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        highlighTagAttributesTable.setDefaultRenderer(String.class, LookAndFeelSelector.getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
+        highlighTagAttributesTable.setDefaultRenderer(String.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
 			
 			@Override
 			public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {

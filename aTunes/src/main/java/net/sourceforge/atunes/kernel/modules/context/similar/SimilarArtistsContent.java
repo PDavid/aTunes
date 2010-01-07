@@ -81,7 +81,7 @@ public class SimilarArtistsContent extends ContextPanelContent {
         similarArtistsTable = new ContextImageJTable();
         similarArtistsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         similarArtistsTable.setShowGrid(false);
-        similarArtistsTable.setDefaultRenderer(ArtistInfo.class, LookAndFeelSelector.getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
+        similarArtistsTable.setDefaultRenderer(ArtistInfo.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
 
         	@Override
         	public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {

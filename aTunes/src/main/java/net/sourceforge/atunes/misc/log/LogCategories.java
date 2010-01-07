@@ -160,5 +160,5 @@ public class LogCategories {
     public static final String CONTEXT = "CONTEXT     ";
     
     /** The Constant FAVORITES. */
-    public static final String FAVORITES = "FAVORITES   ";
+    public static final String FAVORITES = "FAVORITES   ";    
 }

@@ -210,7 +210,7 @@ public final class AboutDialog extends CustomModalDialog {
 
         JTable propertiesTable = new JTable(tableModel);
         propertiesTable.setShowGrid(false);
-        propertiesTable.setDefaultRenderer(Object.class, LookAndFeelSelector.getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
+        propertiesTable.setDefaultRenderer(Object.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
 			
 			@Override
 			public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {

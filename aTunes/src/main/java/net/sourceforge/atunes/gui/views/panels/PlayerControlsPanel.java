@@ -67,13 +67,13 @@ public final class PlayerControlsPanel extends JPanel {
     public static final Dimension DEFAULT_BUTTONS_SIZE = new Dimension(35, 35);
     
     /** Size of play / pause button */
-    public static final Dimension PLAY_BUTTON_SIZE = LookAndFeelSelector.getCurrentLookAndFeel().isCustomPlayerControlsSupported() ? new Dimension(45, 45) : DEFAULT_BUTTONS_SIZE;
+    public static final Dimension PLAY_BUTTON_SIZE = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isCustomPlayerControlsSupported() ? new Dimension(45, 45) : DEFAULT_BUTTONS_SIZE;
 
     /** Size of previous and next buttons */
-    public static final Dimension PREVIOUS_NEXT_BUTTONS_SIZE = LookAndFeelSelector.getCurrentLookAndFeel().isCustomPlayerControlsSupported() ? new Dimension(62, 30) : DEFAULT_BUTTONS_SIZE;
+    public static final Dimension PREVIOUS_NEXT_BUTTONS_SIZE = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isCustomPlayerControlsSupported() ? new Dimension(62, 30) : DEFAULT_BUTTONS_SIZE;
 
     /** Size of stop and mute buttons */
-    public static final Dimension STOP_MUTE_BUTTONS_SIZE = LookAndFeelSelector.getCurrentLookAndFeel().isCustomPlayerControlsSupported() ? new Dimension(30, 26) : DEFAULT_BUTTONS_SIZE;
+    public static final Dimension STOP_MUTE_BUTTONS_SIZE = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isCustomPlayerControlsSupported() ? new Dimension(30, 26) : DEFAULT_BUTTONS_SIZE;
 
     /** Size of shuffle, repeat, ... buttons */
     public static final Dimension OTHER_BUTTONS_SIZE = new Dimension(25, 23);
@@ -243,7 +243,7 @@ public final class PlayerControlsPanel extends JPanel {
      * @return
      */
     public static JPanel getPanelWithPlayerControls(StopButton stopButton, PreviousButton previousButton, PlayPauseButton playButton, NextButton nextButton, MuteButton volumeButton, JSlider volumeSlider, JLabel volumeLevel) {
-    	return LookAndFeelSelector.getCurrentLookAndFeel().isCustomPlayerControlsSupported() ? 
+    	return LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isCustomPlayerControlsSupported() ? 
     			getCustomPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider, volumeLevel) :
     			getStandardPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider, volumeLevel);
     }

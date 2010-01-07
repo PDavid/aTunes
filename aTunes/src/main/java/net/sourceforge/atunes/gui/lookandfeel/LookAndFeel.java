@@ -17,8 +17,11 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
+import org.commonjukebox.plugins.PluginApi;
+
 import net.sourceforge.atunes.misc.log.Logger;
 
+@PluginApi
 public abstract class LookAndFeel {
 	
 	/** Logger */

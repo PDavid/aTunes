@@ -54,7 +54,7 @@ public class ScoreColumn extends Column {
     public TableCellEditor getCellEditor() {
         JComboBox comboBox = new JComboBox(new Object[] { 0, 1, 2, 3, 4, 5 });
         
-        comboBox.setRenderer(LookAndFeelSelector.getCurrentLookAndFeel().getListCellRenderer(new ListCellRendererCode() {
+        comboBox.setRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListCellRenderer(new ListCellRendererCode() {
 			
 			@Override
 			public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -68,7 +68,7 @@ public class ScoreColumn extends Column {
 
     @Override
     public TableCellRenderer getCellRenderer() {
-        return LookAndFeelSelector.getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
+        return LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
 			
 			@Override
 			public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {

@@ -279,7 +279,7 @@ public final class FileSelectionDialog extends CustomModalDialog {
      * Sets the list renderer.
      */
     private void setListRenderer() {
-        fileSystemList.setCellRenderer(LookAndFeelSelector.getCurrentLookAndFeel().getListCellRenderer(new ListCellRendererCode() {
+        fileSystemList.setCellRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListCellRenderer(new ListCellRendererCode() {
 			
 			@Override
 			public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -418,7 +418,7 @@ public final class FileSelectionDialog extends CustomModalDialog {
      * Sets the tree renderer.
      */
     private void setTreeRenderer() {
-        fileSystemTree.setCellRenderer(LookAndFeelSelector.getCurrentLookAndFeel().getTreeCellRenderer(new TreeCellRendererCode() {
+        fileSystemTree.setCellRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTreeCellRenderer(new TreeCellRendererCode() {
 			
 			@Override
 			public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {

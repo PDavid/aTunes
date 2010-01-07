@@ -29,6 +29,8 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeel;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.columns.Column;
@@ -157,6 +159,7 @@ public class PluginsHandler extends Handler implements PluginListener {
             pluginTypes.add(new PluginType(Column.class.getName(), ColumnSets.getInstance(), false));
             pluginTypes.add(new PluginType(NavigationView.class.getName(), NavigationHandler.getInstance(), false));
             pluginTypes.add(new PluginType(ContextPanel.class.getName(), ContextHandler.getInstance(), false));
+            pluginTypes.add(new PluginType(LookAndFeel.class.getName(), LookAndFeelSelector.getInstance(), false));
         }
         return pluginTypes;
     }
