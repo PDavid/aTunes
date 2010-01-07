@@ -87,19 +87,9 @@ public final class FilterHandler extends Handler {
 
     @Override
     protected void initHandler() {
-        addFilter(allFilter);
-
-        addFilter(NavigationHandler.getInstance().getTreeFilter());
-        setFilterEnabled(NavigationHandler.getInstance().getTreeFilter(), ApplicationState.getInstance().isShowNavigationTree());
-
-        addFilter(NavigationHandler.getInstance().getTableFilter());
-        setFilterEnabled(NavigationHandler.getInstance().getTableFilter(), ApplicationState.getInstance().isShowNavigationTable());
-
-        addFilter(PlayListHandler.getInstance().getPlayListFilter());
-
-        ControllerProxy.getInstance().getToolBarFilterController().setSelectedFilter(allFilter.getName());
-
     }
+    
+    
 
     /**
      * Getter for singleton instance
@@ -148,7 +138,17 @@ public final class FilterHandler extends Handler {
 
     @Override
     public void applicationStarted() {
-        // TODO Auto-generated method stub
+        addFilter(allFilter);
+
+        addFilter(NavigationHandler.getInstance().getTreeFilter());
+        setFilterEnabled(NavigationHandler.getInstance().getTreeFilter(), ApplicationState.getInstance().isShowNavigationTree());
+
+        addFilter(NavigationHandler.getInstance().getTableFilter());
+        setFilterEnabled(NavigationHandler.getInstance().getTableFilter(), ApplicationState.getInstance().isShowNavigationTable());
+
+        addFilter(PlayListHandler.getInstance().getPlayListFilter());
+
+        ControllerProxy.getInstance().getToolBarFilterController().setSelectedFilter(allFilter.getName());
     }
 
     @Override

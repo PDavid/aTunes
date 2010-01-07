@@ -82,6 +82,9 @@ public final class PlayerHandler extends Handler implements PluginListener {
 
     @Override
     public void applicationStarted() {
+        // Initial playback state is stopped
+        getInstance().playerEngine.callPlaybackStateListeners(PlaybackState.STOPPED);
+
         if (ApplicationState.getInstance().isPlayAtStartup()) {
             playCurrentAudioObject(true);
         }
@@ -365,10 +368,8 @@ public final class PlayerHandler extends Handler implements PluginListener {
      * Initializes handler
      */
     public void initHandler() {
-        // Initial playback state is stopped
-        getInstance().playerEngine.callPlaybackStateListeners(PlaybackState.STOPPED);
     }
-
+    
     private static void handlePlayerError(Throwable t) {
         getLogger().error(LogCategories.PLAYER, StringUtils.getString("Player Error: ", t));
         getLogger().error(LogCategories.PLAYER, t);
