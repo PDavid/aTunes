@@ -114,6 +114,7 @@ public class PluginsHandler extends Handler implements PluginListener {
 
             addPluginListeners();
             int plugins = factory.start(getPluginClassNames(), true, "net.sourceforge.atunes");
+            
             getLogger().info(LogCategories.PLUGINS, StringUtils.getString("Found ", plugins, " plugins (", t.stop(), " seconds)"));            
         } catch (PluginSystemException e) {
             getLogger().error(LogCategories.PLUGINS, e);

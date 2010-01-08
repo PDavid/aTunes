@@ -110,7 +110,6 @@ public class LastFmService {
     private String user;
     private String password;
     private boolean handshakePerformed;
-    private Locale locale;
 
     private static LastFmCache lastFmCache = new LastFmCache();
 
@@ -164,7 +163,6 @@ public class LastFmService {
         // Use encoded version name to avoid errors from server
         scrobbler = Scrobbler.newScrobbler(CLIENT_ID, NetworkUtils.encodeString(CLIENT_VERSION), user);
         this.handshakePerformed = false;
-        this.locale = ApplicationState.getInstance().getLocale().getLocale();
     }
 
     /**
@@ -481,7 +479,7 @@ public class LastFmService {
             String wikiText = lastFmCache.retrieveArtistWiki(artist);
             if (wikiText == null) {
 
-                Artist a = Artist.getInfo(artist, locale, getApiKey());
+                Artist a = Artist.getInfo(artist, ApplicationState.getInstance().getLocale().getLocale(), getApiKey());
                 wikiText = a != null ? a.getWikiSummary() : "";
                 wikiText = wikiText.replaceAll("<.*?>", "");
                 wikiText = StringUtils.unescapeHTML(wikiText, 0);
@@ -504,7 +502,7 @@ public class LastFmService {
      * @return the wiki url
      */
     public String getWikiURL(String artist) {
-        return ARTIST_WIKI_URL.replace(ARTIST_WILDCARD, NetworkUtils.encodeString(artist)).replace(LANGUAGE_WILDCARD, locale.getLanguage());
+        return ARTIST_WIKI_URL.replace(ARTIST_WILDCARD, NetworkUtils.encodeString(artist)).replace(LANGUAGE_WILDCARD, ApplicationState.getInstance().getLocale().getLocale().getLanguage());
     }
 
     /**
