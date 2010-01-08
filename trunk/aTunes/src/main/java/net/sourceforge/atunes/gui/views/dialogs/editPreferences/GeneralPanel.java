@@ -152,7 +152,7 @@ public final class GeneralPanel extends PreferencesPanel {
             }
         });
 
-        lookAndFeel = new JComboBox(new ListComboBoxModel<String>(LookAndFeelSelector.getInstance().getAvailableLookAndFeels()));
+        lookAndFeel = new JComboBox();
         lookAndFeel.addActionListener(new ActionListener() {
         	@Override
         	public void actionPerformed(ActionEvent e) {
@@ -354,6 +354,7 @@ public final class GeneralPanel extends PreferencesPanel {
 
     @Override
     public void updatePanel(ApplicationState state) {
+    	lookAndFeel.setModel(new ListComboBoxModel<String>(LookAndFeelSelector.getInstance().getAvailableLookAndFeels()));
         setShowTitle(state.isShowTitle());
         setWindowType(state.getFrameClass());
         setLanguage(I18nUtils.getSelectedLocale());
