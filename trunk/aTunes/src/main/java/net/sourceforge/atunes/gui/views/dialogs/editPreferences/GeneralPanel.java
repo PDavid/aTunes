@@ -360,9 +360,13 @@ public final class GeneralPanel extends PreferencesPanel {
         setLanguage(I18nUtils.getSelectedLocale());
         setShowIconTray(state.isShowSystemTray());
         setShowTrayPlayer(state.isShowTrayPlayer());
-        setLookAndFeel(state.getLookAndFeel().getName());
-        updateSkins(state.getLookAndFeel().getName());
-        setSkin(state.getLookAndFeel().getSkin() != null ? state.getLookAndFeel().getSkin() : LookAndFeelSelector.getInstance().getDefaultSkin(state.getLookAndFeel().getName()));
+        // If look and feel is not available then set default
+        String lookAndFeelName = LookAndFeelSelector.getInstance().getAvailableLookAndFeels().contains(state.getLookAndFeel().getName()) ? 
+        		state.getLookAndFeel().getName() : LookAndFeelSelector.getDefaultLookAndFeel().getName();
+        setLookAndFeel(lookAndFeelName);
+        
+        updateSkins(lookAndFeelName);
+        setSkin(state.getLookAndFeel().getSkin() != null ? state.getLookAndFeel().getSkin() : LookAndFeelSelector.getInstance().getDefaultSkin(lookAndFeelName));
         currentFontSettings = state.getFontSettings();
     }
 

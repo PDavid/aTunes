@@ -220,4 +220,11 @@ public final class LookAndFeelSelector implements PluginListener {
 		}
 		return logger;
 	}
+
+	/**
+	 * @return the defaultLookAndFeel
+	 */
+	public static LookAndFeel getDefaultLookAndFeel() {
+		return defaultLookAndFeel;
+	}
 }
