@@ -19,14 +19,11 @@
  */
 package net.sourceforge.atunes.kernel;
 
-import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.DateUtils;
-import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -46,22 +43,6 @@ final class LanguageSelector {
     static void setLanguage() {
         LocaleBean locale = ApplicationState.getInstance().getLocale();
         if (locale != null) {
-            //TODO: Update languages that are outdated. This triggers a nag screen, so only use if no translation update was avaible for a long time for the language you add to the list.
-            //The message will appear three times. It begins after seven starts of the application. Don't forget to remove the language in case of success of this measure.
-            if (locale.getLocale().getISO3Language().equals("zho") || locale.getLocale().getISO3Language().equals("jpn") || locale.getLocale().getISO3Language().equals("tur")) {
-                logger.info(LogCategories.START, StringUtils.getString("Outdated locale: ", locale.getLocale()));
-                if (ApplicationState.getInstance().getNagDialogCounter() > 6) {
-                    GuiHandler.getInstance().hideSplashScreen();
-                    GuiHandler
-                            .getInstance()
-                            .showMessage(
-                                    StringUtils
-                                            .getString(I18nUtils
-                                                    .getString("The translation file you are using has not been updated for a long time. \nPlease contact us in order to refresh your favourite translation.")));
-                    DesktopUtils.openURL(Constants.CONTRIBUTORS_WANTED);
-                }
-                ApplicationState.getInstance().setNagDialogCounter(ApplicationState.getInstance().getNagDialogCounter() + 1);
-            }
             I18nUtils.setLocale(locale.getLocale());
             logger.info(LogCategories.START, StringUtils.getString("Setting language: ", locale.getLocale()));
         } else {

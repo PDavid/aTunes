@@ -136,7 +136,6 @@ public class ApplicationState {
     private int multipleViewYPosition;
     private int multipleViewWidth;
     private int multipleViewHeight;
-    private int nagDialogCounter;
 
     private String encoder = "OGG";
     private String encoderQuality = "5";
@@ -795,14 +794,6 @@ public class ApplicationState {
         this.multipleViewHeight = multipleViewHeight;
     }
 
-    public int getNagDialogCounter() {
-        return nagDialogCounter;
-    }
-
-    public void setNagDialogCounter(int nagDialogCounter) {
-        this.nagDialogCounter = nagDialogCounter;
-    }
-
     public String getEncoder() {
         return encoder;
     }
@@ -1203,18 +1194,18 @@ public class ApplicationState {
         this.isSimilarArtistsMode = isSimilarArtistsMode;
     }
 
-	/**
-	 * @return the customNavigatorColumns
-	 */
-	public Map<String, Map<String, ColumnBean>> getCustomNavigatorColumns() {
-		return customNavigatorColumns;
-	}
+    /**
+     * @return the customNavigatorColumns
+     */
+    public Map<String, Map<String, ColumnBean>> getCustomNavigatorColumns() {
+        return customNavigatorColumns;
+    }
 
-	/**
-	 * @param customNavigatorColumns the customNavigatorColumns to set
-	 */
-	public void setCustomNavigatorColumns(
-			Map<String, Map<String, ColumnBean>> customNavigatorColumns) {
-		this.customNavigatorColumns = customNavigatorColumns;
-	}
+    /**
+     * @param customNavigatorColumns
+     *            the customNavigatorColumns to set
+     */
+    public void setCustomNavigatorColumns(Map<String, Map<String, ColumnBean>> customNavigatorColumns) {
+        this.customNavigatorColumns = customNavigatorColumns;
+    }
 }
