@@ -1,4 +1,4 @@
-﻿aTunes 2.0.0
+aTunes 2.0.0
 -------------
 - Support for libnotify (Gnome)
 - File chooser in tag dialog should open in directory of the audio file (feature request [2786730])
@@ -29,6 +29,7 @@
 - Filter redesign
 - New window layouts available
 - Cache for audio file images
+- Allow jumping to the previous/next song in the playlist in the tag edit dialog
 - Added translation to Catalan (thanks to perru002)
 - INTERNAL: Avoid unnecessary refresh view operations
 - INTERNAL: Share actions between play list and navigation tree and table
