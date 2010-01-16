@@ -19,12 +19,15 @@
  */
 package net.sourceforge.atunes.kernel.modules.playlist;
 
+import java.awt.EventQueue;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
+
+import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -349,8 +352,18 @@ public class PlayList implements Serializable, Cloneable {
     }
 
     protected void updateUI() {
-        ControllerProxy.getInstance().getPlayListController().refreshPlayList();
-        ControllerProxy.getInstance().getPlayListController().scrollPlayList(false);
+    	if (!EventQueue.isDispatchThread()) {
+    		SwingUtilities.invokeLater(new Runnable() {
+    			@Override
+    			public void run() {
+    		        ControllerProxy.getInstance().getPlayListController().refreshPlayList();
+    		        ControllerProxy.getInstance().getPlayListController().scrollPlayList(false);
+    			}
+    		});
+    	} else {
+            ControllerProxy.getInstance().getPlayListController().refreshPlayList();
+            ControllerProxy.getInstance().getPlayListController().scrollPlayList(false);
+    	}
     }
 
     /**

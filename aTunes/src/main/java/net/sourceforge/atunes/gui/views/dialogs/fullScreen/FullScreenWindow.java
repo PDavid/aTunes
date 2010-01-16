@@ -23,6 +23,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
@@ -56,6 +57,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JSlider;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.filechooser.FileFilter;
 
@@ -572,8 +574,21 @@ public final class FullScreenWindow extends CustomWindow {
      * @param totalTime
      *            the total time
      */
-    public void setCurrentAudioObjectPlayedTime(long time, long totalTime) {
-        long remainingTime1 = totalTime - time;
+    public void setCurrentAudioObjectPlayedTime(final long time, final long totalTime) {
+    	if (!EventQueue.isDispatchThread()) {
+    		SwingUtilities.invokeLater(new Runnable() {
+    			@Override
+    			public void run() {
+    				setCurrentAudioObjectPlayedTimeEDT(time, totalTime);
+    			}
+    		});
+    	} else {
+    		setCurrentAudioObjectPlayedTimeEDT(time, totalTime);
+    	}
+    }
+    
+    private void setCurrentAudioObjectPlayedTimeEDT(long time, long totalTime) {
+    	long remainingTime1 = totalTime - time;
         if (time == 0) {
             this.remainingTime.setText(StringUtils.milliseconds2String(time));
         } else {

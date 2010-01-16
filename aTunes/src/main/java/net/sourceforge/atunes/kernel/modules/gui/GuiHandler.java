@@ -21,6 +21,7 @@ package net.sourceforge.atunes.kernel.modules.gui;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.GraphicsDevice;
 import java.awt.Image;
 import java.awt.Point;
@@ -1376,7 +1377,20 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
     }
 
     @Override
-    public void playbackStateChanged(PlaybackState newState, AudioObject currentAudioObject) {
+    public void playbackStateChanged(final PlaybackState newState, final AudioObject currentAudioObject) {
+    	if (!EventQueue.isDispatchThread()) {
+    		SwingUtilities.invokeLater(new Runnable() {
+    			@Override
+    			public void run() {
+    				playbackStateChangedEDT(newState, currentAudioObject);
+    			}
+    		});
+    	} else {
+    		playbackStateChangedEDT(newState, currentAudioObject);
+    	}
+    }
+    
+    private void playbackStateChangedEDT(PlaybackState newState, AudioObject currentAudioObject) {
         if (newState == PlaybackState.PAUSED) {
             // Pause
             setPlaying(false);
@@ -1429,5 +1443,12 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
 
         // Once done graphic changes, repaint the window
         repaint();
+    }
+    
+    /**
+     * Returns <code>true</code> if stats dialog is visible
+     */
+    public boolean isStatsDialogVisible() {
+    	return statsDialog != null && statsDialog.isVisible();
     }
 }

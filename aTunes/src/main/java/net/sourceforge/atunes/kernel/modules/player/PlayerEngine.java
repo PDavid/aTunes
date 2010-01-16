@@ -19,6 +19,7 @@
  */
 package net.sourceforge.atunes.kernel.modules.player;
 
+import java.awt.EventQueue;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -514,7 +515,7 @@ public abstract class PlayerEngine implements PlaybackStateListener {
         if ((submissionState == SubmissionState.PENDING) && audioObject instanceof AudioFile) {
             LastFmService.getInstance().submitToLastFm((AudioFile) audioObject, currentAudioObjectPlayedTime / 1000);
             StatisticsHandler.getInstance().setAudioFileStatistics((AudioFile) audioObject);
-            if (GuiHandler.getInstance().getStatsDialog().isVisible()) {
+            if (GuiHandler.getInstance().isStatsDialogVisible()) {
                 ControllerProxy.getInstance().getStatsDialogController().updateStats();
             }
             submissionState = SubmissionState.SUBMITTED;

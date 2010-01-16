@@ -20,6 +20,7 @@
 package net.sourceforge.atunes.kernel.modules.context;
 
 import java.awt.Component;
+import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -29,6 +30,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -128,8 +130,21 @@ public abstract class ContextPanel {
      * 
      * @param audioObject
      */
-    protected final void updateContextPanel(AudioObject audioObject, boolean forceUpdate) {
-        // If the AudioObject is the same as used before to update panel then do nothing if forceUpdate is false
+    protected final void updateContextPanel(final AudioObject audioObject, final boolean forceUpdate) {
+    	if (!EventQueue.isDispatchThread()) {
+    		SwingUtilities.invokeLater(new Runnable() {
+    			@Override
+    			public void run() {
+    				updateContextPanelEDT(audioObject, forceUpdate);
+    			}
+    		});
+    	} else {
+    		updateContextPanelEDT(audioObject, forceUpdate);
+    	}
+    }
+    
+    private void updateContextPanelEDT(AudioObject audioObject, boolean forceUpdate) {
+    	// If the AudioObject is the same as used before to update panel then do nothing if forceUpdate is false
         if (!forceUpdate && this.audioObject != null && this.audioObject.equals(audioObject)) {
             return;
         }

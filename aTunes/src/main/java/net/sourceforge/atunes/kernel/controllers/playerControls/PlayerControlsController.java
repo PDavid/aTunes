@@ -19,12 +19,14 @@
  */
 package net.sourceforge.atunes.kernel.controllers.playerControls;
 
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.util.Hashtable;
 
 import javax.swing.JLabel;
 import javax.swing.JSlider;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
@@ -114,7 +116,20 @@ public final class PlayerControlsController extends SimpleController<PlayerContr
      * @param totalTime
      *            the total time
      */
-    public void setCurrentAudioObjectTimePlayed(long timePlayed, long totalTime) {
+    public void setCurrentAudioObjectTimePlayed(final long timePlayed, final long totalTime) {
+    	if (!EventQueue.isDispatchThread()) {
+    		SwingUtilities.invokeLater(new Runnable() {
+    			@Override
+    			public void run() {
+    				setCurrentAudioObjectTimePlayedEDT(timePlayed, totalTime);
+    			}
+    		});
+    	} else {
+    		setCurrentAudioObjectTimePlayedEDT(timePlayed, totalTime);
+    	}
+    }
+    
+    private void setCurrentAudioObjectTimePlayedEDT(long timePlayed, long totalTime) {
         long remainingTime = totalTime - timePlayed;
         if (timePlayed == 0) {
             getComponentControlled().getRemainingTime().setText(StringUtils.milliseconds2String(timePlayed));
