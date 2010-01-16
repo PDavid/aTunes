@@ -37,17 +37,11 @@ public class GeneralPurposePluginsHandler extends Handler implements PluginListe
     
     @Override
     public void applicationStarted() {
-    	// Activate all plugins
-    	if (plugins != null) {
-    		for (GeneralPurposePlugin plugin : plugins) {
-    			plugin.activate();
-    		}
-    	}
     }
     
     @Override
     public void applicationFinish() {
-    	// Deactivate all plugins
+    	// Deactivate all plugins yet active
     	if (plugins != null) {
     		for (GeneralPurposePlugin plugin : plugins) {
     			plugin.deactivate();
@@ -71,6 +65,8 @@ public class GeneralPurposePluginsHandler extends Handler implements PluginListe
 				plugins = new ArrayList<GeneralPurposePlugin>();
 			}
 			plugins.add(instance);
+			// Activate plugin
+			instance.activate();
 		} catch (PluginSystemException e) {
 			getLogger().error(LogCategories.PLUGINS, e);
 		}
