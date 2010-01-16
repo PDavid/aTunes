@@ -20,10 +20,12 @@
 package net.sourceforge.atunes.gui.views.controls.playerControls;
 
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
@@ -70,7 +72,20 @@ public final class PlayPauseButton extends JButton {
      * @param playing
      *            the new playing
      */
-    public void setPlaying(boolean playing) {
+    public void setPlaying(final boolean playing) {
+    	if (!EventQueue.isDispatchThread()) {
+    		SwingUtilities.invokeLater(new Runnable() {
+    			@Override
+    			public void run() {
+    				setPlayingState(playing);
+    			}
+    		});
+    	} else {
+    		setPlayingState(playing);
+    	}
+    }
+    
+    private void setPlayingState(boolean playing) {
         if (playing) {
             setIcon(Images.getImage(Images.PAUSE));
         } else {
