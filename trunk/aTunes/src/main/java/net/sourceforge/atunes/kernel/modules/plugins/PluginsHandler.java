@@ -161,6 +161,7 @@ public class PluginsHandler extends Handler implements PluginListener {
             pluginTypes.add(new PluginType(NavigationView.class.getName(), NavigationHandler.getInstance(), false));
             pluginTypes.add(new PluginType(ContextPanel.class.getName(), ContextHandler.getInstance(), false));
             pluginTypes.add(new PluginType(LookAndFeel.class.getName(), LookAndFeelSelector.getInstance(), false));
+            pluginTypes.add(new PluginType(GeneralPurposePlugin.class.getName(), GeneralPurposePluginsHandler.getInstance(), false));
         }
         return pluginTypes;
     }
