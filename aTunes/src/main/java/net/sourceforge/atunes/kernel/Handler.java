@@ -39,6 +39,7 @@ import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.notify.NotifyHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
+import net.sourceforge.atunes.kernel.modules.plugins.GeneralPurposePluginsHandler;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
@@ -89,6 +90,7 @@ public abstract class Handler implements ApplicationStartListener, ApplicationFi
         handlerClasses.add(GuiHandler.class);
         handlerClasses.add(StatisticsHandler.class);
         handlerClasses.add(SystemTrayHandler.class);
+        handlerClasses.add(GeneralPurposePluginsHandler.class);
     }
 
     private static List<Handler> handlers = new ArrayList<Handler>();
