@@ -18,6 +18,12 @@ function update() {
 	updateProperties();
 }
 
+function initialize() {
+	update();
+	
+	setInterval('update()',10000);
+}
+
 function callPlayerControl(option) {
 	$.get('/velocity?action='+getActionsPackageName()+'.PlayerControlsAction&template=VoidTemplate&option='+option);
 	
