@@ -1,0 +1,28 @@
+<assembly>
+	<id>webinterface</id>
+	<formats>
+		<format>zip</format>
+	</formats>
+	<baseDirectory>${module.artifactId}-${version}</baseDirectory>
+	<dependencySets>
+		<dependencySet>
+		    <includes>
+		        <include>org.apache.velocity:velocity</include>
+		        <include>org.apache.httpcomponents:httpcore</include>
+		    </includes>
+		</dependencySet>
+	</dependencySets>
+	<fileSets>
+		<fileSet>
+			<directory>target</directory>
+			<outputDirectory />
+			<includes>
+				<include>*.jar</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>resources</directory>
+			<outputDirectory />
+		</fileSet>
+	</fileSets>
+</assembly>
