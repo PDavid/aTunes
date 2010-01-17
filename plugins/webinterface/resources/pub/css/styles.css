@@ -1,0 +1,8 @@
+body { background-color:#B0B0B0; }
+img.control { width:20%; }
+div { margin:auto; text-align:center; font-family:"Trebuchet MS", Helvetica, sans-serif; }
+div.image { margin-left:auto; margin-right:auto; margin-top:5%; margin-bottom:5%; }
+div.title { font-size:2em; }
+div.artist { font-size:1.1em; }
+div.controls { margin-left:5%; margin-right:5%; position:absolute; bottom:20px; width:90%; height:10% }
+img.current_image { width:80%; }

@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" href="css/styles.css" type="text/css">
+  <script type="text/javascript" src="js/jquery.js"></script>
+  <script type="text/javascript" src="js/script.js"></script>
+  <title>aTunes Mobile Client</title>  
+</head>
+
+<body onLoad="update();">
+
+	<!-- BEGIN Current Player Image -->
+	<div id="current_player_image" class="image"></div>
+	<!-- END Current Player Image -->
+	
+	<!-- BEGIN Current Audio Object properties -->
+	<div id="current_ao_properties" class="properties_div"></div>
+	<!-- END Current Audio Object properties-->
+	
+	<!-- BEGIN Player Controls -->
+	<div id="player_controls" class="controls">
+		<a class="button" href="javascript:stop();">
+			<img id="stop" class="control" src="images/stop.png" alt="Stop">
+		</a>
+		<a href="javascript:previous();">
+			<img id="previous" class="control" src="images/previous.png" alt="Previous">
+		</a>
+		<a href="javascript:play();">
+			<img id="play" class="control" src="images/play.png" alt="Play">
+		</a>
+		<a href="javascript:next();">
+			<img id="next" class="control" src="images/next.png" alt="Next">
+		</a>
+	</div>
+	<!-- END Player Controls -->
+
+</body>
+</html>
