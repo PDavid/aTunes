@@ -1,6 +1,8 @@
 package net.sourceforge.atunes.api;
 
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
+import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
+import net.sourceforge.atunes.model.AudioObject;
 
 import org.commonjukebox.plugins.PluginApi;
 
@@ -11,15 +13,7 @@ public class PlayerApi {
 	 * Stops current object being played
 	 */
 	public static void stop() {
-//		if (!EventQueue.isDispatchThread()) {
-//			SwingUtilities.invokeLater(new Runnable() {
-//				@Override
-//				public void run() {
-					PlayerHandler.getInstance().stopCurrentAudioObject(true);
-//				}
-//			});
-//		}
-		
+		PlayerHandler.getInstance().stopCurrentAudioObject(true);
 	}
 	
 	/**
@@ -41,5 +35,13 @@ public class PlayerApi {
 	 */
 	public static void play() {
 		PlayerHandler.getInstance().playCurrentAudioObject(true);
+	}
+	
+	/**
+	 * Returns current audio object in active play list
+	 * @return
+	 */
+	public static AudioObject getCurrentAudioObject() {
+		return PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList();
 	}
 }

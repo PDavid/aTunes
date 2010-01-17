@@ -19,12 +19,14 @@
  */
 package net.sourceforge.atunes.kernel.controllers.audioObjectProperties;
 
+import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.gui.images.Images;
@@ -252,7 +254,27 @@ public final class AudioObjectPropertiesController extends SimpleController<Audi
      *            the audio object that should be shown in the audio object
      *            properties panel
      */
-    public void updateValues(AudioObject audioObject) {
+    public void updateValues(final AudioObject audioObject) {
+    	if (!EventQueue.isDispatchThread()) {
+    		SwingUtilities.invokeLater(new Runnable() {
+    			@Override
+    			public void run() {
+    				updateValuesEDT(audioObject);
+    			}
+    		});
+    	} else {
+    		updateValuesEDT(audioObject);
+    	}
+    }
+
+    /**
+     * Update values.
+     * 
+     * @param audioObject
+     *            the audio object that should be shown in the audio object
+     *            properties panel
+     */
+    private void updateValuesEDT(AudioObject audioObject) {
         if (audioObject != null) {
             getLogger().debug(LogCategories.CONTROLLER, audioObject.getUrl());
             currentAudioObject = audioObject;

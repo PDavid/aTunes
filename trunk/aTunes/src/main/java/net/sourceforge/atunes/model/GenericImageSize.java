@@ -19,6 +19,9 @@
  */
 package net.sourceforge.atunes.model;
 
+import org.commonjukebox.plugins.PluginApi;
+
+@PluginApi
 public enum GenericImageSize {
     SMALL, MEDIUM, BIG;
 }
