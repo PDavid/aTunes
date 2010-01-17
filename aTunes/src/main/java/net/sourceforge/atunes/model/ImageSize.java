@@ -19,6 +19,9 @@
  */
 package net.sourceforge.atunes.model;
 
+import org.commonjukebox.plugins.PluginApi;
+
+@PluginApi
 public enum ImageSize {
 
     SIZE_90(90), SIZE_120(120), SIZE_150(150), SIZE_200(200), SIZE_MAX(-1);
