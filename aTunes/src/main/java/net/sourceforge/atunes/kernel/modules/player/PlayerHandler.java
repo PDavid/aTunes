@@ -46,7 +46,7 @@ import org.commonjukebox.plugins.PluginSystemException;
 /**
  * This class is resopnsible for handling the player engine.
  */
-public final class PlayerHandler extends Handler implements PluginListener {
+public final class PlayerHandler extends Handler implements PluginListener, PlaybackStateListener {
 
     /**
      * The player engine used
@@ -67,6 +67,11 @@ public final class PlayerHandler extends Handler implements PluginListener {
      * The player engine
      */
     private PlayerEngine playerEngine;
+    
+    /**
+     * The current playback state
+     */
+    private PlaybackState playbackState;
 
     /**
      * Instantiates a new player handler.
@@ -347,6 +352,9 @@ public final class PlayerHandler extends Handler implements PluginListener {
                 instance.playerEngine.addPlaybackStateListener(instance.playerEngine);
                 instance.playerEngine.addPlaybackStateListener(GuiHandler.getInstance());
                 instance.playerEngine.addPlaybackStateListener(NotifyHandler.getInstance());
+                
+                // Add instance as listener too
+                instance.playerEngine.addPlaybackStateListener(instance);
             }
 
             // Add a shutdown hook to perform some actions before killing the JVM
@@ -404,5 +412,32 @@ public final class PlayerHandler extends Handler implements PluginListener {
             PlayerHandler.getInstance().removePlaybackStateListener((PlaybackStateListener) createdInstance);
         }
     }
+    
+    @Override
+    public void playbackStateChanged(PlaybackState newState, AudioObject currentAudioObject) {
+    	this.playbackState = newState;
+    }
 
+	/**
+	 * @return the playbackState
+	 */
+	public PlaybackState getPlaybackState() {
+		return playbackState;
+	}
+
+	/**
+	 * Returns time played for current audio object
+	 * @return
+	 */
+	public long getCurrentAudioObjectPlayedTime() {
+		return instance.playerEngine.getCurrentAudioObjectPlayedTime();
+	}
+	
+	/**
+	 * Returns length for current audio object
+	 * @return
+	 */
+	public long getCurrentAudioObjectLength() {
+		return instance.playerEngine.getCurrentAudioObjectLength();
+	}
 }
