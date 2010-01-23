@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -502,7 +501,8 @@ public class LastFmService {
      * @return the wiki url
      */
     public String getWikiURL(String artist) {
-        return ARTIST_WIKI_URL.replace(ARTIST_WILDCARD, NetworkUtils.encodeString(artist)).replace(LANGUAGE_WILDCARD, ApplicationState.getInstance().getLocale().getLocale().getLanguage());
+        return ARTIST_WIKI_URL.replace(ARTIST_WILDCARD, NetworkUtils.encodeString(artist)).replace(LANGUAGE_WILDCARD,
+                ApplicationState.getInstance().getLocale().getLocale().getLanguage());
     }
 
     /**
@@ -954,14 +954,15 @@ public class LastFmService {
     public Collection<Event> getArtistEvents(String artist) {
         return Artist.getEvents(artist, getApiKey());
     }
-    
+
     /**
-     * Test if given user and password are correct to login at last.fm 
+     * Test if given user and password are correct to login at last.fm
+     * 
      * @param user
      * @param password
      */
     public boolean testLogin(String user, String password) {
-    	return Authenticator.getMobileSession(user, password, getApiKey(), getApiSecret()) != null;
+        return Authenticator.getMobileSession(user, password, getApiKey(), getApiSecret()) != null;
     }
 
     private static String getApiKey() {
@@ -985,12 +986,13 @@ public class LastFmService {
         }
         return "";
     }
-    
+
     /**
      * Returns session
+     * 
      * @return
      */
     private Session getSession() {
-    	return Authenticator.getMobileSession(user, password, getApiKey(), getApiSecret());    	
+        return Authenticator.getMobileSession(user, password, getApiKey(), getApiSecret());
     }
 }
