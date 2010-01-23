@@ -150,13 +150,11 @@ public class Genre implements Serializable, TreeObject {
 
     @Override
     public ImageIcon getExtendedToolTipImage() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public boolean isExtendedToolTipImageSupported() {
-        // TODO Auto-generated method stub
         return false;
     }
 
