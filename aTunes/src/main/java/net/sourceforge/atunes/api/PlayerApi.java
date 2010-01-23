@@ -1,7 +1,9 @@
 package net.sourceforge.atunes.api;
 
+import net.sourceforge.atunes.kernel.actions.VolumeDownAction;
 import net.sourceforge.atunes.kernel.modules.player.PlaybackState;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
+import net.sourceforge.atunes.kernel.modules.player.Volume;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.model.AudioObject;
 
@@ -68,5 +70,19 @@ public class PlayerApi {
 	 */
 	public static long getCurrentAudioObjectLength() {
 		return PlayerHandler.getInstance().getCurrentAudioObjectLength();
+	}
+	
+	/**
+	 * Raise volume
+	 */
+	public static void volumeUp() {
+		PlayerHandler.getInstance().volumeUp();
+	}
+	
+	/**
+	 * Lower volume
+	 */
+	public static void volumeDown() {
+		PlayerHandler.getInstance().volumeDown();
 	}
 }

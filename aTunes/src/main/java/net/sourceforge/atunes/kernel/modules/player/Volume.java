@@ -19,6 +19,10 @@
  */
 package net.sourceforge.atunes.kernel.modules.player;
 
+import java.awt.EventQueue;
+
+import javax.swing.SwingUtilities;
+
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
@@ -33,11 +37,24 @@ public class Volume {
         } else if (volume > 100) {
             volume = 100;
         }
+        final int finalVolume = volume;
         ApplicationState.getInstance().setVolume(volume);
         PlayerHandler.getInstance().setVolume(volume);
-        ControllerProxy.getInstance().getPlayerControlsController().setVolume(volume);
-        GuiHandler.getInstance().getFullScreenWindow().setVolume(volume);
+        
+        if (!EventQueue.isDispatchThread()) {
+        	SwingUtilities.invokeLater(new Runnable() {
+        		@Override
+        		public void run() {
+        	        ControllerProxy.getInstance().getPlayerControlsController().setVolume(finalVolume);
+        	        GuiHandler.getInstance().getFullScreenWindow().setVolume(finalVolume);
+        	        ((MuteAction) Actions.getAction(MuteAction.class)).updateIcon();
+        		}
+        	});
+        } else {
+        	ControllerProxy.getInstance().getPlayerControlsController().setVolume(finalVolume);
+        	GuiHandler.getInstance().getFullScreenWindow().setVolume(finalVolume);
+            ((MuteAction) Actions.getAction(MuteAction.class)).updateIcon();
+        }
 
-        ((MuteAction) Actions.getAction(MuteAction.class)).updateIcon();
     }
 }
