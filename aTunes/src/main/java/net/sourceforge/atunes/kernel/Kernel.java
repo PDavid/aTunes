@@ -54,7 +54,6 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class Kernel {
 
-    /** Logger. */
     static Logger logger = new Logger();
 
     /**
@@ -131,6 +130,18 @@ public class Kernel {
     public static void startKernel(final List<String> args) {
         logger.debug(LogCategories.START, "Starting Kernel");
 
+        SwingUtilities.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                LanguageSelector.setLanguage();
+                Fonts.setFontSmoothing();
+                LookAndFeelSelector.getInstance().setLookAndFeel(ApplicationState.getInstance().getLookAndFeel());
+                Fonts.initializeFonts();
+                ColorDefinitions.initColors();
+            }
+        });
+
         // Show title dialog
         try {
             SwingUtilities.invokeAndWait(new Runnable() {
@@ -152,7 +163,7 @@ public class Kernel {
 
         // Initialize handlers
         Handler.initHandlers();
-        
+
         try {
             SwingUtilities.invokeAndWait(new Runnable() {
                 @Override
@@ -167,17 +178,6 @@ public class Kernel {
                         logger.error(LogCategories.START, e);
                     }
 
-
-                    
-                    // Set font smoothing
-                    Fonts.setFontSmoothing();
-                    // Set look and feel
-                    LookAndFeelSelector.getInstance().setLookAndFeel(ApplicationState.getInstance().getLookAndFeel());
-                    ColorDefinitions.initColors();
-                    // Set language
-                    LanguageSelector.setLanguage();
-                    // Init fonts
-                    Fonts.initializeFonts();
                 }
             });
         } catch (Exception e) {
