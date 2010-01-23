@@ -42,11 +42,9 @@ import javax.swing.JRootPane;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
@@ -183,8 +181,8 @@ public final class GuiUtils {
     }
 
     public static void addAppIcons(Window w) {
-        w.setIconImages(Arrays.asList(Images.getImage(Images.APP_ICON).getImage(), Images.getImage(Images.APP_ICON_MEDIUM).getImage(), Images.getImage(
-                Images.APP_ICON_BIG).getImage()));
+        w.setIconImages(Arrays.asList(Images.getImage(Images.APP_ICON).getImage(), Images.getImage(Images.APP_ICON_MEDIUM).getImage(), Images.getImage(Images.APP_ICON_BIG)
+                .getImage()));
     }
 
     /**

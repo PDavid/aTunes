@@ -19,7 +19,6 @@
  */
 package net.sourceforge.atunes.kernel.modules.player;
 
-import java.awt.EventQueue;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -117,8 +116,7 @@ public abstract class PlayerEngine implements PlaybackStateListener {
      *            audio object to play. May be cashed to temp dirs or the same
      *            as audioObject.
      * @param audioObject
-     *            original audio object to update statistics TODO: Change method
-     *            signature and add javadoc
+     *            original audio object to update statistics
      */
     protected abstract void startPlayback(AudioObject audioObjectToPlay, AudioObject audioObject);
 
@@ -558,7 +556,7 @@ public abstract class PlayerEngine implements PlaybackStateListener {
     }
 
     /**
-     * TODO: Add documentation
+     * Starts playing an audio object.
      * 
      * @param audioObject
      */
