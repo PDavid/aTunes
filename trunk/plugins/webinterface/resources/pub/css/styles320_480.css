@@ -1,7 +1,7 @@
 body { background-color:#000000; color:#FFFFFF; text-align:center; font-family:"Trebuchet MS", Helvetica, sans-serif;}
 
 /* Image */
-div.image { top: 1%; left: 0%; width: 100%; position: fixed; }
+div.current_image { top: 1%; left: 0%; width: 100%; position: fixed; }
 img.current_image { height:50%; border-style:solid; border-color:white; border-width:1px; }
 
 /* Controls */
