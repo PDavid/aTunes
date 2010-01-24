@@ -1,0 +1,22 @@
+body { background-color:#000000; color:#FFFFFF; text-align:center; font-family:"Trebuchet MS", Helvetica, sans-serif;}
+
+/* Image */
+div.current_image { top: 20px; left: 20px; position: fixed; }
+img.current_image { height: 150px; border-style:solid; border-color:white; border-width:1px; }
+
+/* Controls */
+button { width: 60px; height: 40px; }
+.abutton { width: 100%; border-style: none; text-decoration: none; }
+img.control { width: 45%; border-style: none; }
+div.controls { top: 115px; left: 200px; position: fixed; }
+
+div.elapsed_time { top: 96px; left: 200px; position: fixed; }
+div.remaining_time { top: 96px; left: 420px; position: fixed; }
+div.progressbar { top: 100px; left: 250px; width: 150px; height: 15px; position: fixed; }
+
+div.title { top: 20px; left: 200px; width: 70%; position: fixed; font-size:1.1em; text-align:left; }
+div.artist { top: 50px; left: 200px; width: 70%; position: fixed; font-size:1em; text-align:left; }
+
+div.hidden { visibility:hidden; }
+
+

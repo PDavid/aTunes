@@ -1,9 +1,68 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta HTTP-EQUIV="REFRESH" content="0; url=/mobile.html">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <link rel="stylesheet" href="css/start/jquery-ui-1.7.2.custom.css" type="text/css">
+  
+  <link rel="stylesheet" href="css/web.css" type="text/css">
+  
+  <script type="text/javascript" src="js/jquery.js"></script>
+  <script type="text/javascript" src="js/jqueryui.js"></script>
+  
+  <script type="text/javascript" src="js/common.js"></script>
+  <script type="text/javascript" src="js/web.js"></script>
+  
+  <title>aTunes Web Interface</title>
 </head>
-<body>
+
+<body onLoad="initialize();">
+
+    <!-- BEGIN Current Player Image -->
+	<div class="current_image">
+		<img id="current_image" class="current_image"/>
+	</div>
+	<!-- END Current Player Image -->
+	
+	<!-- BEGIN Current Audio Object properties -->
+	<div id="current_ao_properties"></div>
+	<!-- END Current Audio Object properties-->
+	
+	<div id="time" class="hidden"></div>
+	<div id="elapsed_time" class="elapsed_time"></div>
+	<div id="remaining_time" class="remaining_time"></div>
+	
+	<div id="progressbar" class="progressbar"></div>
+	
+	<div id="player_state" class="hidden"></div>
+
+	<!-- BEGIN Player Controls -->
+ 	<div id="player_controls" class="controls">
+		<p>
+			<a class="abutton" href="javascript:stop();">
+				<button class="player_button">
+					<img id="stop" class="control" src="images/stop.png" alt="Stop">
+				</button>
+			</a>
+		
+			<a class="abutton" href="javascript:previous();">
+				<button class="player_button">
+					<img id="previous" class="control" src="images/previous.png" alt="Previous">
+				</button>
+			</a>
+			<a class="abutton" href="javascript:play();">
+				<button class="player_button">
+					<img id="play" class="control" src="images/play.png" alt="Play">
+				</button>
+			</a>
+			<a class="abutton" href="javascript:next();">
+				<button class="player_button">
+					<img id="next" class="control" src="images/next.png" alt="Next">
+				</button>
+			</a>
+		</p>
+	</div>
+	<!-- END Player Controls -->	
 </body>
+
 </html>
