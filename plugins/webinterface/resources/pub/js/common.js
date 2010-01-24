@@ -1,16 +1,94 @@
 var lastTitle = null;
 var lastArtist = null;
 
+/*
+ * Name of package to call actions
+ */
 function getActionsPackageName() {
 	return 'net.sourceforge.atunes.plugins.webinterface.actions';
 }
 
+/*
+ * Url to call a player action
+ */
+function getPlayerActionUrl(option) {
+	return '/velocity?action='+getActionsPackageName()+'.PlayerControlsAction&template=VoidTemplate&option='+option;
+}
+
+/*
+ * Returns a string representing minutes and seconds of a given amount of milliseconds
+ */
+function millisecondsToString(milliseconds) {
+    var seconds = milliseconds / 1000;
+    var minutes = Math.floor(seconds / 60);
+    seconds = Math.round(seconds % 60);
+    return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+}
+
+/*
+ * Volume down
+ */
+function volumeDown() {
+	$.get(getPlayerActionUrl('volumedown'));
+}
+
+/*
+ * Volume up
+ */
+function volumeUp() {
+	$.get(getPlayerActionUrl('volumeup'));
+}
+
+/*
+ * Stop player
+ */
+function stop() {
+	$('#elapsed_time').fadeOut('slow');
+	$('#remaining_time').fadeOut('slow');
+	$('#progressbar').fadeOut('slow');
+	callPlayerControl('stop');
+}
+
+/*
+ * Move to previous
+ */
+function previous() {
+	callPlayerControl('previous');
+}
+
+/*
+ * Play or pause
+ */
+function play() {
+	callPlayerControl('play');
+}
+
+/*
+ * Move to next
+ */
+function next() {
+	callPlayerControl('next');
+}
+
+/*
+ * Called to perform a player action
+ */
+function callPlayerControl(option) {
+	$.get(getPlayerActionUrl(option), update);
+}
+
+/*
+ * Updates current image
+ */
 function updateImage() {
 	var randomnumber = Math.floor(Math.random()*10000)	
 	$('#current_image').attr('src', "/images?action="+getActionsPackageName()+".CurrentImageAction&random="+randomnumber);
 }
 
-function callUpdateImage() {
+/*
+ * Checks if title and / or artist have changed and updates image
+ */
+function checkAndUpdateImage() {
 	/* See if audio object has changed */
 	var currentTitleDiv = document.getElementById('title');
 	var currentTitle;
@@ -29,6 +107,9 @@ function callUpdateImage() {
 	}
 }
 
+/*
+ * Updates state for player controls
+ */
 function updateState() {
 	var state = $('#player_state').text();
 	
@@ -51,18 +132,17 @@ function updateState() {
 	}
 }
 
+/*
+ * Retrieves current player state
+ */
 function updateControls() {
 	// Get player state
 	$('#player_state').load('/velocity?action='+getActionsPackageName()+'.PlayerControlsAction&template=PlayerControlsTemplate&option=state', updateState);
 }
 
-function millisecondsToString(milliseconds) {
-    var seconds = milliseconds / 1000;
-    var minutes = Math.floor(seconds / 60);
-    seconds = Math.round(seconds % 60);
-    return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
-}
-
+/*
+ * Updates time controls
+ */
 function updateTimeControls() {
 	var elapsedTime = $('#elapsed_time_span').text();
 	var totalTime = $('#total_time_span').text();
@@ -76,37 +156,30 @@ function updateTimeControls() {
 	$('#progressbar').progressbar('option', 'value', progress);
 }
 
+/*
+ * Retrieves time
+ */
 function updateTime() {
 	// Get player state
 	$('#time').load('/velocity?action='+getActionsPackageName()+'.PlayerControlsAction&template=TimeTemplate&option=time', updateTimeControls);
 }
 
+/*
+ * Updates all controls and information about player
+ */
 function update() {
-
 	updateTime();
 	updateControls();
 	
 	// Update properties and image
 	$("#current_ao_properties").load('/velocity?action='+getActionsPackageName()+
-			'.GetCurrentAudioObjectAction&template=AudioObjectPropertiesTemplate.html', callUpdateImage);
-	
+			'.GetCurrentAudioObjectAction&template=AudioObjectPropertiesTemplate.html', checkAndUpdateImage);
 }
 
-function initialize() {
-	monitorScreenResolution();
-	setInterval('monitorScreenResolution()', 1000);
-	
-/*	var style320 = document.getElementById('style320_480');
-	var style480 = document.getElementById('style480_320');
-	var width = screen.width;
-	if (width < 480) {
-		style320.disabled = false;
-		style480.disabled = true;
-	} else {
-		style320.disabled = false;
-		style480.disabled = true;
-	}*/
-	
+/*
+ * Common tasks needed to initialize
+ */
+function commonInitialize() {
 	$("#progressbar").hide();
 	$("#progressbar").progressbar({
 		value: 0
@@ -115,45 +188,5 @@ function initialize() {
 	$('#remaining_time').hide();
 
 	update();
-	
 	setInterval('update()',5000);	
-}
-
-function callPlayerControl(option) {
-	$.get('/velocity?action='+getActionsPackageName()+'.PlayerControlsAction&template=VoidTemplate&option='+option);
-	/* Adding a callback function to call update seems to not work in mobile device */
-	update();
-}
-
-function stop() {
-	$('#elapsed_time').fadeOut('slow');
-	$('#remaining_time').fadeOut('slow');
-	$('#progressbar').fadeOut('slow');
-	callPlayerControl('stop');
-}
-
-function previous() {
-	callPlayerControl('previous');
-}
-
-function play() {
-	callPlayerControl('play');
-}
-
-function next() {
-	callPlayerControl('next');
-}
-
-function volumeDown() {
-	$.get('/velocity?action='+getActionsPackageName()+'.PlayerControlsAction&template=VoidTemplate&option=volumedown');
-}
-
-function volumeUp() {
-	$.get('/velocity?action='+getActionsPackageName()+'.PlayerControlsAction&template=VoidTemplate&option=volumeup');
-}
-
-function monitorScreenResolution() {
-	var width = screen.width;
-	$('#style320_480').attr('disabled', width >= 480);
-	$('#style480_320').attr('disabled', width < 480);
 }
