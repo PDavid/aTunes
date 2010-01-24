@@ -93,7 +93,10 @@ function update() {
 }
 
 function initialize() {
-	var style320 = document.getElementById('style320_480');
+	monitorScreenResolution();
+	setInterval('monitorScreenResolution()', 1000);
+	
+/*	var style320 = document.getElementById('style320_480');
 	var style480 = document.getElementById('style480_320');
 	var width = screen.width;
 	if (width < 480) {
@@ -102,7 +105,7 @@ function initialize() {
 	} else {
 		style320.disabled = false;
 		style480.disabled = true;
-	}
+	}*/
 	
 	$("#progressbar").hide();
 	$("#progressbar").progressbar({
@@ -147,4 +150,10 @@ function volumeDown() {
 
 function volumeUp() {
 	$.get('/velocity?action='+getActionsPackageName()+'.PlayerControlsAction&template=VoidTemplate&option=volumeup');
+}
+
+function monitorScreenResolution() {
+	var width = screen.width;
+	$('#style320_480').attr('disabled', width >= 480);
+	$('#style480_320').attr('disabled', width < 480);
 }
