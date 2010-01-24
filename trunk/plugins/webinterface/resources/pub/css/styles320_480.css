@@ -1,0 +1,25 @@
+body { background-color:#000000; color:#FFFFFF; text-align:center; font-family:"Trebuchet MS", Helvetica, sans-serif;}
+
+/* Image */
+div.image { top: 1%; left: 0%; width: 100%; position: fixed; }
+img.current_image { height:50%; border-style:solid; border-color:white; border-width:1px; }
+
+/* Controls */
+button { width: 22%; height: 45px; }
+.abutton { width: 100%; border-style: none; text-decoration: none}
+img.control { width: 65%; border-style: none; }
+div.controls { top: 0; left: 0; width: 100%; height: 100%; position: fixed; display: table; }
+div.controls p {display: table-cell; vertical-align: bottom}
+
+div.elapsed_time { bottom: 23%; left: 5%; width: 15%; height: 15px; position: fixed; }
+div.remaining_time { bottom: 23%; right: 5%; width: 15%; height: 15px; position: fixed; }
+div.progressbar { bottom: 23%; left: 22%; width: 56%; height: 15px; position: fixed; }
+
+div.volume { bottom: 10%; left: 10%; width: 80%; height: 50px; position: fixed; }
+
+div.title { top: 55%; left: 5%; width: 90%; position: fixed; font-size:1.5em; border-style: none; }
+div.artist { top: 65%; left: 5%; width: 90%; position: fixed; font-size:1em; border-style: none;}
+
+div.hidden { visibility:hidden; }
+
+
