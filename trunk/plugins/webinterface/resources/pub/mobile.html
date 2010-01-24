@@ -2,38 +2,77 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <link rel="stylesheet" href="css/styles.css" type="text/css">
+  
+  <link rel="stylesheet" href="css/start/jquery-ui-1.7.2.custom.css" type="text/css">
+  
+  <link id="style320_480" rel="stylesheet" href="css/styles320_480.css" type="text/css">
+  <link id="style480_320" rel="stylesheet" href="css/styles480_320.css" type="text/css">
   <script type="text/javascript" src="js/jquery.js"></script>
+  <script type="text/javascript" src="js/jqueryui.js"></script>
   <script type="text/javascript" src="js/script.js"></script>
   <title>aTunes Mobile Client</title>  
 </head>
 
 <body onLoad="initialize();">
 
-	<!-- BEGIN Current Player Image -->
-	<div id="current_player_image" class="image"></div>
+    <!-- BEGIN Current Player Image -->
+	<div id="current_player_image" class="image">
+		<img id="current_image" class="current_image"/>
+	</div>
 	<!-- END Current Player Image -->
 	
 	<!-- BEGIN Current Audio Object properties -->
 	<div id="current_ao_properties" class="properties_div"></div>
 	<!-- END Current Audio Object properties-->
 	
+	<div id="time" class="hidden"></div>
+	<div id="elapsed_time" class="elapsed_time"></div>
+	<div id="remaining_time" class="remaining_time"></div>
+	
+	<div id="progressbar" class="progressbar"></div>
+	
+	<div id="player_state" class="hidden"></div>
+
 	<!-- BEGIN Player Controls -->
-	<div id="player_controls" class="controls">
-		<a class="button" href="javascript:stop();">
-			<img id="stop" class="control" src="images/stop.png" alt="Stop">
-		</a>
-		<a href="javascript:previous();">
-			<img id="previous" class="control" src="images/previous.png" alt="Previous">
-		</a>
-		<a href="javascript:play();">
-			<img id="play" class="control" src="images/play.png" alt="Play">
-		</a>
-		<a href="javascript:next();">
-			<img id="next" class="control" src="images/next.png" alt="Next">
-		</a>
+ 	<div id="player_controls" class="controls">
+		<p>
+			<a class="abutton" href="javascript:stop();">
+				<button class="player_button">
+					<img id="stop" class="control" src="images/stop.png" alt="Stop">
+				</button>
+			</a>
+		
+			<a class="abutton" href="javascript:previous();">
+				<button class="player_button">
+					<img id="previous" class="control" src="images/previous.png" alt="Previous">
+				</button>
+			</a>
+			<a class="abutton" href="javascript:play();">
+				<button class="player_button">
+					<img id="play" class="control" src="images/play.png" alt="Play">
+				</button>
+			</a>
+			<a class="abutton" href="javascript:next();">
+				<button class="player_button">
+					<img id="next" class="control" src="images/next.png" alt="Next">
+				</button>
+			</a>
+		</p>
 	</div>
 	<!-- END Player Controls -->
+	
+	<!-- BEGIN Volume -->
+	<div class="volume">
+		<a class="abutton" href="javascript:volumeDown();">
+			<button class="player_button"><span>-</span></button>
+		</a>
+		<span>Volume</span>
+		<a class="abutton" href="javascript:volumeUp();">
+			<button class="player_button"><span>+</span></button>
+		</a>
+	
+	</div>
+	<!--  END Volume -->
 
 </body>
 </html>
