@@ -19,8 +19,10 @@
  */
 package net.sourceforge.atunes.api;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import net.sourceforge.atunes.kernel.modules.playlist.PlayList;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.model.AudioObject;
 
@@ -29,6 +31,45 @@ import org.commonjukebox.plugins.PluginApi;
 @PluginApi
 public class PlayListApi {
 
+	/**
+	 * Returns number of play lists currently loaded
+	 * @return
+	 */
+	public static int getNumberOfPlayLists() {
+		return PlayListHandler.getInstance().getPlayListCount();
+	}
+	
+	/**
+	 * Returns name of play list at given index
+	 * @param index
+	 * @return
+	 */
+	public static String getNameOfPlayList(int index) {
+		return PlayListHandler.getInstance().getPlayListNameAtIndex(index);
+	}
+	
+	/**
+	 * Returns audio objects of play list being played
+	 * @return Audio objects being played
+	 */
+	public static List<AudioObject> getCurrentPlayList() {
+		List<AudioObject> result = new ArrayList<AudioObject>();
+		PlayList playlist = PlayListHandler.getInstance().getCurrentPlayList(false);
+		for (int i = 0; i < playlist.size(); i++) {
+			result.add(playlist.get(i));
+		}
+		return result; 
+	}
+	
+	/**
+	 * Returns audio objects of play list with given index
+	 * @param index
+	 * @return
+	 */
+	public static List<AudioObject> getPlayList(int index) {
+		return PlayListHandler.getInstance().getPlayListContent(index);
+	}
+	
 	/**
 	 * Adds a list of audio objects to the current visible play list
 	 * @param objects

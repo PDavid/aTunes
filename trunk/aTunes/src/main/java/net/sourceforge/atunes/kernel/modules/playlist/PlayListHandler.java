@@ -1158,4 +1158,31 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
 	public Filter getPlayListFilter() {
 		return playListFilter;
 	}
+	
+	/**
+	 * Returns play list name at given index
+	 * @param index
+	 * @return
+	 */
+	public String getPlayListNameAtIndex(int index) {
+		return this.playLists.get(index).getName();
+	}
+	
+	/**
+	 * Returns audio objects of play list with given index
+	 * @param index
+	 * @return
+	 */
+	public List<AudioObject> getPlayListContent(int index) {
+		if (index >= this.playLists.size()) {
+			throw new IllegalArgumentException(new StringBuilder().append("Invalid play list index ").append(index).toString());
+		} else {
+			List<AudioObject> result = new ArrayList<AudioObject>();
+			PlayList playlist = this.playLists.get(index);
+			for (int i = 0; i < playlist.size(); i++) {
+				result.add(playlist.get(i));
+			}
+			return result; 
+		}
+	}
 }

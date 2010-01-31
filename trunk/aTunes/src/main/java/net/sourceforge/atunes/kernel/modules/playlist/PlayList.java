@@ -29,6 +29,8 @@ import java.util.Random;
 
 import javax.swing.SwingUtilities;
 
+import org.commonjukebox.plugins.PluginApi;
+
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.PointedList;
@@ -325,7 +327,7 @@ public class PlayList implements Serializable, Cloneable {
      * @param index
      * @return
      */
-    protected AudioObject get(int index) {
+    public AudioObject get(int index) {
         if (index < 0 || index >= this.audioObjects.size()) {
             return null;
         }
