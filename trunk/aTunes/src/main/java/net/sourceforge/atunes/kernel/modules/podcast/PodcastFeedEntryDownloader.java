@@ -50,7 +50,8 @@ public class PodcastFeedEntryDownloader extends SwingWorker<Boolean, Void> {
     private PodcastFeedEntry podcastFeedEntry;
     /*
      * Additional Bean properties
-     */private volatile long totalBytes;
+     */
+    private volatile long totalBytes;
     private volatile long byteProgress;
     private volatile boolean failed;
 
