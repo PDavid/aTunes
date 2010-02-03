@@ -29,8 +29,6 @@ import java.util.Random;
 
 import javax.swing.SwingUtilities;
 
-import org.commonjukebox.plugins.PluginApi;
-
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.PointedList;
@@ -60,7 +58,7 @@ public class PlayList implements Serializable, Cloneable {
      * Name of play list as shown on play list tabs.
      */
     private String name;
-    
+
     /**
      * Flag indicating if this playlist contents need to be written to disk
      */
@@ -70,18 +68,18 @@ public class PlayList implements Serializable, Cloneable {
      * Pointed List of audio objects of this play list
      */
     private PointedList<AudioObject> audioObjects = new PlayListPointedList();
-    
+
     class PlayListPointedList extends PointedList<AudioObject> {
         private static final long serialVersionUID = -6966402482637754615L;
 
         PlayListPointedList() {
-        	super();
+            super();
         }
-        
+
         PlayListPointedList(PointedList<AudioObject> pointedList) {
-        	super(pointedList);
+            super(pointedList);
         }
-        
+
         @Override
         public boolean isCyclic() {
             return ApplicationState.getInstance().isRepeat();
@@ -354,18 +352,18 @@ public class PlayList implements Serializable, Cloneable {
     }
 
     protected void updateUI() {
-    	if (!EventQueue.isDispatchThread()) {
-    		SwingUtilities.invokeLater(new Runnable() {
-    			@Override
-    			public void run() {
-    		        ControllerProxy.getInstance().getPlayListController().refreshPlayList();
-    		        ControllerProxy.getInstance().getPlayListController().scrollPlayList(false);
-    			}
-    		});
-    	} else {
+        if (!EventQueue.isDispatchThread()) {
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    ControllerProxy.getInstance().getPlayListController().refreshPlayList();
+                    ControllerProxy.getInstance().getPlayListController().scrollPlayList(false);
+                }
+            });
+        } else {
             ControllerProxy.getInstance().getPlayListController().refreshPlayList();
             ControllerProxy.getInstance().getPlayListController().scrollPlayList(false);
-    	}
+        }
     }
 
     /**
@@ -518,7 +516,7 @@ public class PlayList implements Serializable, Cloneable {
         }
         // Notify mode too
         getMode().audioObjectsAdded(playListAudioObjects);
-        
+
         // Mark as dirty
         setDirty(true);
     }
@@ -534,7 +532,7 @@ public class PlayList implements Serializable, Cloneable {
         }
         // Notify mode too
         getMode().audioObjectsRemoved(audioObjectList);
-        
+
         // Mark as dirty
         setDirty(true);
     }
@@ -588,28 +586,30 @@ public class PlayList implements Serializable, Cloneable {
         this.mode.addToPlaybackHistory(object);
     }
 
-	/**
-	 * @return the dirty
-	 */
-	protected boolean isDirty() {
-		return dirty;
-	}
+    /**
+     * @return the dirty
+     */
+    protected boolean isDirty() {
+        return dirty;
+    }
 
-	/**
-	 * @param dirty the dirty to set
-	 */
-	protected void setDirty(boolean dirty) {
-		this.dirty = dirty;
-	}
-	
-	/**
-	 * Used when setting content to a play list read from disk
-	 * @param content
-	 */
-	protected void setContent(List<AudioObject> content) {
-		this.audioObjects.setContent(content);
-		notifyAudioObjectsAdded(0, content);
+    /**
+     * @param dirty
+     *            the dirty to set
+     */
+    protected void setDirty(boolean dirty) {
+        this.dirty = dirty;
+    }
+
+    /**
+     * Used when setting content to a play list read from disk
+     * 
+     * @param content
+     */
+    protected void setContent(List<AudioObject> content) {
+        this.audioObjects.setContent(content);
+        notifyAudioObjectsAdded(0, content);
         // As this method is used when reading from disk playlist can't be dirty
         setDirty(false);
-	}
+    }
 }
