@@ -1,0 +1,40 @@
+@charset "UTF-8";
+/* CSS Document */
+
+table.playlist_table {
+  border: solid 1px #eeeeee;
+  border-collapse: collapse;
+	width:100%; 
+}
+
+table.playlist_table td {
+	border: none;
+	padding:1px 2px;
+}
+
+table.playlist_table th {
+	background-color:#EEE;
+	border-right:1px solid #eeeeee;
+	line-height:120%;
+	font-weight:bold;
+	padding:3px 3px;
+	text-align:left;
+}
+.ui-resizable {
+	position:relative;
+}
+.ui-resizable-handle {
+	display:block;
+	font-size:0.1px;
+	position:absolute;
+	z-index:99999;
+}
+
+.ui-resizable-s { 
+	background:#EEEEEE url(../images/grippie.png) no-repeat scroll center 2px;
+	border-top:1px solid #CCCCCC;
+	bottom:-5px;
+	cursor:s-resize;
+	height:14px;
+	left:0;width:100%; 
+}

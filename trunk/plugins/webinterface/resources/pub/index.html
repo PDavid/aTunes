@@ -3,66 +3,71 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   
-  <link rel="stylesheet" href="css/start/jquery-ui-1.7.2.custom.css" type="text/css">
+  <link type="text/css" href="css/base/ui.all.css" rel="stylesheet" />
   
-  <link rel="stylesheet" href="css/web.css" type="text/css">
+  <link rel="stylesheet" href="css/web.css" type="text/css" media="screen">
   
   <script type="text/javascript" src="js/jquery.js"></script>
   <script type="text/javascript" src="js/jqueryui.js"></script>
+  <script type="text/javascript" src="js/jquery.chromatable.js"></script>
   
   <script type="text/javascript" src="js/common.js"></script>
   <script type="text/javascript" src="js/web.js"></script>
+  
   
   <title>aTunes Web Interface</title>
 </head>
 
 <body onLoad="initialize();">
 
-    <!-- BEGIN Current Player Image -->
-	<div class="current_image">
-		<img id="current_image" class="current_image"/>
-	</div>
-	<!-- END Current Player Image -->
+	<div class="container">
+		<div class="player">
+    		<!-- BEGIN Current Player Image -->
+			<img id="current_image" class="current_image"/>
+			<!-- END Current Player Image -->
 	
-	<!-- BEGIN Current Audio Object properties -->
-	<div id="current_ao_properties"></div>
-	<!-- END Current Audio Object properties-->
+			<!-- BEGIN Current Audio Object properties -->
+			<div id="current_ao_properties" class="current_ao_properties"></div>
+			<!-- END Current Audio Object properties-->
 	
-	<div id="time" class="hidden"></div>
-	<div id="elapsed_time" class="elapsed_time"></div>
-	<div id="remaining_time" class="remaining_time"></div>
+			<!-- BEGIN Progress bar -->
+			<div id="time" class="hidden"></div>
+			<span id="elapsed_time" class="elapsed_time"></span>
+			<div id="progressbar" class="progressbar"></div>
+			<span id="remaining_time" class="remaining_time"></span>
+			<!-- END Progress bar -->
 	
-	<div id="progressbar" class="progressbar"></div>
-	
-	<div id="player_state" class="hidden"></div>
+			<div id="player_state" class="hidden"></div>
 
-	<!-- BEGIN Player Controls -->
- 	<div id="player_controls" class="controls">
-		<p>
-			<a class="abutton" href="javascript:stop();">
-				<button class="player_button">
-					<img id="stop" class="control" src="images/stop.png" alt="Stop">
-				</button>
-			</a>
+			<!-- BEGIN Player Controls -->
+					<a class="abutton" href="javascript:stop();">
+						<button class="player_button">
+							<img id="stop" class="control" src="images/stop.png" alt="Stop">
+						</button>
+					</a>
 		
-			<a class="abutton" href="javascript:previous();">
-				<button class="player_button">
-					<img id="previous" class="control" src="images/previous.png" alt="Previous">
-				</button>
-			</a>
-			<a class="abutton" href="javascript:play();">
-				<button class="player_button">
-					<img id="play" class="control" src="images/play.png" alt="Play">
-				</button>
-			</a>
-			<a class="abutton" href="javascript:next();">
-				<button class="player_button">
-					<img id="next" class="control" src="images/next.png" alt="Next">
-				</button>
-			</a>
-		</p>
+					<a class="abutton" href="javascript:previous();">
+						<button class="player_button">
+							<img id="previous" class="control" src="images/previous.png" alt="Previous">
+						</button>
+					</a>
+					<a class="abutton" href="javascript:play();">
+						<button class="player_button">
+							<img id="play" class="control" src="images/play.png" alt="Play">
+						</button>
+					</a>
+					<a class="abutton" href="javascript:next();">
+						<button class="player_button">
+							<img id="next" class="control" src="images/next.png" alt="Next">
+						</button>
+					</a>
+			<!-- END Player Controls -->
+		</div>
+	
+		<!--  BEGIN Play List -->
+		<div id="playlist_div" class="playlist"></div>
+		<!--  END Play List -->	
 	</div>
-	<!-- END Player Controls -->	
 </body>
 
 </html>
