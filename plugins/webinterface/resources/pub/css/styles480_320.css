@@ -17,8 +17,8 @@ div.progressbar { top: 74%; left: 22%; width: 56%; height: 15px; position: fixed
 
 div.volume { bottom: 33%; left: 40%; width: 65%; height: 50px; position: fixed; }
 
-div.title { top: 5%; left: 55%; width: 40%; position: fixed; font-size:1.2em; border-style: none; }
-div.artist { top: 35%; left: 55%; width: 40%; position: fixed; font-size:1em; border-style: none; }
+span.title { top: 5%; left: 55%; width: 40%; position: fixed; font-size:1.2em; border-style: none; }
+span.artist { top: 35%; left: 55%; width: 40%; position: fixed; font-size:1em; border-style: none; }
 
 div.hidden { visibility:hidden; }
 

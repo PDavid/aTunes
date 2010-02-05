@@ -26,6 +26,15 @@ function millisecondsToString(milliseconds) {
 }
 
 /*
+ * Returns a string representing minutes and seconds of a given amount of seconds
+ */
+function secondsToString(seconds) {
+    var minutes = Math.floor(seconds / 60);
+    seconds = Math.round(seconds % 60);
+    return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+}
+
+/*
  * Volume down
  */
 function volumeDown() {
