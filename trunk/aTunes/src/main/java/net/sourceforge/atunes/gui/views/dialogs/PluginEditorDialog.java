@@ -26,6 +26,8 @@ import java.awt.Insets;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -33,6 +35,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -150,8 +153,21 @@ public class PluginEditorDialog extends CustomModalDialog {
         	return new JLabel(property.getDescription());
         }
         
-        private JComponent getPropertyEditor(PluginProperty<?> property) {
-        	return new JTextField(property.getValue().toString());
+        private JComponent getPropertyEditor(final PluginProperty<?> property) {
+        	final JTextField textField = new JTextField(property.getValue().toString());
+        	textField.addKeyListener(new KeyAdapter() {
+        		@Override
+        		public void keyTyped(KeyEvent e) {
+        			super.keyTyped(e);
+        			SwingUtilities.invokeLater(new Runnable() {
+        				@Override
+        				public void run() {
+                			property.setValue(textField.getText());
+        				}        				
+        			});
+        		}
+			});
+        	return textField;
         }
     }
 
