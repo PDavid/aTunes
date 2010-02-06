@@ -28,6 +28,7 @@ import java.awt.Point;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
 
 import javax.swing.Action;
 import javax.swing.JDialog;
@@ -37,6 +38,9 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
+
+import org.jdesktop.swingx.JXErrorPane;
+import org.jdesktop.swingx.error.ErrorInfo;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.frame.DefaultSingleFrame;
@@ -853,6 +857,28 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
      */
     public void showErrorDialog(String message, Component parent) {
         JOptionPane.showMessageDialog(parent, message, I18nUtils.getString("ERROR"), JOptionPane.ERROR_MESSAGE);
+    }
+    
+    /**
+     * Shows a exception report dialog 
+     * @param message
+     * @param t
+     */
+    public void showExceptionDialog(String message, Exception t) {
+    	JXErrorPane pane = new JXErrorPane();
+    	StringBuilder sb = new StringBuilder();
+    	sb.append(t.getClass().getName());
+    	sb.append(": ");
+    	sb.append(t.getMessage());
+    	sb.append("<br/>");
+    	sb.append("<br/>");
+    	for (StackTraceElement s : t.getStackTrace()) {
+    		sb.append(s.toString()); 
+    		sb.append("<br/>");
+    	}
+    	pane.setErrorInfo(new ErrorInfo(I18nUtils.getString("ERROR"), message, sb.toString(), null, t, Level.SEVERE, null));
+    	JXErrorPane.showDialog(null, pane);
+
     }
 
     /**

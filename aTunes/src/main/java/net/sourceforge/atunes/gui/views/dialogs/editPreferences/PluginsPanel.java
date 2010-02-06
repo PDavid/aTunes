@@ -275,7 +275,17 @@ public final class PluginsPanel extends PreferencesPanel {
             // if any plugin has been modified then write configuration
             for (PluginInfo plugin : pluginsModified.keySet()) {
                 logger.debug(LogCategories.PLUGINS, "Writting configuration of plugin: ", plugin.getName());
-                PluginConfiguration.setConfiguration(plugin, pluginsModified.get(plugin));
+                
+                // Avoid plugins throw exceptions when setting configuration
+                try {                	
+                	PluginConfiguration.setConfiguration(plugin, pluginsModified.get(plugin));
+                } catch (Exception t) {
+                	StringBuilder sb = new StringBuilder();
+                	sb.append(I18nUtils.getString("PLUGIN_CONFIGURATION_ERROR"));
+                	sb.append(" ");
+                	sb.append(plugin.getName());
+                	GuiHandler.getInstance().showExceptionDialog(sb.toString(), t);
+                }
 
                 restartNeeded = restartNeeded || PluginsHandler.getInstance().pluginNeedsRestart(plugin);
             }
