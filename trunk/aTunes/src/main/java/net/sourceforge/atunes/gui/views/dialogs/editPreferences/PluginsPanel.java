@@ -64,6 +64,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
+import org.commonjukebox.plugins.InvalidPluginConfigurationException;
 import org.commonjukebox.plugins.PluginConfiguration;
 import org.commonjukebox.plugins.PluginInfo;
 import org.commonjukebox.plugins.PluginSystemException;
@@ -207,7 +208,13 @@ public final class PluginsPanel extends PreferencesPanel {
                 dialog.setVisible(true);
                 configuration = dialog.getConfiguration();
                 if (configuration != null) {
-                    pluginsModified.put(plugin, configuration);
+                	// Validate plugin configuration
+                	try {
+                		PluginConfiguration.validateConfiguration(plugin, configuration);
+                        pluginsModified.put(plugin, configuration);
+                	} catch (InvalidPluginConfigurationException ex) {
+                		GuiHandler.getInstance().showErrorDialog(StringUtils.getString(I18nUtils.getString("PLUGIN_CONFIGURATION_INVALID"), ex.getMessage()));
+                	}
                 }
             }
         });
