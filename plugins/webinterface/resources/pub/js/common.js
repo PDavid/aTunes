@@ -104,15 +104,26 @@ function checkAndUpdateImage() {
 	if (currentTitleDiv != null) {
 		currentTitle = currentTitleDiv.firstChild.data;
 	}
+	if (currentTitle.indexOf('Play list is empty') != -1) {
+		$('#current_image').hide();
+		$('.abutton').hide();
+		$('.volume').hide();
+	} else {
+		$('#current_image').show();
+		$('.abutton').show();
+		$('.volume').show();
+	}
 	var currentArtistDiv = document.getElementById('artist');
 	var currentArtist;
 	if (currentArtistDiv != null) {
 		currentArtist = currentArtistDiv.firstChild.data;
-	}
+	}	
 	if (lastTitle == null || lastArtist == null || (lastTitle != currentTitle && lastArtist != currentArtist)) {
 		lastTitle = currentTitle;
 		lastArtist = currentArtist;
-		updateImage();		
+		if (currentTitle.indexOf('Play list is empty') == -1) {
+			updateImage();
+		}
 	}
 }
 
