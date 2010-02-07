@@ -75,7 +75,7 @@ public abstract class AbstractHttpHandler implements HttpRequestHandler {
     }
     
 	protected final String getMimeType(File file) {
-		// TODO: 
+		// CSS mime type is not included in mimeTypesMap so return manually 
 		if (file.getName().toLowerCase().endsWith("css")) {
 			return "text/css";
 		}
