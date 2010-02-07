@@ -11,6 +11,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.StringUtils;
 
+import org.commonjukebox.plugins.InvalidPluginConfigurationException;
 import org.commonjukebox.plugins.Plugin;
 import org.commonjukebox.plugins.PluginConfiguration;
 import org.commonjukebox.plugins.PluginInfo;
@@ -87,7 +88,7 @@ public abstract class UpdateMessagePlugin implements PlaybackStateListener, Plug
     }    
     
 	@Override
-	public void validateConfiguration(PluginConfiguration configuration) {
+	public void validateConfiguration(PluginConfiguration configuration) throws InvalidPluginConfigurationException {
 	}
 
 }
