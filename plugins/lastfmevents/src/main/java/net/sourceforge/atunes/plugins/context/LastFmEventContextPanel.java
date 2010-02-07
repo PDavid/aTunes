@@ -7,6 +7,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
+import org.commonjukebox.plugins.InvalidPluginConfigurationException;
 import org.commonjukebox.plugins.Plugin;
 import org.commonjukebox.plugins.PluginConfiguration;
 import org.commonjukebox.plugins.PluginInfo;
@@ -74,6 +75,6 @@ public class LastFmEventContextPanel extends ContextPanel implements Plugin {
 	}
 	
 	@Override
-	public void validateConfiguration(PluginConfiguration configuration) {
+	public void validateConfiguration(PluginConfiguration configuration) throws InvalidPluginConfigurationException {
 	}
 }
