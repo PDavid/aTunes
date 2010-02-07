@@ -1,4 +1,4 @@
 <table>
-	<tr><td><span id="title" class="title">$audioObject.getTitleOrFileName()</span></td></tr>
-	<tr><td><span id="artist" class="artist">$audioObject.getArtist()</span></td></tr>
+	<tr><td><span id="title" class="title">#if ($audioObject == "null") Play list is empty #else $audioObject.getTitleOrFileName() #end </span></td></tr>
+	<tr><td><span id="artist" class="artist">#if ($audioObject == "null") Please add objects to play list #else $audioObject.getArtist() #end </span></td></tr>
 </table>
