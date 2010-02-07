@@ -16,6 +16,11 @@ import org.commonjukebox.plugins.PluginProperty;
 public class WebInterfacePlugin extends GeneralPurposePlugin implements Plugin {
 	
 	/**
+	 * Directory where plugin is installed
+	 */
+	private String pluginLocation;
+	
+	/**
 	 * "pub" directory: static contents
 	 */
 	private String pubResourceDir;
@@ -33,7 +38,7 @@ public class WebInterfacePlugin extends GeneralPurposePlugin implements Plugin {
 	@Override
 	public void activate() {
 		try {
-			WebServer.start(this.port, this.pubResourceDir, this.templateResourceDir);
+			WebServer.start(this.port, this.pubResourceDir, this.templateResourceDir, this.pluginLocation);
 		} catch (Exception e) {
 			new LoggerService().error(e);
 		}
@@ -70,9 +75,9 @@ public class WebInterfacePlugin extends GeneralPurposePlugin implements Plugin {
 	
 	@Override
 	public void setPluginInfo(PluginInfo pluginInfo) {
-		String pluginLocation = pluginInfo.getPluginLocation();
-		this.pubResourceDir = StringUtils.getString(pluginLocation, "/pub/");
-		this.templateResourceDir = StringUtils.getString(pluginLocation, "/templates/");
+		this.pluginLocation = pluginInfo.getPluginLocation();		
+		this.pubResourceDir = StringUtils.getString(this.pluginLocation, "/pub/");
+		this.templateResourceDir = StringUtils.getString(this.pluginLocation, "/templates/");
 	}
 	
 	@Override

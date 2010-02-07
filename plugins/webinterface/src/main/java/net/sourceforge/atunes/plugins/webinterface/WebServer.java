@@ -27,8 +27,8 @@ public class WebServer {
 
 	private static Thread listener;
 	
-	public static void start(int port, String pubResourceDir, String templateResourceDir) throws Exception {
-        listener = new HttpListener(port, pubResourceDir, templateResourceDir);
+	public static void start(int port, String pubResourceDir, String templateResourceDir, String baseDir) throws Exception {
+        listener = new HttpListener(port, pubResourceDir, templateResourceDir, baseDir);
         listener.setDaemon(false);
         listener.start();
 	}
@@ -46,14 +46,14 @@ public class WebServer {
         
         private HttpService httpService;
 		
-		HttpListener(int port, String pubResourceDir, String templateResourceDir) throws IOException {
+		HttpListener(int port, String pubResourceDir, String templateResourceDir, String baseDir) throws IOException {
 			super();
 			this.serversocket = new ServerSocket(port);
 			
             // Set up request handlers
             HttpRequestHandlerRegistry registry = new HttpRequestHandlerRegistry();
             registry.register("*", new StaticHttpHandler(pubResourceDir));
-            registry.register("/velocity", new VelocityHttpHandler(templateResourceDir));
+            registry.register("/velocity", new VelocityHttpHandler(templateResourceDir, baseDir));
             registry.register("/images", new ImagesHttpHandler());
 
             this.parameters = new BasicHttpParams();
