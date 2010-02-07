@@ -7,6 +7,7 @@ import net.sourceforge.atunes.api.LoggerService;
 import net.sourceforge.atunes.kernel.modules.plugins.GeneralPurposePlugin;
 import net.sourceforge.atunes.utils.StringUtils;
 
+import org.commonjukebox.plugins.InvalidPluginConfigurationException;
 import org.commonjukebox.plugins.Plugin;
 import org.commonjukebox.plugins.PluginConfiguration;
 import org.commonjukebox.plugins.PluginInfo;
@@ -74,6 +75,20 @@ public class WebInterfacePlugin extends GeneralPurposePlugin implements Plugin {
 		this.templateResourceDir = StringUtils.getString(pluginLocation, "/templates/");
 	}
 	
-	
-
+	@Override
+	public void validateConfiguration(PluginConfiguration configuration) throws InvalidPluginConfigurationException {
+		if (configuration.getProperty("PORT") == null) {
+			throw new InvalidPluginConfigurationException("Listening port not defined");
+		}
+		Object value = configuration.getProperty("PORT").getValue();
+		int port = 0;
+		try {
+			port = Integer.parseInt((String)value);
+		} catch (NumberFormatException e) {
+			throw new InvalidPluginConfigurationException(StringUtils.getString(value, " is not a valid number"));
+		}
+		if (port <= 1024) {
+			throw new InvalidPluginConfigurationException("Listening port must be a number greater than 1024");
+		}		
+	}
 }

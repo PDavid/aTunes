@@ -85,4 +85,9 @@ public abstract class UpdateMessagePlugin implements PlaybackStateListener, Plug
     public void setConfiguration(PluginConfiguration configuration) {
         this.configuration = configuration;
     }    
+    
+	@Override
+	public void validateConfiguration(PluginConfiguration configuration) {
+	}
+
 }
