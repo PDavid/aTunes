@@ -53,4 +53,8 @@ public class LyricsColumn extends Column implements Plugin {
         // No plugin info needed
     }
 
+    @Override
+    public void validateConfiguration(PluginConfiguration configuration) {
+        // No configuration
+    }
 }

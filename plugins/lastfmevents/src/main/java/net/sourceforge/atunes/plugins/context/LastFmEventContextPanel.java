@@ -72,4 +72,8 @@ public class LastFmEventContextPanel extends ContextPanel implements Plugin {
 	@Override
 	public void setPluginInfo(PluginInfo pluginInfo) {
 	}
+	
+	@Override
+	public void validateConfiguration(PluginConfiguration configuration) {
+	}
 }
