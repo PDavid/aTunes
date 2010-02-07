@@ -8,6 +8,9 @@ import java.util.Locale;
 
 import javax.activation.MimetypesFileTypeMap;
 
+import net.sourceforge.atunes.api.LoggerService;
+import net.sourceforge.atunes.utils.StringUtils;
+
 import org.apache.http.HttpException;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
@@ -22,8 +25,9 @@ public abstract class AbstractHttpHandler implements HttpRequestHandler {
 	
 	private static MimetypesFileTypeMap mimeTypesMap = new MimetypesFileTypeMap();
 	
+	private LoggerService logger = new LoggerService();
+	
     public void handle(final HttpRequest request, final HttpResponse response, final HttpContext context) throws HttpException, IOException {
-    	System.out.println(request.getRequestLine().getUri());
         String method = request.getRequestLine().getMethod().toUpperCase(Locale.ENGLISH);
         if (!method.equals("GET") && !method.equals("HEAD") && !method.equals("POST")) {
             throw new MethodNotSupportedException(method + " method not supported"); 
@@ -65,9 +69,9 @@ public abstract class AbstractHttpHandler implements HttpRequestHandler {
                 });
                 body.setContentType("text/html; charset=UTF-8");
                 response.setEntity(body);
-
         	}
         }
+    	logger.debug(StringUtils.getString("Request for URI: ", request.getRequestLine().getUri(), " HTTP response: ", response.getStatusLine().getStatusCode()));
     }
     
 	protected final String getMimeType(File file) {
