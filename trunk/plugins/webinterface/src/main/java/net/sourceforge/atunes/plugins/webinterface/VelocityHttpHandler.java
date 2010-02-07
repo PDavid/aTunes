@@ -7,6 +7,8 @@ import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.util.Properties;
 
+import net.sourceforge.atunes.utils.StringUtils;
+
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -29,12 +31,13 @@ public class VelocityHttpHandler extends AbstractHttpHandler {
 	/**
 	 * Folder where templates are located
 	 */
-	private String base;
+	private String templatesBase;
 	
-	protected VelocityHttpHandler(String base) {
-		this.base = base;
+	protected VelocityHttpHandler(String templatesBase, String baseDirectory) {
+		this.templatesBase = templatesBase;
 		Properties p = new Properties();
-		p.put(Velocity.FILE_RESOURCE_LOADER_PATH, base);
+		p.put(Velocity.FILE_RESOURCE_LOADER_PATH, templatesBase);
+		p.put(Velocity.RUNTIME_LOG, StringUtils.getString(baseDirectory, "/velocity.log"));
 		try {
 			Velocity.init(p);
 		} catch (Exception e) {
@@ -99,7 +102,7 @@ public class VelocityHttpHandler extends AbstractHttpHandler {
 	}
 	
 	private File getTemplate(VelocityRequest request) {
-		File template = new File(new StringBuilder().append(base).append(request.getTemplate()).toString());
+		File template = new File(new StringBuilder().append(templatesBase).append(request.getTemplate()).toString());
 		return template.exists() ? template : null;
 	}
 	
