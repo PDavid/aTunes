@@ -34,6 +34,7 @@ import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -89,9 +90,9 @@ public final class AddPodcastFeedDialog extends CustomModalDialog {
         JPanel panel = new JPanel(new GridBagLayout());
 
         JLabel nameLabel = new JLabel(I18nUtils.getString("NAME"));
-        nameTextField = new JTextField();
+        nameTextField = new CustomTextField();
         JLabel urlLabel = new JLabel(I18nUtils.getString("URL"));
-        urlTextField = new JTextField();
+        urlTextField = new CustomTextField();
 
         JButton okButton = new JButton(I18nUtils.getString("OK"));
         okButton.addActionListener(new ActionListener() {

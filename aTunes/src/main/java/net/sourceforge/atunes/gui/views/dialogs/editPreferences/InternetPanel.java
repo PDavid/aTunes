@@ -35,6 +35,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
@@ -102,16 +103,16 @@ public final class InternetPanel extends PreferencesPanel {
 
         proxyURLLabel = new JLabel(I18nUtils.getString("HOST"));
         proxyURLLabel.setEnabled(false);
-        proxyURL = new JTextField(15);
+        proxyURL = new CustomTextField(15);
 
         proxyPortLabel = new JLabel(I18nUtils.getString("PORT"));
         proxyPortLabel.setEnabled(false);
-        proxyPort = new JTextField(15);
+        proxyPort = new CustomTextField(15);
         proxyPort.setEnabled(false);
 
         proxyUserLabel = new JLabel(I18nUtils.getString("USER"));
         proxyUserLabel.setEnabled(false);
-        proxyUser = new JTextField(15);
+        proxyUser = new CustomTextField(15);
         proxyUser.setEnabled(false);
 
         proxyPasswordLabel = new JLabel(I18nUtils.getString("PASSWORD"));

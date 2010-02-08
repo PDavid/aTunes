@@ -34,6 +34,7 @@ import javax.swing.JTextArea;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -65,7 +66,7 @@ public final class RepositorySelectionInfoDialog extends CustomModalDialog {
     private void setContent() {
         JPanel panel = new JPanel(new GridBagLayout());
         JLabel icon = new JLabel(Images.getImage(Images.APP_ICON_BIG));
-        JTextArea text = new JTextArea(I18nUtils.getString("REPOSITORY_SELECTION_INFO_TEXT"));
+        JTextArea text = new CustomTextArea(I18nUtils.getString("REPOSITORY_SELECTION_INFO_TEXT"));
         text.setOpaque(false);
         text.setEditable(false);
         text.setWrapStyleWord(true);

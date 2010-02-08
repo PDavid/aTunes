@@ -38,6 +38,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -154,7 +155,7 @@ public class PluginEditorDialog extends CustomModalDialog {
         }
         
         private JComponent getPropertyEditor(final PluginProperty<?> property) {
-        	final JTextField textField = new JTextField(property.getValue().toString());
+        	final JTextField textField = new CustomTextField(property.getValue().toString());
         	textField.addKeyListener(new KeyAdapter() {
         		@Override
         		public void keyTyped(KeyEvent e) {

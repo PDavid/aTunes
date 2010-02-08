@@ -51,6 +51,7 @@ import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -101,7 +102,7 @@ public final class PatternInputDialog extends CustomModalDialog {
         setTitle(I18nUtils.getString("PATTERN_INPUT"));
 
         // Label with instructions
-        JTextArea textArea = new JTextArea(I18nUtils.getString("PATTERN_INPUT_INSTRUCTIONS"));
+        JTextArea textArea = new CustomTextArea(I18nUtils.getString("PATTERN_INPUT_INSTRUCTIONS"));
         textArea.setBorder(BorderFactory.createEmptyBorder());
         textArea.setWrapStyleWord(true);
         textArea.setEditable(false);

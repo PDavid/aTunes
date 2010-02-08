@@ -38,6 +38,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.gui.views.controls.CustomDialog;
+import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -205,7 +206,7 @@ public final class CustomSearchDialog extends CustomDialog {
             simpleRulesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             simpleRulesScrollPane = new JScrollPane(simpleRulesList);
             simpleRulesComboBox = new JComboBox();
-            simpleRulesTextField = new JTextField();
+            simpleRulesTextField = new CustomTextField();
             simpleRulesAddButton = new JButton(I18nUtils.getString("ADD"));
 
             GridBagConstraints c = new GridBagConstraints();
@@ -300,7 +301,7 @@ public final class CustomSearchDialog extends CustomDialog {
             advancedSearchPanel = new JPanel(new GridBagLayout());
             advancedSearchPanel.setBorder(BorderFactory.createEtchedBorder());
             advancedSearchCheckBox = new JCheckBox(I18nUtils.getString("ENABLE_ADVANCED_SEARCH"));
-            advancedSearchTextField = new JTextField();
+            advancedSearchTextField = new CustomTextField();
             GridBagConstraints c = new GridBagConstraints();
             c.gridx = 0;
             c.gridy = 0;

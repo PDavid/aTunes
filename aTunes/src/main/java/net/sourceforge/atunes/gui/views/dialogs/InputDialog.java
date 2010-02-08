@@ -34,6 +34,7 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -68,7 +69,7 @@ public final class InputDialog extends CustomModalDialog {
         }
         setTitle(title);
         JPanel panel = new JPanel(new GridBagLayout());
-        textField = new JTextField();
+        textField = new CustomTextField();
         JButton okButton = new JButton(I18nUtils.getString("OK"));
         ActionListener okListener = new ActionListener() {
             @Override

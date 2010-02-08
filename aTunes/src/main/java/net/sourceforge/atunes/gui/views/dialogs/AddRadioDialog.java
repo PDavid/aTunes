@@ -34,6 +34,7 @@ import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -92,11 +93,11 @@ public final class AddRadioDialog extends CustomModalDialog {
         JPanel panel = new JPanel(new GridBagLayout());
 
         JLabel nameLabel = new JLabel(I18nUtils.getString("NAME"));
-        nameTextField = new JTextField();
+        nameTextField = new CustomTextField();
         JLabel urlLabel = new JLabel(I18nUtils.getString("URL"));
-        urlTextField = new JTextField();
+        urlTextField = new CustomTextField();
         JLabel labelLabel = new JLabel(I18nUtils.getString("LABEL"));
-        labelTextField = new JTextField();
+        labelTextField = new CustomTextField();
 
         JButton okButton = new JButton(I18nUtils.getString("OK"));
         okButton.addActionListener(new ActionListener() {

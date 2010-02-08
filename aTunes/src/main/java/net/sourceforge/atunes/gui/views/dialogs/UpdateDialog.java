@@ -37,6 +37,7 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomFrame;
+import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.kernel.modules.updates.ApplicationVersion;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -59,7 +60,7 @@ public final class UpdateDialog extends CustomFrame {
 
         JLabel img = new JLabel(Images.getImage(Images.APP_ICON_BIG));
 
-        JTextArea text1 = new JTextArea(text);
+        JTextArea text1 = new CustomTextArea(text);
         text1.setBorder(BorderFactory.createEmptyBorder());
         text1.setEditable(false);
         text1.setOpaque(false);

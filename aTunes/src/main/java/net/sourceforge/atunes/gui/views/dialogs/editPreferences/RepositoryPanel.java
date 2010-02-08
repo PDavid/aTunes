@@ -29,6 +29,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -65,9 +66,9 @@ public final class RepositoryPanel extends PreferencesPanel {
         refreshTime = new JComboBox(new Integer[] { 0, 5, 10, 15, 30, 60 });
         saveRepositoryAsXml = new JCheckBox(I18nUtils.getString("SAVE_REPOSITORY_AS_XML"));
         JLabel label2 = new JLabel(I18nUtils.getString("COMMAND_BEFORE_REPOSITORY_ACCESS"));
-        commandBeforeAccessRepository = new JTextField(20);
+        commandBeforeAccessRepository = new CustomTextField(20);
         JLabel label3 = new JLabel(I18nUtils.getString("COMMAND_AFTER_REPOSITORY_ACCESS"));
-        commandAfterAccessRepository = new JTextField(20);
+        commandAfterAccessRepository = new CustomTextField(20);
 
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;

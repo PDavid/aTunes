@@ -42,6 +42,7 @@ import javax.swing.table.DefaultTableModel;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
+import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -110,7 +111,7 @@ public final class DevicePanel extends PreferencesPanel {
                 fileNamePatternTextField.setEnabled(true);
             }
         });
-        fileNamePatternTextField = new JTextField(10);
+        fileNamePatternTextField = new CustomTextField(10);
         ButtonGroup group = new ButtonGroup();
         group.add(fileNameNoChangeRadioButton);
         group.add(fileNameCustomizedRadioButton);
@@ -131,7 +132,7 @@ public final class DevicePanel extends PreferencesPanel {
                 folderPathPatternTextField.setEnabled(true);
             }
         });
-        folderPathPatternTextField = new JTextField(10);
+        folderPathPatternTextField = new CustomTextField(10);
         ButtonGroup group2 = new ButtonGroup();
         group2.add(folderPathNoChangeRadioButton);
         group2.add(folderPathCustomizedRadioButton);

@@ -36,6 +36,7 @@ import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -161,7 +162,7 @@ final class PodcastFeedEntryPropertiesDialog extends PropertiesDialog {
         c.insets = new Insets(0, 10, 5, 10);
         panel.add(descriptionScrollPane, c);
 
-        descriptionTextArea = new JTextArea();
+        descriptionTextArea = new CustomTextArea();
         descriptionTextArea.setEditable(false);
         descriptionTextArea.setLineWrap(true);
         descriptionTextArea.setWrapStyleWord(true);

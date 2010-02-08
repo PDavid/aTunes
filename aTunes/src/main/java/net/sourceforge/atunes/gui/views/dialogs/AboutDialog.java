@@ -53,6 +53,7 @@ import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -198,7 +199,7 @@ public final class AboutDialog extends CustomModalDialog {
 
         JLabel icon = new JLabel(Images.getImage(Images.APP_ICON_BIG));
 
-        JTextArea license = new JTextArea(licenseText);
+        JTextArea license = new CustomTextArea(licenseText);
         license.setEditable(false);
         license.setLineWrap(true);
         license.setWrapStyleWord(true);
