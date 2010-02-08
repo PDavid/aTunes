@@ -21,14 +21,14 @@ package net.sourceforge.atunes.kernel.controllers.filter;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import net.sourceforge.atunes.gui.views.panels.ToolBarFilterPanel;
 import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
@@ -57,10 +57,24 @@ public class ToolBarFilterController extends SimpleController<ToolBarFilterPanel
 	@Override
 	protected void addBindings() {
         // Add listeners
-        getComponentControlled().getFilterTextField().addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyTyped(final KeyEvent e) {
-                super.keyTyped(e);
+        getComponentControlled().getFilterTextField().getDocument().addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				update();
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				update();
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				update();
+			}
+			
+			private void update() {
                 // Search as user type
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
@@ -68,8 +82,8 @@ public class ToolBarFilterController extends SimpleController<ToolBarFilterPanel
                        	applyFilter(getFilter());
                     }
                 });
-            }
-        });
+			}
+		});
         
         getComponentControlled().getClearFilterButton().addActionListener(new ActionListener() {
 			@Override
