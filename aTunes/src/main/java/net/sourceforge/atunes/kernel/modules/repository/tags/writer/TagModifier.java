@@ -36,6 +36,7 @@ import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
+import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.KeyNotFoundException;
 import org.jaudiotagger.tag.datatype.Artwork;
 import org.jaudiotagger.tag.reference.PictureTypes;
@@ -121,7 +122,7 @@ public class TagModifier {
         try {
             org.jaudiotagger.audio.AudioFile audioFile = org.jaudiotagger.audio.AudioFileIO.read(file.getFile());
             org.jaudiotagger.tag.Tag newTag = audioFile.getTagOrCreateAndSetDefault();
-            newTag.setAlbum(album);
+            newTag.setField(FieldKey.ALBUM, album);
             audioFile.commit();
         } catch (Exception e) {
             logger.error(LogCategories.FILE_WRITE, StringUtils.getString("Could not edit tag. File: ", file.getUrl(), " Error: ", e));
@@ -143,7 +144,7 @@ public class TagModifier {
             org.jaudiotagger.audio.AudioFile audioFile = org.jaudiotagger.audio.AudioFileIO.read(file.getFile());
             org.jaudiotagger.tag.Tag newTag = audioFile.getTagOrCreateAndSetDefault();
             //newTag.setGenre(genre);
-            newTag.set(newTag.createTagField(org.jaudiotagger.tag.TagFieldKey.GENRE, genre));
+            newTag.setField(newTag.createField(FieldKey.GENRE, genre));
             audioFile.commit();
         } catch (Exception e) {
             logger.error(LogCategories.FILE_WRITE, StringUtils.getString("Could not edit tag. File: ", file.getUrl(), " Error: ", e));
@@ -220,76 +221,76 @@ public class TagModifier {
                     ImageInfo imageInfo = new ImageInfo();
                     imageInfo.setInput(new ByteArrayInputStream(cover));
                     artwork.setMimeType(imageInfo.getMimeType());
-                    newTag.createAndSetArtworkField(artwork);
+                    newTag.setField(newTag.createField(artwork));
                 }
             }
 
             // Workaround for mp4 files - strings outside genre list might not be written otherwise
             if (AudioFile.isValidAudioFile(file.getFile(), Format.MP4_1, Format.MP4_2)) {
-                newTag.deleteTagField(org.jaudiotagger.tag.TagFieldKey.GENRE);
+                newTag.deleteField(FieldKey.GENRE);
             }
 
             // Delete tag field if value is empty
             if (album.isEmpty()) {
-                newTag.deleteTagField(org.jaudiotagger.tag.TagFieldKey.ALBUM);
+                newTag.deleteField(FieldKey.ALBUM);
             } else {
-                newTag.setAlbum(album);
+                newTag.setField(FieldKey.ALBUM, album);
             }
             if (artist.isEmpty()) {
-                newTag.deleteTagField(org.jaudiotagger.tag.TagFieldKey.ARTIST);
+                newTag.deleteField(FieldKey.ARTIST);
             } else {
-                newTag.setArtist(artist);
+                newTag.setField(FieldKey.ARTIST, artist);
             }
             if (comment.isEmpty()) {
-                newTag.deleteTagField(org.jaudiotagger.tag.TagFieldKey.COMMENT);
+                newTag.deleteField(FieldKey.COMMENT);
             } else {
-                newTag.setComment(comment);
+                newTag.setField(FieldKey.COMMENT, comment);
             }
             if (genre.isEmpty()) {
-                newTag.deleteTagField(org.jaudiotagger.tag.TagFieldKey.GENRE);
+                newTag.deleteField(FieldKey.GENRE);
             } else {
-                newTag.setGenre(genre);
+                newTag.setField(FieldKey.GENRE, genre);
             }
             if (title.isEmpty()) {
-                newTag.deleteTagField(org.jaudiotagger.tag.TagFieldKey.TITLE);
+                newTag.deleteField(FieldKey.TITLE);
             } else {
-                newTag.setTitle(title);
+                newTag.setField(FieldKey.TITLE, title);
             }
             if (year == -1) {
-                newTag.deleteTagField(org.jaudiotagger.tag.TagFieldKey.YEAR);
+                newTag.deleteField(FieldKey.YEAR);
             } else {
-                newTag.setYear(Integer.toString(year));
+                newTag.setField(FieldKey.YEAR, Integer.toString(year));
             }
             if (track == -1) {
-                newTag.deleteTagField(org.jaudiotagger.tag.TagFieldKey.TRACK);
+                newTag.deleteField(FieldKey.TRACK);
             } else {
-                newTag.setTrack(Integer.toString(track));
+                newTag.setField(FieldKey.TRACK, Integer.toString(track));
             }
             if (discNumber == 0) {
-                newTag.deleteTagField(org.jaudiotagger.tag.TagFieldKey.DISC_NO);
+                newTag.deleteField(FieldKey.DISC_NO);
             } else {
-                newTag.set(newTag.createTagField(org.jaudiotagger.tag.TagFieldKey.DISC_NO, Integer.toString(discNumber)));
+                newTag.setField(FieldKey.DISC_NO, Integer.toString(discNumber));
             }
             if (lyrics.isEmpty()) {
-                newTag.deleteTagField(org.jaudiotagger.tag.TagFieldKey.LYRICS);
+                newTag.deleteField(FieldKey.LYRICS);
             } else {
-                newTag.set(newTag.createTagField(org.jaudiotagger.tag.TagFieldKey.LYRICS, lyrics));
+                newTag.setField(FieldKey.LYRICS, lyrics);
             }
             if (albumArtist.isEmpty()) {
-                newTag.deleteTagField(org.jaudiotagger.tag.TagFieldKey.ALBUM_ARTIST);
+                newTag.deleteField(FieldKey.ALBUM_ARTIST);
             } else {
-                newTag.set(newTag.createTagField(org.jaudiotagger.tag.TagFieldKey.ALBUM_ARTIST, albumArtist));
+                newTag.setField(newTag.createField(FieldKey.ALBUM_ARTIST, albumArtist));
             }
             if (composer.isEmpty()) {
-                newTag.deleteTagField(org.jaudiotagger.tag.TagFieldKey.COMPOSER);
+                newTag.deleteField(FieldKey.COMPOSER);
             } else {
-                newTag.set(newTag.createTagField(org.jaudiotagger.tag.TagFieldKey.COMPOSER, composer));
+                newTag.setField(newTag.createField(FieldKey.COMPOSER, composer));
             }
 
             audioFile.setTag(newTag);
             audioFile.commit();
         } catch (Exception e) {
-            logger.error(LogCategories.FILE_WRITE, StringUtils.getString("Could not edit tag. File: ", file.getUrl(), " Error: ", e));
+            logger.error(LogCategories.FILE_WRITE, StringUtils.getString("Could not edit tag. File: ", file.getUrl(), " Error: ", e.getMessage()));
         }
 
     }
@@ -308,7 +309,7 @@ public class TagModifier {
         try {
             org.jaudiotagger.audio.AudioFile audioFile = org.jaudiotagger.audio.AudioFileIO.read(file.getFile());
             org.jaudiotagger.tag.Tag newTag = audioFile.getTagOrCreateAndSetDefault();
-            newTag.set(newTag.createTagField(org.jaudiotagger.tag.TagFieldKey.LYRICS, lyrics));
+            newTag.setField(newTag.createField(FieldKey.LYRICS, lyrics));
             audioFile.commit();
         } catch (Exception e) {
             logger.error(LogCategories.FILE_WRITE, StringUtils.getString("Could not edit tag. File: ", file.getUrl(), " Error: ", e));
@@ -329,7 +330,7 @@ public class TagModifier {
         try {
             org.jaudiotagger.audio.AudioFile audioFile = org.jaudiotagger.audio.AudioFileIO.read(file.getFile());
             org.jaudiotagger.tag.Tag newTag = audioFile.getTagOrCreateAndSetDefault();
-            newTag.setTitle(newTitle);
+            newTag.setField(FieldKey.TITLE, newTitle);
             audioFile.commit();
         } catch (Exception e) {
             logger.error(LogCategories.FILE_WRITE, StringUtils.getString("Could not edit tag. File: ", file.getUrl(), " Error: ", e));
@@ -350,7 +351,7 @@ public class TagModifier {
         try {
             org.jaudiotagger.audio.AudioFile audioFile = org.jaudiotagger.audio.AudioFileIO.read(file.getFile());
             org.jaudiotagger.tag.Tag newTag = audioFile.getTagOrCreateAndSetDefault();
-            newTag.setTrack(track.toString());
+            newTag.setField(FieldKey.TRACK, track.toString());
             audioFile.commit();
         } catch (Exception e) {
             logger.error(LogCategories.FILE_WRITE, StringUtils.getString("Could not edit tag. File: ", file.getUrl(), " Error: ", e));
