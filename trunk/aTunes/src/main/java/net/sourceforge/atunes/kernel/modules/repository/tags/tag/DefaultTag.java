@@ -19,7 +19,7 @@
  */
 package net.sourceforge.atunes.kernel.modules.repository.tags.tag;
 
-import org.jaudiotagger.tag.TagFieldKey;
+import org.jaudiotagger.tag.FieldKey;
 
 /**
  * The default tag. Can read tags from JAudiotagger and from properties.
@@ -43,10 +43,10 @@ public class DefaultTag extends Tag {
      *            JAudiotagger type tag must be passed
      */
     public DefaultTag(org.jaudiotagger.tag.Tag tag) {
-        setAlbum(tag.getFirstAlbum());
-        setArtist(tag.getFirstArtist());
-        setComment(tag.getFirstComment());
-        String result = tag.getFirstGenre();
+        setAlbum(tag.getFirst(FieldKey.ALBUM));
+        setArtist(tag.getFirst(FieldKey.ARTIST));
+        setComment(tag.getFirst(FieldKey.COMMENT));
+        String result = tag.getFirst(FieldKey.GENRE);
         // Code taken from Jajuk http://jajuk.info - (Copyright (C) 2008) The Jajuk team
         // Detects if Genre is a number and try to map the corresponding genre
         // This should only happen with ID3 tags
@@ -70,11 +70,11 @@ public class DefaultTag extends Tag {
         }
         // End Jajuk code
         setGenre(result);
-        setTitle(tag.getFirstTitle());
+        setTitle(tag.getFirst(FieldKey.TITLE));
         try {
             // We must catch Exception when file has ID3v1.0 tag - This tag format has no track number
             try {
-                result = tag.getFirstTrack();
+                result = tag.getFirst(FieldKey.TRACK);
             } catch (UnsupportedOperationException e) {
                 result = "-1";
             }
@@ -90,17 +90,17 @@ public class DefaultTag extends Tag {
             setTrackNumber(-1);
         }
         try {
-            setYear(Integer.parseInt(tag.getFirstYear()));
+            setYear(Integer.parseInt(tag.getFirst(FieldKey.YEAR)));
         } catch (NumberFormatException e) {
             setYear(-1);
         }
-        setLyrics(tag.getFirst(org.jaudiotagger.tag.TagFieldKey.LYRICS));
-        setComposer(tag.getFirst(org.jaudiotagger.tag.TagFieldKey.COMPOSER));
-        setAlbumArtist(tag.getFirst(org.jaudiotagger.tag.TagFieldKey.ALBUM_ARTIST));
-        setInternalImage(tag.hasField(org.jaudiotagger.tag.TagFieldKey.COVER_ART.name()));
+        setLyrics(tag.getFirst(FieldKey.LYRICS));
+        setComposer(tag.getFirst(FieldKey.COMPOSER));
+        setAlbumArtist(tag.getFirst(FieldKey.ALBUM_ARTIST));
+        setInternalImage(tag.hasField(FieldKey.COVER_ART.name()));
 
         // Disc Number
-        String discNumberStr = tag.getFirst(TagFieldKey.DISC_NO);
+        String discNumberStr = tag.getFirst(FieldKey.DISC_NO);
         if (discNumberStr != null && !discNumberStr.trim().equals("")) {
             // try to get disc number parsing string
             try {
