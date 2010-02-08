@@ -27,6 +27,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -51,7 +52,7 @@ public class ToolBarFilterPanel extends JPanel {
         c.weightx = 1;
         c.anchor = GridBagConstraints.EAST;
         add(filterButton, c);
-        filterTextField = new JTextField(20);
+        filterTextField = new CustomTextField(20);
         filterTextField.setToolTipText(I18nUtils.getString("FILTER_TEXTFIELD_TOOLTIP"));
         c.gridx = 1;
         c.gridy = 0;

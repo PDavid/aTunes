@@ -59,7 +59,7 @@ public final class CustomJFileChooser extends JPanel {
         super(new GridBagLayout());
         // Use user home by default
         final File defaultFolder = new File(SystemProperties.USER_HOME);
-        textField = new JTextField(defaultFolder.getAbsolutePath(), length);
+        textField = new CustomTextField(defaultFolder.getAbsolutePath(), length);
         JButton button = new JButton("...");
         button.setSize(textField.getPreferredSize().height, textField.getPreferredSize().height);
         button.setPreferredSize(button.getSize());

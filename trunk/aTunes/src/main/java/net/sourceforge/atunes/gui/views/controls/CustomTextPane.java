@@ -44,5 +44,6 @@ public final class CustomTextPane extends JTextPane {
         StyleConstants.setFontSize(mainStyle, UIManager.getFont("Label.font").getSize());
         StyleConstants.setForeground(mainStyle, UIManager.getColor("Label.foreground"));
         getStyledDocument().setParagraphAttributes(0, 0, mainStyle, true);
+        new EditionPopUpMenu(this);
     }
 }

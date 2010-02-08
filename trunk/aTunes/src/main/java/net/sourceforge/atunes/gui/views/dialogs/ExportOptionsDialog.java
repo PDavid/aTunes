@@ -42,6 +42,7 @@ import javax.swing.JTextArea;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -103,7 +104,7 @@ public final class ExportOptionsDialog extends CustomModalDialog {
         container.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // Export instructions
-        JTextArea exportInstructions = new JTextArea(I18nUtils.getString("EXPORT_INSTRUCTIONS"));
+        JTextArea exportInstructions = new CustomTextArea(I18nUtils.getString("EXPORT_INSTRUCTIONS"));
         exportInstructions.setWrapStyleWord(true);
         exportInstructions.setLineWrap(true);
         exportInstructions.setEditable(false);

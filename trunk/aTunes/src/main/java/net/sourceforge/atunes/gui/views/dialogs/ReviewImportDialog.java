@@ -46,6 +46,7 @@ import javax.swing.event.ListSelectionListener;
 
 import net.sourceforge.atunes.gui.model.ReviewImportTreeTableModel;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.tags.TagAttributesReviewed;
@@ -97,7 +98,7 @@ public final class ReviewImportDialog extends CustomModalDialog {
         treeTable.getTableHeader().setReorderingAllowed(false);
         treeTable.setSurrendersFocusOnKeystroke(true);
         JPanel topPanel = new JPanel(new BorderLayout(10, 0));
-        reviewInstructions = new JTextArea(I18nUtils.getString("REVIEW_TAGS_INSTRUCTIONS"));
+        reviewInstructions = new CustomTextArea(I18nUtils.getString("REVIEW_TAGS_INSTRUCTIONS"));
         reviewInstructions.setEditable(false);
         reviewInstructions.setLineWrap(true);
         reviewInstructions.setWrapStyleWord(true);

@@ -34,6 +34,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddBannedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction;
@@ -72,7 +73,7 @@ public final class LastFmPanel extends PreferencesPanel {
         JLabel lastFmLabel = new JLabel(I18nUtils.getString("LASTFM_PREFERENCES"));
         lastFmEnabled = new JCheckBox(I18nUtils.getString("LASTFM_ENABLED"));
         JLabel userLabel = new JLabel(I18nUtils.getString("LASTFM_USER"));
-        lastFmUser = new JTextField(15);
+        lastFmUser = new CustomTextField(15);
         JLabel passwordLabel = new JLabel(I18nUtils.getString("LASTFM_PASSWORD"));
         lastFmPassword = new JPasswordField(15);
         autoLoveFavoriteSongs = new JCheckBox(I18nUtils.getString("AUTOMATICALLY_LOVE_IN_LASTFM_FAVORITE_SONGS"));

@@ -45,6 +45,8 @@ import javax.swing.JTextField;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
+import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -246,7 +248,7 @@ public final class EditTagDialog extends CustomModalDialog {
         titleCheckBox = new JCheckBox();
         titleCheckBox.setFocusable(false);
         JLabel titleLabel = new JLabel(I18nUtils.getString("TITLE"));
-        titleTextField = new JTextField();
+        titleTextField = new CustomTextField();
         titleCheckBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -278,7 +280,7 @@ public final class EditTagDialog extends CustomModalDialog {
         artistCheckBox.setSelected(true);
         yearCheckBox = new JCheckBox();
         JLabel yearLabel = new JLabel(I18nUtils.getString("YEAR"));
-        yearTextField = new JTextField();
+        yearTextField = new CustomTextField();
         yearCheckBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -299,7 +301,7 @@ public final class EditTagDialog extends CustomModalDialog {
 
         commentCheckBox = new JCheckBox();
         JLabel commentLabel = new JLabel(I18nUtils.getString("COMMENT"));
-        commentTextArea = new JTextArea();
+        commentTextArea = new CustomTextArea();
         commentTextArea.setBorder(BorderFactory.createEmptyBorder());
         commentCheckBox.addActionListener(new ActionListener() {
             @Override
@@ -311,7 +313,7 @@ public final class EditTagDialog extends CustomModalDialog {
         JScrollPane scrollPane = new JScrollPane(commentTextArea);
         lyricsCheckBox = new JCheckBox();
         JLabel lyricsLabel = new JLabel(I18nUtils.getString("LYRICS"));
-        lyricsTextArea = new JTextArea();
+        lyricsTextArea = new CustomTextArea();
         lyricsTextArea.setBorder(BorderFactory.createEmptyBorder());
         lyricsCheckBox.addActionListener(new ActionListener() {
             @Override
@@ -323,7 +325,7 @@ public final class EditTagDialog extends CustomModalDialog {
         JScrollPane scrollPane2 = new JScrollPane(lyricsTextArea);
         trackNumberCheckBox = new JCheckBox();
         JLabel trackNumberLabel = new JLabel(I18nUtils.getString("TRACK"));
-        trackNumberTextField = new JTextField();
+        trackNumberTextField = new CustomTextField();
         trackNumberCheckBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -334,7 +336,7 @@ public final class EditTagDialog extends CustomModalDialog {
         trackNumberCheckBox.setSelected(true);
         discNumberCheckBox = new JCheckBox();
         JLabel discNumberLabel = new JLabel(I18nUtils.getString("DISC_NUMBER"));
-        discNumberTextField = new JTextField();
+        discNumberTextField = new CustomTextField();
         discNumberCheckBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -345,7 +347,7 @@ public final class EditTagDialog extends CustomModalDialog {
         discNumberCheckBox.setSelected(true);
         composerCheckBox = new JCheckBox();
         JLabel composerLabel = new JLabel(I18nUtils.getString("COMPOSER"));
-        composerTextField = new JTextField();
+        composerTextField = new CustomTextField();
         composerCheckBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -355,7 +357,7 @@ public final class EditTagDialog extends CustomModalDialog {
         composerCheckBox.setSelected(true);
         albumArtistCheckBox = new JCheckBox();
         JLabel albumArtistLabel = new JLabel(I18nUtils.getString("ALBUM_ARTIST"));
-        albumArtistTextField = new JTextField();
+        albumArtistTextField = new CustomTextField();
         albumArtistCheckBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

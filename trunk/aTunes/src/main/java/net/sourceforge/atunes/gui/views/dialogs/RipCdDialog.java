@@ -44,6 +44,7 @@ import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.controllers.ripcd.RipCdDialogController;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
@@ -334,9 +335,9 @@ public final class RipCdDialog extends CustomModalDialog {
         table.getColumnModel().getColumn(4).setMaxWidth(50);
         JCheckBox checkBox = new JCheckBox();
         table.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(checkBox));
-        JTextField textfield1 = new JTextField();
-        JTextField textfield2 = new JTextField();
-        JTextField textfield3 = new JTextField();
+        JTextField textfield1 = new CustomTextField();
+        JTextField textfield2 = new CustomTextField();
+        JTextField textfield3 = new CustomTextField();
         textfield1.setBorder(BorderFactory.createEmptyBorder());
         textfield2.setBorder(BorderFactory.createEmptyBorder());
         textfield3.setBorder(BorderFactory.createEmptyBorder());
@@ -359,12 +360,12 @@ public final class RipCdDialog extends CustomModalDialog {
 
         JScrollPane scrollPane = new JScrollPane(table);
         JLabel artistLabel = new JLabel(I18nUtils.getString("ALBUM_ARTIST"));
-        artistTextField = new JTextField();
+        artistTextField = new CustomTextField();
         JLabel albumLabel = new JLabel(I18nUtils.getString("ALBUM"));
-        albumTextField = new JTextField();
+        albumTextField = new CustomTextField();
         JLabel yearLabel = new JLabel();
         yearLabel.setText(I18nUtils.getString("YEAR"));
-        yearTextField = new JTextField();
+        yearTextField = new CustomTextField();
         JLabel genreLabel = new JLabel(I18nUtils.getString("GENRE"));
 
         genreComboBox = new JComboBox();
@@ -383,7 +384,7 @@ public final class RipCdDialog extends CustomModalDialog {
         filePattern = new JComboBox(RipCdDialogController.FILENAMEPATTERN);
         JLabel dir = new JLabel(I18nUtils.getString("FOLDER"));
 
-        folderName = new JTextField();
+        folderName = new CustomTextField();
         folderSelectionButton = new JButton(I18nUtils.getString("SELECT_FOLDER"));
 
         // Explain what the file name pattern means

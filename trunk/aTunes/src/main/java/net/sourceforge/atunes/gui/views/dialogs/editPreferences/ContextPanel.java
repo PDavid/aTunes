@@ -52,6 +52,7 @@ import javax.swing.table.TableModel;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
+import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ClearCachesAction;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -216,7 +217,7 @@ public final class ContextPanel extends PreferencesPanel {
         showTextInTabs = new JCheckBox(I18nUtils.getString("SHOW_CONTEXT_TABS_TEXT"));
         hideVariousArtistsAlbums = new JCheckBox(I18nUtils.getString("HIDE_VARIOUS_ARTISTS_ALBUMS"));
         minimumSongNumberPerAlbum = new JCheckBox(I18nUtils.getString("MINIMUM_SONG_NUMBER_PER_ALBUM"));
-        minimumSongNumber = new JTextField(4);
+        minimumSongNumber = new CustomTextField(4);
         minimumSongNumber.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
