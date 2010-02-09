@@ -70,7 +70,7 @@ public abstract class Column implements Comparable<Column>, Serializable {
 
     /** Editable flag. */
     private boolean editable = false;
-    
+
     /** Indicates if this column can be used to filter objects */
     private boolean usedForFilter = false;
 
@@ -214,13 +214,15 @@ public abstract class Column implements Comparable<Column>, Serializable {
      * @return the value for
      */
     public abstract Object getValueFor(AudioObject audioObject);
-    
+
     /**
-     * Returns if this column can be shown only in play list. By default <code>false</code>
+     * Returns if this column can be shown only in play list. By default
+     * <code>false</code>
+     * 
      * @return
      */
     public boolean isPlayListExclusive() {
-    	return false;
+        return false;
     }
 
     /**
@@ -240,13 +242,15 @@ public abstract class Column implements Comparable<Column>, Serializable {
     public boolean isEditable() {
         return editable;
     }
-    
+
     /**
-     * Returns if this column can be sorted. All columns are sortable unless this method is overrided
+     * Returns if this column can be sorted. All columns are sortable unless
+     * this method is overrided
+     * 
      * @return
      */
     public boolean isSortable() {
-    	return true;
+        return true;
     }
 
     /**
@@ -370,64 +374,69 @@ public abstract class Column implements Comparable<Column>, Serializable {
     }
 
     /**
-     * Return a comparator to sort by this column. Comparator order is changed or not according to value of <code>changeSort</code>
-     * If not sort has been done before ascending comparator is returned
+     * Return a comparator to sort by this column. Comparator order is changed
+     * or not according to value of <code>changeSort</code> If not sort has been
+     * done before ascending comparator is returned
      * 
      * @param changeSort
      * @return
      */
     public Comparator<AudioObject> getComparator(boolean changeSort) {
-    	if (columnSort == null) {
-    		columnSort = ColumnSort.ASCENDING;
-    	} else if (columnSort == ColumnSort.ASCENDING && changeSort) {
-    		columnSort = ColumnSort.DESCENDING;
-    	} else if (columnSort == ColumnSort.DESCENDING && changeSort) {
-    		columnSort = ColumnSort.ASCENDING;
-    	}
-    	
-    	return new Comparator<AudioObject>() {
-    		@Override
-    		public int compare(AudioObject o1, AudioObject o2) {
-    			return columnSort == ColumnSort.ASCENDING ? ascendingCompare(o1, o2) : - ascendingCompare(o1, o2);
-    		}
-    	};
+        if (columnSort == null) {
+            columnSort = ColumnSort.ASCENDING;
+        } else if (columnSort == ColumnSort.ASCENDING && changeSort) {
+            columnSort = ColumnSort.DESCENDING;
+        } else if (columnSort == ColumnSort.DESCENDING && changeSort) {
+            columnSort = ColumnSort.ASCENDING;
+        }
+
+        return new Comparator<AudioObject>() {
+            @Override
+            public int compare(AudioObject o1, AudioObject o2) {
+                return columnSort == ColumnSort.ASCENDING ? ascendingCompare(o1, o2) : -ascendingCompare(o1, o2);
+            }
+        };
     }
 
-	/**
-	 * @return the usedForFilter
-	 */
-	public boolean isUsedForFilter() {
-		return usedForFilter;
-	}
+    /**
+     * @return the usedForFilter
+     */
+    public boolean isUsedForFilter() {
+        return usedForFilter;
+    }
 
-	/**
-	 * @param usedForFilter the usedForFilter to set
-	 */
-	public void setUsedForFilter(boolean usedForFilter) {
-		this.usedForFilter = usedForFilter;
-	}
-	
-	/**
-	 * Returns string used to filter by this column. By default it performs a <code>toString</code> over object returned by <code>getValueFor</code>
-	 * @param audioObject
-	 * @return
-	 */
-	public String getValueForFilter(AudioObject audioObject) {
-		return getValueFor(audioObject).toString();
-	}
+    /**
+     * @param usedForFilter
+     *            the usedForFilter to set
+     */
+    public void setUsedForFilter(boolean usedForFilter) {
+        this.usedForFilter = usedForFilter;
+    }
 
-	/**
-	 * @param columnSort the columnSort to set
-	 */
-	public void setColumnSort(ColumnSort columnSort) {
-		this.columnSort = columnSort;
-	}
+    /**
+     * Returns string used to filter by this column. By default it performs a
+     * <code>toString</code> over object returned by <code>getValueFor</code>
+     * 
+     * @param audioObject
+     * @return
+     */
+    public String getValueForFilter(AudioObject audioObject) {
+        return getValueFor(audioObject).toString();
+    }
 
-	/**
-	 * @return the columnSort
-	 */
-	public ColumnSort getColumnSort() {
-		return columnSort;
-	}
+    /**
+     * @param columnSort
+     *            the columnSort to set
+     */
+    public void setColumnSort(ColumnSort columnSort) {
+        this.columnSort = columnSort;
+    }
+
+    /**
+     * @return the columnSort
+     */
+    public ColumnSort getColumnSort() {
+        return columnSort;
+    }
 
 }

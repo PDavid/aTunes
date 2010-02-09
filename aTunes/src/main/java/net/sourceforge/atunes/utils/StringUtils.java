@@ -172,9 +172,9 @@ public final class StringUtils {
      * @return string with a given number of decimal digits
      */
     public static String toString(double value, int numberOfDecimals) {
-    	DecimalFormat df = new DecimalFormat("#.#");
-    	df.setMinimumFractionDigits(numberOfDecimals);
-    	return df.format(value);    	    	
+        DecimalFormat df = new DecimalFormat("#.#");
+        df.setMinimumFractionDigits(numberOfDecimals);
+        return df.format(value);
     }
 
     /**

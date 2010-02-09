@@ -43,10 +43,10 @@ public class TitleColumn extends Column {
     public Object getValueFor(AudioObject audioObject) {
         return audioObject.getTitleOrFileName();
     }
-    
+
     @Override
     public String getValueForFilter(AudioObject audioObject) {
-    	return audioObject.getTitle();
+        return audioObject.getTitle();
     }
 
 }

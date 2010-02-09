@@ -77,11 +77,10 @@ public final class I18nUtils {
      * @return the languages
      */
     public static List<Locale> getLanguages() {
-        return Arrays
-                .asList(new Locale("ar"), new Locale("ca"), new Locale("cs"), new Locale("da"), new Locale("de"), new Locale("el"), new Locale("en"), new Locale("es"), new Locale("fr"), new Locale(
-                        "gl"), new Locale("hr"), new Locale("hu"), new Locale("it"), new Locale("ja"), new Locale("nl"), new Locale("no"), new Locale("pl"),
-                        new Locale("pt", "BR"), new Locale("pt"), new Locale("ru"), new Locale("sk"), new Locale("sv"), new Locale("tr"), new Locale("uk"), new Locale("zh", "TW"),
-                        new Locale("zh"));
+        return Arrays.asList(new Locale("ar"), new Locale("ca"), new Locale("cs"), new Locale("da"), new Locale("de"), new Locale("el"), new Locale("en"), new Locale("es"),
+                new Locale("fr"), new Locale("gl"), new Locale("hr"), new Locale("hu"), new Locale("it"), new Locale("ja"), new Locale("nl"), new Locale("no"), new Locale("pl"),
+                new Locale("pt", "BR"), new Locale("pt"), new Locale("ru"), new Locale("sk"), new Locale("sv"), new Locale("tr"), new Locale("uk"), new Locale("zh", "TW"),
+                new Locale("zh"));
     }
 
     /**

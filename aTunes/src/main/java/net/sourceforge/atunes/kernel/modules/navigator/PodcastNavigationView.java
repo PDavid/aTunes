@@ -73,7 +73,7 @@ public final class PodcastNavigationView extends NavigationView {
     private JPopupMenu podcastFeedTreeMenu;
 
     private JPopupMenu podcastFeedTableMenu;
-    
+
     /** The column set */
     private ColumnSet columnSet;
 
@@ -224,136 +224,136 @@ public final class PodcastNavigationView extends NavigationView {
             }
         }
     }
-    
+
     @Override
     public boolean isUseDefaultNavigatorColumnSet() {
-    	return false;
+        return false;
     }
 
     @Override
     public ColumnSet getCustomColumnSet() {
-    	if (columnSet == null) {
-    		columnSet = new CustomNavigatorColumnSet(this.getClass().getName()) {
-				
-				@Override
-				protected List<Column> getAllowedColumns() {
-					List<Column> columns = new ArrayList<Column>();
-					
-					Column property1 = new Column("", Property.class) {
-						/**
+        if (columnSet == null) {
+            columnSet = new CustomNavigatorColumnSet(this.getClass().getName()) {
+
+                @Override
+                protected List<Column> getAllowedColumns() {
+                    List<Column> columns = new ArrayList<Column>();
+
+                    Column property1 = new Column("", Property.class) {
+                        /**
 						 * 
 						 */
-						private static final long serialVersionUID = 1L;
-						
-						@Override
-						public Object getValueFor(AudioObject audioObject) {
-							return ((PodcastFeedEntry) audioObject).isListened() ? Property.NO_PROPERTIES : Property.NOT_LISTENED_ENTRY;
-						}
-						
-						@Override
-						protected int ascendingCompare(AudioObject o1, AudioObject o2) {
-							return Boolean.valueOf(((PodcastFeedEntry) o1).isListened()).compareTo(Boolean.valueOf(((PodcastFeedEntry) o2).isListened()));
-						}
-					};
-					property1.setVisible(true);
-					property1.setWidth(20);
-					property1.setResizable(false);
-					columns.add(property1);
+                        private static final long serialVersionUID = 1L;
 
-					Column property2 = new Column("", Property.class) {
-						/**
+                        @Override
+                        public Object getValueFor(AudioObject audioObject) {
+                            return ((PodcastFeedEntry) audioObject).isListened() ? Property.NO_PROPERTIES : Property.NOT_LISTENED_ENTRY;
+                        }
+
+                        @Override
+                        protected int ascendingCompare(AudioObject o1, AudioObject o2) {
+                            return Boolean.valueOf(((PodcastFeedEntry) o1).isListened()).compareTo(Boolean.valueOf(((PodcastFeedEntry) o2).isListened()));
+                        }
+                    };
+                    property1.setVisible(true);
+                    property1.setWidth(20);
+                    property1.setResizable(false);
+                    columns.add(property1);
+
+                    Column property2 = new Column("", Property.class) {
+                        /**
 						 * 
 						 */
-						private static final long serialVersionUID = 1L;
+                        private static final long serialVersionUID = 1L;
 
-						@Override
-						public Object getValueFor(AudioObject audioObject) {
-							return ((PodcastFeedEntry) audioObject).isDownloaded() ? Property.DOWNLOADED_ENTRY : Property.NO_PROPERTIES;
-						}
-						
-						@Override
-						protected int ascendingCompare(AudioObject o1, AudioObject o2) {
-							return Boolean.valueOf(((PodcastFeedEntry) o1).isDownloaded()).compareTo(Boolean.valueOf(((PodcastFeedEntry) o2).isDownloaded()));
-						}
-					};
-					property2.setVisible(true);
-					property2.setWidth(20);
-					property2.setResizable(false);
-					columns.add(property2);
+                        @Override
+                        public Object getValueFor(AudioObject audioObject) {
+                            return ((PodcastFeedEntry) audioObject).isDownloaded() ? Property.DOWNLOADED_ENTRY : Property.NO_PROPERTIES;
+                        }
 
-					Column property3 = new Column("", Property.class) {
-						/**
+                        @Override
+                        protected int ascendingCompare(AudioObject o1, AudioObject o2) {
+                            return Boolean.valueOf(((PodcastFeedEntry) o1).isDownloaded()).compareTo(Boolean.valueOf(((PodcastFeedEntry) o2).isDownloaded()));
+                        }
+                    };
+                    property2.setVisible(true);
+                    property2.setWidth(20);
+                    property2.setResizable(false);
+                    columns.add(property2);
+
+                    Column property3 = new Column("", Property.class) {
+                        /**
 						 * 
 						 */
-						private static final long serialVersionUID = 1L;
+                        private static final long serialVersionUID = 1L;
 
-						@Override
-						public Object getValueFor(AudioObject audioObject) {
-							return ((PodcastFeedEntry) audioObject).isOld() ? Property.OLD_ENTRY : Property.NO_PROPERTIES;
-						}
-						
-						@Override
-						protected int ascendingCompare(AudioObject o1, AudioObject o2) {
-							return Boolean.valueOf(((PodcastFeedEntry) o1).isOld()).compareTo(Boolean.valueOf(((PodcastFeedEntry) o2).isOld()));
-						}
-						
-					};
-					property3.setVisible(true);
-					property3.setWidth(20);
-					property3.setResizable(false);
-					columns.add(property3);
+                        @Override
+                        public Object getValueFor(AudioObject audioObject) {
+                            return ((PodcastFeedEntry) audioObject).isOld() ? Property.OLD_ENTRY : Property.NO_PROPERTIES;
+                        }
 
-					Column entries = new Column("PODCAST_ENTRIES", String.class) {
-						
-						/**
+                        @Override
+                        protected int ascendingCompare(AudioObject o1, AudioObject o2) {
+                            return Boolean.valueOf(((PodcastFeedEntry) o1).isOld()).compareTo(Boolean.valueOf(((PodcastFeedEntry) o2).isOld()));
+                        }
+
+                    };
+                    property3.setVisible(true);
+                    property3.setWidth(20);
+                    property3.setResizable(false);
+                    columns.add(property3);
+
+                    Column entries = new Column("PODCAST_ENTRIES", String.class) {
+
+                        /**
 						 * 
 						 */
-						private static final long serialVersionUID = -1788596965509543581L;
+                        private static final long serialVersionUID = -1788596965509543581L;
 
-						@Override
-						public Object getValueFor(AudioObject audioObject) {
-							return audioObject.getTitleOrFileName();
-						}
-						
-						@Override
-						protected int ascendingCompare(AudioObject o1, AudioObject o2) {
-							return o1.getTitleOrFileName().compareTo(o2.getTitleOrFileName());
-						}
-					};
-					entries.setVisible(true);
-					entries.setWidth(300);
-					entries.setUsedForFilter(true);
-					columns.add(entries);
-					
-					Column duration = new Column("DURATION", String.class) {
-						
-						/**
+                        @Override
+                        public Object getValueFor(AudioObject audioObject) {
+                            return audioObject.getTitleOrFileName();
+                        }
+
+                        @Override
+                        protected int ascendingCompare(AudioObject o1, AudioObject o2) {
+                            return o1.getTitleOrFileName().compareTo(o2.getTitleOrFileName());
+                        }
+                    };
+                    entries.setVisible(true);
+                    entries.setWidth(300);
+                    entries.setUsedForFilter(true);
+                    columns.add(entries);
+
+                    Column duration = new Column("DURATION", String.class) {
+
+                        /**
 						 * 
 						 */
-						private static final long serialVersionUID = -5577224920500040774L;
+                        private static final long serialVersionUID = -5577224920500040774L;
 
-						@Override
-						public Object getValueFor(AudioObject audioObject) {
-							return StringUtils.seconds2String(audioObject.getDuration());
-						}
-						
-						@Override
-						protected int ascendingCompare(AudioObject o1, AudioObject o2) {
-							return Integer.valueOf(o1.getDuration()).compareTo(Integer.valueOf(o2.getDuration()));
-						}
-					};
-					duration.setVisible(true);
-					duration.setWidth(60);
-					duration.setUsedForFilter(true);
-					columns.add(duration);
-					
-					return columns;
-				}
-			};
-    	}
-    	return columnSet;
+                        @Override
+                        public Object getValueFor(AudioObject audioObject) {
+                            return StringUtils.seconds2String(audioObject.getDuration());
+                        }
+
+                        @Override
+                        protected int ascendingCompare(AudioObject o1, AudioObject o2) {
+                            return Integer.valueOf(o1.getDuration()).compareTo(Integer.valueOf(o2.getDuration()));
+                        }
+                    };
+                    duration.setVisible(true);
+                    duration.setWidth(60);
+                    duration.setUsedForFilter(true);
+                    columns.add(duration);
+
+                    return columns;
+                }
+            };
+        }
+        return columnSet;
     }
-    
+
     @Override
     public boolean isViewModeSupported() {
         return false;
@@ -361,10 +361,10 @@ public final class PodcastNavigationView extends NavigationView {
 
     @Override
     protected TreeCellRenderer getTreeRenderer() {
-    	return LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTreeCellRenderer(new TreeCellRendererCode() {
-			
-			@Override
-			public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
+        return LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTreeCellRenderer(new TreeCellRendererCode() {
+
+            @Override
+            public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
                 JLabel icon = (JLabel) superComponent;
                 icon.setIcon(Images.getImage(Images.RSS_LITTLE));
                 return icon;

@@ -42,7 +42,7 @@ public class AlbumColumn extends Column {
     @Override
     protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
         if (ao1.getAlbum().equals(ao2.getAlbum())) {
-            if (ao1.getDiscNumber()==ao2.getDiscNumber()) {
+            if (ao1.getDiscNumber() == ao2.getDiscNumber()) {
                 return Integer.valueOf(ao1.getTrackNumber()).compareTo(ao2.getTrackNumber());
             }
             return Integer.valueOf(ao1.getDiscNumber()).compareTo(ao2.getDiscNumber());
@@ -56,10 +56,10 @@ public class AlbumColumn extends Column {
         return new JLabel(audioObject.getAlbum(), !FavoritesHandler.getInstance().getFavoriteAlbumsInfo().containsKey(audioObject.getAlbum()) ? null : Images
                 .getImage(Images.ALBUM_FAVORITE), SwingConstants.LEFT);
     }
-    
+
     @Override
     public String getValueForFilter(AudioObject audioObject) {
-    	return audioObject.getAlbum();
+        return audioObject.getAlbum();
     }
 
 }

@@ -37,7 +37,7 @@ public final class ColumnBean {
 
     /** The width. */
     private int width;
-    
+
     /** The sort */
     private ColumnSort sort;
 
@@ -98,17 +98,18 @@ public final class ColumnBean {
         this.width = width;
     }
 
-	/**
-	 * @return the sort
-	 */
-	public ColumnSort getSort() {
-		return sort;
-	}
+    /**
+     * @return the sort
+     */
+    public ColumnSort getSort() {
+        return sort;
+    }
 
-	/**
-	 * @param sort the sort to set
-	 */
-	public void setSort(ColumnSort sort) {
-		this.sort = sort;
-	}
+    /**
+     * @param sort
+     *            the sort to set
+     */
+    public void setSort(ColumnSort sort) {
+        this.sort = sort;
+    }
 }

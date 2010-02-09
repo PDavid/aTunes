@@ -256,7 +256,7 @@ public final class PlayListController extends SimpleController<PlayListPanel> {
             GuiHandler.getInstance().getPlayListTable().getSelectionModel().addSelectionInterval(selectedRows[i], selectedRows[i]);
         }
     }
-    
+
     public void reapplyFilter() {
         getLogger().debug(LogCategories.CONTROLLER);
 

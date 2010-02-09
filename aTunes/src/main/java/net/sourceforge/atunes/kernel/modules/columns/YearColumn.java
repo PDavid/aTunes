@@ -48,10 +48,10 @@ public class YearColumn extends Column {
         // Return year
         return audioObject.getYear();
     }
-    
+
     @Override
     public String getValueForFilter(AudioObject audioObject) {
-    	return audioObject.getYear();
+        return audioObject.getYear();
     }
 
 }

@@ -212,13 +212,13 @@ public final class AboutDialog extends CustomModalDialog {
         JTable propertiesTable = new JTable(tableModel);
         propertiesTable.setShowGrid(false);
         propertiesTable.setDefaultRenderer(Object.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
-			
-			@Override
-			public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+
+            @Override
+            public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 GuiUtils.applyComponentOrientation((JLabel) superComponent);
                 return superComponent;
-			}
-		}));
+            }
+        }));
         JScrollPane propertiesScrollPane = new JScrollPane(propertiesTable);
 
         JButton close = new CustomButton(null, I18nUtils.getString("CLOSE"));

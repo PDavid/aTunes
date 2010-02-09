@@ -280,17 +280,17 @@ public final class FileSelectionDialog extends CustomModalDialog {
      */
     private void setListRenderer() {
         fileSystemList.setCellRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListCellRenderer(new ListCellRendererCode() {
-			
-			@Override
-			public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+
+            @Override
+            public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 JLabel icon = (JLabel) superComponent;
                 File f = (File) value;
                 icon.setText(fsView.getSystemDisplayName(f));
                 icon.setIcon(fsView.getSystemIcon(f));
                 icon.setHorizontalAlignment(GuiUtils.getComponentOrientationAsSwingConstant());
                 return icon;
-			}
-		}));
+            }
+        }));
     }
 
     /**
@@ -419,13 +419,13 @@ public final class FileSelectionDialog extends CustomModalDialog {
      */
     private void setTreeRenderer() {
         fileSystemTree.setCellRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTreeCellRenderer(new TreeCellRendererCode() {
-			
-			@Override
-			public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
+
+            @Override
+            public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
 
                 if (node.getUserObject() instanceof String) {
-                	((JLabel)superComponent).setText(null);
+                    ((JLabel) superComponent).setText(null);
                     return superComponent;
                 }
 
@@ -434,8 +434,8 @@ public final class FileSelectionDialog extends CustomModalDialog {
                 icon.setIcon(fsView.getSystemIcon(content.file));
 
                 return icon;
-			}
-		}));
+            }
+        }));
     }
 
     /**

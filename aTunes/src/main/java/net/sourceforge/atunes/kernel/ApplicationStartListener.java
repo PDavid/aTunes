@@ -28,8 +28,8 @@ package net.sourceforge.atunes.kernel;
  */
 public interface ApplicationStartListener {
 
-	/**
-	 * Called after application start
-	 */
-	public void applicationStarted();
+    /**
+     * Called after application start
+     */
+    public void applicationStarted();
 }

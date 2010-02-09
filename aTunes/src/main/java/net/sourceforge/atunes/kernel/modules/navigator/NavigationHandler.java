@@ -53,43 +53,42 @@ public final class NavigationHandler extends Handler implements PluginListener {
      */
     private Filter tableFilter = new Filter() {
 
-    	@Override
-    	public String getName() {
-    		return "NAVIGATION_TABLE";
-    	}
-    	
-    	@Override
-    	public String getDescription() {
-    		return I18nUtils.getString("NAVIGATION_TABLE");
-    	}
-    	
-    	@Override
-    	public void applyFilter(String filter) {
-    		ControllerProxy.getInstance().getNavigationController().updateTableContent(getCurrentView().getTree());
-    	}
+        @Override
+        public String getName() {
+            return "NAVIGATION_TABLE";
+        }
+
+        @Override
+        public String getDescription() {
+            return I18nUtils.getString("NAVIGATION_TABLE");
+        }
+
+        @Override
+        public void applyFilter(String filter) {
+            ControllerProxy.getInstance().getNavigationController().updateTableContent(getCurrentView().getTree());
+        }
     };
-    
+
     /**
      * Filter for tree
      */
     private Filter treeFilter = new Filter() {
-    	
-    	@Override
-    	public String getName() {
-    		return "NAVIGATION_TREE";
-    	};
-    	
-    	@Override
-    	public String getDescription() {
-    		return I18nUtils.getString("NAVIGATOR");
-    	};
-    	
-    	@Override
-    	public void applyFilter(String filter) {
-    		refreshCurrentView();
-    	};
-    };
 
+        @Override
+        public String getName() {
+            return "NAVIGATION_TREE";
+        };
+
+        @Override
+        public String getDescription() {
+            return I18nUtils.getString("NAVIGATOR");
+        };
+
+        @Override
+        public void applyFilter(String filter) {
+            refreshCurrentView();
+        };
+    };
 
     /**
      * Getter of singleton instance
@@ -162,7 +161,7 @@ public final class NavigationHandler extends Handler implements PluginListener {
      */
     public void refreshCurrentView() {
         getCurrentView().refreshView(ApplicationState.getInstance().getViewMode(),
-        		FilterHandler.getInstance().isFilterSelected(getTreeFilter()) ? FilterHandler.getInstance().getFilter() : null);
+                FilterHandler.getInstance().isFilterSelected(getTreeFilter()) ? FilterHandler.getInstance().getFilter() : null);
     }
 
     /**
@@ -222,17 +221,17 @@ public final class NavigationHandler extends Handler implements PluginListener {
         refreshCurrentView();
     }
 
-	/**
-	 * @return the tableFilter
-	 */
-	public Filter getTableFilter() {
-		return tableFilter;
-	}
+    /**
+     * @return the tableFilter
+     */
+    public Filter getTableFilter() {
+        return tableFilter;
+    }
 
-	/**
-	 * @return the treeFilter
-	 */
-	public Filter getTreeFilter() {
-		return treeFilter;
-	}
+    /**
+     * @return the treeFilter
+     */
+    public Filter getTreeFilter() {
+        return treeFilter;
+    }
 }

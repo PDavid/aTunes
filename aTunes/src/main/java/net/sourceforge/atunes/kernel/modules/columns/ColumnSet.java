@@ -30,38 +30,40 @@ import net.sourceforge.atunes.model.AudioObject;
 
 /**
  * A set of columns used in a component
+ * 
  * @author fleax
- *
+ * 
  */
-public abstract class ColumnSet  {
+public abstract class ColumnSet {
 
-	/** Available columns */
-	private List<Column> availableColumns;
-	
-	/** Column map for direct access */
-	private Map<Class<? extends Column>, Column> columnMap;
-	
+    /** Available columns */
+    private List<Column> availableColumns;
+
+    /** Column map for direct access */
+    private Map<Class<? extends Column>, Column> columnMap;
+
     /** The current visible columns. */
     private List<Class<? extends Column>> currentColumns;
-    
+
     /** Logger */
     private Logger logger;
-    
+
     public ColumnSet() {
-    	ColumnSets.registerColumnSet(this);
-	}
-    
+        ColumnSets.registerColumnSet(this);
+    }
+
     /**
      * Returns logger
+     * 
      * @return
      */
     protected final Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
     }
-    
+
     /**
      * Gets the available columns.
      * 
@@ -75,7 +77,7 @@ public abstract class ColumnSet  {
             availableColumns = getAllowedColumns();
             columnMap = new HashMap<Class<? extends Column>, Column>();
             for (Column c : availableColumns) {
-            	columnMap.put(c.getClass(), c);
+                columnMap.put(c.getClass(), c);
             }
 
             // Apply configuration
@@ -90,13 +92,14 @@ public abstract class ColumnSet  {
         }
         return availableColumns;
     }
-    
+
     /**
      * Returns a list of columns allowed to be used in this column set
+     * 
      * @return
      */
     protected abstract List<Column> getAllowedColumns();
-    
+
     /**
      * Store current column settings.
      */
@@ -111,6 +114,7 @@ public abstract class ColumnSet  {
 
     /**
      * Returns the amount of columns visible in this set
+     * 
      * @return
      */
     public final int getVisibleColumnCount() {
@@ -151,19 +155,20 @@ public abstract class ColumnSet  {
             }
         }
     }
-    
+
     /**
      * Returns columns used for filtering
+     * 
      * @return
      */
     private List<Column> getColumnsForFilter() {
-    	List<Column> columnsForFilter = new ArrayList<Column>();
+        List<Column> columnsForFilter = new ArrayList<Column>();
         for (Column c : getAvailableColumns()) {
             if (c.isVisible() && c.isUsedForFilter()) {
-            	columnsForFilter.add(c);
+                columnsForFilter.add(c);
             }
-        }    	
-    	return columnsForFilter;
+        }
+        return columnsForFilter;
     }
 
     /**
@@ -189,7 +194,7 @@ public abstract class ColumnSet  {
     public List<Column> getColumnsForSelection() {
         return new ArrayList<Column>(getAvailableColumns());
     }
-    
+
     /**
      * Returns a column object given its class name
      * 
@@ -197,115 +202,124 @@ public abstract class ColumnSet  {
      * @return
      */
     public Column getColumn(Class<? extends Column> columnClass) {
-    	return columnMap.get(columnClass);
+        return columnMap.get(columnClass);
     }
 
     /**
-     * Filters audio objects with given filter and current visible columns of this column set
+     * Filters audio objects with given filter and current visible columns of
+     * this column set
+     * 
      * @param audioObjects
      * @param filter
      * @return
      */
     public List<AudioObject> filterAudioObjects(List<AudioObject> audioObjects, String filter) {
-    	List<AudioObject> result = new ArrayList<AudioObject>();
-    	List<Column> columnsForFilter = getColumnsForFilter();
-    	String lowerCaseFilter = filter.toLowerCase();
-    	
-    	for (AudioObject audioObject : audioObjects) {
-    		if (filterAudioObject(audioObject, columnsForFilter, lowerCaseFilter)) {
-    			result.add(audioObject);
-    		}
-    	}
-    	
-    	return result;
+        List<AudioObject> result = new ArrayList<AudioObject>();
+        List<Column> columnsForFilter = getColumnsForFilter();
+        String lowerCaseFilter = filter.toLowerCase();
+
+        for (AudioObject audioObject : audioObjects) {
+            if (filterAudioObject(audioObject, columnsForFilter, lowerCaseFilter)) {
+                result.add(audioObject);
+            }
+        }
+
+        return result;
     }
-    
+
     /**
-     * Returns <code>true</code> if given audio object passes the given filter for at least one column
+     * Returns <code>true</code> if given audio object passes the given filter
+     * for at least one column
+     * 
      * @param audioObject
      * @param columns
      * @return
      */
     private boolean filterAudioObject(AudioObject audioObject, List<Column> columns, String filter) {
-    	boolean passed = false;
-    	int i = 0;
-    	while (!passed && i < columns.size()) {
-    		String value = columns.get(i++).getValueForFilter(audioObject);
-    		if (value != null) {
-    			passed = value.toLowerCase().contains(filter);
-    		}
-    	}
-    	return passed;
+        boolean passed = false;
+        int i = 0;
+        while (!passed && i < columns.size()) {
+            String value = columns.get(i++).getValueForFilter(audioObject);
+            if (value != null) {
+                passed = value.toLowerCase().contains(filter);
+            }
+        }
+        return passed;
     }
-    
+
     /**
      * Called to add a new available column
+     * 
      * @param column
      */
     protected final void addNewColumn(Column column) {
-    	column.setOrder(getAvailableColumns().size());
-    	getAvailableColumns().add(column);
-    	columnMap.put(column.getClass(), column);
-    	
+        column.setOrder(getAvailableColumns().size());
+        getAvailableColumns().add(column);
+        columnMap.put(column.getClass(), column);
 
-    	// Apply configuration if column has been previously used
-    	boolean needRefresh = false;
-    	Map<String, ColumnBean> columnsBeans = getColumnsConfiguration();
-    	if (columnsBeans != null) {
-    		ColumnBean bean = columnsBeans.get(column.getClass().getName());
-    		if (bean != null) {
-    			column.applyColumnBean(bean);
-    			needRefresh = true;
-    		}
-    	}
+        // Apply configuration if column has been previously used
+        boolean needRefresh = false;
+        Map<String, ColumnBean> columnsBeans = getColumnsConfiguration();
+        if (columnsBeans != null) {
+            ColumnBean bean = columnsBeans.get(column.getClass().getName());
+            if (bean != null) {
+                column.applyColumnBean(bean);
+                needRefresh = true;
+            }
+        }
 
-    	// Refresh columns if necessary
-    	if (needRefresh) {
-    		refreshColumns();
-    	}
+        // Refresh columns if necessary
+        if (needRefresh) {
+            refreshColumns();
+        }
     }
 
     /**
      * Called to remove an available column
+     * 
      * @param columnClass
      */
     public void removeColumn(Class<?> columnClass) {
-		Column column = columnMap.get(columnClass);
-		columnMap.remove(columnClass);
-   		getAvailableColumns().remove(column);
-    	refreshColumns();
+        Column column = columnMap.get(columnClass);
+        columnMap.remove(columnClass);
+        getAvailableColumns().remove(column);
+        refreshColumns();
     }
 
     /**
      * Returns the column sorted (if any)
+     * 
      * @return
      */
     public Column getSortedColumn() {
-    	if (currentColumns != null) {
-    		for (Class<? extends Column> columnClass : currentColumns) {
-    			Column column = getColumn(columnClass);
-    			if (column.getColumnSort() != null) {
-    				return column;
-    			}
-    		}
-    	}
-    	return null;
+        if (currentColumns != null) {
+            for (Class<? extends Column> columnClass : currentColumns) {
+                Column column = getColumn(columnClass);
+                if (column.getColumnSort() != null) {
+                    return column;
+                }
+            }
+        }
+        return null;
     }
-    
+
     /**
      * Returns existing column configuration for this column set
+     * 
      * @return
      */
     protected abstract Map<String, ColumnBean> getColumnsConfiguration();
-    
+
     /**
      * Sets column configuration of this column set
+     * 
      * @param columnsConfiguration
      */
     protected abstract void setColumnsConfiguration(Map<String, ColumnBean> columnsConfiguration);
 
     /**
-     * Method called to refresh columns when a plugin is activated or deactivated
+     * Method called to refresh columns when a plugin is activated or
+     * deactivated
      */
     protected abstract void refreshColumns();
 

@@ -89,25 +89,25 @@ public class AlbumTracksContent extends ContextPanelContent {
         tracksTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tracksTable.setShowGrid(false);
         tracksTable.setDefaultRenderer(String.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
-			
-			@Override
-			public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                Component c = superComponent;
-                GuiUtils.applyComponentOrientation((JLabel) c);
-                return c;
-			}
-		}));
-        
-        tracksTable.setDefaultRenderer(Integer.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
-			
-			@Override
-			public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+
+            @Override
+            public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component c = superComponent;
                 GuiUtils.applyComponentOrientation((JLabel) c);
                 return c;
             }
         }));
-        
+
+        tracksTable.setDefaultRenderer(Integer.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
+
+            @Override
+            public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                Component c = superComponent;
+                GuiUtils.applyComponentOrientation((JLabel) c);
+                return c;
+            }
+        }));
+
         tracksTable.getTableHeader().setReorderingAllowed(true);
         tracksTable.getTableHeader().setResizingAllowed(false);
         tracksTable.setColumnModel(new DefaultTableColumnModel() {

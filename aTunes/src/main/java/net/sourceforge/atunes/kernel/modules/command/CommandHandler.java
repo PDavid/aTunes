@@ -69,7 +69,7 @@ public class CommandHandler extends Handler {
 
     @Override
     public void applicationStarted() {
-    	runCommands(ApplicationArguments.getSavedCommands());
+        runCommands(ApplicationArguments.getSavedCommands());
     }
 
     /**
@@ -155,16 +155,16 @@ public class CommandHandler extends Handler {
     @Override
     public void applicationFinish() {
     }
-    
+
     @Override
     public void applicationStateChanged(ApplicationState newState) {
     }
-    
+
     @Override
     protected void initHandler() {
-    	initActions();
+        initActions();
     }
-    
+
     private void initActions() {
         Actions.getAction(PlayNextAudioObjectAction.class);
         Actions.getAction(PlayPreviousAudioObjectAction.class);

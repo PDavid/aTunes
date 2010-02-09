@@ -40,19 +40,19 @@ public class Volume {
         final int finalVolume = volume;
         ApplicationState.getInstance().setVolume(volume);
         PlayerHandler.getInstance().setVolume(volume);
-        
+
         if (!EventQueue.isDispatchThread()) {
-        	SwingUtilities.invokeLater(new Runnable() {
-        		@Override
-        		public void run() {
-        	        ControllerProxy.getInstance().getPlayerControlsController().setVolume(finalVolume);
-        	        GuiHandler.getInstance().getFullScreenWindow().setVolume(finalVolume);
-        	        ((MuteAction) Actions.getAction(MuteAction.class)).updateIcon();
-        		}
-        	});
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    ControllerProxy.getInstance().getPlayerControlsController().setVolume(finalVolume);
+                    GuiHandler.getInstance().getFullScreenWindow().setVolume(finalVolume);
+                    ((MuteAction) Actions.getAction(MuteAction.class)).updateIcon();
+                }
+            });
         } else {
-        	ControllerProxy.getInstance().getPlayerControlsController().setVolume(finalVolume);
-        	GuiHandler.getInstance().getFullScreenWindow().setVolume(finalVolume);
+            ControllerProxy.getInstance().getPlayerControlsController().setVolume(finalVolume);
+            GuiHandler.getInstance().getFullScreenWindow().setVolume(finalVolume);
             ((MuteAction) Actions.getAction(MuteAction.class)).updateIcon();
         }
 

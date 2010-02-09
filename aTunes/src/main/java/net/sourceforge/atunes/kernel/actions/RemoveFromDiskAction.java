@@ -146,7 +146,8 @@ public class RemoveFromDiskAction extends Action {
         if (rows.length > 0) {
             List<AudioObject> songs = new ArrayList<AudioObject>();
             for (int element : rows) {
-                songs.add(((NavigationTableModel) ControllerProxy.getInstance().getNavigationController().getNavigationTablePanel().getNavigationTable().getModel()).getSongAt(element));
+                songs.add(((NavigationTableModel) ControllerProxy.getInstance().getNavigationController().getNavigationTablePanel().getNavigationTable().getModel())
+                        .getSongAt(element));
             }
             for (int i = 0; i < songs.size(); i++) {
                 PodcastFeedEntry podcastFeedEntry = (PodcastFeedEntry) songs.get(i);

@@ -150,7 +150,7 @@ public final class SmartPlayListHandler {
 
         // Sort
         AudioObjectComparator.sort(songsSelected);
-        
+
         // Add to playlist
         PlayListHandler.getInstance().addToPlayList(songsSelected);
     }
@@ -191,8 +191,8 @@ public final class SmartPlayListHandler {
         // Add to playlist
         int count = Math.min(unplayedSongs.size(), n);
         if (count > 0) {
-        	List<AudioObject> audioObjects = new ArrayList<AudioObject>(unplayedSongs.subList(0, count));
-        	AudioObjectComparator.sort(audioObjects);
+            List<AudioObject> audioObjects = new ArrayList<AudioObject>(unplayedSongs.subList(0, count));
+            AudioObjectComparator.sort(audioObjects);
             PlayListHandler.getInstance().addToPlayList(audioObjects);
         }
     }

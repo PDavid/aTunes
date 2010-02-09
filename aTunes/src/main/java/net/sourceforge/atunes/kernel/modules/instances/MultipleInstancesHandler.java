@@ -208,11 +208,11 @@ public final class MultipleInstancesHandler extends Handler {
     private MultipleInstancesHandler() {
         // Nothing to do
     }
-    
+
     @Override
     public void applicationStateChanged(ApplicationState newState) {
     }
-    
+
     @Override
     protected void initHandler() {
     }

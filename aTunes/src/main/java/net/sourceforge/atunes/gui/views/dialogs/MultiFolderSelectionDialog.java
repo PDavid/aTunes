@@ -209,7 +209,7 @@ public final class MultiFolderSelectionDialog extends CustomModalDialog {
 
         /** The label. */
         protected JLabel label;
-        
+
         private TreeCellRendererCode rendererCode;
 
         /**
@@ -222,34 +222,34 @@ public final class MultiFolderSelectionDialog extends CustomModalDialog {
             add(check);
             add(label = new JLabel());
             rendererCode = new TreeCellRendererCode() {
-				
-				@Override
-				public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
-		            String stringValue = value.toString();
-		            setEnabled(tree.isEnabled());
-		            if (value instanceof CheckNode) {
-		                check.setSelected(((CheckNode) value).isSelected());
-		                check.setEnabled(((CheckNode) value).isEnabled());
-		                label.setFont(tree.getFont());
-		                label.setText(stringValue);
-		                if (((CheckNode) value).getUserObject() instanceof Directory) {
-		                    Directory content = (Directory) ((CheckNode) value).getUserObject();
-		                    label.setIcon(((CheckNode) value).getIcon());
-		                    if (isInPathOfSelectedFolders(content.getFile()) || ((CheckNode) value).isSelected()) {
-		                        label.setFont(label.getFont().deriveFont(Font.BOLD));
-		                    }
-		                }
-		            } else if (value instanceof DefaultMutableTreeNode) {
-		                check.setEnabled(false);
-		                check.setSelected(false);
-		                label.setText(stringValue);
-		                label.setIcon(null);
-		                label.setFont(tree.getFont());
-		            }
 
-		            return CheckRenderer.this;
-				}
-			};
+                @Override
+                public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
+                    String stringValue = value.toString();
+                    setEnabled(tree.isEnabled());
+                    if (value instanceof CheckNode) {
+                        check.setSelected(((CheckNode) value).isSelected());
+                        check.setEnabled(((CheckNode) value).isEnabled());
+                        label.setFont(tree.getFont());
+                        label.setText(stringValue);
+                        if (((CheckNode) value).getUserObject() instanceof Directory) {
+                            Directory content = (Directory) ((CheckNode) value).getUserObject();
+                            label.setIcon(((CheckNode) value).getIcon());
+                            if (isInPathOfSelectedFolders(content.getFile()) || ((CheckNode) value).isSelected()) {
+                                label.setFont(label.getFont().deriveFont(Font.BOLD));
+                            }
+                        }
+                    } else if (value instanceof DefaultMutableTreeNode) {
+                        check.setEnabled(false);
+                        check.setSelected(false);
+                        label.setText(stringValue);
+                        label.setIcon(null);
+                        label.setFont(tree.getFont());
+                    }
+
+                    return CheckRenderer.this;
+                }
+            };
         }
 
         // TODO this method should be aware of component orientation
@@ -280,8 +280,8 @@ public final class MultiFolderSelectionDialog extends CustomModalDialog {
 
         @Override
         public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-        	Component superComponent = super.getTreeCellRendererComponent(tree, "", isSelected, expanded, leaf, row, hasFocus);
-        	return rendererCode.getComponent(superComponent, tree, value, isSelected, expanded, leaf, row, hasFocus);
+            Component superComponent = super.getTreeCellRendererComponent(tree, "", isSelected, expanded, leaf, row, hasFocus);
+            return rendererCode.getComponent(superComponent, tree, value, isSelected, expanded, leaf, row, hasFocus);
         }
 
     }

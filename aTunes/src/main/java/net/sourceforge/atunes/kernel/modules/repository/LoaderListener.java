@@ -68,7 +68,7 @@ public interface LoaderListener {
      *            the time
      */
     public void notifyRemainingTime(long time);
-    
+
     /**
      * Notify read progress (not refresh)
      */

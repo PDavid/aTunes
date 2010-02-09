@@ -43,7 +43,7 @@ public class NavigatorColumnSet extends ColumnSet {
      */
     private NavigatorColumnSet() {
         super();
-    }    
+    }
 
     /**
      * Returns singleton instance
@@ -59,9 +59,9 @@ public class NavigatorColumnSet extends ColumnSet {
 
     @Override
     protected List<Column> getAllowedColumns() {
-    	return Columns.getColumns(false);
+        return Columns.getColumns(false);
     }
-    
+
     @Override
     protected Map<String, ColumnBean> getColumnsConfiguration() {
         return ApplicationState.getInstance().getDefaultNavigatorColumns();

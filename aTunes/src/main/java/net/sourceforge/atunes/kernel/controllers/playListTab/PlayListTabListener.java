@@ -80,7 +80,7 @@ final class PlayListTabListener extends MouseAdapter implements ActionListener, 
                 panel.getPlayListsPopUpButton().add(plMenuItem);
             }
         } else if (e.getSource() == panel.getArrangeColumnsMenuItem()) {
-        	ColumnSetPopupMenu.selectColumns((CommonColumnModel)ControllerProxy.getInstance().getPlayListController().getMainPlayListTable().getColumnModel());
+            ColumnSetPopupMenu.selectColumns((CommonColumnModel) ControllerProxy.getInstance().getPlayListController().getMainPlayListTable().getColumnModel());
         }
     }
 

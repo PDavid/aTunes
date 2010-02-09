@@ -117,10 +117,10 @@ public abstract class AudioFileTransferProcess extends Process {
                         SwingUtilities.invokeAndWait(new Runnable() {
                             @Override
                             public void run() {
-                                userSelectionWhenErrors = (String) GuiHandler.getInstance().showMessage(
-                                        StringUtils.getString(I18nUtils.getString("ERROR"), ": ", thrownExceptions.get(0).getMessage()), I18nUtils.getString("ERROR"),
-                                        JOptionPane.ERROR_MESSAGE,
-                                        new String[] { I18nUtils.getString("IGNORE"), I18nUtils.getString("IGNORE_ALL"), I18nUtils.getString("CANCEL") });
+                                userSelectionWhenErrors = (String) GuiHandler.getInstance()
+                                        .showMessage(StringUtils.getString(I18nUtils.getString("ERROR"), ": ", thrownExceptions.get(0).getMessage()), I18nUtils.getString("ERROR"),
+                                                JOptionPane.ERROR_MESSAGE,
+                                                new String[] { I18nUtils.getString("IGNORE"), I18nUtils.getString("IGNORE_ALL"), I18nUtils.getString("CANCEL") });
                             }
                         });
                     } catch (InterruptedException e1) {

@@ -63,14 +63,14 @@ public class ImportToRepositoryAction extends Action {
             // If user selected folders...
             if (!folders.isEmpty()) {
                 String path;
-            	String[] foldersList = new String[RepositoryHandler.getInstance().getFoldersCount()];
-            	for (int i = 0; i < RepositoryHandler.getInstance().getFolders().size(); i++) {
-            		foldersList[i] = RepositoryHandler.getInstance().getFolders().get(i).getAbsolutePath();
-            	}
+                String[] foldersList = new String[RepositoryHandler.getInstance().getFoldersCount()];
+                for (int i = 0; i < RepositoryHandler.getInstance().getFolders().size(); i++) {
+                    foldersList[i] = RepositoryHandler.getInstance().getFolders().get(i).getAbsolutePath();
+                }
                 // If repository folders are more than one then user must select where to import songs
                 if (foldersList.length > 1) {
                     SelectorDialog selector = new SelectorDialog(GuiHandler.getInstance().getFrame().getFrame(), I18nUtils.getString("SELECT_REPOSITORY_FOLDER_TO_IMPORT"),
-                    		foldersList, null);
+                            foldersList, null);
                     selector.setVisible(true);
                     path = selector.getSelection();
                     // If user closed dialog then select first entry

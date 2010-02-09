@@ -35,15 +35,15 @@ public final class NotifyHandler extends Handler implements PlaybackStateListene
     @Override
     public void applicationFinish() {
     }
-    
+
     @Override
     public void applicationStateChanged(ApplicationState newState) {
     }
-    
+
     @Override
     protected void initHandler() {
     };
-    
+
     public static NotifyHandler getInstance() {
         if (instance == null) {
             instance = new NotifyHandler();

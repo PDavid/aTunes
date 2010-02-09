@@ -575,20 +575,20 @@ public final class FullScreenWindow extends CustomWindow {
      *            the total time
      */
     public void setCurrentAudioObjectPlayedTime(final long time, final long totalTime) {
-    	if (!EventQueue.isDispatchThread()) {
-    		SwingUtilities.invokeLater(new Runnable() {
-    			@Override
-    			public void run() {
-    				setCurrentAudioObjectPlayedTimeEDT(time, totalTime);
-    			}
-    		});
-    	} else {
-    		setCurrentAudioObjectPlayedTimeEDT(time, totalTime);
-    	}
+        if (!EventQueue.isDispatchThread()) {
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    setCurrentAudioObjectPlayedTimeEDT(time, totalTime);
+                }
+            });
+        } else {
+            setCurrentAudioObjectPlayedTimeEDT(time, totalTime);
+        }
     }
-    
+
     private void setCurrentAudioObjectPlayedTimeEDT(long time, long totalTime) {
-    	long remainingTime1 = totalTime - time;
+        long remainingTime1 = totalTime - time;
         if (time == 0) {
             this.remainingTime.setText(StringUtils.milliseconds2String(time));
         } else {

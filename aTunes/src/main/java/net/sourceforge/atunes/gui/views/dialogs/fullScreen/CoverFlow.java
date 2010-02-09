@@ -167,8 +167,7 @@ public final class CoverFlow extends JPanel {
         }
 
         if (object == null) {
-            cover.setImage(ImageUtils.scaleImageBicubic(Images.getImage(Images.NO_COVER).getImage(), getImageSize(covers.indexOf(cover)), getImageSize(covers
-                    .indexOf(cover))));
+            cover.setImage(ImageUtils.scaleImageBicubic(Images.getImage(Images.NO_COVER).getImage(), getImageSize(covers.indexOf(cover)), getImageSize(covers.indexOf(cover))));
         } else {
             int size = getImageSize(covers.indexOf(cover));
             ImageIcon imageScaled = ImageUtils.scaleImageBicubic(image, size, size);

@@ -137,9 +137,9 @@ public final class ContextHandler extends Handler implements PluginListener {
      * 
      */
     public void clear() {
-    	clearTabsContent();
+        clearTabsContent();
         currentAudioObject = null;
-        
+
         // Select first tab
         ApplicationState.getInstance().setSelectedContextTab(0);
         GuiHandler.getInstance().getContextPanel().setSelectedIndex(ApplicationState.getInstance().getSelectedContextTab());
@@ -154,7 +154,7 @@ public final class ContextHandler extends Handler implements PluginListener {
             panel.clearContextPanel();
         }
     }
-    
+
     /**
      * Updates panel with audio object information.
      * 
@@ -162,14 +162,14 @@ public final class ContextHandler extends Handler implements PluginListener {
      *            the audio object
      */
     public void retrieveInfoAndShowInPanel(AudioObject ao) {
-    	boolean audioObjectModified = false;
+        boolean audioObjectModified = false;
         // Avoid retrieve information about the same audio object twice except if is an AudioFile and has been recently changed
         if (currentAudioObject != null && currentAudioObject.equals(ao)) {
             if (ao instanceof AudioFile) {
                 if (((AudioFile) ao).getFile().lastModified() == lastAudioObjectModificationTime) {
                     return;
                 } else {
-                	audioObjectModified = true;
+                    audioObjectModified = true;
                 }
             } else if (!(ao instanceof Radio)) {
                 return;
@@ -198,9 +198,9 @@ public final class ContextHandler extends Handler implements PluginListener {
                 // Clear all tabs
                 clear();
             } else {
-            	if (audioObjectModified) {
-            		clearTabsContent();
-            	}
+                if (audioObjectModified) {
+                    clearTabsContent();
+                }
                 // Retrieve data for audio object. Force Update since audio file is different or has been modified
                 retrieveInfo(ao, true);
             }
@@ -213,18 +213,20 @@ public final class ContextHandler extends Handler implements PluginListener {
      * @param audioObject
      *            the audio object
      * @param forceUpdate
-     * 			  If <code>true</code> data will be retrieved and shown even if the audio object is the same as before
-     *			  This is necessary when audio object is the same but has been modified so context data can be different
+     *            If <code>true</code> data will be retrieved and shown even if
+     *            the audio object is the same as before This is necessary when
+     *            audio object is the same but has been modified so context data
+     *            can be different
      */
     private void retrieveInfo(AudioObject audioObject, boolean forceUpdate) {
         if (audioObject == null) {
             return;
         }
-        
+
         // Context panel can be removed so check index
         int selectedTab = ApplicationState.getInstance().getSelectedContextTab();
         if (selectedTab >= getContextPanels().size()) {
-        	selectedTab = 0;
+            selectedTab = 0;
         }
         // Update current context panel
         getContextPanels().get(selectedTab).updateContextPanel(audioObject, forceUpdate);
@@ -253,23 +255,23 @@ public final class ContextHandler extends Handler implements PluginListener {
     public AudioObject getCurrentAudioObject() {
         return currentAudioObject;
     }
-    
+
     @Override
     public void pluginActivated(PluginInfo plugin) {
-    	try {
-    		ContextPanel newPanel = (ContextPanel) plugin.getInstance();
-    		getContextPanels().add(newPanel);
-    		GuiHandler.getInstance().getContextPanel().addContextPanel(newPanel);
-    	} catch (PluginSystemException e) {
-    		getLogger().error(LogCategories.PLUGINS, e);
-    	}
+        try {
+            ContextPanel newPanel = (ContextPanel) plugin.getInstance();
+            getContextPanels().add(newPanel);
+            GuiHandler.getInstance().getContextPanel().addContextPanel(newPanel);
+        } catch (PluginSystemException e) {
+            getLogger().error(LogCategories.PLUGINS, e);
+        }
     }
-    
+
     @Override
     public void pluginDeactivated(PluginInfo plugin, Collection<Plugin> createdInstances) {
-    	for (Plugin instance : createdInstances) {
-    		getContextPanels().remove((ContextPanel)instance);
-    		GuiHandler.getInstance().getContextPanel().removeContextPanel((ContextPanel)instance);
-    	}
+        for (Plugin instance : createdInstances) {
+            getContextPanels().remove((ContextPanel) instance);
+            GuiHandler.getInstance().getContextPanel().removeContextPanel((ContextPanel) instance);
+        }
     }
 }

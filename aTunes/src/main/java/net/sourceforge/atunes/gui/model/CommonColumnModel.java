@@ -45,14 +45,14 @@ import net.sourceforge.atunes.kernel.modules.columns.Column.ColumnSort;
 
 public abstract class CommonColumnModel extends DefaultTableColumnModel {
 
-	private static final long serialVersionUID = -8202322203076350708L;
-	
+    private static final long serialVersionUID = -8202322203076350708L;
+
     /** The table. */
     JTable table;
 
     /** Column set */
     ColumnSet columnSet;
-    
+
     /** The model. */
     CommonTableModel model;
 
@@ -61,21 +61,22 @@ public abstract class CommonColumnModel extends DefaultTableColumnModel {
 
     /** The column moved to. */
     int columnMovedTo = -1;
-    
+
     private ColumnMoveListener columnMoveListener;
-    
+
     private ColumnModelListener columnModelListener;
 
     /**
      * Instantiates a new column model
+     * 
      * @param table
      * @param columnSet
      */
     public CommonColumnModel(JTable table, ColumnSet columnSet) {
-    	this(table);
+        this(table);
         this.columnSet = columnSet;
     }
-    
+
     /**
      * Instantiates a new column model.
      * 
@@ -163,127 +164,131 @@ public abstract class CommonColumnModel extends DefaultTableColumnModel {
 
     /**
      * Returns class of column given by index
+     * 
      * @param index
      * @return
      */
     private final Class<? extends Column> getColumnId(int index) {
-    	return columnSet.getColumnId(index);
-    }    
-    
+        return columnSet.getColumnId(index);
+    }
+
     /**
      * Returns a column object given its class
+     * 
      * @param columnClass
      * @return
      */
     private final Column getColumn(Class<? extends Column> columnClass) {
-    	return columnSet.getColumn(columnClass);
+        return columnSet.getColumn(columnClass);
     }
-    
+
     /**
      * Returns alignment of current column
+     * 
      * @param column
      * @return
      */
     public int getColumnAlignment(int column) {
-    	return getColumn(getColumnId(column)).getAlignment();
+        return getColumn(getColumnId(column)).getAlignment();
     }
 
     /**
      * Initializes columns
      */
     private void setCurrentColumns() {
-    	columnSet.setCurrentColumns();
+        columnSet.setCurrentColumns();
     }
-    
+
     private class ColumnMoveListener extends MouseAdapter {
-    	@Override
-    	public void mouseReleased(MouseEvent e) {
-    		if (columnBeingMoved != -1) {
-    			// Swap order in model
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            if (columnBeingMoved != -1) {
+                // Swap order in model
 
-    			// Column moved to right
-    			if (columnBeingMoved < columnMovedTo) {
-    				int columnDestinyOrder = getColumnObject(columnMovedTo).getOrder();
-    				for (int i = columnBeingMoved + 1; i <= columnMovedTo; i++) {
-    					int order = getColumnObject(i).getOrder();
-    					getColumnObject(i).setOrder(order - 1);
-    				}
-    				getColumnObject(columnBeingMoved).setOrder(columnDestinyOrder);
-    			}
-    			// Column moved to left
-    			else if (columnBeingMoved > columnMovedTo) {
-    				int columnDestinyOrder = getColumnObject(columnMovedTo).getOrder();
-    				for (int i = columnBeingMoved - 1; i >= columnMovedTo; i--) {
-    					int order = getColumnObject(i).getOrder();
-    					getColumnObject(i).setOrder(order + 1);
-    				}
-    				getColumnObject(columnBeingMoved).setOrder(columnDestinyOrder);
-    			}
-    			arrangeColumns(false);
-    		}
-    		columnBeingMoved = -1;
-    		columnMovedTo = -1;
-    	}
+                // Column moved to right
+                if (columnBeingMoved < columnMovedTo) {
+                    int columnDestinyOrder = getColumnObject(columnMovedTo).getOrder();
+                    for (int i = columnBeingMoved + 1; i <= columnMovedTo; i++) {
+                        int order = getColumnObject(i).getOrder();
+                        getColumnObject(i).setOrder(order - 1);
+                    }
+                    getColumnObject(columnBeingMoved).setOrder(columnDestinyOrder);
+                }
+                // Column moved to left
+                else if (columnBeingMoved > columnMovedTo) {
+                    int columnDestinyOrder = getColumnObject(columnMovedTo).getOrder();
+                    for (int i = columnBeingMoved - 1; i >= columnMovedTo; i--) {
+                        int order = getColumnObject(i).getOrder();
+                        getColumnObject(i).setOrder(order + 1);
+                    }
+                    getColumnObject(columnBeingMoved).setOrder(columnDestinyOrder);
+                }
+                arrangeColumns(false);
+            }
+            columnBeingMoved = -1;
+            columnMovedTo = -1;
+        }
     };
-    
+
     private class ColumnModelListener implements TableColumnModelListener {
-    	public void columnAdded(TableColumnModelEvent e) {
-    		// Nothing to do
-    	}
+        public void columnAdded(TableColumnModelEvent e) {
+            // Nothing to do
+        }
 
-    	public void columnMarginChanged(ChangeEvent e) {
-    		updateColumnWidth();
-    	}
+        public void columnMarginChanged(ChangeEvent e) {
+            updateColumnWidth();
+        }
 
-    	public void columnMoved(TableColumnModelEvent e) {
-    		if (columnBeingMoved == -1) {
-    			columnBeingMoved = e.getFromIndex();
-    		}
-    		columnMovedTo = e.getToIndex();
-    	}
+        public void columnMoved(TableColumnModelEvent e) {
+            if (columnBeingMoved == -1) {
+                columnBeingMoved = e.getFromIndex();
+            }
+            columnMovedTo = e.getToIndex();
+        }
 
-    	public void columnRemoved(TableColumnModelEvent e) {
-    		// Nothing to do
-    	}
+        public void columnRemoved(TableColumnModelEvent e) {
+            // Nothing to do
+        }
 
-    	public void columnSelectionChanged(ListSelectionEvent e) {
-    		// Nothing to do
-    	}
+        public void columnSelectionChanged(ListSelectionEvent e) {
+            // Nothing to do
+        }
     };
 
     private ColumnMoveListener getColumnMoveListener() {
-    	if (columnMoveListener == null) {
-    		columnMoveListener = new ColumnMoveListener();
-    	}
-    	return columnMoveListener;
+        if (columnMoveListener == null) {
+            columnMoveListener = new ColumnMoveListener();
+        }
+        return columnMoveListener;
     }
-    
+
     private ColumnModelListener getColumnModelListener() {
-    	if (columnModelListener == null) {
-    		columnModelListener = new ColumnModelListener();
-    	}
-    	return columnModelListener;
+        if (columnModelListener == null) {
+            columnModelListener = new ColumnModelListener();
+        }
+        return columnModelListener;
     }
-    
+
     public void enableColumnChange(boolean enable) {
-    	this.table.getTableHeader().setReorderingAllowed(enable);
-    	if (enable) {
+        this.table.getTableHeader().setReorderingAllowed(enable);
+        if (enable) {
             // Add listener for column size changes
             addColumnModelListener(getColumnModelListener());
             this.table.getTableHeader().addMouseListener(getColumnMoveListener());
-    	} else {
-    		removeColumnModelListener(getColumnModelListener());
-    		this.table.getTableHeader().removeMouseListener(getColumnMoveListener());
-    	}
+        } else {
+            removeColumnModelListener(getColumnModelListener());
+            this.table.getTableHeader().removeMouseListener(getColumnMoveListener());
+        }
     }
-    
+
     /**
      * Apply filter
      */
     protected abstract void reapplyFilter();
-    
+
     /**
      * Updates a column according to settings from column set
+     * 
      * @param aColumn
      */
     protected void updateColumnSettings(TableColumn aColumn) {
@@ -307,11 +312,12 @@ public abstract class CommonColumnModel extends DefaultTableColumnModel {
         TableCellRenderer cellRenderer = column.getCellRenderer();
         if (cellRenderer != null) {
             aColumn.setCellRenderer(cellRenderer);
-        }        
+        }
     }
-    
+
     /**
      * Updates a column header according to settings from column set
+     * 
      * @param aColumn
      */
     protected void updateColumnHeader(TableColumn aColumn) {
@@ -320,42 +326,42 @@ public abstract class CommonColumnModel extends DefaultTableColumnModel {
 
         // Set header renderer to sortable columns
         if (column.isSortable()) {
-        	aColumn.setHeaderRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableHeaderCellRenderer(new TableCellRendererCode() {
-				
-				@Override
-				public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
-        			Component c = superComponent;
-        			
-        			ColumnSort columnSort = column.getColumnSort();
-        			
-        			if (columnSort != null) {
-        				((JLabel)c).setHorizontalTextPosition(SwingConstants.LEFT);
-        				if (columnSort.equals(ColumnSort.ASCENDING)) {
-        					((JLabel)c).setIcon(Images.getImage(Images.ARROW_UP));
-        				} else if (columnSort.equals(ColumnSort.DESCENDING)) {
-        					((JLabel)c).setIcon(Images.getImage(Images.ARROW_DOWN));
-        				}
-        			}
-        			
-        			return c;
-				}
-			}));        			
+            aColumn.setHeaderRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableHeaderCellRenderer(new TableCellRendererCode() {
+
+                @Override
+                public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
+                    Component c = superComponent;
+
+                    ColumnSort columnSort = column.getColumnSort();
+
+                    if (columnSort != null) {
+                        ((JLabel) c).setHorizontalTextPosition(SwingConstants.LEFT);
+                        if (columnSort.equals(ColumnSort.ASCENDING)) {
+                            ((JLabel) c).setIcon(Images.getImage(Images.ARROW_UP));
+                        } else if (columnSort.equals(ColumnSort.DESCENDING)) {
+                            ((JLabel) c).setIcon(Images.getImage(Images.ARROW_DOWN));
+                        }
+                    }
+
+                    return c;
+                }
+            }));
         }
     }
-    
-	/**
-	 * @return the columnSet
-	 */
-	public ColumnSet getColumnSet() {
-		return columnSet;
-	}
 
-	/**
-	 * @param columnSet the columnSet to set
-	 */
-	public void setColumnSet(ColumnSet columnSet) {
-		this.columnSet = columnSet;
-	}
+    /**
+     * @return the columnSet
+     */
+    public ColumnSet getColumnSet() {
+        return columnSet;
+    }
 
-    
+    /**
+     * @param columnSet
+     *            the columnSet to set
+     */
+    public void setColumnSet(ColumnSet columnSet) {
+        this.columnSet = columnSet;
+    }
+
 }

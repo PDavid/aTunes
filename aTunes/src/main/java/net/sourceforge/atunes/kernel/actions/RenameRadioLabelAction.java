@@ -56,8 +56,7 @@ public class RenameRadioLabelAction extends Action {
             }
         } else if (o instanceof Radio) {
             Radio radio = (Radio) o;
-            String result = GuiHandler.getInstance().showInputDialog(I18nUtils.getString("RENAME_LABEL"), radio.getLabel(),
-                    Images.getImage(Images.RADIO_LITTLE).getImage());
+            String result = GuiHandler.getInstance().showInputDialog(I18nUtils.getString("RENAME_LABEL"), radio.getLabel(), Images.getImage(Images.RADIO_LITTLE).getImage());
             if (result != null) {
                 radio.setLabel(result);
                 NavigationHandler.getInstance().refreshView(RadioNavigationView.class);

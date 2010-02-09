@@ -47,10 +47,10 @@ public class TypeColumn extends Column {
     protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
         return 0;
     }
-    
+
     @Override
     public boolean isSortable() {
-    	return false;
+        return false;
     }
 
     @Override

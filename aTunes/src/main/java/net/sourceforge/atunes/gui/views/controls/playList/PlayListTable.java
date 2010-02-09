@@ -119,13 +119,13 @@ public final class PlayListTable extends JTable implements DragSourceListener, D
         // Set column model
         PlayListColumnModel columnModel = new PlayListColumnModel(this);
         setColumnModel(columnModel);
-        
+
         // Set sorter
         new ColumnSetRowSorter(this, model, columnModel);
-        
+
         // Bind column set popup menu
         new ColumnSetPopupMenu(this, columnModel);
-        
+
         // Disable autoresize, as we will control it
         setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 

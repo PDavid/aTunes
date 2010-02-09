@@ -107,16 +107,16 @@ public final class EditPreferencesDialog extends CustomModalDialog {
         container.setOpaque(false);
         list = new JList();
         list.setCellRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListCellRenderer(new ListCellRendererCode() {
-			
-			@Override
-			public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+
+            @Override
+            public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 JLabel label = (JLabel) superComponent;
                 PreferencesPanel p = (PreferencesPanel) value;
                 label.setText(p.getTitle());
                 label.setIcon(p.getIcon());
                 return label;
-			}
-		}));
+            }
+        }));
         JScrollPane scrollPane = new JScrollPane(list);
         // Force minimum width of scroll pane to show items
         scrollPane.setMinimumSize(new Dimension(200, 0));

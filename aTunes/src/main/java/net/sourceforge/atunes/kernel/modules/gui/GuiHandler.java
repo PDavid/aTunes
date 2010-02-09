@@ -208,7 +208,7 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
      */
     public EditTagDialog getEditTagDialog(boolean arePrevNextButtonsShown) {
         // EditTagDialog does not need to be cached in a local variable. It is modal and therefore either shown or not.
-    	return new EditTagDialog(frame.getFrame(),arePrevNextButtonsShown);
+        return new EditTagDialog(frame.getFrame(), arePrevNextButtonsShown);
     }
 
     /**
@@ -858,26 +858,27 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
     public void showErrorDialog(String message, Component parent) {
         JOptionPane.showMessageDialog(parent, message, I18nUtils.getString("ERROR"), JOptionPane.ERROR_MESSAGE);
     }
-    
+
     /**
-     * Shows a exception report dialog 
+     * Shows a exception report dialog
+     * 
      * @param message
      * @param t
      */
     public void showExceptionDialog(String message, Exception t) {
-    	JXErrorPane pane = new JXErrorPane();
-    	StringBuilder sb = new StringBuilder();
-    	sb.append(t.getClass().getName());
-    	sb.append(": ");
-    	sb.append(t.getMessage());
-    	sb.append("<br/>");
-    	sb.append("<br/>");
-    	for (StackTraceElement s : t.getStackTrace()) {
-    		sb.append(s.toString()); 
-    		sb.append("<br/>");
-    	}
-    	pane.setErrorInfo(new ErrorInfo(I18nUtils.getString("ERROR"), message, sb.toString(), null, t, Level.SEVERE, null));
-    	JXErrorPane.showDialog(null, pane);
+        JXErrorPane pane = new JXErrorPane();
+        StringBuilder sb = new StringBuilder();
+        sb.append(t.getClass().getName());
+        sb.append(": ");
+        sb.append(t.getMessage());
+        sb.append("<br/>");
+        sb.append("<br/>");
+        for (StackTraceElement s : t.getStackTrace()) {
+            sb.append(s.toString());
+            sb.append("<br/>");
+        }
+        pane.setErrorInfo(new ErrorInfo(I18nUtils.getString("ERROR"), message, sb.toString(), null, t, Level.SEVERE, null));
+        JXErrorPane.showDialog(null, pane);
 
     }
 
@@ -1404,18 +1405,18 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
 
     @Override
     public void playbackStateChanged(final PlaybackState newState, final AudioObject currentAudioObject) {
-    	if (!EventQueue.isDispatchThread()) {
-    		SwingUtilities.invokeLater(new Runnable() {
-    			@Override
-    			public void run() {
-    				playbackStateChangedEDT(newState, currentAudioObject);
-    			}
-    		});
-    	} else {
-    		playbackStateChangedEDT(newState, currentAudioObject);
-    	}
+        if (!EventQueue.isDispatchThread()) {
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    playbackStateChangedEDT(newState, currentAudioObject);
+                }
+            });
+        } else {
+            playbackStateChangedEDT(newState, currentAudioObject);
+        }
     }
-    
+
     private void playbackStateChangedEDT(PlaybackState newState, AudioObject currentAudioObject) {
         if (newState == PlaybackState.PAUSED) {
             // Pause
@@ -1470,11 +1471,11 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
         // Once done graphic changes, repaint the window
         repaint();
     }
-    
+
     /**
      * Returns <code>true</code> if stats dialog is visible
      */
     public boolean isStatsDialogVisible() {
-    	return statsDialog != null && statsDialog.isVisible();
+        return statsDialog != null && statsDialog.isVisible();
     }
 }

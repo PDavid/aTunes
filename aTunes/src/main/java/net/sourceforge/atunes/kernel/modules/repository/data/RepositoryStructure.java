@@ -23,7 +23,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-
 public class RepositoryStructure implements Serializable {
 
     private static final long serialVersionUID = -2230698137764691254L;

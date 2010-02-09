@@ -310,10 +310,10 @@ public final class XMLUtils {
             ClosingUtils.close(outputStreamWriter);
         }
     }
-    
+
     private static XStream getXStream() {
-    	XStream xStream = new XStream();
-    	
+        XStream xStream = new XStream();
+
         xStream.alias("Repository", Repository.class);
         xStream.alias("RepositoryStats", Statistics.class);
         xStream.alias("RepositoryStructure", RepositoryStructure.class);
@@ -335,22 +335,22 @@ public final class XMLUtils {
         xStream.omitField(Radio.class, "title");
         xStream.omitField(Radio.class, "artist");
         xStream.omitField(Radio.class, "songInfoAvailable");
-        
+
         xStream.omitField(PointedList.class, "list");
-        
+
         return xStream;
     }
-    
+
     private static ThreadLocal<XPath> getXPath() {
-    	if (xPath == null) {
-    		xPath = new ThreadLocal<XPath>() {
-    			@Override
-    			protected XPath initialValue() {
-    				return XPathFactory.newInstance().newXPath();
-    			}
-    		};
-    	}
-    	return xPath;
+        if (xPath == null) {
+            xPath = new ThreadLocal<XPath>() {
+                @Override
+                protected XPath initialValue() {
+                    return XPathFactory.newInstance().newXPath();
+                }
+            };
+        }
+        return xPath;
     }
 
 }

@@ -301,15 +301,15 @@ public final class FavoritesNavigationView extends NavigationView {
 
     @Override
     public boolean isUseDefaultNavigatorColumnSet() {
-    	return true;
+        return true;
     }
 
     @Override
     public ColumnSet getCustomColumnSet() {
-    	// Returns null since uses default column set
-    	return null;
+        // Returns null since uses default column set
+        return null;
     }
-    
+
     @Override
     public boolean isViewModeSupported() {
         return false;
@@ -317,10 +317,10 @@ public final class FavoritesNavigationView extends NavigationView {
 
     @Override
     protected TreeCellRenderer getTreeRenderer() {
-    	return LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTreeCellRenderer(new TreeCellRendererCode() {
-			
-			@Override
-			public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
+        return LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTreeCellRenderer(new TreeCellRendererCode() {
+
+            @Override
+            public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
                 JLabel label = (JLabel) superComponent;
 
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;

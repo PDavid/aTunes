@@ -154,18 +154,18 @@ public final class PluginsPanel extends PreferencesPanel {
         add(pluginDetailPanel, c);
 
         pluginsTable.setDefaultRenderer(PluginInfo.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
-			
-			@Override
-			public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+
+            @Override
+            public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component c = superComponent;
-                ((JLabel)c).setText(((PluginInfo) value).getName());
+                ((JLabel) c).setText(((PluginInfo) value).getName());
                 if (((PluginInfo) value).getIcon() != null) {
                     ((JLabel) c).setIcon(ImageUtils.scaleImageBicubic(((PluginInfo) value).getIcon(), CELL_HEIGHT - 5, CELL_HEIGHT - 5));
                 } else {
                     ((JLabel) c).setIcon(ImageUtils.scaleImageBicubic(Images.getImage(Images.EMPTY).getImage(), CELL_HEIGHT - 5, CELL_HEIGHT - 5));
                 }
                 return c;
-			}
+            }
         }));
 
         pluginsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -208,13 +208,13 @@ public final class PluginsPanel extends PreferencesPanel {
                 dialog.setVisible(true);
                 configuration = dialog.getConfiguration();
                 if (configuration != null) {
-                	// Validate plugin configuration
-                	try {
-                		PluginConfiguration.validateConfiguration(plugin, configuration);
+                    // Validate plugin configuration
+                    try {
+                        PluginConfiguration.validateConfiguration(plugin, configuration);
                         pluginsModified.put(plugin, configuration);
-                	} catch (InvalidPluginConfigurationException ex) {
-                		GuiHandler.getInstance().showErrorDialog(StringUtils.getString(I18nUtils.getString("PLUGIN_CONFIGURATION_INVALID"), ex.getMessage()));
-                	}
+                    } catch (InvalidPluginConfigurationException ex) {
+                        GuiHandler.getInstance().showErrorDialog(StringUtils.getString(I18nUtils.getString("PLUGIN_CONFIGURATION_INVALID"), ex.getMessage()));
+                    }
                 }
             }
         });
@@ -282,16 +282,16 @@ public final class PluginsPanel extends PreferencesPanel {
             // if any plugin has been modified then write configuration
             for (PluginInfo plugin : pluginsModified.keySet()) {
                 logger.debug(LogCategories.PLUGINS, "Writting configuration of plugin: ", plugin.getName());
-                
+
                 // Avoid plugins throw exceptions when setting configuration
-                try {                	
-                	PluginConfiguration.setConfiguration(plugin, pluginsModified.get(plugin));
+                try {
+                    PluginConfiguration.setConfiguration(plugin, pluginsModified.get(plugin));
                 } catch (Exception t) {
-                	StringBuilder sb = new StringBuilder();
-                	sb.append(I18nUtils.getString("PLUGIN_CONFIGURATION_ERROR"));
-                	sb.append(" ");
-                	sb.append(plugin.getName());
-                	GuiHandler.getInstance().showExceptionDialog(sb.toString(), t);
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(I18nUtils.getString("PLUGIN_CONFIGURATION_ERROR"));
+                    sb.append(" ");
+                    sb.append(plugin.getName());
+                    GuiHandler.getInstance().showExceptionDialog(sb.toString(), t);
                 }
 
                 restartNeeded = restartNeeded || PluginsHandler.getInstance().pluginNeedsRestart(plugin);

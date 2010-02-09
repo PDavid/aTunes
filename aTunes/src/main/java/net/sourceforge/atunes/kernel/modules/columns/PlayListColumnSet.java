@@ -42,9 +42,9 @@ public class PlayListColumnSet extends ColumnSet {
      * Private constructor
      */
     private PlayListColumnSet() {
-    	super();
+        super();
     }
-    
+
     /**
      * Returns singleton instance
      * 
@@ -59,21 +59,21 @@ public class PlayListColumnSet extends ColumnSet {
 
     @Override
     protected List<Column> getAllowedColumns() {
-    	return Columns.getColumns(true);
+        return Columns.getColumns(true);
     }
-    
+
     @Override
     protected Map<String, ColumnBean> getColumnsConfiguration() {
-    	return ApplicationState.getInstance().getColumns();
+        return ApplicationState.getInstance().getColumns();
     }
-    
+
     @Override
     protected void setColumnsConfiguration(Map<String, ColumnBean> columnsConfiguration) {
         ApplicationState.getInstance().setColumns(columnsConfiguration);
     }
-    
+
     @Override
     protected void refreshColumns() {
         ((PlayListColumnModel) GuiHandler.getInstance().getPlayListTable().getColumnModel()).arrangeColumns(false);
-    }    
+    }
 }

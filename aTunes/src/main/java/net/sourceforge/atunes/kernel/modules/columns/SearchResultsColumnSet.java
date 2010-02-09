@@ -42,9 +42,9 @@ public class SearchResultsColumnSet extends ColumnSet {
      * Private constructor
      */
     private SearchResultsColumnSet() {
-    	super();
+        super();
     }
-    
+
     /**
      * Returns singleton instance
      * 
@@ -56,24 +56,25 @@ public class SearchResultsColumnSet extends ColumnSet {
         }
         return instance;
     }
-    
+
     @Override
     protected List<Column> getAllowedColumns() {
-    	return Columns.getColumns(false);
+        return Columns.getColumns(false);
     }
 
     @Override
     protected Map<String, ColumnBean> getColumnsConfiguration() {
-    	return ApplicationState.getInstance().getSearchResultsColumns();
+        return ApplicationState.getInstance().getSearchResultsColumns();
     }
-    
+
     @Override
     protected void setColumnsConfiguration(Map<String, ColumnBean> columnsConfiguration) {
         ApplicationState.getInstance().setSearchResultsColumns(columnsConfiguration);
     }
-    
+
     @Override
     protected void refreshColumns() {
-    	((SearchResultColumnModel)ControllerProxy.getInstance().getSearchResultsController().getComponentControlled().getSearchResultsTable().getColumnModel()).arrangeColumns(false);
-    }    
+        ((SearchResultColumnModel) ControllerProxy.getInstance().getSearchResultsController().getComponentControlled().getSearchResultsTable().getColumnModel())
+                .arrangeColumns(false);
+    }
 }

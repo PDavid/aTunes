@@ -71,7 +71,7 @@ public final class NavigationTableModel extends ColumnSetTableModel {
      *            the controller
      */
     public NavigationTableModel() {
-    	super();
+        super();
     }
 
     /*
@@ -131,9 +131,9 @@ public final class NavigationTableModel extends ColumnSetTableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         AudioObject audioObject = getSongAt(rowIndex);
         if (audioObject == null) {
-        	return null;
+            return null;
         }
-   		return getColumn(columnIndex).getValueFor(audioObject);
+        return getColumn(columnIndex).getValueFor(audioObject);
     }
 
     /*
@@ -169,7 +169,7 @@ public final class NavigationTableModel extends ColumnSetTableModel {
 
     @Override
     public void sort(Comparator<AudioObject> comparator) {
-    	Collections.sort(this.songs, comparator);
-    	refresh(TableModelEvent.UPDATE);
+        Collections.sort(this.songs, comparator);
+        refresh(TableModelEvent.UPDATE);
     }
 }

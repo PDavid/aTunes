@@ -350,13 +350,13 @@ public final class RipCdDialog extends CustomModalDialog {
         table.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(textfield3));
 
         table.setDefaultRenderer(String.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
-			
-			@Override
-			public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+
+            @Override
+            public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 GuiUtils.applyComponentOrientation((JLabel) superComponent);
                 return superComponent;
-			}
-		}));
+            }
+        }));
 
         JScrollPane scrollPane = new JScrollPane(table);
         JLabel artistLabel = new JLabel(I18nUtils.getString("ALBUM_ARTIST"));

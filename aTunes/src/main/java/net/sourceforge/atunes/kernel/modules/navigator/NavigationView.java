@@ -191,12 +191,13 @@ public abstract class NavigationView implements AudioObjectsSource {
     public abstract boolean isUseDefaultNavigatorColumnSet();
 
     /**
-     * If <code>isUseDefaultNavigatorColumns</code> returns <code>false</code> then this
-     * method must return a column set with columns
+     * If <code>isUseDefaultNavigatorColumns</code> returns <code>false</code>
+     * then this method must return a column set with columns
+     * 
      * @return
      */
     public abstract ColumnSet getCustomColumnSet();
-    
+
     /**
      * Enables or disables tree popup menu items of this view
      * 
@@ -397,9 +398,8 @@ public abstract class NavigationView implements AudioObjectsSource {
             List<AudioObject> audioObjectsSelected = new ArrayList<AudioObject>();
             if (paths != null) {
                 for (TreePath path : paths) {
-                    audioObjectsSelected.addAll(getAudioObjectForTreeNode((DefaultMutableTreeNode) path.getLastPathComponent(), getCurrentViewMode(), 
-                    		FilterHandler.getInstance().isFilterSelected(NavigationHandler.getInstance().getTreeFilter()) ? 
-                    				FilterHandler.getInstance().getFilter() : null ));
+                    audioObjectsSelected.addAll(getAudioObjectForTreeNode((DefaultMutableTreeNode) path.getLastPathComponent(), getCurrentViewMode(), FilterHandler.getInstance()
+                            .isFilterSelected(NavigationHandler.getInstance().getTreeFilter()) ? FilterHandler.getInstance().getFilter() : null));
                     AudioObjectComparator.sort(audioObjectsSelected);
                 }
             }

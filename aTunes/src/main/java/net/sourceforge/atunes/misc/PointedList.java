@@ -136,7 +136,7 @@ public class PointedList<T> implements Serializable {
     }
 
     public void add(int index, T element) {
-    	getList().add(index, element);
+        getList().add(index, element);
         if (size() > 1 && this.pointer != null && index <= this.pointer) {
             this.pointer++;
         }
@@ -319,9 +319,9 @@ public class PointedList<T> implements Serializable {
      * @return the list
      */
     public List<T> getList() {
-    	if (this.list == null) {
-    		this.list = new ArrayList<T>();
-    	}
+        if (this.list == null) {
+            this.list = new ArrayList<T>();
+        }
         return this.list;
     }
 
@@ -329,11 +329,12 @@ public class PointedList<T> implements Serializable {
         return getList().contains(object);
     }
 
-	/**
-	 * Set content without changing pointer
-	 * @param content
-	 */
+    /**
+     * Set content without changing pointer
+     * 
+     * @param content
+     */
     public void setContent(List<T> content) {
-    	getList().addAll(content);
+        getList().addAll(content);
     }
 }

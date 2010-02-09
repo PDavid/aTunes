@@ -41,7 +41,8 @@ public final class EditTagMenu extends JMenu {
 
     public EditTagMenu(boolean playlistMenu, AudioObjectsSource audioObjectsSource) {
         super(I18nUtils.getString("TAGS"));
-        add(Actions.getMenuItemForAction(EditTagAction.class, playlistMenu ? EditTagAction.EditTagSources.PLAYLIST.toString() : EditTagAction.EditTagSources.NAVIGATOR.toString(), audioObjectsSource));
+        add(Actions.getMenuItemForAction(EditTagAction.class, playlistMenu ? EditTagAction.EditTagSources.PLAYLIST.toString() : EditTagAction.EditTagSources.NAVIGATOR.toString(),
+                audioObjectsSource));
         add(new JSeparator());
         add(Actions.getMenuItemForAction(AutoSetTagFromFolderNamePatternAction.class, audioObjectsSource));
         add(Actions.getMenuItemForAction(AutoSetTagFromFileNamePatternAction.class, audioObjectsSource));

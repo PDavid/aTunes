@@ -30,10 +30,10 @@ import org.junit.Test;
 
 public class LastFmTests {
 
-	@Test
-	public void testLovedTracks() {
-		ApplicationState.getInstance().setLastFmUser("alexaranda");
-		List<LastFmLovedTrack> lovedTracks = LastFmService.getInstance().getLovedTracks();
-		Assert.assertFalse(lovedTracks.isEmpty());
-	}
+    @Test
+    public void testLovedTracks() {
+        ApplicationState.getInstance().setLastFmUser("alexaranda");
+        List<LastFmLovedTrack> lovedTracks = LastFmService.getInstance().getLovedTracks();
+        Assert.assertFalse(lovedTracks.isEmpty());
+    }
 }

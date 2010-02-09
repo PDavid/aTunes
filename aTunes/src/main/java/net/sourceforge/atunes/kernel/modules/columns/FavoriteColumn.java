@@ -45,10 +45,10 @@ public class FavoriteColumn extends Column {
     protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
         return 0;
     }
-    
+
     @Override
     public boolean isSortable() {
-    	return false;
+        return false;
     }
 
     @Override
@@ -60,8 +60,7 @@ public class FavoriteColumn extends Column {
         if (audioObject instanceof PodcastFeedEntry) {
             return Images.getImage(Images.EMPTY);
         }
-        return FavoritesHandler.getInstance().getFavoriteSongsInfo().containsValue(audioObject) ? Images.getImage(Images.FAVORITE) : Images
-                .getImage(Images.EMPTY);
+        return FavoritesHandler.getInstance().getFavoriteSongsInfo().containsValue(audioObject) ? Images.getImage(Images.FAVORITE) : Images.getImage(Images.EMPTY);
     }
 
     @Override

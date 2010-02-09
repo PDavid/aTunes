@@ -31,9 +31,9 @@ public abstract class CommonTableModel implements TableModel {
     private List<TableModelListener> listeners;
 
     protected CommonTableModel() {
-    	listeners = new ArrayList<TableModelListener>();
+        listeners = new ArrayList<TableModelListener>();
     }
-    
+
     /**
      * Adds a listener.
      * 

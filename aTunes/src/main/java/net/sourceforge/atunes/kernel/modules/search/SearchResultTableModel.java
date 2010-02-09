@@ -32,8 +32,8 @@ import net.sourceforge.atunes.model.AudioObject;
  */
 public class SearchResultTableModel extends ColumnSetTableModel {
 
-	private List<AudioObject> results;
-	
+    private List<AudioObject> results;
+
     /**
      * Constructor.
      * 
@@ -66,7 +66,7 @@ public class SearchResultTableModel extends ColumnSetTableModel {
      */
     @Override
     public Object getValueAt(int rowIndex, int colIndex) {
-    	return results != null ? getColumn(colIndex).getValueFor(results.get(rowIndex)) : null;
+        return results != null ? getColumn(colIndex).getValueFor(results.get(rowIndex)) : null;
     }
 
     /**
@@ -81,7 +81,7 @@ public class SearchResultTableModel extends ColumnSetTableModel {
      */
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-    	return false;
+        return false;
     }
 
     /**
@@ -96,18 +96,19 @@ public class SearchResultTableModel extends ColumnSetTableModel {
      */
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-    	// Nothing to do
+        // Nothing to do
     }
 
-	/**
-	 * @param results the results to set
-	 */
-	public void setResults(List<AudioObject> results) {
-		this.results = results;
-	}
-	
-	@Override
-	public void sort(Comparator<AudioObject> comparator) {
-		Collections.sort(this.results, comparator);
-	}
+    /**
+     * @param results
+     *            the results to set
+     */
+    public void setResults(List<AudioObject> results) {
+        this.results = results;
+    }
+
+    @Override
+    public void sort(Comparator<AudioObject> comparator) {
+        Collections.sort(this.results, comparator);
+    }
 }

@@ -70,8 +70,8 @@ public class SynchronizeDeviceWithPlayListAction extends Action {
                     @Override
                     public void run() {
                         GuiHandler.getInstance().showMessage(
-                                StringUtils.getString(I18nUtils.getString("SYNCHRONIZATION_FINISHED"), " ", I18nUtils.getString("ADDED"), ": ", added ? DeviceHandler
-                                        .getInstance().getFilesCopiedToDevice() : 0, " ", I18nUtils.getString("REMOVED"), ": ", filesRemoved));
+                                StringUtils.getString(I18nUtils.getString("SYNCHRONIZATION_FINISHED"), " ", I18nUtils.getString("ADDED"), ": ", added ? DeviceHandler.getInstance()
+                                        .getFilesCopiedToDevice() : 0, " ", I18nUtils.getString("REMOVED"), ": ", filesRemoved));
                     }
                 });
             }

@@ -47,8 +47,9 @@ import org.xml.sax.helpers.DefaultHandler;
  * A lyrics engine which retrieve lyrics from www.winamp.cn.
  * 
  * The query is a 2 phases process. <br/>
- * First, we send a quest using the artist name and song title, then the server return an xml format search result
- * include the all match lyrics. The xml look like below:
+ * First, we send a quest using the artist name and song title, then the server
+ * return an xml format search result include the all match lyrics. The xml look
+ * like below:
  * 
  * <pre>
  * &lt;?xml version="1.0" encoding="gb2312"?&gt;
@@ -58,133 +59,135 @@ import org.xml.sax.helpers.DefaultHandler;
  * &lt;/Lyric&gt;
  * </pre>
  * 
- * Then we can pick a lyric you want to download(this engine will download the most downloaded lyric) using the $lyricurl. 
- * The lyric is in plain text format and gbk encoding. 
+ * Then we can pick a lyric you want to download(this engine will download the
+ * most downloaded lyric) using the $lyricurl. The lyric is in plain text format
+ * and gbk encoding.
  * 
  * @author Taylor Tang
  */
 public class WinampcnEngine extends LyricsEngine {
-   
-	private static final String QUERY_URL = "http://www.winampcn.com/lyrictransfer/get.aspx?song=%1&artist=%2&lsong=%3";
-	private static final String LYRC_URL = "http://www.winampcn.com/lyrictransfer/lrc.aspx?id=%1&ti=%2";
 
-	private Logger logger = new Logger();
+    private static final String QUERY_URL = "http://www.winampcn.com/lyrictransfer/get.aspx?song=%1&artist=%2&lsong=%3";
+    private static final String LYRC_URL = "http://www.winampcn.com/lyrictransfer/lrc.aspx?id=%1&ti=%2";
 
-	public WinampcnEngine(Proxy proxy) {
-		super(proxy);
-	}
+    private Logger logger = new Logger();
 
-	@Override
-	public Lyrics getLyricsFor(String artist, String title) {
-		String url = getUrl(artist, title);
-		try {
-			String xml = readURL(getConnection(url), "gbk");
-			String lyrcUrl = getMostPopularLyrcUrl(xml);
-			if (lyrcUrl == null) return null;
+    public WinampcnEngine(Proxy proxy) {
+        super(proxy);
+    }
 
-			String lyrics = readURL(getConnection(lyrcUrl), "gbk");
-			lyrics = lyrics.replaceAll("\\[.+\\]", "");
-			return lyrics == null || lyrics.isEmpty() ? null : new Lyrics(lyrics, lyrcUrl);
-		} catch (IOException e) {
-			logger.error(LogCategories.SERVICE, "Cannot fetch lyrics for: " + artist + "/" + title);
-			return null;
-		}
-	}
+    @Override
+    public Lyrics getLyricsFor(String artist, String title) {
+        String url = getUrl(artist, title);
+        try {
+            String xml = readURL(getConnection(url), "gbk");
+            String lyrcUrl = getMostPopularLyrcUrl(xml);
+            if (lyrcUrl == null)
+                return null;
 
-	/**
-	 * Pick the most downloaded lyric, and return its url.
-	 * @param xml
-	 * @return
-	 */
-	private String getMostPopularLyrcUrl(String xml) {
-		List<LyrcCandidate> lyrcCandidates = new LyrcXMLParser().parse(xml);
-		LyrcCandidate tmp = null;
-		for (LyrcCandidate candidate : lyrcCandidates) {
-			if (tmp == null) {
-				tmp = candidate;
-			} else {
-				tmp = candidate.downloadCount > tmp.downloadCount ? candidate : tmp;
-			}
-		}
+            String lyrics = readURL(getConnection(lyrcUrl), "gbk");
+            lyrics = lyrics.replaceAll("\\[.+\\]", "");
+            return lyrics == null || lyrics.isEmpty() ? null : new Lyrics(lyrics, lyrcUrl);
+        } catch (IOException e) {
+            logger.error(LogCategories.SERVICE, "Cannot fetch lyrics for: " + artist + "/" + title);
+            return null;
+        }
+    }
 
-		if (tmp != null) {
-			return LYRC_URL.replace("%1", "" + tmp.id)
-			.replace("%2", encodeUrl(tmp.songName));
-		}
+    /**
+     * Pick the most downloaded lyric, and return its url.
+     * 
+     * @param xml
+     * @return
+     */
+    private String getMostPopularLyrcUrl(String xml) {
+        List<LyrcCandidate> lyrcCandidates = new LyrcXMLParser().parse(xml);
+        LyrcCandidate tmp = null;
+        for (LyrcCandidate candidate : lyrcCandidates) {
+            if (tmp == null) {
+                tmp = candidate;
+            } else {
+                tmp = candidate.downloadCount > tmp.downloadCount ? candidate : tmp;
+            }
+        }
 
-		return null;
-	}
+        if (tmp != null) {
+            return LYRC_URL.replace("%1", "" + tmp.id).replace("%2", encodeUrl(tmp.songName));
+        }
 
-	/**
-	 * Construct a url from artist name and song title. 
-	 * We use this url to request lyrics from server.
-	 * @param artist
-	 * @param title
-	 * @return
-	 */
-	private String getUrl(String artist, String title) {
-		String url = QUERY_URL.replace("%1", encodeUrl(title))
-		.replace("%2", encodeUrl(artist))
-		.replace("%3", encodeUrl(title));
-		return url;
-	}
+        return null;
+    }
 
-	/**
-	 * Encode the url using gbk encoding, because the server can only accept gbk encoding.
-	 * @param title
-	 * @return
-	 */
-	private CharSequence encodeUrl(String url) {
-		try {
-			return URLEncoder.encode(url, "gbk");
-		} catch (UnsupportedEncodingException e) {
-			return url;
-		}
-	}
+    /**
+     * Construct a url from artist name and song title. We use this url to
+     * request lyrics from server.
+     * 
+     * @param artist
+     * @param title
+     * @return
+     */
+    private String getUrl(String artist, String title) {
+        String url = QUERY_URL.replace("%1", encodeUrl(title)).replace("%2", encodeUrl(artist)).replace("%3", encodeUrl(title));
+        return url;
+    }
 
-	@Override
-	public String getLyricsProviderName() {
-		return "winampcn.com";
-	}
+    /**
+     * Encode the url using gbk encoding, because the server can only accept gbk
+     * encoding.
+     * 
+     * @param title
+     * @return
+     */
+    private CharSequence encodeUrl(String url) {
+        try {
+            return URLEncoder.encode(url, "gbk");
+        } catch (UnsupportedEncodingException e) {
+            return url;
+        }
+    }
 
-	@Override
-	public String getUrlForAddingNewLyrics(String artist, String title) {
-		return "";
-	}
+    @Override
+    public String getLyricsProviderName() {
+        return "winampcn.com";
+    }
 
+    @Override
+    public String getUrlForAddingNewLyrics(String artist, String title) {
+        return "";
+    }
 
-	private static class LyrcCandidate {
-		int id;
-		int downloadCount;
-		String songName;
-		//String albumName;
-	}
+    private static class LyrcCandidate {
+        int id;
+        int downloadCount;
+        String songName;
+        //String albumName;
+    }
 
-	private static class LyrcXMLParser extends DefaultHandler {
-		private Logger logger = new Logger();
-		List<LyrcCandidate> lyrcs = new ArrayList<LyrcCandidate>();
+    private static class LyrcXMLParser extends DefaultHandler {
+        private Logger logger = new Logger();
+        List<LyrcCandidate> lyrcs = new ArrayList<LyrcCandidate>();
 
-		@Override
-		public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-			if (qName.equals("LyricUrl")) {
-				LyrcCandidate lyrc = new LyrcCandidate();
-				lyrc.id = Integer.parseInt(attributes.getValue("id"));
-				lyrc.songName = attributes.getValue("SongName");
-				lyrc.downloadCount = Integer.parseInt(attributes.getValue("downloadtimes"));
-				//lyrc.albumName = attributes.getValue("album");
-				lyrcs.add(lyrc);
-			}
-		}
+        @Override
+        public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+            if (qName.equals("LyricUrl")) {
+                LyrcCandidate lyrc = new LyrcCandidate();
+                lyrc.id = Integer.parseInt(attributes.getValue("id"));
+                lyrc.songName = attributes.getValue("SongName");
+                lyrc.downloadCount = Integer.parseInt(attributes.getValue("downloadtimes"));
+                //lyrc.albumName = attributes.getValue("album");
+                lyrcs.add(lyrc);
+            }
+        }
 
-		public List<LyrcCandidate> parse(String xml) {
-			try {
-				SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
-				parser.parse(new ByteArrayInputStream(xml.getBytes("gbk")), this);
-			} catch (Exception e) {
-				logger.error(LogCategories.SERVICE, "Cannot parse lyrics list from winampcn: " + e.getMessage());
-			} 
-			return this.lyrcs;
-		}
+        public List<LyrcCandidate> parse(String xml) {
+            try {
+                SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
+                parser.parse(new ByteArrayInputStream(xml.getBytes("gbk")), this);
+            } catch (Exception e) {
+                logger.error(LogCategories.SERVICE, "Cannot parse lyrics list from winampcn: " + e.getMessage());
+            }
+            return this.lyrcs;
+        }
 
-	}
+    }
 }

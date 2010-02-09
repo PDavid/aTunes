@@ -44,7 +44,7 @@ public class Favorites implements Serializable {
 
     /** The favorite artists. */
     private Map<String, Artist> favoriteArtists;
-    
+
     /**
      * Flag indicating if favorites information needs to be written to disk
      */
@@ -144,17 +144,18 @@ public class Favorites implements Serializable {
         this.favoriteSongs = favoriteSongs;
     }
 
-	/**
-	 * @return the dirty
-	 */
-	protected boolean isDirty() {
-		return dirty;
-	}
+    /**
+     * @return the dirty
+     */
+    protected boolean isDirty() {
+        return dirty;
+    }
 
-	/**
-	 * @param dirty the dirty to set
-	 */
-	protected void setDirty(boolean dirty) {
-		this.dirty = dirty;
-	}
+    /**
+     * @param dirty
+     *            the dirty to set
+     */
+    protected void setDirty(boolean dirty) {
+        this.dirty = dirty;
+    }
 }

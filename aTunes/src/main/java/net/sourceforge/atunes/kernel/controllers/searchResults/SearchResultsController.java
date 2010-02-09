@@ -68,11 +68,11 @@ public final class SearchResultsController extends SimpleController<SearchResult
 
         Column sortedColumn = SearchResultsColumnSet.getInstance().getSortedColumn();
         if (sortedColumn != null) {
-        	Collections.sort(resultsList, sortedColumn.getComparator(false));
+            Collections.sort(resultsList, sortedColumn.getComparator(false));
         } else {
-        	AudioObjectComparator.sort(resultsList);
+            AudioObjectComparator.sort(resultsList);
         }
-        
+
         tableModel.setResults(resultsList);
         tableModel.refresh(TableModelEvent.UPDATE);
         getComponentControlled().setVisible(true);

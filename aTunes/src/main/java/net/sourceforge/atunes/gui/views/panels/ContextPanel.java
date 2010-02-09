@@ -91,19 +91,20 @@ public final class ContextPanel extends JPanel {
 
     public void enableContextTabs() {
         for (net.sourceforge.atunes.kernel.modules.context.ContextPanel panel : ContextHandler.getInstance().getContextPanels()) {
-        	enableContextTab(panel);
+            enableContextTab(panel);
         }
     }
 
     /**
      * Enables or disables the given panel
+     * 
      * @param panel
      */
     private void enableContextTab(net.sourceforge.atunes.kernel.modules.context.ContextPanel panel) {
         tabbedPane.setEnabledAt(panelsIndexes.get(panel), panel.isEnabled());
         tabbedPane.getComponentAt(panelsIndexes.get(panel)).setEnabled(panel.isEnabled());
     }
-    
+
     /**
      * Selects given tab index
      * 

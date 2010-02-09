@@ -27,17 +27,17 @@ import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public abstract class ColumnSetTableModel extends CommonTableModel {
-	
-	private ColumnSet columnSet;
-	
-	public ColumnSetTableModel(ColumnSet columnSet) {
-		super();
-		this.columnSet = columnSet;		
-	}
 
-	public ColumnSetTableModel() {
-		super();
-	}
+    private ColumnSet columnSet;
+
+    public ColumnSetTableModel(ColumnSet columnSet) {
+        super();
+        this.columnSet = columnSet;
+    }
+
+    public ColumnSetTableModel() {
+        super();
+    }
 
     /**
      * Returns column data class.
@@ -51,7 +51,7 @@ public abstract class ColumnSetTableModel extends CommonTableModel {
     public Class<?> getColumnClass(int colIndex) {
         return getColumn(colIndex).getColumnClass();
     }
-    
+
     /**
      * Return column count.
      * 
@@ -77,25 +77,27 @@ public abstract class ColumnSetTableModel extends CommonTableModel {
 
     /**
      * Returns column in given index
+     * 
      * @param colIndex
      * @return
      */
     protected Column getColumn(int colIndex) {
-    	return columnSet != null ? columnSet.getColumn(columnSet.getColumnId(colIndex)) : null;
+        return columnSet != null ? columnSet.getColumn(columnSet.getColumnId(colIndex)) : null;
     }
 
     /**
      * Abstract method to sort by the given comparator
+     * 
      * @param comparator
      */
     public abstract void sort(Comparator<AudioObject> comparator);
 
-	/**
-	 * @param columnSet the columnSet to set
-	 */
-	public void setColumnSet(ColumnSet columnSet) {
-		this.columnSet = columnSet;
-	}
-	
+    /**
+     * @param columnSet
+     *            the columnSet to set
+     */
+    public void setColumnSet(ColumnSet columnSet) {
+        this.columnSet = columnSet;
+    }
 
 }

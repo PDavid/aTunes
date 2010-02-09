@@ -50,10 +50,10 @@ public class ArtistColumn extends Column {
         return new JLabel(audioObject.getArtist(), !FavoritesHandler.getInstance().getFavoriteArtistsInfo().containsKey(audioObject.getArtist()) ? null : Images
                 .getImage(Images.ARTIST_FAVORITE), SwingConstants.LEFT);
     }
-    
+
     @Override
     public String getValueForFilter(AudioObject audioObject) {
-    	return audioObject.getArtist();
+        return audioObject.getArtist();
     }
 
 }
