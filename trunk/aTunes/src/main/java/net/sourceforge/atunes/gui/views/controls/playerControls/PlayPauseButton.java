@@ -55,7 +55,7 @@ public final class PlayPauseButton extends JButton {
         setMaximumSize(size);
         setFocusable(false);
 
-        LookAndFeelSelector.getInstance().getCurrentLookAndFeel().putClientProperties(this);        
+        LookAndFeelSelector.getInstance().getCurrentLookAndFeel().putClientProperties(this);
 
         // Add behaviour
         addActionListener(new ActionListener() {
@@ -73,18 +73,18 @@ public final class PlayPauseButton extends JButton {
      *            the new playing
      */
     public void setPlaying(final boolean playing) {
-    	if (!EventQueue.isDispatchThread()) {
-    		SwingUtilities.invokeLater(new Runnable() {
-    			@Override
-    			public void run() {
-    				setPlayingState(playing);
-    			}
-    		});
-    	} else {
-    		setPlayingState(playing);
-    	}
+        if (!EventQueue.isDispatchThread()) {
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    setPlayingState(playing);
+                }
+            });
+        } else {
+            setPlayingState(playing);
+        }
     }
-    
+
     private void setPlayingState(boolean playing) {
         if (playing) {
             setIcon(Images.getImage(Images.PAUSE));

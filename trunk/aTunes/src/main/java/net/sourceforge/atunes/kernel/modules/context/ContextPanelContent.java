@@ -109,9 +109,9 @@ public abstract class ContextPanelContent {
      * previous information retrieved for previous audio object
      */
     protected void clearContextPanelContent() {
-   		parentTaskPane.setCollapsed(true);
-   		// Disable task pane so user can't expand it
-   		parentTaskPane.setEnabled(false);
+        parentTaskPane.setCollapsed(true);
+        // Disable task pane so user can't expand it
+        parentTaskPane.setEnabled(false);
         if (worker != null) {
             worker.cancel(true);
         }
@@ -189,7 +189,7 @@ public abstract class ContextPanelContent {
         textLabel.setOpaque(false);
         textLabel.setVerticalAlignment(SwingConstants.TOP);
 
-    	panel.setOpaque(false);
+        panel.setOpaque(false);
         if (backgroundColor != null) {
             textLabel.setBackground(backgroundColor);
             panel.setBackground(backgroundColor);

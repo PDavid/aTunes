@@ -88,8 +88,6 @@ public final class FilterHandler extends Handler {
     @Override
     protected void initHandler() {
     }
-    
-    
 
     /**
      * Getter for singleton instance

@@ -46,11 +46,12 @@ public final class ApplicationArguments {
 
     /** Argument to define a custom folder from which to read configuration. */
     public static final String USE_CONFIG_FOLDER = "use-config-folder=";
-    
-    /** 
-     * Argument to define a custom folder from which to read repository configuration (useful to share a repository configuration)
-     * This parameter has priority over USE_CONFIG_FOLDER 
-     * */ 
+
+    /**
+     * Argument to define a custom folder from which to read repository
+     * configuration (useful to share a repository configuration) This parameter
+     * has priority over USE_CONFIG_FOLDER
+     * */
     public static final String USE_REPOSITORY_CONFIG_FOLDER = "use-repository-config-folder=";
 
     /** Do not try to update the application (useful for Linux packages). */

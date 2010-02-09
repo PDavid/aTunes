@@ -255,16 +255,16 @@ public final class AudioObjectPropertiesController extends SimpleController<Audi
      *            properties panel
      */
     public void updateValues(final AudioObject audioObject) {
-    	if (!EventQueue.isDispatchThread()) {
-    		SwingUtilities.invokeLater(new Runnable() {
-    			@Override
-    			public void run() {
-    				updateValuesEDT(audioObject);
-    			}
-    		});
-    	} else {
-    		updateValuesEDT(audioObject);
-    	}
+        if (!EventQueue.isDispatchThread()) {
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    updateValuesEDT(audioObject);
+                }
+            });
+        } else {
+            updateValuesEDT(audioObject);
+        }
     }
 
     /**

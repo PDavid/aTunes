@@ -78,7 +78,7 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
 
     /** Play lists stored */
     private static ListOfPlayLists playListsRetrievedFromCache;
-    
+
     /**
      * Flag indicating if playlists have changed (removed or created)
      */
@@ -88,24 +88,24 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
      * Filter for play list
      */
     private Filter playListFilter = new Filter() {
-    	
-    	@Override
-    	public String getName() {
-    		return "PLAYLIST";
-    	};
-    	
-    	@Override
-    	public String getDescription() {
-    		return I18nUtils.getString("PLAYLIST");
-    	};
-    	
-    	@Override
-    	public void applyFilter(String filter) {
-    		setFilter(filter);
-    	}
-    	
+
+        @Override
+        public String getName() {
+            return "PLAYLIST";
+        };
+
+        @Override
+        public String getDescription() {
+            return I18nUtils.getString("PLAYLIST");
+        };
+
+        @Override
+        public void applyFilter(String filter) {
+            setFilter(filter);
+        }
+
     };
-    
+
     /**
      * Private constructor.
      */
@@ -560,17 +560,17 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
     public void applicationFinish() {
         // Store play list definition
         ApplicationStateHandler.getInstance().persistPlayListsDefinition(getListOfPlayLists());
-        
+
         // Store contents if play lists are dirty or list of play lists have changed
         boolean playListsDirty = false;
         for (PlayList playList : playLists) {
-        	playListsDirty = playListsDirty || playList.isDirty();
+            playListsDirty = playListsDirty || playList.isDirty();
         }
-        
+
         if (playListsDirty || playListsChanged) {
-        	ApplicationStateHandler.getInstance().persistPlayListsContents(getPlayListsContents());
+            ApplicationStateHandler.getInstance().persistPlayListsContents(getPlayListsContents());
         } else {
-        	getLogger().info(LogCategories.PLAYLIST, "Playlists contents are clean");
+            getLogger().info(LogCategories.PLAYLIST, "Playlists contents are clean");
         }
     }
 
@@ -959,51 +959,51 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
      *            the new play list after filtering
      */
     private void setPlayListAfterFiltering(PlayList playList) {
-    	playLists.remove(visiblePlayListIndex);
-    	playLists.add(visiblePlayListIndex, playList);
+        playLists.remove(visiblePlayListIndex);
+        playLists.add(visiblePlayListIndex, playList);
 
-    	// Set selection interval to none
+        // Set selection interval to none
         GuiHandler.getInstance().getPlayListTable().getSelectionModel().clearSelection();
 
         setPlayList(playList);
-        
+
         // Update table model
         ((PlayListTableModel) GuiHandler.getInstance().getPlayListTable().getModel()).setVisiblePlayList(playList);
         ControllerProxy.getInstance().getPlayListController().refreshPlayList();
 
         ControllerProxy.getInstance().getPlayListController().scrollPlayList(false);
 
-//        PlayList currentPlayList = getCurrentPlayList(true);
-//
-//        if (playList.size() > currentPlayList.size()) { // Removing filter
-//            AudioObject selectedAudioObject = currentPlayList.getCurrentAudioObject();
-//            int index = playList.indexOf(selectedAudioObject);
-//            for (int i = 0; i < playList.size(); i++) {
-//                currentPlayList.add(playList.get(i));
-//            }
-//            playLists.remove(visiblePlayListIndex);
-//            playLists.add(visiblePlayListIndex, playList);
-//            getCurrentPlayList(true).setCurrentAudioObjectIndex(index != -1 ? index : 0);
-//            if (index == -1 && isActivePlayListVisible()) {
-//                selectedAudioObjectChanged(currentPlayList.get(0));
-//            }
-//        } else {
-//            // Remove from table 
-//            List<Integer> rowsToRemove = new ArrayList<Integer>();
-//            for (int i = 0; i < currentPlayList.size(); i++) {
-//                AudioObject ao = currentPlayList.get(i);
-//                if (!playList.contains(ao)) {
-//                    rowsToRemove.add(i);
-//                }
-//            }
-//            int[] rowsToRemoveArray = new int[rowsToRemove.size()];
-//            for (int i = 0; i < rowsToRemove.size(); i++) {
-//                rowsToRemoveArray[i] = rowsToRemove.get(i);
-//            }
-//
-//            removeAudioObjects(rowsToRemoveArray);
-//        }
-//        GuiHandler.getInstance().showPlayListInformation(currentPlayList);
+        //        PlayList currentPlayList = getCurrentPlayList(true);
+        //
+        //        if (playList.size() > currentPlayList.size()) { // Removing filter
+        //            AudioObject selectedAudioObject = currentPlayList.getCurrentAudioObject();
+        //            int index = playList.indexOf(selectedAudioObject);
+        //            for (int i = 0; i < playList.size(); i++) {
+        //                currentPlayList.add(playList.get(i));
+        //            }
+        //            playLists.remove(visiblePlayListIndex);
+        //            playLists.add(visiblePlayListIndex, playList);
+        //            getCurrentPlayList(true).setCurrentAudioObjectIndex(index != -1 ? index : 0);
+        //            if (index == -1 && isActivePlayListVisible()) {
+        //                selectedAudioObjectChanged(currentPlayList.get(0));
+        //            }
+        //        } else {
+        //            // Remove from table 
+        //            List<Integer> rowsToRemove = new ArrayList<Integer>();
+        //            for (int i = 0; i < currentPlayList.size(); i++) {
+        //                AudioObject ao = currentPlayList.get(i);
+        //                if (!playList.contains(ao)) {
+        //                    rowsToRemove.add(i);
+        //                }
+        //            }
+        //            int[] rowsToRemoveArray = new int[rowsToRemove.size()];
+        //            for (int i = 0; i < rowsToRemove.size(); i++) {
+        //                rowsToRemoveArray[i] = rowsToRemove.get(i);
+        //            }
+        //
+        //            removeAudioObjects(rowsToRemoveArray);
+        //        }
+        //        GuiHandler.getInstance().showPlayListInformation(currentPlayList);
     }
 
     /**
@@ -1047,32 +1047,36 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
     /**
      * Returns the index of an audio object in a playlist.
      * 
-     * @param aObject The audio object you need the index of
+     * @param aObject
+     *            The audio object you need the index of
      * 
      * @return The index of the audio object
      */
     public int getIndexOfAudioObject(AudioObject aObject) {
-    	return getCurrentPlayList(false).indexOf(aObject);
+        return getCurrentPlayList(false).indexOf(aObject);
     }
 
     /**
      * Returns the audio object at the given index in the playlist.
      * 
-     * @param index The index of the audio object
+     * @param index
+     *            The index of the audio object
      * 
      * @return The audio object
      */
     public AudioObject getAudioObjectAtIndex(int index) {
-    	return getCurrentPlayList(false).getNextAudioObject(index);
+        return getCurrentPlayList(false).getNextAudioObject(index);
     }
 
     /**
-     * Moves the selected row in the play list to the position given in the index
+     * Moves the selected row in the play list to the position given in the
+     * index
      * 
-     * @param index The index to move to
+     * @param index
+     *            The index to move to
      */
     public void changeSelectedAudioObjectToIndex(int index) {
-    	GuiHandler.getInstance().getPlayListTable().changeSelection(index, 0, false, false);
+        GuiHandler.getInstance().getPlayListTable().changeSelection(index, 0, false, false);
     }
 
     /**
@@ -1139,50 +1143,53 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
         activePlayListIndex = playLists.indexOf(activePlayList);
         visiblePlayListIndex = playLists.indexOf(visiblePlayList);
     }
-    
+
     /**
      * Returns content of all play lists
+     * 
      * @return
      */
     private List<List<AudioObject>> getPlayListsContents() {
-    	List<List<AudioObject>> result = new ArrayList<List<AudioObject>>(playLists.size());
-    	for (PlayList playList : playLists) {
-    		result.add(playList.getAudioObjects());
-    	}
-    	return result;
+        List<List<AudioObject>> result = new ArrayList<List<AudioObject>>(playLists.size());
+        for (PlayList playList : playLists) {
+            result.add(playList.getAudioObjects());
+        }
+        return result;
     }
 
-	/**
-	 * @return the playListFilter
-	 */
-	public Filter getPlayListFilter() {
-		return playListFilter;
-	}
-	
-	/**
-	 * Returns play list name at given index
-	 * @param index
-	 * @return
-	 */
-	public String getPlayListNameAtIndex(int index) {
-		return this.playLists.get(index).getName();
-	}
-	
-	/**
-	 * Returns audio objects of play list with given index
-	 * @param index
-	 * @return
-	 */
-	public List<AudioObject> getPlayListContent(int index) {
-		if (index >= this.playLists.size()) {
-			throw new IllegalArgumentException(new StringBuilder().append("Invalid play list index ").append(index).toString());
-		} else {
-			List<AudioObject> result = new ArrayList<AudioObject>();
-			PlayList playlist = this.playLists.get(index);
-			for (int i = 0; i < playlist.size(); i++) {
-				result.add(playlist.get(i));
-			}
-			return result; 
-		}
-	}
+    /**
+     * @return the playListFilter
+     */
+    public Filter getPlayListFilter() {
+        return playListFilter;
+    }
+
+    /**
+     * Returns play list name at given index
+     * 
+     * @param index
+     * @return
+     */
+    public String getPlayListNameAtIndex(int index) {
+        return this.playLists.get(index).getName();
+    }
+
+    /**
+     * Returns audio objects of play list with given index
+     * 
+     * @param index
+     * @return
+     */
+    public List<AudioObject> getPlayListContent(int index) {
+        if (index >= this.playLists.size()) {
+            throw new IllegalArgumentException(new StringBuilder().append("Invalid play list index ").append(index).toString());
+        } else {
+            List<AudioObject> result = new ArrayList<AudioObject>();
+            PlayList playlist = this.playLists.get(index);
+            for (int i = 0; i < playlist.size(); i++) {
+                result.add(playlist.get(i));
+            }
+            return result;
+        }
+    }
 }

@@ -62,8 +62,8 @@ public class RemoveFromFavoritesAction extends Action {
         } else {
             int[] rows = ControllerProxy.getInstance().getNavigationController().getNavigationTablePanel().getNavigationTable().getSelectedRows();
             if (rows.length > 0) {
-                List<AudioObject> audioObjects = ((NavigationTableModel) ControllerProxy.getInstance().getNavigationController().getNavigationTablePanel().getNavigationTable().getModel())
-                        .getAudioObjectsAt(rows);
+                List<AudioObject> audioObjects = ((NavigationTableModel) ControllerProxy.getInstance().getNavigationController().getNavigationTablePanel().getNavigationTable()
+                        .getModel()).getAudioObjectsAt(rows);
                 FavoritesHandler.getInstance().removeSongsFromFavorites(audioObjects);
             }
         }

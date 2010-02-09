@@ -117,18 +117,18 @@ public final class PlayerControlsController extends SimpleController<PlayerContr
      *            the total time
      */
     public void setCurrentAudioObjectTimePlayed(final long timePlayed, final long totalTime) {
-    	if (!EventQueue.isDispatchThread()) {
-    		SwingUtilities.invokeLater(new Runnable() {
-    			@Override
-    			public void run() {
-    				setCurrentAudioObjectTimePlayedEDT(timePlayed, totalTime);
-    			}
-    		});
-    	} else {
-    		setCurrentAudioObjectTimePlayedEDT(timePlayed, totalTime);
-    	}
+        if (!EventQueue.isDispatchThread()) {
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    setCurrentAudioObjectTimePlayedEDT(timePlayed, totalTime);
+                }
+            });
+        } else {
+            setCurrentAudioObjectTimePlayedEDT(timePlayed, totalTime);
+        }
     }
-    
+
     private void setCurrentAudioObjectTimePlayedEDT(long timePlayed, long totalTime) {
         long remainingTime = totalTime - timePlayed;
         if (timePlayed == 0) {

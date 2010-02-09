@@ -30,19 +30,19 @@ public final class NavigationTableColumnModel extends CommonColumnModel {
     private static final long serialVersionUID = 1071222881574684439L;
 
     public NavigationTableColumnModel(JTable table) {
-    	super(table);
-    	enableColumnChange(true);
-	}
-    
-    @Override
-    public void addColumn(TableColumn aColumn) {    	
-    	updateColumnSettings(aColumn);
-        updateColumnHeader(aColumn);
-    	super.addColumn(aColumn);    	
+        super(table);
+        enableColumnChange(true);
     }
-    
+
+    @Override
+    public void addColumn(TableColumn aColumn) {
+        updateColumnSettings(aColumn);
+        updateColumnHeader(aColumn);
+        super.addColumn(aColumn);
+    }
+
     @Override
     protected void reapplyFilter() {
-    	ControllerProxy.getInstance().getNavigationController().updateTableContent(NavigationHandler.getInstance().getCurrentView().getTree());    	
+        ControllerProxy.getInstance().getNavigationController().updateTableContent(NavigationHandler.getInstance().getCurrentView().getTree());
     }
 }

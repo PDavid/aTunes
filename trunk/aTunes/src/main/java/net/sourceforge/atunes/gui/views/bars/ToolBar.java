@@ -114,10 +114,9 @@ public final class ToolBar extends JToolBar {
         search = new JButton(Actions.getAction(CustomSearchAction.class));
         search.setText(null);
         add(search);
-        
+
         filterPanel = new ToolBarFilterPanel();
         add(filterPanel);
-
 
     }
 
@@ -136,11 +135,11 @@ public final class ToolBar extends JToolBar {
     public JToggleButton getShowContext() {
         return showContext;
     }
-    
-	/**
-	 * @return the filterPanel
-	 */
-	public ToolBarFilterPanel getFilterPanel() {
-		return filterPanel;
-	}
+
+    /**
+     * @return the filterPanel
+     */
+    public ToolBarFilterPanel getFilterPanel() {
+        return filterPanel;
+    }
 }

@@ -60,16 +60,15 @@ public final class UpdateHandler extends Handler {
     @Override
     public void applicationFinish() {
     }
-    
+
     @Override
     public void applicationStateChanged(ApplicationState newState) {
     }
-    
-    
+
     @Override
     protected void initHandler() {
     }
-    
+
     public static UpdateHandler getInstance() {
         return instance;
     }
@@ -77,7 +76,7 @@ public final class UpdateHandler extends Handler {
     @Override
     public void applicationStarted() {
         if (!Kernel.NO_UPDATE) {
-        	checkUpdates(ApplicationState.getInstance().getProxy(), false, false);
+            checkUpdates(ApplicationState.getInstance().getProxy(), false, false);
         }
     }
 

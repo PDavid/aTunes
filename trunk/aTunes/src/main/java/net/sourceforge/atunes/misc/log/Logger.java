@@ -115,13 +115,14 @@ public class Logger {
         StringBuilder sb = new StringBuilder();
         sb.append('[').append(cat).append("] ");
         for (Object object : objects) {
-        	sb.append(object);
+            sb.append(object);
         }
         logger.debug(sb.toString());
     }
 
     /**
-     * Logs a debug event. This method is specially designed to be called at the beginning of a method to log the execution of the method
+     * Logs a debug event. This method is specially designed to be called at the
+     * beginning of a method to log the execution of the method
      * 
      * @param cat
      *            the cat

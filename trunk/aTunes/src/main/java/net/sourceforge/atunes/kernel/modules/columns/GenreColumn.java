@@ -53,6 +53,6 @@ public class GenreColumn extends Column {
 
     @Override
     public String getValueForFilter(AudioObject audioObject) {
-    	return audioObject.getGenre();
+        return audioObject.getGenre();
     }
 }

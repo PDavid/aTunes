@@ -73,13 +73,13 @@ public class AlbumContextPanel extends ContextPanel {
 
     @Override
     protected boolean isPanelEnabledForAudioObject(AudioObject audioObject) {
-    	// Avoid unknown artist or album
-    	if (Artist.isUnknownArtist(audioObject.getArtist()) || Album.isUnknownAlbum(audioObject.getAlbum())) {
-    		return false;
-    	}
-    	
-    	// Enable panel for AudioFile objects or Radios with song information available
-		return audioObject instanceof AudioFile || audioObject instanceof Radio && ((Radio)audioObject).isSongInfoAvailable();
+        // Avoid unknown artist or album
+        if (Artist.isUnknownArtist(audioObject.getArtist()) || Album.isUnknownAlbum(audioObject.getAlbum())) {
+            return false;
+        }
+
+        // Enable panel for AudioFile objects or Radios with song information available
+        return audioObject instanceof AudioFile || audioObject instanceof Radio && ((Radio) audioObject).isSongInfoAvailable();
     }
 
 }

@@ -79,8 +79,7 @@ public class ImportLovedTracksFromLastFM extends Action {
                     FavoritesHandler.getInstance().addFavoriteSongs(lovedTracks);
                 } catch (Exception e) {
                 }
-                GuiHandler.getInstance().showMessage(
-                        StringUtils.getString(I18nUtils.getString("LOVED_TRACKS_IMPORTED"), ": ", lovedTracks == null ? "0" : lovedTracks.size()));
+                GuiHandler.getInstance().showMessage(StringUtils.getString(I18nUtils.getString("LOVED_TRACKS_IMPORTED"), ": ", lovedTracks == null ? "0" : lovedTracks.size()));
 
             }
         };

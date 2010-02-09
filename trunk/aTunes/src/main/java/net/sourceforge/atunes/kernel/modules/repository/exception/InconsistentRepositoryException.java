@@ -24,7 +24,6 @@ package net.sourceforge.atunes.kernel.modules.repository.exception;
  */
 public class InconsistentRepositoryException extends Exception {
 
-	
-	private static final long serialVersionUID = 3462544971099489889L;
+    private static final long serialVersionUID = 3462544971099489889L;
 
 }

@@ -206,7 +206,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
             int dropRow = GuiHandler.getInstance().getPlayListTable().rowAtPoint(support.getDropLocation().getDropPoint());
 
             if (!audioObjectsToAdd.isEmpty()) {
-            	AudioObjectComparator.sort(audioObjectsToAdd);
+                AudioObjectComparator.sort(audioObjectsToAdd);
                 PlayListHandler.getInstance().addToPlayList(dropRow, audioObjectsToAdd, true);
                 // Keep selected rows: if drop row is the bottom of play list (-1) then select last row
                 if (dropRow == -1) {
@@ -328,7 +328,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
             int dropRow = GuiHandler.getInstance().getPlayListTable().rowAtPoint(support.getDropLocation().getDropPoint());
 
             if (!filesToAdd.isEmpty()) {
-            	AudioObjectComparator.sort(filesToAdd);
+                AudioObjectComparator.sort(filesToAdd);
                 PlayListHandler.getInstance().addToPlayList(dropRow, filesToAdd, true);
                 // Keep selected rows: if drop row is the bottom of play list (-1) then select last row
                 if (dropRow == -1) {

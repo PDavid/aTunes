@@ -439,17 +439,16 @@ public final class DeviceNavigationView extends NavigationView {
         return songs;
     }
 
-    
     @Override
     public boolean isUseDefaultNavigatorColumnSet() {
-    	return true;
+        return true;
     }
 
     @Override
     public ColumnSet getCustomColumnSet() {
-    	return null;
+        return null;
     }
-    
+
     @Override
     public boolean isViewModeSupported() {
         return true;
@@ -457,10 +456,10 @@ public final class DeviceNavigationView extends NavigationView {
 
     @Override
     protected TreeCellRenderer getTreeRenderer() {
-    	return LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTreeCellRenderer(new TreeCellRendererCode() {
-			
-			@Override
-			public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
+        return LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTreeCellRenderer(new TreeCellRendererCode() {
+
+            @Override
+            public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
                 JLabel label = (JLabel) superComponent;
 
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;

@@ -43,10 +43,10 @@ public class ComposerColumn extends Column {
     public Object getValueFor(AudioObject audioObject) {
         return audioObject.getComposer();
     }
-    
+
     @Override
     public String getValueForFilter(AudioObject audioObject) {
-    	return audioObject.getComposer();
+        return audioObject.getComposer();
     }
 
 }

@@ -282,11 +282,11 @@ public final class SystemProperties {
         return System.getProperty("user.dir");
     }
 
-	/**
-	 * @return the customRepositoryConfigFolder
-	 */
-	public static String getCustomRepositoryConfigFolder() {
-		return customRepositoryConfigFolder;
-	}
+    /**
+     * @return the customRepositoryConfigFolder
+     */
+    public static String getCustomRepositoryConfigFolder() {
+        return customRepositoryConfigFolder;
+    }
 
 }

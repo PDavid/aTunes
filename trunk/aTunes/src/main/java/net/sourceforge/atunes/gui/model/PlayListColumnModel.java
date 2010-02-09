@@ -45,16 +45,16 @@ public final class PlayListColumnModel extends CommonColumnModel {
 
     @Override
     protected void reapplyFilter() {
-    	ControllerProxy.getInstance().getPlayListController().reapplyFilter();    	
-    }    
-    
+        ControllerProxy.getInstance().getPlayListController().reapplyFilter();
+    }
+
     @Override
     public void addColumn(TableColumn aColumn) {
         super.addColumn(aColumn);
         updateColumnSettings(aColumn);
-        
+
         // No header renderer is added to play list since user can change order of table manually by adding, removing or moving rows
         // so keep ordering has no sense
     }
-    
+
 }

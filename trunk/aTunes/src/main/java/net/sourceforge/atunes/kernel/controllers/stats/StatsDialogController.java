@@ -384,20 +384,20 @@ public final class StatsDialogController extends SimpleController<StatsDialog> {
         table.getColumnModel().getColumn(0).setWidth(table.getColumnModel().getColumn(0).getWidth());
         table.getColumnModel().getColumn(0).setCellRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
 
-        	@Override
-        	public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        		JLabel l = (JLabel) superComponent;
-        		l.setHorizontalAlignment(GuiUtils.getComponentOrientationAsSwingConstant());
-        		return l;
-        	}
+            @Override
+            public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                JLabel l = (JLabel) superComponent;
+                l.setHorizontalAlignment(GuiUtils.getComponentOrientationAsSwingConstant());
+                return l;
+            }
         }));
         table.getColumnModel().getColumn(2).setPreferredWidth(30);
         table.getColumnModel().getColumn(2).setWidth(table.getColumnModel().getColumn(2).getWidth());
 
         table.getColumnModel().getColumn(1).setCellRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
 
-        	@Override
-        	public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            @Override
+            public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 JLabel l = (JLabel) superComponent;
                 l.setHorizontalAlignment(SwingConstants.RIGHT);
                 return l;
@@ -405,8 +405,8 @@ public final class StatsDialogController extends SimpleController<StatsDialog> {
         }));
         table.getColumnModel().getColumn(2).setCellRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
 
-        	@Override
-        	public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            @Override
+            public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 JLabel l = (JLabel) superComponent;
                 l.setHorizontalAlignment(SwingConstants.RIGHT);
                 return l;

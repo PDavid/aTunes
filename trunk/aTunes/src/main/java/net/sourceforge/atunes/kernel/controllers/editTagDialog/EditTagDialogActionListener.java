@@ -97,10 +97,10 @@ public final class EditTagDialogActionListener implements ActionListener {
                 PlayListHandler.getInstance().changeSelectedAudioObjectToIndex(++currentSelectedSongIndex);
                 selectedFiles.clear();
                 selectedFiles.add(PlayListHandler.getInstance().getSelectedAudioObjects().get(0));
-                validAudioFile = AudioFile.isValidAudioFile(selectedFiles.get(0).getUrl());         
+                validAudioFile = AudioFile.isValidAudioFile(selectedFiles.get(0).getUrl());
             }
             if (validAudioFile) {
-                nextFile.add((AudioFile)selectedFiles.get(0));
+                nextFile.add((AudioFile) selectedFiles.get(0));
                 controller.editFiles(nextFile);
             }
         } else if (e.getSource() == dialog.getPrevButton()) {
@@ -128,7 +128,7 @@ public final class EditTagDialogActionListener implements ActionListener {
                 }
             }
             if (validAudioFile) {
-                prevFile.add((AudioFile)selectedFiles.get(0));
+                prevFile.add((AudioFile) selectedFiles.get(0));
                 controller.editFiles(prevFile);
             }
         } else if (e.getSource() == dialog.getCancelButton()) {

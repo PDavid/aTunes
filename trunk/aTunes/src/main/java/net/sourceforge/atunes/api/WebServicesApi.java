@@ -29,16 +29,17 @@ import org.commonjukebox.plugins.PluginApi;
 @PluginApi
 public class WebServicesApi {
 
-	/**
-	 * Returns similar artists information for the given artist name
-	 * @param artistName
-	 * @return
-	 */
-	public static SimilarArtistsInfo getSimilarArtists(String artistName) {
-		return LastFmService.getInstance().getSimilarArtists(artistName);
-	}
-	
-	public static Image getAlbumImage(String artist, String album) {
-		return LastFmService.getInstance().getAlbumImage(artist, album);
-	}
+    /**
+     * Returns similar artists information for the given artist name
+     * 
+     * @param artistName
+     * @return
+     */
+    public static SimilarArtistsInfo getSimilarArtists(String artistName) {
+        return LastFmService.getInstance().getSimilarArtists(artistName);
+    }
+
+    public static Image getAlbumImage(String artist, String album) {
+        return LastFmService.getInstance().getAlbumImage(artist, album);
+    }
 }

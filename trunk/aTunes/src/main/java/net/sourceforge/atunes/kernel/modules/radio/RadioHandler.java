@@ -53,7 +53,7 @@ public final class RadioHandler extends Handler {
     private List<Radio> presetRadios;
     List<Radio> retrievedPresetRadios = new ArrayList<Radio>();
     boolean noNewStations = true;
-    
+
     /**
      * Flag indicating if radio information must be stored to disk
      */
@@ -116,15 +116,15 @@ public final class RadioHandler extends Handler {
      * Write stations to xml files.
      */
     public void applicationFinish() {
-    	if (radioListDirty) {
-    		ApplicationStateHandler.getInstance().persistRadioCache(getRadios());
-    		// Only write preset list if new stations were added
-    		if (!noNewStations) {
-    			ApplicationStateHandler.getInstance().persistPresetRadioCache(presetRadios);
-    		}
-    	} else {
-    		getLogger().info(LogCategories.HANDLER, "Radio list is clean");
-    	}
+        if (radioListDirty) {
+            ApplicationStateHandler.getInstance().persistRadioCache(getRadios());
+            // Only write preset list if new stations were added
+            if (!noNewStations) {
+                ApplicationStateHandler.getInstance().persistPresetRadioCache(presetRadios);
+            }
+        } else {
+            getLogger().info(LogCategories.HANDLER, "Radio list is clean");
+        }
     }
 
     @Override

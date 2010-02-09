@@ -25,7 +25,7 @@ import javax.swing.table.TableColumn;
 import net.sourceforge.atunes.kernel.modules.columns.SearchResultsColumnSet;
 
 public class SearchResultColumnModel extends CommonColumnModel {
-	
+
     private static final long serialVersionUID = -2211160302611944001L;
 
     /**
@@ -41,15 +41,14 @@ public class SearchResultColumnModel extends CommonColumnModel {
 
     @Override
     protected void reapplyFilter() {
-    	// Nothing to do    	
-    }    
-    
+        // Nothing to do    	
+    }
+
     @Override
     public void addColumn(TableColumn aColumn) {
         super.addColumn(aColumn);
         updateColumnSettings(aColumn);
         updateColumnHeader(aColumn);
     }
-
 
 }

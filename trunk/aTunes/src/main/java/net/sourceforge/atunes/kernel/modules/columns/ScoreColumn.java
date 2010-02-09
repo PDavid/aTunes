@@ -53,29 +53,29 @@ public class ScoreColumn extends Column {
     @Override
     public TableCellEditor getCellEditor() {
         JComboBox comboBox = new JComboBox(new Object[] { 0, 1, 2, 3, 4, 5 });
-        
+
         comboBox.setRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListCellRenderer(new ListCellRendererCode() {
-			
-			@Override
-			public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-				setLabel((JLabel)superComponent, (Integer)value);
-				return superComponent;
-			}
-		}));
-        
+
+            @Override
+            public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                setLabel((JLabel) superComponent, (Integer) value);
+                return superComponent;
+            }
+        }));
+
         return new DefaultCellEditor(comboBox);
     }
 
     @Override
     public TableCellRenderer getCellRenderer() {
         return LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
-			
-			@Override
-			public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-				setLabel((JLabel)superComponent, (Integer)value);
-				return superComponent;
-			}
-		});
+
+            @Override
+            public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                setLabel((JLabel) superComponent, (Integer) value);
+                return superComponent;
+            }
+        });
     }
 
     @Override
@@ -98,11 +98,12 @@ public class ScoreColumn extends Column {
 
     /**
      * Sets proper icon and text
+     * 
      * @param label
      * @param score
      */
     private void setLabel(JLabel label, int score) {
-    	label.setText(null);
+        label.setText(null);
         switch (score) {
         case 0:
             label.setIcon(Images.getImage(Images.EMPTY));
@@ -124,5 +125,5 @@ public class ScoreColumn extends Column {
             break;
         }
     }
-    	
+
 }

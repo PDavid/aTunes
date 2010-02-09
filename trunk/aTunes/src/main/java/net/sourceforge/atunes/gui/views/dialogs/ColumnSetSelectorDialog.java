@@ -239,13 +239,13 @@ public final class ColumnSetSelectorDialog extends CustomModalDialog {
         columnsList.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JCheckBox()));
         columnsList.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         columnsList.setDefaultRenderer(String.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
-			
-			@Override
-			public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-		        GuiUtils.applyComponentOrientation((JLabel) superComponent);
-		        return superComponent;
-			}
-		}));
+
+            @Override
+            public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                GuiUtils.applyComponentOrientation((JLabel) superComponent);
+                return superComponent;
+            }
+        }));
 
         JScrollPane scrollPane = new JScrollPane(columnsList);
         JLabel label = new JLabel(I18nUtils.getString("SELECT_COLUMNS"));
@@ -322,8 +322,9 @@ public final class ColumnSetSelectorDialog extends CustomModalDialog {
     /**
      * Sets the columns set to be changed
      * 
-     * @param column set
-     *            
+     * @param column
+     *            set
+     * 
      */
     public void setColumnSet(ColumnSet columnSet) {
         model.setColumns(columnSet.getColumnsForSelection());

@@ -49,8 +49,8 @@ public class ClearPlayListAction extends Action {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        int returnValue = JOptionPane.showConfirmDialog(GuiHandler.getInstance().getFrame().getFrame(), I18nUtils.getString("CLEAR_PLAYLIST_WARNING"), I18nUtils
-                .getString("CLEAR"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        int returnValue = JOptionPane.showConfirmDialog(GuiHandler.getInstance().getFrame().getFrame(), I18nUtils.getString("CLEAR_PLAYLIST_WARNING"),
+                I18nUtils.getString("CLEAR"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (JOptionPane.YES_OPTION == returnValue) {
             PlayListHandler.getInstance().clearPlayList();
         }

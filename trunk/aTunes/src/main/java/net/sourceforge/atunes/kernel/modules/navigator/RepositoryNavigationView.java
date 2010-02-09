@@ -477,15 +477,15 @@ public class RepositoryNavigationView extends NavigationView {
 
     @Override
     public boolean isUseDefaultNavigatorColumnSet() {
-    	return true;
+        return true;
     }
-    
+
     @Override
     public ColumnSet getCustomColumnSet() {
-    	// Return null since use default navigator column set
-    	return null;
+        // Return null since use default navigator column set
+        return null;
     }
-    
+
     @Override
     public boolean isViewModeSupported() {
         return true;
@@ -493,15 +493,14 @@ public class RepositoryNavigationView extends NavigationView {
 
     @Override
     protected TreeCellRenderer getTreeRenderer() {
-    	return LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTreeCellRenderer(new TreeCellRendererCode() {
-			
-			@Override
-			public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
+        return LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTreeCellRenderer(new TreeCellRendererCode() {
+
+            @Override
+            public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
                 JLabel label = (JLabel) superComponent;
-                
+
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
                 final Object content = node.getUserObject();
-
 
                 if (content instanceof Artist) {
                     if (!ApplicationState.getInstance().isShowFavoritesInNavigator() || !FavoritesHandler.getInstance().getFavoriteArtistsInfo().containsValue(content)) {
@@ -561,5 +560,5 @@ public class RepositoryNavigationView extends NavigationView {
     static String getToolTipForRepository() {
         int songs = RepositoryHandler.getInstance().getAudioFilesList().size();
         return StringUtils.getString(I18nUtils.getString("REPOSITORY"), " (", songs, " ", (songs > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG")), ")");
-    }    
+    }
 }

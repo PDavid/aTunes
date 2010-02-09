@@ -131,20 +131,20 @@ public abstract class ContextPanel {
      * @param audioObject
      */
     protected final void updateContextPanel(final AudioObject audioObject, final boolean forceUpdate) {
-    	if (!EventQueue.isDispatchThread()) {
-    		SwingUtilities.invokeLater(new Runnable() {
-    			@Override
-    			public void run() {
-    				updateContextPanelEDT(audioObject, forceUpdate);
-    			}
-    		});
-    	} else {
-    		updateContextPanelEDT(audioObject, forceUpdate);
-    	}
+        if (!EventQueue.isDispatchThread()) {
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    updateContextPanelEDT(audioObject, forceUpdate);
+                }
+            });
+        } else {
+            updateContextPanelEDT(audioObject, forceUpdate);
+        }
     }
-    
+
     private void updateContextPanelEDT(AudioObject audioObject, boolean forceUpdate) {
-    	// If the AudioObject is the same as used before to update panel then do nothing if forceUpdate is false
+        // If the AudioObject is the same as used before to update panel then do nothing if forceUpdate is false
         if (!forceUpdate && this.audioObject != null && this.audioObject.equals(audioObject)) {
             return;
         }
@@ -198,7 +198,7 @@ public abstract class ContextPanel {
 
             Component componentToAdd = content.getComponent();
             if (componentToAdd instanceof JComponent) {
-            	((JComponent)componentToAdd).setOpaque(false);
+                ((JComponent) componentToAdd).setOpaque(false);
             }
             if (content.isScrollNeeded()) {
                 JScrollPane scroll = new JScrollPane(componentToAdd);

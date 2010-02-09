@@ -98,15 +98,16 @@ public class ListOfPlayLists implements Serializable {
     void setSelectedPlayList(int selectedPlayList) {
         this.selectedPlayListIndex = selectedPlayList;
     }
-    
+
     /**
      * Fills contents of a list of playlists
+     * 
      * @param contents
      */
     public void setContents(List<List<AudioObject>> contents) {
-    	for (int i = 0; i < getPlayLists().size(); i++) {
-    		getPlayLists().get(i).setContent(contents.get(i));
-    	}
+        for (int i = 0; i < getPlayLists().size(); i++) {
+            getPlayLists().get(i).setContent(contents.get(i));
+        }
     }
 
 }

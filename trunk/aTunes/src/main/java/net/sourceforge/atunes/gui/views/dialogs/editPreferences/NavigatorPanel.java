@@ -232,14 +232,14 @@ public final class NavigatorPanel extends PreferencesPanel {
         highlighTagAttributesTable.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JCheckBox()));
         highlighTagAttributesTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         highlighTagAttributesTable.setDefaultRenderer(String.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
-			
-			@Override
-			public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+
+            @Override
+            public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 GuiUtils.applyComponentOrientation((JLabel) superComponent);
                 return superComponent;
-			}
-		}));
-        
+            }
+        }));
+
         highlightTagAttributesScrollPane = new JScrollPane(highlighTagAttributesTable);
         highlightTagAttributesScrollPane.setMinimumSize(new Dimension(300, 150));
 

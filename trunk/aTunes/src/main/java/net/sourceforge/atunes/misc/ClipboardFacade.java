@@ -66,9 +66,10 @@ public class ClipboardFacade implements ClipboardOwner {
         // Put text on clipboard
         objClipboard.setContents(objStringSelection, instance);
     }
-    
+
     /**
      * Gets text from clipboard
+     * 
      * @return Text from clipboard
      */
     public static String getClipboardContent() {
@@ -76,23 +77,24 @@ public class ClipboardFacade implements ClipboardOwner {
         Clipboard objClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         String content = "";
         try {
-        	Transferable transferable = objClipboard.getContents(null);
-        	boolean hasTransferableText = transferable != null && transferable.isDataFlavorSupported(DataFlavor.stringFlavor);
-        	if ( hasTransferableText ) {
-       			content = (String)transferable.getTransferData(DataFlavor.stringFlavor);
-        	}
+            Transferable transferable = objClipboard.getContents(null);
+            boolean hasTransferableText = transferable != null && transferable.isDataFlavorSupported(DataFlavor.stringFlavor);
+            if (hasTransferableText) {
+                content = (String) transferable.getTransferData(DataFlavor.stringFlavor);
+            }
         } catch (Exception e) {
-        	// Thrown if clipboard is not available: Will return empty string
+            // Thrown if clipboard is not available: Will return empty string
         }
         return content;
     }
-    
+
     /**
      * Gets if clipboard contains text
+     * 
      * @return <code>true</code> if clipboard contains text
      */
     public static boolean clipboardContainsText() {
-    	return !getClipboardContent().equals("");
+        return !getClipboardContent().equals("");
     }
 
     /**

@@ -81,17 +81,17 @@ public final class SystemTrayHandler extends Handler {
      */
     private SystemTrayHandler() {
     }
-    
+
     @Override
     protected void initHandler() {
-    	// TODO Auto-generated method stub
-    	
+        // TODO Auto-generated method stub
+
     }
-    
+
     @Override
     public void applicationStarted() {
-    	// TODO Auto-generated method stub
-    	
+        // TODO Auto-generated method stub
+
     }
 
     /**

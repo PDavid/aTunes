@@ -23,7 +23,6 @@ import net.sourceforge.atunes.model.AudioObject;
 
 public class AlbumArtistColumn extends Column {
 
- 
     private static final long serialVersionUID = -1105793722315426353L;
 
     public AlbumArtistColumn() {
@@ -45,10 +44,10 @@ public class AlbumArtistColumn extends Column {
         // Return album artist
         return audioObject.getAlbumArtist();
     }
-    
+
     @Override
     public String getValueForFilter(AudioObject audioObject) {
-    	return audioObject.getAlbumArtist();
+        return audioObject.getAlbumArtist();
     }
 
 }

@@ -166,9 +166,9 @@ public final class PlayerPanel extends PreferencesPanel {
         hotkeyTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         hotkeyTable.setEnabled(HotkeyHandler.getInstance().areHotkeysSupported());
         hotkeyTable.setDefaultRenderer(Object.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
-			
-			@Override
-			public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+
+            @Override
+            public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component c = superComponent;
                 GuiUtils.applyComponentOrientation((JLabel) c);
                 if (conflicts.contains(row) || notRecommendedKeys.contains(row)) {
@@ -186,9 +186,9 @@ public final class PlayerPanel extends PreferencesPanel {
                 }
                 ((JLabel) c).setToolTipText(keyWarnings.isEmpty() ? null : keyWarnings);
                 return c;
-			}
-		}));
-        
+            }
+        }));
+
         hotkeyTable.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {

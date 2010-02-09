@@ -109,7 +109,7 @@ public class PluginEditorDialog extends CustomModalDialog {
     public PluginConfiguration getConfiguration() {
         return configuration;
     }
-    
+
     private class PluginConfigurationPanel extends JPanel {
 
         private static final long serialVersionUID = 8063088904049173181L;
@@ -123,54 +123,53 @@ public class PluginEditorDialog extends CustomModalDialog {
         }
 
         private void addContent() {
-        	GridBagConstraints c = new GridBagConstraints();
-        	c.gridx = 0;
-        	c.gridy = 0;
-        	c.weightx = 0.5;
-        	c.fill = GridBagConstraints.HORIZONTAL;
-        	c.anchor = GridBagConstraints.WEST;
-        	c.insets = new Insets(10, 10, 0, 10);
-        	for (String property : this.configuration.getPropertiesNames()) {
-        		PluginProperty<?> pluginProperty = this.configuration.getProperty(property);
-        		JLabel propertyLabel = getPropertyLabel(pluginProperty);
-        		JComponent propertyValue = getPropertyEditor(pluginProperty);
-        		
-        		// When last component is added set weighty = 1
-        		if (c.gridy == this.configuration.getPropertiesCount() - 1) {
-        			c.weighty = 1;
-        			c.anchor = GridBagConstraints.NORTHWEST;
-        		}
+            GridBagConstraints c = new GridBagConstraints();
+            c.gridx = 0;
+            c.gridy = 0;
+            c.weightx = 0.5;
+            c.fill = GridBagConstraints.HORIZONTAL;
+            c.anchor = GridBagConstraints.WEST;
+            c.insets = new Insets(10, 10, 0, 10);
+            for (String property : this.configuration.getPropertiesNames()) {
+                PluginProperty<?> pluginProperty = this.configuration.getProperty(property);
+                JLabel propertyLabel = getPropertyLabel(pluginProperty);
+                JComponent propertyValue = getPropertyEditor(pluginProperty);
 
-        		c.gridx = 0;
-        		this.add(propertyLabel, c);
-        		c.gridx = 1;
-        		this.add(propertyValue, c);
-        		
-        		c.gridy++;
-        	}
+                // When last component is added set weighty = 1
+                if (c.gridy == this.configuration.getPropertiesCount() - 1) {
+                    c.weighty = 1;
+                    c.anchor = GridBagConstraints.NORTHWEST;
+                }
+
+                c.gridx = 0;
+                this.add(propertyLabel, c);
+                c.gridx = 1;
+                this.add(propertyValue, c);
+
+                c.gridy++;
+            }
         }
-        
+
         private JLabel getPropertyLabel(PluginProperty<?> property) {
-        	return new JLabel(property.getDescription());
+            return new JLabel(property.getDescription());
         }
-        
+
         private JComponent getPropertyEditor(final PluginProperty<?> property) {
-        	final JTextField textField = new CustomTextField(property.getValue().toString());
-        	textField.addKeyListener(new KeyAdapter() {
-        		@Override
-        		public void keyTyped(KeyEvent e) {
-        			super.keyTyped(e);
-        			SwingUtilities.invokeLater(new Runnable() {
-        				@Override
-        				public void run() {
-                			property.setValue(textField.getText());
-        				}        				
-        			});
-        		}
-			});
-        	return textField;
+            final JTextField textField = new CustomTextField(property.getValue().toString());
+            textField.addKeyListener(new KeyAdapter() {
+                @Override
+                public void keyTyped(KeyEvent e) {
+                    super.keyTyped(e);
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            property.setValue(textField.getText());
+                        }
+                    });
+                }
+            });
+            return textField;
         }
     }
 
 }
-

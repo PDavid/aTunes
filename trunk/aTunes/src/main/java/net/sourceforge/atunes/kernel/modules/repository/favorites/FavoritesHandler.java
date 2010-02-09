@@ -62,17 +62,17 @@ public final class FavoritesHandler extends Handler implements AudioFilesRemoved
 
     @Override
     public void applicationStateChanged(ApplicationState newState) {
-    	// TODO Auto-generated method stub	
+        // TODO Auto-generated method stub	
     }
-    
+
     @Override
     protected void initHandler() {
-    	RepositoryHandler.getInstance().addAudioFilesRemovedListener(this);
+        RepositoryHandler.getInstance().addAudioFilesRemovedListener(this);
     }
-    
+
     @Override
     public void applicationStarted() {
-    	SearchHandler.getInstance().registerSearchableObject(FavoritesSearchableObject.getInstance());
+        SearchHandler.getInstance().registerSearchableObject(FavoritesSearchableObject.getInstance());
     }
 
     /**
@@ -141,10 +141,10 @@ public final class FavoritesHandler extends Handler implements AudioFilesRemoved
     public void applicationFinish() {
         // Only store repository if it's dirty
         if (getFavorites().isDirty()) {
-        	ApplicationStateHandler.getInstance().persistFavoritesCache(getFavorites());
+            ApplicationStateHandler.getInstance().persistFavoritesCache(getFavorites());
         } else {
-        	getLogger().info(LogCategories.FAVORITES, "Favorites are clean");
-        }        
+            getLogger().info(LogCategories.FAVORITES, "Favorites are clean");
+        }
     }
 
     /**
@@ -167,14 +167,14 @@ public final class FavoritesHandler extends Handler implements AudioFilesRemoved
 
     @Override
     protected Runnable getPreviousInitializationTask() {
-    	return new Runnable() {
-    		@Override
-    		public void run() {
+        return new Runnable() {
+            @Override
+            public void run() {
                 favorites = ApplicationStateHandler.getInstance().retrieveFavoritesCache();
-    		}
-    	};
+            }
+        };
     }
-    
+
     /**
      * Gets the favorites.
      * 
@@ -218,9 +218,9 @@ public final class FavoritesHandler extends Handler implements AudioFilesRemoved
     public void removeFromFavorites(List<TreeObject> objects) {
         for (TreeObject obj : objects) {
             if (obj instanceof Artist) {
-            	getFavorites().getFavoriteArtists().remove(obj.toString());
+                getFavorites().getFavoriteArtists().remove(obj.toString());
             } else {
-            	getFavorites().getFavoriteAlbums().remove(obj.toString());
+                getFavorites().getFavoriteAlbums().remove(obj.toString());
             }
         }
 
@@ -235,7 +235,7 @@ public final class FavoritesHandler extends Handler implements AudioFilesRemoved
      */
     public void removeSongsFromFavorites(List<AudioObject> files) {
         for (AudioObject file : files) {
-       		getFavorites().getFavoriteAudioFiles().remove(file.getUrl());
+            getFavorites().getFavoriteAudioFiles().remove(file.getUrl());
         }
 
         callActionsAfterFavoritesChange();
@@ -245,9 +245,9 @@ public final class FavoritesHandler extends Handler implements AudioFilesRemoved
      * Actions to do after a favorite change (add, remove)
      */
     private void callActionsAfterFavoritesChange() {
-    	// Mark favorites information as dirty
-    	getFavorites().setDirty(true);
-    	
+        // Mark favorites information as dirty
+        getFavorites().setDirty(true);
+
         // Update playlist to remove favorite icon
         ControllerProxy.getInstance().getPlayListController().refreshPlayList();
 
@@ -260,20 +260,20 @@ public final class FavoritesHandler extends Handler implements AudioFilesRemoved
 
     @Override
     public void audioFilesRemoved(List<AudioFile> audioFiles) {
-    	for (AudioFile file : audioFiles) {
-    		// Remove from favorite audio files
-    		getFavorites().getFavoriteAudioFiles().remove(file.getUrl());
+        for (AudioFile file : audioFiles) {
+            // Remove from favorite audio files
+            getFavorites().getFavoriteAudioFiles().remove(file.getUrl());
 
-    		// If artist has been removed then remove it from favorites too
-    		if (!RepositoryHandler.getInstance().getArtistStructure().containsKey(file.getArtist())) {
-    			getFavorites().getFavoriteArtists().remove(file.getArtist());
-    		} else {
-    			// If album has been removed then remove it from favorites too
-    			if (RepositoryHandler.getInstance().getArtistStructure().get(file.getArtist()).getAlbum(file.getAlbum()) == null) {
-    				getFavorites().getFavoriteAlbums().remove(file.getAlbum());
-    			}
-    		}
-    	}
-    	callActionsAfterFavoritesChange();
+            // If artist has been removed then remove it from favorites too
+            if (!RepositoryHandler.getInstance().getArtistStructure().containsKey(file.getArtist())) {
+                getFavorites().getFavoriteArtists().remove(file.getArtist());
+            } else {
+                // If album has been removed then remove it from favorites too
+                if (RepositoryHandler.getInstance().getArtistStructure().get(file.getArtist()).getAlbum(file.getAlbum()) == null) {
+                    getFavorites().getFavoriteAlbums().remove(file.getAlbum());
+                }
+            }
+        }
+        callActionsAfterFavoritesChange();
     }
 }

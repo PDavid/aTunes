@@ -107,8 +107,8 @@ public class YoutubeContent extends ContextPanelContent {
         youtubeResultTable.getTableHeader().setReorderingAllowed(false);
         youtubeResultTable.setDefaultRenderer(YoutubeResultEntry.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
 
-        	@Override
-        	public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            @Override
+            public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 return getPanelForTableRenderer(((YoutubeResultEntry) value).getImage(), StringUtils.getString("<html>", ((YoutubeResultEntry) value).getName(), "<br>(",
                         ((YoutubeResultEntry) value).getDuration(), ")</html>"), superComponent.getBackground(), Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT);
             }
@@ -264,8 +264,8 @@ public class YoutubeContent extends ContextPanelContent {
      * Opens a web browser to show youtube results
      */
     protected void openYoutube() {
-        DesktopUtils.openSearch(SearchFactory.getSearchForName("YouTube"),
-                YoutubeService.getInstance().getSearchForAudioObject(ContextHandler.getInstance().getCurrentAudioObject()));
+        DesktopUtils.openSearch(SearchFactory.getSearchForName("YouTube"), YoutubeService.getInstance().getSearchForAudioObject(
+                ContextHandler.getInstance().getCurrentAudioObject()));
     }
 
 }

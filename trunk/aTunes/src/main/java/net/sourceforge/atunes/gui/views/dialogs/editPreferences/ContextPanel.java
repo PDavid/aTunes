@@ -266,13 +266,13 @@ public final class ContextPanel extends PreferencesPanel {
         enginesTable.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JCheckBox()));
         enginesTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         enginesTable.setDefaultRenderer(String.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
-			
-			@Override
-			public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+
+            @Override
+            public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 GuiUtils.applyComponentOrientation((JLabel) superComponent);
                 return superComponent;
-			}
-		}));
+            }
+        }));
         JButton upButton = new JButton(Images.getImage(Images.GO_UP));
         upButton.addActionListener(new ActionListener() {
             @Override

@@ -63,10 +63,10 @@ final class FadingPopup extends Popup {
         JComponent parent = (JComponent) contents.getParent();
         // set the shadow border
         if (shadowBorder) {
-        	Border shadow = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getShadowBorder();
-        	if (shadow != null) {
-        		parent.setBorder(shadow);
-        	}
+            Border shadow = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getShadowBorder();
+            if (shadow != null) {
+                parent.setBorder(shadow);
+            }
         }
         this.windowFader = new WindowFader(popupWindow, 40) {
             @Override

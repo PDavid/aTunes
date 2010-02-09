@@ -81,7 +81,7 @@ public final class HotkeyHandler extends Handler implements HotkeyListener {
      */
     private HotkeyHandler() {
     }
-    
+
     @Override
     protected void initHandler() {
         hotkeys = Hotkeys.createInstance(this);
@@ -97,8 +97,8 @@ public final class HotkeyHandler extends Handler implements HotkeyListener {
 
     @Override
     public void applicationStarted() {
-    	// TODO Auto-generated method stub
-    	
+        // TODO Auto-generated method stub
+
     }
 
     /**

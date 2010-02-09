@@ -101,29 +101,29 @@ public final class GeneralPanel extends PreferencesPanel {
         });
         language = new JComboBox(array);
         language.setRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListCellRenderer(new ListCellRendererCode() {
-			
-			@Override
-			public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+
+            @Override
+            public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 if (!(value instanceof Locale)) {
                     throw new IllegalArgumentException("Argument value must be instance of Locale");
                 }
 
                 Component c = superComponent;
-                
+
                 Locale displayingLocale = (Locale) value;
                 Locale currentLocale = ApplicationState.getInstance().getLocale().getLocale();
 
                 String name = displayingLocale.getDisplayName(currentLocale);
                 name = StringUtils.getString(String.valueOf(name.charAt(0)).toUpperCase(currentLocale), name.substring(1));
-                ((JLabel)c).setText(name);
+                ((JLabel) c).setText(name);
 
                 // The name of flag file should be flag_<locale>.png
                 // if the name of bundle is MainBundle_<locale>.properties
                 String flag = StringUtils.getString("flag_", displayingLocale.toString(), ".png");
                 ((JLabel) c).setIcon(new ImageIcon(GeneralPanel.class.getResource(StringUtils.getString("/", Constants.TRANSLATIONS_DIR, "/", flag))));
                 return c;
-			}
-		}));
+            }
+        }));
 
         showIconTray = new JCheckBox(I18nUtils.getString("SHOW_TRAY_ICON"));
         showTrayPlayer = new JCheckBox(I18nUtils.getString("SHOW_TRAY_PLAYER"));
@@ -142,8 +142,8 @@ public final class GeneralPanel extends PreferencesPanel {
                     fontChooserDialog = new FontChooserDialog(GuiHandler.getInstance().getFrame().getFrame(), 300, 300, currentFontSettings.getFont().toFont(), currentFontSettings
                             .isUseFontSmoothing(), currentFontSettings.isUseFontSmoothingSettingsFromOs(), ApplicationState.getInstance().getLocale().getLocale());
                 } else {
-                    fontChooserDialog = new FontChooserDialog(GuiHandler.getInstance().getFrame().getFrame(), 300, 300, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getDefaultFont()
-                    		, true, false, ApplicationState.getInstance().getLocale().getLocale());
+                    fontChooserDialog = new FontChooserDialog(GuiHandler.getInstance().getFrame().getFrame(), 300, 300, LookAndFeelSelector.getInstance().getCurrentLookAndFeel()
+                            .getDefaultFont(), true, false, ApplicationState.getInstance().getLocale().getLocale());
                 }
                 fontChooserDialog.setVisible(true);
                 if (fontChooserDialog.getSelectedFontSettings() != null) {
@@ -154,26 +154,26 @@ public final class GeneralPanel extends PreferencesPanel {
 
         lookAndFeel = new JComboBox();
         lookAndFeel.addActionListener(new ActionListener() {
-        	@Override
-        	public void actionPerformed(ActionEvent e) {
-        		// Only allow select skin when look and feel is the current enabled
-        		boolean isCurrentLookAndFeel = LookAndFeelSelector.getInstance().getCurrentLookAndFeelName().equals(lookAndFeel.getSelectedItem());
-        		skinLabel.setEnabled(isCurrentLookAndFeel);
-        		skin.setEnabled(isCurrentLookAndFeel);
-        		skin.setModel(isCurrentLookAndFeel ? new ListComboBoxModel<String>(LookAndFeelSelector.getInstance().getAvailableSkins((String)lookAndFeel.getSelectedItem())) :
-        			new ListComboBoxModel<String>(new ArrayList<String>()));
-        	}
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Only allow select skin when look and feel is the current enabled
+                boolean isCurrentLookAndFeel = LookAndFeelSelector.getInstance().getCurrentLookAndFeelName().equals(lookAndFeel.getSelectedItem());
+                skinLabel.setEnabled(isCurrentLookAndFeel);
+                skin.setEnabled(isCurrentLookAndFeel);
+                skin.setModel(isCurrentLookAndFeel ? new ListComboBoxModel<String>(LookAndFeelSelector.getInstance().getAvailableSkins((String) lookAndFeel.getSelectedItem()))
+                        : new ListComboBoxModel<String>(new ArrayList<String>()));
+            }
         });
-        
+
         skin = new JComboBox();
         skin.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String selectedSkin = (String) skin.getSelectedItem();
-        		boolean isCurrentLookAndFeel = LookAndFeelSelector.getInstance().getCurrentLookAndFeelName().equals(lookAndFeel.getSelectedItem());
-        		if (isCurrentLookAndFeel) {
-        			LookAndFeelSelector.getInstance().applySkin(selectedSkin);
-        		}
+                boolean isCurrentLookAndFeel = LookAndFeelSelector.getInstance().getCurrentLookAndFeelName().equals(lookAndFeel.getSelectedItem());
+                if (isCurrentLookAndFeel) {
+                    LookAndFeelSelector.getInstance().applySkin(selectedSkin);
+                }
             }
 
         });
@@ -274,11 +274,11 @@ public final class GeneralPanel extends PreferencesPanel {
 
         LookAndFeelBean oldLookAndFeel = state.getLookAndFeel();
         LookAndFeelBean newLookAndFeel = new LookAndFeelBean();
-        newLookAndFeel.setName((String)lookAndFeel.getSelectedItem());
-        newLookAndFeel.setSkin((String)skin.getSelectedItem());
+        newLookAndFeel.setName((String) lookAndFeel.getSelectedItem());
+        newLookAndFeel.setSkin((String) skin.getSelectedItem());
         state.setLookAndFeel(newLookAndFeel);
         if (!oldLookAndFeel.getName().equals(newLookAndFeel.getName())) {
-        	needRestart = true;
+            needRestart = true;
         }
 
         return needRestart;
@@ -326,12 +326,13 @@ public final class GeneralPanel extends PreferencesPanel {
 
     /**
      * Sets the look and feel
+     * 
      * @param lookAndFeel
      */
     private void setLookAndFeel(String lookAndFeel) {
-    	this.lookAndFeel.setSelectedItem(lookAndFeel);
+        this.lookAndFeel.setSelectedItem(lookAndFeel);
     }
-    
+
     /**
      * Sets the theme.
      * 
@@ -354,17 +355,17 @@ public final class GeneralPanel extends PreferencesPanel {
 
     @Override
     public void updatePanel(ApplicationState state) {
-    	lookAndFeel.setModel(new ListComboBoxModel<String>(LookAndFeelSelector.getInstance().getAvailableLookAndFeels()));
+        lookAndFeel.setModel(new ListComboBoxModel<String>(LookAndFeelSelector.getInstance().getAvailableLookAndFeels()));
         setShowTitle(state.isShowTitle());
         setWindowType(state.getFrameClass());
         setLanguage(I18nUtils.getSelectedLocale());
         setShowIconTray(state.isShowSystemTray());
         setShowTrayPlayer(state.isShowTrayPlayer());
         // If look and feel is not available then set default
-        String lookAndFeelName = LookAndFeelSelector.getInstance().getAvailableLookAndFeels().contains(state.getLookAndFeel().getName()) ? 
-        		state.getLookAndFeel().getName() : LookAndFeelSelector.getDefaultLookAndFeel().getName();
+        String lookAndFeelName = LookAndFeelSelector.getInstance().getAvailableLookAndFeels().contains(state.getLookAndFeel().getName()) ? state.getLookAndFeel().getName()
+                : LookAndFeelSelector.getDefaultLookAndFeel().getName();
         setLookAndFeel(lookAndFeelName);
-        
+
         updateSkins(lookAndFeelName);
         setSkin(state.getLookAndFeel().getSkin() != null ? state.getLookAndFeel().getSkin() : LookAndFeelSelector.getInstance().getDefaultSkin(lookAndFeelName));
         currentFontSettings = state.getFontSettings();
@@ -391,17 +392,18 @@ public final class GeneralPanel extends PreferencesPanel {
     public ImageIcon getIcon() {
         return Images.getImage(Images.PREFS);
     }
-    
+
     /**
      * Updates skins combo for given look and feel
+     * 
      * @param selectedLookAndFeel
      */
     protected void updateSkins(String selectedLookAndFeel) {
-		boolean hasSkins = !LookAndFeelSelector.getInstance().getAvailableSkins(selectedLookAndFeel).isEmpty();
-		skinLabel.setEnabled(hasSkins);
-		skin.setEnabled(hasSkins);
-		skin.setModel(new ListComboBoxModel<String>(LookAndFeelSelector.getInstance().getAvailableSkins(selectedLookAndFeel)));
-		skin.setSelectedItem(LookAndFeelSelector.getInstance().getDefaultSkin(selectedLookAndFeel));
+        boolean hasSkins = !LookAndFeelSelector.getInstance().getAvailableSkins(selectedLookAndFeel).isEmpty();
+        skinLabel.setEnabled(hasSkins);
+        skin.setEnabled(hasSkins);
+        skin.setModel(new ListComboBoxModel<String>(LookAndFeelSelector.getInstance().getAvailableSkins(selectedLookAndFeel)));
+        skin.setSelectedItem(LookAndFeelSelector.getInstance().getDefaultSkin(selectedLookAndFeel));
     }
 
 }

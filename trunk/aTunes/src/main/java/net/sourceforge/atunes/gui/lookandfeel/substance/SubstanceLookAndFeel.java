@@ -1,3 +1,22 @@
+/*
+ * aTunes 2.0.0-SNAPSHOT
+ * Copyright (C) 2006-2010 Alex Aranda, Sylvain Gaudard, Thomas Beckers and contributors
+ *
+ * See http://www.atunes.org/wiki/index.php?title=Contributing for information about contributors
+ *
+ * http://www.atunes.org
+ * http://sourceforge.net/projects/atunes
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
 package net.sourceforge.atunes.gui.lookandfeel.substance;
 
 import java.awt.Component;
@@ -48,9 +67,8 @@ import org.jvnet.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
 import org.jvnet.substance.fonts.FontPolicy;
 import org.jvnet.substance.fonts.FontSet;
 
-
 public class SubstanceLookAndFeel extends LookAndFeel {
-	
+
     /** The map of skin names and class names */
     private static Map<String, String> skins = setMapOfSkins();
 
@@ -102,29 +120,27 @@ public class SubstanceLookAndFeel extends LookAndFeel {
         return result;
     }
 
+    @Override
+    public String getName() {
+        return "Substance";
+    }
 
-	
-	@Override
-	public String getName() {
-		return "Substance";
-	}
-	
-	@Override
-	public String getDescription() {
-		return "Substance Look And Feel";
-	}
-	
-	@Override
-	public void initializeLookAndFeel() {
+    @Override
+    public String getDescription() {
+        return "Substance Look And Feel";
+    }
+
+    @Override
+    public void initializeLookAndFeel() {
         UIManager.put(LafWidget.ANIMATION_KIND, LafConstants.AnimationKind.NONE);
         UIManager.put(org.jvnet.substance.SubstanceLookAndFeel.TABBED_PANE_CONTENT_BORDER_KIND, SubstanceConstants.TabContentPaneBorderKind.SINGLE_FULL);
 
         JFrame.setDefaultLookAndFeelDecorated(true);
         JDialog.setDefaultLookAndFeelDecorated(true);
-	}
-	
-	@Override
-	public void setLookAndFeel(String skin) {
+    }
+
+    @Override
+    public void setLookAndFeel(String skin) {
         try {
             if (skins.containsKey(skin)) {
                 UIManager.setLookAndFeel(skins.get(skin));
@@ -138,21 +154,21 @@ public class SubstanceLookAndFeel extends LookAndFeel {
         } catch (ClassNotFoundException e) {
             getLogger().internalError(e);
         } catch (InstantiationException e) {
-        	getLogger().internalError(e);
+            getLogger().internalError(e);
         } catch (IllegalAccessException e) {
-        	getLogger().internalError(e);
+            getLogger().internalError(e);
         } catch (UnsupportedLookAndFeelException e) {
-        	getLogger().internalError(e);
+            getLogger().internalError(e);
         }
-	}
-	
-	@Override
-	public String getDefaultSkin() {
-		return DEFAULT_SKIN;
-	}
-	
-	@Override
-	public List<String> getSkins() {
+    }
+
+    @Override
+    public String getDefaultSkin() {
+        return DEFAULT_SKIN;
+    }
+
+    @Override
+    public List<String> getSkins() {
         List<String> result = new ArrayList<String>(skins.keySet());
         Collections.sort(result, new Comparator<String>() {
             @Override
@@ -162,117 +178,116 @@ public class SubstanceLookAndFeel extends LookAndFeel {
         });
         return result;
     }
-	
-	@Override
-	public TreeCellRenderer getTreeCellRenderer(final TreeCellRendererCode code) {
-		return new SubstanceDefaultTreeCellRenderer() {
-			/**
+
+    @Override
+    public TreeCellRenderer getTreeCellRenderer(final TreeCellRendererCode code) {
+        return new SubstanceDefaultTreeCellRenderer() {
+            /**
 			 * 
 			 */
-			private static final long serialVersionUID = 3830003466764008228L;
+            private static final long serialVersionUID = 3830003466764008228L;
 
-			@Override
-			public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-				Component c = super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-				return code.getComponent(c, tree, value, sel, expanded, leaf, row, hasFocus);
-			}
-		};
-	}
-	
-	/**
-	 * Returns a new TableCellRenderer executing given code (default implementation)
-	 * @param code
-	 * @return
-	 */
-	public TableCellRenderer getTableCellRenderer(final TableCellRendererCode code) {
-		return new SubstanceDefaultTableCellRenderer() {
+            @Override
+            public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+                Component c = super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
+                return code.getComponent(c, tree, value, sel, expanded, leaf, row, hasFocus);
+            }
+        };
+    }
 
-			/**
+    /**
+     * Returns a new TableCellRenderer executing given code (default
+     * implementation)
+     * 
+     * @param code
+     * @return
+     */
+    public TableCellRenderer getTableCellRenderer(final TableCellRendererCode code) {
+        return new SubstanceDefaultTableCellRenderer() {
+
+            /**
 			 * 
 			 */
-			private static final long serialVersionUID = 2844251523912028654L;
+            private static final long serialVersionUID = 2844251523912028654L;
 
-			@Override
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-				Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-				return code.getComponent(c, table, value, isSelected, hasFocus, row, column);
-			}
-		};		
-	}
-	
-	/**
-	 * Returns a new TableCellRenderer executing given code (default implementation)
-	 * @param code
-	 * @return
-	 */
-	public TableCellRenderer getTableHeaderCellRenderer(final TableCellRendererCode code) {
-		return new SubstanceDefaultTableHeaderCellRenderer() {
-			/**
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                return code.getComponent(c, table, value, isSelected, hasFocus, row, column);
+            }
+        };
+    }
+
+    /**
+     * Returns a new TableCellRenderer executing given code (default
+     * implementation)
+     * 
+     * @param code
+     * @return
+     */
+    public TableCellRenderer getTableHeaderCellRenderer(final TableCellRendererCode code) {
+        return new SubstanceDefaultTableHeaderCellRenderer() {
+            /**
 			 * 
 			 */
-			private static final long serialVersionUID = 1L;
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-				Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-				return code.getComponent(c, table, value, isSelected, hasFocus, row, column);
-			}
-		};		
-	}
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                return code.getComponent(c, table, value, isSelected, hasFocus, row, column);
+            }
+        };
+    }
 
-	
-	@Override
-	public ListCellRenderer getListCellRenderer(final ListCellRendererCode code) {
-		return new SubstanceDefaultListCellRenderer() {
-			/**
+    @Override
+    public ListCellRenderer getListCellRenderer(final ListCellRendererCode code) {
+        return new SubstanceDefaultListCellRenderer() {
+            /**
 			 * 
 			 */
-			private static final long serialVersionUID = 2572603555660744197L;
+            private static final long serialVersionUID = 2572603555660744197L;
 
-			@Override
-			public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-				Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-				return code.getComponent(c, list, value, index, isSelected, cellHasFocus);
-			}
-		};
-	}
-	
-	@Override
-	public boolean isDialogUndecorated() {
-		return true;
-	}
-	
-	@Override
-	public void putClientProperties(JComponent c) {
-		if (c instanceof SecondaryControl || 
-			c instanceof MuteButton || 
-			c instanceof StopButton) {
-	        c.putClientProperty(org.jvnet.substance.SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY, new RoundRectButtonShaper());
-		} else if (c instanceof NextButton) {
-	        c.putClientProperty(org.jvnet.substance.SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY, 
-	        		GuiUtils.getComponentOrientation().isLeftToRight() ? new LeftConcaveButtonShaper(
-	                PlayerControlsPanel.PLAY_BUTTON_SIZE.height) : new RightConcaveButtonShaper(PlayerControlsPanel.PLAY_BUTTON_SIZE.height));
-		} else if (c instanceof PlayPauseButton) {
-	        c.putClientProperty(org.jvnet.substance.SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY, new CircleButtonShaper());
-		} else if (c instanceof PreviousButton) {
-	        c.putClientProperty(org.jvnet.substance.SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY, 
-	        		GuiUtils.getComponentOrientation().isLeftToRight() ? new RightConcaveButtonShaper(
-	                PlayerControlsPanel.PLAY_BUTTON_SIZE.height) : new LeftConcaveButtonShaper(PlayerControlsPanel.PLAY_BUTTON_SIZE.height));
-		}
-	}
-	
-	@Override
-	public boolean isCustomPlayerControlsSupported() {
-		return true;
-	}
-	
-	@Override
-	public Border getShadowBorder() {
-		return ShadowPopupBorder.getInstance();
-	}
-	
-	@Override
-	public void initializeFonts(final Font baseFont) {
+            @Override
+            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                return code.getComponent(c, list, value, index, isSelected, cellHasFocus);
+            }
+        };
+    }
+
+    @Override
+    public boolean isDialogUndecorated() {
+        return true;
+    }
+
+    @Override
+    public void putClientProperties(JComponent c) {
+        if (c instanceof SecondaryControl || c instanceof MuteButton || c instanceof StopButton) {
+            c.putClientProperty(org.jvnet.substance.SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY, new RoundRectButtonShaper());
+        } else if (c instanceof NextButton) {
+            c.putClientProperty(org.jvnet.substance.SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY, GuiUtils.getComponentOrientation().isLeftToRight() ? new LeftConcaveButtonShaper(
+                    PlayerControlsPanel.PLAY_BUTTON_SIZE.height) : new RightConcaveButtonShaper(PlayerControlsPanel.PLAY_BUTTON_SIZE.height));
+        } else if (c instanceof PlayPauseButton) {
+            c.putClientProperty(org.jvnet.substance.SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY, new CircleButtonShaper());
+        } else if (c instanceof PreviousButton) {
+            c.putClientProperty(org.jvnet.substance.SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY, GuiUtils.getComponentOrientation().isLeftToRight() ? new RightConcaveButtonShaper(
+                    PlayerControlsPanel.PLAY_BUTTON_SIZE.height) : new LeftConcaveButtonShaper(PlayerControlsPanel.PLAY_BUTTON_SIZE.height));
+        }
+    }
+
+    @Override
+    public boolean isCustomPlayerControlsSupported() {
+        return true;
+    }
+
+    @Override
+    public Border getShadowBorder() {
+        return ShadowPopupBorder.getInstance();
+    }
+
+    @Override
+    public void initializeFonts(final Font baseFont) {
         org.jvnet.substance.SubstanceLookAndFeel.setFontPolicy(new FontPolicy() {
 
             @Override
@@ -318,10 +333,10 @@ public class SubstanceLookAndFeel extends LookAndFeel {
                 };
             }
         });
-	}
-	
-	@Override
-	public Font getDefaultFont() {
+    }
+
+    @Override
+    public Font getDefaultFont() {
         return org.jvnet.substance.SubstanceLookAndFeel.getFontPolicy().getFontSet("Substance", null).getControlFont();
-	}
+    }
 }

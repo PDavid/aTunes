@@ -25,21 +25,21 @@ public class AmazonTest {
 
     @Test
     public void test() {
-//        AmazonService.getInstance().setProxyBean(null);
-//
-//        AmazonAlbum album = AmazonService.getInstance().getAlbum("Metallica", "Metallica");
-//
-//        Assert.assertNotNull(album);
-//        Assert.assertEquals("Metallica", album.getArtist());
-//        Assert.assertEquals("Metallica", album.getAlbum());
-//        Assert.assertEquals(1, album.getDiscs().size());
-//
-//        AmazonDisc disc = album.getDiscs().get(0);
-//
-//        Assert.assertEquals(12, disc.getTracks().size());
-//
-//        Image image = AmazonService.getInstance().getImage(album.getImageURL());
-//
-//        Assert.assertNotNull(image);
+        //        AmazonService.getInstance().setProxyBean(null);
+        //
+        //        AmazonAlbum album = AmazonService.getInstance().getAlbum("Metallica", "Metallica");
+        //
+        //        Assert.assertNotNull(album);
+        //        Assert.assertEquals("Metallica", album.getArtist());
+        //        Assert.assertEquals("Metallica", album.getAlbum());
+        //        Assert.assertEquals(1, album.getDiscs().size());
+        //
+        //        AmazonDisc disc = album.getDiscs().get(0);
+        //
+        //        Assert.assertEquals(12, disc.getTracks().size());
+        //
+        //        Image image = AmazonService.getInstance().getImage(album.getImageURL());
+        //
+        //        Assert.assertNotNull(image);
     }
 }

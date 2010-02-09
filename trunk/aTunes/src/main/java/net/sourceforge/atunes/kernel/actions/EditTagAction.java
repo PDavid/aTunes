@@ -41,7 +41,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 public class EditTagAction extends ActionOverSelectedObjects<AudioFile> {
 
     private static final long serialVersionUID = -4310895355731333072L;
-    
+
     private static Logger logger = new Logger();
 
     public enum EditTagSources {

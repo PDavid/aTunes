@@ -67,7 +67,7 @@ public final class PlayerHandler extends Handler implements PluginListener, Play
      * The player engine
      */
     private PlayerEngine playerEngine;
-    
+
     /**
      * The current playback state
      */
@@ -81,8 +81,8 @@ public final class PlayerHandler extends Handler implements PluginListener, Play
 
     @Override
     public void applicationStateChanged(ApplicationState newState) {
-    	// TODO Auto-generated method stub
-    	
+        // TODO Auto-generated method stub
+
     }
 
     @Override
@@ -352,7 +352,7 @@ public final class PlayerHandler extends Handler implements PluginListener, Play
                 instance.playerEngine.addPlaybackStateListener(instance.playerEngine);
                 instance.playerEngine.addPlaybackStateListener(GuiHandler.getInstance());
                 instance.playerEngine.addPlaybackStateListener(NotifyHandler.getInstance());
-                
+
                 // Add instance as listener too
                 instance.playerEngine.addPlaybackStateListener(instance);
             }
@@ -377,7 +377,7 @@ public final class PlayerHandler extends Handler implements PluginListener, Play
      */
     public void initHandler() {
     }
-    
+
     private static void handlePlayerError(Throwable t) {
         getLogger().error(LogCategories.PLAYER, StringUtils.getString("Player Error: ", t));
         getLogger().error(LogCategories.PLAYER, t);
@@ -412,32 +412,34 @@ public final class PlayerHandler extends Handler implements PluginListener, Play
             PlayerHandler.getInstance().removePlaybackStateListener((PlaybackStateListener) createdInstance);
         }
     }
-    
+
     @Override
     public void playbackStateChanged(PlaybackState newState, AudioObject currentAudioObject) {
-    	this.playbackState = newState;
+        this.playbackState = newState;
     }
 
-	/**
-	 * @return the playbackState
-	 */
-	public PlaybackState getPlaybackState() {
-		return playbackState;
-	}
+    /**
+     * @return the playbackState
+     */
+    public PlaybackState getPlaybackState() {
+        return playbackState;
+    }
 
-	/**
-	 * Returns time played for current audio object
-	 * @return
-	 */
-	public long getCurrentAudioObjectPlayedTime() {
-		return instance.playerEngine.getCurrentAudioObjectPlayedTime();
-	}
-	
-	/**
-	 * Returns length for current audio object
-	 * @return
-	 */
-	public long getCurrentAudioObjectLength() {
-		return instance.playerEngine.getCurrentAudioObjectLength();
-	}
+    /**
+     * Returns time played for current audio object
+     * 
+     * @return
+     */
+    public long getCurrentAudioObjectPlayedTime() {
+        return instance.playerEngine.getCurrentAudioObjectPlayedTime();
+    }
+
+    /**
+     * Returns length for current audio object
+     * 
+     * @return
+     */
+    public long getCurrentAudioObjectLength() {
+        return instance.playerEngine.getCurrentAudioObjectLength();
+    }
 }

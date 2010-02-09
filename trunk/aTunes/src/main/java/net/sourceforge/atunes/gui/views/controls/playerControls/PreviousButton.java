@@ -48,8 +48,8 @@ public final class PreviousButton extends JButton {
         setMinimumSize(size);
         setMaximumSize(size);
         setFocusable(false);
-        
-        LookAndFeelSelector.getInstance().getCurrentLookAndFeel().putClientProperties(this);        
+
+        LookAndFeelSelector.getInstance().getCurrentLookAndFeel().putClientProperties(this);
 
         // Add behaviour
         addActionListener(new ActionListener() {

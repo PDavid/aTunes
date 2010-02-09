@@ -138,7 +138,7 @@ public final class NavigationController extends Controller implements AudioFiles
 
         }
     });
-    
+
     /**
      * Instantiates a new navigation controller.
      * 
@@ -164,14 +164,14 @@ public final class NavigationController extends Controller implements AudioFiles
 
     @Override
     protected void addBindings() {
-    	NavigationTableModel model = new NavigationTableModel();
+        NavigationTableModel model = new NavigationTableModel();
         navigationTablePanel.getNavigationTable().setModel(model);
         columnModel = new NavigationTableColumnModel(navigationTablePanel.getNavigationTable());
         navigationTablePanel.getNavigationTable().setColumnModel(columnModel);
         ColumnRenderers.addRenderers(navigationTablePanel.getNavigationTable(), columnModel);
 
         new ColumnSetRowSorter(navigationTablePanel.getNavigationTable(), model, columnModel);
-        
+
         // Bind column set popup menu
         columnSetPopupMenu = new ColumnSetPopupMenu(navigationTablePanel.getNavigationTable(), columnModel);
 
@@ -296,7 +296,9 @@ public final class NavigationController extends Controller implements AudioFiles
     }
 
     /**
-     * Returns audio objects selected by the given node in the given navigation view
+     * Returns audio objects selected by the given node in the given navigation
+     * view
+     * 
      * @param navigationViewClass
      * @param node
      * @return
@@ -304,15 +306,15 @@ public final class NavigationController extends Controller implements AudioFiles
     public List<AudioObject> getAudioObjectsForTreeNode(Class<? extends NavigationView> navigationViewClass, DefaultMutableTreeNode node) {
         List<AudioObject> audioObjects = NavigationHandler.getInstance().getView(navigationViewClass).getAudioObjectForTreeNode(node, ApplicationState.getInstance().getViewMode(),
                 FilterHandler.getInstance().isFilterSelected(NavigationHandler.getInstance().getTreeFilter()) ? FilterHandler.getInstance().getFilter() : null);
-        
+
         ColumnSet columnSet = NavigationHandler.getInstance().getCurrentView().getCustomColumnSet();
         if (columnSet == null) {
-        	columnSet = NavigatorColumnSet.getInstance();
-        }        
-        
+            columnSet = NavigatorColumnSet.getInstance();
+        }
+
         Column columnSorted = columnSet.getSortedColumn();
         if (columnSorted != null) {
-        	Collections.sort(audioObjects, columnSorted.getComparator(false));
+            Collections.sort(audioObjects, columnSorted.getComparator(false));
         }
         return audioObjects;
     }
@@ -322,7 +324,7 @@ public final class NavigationController extends Controller implements AudioFiles
      */
     public void notifyDeviceReload() {
         NavigationHandler.getInstance().getView(DeviceNavigationView.class).refreshView(ApplicationState.getInstance().getViewMode(),
-        		FilterHandler.getInstance().isFilterSelected(NavigationHandler.getInstance().getTreeFilter()) ? FilterHandler.getInstance().getFilter() : null);
+                FilterHandler.getInstance().isFilterSelected(NavigationHandler.getInstance().getTreeFilter()) ? FilterHandler.getInstance().getFilter() : null);
     }
 
     @Override
@@ -382,16 +384,16 @@ public final class NavigationController extends Controller implements AudioFiles
         boolean useDefaultNavigatorColumns = NavigationHandler.getInstance().getView(navigationView).isUseDefaultNavigatorColumnSet();
         ColumnSet columnSet = null;
         if (useDefaultNavigatorColumns) {
-        	columnSet = NavigatorColumnSet.getInstance();
+            columnSet = NavigatorColumnSet.getInstance();
         } else {
-        	columnSet = NavigationHandler.getInstance().getView(navigationView).getCustomColumnSet();
+            columnSet = NavigationHandler.getInstance().getView(navigationView).getCustomColumnSet();
         }
-        
-    	((NavigationTableModel) navigationTablePanel.getNavigationTable().getModel()).setColumnSet(columnSet);
-    	((NavigationTableColumnModel) navigationTablePanel.getNavigationTable().getColumnModel()).setColumnSet(columnSet);	
 
-    	NavigationHandler.getInstance().refreshCurrentView();
-        
+        ((NavigationTableModel) navigationTablePanel.getNavigationTable().getModel()).setColumnSet(columnSet);
+        ((NavigationTableColumnModel) navigationTablePanel.getNavigationTable().getColumnModel()).setColumnSet(columnSet);
+
+        NavigationHandler.getInstance().refreshCurrentView();
+
         // Allow arrange columns if view uses default column set
         columnSetPopupMenu.enableArrangeColumns(useDefaultNavigatorColumns);
 
@@ -402,7 +404,7 @@ public final class NavigationController extends Controller implements AudioFiles
                     .getSelectionPath().getLastPathComponent())));
         }
     }
-    
+
     /**
      * Updates table contents when user selects a tree node or the table filter
      * changes

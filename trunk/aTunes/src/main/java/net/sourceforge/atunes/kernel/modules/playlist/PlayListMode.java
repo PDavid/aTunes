@@ -59,7 +59,7 @@ class PlayListMode implements PlayListChangedListener {
             int currentIndex = playList.getCurrentAudioObjectIndex();
             int indexInShuffle = shufflePlayList.indexOf(currentIndex);
             if (indexInShuffle != -1) {
-            	Collections.swap(shufflePlayList.getList(), 0, indexInShuffle);
+                Collections.swap(shufflePlayList.getList(), 0, indexInShuffle);
             }
         }
     }

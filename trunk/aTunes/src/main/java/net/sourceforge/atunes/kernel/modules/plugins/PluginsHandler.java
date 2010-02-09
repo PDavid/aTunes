@@ -84,69 +84,68 @@ public class PluginsHandler extends Handler implements PluginListener {
      */
     private void initPlugins() {
         try {
-        	Timer t = new Timer();
-        	t.start();
+            Timer t = new Timer();
+            t.start();
             factory = new PluginsFactory();
 
             PluginSystemLogger.addHandler(new java.util.logging.Handler() {
-				
-				@Override
-				public void publish(LogRecord record) {
-					if (record.getLevel().equals(Level.SEVERE)) {
-						getLogger().error(LogCategories.PLUGINS, record.getMessage());
-					} else {
-						getLogger().debug(LogCategories.PLUGINS, record.getMessage());
-					}
-				}
-				
-				@Override
-				public void flush() {
-				}
-				
-				@Override
-				public void close() throws SecurityException {
-				}
-			});
+
+                @Override
+                public void publish(LogRecord record) {
+                    if (record.getLevel().equals(Level.SEVERE)) {
+                        getLogger().error(LogCategories.PLUGINS, record.getMessage());
+                    } else {
+                        getLogger().debug(LogCategories.PLUGINS, record.getMessage());
+                    }
+                }
+
+                @Override
+                public void flush() {
+                }
+
+                @Override
+                public void close() throws SecurityException {
+                }
+            });
             PluginSystemLogger.setLevel(Kernel.DEBUG ? Level.FINE : Level.OFF);
-            
+
             // User plugins folder
             factory.addPluginsFolder(getUserPluginsFolder());
 
             addPluginListeners();
             int plugins = factory.start(getPluginClassNames(), true, "net.sourceforge.atunes");
-            
-            getLogger().info(LogCategories.PLUGINS, StringUtils.getString("Found ", plugins, " plugins (", t.stop(), " seconds)"));            
+
+            getLogger().info(LogCategories.PLUGINS, StringUtils.getString("Found ", plugins, " plugins (", t.stop(), " seconds)"));
         } catch (PluginSystemException e) {
             getLogger().error(LogCategories.PLUGINS, e);
             if (e.getCause() != null) {
-            	getLogger().error(LogCategories.PLUGINS, e.getCause());
+                getLogger().error(LogCategories.PLUGINS, e.getCause());
             }
         }
     }
-    
+
     @Override
     public void applicationFinish() {
-    	// TODO Auto-generated method stub
-    	
-    }
-    
-    @Override
-    public void applicationStateChanged(ApplicationState newState) {
-    	// TODO Auto-generated method stub
-    	
-    }
-    
-    @Override
-    protected void initHandler() {
-    	initPlugins();
-    }
-    
-    @Override
-    public void applicationStarted() {
-    	// TODO Auto-generated method stub
-    	
+        // TODO Auto-generated method stub
+
     }
 
+    @Override
+    public void applicationStateChanged(ApplicationState newState) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    protected void initHandler() {
+        initPlugins();
+    }
+
+    @Override
+    public void applicationStarted() {
+        // TODO Auto-generated method stub
+
+    }
 
     /**
      * A set of all plugin types accepted TODO: Add a new plugin type here
@@ -196,7 +195,7 @@ public class PluginsHandler extends Handler implements PluginListener {
      * @return
      */
     public List<PluginInfo> getAvailablePlugins() {
-    	return this.factory.getPlugins();
+        return this.factory.getPlugins();
     }
 
     /**
@@ -233,7 +232,7 @@ public class PluginsHandler extends Handler implements PluginListener {
         } catch (PluginSystemException e) {
             getLogger().error(LogCategories.PLUGINS, e);
             if (e.getCause() != null) {
-            	getLogger().error(LogCategories.PLUGINS, e.getCause());
+                getLogger().error(LogCategories.PLUGINS, e.getCause());
             }
             throw e;
         }
@@ -256,7 +255,7 @@ public class PluginsHandler extends Handler implements PluginListener {
             } catch (PluginSystemException e) {
                 getLogger().error(LogCategories.PLUGINS, e);
                 if (e.getCause() != null) {
-                	getLogger().error(LogCategories.PLUGINS, e.getCause());
+                    getLogger().error(LogCategories.PLUGINS, e.getCause());
                 }
                 throw e;
             }
@@ -279,7 +278,7 @@ public class PluginsHandler extends Handler implements PluginListener {
         } catch (PluginSystemException e) {
             getLogger().error(LogCategories.PLUGINS, e);
             if (e.getCause() != null) {
-            	getLogger().error(LogCategories.PLUGINS, e.getCause());
+                getLogger().error(LogCategories.PLUGINS, e.getCause());
             }
         }
     }
