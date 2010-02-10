@@ -30,6 +30,7 @@ aTunes 2.0.0
 - New window layouts available
 - Cache for audio file images
 - Allow jumping to the previous/next song in the playlist in the tag edit dialog
+- Use mp4 instead of flv for Youtube download
 - Added edition options to all text components
 - Added translation to Catalan (thanks to perru002)
 - INTERNAL: Avoid unnecessary refresh view operations
