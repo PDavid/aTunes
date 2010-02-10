@@ -199,7 +199,7 @@ public class YoutubeContent extends ContextPanelContent {
             JFileChooser dialog = new JFileChooser();
             dialog.setDialogType(JFileChooser.SAVE_DIALOG);
             dialog.setDialogTitle(I18nUtils.getString("SAVE_YOUTUBE_VIDEO"));
-            dialog.setFileFilter(new ExtensionFileFilter("FLV", "FLV"));
+            dialog.setFileFilter(new ExtensionFileFilter("MP4", "MP4"));
             // Set default file name
             // for some reason dialog fails with files with [ or ] chars
             File defaultFileName = new File(FileNameUtils
