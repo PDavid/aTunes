@@ -98,8 +98,8 @@ public class YoutubeVideoDownloader extends SwingWorker<Void, String> {
         this.entry = entry;
         File f = file;
         // Adds FLV extension if necessary
-        if (!file.getAbsolutePath().toUpperCase().endsWith(".flv")) {
-            f = new File(StringUtils.getString(file.getAbsolutePath(), ".flv"));
+        if (!file.getAbsolutePath().toUpperCase().endsWith(".mp4")) {
+            f = new File(StringUtils.getString(file.getAbsolutePath(), ".mp4"));
         }
         this.file = f;
         this.progressDialog = GuiHandler.getInstance().getNewTransferProgressDialog(entry.getName(), null);
