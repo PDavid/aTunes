@@ -234,8 +234,17 @@ public class YoutubeService {
             start = substr.indexOf(":");
             end = substr.indexOf("\",");
             String t = substr.substring(start + 3, end);
-
-            String downloadurl = StringUtils.getString("http://youtube.com/get_video?video_id=", video_id, "&t=", t);
+            /**
+             * Quality settings for downloading Youtube video:
+             * No &fmt = FLV (very low - same as &fmt=5)
+             * &fmt=5 = FLV (very low)
+             * &fmt=6 = FLV (does not always work)
+             * &fmt=13 = 3GP (mobile phone)
+             * &fmt=18 = MP4 (normal)
+             * &fmt=22 = MP4 (hd)
+             */
+            String video_quality = "18";
+            String downloadurl = StringUtils.getString("http://youtube.com/get_video?video_id=", video_id, "&t=", t,"&fmt=", video_quality );
 
             return downloadurl;
         } catch (Exception e) {
