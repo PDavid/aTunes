@@ -31,6 +31,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.Folder;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.TagAttribute;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.model.AudioObject;
 
 public class IncompleteTagsChecker {
 
@@ -141,6 +142,19 @@ public class IncompleteTagsChecker {
             }
         }
         return false;
+    }
+    
+    /**
+     * Returns <code>true</code> if object has incomplete tag
+     * tags
+     * 
+     * @return
+     */
+    public static boolean hasIncompleteTags(AudioObject audioObject) {
+    	if (audioObject instanceof AudioFile) {
+    		return !hasTagAttributesFilled((AudioFile)audioObject);
+    	}
+    	return false;
     }
 
 }

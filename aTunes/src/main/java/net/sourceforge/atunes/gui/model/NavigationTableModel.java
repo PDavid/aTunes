@@ -62,7 +62,7 @@ public final class NavigationTableModel extends ColumnSetTableModel {
     }
 
     /** The songs. */
-    private List<AudioObject> songs;
+    private List<AudioObject> audioObjects;
 
     /**
      * Instantiates a new navigation table model.
@@ -81,28 +81,28 @@ public final class NavigationTableModel extends ColumnSetTableModel {
      */
     @Override
     public int getRowCount() {
-        return songs != null ? songs.size() : 0;
+        return audioObjects != null ? audioObjects.size() : 0;
     }
 
     /**
-     * Gets the song at.
+     * Gets the audio object at.
      * 
      * @param row
      *            the row
      * 
      * @return the song at
      */
-    public AudioObject getSongAt(int row) {
-        return songs != null ? songs.get(row) : null;
+    public AudioObject getAudioObjectAt(int row) {
+        return audioObjects != null ? audioObjects.get(row) : null;
     }
 
     /**
-     * Gets the songs.
+     * Gets the audio objects.
      * 
-     * @return the songs
+     * @return the audio objects
      */
-    public List<AudioObject> getSongs() {
-        return songs;
+    public List<AudioObject> getAudioObjects() {
+        return audioObjects;
     }
 
     /**
@@ -116,7 +116,7 @@ public final class NavigationTableModel extends ColumnSetTableModel {
     public List<AudioObject> getAudioObjectsAt(int[] rows) {
         List<AudioObject> result = new ArrayList<AudioObject>();
         for (int element : rows) {
-            result.add(getSongAt(element));
+            result.add(getAudioObjectAt(element));
         }
         return result;
     }
@@ -129,7 +129,7 @@ public final class NavigationTableModel extends ColumnSetTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        AudioObject audioObject = getSongAt(rowIndex);
+        AudioObject audioObject = getAudioObjectAt(rowIndex);
         if (audioObject == null) {
             return null;
         }
@@ -153,7 +153,7 @@ public final class NavigationTableModel extends ColumnSetTableModel {
      *            the new songs
      */
     public void setSongs(List<AudioObject> songs) {
-        this.songs = songs;
+        this.audioObjects = songs;
         refresh(TableModelEvent.INSERT);
     }
 
@@ -169,7 +169,7 @@ public final class NavigationTableModel extends ColumnSetTableModel {
 
     @Override
     public void sort(Comparator<AudioObject> comparator) {
-        Collections.sort(this.songs, comparator);
+        Collections.sort(this.audioObjects, comparator);
         refresh(TableModelEvent.UPDATE);
     }
 }

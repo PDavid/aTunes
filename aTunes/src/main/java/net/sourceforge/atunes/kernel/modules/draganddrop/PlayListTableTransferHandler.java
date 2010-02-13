@@ -199,7 +199,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
                 } else if (objectDragged instanceof Integer) {
                     // DRAG AND DROP FROM TABLE
                     Integer row = (Integer) objectDragged;
-                    audioObjectsToAdd.add(ControllerProxy.getInstance().getNavigationController().getSongInNavigationTable(row));
+                    audioObjectsToAdd.add(ControllerProxy.getInstance().getNavigationController().getAudioObjectInNavigationTable(row));
                 }
             }
 

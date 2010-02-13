@@ -149,7 +149,7 @@ public abstract class NavigationView implements AudioObjectsSource {
 
         // Set the same selected audio objects as before refreshing
         for (AudioObject audioObject : selectedObjects) {
-            int indexOfAudioObject = ((NavigationTableModel) getNavigationTable().getModel()).getSongs().indexOf(audioObject);
+            int indexOfAudioObject = ((NavigationTableModel) getNavigationTable().getModel()).getAudioObjects().indexOf(audioObject);
             if (indexOfAudioObject != -1) {
                 getNavigationTable().addRowSelectionInterval(indexOfAudioObject, indexOfAudioObject);
             }

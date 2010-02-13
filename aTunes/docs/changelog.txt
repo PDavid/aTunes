@@ -32,6 +32,7 @@ aTunes 2.0.0
 - Allow jumping to the previous/next song in the playlist in the tag edit dialog
 - Use mp4 instead of flv for Youtube download
 - Added edition options to all text components
+- Highlight audio files with incomplete tags in navigator table (feature request [2383156])
 - Added translation to Catalan (thanks to perru002)
 - INTERNAL: Avoid unnecessary refresh view operations
 - INTERNAL: Share actions between play list and navigation tree and table

@@ -284,15 +284,15 @@ public final class NavigationController extends Controller implements AudioFiles
     }
 
     /**
-     * Gets the song in navigation table.
+     * Gets the audio object in navigation table.
      * 
      * @param row
      *            the row
      * 
      * @return the song in navigation table
      */
-    public AudioObject getSongInNavigationTable(int row) {
-        return ((NavigationTableModel) navigationTablePanel.getNavigationTable().getModel()).getSongAt(row);
+    public AudioObject getAudioObjectInNavigationTable(int row) {
+        return ((NavigationTableModel) navigationTablePanel.getNavigationTable().getModel()).getAudioObjectAt(row);
     }
 
     /**
