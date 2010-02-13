@@ -68,7 +68,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.data.Folder;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
-import net.sourceforge.atunes.kernel.modules.repository.tags.HighlightFoldersByIncompleteTags;
+import net.sourceforge.atunes.kernel.modules.repository.tags.IncompleteTagsChecker;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
@@ -518,7 +518,7 @@ public class RepositoryNavigationView extends NavigationView {
                     label.setIcon(Images.getImage(Images.GENRE));
                 } else if (content instanceof Folder) {
                     label.setIcon(Images.getImage(Images.FOLDER));
-                    if (ApplicationState.getInstance().isHighlightIncompleteTagFolders() && HighlightFoldersByIncompleteTags.hasIncompleteTags((Folder) content)) {
+                    if (ApplicationState.getInstance().isHighlightIncompleteTagElements() && IncompleteTagsChecker.hasIncompleteTags((Folder) content)) {
                         label.setForeground(ColorDefinitions.GENERAL_UNKNOWN_ELEMENT_FOREGROUND_COLOR);
                     }
                 } else if (content instanceof String) {

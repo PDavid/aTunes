@@ -32,7 +32,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.TagAttribute;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 
-public class HighlightFoldersByIncompleteTags {
+public class IncompleteTagsChecker {
 
     /**
      * Returns a list with default attributes to highlight folders

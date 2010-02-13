@@ -44,7 +44,7 @@ import javax.swing.table.TableModel;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
-import net.sourceforge.atunes.kernel.modules.repository.tags.HighlightFoldersByIncompleteTags;
+import net.sourceforge.atunes.kernel.modules.repository.tags.IncompleteTagsChecker;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.TagAttribute;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -224,7 +224,7 @@ public final class NavigatorPanel extends PreferencesPanel {
         });
 
         tagAttributesTableModel = new TagAttributesTableModel();
-        tagAttributesTableModel.setTagAttributes(HighlightFoldersByIncompleteTags.getAllTagAttributes());
+        tagAttributesTableModel.setTagAttributes(IncompleteTagsChecker.getAllTagAttributes());
         highlighTagAttributesTable = new JTable(tagAttributesTableModel);
         highlighTagAttributesTable.setShowGrid(false);
         highlighTagAttributesTable.setTableHeader(null);
@@ -288,7 +288,7 @@ public final class NavigatorPanel extends PreferencesPanel {
         state.setUseSmartTagViewSorting(useSmartTagViewSorting.isSelected());
         state.setShowNavigatorTabsAtLeft(showNavigatorTabsAtLeft.isSelected());
         state.setShowNavigatorTabsText(showNavigatorTabsText.isSelected());
-        state.setHighlightIncompleteTagFolders(highlightFoldersWithIncompleteBasicTags.isSelected());
+        state.setHighlightIncompleteTagElements(highlightFoldersWithIncompleteBasicTags.isSelected());
         state.setHighlightIncompleteTagFoldersAttributes(tagAttributesTableModel.getSelectedTagAttributes());
         state.setUsePersonNamesArtistTagViewSorting(useArtistNamesSorting.isSelected());
 
@@ -384,7 +384,7 @@ public final class NavigatorPanel extends PreferencesPanel {
         setUseSmartTagViewSorting(state.isUseSmartTagViewSorting());
         setShowNavigatorTabsAtLeft(state.isShowNavigatorTabsAtLeft());
         setShowNavigatorTabsText(state.isShowNavigatorTabsText());
-        setHighlightFoldersWithIncompleteBasicTags(state.isHighlightIncompleteTagFolders());
+        setHighlightFoldersWithIncompleteBasicTags(state.isHighlightIncompleteTagElements());
         setUsePersonNamesArtistTagViewSorting(state.isUsePersonNamesArtistTagViewSorting());
     }
 
