@@ -50,6 +50,7 @@ aTunes 2.0.0
 - FIX: Validate repository content when loading it (patch from Laurent Cathala)
 - FIX: Podcast file renaming is not possible [2897134]
 - FIX: Progress bar should work for downloaded podcast entries
+- FIX: Progress bar improvements [2942626]
 
 aTunes 1.13.6
 -------------

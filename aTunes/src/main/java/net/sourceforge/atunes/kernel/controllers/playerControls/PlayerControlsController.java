@@ -43,7 +43,7 @@ public final class PlayerControlsController extends SimpleController<PlayerContr
     private static final int MINUTES_5 = 300000;
     private static final int MINUTES_10 = 600000;
     private static final int MINUTES_30 = 1800000;
-
+    
     /**
      * Instantiates a new player controls controller.
      * 
@@ -130,15 +130,15 @@ public final class PlayerControlsController extends SimpleController<PlayerContr
     }
 
     private void setCurrentAudioObjectTimePlayedEDT(long timePlayed, long totalTime) {
-        long remainingTime = totalTime - timePlayed;
-        if (timePlayed == 0) {
-            getComponentControlled().getRemainingTime().setText(StringUtils.milliseconds2String(timePlayed));
-        } else {
-            getComponentControlled().getRemainingTime().setText(remainingTime > 0 ? StringUtils.getString("- ", StringUtils.milliseconds2String(remainingTime)) : "-");
-        }
+    	long remainingTime = totalTime - timePlayed;
+    	if (timePlayed == 0) {
+    		getComponentControlled().getRemainingTime().setText(StringUtils.milliseconds2String(timePlayed));
+    	} else {
+    		getComponentControlled().getRemainingTime().setText(remainingTime > 0 ? StringUtils.getString("- ", StringUtils.milliseconds2String(remainingTime)) : "-");
+    	}
 
-        getComponentControlled().getTime().setText(StringUtils.milliseconds2String(timePlayed));
-        getComponentControlled().getProgressBar().setValue((int) timePlayed);
+    	getComponentControlled().getTime().setText(StringUtils.milliseconds2String(timePlayed));
+    	getComponentControlled().getProgressBar().setValue((int) timePlayed);
     }
 
     /**
