@@ -44,7 +44,7 @@ public class PlayNowAction extends Action {
         // If not, it's added to play list
         int selectedRow = ControllerProxy.getInstance().getNavigationController().getNavigationTablePanel().getNavigationTable().getSelectedRow();
         AudioObject song = ((NavigationTableModel) ControllerProxy.getInstance().getNavigationController().getNavigationTablePanel().getNavigationTable().getModel())
-                .getSongAt(selectedRow);
+                .getAudioObjectAt(selectedRow);
         PlayListHandler.getInstance().playNow(song);
     }
 

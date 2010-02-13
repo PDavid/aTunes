@@ -71,10 +71,10 @@ public final class NavigatorPanel extends PreferencesPanel {
     private JCheckBox showNavigatorTabsText;
 
     /**
-     * Check box to highlight folders with incomplete tags (selected) or not
+     * Check box to highlight elements with incomplete tags (selected) or not
      * (unselected)
      */
-    JCheckBox highlightFoldersWithIncompleteBasicTags;
+    JCheckBox highlightElementsWithIncompleteBasicTags;
 
     /**
      * Table to select which tag attributes are used to highlight incomplete tag
@@ -209,15 +209,15 @@ public final class NavigatorPanel extends PreferencesPanel {
         useArtistNamesSorting = new JCheckBox(I18nUtils.getString("USE_PERSON_NAMES_ARTIST_TAG_VIEW_SORTING"));
         showNavigatorTabsAtLeft = new JCheckBox(I18nUtils.getString("SHOW_NAVIGATION_TABS_AT_LEFT"));
         showNavigatorTabsText = new JCheckBox(I18nUtils.getString("SHOW_NAVIGATION_TABS_TEXT"));
-        highlightFoldersWithIncompleteBasicTags = new JCheckBox(I18nUtils.getString("HIGHLIGHT_INCOMPLETE_TAG_FOLDERS"));
-        highlightFoldersWithIncompleteBasicTags.addActionListener(new ActionListener() {
+        highlightElementsWithIncompleteBasicTags = new JCheckBox(I18nUtils.getString("HIGHLIGHT_INCOMPLETE_TAG_ELEMENTS"));
+        highlightElementsWithIncompleteBasicTags.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
                     public void run() {
-                        highlightTagAttributesScrollPane.setEnabled(highlightFoldersWithIncompleteBasicTags.isSelected());
-                        highlighTagAttributesTable.setEnabled(highlightFoldersWithIncompleteBasicTags.isSelected());
+                        highlightTagAttributesScrollPane.setEnabled(highlightElementsWithIncompleteBasicTags.isSelected());
+                        highlighTagAttributesTable.setEnabled(highlightElementsWithIncompleteBasicTags.isSelected());
                     }
                 });
             }
@@ -271,7 +271,7 @@ public final class NavigatorPanel extends PreferencesPanel {
         c.gridy = 6;
         add(showNavigatorTabsText, c);
         c.gridy = 7;
-        add(highlightFoldersWithIncompleteBasicTags, c);
+        add(highlightElementsWithIncompleteBasicTags, c);
         c.gridy = 8;
         c.weighty = 1;
         c.weightx = 0;
@@ -288,7 +288,7 @@ public final class NavigatorPanel extends PreferencesPanel {
         state.setUseSmartTagViewSorting(useSmartTagViewSorting.isSelected());
         state.setShowNavigatorTabsAtLeft(showNavigatorTabsAtLeft.isSelected());
         state.setShowNavigatorTabsText(showNavigatorTabsText.isSelected());
-        state.setHighlightIncompleteTagElements(highlightFoldersWithIncompleteBasicTags.isSelected());
+        state.setHighlightIncompleteTagElements(highlightElementsWithIncompleteBasicTags.isSelected());
         state.setHighlightIncompleteTagFoldersAttributes(tagAttributesTableModel.getSelectedTagAttributes());
         state.setUsePersonNamesArtistTagViewSorting(useArtistNamesSorting.isSelected());
 
@@ -371,7 +371,7 @@ public final class NavigatorPanel extends PreferencesPanel {
      *            the highlightFoldersWithIncompleteBasicTags to set
      */
     private void setHighlightFoldersWithIncompleteBasicTags(boolean highlightFoldersWithIncompleteBasicTags) {
-        this.highlightFoldersWithIncompleteBasicTags.setSelected(highlightFoldersWithIncompleteBasicTags);
+        this.highlightElementsWithIncompleteBasicTags.setSelected(highlightFoldersWithIncompleteBasicTags);
         highlightTagAttributesScrollPane.setEnabled(highlightFoldersWithIncompleteBasicTags);
         highlighTagAttributesTable.setEnabled(highlightFoldersWithIncompleteBasicTags);
     }
