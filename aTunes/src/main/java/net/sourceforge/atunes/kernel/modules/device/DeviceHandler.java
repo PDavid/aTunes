@@ -310,6 +310,7 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
         Actions.getAction(RefreshDeviceAction.class).setEnabled(false);
         Actions.getAction(DisconnectDeviceAction.class).setEnabled(false);
         Actions.getAction(SynchronizeDeviceWithPlayListAction.class).setEnabled(false);
+        Actions.getAction(CopyPlayListToDeviceAction.class).setEnabled(false);
 
         // Unregister device to search in
         SearchHandler.getInstance().unregisterSearchableObject(DeviceSearchableObject.getInstance());
