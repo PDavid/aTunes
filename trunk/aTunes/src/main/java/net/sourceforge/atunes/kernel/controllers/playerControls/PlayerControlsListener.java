@@ -26,8 +26,6 @@ import javax.swing.JSlider;
 
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
-import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
  * The listener interface for receiving playerControls events.
@@ -35,8 +33,6 @@ import net.sourceforge.atunes.utils.GuiUtils;
 public final class PlayerControlsListener extends MouseAdapter {
 
     private PlayerControlsPanel panel;
-
-    //private PlayerControlsController controller;
 
     /**
      * Instantiates a new player controls listener.
@@ -48,30 +44,18 @@ public final class PlayerControlsListener extends MouseAdapter {
      */
     protected PlayerControlsListener(PlayerControlsPanel panel, PlayerControlsController controller) {
         this.panel = panel;
-        //this.controller = controller;
     }
 
     @Override
-    public void mouseReleased(MouseEvent e) {
-        if (e.getSource().equals(panel.getProgressBar()) && panel.getProgressBar().isEnabled()) {
-            //int value = ((JSlider)e.getSource()).getValue();
-            //double perCent = (double) value / ((JSlider)e.getSource()).getMaximum();
-            //double perCentOfSong = value * 1000000 / duration;
-            int widthClicked;
-            if (GuiUtils.getComponentOrientation().isLeftToRight()) {
-                widthClicked = e.getPoint().x;
-            } else {
-                widthClicked = ((JSlider) e.getSource()).getWidth() - e.getPoint().x;
-            }
-            int widthOfProgressBar = panel.getProgressBar().getSize().width;
-            double perCent = (double) widthClicked / (double) widthOfProgressBar;
-
-            AudioObject audioObject = PlayerHandler.getInstance().getAudioObject();
-            if (audioObject == null) {
-                return;
-            }
-
-            PlayerHandler.getInstance().seekCurrentAudioObject(perCent);
-        }
+    public void mousePressed(final MouseEvent e) {
+    	if (e.getSource().equals(panel.getProgressBar()) && panel.getProgressBar().isEnabled()) {        	
+    		// Progress bar width is greater than real slider width so calculate value assuming 5 pixels in both left and right of track 
+    		int value = (panel.getProgressBar().getMaximum()*(e.getX()-5))/(panel.getProgressBar().getWidth()-10);
+    		// Force new value to avoid jump to next major tick
+    		panel.getProgressBar().setValue(value);
+    		// Calculate percent
+    		double perCent = (double) value / ((JSlider)e.getSource()).getMaximum();
+    		PlayerHandler.getInstance().seekCurrentAudioObject(perCent);
+    	}
     }
 }
