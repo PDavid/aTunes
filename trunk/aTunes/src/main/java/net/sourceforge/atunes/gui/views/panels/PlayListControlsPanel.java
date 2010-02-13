@@ -25,18 +25,15 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.JButton;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
-import net.sourceforge.atunes.gui.views.controls.PopUpButton;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AutoScrollPlayListAction;
 import net.sourceforge.atunes.kernel.actions.ClearPlayListAction;
 import net.sourceforge.atunes.kernel.actions.CreatePlayListWithSelectedAlbumsAction;
 import net.sourceforge.atunes.kernel.actions.CreatePlayListWithSelectedArtistsAction;
-import net.sourceforge.atunes.kernel.actions.FavoritePopupAction;
 import net.sourceforge.atunes.kernel.actions.LoadPlayListAction;
 import net.sourceforge.atunes.kernel.actions.MoveDownAction;
 import net.sourceforge.atunes.kernel.actions.MoveToBottomAction;
@@ -49,7 +46,6 @@ import net.sourceforge.atunes.kernel.actions.SetPlayListSelectionAsFavoriteArtis
 import net.sourceforge.atunes.kernel.actions.SetPlayListSelectionAsFavoriteSongAction;
 import net.sourceforge.atunes.kernel.actions.ShowPlayListItemInfoAction;
 import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
-import net.sourceforge.atunes.utils.GuiUtils;
 
 public final class PlayListControlsPanel extends JPanel {
 
@@ -94,17 +90,14 @@ public final class PlayListControlsPanel extends JPanel {
     /** The shuffle playlist. */
     private JButton shufflePlaylist;
 
-    /** The favorite popup. */
-    private PopUpButton favoritePopup;
-
     /** The favorite song. */
-    private JMenuItem favoriteSong;
+    private JButton favoriteSongButton;
 
     /** The favorite album. */
-    private JMenuItem favoriteAlbum;
+    private JButton favoriteAlbumButton;
 
     /** The favorite artist. */
-    private JMenuItem favoriteArtist;
+    private JButton favoriteArtistButton;
 
     /** The playlist table */
     private PlayListTable playListTable;
@@ -163,15 +156,14 @@ public final class PlayListControlsPanel extends JPanel {
         shufflePlaylist = new CustomButton(Actions.getAction(ShufflePlayListAction.class));
         shufflePlaylist.setText(null);
 
-        favoritePopup = new PopUpButton(Actions.getAction(FavoritePopupAction.class), PopUpButton.TOP_LEFT);
-
-        favoriteSong = new JMenuItem(Actions.getAction(SetPlayListSelectionAsFavoriteSongAction.class));
-        favoriteAlbum = new JMenuItem(Actions.getAction(SetPlayListSelectionAsFavoriteAlbumAction.class));
-        favoriteArtist = new JMenuItem(Actions.getAction(SetPlayListSelectionAsFavoriteArtistAction.class));
-
-        favoritePopup.add(favoriteSong);
-        favoritePopup.add(favoriteAlbum);
-        favoritePopup.add(favoriteArtist);
+        favoriteSongButton = new CustomButton(Actions.getAction(SetPlayListSelectionAsFavoriteSongAction.class));
+        favoriteSongButton.setText(null);
+        
+        favoriteAlbumButton = new CustomButton(Actions.getAction(SetPlayListSelectionAsFavoriteAlbumAction.class));
+        favoriteAlbumButton.setText(null);
+        
+        favoriteArtistButton = new CustomButton(Actions.getAction(SetPlayListSelectionAsFavoriteArtistAction.class));
+        favoriteArtistButton.setText(null);
 
         GridBagConstraints c = new GridBagConstraints();
 
@@ -244,9 +236,17 @@ public final class PlayListControlsPanel extends JPanel {
         c.gridx = 13;
         c.gridy = 0;
         c.insets = new Insets(1, 0, 0, 0);
-        setButton(favoritePopup, c);
+        setButton(favoriteSongButton, c);
 
-        GuiUtils.applyComponentOrientation(favoritePopup);
+        c.gridx = 14;
+        c.gridy = 0;
+        c.insets = new Insets(1, 0, 0, 0);
+        setButton(favoriteArtistButton, c);
+
+        c.gridx = 15;
+        c.gridy = 0;
+        c.insets = new Insets(1, 0, 0, 0);
+        setButton(favoriteAlbumButton, c);
     }
 
     /**

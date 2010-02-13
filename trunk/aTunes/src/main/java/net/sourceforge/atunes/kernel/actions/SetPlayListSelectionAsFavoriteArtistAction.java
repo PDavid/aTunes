@@ -47,6 +47,7 @@ public class SetPlayListSelectionAsFavoriteArtistAction extends Action {
     SetPlayListSelectionAsFavoriteArtistAction() {
         super(I18nUtils.getString("SET_FAVORITE_ARTIST"), Images.getImage(Images.ARTIST_FAVORITE));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0));
+        setEnabled(false);
     }
 
     @Override
