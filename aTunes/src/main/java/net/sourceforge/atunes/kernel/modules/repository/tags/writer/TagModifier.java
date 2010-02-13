@@ -36,6 +36,7 @@ import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
+import org.jaudiotagger.tag.FieldDataInvalidException;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.KeyNotFoundException;
 import org.jaudiotagger.tag.datatype.Artwork;
@@ -51,9 +52,8 @@ import org.jaudiotagger.tag.reference.PictureTypes;
  * 
  * @author sylvain
  */
-public class TagModifier {
+public final class TagModifier {
 
-    /** The logger. */
     private static Logger logger = new Logger();
 
     /**
@@ -230,69 +230,61 @@ public class TagModifier {
                 newTag.deleteField(FieldKey.GENRE);
             }
 
-            // Delete tag field if value is empty
-            if (album.isEmpty()) {
-                newTag.deleteField(FieldKey.ALBUM);
-            } else {
-                newTag.setField(FieldKey.ALBUM, album);
-            }
-            if (artist.isEmpty()) {
-                newTag.deleteField(FieldKey.ARTIST);
-            } else {
-                newTag.setField(FieldKey.ARTIST, artist);
-            }
-            if (comment.isEmpty()) {
-                newTag.deleteField(FieldKey.COMMENT);
-            } else {
-                newTag.setField(FieldKey.COMMENT, comment);
-            }
-            if (genre.isEmpty()) {
-                newTag.deleteField(FieldKey.GENRE);
-            } else {
-                newTag.setField(FieldKey.GENRE, genre);
-            }
-            if (title.isEmpty()) {
-                newTag.deleteField(FieldKey.TITLE);
-            } else {
-                newTag.setField(FieldKey.TITLE, title);
-            }
-            if (year == -1) {
-                newTag.deleteField(FieldKey.YEAR);
-            } else {
-                newTag.setField(FieldKey.YEAR, Integer.toString(year));
-            }
-            if (track == -1) {
-                newTag.deleteField(FieldKey.TRACK);
-            } else {
-                newTag.setField(FieldKey.TRACK, Integer.toString(track));
-            }
+            setStringTagField(newTag, FieldKey.ALBUM, album);
+            setStringTagField(newTag, FieldKey.ARTIST, artist);
+            setStringTagField(newTag, FieldKey.COMMENT, comment);
+            setStringTagField(newTag, FieldKey.GENRE, genre);
+            setStringTagField(newTag, FieldKey.TITLE, title);
+            setNumberTagField(newTag, FieldKey.YEAR, year);
+            setNumberTagField(newTag, FieldKey.TRACK, track);
             if (discNumber == 0) {
                 newTag.deleteField(FieldKey.DISC_NO);
             } else {
-                newTag.setField(FieldKey.DISC_NO, Integer.toString(discNumber));
+                // only set the discnumber if we have a useful one
+                String discno = newTag.getFirst(FieldKey.DISC_NO);
+                if (!StringUtils.isEmpty(discno)) {
+                    newTag.setField(FieldKey.DISC_NO, Integer.toString(discNumber));
+                }
             }
-            if (lyrics.isEmpty()) {
-                newTag.deleteField(FieldKey.LYRICS);
-            } else {
-                newTag.setField(FieldKey.LYRICS, lyrics);
-            }
-            if (albumArtist.isEmpty()) {
-                newTag.deleteField(FieldKey.ALBUM_ARTIST);
-            } else {
-                newTag.setField(newTag.createField(FieldKey.ALBUM_ARTIST, albumArtist));
-            }
-            if (composer.isEmpty()) {
-                newTag.deleteField(FieldKey.COMPOSER);
-            } else {
-                newTag.setField(newTag.createField(FieldKey.COMPOSER, composer));
-            }
+            setStringTagField(newTag, FieldKey.LYRICS, lyrics);
+            setStringTagField(newTag, FieldKey.ALBUM_ARTIST, albumArtist);
+            setStringTagField(newTag, FieldKey.COMPOSER, composer);
 
             audioFile.setTag(newTag);
             audioFile.commit();
         } catch (Exception e) {
             logger.error(LogCategories.FILE_WRITE, StringUtils.getString("Could not edit tag. File: ", file.getUrl(), " Error: ", e.getMessage()));
         }
+    }
 
+    private static void setStringTagField(org.jaudiotagger.tag.Tag tag, FieldKey fieldKey, String fieldValue) {
+        if (fieldValue.isEmpty()) {
+            // Delete tag field if value is empty
+            tag.deleteField(fieldKey);
+        } else {
+            try {
+                tag.setField(tag.createField(fieldKey, fieldValue));
+            } catch (FieldDataInvalidException e) {
+                logger.error(LogCategories.FILE_WRITE, e);
+            } catch (KeyNotFoundException e) {
+                logger.error(LogCategories.FILE_WRITE, e);
+            }
+        }
+    }
+
+    private static void setNumberTagField(org.jaudiotagger.tag.Tag tag, FieldKey fieldKey, int fieldValue) {
+        if (fieldValue == -1) {
+            tag.deleteField(fieldKey);
+        } else {
+            try {
+                tag.setField(fieldKey, String.valueOf(fieldValue));
+            } catch (KeyNotFoundException e) {
+                logger.error(LogCategories.FILE_WRITE, e);
+            } catch (FieldDataInvalidException e) {
+                logger.error(LogCategories.FILE_WRITE, e);
+
+            }
+        }
     }
 
     /**

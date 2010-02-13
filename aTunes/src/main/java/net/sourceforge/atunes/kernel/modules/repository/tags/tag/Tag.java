@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.modules.repository.tags.tag;
 import java.io.Serializable;
 
 /**
- * The Class Tag.
+ * The abstract class for tags.
  * 
  * @author fleax
  */
@@ -30,7 +30,6 @@ public abstract class Tag implements Serializable {
 
     private static final long serialVersionUID = -4044670497563446883L;
 
-    /** Description of the Field. */
     public static final String[] genres = { "Blues", "Classic Rock", "Country", "Dance", "Disco", "Funk", "Grunge", "Hip-Hop", "Jazz", "Metal", "New Age", "Oldies", "Other",
             "Pop", "R&B", "Rap", "Reggae", "Rock", "Techno", "Industrial", "Alternative", "Ska", "Death Metal", "Pranks", "Soundtrack", "Euro-Techno", "Ambient", "Trip-Hop",
             "Vocal", "Jazz+Funk", "Fusion", "Trance", "Classical", "Instrumental", "Acid", "House", "Game", "Sound Clip", "Gospel", "Noise", "AlternRock", "Bass", "Soul", "Punk",
