@@ -45,4 +45,5 @@ public final class NavigationTableColumnModel extends CommonColumnModel {
     protected void reapplyFilter() {
         ControllerProxy.getInstance().getNavigationController().updateTableContent(NavigationHandler.getInstance().getCurrentView().getTree());
     }
+    
 }

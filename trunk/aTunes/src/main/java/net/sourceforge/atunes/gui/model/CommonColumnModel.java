@@ -23,6 +23,7 @@ import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -39,6 +40,12 @@ import javax.swing.table.TableColumn;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
+import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
+import net.sourceforge.atunes.gui.renderers.ImageIconTableCellRendererCode;
+import net.sourceforge.atunes.gui.renderers.IntegerTableCellRendererCode;
+import net.sourceforge.atunes.gui.renderers.JLabelTableCellRendererCode;
+import net.sourceforge.atunes.gui.renderers.PropertyTableCellRendererCode;
+import net.sourceforge.atunes.gui.renderers.StringTableCellRendererCode;
 import net.sourceforge.atunes.kernel.modules.columns.Column;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnSet;
 import net.sourceforge.atunes.kernel.modules.columns.Column.ColumnSort;
@@ -362,6 +369,26 @@ public abstract class CommonColumnModel extends DefaultTableColumnModel {
      */
     public void setColumnSet(ColumnSet columnSet) {
         this.columnSet = columnSet;
+    }
+    
+    /**
+     * Returns renderer code for given class
+     * @param clazz
+     * @return
+     */
+    public TableCellRendererCode getRendererCodeFor(Class<?> clazz) {
+    	if (clazz.equals(Integer.class)) {
+    		return new IntegerTableCellRendererCode();
+    	} else if (clazz.equals(ImageIcon.class)) {
+    		return new ImageIconTableCellRendererCode(this);
+    	} else if (clazz.equals(String.class)) {
+    		return new StringTableCellRendererCode(this);
+    	} else if (clazz.equals(JLabel.class)) {
+    		return new JLabelTableCellRendererCode(this);
+    	} else if (clazz.equals(Property.class)) {
+    		return new PropertyTableCellRendererCode();
+    	}
+    	return null;
     }
 
 }

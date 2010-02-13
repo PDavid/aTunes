@@ -35,7 +35,7 @@ import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeysConfig;
 import net.sourceforge.atunes.kernel.modules.navigator.RepositoryNavigationView;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
-import net.sourceforge.atunes.kernel.modules.repository.tags.HighlightFoldersByIncompleteTags;
+import net.sourceforge.atunes.kernel.modules.repository.tags.IncompleteTagsChecker;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.TagAttribute;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
@@ -183,12 +183,12 @@ public class ApplicationState {
      * Property to highlight folder with incomplete tags in navigator (true) or
      * not (false)
      */
-    private boolean highlightIncompleteTagFolders = true;
+    private boolean highlightIncompleteTagElements = true;
 
     /**
      * list with tag attributes used to hightlight folders
      */
-    private List<TagAttribute> highlightIncompleteTagFoldersAttributes = HighlightFoldersByIncompleteTags.getDefaultTagAttributesToHighlightFolders();
+    private List<TagAttribute> highlightIncompleteTagFoldersAttributes = IncompleteTagsChecker.getDefaultTagAttributesToHighlightFolders();
     /**
      * Property to show tool bar or not
      */
@@ -946,12 +946,12 @@ public class ApplicationState {
         this.minimumSongNumberPerAlbum = minimumSongNumberPerAlbum;
     }
 
-    public boolean isHighlightIncompleteTagFolders() {
-        return highlightIncompleteTagFolders;
+    public boolean isHighlightIncompleteTagElements() {
+        return highlightIncompleteTagElements;
     }
 
-    public void setHighlightIncompleteTagFolders(boolean highlightIncompleteTagFolders) {
-        this.highlightIncompleteTagFolders = highlightIncompleteTagFolders;
+    public void setHighlightIncompleteTagElements(boolean highlightIncompleteTagElements) {
+        this.highlightIncompleteTagElements = highlightIncompleteTagElements;
     }
 
     public List<TagAttribute> getHighlightIncompleteTagFoldersAttributes() {

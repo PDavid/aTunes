@@ -19,11 +19,22 @@
  */
 package net.sourceforge.atunes.gui.model;
 
+import java.awt.Component;
+
+import javax.swing.JLabel;
+import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 
+import net.sourceforge.atunes.gui.Fonts;
+import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
+import net.sourceforge.atunes.gui.renderers.JLabelTableCellRendererCode;
+import net.sourceforge.atunes.gui.renderers.StringTableCellRendererCode;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
+import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable.PlayState;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.columns.PlayListColumnSet;
+import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 
 /**
  * The Class PlayListColumnModel.
@@ -55,6 +66,51 @@ public final class PlayListColumnModel extends CommonColumnModel {
 
         // No header renderer is added to play list since user can change order of table manually by adding, removing or moving rows
         // so keep ordering has no sense
+    }
+    
+    @Override
+    public TableCellRendererCode getRendererCodeFor(Class<?> clazz) {
+    	if (clazz.equals(Integer.class)) {
+    		return new TableCellRendererCode() {
+				
+				@Override
+				public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+					Component c = superComponent;
+		            ((JLabel) c).setText(null);
+		            if (PlayListHandler.getInstance().isCurrentVisibleRowPlaying(row)) {
+		                ((JLabel) c).setIcon(PlayState.getPlayStateIcon(((PlayListTable) table).getPlayState()));
+		            } else {
+		                ((JLabel) c).setIcon(Images.getImage(Images.EMPTY));
+		            }
+
+		            // Get alignment from model
+		            ((JLabel) c).setHorizontalAlignment(getColumnAlignment(column));
+		            return c;
+				}
+			};
+    	} else if (clazz.equals(String.class)) {
+    		return new StringTableCellRendererCode(this) {
+				
+				@Override
+				public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+					Component c = super.getComponent(superComponent, t, value, isSelected, hasFocus, row, column);
+	            	((JLabel)c).setFont(PlayListHandler.getInstance().isCurrentVisibleRowPlaying(row) ? Fonts.PLAY_LIST_FONT_SELECTED_ITEM : Fonts.PLAY_LIST_FONT);
+		            return c;
+				}
+			};
+    	} else if (clazz.equals(JLabel.class)) {
+    		return new JLabelTableCellRendererCode(this) {
+    			@Override
+    			public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    				Component c = super.getComponent(superComponent, table, value, isSelected, hasFocus, row, column);
+    	        	((JLabel)c).setFont(PlayListHandler.getInstance().isCurrentVisibleRowPlaying(row) ? Fonts.PLAY_LIST_FONT_SELECTED_ITEM : Fonts.PLAY_LIST_FONT);
+    	        	return c;
+    			}
+    			
+    		};
+    	} else {
+    		return super.getRendererCodeFor(clazz);
+    	}
     }
 
 }
