@@ -228,7 +228,7 @@ public final class PlayerHandler extends Handler implements PluginListener, Play
      * parameter (0-100%)
      * 
      * @param position
-     *            From start of audio object (0) to end of audio object (100)
+     *            From start of audio object (0) to end of audio object (1)
      * 
      */
     public final void seekCurrentAudioObject(double position) {

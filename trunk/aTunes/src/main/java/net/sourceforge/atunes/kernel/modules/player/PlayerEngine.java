@@ -152,7 +152,7 @@ public abstract class PlayerEngine implements PlaybackStateListener {
      * operation in player engine
      * 
      * @param perCent
-     *            0-100
+     *            0-1
      */
     protected abstract void seekTo(double perCent);
 
