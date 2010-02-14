@@ -19,14 +19,12 @@
  */
 package net.sourceforge.atunes.kernel.modules.navigator;
 
-import java.awt.Component;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.JTree;
@@ -35,9 +33,11 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.lookandfeel.TreeCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.TreeCellDecorator;
 import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
+import net.sourceforge.atunes.gui.views.decorators.PodcastFeedTreeCellDecorator;
+import net.sourceforge.atunes.gui.views.decorators.StringTreeCellDecorator;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddPodcastFeedAction;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAction;
@@ -65,6 +65,8 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 public final class PodcastNavigationView extends NavigationView {
 
+	private List<TreeCellDecorator> decorators;
+	
     /** The podcast feed tree. */
     private JTree podcastFeedTree;
 
@@ -358,15 +360,13 @@ public final class PodcastNavigationView extends NavigationView {
     }
 
     @Override
-    protected TreeCellRendererCode getTreeRendererCode() {
-        return new TreeCellRendererCode() {
-
-            @Override
-            public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
-                JLabel icon = (JLabel) superComponent;
-                icon.setIcon(Images.getImage(Images.RSS_LITTLE));
-                return icon;
-            }
-        };
+    protected List<TreeCellDecorator> getTreeCellDecorators() {
+    	if (decorators == null) {
+    		decorators = new ArrayList<TreeCellDecorator>();
+            decorators.add(new StringTreeCellDecorator());
+            decorators.add(new PodcastFeedTreeCellDecorator());
+    	}
+    	return decorators;
     }
+
 }

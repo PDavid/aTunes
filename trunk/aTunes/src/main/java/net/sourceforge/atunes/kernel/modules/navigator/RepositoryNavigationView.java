@@ -19,14 +19,12 @@
  */
 package net.sourceforge.atunes.kernel.modules.navigator;
 
-import java.awt.Component;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.JTree;
@@ -35,11 +33,17 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 
-import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.lookandfeel.TreeCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.TreeCellDecorator;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
-import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
+import net.sourceforge.atunes.gui.views.decorators.AlbumTreeCellDecorator;
+import net.sourceforge.atunes.gui.views.decorators.ArtistTreeCellDecorator;
+import net.sourceforge.atunes.gui.views.decorators.FolderTreeCellDecorator;
+import net.sourceforge.atunes.gui.views.decorators.GenreTreeCellDecorator;
+import net.sourceforge.atunes.gui.views.decorators.IncompleteTagsTreeCellDecorator;
+import net.sourceforge.atunes.gui.views.decorators.StringTreeCellDecorator;
+import net.sourceforge.atunes.gui.views.decorators.TooltipTreeCellDecorator;
+import net.sourceforge.atunes.gui.views.decorators.UnknownElementTreeCellDecorator;
 import net.sourceforge.atunes.gui.views.menus.EditTagMenu;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAction;
@@ -65,8 +69,6 @@ import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.data.Folder;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
-import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
-import net.sourceforge.atunes.kernel.modules.repository.tags.IncompleteTagsChecker;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
@@ -80,6 +82,8 @@ public class RepositoryNavigationView extends NavigationView {
     private JPopupMenu treePopupMenu;
 
     private JPopupMenu tablePopupMenu;
+    
+    private List<TreeCellDecorator> decorators;
 
     @Override
     public ImageIcon getIcon() {
@@ -490,63 +494,19 @@ public class RepositoryNavigationView extends NavigationView {
     }
 
     @Override
-    protected TreeCellRendererCode getTreeRendererCode() {
-        return new TreeCellRendererCode() {
-
-            @Override
-            public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
-                JLabel label = (JLabel) superComponent;
-
-                DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-                final Object content = node.getUserObject();
-
-                if (content instanceof Artist) {
-                    if (!ApplicationState.getInstance().isShowFavoritesInNavigator() || !FavoritesHandler.getInstance().getFavoriteArtistsInfo().containsValue(content)) {
-                        label.setIcon(Images.getImage(Images.ARTIST));
-                    } else {
-                        label.setIcon(Images.getImage(Images.ARTIST_FAVORITE));
-                    }
-                } else if (content instanceof Album) {
-                    if (!ApplicationState.getInstance().isShowFavoritesInNavigator() || !FavoritesHandler.getInstance().getFavoriteAlbumsInfo().containsValue(content)) {
-                        label.setIcon(Images.getImage(Images.ALBUM));
-                    } else {
-                        label.setIcon(Images.getImage(Images.ALBUM_FAVORITE));
-                    }
-                } else if (content instanceof Genre) {
-                    label.setIcon(Images.getImage(Images.GENRE));
-                } else if (content instanceof Folder) {
-                    label.setIcon(Images.getImage(Images.FOLDER));
-                    if (ApplicationState.getInstance().isHighlightIncompleteTagElements() && IncompleteTagsChecker.hasIncompleteTags((Folder) content)) {
-                        label.setForeground(ColorDefinitions.GENERAL_UNKNOWN_ELEMENT_FOREGROUND_COLOR);
-                    }
-                } else if (content instanceof String) {
-                    if (((String) content).equals(I18nUtils.getString("REPOSITORY"))) {
-                        label.setIcon(Images.getImage(Images.AUDIO_FILE_LITTLE));
-                    } else {
-                        label.setIcon(Images.getImage(Images.FOLDER));
-                    }
-                    label.setToolTipText(null);
-                }
-
-                if (!ApplicationState.getInstance().isShowExtendedTooltip() || !ExtendedToolTip.canObjectBeShownInExtendedToolTip(content)) {
-                    if (content instanceof TreeObject) {
-                        label.setToolTipText(((TreeObject) content).getToolTip());
-                    } else {
-                        label.setToolTipText(content.toString());
-                    }
-                } else {
-                    // If using extended tooltip we must set tooltip to null. If not will appear the tooltip of the parent node
-                    label.setToolTipText(null);
-                }
-
-                if (value.toString() != null) {
-                    if (Artist.isUnknownArtist(value.toString()) || Album.isUnknownAlbum(value.toString()) || Genre.isUnknownGenre(value.toString())) {
-                        label.setForeground(ColorDefinitions.GENERAL_UNKNOWN_ELEMENT_FOREGROUND_COLOR);
-                    }
-                }
-                return label;
-            }
-        };
+    protected List<TreeCellDecorator> getTreeCellDecorators() {
+    	if (decorators == null) {
+    		decorators = new ArrayList<TreeCellDecorator>();
+            decorators.add(new ArtistTreeCellDecorator());
+            decorators.add(new AlbumTreeCellDecorator());
+            decorators.add(new GenreTreeCellDecorator());
+            decorators.add(new FolderTreeCellDecorator());
+            decorators.add(new StringTreeCellDecorator());
+            decorators.add(new TooltipTreeCellDecorator());
+            decorators.add(new UnknownElementTreeCellDecorator());
+            decorators.add(new IncompleteTagsTreeCellDecorator());
+    	}
+    	return decorators;
     }
 
     /**

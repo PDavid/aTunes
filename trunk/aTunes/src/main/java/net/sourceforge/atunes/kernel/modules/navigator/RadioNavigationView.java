@@ -19,14 +19,12 @@
  */
 package net.sourceforge.atunes.kernel.modules.navigator;
 
-import java.awt.Component;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
@@ -35,9 +33,11 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.lookandfeel.TreeCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.TreeCellDecorator;
 import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
+import net.sourceforge.atunes.gui.views.decorators.RadioTreeCellDecorator;
+import net.sourceforge.atunes.gui.views.decorators.StringTreeCellDecorator;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddFavoriteRadioAction;
 import net.sourceforge.atunes.kernel.actions.AddRadioAction;
@@ -62,6 +62,8 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class RadioNavigationView extends NavigationView {
 
+	private List<TreeCellDecorator> decorators;
+	
     /** The radio tree. */
     private JTree radioTree;
 
@@ -424,21 +426,15 @@ public final class RadioNavigationView extends NavigationView {
     public boolean isViewModeSupported() {
         return false;
     }
-
+    
     @Override
-    protected TreeCellRendererCode getTreeRendererCode() {
-        return new TreeCellRendererCode() {
-
-            @Override
-            public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
-                JLabel icon = (JLabel) superComponent;
-                if (leaf || row == 0) {
-                    icon.setIcon(Images.getImage(Images.RADIO_LITTLE));
-                } else {
-                    icon.setIcon(Images.getImage(Images.FOLDER));
-                }
-                return icon;
-            }
-        };
+    protected List<TreeCellDecorator> getTreeCellDecorators() {
+    	if (decorators == null) {
+    		decorators = new ArrayList<TreeCellDecorator>();
+            decorators.add(new StringTreeCellDecorator());
+            decorators.add(new RadioTreeCellDecorator());
+    	}
+    	return decorators;
     }
+
 }
