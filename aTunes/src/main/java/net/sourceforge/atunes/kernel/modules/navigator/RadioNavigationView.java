@@ -33,10 +33,8 @@ import javax.swing.JSeparator;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeCellRenderer;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.lookandfeel.TreeCellRendererCode;
 import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
@@ -428,8 +426,8 @@ public final class RadioNavigationView extends NavigationView {
     }
 
     @Override
-    protected TreeCellRenderer getTreeRenderer() {
-        return LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTreeCellRenderer(new TreeCellRendererCode() {
+    protected TreeCellRendererCode getTreeRendererCode() {
+        return new TreeCellRendererCode() {
 
             @Override
             public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
@@ -441,6 +439,6 @@ public final class RadioNavigationView extends NavigationView {
                 }
                 return icon;
             }
-        });
+        };
     }
 }
