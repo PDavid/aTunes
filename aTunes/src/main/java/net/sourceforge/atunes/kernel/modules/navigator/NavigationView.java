@@ -46,6 +46,7 @@ import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.gui.lookandfeel.TreeCellDecorator;
 import net.sourceforge.atunes.gui.lookandfeel.TreeCellRendererCode;
 import net.sourceforge.atunes.gui.model.AudioObjectsSource;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
@@ -95,11 +96,11 @@ public abstract class NavigationView implements AudioObjectsSource {
     public abstract JTree getTree();
 
     /**
-     * Return tree renderer code for this view
+     * Return decorators to be used in view
      * 
      * @return
      */
-    protected abstract TreeCellRendererCode getTreeRendererCode();
+    protected abstract List<TreeCellDecorator> getTreeCellDecorators();
 
     /**
      * 
@@ -574,6 +575,16 @@ public abstract class NavigationView implements AudioObjectsSource {
      * @return
      */
     protected final TreeCellRenderer getTreeRenderer() {
-        return LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTreeCellRenderer(getTreeRendererCode());
+        return LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTreeCellRenderer(new TreeCellRendererCode() {
+			
+			@Override
+			public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
+            	final Object content = ((DefaultMutableTreeNode) value).getUserObject();
+            	for (TreeCellDecorator decorator : getTreeCellDecorators()) {
+            		decorator.decorateTreeCellComponent(superComponent, content);
+            	}
+                return superComponent;
+			}
+		});
     }
 }

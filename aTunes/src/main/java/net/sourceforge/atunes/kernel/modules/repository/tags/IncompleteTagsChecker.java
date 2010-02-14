@@ -27,11 +27,11 @@ import java.util.Map;
 import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.repository.data.Folder;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.TagAttribute;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.TreeObject;
 
 public class IncompleteTagsChecker {
 
@@ -130,14 +130,14 @@ public class IncompleteTagsChecker {
     }
 
     /**
-     * Returns <code>true</code> if folder contains audio files with incomplete
+     * Returns <code>true</code> if tree object contains audio objects with incomplete
      * tags
-     * 
+     * @param treeObject
      * @return
      */
-    public static boolean hasIncompleteTags(Folder folder) {
-        for (AudioFile f : folder.getAudioFiles()) {
-            if (!hasTagAttributesFilled(f)) {
+    public static boolean hasIncompleteTags(TreeObject treeObject) {
+        for (AudioObject f : treeObject.getAudioObjects()) {
+            if (hasIncompleteTags(f)) {
                 return true;
             }
         }

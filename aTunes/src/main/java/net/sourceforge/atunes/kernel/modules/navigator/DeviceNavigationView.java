@@ -19,14 +19,12 @@
  */
 package net.sourceforge.atunes.kernel.modules.navigator;
 
-import java.awt.Component;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
@@ -35,10 +33,16 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 
-import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.lookandfeel.TreeCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.TreeCellDecorator;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
+import net.sourceforge.atunes.gui.views.decorators.AlbumTreeCellDecorator;
+import net.sourceforge.atunes.gui.views.decorators.ArtistTreeCellDecorator;
+import net.sourceforge.atunes.gui.views.decorators.FolderTreeCellDecorator;
+import net.sourceforge.atunes.gui.views.decorators.GenreTreeCellDecorator;
+import net.sourceforge.atunes.gui.views.decorators.IncompleteTagsTreeCellDecorator;
+import net.sourceforge.atunes.gui.views.decorators.StringTreeCellDecorator;
+import net.sourceforge.atunes.gui.views.decorators.UnknownElementTreeCellDecorator;
 import net.sourceforge.atunes.gui.views.menus.EditTagMenu;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAction;
@@ -68,6 +72,8 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 public final class DeviceNavigationView extends NavigationView {
 
+	private List<TreeCellDecorator> decorators;
+	
     /** The device tree. */
     private JTree deviceTree;
 
@@ -453,35 +459,18 @@ public final class DeviceNavigationView extends NavigationView {
     }
 
     @Override
-    protected TreeCellRendererCode getTreeRendererCode() {
-        return new TreeCellRendererCode() {
-
-            @Override
-            public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
-                JLabel label = (JLabel) superComponent;
-
-                DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-                final Object content = node.getUserObject();
-
-                if (content instanceof Artist) {
-                    label.setIcon(Images.getImage(Images.ARTIST));
-                } else if (content instanceof Album) {
-                    label.setIcon(Images.getImage(Images.ALBUM));
-                } else if (content instanceof Genre) {
-                    label.setIcon(Images.getImage(Images.GENRE));
-                } else if (content instanceof Folder) {
-                    label.setIcon(Images.getImage(Images.FOLDER));
-                } else {
-                    label.setIcon(Images.getImage(Images.DEVICE));
-                }
-
-                if (value.toString() != null) {
-                    if (Artist.isUnknownArtist(value.toString()) || Album.isUnknownAlbum(value.toString()) || Genre.isUnknownGenre(value.toString())) {
-                        label.setForeground(ColorDefinitions.GENERAL_UNKNOWN_ELEMENT_FOREGROUND_COLOR);
-                    }
-                }
-                return label;
-            }
-        };
+    protected List<TreeCellDecorator> getTreeCellDecorators() {
+    	if (decorators == null) {
+    		decorators = new ArrayList<TreeCellDecorator>();
+            decorators.add(new ArtistTreeCellDecorator());
+            decorators.add(new AlbumTreeCellDecorator());
+            decorators.add(new GenreTreeCellDecorator());
+            decorators.add(new FolderTreeCellDecorator());
+            decorators.add(new StringTreeCellDecorator());
+            decorators.add(new UnknownElementTreeCellDecorator());
+            decorators.add(new IncompleteTagsTreeCellDecorator());
+    	}
+    	return decorators;
     }
+
 }
