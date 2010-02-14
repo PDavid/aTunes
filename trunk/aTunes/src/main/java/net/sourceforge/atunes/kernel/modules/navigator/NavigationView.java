@@ -45,6 +45,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.gui.lookandfeel.TreeCellRendererCode;
 import net.sourceforge.atunes.gui.model.AudioObjectsSource;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
 import net.sourceforge.atunes.kernel.ControllerProxy;
@@ -93,11 +95,11 @@ public abstract class NavigationView implements AudioObjectsSource {
     public abstract JTree getTree();
 
     /**
-     * Return tree renderer of this view
+     * Return tree renderer code for this view
      * 
      * @return
      */
-    protected abstract TreeCellRenderer getTreeRenderer();
+    protected abstract TreeCellRendererCode getTreeRendererCode();
 
     /**
      * 
@@ -565,5 +567,13 @@ public abstract class NavigationView implements AudioObjectsSource {
         }
 
         return viewAction;
+    }
+    
+    /**
+     * Returns tree renderer used
+     * @return
+     */
+    protected final TreeCellRenderer getTreeRenderer() {
+        return LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTreeCellRenderer(getTreeRendererCode());
     }
 }
