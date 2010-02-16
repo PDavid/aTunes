@@ -73,12 +73,7 @@ class MPlayerErrorReader extends Thread {
                 }
             }
         } catch (final IOException e) {
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    engine.handlePlayerEngineError(e);
-                }
-            });
+            engine.handlePlayerEngineError(e);
         } finally {
             ClosingUtils.close(in);
         }
