@@ -323,9 +323,9 @@
 			<version>1.0</version>
 		</dependency>
 		<dependency>
-			<groupId>com.sun.jna</groupId>
+			<groupId>net.java.dev.jna</groupId>
 			<artifactId>jna</artifactId>
-			<version>3.2.1</version>
+			<version>3.2.4</version>
 		</dependency>
 		<dependency>
 		<groupId>gstreamer</groupId>

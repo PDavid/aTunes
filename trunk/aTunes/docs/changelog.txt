@@ -1,6 +1,6 @@
 aTunes 2.0.0
 -------------
-- Support for libnotify (Gnome)
+- Support for libnotify (Gnome) (Patch by Marco Biscaro)
 - File chooser in tag dialog should open in directory of the audio file (feature request [2786730])
 - Three new look and feel skins (Dust, Dust Coffee and Twilight)
 - Avoid child nodes in album tree view in navigator
