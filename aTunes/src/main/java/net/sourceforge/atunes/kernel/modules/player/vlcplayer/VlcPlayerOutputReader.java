@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.player.vlcplayer;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.SocketException;
 
 import javax.swing.SwingUtilities;
 
@@ -152,14 +151,8 @@ class VlcPlayerOutputReader extends Thread {
                     }
                 });
             }
-        } catch (final IOException e) {
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    if (!(e instanceof SocketException)) {
-                        engine.handlePlayerEngineError(e);
-                    }
-                }
-            });
+        } catch (IOException e) {
+        	engine.handlePlayerEngineError(e);
         } finally {
             ClosingUtils.close(in);
         }

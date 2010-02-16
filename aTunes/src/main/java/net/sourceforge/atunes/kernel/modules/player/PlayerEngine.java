@@ -23,6 +23,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
@@ -428,10 +430,15 @@ public abstract class PlayerEngine implements PlaybackStateListener {
      * @param e
      *            The exception thrown
      */
-    public final void handlePlayerEngineError(Exception e) {
+    public final void handlePlayerEngineError(final Exception e) {
         logger.error(LogCategories.PLAYER, StringUtils.getString("Player Error: ", e));
         logger.error(LogCategories.PLAYER, e);
-        GuiHandler.getInstance().showErrorDialog(e.getMessage());
+        SwingUtilities.invokeLater(new Runnable() {
+        	@Override
+        	public void run() {
+                GuiHandler.getInstance().showErrorDialog(e.getMessage());
+        	}
+        });
     }
 
     /**

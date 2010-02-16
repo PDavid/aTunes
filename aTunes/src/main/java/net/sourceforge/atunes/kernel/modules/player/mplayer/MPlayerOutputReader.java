@@ -129,12 +129,7 @@ abstract class MPlayerOutputReader extends Thread {
                 });
             }
         } catch (final IOException e) {
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    getEngine().handlePlayerEngineError(e);
-                }
-            });
+            getEngine().handlePlayerEngineError(e);
         } finally {
             ClosingUtils.close(in);
         }

@@ -71,11 +71,7 @@ public class VlcPlayerCommandWriter extends Thread {
                     if (i == (tries - 1)) {
                         process.destroy();
                         logger.error(LogCategories.PLAYER, ex);
-                        SwingUtilities.invokeLater(new Runnable() {
-                            public void run() {
-                                engine.handlePlayerEngineError(new VlcTelnetClientException("Communication problem with vlc remote interface"));
-                            }
-                        });
+                        engine.handlePlayerEngineError(new VlcTelnetClientException("Communication problem with vlc remote interface"));
                         break;
                     }
                 }
