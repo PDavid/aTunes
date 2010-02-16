@@ -22,10 +22,6 @@ package net.sourceforge.atunes.kernel.modules.tray;
 import java.awt.AWTException;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenuItem;
@@ -34,6 +30,7 @@ import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.views.controls.ActionTrayIcon;
 import net.sourceforge.atunes.gui.views.controls.JTrayIcon;
 import net.sourceforge.atunes.gui.views.controls.JTrayIcon.JTrayIconPopupMenu;
 import net.sourceforge.atunes.kernel.Handler;
@@ -41,11 +38,15 @@ import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ExitAction;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
 import net.sourceforge.atunes.kernel.actions.OSDSettingAction;
+import net.sourceforge.atunes.kernel.actions.PlayAction;
+import net.sourceforge.atunes.kernel.actions.PlayNextAudioObjectAction;
+import net.sourceforge.atunes.kernel.actions.PlayPreviousAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.RepeatModeAction;
 import net.sourceforge.atunes.kernel.actions.ShowAboutAction;
 import net.sourceforge.atunes.kernel.actions.ShuffleModeAction;
+import net.sourceforge.atunes.kernel.actions.StopCurrentAudioObjectAction;
+import net.sourceforge.atunes.kernel.actions.ToggleWindowVisibilityAction;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
-import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
@@ -70,11 +71,7 @@ public final class SystemTrayHandler extends Handler {
     private TrayIcon playIcon;
     private TrayIcon stopIcon;
     private TrayIcon nextIcon;
-    private JMenuItem playMenu;
-    JCheckBoxMenuItem mute;
-    JCheckBoxMenuItem shuffle;
-    JCheckBoxMenuItem repeat;
-    JCheckBoxMenuItem showOSD;
+    private JMenuItem playMenuItem;
 
     /**
      * Instantiates a new system tray handler.
@@ -112,68 +109,21 @@ public final class SystemTrayHandler extends Handler {
      * @return the j tray icon popup menu
      */
     private JTrayIconPopupMenu fillMenu(JTrayIconPopupMenu menu) {
-        playMenu = new JMenuItem(I18nUtils.getString("PLAY"), Images.getImage(Images.PLAY_TRAY_MENU));
-        playMenu.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                PlayerHandler.getInstance().playCurrentAudioObject(true);
-            }
-        });
-        menu.add(playMenu);
-
-        JMenuItem stop = new JMenuItem(I18nUtils.getString("STOP"), Images.getImage(Images.STOP_TRAY_MENU));
-        stop.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                PlayerHandler.getInstance().stopCurrentAudioObject(true);
-            }
-        });
-        menu.add(stop);
-
-        JMenuItem previous = new JMenuItem(I18nUtils.getString("PREVIOUS"), Images.getImage(Images.PREVIOUS_TRAY_MENU));
-        previous.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                PlayerHandler.getInstance().playPreviousAudioObject();
-            }
-        });
-        menu.add(previous);
-
-        JMenuItem next = new JMenuItem(I18nUtils.getString("NEXT"), Images.getImage(Images.NEXT_TRAY_MENU));
-        next.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                PlayerHandler.getInstance().playNextAudioObject();
-            }
-        });
-        menu.add(next);
-
+        menu.add(getPlayMenuItem());
+        menu.add(getStopMenuItem());
+        menu.add(getPreviousMenuItem());
+        menu.add(getNextMenuItem());
         menu.add(new JSeparator());
-
-        mute = new JCheckBoxMenuItem(I18nUtils.getString("MUTE"), Images.getImage(Images.VOLUME_MUTE_TRAY_MENU));
-        mute.setAction(Actions.getAction(MuteAction.class));
-        menu.add(mute);
-
+        menu.add(getMuteCheckBoxMenuItem());
         menu.add(new JSeparator());
-
-        shuffle = new JCheckBoxMenuItem(Actions.getAction(ShuffleModeAction.class));
-        menu.add(shuffle);
-
-        repeat = new JCheckBoxMenuItem(Actions.getAction(RepeatModeAction.class));
-        menu.add(repeat);
-
+        menu.add(getShuffleCheckBoxMenuItem());
+        menu.add(getRepeatCheckBoxMenuItem());
         menu.add(new JSeparator());
-
-        showOSD = new JCheckBoxMenuItem(Actions.getAction(OSDSettingAction.class));
-        menu.add(showOSD);
-
+        menu.add(getShowOSDCheckBoxMenuItem());
         menu.add(new JSeparator());
-
-        menu.add(new JMenuItem(Actions.getAction(ShowAboutAction.class)));
-
+        menu.add(getAboutMenuItem());
         menu.add(new JSeparator());
-
-        menu.add(new JMenuItem(Actions.getAction(ExitAction.class)));
+        menu.add(getExitMenuItem());
 
         GuiUtils.applyComponentOrientation(menu);
 
@@ -205,25 +155,13 @@ public final class SystemTrayHandler extends Handler {
         initSystemTray();
         if (tray != null) {
             trayIconVisible = true;
-            trayIcon = new JTrayIcon(Images.getImage(Images.APP_ICON_TRAY).getImage(), SystemProperties.OS == OperatingSystem.LINUX);
-            trayIcon.setToolTip(StringUtils.getString(Constants.APP_NAME, " ", Constants.VERSION.toShortString()));
-            trayIcon.setJTrayIconJPopupMenu(fillMenu(trayIcon.new JTrayIconPopupMenu()));
-            trayIcon.setImageAutoSize(true);
 
             try {
-                tray.add(trayIcon);
+                tray.add(getTrayIcon());
             } catch (AWTException e) {
                 getLogger().error(LogCategories.TRAY, e);
             }
 
-            trayIcon.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    if (e.getButton() == MouseEvent.BUTTON1) {
-                        GuiHandler.getInstance().toggleWindowVisibility();
-                    }
-                }
-            });
             GuiHandler.getInstance().setFrameDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         } else {
             getLogger().error(LogCategories.TRAY, "No system tray supported");
@@ -237,71 +175,24 @@ public final class SystemTrayHandler extends Handler {
         initSystemTray();
         if (tray != null) {
             trayPlayerVisible = true;
-            nextIcon = new TrayIcon(Images.getImage(Images.NEXT_TRAY).getImage());
-            nextIcon.setImageAutoSize(true);
-            nextIcon.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    if (e.getButton() == MouseEvent.BUTTON1) {
-                        PlayerHandler.getInstance().playNextAudioObject();
-                    }
-                }
-            });
-            try {
-                tray.add(nextIcon);
-            } catch (AWTException e) {
-                getLogger().error(LogCategories.TRAY, e);
-            }
-
-            stopIcon = new TrayIcon(Images.getImage(Images.STOP_TRAY).getImage());
-            stopIcon.setImageAutoSize(true);
-            stopIcon.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    if (e.getButton() == MouseEvent.BUTTON1) {
-                        PlayerHandler.getInstance().stopCurrentAudioObject(true);
-                    }
-                }
-            });
-            try {
-                tray.add(stopIcon);
-            } catch (AWTException e) {
-                getLogger().error(LogCategories.TRAY, e);
-            }
-
-            playIcon = new TrayIcon(Images.getImage(Images.PLAY_TRAY).getImage());
-            playIcon.setImageAutoSize(true);
-            playIcon.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    if (e.getButton() == MouseEvent.BUTTON1) {
-                        PlayerHandler.getInstance().playCurrentAudioObject(true);
-                    }
-                }
-            });
-            try {
-                tray.add(playIcon);
-            } catch (AWTException e) {
-                getLogger().error(LogCategories.TRAY, e);
-            }
-
-            previousIcon = new TrayIcon(Images.getImage(Images.PREVIOUS_TRAY).getImage());
-            previousIcon.setImageAutoSize(true);
-            previousIcon.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    if (e.getButton() == MouseEvent.BUTTON1) {
-                        PlayerHandler.getInstance().playPreviousAudioObject();
-                    }
-                }
-            });
-            try {
-                tray.add(previousIcon);
-            } catch (AWTException e) {
-                getLogger().error(LogCategories.TRAY, e);
-            }
+            addTrayIcon(getNextTrayIcon());
+            addTrayIcon(getStopTrayIcon());
+            addTrayIcon(getPlayTrayIcon());
+            addTrayIcon(getPreviousTrayIcon());
         } else {
             getLogger().error(LogCategories.TRAY, "No system tray supported");
+        }
+    }
+    
+    /**
+     * Adds given tray icon
+     * @param icon
+     */
+    private void addTrayIcon(TrayIcon icon) {
+    	try {
+    		tray.add(icon);
+        } catch (AWTException e) {
+            getLogger().error(LogCategories.TRAY, e);
         }
     }
 
@@ -313,21 +204,13 @@ public final class SystemTrayHandler extends Handler {
      */
     public void setPlaying(boolean playing) {
         if (playing) {
-            if (trayIcon != null) {
-                playMenu.setText(I18nUtils.getString("PAUSE"));
-                playMenu.setIcon(Images.getImage(Images.PAUSE_TRAY_MENU));
-            }
-            if (playIcon != null) {
-                playIcon.setImage(Images.getImage(Images.PAUSE_TRAY).getImage());
-            }
+           	getPlayMenuItem().setText(I18nUtils.getString("PAUSE"));
+           	getPlayMenuItem().setIcon(Images.getImage(Images.PAUSE_TRAY_MENU));
+            getPlayTrayIcon().setImage(Images.getImage(Images.PAUSE_TRAY).getImage());
         } else {
-            if (trayIcon != null) {
-                playMenu.setText(I18nUtils.getString("PLAY"));
-                playMenu.setIcon(Images.getImage(Images.PLAY_TRAY_MENU));
-            }
-            if (playIcon != null) {
-                playIcon.setImage(Images.getImage(Images.PLAY_TRAY).getImage());
-            }
+           	getPlayMenuItem().setText(I18nUtils.getString("PLAY"));
+           	getPlayMenuItem().setIcon(Images.getImage(Images.PLAY_TRAY_MENU));
+           	getPlayTrayIcon().setImage(Images.getImage(Images.PLAY_TRAY).getImage());
         }
 
     }
@@ -346,7 +229,7 @@ public final class SystemTrayHandler extends Handler {
             }
         } else {
             if (!visible && trayIconVisible) {
-                tray.remove(trayIcon);
+                tray.remove(getTrayIcon());
                 GuiHandler.getInstance().setFrameDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
                 trayIconVisible = false;
             }
@@ -364,10 +247,10 @@ public final class SystemTrayHandler extends Handler {
             initTrayPlayerIcons();
         } else {
             if (!visible && trayPlayerVisible) {
-                tray.remove(previousIcon);
-                tray.remove(playIcon);
-                tray.remove(stopIcon);
-                tray.remove(nextIcon);
+                tray.remove(getPreviousTrayIcon());
+                tray.remove(getPlayTrayIcon());
+                tray.remove(getStopTrayIcon());
+                tray.remove(getNextTrayIcon());
                 trayPlayerVisible = false;
             }
         }
@@ -380,9 +263,7 @@ public final class SystemTrayHandler extends Handler {
      *            the new tray tool tip
      */
     public void setTrayToolTip(String msg) {
-        if (trayIcon != null) {
-            trayIcon.setToolTip(msg);
-        }
+        getTrayIcon().setToolTip(msg);
     }
 
     /**
@@ -391,7 +272,7 @@ public final class SystemTrayHandler extends Handler {
     private void trayIconAdvice() {
         // For some reason, in Linux systems display message causes Swing freeze
         if (SystemProperties.OS != OperatingSystem.LINUX) {
-            trayIcon.displayMessage(Constants.APP_NAME, I18nUtils.getString("TRAY_ICON_MESSAGE"), TrayIcon.MessageType.INFO);
+        	getTrayIcon().displayMessage(Constants.APP_NAME, I18nUtils.getString("TRAY_ICON_MESSAGE"), TrayIcon.MessageType.INFO);
         }
     }
 
@@ -400,4 +281,161 @@ public final class SystemTrayHandler extends Handler {
         setTrayIconVisible(newState.isShowSystemTray());
         setTrayPlayerVisible(newState.isShowTrayPlayer());
     }
+    
+    /**
+     * Getter of play menu item
+     * @return
+     */
+    private JMenuItem getPlayMenuItem() {
+    	if (playMenuItem == null) {
+            playMenuItem = new JMenuItem(Actions.getAction(PlayAction.class));
+            playMenuItem.setIcon(Images.getImage(Images.PLAY_TRAY_MENU));
+    	}
+    	return playMenuItem;
+    }
+    
+    /**
+     * Getter of stop menu item
+     * @return
+     */
+    private JMenuItem getStopMenuItem() {
+        JMenuItem stop = new JMenuItem(Actions.getAction(StopCurrentAudioObjectAction.class));
+        stop.setText(I18nUtils.getString("STOP"));
+        stop.setIcon(Images.getImage(Images.STOP_TRAY_MENU));
+        return stop;
+    }
+    
+    /**
+     * Getter of previous menu item
+     * @return
+     */
+    private JMenuItem getPreviousMenuItem() {
+        JMenuItem previous = new JMenuItem(Actions.getAction(PlayPreviousAudioObjectAction.class));
+        previous.setText(I18nUtils.getString("PREVIOUS"));
+        previous.setIcon(Images.getImage(Images.PREVIOUS_TRAY_MENU));
+        return previous;
+    }
+    
+    /**
+     * Getter for next menu item
+     * @return
+     */
+    private JMenuItem getNextMenuItem() {
+        JMenuItem next = new JMenuItem(Actions.getAction(PlayNextAudioObjectAction.class));
+        next.setText(I18nUtils.getString("NEXT"));
+        next.setIcon(Images.getImage(Images.NEXT_TRAY_MENU));
+        return next;
+    }
+    
+    /**
+     * Getter for mute menu item
+     * @return
+     */
+    private JCheckBoxMenuItem getMuteCheckBoxMenuItem() {
+    	JCheckBoxMenuItem mute = new JCheckBoxMenuItem(Actions.getAction(MuteAction.class));
+    	mute.setText(I18nUtils.getString("MUTE"));
+    	mute.setIcon(Images.getImage(Images.VOLUME_MUTE_TRAY_MENU));
+    	return mute;
+    }
+    
+    /**
+     * Getter for shuffle menu item
+     * @return
+     */
+    private JCheckBoxMenuItem getShuffleCheckBoxMenuItem() {
+    	return new JCheckBoxMenuItem(Actions.getAction(ShuffleModeAction.class));
+    }
+    
+    /**
+     * Getter for repeat menu item
+     */
+    private JCheckBoxMenuItem getRepeatCheckBoxMenuItem() {
+    	return new JCheckBoxMenuItem(Actions.getAction(RepeatModeAction.class));
+    }
+    
+    /**
+     * Getter for showOSD menu item
+     * @return
+     */
+    private JCheckBoxMenuItem getShowOSDCheckBoxMenuItem() {
+    	return new JCheckBoxMenuItem(Actions.getAction(OSDSettingAction.class));
+    }
+    
+    /**
+     * Getter for about menu item
+     * @return
+     */
+    private JMenuItem getAboutMenuItem() {
+    	return new JMenuItem(Actions.getAction(ShowAboutAction.class));
+    }
+
+    /**
+     * Getter for exit menu item
+     * @return
+     */
+    private JMenuItem getExitMenuItem() {
+    	return new JMenuItem(Actions.getAction(ExitAction.class));
+    }
+    
+    /**
+     * Getter for trayIcon
+     * @return
+     */
+    private JTrayIcon getTrayIcon() {
+    	if (trayIcon == null) {
+    		trayIcon = new JTrayIcon(Images.getImage(Images.APP_ICON_TRAY).getImage(), SystemProperties.OS == OperatingSystem.LINUX, 
+    				Actions.getAction(ToggleWindowVisibilityAction.class));
+    		trayIcon.setToolTip(StringUtils.getString(Constants.APP_NAME, " ", Constants.VERSION.toShortString()));
+    		trayIcon.setJTrayIconJPopupMenu(fillMenu(trayIcon.new JTrayIconPopupMenu()));
+    		trayIcon.setImageAutoSize(true);
+    	} 
+    	return trayIcon;
+    }
+
+    /**
+     * Getter for nextIcon
+     * @return
+     */
+    private TrayIcon getNextTrayIcon() {
+    	if (nextIcon == null) {
+            nextIcon = new ActionTrayIcon(Images.getImage(Images.NEXT_TRAY).getImage(), Actions.getAction(PlayNextAudioObjectAction.class));
+            nextIcon.setImageAutoSize(true);
+    	}
+    	return nextIcon;
+    }
+
+    /**
+     * Getter for stopIcon
+     * @return
+     */
+    private TrayIcon getStopTrayIcon() {
+    	if (stopIcon == null) {
+    	    stopIcon = new ActionTrayIcon(Images.getImage(Images.STOP_TRAY).getImage(), Actions.getAction(StopCurrentAudioObjectAction.class));
+    	    stopIcon.setImageAutoSize(true);
+    	}
+    	return stopIcon;
+    }
+
+    /**
+     * Getter for playIcon
+     * @return
+     */
+    private TrayIcon getPlayTrayIcon() {
+    	if (playIcon == null) {
+            playIcon = new ActionTrayIcon(Images.getImage(Images.PLAY_TRAY).getImage(), Actions.getAction(PlayAction.class));
+            playIcon.setImageAutoSize(true);
+    	}
+    	return playIcon;
+    }
+
+    /**
+     * Getter for previousIcon
+     * @return
+     */
+    private TrayIcon getPreviousTrayIcon() {
+        previousIcon = new ActionTrayIcon(Images.getImage(Images.PREVIOUS_TRAY).getImage(), Actions.getAction(PlayPreviousAudioObjectAction.class));
+        previousIcon.setImageAutoSize(true);
+        return previousIcon;
+    }
+    
 }
