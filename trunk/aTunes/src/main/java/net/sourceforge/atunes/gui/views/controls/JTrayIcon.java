@@ -28,6 +28,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.Action;
 import javax.swing.JDialog;
 import javax.swing.JPopupMenu;
 import javax.swing.event.PopupMenuEvent;
@@ -64,6 +65,8 @@ public final class JTrayIcon extends TrayIcon {
     private MouseListener trayIconMouseListener;
     PopupMenuListener popupMenuListener;
     boolean isLinux;
+    
+    private Action action;
 
     /**
      * Instantiates a new j tray icon.
@@ -71,9 +74,10 @@ public final class JTrayIcon extends TrayIcon {
      * @param image
      *            the image
      */
-    public JTrayIcon(Image image, boolean isLinux) {
+    public JTrayIcon(Image image, boolean isLinux, Action action) {
         super(image);
         this.isLinux = isLinux;
+        this.action = action;
         init();
     }
 
@@ -110,6 +114,15 @@ public final class JTrayIcon extends TrayIcon {
         trayParent.setUndecorated(true);
         trayParent.setAlwaysOnTop(true);
         trayParent.setVisible(false);
+        
+        addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		if (e.getButton() == MouseEvent.BUTTON1) {
+        			action.actionPerformed(null);
+        		}
+        	}
+		});
     }
 
     @Override
