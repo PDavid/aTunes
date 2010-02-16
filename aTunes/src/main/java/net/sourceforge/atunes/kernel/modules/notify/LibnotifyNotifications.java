@@ -19,13 +19,13 @@
  */
 package net.sourceforge.atunes.kernel.modules.notify;
 
-import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import javax.swing.ImageIcon;
 
+import net.sourceforge.atunes.kernel.modules.notify.Notify.NotifyNotification;
 import net.sourceforge.atunes.misc.TempFolder;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -55,29 +55,26 @@ public class LibnotifyNotifications implements Notifications {
 
             @Override
             public void run() {
-                StringBuilder sb = new StringBuilder();
-
-                sb.append("--icon=");
+                if (!Notify.isNotifyPresent()) {
+                    logger.error(LogCategories.NOTIFICATIONS, "libnotify is not available");
+                    return;
+                }
+                if (!Notify.init("aTunes")) {
+                    logger.error(LogCategories.NOTIFICATIONS, "could not init libnotify");
+                    return;
+                }
                 ImageIcon imageForAudioObject = audioObject.getImage(ImageSize.SIZE_200);
                 if (imageForAudioObject == null) {
                     imageForAudioObject = audioObject.getGenericImage(GenericImageSize.MEDIUM);
                 }
-                sb.append(TempFolder.getInstance().writeImageToTempFolder(ImageUtils.toBufferedImage(imageForAudioObject.getImage()), UUID.randomUUID().toString())
-                        .getAbsolutePath());
-
-                String image = sb.toString();
-                sb = new StringBuilder();
-                sb.append(audioObject.getArtist());
-                sb.append(" - ");
-                sb.append(audioObject.getTitle());
-                String text = sb.toString();
-                ProcessBuilder processBuilder = new ProcessBuilder("notify-send", image, text);
-
-                try {
-                    processBuilder.start();
-                } catch (IOException e) {
-                    logger.error(LogCategories.NOTIFICATIONS, "libnotify is not available");
+                String image = TempFolder.getInstance().writeImageToTempFolder(ImageUtils.toBufferedImage(imageForAudioObject.getImage()), UUID.randomUUID().toString())
+                        .getAbsolutePath();
+                NotifyNotification n = Notify.newNotification(audioObject.getTitle(), audioObject.getArtist(), image);
+                if (!Notify.show(n)) {
+                    logger.error(LogCategories.NOTIFICATIONS, "could not show notification - libnotify");
+                    return;
                 }
+                Notify.uninit();
             }
         };
         executorService.execute(r);
