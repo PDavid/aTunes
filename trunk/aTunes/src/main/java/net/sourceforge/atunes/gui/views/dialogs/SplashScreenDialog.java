@@ -74,7 +74,7 @@ public final class SplashScreenDialog extends CustomWindow {
 
         JLabel label = new JLabel(StringUtils.getString(Constants.APP_VERSION, "  ", Character.valueOf((char) 169), " ", Constants.APP_AUTHOR));
         label.setHorizontalAlignment(SwingConstants.CENTER);
-        label.setFont(Fonts.APP_VERSION_TITLE_FONT);
+        label.setFont(Fonts.getAppVersionLittleFont());
         label.setForeground(ColorDefinitions.TITLE_DIALOG_FONT_COLOR);
         label.setSize(475, 20);
         label.setLocation(0, 170);

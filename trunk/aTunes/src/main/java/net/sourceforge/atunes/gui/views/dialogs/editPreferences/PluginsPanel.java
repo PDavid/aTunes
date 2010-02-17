@@ -128,17 +128,17 @@ public final class PluginsPanel extends PreferencesPanel {
 
         JPanel pluginDetailPanel = new JPanel(new GridLayout(6, 1));
         final JLabel pluginNameLabel = new JLabel();
-        pluginNameLabel.setFont(Fonts.SMALL_FONT);
+        pluginNameLabel.setFont(Fonts.getSmallFont());
         final JLabel pluginVersionLabel = new JLabel();
-        pluginVersionLabel.setFont(Fonts.SMALL_FONT);
+        pluginVersionLabel.setFont(Fonts.getSmallFont());
         final JLabel pluginClassNameLabel = new JLabel();
-        pluginClassNameLabel.setFont(Fonts.SMALL_FONT);
+        pluginClassNameLabel.setFont(Fonts.getSmallFont());
         final JLabel pluginLocationLabel = new JLabel();
-        pluginLocationLabel.setFont(Fonts.SMALL_FONT);
+        pluginLocationLabel.setFont(Fonts.getSmallFont());
         final JLabel pluginAuthorLabel = new JLabel();
-        pluginAuthorLabel.setFont(Fonts.SMALL_FONT);
+        pluginAuthorLabel.setFont(Fonts.getSmallFont());
         final UrlLabel pluginUrlLabel = new UrlLabel();
-        pluginUrlLabel.setFont(Fonts.SMALL_FONT);
+        pluginUrlLabel.setFont(Fonts.getSmallFont());
         pluginDetailPanel.add(pluginNameLabel);
         pluginDetailPanel.add(pluginVersionLabel);
         pluginDetailPanel.add(pluginClassNameLabel);

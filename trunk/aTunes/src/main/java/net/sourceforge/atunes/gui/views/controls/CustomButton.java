@@ -39,7 +39,7 @@ public final class CustomButton extends JButton {
      */
     public CustomButton(Icon icon, String text) {
         super(text, icon);
-        setFont(Fonts.BUTTON_FONT);
+        setFont(Fonts.getButtonFont());
     }
 
     /**

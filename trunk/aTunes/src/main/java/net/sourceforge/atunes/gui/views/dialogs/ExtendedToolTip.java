@@ -66,7 +66,7 @@ public final class ExtendedToolTip extends CustomWindow {
         image = new JLabel();
         image.setBorder(new DropShadowBorder());
         line1 = new JLabel();
-        line1.setFont(Fonts.GENERAL_FONT_BOLD);
+        line1.setFont(Fonts.getGeneralBoldFont());
         line2 = new JLabel();
         line3 = new JLabel();
 

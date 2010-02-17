@@ -116,7 +116,7 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
         panel.add(pictureLabel, c);
 
         songLabel = new JLabel();
-        songLabel.setFont(Fonts.PROPERTIES_DIALOG_BIG_FONT);
+        songLabel.setFont(Fonts.getPropertiesDialogBigFont());
         c.gridx = 1;
         c.gridy = 0;
         c.gridheight = 1;
@@ -125,19 +125,19 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
         panel.add(songLabel, c);
 
         artistLabel = new JLabel();
-        artistLabel.setFont(Fonts.PROPERTIES_DIALOG_BIG_FONT);
+        artistLabel.setFont(Fonts.getPropertiesDialogBigFont());
         c.gridx = 1;
         c.gridy = 1;
         panel.add(artistLabel, c);
 
         albumArtistLabel = new JLabel();
-        albumArtistLabel.setFont(Fonts.PROPERTIES_DIALOG_BIG_FONT);
+        albumArtistLabel.setFont(Fonts.getPropertiesDialogBigFont());
         c.gridx = 1;
         c.gridy = 2;
         panel.add(albumArtistLabel, c);
 
         albumLabel = new JLabel();
-        albumLabel.setFont(Fonts.PROPERTIES_DIALOG_BIG_FONT);
+        albumLabel.setFont(Fonts.getPropertiesDialogBigFont());
         c.gridx = 1;
         c.gridy = 3;
         panel.add(albumLabel, c);

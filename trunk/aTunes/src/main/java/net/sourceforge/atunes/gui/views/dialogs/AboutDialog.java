@@ -193,7 +193,7 @@ public final class AboutDialog extends CustomModalDialog {
         JPanel panel = new JPanel(new GridBagLayout());
 
         UrlLabel title = new UrlLabel(Constants.APP_NAME + ' ' + Constants.VERSION.toString(), Constants.APP_WEB);
-        title.setFont(Fonts.ABOUT_BIG_FONT);
+        title.setFont(Fonts.getAboutBigFont());
         title.setFocusPainted(false);
         JLabel description = new JLabel(Constants.APP_DESCRIPTION);
 
@@ -207,7 +207,7 @@ public final class AboutDialog extends CustomModalDialog {
         license.setBorder(BorderFactory.createEmptyBorder());
 
         UrlLabel contributors = new UrlLabel(I18nUtils.getString("CONTRIBUTORS"), Constants.CONTRIBUTORS_WEB);
-        contributors.setFont(Fonts.APP_VERSION_TITLE_FONT);
+        contributors.setFont(Fonts.getAppVersionLittleFont());
 
         JTable propertiesTable = new JTable(tableModel);
         propertiesTable.setShowGrid(false);

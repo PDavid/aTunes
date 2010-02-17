@@ -115,13 +115,13 @@ public final class EqualizerDialog extends CustomModalFrame {
         for (int i = 0; i < 10; i++) {
             bands[i] = getNewJSlider();
             labels[i] = new JLabel(freqs[i]);
-            labels[i].setFont(Fonts.SMALL_FONT);
+            labels[i].setFont(Fonts.getSmallFont());
         }
 
         JLabel changeWhenStopped = new JLabel(I18nUtils.getString("CAN_ONLY_CHANGE_WHEN_STOPPED"));
 
         JButton loadPresetButton = new JButton(I18nUtils.getString("LOAD_PRESET"));
-        loadPresetButton.setFont(Fonts.BUTTON_FONT);
+        loadPresetButton.setFont(Fonts.getButtonFont());
         loadPresetButton.addActionListener(new ActionListener() {
 
             @Override
@@ -184,11 +184,11 @@ public final class EqualizerDialog extends CustomModalFrame {
         }
 
         JLabel l12 = new JLabel("+12db");
-        l12.setFont(Fonts.SMALL_FONT);
+        l12.setFont(Fonts.getSmallFont());
         JLabel l0 = new JLabel("0");
-        l0.setFont(Fonts.SMALL_FONT);
+        l0.setFont(Fonts.getSmallFont());
         JLabel lm12 = new JLabel("-12db");
-        lm12.setFont(Fonts.SMALL_FONT);
+        lm12.setFont(Fonts.getSmallFont());
 
         JPanel labelPanel = new JPanel(new GridLayout(3, 1, 0, 50));
         labelPanel.add(l12);

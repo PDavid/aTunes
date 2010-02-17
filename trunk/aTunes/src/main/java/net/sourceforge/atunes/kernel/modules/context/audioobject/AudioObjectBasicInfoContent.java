@@ -147,7 +147,7 @@ public class AudioObjectBasicInfoContent extends ContextPanelContent {
         audioObjectImage = new JLabel();
         audioObjectTitle = new JLabel();
         audioObjectTitle.setHorizontalAlignment(SwingConstants.CENTER);
-        audioObjectTitle.setFont(Fonts.CONTEXT_INFORMATION_BIG_FONT);
+        audioObjectTitle.setFont(Fonts.getContextInformationBigFont());
         audioObjectArtist = new JLabel();
         audioObjectArtist.setHorizontalAlignment(SwingConstants.CENTER);
         audioObjectLastPlayDate = new JLabel();

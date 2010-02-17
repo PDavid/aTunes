@@ -96,7 +96,7 @@ final class RadioPropertiesDialog extends PropertiesDialog {
         panel.add(pictureLabel, c);
 
         titleLabel = new JLabel();
-        titleLabel.setFont(Fonts.PROPERTIES_DIALOG_BIG_FONT);
+        titleLabel.setFont(Fonts.getPropertiesDialogBigFont());
         c.gridx = 1;
         c.gridy = 0;
         c.gridheight = 1;
@@ -105,7 +105,7 @@ final class RadioPropertiesDialog extends PropertiesDialog {
         panel.add(titleLabel, c);
 
         urlLabel = new JLabel();
-        urlLabel.setFont(Fonts.PROPERTIES_DIALOG_BIG_FONT);
+        urlLabel.setFont(Fonts.getPropertiesDialogBigFont());
         c.gridx = 1;
         c.gridy = 1;
         c.insets = new Insets(5, 10, 5, 10);

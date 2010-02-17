@@ -114,7 +114,7 @@ public class ArtistBasicInfoContent extends ContextPanelContent {
         // Create components
         artistImageLabel = new JLabel();
         artistNameLabel = new UrlLabel();
-        artistNameLabel.setFont(Fonts.CONTEXT_INFORMATION_BIG_FONT);
+        artistNameLabel.setFont(Fonts.getContextInformationBigFont());
         artistWikiAbstract = new CustomTextPane(StyleConstants.ALIGN_JUSTIFIED);
         artistWikiAbstract.setEditable(false);
         artistWikiAbstract.setBorder(BorderFactory.createEmptyBorder());
