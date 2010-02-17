@@ -51,7 +51,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class PlayListTabPanel extends JPanel {
 
-    public class TabReorderer extends MouseInputAdapter {
+    public static class TabReorderer extends MouseInputAdapter {
 
         private JTabbedPane tabPane;
         private int draggedTabIndex;

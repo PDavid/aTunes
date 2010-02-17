@@ -110,7 +110,7 @@ public class PluginEditorDialog extends CustomModalDialog {
         return configuration;
     }
 
-    private class PluginConfigurationPanel extends JPanel {
+    private static class PluginConfigurationPanel extends JPanel {
 
         private static final long serialVersionUID = 8063088904049173181L;
 

@@ -69,7 +69,7 @@ public class PlayList implements Serializable, Cloneable {
      */
     private PointedList<AudioObject> audioObjects = new PlayListPointedList();
 
-    class PlayListPointedList extends PointedList<AudioObject> {
+    static class PlayListPointedList extends PointedList<AudioObject> {
         private static final long serialVersionUID = -6966402482637754615L;
 
         PlayListPointedList() {
