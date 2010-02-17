@@ -603,10 +603,12 @@ public class Cdda2wav extends CdToWavConverter {
                                     token = albumInfoTokenizer.nextToken();
                                 }
                                 // Album names can contain "'" so check if there is something left
+                                StringBuilder sb = new StringBuilder(album);
                                 while (albumInfoTokenizer.hasMoreElements() && token != null && !token.matches(" from ")) {
-                                    album = album + token;
+                                    sb.append(token);
                                     token = albumInfoTokenizer.nextToken();
                                 }
+                                album = sb.toString();
                                 if (albumInfoTokenizer.hasMoreTokens()) {
                                     artist = albumInfoTokenizer.nextToken();
                                 }

@@ -461,26 +461,26 @@ public class VlcPlayerEngine extends PlayerEngine {
         return "";
     }
 
-    private String buildEqualizerBands(float[] equalizer) {
-        String bands = "";
+    private String buildEqualizerBands(float[] equalizer) {    	
+        StringBuilder bands = new StringBuilder();
         for (int i = 0; i < equalizer.length; i++) {
-            bands += String.valueOf(new Float(equalizer[i]).intValue());
+            bands.append(String.valueOf(new Float(equalizer[i]).intValue()));
             if (i != equalizer.length - 1) {
-                bands += " ";
+                bands.append(" ");
             }
         }
-        return bands;
+        return bands.toString();
     }
 
     private String buildAudioFiltersParameter(List<String> audioFilters) {
-        String audioFiltersParam = "";
+        StringBuilder audioFiltersParam = new StringBuilder();
         for (int i = 0; i < audioFilters.size(); i++) {
-            audioFiltersParam += audioFilters.get(i);
+            audioFiltersParam.append(audioFilters.get(i));
             if (i != audioFilters.size() - 1) {
-                audioFiltersParam += ":";
+                audioFiltersParam.append(":");
             }
         }
-        return audioFiltersParam;
+        return audioFiltersParam.toString();
     }
 
     /**
