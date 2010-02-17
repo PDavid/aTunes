@@ -109,7 +109,7 @@ final class PodcastFeedEntryPropertiesDialog extends PropertiesDialog {
         panel.add(pictureLabel, c);
 
         titleLabel = new JLabel();
-        titleLabel.setFont(Fonts.PROPERTIES_DIALOG_BIG_FONT);
+        titleLabel.setFont(Fonts.getPropertiesDialogBigFont());
         c.gridx = 1;
         c.gridy = 0;
         c.gridheight = 1;
@@ -118,13 +118,13 @@ final class PodcastFeedEntryPropertiesDialog extends PropertiesDialog {
         panel.add(titleLabel, c);
 
         artistLabel = new JLabel();
-        artistLabel.setFont(Fonts.PROPERTIES_DIALOG_BIG_FONT);
+        artistLabel.setFont(Fonts.getPropertiesDialogBigFont());
         c.gridx = 1;
         c.gridy = 1;
         panel.add(artistLabel, c);
 
         urlLabel = new JLabel();
-        urlLabel.setFont(Fonts.PROPERTIES_DIALOG_BIG_FONT);
+        urlLabel.setFont(Fonts.getPropertiesDialogBigFont());
         c.gridx = 1;
         c.gridy = 2;
         panel.add(urlLabel, c);

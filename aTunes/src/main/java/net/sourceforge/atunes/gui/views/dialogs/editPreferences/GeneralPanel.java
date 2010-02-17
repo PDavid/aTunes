@@ -85,10 +85,10 @@ public final class GeneralPanel extends PreferencesPanel {
         super(I18nUtils.getString("GENERAL"));
         showTitle = new JCheckBox(I18nUtils.getString("SHOW_TITLE"));
         JLabel windowTypeLabel = new JLabel(I18nUtils.getString("WINDOW_TYPE"));
-        windowTypeLabel.setFont(Fonts.GENERAL_FONT_BOLD);
+        windowTypeLabel.setFont(Fonts.getGeneralBoldFont());
 
         JLabel languageLabel = new JLabel(I18nUtils.getString("LANGUAGE"));
-        languageLabel.setFont(Fonts.GENERAL_FONT_BOLD);
+        languageLabel.setFont(Fonts.getGeneralBoldFont());
 
         List<Locale> langs = I18nUtils.getLanguages();
         Locale[] array = langs.toArray(new Locale[langs.size()]);
@@ -128,9 +128,9 @@ public final class GeneralPanel extends PreferencesPanel {
         showIconTray = new JCheckBox(I18nUtils.getString("SHOW_TRAY_ICON"));
         showTrayPlayer = new JCheckBox(I18nUtils.getString("SHOW_TRAY_PLAYER"));
         JLabel lookAndFeelLabel = new JLabel(I18nUtils.getString("LOOK_AND_FEEL"));
-        lookAndFeelLabel.setFont(Fonts.GENERAL_FONT_BOLD);
+        lookAndFeelLabel.setFont(Fonts.getGeneralBoldFont());
         skinLabel = new JLabel(I18nUtils.getString("THEME"));
-        skinLabel.setFont(Fonts.GENERAL_FONT_BOLD);
+        skinLabel.setFont(Fonts.getGeneralBoldFont());
 
         fontSettings = new JButton(I18nUtils.getString("CHANGE_FONT_SETTINGS"));
         fontSettings.addActionListener(new ActionListener() {

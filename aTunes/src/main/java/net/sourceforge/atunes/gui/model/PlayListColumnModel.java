@@ -94,7 +94,7 @@ public final class PlayListColumnModel extends CommonColumnModel {
 				@Override
 				public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 					Component c = super.getComponent(superComponent, t, value, isSelected, hasFocus, row, column);
-	            	((JLabel)c).setFont(PlayListHandler.getInstance().isCurrentVisibleRowPlaying(row) ? Fonts.PLAY_LIST_FONT_SELECTED_ITEM : Fonts.PLAY_LIST_FONT);
+	            	((JLabel)c).setFont(PlayListHandler.getInstance().isCurrentVisibleRowPlaying(row) ? Fonts.getPlayListSelectedItemFont() : Fonts.getPlayListFont());
 		            return c;
 				}
 			};
@@ -103,7 +103,7 @@ public final class PlayListColumnModel extends CommonColumnModel {
     			@Override
     			public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     				Component c = super.getComponent(superComponent, table, value, isSelected, hasFocus, row, column);
-    	        	((JLabel)c).setFont(PlayListHandler.getInstance().isCurrentVisibleRowPlaying(row) ? Fonts.PLAY_LIST_FONT_SELECTED_ITEM : Fonts.PLAY_LIST_FONT);
+    	        	((JLabel)c).setFont(PlayListHandler.getInstance().isCurrentVisibleRowPlaying(row) ? Fonts.getPlayListSelectedItemFont() : Fonts.getPlayListFont());
     	        	return c;
     			}
     			

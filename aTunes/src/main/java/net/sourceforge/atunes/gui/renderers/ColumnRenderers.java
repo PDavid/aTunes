@@ -82,7 +82,7 @@ public final class ColumnRenderers {
      * @param row
      */
     static void setFontForRow(JLabel label, int row) {
-        label.setFont(PlayListHandler.getInstance().isCurrentVisibleRowPlaying(row) ? Fonts.PLAY_LIST_FONT_SELECTED_ITEM : Fonts.PLAY_LIST_FONT);
+        label.setFont(PlayListHandler.getInstance().isCurrentVisibleRowPlaying(row) ? Fonts.getPlayListSelectedItemFont() : Fonts.getPlayListFont());
     }
 
     /**

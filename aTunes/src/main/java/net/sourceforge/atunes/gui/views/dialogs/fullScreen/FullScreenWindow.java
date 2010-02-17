@@ -442,11 +442,11 @@ public final class FullScreenWindow extends CustomWindow {
         covers.addMouseMotionListener(moveListener);
 
         textLabel = new JLabel();
-        textLabel.setFont(Fonts.FULL_SCREEN_LINE1_FONT);
+        textLabel.setFont(Fonts.getFullScreenLine1Font());
         textLabel.setForeground(Color.WHITE);
 
         textLabel2 = new JLabel();
-        textLabel2.setFont(Fonts.CONTEXT_INFORMATION_BIG_FONT);
+        textLabel2.setFont(Fonts.getContextInformationBigFont());
         textLabel2.setForeground(Color.WHITE);
 
         time = new JLabel("0:00");

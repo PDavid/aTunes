@@ -115,7 +115,7 @@ public class AlbumBasicInfoContent extends ContextPanelContent {
         albumCoverLabel = new JLabel();
         albumLabel = new UrlLabel();
         albumLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        albumLabel.setFont(Fonts.CONTEXT_INFORMATION_BIG_FONT);
+        albumLabel.setFont(Fonts.getContextInformationBigFont());
         artistLabel = new UrlLabel();
         artistLabel.setHorizontalAlignment(SwingConstants.CENTER);
         yearLabel = new UrlLabel();

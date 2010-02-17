@@ -97,9 +97,9 @@ public final class OSDDialog extends CustomWindow {
         line2 = new JLabel();
         line3 = new JLabel();
 
-        line1.setFont(Fonts.OSD_LINE1_FONT);
-        line2.setFont(Fonts.OSD_LINE2_FONT);
-        line3.setFont(Fonts.OSD_LINE3_FONT);
+        line1.setFont(Fonts.getOsdLine1Font());
+        line2.setFont(Fonts.getOsdLine2Font());
+        line3.setFont(Fonts.getOsdLine3Font());
 
         line1.setHorizontalAlignment(SwingConstants.CENTER);
         line2.setHorizontalAlignment(SwingConstants.CENTER);
