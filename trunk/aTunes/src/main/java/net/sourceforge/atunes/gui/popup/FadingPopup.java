@@ -37,7 +37,6 @@ import net.sourceforge.atunes.utils.GuiUtils;
 final class FadingPopup extends Popup {
 
     JWindow popupWindow;
-    int currOpacity;
     WindowFader windowFader;
 
     /**
@@ -80,7 +79,6 @@ final class FadingPopup extends Popup {
     @Override
     public void show() {
         // mark the popup with 0% opacity
-        this.currOpacity = 0;
         GuiUtils.setWindowOpacity(popupWindow, 0.0f);
 
         this.popupWindow.setVisible(true);

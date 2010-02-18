@@ -33,7 +33,6 @@ class VlcOutputReader extends Thread {
 
     protected static Logger logger = new Logger();
 
-    VlcPlayerEngine engine;
     private BufferedReader in;
     private String lastLineReaded = "";
     /** the sentence used by vlc to present radio stream infos */
@@ -50,7 +49,6 @@ class VlcOutputReader extends Thread {
      *            the audio object
      */
     VlcOutputReader(VlcPlayerEngine handler, Process process) {
-        this.engine = handler;
         in = new BufferedReader(new InputStreamReader(process.getErrorStream()));
     }
 
