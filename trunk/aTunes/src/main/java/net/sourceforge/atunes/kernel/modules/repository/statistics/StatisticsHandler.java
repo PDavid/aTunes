@@ -168,7 +168,7 @@ public final class StatisticsHandler extends Handler {
     public Map<String, Integer> getArtistMostPlayed() {
         Map<String, Integer> result = new HashMap<String, Integer>();
         if (statistics.getArtistsRanking().size() > 0) {
-            String firstArtist = statistics.getArtistsRanking().getNFirstElements(1).get(0).toString();
+            String firstArtist = statistics.getArtistsRanking().getNFirstElements(1).get(0);
             Integer count = statistics.getArtistsRanking().getNFirstElementCounts(1).get(0);
             result.put(firstArtist, count);
         } else {

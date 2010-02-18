@@ -203,7 +203,7 @@ public class YoutubeContent extends ContextPanelContent {
             // Set default file name
             // for some reason dialog fails with files with [ or ] chars
             File defaultFileName = new File(FileNameUtils
-                    .getValidFileName(entry.getName().replace("\\", "\\\\").replace("$", "\\$").replace('[', ' ').replace(']', ' ').toString()));
+                    .getValidFileName(entry.getName().replace("\\", "\\\\").replace("$", "\\$").replace('[', ' ').replace(']', ' ')));
             dialog.setSelectedFile(defaultFileName);
             int returnValue = dialog.showSaveDialog(GuiHandler.getInstance().getFrame().getFrame());
             File selectedFile = dialog.getSelectedFile();
