@@ -99,7 +99,7 @@ abstract class MPlayerOutputReader extends Thread {
         // Read progress			
         // MPlayer bug: Duration still inaccurate with mp3 VBR files! Flac duration bug
         if (line.contains("ANS_TIME_POSITION")) {
-            setTime((int) (Float.parseFloat(line.substring(line.indexOf("=") + 1)) * 1000.0));
+            setTime((int) (Float.parseFloat(line.substring(line.indexOf('=') + 1)) * 1000.0));
             getEngine().setTime(getTime());
         }
 

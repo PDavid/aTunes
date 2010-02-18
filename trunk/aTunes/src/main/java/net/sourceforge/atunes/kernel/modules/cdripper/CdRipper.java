@@ -76,8 +76,7 @@ public class CdRipper {
      * @return true, if successful
      */
     private boolean checkFolder(File folder) {
-        boolean result = folder.exists() && folder.isDirectory();
-        return result;
+        return folder.exists() && folder.isDirectory();
     }
 
     /**

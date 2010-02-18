@@ -225,13 +225,13 @@ public class YoutubeService {
             response = response.substring(ind + 1, response.length());
             ind = response.indexOf("\"video_id\":");
             String substr = response.substring(ind, response.length());
-            int start = substr.indexOf(":");
+            int start = substr.indexOf(':');
             int end = substr.indexOf("\",");
             String video_id = substr.substring(start + 3, end);
 
             ind = response.indexOf("\"t\":");
             substr = response.substring(ind, response.length());
-            start = substr.indexOf(":");
+            start = substr.indexOf(':');
             end = substr.indexOf("\",");
             String t = substr.substring(start + 3, end);
             /**
