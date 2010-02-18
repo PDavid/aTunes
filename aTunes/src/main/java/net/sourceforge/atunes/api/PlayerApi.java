@@ -29,6 +29,10 @@ import org.commonjukebox.plugins.PluginApi;
 @PluginApi
 public class PlayerApi {
 
+	private PlayerApi() {
+		
+	}
+	
     /**
      * Stops current object being played
      */
