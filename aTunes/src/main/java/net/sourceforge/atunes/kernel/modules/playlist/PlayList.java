@@ -111,7 +111,7 @@ public class PlayList implements Serializable, Cloneable {
      * @param playList
      */
     private PlayList(PlayList playList) {
-        this.name = playList.name == null ? null : new String(playList.name);
+        this.name = playList.name == null ? null : playList.name;
         this.audioObjects = new PlayListPointedList(playList.audioObjects);
         this.mode = PlayListMode.getPlayListMode(this);
     }

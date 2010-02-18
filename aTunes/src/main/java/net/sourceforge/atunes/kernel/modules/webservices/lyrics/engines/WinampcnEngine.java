@@ -112,7 +112,7 @@ public class WinampcnEngine extends LyricsEngine {
         }
 
         if (tmp != null) {
-            return LYRC_URL.replace("%1", "" + tmp.id).replace("%2", encodeUrl(tmp.songName));
+            return LYRC_URL.replace("%1", String.valueOf(tmp.id)).replace("%2", encodeUrl(tmp.songName));
         }
 
         return null;

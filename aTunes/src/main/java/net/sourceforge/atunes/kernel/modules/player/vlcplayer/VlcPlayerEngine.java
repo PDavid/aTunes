@@ -225,7 +225,7 @@ public class VlcPlayerEngine extends PlayerEngine {
         //VLC needs a position in seconds
         if (duration > 0 && duration < Integer.MAX_VALUE) {
             position = position * duration;
-            commandWriter.sendSeekCommand(new Double(position / 1000).intValue());
+            commandWriter.sendSeekCommand((int)(position / 1000));
         }
     }
 
@@ -464,7 +464,7 @@ public class VlcPlayerEngine extends PlayerEngine {
     private String buildEqualizerBands(float[] equalizer) {    	
         StringBuilder bands = new StringBuilder();
         for (int i = 0; i < equalizer.length; i++) {
-            bands.append(String.valueOf(new Float(equalizer[i]).intValue()));
+            bands.append(String.valueOf((int)equalizer[i]));
             if (i != equalizer.length - 1) {
                 bands.append(" ");
             }
