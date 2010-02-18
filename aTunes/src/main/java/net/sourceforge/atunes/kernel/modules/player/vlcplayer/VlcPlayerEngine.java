@@ -69,7 +69,7 @@ public class VlcPlayerEngine extends PlayerEngine {
     private static final String RC = "rc";
     protected static final String REMOTE_HOST = "127.0.0.1";
     protected static int REMOTE_PORT = 8888;
-    private static final String RC_HOST = "--rc-host=" + REMOTE_HOST + ":" + String.valueOf(REMOTE_PORT);
+    private static final String RC_HOST = "--rc-host=" + REMOTE_HOST + ":" + REMOTE_PORT;
     /**
      * Argument to not display more information than needed. Depends on OS
      */

@@ -24,7 +24,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
  * ImageInfo.java
@@ -37,6 +38,8 @@ import java.util.Vector;
  * Written by Marco Schmidt 
  *
  * Contributed to the Public Domain.
+ * 
+ * 2010/02/17: Performance improvements by aTunes Team
  */
 /**
  * Get file format, image resolution, number of bits per pixel and optionally
@@ -269,7 +272,7 @@ public class ImageInfo {
     private InputStream in;
     private DataInput din;
     private boolean collectComments = true;
-    private Vector<String> comments;
+    private List<String> comments;
     private boolean determineNumberOfImages;
     private int numberOfImages;
     private int physicalHeightDpi;
@@ -277,9 +280,9 @@ public class ImageInfo {
 
     private void addComment(String s) {
         if (comments == null) {
-            comments = new Vector<String>();
+            comments = new ArrayList<String>();
         }
-        comments.addElement(s);
+        comments.add(s);
     }
 
     /**
@@ -775,7 +778,7 @@ public class ImageInfo {
         if (comments == null || index < 0 || index >= comments.size()) {
             throw new IllegalArgumentException("Not a valid comment index: " + index);
         }
-        return comments.elementAt(index);
+        return comments.get(index);
     }
 
     /**
