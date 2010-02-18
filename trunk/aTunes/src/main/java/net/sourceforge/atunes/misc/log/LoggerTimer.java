@@ -27,6 +27,10 @@ public class LoggerTimer {
     /** Counter. */
     private static long timer = 1;
 
+    private LoggerTimer() {
+    	
+    }
+    
     /**
      * Gets next count.
      * 

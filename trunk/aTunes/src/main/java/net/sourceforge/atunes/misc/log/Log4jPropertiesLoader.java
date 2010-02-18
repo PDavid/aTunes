@@ -33,6 +33,10 @@ import org.apache.log4j.PropertyConfigurator;
  * The Class Log4jPropertiesLoader.
  */
 public class Log4jPropertiesLoader {
+	
+	private Log4jPropertiesLoader() {
+		
+	}
 
     /**
      * Set log4j properties from file, and changes properties if debug mode.

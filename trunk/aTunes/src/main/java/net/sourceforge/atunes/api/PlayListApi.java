@@ -31,6 +31,10 @@ import org.commonjukebox.plugins.PluginApi;
 @PluginApi
 public class PlayListApi {
 
+	private PlayListApi() {
+		
+	}
+	
     /**
      * Returns number of play lists currently loaded
      * 

@@ -29,6 +29,10 @@ import org.commonjukebox.plugins.PluginApi;
 @PluginApi
 public class WebServicesApi {
 
+	private WebServicesApi() {
+		
+	}
+	
     /**
      * Returns similar artists information for the given artist name
      * 
