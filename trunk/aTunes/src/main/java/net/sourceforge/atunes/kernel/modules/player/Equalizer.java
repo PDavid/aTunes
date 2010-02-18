@@ -102,7 +102,7 @@ public class Equalizer {
     public String[] getPresetsNames() {
         List<String> names = new ArrayList<String>(presets.keySet());
         Collections.sort(names);
-        return names.toArray(new String[] {});
+        return names.toArray(new String[names.size()]);
     }
 
     /**

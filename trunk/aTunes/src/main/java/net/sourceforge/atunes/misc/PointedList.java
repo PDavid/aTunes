@@ -54,7 +54,7 @@ public class PointedList<T> implements Serializable {
      */
     public PointedList(PointedList<? extends T> pointedList) {
         this.list = new ArrayList<T>(pointedList.getList());
-        this.pointer = pointedList.pointer == null ? null : new Integer(pointedList.pointer);
+        this.pointer = pointedList.pointer == null ? null : Integer.valueOf(pointedList.pointer);
     }
 
     /**

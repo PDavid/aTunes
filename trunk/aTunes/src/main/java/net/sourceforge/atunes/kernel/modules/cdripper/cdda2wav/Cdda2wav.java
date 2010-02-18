@@ -613,10 +613,12 @@ public class Cdda2wav extends CdToWavConverter {
                                     artist = albumInfoTokenizer.nextToken();
                                 }
                                 // Artist names can contain "'" so check if there is something left
+                                sb = new StringBuilder(artist); 
                                 while (albumInfoTokenizer.hasMoreTokens()) {
                                     token = albumInfoTokenizer.nextToken();
-                                    artist = artist + token;
+                                    sb.append(token);
                                 }
+                                artist = sb.toString();
                             }
 
                             // Get track info (track number, title name) - Data tracks get ignored.
