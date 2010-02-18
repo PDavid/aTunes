@@ -182,9 +182,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
 
             // DRAG AND DROP FROM PLAY LIST -> MOVE			
             if (listOfObjectsDragged.get(0) instanceof PlayListDragableRow) {
-                @SuppressWarnings("unchecked")
-                boolean moveRowsInPlayList = moveRowsInPlayList((List<PlayListDragableRow>) listOfObjectsDragged, ((JTable.DropLocation) support.getDropLocation()).getRow());
-                return moveRowsInPlayList;
+                return moveRowsInPlayList((List<PlayListDragableRow>) listOfObjectsDragged, ((JTable.DropLocation) support.getDropLocation()).getRow());
             }
 
             for (int i = 0; i < listOfObjectsDragged.size(); i++) {

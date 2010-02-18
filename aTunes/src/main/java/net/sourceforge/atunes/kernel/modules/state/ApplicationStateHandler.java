@@ -471,8 +471,7 @@ public final class ApplicationStateHandler extends Handler {
         try {
             stream = new ObjectInputStream(new FileInputStream(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.CACHE_FAVORITES_NAME)));
             getLogger().info(LogCategories.HANDLER, "Reading serialized favorites cache");
-            Favorites result = (Favorites) stream.readObject();
-            return result;
+            return (Favorites) stream.readObject();
         } catch (InvalidClassException e) {
             //TODO remove in next version
             getLogger().error(LogCategories.HANDLER, e);
@@ -508,8 +507,7 @@ public final class ApplicationStateHandler extends Handler {
         try {
             stream = new ObjectInputStream(new FileInputStream(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.CACHE_FAVORITES_NAME)));
             getLogger().info(LogCategories.HANDLER, "Reading serialized statistics cache");
-            Statistics result = (Statistics) stream.readObject();
-            return result;
+            return (Statistics) stream.readObject();
         } catch (InvalidClassException e) {
             //TODO remove in next version
             getLogger().error(LogCategories.HANDLER, e);

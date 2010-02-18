@@ -141,8 +141,7 @@ class PlayListMode implements PlayListChangedListener {
             return this.playList.get(previousIndex);
         }
 
-        AudioObject previousAudioObject = playList.getPointedList().getPreviousObject(index);
-        return previousAudioObject;
+        return playList.getPointedList().getPreviousObject(index);
     }
 
     AudioObject getNextAudioObject(int index) {
@@ -164,8 +163,7 @@ class PlayListMode implements PlayListChangedListener {
             return this.playList.get(nextIndex);
         }
 
-        AudioObject nextAudioObject = playList.getPointedList().getNextObject(index);
-        return nextAudioObject;
+        return playList.getPointedList().getNextObject(index);
     }
 
     @Override

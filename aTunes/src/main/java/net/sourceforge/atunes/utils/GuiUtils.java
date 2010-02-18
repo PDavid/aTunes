@@ -290,8 +290,7 @@ public final class GuiUtils {
      */
     public static int getComponentWidthForResolution(int screenWidth, int desiredWidth) {
         int currentScreenWidth = mainDeviceBounds.width > MAX_COMPONENTS_WIDTH ? MAX_COMPONENTS_WIDTH : mainDeviceBounds.width;
-        int result = desiredWidth * currentScreenWidth / screenWidth;
-        return result;
+        return desiredWidth * currentScreenWidth / screenWidth;
     }
 
     /**
@@ -307,8 +306,7 @@ public final class GuiUtils {
      */
     public static int getComponentHeightForResolution(int screenHeight, int desiredHeight) {
         int currentScreenHeight = mainDeviceBounds.height;
-        int result = desiredHeight * currentScreenHeight / screenHeight;
-        return result;
+        return desiredHeight * currentScreenHeight / screenHeight;
     }
 
     /**

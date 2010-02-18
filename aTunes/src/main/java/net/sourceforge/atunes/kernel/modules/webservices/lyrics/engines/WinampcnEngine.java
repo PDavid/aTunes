@@ -127,8 +127,7 @@ public class WinampcnEngine extends LyricsEngine {
      * @return
      */
     private String getUrl(String artist, String title) {
-        String url = QUERY_URL.replace("%1", encodeUrl(title)).replace("%2", encodeUrl(artist)).replace("%3", encodeUrl(title));
-        return url;
+        return QUERY_URL.replace("%1", encodeUrl(title)).replace("%2", encodeUrl(artist)).replace("%3", encodeUrl(title));
     }
 
     /**

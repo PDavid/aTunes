@@ -45,21 +45,13 @@ public class PlayListToDeviceDragAndDropListener implements DropTargetListener {
     /** The logger. */
     private static Logger logger = new Logger();
 
-    /** The drop target. */
-    @SuppressWarnings("unused")
-    private DropTarget dropTarget;
-
-    /** The drop target2. */
-    @SuppressWarnings("unused")
-    private DropTarget dropTarget2;
-
     /**
      * Instantiates a new drag and drop listener.
      */
     public PlayListToDeviceDragAndDropListener() {
         // Drop targets for drag and drops operations from playlist to device tree
-        dropTarget = new DropTarget(NavigationHandler.getInstance().getView(DeviceNavigationView.class).getTreeScrollPane(), this);
-        dropTarget2 = new DropTarget(NavigationHandler.getInstance().getView(DeviceNavigationView.class).getTree(), this);
+        new DropTarget(NavigationHandler.getInstance().getView(DeviceNavigationView.class).getTreeScrollPane(), this);
+        new DropTarget(NavigationHandler.getInstance().getView(DeviceNavigationView.class).getTree(), this);
     }
 
     /*

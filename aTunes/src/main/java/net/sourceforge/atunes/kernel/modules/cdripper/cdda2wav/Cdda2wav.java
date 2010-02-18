@@ -646,10 +646,12 @@ public class Cdda2wav extends CdToWavConverter {
                                         token = titleInfoTokenizer.nextToken();
                                     }
                                     // Album names can contain "'" so check if there is something left. Also, add "\" for Windows
+                                    StringBuilder sb = new StringBuilder(title);
                                     while (titleInfoTokenizer.hasMoreTokens() && token != null && !token.matches(" from ")) {
-                                        title = title + token;
+                                        sb.append(token);
                                         token = titleInfoTokenizer.nextToken();
                                     }
+                                    title = sb.toString();
 
                                     title = title != null ? title.trim() : null;
 
