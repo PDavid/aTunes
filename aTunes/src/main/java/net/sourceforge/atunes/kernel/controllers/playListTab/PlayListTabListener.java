@@ -71,12 +71,7 @@ final class PlayListTabListener extends MouseAdapter implements ActionListener, 
                 } else {
                     plMenuItem = new JMenuItem(playlists.get(i));
                 }
-                plMenuItem.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e1) {
-                        ControllerProxy.getInstance().getPlayListTabController().forceSwitchTo(index);
-                    }
-                });
+                plMenuItem.addActionListener(new SwitchPlayListListener(index));
                 panel.getPlayListsPopUpButton().add(plMenuItem);
             }
         } else if (e.getSource() == panel.getArrangeColumnsMenuItem()) {
@@ -98,6 +93,19 @@ final class PlayListTabListener extends MouseAdapter implements ActionListener, 
     @Override
     public void stateChanged(ChangeEvent e) {
         PlayListHandler.getInstance().switchToPlaylist(panel.getPlayListTabbedPane().getSelectedIndex());
+    }
+    
+    private static class SwitchPlayListListener implements ActionListener {
+
+    	private int index;
+    	
+    	public SwitchPlayListListener(int index) {
+			this.index = index;
+		}
+    	
+        public void actionPerformed(ActionEvent e1) {
+            ControllerProxy.getInstance().getPlayListTabController().forceSwitchTo(index);
+        }
     }
 
 }

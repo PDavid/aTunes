@@ -70,7 +70,6 @@ public class SimilarArtistsContent extends ContextPanelContent {
 
     @Override
     protected void clearContextPanelContent() {
-        // TODO Auto-generated method stub
         super.clearContextPanelContent();
         similarArtistsTable.setModel(new SimilarArtistsTableModel(null));
     }
@@ -81,15 +80,8 @@ public class SimilarArtistsContent extends ContextPanelContent {
         similarArtistsTable = new ContextImageJTable();
         similarArtistsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         similarArtistsTable.setShowGrid(false);
-        similarArtistsTable.setDefaultRenderer(ArtistInfo.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
-
-            @Override
-            public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                return getPanelForTableRenderer(((ArtistInfo) value).getImage(), StringUtils.getString("<html><br>", ((ArtistInfo) value).getName(), "<br>", ((ArtistInfo) value)
-                        .getMatch(), "%<br>", ((ArtistInfo) value).isAvailable() ? I18nUtils.getString("AVAILABLE_IN_REPOSITORY") : "", "</html>"), superComponent.getBackground(),
-                        Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT);
-            }
-        }));
+        similarArtistsTable.setDefaultRenderer(ArtistInfo.class, 
+        		LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new SimilarArtistTableCellRendererCode()));
         similarArtistsTable.setColumnSelectionAllowed(false);
         similarArtistsTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
         similarArtistsTable.getTableHeader().setReorderingAllowed(false);
@@ -108,6 +100,22 @@ public class SimilarArtistsContent extends ContextPanelContent {
         });
 
         return similarArtistsTable;
+    }
+    
+    /**
+     * Special renderer for table
+     * @author fleax
+     *
+     */
+    private static class SimilarArtistTableCellRendererCode extends TableCellRendererCode {
+    	
+        @Override
+        public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            return getPanelForTableRenderer(((ArtistInfo) value).getImage(), StringUtils.getString("<html><br>", ((ArtistInfo) value).getName(), "<br>", ((ArtistInfo) value)
+                    .getMatch(), "%<br>", ((ArtistInfo) value).isAvailable() ? I18nUtils.getString("AVAILABLE_IN_REPOSITORY") : "", "</html>"), superComponent.getBackground(),
+                    Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT);
+        }
+
     }
 
 }

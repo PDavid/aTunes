@@ -344,80 +344,7 @@ public final class RadioNavigationView extends NavigationView {
     @Override
     public ColumnSet getCustomColumnSet() {
         if (columnSet == null) {
-            columnSet = new CustomNavigatorColumnSet(this.getClass().getName()) {
-
-                @Override
-                protected List<Column> getAllowedColumns() {
-                    List<Column> columns = new ArrayList<Column>();
-
-                    Column property = new Column("", Property.class) {
-                        /**
-    					 * 
-    					 */
-                        private static final long serialVersionUID = 3613237620716484881L;
-
-                        @Override
-                        protected int ascendingCompare(AudioObject o1, AudioObject o2) {
-                            return 0;
-                        }
-
-                        @Override
-                        public Object getValueFor(AudioObject audioObject) {
-                            return Property.NO_PROPERTIES;
-                        }
-                    };
-                    property.setVisible(true);
-                    property.setWidth(20);
-                    property.setResizable(false);
-                    columns.add(property);
-
-                    Column name = new Column("NAME", String.class) {
-
-                        /**
-    					 * 
-    					 */
-                        private static final long serialVersionUID = 3613237620716484881L;
-
-                        @Override
-                        public Object getValueFor(AudioObject audioObject) {
-                            return ((Radio) audioObject).getName();
-                        }
-
-                        @Override
-                        protected int ascendingCompare(AudioObject o1, AudioObject o2) {
-                            return ((Radio) o1).getName().compareTo(((Radio) o2).getName());
-                        }
-
-                    };
-                    name.setVisible(true);
-                    name.setWidth(150);
-                    name.setUsedForFilter(true);
-                    columns.add(name);
-
-                    Column url = new Column("URL", String.class) {
-                        /**
-    					 * 
-    					 */
-                        private static final long serialVersionUID = -1615880013918017198L;
-
-                        @Override
-                        protected int ascendingCompare(AudioObject o1, AudioObject o2) {
-                            return o1.getUrl().compareTo(o2.getUrl());
-                        }
-
-                        @Override
-                        public Object getValueFor(AudioObject audioObject) {
-                            return audioObject.getUrl();
-                        }
-                    };
-                    url.setVisible(true);
-                    url.setWidth(400);
-                    url.setUsedForFilter(true);
-                    columns.add(url);
-
-                    return columns;
-                }
-            };
+            columnSet = new RadioNavigationColumnSet(this.getClass().getName());
         }
         return columnSet;
     }
@@ -435,6 +362,86 @@ public final class RadioNavigationView extends NavigationView {
             decorators.add(new RadioTreeCellDecorator());
     	}
     	return decorators;
+    }
+    
+    private static class RadioNavigationColumnSet extends CustomNavigatorColumnSet {
+        
+    	public RadioNavigationColumnSet(String columnSetName) {
+			super(columnSetName);
+		}
+
+		@Override
+        protected List<Column> getAllowedColumns() {
+            List<Column> columns = new ArrayList<Column>();
+
+            Column property = new Column("", Property.class) {
+                /**
+				 * 
+				 */
+                private static final long serialVersionUID = 3613237620716484881L;
+
+                @Override
+                protected int ascendingCompare(AudioObject o1, AudioObject o2) {
+                    return 0;
+                }
+
+                @Override
+                public Object getValueFor(AudioObject audioObject) {
+                    return Property.NO_PROPERTIES;
+                }
+            };
+            property.setVisible(true);
+            property.setWidth(20);
+            property.setResizable(false);
+            columns.add(property);
+
+            Column name = new Column("NAME", String.class) {
+
+                /**
+				 * 
+				 */
+                private static final long serialVersionUID = 3613237620716484881L;
+
+                @Override
+                public Object getValueFor(AudioObject audioObject) {
+                    return ((Radio) audioObject).getName();
+                }
+
+                @Override
+                protected int ascendingCompare(AudioObject o1, AudioObject o2) {
+                    return ((Radio) o1).getName().compareTo(((Radio) o2).getName());
+                }
+
+            };
+            name.setVisible(true);
+            name.setWidth(150);
+            name.setUsedForFilter(true);
+            columns.add(name);
+
+            Column url = new Column("URL", String.class) {
+                /**
+				 * 
+				 */
+                private static final long serialVersionUID = -1615880013918017198L;
+
+                @Override
+                protected int ascendingCompare(AudioObject o1, AudioObject o2) {
+                    return o1.getUrl().compareTo(o2.getUrl());
+                }
+
+                @Override
+                public Object getValueFor(AudioObject audioObject) {
+                    return audioObject.getUrl();
+                }
+            };
+            url.setVisible(true);
+            url.setWidth(400);
+            url.setUsedForFilter(true);
+            columns.add(url);
+
+            return columns;
+        }
+
     }
 
 }
