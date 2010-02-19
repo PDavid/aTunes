@@ -180,19 +180,7 @@ public abstract class ContextPanel {
         JXTaskPaneContainer container = new JXTaskPaneContainer();
         container.setOpaque(false);
         for (ContextPanelContent content : getContents()) {
-            JXTaskPane taskPane = new JXTaskPane() {
-
-                private static final long serialVersionUID = 1569831509432974799L;
-
-                @Override
-                public void setCollapsed(boolean collapsed) {
-                    // TODO: Currently JXTaskPane collapses or expands when user presses mouse button
-                    // So we override setCollapsed method to avoid collapsing or expanding task pane if it's disabled
-                    if (isEnabled()) {
-                        super.setCollapsed(collapsed);
-                    }
-                }
-            };
+        	JXTaskPane taskPane = new CustomJXTaskPane();
             content.setParentTaskPane(taskPane);
             taskPane.setTitle(content.getContentName());
 
@@ -287,5 +275,19 @@ public abstract class ContextPanel {
             logger = new Logger();
         }
         return logger;
+    }
+    
+    private static class CustomJXTaskPane extends JXTaskPane {
+        private static final long serialVersionUID = 1569831509432974799L;
+
+        @Override
+        public void setCollapsed(boolean collapsed) {
+            // TODO: Currently JXTaskPane collapses or expands when user presses mouse button
+            // So we override setCollapsed method to avoid collapsing or expanding task pane if it's disabled
+            if (isEnabled()) {
+                super.setCollapsed(collapsed);
+            }
+        }
+
     }
 }

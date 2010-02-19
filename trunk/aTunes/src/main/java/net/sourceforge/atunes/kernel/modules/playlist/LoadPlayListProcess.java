@@ -59,15 +59,25 @@ class LoadPlayListProcess extends Process {
             setCurrentProgress(i + 1);
         }
         // If canceled loaded files are added anyway
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                if (songsLoaded.size() >= 1) {
-                    PlayListHandler.getInstance().addToPlayList(songsLoaded);
-                }
-            }
-        });
+        SwingUtilities.invokeLater(new AddToPlayListRunnable(songsLoaded));
         return true;
+    }
+    
+    private static class AddToPlayListRunnable implements Runnable {
+    	
+    	private List<AudioObject> songsLoaded;
+    	
+    	public AddToPlayListRunnable(List<AudioObject> songsLoaded) {
+    		this.songsLoaded = songsLoaded;
+    	}
+    	
+        @Override
+        public void run() {
+            if (songsLoaded.size() >= 1) {
+                PlayListHandler.getInstance().addToPlayList(songsLoaded);
+            }
+        }
+
     }
 
 }
