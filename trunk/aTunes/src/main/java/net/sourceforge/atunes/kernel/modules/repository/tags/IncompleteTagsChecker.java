@@ -35,6 +35,10 @@ import net.sourceforge.atunes.model.TreeObject;
 
 public class IncompleteTagsChecker {
 
+	private IncompleteTagsChecker() {
+		
+	}
+	
     /**
      * Returns a list with default attributes to highlight folders
      * 

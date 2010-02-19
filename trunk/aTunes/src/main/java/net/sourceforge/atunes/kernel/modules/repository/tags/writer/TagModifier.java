@@ -56,6 +56,10 @@ public final class TagModifier {
 
     private static Logger logger = new Logger();
 
+    private TagModifier() {
+    	
+    }
+    
     /**
      * Delete tags.
      * 

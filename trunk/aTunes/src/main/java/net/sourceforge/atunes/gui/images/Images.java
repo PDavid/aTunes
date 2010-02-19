@@ -184,6 +184,10 @@ public final class Images {
      */
     private static Map<String, ImageIcon> images = new HashMap<String, ImageIcon>();
 
+    private Images() {
+    	
+    }
+    
     /**
      * Returns an image.
      * 

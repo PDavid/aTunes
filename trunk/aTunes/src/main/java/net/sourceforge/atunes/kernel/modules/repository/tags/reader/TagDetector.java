@@ -34,6 +34,10 @@ public class TagDetector {
     /** The logger. */
     private static Logger logger = new Logger();
 
+    private TagDetector() {
+    	
+    }
+    
     /**
      * Calls appropriate tag reader and sends tag to AudioFile class.
      * 

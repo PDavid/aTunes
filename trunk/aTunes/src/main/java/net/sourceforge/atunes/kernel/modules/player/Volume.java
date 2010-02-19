@@ -31,6 +31,10 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 
 public class Volume {
 
+	private Volume() {
+		
+	}
+	
     public static void setVolume(int volume) {
         if (volume < 0) {
             volume = 0;

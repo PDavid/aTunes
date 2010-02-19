@@ -68,6 +68,10 @@ public final class Notify {
         }
     }
 
+    private Notify() {
+    	
+    }
+    
     /**
      * Class that model a NotifyNotification object, used by libnotify.
      * 
