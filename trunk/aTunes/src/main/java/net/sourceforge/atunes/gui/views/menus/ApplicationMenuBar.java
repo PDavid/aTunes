@@ -222,23 +222,7 @@ public final class ApplicationMenuBar extends JMenuBar {
             playList = new JMenu(I18nUtils.getString("PLAYLIST"));
             PlayListMenu.fillMenu(playList, ControllerProxy.getInstance().getPlayListController().getMainPlayListTable());
             // Every time menu is opened all menu items are updated according to play list selection
-            playList.addMenuListener(new MenuListener() {
-                @Override
-                public void menuSelected(MenuEvent e) {
-                    PlayListMenu.updatePlayListMenuItems(ControllerProxy.getInstance().getPlayListController().getMainPlayListTable());
-                }
-
-                @Override
-                public void menuCanceled(MenuEvent e) {
-                    // Nothing to do
-                }
-
-                @Override
-                public void menuDeselected(MenuEvent e) {
-                    // Nothing to do
-                }
-
-            });
+            playList.addMenuListener(new PlayListMenuListener());
         }
         return playList;
     }
@@ -325,5 +309,22 @@ public final class ApplicationMenuBar extends JMenuBar {
         remove(getComponentCount() - 1);
         add(newMenu);
         add(getCustomHelpMenu());
+    }
+    
+    private static class PlayListMenuListener implements MenuListener {
+        @Override
+        public void menuSelected(MenuEvent e) {
+            PlayListMenu.updatePlayListMenuItems(ControllerProxy.getInstance().getPlayListController().getMainPlayListTable());
+        }
+
+        @Override
+        public void menuCanceled(MenuEvent e) {
+            // Nothing to do
+        }
+
+        @Override
+        public void menuDeselected(MenuEvent e) {
+            // Nothing to do
+        }
     }
 }
