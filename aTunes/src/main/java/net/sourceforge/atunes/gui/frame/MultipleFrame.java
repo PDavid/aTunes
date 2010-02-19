@@ -444,9 +444,7 @@ public final class MultipleFrame implements Frame {
      * @return the new dialog
      */
     private CustomDialog getNewDialog(CustomFrame parent, String title, int width, int height, Window relative, int position, Dimension minSize) {
-        final CustomDialog dialog = new CustomDialog(frame, width, height) {
-            private static final long serialVersionUID = 0L;
-        };
+        final CustomDialog dialog = new CustomDialog(frame, width, height);
         dialog.setTitle(title);
         dialog.setMinimumSize(minSize);
         final Timer t = new Timer(400, new ActionListener() {
