@@ -35,6 +35,10 @@ import net.sourceforge.atunes.model.TreeObject;
  */
 public class RefreshUtils {
 
+	private RefreshUtils() {
+		
+	}
+	
     /**
      * Adds the folder nodes.
      * 
