@@ -77,7 +77,7 @@ public final class PlayListTabPanel extends JPanel {
                 return;
             }
 
-            final int targetTabIndex = tabPane.getUI().tabForCoordinate(tabPane, e.getX(), e.getY());
+            int targetTabIndex = tabPane.getUI().tabForCoordinate(tabPane, e.getX(), e.getY());
             if (targetTabIndex != -1 && targetTabIndex != draggedTabIndex) {
 
                 ControllerProxy.getInstance().getPlayListTabController().switchPlayListTabs(draggedTabIndex, targetTabIndex);
@@ -88,13 +88,7 @@ public final class PlayListTabPanel extends JPanel {
 
                 draggedTabIndex = -1;
 
-                SwingUtilities.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        PlayListHandler.getInstance().switchToPlaylist(targetTabIndex);
-                    }
-                });
+                SwingUtilities.invokeLater(new SwitchPlayList(targetTabIndex));
             }
         }
 
@@ -201,6 +195,20 @@ public final class PlayListTabPanel extends JPanel {
      */
     public JMenuItem getArrangeColumnsMenuItem() {
         return arrangeColumnsMenuItem;
+    }
+    
+    private static class SwitchPlayList implements Runnable {
+    	
+    	private int targetTabIndex;
+    	
+    	public SwitchPlayList(int targetTabIndex) {
+    		this.targetTabIndex = targetTabIndex;
+    	}
+    	
+        @Override
+        public void run() {
+            PlayListHandler.getInstance().switchToPlaylist(targetTabIndex);
+        }
     }
 
 }

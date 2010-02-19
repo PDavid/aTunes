@@ -21,15 +21,14 @@ package net.sourceforge.atunes.gui.views.controls.playerControls;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
+import net.sourceforge.atunes.kernel.actions.Actions;
+import net.sourceforge.atunes.kernel.actions.PlayAction;
 
 /*
  * based on code from Xtreme Media Player
@@ -48,22 +47,16 @@ public final class PlayPauseButton extends JButton {
      * @param height
      */
     public PlayPauseButton(Dimension size) {
-        super(Images.getImage(Images.PLAY));
+        super(Actions.getAction(PlayAction.class));
         // Force size of button
         setPreferredSize(size);
         setMinimumSize(size);
         setMaximumSize(size);
         setFocusable(false);
+        setIcon(Images.getImage(Images.PLAY));
+        setText(null);
 
         LookAndFeelSelector.getInstance().getCurrentLookAndFeel().putClientProperties(this);
-
-        // Add behaviour
-        addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                PlayerHandler.getInstance().playCurrentAudioObject(true);
-            }
-        });
     }
 
     /**

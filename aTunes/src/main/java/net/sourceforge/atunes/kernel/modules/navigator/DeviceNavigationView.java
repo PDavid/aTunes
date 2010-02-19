@@ -293,19 +293,7 @@ public final class DeviceNavigationView extends NavigationView {
             Album album = data.get(albumsNamesList.get(i));
             if (treeFilter == null || album.getName().toUpperCase().contains(treeFilter.toUpperCase())) {
                 // Special album node that shows artist name too
-                DefaultMutableTreeNode albumNode = new DefaultMutableTreeNode(album) {
-
-                    /**
-                     * 
-                     */
-                    private static final long serialVersionUID = 0L;
-
-                    @Override
-                    public String toString() {
-                        return ((Album) getUserObject()).getNameAndArtist();
-                    }
-                };
-
+                DefaultMutableTreeNode albumNode = new DeviceTreeNode(album);
                 root.add(albumNode);
 
                 // If node was selected before refreshing...
@@ -471,6 +459,23 @@ public final class DeviceNavigationView extends NavigationView {
             decorators.add(new IncompleteTagsTreeCellDecorator());
     	}
     	return decorators;
+    }
+    
+    private static class DeviceTreeNode extends DefaultMutableTreeNode {
+
+    	/**
+		 * 
+		 */
+		private static final long serialVersionUID = 4339839224598007751L;
+
+		public DeviceTreeNode(Album album) {
+    		super(album);
+    	}
+    	
+        @Override
+        public String toString() {
+            return ((Album) getUserObject()).getNameAndArtist();
+        }
     }
 
 }

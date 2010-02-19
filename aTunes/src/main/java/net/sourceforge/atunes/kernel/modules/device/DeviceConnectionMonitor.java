@@ -86,12 +86,7 @@ public class DeviceConnectionMonitor extends Thread {
                     if (deviceLocationFile.exists()) {
                         logger.info(LogCategories.PROCESS, "Device connected");
                         for (final DeviceConnectionListener l : listeners) {
-                            SwingUtilities.invokeLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    l.deviceConnected(deviceLocation);
-                                }
-                            });
+                            SwingUtilities.invokeLater(new DeviceConnectedRunnable(l, deviceLocation));
                         }
                         instance = null;
                         return;
@@ -103,6 +98,23 @@ public class DeviceConnectionMonitor extends Thread {
             } catch (InterruptedException e) {
                 logger.error(LogCategories.PROCESS, e);
             }
+        }
+    }
+    
+    private static class DeviceConnectedRunnable implements Runnable {
+    	
+    	private DeviceConnectionListener listener;
+    	
+    	private String deviceLocation;
+    	
+    	public DeviceConnectedRunnable(DeviceConnectionListener listener, String deviceLocation) {
+    		this.listener = listener;
+    		this.deviceLocation = deviceLocation;
+    	}
+    	
+        @Override
+        public void run() {
+        	listener.deviceConnected(deviceLocation);
         }
     }
 
