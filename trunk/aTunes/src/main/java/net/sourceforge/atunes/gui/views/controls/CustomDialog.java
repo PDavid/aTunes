@@ -27,7 +27,7 @@ import net.sourceforge.atunes.utils.GuiUtils;
 /**
  * The Class CustomDialog.
  */
-public abstract class CustomDialog extends JDialog {
+public class CustomDialog extends JDialog {
 
     private static final long serialVersionUID = -8846047318549650938L;
 
