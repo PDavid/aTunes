@@ -106,6 +106,10 @@ public class SearchFactory {
         }
     };
 
+    private SearchFactory() {
+    	
+    }
+    
     /**
      * Gets the searches.
      * 

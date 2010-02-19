@@ -37,6 +37,10 @@ class RepositoryFiller {
      */
     private static Logger logger = new Logger();
 
+    private RepositoryFiller() {
+    	
+    }
+    
     /**
      * Adds basic information of given audio file to repository
      * 

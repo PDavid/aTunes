@@ -35,6 +35,10 @@ final class LanguageSelector {
     /** Logger. */
     private static Logger logger = new Logger();
 
+    private LanguageSelector() {
+    	
+    }
+    
     /**
      * Sets application language. If a language is defined in the state, it's
      * used. If not, a dialog is shown to let the user choose. The language

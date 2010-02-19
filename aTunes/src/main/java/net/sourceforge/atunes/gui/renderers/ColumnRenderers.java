@@ -43,6 +43,10 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public final class ColumnRenderers {
 
+	private ColumnRenderers() {
+		
+	}
+	
     /**
      * Add renderers to table
      * 
