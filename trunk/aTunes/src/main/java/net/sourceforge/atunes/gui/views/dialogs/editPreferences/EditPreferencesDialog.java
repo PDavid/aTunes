@@ -106,17 +106,7 @@ public final class EditPreferencesDialog extends CustomModalDialog {
         JPanel container = new JPanel(new GridBagLayout());
         container.setOpaque(false);
         list = new JList();
-        list.setCellRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListCellRenderer(new ListCellRendererCode() {
-
-            @Override
-            public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                JLabel label = (JLabel) superComponent;
-                PreferencesPanel p = (PreferencesPanel) value;
-                label.setText(p.getTitle());
-                label.setIcon(p.getIcon());
-                return label;
-            }
-        }));
+        list.setCellRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListCellRenderer(new PreferencesListCellRendererCode()));
         JScrollPane scrollPane = new JScrollPane(list);
         // Force minimum width of scroll pane to show items
         scrollPane.setMinimumSize(new Dimension(200, 0));
@@ -205,6 +195,17 @@ public final class EditPreferencesDialog extends CustomModalDialog {
      */
     public void showPanel(int index) {
         ((CardLayout) options.getLayout()).show(options, Integer.toString(index));
+    }
+    
+    private static class PreferencesListCellRendererCode extends ListCellRendererCode {
+        @Override
+        public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            JLabel label = (JLabel) superComponent;
+            PreferencesPanel p = (PreferencesPanel) value;
+            label.setText(p.getTitle());
+            label.setIcon(p.getIcon());
+            return label;
+        }
     }
 
 }

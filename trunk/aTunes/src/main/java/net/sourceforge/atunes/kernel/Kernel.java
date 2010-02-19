@@ -265,7 +265,7 @@ public class Kernel {
      * @param playList
      *            the play list
      */
-    void start(final List<AudioObject> playList) {
+    void start(List<AudioObject> playList) {
         try {
             Timer timer = new Timer();
             timer.start();
@@ -277,18 +277,7 @@ public class Kernel {
             GuiHandler.getInstance().hideSplashScreen();
 
             // Just after all events in EDT are done set repository and play lists, then call post-init actions
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    RepositoryHandler.getInstance().applyRepository();
-                    PlayListHandler.getInstance().setPlayLists();
-
-                    if (!playList.isEmpty()) {
-                        PlayListHandler.getInstance().addToPlayListAndPlay(playList);
-                        ControllerProxy.getInstance().getPlayListController().refreshPlayList();
-                    }
-                }
-            });
+            SwingUtilities.invokeLater(new RepositoryAndPlayListLoadRunnable(playList));
 
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
@@ -368,6 +357,26 @@ public class Kernel {
         } finally {
             // Exit normally
             System.exit(0);
+        }
+    }
+    
+    private static class RepositoryAndPlayListLoadRunnable implements Runnable {
+    	
+    	private List<AudioObject> playList;
+    	
+    	public RepositoryAndPlayListLoadRunnable(List<AudioObject> playList) {
+    		this.playList = playList;
+    	}
+    	
+        @Override
+        public void run() {
+            RepositoryHandler.getInstance().applyRepository();
+            PlayListHandler.getInstance().setPlayLists();
+
+            if (!playList.isEmpty()) {
+                PlayListHandler.getInstance().addToPlayListAndPlay(playList);
+                ControllerProxy.getInstance().getPlayListController().refreshPlayList();
+            }
         }
     }
 }

@@ -86,12 +86,7 @@ public class DeviceDisconnectionMonitor extends Thread {
             if (!deviceLocationFile.exists()) {
                 logger.info(LogCategories.PROCESS, "Device disconnected");
                 for (final DeviceDisconnectionListener l : listeners) {
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            l.deviceDisconnected(deviceLocationFile.getAbsolutePath());
-                        }
-                    });
+                    SwingUtilities.invokeLater(new DeviceDisconnectedRunnable(l, deviceLocationFile.getAbsolutePath()));
                 }
                 return;
             }
@@ -100,6 +95,23 @@ public class DeviceDisconnectionMonitor extends Thread {
             } catch (InterruptedException e) {
                 logger.error(LogCategories.PROCESS, e);
             }
+        }
+    }
+
+    private static class DeviceDisconnectedRunnable implements Runnable {
+    	
+    	private DeviceDisconnectionListener listener;
+    	
+    	private String deviceLocation;
+    	
+    	public DeviceDisconnectedRunnable(DeviceDisconnectionListener listener, String deviceLocation) {
+    		this.listener = listener;
+    		this.deviceLocation = deviceLocation;
+    	}
+    	
+        @Override
+        public void run() {
+        	listener.deviceDisconnected(deviceLocation);
         }
     }
 

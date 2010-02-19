@@ -339,12 +339,7 @@ public final class CustomSearchController extends SimpleController<CustomSearchD
         List<String> translatedAttributesList = new ArrayList<String>(translatedAttributes.keySet());
 
         // Sort translated attributes from the largest to the smallest, to apply substitution in correct order
-        Collections.sort(translatedAttributesList, new Comparator<String>() {
-            @Override
-            public int compare(String o1, String o2) {
-                return -Integer.valueOf(o1.length()).compareTo(Integer.valueOf(o2.length()));
-            }
-        });
+        Collections.sort(translatedAttributesList, new TranslatedAttributesList());
 
         String translatedQuery = query;
         // Replace translated attributes to internal
@@ -452,6 +447,15 @@ public final class CustomSearchController extends SimpleController<CustomSearchD
     @Override
     protected void notifyReload() {
         // Nothing to do
+    }
+    
+    private static class TranslatedAttributesList implements Comparator<String> {
+    	
+        @Override
+        public int compare(String o1, String o2) {
+            return -Integer.valueOf(o1.length()).compareTo(Integer.valueOf(o2.length()));
+        }
+
     }
 
 }

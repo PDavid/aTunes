@@ -88,25 +88,7 @@ public class PluginsHandler extends Handler implements PluginListener {
             t.start();
             factory = new PluginsFactory();
 
-            PluginSystemLogger.addHandler(new java.util.logging.Handler() {
-
-                @Override
-                public void publish(LogRecord record) {
-                    if (record.getLevel().equals(Level.SEVERE)) {
-                        getLogger().error(LogCategories.PLUGINS, record.getMessage());
-                    } else {
-                        getLogger().debug(LogCategories.PLUGINS, record.getMessage());
-                    }
-                }
-
-                @Override
-                public void flush() {
-                }
-
-                @Override
-                public void close() throws SecurityException {
-                }
-            });
+            PluginSystemLogger.addHandler(new PluginsLoggerHandler());
             PluginSystemLogger.setLevel(Kernel.DEBUG ? Level.FINE : Level.OFF);
 
             // User plugins folder
@@ -307,6 +289,27 @@ public class PluginsHandler extends Handler implements PluginListener {
             }
         }
         return false;
+    }
+    
+    private static class PluginsLoggerHandler extends java.util.logging.Handler {
+
+        @Override
+        public void publish(LogRecord record) {
+            if (record.getLevel().equals(Level.SEVERE)) {
+                getLogger().error(LogCategories.PLUGINS, record.getMessage());
+            } else {
+                getLogger().debug(LogCategories.PLUGINS, record.getMessage());
+            }
+        }
+
+        @Override
+        public void flush() {
+        }
+
+        @Override
+        public void close() throws SecurityException {
+        }
+
     }
 
 }

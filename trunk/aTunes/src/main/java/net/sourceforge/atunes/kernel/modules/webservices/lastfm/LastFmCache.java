@@ -387,12 +387,7 @@ public class LastFmCache extends AbstractCache {
     public synchronized void addSubmissionData(SubmissionData submissionData) {
         List<SubmissionData> submissionDataList = getSubmissionData();
         submissionDataList.add(submissionData);
-        Collections.sort(submissionDataList, new Comparator<SubmissionData>() {
-            @Override
-            public int compare(SubmissionData o1, SubmissionData o2) {
-                return Integer.valueOf(o1.getStartTime()).compareTo(o2.getStartTime());
-            }
-        });
+        Collections.sort(submissionDataList, new SubmissionDataComparator());
         try {
             String path = getFileNameForSubmissionCache();
             if (path != null) {
@@ -465,5 +460,12 @@ public class LastFmCache extends AbstractCache {
         getSimilarArtistsCache().dispose();
         getArtistThumbsCache().dispose();
         getArtistWikiCache().dispose();
+    }
+    
+    private static class SubmissionDataComparator implements Comparator<SubmissionData> {
+        @Override
+        public int compare(SubmissionData o1, SubmissionData o2) {
+            return Integer.valueOf(o1.getStartTime()).compareTo(o2.getStartTime());
+        }
     }
 }

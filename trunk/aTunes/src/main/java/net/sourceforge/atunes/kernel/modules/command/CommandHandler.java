@@ -140,15 +140,9 @@ public class CommandHandler extends Handler {
      * @param commandName
      */
     public void processAndRun(String commandName) {
-        final Command cmd = commands.get(commandName.replaceFirst(COMMAND_PREFIX, ""));
+        Command cmd = commands.get(commandName.replaceFirst(COMMAND_PREFIX, ""));
         if (cmd != null) {
-            SwingUtilities.invokeLater(new Runnable() {
-
-                @Override
-                public void run() {
-                    cmd.runCommand();
-                }
-            });
+            SwingUtilities.invokeLater(new RunCommandRunnable(cmd));
         }
     }
 
@@ -169,6 +163,21 @@ public class CommandHandler extends Handler {
         Actions.getAction(PlayNextAudioObjectAction.class);
         Actions.getAction(PlayPreviousAudioObjectAction.class);
         Actions.getAction(ShowOSDAction.class);
+    }
+    
+    private static class RunCommandRunnable implements Runnable {
+    	
+    	private Command command;
+    	
+    	public RunCommandRunnable(Command command) {
+    		this.command = command;
+    	}
+    	
+        @Override
+        public void run() {
+        	command.runCommand();
+        }
+    	
     }
 
 }
