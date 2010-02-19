@@ -136,21 +136,7 @@ public final class EditTagDialogActionListener implements ActionListener {
             controller.clear();
         } else if (e.getSource() == dialog.getCoverButton()) {
             JFileChooser fc = new JFileChooser();
-            fc.setFileFilter(new FileFilter() {
-                @Override
-                public boolean accept(File pathname) {
-                    if (pathname.isDirectory()) {
-                        return true;
-                    }
-                    String fileName = pathname.getName().toUpperCase();
-                    return fileName.endsWith("JPG") || fileName.endsWith("JPEG") || fileName.endsWith("PNG");
-                }
-
-                @Override
-                public String getDescription() {
-                    return I18nUtils.getString("IMAGES");
-                }
-            });
+            fc.setFileFilter(new ImagesFileFiler());
             fc.setCurrentDirectory(getCommonDirectoryForAudioFiles());
             int fileChooserState = fc.showOpenDialog(dialog);
             if (fileChooserState == JFileChooser.APPROVE_OPTION) {
@@ -194,5 +180,21 @@ public final class EditTagDialogActionListener implements ActionListener {
         } else {
             return null;
         }
+    }
+    
+    private static class ImagesFileFiler extends FileFilter {
+    	@Override
+    	public boolean accept(File pathname) {
+    		if (pathname.isDirectory()) {
+    			return true;
+    		}
+    		String fileName = pathname.getName().toUpperCase();
+    		return fileName.endsWith("JPG") || fileName.endsWith("JPEG") || fileName.endsWith("PNG");
+    	}
+
+    	@Override
+    	public String getDescription() {
+    		return I18nUtils.getString("IMAGES");
+    	}
     }
 }
