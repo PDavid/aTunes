@@ -19,7 +19,6 @@
  */
 package net.sourceforge.atunes.gui.views.dialogs;
 
-import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -44,7 +43,6 @@ import javax.swing.table.TableModel;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
 import net.sourceforge.atunes.kernel.modules.columns.Column;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnSet;
@@ -55,15 +53,6 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * Dialog to select column set
  */
 public final class ColumnSetSelectorDialog extends CustomModalDialog {
-
-    private static class ColumnListTableCellRendererCode extends
-			TableCellRendererCode {
-		@Override
-		public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-		    GuiUtils.applyComponentOrientation((JLabel) superComponent);
-		    return superComponent;
-		}
-	}
 
 	private class ColumnsTableModel implements TableModel {
 
@@ -247,7 +236,8 @@ public final class ColumnSetSelectorDialog extends CustomModalDialog {
         columnsList.getColumnModel().getColumn(0).setMaxWidth(20);
         columnsList.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JCheckBox()));
         columnsList.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        columnsList.setDefaultRenderer(String.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new ColumnListTableCellRendererCode()));
+        columnsList.setDefaultRenderer(String.class, 
+        		LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(GuiUtils.getComponentOrientationTableCellRendererCode()));
 
         JScrollPane scrollPane = new JScrollPane(columnsList);
         JLabel label = new JLabel(I18nUtils.getString("SELECT_COLUMNS"));

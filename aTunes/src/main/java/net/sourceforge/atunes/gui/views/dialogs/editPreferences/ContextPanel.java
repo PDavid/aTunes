@@ -51,7 +51,6 @@ import javax.swing.table.TableModel;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ClearCachesAction;
@@ -265,14 +264,8 @@ public final class ContextPanel extends PreferencesPanel {
         enginesTable.getColumnModel().getColumn(0).setMaxWidth(20);
         enginesTable.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JCheckBox()));
         enginesTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        enginesTable.setDefaultRenderer(String.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
-
-            @Override
-            public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                GuiUtils.applyComponentOrientation((JLabel) superComponent);
-                return superComponent;
-            }
-        }));
+        enginesTable.setDefaultRenderer(String.class, 
+        		LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(GuiUtils.getComponentOrientationTableCellRendererCode()));
         JButton upButton = new JButton(Images.getImage(Images.GO_UP));
         upButton.addActionListener(new ActionListener() {
             @Override

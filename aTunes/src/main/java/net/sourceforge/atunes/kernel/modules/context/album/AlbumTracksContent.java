@@ -23,7 +23,6 @@ import java.awt.Component;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
@@ -32,7 +31,6 @@ import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
 import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
 import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
@@ -88,25 +86,11 @@ public class AlbumTracksContent extends ContextPanelContent {
         tracksTable = new JTable();
         tracksTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tracksTable.setShowGrid(false);
-        tracksTable.setDefaultRenderer(String.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
+        tracksTable.setDefaultRenderer(String.class, 
+        		LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(GuiUtils.getComponentOrientationTableCellRendererCode()));
 
-            @Override
-            public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                Component c = superComponent;
-                GuiUtils.applyComponentOrientation((JLabel) c);
-                return c;
-            }
-        }));
-
-        tracksTable.setDefaultRenderer(Integer.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
-
-            @Override
-            public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                Component c = superComponent;
-                GuiUtils.applyComponentOrientation((JLabel) c);
-                return c;
-            }
-        }));
+        tracksTable.setDefaultRenderer(Integer.class, 
+        		LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(GuiUtils.getComponentOrientationTableCellRendererCode()));
 
         tracksTable.getTableHeader().setReorderingAllowed(true);
         tracksTable.getTableHeader().setResizingAllowed(false);
