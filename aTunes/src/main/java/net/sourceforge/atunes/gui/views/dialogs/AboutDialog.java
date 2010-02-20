@@ -68,7 +68,16 @@ public final class AboutDialog extends CustomModalDialog {
     static final String[] JAVA_VERSION = new String[] { "Java Runtime Enviroment", System.getProperty("java.version") };
     static final String[] OS_NAME = new String[] { "OS", StringUtils.getString(System.getProperty("os.name"), " (", System.getProperty("os.arch"), ')') };
 
-    /**
+    private static class ApplyOrientationTableCellRendererCode extends
+			TableCellRendererCode {
+		@Override
+		public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+		    GuiUtils.applyComponentOrientation((JLabel) superComponent);
+		    return superComponent;
+		}
+	}
+
+	/**
      * The Class AboutDialogTableModel.
      */
     private static class AboutDialogTableModel extends AbstractTableModel {
@@ -211,14 +220,7 @@ public final class AboutDialog extends CustomModalDialog {
 
         JTable propertiesTable = new JTable(tableModel);
         propertiesTable.setShowGrid(false);
-        propertiesTable.setDefaultRenderer(Object.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
-
-            @Override
-            public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                GuiUtils.applyComponentOrientation((JLabel) superComponent);
-                return superComponent;
-            }
-        }));
+        propertiesTable.setDefaultRenderer(Object.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new ApplyOrientationTableCellRendererCode()));
         JScrollPane propertiesScrollPane = new JScrollPane(propertiesTable);
 
         JButton close = new CustomButton(null, I18nUtils.getString("CLOSE"));

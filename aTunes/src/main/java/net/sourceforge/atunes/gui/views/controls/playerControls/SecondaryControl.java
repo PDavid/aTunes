@@ -25,7 +25,7 @@ import javax.swing.JToggleButton;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 
-public abstract class SecondaryControl extends JToggleButton {
+public class SecondaryControl extends JToggleButton {
 
     /**
 	 * 

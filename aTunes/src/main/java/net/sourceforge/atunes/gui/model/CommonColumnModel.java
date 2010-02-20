@@ -206,7 +206,34 @@ public abstract class CommonColumnModel extends DefaultTableColumnModel {
         columnSet.setCurrentColumns();
     }
 
-    private class ColumnMoveListener extends MouseAdapter {
+    private static class HeaderTableCellRendererCode extends
+			TableCellRendererCode {
+		private final Column column;
+
+		private HeaderTableCellRendererCode(Column column) {
+			this.column = column;
+		}
+
+		@Override
+		public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
+		    Component c = superComponent;
+
+		    ColumnSort columnSort = column.getColumnSort();
+
+		    if (columnSort != null) {
+		        ((JLabel) c).setHorizontalTextPosition(SwingConstants.LEFT);
+		        if (columnSort.equals(ColumnSort.ASCENDING)) {
+		            ((JLabel) c).setIcon(Images.getImage(Images.ARROW_UP));
+		        } else if (columnSort.equals(ColumnSort.DESCENDING)) {
+		            ((JLabel) c).setIcon(Images.getImage(Images.ARROW_DOWN));
+		        }
+		    }
+
+		    return c;
+		}
+	}
+
+	private class ColumnMoveListener extends MouseAdapter {
         @Override
         public void mouseReleased(MouseEvent e) {
             if (columnBeingMoved != -1) {
@@ -333,26 +360,7 @@ public abstract class CommonColumnModel extends DefaultTableColumnModel {
 
         // Set header renderer to sortable columns
         if (column.isSortable()) {
-            aColumn.setHeaderRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableHeaderCellRenderer(new TableCellRendererCode() {
-
-                @Override
-                public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
-                    Component c = superComponent;
-
-                    ColumnSort columnSort = column.getColumnSort();
-
-                    if (columnSort != null) {
-                        ((JLabel) c).setHorizontalTextPosition(SwingConstants.LEFT);
-                        if (columnSort.equals(ColumnSort.ASCENDING)) {
-                            ((JLabel) c).setIcon(Images.getImage(Images.ARROW_UP));
-                        } else if (columnSort.equals(ColumnSort.DESCENDING)) {
-                            ((JLabel) c).setIcon(Images.getImage(Images.ARROW_DOWN));
-                        }
-                    }
-
-                    return c;
-                }
-            }));
+            aColumn.setHeaderRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableHeaderCellRenderer(new HeaderTableCellRendererCode(column)));
         }
     }
 

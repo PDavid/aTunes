@@ -35,7 +35,27 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 public class CopyToRepositoryAction extends ActionOverSelectedObjects<AudioFile> {
 
-    private static final long serialVersionUID = 2416674807979541242L;
+    private static class ImportProcessListener implements ProcessListener {
+		@Override
+		public void processCanceled() { /* Nothing to do */
+		}
+
+		@Override
+		public void processFinished(final boolean ok) {
+		    SwingUtilities.invokeLater(new Runnable() {
+		        @Override
+		        public void run() {
+		            if (!ok) {
+		                GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("ERRORS_IN_COPYING_PROCESS"));
+		            }
+		            // Force a refresh of repository to add new songs
+		            RepositoryHandler.getInstance().refreshRepository();
+		        }
+		    });
+		}
+	}
+
+	private static final long serialVersionUID = 2416674807979541242L;
 
     CopyToRepositoryAction() {
         super(I18nUtils.getString("COPY_TO_REPOSITORY"), Images.getImage(Images.EXPORT), AudioFile.class);
@@ -45,25 +65,7 @@ public class CopyToRepositoryAction extends ActionOverSelectedObjects<AudioFile>
     @Override
     protected void performAction(List<AudioFile> objects) {
         final TransferToRepositoryProcess importer = new TransferToRepositoryProcess(objects);
-        importer.addProcessListener(new ProcessListener() {
-            @Override
-            public void processCanceled() { /* Nothing to do */
-            }
-
-            @Override
-            public void processFinished(final boolean ok) {
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (!ok) {
-                            GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("ERRORS_IN_COPYING_PROCESS"));
-                        }
-                        // Force a refresh of repository to add new songs
-                        RepositoryHandler.getInstance().refreshRepository();
-                    }
-                });
-            }
-        });
+        importer.addProcessListener(new ImportProcessListener());
         importer.execute();
     }
 

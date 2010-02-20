@@ -380,13 +380,7 @@ public final class PlayerControlsPanel extends JPanel {
         c.gridx = getSecondaryControls().getComponentCount();
         c.gridy = 0;
         c.insets = new Insets(0, 1, 0, 0);
-        JToggleButton button = new SecondaryControl(action) {
-
-            /**
-			 * 
-			 */
-            private static final long serialVersionUID = 5271158500580807364L;
-        };
+        JToggleButton button = new SecondaryControl(action);
         getSecondaryControls().add(button, c);
     }
 

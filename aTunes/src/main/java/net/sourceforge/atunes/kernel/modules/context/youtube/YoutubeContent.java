@@ -64,7 +64,16 @@ import org.jfree.ui.ExtensionFileFilter;
  */
 public class YoutubeContent extends ContextPanelContent {
 
-    private static final long serialVersionUID = 5041098100868186051L;
+    private static class YoutubeResultsTableCellRendererCode extends
+			TableCellRendererCode {
+		@Override
+		public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+		    return getPanelForTableRenderer(((YoutubeResultEntry) value).getImage(), StringUtils.getString("<html>", ((YoutubeResultEntry) value).getName(), "<br>(",
+		            ((YoutubeResultEntry) value).getDuration(), ")</html>"), superComponent.getBackground(), Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT);
+		}
+	}
+
+	private static final long serialVersionUID = 5041098100868186051L;
 
     private ContextImageJTable youtubeResultTable;
 
@@ -105,14 +114,7 @@ public class YoutubeContent extends ContextPanelContent {
         youtubeResultTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         youtubeResultTable.setShowGrid(false);
         youtubeResultTable.getTableHeader().setReorderingAllowed(false);
-        youtubeResultTable.setDefaultRenderer(YoutubeResultEntry.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
-
-            @Override
-            public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                return getPanelForTableRenderer(((YoutubeResultEntry) value).getImage(), StringUtils.getString("<html>", ((YoutubeResultEntry) value).getName(), "<br>(",
-                        ((YoutubeResultEntry) value).getDuration(), ")</html>"), superComponent.getBackground(), Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT);
-            }
-        }));
+        youtubeResultTable.setDefaultRenderer(YoutubeResultEntry.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new YoutubeResultsTableCellRendererCode()));
         youtubeResultTable.setColumnSelectionAllowed(false);
 
         JMenuItem playMenuItem = new JMenuItem(I18nUtils.getString("PLAY_VIDEO_AT_YOUTUBE"));

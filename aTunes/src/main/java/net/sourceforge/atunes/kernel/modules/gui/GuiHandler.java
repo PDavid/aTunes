@@ -125,7 +125,14 @@ import org.jdesktop.swingx.error.ErrorInfo;
 
 public final class GuiHandler extends Handler implements PlaybackStateListener {
 
-    private static GuiHandler instance = new GuiHandler();
+    private static class RipperCancelAction implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		    RipperHandler.getInstance().cancelProcess();
+		}
+	}
+
+	private static GuiHandler instance = new GuiHandler();
 
     private Logger logger = new Logger();
 
@@ -485,12 +492,7 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
     public RipperProgressDialog getRipperProgressDialog() {
         if (ripperProgressDialog == null) {
             ripperProgressDialog = new RipperProgressDialog(frame.getFrame());
-            ripperProgressDialog.addCancelAction(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    RipperHandler.getInstance().cancelProcess();
-                }
-            });
+            ripperProgressDialog.addCancelAction(new RipperCancelAction());
         }
         return ripperProgressDialog;
     }

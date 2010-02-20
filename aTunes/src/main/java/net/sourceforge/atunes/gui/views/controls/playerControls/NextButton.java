@@ -20,14 +20,13 @@
 package net.sourceforge.atunes.gui.views.controls.playerControls;
 
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
+import net.sourceforge.atunes.kernel.actions.Actions;
+import net.sourceforge.atunes.kernel.actions.PlayNextAudioObjectAction;
 
 /*
  * based on code from Xtreme Media Player
@@ -42,21 +41,15 @@ public final class NextButton extends JButton {
      * @param size
      */
     public NextButton(Dimension size) {
-        super(Images.getImage(Images.NEXT));
+        super(Actions.getAction(PlayNextAudioObjectAction.class));
         // Force size
         setPreferredSize(size);
         setMinimumSize(size);
         setMaximumSize(size);
         setFocusable(false);
+        setIcon(Images.getImage(Images.NEXT));
+        setText(null);
 
         LookAndFeelSelector.getInstance().getCurrentLookAndFeel().putClientProperties(this);
-
-        // Add behaviour
-        addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                PlayerHandler.getInstance().playNextAudioObject();
-            }
-        });
     }
 }

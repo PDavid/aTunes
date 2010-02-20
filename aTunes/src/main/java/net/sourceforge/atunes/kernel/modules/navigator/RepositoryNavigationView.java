@@ -77,7 +77,21 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 public class RepositoryNavigationView extends NavigationView {
 
-    private JTree tree;
+    private static class AlbumDefaultMutableTreeNode extends
+			DefaultMutableTreeNode {
+		private static final long serialVersionUID = -1276777390072754207L;
+
+		private AlbumDefaultMutableTreeNode(Object userObject) {
+			super(userObject);
+		}
+
+		@Override
+		public String toString() {
+		    return ((Album) getUserObject()).getNameAndArtist();
+		}
+	}
+
+	private JTree tree;
 
     private JPopupMenu treePopupMenu;
 
@@ -331,15 +345,7 @@ public class RepositoryNavigationView extends NavigationView {
             Album album = structure.get(albumsNamesList.get(i));
             if (currentFilter == null || album.getName().toUpperCase().contains(currentFilter.toUpperCase())) {
                 // Special album node that shows artist name too
-                DefaultMutableTreeNode albumNode = new DefaultMutableTreeNode(album) {
-
-                    private static final long serialVersionUID = -1276777390072754207L;
-
-                    @Override
-                    public String toString() {
-                        return ((Album) getUserObject()).getNameAndArtist();
-                    }
-                };
+                DefaultMutableTreeNode albumNode = new AlbumDefaultMutableTreeNode(album);
 
                 root.add(albumNode);
 

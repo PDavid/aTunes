@@ -54,7 +54,20 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class LyricsContent extends ContextPanelContent {
 
-    private static final long serialVersionUID = 962229017133714396L;
+    private static class OpenUrlActionListener implements ActionListener {
+		private final Entry<String, String> entry;
+
+		private OpenUrlActionListener(Entry<String, String> entry) {
+			this.entry = entry;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		    DesktopUtils.openURL(entry.getValue());
+		}
+	}
+
+	private static final long serialVersionUID = 962229017133714396L;
 
     private CustomTextPane lyricsContainer;
 
@@ -96,12 +109,7 @@ public class LyricsContent extends ContextPanelContent {
                 addLyrics.removeAll();
                 for (final Entry<String, String> entry : LyricsService.getInstance().getUrlsForAddingNewLyrics(audioObject.getArtist(), audioObject.getTitle()).entrySet()) {
                     JMenuItem mi = new JMenuItem(entry.getKey());
-                    mi.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            DesktopUtils.openURL(entry.getValue());
-                        }
-                    });
+                    mi.addActionListener(new OpenUrlActionListener(entry));
                     addLyrics.add(mi);
                 }
                 addLyrics.setEnabled(addLyrics.getMenuComponentCount() > 0);
