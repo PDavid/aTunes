@@ -98,20 +98,19 @@ public final class PlayerControlsPanel extends JPanel {
 
     /************************************************ PANEL CONSTANTS ******************************************************/
 
-    protected ShuffleButton shuffleButton;
-    protected RepeatButton repeatButton;
-    protected KaraokeButton karaokeButton;
-    protected NormalizationButton normalizeButton;
-    protected PreviousButton previousButton;
-    protected PlayPauseButton playButton;
-    protected StopButton stopButton;
-    protected NextButton nextButton;
-    protected MuteButton volumeButton;
-    protected VolumeSlider volumeSlider;
-    protected VolumeLevel volumeLevel;
-    boolean playing;
-    ProgressSlider progressSlider;
-
+    private ShuffleButton shuffleButton;
+    private RepeatButton repeatButton;
+    private KaraokeButton karaokeButton;
+    private NormalizationButton normalizeButton;
+    private PreviousButton previousButton;
+    private PlayPauseButton playButton;
+    private StopButton stopButton;
+    private NextButton nextButton;
+    private MuteButton volumeButton;
+    private VolumeSlider volumeSlider;
+    private VolumeLevel volumeLevel;
+    private boolean playing;
+    private ProgressSlider progressSlider;
     private JPanel secondaryControls;
 
     /**
