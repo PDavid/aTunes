@@ -55,7 +55,31 @@ import org.apache.commons.io.FileUtils;
 
 public class RemoveFromDiskAction extends Action {
 
-    private static final long serialVersionUID = -6958409532399604195L;
+    private static class DeleteFilesWorker extends SwingWorker<Void, Void> {
+		private final List<AudioFile> files;
+
+		private DeleteFilesWorker(List<AudioFile> files) {
+			this.files = files;
+		}
+
+		@Override
+		protected Void doInBackground() {
+		    for (AudioFile audioFile : files) {
+		        File file = audioFile.getFile();
+		        if (file != null) {
+		            file.delete();
+		        }
+		    }
+		    return null;
+		}
+
+		@Override
+		protected void done() {
+		    GuiHandler.getInstance().hideIndeterminateProgressDialog();
+		}
+	}
+
+	private static final long serialVersionUID = -6958409532399604195L;
 
     private Logger logger = new Logger();
 
@@ -88,23 +112,7 @@ public class RemoveFromDiskAction extends Action {
         final List<AudioFile> files = ControllerProxy.getInstance().getNavigationController().getFilesSelectedInNavigator();
         RepositoryHandler.getInstance().remove(files);
         GuiHandler.getInstance().showIndeterminateProgressDialog(I18nUtils.getString("PLEASE_WAIT"));
-        new SwingWorker<Void, Void>() {
-            @Override
-            protected Void doInBackground() {
-                for (AudioFile audioFile : files) {
-                    File file = audioFile.getFile();
-                    if (file != null) {
-                        file.delete();
-                    }
-                }
-                return null;
-            }
-
-            @Override
-            protected void done() {
-                GuiHandler.getInstance().hideIndeterminateProgressDialog();
-            }
-        }.execute();
+        new DeleteFilesWorker(files).execute();
     }
 
     private void fromRepositoryOrDeviceView() {
