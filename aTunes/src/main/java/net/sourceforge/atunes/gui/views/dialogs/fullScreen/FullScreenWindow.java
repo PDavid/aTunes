@@ -78,7 +78,6 @@ import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.SystemProperties;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -89,8 +88,6 @@ public final class FullScreenWindow extends CustomWindow {
 
     private static final long serialVersionUID = 3422799994808333945L;
 
-    static Logger logger = new Logger();
-
     private CoverFlow covers;
 
     /** The text label. */
@@ -100,7 +97,7 @@ public final class FullScreenWindow extends CustomWindow {
     private JLabel textLabel2;
 
     /** The progress bar. */
-    JSlider progressBar;
+    private JSlider progressBar;
 
     /** The time. */
     private JLabel time;
@@ -109,7 +106,7 @@ public final class FullScreenWindow extends CustomWindow {
     private JLabel remainingTime;
 
     /** The options. */
-    JPopupMenu options;
+    private JPopupMenu options;
 
     /** The exit full screen. */
     private JMenuItem exitFullScreen;
@@ -149,7 +146,7 @@ public final class FullScreenWindow extends CustomWindow {
     private boolean playing;
 
     /** The background. */
-    ImageIcon background;
+    private ImageIcon background;
 
     /** The key adapter. */
     private KeyAdapter keyAdapter = new KeyAdapter() {
@@ -161,23 +158,23 @@ public final class FullScreenWindow extends CustomWindow {
         }
     };
 
-    Timer hideMouseTimer;
+    private Timer hideMouseTimer;
 
-    MouseListener clickListener = new MouseAdapter() {
+    private MouseListener clickListener = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
             activateTimer();
         }
     };
 
-    MouseMotionListener moveListener = new MouseMotionAdapter() {
+    private  MouseMotionListener moveListener = new MouseMotionAdapter() {
         @Override
         public void mouseMoved(MouseEvent e) {
             activateTimer();
         }
     };
 
-    MouseListener showMenuListener = new MouseAdapter() {
+    private MouseListener showMenuListener = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
             if (e.getButton() == MouseEvent.BUTTON3) {

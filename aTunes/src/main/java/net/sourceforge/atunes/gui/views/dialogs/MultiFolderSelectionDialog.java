@@ -73,7 +73,7 @@ public final class MultiFolderSelectionDialog extends CustomModalDialog {
      * Width of a check box. This is used to calculate if user pressed mouse
      * button inside checkbox
      */
-    int checkBoxWidth = new JCheckBox().getPreferredSize().width;
+	private int checkBoxWidth = new JCheckBox().getPreferredSize().width;
 
     /**
      * The Class CheckNode.
@@ -205,10 +205,10 @@ public final class MultiFolderSelectionDialog extends CustomModalDialog {
         private static final long serialVersionUID = 5564069979708271654L;
 
         /** The check. */
-        protected JCheckBox check;
+        private JCheckBox check;
 
         /** The label. */
-        protected JLabel label;
+        private JLabel label;
 
         private TreeCellRendererCode rendererCode;
 
@@ -327,19 +327,19 @@ public final class MultiFolderSelectionDialog extends CustomModalDialog {
     private static final long serialVersionUID = -1612490779910952274L;
 
     /** The Constant logger. */
-    static final Logger logger = new Logger();
+    private static final Logger logger = new Logger();
 
     /** The fs view. */
-    static FileSystemView fsView = FileSystemView.getFileSystemView();
+    private static FileSystemView fsView = FileSystemView.getFileSystemView();
 
     /** The file system tree. */
-    JTree fileSystemTree;
+    private JTree fileSystemTree;
 
     /** The scroll pane. */
-    JScrollPane scrollPane;
+    private JScrollPane scrollPane;
 
     /** The ok button. */
-    JButton okButton;
+    private JButton okButton;
 
     /** The cancel button. */
     private JButton cancelButton;
@@ -348,10 +348,10 @@ public final class MultiFolderSelectionDialog extends CustomModalDialog {
     private JLabel text;
 
     /** The folders selected. */
-    List<File> selectedFolders;
+    private List<File> selectedFolders;
 
     /** The cancelled. */
-    boolean cancelled = true;
+    private boolean cancelled = true;
 
     /**
      * Instantiates a new multi folder selection dialog.
