@@ -17,7 +17,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package net.sourceforge.atunes.test.misc;
+package net.sourceforge.atunes.misc;
 
 import java.util.Arrays;
 import java.util.List;

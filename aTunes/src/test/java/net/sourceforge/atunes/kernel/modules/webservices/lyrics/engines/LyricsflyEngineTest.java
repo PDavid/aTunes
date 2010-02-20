@@ -17,7 +17,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package net.sourceforge.atunes.test.lyrics;
+package net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines;
 
 import java.util.UUID;
 
@@ -28,7 +28,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class LyricsflyTest {
+public class LyricsflyEngineTest {
 
     private LyricsflyEngine testedObject;
 

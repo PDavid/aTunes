@@ -17,11 +17,11 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package net.sourceforge.atunes.test.amazon;
+package net.sourceforge.atunes.kernel.modules.amazon;
 
 import org.junit.Test;
 
-public class AmazonTest {
+public class AmazonServiceTest {
 
     @Test
     public void test() {
