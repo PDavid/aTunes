@@ -83,7 +83,21 @@ import org.apache.commons.io.FilenameUtils;
  */
 public final class RepositoryHandler extends Handler implements LoaderListener, AudioFilesRemovedListener {
 
-    private static RepositoryHandler instance = new RepositoryHandler();
+    private static class ShowProgressBarRunnable implements Runnable {
+		@Override
+		public void run() {
+		    GuiHandler.getInstance().showProgressBar(true, StringUtils.getString(I18nUtils.getString("REFRESHING"), "..."));
+		}
+	}
+
+	private static class ExitRunnable implements Runnable {
+		@Override
+		public void run() {
+		    Actions.getAction(ExitAction.class).actionPerformed(null);
+		}
+	}
+
+	private static RepositoryHandler instance = new RepositoryHandler();
 
     Repository repository;
     private int filesLoaded;
@@ -147,12 +161,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
      *            the files
      */
     public void addFilesAndRefresh(final List<File> files) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                GuiHandler.getInstance().showProgressBar(true, StringUtils.getString(I18nUtils.getString("REFRESHING"), "..."));
-            }
-        });
+        SwingUtilities.invokeLater(new ShowProgressBarRunnable());
         SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() {
@@ -673,13 +682,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
                     new String[] { I18nUtils.getString("RETRY"), I18nUtils.getString("SELECT_REPOSITORY"), exitString });
 
             if (selection.equals(exitString)) {
-                SwingUtilities.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        Actions.getAction(ExitAction.class).actionPerformed(null);
-                    }
-                });
+                SwingUtilities.invokeLater(new ExitRunnable());
             }
         } while (I18nUtils.getString("RETRY").equals(selection) && !rep.exists());
     }

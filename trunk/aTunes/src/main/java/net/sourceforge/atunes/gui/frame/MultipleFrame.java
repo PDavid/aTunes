@@ -65,7 +65,40 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public final class MultipleFrame implements Frame {
 
-    private static final int STICKY_INSET = 30;
+    private static class FrameWindowAdapter extends WindowAdapter {
+		@Override
+		public void windowClosing(WindowEvent e) {
+		    GuiHandler.getInstance().finish();
+		}
+	}
+
+	private static class FrameComponentAdapter extends ComponentAdapter {
+		private final Timer t;
+
+		private FrameComponentAdapter(Timer t) {
+			this.t = t;
+		}
+
+		@Override
+		public void componentMoved(ComponentEvent e) {
+		    t.start();
+		}
+	}
+
+	private static class CustomDialogComponentAdapter extends ComponentAdapter {
+		private final Timer t;
+
+		private CustomDialogComponentAdapter(Timer t) {
+			this.t = t;
+		}
+
+		@Override
+		public void componentMoved(ComponentEvent e) {
+		    t.start();
+		}
+	}
+
+	private static final int STICKY_INSET = 30;
 
     private static int SCREEN_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
     private static int SCREEN_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height;
@@ -454,12 +487,7 @@ public final class MultipleFrame implements Frame {
             }
         });
         t.setRepeats(false);
-        dialog.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentMoved(ComponentEvent e) {
-                t.start();
-            }
-        });
+        dialog.addComponentListener(new CustomDialogComponentAdapter(t));
 
         if (windows.isEmpty() || position == NONE) {
             dialog.setLocation(50, 50);
@@ -501,9 +529,7 @@ public final class MultipleFrame implements Frame {
      * @return the new frame
      */
     private CustomFrame getNewFrame(String title, int width, int height, Window relative, int position, Dimension minSize) {
-        final CustomFrame newFrame = new CustomFrame(title, width, height, this.frame == null ? null : this.frame) {
-            private static final long serialVersionUID = 7204427148108937993L;
-        };
+        final CustomFrame newFrame = new CustomFrame(title, width, height, this.frame == null ? null : this.frame);
         final Timer t = new Timer(400, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -511,21 +537,11 @@ public final class MultipleFrame implements Frame {
             }
         });
         t.setRepeats(false);
-        newFrame.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentMoved(ComponentEvent e) {
-                t.start();
-            }
-        });
+        newFrame.addComponentListener(new FrameComponentAdapter(t));
 
         if (this.frame == null) {
             this.frame = newFrame;
-            this.frame.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosing(WindowEvent e) {
-                    GuiHandler.getInstance().finish();
-                }
-            });
+            this.frame.addWindowListener(new FrameWindowAdapter());
         }
         if (windows.isEmpty() || position == NONE) {
             newFrame.setLocationRelativeTo(null);

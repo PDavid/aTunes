@@ -25,7 +25,7 @@ import javax.swing.JFrame;
 
 import net.sourceforge.atunes.utils.GuiUtils;
 
-public abstract class CustomFrame extends JFrame {
+public class CustomFrame extends JFrame {
 
     private static final long serialVersionUID = -7162399690169458143L;
 

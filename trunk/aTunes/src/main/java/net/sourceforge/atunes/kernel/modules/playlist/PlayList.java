@@ -69,7 +69,23 @@ public class PlayList implements Serializable, Cloneable {
      */
     private PointedList<AudioObject> audioObjects = new PlayListPointedList();
 
-    static class PlayListPointedList extends PointedList<AudioObject> {
+    private static class UpdateUIRunnable implements Runnable {
+		@Override
+		public void run() {
+		    ControllerProxy.getInstance().getPlayListController().refreshPlayList();
+		    ControllerProxy.getInstance().getPlayListController().scrollPlayList(false);
+		}
+	}
+
+	private static class PlayListAudioObjectComparator implements
+			Comparator<PlayListAudioObject> {
+		@Override
+		public int compare(PlayListAudioObject o1, PlayListAudioObject o2) {
+		    return -Integer.valueOf(o1.getPosition()).compareTo(Integer.valueOf(o2.getPosition()));
+		}
+	}
+
+	static class PlayListPointedList extends PointedList<AudioObject> {
         private static final long serialVersionUID = -6966402482637754615L;
 
         PlayListPointedList() {
@@ -204,12 +220,7 @@ public class PlayList implements Serializable, Cloneable {
         }
 
         // Sort in reverse order to remove last index first and avoid shift
-        Collections.sort(playListAudioObjects, new Comparator<PlayListAudioObject>() {
-            @Override
-            public int compare(PlayListAudioObject o1, PlayListAudioObject o2) {
-                return -Integer.valueOf(o1.getPosition()).compareTo(Integer.valueOf(o2.getPosition()));
-            }
-        });
+        Collections.sort(playListAudioObjects, new PlayListAudioObjectComparator());
 
         for (PlayListAudioObject plao : playListAudioObjects) {
             this.audioObjects.remove(plao.getPosition());
@@ -353,13 +364,7 @@ public class PlayList implements Serializable, Cloneable {
 
     protected void updateUI() {
         if (!EventQueue.isDispatchThread()) {
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    ControllerProxy.getInstance().getPlayListController().refreshPlayList();
-                    ControllerProxy.getInstance().getPlayListController().scrollPlayList(false);
-                }
-            });
+            SwingUtilities.invokeLater(new UpdateUIRunnable());
         } else {
             ControllerProxy.getInstance().getPlayListController().refreshPlayList();
             ControllerProxy.getInstance().getPlayListController().scrollPlayList(false);

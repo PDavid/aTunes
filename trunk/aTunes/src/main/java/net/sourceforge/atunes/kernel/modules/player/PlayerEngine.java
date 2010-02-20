@@ -46,7 +46,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public abstract class PlayerEngine implements PlaybackStateListener {
 
-    private final class ShowErrorDialog implements Runnable {
+    private static class ShowErrorDialog implements Runnable {
 		private final Exception e;
 
 		private ShowErrorDialog(Exception e) {

@@ -49,7 +49,21 @@ import org.jdesktop.swingx.border.DropShadowBorder;
 
 public class AudioObjectBasicInfoContent extends ContextPanelContent {
 
-    private static final long serialVersionUID = 996227362636450601L;
+    private static class AddBannedSongActionListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		    LastFmService.getInstance().addBannedSong(ContextHandler.getInstance().getCurrentAudioObject());
+		}
+	}
+
+	private static class AddLovedSongActionListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		    LastFmService.getInstance().addLovedSong(ContextHandler.getInstance().getCurrentAudioObject());
+		}
+	}
+
+	private static final long serialVersionUID = 996227362636450601L;
 
     /**
      * Image for Audio Object
@@ -180,19 +194,9 @@ public class AudioObjectBasicInfoContent extends ContextPanelContent {
     protected List<Component> getOptions() {
         List<Component> options = new ArrayList<Component>();
         lovedSong = new JMenuItem(I18nUtils.getString("ADD_LOVED_SONG_IN_LASTFM"));
-        lovedSong.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                LastFmService.getInstance().addLovedSong(ContextHandler.getInstance().getCurrentAudioObject());
-            }
-        });
+        lovedSong.addActionListener(new AddLovedSongActionListener());
         bannedSong = new JMenuItem(I18nUtils.getString("ADD_BANNED_SONG_IN_LASTFM"));
-        bannedSong.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                LastFmService.getInstance().addBannedSong(ContextHandler.getInstance().getCurrentAudioObject());
-            }
-        });
+        bannedSong.addActionListener(new AddBannedSongActionListener());
         options.add(lovedSong);
         options.add(bannedSong);
         return options;
