@@ -41,7 +41,35 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
  */
 public final class PlayListColumnModel extends CommonColumnModel {
 
-    private static final long serialVersionUID = -2211160302611944001L;
+    private static class PlayListJLabelTableCellRendererCode extends
+			JLabelTableCellRendererCode {
+		private PlayListJLabelTableCellRendererCode(CommonColumnModel model) {
+			super(model);
+		}
+
+		@Override
+		public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+			Component c = super.getComponent(superComponent, table, value, isSelected, hasFocus, row, column);
+			((JLabel)c).setFont(PlayListHandler.getInstance().isCurrentVisibleRowPlaying(row) ? Fonts.getPlayListSelectedItemFont() : Fonts.getPlayListFont());
+			return c;
+		}
+	}
+
+	private static class PlayListStringTableCellRendererCode extends
+			StringTableCellRendererCode {
+		private PlayListStringTableCellRendererCode(CommonColumnModel model) {
+			super(model);
+		}
+
+		@Override
+		public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+			Component c = super.getComponent(superComponent, t, value, isSelected, hasFocus, row, column);
+			((JLabel)c).setFont(PlayListHandler.getInstance().isCurrentVisibleRowPlaying(row) ? Fonts.getPlayListSelectedItemFont() : Fonts.getPlayListFont());
+		    return c;
+		}
+	}
+
+	private static final long serialVersionUID = -2211160302611944001L;
 
     /**
      * Instantiates a new play list column model.
@@ -89,25 +117,9 @@ public final class PlayListColumnModel extends CommonColumnModel {
 				}
 			};
     	} else if (clazz.equals(String.class)) {
-    		return new StringTableCellRendererCode(this) {
-				
-				@Override
-				public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-					Component c = super.getComponent(superComponent, t, value, isSelected, hasFocus, row, column);
-	            	((JLabel)c).setFont(PlayListHandler.getInstance().isCurrentVisibleRowPlaying(row) ? Fonts.getPlayListSelectedItemFont() : Fonts.getPlayListFont());
-		            return c;
-				}
-			};
+    		return new PlayListStringTableCellRendererCode(this);
     	} else if (clazz.equals(JLabel.class)) {
-    		return new JLabelTableCellRendererCode(this) {
-    			@Override
-    			public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    				Component c = super.getComponent(superComponent, table, value, isSelected, hasFocus, row, column);
-    	        	((JLabel)c).setFont(PlayListHandler.getInstance().isCurrentVisibleRowPlaying(row) ? Fonts.getPlayListSelectedItemFont() : Fonts.getPlayListFont());
-    	        	return c;
-    			}
-    			
-    		};
+    		return new PlayListJLabelTableCellRendererCode(this);
     	} else {
     		return super.getRendererCodeFor(clazz);
     	}

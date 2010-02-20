@@ -55,7 +55,27 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class PlayListHandler extends Handler implements AudioFilesRemovedListener, PlayListEventListener {
 
-    /** Singleton instance. */
+    private static class RowListComparator implements Comparator<Integer> {
+		private final boolean up;
+
+		private RowListComparator(boolean up) {
+			this.up = up;
+		}
+
+		@Override
+		public int compare(Integer o1, Integer o2) {
+		    return (up ? 1 : -1) * o1.compareTo(o2);
+		}
+	}
+
+	private static class PreviousInitializationTaskRunnable implements Runnable {
+		@Override
+		public void run() {
+		    playListsRetrievedFromCache = ApplicationStateHandler.getInstance().retrievePlayListsCache();
+		}
+	}
+
+	/** Singleton instance. */
     private static PlayListHandler instance = new PlayListHandler();
 
     /**
@@ -576,12 +596,7 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
 
     @Override
     protected Runnable getPreviousInitializationTask() {
-        return new Runnable() {
-            @Override
-            public void run() {
-                playListsRetrievedFromCache = ApplicationStateHandler.getInstance().retrievePlayListsCache();
-            }
-        };
+        return new PreviousInitializationTaskRunnable();
     }
 
     /**
@@ -681,12 +696,7 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
         for (int row : rows) {
             rowList.add(row);
         }
-        Collections.sort(rowList, new Comparator<Integer>() {
-            @Override
-            public int compare(Integer o1, Integer o2) {
-                return (up ? 1 : -1) * o1.compareTo(o2);
-            }
-        });
+        Collections.sort(rowList, new RowListComparator(up));
         for (Integer row : rowList) {
             moveRowTo(row, row + (up ? -1 : 1));
         }

@@ -102,18 +102,7 @@ public final class PluginsPanel extends PreferencesPanel {
         pluginsTable.setRowHeight(CELL_HEIGHT);
         pluginsTable.setShowGrid(false);
         pluginsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        pluginsTable.setColumnModel(new DefaultTableColumnModel() {
-            private static final long serialVersionUID = -4128210690358582389L;
-
-            @Override
-            public void addColumn(TableColumn column) {
-                super.addColumn(column);
-                if (column.getHeaderValue().equals(I18nUtils.getString("ACTIVE"))) {
-                    column.setMinWidth(80);
-                    column.setMaxWidth(100);
-                }
-            }
-        });
+        pluginsTable.setColumnModel(new PluginsTableDefaultTableColumnModel());
 
         JScrollPane scrollPane = new JScrollPane(pluginsTable);
         GridBagConstraints c = new GridBagConstraints();
@@ -153,20 +142,7 @@ public final class PluginsPanel extends PreferencesPanel {
         c.gridwidth = 2;
         add(pluginDetailPanel, c);
 
-        pluginsTable.setDefaultRenderer(PluginInfo.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
-
-            @Override
-            public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                Component c = superComponent;
-                ((JLabel) c).setText(((PluginInfo) value).getName());
-                if (((PluginInfo) value).getIcon() != null) {
-                    ((JLabel) c).setIcon(ImageUtils.scaleImageBicubic(((PluginInfo) value).getIcon(), CELL_HEIGHT - 5, CELL_HEIGHT - 5));
-                } else {
-                    ((JLabel) c).setIcon(ImageUtils.scaleImageBicubic(Images.getImage(Images.EMPTY).getImage(), CELL_HEIGHT - 5, CELL_HEIGHT - 5));
-                }
-                return c;
-            }
-        }));
+        pluginsTable.setDefaultRenderer(PluginInfo.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new PluginsTableCellRendererCode()));
 
         pluginsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -344,7 +320,36 @@ public final class PluginsPanel extends PreferencesPanel {
         }
     }
 
-    private class PluginsTableModel implements TableModel {
+    private static class PluginsTableCellRendererCode extends
+			TableCellRendererCode {
+		@Override
+		public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+		    Component c = superComponent;
+		    ((JLabel) c).setText(((PluginInfo) value).getName());
+		    if (((PluginInfo) value).getIcon() != null) {
+		        ((JLabel) c).setIcon(ImageUtils.scaleImageBicubic(((PluginInfo) value).getIcon(), CELL_HEIGHT - 5, CELL_HEIGHT - 5));
+		    } else {
+		        ((JLabel) c).setIcon(ImageUtils.scaleImageBicubic(Images.getImage(Images.EMPTY).getImage(), CELL_HEIGHT - 5, CELL_HEIGHT - 5));
+		    }
+		    return c;
+		}
+	}
+
+	private static class PluginsTableDefaultTableColumnModel extends
+			DefaultTableColumnModel {
+		private static final long serialVersionUID = -4128210690358582389L;
+
+		@Override
+		public void addColumn(TableColumn column) {
+		    super.addColumn(column);
+		    if (column.getHeaderValue().equals(I18nUtils.getString("ACTIVE"))) {
+		        column.setMinWidth(80);
+		        column.setMaxWidth(100);
+		    }
+		}
+	}
+
+	private class PluginsTableModel implements TableModel {
 
         private List<PluginInfo> plugins;
 

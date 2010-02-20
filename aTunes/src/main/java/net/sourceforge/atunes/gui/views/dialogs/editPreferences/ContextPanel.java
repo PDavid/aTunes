@@ -62,7 +62,14 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class ContextPanel extends PreferencesPanel {
 
-    private class LyricsEnginesTableModel implements TableModel {
+    private static class OpenLastFmMouseAdapter extends MouseAdapter {
+		@Override
+		public void mousePressed(MouseEvent e) {
+		    DesktopUtils.openURL("http://www.last.fm");
+		}
+	}
+
+	private class LyricsEnginesTableModel implements TableModel {
 
         /** The lyrics engines info. */
         private List<LyricsEngineInfo> lyricsEnginesInfo = new ArrayList<LyricsEngineInfo>();;
@@ -250,12 +257,7 @@ public final class ContextPanel extends PreferencesPanel {
         });
         JButton clearCache = new JButton(Actions.getAction(ClearCachesAction.class));
         info = new JLabel(Images.getImage(Images.POWERED_BY_LAST_FM), GuiUtils.getComponentOrientationAsSwingConstant());
-        info.addMouseListener((new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                DesktopUtils.openURL("http://www.last.fm");
-            }
-        }));
+        info.addMouseListener(new OpenLastFmMouseAdapter());
         JLabel enginesTableLabel = new JLabel(I18nUtils.getString("LYRICS_ENGINES_SELECTION"));
         final LyricsEnginesTableModel model = new LyricsEnginesTableModel();
         enginesTable = new JTable(model);

@@ -36,21 +36,46 @@ import net.sourceforge.atunes.misc.log.Logger;
  */
 public class PodcastFeedEntryDownloadChecker implements Runnable {
 
-    private Logger logger = new Logger();
+    private static class SetDownloadedRunnable implements Runnable {
+		private final Map<PodcastFeedEntry, Boolean> downloaded;
+
+		private SetDownloadedRunnable(Map<PodcastFeedEntry, Boolean> downloaded) {
+			this.downloaded = downloaded;
+		}
+
+		@Override
+		public void run() {
+		    for (Entry<PodcastFeedEntry, Boolean> entry : downloaded.entrySet()) {
+		        entry.getKey().setDownloaded(entry.getValue());
+		    }
+		    GuiHandler.getInstance().getNavigationTablePanel().getNavigationTable().repaint();
+		}
+	}
+
+	private static class GetPodcastFeedEntriesFilesRunnable implements Runnable {
+		private final Map<PodcastFeedEntry, File> files;
+
+		private GetPodcastFeedEntriesFilesRunnable(
+				Map<PodcastFeedEntry, File> files) {
+			this.files = files;
+		}
+
+		@Override
+		public void run() {
+		    for (PodcastFeedEntry podcastFeedEntry : PodcastFeedHandler.getInstance().getPodcastFeedEntries()) {
+		        File f = new File(PodcastFeedHandler.getInstance().getDownloadPath(podcastFeedEntry));
+		        files.put(podcastFeedEntry, f);
+		    }
+		}
+	}
+
+	private Logger logger = new Logger();
 
     @Override
     public void run() {
         final Map<PodcastFeedEntry, File> files = new HashMap<PodcastFeedEntry, File>();
         try {
-            SwingUtilities.invokeAndWait(new Runnable() {
-                @Override
-                public void run() {
-                    for (PodcastFeedEntry podcastFeedEntry : PodcastFeedHandler.getInstance().getPodcastFeedEntries()) {
-                        File f = new File(PodcastFeedHandler.getInstance().getDownloadPath(podcastFeedEntry));
-                        files.put(podcastFeedEntry, f);
-                    }
-                }
-            });
+            SwingUtilities.invokeAndWait(new GetPodcastFeedEntriesFilesRunnable(files));
         } catch (InterruptedException e) {
             return;
         } catch (InvocationTargetException e) {
@@ -60,14 +85,6 @@ public class PodcastFeedEntryDownloadChecker implements Runnable {
         for (Entry<PodcastFeedEntry, File> entry : files.entrySet()) {
             downloaded.put(entry.getKey(), entry.getValue().exists() && !PodcastFeedHandler.getInstance().isDownloading(entry.getKey()));
         }
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                for (Entry<PodcastFeedEntry, Boolean> entry : downloaded.entrySet()) {
-                    entry.getKey().setDownloaded(entry.getValue());
-                }
-                GuiHandler.getInstance().getNavigationTablePanel().getNavigationTable().repaint();
-            }
-        });
+        SwingUtilities.invokeLater(new SetDownloadedRunnable(downloaded));
     }
 }

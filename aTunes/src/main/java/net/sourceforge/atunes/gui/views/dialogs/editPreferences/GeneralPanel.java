@@ -64,7 +64,45 @@ import org.jdesktop.swingx.combobox.ListComboBoxModel;
  */
 public final class GeneralPanel extends PreferencesPanel {
 
-    private static final long serialVersionUID = -9216216930198145476L;
+    private static class LanguageListCellRendererCode extends
+			ListCellRendererCode {
+		@Override
+		public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+		    if (!(value instanceof Locale)) {
+		        throw new IllegalArgumentException("Argument value must be instance of Locale");
+		    }
+
+		    Component c = superComponent;
+
+		    Locale displayingLocale = (Locale) value;
+		    Locale currentLocale = ApplicationState.getInstance().getLocale().getLocale();
+
+		    String name = displayingLocale.getDisplayName(currentLocale);
+		    name = StringUtils.getString(String.valueOf(name.charAt(0)).toUpperCase(currentLocale), name.substring(1));
+		    ((JLabel) c).setText(name);
+
+		    // The name of flag file should be flag_<locale>.png
+		    // if the name of bundle is MainBundle_<locale>.properties
+		    String flag = StringUtils.getString("flag_", displayingLocale.toString(), ".png");
+		    ((JLabel) c).setIcon(new ImageIcon(GeneralPanel.class.getResource(StringUtils.getString("/", Constants.TRANSLATIONS_DIR, "/", flag))));
+		    return c;
+		}
+	}
+
+	private static class LocaleComparator implements Comparator<Locale> {
+		private final Locale currentLocale;
+
+		private LocaleComparator(Locale currentLocale) {
+			this.currentLocale = currentLocale;
+		}
+
+		@Override
+		public int compare(Locale l1, Locale l2) {
+		    return Collator.getInstance().compare(l1.getDisplayName(currentLocale), l2.getDisplayName(currentLocale));
+		}
+	}
+
+	private static final long serialVersionUID = -9216216930198145476L;
 
     private JCheckBox showTitle;
     private JComboBox language;
@@ -93,37 +131,9 @@ public final class GeneralPanel extends PreferencesPanel {
         List<Locale> langs = I18nUtils.getLanguages();
         Locale[] array = langs.toArray(new Locale[langs.size()]);
         final Locale currentLocale = ApplicationState.getInstance().getLocale().getLocale();
-        Arrays.sort(array, new Comparator<Locale>() {
-            @Override
-            public int compare(Locale l1, Locale l2) {
-                return Collator.getInstance().compare(l1.getDisplayName(currentLocale), l2.getDisplayName(currentLocale));
-            }
-        });
+        Arrays.sort(array, new LocaleComparator(currentLocale));
         language = new JComboBox(array);
-        language.setRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListCellRenderer(new ListCellRendererCode() {
-
-            @Override
-            public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                if (!(value instanceof Locale)) {
-                    throw new IllegalArgumentException("Argument value must be instance of Locale");
-                }
-
-                Component c = superComponent;
-
-                Locale displayingLocale = (Locale) value;
-                Locale currentLocale = ApplicationState.getInstance().getLocale().getLocale();
-
-                String name = displayingLocale.getDisplayName(currentLocale);
-                name = StringUtils.getString(String.valueOf(name.charAt(0)).toUpperCase(currentLocale), name.substring(1));
-                ((JLabel) c).setText(name);
-
-                // The name of flag file should be flag_<locale>.png
-                // if the name of bundle is MainBundle_<locale>.properties
-                String flag = StringUtils.getString("flag_", displayingLocale.toString(), ".png");
-                ((JLabel) c).setIcon(new ImageIcon(GeneralPanel.class.getResource(StringUtils.getString("/", Constants.TRANSLATIONS_DIR, "/", flag))));
-                return c;
-            }
-        }));
+        language.setRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListCellRenderer(new LanguageListCellRendererCode()));
 
         showIconTray = new JCheckBox(I18nUtils.getString("SHOW_TRAY_ICON"));
         showTrayPlayer = new JCheckBox(I18nUtils.getString("SHOW_TRAY_PLAYER"));
