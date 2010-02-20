@@ -22,8 +22,6 @@ package net.sourceforge.atunes.gui.views.dialogs;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -38,7 +36,9 @@ import javax.swing.WindowConstants;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.actions.Actions;
+import net.sourceforge.atunes.kernel.actions.RepositoryLoadCancelAction;
+import net.sourceforge.atunes.kernel.actions.RepositoryLoadInBackgroundAction;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -50,7 +50,34 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class RepositoryProgressDialog extends CustomModalDialog {
 
-    private static final long serialVersionUID = -3071934230042256578L;
+    private static class GlassPaneMouseListener implements MouseListener {
+		@Override
+        public void mouseClicked(MouseEvent e) {
+            // Nothing to do
+        }
+
+		@Override
+        public void mouseEntered(MouseEvent e) {
+            // Nothing to do
+        }
+
+		@Override
+        public void mouseExited(MouseEvent e) {
+            // Nothing to do
+        }
+
+		@Override
+        public void mousePressed(MouseEvent e) {
+            // Nothing to do
+        }
+
+		@Override
+        public void mouseReleased(MouseEvent e) {
+            // Nothing to do
+        }
+	}
+
+	private static final long serialVersionUID = -3071934230042256578L;
 
     private JLabel pictureLabel;
     private JLabel label;
@@ -62,32 +89,7 @@ public final class RepositoryProgressDialog extends CustomModalDialog {
     private JLabel remainingTimeLabel;
     private JButton cancelButton;
     private JButton backgroundButton;
-    private MouseListener listener = new MouseListener() {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            // Nothing to do
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-            // Nothing to do
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-            // Nothing to do
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-            // Nothing to do
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-            // Nothing to do
-        }
-    };
+    private MouseListener listener = new GlassPaneMouseListener();
 
     /**
      * Instantiates a new repository progress dialog.
@@ -145,20 +147,8 @@ public final class RepositoryProgressDialog extends CustomModalDialog {
         progressBar.setBorder(BorderFactory.createEmptyBorder());
         folderLabel = new JLabel(" ");
         remainingTimeLabel = new JLabel(" ");
-        backgroundButton = new CustomButton(null, I18nUtils.getString("DO_IN_BACKGROUND"));
-        backgroundButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                RepositoryHandler.getInstance().doInBackground();
-            }
-        });
-        cancelButton = new CustomButton(null, I18nUtils.getString("CANCEL"));
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                RepositoryHandler.getInstance().notifyCancel();
-            }
-        });
+        backgroundButton = new CustomButton(Actions.getAction(RepositoryLoadInBackgroundAction.class));
+        cancelButton = new CustomButton(Actions.getAction(RepositoryLoadCancelAction.class));
 
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.add(backgroundButton);

@@ -43,7 +43,83 @@ import org.commonjukebox.plugins.PluginApi;
 @PluginApi
 public abstract class LookAndFeel {
 
-    /** Logger */
+    private static class LookAndFeelListCellRenderer extends
+			DefaultListCellRenderer {
+		private final ListCellRendererCode code;
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 2572603555660744197L;
+
+		private LookAndFeelListCellRenderer(ListCellRendererCode code) {
+			this.code = code;
+		}
+
+		@Override
+		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+		    Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+		    return code.getComponent(c, list, value, index, isSelected, cellHasFocus);
+		}
+	}
+
+	private static class LookAndFeelTableHeaderCellRenderer extends
+			DefaultTableCellRenderer {
+		private final TableCellRendererCode code;
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		private LookAndFeelTableHeaderCellRenderer(TableCellRendererCode code) {
+			this.code = code;
+		}
+
+		@Override
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+		    Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+		    return code.getComponent(c, table, value, isSelected, hasFocus, row, column);
+		}
+	}
+
+	private static class LookAndFeelTableCellRenderer extends
+			DefaultTableCellRenderer {
+		private final TableCellRendererCode code;
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		private LookAndFeelTableCellRenderer(TableCellRendererCode code) {
+			this.code = code;
+		}
+
+		@Override
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+		    Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+		    return code.getComponent(c, table, value, isSelected, hasFocus, row, column);
+		}
+	}
+
+	private static class LookAndFeelTreeCellRenderer extends
+			DefaultTreeCellRenderer {
+		private final TreeCellRendererCode code;
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 5424315832943108932L;
+
+		private LookAndFeelTreeCellRenderer(TreeCellRendererCode code) {
+			this.code = code;
+		}
+
+		@Override
+		public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+		    Component c = super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
+		    return code.getComponent(c, tree, value, sel, expanded, leaf, row, hasFocus);
+		}
+	}
+
+	/** Logger */
     private static Logger logger;
 
     /**
@@ -111,18 +187,7 @@ public abstract class LookAndFeel {
      * @return
      */
     public TreeCellRenderer getTreeCellRenderer(final TreeCellRendererCode code) {
-        return new DefaultTreeCellRenderer() {
-            /**
-			 * 
-			 */
-            private static final long serialVersionUID = 5424315832943108932L;
-
-            @Override
-            public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-                Component c = super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-                return code.getComponent(c, tree, value, sel, expanded, leaf, row, hasFocus);
-            }
-        };
+        return new LookAndFeelTreeCellRenderer(code);
     }
 
     /**
@@ -133,18 +198,7 @@ public abstract class LookAndFeel {
      * @return
      */
     public TableCellRenderer getTableCellRenderer(final TableCellRendererCode code) {
-        return new DefaultTableCellRenderer() {
-            /**
-			 * 
-			 */
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                return code.getComponent(c, table, value, isSelected, hasFocus, row, column);
-            }
-        };
+        return new LookAndFeelTableCellRenderer(code);
     }
 
     /**
@@ -155,18 +209,7 @@ public abstract class LookAndFeel {
      * @return
      */
     public TableCellRenderer getTableHeaderCellRenderer(final TableCellRendererCode code) {
-        return new DefaultTableCellRenderer() {
-            /**
-			 * 
-			 */
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                return code.getComponent(c, table, value, isSelected, hasFocus, row, column);
-            }
-        };
+        return new LookAndFeelTableHeaderCellRenderer(code);
     }
 
     /**
@@ -177,18 +220,7 @@ public abstract class LookAndFeel {
      * @return
      */
     public ListCellRenderer getListCellRenderer(final ListCellRendererCode code) {
-        return new DefaultListCellRenderer() {
-            /**
-			 * 
-			 */
-            private static final long serialVersionUID = 2572603555660744197L;
-
-            @Override
-            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                return code.getComponent(c, list, value, index, isSelected, cellHasFocus);
-            }
-        };
+        return new LookAndFeelListCellRenderer(code);
     }
 
     /**

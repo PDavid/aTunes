@@ -21,7 +21,7 @@ package net.sourceforge.atunes.kernel.modules.cdripper.encoders;
 
 import java.io.File;
 
-import net.sourceforge.atunes.kernel.modules.cdripper.EncoderProgressListener;
+import net.sourceforge.atunes.kernel.modules.cdripper.ProgressListener;
 
 /**
  * The Interface Encoder.
@@ -85,7 +85,7 @@ public interface Encoder {
      * @param listener
      *            the new listener
      */
-    public void setListener(EncoderProgressListener listener);
+    public void setListener(ProgressListener listener);
 
     /**
      * Sets the quality.

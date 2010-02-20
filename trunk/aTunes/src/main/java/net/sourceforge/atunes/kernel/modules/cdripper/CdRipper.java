@@ -50,7 +50,7 @@ public class CdRipper {
     private CdToWavConverter cdToWavConverter;
     Encoder encoder;
     ProgressListener listener;
-    EncoderProgressListener encoderListener;
+    ProgressListener encoderListener;
     boolean interrupted;
     /** ExecutorService for file encoding. */
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -312,7 +312,7 @@ public class CdRipper {
      * @param listener
      *            the new encoder listener
      */
-    public void setEncoderListener(EncoderProgressListener listener) {
+    public void setEncoderListener(ProgressListener listener) {
         if (encoder != null) {
             encoder.setListener(listener);
         }

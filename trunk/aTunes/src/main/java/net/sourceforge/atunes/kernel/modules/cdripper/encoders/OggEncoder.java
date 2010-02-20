@@ -28,7 +28,7 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.kernel.modules.cdripper.EncoderProgressListener;
+import net.sourceforge.atunes.kernel.modules.cdripper.ProgressListener;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.DefaultTag;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.Tag;
@@ -62,7 +62,7 @@ public class OggEncoder implements Encoder {
 
     private Logger logger = new Logger();
     private Process p;
-    EncoderProgressListener listener;
+    ProgressListener listener;
     private String albumArtist;
     private String album;
     private int year;
@@ -243,7 +243,7 @@ public class OggEncoder implements Encoder {
     }
 
     @Override
-    public void setListener(EncoderProgressListener listener) {
+    public void setListener(ProgressListener listener) {
         this.listener = listener;
     }
 
