@@ -28,7 +28,7 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.kernel.modules.cdripper.EncoderProgressListener;
+import net.sourceforge.atunes.kernel.modules.cdripper.ProgressListener;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.DefaultTag;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.Tag;
@@ -58,7 +58,7 @@ public class NeroAacEncoder implements Encoder {
     static final String DEFAULT_NERO_AAC_QUALITY = "0.4";
 
     private Logger logger = new Logger();
-    EncoderProgressListener listener;
+    ProgressListener listener;
     private Process p;
     private String albumArtist;
     private String album;
@@ -225,7 +225,7 @@ public class NeroAacEncoder implements Encoder {
     }
 
     @Override
-    public void setListener(EncoderProgressListener listener) {
+    public void setListener(ProgressListener listener) {
         this.listener = listener;
     }
 

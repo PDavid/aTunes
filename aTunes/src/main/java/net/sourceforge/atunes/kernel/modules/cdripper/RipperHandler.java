@@ -60,7 +60,76 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 public final class RipperHandler extends Handler {
 
-    private static RipperHandler instance = new RipperHandler();
+    private static class TotalProgressListener implements ProgressListener {
+		private final RipperProgressDialog dialog;
+		private final List<File> filesImported;
+
+		private TotalProgressListener(RipperProgressDialog dialog,
+				List<File> filesImported) {
+			this.dialog = dialog;
+			this.filesImported = filesImported;
+		}
+
+		@Override
+		public void notifyFileFinished(File file) {
+		    filesImported.add(file);
+		}
+
+		@Override
+		public void notifyProgress(int value) {
+		    dialog.setTotalProgressValue(value);
+		    dialog.setDecodeProgressValue(0);
+		    dialog.setDecodeProgressValue(StringUtils.getString(0, "%"));
+		    dialog.setEncodeProgressValue(0);
+		    dialog.setEncodeProgressValue(StringUtils.getString(0, "%"));
+		}
+	}
+
+	private static class EncoderProgressListener implements ProgressListener {
+		private final RipperProgressDialog dialog;
+
+		private EncoderProgressListener(RipperProgressDialog dialog) {
+			this.dialog = dialog;
+		}
+
+		@Override
+		public void notifyFileFinished(File f) {
+		    // Nothing to do
+		}
+
+		@Override
+		public void notifyProgress(int percent) {
+		    dialog.setEncodeProgressValue(percent);
+		    if (!(percent < 0)) {
+		        dialog.setEncodeProgressValue(StringUtils.getString(percent, "%"));
+		    }
+		}
+	}
+
+	private static class DecoderProgressListener implements ProgressListener {
+		private final RipperProgressDialog dialog;
+
+		private DecoderProgressListener(RipperProgressDialog dialog) {
+			this.dialog = dialog;
+		}
+
+		@Override
+		public void notifyFileFinished(File f) {
+		    // Nothing to do
+		}
+
+		@Override
+		public void notifyProgress(int percent) {
+		    dialog.setDecodeProgressValue(percent);
+		    if (percent > 0) {
+		        dialog.setDecodeProgressValue(StringUtils.getString(percent, "%"));
+		    } else {
+		        dialog.setDecodeProgressValue("");
+		    }
+		}
+	}
+
+	private static RipperHandler instance = new RipperHandler();
 
     CdRipper ripper;
     volatile boolean interrupted;
@@ -389,53 +458,11 @@ public final class RipperHandler extends Handler {
 
         final List<File> filesImported = new ArrayList<File>();
 
-        ripper.setDecoderListener(new ProgressListener() {
-            @Override
-            public void notifyFileFinished(File f) {
-                // Nothing to do
-            }
+        ripper.setDecoderListener(new DecoderProgressListener(dialog));
 
-            @Override
-            public void notifyProgress(int percent) {
-                dialog.setDecodeProgressValue(percent);
-                if (percent > 0) {
-                    dialog.setDecodeProgressValue(StringUtils.getString(percent, "%"));
-                } else {
-                    dialog.setDecodeProgressValue("");
-                }
-            }
-        });
+        ripper.setEncoderListener(new EncoderProgressListener(dialog));
 
-        ripper.setEncoderListener(new EncoderProgressListener() {
-            @Override
-            public void notifyFileFinished(File f) {
-                // Nothing to do
-            }
-
-            @Override
-            public void notifyProgress(int percent) {
-                dialog.setEncodeProgressValue(percent);
-                if (!(percent < 0)) {
-                    dialog.setEncodeProgressValue(StringUtils.getString(percent, "%"));
-                }
-            }
-        });
-
-        ripper.setTotalProgressListener(new ProgressListener() {
-            @Override
-            public void notifyFileFinished(File file) {
-                filesImported.add(file);
-            }
-
-            @Override
-            public void notifyProgress(int value) {
-                dialog.setTotalProgressValue(value);
-                dialog.setDecodeProgressValue(0);
-                dialog.setDecodeProgressValue(StringUtils.getString(0, "%"));
-                dialog.setEncodeProgressValue(0);
-                dialog.setEncodeProgressValue(StringUtils.getString(0, "%"));
-            }
-        });
+        ripper.setTotalProgressListener(new TotalProgressListener(dialog, filesImported));
 
         new SwingWorker<Boolean, Void>() {
             @Override

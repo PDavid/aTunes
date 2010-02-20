@@ -17,28 +17,24 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package net.sourceforge.atunes.kernel.modules.cdripper;
+package net.sourceforge.atunes.kernel.actions;
 
-import java.io.File;
+import java.awt.event.ActionEvent;
 
-/**
- * Same as ProgressListener, but for encoder.
- */
-public interface EncoderProgressListener {
+import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.utils.I18nUtils;
 
-    /**
-     * Notify file finished.
-     * 
-     * @param file
-     *            the file
-     */
-    public void notifyFileFinished(File file);
+public class RepositoryLoadCancelAction extends Action {
 
-    /**
-     * Notify progress.
-     * 
-     * @param value
-     *            the value
-     */
-    public void notifyProgress(int value);
+    private static final long serialVersionUID = -9039622325405324974L;
+
+    RepositoryLoadCancelAction() {
+        super(I18nUtils.getString("CANCEL"), null);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+    	RepositoryHandler.getInstance().notifyCancel();
+    }
+
 }

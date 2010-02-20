@@ -65,7 +65,62 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public final class PatternInputDialog extends CustomModalDialog {
 
-    private static final long serialVersionUID = -5789081662254435503L;
+    private static class AvailablePatternsDefaultTableModel extends
+			DefaultTableModel {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 7475413284696491261L;
+
+		private AvailablePatternsDefaultTableModel(Object[][] data,
+				Object[] columnNames) {
+			super(data, columnNames);
+		}
+
+		@Override
+		public boolean isCellEditable(int row, int column) {
+		    return false;
+		}
+	}
+
+	private static class PatternPreviewDefaultTableModel extends
+			DefaultTableModel {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 0L;
+
+		private PatternPreviewDefaultTableModel(Object[][] data,
+				Object[] columnNames) {
+			super(data, columnNames);
+		}
+
+		@Override
+		public boolean isCellEditable(int row, int column) {
+		    return false;
+		}
+	}
+
+	private static class PatternPreviewDefaultTableColumnModel extends
+			DefaultTableColumnModel {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -1915883409261076543L;
+
+		@Override
+		public void addColumn(TableColumn column) {
+		    super.addColumn(column);
+		    if (column.getHeaderValue().equals(I18nUtils.getString("NAME"))) {
+		        column.setPreferredWidth(100);
+		    } else {
+		        // Space removed from first column is given to second column
+		        column.setPreferredWidth(230);
+		    }
+		}
+	}
+
+	private static final long serialVersionUID = -5789081662254435503L;
 
     /** The combo box used to enter or select pattern */
     JComboBox patternComboBox;
@@ -297,47 +352,11 @@ public final class PatternInputDialog extends CustomModalDialog {
         }
         // Disable autoresize, as we will control it
         patternPreviewTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        patternPreviewTable.setColumnModel(new DefaultTableColumnModel() {
-            /**
-             * 
-             */
-            private static final long serialVersionUID = -1915883409261076543L;
-
-            @Override
-            public void addColumn(TableColumn column) {
-                super.addColumn(column);
-                if (column.getHeaderValue().equals(I18nUtils.getString("NAME"))) {
-                    column.setPreferredWidth(100);
-                } else {
-                    // Space removed from first column is given to second column
-                    column.setPreferredWidth(230);
-                }
-            }
-        });
-        DefaultTableModel patternPreviewTableModel = new DefaultTableModel(new String[0][2], PREVIEW_COLUMN_NAMES) {
-            /**
-             * 
-             */
-            private static final long serialVersionUID = 0L;
-
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
+        patternPreviewTable.setColumnModel(new PatternPreviewDefaultTableColumnModel());
+        DefaultTableModel patternPreviewTableModel = new PatternPreviewDefaultTableModel(new String[0][2], PREVIEW_COLUMN_NAMES);
         patternPreviewTable.setModel(patternPreviewTableModel);
 
-        DefaultTableModel availablePatternsTableModel = new DefaultTableModel(patterns, new String[] { I18nUtils.getString("PATTERN"), I18nUtils.getString("DESCRIPTION") }) {
-            /**
-             * 
-             */
-            private static final long serialVersionUID = 7475413284696491261L;
-
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
+        DefaultTableModel availablePatternsTableModel = new AvailablePatternsDefaultTableModel(patterns, new String[] { I18nUtils.getString("PATTERN"), I18nUtils.getString("DESCRIPTION") });
         availablePatternsTable.setModel(availablePatternsTableModel);
         setVisible(true);
         patternComboBox.requestFocus();
