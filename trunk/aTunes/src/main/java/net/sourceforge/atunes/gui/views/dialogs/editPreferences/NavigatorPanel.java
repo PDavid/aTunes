@@ -19,7 +19,6 @@
  */
 package net.sourceforge.atunes.gui.views.dialogs.editPreferences;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -43,7 +42,6 @@ import javax.swing.table.TableModel;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
 import net.sourceforge.atunes.kernel.modules.repository.tags.IncompleteTagsChecker;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.TagAttribute;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -231,14 +229,8 @@ public final class NavigatorPanel extends PreferencesPanel {
         highlighTagAttributesTable.getColumnModel().getColumn(0).setMaxWidth(20);
         highlighTagAttributesTable.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JCheckBox()));
         highlighTagAttributesTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        highlighTagAttributesTable.setDefaultRenderer(String.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
-
-            @Override
-            public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                GuiUtils.applyComponentOrientation((JLabel) superComponent);
-                return superComponent;
-            }
-        }));
+        highlighTagAttributesTable.setDefaultRenderer(String.class, 
+        		LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(GuiUtils.getComponentOrientationTableCellRendererCode()));
 
         highlightTagAttributesScrollPane = new JScrollPane(highlighTagAttributesTable);
         highlightTagAttributesScrollPane.setMinimumSize(new Dimension(300, 150));

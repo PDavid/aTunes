@@ -19,7 +19,6 @@
  */
 package net.sourceforge.atunes.gui.views.dialogs;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -41,7 +40,6 @@ import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
@@ -350,7 +348,7 @@ public final class RipCdDialog extends CustomModalDialog {
         table.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(textfield3));
 
         table.setDefaultRenderer(String.class, 
-        		LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new RipCdDialogTableCellRendererCode()));
+        		LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(GuiUtils.getComponentOrientationTableCellRendererCode()));
 
         JScrollPane scrollPane = new JScrollPane(table);
         JLabel artistLabel = new JLabel(I18nUtils.getString("ALBUM_ARTIST"));
@@ -685,13 +683,4 @@ public final class RipCdDialog extends CustomModalDialog {
         tableModel.fireTableDataChanged();
     }
     
-    private static class RipCdDialogTableCellRendererCode extends TableCellRendererCode {
-        
-    	@Override
-        public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            GuiUtils.applyComponentOrientation((JLabel) superComponent);
-            return superComponent;
-        }
-    }
-
 }

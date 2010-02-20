@@ -20,6 +20,7 @@
 package net.sourceforge.atunes.utils;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Container;
 import java.awt.GraphicsDevice;
@@ -38,13 +39,16 @@ import java.util.Locale;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JRootPane;
+import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
 import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
@@ -460,5 +464,17 @@ public final class GuiUtils {
      */
     public static GraphicsDevice getGraphicsDeviceForLocation(Point p) {
         return getGraphicsDeviceForLocation(p.x, p.y);
+    }
+    
+    public static ComponentOrientationTableCellRendererCode getComponentOrientationTableCellRendererCode() {
+    	return new ComponentOrientationTableCellRendererCode();
+    }
+    
+    public static class ComponentOrientationTableCellRendererCode extends TableCellRendererCode {
+        @Override
+        public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            GuiUtils.applyComponentOrientation((JLabel) superComponent);
+            return superComponent;
+        }
     }
 }

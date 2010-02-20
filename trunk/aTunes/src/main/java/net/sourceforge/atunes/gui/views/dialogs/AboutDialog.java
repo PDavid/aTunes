@@ -19,7 +19,6 @@
  */
 package net.sourceforge.atunes.gui.views.dialogs;
 
-import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -50,7 +49,6 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
@@ -67,15 +65,6 @@ public final class AboutDialog extends CustomModalDialog {
     static final String[] VERSION = new String[] { "Version", Constants.VERSION.toString() };
     static final String[] JAVA_VERSION = new String[] { "Java Runtime Enviroment", System.getProperty("java.version") };
     static final String[] OS_NAME = new String[] { "OS", StringUtils.getString(System.getProperty("os.name"), " (", System.getProperty("os.arch"), ')') };
-
-    private static class ApplyOrientationTableCellRendererCode extends
-			TableCellRendererCode {
-		@Override
-		public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-		    GuiUtils.applyComponentOrientation((JLabel) superComponent);
-		    return superComponent;
-		}
-	}
 
 	/**
      * The Class AboutDialogTableModel.
@@ -220,7 +209,8 @@ public final class AboutDialog extends CustomModalDialog {
 
         JTable propertiesTable = new JTable(tableModel);
         propertiesTable.setShowGrid(false);
-        propertiesTable.setDefaultRenderer(Object.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new ApplyOrientationTableCellRendererCode()));
+        propertiesTable.setDefaultRenderer(Object.class, 
+        		LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(GuiUtils.getComponentOrientationTableCellRendererCode()));
         JScrollPane propertiesScrollPane = new JScrollPane(propertiesTable);
 
         JButton close = new CustomButton(null, I18nUtils.getString("CLOSE"));
