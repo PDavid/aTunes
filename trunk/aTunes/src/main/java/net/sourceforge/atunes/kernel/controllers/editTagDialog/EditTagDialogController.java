@@ -55,7 +55,41 @@ import org.jdesktop.swingx.combobox.ListComboBoxModel;
 
 public final class EditTagDialogController extends SimpleController<EditTagDialog> {
 
-    Logger logger = new Logger();
+    private static class TitleTextFieldKeyAdapter extends KeyAdapter {
+		private final JTextField textField;
+		private final String fileName;
+		int lenght = 0;
+
+		private TitleTextFieldKeyAdapter(JTextField textField, String fileName) {
+			this.textField = textField;
+			this.fileName = fileName;
+		}
+
+		@Override
+		public void keyTyped(KeyEvent e) {
+		    SwingUtilities.invokeLater(new Runnable() {
+		        @Override
+		        public void run() {
+		            String text = textField.getText();
+
+		            // User added a char
+		            if (text.length() > lenght) {
+		                if (text.length() >= 3) {
+		                    int index = fileName.indexOf(text);
+		                    if (index != -1) {
+		                        textField.setText(fileName.substring(index));
+		                        textField.setSelectionStart(text.length());
+		                        textField.setSelectionEnd(textField.getText().length());
+		                    }
+		                }
+		            }
+		            lenght = text.length();
+		        }
+		    });
+		}
+	}
+
+	Logger logger = new Logger();
 
     /** The audio files editing. */
     List<AudioFile> audioFilesEditing;
@@ -346,33 +380,7 @@ public final class EditTagDialogController extends SimpleController<EditTagDialo
         if (audioFiles.size() == 1) {
             final String fileName = audioFiles.get(0).getNameWithoutExtension();
             final JTextField textField = getDialog().getTitleTextField();
-            textField.addKeyListener(new KeyAdapter() {
-
-                int lenght = 0;
-
-                @Override
-                public void keyTyped(KeyEvent e) {
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            String text = textField.getText();
-
-                            // User added a char
-                            if (text.length() > lenght) {
-                                if (text.length() >= 3) {
-                                    int index = fileName.indexOf(text);
-                                    if (index != -1) {
-                                        textField.setText(fileName.substring(index));
-                                        textField.setSelectionStart(text.length());
-                                        textField.setSelectionEnd(textField.getText().length());
-                                    }
-                                }
-                            }
-                            lenght = text.length();
-                        }
-                    });
-                }
-            });
+            textField.addKeyListener(new TitleTextFieldKeyAdapter(textField, fileName));
         }
 
         SwingUtilities.invokeLater(new Runnable() {

@@ -38,7 +38,46 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 public class ImportLovedTracksFromLastFM extends Action {
 
-    private static final long serialVersionUID = 5620935204300321285L;
+    private static class ImportLovedTracksWorker extends
+			SwingWorker<List<AudioFile>, Void> {
+		@Override
+		protected List<AudioFile> doInBackground() throws Exception {
+		    // Get loved tracks
+		    List<LastFmLovedTrack> lovedTracks = LastFmService.getInstance().getLovedTracks();
+		    if (!lovedTracks.isEmpty()) {
+		        List<AudioFile> favoriteAudioFiles = new ArrayList<AudioFile>();
+		        for (LastFmLovedTrack lovedTrack : lovedTracks) {
+		            Artist artist = RepositoryHandler.getInstance().getArtistStructure().get(lovedTrack.getArtist());
+		            if (artist != null) {
+		                for (AudioFile audioObject : artist.getAudioFiles()) {
+		                    if (audioObject.getTitleOrFileName().equalsIgnoreCase(lovedTrack.getTitle())) {
+		                        favoriteAudioFiles.add(audioObject);
+		                    }
+		                }
+		            }
+		        }
+		        return favoriteAudioFiles;
+		    }
+		    return Collections.emptyList();
+		}
+
+		@Override
+		protected void done() {
+		    GuiHandler.getInstance().hideIndeterminateProgressDialog();
+		    List<AudioFile> lovedTracks = null;
+		    try {
+		        // Get loved tracks
+		        lovedTracks = get();
+		        // Set favorites
+		        FavoritesHandler.getInstance().addFavoriteSongs(lovedTracks);
+		    } catch (Exception e) {
+		    }
+		    GuiHandler.getInstance().showMessage(StringUtils.getString(I18nUtils.getString("LOVED_TRACKS_IMPORTED"), ": ", lovedTracks == null ? "0" : lovedTracks.size()));
+
+		}
+	}
+
+	private static final long serialVersionUID = 5620935204300321285L;
 
     ImportLovedTracksFromLastFM() {
         super(I18nUtils.getString("IMPORT_LOVED_TRACKS_FROM_LASTFM"));
@@ -46,43 +85,7 @@ public class ImportLovedTracksFromLastFM extends Action {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        SwingWorker<List<AudioFile>, Void> worker = new SwingWorker<List<AudioFile>, Void>() {
-            @Override
-            protected List<AudioFile> doInBackground() throws Exception {
-                // Get loved tracks
-                List<LastFmLovedTrack> lovedTracks = LastFmService.getInstance().getLovedTracks();
-                if (!lovedTracks.isEmpty()) {
-                    List<AudioFile> favoriteAudioFiles = new ArrayList<AudioFile>();
-                    for (LastFmLovedTrack lovedTrack : lovedTracks) {
-                        Artist artist = RepositoryHandler.getInstance().getArtistStructure().get(lovedTrack.getArtist());
-                        if (artist != null) {
-                            for (AudioFile audioObject : artist.getAudioFiles()) {
-                                if (audioObject.getTitleOrFileName().equalsIgnoreCase(lovedTrack.getTitle())) {
-                                    favoriteAudioFiles.add(audioObject);
-                                }
-                            }
-                        }
-                    }
-                    return favoriteAudioFiles;
-                }
-                return Collections.emptyList();
-            }
-
-            @Override
-            protected void done() {
-                GuiHandler.getInstance().hideIndeterminateProgressDialog();
-                List<AudioFile> lovedTracks = null;
-                try {
-                    // Get loved tracks
-                    lovedTracks = get();
-                    // Set favorites
-                    FavoritesHandler.getInstance().addFavoriteSongs(lovedTracks);
-                } catch (Exception e) {
-                }
-                GuiHandler.getInstance().showMessage(StringUtils.getString(I18nUtils.getString("LOVED_TRACKS_IMPORTED"), ": ", lovedTracks == null ? "0" : lovedTracks.size()));
-
-            }
-        };
+        SwingWorker<List<AudioFile>, Void> worker = new ImportLovedTracksWorker();
         GuiHandler.getInstance().showIndeterminateProgressDialog(I18nUtils.getString("GETTING_LOVED_TRACKS_FROM_LASTFM"));
         worker.execute();
     }

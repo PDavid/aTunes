@@ -75,11 +75,11 @@ class VlcOutputReader extends Thread {
                 });
             }
         } catch (final IOException e) {
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    //PlayerHandler.notifyPlayerError(e);
-                }
-            });
+//            SwingUtilities.invokeLater(new Runnable() {
+//                public void run() {
+//                    //PlayerHandler.notifyPlayerError(e);
+//                }
+//            });
         } finally {
             ClosingUtils.close(in);
         }

@@ -56,7 +56,16 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public final class ColumnSetSelectorDialog extends CustomModalDialog {
 
-    private class ColumnsTableModel implements TableModel {
+    private static class ColumnListTableCellRendererCode extends
+			TableCellRendererCode {
+		@Override
+		public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+		    GuiUtils.applyComponentOrientation((JLabel) superComponent);
+		    return superComponent;
+		}
+	}
+
+	private class ColumnsTableModel implements TableModel {
 
         private static final long serialVersionUID = 5251001708812824836L;
 
@@ -238,14 +247,7 @@ public final class ColumnSetSelectorDialog extends CustomModalDialog {
         columnsList.getColumnModel().getColumn(0).setMaxWidth(20);
         columnsList.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JCheckBox()));
         columnsList.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        columnsList.setDefaultRenderer(String.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
-
-            @Override
-            public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                GuiUtils.applyComponentOrientation((JLabel) superComponent);
-                return superComponent;
-            }
-        }));
+        columnsList.setDefaultRenderer(String.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new ColumnListTableCellRendererCode()));
 
         JScrollPane scrollPane = new JScrollPane(columnsList);
         JLabel label = new JLabel(I18nUtils.getString("SELECT_COLUMNS"));

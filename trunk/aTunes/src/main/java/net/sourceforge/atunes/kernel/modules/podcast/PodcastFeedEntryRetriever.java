@@ -49,7 +49,16 @@ import org.w3c.dom.NodeList;
  */
 public class PodcastFeedEntryRetriever implements Runnable {
 
-    static Logger logger = new Logger();
+    private static class RefreshViewRunnable implements Runnable {
+		@Override
+		public void run() {
+		    // refresh view
+		    NavigationHandler.getInstance().refreshView(PodcastNavigationView.class);
+		    logger.info(LogCategories.PODCAST, "Podcast feed entries retrieval done");
+		}
+	}
+
+	static Logger logger = new Logger();
 
     List<PodcastFeed> podcastFeeds;
 
@@ -185,14 +194,7 @@ public class PodcastFeedEntryRetriever implements Runnable {
     }
 
     private void refreshView() {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                // refresh view
-                NavigationHandler.getInstance().refreshView(PodcastNavigationView.class);
-                logger.info(LogCategories.PODCAST, "Podcast feed entries retrieval done");
-            }
-        });
+        SwingUtilities.invokeLater(new RefreshViewRunnable());
     }
 
     private void showMessage(final List<PodcastFeed> podcastFeedsWithNewEntries) {

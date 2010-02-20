@@ -52,7 +52,19 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class LanguageSelectorDialog extends JDialog {
 
-    private static final long serialVersionUID = 8846024391499257859L;
+    private static class LanguageSelectorListCellRendererCode extends
+			ListCellRendererCode {
+		@Override
+		public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+		    Component c = superComponent;
+		    // Name of flag file should be <language_name>.png
+		    String flag = StringUtils.getString(((String) value).toLowerCase(), ".png");
+		    ((JLabel) c).setIcon(new ImageIcon(LanguageSelectorDialog.class.getResource(StringUtils.getString("/", Constants.TRANSLATIONS_DIR, "/", flag))));
+		    return c;
+		}
+	}
+
+	private static final long serialVersionUID = 8846024391499257859L;
 
     /** The frame. */
     private static JFrame frame = getFrame();
@@ -91,17 +103,7 @@ public final class LanguageSelectorDialog extends JDialog {
         c.fill = GridBagConstraints.BOTH;
         panel.add(scrollPane, c);
 
-        list.setCellRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListCellRenderer(new ListCellRendererCode() {
-
-            @Override
-            public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                Component c = superComponent;
-                // Name of flag file should be <language_name>.png
-                String flag = StringUtils.getString(((String) value).toLowerCase(), ".png");
-                ((JLabel) c).setIcon(new ImageIcon(LanguageSelectorDialog.class.getResource(StringUtils.getString("/", Constants.TRANSLATIONS_DIR, "/", flag))));
-                return c;
-            }
-        }));
+        list.setCellRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListCellRenderer(new LanguageSelectorListCellRendererCode()));
 
         JButton okButton = new CustomButton(null, "OK");
         okButton.addActionListener(new ActionListener() {

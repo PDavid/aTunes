@@ -44,7 +44,25 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class ExportAction extends Action {
 
-    private static final long serialVersionUID = -6661702915765846089L;
+    private static class ExportProcessListener implements ProcessListener {
+		@Override
+		public void processCanceled() { /* Nothing to do */
+		}
+
+		@Override
+		public void processFinished(final boolean ok) {
+		    SwingUtilities.invokeLater(new Runnable() {
+		        @Override
+		        public void run() {
+		            if (!ok) {
+		                GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("ERRORS_IN_EXPORT_PROCESS"));
+		            }
+		        }
+		    });
+		}
+	}
+
+	private static final long serialVersionUID = -6661702915765846089L;
 
     ExportAction() {
         super(StringUtils.getString(I18nUtils.getString("EXPORT"), "..."));
@@ -85,23 +103,7 @@ public class ExportAction extends Action {
                     }
 
                     ExportFilesProcess process = new ExportFilesProcess(songs, path);
-                    process.addProcessListener(new ProcessListener() {
-                        @Override
-                        public void processCanceled() { /* Nothing to do */
-                        }
-
-                        @Override
-                        public void processFinished(final boolean ok) {
-                            SwingUtilities.invokeLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (!ok) {
-                                        GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("ERRORS_IN_EXPORT_PROCESS"));
-                                    }
-                                }
-                            });
-                        }
-                    });
+                    process.addProcessListener(new ExportProcessListener());
                     process.execute();
                 } else if (userWantsToCreate) {
                     // If path does not exist and app is not able to create it show an error dialog

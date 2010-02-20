@@ -46,7 +46,20 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public abstract class PlayerEngine implements PlaybackStateListener {
 
-    private enum SubmissionState {
+    private final class ShowErrorDialog implements Runnable {
+		private final Exception e;
+
+		private ShowErrorDialog(Exception e) {
+			this.e = e;
+		}
+
+		@Override
+		public void run() {
+		    GuiHandler.getInstance().showErrorDialog(e.getMessage());
+		}
+	}
+
+	private enum SubmissionState {
         NOT_SUBMITTED, PENDING, SUBMITTED;
     }
 
@@ -433,12 +446,7 @@ public abstract class PlayerEngine implements PlaybackStateListener {
     public final void handlePlayerEngineError(final Exception e) {
         logger.error(LogCategories.PLAYER, StringUtils.getString("Player Error: ", e));
         logger.error(LogCategories.PLAYER, e);
-        SwingUtilities.invokeLater(new Runnable() {
-        	@Override
-        	public void run() {
-                GuiHandler.getInstance().showErrorDialog(e.getMessage());
-        	}
-        });
+        SwingUtilities.invokeLater(new ShowErrorDialog(e));
     }
 
     /**
