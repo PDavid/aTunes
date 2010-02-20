@@ -17,7 +17,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package net.sourceforge.atunes.test.lastfm;
+package net.sourceforge.atunes.kernel.modules.webservices.lastfm;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmLoved
 
 import org.junit.Test;
 
-public class LastFmTests {
+public class LastFmServiceTest {
 
     @Test
     public void testLovedTracks() {

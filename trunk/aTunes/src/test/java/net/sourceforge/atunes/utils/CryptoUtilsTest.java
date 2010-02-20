@@ -17,7 +17,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package net.sourceforge.atunes.test.utils;
+package net.sourceforge.atunes.utils;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
