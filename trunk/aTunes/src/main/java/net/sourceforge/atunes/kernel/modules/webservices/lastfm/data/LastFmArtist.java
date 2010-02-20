@@ -49,7 +49,8 @@ public class LastFmArtist implements ArtistInfo {
     protected static LastFmArtist getArtist(Artist a) {
         LastFmArtist artist = new LastFmArtist();
         artist.name = a.getName();
-        artist.match = String.valueOf(a.getSimilarityMatch());
+        // Match is returned in [0-1] range and we show a percentage
+        artist.match = String.valueOf((int)(a.getSimilarityMatch() * 100));
         String url2 = a.getUrl();
         artist.url = url2.startsWith("http") ? url2 : "http://" + url2;
         // SMALL images have low quality when scaling. Better to get largest image
