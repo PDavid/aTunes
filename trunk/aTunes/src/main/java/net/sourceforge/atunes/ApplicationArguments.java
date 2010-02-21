@@ -60,7 +60,7 @@ public final class ApplicationArguments {
     /**
      * Saved arguments
      */
-    private static List<String> savedArguments = new ArrayList<String>();
+    private static List<String> savedArguments;
 
     /**
      * Finds USE_CONFIG_FOLDER at argument list and gets value.
@@ -73,10 +73,12 @@ public final class ApplicationArguments {
     public static String getUserConfigFolder(List<String> args) {
         String configFolder = null;
 
-        for (String arg : args) {
-            if (arg.toLowerCase().startsWith(USE_CONFIG_FOLDER)) {
-                configFolder = arg.substring(USE_CONFIG_FOLDER.length());
-            }
+        if (args != null) {
+        	for (String arg : args) {
+        		if (arg.toLowerCase().startsWith(USE_CONFIG_FOLDER)) {
+        			configFolder = arg.substring(USE_CONFIG_FOLDER.length());
+        		}
+        	}
         }
 
         return configFolder;
@@ -93,10 +95,12 @@ public final class ApplicationArguments {
     public static String getRepositoryConfigFolder(List<String> args) {
         String configFolder = null;
 
-        for (String arg : args) {
-            if (arg.toLowerCase().startsWith(USE_REPOSITORY_CONFIG_FOLDER)) {
-                configFolder = arg.substring(USE_REPOSITORY_CONFIG_FOLDER.length());
-            }
+        if (args != null) {
+        	for (String arg : args) {
+        		if (arg.toLowerCase().startsWith(USE_REPOSITORY_CONFIG_FOLDER)) {
+        			configFolder = arg.substring(USE_REPOSITORY_CONFIG_FOLDER.length());
+        		}
+        	}
         }
 
         return configFolder;
@@ -109,6 +113,7 @@ public final class ApplicationArguments {
      * @param arguments
      */
     public static void saveArguments(List<String> arguments) {
+    	savedArguments = new ArrayList<String>();
         checkAndSave(arguments, DEBUG);
         checkAndSave(arguments, IGNORE_LOOK_AND_FEEL);
         checkAndSave(arguments, ALLOW_MULTIPLE_INSTANCE);
@@ -125,11 +130,13 @@ public final class ApplicationArguments {
      * @param arg
      */
     private static void checkAndSave(List<String> arguments, String arg) {
-        for (String argument : arguments) {
-            if (argument.toLowerCase().startsWith(arg.toLowerCase())) {
-                savedArguments.add(argument);
-            }
-        }
+    	if (arguments != null) {
+    		for (String argument : arguments) {
+    			if (argument.toLowerCase().startsWith(arg.toLowerCase())) {
+    				savedArguments.add(argument);
+    			}
+    		}
+    	}
     }
 
     /**
