@@ -44,6 +44,8 @@ abstract class MPlayerOutputReader extends Thread {
     private BufferedReader in;
     private int length;
     private int time;
+    
+    private volatile boolean readStopped = false;
 
     /**
      * Instantiates a new mplayer output reader.
@@ -105,8 +107,15 @@ abstract class MPlayerOutputReader extends Thread {
 
         // End
         if (END_PATTERN.matcher(line).matches()) {
-            getEngine().currentAudioObjectFinished();
+        	// Playback finished
+        	if (!readStopped) {
+        		getEngine().currentAudioObjectFinished(true);
+        	}
         }
+    }
+    
+    protected void stopRead() {
+    	readStopped = true;
     }
 
     @Override

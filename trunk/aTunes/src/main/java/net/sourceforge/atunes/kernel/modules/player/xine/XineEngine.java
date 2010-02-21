@@ -37,6 +37,8 @@ import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.StringUtils;
 
 import org.libxinejna.Xine;
 import org.libxinejna.XineController;
@@ -108,11 +110,14 @@ public class XineEngine extends PlayerEngine {
         // Apply equalizer
         applyEqualization(getEqualizer().getEqualizerValues());
 
+        
+        String errorMessage = null;
         int streamLength = xineController.getStreamLength();
         if (audioObjectToPlay instanceof PodcastFeedEntry || audioObjectToPlay instanceof Radio) {
             if (!xineController.hasAudio()) {
                 info("No audio found, go to next track");
                 valid = false;
+                errorMessage = StringUtils.getString(I18nUtils.getString("FILE_NOT_FOUND"), ": ", audioObjectToPlay.getUrl());
             } else {
                 // logic from init() of PodcastFeedEntryMPlayerOutputReader
                 long duration = audioObjectToPlay.getDuration() * 1000;
@@ -123,6 +128,7 @@ public class XineEngine extends PlayerEngine {
             // Check if stream length is 0 which may indicate a wrong audio object, and then skip
             if (streamLength <= 0) {
                 valid = false;
+                errorMessage = StringUtils.getString(I18nUtils.getString("ERROR"), ": ", audioObjectToPlay.getUrl());
             }
             setCurrentAudioObjectLength(streamLength);
         }
@@ -155,7 +161,7 @@ public class XineEngine extends PlayerEngine {
             });
             durationUpdater.start();
         } else {
-            currentAudioObjectFinished();
+            currentAudioObjectFinished(false, errorMessage);
         }
     }
 
@@ -289,7 +295,7 @@ public class XineEngine extends PlayerEngine {
             xineController.start(startPosition, 0);
         } catch (Exception e) {
             info("Xine encountered an error: " + e);
-            currentAudioObjectFinished();
+            currentAudioObjectFinished(false, "Xine encountered an error: ", e.getMessage());
         }
     }
 
@@ -316,7 +322,7 @@ public class XineEngine extends PlayerEngine {
                     SwingUtilities.invokeAndWait(new Runnable() {
                         @Override
                         public void run() {
-                            currentAudioObjectFinished();
+                            currentAudioObjectFinished(true);
                         }
                     });
                 } catch (InterruptedException e) {

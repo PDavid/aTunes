@@ -172,8 +172,8 @@ public class MPlayerEngine extends PlayerEngine {
             // Output reader needs original audio object, specially when cacheFilesBeforePlaying is true, as
             // statistics must be applied over original audio object, not the cached one
             mPlayerOutputReader = MPlayerOutputReader.newInstance(this, process, audioObject);
+            mPlayerErrorReader = new MPlayerErrorReader(this, process, mPlayerOutputReader, audioObjectToPlay);
             mPlayerOutputReader.start();
-            mPlayerErrorReader = new MPlayerErrorReader(this, process, audioObjectToPlay);
             mPlayerErrorReader.start();
             mPlayerPositionThread = new MPlayerPositionThread(this);
             mPlayerPositionThread.start();
