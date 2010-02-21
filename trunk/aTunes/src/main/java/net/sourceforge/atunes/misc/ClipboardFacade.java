@@ -26,9 +26,6 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 
-import net.sourceforge.atunes.misc.log.LogCategories;
-import net.sourceforge.atunes.misc.log.Logger;
-
 import org.commonjukebox.plugins.PluginApi;
 
 /**
@@ -36,9 +33,6 @@ import org.commonjukebox.plugins.PluginApi;
  */
 @PluginApi
 public class ClipboardFacade implements ClipboardOwner {
-
-    /** Logger. */
-    private static Logger logger;
 
     /** Private singleton instance. */
     private static ClipboardFacade instance = new ClipboardFacade();
@@ -57,8 +51,6 @@ public class ClipboardFacade implements ClipboardOwner {
      *            the s text
      */
     public static void copyToClipboard(String sText) {
-        getLogger().debug(LogCategories.CLIPBOARD);
-
         // Get System Clipboard
         Clipboard objClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         // Wrap text into a transferable object
@@ -110,15 +102,4 @@ public class ClipboardFacade implements ClipboardOwner {
         // Nothing to do
     }
     
-    /**
-     * Getter for logger
-     * @return
-     */
-    private static Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
-    }
-
 }

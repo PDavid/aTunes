@@ -36,7 +36,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class LyrcEngine extends LyricsEngine {
 
-    private static Logger logger;
+    private Logger logger;
 
     private static final String ARTIST_WILDCARD = "(%ARTIST%)";
     private static final String SONG_WILDCARD = "(%SONG%)";

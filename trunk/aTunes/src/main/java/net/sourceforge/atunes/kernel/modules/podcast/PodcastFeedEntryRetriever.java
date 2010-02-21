@@ -54,11 +54,11 @@ public class PodcastFeedEntryRetriever implements Runnable {
 		public void run() {
 		    // refresh view
 		    NavigationHandler.getInstance().refreshView(PodcastNavigationView.class);
-		    getLogger().info(LogCategories.PODCAST, "Podcast feed entries retrieval done");
+		    new Logger().info(LogCategories.PODCAST, "Podcast feed entries retrieval done");
 		}
 	}
 
-	private static Logger logger;
+	private Logger logger;
 
     private List<PodcastFeed> podcastFeeds;
 
@@ -256,7 +256,7 @@ public class PodcastFeedEntryRetriever implements Runnable {
      * Getter for logger
      * @return
      */
-    private static Logger getLogger() {
+    private Logger getLogger() {
     	if (logger == null) {
     		logger = new Logger();
     	}

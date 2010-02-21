@@ -36,8 +36,6 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
-import net.sourceforge.atunes.misc.log.Logger;
-
 import org.commonjukebox.plugins.PluginApi;
 
 @PluginApi
@@ -118,21 +116,6 @@ public abstract class LookAndFeel {
 		    return code.getComponent(c, tree, value, sel, expanded, leaf, row, hasFocus);
 		}
 	}
-
-	/** Logger */
-    private static Logger logger;
-
-    /**
-     * Private getter for logger
-     * 
-     * @return
-     */
-    protected static Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
-    }
 
     /**
      * Returns name of the look and feel

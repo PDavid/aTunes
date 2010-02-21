@@ -50,8 +50,6 @@ import org.jaudiotagger.tag.datatype.Artwork;
  */
 public final class AudioFilePictureUtils {
 
-    private static Logger logger;
-
     private AudioFilePictureUtils() {
     }
 
@@ -86,7 +84,7 @@ public final class AudioFilePictureUtils {
                 }
             }
         } catch (Exception e) {
-            getLogger().error(LogCategories.IMAGE, e);
+            new Logger().error(LogCategories.IMAGE, e);
         }
     }
 
@@ -194,7 +192,7 @@ public final class AudioFilePictureUtils {
             }
             return null;
         } catch (Exception e) {
-            getLogger().error(LogCategories.IMAGE, e);
+            new Logger().error(LogCategories.IMAGE, e);
             return null;
         }
     }
@@ -262,15 +260,4 @@ public final class AudioFilePictureUtils {
         ImageUtils.writeImageToFile(image.getImage(), file.getAbsolutePath());
     }
     
-    /**
-     * Getter for logger
-     * @return
-     */
-    private static Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
-    }
-
 }

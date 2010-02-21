@@ -66,7 +66,7 @@ public abstract class PlayerEngine implements PlaybackStateListener {
     /**
      * The logger used in player engines
      */
-    private static Logger logger;
+    private Logger logger;
 
     /**
      * Listeners of playback state
@@ -683,7 +683,7 @@ public abstract class PlayerEngine implements PlaybackStateListener {
 	/**
 	 * @return the logger
 	 */
-	protected static Logger getLogger() {
+	protected Logger getLogger() {
 		if (logger == null) {
 			logger = new Logger();
 		}

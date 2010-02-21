@@ -25,6 +25,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeel;
+import net.sourceforge.atunes.misc.log.Logger;
 
 public class NimbusLookAndFeel extends LookAndFeel {
 
@@ -57,13 +58,13 @@ public class NimbusLookAndFeel extends LookAndFeel {
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (ClassNotFoundException e) {
-            getLogger().internalError(e);
+        	new Logger().internalError(e);
         } catch (InstantiationException e) {
-            getLogger().internalError(e);
+        	new Logger().internalError(e);
         } catch (IllegalAccessException e) {
-            getLogger().internalError(e);
+        	new Logger().internalError(e);
         } catch (UnsupportedLookAndFeelException e) {
-            getLogger().internalError(e);
+        	new Logger().internalError(e);
         }
     }
 }

@@ -57,11 +57,6 @@ public abstract class ContextPanel {
     private static final long serialVersionUID = 7870512266932745272L;
 
     /**
-     * Logger shared by all context panels
-     */
-    private static Logger logger;
-
-    /**
      * Last AudioObject used to update context panel
      */
     private AudioObject audioObject;
@@ -149,7 +144,7 @@ public abstract class ContextPanel {
             return;
         }
 
-        getLogger().debug(LogCategories.CONTEXT, "Updating panel: ", getContextPanelName());
+        new Logger().debug(LogCategories.CONTEXT, "Updating panel: ", getContextPanelName());
         for (ContextPanelContent content : getContents()) {
             content.clearContextPanelContent();
             content.updateContextPanelContent(audioObject);
@@ -164,7 +159,7 @@ public abstract class ContextPanel {
      * tab showing this panel method updateContextPanel must be called again
      */
     public final void clearContextPanel() {
-        getLogger().debug(LogCategories.CONTEXT, "Clearing panel: ", getContextPanelName());
+        new Logger().debug(LogCategories.CONTEXT, "Clearing panel: ", getContextPanelName());
         for (ContextPanelContent content : getContents()) {
             content.clearContextPanelContent();
         }
@@ -265,18 +260,6 @@ public abstract class ContextPanel {
         return isPanelEnabledForAudioObject(ContextHandler.getInstance().getCurrentAudioObject());
     }
 
-    /**
-     * Getter of logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
-    }
-    
     private static class CustomJXTaskPane extends JXTaskPane {
         private static final long serialVersionUID = 1569831509432974799L;
 

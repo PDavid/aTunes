@@ -51,7 +51,7 @@ public abstract class Process {
     /**
      * Logger shared by all processes
      */
-    private static Logger logger;
+    private Logger logger;
 
     /**
      * List of listeners notified when Process ends or is canceled
@@ -340,7 +340,7 @@ public abstract class Process {
      * Getter for logger
      * @return
      */
-    private static Logger getLogger() {
+    private Logger getLogger() {
     	if (logger == null) {
     		logger = new Logger();
     	}

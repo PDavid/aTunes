@@ -70,8 +70,6 @@ public class WinampcnEngine extends LyricsEngine {
     private static final String QUERY_URL = "http://www.winampcn.com/lyrictransfer/get.aspx?song=%1&artist=%2&lsong=%3";
     private static final String LYRC_URL = "http://www.winampcn.com/lyrictransfer/lrc.aspx?id=%1&ti=%2";
 
-    private static Logger logger;
-
     public WinampcnEngine(Proxy proxy) {
         super(proxy);
     }
@@ -89,7 +87,7 @@ public class WinampcnEngine extends LyricsEngine {
             lyrics = lyrics.replaceAll("\\[.+\\]", "");
             return lyrics == null || lyrics.isEmpty() ? null : new Lyrics(lyrics, lyrcUrl);
         } catch (IOException e) {
-            getLogger().error(LogCategories.SERVICE, "Cannot fetch lyrics for: " + artist + "/" + title);
+            new Logger().error(LogCategories.SERVICE, "Cannot fetch lyrics for: " + artist + "/" + title);
             return null;
         }
     }
@@ -182,21 +180,9 @@ public class WinampcnEngine extends LyricsEngine {
                 SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
                 parser.parse(new ByteArrayInputStream(xml.getBytes("gbk")), this);
             } catch (Exception e) {
-                getLogger().error(LogCategories.SERVICE, "Cannot parse lyrics list from winampcn: " + e.getMessage());
+                new Logger().error(LogCategories.SERVICE, "Cannot parse lyrics list from winampcn: " + e.getMessage());
             }
             return this.lyrcs;
         }
-    }
-    
-    /**
-     * Getter for logger
-     * @return
-     */
-    private static Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
-    }
-
+    }    
 }

@@ -59,8 +59,6 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
 
     private static ImageCache imageCache = new ImageCache();
 
-    private static transient Logger logger;
-
     private Tag tag;
     private List<File> externalPictures;
     private int duration;
@@ -204,7 +202,7 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
             bitrate = af.getAudioHeader().getBitRateAsNumber();
             frequency = af.getAudioHeader().getSampleRateAsNumber();
         } catch (Exception e) {
-            getLogger().error(LogCategories.FILE_READ, e.getMessage());
+            new Logger().error(LogCategories.FILE_READ, e.getMessage());
         }
     }
 
@@ -678,17 +676,6 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
 
     public static ImageCache getImageCache() {
         return imageCache;
-    }
-
-    /**
-     * Getter for logger
-     * @return
-     */
-    private static Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
     }
 
 }

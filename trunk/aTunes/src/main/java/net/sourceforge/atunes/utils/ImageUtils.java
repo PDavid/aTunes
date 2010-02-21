@@ -42,8 +42,6 @@ import org.jdesktop.swingx.graphics.GraphicsUtilities;
 @PluginApi
 public final class ImageUtils {
 
-    /** The logger. */
-    private static Logger logger;
     /** The Constant FILES_EXTENSION. */
     public static final String FILES_EXTENSION = "png";
 
@@ -175,8 +173,9 @@ public final class ImageUtils {
             g.drawImage(image, 0, 0, null);
             g.dispose();
         } catch (IllegalArgumentException e) {
-            getLogger().info(LogCategories.IMAGE, "Maybe picture file with wrong ending?");
-            getLogger().error(LogCategories.IMAGE, e);
+        	Logger logger = new Logger();
+            logger.info(LogCategories.IMAGE, "Maybe picture file with wrong ending?");
+            logger.error(LogCategories.IMAGE, e);
             return null;
         }
 
@@ -210,17 +209,6 @@ public final class ImageUtils {
         }
 
         ImageIO.write(buf, ImageUtils.FILES_EXTENSION, new FileOutputStream(fileNameWithExtension));
-    }
-
-    /**
-     * Getter for logger
-     * @return
-     */
-    private static Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
     }
 
 }

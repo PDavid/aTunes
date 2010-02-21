@@ -32,11 +32,6 @@ import net.sourceforge.atunes.misc.log.Logger;
 
 class RepositoryFiller {
 
-    /**
-     * Logger
-     */
-    private static Logger logger;
-
     private RepositoryFiller() {
     	
     }
@@ -81,7 +76,7 @@ class RepositoryFiller {
 
             albumObject.addAudioFile(audioFile);
         } catch (Exception e) {
-            getLogger().error(LogCategories.FILE_READ, e.getMessage());
+            new Logger().error(LogCategories.FILE_READ, e.getMessage());
         }
     }
 
@@ -105,7 +100,7 @@ class RepositoryFiller {
 
             genreObject.addAudioFile(audioFile);
         } catch (Exception e) {
-            getLogger().error(LogCategories.FILE_READ, e.getMessage());
+        	new Logger().error(LogCategories.FILE_READ, e.getMessage());
         }
     }
 
@@ -152,16 +147,4 @@ class RepositoryFiller {
         }
         parentFolder.addAudioFile(file);
     }
-
-    /**
-     * Getter for logger
-     * @return
-     */
-    private static Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
-    }
-
 }
