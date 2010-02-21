@@ -35,7 +35,7 @@ public abstract class AbstractCache {
     }
 
     private void init(URL settings) {
-        System.setProperty("ehcache.disk.store.dir", SystemProperties.getUserConfigFolder(Kernel.DEBUG) + SystemProperties.FILE_SEPARATOR + Constants.CACHE_DIR);
+        System.setProperty("ehcache.disk.store.dir", SystemProperties.getUserConfigFolder(Kernel.isDebug()) + SystemProperties.FILE_SEPARATOR + Constants.CACHE_DIR);
         this.cacheManager = new CacheManager(settings);
     }
 

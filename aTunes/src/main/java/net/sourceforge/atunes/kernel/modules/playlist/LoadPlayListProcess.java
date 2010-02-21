@@ -54,7 +54,7 @@ class LoadPlayListProcess extends Process {
     @Override
     protected boolean runProcess() {
         final List<AudioObject> songsLoaded = new ArrayList<AudioObject>();
-        for (int i = 0; i < filenamesToLoad.size() && !cancel; i++) {
+        for (int i = 0; i < filenamesToLoad.size() && !isCanceled(); i++) {
             songsLoaded.add(PlayListIO.getAudioFileOrCreate(filenamesToLoad.get(i)));
             setCurrentProgress(i + 1);
         }

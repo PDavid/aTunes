@@ -46,12 +46,12 @@ public class CdRipper {
     public static final String TITLE_PATTERN = "%T";
     public static final String TRACK_NUMBER = "%N";
 
-    Logger logger = new Logger();
+    private Logger logger = new Logger();
     private CdToWavConverter cdToWavConverter;
-    Encoder encoder;
-    ProgressListener listener;
-    ProgressListener encoderListener;
-    boolean interrupted;
+    private Encoder encoder;
+    private ProgressListener listener;
+    private ProgressListener encoderListener;
+    private boolean interrupted;
     /** ExecutorService for file encoding. */
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private String artist;
@@ -85,7 +85,7 @@ public class CdRipper {
      * @return the cD info
      */
     public CDInfo getCDInfo() {
-        return cdToWavConverter.getCDInfo();
+        return cdToWavConverter.retrieveDiscInformation();
     }
 
     /**

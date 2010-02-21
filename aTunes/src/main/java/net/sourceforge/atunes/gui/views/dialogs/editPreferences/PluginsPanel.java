@@ -73,25 +73,25 @@ public final class PluginsPanel extends PreferencesPanel {
 
     private static final long serialVersionUID = 8611795969151425262L;
 
-    JTable pluginsTable;
+    private JTable pluginsTable;
 
-    JButton pluginPreferencesButton;
+    private JButton pluginPreferencesButton;
 
-    JButton uninstallPluginButton;
+    private JButton uninstallPluginButton;
 
     private static final int CELL_HEIGHT = 30;
 
-    Logger logger = new Logger();
+    private Logger logger = new Logger();
 
     /**
      * Plugins modified with their modified configuration
      */
-    Map<PluginInfo, PluginConfiguration> pluginsModified;
+    private Map<PluginInfo, PluginConfiguration> pluginsModified;
 
     /**
      * Plugins activated or deactivated
      */
-    Map<PluginInfo, Boolean> pluginsActivation;
+    private Map<PluginInfo, Boolean> pluginsActivation;
 
     /**
      * Instantiates a new plugins panel.

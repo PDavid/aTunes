@@ -262,7 +262,7 @@ public final class SystemProperties {
      * @return the temp folder
      */
     public static String getTempFolder() {
-        String userConfigFolder = getUserConfigFolder(Kernel.DEBUG);
+        String userConfigFolder = getUserConfigFolder(Kernel.isDebug());
         String tempFolder = StringUtils.getString(userConfigFolder, FILE_SEPARATOR, Constants.TEMP_DIR);
         File tempFile = new File(tempFolder);
         if (!tempFile.exists()) {

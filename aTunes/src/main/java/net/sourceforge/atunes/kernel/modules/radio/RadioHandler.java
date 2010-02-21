@@ -51,13 +51,13 @@ public final class RadioHandler extends Handler {
 
     private List<Radio> radios;
     private List<Radio> presetRadios;
-    List<Radio> retrievedPresetRadios = new ArrayList<Radio>();
-    boolean noNewStations = true;
+    private List<Radio> retrievedPresetRadios = new ArrayList<Radio>();
+    private boolean noNewStations = true;
 
     /**
      * Flag indicating if radio information must be stored to disk
      */
-    boolean radioListDirty = false;
+    private boolean radioListDirty = false;
 
     /**
      * Instantiates a new radio handler.

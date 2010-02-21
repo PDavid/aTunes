@@ -42,20 +42,20 @@ public final class AutoCompleteDocument extends PlainDocument {
      * been caused by the adapted Component that is trying to set the text for
      * the selected component.
      */
-    boolean selecting = false;
+    private boolean selecting = false;
 
     /**
      * true, if only items from the adaptors's list can be entered false,
      * otherwise (selected item might not be in the adaptors's list)
      */
-    boolean strictMatching;
+    private boolean strictMatching;
 
     /**
      * The adaptor that is used to find and select items.
      */
-    AbstractAutoCompleteAdaptor adaptor;
+    private AbstractAutoCompleteAdaptor adaptor;
 
-    ObjectToStringConverter stringConverter;
+    private ObjectToStringConverter stringConverter;
 
     /**
      * Creates a new AutoCompleteDocument for the given

@@ -75,7 +75,7 @@ public final class UpdateHandler extends Handler {
 
     @Override
     public void applicationStarted() {
-        if (!Kernel.NO_UPDATE) {
+        if (!Kernel.isNoUpdate()) {
             checkUpdates(ApplicationState.getInstance().getProxy(), false, false);
         }
     }

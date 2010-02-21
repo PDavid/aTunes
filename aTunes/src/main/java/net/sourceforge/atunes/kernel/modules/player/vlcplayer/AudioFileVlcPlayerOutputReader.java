@@ -45,8 +45,8 @@ class AudioFileVlcPlayerOutputReader extends VlcPlayerOutputReader {
         super.init();
         //System.out.println("length " + (audioFile.getDuration() * 1000));
         if (AudioFile.isValidAudioFile(audioFile.getFile())) {
-            engine.setCurrentLength(audioFile.getDuration() * 1000);
-            super.lenght = ((int) audioFile.getDuration());
+            getEngine().setCurrentLength(audioFile.getDuration() * 1000);
+            setLength((int) audioFile.getDuration());
         }
     }
 

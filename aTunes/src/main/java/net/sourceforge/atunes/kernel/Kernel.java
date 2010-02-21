@@ -54,22 +54,22 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class Kernel {
 
-    static Logger logger = new Logger();
+	private static Logger logger = new Logger();
 
     /**
      * Unique instance of Kernel. To access Kernel, Kernel.getInstance() must be
      * called
      */
-    static Kernel instance;
+	private static Kernel instance;
 
     /** Defines if aTunes is running in debug mode. */
-    public static boolean DEBUG;
+	private static boolean debug;
 
     /** Defines if aTunes will ignore look and feel. */
-    public static boolean IGNORE_LOOK_AND_FEEL;
+	private static boolean ignoreLookAndFeel;
 
     /** Defines if aTunes should not try to update (for Linux packages). */
-    public static boolean NO_UPDATE;
+	private static boolean noUpdate;
 
     /**
      * List of start listeners
@@ -379,4 +379,46 @@ public class Kernel {
             }
         }
     }
+
+	/**
+	 * @return the debug
+	 */
+	public static boolean isDebug() {
+		return debug;
+	}
+
+	/**
+	 * @param debug the debug to set
+	 */
+	public static void setDebug(boolean debug) {
+		Kernel.debug = debug;
+	}
+
+	/**
+	 * @return the ignoreLookAndFeel
+	 */
+	public static boolean isIgnoreLookAndFeel() {
+		return ignoreLookAndFeel;
+	}
+
+	/**
+	 * @param ignoreLookAndFeel the ignoreLookAndFeel to set
+	 */
+	public static void setIgnoreLookAndFeel(boolean ignoreLookAndFeel) {
+		Kernel.ignoreLookAndFeel = ignoreLookAndFeel;
+	}
+
+	/**
+	 * @return the noUpdate
+	 */
+	public static boolean isNoUpdate() {
+		return noUpdate;
+	}
+
+	/**
+	 * @param noUpdate the noUpdate to set
+	 */
+	public static void setNoUpdate(boolean noUpdate) {
+		Kernel.noUpdate = noUpdate;
+	}
 }

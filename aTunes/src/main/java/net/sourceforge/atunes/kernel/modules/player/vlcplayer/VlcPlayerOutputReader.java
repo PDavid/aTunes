@@ -33,12 +33,12 @@ import net.sourceforge.atunes.utils.ClosingUtils;
 
 class VlcPlayerOutputReader extends Thread {
 
-    protected VlcPlayerEngine engine;
-    protected BufferedReader in;
+    private VlcPlayerEngine engine;
+    private  BufferedReader in;
     /** Flags for the length and position of media */
-    protected int lenght = 0;
-    protected int position = 0;
-    protected boolean endReached = false;
+    private  int length = 0;
+    private  int position = 0;
+    private  boolean endReached = false;
 
     /**
      * Instantiates a new m player output reader.
@@ -87,12 +87,12 @@ class VlcPlayerOutputReader extends Thread {
     protected void read(String line) {
 
         //retrieve the length of the media
-        if (lenght == 0) {
+        if (length == 0) {
             try {
                 int retrievedValue = new Long(line).intValue();
                 if (retrievedValue > 0) {
                     engine.setCurrentLength(retrievedValue * 1000);
-                    lenght = retrievedValue * 1000;
+                    length = retrievedValue * 1000;
                 } else {
                     if (engine.getCommandWriter() != null) {
                         engine.getCommandWriter().sendGetDurationCommand();
@@ -109,7 +109,7 @@ class VlcPlayerOutputReader extends Thread {
 
             try {
                 int retrievedValue = new Integer(line).intValue();
-                if (retrievedValue <= lenght) {
+                if (retrievedValue <= length) {
                     engine.setTime(retrievedValue * 1000);
                     position = retrievedValue;
                 }
@@ -121,8 +121,8 @@ class VlcPlayerOutputReader extends Thread {
         //System.out.println(position + " / " + lenght);
 
         //automatically play next audio if end is reached and player stops 
-        if (lenght > 0) {
-            endReached = position >= lenght - 1;
+        if (length > 0) {
+            endReached = position >= length - 1;
         }
         if (line.equals("status change: ( stop state: 0 )")) {
             if (endReached) {
@@ -157,5 +157,26 @@ class VlcPlayerOutputReader extends Thread {
             ClosingUtils.close(in);
         }
     }
+
+	/**
+	 * @return the engine
+	 */
+	protected VlcPlayerEngine getEngine() {
+		return engine;
+	}
+
+	/**
+	 * @return the length
+	 */
+	protected int getLength() {
+		return length;
+	}
+
+	/**
+	 * @param length the length to set
+	 */
+	protected void setLength(int length) {
+		this.length = length;
+	}
 
 }

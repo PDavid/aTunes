@@ -129,10 +129,10 @@ public final class FileSelectionDialog extends CustomModalDialog {
     static transient FileSystemView fsView = FileSystemView.getFileSystemView();
 
     /** The file system tree. */
-    JTree fileSystemTree;
+    private JTree fileSystemTree;
 
     /** The file system list. */
-    JList fileSystemList;
+    private JList fileSystemList;
 
     /** The selection. */
     private JLabel selection;
@@ -150,10 +150,10 @@ public final class FileSelectionDialog extends CustomModalDialog {
     boolean canceled = true;
 
     /** The selected dir. */
-    File selectedDir;
+    private File selectedDir;
 
     /** The selected files. */
-    File[] selectedFiles;
+    private File[] selectedFiles;
 
     /**
      * Instantiates a new file selection dialog.

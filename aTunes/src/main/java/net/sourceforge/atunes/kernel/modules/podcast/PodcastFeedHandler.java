@@ -389,7 +389,7 @@ public final class PodcastFeedHandler extends Handler {
     public String getDownloadPath(PodcastFeedEntry podcastFeedEntry) {
         String path = ApplicationState.getInstance().getPodcastFeedEntryDownloadPath();
         if (path == null || path.isEmpty()) {
-            path = StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.DEFAULT_PODCAST_FEED_ENTRY_DOWNLOAD_DIR);
+            path = StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.isDebug()), "/", Constants.DEFAULT_PODCAST_FEED_ENTRY_DOWNLOAD_DIR);
         }
         File podcastFeedsDownloadFolder = new File(path);
 

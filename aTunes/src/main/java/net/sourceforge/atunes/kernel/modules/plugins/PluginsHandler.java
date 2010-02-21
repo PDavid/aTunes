@@ -89,7 +89,7 @@ public class PluginsHandler extends Handler implements PluginListener {
             factory = new PluginsFactory();
 
             PluginSystemLogger.addHandler(new PluginsLoggerHandler());
-            PluginSystemLogger.setLevel(Kernel.DEBUG ? Level.FINE : Level.OFF);
+            PluginSystemLogger.setLevel(Kernel.isDebug() ? Level.FINE : Level.OFF);
 
             // User plugins folder
             factory.addPluginsFolder(getUserPluginsFolder());
@@ -186,7 +186,7 @@ public class PluginsHandler extends Handler implements PluginListener {
      * @return the plugins folder
      */
     private static String getUserPluginsFolder() {
-        String userConfigFolder = SystemProperties.getUserConfigFolder(Kernel.DEBUG);
+        String userConfigFolder = SystemProperties.getUserConfigFolder(Kernel.isDebug());
         String pluginsFolder = StringUtils.getString(userConfigFolder, SystemProperties.FILE_SEPARATOR, Constants.PLUGINS_DIR);
         File pluginFile = new File(pluginsFolder);
         if (!pluginFile.exists()) {

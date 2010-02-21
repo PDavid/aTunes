@@ -98,20 +98,20 @@ public class Cdparanoia extends CdToWavConverter {
             command.add(file.getAbsolutePath());
 
             logger.debugMethodCall(LogCategories.CDPARANOIA, command.toArray(new String[command.size()]));
-            process = new ProcessBuilder(command).start();
+            setProcess(new ProcessBuilder(command).start());
 
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    listener.notifyProgress(-1);
+                    getListener().notifyProgress(-1);
                 }
             });
 
-            int code = process.waitFor();
+            int code = getProcess().waitFor();
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    listener.notifyProgress(100);
+                	getListener().notifyProgress(100);
                 }
             });
 
@@ -137,7 +137,7 @@ public class Cdparanoia extends CdToWavConverter {
     }
 
     @Override
-    public CDInfo getCDInfo() {
+    public CDInfo retrieveDiscInformation() {
         logger.info(LogCategories.CDPARANOIA, "Getting cd information...");
 
         try {
@@ -148,12 +148,12 @@ public class Cdparanoia extends CdToWavConverter {
 
             logger.debugMethodCall(LogCategories.CDPARANOIA, command.toArray(new String[command.size()]));
 
-            process = new ProcessBuilder(command).start();
+            setProcess(new ProcessBuilder(command).start());
 
             BufferedReader stdInput = null;
             boolean cdLoaded = false;
             try {
-                stdInput = new BufferedReader(new InputStreamReader(process.getErrorStream(), "ISO8859_1"));
+                stdInput = new BufferedReader(new InputStreamReader(getProcess().getErrorStream(), "ISO8859_1"));
                 logger.info(LogCategories.CDPARANOIA, "Trying to read cdparanoia stream");
 
                 String s = null;
@@ -206,18 +206,18 @@ public class Cdparanoia extends CdToWavConverter {
                     }
                 }
 
-                cd.setTracks(tracks);
-                cd.setDurations(durations);
-                cd.setDuration(totalDuration);
-                cd.setId(id);
+                getCdInfo().setTracks(tracks);
+                getCdInfo().setDurations(durations);
+                getCdInfo().setDuration(totalDuration);
+                getCdInfo().setId(id);
                 //if (album != null && !album.equals(""))
-                //	cd.setAlbum(album);
+                //	getCdInfo().setAlbum(album);
                 //
                 //if (artist != null && !artist.equals(""))
-                //	cd.setArtist(artist);
-                cd.setTitles(titles);
-                cd.setArtists(artists);
-                cd.setComposers(composers);
+                //	getCdInfo().setArtist(artist);
+                getCdInfo().setTitles(titles);
+                getCdInfo().setArtists(artists);
+                getCdInfo().setComposers(composers);
 
             } catch (Exception e) {
                 logger.error(LogCategories.CDDA2WAV, e);
@@ -225,8 +225,8 @@ public class Cdparanoia extends CdToWavConverter {
                 ClosingUtils.close(stdInput);
             }
 
-            logger.info(LogCategories.CDPARANOIA, StringUtils.getString("CD info: ", cd));
-            return cd;
+            logger.info(LogCategories.CDPARANOIA, StringUtils.getString("CD info: ", getCdInfo()));
+            return getCdInfo();
 
         } catch (Exception e) {
             logger.error(LogCategories.CDPARANOIA, e);

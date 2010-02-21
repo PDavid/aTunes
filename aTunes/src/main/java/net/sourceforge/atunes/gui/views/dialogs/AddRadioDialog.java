@@ -47,16 +47,16 @@ public final class AddRadioDialog extends CustomModalDialog {
     private static final long serialVersionUID = 7295438534550341824L;
 
     /** The radio. */
-    Radio radio;
+    private Radio radio;
 
     /** The name text field. */
-    JTextField nameTextField;
+    private JTextField nameTextField;
 
     /** The url text field. */
-    JTextField urlTextField;
+    private JTextField urlTextField;
 
     /** The label text field. */
-    JTextField labelTextField;
+    private JTextField labelTextField;
 
     /**
      * Instantiates a new adds the radio dialog.

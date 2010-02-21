@@ -125,7 +125,7 @@ public final class LookAndFeelSelector implements PluginListener {
      *            the new look and feel
      */
     public void setLookAndFeel(LookAndFeelBean lookAndFeelBean) {
-        if (Kernel.IGNORE_LOOK_AND_FEEL) {
+        if (Kernel.isIgnoreLookAndFeel()) {
             return;
         }
 

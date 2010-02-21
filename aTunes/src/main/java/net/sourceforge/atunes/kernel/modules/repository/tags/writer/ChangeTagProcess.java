@@ -66,7 +66,7 @@ public abstract class ChangeTagProcess extends Process {
         retrieveInformationBeforeChangeTags();
         boolean errors = false;
         try {
-            for (int i = 0; i < this.filesToChange.size() && !cancel; i++) {
+            for (int i = 0; i < this.filesToChange.size() && !isCanceled(); i++) {
                 // Change every AudioFile
                 changeTag(this.filesToChange.get(i));
                 // Reread every file after being writen

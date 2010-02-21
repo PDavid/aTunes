@@ -45,11 +45,11 @@ public final class TransferProgressDialog extends ProgressDialog {
 
     @Override
     public void setCurrentProgress(long value) {
-        currentLabel.setText(StringUtils.fromByteToMegaOrGiga(value));
+        getCurrentLabel().setText(StringUtils.fromByteToMegaOrGiga(value));
     }
 
     @Override
     public void setTotalProgress(long value) {
-        totalLabel.setText(StringUtils.fromByteToMegaOrGiga(value));
+        getTotalLabel().setText(StringUtils.fromByteToMegaOrGiga(value));
     }
 }

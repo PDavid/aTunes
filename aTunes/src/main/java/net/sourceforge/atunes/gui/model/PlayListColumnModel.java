@@ -106,7 +106,7 @@ public final class PlayListColumnModel extends CommonColumnModel {
 					Component c = superComponent;
 		            ((JLabel) c).setText(null);
 		            if (PlayListHandler.getInstance().isCurrentVisibleRowPlaying(row)) {
-		                ((JLabel) c).setIcon(PlayState.getPlayStateIcon(((PlayListTable) table).getPlayState()));
+		                ((JLabel) c).setIcon(PlayState.getPlayStateIcon(((PlayListTable) getTable()).getPlayState()));
 		            } else {
 		                ((JLabel) c).setIcon(Images.getImage(Images.EMPTY));
 		            }

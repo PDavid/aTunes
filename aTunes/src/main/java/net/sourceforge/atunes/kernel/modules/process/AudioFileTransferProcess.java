@@ -55,6 +55,11 @@ public abstract class AudioFileTransferProcess extends Process {
      * files
      */
     protected List<File> filesTransferred;
+    
+    /**
+     * The dialog used to show the progress of this process
+     */
+    private ProgressDialog progressDialog;
 
     /**
      * User selection if an error occurs while transferring
@@ -81,7 +86,7 @@ public abstract class AudioFileTransferProcess extends Process {
     protected ProgressDialog getProgressDialog() {
         if (progressDialog == null) {
             // Use a TransferProgressDialog
-            progressDialog = GuiHandler.getInstance().getNewTransferProgressDialog(getProgressDialogTitle(), owner);
+            progressDialog = GuiHandler.getInstance().getNewTransferProgressDialog(getProgressDialogTitle(), getOwner());
             progressDialog.setInfoText(getProgressDialogInformation());
             progressDialog.setCurrentProgress(0);
             progressDialog.setProgressBarValue(0);
@@ -103,7 +108,7 @@ public abstract class AudioFileTransferProcess extends Process {
         long bytesTransferred = 0;
         boolean ignoreAllErrors = false;
         addInfoLog(StringUtils.getString("Transferring ", this.filesToTransfer.size(), " files to ", destination));
-        for (Iterator<AudioFile> it = this.filesToTransfer.iterator(); it.hasNext() && !cancel;) {
+        for (Iterator<AudioFile> it = this.filesToTransfer.iterator(); it.hasNext() && !isCanceled();) {
             AudioFile file = it.next();
             final List<Exception> thrownExceptions = new ArrayList<Exception>();
             File transferredFile = transferAudioFile(destination, file, thrownExceptions);
