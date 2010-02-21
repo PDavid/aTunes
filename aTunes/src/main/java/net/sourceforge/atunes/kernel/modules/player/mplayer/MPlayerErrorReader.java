@@ -23,12 +23,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import javax.swing.SwingUtilities;
-
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
-import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.ClosingUtils;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The Class MPlayerErrorReader.
@@ -38,6 +35,7 @@ class MPlayerErrorReader extends Thread {
     private MPlayerEngine engine;
     private BufferedReader in;
     private AudioObject audioObject;
+    private MPlayerOutputReader outputReader;
 
     /**
      * Instantiates a new m player error reader.
@@ -49,10 +47,11 @@ class MPlayerErrorReader extends Thread {
      * @param audioObject
      *            the audio object
      */
-    MPlayerErrorReader(MPlayerEngine engine, Process process, AudioObject audioObject) {
+    MPlayerErrorReader(MPlayerEngine engine, Process process, MPlayerOutputReader outputReader, AudioObject audioObject) {
         this.engine = engine;
         in = new BufferedReader(new InputStreamReader(process.getErrorStream()));
         this.audioObject = audioObject;
+        this.outputReader = outputReader;
     }
 
     @Override
@@ -60,17 +59,12 @@ class MPlayerErrorReader extends Thread {
         String line = null;
         try {
             while ((line = in.readLine()) != null && !isInterrupted()) {
-                if (audioObject instanceof Radio || audioObject instanceof PodcastFeedEntry) {
-                    // When starting playback, update status bar
-                    if (line.startsWith("File not found")) {
-                        SwingUtilities.invokeLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                engine.currentAudioObjectFinished();
-                            }
-                        });
-                    }
-                }
+            	if (line.startsWith("File not found")) {
+            		// Stop output reader
+            		outputReader.stopRead();
+            		// Playback finished with error
+       				engine.currentAudioObjectFinished(false, I18nUtils.getString("FILE_NOT_FOUND"), ": ", audioObject.getUrl());
+            	}
             }
         } catch (final IOException e) {
             engine.handlePlayerEngineError(e);
