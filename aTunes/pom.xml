@@ -213,7 +213,7 @@
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
-			<version>1.2.13</version>
+			<version>1.2.15</version>
 			<!-- exclude unwanted dependencies-->
 			<exclusions>
 				<exclusion>
@@ -233,7 +233,7 @@
 		<dependency>
 			<groupId>jfree</groupId>
 			<artifactId>jfreechart</artifactId>
-			<version>1.0.12</version>
+			<version>1.0.13</version>
 		</dependency>
 		<dependency>
 			<groupId>com.thoughtworks.xstream</groupId>
@@ -263,7 +263,7 @@
 		<dependency>
 			<groupId>com.melloware</groupId>
 			<artifactId>jintellitype</artifactId>
-			<version>1.3.1</version>
+			<version>1.3.3</version>
 		</dependency>
 		<dependency>
 			<groupId>com.jhlabs</groupId>
@@ -278,7 +278,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.6</version>
+			<version>4.8.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -330,12 +330,17 @@
 		<dependency>
 		<groupId>gstreamer</groupId>
 			<artifactId>gstreamer-java</artifactId>
-			<version>1.2</version>
+			<version>1.3</version>
 		</dependency>
 		<dependency>
 			<groupId>common-jukebox</groupId>
 			<artifactId>plugin-system</artifactId>
 			<version>1.5</version>
+		</dependency>
+		<dependency>
+			<groupId>jfree</groupId>
+			<artifactId>jcommon</artifactId>
+			<version>1.0.15</version>
 		</dependency>
 	</dependencies>
 
@@ -412,15 +417,15 @@
 
 	<repositories>
 		<repository>
-			<id>atunes-depenencies-not-in-central-repo</id>
-			<name>atunes-depenencies-not-in-central-repo</name>
+			<id>atunes-dependencies-not-in-central-repo</id>
+			<name>atunes-dependencies-not-in-central-repo</name>
 			<url>http://gimlet.is.inf.uni-due.de:8081/nexus/content/repositories/atunes-dependencies/
 			</url>
 		</repository>
 		<repository>
-			<id>ehcache</id>
-			<name>ehcache</name>
-			<url>http://oss.sonatype.org/content/repositories/sourceforge-releases/</url>
+			<id>ehcache-core</id>
+			<name>ehcache-core</name>
+			<url>http://oss.sonatype.org/content/repositories/sourceforge-releases</url>
 		</repository>
 		<repository>
 			<id>java.net</id>
