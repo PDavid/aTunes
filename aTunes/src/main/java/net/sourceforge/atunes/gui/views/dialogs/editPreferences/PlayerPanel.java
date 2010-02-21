@@ -126,13 +126,13 @@ public final class PlayerPanel extends PreferencesPanel {
     private JCheckBox enableGlobalHotkeys;
 
     /** The hotkey table. */
-    JTable hotkeyTable;
+    private JTable hotkeyTable;
 
     /** The table model. */
-    HotkeyTableModel tableModel = new HotkeyTableModel();
+    private HotkeyTableModel tableModel = new HotkeyTableModel();
 
-    Set<Integer> conflicts = new HashSet<Integer>();
-    Set<Integer> notRecommendedKeys = new HashSet<Integer>();
+    private Set<Integer> conflicts = new HashSet<Integer>();
+    private Set<Integer> notRecommendedKeys = new HashSet<Integer>();
 
     private JButton resetHotkeys;
 

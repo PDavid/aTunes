@@ -29,7 +29,7 @@ public class VlcPlayerCommandWriter extends Thread {
 
     protected static final int VOLUME_FACTOR = 5;
 
-    Logger logger = new Logger();
+    private Logger logger = new Logger();
 
     private volatile Process process;
     /** The audio object to play. */
@@ -62,7 +62,7 @@ public class VlcPlayerCommandWriter extends Thread {
 
             for (int i = 0; i < tries; i++) {
                 try {
-                    vlcTelnetClient = new VlcTelnetClient(VlcPlayerEngine.REMOTE_HOST, VlcPlayerEngine.REMOTE_PORT);
+                    vlcTelnetClient = new VlcTelnetClient(VlcPlayerEngine.getRemoteHost(), VlcPlayerEngine.getRemotePort());
                     break;
 
                 } catch (VlcTelnetClientException ex) {

@@ -86,7 +86,7 @@ public class YoutubeVideoDownloader extends SwingWorker<Void, String> {
     /**
      * Flag indicating whether download must be aborted
      */
-    boolean cancelled = false;
+    private boolean cancelled = false;
 
     /**
      * Creates a new downloader

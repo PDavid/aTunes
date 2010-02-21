@@ -100,7 +100,7 @@ public final class DevicePanel extends PreferencesPanel {
     private JRadioButton fileNameCustomizedRadioButton;
 
     /** Text Field used to define custom file name pattern */
-    JTextField fileNamePatternTextField;
+    private JTextField fileNamePatternTextField;
 
     /**
      * The radio button used to select no changes in folder name when copying to
@@ -112,7 +112,7 @@ public final class DevicePanel extends PreferencesPanel {
     private JRadioButton folderPathCustomizedRadioButton;
 
     /** Text Field used to define custom folder path */
-    JTextField folderPathPatternTextField;
+    private JTextField folderPathPatternTextField;
 
     /** A table to show available pattern transformations */
     private JTable availablePatternsTable;

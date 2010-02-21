@@ -131,7 +131,7 @@ public final class MultipleFrame implements Frame {
     private AudioObjectPropertiesPanel audioObjectPropertiesPanel;
     private ContextPanel contextPanel;
 
-    List<Window> windows;
+    private List<Window> windows;
 
     /**
      * Instantiates a new multiple frame.

@@ -63,7 +63,7 @@ public class FlacEncoder implements Encoder {
 
     private Logger logger = new Logger();
     private Process process;
-    ProgressListener listener;
+    private ProgressListener listener;
     private String albumArtist;
     private String album;
     private int year;

@@ -49,12 +49,12 @@ public final class CoverFlow extends JPanel {
 
     private static final long serialVersionUID = -5982158797052430789L;
 
-    static Logger logger = new Logger();
+    private static Logger logger = new Logger();
 
     private List<Cover3D> covers;
 
     /** The current audio object. */
-    Map<AudioObject, Image> cachedImages = new HashMap<AudioObject, Image>();
+    private Map<AudioObject, Image> cachedImages = new HashMap<AudioObject, Image>();
 
     CoverFlow() {
         super(new GridBagLayout());

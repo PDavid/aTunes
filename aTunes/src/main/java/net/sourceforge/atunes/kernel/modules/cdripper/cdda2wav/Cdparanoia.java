@@ -47,7 +47,7 @@ public class Cdparanoia extends CdToWavConverter {
     private static final String QUERY = "-Q";
     private static final String WAVFORMAT = "-w";
 
-    Logger logger = new Logger();
+    private Logger logger = new Logger();
 
     /**
      * Tests if cdparanoia is present

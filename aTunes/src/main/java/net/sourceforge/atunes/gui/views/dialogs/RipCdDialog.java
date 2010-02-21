@@ -63,9 +63,9 @@ public final class RipCdDialog extends CustomModalDialog {
         private static final long serialVersionUID = -7577681531593039707L;
 
         private transient CDInfo cdInfo;
-        List<String> trackNames = new ArrayList<String>();
-        List<String> artistNames = new ArrayList<String>();
-        List<String> composerNames = new ArrayList<String>();
+        private List<String> trackNames = new ArrayList<String>();
+        private List<String> artistNames = new ArrayList<String>();
+        private List<String> composerNames = new ArrayList<String>();
         private List<Boolean> tracksSelected;
 
         /**

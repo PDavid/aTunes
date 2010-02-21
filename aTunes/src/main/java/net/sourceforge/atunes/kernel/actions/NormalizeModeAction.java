@@ -33,7 +33,7 @@ public class NormalizeModeAction extends Action {
 
     private static final long serialVersionUID = 6993968558006979367L;
 
-    Timer timer;
+    private Timer timer;
 
     public NormalizeModeAction() {
         super(I18nUtils.getString("NORMALIZE"), Images.getImage(Images.NORMALIZATION));

@@ -99,12 +99,12 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
 
 	private static RepositoryHandler instance = new RepositoryHandler();
 
-    Repository repository;
+	private Repository repository;
     private int filesLoaded;
     private RepositoryLoader currentLoader;
     private boolean backgroundLoad = false;
-    RepositoryAutoRefresher repositoryRefresher;
-    Repository repositoryRetrievedFromCache = null;
+    private RepositoryAutoRefresher repositoryRefresher;
+    private Repository repositoryRetrievedFromCache = null;
     /** Listeners notified when an audio file is removed */
     private List<AudioFilesRemovedListener> audioFilesRemovedListeners = new ArrayList<AudioFilesRemovedListener>();
 

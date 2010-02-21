@@ -190,10 +190,10 @@ public final class DateUtils {
         static class MailDateParser {
 
             /** The index. */
-            int index = 0;
+        	private int index = 0;
 
             /** The orig. */
-            char[] orig = null;
+        	private char[] orig = null;
 
             /**
              * Instantiates a new mail date parser.
@@ -707,7 +707,7 @@ public final class DateUtils {
          * then alpha time zone offset.
          */
 
-        static boolean debug = false;
+        private static boolean debug = false;
 
         ////////////////////////////////////////////////////////////
 

@@ -41,7 +41,7 @@ import net.sourceforge.atunes.utils.GuiUtils;
 
 public final class OSDDialogController extends SimpleController<OSDDialog> {
 
-    WindowFader windowFader;
+    private WindowFader windowFader;
     private Point location;
     private Timer timer;
 

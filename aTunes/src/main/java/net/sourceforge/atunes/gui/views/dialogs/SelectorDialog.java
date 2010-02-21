@@ -48,10 +48,10 @@ public final class SelectorDialog extends JDialog {
     private static final long serialVersionUID = 8846024391499257859L;
 
     /** The selection. */
-    String selection;
+    private String selection;
 
     /** The list. */
-    JList list;
+    private JList list;
 
     /**
      * The main method.

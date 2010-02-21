@@ -52,7 +52,7 @@ import org.jdesktop.swingx.border.DropShadowBorder;
 public final class AudioObjectPropertiesController extends SimpleController<AudioObjectPropertiesPanel> {
 
     /** The current audio object. */
-    AudioObject currentAudioObject;
+    private AudioObject currentAudioObject;
 
     /**
      * Instantiates a new audio object properties controller.
@@ -113,7 +113,7 @@ public final class AudioObjectPropertiesController extends SimpleController<Audi
     void fillPicture() {
         if (currentAudioObject != null) {
             new SwingWorker<ImageIcon, Void>() {
-                boolean shadowBorder;
+                private boolean shadowBorder;
 
                 @Override
                 protected ImageIcon doInBackground() throws Exception {

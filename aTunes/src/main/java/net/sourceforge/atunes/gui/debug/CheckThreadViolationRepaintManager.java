@@ -52,7 +52,7 @@ import javax.swing.SwingUtilities;
 public final class CheckThreadViolationRepaintManager extends RepaintManager {
 
     /** The test. */
-    static JButton test;
+    private static JButton test;
     // it is recommended to pass the complete check  
     /** The complete check. */
     private boolean completeCheck = true;

@@ -37,7 +37,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class Main {
 
-    static Logger logger = new Logger();
+    private static Logger logger = new Logger();
 
     private Main() {
     }

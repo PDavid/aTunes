@@ -43,10 +43,10 @@ import net.sourceforge.atunes.utils.StringUtils;
 public final class RipCdDialogListener extends KeyAdapter implements ActionListener {
 
     /** The rip cd dialog. */
-    RipCdDialog ripCdDialog;
+    private RipCdDialog ripCdDialog;
 
     /** The rip cd dialog controller. */
-    RipCdDialogController ripCdDialogController;
+    private RipCdDialogController ripCdDialogController;
 
     /**
      * Instantiates a new rip cd dialog listener.

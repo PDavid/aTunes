@@ -131,10 +131,10 @@ public final class RipperHandler extends Handler {
 
 	private static RipperHandler instance = new RipperHandler();
 
-    CdRipper ripper;
-    volatile boolean interrupted;
-    boolean folderCreated;
-    String albumCoverURL;
+    private CdRipper ripper;
+    private volatile boolean interrupted;
+    private boolean folderCreated;
+    private String albumCoverURL;
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     /**

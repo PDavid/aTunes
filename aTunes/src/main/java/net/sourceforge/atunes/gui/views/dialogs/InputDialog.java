@@ -46,10 +46,10 @@ public final class InputDialog extends CustomModalDialog {
     private static final long serialVersionUID = -5789081662254435503L;
 
     /** The text field. */
-    JTextField textField;
+    private JTextField textField;
 
     /** The result. */
-    String result = null;
+    private String result = null;
 
     /**
      * Instantiates a new input dialog.

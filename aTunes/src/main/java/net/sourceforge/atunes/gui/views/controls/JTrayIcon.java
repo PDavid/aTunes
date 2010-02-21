@@ -60,11 +60,11 @@ public final class JTrayIcon extends TrayIcon {
         }
     }
 
-    JDialog trayParent;
+    private JDialog trayParent;
     private JPopupMenu popupMenu;
     private MouseListener trayIconMouseListener;
-    PopupMenuListener popupMenuListener;
-    boolean isLinux;
+    private PopupMenuListener popupMenuListener;
+    private boolean isLinux;
     
     private Action action;
 

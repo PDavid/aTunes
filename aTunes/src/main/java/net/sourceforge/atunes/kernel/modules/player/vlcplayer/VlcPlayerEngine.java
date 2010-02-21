@@ -67,8 +67,8 @@ public class VlcPlayerEngine extends PlayerEngine {
     /** Arguments to control vlc through commands. */
     private static final String INTERFACE = "-I";
     private static final String RC = "rc";
-    protected static final String REMOTE_HOST = "127.0.0.1";
-    protected static int REMOTE_PORT = 8888;
+    private static final String REMOTE_HOST = "127.0.0.1";
+    private static int REMOTE_PORT = 8888;
     private static final String RC_HOST = "--rc-host=" + REMOTE_HOST + ":" + REMOTE_PORT;
     /**
      * Argument to not display more information than needed. Depends on OS
@@ -108,7 +108,7 @@ public class VlcPlayerEngine extends PlayerEngine {
             PropertyResourceBundle vlcConfig = new PropertyResourceBundle(VlcPlayerEngine.class.getResourceAsStream(Constants.VLC_CONFIG_FILE));
             REMOTE_PORT = Integer.valueOf(vlcConfig.getString("vlc.telnet.client.port")).intValue();
         } catch (IOException ioe) {
-            logger.internalError(ioe);
+        	getLogger().internalError(ioe);
         }
     }
 
@@ -232,7 +232,7 @@ public class VlcPlayerEngine extends PlayerEngine {
     @Override
     public void finishPlayer() {
         stopCurrentAudioObject(false);
-        logger.info(LogCategories.PLAYER, "Stopping player");
+        getLogger().info(LogCategories.PLAYER, "Stopping player");
     }
 
     @Override
@@ -419,7 +419,7 @@ public class VlcPlayerEngine extends PlayerEngine {
 
         command.add(url);
 
-        logger.info(LogCategories.PLAYER, "VLC process args : " + command);
+        getLogger().info(LogCategories.PLAYER, "VLC process args : " + command);
 
         return pb.command(command).start();
 
@@ -517,5 +517,19 @@ public class VlcPlayerEngine extends PlayerEngine {
             return MACOS_ARG_QUIET;
         }
     }
+
+	/**
+	 * @return the rEMOTE_PORT
+	 */
+	protected static int getRemotePort() {
+		return REMOTE_PORT;
+	}
+
+	/**
+	 * @return the remoteHost
+	 */
+	protected static String getRemoteHost() {
+		return REMOTE_HOST;
+	}
 
 }

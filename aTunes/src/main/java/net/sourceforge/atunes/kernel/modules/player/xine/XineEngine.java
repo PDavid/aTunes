@@ -49,9 +49,9 @@ import org.libxinejna.XineEventListener;
  */
 public class XineEngine extends PlayerEngine {
 
-    XineController xineController;
+	private XineController xineController;
     private Timer durationUpdater;
-    final Object xineLock = new Object();
+    private final Object xineLock = new Object();
 
     @Override
     protected boolean isEngineAvailable() {
@@ -301,11 +301,11 @@ public class XineEngine extends PlayerEngine {
     }
 
     protected void info(String info) {
-        logger.info(LogCategories.PLAYER, "Xine: " + info);
+        getLogger().info(LogCategories.PLAYER, "Xine: " + info);
     }
 
     protected void error(Exception o) {
-        logger.error(LogCategories.PLAYER, o);
+    	getLogger().error(LogCategories.PLAYER, o);
     }
 
     protected class XineListener implements XineEventListener {

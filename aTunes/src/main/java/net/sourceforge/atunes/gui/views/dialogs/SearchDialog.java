@@ -51,13 +51,13 @@ public final class SearchDialog extends CustomModalDialog {
     private static final long serialVersionUID = 89888215541058798L;
 
     /** The result. */
-    Search result;
+    private Search result;
 
     /** The set as default. */
-    boolean setAsDefault;
+    private boolean setAsDefault;
 
     /** The set as default check box. */
-    JCheckBox setAsDefaultCheckBox;
+    private JCheckBox setAsDefaultCheckBox;
 
     /**
      * Instantiates a new search dialog.

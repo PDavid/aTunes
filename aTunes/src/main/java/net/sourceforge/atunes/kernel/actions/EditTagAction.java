@@ -55,7 +55,7 @@ public class EditTagAction extends ActionOverSelectedObjects<AudioFile> {
 
     @Override
     protected void initialize() {
-        if (EditTagSources.PLAYLIST.toString().equals(actionId)) {
+        if (EditTagSources.PLAYLIST.toString().equals(getActionId())) {
             putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_INSERT, 0));
         }
     }
@@ -64,7 +64,7 @@ public class EditTagAction extends ActionOverSelectedObjects<AudioFile> {
     protected void performAction(List<AudioFile> objects) {
         // Start edit by opening edit dialog
         try {
-            EditTagSources editTagSource = EditTagSources.valueOf(actionId);
+            EditTagSources editTagSource = EditTagSources.valueOf(getActionId());
             ControllerProxy.getInstance().getEditTagDialogController(editTagSource).editFiles(objects);
         } catch (IllegalArgumentException iae) {
             logger.error("The source that caused this action is not known. No further action initiated.", iae);
@@ -75,7 +75,7 @@ public class EditTagAction extends ActionOverSelectedObjects<AudioFile> {
 
     @Override
     public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
-        if (EditTagSources.NAVIGATOR.toString().equals(actionId)) {
+        if (EditTagSources.NAVIGATOR.toString().equals(getActionId())) {
             return !rootSelected && !selection.isEmpty();
         }
         return super.isEnabledForNavigationTreeSelection(rootSelected, selection);
@@ -83,7 +83,7 @@ public class EditTagAction extends ActionOverSelectedObjects<AudioFile> {
 
     @Override
     public boolean isEnabledForNavigationTableSelection(List<AudioObject> selection) {
-        if (EditTagSources.NAVIGATOR.toString().equals(actionId)) {
+        if (EditTagSources.NAVIGATOR.toString().equals(getActionId())) {
             return !selection.isEmpty();
         }
         return super.isEnabledForNavigationTableSelection(selection);

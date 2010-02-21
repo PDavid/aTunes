@@ -39,7 +39,7 @@ public abstract class ChangeTagProcess extends Process {
     /**
      * List of AudioFile objects to change
      */
-    protected List<AudioFile> filesToChange;
+    private List<AudioFile> filesToChange;
 
     /**
      * Constructor, initialized with AudioFiles to be changed
@@ -103,4 +103,18 @@ public abstract class ChangeTagProcess extends Process {
     protected void retrieveInformationBeforeChangeTags() {
         // Nothing to do
     }
+
+	/**
+	 * @return the filesToChange
+	 */
+	protected List<AudioFile> getFilesToChange() {
+		return filesToChange;
+	}
+
+	/**
+	 * @param filesToChange the filesToChange to set
+	 */
+	protected void setFilesToChange(List<AudioFile> filesToChange) {
+		this.filesToChange = filesToChange;
+	}
 }

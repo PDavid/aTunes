@@ -105,7 +105,7 @@ public final class ButtonTabComponent extends JPanel {
     private static final long serialVersionUID = 3945896434769821096L;
 
     /** The pane. */
-    final JTabbedPane pane;
+    private final JTabbedPane pane;
 
     /** The label. */
     private final JLabel label;

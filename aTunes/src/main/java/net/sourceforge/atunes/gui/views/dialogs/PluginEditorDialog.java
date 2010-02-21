@@ -54,7 +54,7 @@ public class PluginEditorDialog extends CustomModalDialog {
      */
     private static final long serialVersionUID = -2629422819919724654L;
 
-    PluginConfiguration configuration;
+    private PluginConfiguration configuration;
 
     public PluginEditorDialog(Window owner, PluginInfo plugin, PluginConfiguration configuration) {
         super(owner, GuiUtils.getComponentWidthForResolution(1280, 500), GuiUtils.getComponentHeightForResolution(1024, 300), true);

@@ -294,7 +294,7 @@ public final class RadioHandler extends Handler {
     public void retrieveRadios() {
         new SwingWorker<List<Radio>, Void>() {
 
-            final ProxyBean proxy = ApplicationState.getInstance().getProxy();
+            private final ProxyBean proxy = ApplicationState.getInstance().getProxy();
 
             @Override
             protected List<Radio> doInBackground() throws Exception {

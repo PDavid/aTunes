@@ -48,7 +48,7 @@ public final class PodcastFeedEntry implements AudioObject, Serializable, Compar
         }
     };
 
-    String title;
+    private String title;
     private String author;
     private String url;
     private String description;

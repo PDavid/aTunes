@@ -191,9 +191,9 @@ public final class DeviceNavigationView extends NavigationView {
         root.removeAllChildren();
         List<String> artistNamesList = new ArrayList<String>(data.keySet());
         if (ApplicationState.getInstance().isUseSmartTagViewSorting()) {
-            Collections.sort(artistNamesList, smartComparator);
+            Collections.sort(artistNamesList, getSmartComparator());
         } else {
-            Collections.sort(artistNamesList, comparator);
+            Collections.sort(artistNamesList, getDefaultComparator());
         }
 
         if (viewMode == ViewMode.ARTIST) {
@@ -232,11 +232,11 @@ public final class DeviceNavigationView extends NavigationView {
             DefaultMutableTreeNode artistNode = new DefaultMutableTreeNode(artist);
             List<String> albumNamesList = new ArrayList<String>(artist.getAlbums().keySet());
             if (ApplicationState.getInstance().isUseSmartTagViewSorting() && !ApplicationState.getInstance().isUsePersonNamesArtistTagViewSorting()) {
-                Collections.sort(artistNamesList, smartComparator);
+                Collections.sort(artistNamesList, getSmartComparator());
             } else if (ApplicationState.getInstance().isUsePersonNamesArtistTagViewSorting()) {
-                Collections.sort(artistNamesList, artistNamesComparator);
+                Collections.sort(artistNamesList, getArtistNamesComparator());
             } else {
-                Collections.sort(artistNamesList, comparator);
+                Collections.sort(artistNamesList, getDefaultComparator());
             }
             if (treeFilter == null || artist.getName().toUpperCase().contains(treeFilter.toUpperCase())) {
                 for (int j = 0; j < albumNamesList.size(); j++) {
@@ -284,9 +284,9 @@ public final class DeviceNavigationView extends NavigationView {
 
         List<String> albumsNamesList = new ArrayList<String>(data.keySet());
         if (ApplicationState.getInstance().isUseSmartTagViewSorting()) {
-            Collections.sort(albumsNamesList, smartComparator);
+            Collections.sort(albumsNamesList, getSmartComparator());
         } else {
-            Collections.sort(albumsNamesList, comparator);
+            Collections.sort(albumsNamesList, getDefaultComparator());
         }
 
         for (int i = 0; i < albumsNamesList.size(); i++) {
@@ -323,7 +323,7 @@ public final class DeviceNavigationView extends NavigationView {
      */
     private void refreshGenreView(List<String> artistNamesList, Map<String, Genre> data, String treeFilter, DefaultMutableTreeNode root, List<TreeObject> objectsSelected, List<DefaultMutableTreeNode> nodesToSelect, List<DefaultMutableTreeNode> nodesToExpand, List<TreeObject> objectsExpanded, DefaultTreeModel treeModel) {
         List<String> genreNamesList = new ArrayList<String>(data.keySet());
-        Collections.sort(genreNamesList, comparator);
+        Collections.sort(genreNamesList, getDefaultComparator());
 
         for (int i = 0; i < genreNamesList.size(); i++) {
             Genre genre = data.get(genreNamesList.get(i));
@@ -389,7 +389,7 @@ public final class DeviceNavigationView extends NavigationView {
         } else {
             root.setUserObject(StringUtils.getString(I18nUtils.getString("DEVICE"), " (", rootFolderKeys.get(0), ")"));
             Folder rootFolder = data.get(rootFolderKeys.get(0));
-            RefreshUtils.addFolderNodes(rootFolder.getFolders(), root, null, comparator);
+            RefreshUtils.addFolderNodes(rootFolder.getFolders(), root, null, getDefaultComparator());
         }
         // Reload the tree to refresh content
         treeModel.reload();

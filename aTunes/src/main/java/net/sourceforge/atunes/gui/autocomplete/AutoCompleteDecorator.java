@@ -288,11 +288,11 @@ public final class AutoCompleteDecorator {
     static class NonStrictBackspaceAction extends TextAction {
         private static final long serialVersionUID = -5508607690462561673L;
 
-        Action backspace;
+        private Action backspace;
 
-        Action selectionBackward;
+        private Action selectionBackward;
 
-        AbstractAutoCompleteAdaptor adaptor;
+        private AbstractAutoCompleteAdaptor adaptor;
 
         public NonStrictBackspaceAction(Action backspace, Action selectionBackward, AbstractAutoCompleteAdaptor adaptor) {
             super("nonstrict-backspace");
@@ -315,7 +315,7 @@ public final class AutoCompleteDecorator {
      * A TextAction that provides an error feedback for the text component that
      * invoked the action. The error feedback is most likely a "beep".
      */
-    static Object errorFeedbackAction = new TextAction("provide-error-feedback") {
+    private static Object errorFeedbackAction = new TextAction("provide-error-feedback") {
         private static final long serialVersionUID = -3868819565696640330L;
 
         @Override

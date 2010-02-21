@@ -193,8 +193,8 @@ public final class ColumnSetSelectorDialog extends CustomModalDialog {
 
     private static final long serialVersionUID = -7592059207162524630L;
 
-    JTable columnsList;
-    ColumnsTableModel model;
+    private JTable columnsList;
+    private ColumnsTableModel model;
 
     /**
      * Instantiates a new play list column selector.

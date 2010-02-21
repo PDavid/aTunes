@@ -114,7 +114,7 @@ public final class GeneralPanel extends PreferencesPanel {
     private JComboBox skin;
     private ByImageChoosingPanel<Class<? extends Frame>> windowTypeChoosingPanel;
 
-    FontSettings currentFontSettings;
+    private FontSettings currentFontSettings;
 
     /**
      * Instantiates a new general panel.

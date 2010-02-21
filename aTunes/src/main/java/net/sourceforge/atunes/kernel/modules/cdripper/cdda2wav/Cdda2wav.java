@@ -65,12 +65,12 @@ public class Cdda2wav extends CdToWavConverter {
 
     private static String converterCommand = CDDA2WAV_COMMAND_STRING;
 
-    Logger logger = new Logger();
+    private Logger logger = new Logger();
 
     private int devNumber;
     private CDInfo cdRecursive;
     private String device;
-    boolean cdLoaded;
+    private boolean cdLoaded;
     private boolean doNotRepeatNoCdDialog = true;
     private boolean ata = false;
     /** Use paranoia mode (better error correction but slower ripping) */

@@ -35,9 +35,9 @@ public abstract class ActionOverSelectedObjects<T extends AudioObject> extends A
 
     private static final long serialVersionUID = 1673432955671008277L;
 
-    static Map<Component, AudioObjectsSource> registeredComponents = new HashMap<Component, AudioObjectsSource>();
+    private static Map<Component, AudioObjectsSource> registeredComponents = new HashMap<Component, AudioObjectsSource>();
 
-    protected Class<T> objectsClass;
+    private Class<T> objectsClass;
 
     public ActionOverSelectedObjects(Class<T> objectsClass) {
         super();

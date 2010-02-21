@@ -86,7 +86,7 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
     /**
      * Used to store number of files copied
      */
-    protected int filesCopiedToDevice;
+    private int filesCopiedToDevice;
 
     /**
      * Instantiates a new device handler.

@@ -37,12 +37,12 @@ public abstract class Action extends AbstractAction implements Command {
     /**
      * ID of the action
      */
-    protected String actionId;
+    private String actionId;
 
     /**
      * Parameters of the instance
      */
-    protected Properties properties;
+    private Properties properties;
 
     public Action() {
         super();
@@ -132,4 +132,18 @@ public abstract class Action extends AbstractAction implements Command {
     public String getCommandName() {
         return "";
     }
+
+	/**
+	 * @return the actionId
+	 */
+	protected String getActionId() {
+		return actionId;
+	}
+
+	/**
+	 * @return the properties
+	 */
+	protected Properties getProperties() {
+		return properties;
+	}
 }

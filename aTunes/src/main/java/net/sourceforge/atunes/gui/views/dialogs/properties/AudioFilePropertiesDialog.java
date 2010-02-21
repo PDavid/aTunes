@@ -51,7 +51,7 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
 
     static final Logger logger = new Logger();
 
-    JLabel pictureLabel;
+    private JLabel pictureLabel;
     private JLabel fileNameLabel;
     private JLabel pathLabel;
     private JLabel songLabel;
@@ -66,7 +66,7 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
     private JLabel genreLabel;
     private JLabel bitrateLabel;
     private JLabel frequencyLabel;
-    AudioFile file;
+    private AudioFile file;
 
     /**
      * Instantiates a new audio file properties dialog.

@@ -58,7 +58,7 @@ public final class EditTagDialogController extends SimpleController<EditTagDialo
     private static class TitleTextFieldKeyAdapter extends KeyAdapter {
 		private final JTextField textField;
 		private final String fileName;
-		int lenght = 0;
+		private int lenght = 0;
 
 		private TitleTextFieldKeyAdapter(JTextField textField, String fileName) {
 			this.textField = textField;
@@ -89,10 +89,10 @@ public final class EditTagDialogController extends SimpleController<EditTagDialo
 		}
 	}
 
-	Logger logger = new Logger();
+	private Logger logger = new Logger();
 
     /** The audio files editing. */
-    List<AudioFile> audioFilesEditing;
+    private List<AudioFile> audioFilesEditing;
     private byte[] newCover;
     private boolean coverEdited;
 

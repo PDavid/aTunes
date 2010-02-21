@@ -53,7 +53,7 @@ public final class MultipleInstancesHandler extends Handler {
     /**
      * Used to ignore errors in sockets when closing application
      */
-    static boolean closing = false;
+    private static boolean closing = false;
 
     /**
      * This class is responsible of listening to server socket and accept
@@ -141,7 +141,7 @@ public final class MultipleInstancesHandler extends Handler {
     static class SongsQueue extends Thread {
 
         /** The songs queue. */
-        List<AudioObject> songsQueue;
+        private List<AudioObject> songsQueue;
 
         /** The last song added. */
         private long lastSongAdded = 0;

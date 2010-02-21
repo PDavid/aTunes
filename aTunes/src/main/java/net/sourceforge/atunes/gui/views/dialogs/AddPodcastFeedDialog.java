@@ -47,13 +47,13 @@ public final class AddPodcastFeedDialog extends CustomModalDialog {
     private static final long serialVersionUID = 7295438534550341824L;
 
     /** The podcast feed. */
-    PodcastFeed podcastFeed;
+    private PodcastFeed podcastFeed;
 
     /** The name text field. */
-    JTextField nameTextField;
+    private JTextField nameTextField;
 
     /** The url text field. */
-    JTextField urlTextField;
+    private JTextField urlTextField;
 
     /**
      * Instantiates a new adds the podcast feed dialog.

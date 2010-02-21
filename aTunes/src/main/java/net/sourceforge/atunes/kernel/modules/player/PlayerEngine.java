@@ -66,7 +66,7 @@ public abstract class PlayerEngine implements PlaybackStateListener {
     /**
      * The logger used in player engines
      */
-    protected static Logger logger = new Logger();
+    private static Logger logger = new Logger();
 
     /**
      * Listeners of playback state
@@ -679,5 +679,12 @@ public abstract class PlayerEngine implements PlaybackStateListener {
     public long getCurrentAudioObjectLength() {
         return currentAudioObjectLength;
     }
+
+	/**
+	 * @return the logger
+	 */
+	protected static Logger getLogger() {
+		return logger;
+	}
 
 }

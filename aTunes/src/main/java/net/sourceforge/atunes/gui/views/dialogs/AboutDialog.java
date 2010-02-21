@@ -153,7 +153,7 @@ public final class AboutDialog extends CustomModalDialog {
     private static final long serialVersionUID = 8666235475424750562L;
 
     /** The table model. */
-    AboutDialogTableModel tableModel = new AboutDialogTableModel();
+    private AboutDialogTableModel tableModel = new AboutDialogTableModel();
 
     /** The license text. */
     private String licenseText = getLicenseText();

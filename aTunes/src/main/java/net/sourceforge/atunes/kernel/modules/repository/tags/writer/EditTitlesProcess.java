@@ -48,7 +48,7 @@ public class EditTitlesProcess extends ChangeTagProcess {
     protected void retrieveInformationBeforeChangeTags() {
         super.retrieveInformationBeforeChangeTags();
         if (filesAndTitles == null) {
-            filesAndTitles = getTitlesForFiles(filesToChange);
+            filesAndTitles = getTitlesForFiles(getFilesToChange());
         }
     }
 

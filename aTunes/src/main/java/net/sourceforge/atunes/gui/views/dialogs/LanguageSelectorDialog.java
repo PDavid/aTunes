@@ -70,10 +70,10 @@ public final class LanguageSelectorDialog extends JDialog {
     private static JFrame frame = getFrame();
 
     /** The selection. */
-    String selection;
+    private String selection;
 
     /** The list. */
-    JList list;
+    private JList list;
 
     /**
      * Instantiates a new language selector dialog.

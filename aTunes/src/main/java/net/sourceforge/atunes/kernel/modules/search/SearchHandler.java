@@ -82,10 +82,10 @@ public final class SearchHandler extends Handler {
      * List which indicates if an indexing process is currently running for a
      * given searchable object.
      */
-    volatile Map<SearchableObject, Boolean> currentIndexingWorks;
+    private volatile Map<SearchableObject, Boolean> currentIndexingWorks;
 
     /** Map with locks for each index. */
-    Map<SearchableObject, ReadWriteLock> indexLocks;
+    private Map<SearchableObject, ReadWriteLock> indexLocks;
 
     /**
      * Constructor.

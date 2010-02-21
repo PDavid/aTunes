@@ -136,7 +136,7 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
 
     private Logger logger = new Logger();
 
-    Frame frame;
+    private Frame frame;
     private OSDDialog osdDialog;
     private ExportOptionsDialog exportDialog;
     private StatsDialog statsDialog;

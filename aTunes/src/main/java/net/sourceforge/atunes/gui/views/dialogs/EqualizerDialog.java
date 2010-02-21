@@ -52,7 +52,7 @@ public final class EqualizerDialog extends CustomModalFrame {
     private static final long serialVersionUID = 7295438534550341824L;
 
     /** The bands. */
-    JSlider[] bands;
+    private JSlider[] bands;
 
     /** The labels. */
     private JLabel[] labels;
