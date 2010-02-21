@@ -54,7 +54,7 @@ import org.jaudiotagger.tag.reference.PictureTypes;
  */
 public final class TagModifier {
 
-    private static Logger logger = new Logger();
+    private static Logger logger;
 
     private TagModifier() {
     	
@@ -72,7 +72,7 @@ public final class TagModifier {
         try {
             org.jaudiotagger.audio.AudioFileIO.delete(org.jaudiotagger.audio.AudioFileIO.read(file.getFile()));
         } catch (Exception e) {
-            logger.error(LogCategories.FILE_WRITE, e);
+            getLogger().error(LogCategories.FILE_WRITE, e);
         }
 
     }
@@ -129,7 +129,7 @@ public final class TagModifier {
             newTag.setField(FieldKey.ALBUM, album);
             audioFile.commit();
         } catch (Exception e) {
-            logger.error(LogCategories.FILE_WRITE, StringUtils.getString("Could not edit tag. File: ", file.getUrl(), " Error: ", e));
+            getLogger().error(LogCategories.FILE_WRITE, StringUtils.getString("Could not edit tag. File: ", file.getUrl(), " Error: ", e));
         }
     }
 
@@ -151,7 +151,7 @@ public final class TagModifier {
             newTag.setField(newTag.createField(FieldKey.GENRE, genre));
             audioFile.commit();
         } catch (Exception e) {
-            logger.error(LogCategories.FILE_WRITE, StringUtils.getString("Could not edit tag. File: ", file.getUrl(), " Error: ", e));
+            getLogger().error(LogCategories.FILE_WRITE, StringUtils.getString("Could not edit tag. File: ", file.getUrl(), " Error: ", e));
         }
     }
 
@@ -213,7 +213,7 @@ public final class TagModifier {
                 try {
                     newTag.deleteArtworkField();
                 } catch (KeyNotFoundException e) {
-                    logger.error(LogCategories.IMAGE, e);
+                    getLogger().error(LogCategories.IMAGE, e);
                 }
 
                 if (cover != null) {
@@ -257,7 +257,7 @@ public final class TagModifier {
             audioFile.setTag(newTag);
             audioFile.commit();
         } catch (Exception e) {
-            logger.error(LogCategories.FILE_WRITE, StringUtils.getString("Could not edit tag. File: ", file.getUrl(), " Error: ", e.getMessage()));
+            getLogger().error(LogCategories.FILE_WRITE, StringUtils.getString("Could not edit tag. File: ", file.getUrl(), " Error: ", e.getMessage()));
         }
     }
 
@@ -269,9 +269,9 @@ public final class TagModifier {
             try {
                 tag.setField(tag.createField(fieldKey, fieldValue));
             } catch (FieldDataInvalidException e) {
-                logger.error(LogCategories.FILE_WRITE, e);
+                getLogger().error(LogCategories.FILE_WRITE, e);
             } catch (KeyNotFoundException e) {
-                logger.error(LogCategories.FILE_WRITE, e);
+                getLogger().error(LogCategories.FILE_WRITE, e);
             }
         }
     }
@@ -283,9 +283,9 @@ public final class TagModifier {
             try {
                 tag.setField(fieldKey, String.valueOf(fieldValue));
             } catch (KeyNotFoundException e) {
-                logger.error(LogCategories.FILE_WRITE, e);
+                getLogger().error(LogCategories.FILE_WRITE, e);
             } catch (FieldDataInvalidException e) {
-                logger.error(LogCategories.FILE_WRITE, e);
+                getLogger().error(LogCategories.FILE_WRITE, e);
 
             }
         }
@@ -308,7 +308,7 @@ public final class TagModifier {
             newTag.setField(newTag.createField(FieldKey.LYRICS, lyrics));
             audioFile.commit();
         } catch (Exception e) {
-            logger.error(LogCategories.FILE_WRITE, StringUtils.getString("Could not edit tag. File: ", file.getUrl(), " Error: ", e));
+            getLogger().error(LogCategories.FILE_WRITE, StringUtils.getString("Could not edit tag. File: ", file.getUrl(), " Error: ", e));
         }
     }
 
@@ -329,7 +329,7 @@ public final class TagModifier {
             newTag.setField(FieldKey.TITLE, newTitle);
             audioFile.commit();
         } catch (Exception e) {
-            logger.error(LogCategories.FILE_WRITE, StringUtils.getString("Could not edit tag. File: ", file.getUrl(), " Error: ", e));
+            getLogger().error(LogCategories.FILE_WRITE, StringUtils.getString("Could not edit tag. File: ", file.getUrl(), " Error: ", e));
         }
     }
 
@@ -350,8 +350,20 @@ public final class TagModifier {
             newTag.setField(FieldKey.TRACK, track.toString());
             audioFile.commit();
         } catch (Exception e) {
-            logger.error(LogCategories.FILE_WRITE, StringUtils.getString("Could not edit tag. File: ", file.getUrl(), " Error: ", e));
+            getLogger().error(LogCategories.FILE_WRITE, StringUtils.getString("Could not edit tag. File: ", file.getUrl(), " Error: ", e));
         }
     }
+    
+    /**
+     * Getter for logger
+     * @return
+     */
+    private static Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
+    }
+
 
 }

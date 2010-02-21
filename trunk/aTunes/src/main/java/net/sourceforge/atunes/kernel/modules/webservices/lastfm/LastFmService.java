@@ -101,7 +101,7 @@ public class LastFmService {
     private static final int MIN_DURATION_TO_SUBMIT = 30;
     private static final int MAX_SUBMISSIONS = 50;
 
-    private static Logger logger = new Logger();
+    private static Logger logger;
 
     private Proxy proxy;
 
@@ -150,7 +150,7 @@ public class LastFmService {
                 proxy = Proxy.getProxy(proxyBean);
             }
         } catch (Exception e) {
-            logger.error(LogCategories.SERVICE, e);
+            getLogger().error(LogCategories.SERVICE, e);
         }
 
         this.proxy = proxy;
@@ -204,7 +204,7 @@ public class LastFmService {
             }
             return albumObject;
         } catch (Exception e) {
-            logger.error(LogCategories.SERVICE, e);
+            getLogger().error(LogCategories.SERVICE, e);
         }
         return null;
     }
@@ -294,7 +294,7 @@ public class LastFmService {
             }
             return albumList;
         } catch (Exception e) {
-            logger.error(LogCategories.SERVICE, e);
+            getLogger().error(LogCategories.SERVICE, e);
         }
         return null;
     }
@@ -313,7 +313,7 @@ public class LastFmService {
             List<String> tags = new ArrayList<String>(topTags);
             return tags.isEmpty() ? "" : tags.get(0);
         } catch (Exception e) {
-            logger.error(LogCategories.SERVICE, e);
+            getLogger().error(LogCategories.SERVICE, e);
         }
         return null;
     }
@@ -338,7 +338,7 @@ public class LastFmService {
 
             return img;
         } catch (IOException e) {
-            logger.error(LogCategories.SERVICE, e);
+            getLogger().error(LogCategories.SERVICE, e);
         }
         return null;
     }
@@ -368,7 +368,7 @@ public class LastFmService {
             }
             return img;
         } catch (Exception e) {
-            logger.error(LogCategories.SERVICE, e);
+            getLogger().error(LogCategories.SERVICE, e);
         }
         return null;
     }
@@ -407,7 +407,7 @@ public class LastFmService {
 
             return img;
         } catch (Exception e) {
-            logger.error(LogCategories.SERVICE, e);
+            getLogger().error(LogCategories.SERVICE, e);
         }
         return null;
     }
@@ -432,7 +432,7 @@ public class LastFmService {
                 }
             }
         } catch (IOException e) {
-            logger.error(LogCategories.SERVICE, e);
+            getLogger().error(LogCategories.SERVICE, e);
         }
         return null;
     }
@@ -459,7 +459,7 @@ public class LastFmService {
             }
             return similar;
         } catch (Exception e) {
-            logger.error(LogCategories.SERVICE, e);
+            getLogger().error(LogCategories.SERVICE, e);
         }
         return null;
     }
@@ -487,7 +487,7 @@ public class LastFmService {
             }
             return wikiText;
         } catch (Exception e) {
-            logger.error(LogCategories.SERVICE, e);
+            getLogger().error(LogCategories.SERVICE, e);
         }
         return null;
     }
@@ -523,14 +523,14 @@ public class LastFmService {
         // Get started to play
         long startedToPlay = System.currentTimeMillis() / 1000 - secondsPlayed;
 
-        logger.info(LogCategories.SERVICE, "Trying to submit song to Last.fm");
+        getLogger().info(LogCategories.SERVICE, "Trying to submit song to Last.fm");
         try {
             performHandshakeIfNeeded();
             SubmissionData submissionData = new SubmissionData(file.getArtist(), file.getTitle(), file.getAlbum(), (int) file.getDuration(), file.getTrackNumber(), Source.USER,
                     null, startedToPlay);
             ResponseStatus status = scrobbler.submit(submissionData);
             if (status.ok()) {
-                logger.info(LogCategories.SERVICE, "Song submitted to Last.fm");
+                getLogger().info(LogCategories.SERVICE, "Song submitted to Last.fm");
             } else {
                 handshakePerformed = false;
                 lastFmCache.addSubmissionData(new net.sourceforge.atunes.kernel.modules.webservices.lastfm.SubmissionData(file.getArtist(), file.getTitle(), file.getAlbum(),
@@ -539,7 +539,7 @@ public class LastFmService {
             }
 
         } catch (IOException e) {
-            logger.error(LogCategories.SERVICE, e);
+            getLogger().error(LogCategories.SERVICE, e);
             handshakePerformed = false;
             lastFmCache.addSubmissionData(new net.sourceforge.atunes.kernel.modules.webservices.lastfm.SubmissionData(file.getArtist(), file.getTitle(), file.getAlbum(),
                     (int) file.getDuration(), file.getTrackNumber(), Source.USER.toString(), (int) startedToPlay));
@@ -558,12 +558,12 @@ public class LastFmService {
             return;
         }
 
-        logger.info(LogCategories.SERVICE, StringUtils.getString("Trying to submit loved song to Last.fm: ", song.getArtist(), " - ", song.getTitle()));
+        getLogger().info(LogCategories.SERVICE, StringUtils.getString("Trying to submit loved song to Last.fm: ", song.getArtist(), " - ", song.getTitle()));
         Result r = Track.love(song.getArtist(), song.getTitle(), getSession());
         if (r.getStatus().equals(Status.OK)) {
-            logger.info(LogCategories.SERVICE, StringUtils.getString("Loved song submitted OK"));
+            getLogger().info(LogCategories.SERVICE, StringUtils.getString("Loved song submitted OK"));
         } else {
-            logger.error(LogCategories.SERVICE, StringUtils.getString("Error while submitting loved song"));
+            getLogger().error(LogCategories.SERVICE, StringUtils.getString("Error while submitting loved song"));
             // TODO: Add a cache to submit
         }
 
@@ -580,12 +580,12 @@ public class LastFmService {
             return;
         }
 
-        logger.info(LogCategories.SERVICE, StringUtils.getString("Trying to submit banned song to Last.fm: ", song.getArtist(), " - ", song.getTitle()));
+        getLogger().info(LogCategories.SERVICE, StringUtils.getString("Trying to submit banned song to Last.fm: ", song.getArtist(), " - ", song.getTitle()));
         Result r = Track.ban(song.getArtist(), song.getTitle(), getSession());
         if (r.getStatus().equals(Status.OK)) {
-            logger.info(LogCategories.SERVICE, StringUtils.getString("Banned song submitted OK"));
+            getLogger().info(LogCategories.SERVICE, StringUtils.getString("Banned song submitted OK"));
         } else {
-            logger.error(LogCategories.SERVICE, StringUtils.getString("Error while submitting banned song"));
+            getLogger().error(LogCategories.SERVICE, StringUtils.getString("Error while submitting banned song"));
             // TODO: Add a cache to submit
         }
     }
@@ -609,7 +609,7 @@ public class LastFmService {
                 collectionWithSubmissionData = collectionWithSubmissionData.subList(size - MAX_SUBMISSIONS, size);
             }
 
-            logger.info(LogCategories.SERVICE, "Trying to submit cache to Last.fm");
+            getLogger().info(LogCategories.SERVICE, "Trying to submit cache to Last.fm");
             try {
                 performHandshakeIfNeeded();
 
@@ -623,14 +623,14 @@ public class LastFmService {
                 ResponseStatus status = scrobbler.submit(submissionDataList);
                 if (status.ok()) {
                     lastFmCache.removeSubmissionData();
-                    logger.info(LogCategories.SERVICE, "Cache submitted to Last.fm");
+                    getLogger().info(LogCategories.SERVICE, "Cache submitted to Last.fm");
                 } else {
                     handshakePerformed = false;
                     throw new ScrobblerException(status.getStatus());
                 }
 
             } catch (IOException e) {
-                logger.error(LogCategories.SERVICE, e);
+                getLogger().error(LogCategories.SERVICE, e);
                 handshakePerformed = false;
                 throw new ScrobblerException(e.getMessage());
             }
@@ -651,18 +651,18 @@ public class LastFmService {
             return;
         }
 
-        logger.info(LogCategories.SERVICE, "Trying to submit now playing info to Last.fm");
+        getLogger().info(LogCategories.SERVICE, "Trying to submit now playing info to Last.fm");
         try {
             performHandshakeIfNeeded();
             ResponseStatus status = scrobbler.nowPlaying(file.getArtist(), file.getTitle(), file.getAlbum(), (int) file.getDuration(), file.getTrackNumber());
             if (status.ok()) {
-                logger.info(LogCategories.SERVICE, "Now playing info submitted to Last.fm");
+                getLogger().info(LogCategories.SERVICE, "Now playing info submitted to Last.fm");
             } else {
                 handshakePerformed = false;
                 throw new ScrobblerException(status.getStatus());
             }
         } catch (IOException e) {
-            logger.error(LogCategories.SERVICE, e);
+            getLogger().error(LogCategories.SERVICE, e);
             handshakePerformed = false;
             throw new ScrobblerException(e.getMessage());
         }
@@ -694,7 +694,7 @@ public class LastFmService {
             try {
                 return LastFmLovedTracks.getLovedTracks(this.user, null, proxy);
             } catch (Exception e) {
-                logger.error(LogCategories.SERVICE, e);
+                getLogger().error(LogCategories.SERVICE, e);
             }
         }
         return Collections.emptyList();
@@ -707,7 +707,7 @@ public class LastFmService {
      */
     private boolean checkUser() {
         if (user == null || user.equals("")) {
-            logger.debug(LogCategories.SERVICE, "Don't submit to Last.fm: Empty user");
+            getLogger().debug(LogCategories.SERVICE, "Don't submit to Last.fm: Empty user");
             return false;
         }
         return true;
@@ -733,7 +733,7 @@ public class LastFmService {
      */
     private boolean checkPassword() {
         if (password == null || password.equals("")) {
-            logger.debug(LogCategories.SERVICE, "Don't submit to Last.fm: Empty password");
+            getLogger().debug(LogCategories.SERVICE, "Don't submit to Last.fm: Empty password");
             return false;
         }
         return true;
@@ -747,7 +747,7 @@ public class LastFmService {
      */
     private boolean checkArtist(AudioObject ao) {
         if (net.sourceforge.atunes.kernel.modules.repository.data.Artist.isUnknownArtist(ao.getArtist())) {
-            logger.debug(LogCategories.SERVICE, "Don't submit to Last.fm: Unknown artist");
+            getLogger().debug(LogCategories.SERVICE, "Don't submit to Last.fm: Unknown artist");
             return false;
         }
         return true;
@@ -761,7 +761,7 @@ public class LastFmService {
      */
     private boolean checkTitle(AudioObject ao) {
         if (ao.getTitle().trim().equals("")) {
-            logger.debug(LogCategories.SERVICE, "Don't submit to Last.fm: Unknown Title");
+            getLogger().debug(LogCategories.SERVICE, "Don't submit to Last.fm: Unknown Title");
             return false;
         }
         return true;
@@ -775,7 +775,7 @@ public class LastFmService {
      */
     private boolean checkDuration(AudioObject ao) {
         if (ao.getDuration() < MIN_DURATION_TO_SUBMIT) {
-            logger.debug(LogCategories.SERVICE, "Don't submit to Last.fm: Lenght < ", MIN_DURATION_TO_SUBMIT);
+            getLogger().debug(LogCategories.SERVICE, "Don't submit to Last.fm: Lenght < ", MIN_DURATION_TO_SUBMIT);
             return false;
         }
         return true;
@@ -855,7 +855,7 @@ public class LastFmService {
                         submit(audioFile, secondsPlayed);
                     } catch (ScrobblerException e) {
                         if (e.getStatus() == 2) {
-                            logger.error(LogCategories.SERVICE, "Authentication failure on Last.fm service");
+                            getLogger().error(LogCategories.SERVICE, "Authentication failure on Last.fm service");
                             SwingUtilities.invokeLater(new Runnable() {
                                 @Override
                                 public void run() {
@@ -865,7 +865,7 @@ public class LastFmService {
                                 }
                             });
                         } else {
-                            logger.error(LogCategories.SERVICE, e.getMessage());
+                            getLogger().error(LogCategories.SERVICE, e.getMessage());
                         }
                     }
                 }
@@ -873,7 +873,7 @@ public class LastFmService {
             try {
                 scrobblerExecutorService.submit(r);
             } catch (RejectedExecutionException e) {
-                logger.info(LogCategories.SERVICE, "execution of submission runnable rejected");
+                getLogger().info(LogCategories.SERVICE, "execution of submission runnable rejected");
             }
         }
     }
@@ -890,9 +890,9 @@ public class LastFmService {
                         submitCache();
                     } catch (ScrobblerException e) {
                         if (e.getStatus() == 2) {
-                            logger.error(LogCategories.SERVICE, "Authentication failure on Last.fm service");
+                            getLogger().error(LogCategories.SERVICE, "Authentication failure on Last.fm service");
                         } else {
-                            logger.error(LogCategories.SERVICE, e.getMessage());
+                            getLogger().error(LogCategories.SERVICE, e.getMessage());
                         }
                     }
                 }
@@ -900,7 +900,7 @@ public class LastFmService {
             try {
                 scrobblerExecutorService.submit(r);
             } catch (RejectedExecutionException e) {
-                logger.info(LogCategories.SERVICE, "execution of cache submission runnable rejected");
+                getLogger().info(LogCategories.SERVICE, "execution of cache submission runnable rejected");
             }
         }
     }
@@ -920,7 +920,7 @@ public class LastFmService {
                         submitNowPlayingInfo(audioFile);
                     } catch (ScrobblerException e) {
                         if (e.getStatus() == 2) {
-                            logger.error(LogCategories.SERVICE, "Authentication failure on Last.fm service");
+                            getLogger().error(LogCategories.SERVICE, "Authentication failure on Last.fm service");
                             SwingUtilities.invokeLater(new Runnable() {
                                 @Override
                                 public void run() {
@@ -930,7 +930,7 @@ public class LastFmService {
                                 }
                             });
                         } else {
-                            logger.error(LogCategories.SERVICE, e.getMessage());
+                            getLogger().error(LogCategories.SERVICE, e.getMessage());
                         }
                     }
                 }
@@ -938,7 +938,7 @@ public class LastFmService {
             try {
                 scrobblerExecutorService.submit(r);
             } catch (RejectedExecutionException e) {
-                logger.info(LogCategories.SERVICE, "execution of now playing runnable rejected");
+                getLogger().info(LogCategories.SERVICE, "execution of now playing runnable rejected");
             }
         }
     }
@@ -969,9 +969,9 @@ public class LastFmService {
         try {
             return new String(CryptoUtils.decrypt(API_KEY));
         } catch (GeneralSecurityException e) {
-            logger.internalError(e);
+            getLogger().internalError(e);
         } catch (IOException e) {
-            logger.internalError(e);
+            getLogger().internalError(e);
         }
         return "";
     }
@@ -980,9 +980,9 @@ public class LastFmService {
         try {
             return new String(CryptoUtils.decrypt(API_SECRET));
         } catch (GeneralSecurityException e) {
-            logger.internalError(e);
+            getLogger().internalError(e);
         } catch (IOException e) {
-            logger.internalError(e);
+            getLogger().internalError(e);
         }
         return "";
     }
@@ -995,4 +995,16 @@ public class LastFmService {
     private Session getSession() {
         return Authenticator.getMobileSession(user, password, getApiKey(), getApiSecret());
     }
+    
+    /**
+     * Getter for logger
+     * @return
+     */
+    private static Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
+    }
+
 }

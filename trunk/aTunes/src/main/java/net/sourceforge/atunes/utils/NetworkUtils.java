@@ -44,7 +44,7 @@ import org.commonjukebox.plugins.PluginApi;
 @PluginApi
 public final class NetworkUtils {
 
-    private static Logger logger = new Logger();
+    private static Logger logger;
 
     private NetworkUtils() {
     }
@@ -79,7 +79,7 @@ public final class NetworkUtils {
      *             If an IO exception occurs
      */
     public static URLConnection getConnection(String urlString, Proxy proxy) throws IOException {
-        logger.debug(LogCategories.NETWORK, "Opening Connection With: ", urlString);
+        getLogger().debug(LogCategories.NETWORK, "Opening Connection With: ", urlString);
 
         URL url = new URL(urlString);
 
@@ -238,6 +238,17 @@ public final class NetworkUtils {
         } finally {
             ClosingUtils.close(input);
         }
+    }
+
+    /**
+     * Getter for logger
+     * @return
+     */
+    private static Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
     }
 
 }

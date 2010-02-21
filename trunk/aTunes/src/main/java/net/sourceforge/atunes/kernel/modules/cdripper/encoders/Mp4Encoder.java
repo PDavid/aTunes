@@ -59,7 +59,7 @@ public class Mp4Encoder implements Encoder {
 
     static final String DEFAULT_MP4_QUALITY = "200";
 
-    private Logger logger = new Logger();
+    private Logger logger;
     private Process p;
     private ProgressListener listener;
     private String albumArtist;
@@ -122,7 +122,7 @@ public class Mp4Encoder implements Encoder {
      */
     @Override
     public boolean encode(File wavFile, File mp4File, String title, int trackNumber, String artist, String composer) {
-        logger.info(LogCategories.FAAC, StringUtils.getString("Mp4 encoding process started... ", wavFile.getName(), " -> ", mp4File.getName()));
+        getLogger().info(LogCategories.FAAC, StringUtils.getString("Mp4 encoding process started... ", wavFile.getName(), " -> ", mp4File.getName()));
         BufferedReader stdInput = null;
         try {
             List<String> command = new ArrayList<String>();
@@ -172,7 +172,7 @@ public class Mp4Encoder implements Encoder {
 
             int code = p.waitFor();
             if (code != 0) {
-                logger.error(LogCategories.FAAC, StringUtils.getString("Process returned code ", code));
+                getLogger().error(LogCategories.FAAC, StringUtils.getString("Process returned code ", code));
                 return false;
             }
 
@@ -193,15 +193,15 @@ public class Mp4Encoder implements Encoder {
                 TagModifier.setInfo(audiofile, tag);
 
             } catch (Exception e) {
-                logger.error(LogCategories.FAAC, StringUtils.getString("Jaudiotagger: Process execution caused exception ", e));
+                getLogger().error(LogCategories.FAAC, StringUtils.getString("Jaudiotagger: Process execution caused exception ", e));
                 return false;
             }
 
-            logger.info(LogCategories.FAAC, "Encoded ok!!");
+            getLogger().info(LogCategories.FAAC, "Encoded ok!!");
             return true;
 
         } catch (Exception e) {
-            logger.error(LogCategories.FAAC, StringUtils.getString("Process execution caused exception ", e));
+            getLogger().error(LogCategories.FAAC, StringUtils.getString("Process execution caused exception ", e));
             return false;
         } finally {
             ClosingUtils.close(stdInput);
@@ -315,4 +315,16 @@ public class Mp4Encoder implements Encoder {
     public String getFormatName() {
         return FORMAT_NAME;
     }
+    
+    /**
+     * Getter for logger
+     * @return
+     */
+    private Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
+    }
+
 }

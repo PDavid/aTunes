@@ -55,7 +55,7 @@ import com.sun.jna.WString;
  */
 public final class FileNameUtils {
 
-    private static final Logger logger = new Logger();
+    private static Logger logger;
     private static final int CHAR_BYTE_WIDTH = 2;
 
     private static Kernel32 kernel32;
@@ -68,7 +68,7 @@ public final class FileNameUtils {
             Native.setProtected(true);
             kernel32 = (Kernel32) Native.loadLibrary("Kernel32", Kernel32.class);
         } catch (UnsatisfiedLinkError e) {
-            logger.debug(LogCategories.NATIVE, "kernel32 not found");
+            getLogger().debug(LogCategories.NATIVE, "kernel32 not found");
         }
     }
 
@@ -308,4 +308,16 @@ public final class FileNameUtils {
         }
         return buffer.getString(0, true);
     }
+    
+    /**
+     * Getter for logger
+     * @return
+     */
+    private static Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
+    }
+
 }

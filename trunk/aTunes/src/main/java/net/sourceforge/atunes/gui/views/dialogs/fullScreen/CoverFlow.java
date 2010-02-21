@@ -49,7 +49,7 @@ public final class CoverFlow extends JPanel {
 
     private static final long serialVersionUID = -5982158797052430789L;
 
-    private static Logger logger = new Logger();
+    private Logger logger;
 
     private List<Cover3D> covers;
 
@@ -132,9 +132,9 @@ public final class CoverFlow extends JPanel {
                     image = get();
                     setPicture(audioObject, image, cover);
                 } catch (InterruptedException e) {
-                    logger.error(LogCategories.IMAGE, e);
+                    getLogger().error(LogCategories.IMAGE, e);
                 } catch (ExecutionException e) {
-                    logger.error(LogCategories.IMAGE, e);
+                    getLogger().error(LogCategories.IMAGE, e);
                 }
             }
         }.execute();
@@ -184,4 +184,16 @@ public final class CoverFlow extends JPanel {
             return Constants.FULL_SCREEN_COVER * 9 / 16;
         }
     }
+    
+    /**
+     * Getter for logger
+     * @return
+     */
+    private Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
+    }
+
 }

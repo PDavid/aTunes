@@ -34,7 +34,6 @@ import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 
 import org.gstreamer.Bus;
@@ -46,8 +45,6 @@ import org.gstreamer.elements.PlayBin;
 //TODO:  radio?, podcast?, proxy?, normalization?, karaoke?
 public class GStreamerEngine extends PlayerEngine {
 
-    private static Logger logger = new Logger();
-
     private PlayBin playBin;
     private Runnable remainingTimeRunnable;
     private ScheduledFuture<?> scheduledFuture;
@@ -58,7 +55,7 @@ public class GStreamerEngine extends PlayerEngine {
             playBin = new PlayBin("AudioPlayer");
             playBin.setVideoSink(ElementFactory.make("fakesink", "videosink"));
         } catch (Throwable e) {
-            logger.error(LogCategories.PLAYER, "GStreamer is not supported");
+            getLogger().error(LogCategories.PLAYER, "GStreamer is not supported");
         }
 
         remainingTimeRunnable = new Runnable() {
@@ -161,7 +158,7 @@ public class GStreamerEngine extends PlayerEngine {
             try {
                 playBin.setURI(new URI(audioObjectToPlay.getUrl()));
             } catch (URISyntaxException e) {
-                logger.error(LogCategories.PLAYER, e);
+                getLogger().error(LogCategories.PLAYER, e);
             }
         }
         playBin.getBus().connect(new Bus.EOS() {

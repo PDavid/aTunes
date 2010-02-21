@@ -44,7 +44,7 @@ public class LyricsflyEngine extends LyricsEngine {
     private static final int SLEEP_TIME = 1500;
     private static final String LIMITED_TIME_STATUS = "402";
 
-    private Logger logger = new Logger();
+    private Logger logger;
 
     public LyricsflyEngine(Proxy proxy) {
         super(proxy);
@@ -62,11 +62,11 @@ public class LyricsflyEngine extends LyricsEngine {
                 return null;
             }
         } catch (UnknownHostException e) {
-            logger.error(LogCategories.SERVICE, e);
+            getLogger().error(LogCategories.SERVICE, e);
         } catch (IOException e) {
-            logger.error(LogCategories.SERVICE, e);
+            getLogger().error(LogCategories.SERVICE, e);
         } catch (GeneralSecurityException e) {
-            logger.error(LogCategories.SERVICE, e);
+            getLogger().error(LogCategories.SERVICE, e);
         }
         return null;
     }
@@ -82,7 +82,7 @@ public class LyricsflyEngine extends LyricsEngine {
                 try {
                     Thread.sleep(SLEEP_TIME);
                 } catch (InterruptedException e) {
-                    logger.error(LogCategories.SERVICE, e);
+                    getLogger().error(LogCategories.SERVICE, e);
                 }
             }
             String url = getUrl(artist, title);
@@ -124,5 +124,16 @@ public class LyricsflyEngine extends LyricsEngine {
      * DO NOT USE THIS KEY FOR OTHER APPLICATIONS THAN aTunes!
      */
     private static final byte[] C = { -113, 48, 87, 26, 59, 127, 85, -7, -72, 92, 78, -96, -25, 46, -16, 112, -104, 20, -78, 126, 26, 13, -40, 46 };
+
+    /**
+     * Getter for logger
+     * @return
+     */
+    private Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
+    }
 
 }

@@ -34,7 +34,7 @@ public class ImageCache extends AbstractCache {
 
     private static final String COVERS = "covers";
 
-    private Logger logger = new Logger();
+    private Logger logger;
 
     public ImageCache() {
         super(LyricsCache.class.getResource("/settings/ehcache-covers.xml"));
@@ -50,7 +50,7 @@ public class ImageCache extends AbstractCache {
             getCache().removeAll();
             getCache().flush();
         } catch (Exception e) {
-            logger.info(LogCategories.FILE_DELETE, "Could not delete all files from cover cache");
+            getLogger().info(LogCategories.FILE_DELETE, "Could not delete all files from cover cache");
             return true;
         }
         return false;
@@ -63,7 +63,7 @@ public class ImageCache extends AbstractCache {
             }
             getCache().flush();
         } catch (Exception e) {
-            logger.info(LogCategories.FILE_DELETE, "Could not delete all files from cover cache");
+            getLogger().info(LogCategories.FILE_DELETE, "Could not delete all files from cover cache");
             return true;
         }
         return false;
@@ -88,7 +88,7 @@ public class ImageCache extends AbstractCache {
         }
         Element element = new Element(id(audioFile, imageSize), cover);
         getCache().put(element);
-        logger.debug(LogCategories.CACHE, "Stored image for ", audioFile);
+        getLogger().debug(LogCategories.CACHE, "Stored image for ", audioFile);
     }
 
     private Cache getCache() {
@@ -98,5 +98,17 @@ public class ImageCache extends AbstractCache {
     public void shutdown() {
         getCache().dispose();
     }
+    
+    /**
+     * Getter for logger
+     * @return
+     */
+    private Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
+    }
+
 
 }

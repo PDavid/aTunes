@@ -133,7 +133,7 @@ public class AmazonService implements ApplicationStateChangeListener {
      * 
      * @return
      */
-    private Logger getLogger() {
+    private static Logger getLogger() {
         if (logger == null) {
             logger = new Logger();
         }
@@ -149,9 +149,9 @@ public class AmazonService implements ApplicationStateChangeListener {
         try {
             return new String(CryptoUtils.decrypt(SUBSCRIPTION_ID));
         } catch (GeneralSecurityException e) {
-            logger.internalError(e);
+        	getLogger().internalError(e);
         } catch (IOException e) {
-            logger.internalError(e);
+        	getLogger().internalError(e);
         }
         return "";
     }

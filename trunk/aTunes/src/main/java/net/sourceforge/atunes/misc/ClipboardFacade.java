@@ -38,7 +38,7 @@ import org.commonjukebox.plugins.PluginApi;
 public class ClipboardFacade implements ClipboardOwner {
 
     /** Logger. */
-    private static Logger logger = new Logger();
+    private static Logger logger;
 
     /** Private singleton instance. */
     private static ClipboardFacade instance = new ClipboardFacade();
@@ -57,7 +57,7 @@ public class ClipboardFacade implements ClipboardOwner {
      *            the s text
      */
     public static void copyToClipboard(String sText) {
-        logger.debug(LogCategories.CLIPBOARD);
+        getLogger().debug(LogCategories.CLIPBOARD);
 
         // Get System Clipboard
         Clipboard objClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -109,4 +109,16 @@ public class ClipboardFacade implements ClipboardOwner {
     public void lostOwnership(Clipboard arg0, Transferable arg1) {
         // Nothing to do
     }
+    
+    /**
+     * Getter for logger
+     * @return
+     */
+    private static Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
+    }
+
 }

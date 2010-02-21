@@ -46,7 +46,7 @@ public class CdRipper {
     public static final String TITLE_PATTERN = "%T";
     public static final String TRACK_NUMBER = "%N";
 
-    private Logger logger = new Logger();
+    private Logger logger;
     private CdToWavConverter cdToWavConverter;
     private Encoder encoder;
     private ProgressListener listener;
@@ -141,10 +141,10 @@ public class CdRipper {
 
     public boolean ripTracks(List<Integer> tracks, final List<String> titles, File folder, final List<String> artistNames, final List<String> composerNames, boolean useParanoia) {
         String extension = encoder != null ? encoder.getExtensionOfEncodedFiles() : "wav";
-        logger.info(LogCategories.RIPPER, StringUtils.getString("Running cd ripping of ", tracks.size(), " to ", extension, "..."));
+        getLogger().info(LogCategories.RIPPER, StringUtils.getString("Running cd ripping of ", tracks.size(), " to ", extension, "..."));
         long t0 = System.currentTimeMillis();
         if (!checkFolder(folder)) {
-            logger.error(LogCategories.RIPPER, "Folder " + folder + " not found or not a directory");
+            getLogger().error(LogCategories.RIPPER, "Folder " + folder + " not found or not a directory");
             return false;
         }
 
@@ -206,7 +206,7 @@ public class CdRipper {
                                 });
                             }
 
-                            logger.info(LogCategories.RIPPER, "Deleting wav file...");
+                            getLogger().info(LogCategories.RIPPER, "Deleting wav file...");
                             wavFileTemp.delete();
                             infFileTemp.delete();
 
@@ -217,7 +217,7 @@ public class CdRipper {
                             wavFileTemp.delete();
                             infFileTemp.delete();
                         } else if (!ripResultFinal) {
-                            logger.error(LogCategories.RIPPER, StringUtils.getString("Rip failed. Skipping track ", trackNumber, "..."));
+                            getLogger().error(LogCategories.RIPPER, StringUtils.getString("Rip failed. Skipping track ", trackNumber, "..."));
                         }
                     }
                 };
@@ -232,7 +232,7 @@ public class CdRipper {
                     try {
                         executorService.awaitTermination(100, TimeUnit.MINUTES);
                     } catch (InterruptedException e) {
-                        logger.error(LogCategories.RIPPER, e);
+                        getLogger().error(LogCategories.RIPPER, e);
                     }
                 }
 
@@ -248,7 +248,7 @@ public class CdRipper {
             }
         }
         long t1 = System.currentTimeMillis();
-        logger.info(LogCategories.RIPPER, StringUtils.getString("Process finished in ", (t1 - t0) / 1000.0, " seconds"));
+        getLogger().info(LogCategories.RIPPER, StringUtils.getString("Process finished in ", (t1 - t0) / 1000.0, " seconds"));
         return true;
     }
 
@@ -383,5 +383,16 @@ public class CdRipper {
         if (encoder != null) {
             encoder.stop();
         }
+    }
+    
+    /**
+     * Getter for logger
+     * @return
+     */
+    private Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
     }
 }

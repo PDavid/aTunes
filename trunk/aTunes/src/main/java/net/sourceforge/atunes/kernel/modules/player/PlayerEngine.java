@@ -66,7 +66,7 @@ public abstract class PlayerEngine implements PlaybackStateListener {
     /**
      * The logger used in player engines
      */
-    private static Logger logger = new Logger();
+    private static Logger logger;
 
     /**
      * Listeners of playback state
@@ -298,7 +298,7 @@ public abstract class PlayerEngine implements PlaybackStateListener {
             try {
                 paused = true;
                 pausePlayback();
-                logger.info(LogCategories.PLAYER, "Pause");
+                getLogger().info(LogCategories.PLAYER, "Pause");
                 callPlaybackStateListeners(PlaybackState.PAUSED);
             } catch (Exception e) {
                 handlePlayerEngineError(e);
@@ -312,7 +312,7 @@ public abstract class PlayerEngine implements PlaybackStateListener {
                         paused = false;
                         resumePlayback();
                         callPlaybackStateListeners(PlaybackState.RESUMING);
-                        logger.info(LogCategories.PLAYER, "Resumed paused song");
+                        getLogger().info(LogCategories.PLAYER, "Resumed paused song");
                     }
                 } else {
                     nextAudioObject = PlayListHandler.getInstance().getCurrentAudioObjectFromVisiblePlayList();
@@ -352,7 +352,7 @@ public abstract class PlayerEngine implements PlaybackStateListener {
 
             stopPlayback(userStopped, activateFadeAway);
             callPlaybackStateListeners(PlaybackState.STOPPED);
-            logger.info(LogCategories.PLAYER, "Stop");
+            getLogger().info(LogCategories.PLAYER, "Stop");
         } catch (Exception e) {
             handlePlayerEngineError(e);
         }
@@ -391,7 +391,7 @@ public abstract class PlayerEngine implements PlaybackStateListener {
      * playback
      */
     public final void currentAudioObjectFinished() {
-        logger.info(LogCategories.PLAYER, "Playback finished");
+        getLogger().info(LogCategories.PLAYER, "Playback finished");
 
         // Call listeners to notify playback finished
         callPlaybackStateListeners(PlaybackState.PLAY_FINISHED);
@@ -414,7 +414,7 @@ public abstract class PlayerEngine implements PlaybackStateListener {
             paused = false;
             if (!PlayListHandler.getInstance().getCurrentPlayList(false).isEmpty()) {
                 callPlaybackStateListeners(PlaybackState.RESUMING);
-                logger.info(LogCategories.PLAYER, "Resumed paused song");
+                getLogger().info(LogCategories.PLAYER, "Resumed paused song");
             }
         }
 
@@ -425,7 +425,7 @@ public abstract class PlayerEngine implements PlaybackStateListener {
      * Lower volume
      */
     public final void volumeDown() {
-        logger.debug(LogCategories.PLAYER);
+        getLogger().debug(LogCategories.PLAYER);
         Volume.setVolume(ApplicationState.getInstance().getVolume() - 5);
     }
 
@@ -433,7 +433,7 @@ public abstract class PlayerEngine implements PlaybackStateListener {
      * Raise volume
      */
     public final void volumeUp() {
-        logger.debug(LogCategories.PLAYER);
+        getLogger().debug(LogCategories.PLAYER);
         Volume.setVolume(ApplicationState.getInstance().getVolume() + 5);
     }
 
@@ -444,8 +444,8 @@ public abstract class PlayerEngine implements PlaybackStateListener {
      *            The exception thrown
      */
     public final void handlePlayerEngineError(final Exception e) {
-        logger.error(LogCategories.PLAYER, StringUtils.getString("Player Error: ", e));
-        logger.error(LogCategories.PLAYER, e);
+        getLogger().error(LogCategories.PLAYER, StringUtils.getString("Player Error: ", e));
+        getLogger().error(LogCategories.PLAYER, e);
         SwingUtilities.invokeLater(new ShowErrorDialog(e));
     }
 
@@ -549,14 +549,14 @@ public abstract class PlayerEngine implements PlaybackStateListener {
      * playing (MPlayer bug workaround).
      */
     protected final void notifyRadioOrPodcastFeedEntryStarted() {
-        logger.debug(LogCategories.PLAYER, "radio or podcast feed entry has started playing");
+        getLogger().debug(LogCategories.PLAYER, "radio or podcast feed entry has started playing");
         // send volume command
         setVolume(ApplicationState.getInstance().getVolume());
         // if muted set mute again
         if (ApplicationState.getInstance().isMuteEnabled()) {
             applyMuteState(true);
         }
-        logger.debug(LogCategories.PLAYER, "MPlayer bug (ignoring muting and volume settings after streamed file starts playing) workaround applied");
+        getLogger().debug(LogCategories.PLAYER, "MPlayer bug (ignoring muting and volume settings after streamed file starts playing) workaround applied");
     }
 
     /**
@@ -567,7 +567,7 @@ public abstract class PlayerEngine implements PlaybackStateListener {
      * super.initializePlayerEngine()</b>
      */
     protected void initializePlayerEngine() {
-        logger.debug(LogCategories.PLAYER);
+        getLogger().debug(LogCategories.PLAYER);
     }
 
     /**
@@ -576,7 +576,7 @@ public abstract class PlayerEngine implements PlaybackStateListener {
      * @param audioObject
      */
     private void playAudioObject(AudioObject audioObject) {
-        logger.info(LogCategories.PLAYER, StringUtils.getString("Started play of file ", audioObject));
+        getLogger().info(LogCategories.PLAYER, StringUtils.getString("Started play of file ", audioObject));
 
         // If cacheFilesBeforePlaying is true and audio object is an audio file, copy it to temp folder
         // and start mplayer process from this copied file
@@ -684,6 +684,9 @@ public abstract class PlayerEngine implements PlaybackStateListener {
 	 * @return the logger
 	 */
 	protected static Logger getLogger() {
+		if (logger == null) {
+			logger = new Logger();
+		}
 		return logger;
 	}
 

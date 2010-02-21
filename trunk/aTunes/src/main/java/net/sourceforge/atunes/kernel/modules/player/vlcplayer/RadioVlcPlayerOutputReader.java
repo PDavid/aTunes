@@ -29,7 +29,7 @@ import net.sourceforge.atunes.misc.log.Logger;
 
 class RadioVlcPlayerOutputReader extends VlcPlayerOutputReader {
 
-    private static final Logger logger = new Logger();
+    private Logger logger;
     private Radio radio;
     /** The info line for the radio */
     private String infoLine = "NO_INFO";
@@ -80,7 +80,7 @@ class RadioVlcPlayerOutputReader extends VlcPlayerOutputReader {
                         radio.setSongInfoAvailable(true);
                         ControllerProxy.getInstance().getPlayListController().refreshPlayList();
                     } catch (IndexOutOfBoundsException e) {
-                        logger.info(LogCategories.PLAYER, "Could not read song info from radio");
+                        getLogger().info(LogCategories.PLAYER, "Could not read song info from radio");
                     }
                     if (radio.equals(PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList())) {
                         ContextHandler.getInstance().retrieveInfoAndShowInPanel(radio);
@@ -93,6 +93,17 @@ class RadioVlcPlayerOutputReader extends VlcPlayerOutputReader {
             radio.deleteSongInfo();
             ControllerProxy.getInstance().getPlayListController().refreshPlayList();
         }
-
     }
+    
+    /**
+     * Getter for logger
+     * @return
+     */
+    private Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
+    }
+
 }

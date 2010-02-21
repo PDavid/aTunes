@@ -76,7 +76,6 @@ import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 
@@ -86,8 +85,6 @@ public final class NavigationController extends Controller implements AudioFiles
 
         ARTIST, ALBUM, GENRE, FOLDER
     }
-
-    private Logger logger = new Logger();
 
     private NavigationTreePanel navigationTreePanel;
     private NavigationTablePanel navigationTablePanel;
@@ -128,9 +125,9 @@ public final class NavigationController extends Controller implements AudioFiles
                             getExtendedToolTip().setImage(get());
                         }
                     } catch (InterruptedException e) {
-                        logger.error(LogCategories.IMAGE, e);
+                        getLogger().error(LogCategories.IMAGE, e);
                     } catch (ExecutionException e) {
-                        logger.error(LogCategories.IMAGE, e);
+                        getLogger().error(LogCategories.IMAGE, e);
                     }
                 }
             };

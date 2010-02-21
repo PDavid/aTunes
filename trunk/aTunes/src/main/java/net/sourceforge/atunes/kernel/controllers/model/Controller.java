@@ -23,7 +23,7 @@ import net.sourceforge.atunes.misc.log.Logger;
 
 public abstract class Controller {
 
-    private Logger logger = new Logger();
+    private Logger logger;
 
     /**
      * Adds the bindings.
@@ -46,6 +46,9 @@ public abstract class Controller {
      * @return
      */
     protected Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
         return logger;
     }
 }

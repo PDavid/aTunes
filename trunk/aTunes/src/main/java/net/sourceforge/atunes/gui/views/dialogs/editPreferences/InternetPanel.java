@@ -49,7 +49,8 @@ import net.sourceforge.atunes.utils.I18nUtils;
 public final class InternetPanel extends PreferencesPanel {
 
     private static final long serialVersionUID = -1872565673079044088L;
-    private static final Logger logger = new Logger();
+    
+    private Logger logger;
 
     private JRadioButton noProxyRadioButton;
     private JRadioButton httpProxyRadioButton;
@@ -218,9 +219,9 @@ public final class InternetPanel extends PreferencesPanel {
         try {
             Proxy.initProxy(Proxy.getProxy(proxy));
         } catch (UnknownHostException e) {
-            logger.error(LogCategories.CONTROLLER, e);
+            getLogger().error(LogCategories.CONTROLLER, e);
         } catch (IOException e) {
-            logger.error(LogCategories.CONTROLLER, e);
+            getLogger().error(LogCategories.CONTROLLER, e);
         }
         return false;
     }
@@ -288,5 +289,18 @@ public final class InternetPanel extends PreferencesPanel {
     public ImageIcon getIcon() {
         return Images.getImage(Images.NETWORK_LITTLE);
     }
+    
+    /**
+     * Getter for logger
+     * 
+     * @return
+     */
+    private Logger getLogger() {
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
+    }
+
 
 }

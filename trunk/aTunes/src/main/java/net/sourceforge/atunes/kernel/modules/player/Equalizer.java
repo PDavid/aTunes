@@ -42,7 +42,7 @@ import net.sourceforge.atunes.misc.log.Logger;
  */
 public class Equalizer {
 
-    private Logger logger = new Logger();
+    private Logger logger;
 
     private Map<String, Integer[]> presets;
 
@@ -86,9 +86,9 @@ public class Equalizer {
             }
 
         } catch (IOException ioe) {
-            logger.error(LogCategories.PLAYER, ioe);
+            getLogger().error(LogCategories.PLAYER, ioe);
         } catch (NumberFormatException nfe) {
-            logger.error(LogCategories.PLAYER, nfe);
+            getLogger().error(LogCategories.PLAYER, nfe);
         }
 
         return result;
@@ -174,4 +174,16 @@ public class Equalizer {
         float[] equalizerSettings = ApplicationState.getInstance().getEqualizerSettings();
         return equalizerSettings != null ? Arrays.copyOf(equalizerSettings, equalizerSettings.length) : null;
     }
+    
+    /**
+     * Getter for logger
+     * @return
+     */
+    private Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
+    }
+
 }

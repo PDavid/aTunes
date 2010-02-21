@@ -36,7 +36,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class LyrcEngine extends LyricsEngine {
 
-    private static Logger logger = new Logger();
+    private static Logger logger;
 
     private static final String ARTIST_WILDCARD = "(%ARTIST%)";
     private static final String SONG_WILDCARD = "(%SONG%)";
@@ -72,7 +72,7 @@ public class LyrcEngine extends LyricsEngine {
             String html = readURL(getConnection(url), "ISO-8859-1");
 
             if (html.contains("Suggestions : <br>")) { // More than one posibility, find the best one
-                logger.debugMethodCall(LogCategories.SERVICE, new String[] { "Suggestions found" });
+                getLogger().debugMethodCall(LogCategories.SERVICE, new String[] { "Suggestions found" });
 
                 html = html.substring(html.indexOf("Suggestions : <br>"));
                 html = html.substring(0, html.indexOf("<br><br"));
@@ -120,14 +120,14 @@ public class LyrcEngine extends LyricsEngine {
                     }
                     if (matches) {
                         // We have found it, build url and call again
-                        logger.debugMethodCall(LogCategories.SERVICE, new String[] { "Found suggestion", suggestion.getKey() });
+                        getLogger().debugMethodCall(LogCategories.SERVICE, new String[] { "Found suggestion", suggestion.getKey() });
 
                         String auxUrl = SUGGESTIONS_URL.concat(suggestion.getValue());
                         return getLyrics(auxUrl, artist, title);
                     }
                 }
 
-                logger.debugMethodCall(LogCategories.SERVICE, new String[] { "No suitable suggestion found" });
+                getLogger().debugMethodCall(LogCategories.SERVICE, new String[] { "No suitable suggestion found" });
                 // If we reach this code, no suggestion was found, so return null
                 return null;
             }
@@ -159,7 +159,7 @@ public class LyrcEngine extends LyricsEngine {
 
             return html;
         } catch (Exception e) {
-            logger.error(LogCategories.SERVICE, e);
+            getLogger().error(LogCategories.SERVICE, e);
 
             return null;
         }
@@ -184,5 +184,17 @@ public class LyrcEngine extends LyricsEngine {
     public String getUrlForAddingNewLyrics(String artist, String title) {
         return ADD_LYRICS_URL.replace(SONG_WILDCARD, encodeString(title)).replace(ARTIST_WILDCARD, encodeString(artist));
     }
+    
+    /**
+     * Getter for logger
+     * @return
+     */
+    private Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
+    }
+
 
 }

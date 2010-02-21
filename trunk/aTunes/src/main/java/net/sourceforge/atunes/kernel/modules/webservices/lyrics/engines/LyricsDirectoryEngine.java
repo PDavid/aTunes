@@ -35,7 +35,7 @@ public class LyricsDirectoryEngine extends LyricsEngine {
     private static final String BASE_URL = "http://www.lyricsdir.com/";
     private static final String CHARSET = "UTF-8";
 
-    private Logger logger = new Logger();
+    private Logger logger;
 
     public LyricsDirectoryEngine(Proxy proxy) {
         super(proxy);
@@ -63,10 +63,10 @@ public class LyricsDirectoryEngine extends LyricsEngine {
             }
             return lyrics != null && !lyrics.isEmpty() ? new Lyrics(lyrics, sb.toString()) : null;
         } catch (UnknownHostException e) {
-            logger.error(LogCategories.SERVICE, e);
+            getLogger().error(LogCategories.SERVICE, e);
             return null;
         } catch (IOException e) {
-            logger.debug(LogCategories.SERVICE, "No lyrics found at ", BASE_URL, " for ", artist, " - ", title);
+            getLogger().debug(LogCategories.SERVICE, "No lyrics found at ", BASE_URL, " for ", artist, " - ", title);
             return null;
         }
     }
@@ -96,6 +96,17 @@ public class LyricsDirectoryEngine extends LyricsEngine {
     @Override
     public String getUrlForAddingNewLyrics(String artist, String title) {
         return "";
+    }
+
+    /**
+     * Getter for logger
+     * @return
+     */
+    private Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
     }
 
 }

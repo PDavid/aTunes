@@ -51,7 +51,7 @@ public abstract class Process {
     /**
      * Logger shared by all processes
      */
-    private static Logger logger = new Logger();
+    private static Logger logger;
 
     /**
      * List of listeners notified when Process ends or is canceled
@@ -179,14 +179,14 @@ public abstract class Process {
      * @param o
      */
     protected final void addInfoLog(Object o) {
-        logger.info(LogCategories.PROCESS, o);
+        getLogger().info(LogCategories.PROCESS, o);
     }
 
     /**
      * Adds a default debug log
      */
     protected final void addDebugLog() {
-        logger.debug(LogCategories.PROCESS);
+        getLogger().debug(LogCategories.PROCESS);
     }
 
     /**
@@ -195,7 +195,7 @@ public abstract class Process {
      * @param o
      */
     protected final void addDebugLog(Object... o) {
-        logger.debug(LogCategories.PROCESS, o);
+        getLogger().debug(LogCategories.PROCESS, o);
     }
 
     /**
@@ -204,7 +204,7 @@ public abstract class Process {
      * @param o
      */
     protected final void addErrorLog(Object o) {
-        logger.error(LogCategories.PROCESS, o);
+        getLogger().error(LogCategories.PROCESS, o);
     }
 
     /**
@@ -246,7 +246,7 @@ public abstract class Process {
                 }
             });
         } catch (Exception e) {
-            logger.error(LogCategories.PROCESS, e);
+            getLogger().error(LogCategories.PROCESS, e);
         }
     }
 
@@ -261,7 +261,7 @@ public abstract class Process {
                 }
             });
         } catch (Exception e) {
-            logger.error(LogCategories.PROCESS, e);
+            getLogger().error(LogCategories.PROCESS, e);
         }
     }
 
@@ -281,7 +281,7 @@ public abstract class Process {
                 }
             });
         } catch (Exception e) {
-            logger.error(LogCategories.PROCESS, e);
+            getLogger().error(LogCategories.PROCESS, e);
         }
     }
 
@@ -335,5 +335,17 @@ public abstract class Process {
 	protected Component getOwner() {
 		return owner;
 	}
+	
+    /**
+     * Getter for logger
+     * @return
+     */
+    private static Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
+    }
+
 
 }

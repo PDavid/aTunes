@@ -61,7 +61,7 @@ public class FlacEncoder implements Encoder {
     static final String[] FLAC_QUALITY = { "-0", "-1", "-2", "-3", "-4", "-5", "-6", "-7", "-8" };
     static final String DEFAULT_FLAC_QUALITY = "-5";
 
-    private Logger logger = new Logger();
+    private Logger logger;
     private Process process;
     private ProgressListener listener;
     private String albumArtist;
@@ -124,7 +124,7 @@ public class FlacEncoder implements Encoder {
      */
     @Override
     public boolean encode(File wavFile, File oggFile, String title, int trackNumber, String artist, String composer) {
-        logger.info(LogCategories.FLAC, StringUtils.getString("Flac encoding process started... ", wavFile.getName(), " -> ", oggFile.getName()));
+        getLogger().info(LogCategories.FLAC, StringUtils.getString("Flac encoding process started... ", wavFile.getName(), " -> ", oggFile.getName()));
         BufferedReader stdInput = null;
         try {
             // Encode the file using FLAC. We could pass the infos for the tag, but 
@@ -175,7 +175,7 @@ public class FlacEncoder implements Encoder {
 
             int code = process.waitFor();
             if (code != 0) {
-                logger.error(LogCategories.FLAC, StringUtils.getString("Process returned code ", code));
+                getLogger().error(LogCategories.FLAC, StringUtils.getString("Process returned code ", code));
                 return false;
             }
 
@@ -196,14 +196,14 @@ public class FlacEncoder implements Encoder {
                 TagModifier.setInfo(audiofile, tag);
 
             } catch (Exception e) {
-                logger.error(LogCategories.FLAC, StringUtils.getString("Jaudiotagger: Process execution caused exception ", e));
+                getLogger().error(LogCategories.FLAC, StringUtils.getString("Jaudiotagger: Process execution caused exception ", e));
                 return false;
             }
-            logger.info(LogCategories.FLAC, "Encoded ok!!");
+            getLogger().info(LogCategories.FLAC, "Encoded ok!!");
             return true;
 
         } catch (Exception e) {
-            logger.error(LogCategories.FLAC, StringUtils.getString("Process execution caused exception ", e));
+            getLogger().error(LogCategories.FLAC, StringUtils.getString("Process execution caused exception ", e));
             return false;
         } finally {
             ClosingUtils.close(stdInput);
@@ -272,4 +272,16 @@ public class FlacEncoder implements Encoder {
     public String getFormatName() {
         return FORMAT_NAME;
     }
+    
+    /**
+     * Getter for logger
+     * @return
+     */
+    private Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
+    }
+
 }

@@ -48,7 +48,6 @@ import net.sourceforge.atunes.kernel.modules.repository.tags.writer.EditTagsProc
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
 import net.sourceforge.atunes.misc.log.LogCategories;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
@@ -88,8 +87,6 @@ public final class EditTagDialogController extends SimpleController<EditTagDialo
 		    });
 		}
 	}
-
-	private Logger logger = new Logger();
 
     /** The audio files editing. */
     private List<AudioFile> audioFilesEditing;
@@ -234,9 +231,9 @@ public final class EditTagDialogController extends SimpleController<EditTagDialo
                                 getEditTagDialog().getOkButton().setEnabled(true);
                             }
                         } catch (InterruptedException e) {
-                            logger.error(LogCategories.IMAGE, e);
+                            getLogger().error(LogCategories.IMAGE, e);
                         } catch (ExecutionException e) {
-                            logger.error(LogCategories.IMAGE, e);
+                            getLogger().error(LogCategories.IMAGE, e);
                         }
                     }
                 }.execute();
@@ -491,4 +488,5 @@ public final class EditTagDialogController extends SimpleController<EditTagDialo
     protected void notifyReload() {
         // Nothing to do
     }
+    
 }

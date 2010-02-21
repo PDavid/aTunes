@@ -31,7 +31,7 @@ import net.sourceforge.atunes.utils.ClosingUtils;
 
 class VlcOutputReader extends Thread {
 
-    private static Logger logger = new Logger();
+    private Logger logger;
 
     private BufferedReader in;
     private String lastLineReaded = "";
@@ -53,7 +53,7 @@ class VlcOutputReader extends Thread {
     }
 
     protected void read(String line) {
-        logger.debug(LogCategories.PLAYER, "VLC Debug Stream read : ", line);
+        getLogger().debug(LogCategories.PLAYER, "VLC Debug Stream read : ", line);
 
         if (line.indexOf(ACCESS_HTTP_DEBUG) > 0) {
             //System.out.println("Stream info : " + line);
@@ -87,6 +87,17 @@ class VlcOutputReader extends Thread {
 
     public String getLastLineReaded() {
         return lastLineReaded;
+    }
+
+    /**
+     * Getter for logger
+     * @return
+     */
+    private Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
     }
 
 }

@@ -49,7 +49,7 @@ public class SynchronizeDeviceWithPlayListAction extends Action {
 
     private static final long serialVersionUID = -1885495996370465881L;
 
-    private Logger logger = new Logger();
+    private Logger logger;
 
     public SynchronizeDeviceWithPlayListAction() {
         super(I18nUtils.getString("SYNCHRONIZE_DEVICE_WITH_PLAYLIST"));
@@ -152,12 +152,24 @@ public class SynchronizeDeviceWithPlayListAction extends Action {
                         showMessage(false);
                     }
                 } catch (Exception e) {
-                    logger.error(LogCategories.ACTION, e);
+                    getLogger().error(LogCategories.ACTION, e);
                 }
             }
         };
         worker.execute();
         GuiHandler.getInstance().showIndeterminateProgressDialog(I18nUtils.getString("PLEASE_WAIT"));
     }
+    
+    /**
+     * Getter for logger
+     * @return
+     */
+    private Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
+    }
+
 
 }

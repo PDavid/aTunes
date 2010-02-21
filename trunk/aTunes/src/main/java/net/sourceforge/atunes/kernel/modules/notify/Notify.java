@@ -51,22 +51,34 @@ public final class Notify {
      */
     private static boolean notifyPresent;
 
-    private static Logger logger = new Logger();
+    private static Logger logger;
 
     /**
      * Register the libnotify and sets the <code>notifyPresent</code> flag to
      * true if everything occurs successfully.
      */
     static {
-        logger.info(LogCategories.NOTIFICATIONS, "Starting libnotify...");
+        getLogger().info(LogCategories.NOTIFICATIONS, "Starting libnotify...");
         try {
             Native.register("notify");
             notifyPresent = true;
-            logger.info(LogCategories.NOTIFICATIONS, "libnotify started");
+            getLogger().info(LogCategories.NOTIFICATIONS, "libnotify started");
         } catch (UnsatisfiedLinkError e) {
-            logger.info(LogCategories.NOTIFICATIONS, "libnotify is not present");
+            getLogger().info(LogCategories.NOTIFICATIONS, "libnotify is not present");
         }
     }
+    
+    /**
+     * Getter for logger
+     * @return
+     */
+    private static Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
+    }
+
 
     private Notify() {
     	

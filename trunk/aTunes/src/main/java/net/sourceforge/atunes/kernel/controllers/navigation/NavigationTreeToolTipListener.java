@@ -31,14 +31,11 @@ import javax.swing.tree.TreePath;
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.misc.log.Logger;
 
 /**
  * The listener interface for receiving navigationTreeToolTip events.
  */
 public final class NavigationTreeToolTipListener extends MouseAdapter implements MouseMotionListener, MouseWheelListener {
-
-    static final Logger logger = new Logger();
 
     private NavigationController controller;
 

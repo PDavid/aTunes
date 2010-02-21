@@ -62,7 +62,7 @@ import org.commonjukebox.plugins.PluginApi;
 @PluginApi
 public final class GuiUtils {
 
-    private static Logger logger = new Logger();
+    private static Logger logger;
 
     /** The border color. */
     private static Color borderColor = Color.BLACK;
@@ -93,11 +93,11 @@ public final class GuiUtils {
             setWindowOpacityMethod = awtUtilities.getDeclaredMethod("setWindowOpacity", Window.class, float.class);
             setWindowOpaqueMethod = awtUtilities.getDeclaredMethod("setWindowOpaque", Window.class, boolean.class);
         } catch (ClassNotFoundException e) {
-            logger.info(LogCategories.DESKTOP, "class com.sun.awt.AWTUtilities not found");
+            getLogger().info(LogCategories.DESKTOP, "class com.sun.awt.AWTUtilities not found");
         } catch (SecurityException e) {
-            logger.error(LogCategories.DESKTOP, e);
+            getLogger().error(LogCategories.DESKTOP, e);
         } catch (NoSuchMethodException e) {
-            logger.info(LogCategories.DESKTOP, "method in class com.sun.awt.AWTUtilities not found");
+            getLogger().info(LogCategories.DESKTOP, "method in class com.sun.awt.AWTUtilities not found");
         }
 
         mainDeviceBounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().getBounds();
@@ -352,15 +352,15 @@ public final class GuiUtils {
             try {
                 setWindowShapeMethod.invoke(null, window, mask);
             } catch (SecurityException e) {
-                logger.error(LogCategories.DESKTOP, e);
+                getLogger().error(LogCategories.DESKTOP, e);
             } catch (IllegalArgumentException e) {
-                logger.info(LogCategories.DESKTOP, "shaped windows not supported");
+                getLogger().info(LogCategories.DESKTOP, "shaped windows not supported");
             } catch (IllegalAccessException e) {
-                logger.error(LogCategories.DESKTOP, e);
+                getLogger().error(LogCategories.DESKTOP, e);
             } catch (InvocationTargetException e) {
-                logger.error(LogCategories.DESKTOP, e);
+                getLogger().error(LogCategories.DESKTOP, e);
             } catch (UnsupportedOperationException e) {
-                logger.error(LogCategories.DESKTOP, e);
+                getLogger().error(LogCategories.DESKTOP, e);
             }
         }
     }
@@ -379,20 +379,20 @@ public final class GuiUtils {
             try {
                 setWindowOpacityMethod.invoke(null, window, opacity);
             } catch (SecurityException e) {
-                logger.error(LogCategories.DESKTOP, e);
+                getLogger().error(LogCategories.DESKTOP, e);
             } catch (IllegalArgumentException e) {
-                logger.info(LogCategories.DESKTOP, "opaque windows not supported");
+                getLogger().info(LogCategories.DESKTOP, "opaque windows not supported");
             } catch (IllegalAccessException e) {
-                logger.error(LogCategories.DESKTOP, e);
+                getLogger().error(LogCategories.DESKTOP, e);
             } catch (InvocationTargetException e) {
-                logger.info(LogCategories.DESKTOP, "opaque windows not supported");
+                getLogger().info(LogCategories.DESKTOP, "opaque windows not supported");
                 // In some systems where window opacity is not supported
                 // This method launches InvocationTargetException continuosly
                 // So the first time exception is thrown, we disable
                 // call to setWindowOpacityMethod
                 setWindowOpacityMethod = null;
             } catch (UnsupportedOperationException e) {
-                logger.error(LogCategories.DESKTOP, e);
+                getLogger().error(LogCategories.DESKTOP, e);
             }
         }
     }
@@ -410,20 +410,20 @@ public final class GuiUtils {
             try {
                 setWindowOpaqueMethod.invoke(null, window, opaque);
             } catch (SecurityException e) {
-                logger.error(LogCategories.DESKTOP, e);
+                getLogger().error(LogCategories.DESKTOP, e);
             } catch (IllegalArgumentException e) {
-                logger.info(LogCategories.DESKTOP, "opaque windows not supported");
+                getLogger().info(LogCategories.DESKTOP, "opaque windows not supported");
             } catch (IllegalAccessException e) {
-                logger.error(LogCategories.DESKTOP, e);
+                getLogger().error(LogCategories.DESKTOP, e);
             } catch (InvocationTargetException e) {
-                logger.info(LogCategories.DESKTOP, "opaque windows not supported");
+                getLogger().info(LogCategories.DESKTOP, "opaque windows not supported");
                 // In some systems where window opacity is not supported
                 // This method launches InvocationTargetException continuosly
                 // So the first time exception is thrown, we disable
                 // call to setWindowOpaqueMethod
                 setWindowOpaqueMethod = null;
             } catch (UnsupportedOperationException e) {
-                logger.error(LogCategories.DESKTOP, e);
+                getLogger().error(LogCategories.DESKTOP, e);
             }
         }
     }
@@ -477,4 +477,16 @@ public final class GuiUtils {
             return superComponent;
         }
     }
+    
+    /**
+     * Getter for logger
+     * @return
+     */
+    private static Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
+    }
+
 }
