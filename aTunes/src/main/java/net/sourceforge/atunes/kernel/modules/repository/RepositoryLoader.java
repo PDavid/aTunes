@@ -51,7 +51,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class RepositoryLoader extends Thread {
 
-    private static Logger logger;
+    private Logger logger;
 
     // Some attributes to speed up populate info process
     private LoaderListener listener;
@@ -387,7 +387,7 @@ public class RepositoryLoader extends Thread {
             }
 
         } catch (Exception e) {
-            getLogger().error(LogCategories.FILE_READ, e.getMessage());
+            new Logger().error(LogCategories.FILE_READ, e.getMessage());
         }
     }
 
@@ -792,7 +792,7 @@ public class RepositoryLoader extends Thread {
      * Getter for logger
      * @return
      */
-    private static Logger getLogger() {
+    private Logger getLogger() {
     	if (logger == null) {
     		logger = new Logger();
     	}

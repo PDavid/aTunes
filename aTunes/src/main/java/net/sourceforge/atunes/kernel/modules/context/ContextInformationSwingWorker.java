@@ -38,11 +38,6 @@ import net.sourceforge.atunes.misc.log.Logger;
 class ContextInformationSwingWorker extends SwingWorker<Map<String, ?>, Void> {
 
     /**
-     * Logger for all swing workers
-     */
-    private static Logger logger;
-
-    /**
      * The context panel content where information must be shown after
      * retrieving data
      */
@@ -88,21 +83,9 @@ class ContextInformationSwingWorker extends SwingWorker<Map<String, ?>, Void> {
         } catch (CancellationException e) {
             // thrown when cancelled
         } catch (InterruptedException e) {
-            getLogger().error(LogCategories.CONTEXT, e);
+            new Logger().error(LogCategories.CONTEXT, e);
         } catch (ExecutionException e) {
-            getLogger().error(LogCategories.CONTEXT, e);
+        	new Logger().error(LogCategories.CONTEXT, e);
         }
-    }
-
-    /**
-     * Returns the logger shared by all workers
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
     }
 }

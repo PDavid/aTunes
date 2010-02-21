@@ -35,8 +35,6 @@ import net.sourceforge.atunes.misc.log.Logger;
  */
 public final class ClosingUtils {
 
-    private static Logger logger;
-
     private ClosingUtils() {
     }
 
@@ -55,7 +53,7 @@ public final class ClosingUtils {
             try {
                 closable.close();
             } catch (IOException e) {
-                getLogger().error(LogCategories.INTERNAL_ERROR, e);
+            	new Logger().error(LogCategories.INTERNAL_ERROR, e);
             }
         }
     }
@@ -75,7 +73,7 @@ public final class ClosingUtils {
             try {
                 zipFile.close();
             } catch (IOException e) {
-                getLogger().error(LogCategories.INTERNAL_ERROR, e);
+            	new Logger().error(LogCategories.INTERNAL_ERROR, e);
             }
         }
     }
@@ -95,7 +93,7 @@ public final class ClosingUtils {
             try {
                 socket.close();
             } catch (IOException e) {
-                getLogger().error(LogCategories.INTERNAL_ERROR, e);
+            	new Logger().error(LogCategories.INTERNAL_ERROR, e);
             }
         }
     }
@@ -115,7 +113,7 @@ public final class ClosingUtils {
             try {
                 socket.close();
             } catch (IOException e) {
-                getLogger().error(LogCategories.INTERNAL_ERROR, e);
+            	new Logger().error(LogCategories.INTERNAL_ERROR, e);
             }
         }
     }
@@ -144,17 +142,6 @@ public final class ClosingUtils {
         if (encoder != null) {
             encoder.close();
         }
-    }
-
-    /**
-     * Getter for logger
-     * @return
-     */
-    private static Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
     }
 
 }

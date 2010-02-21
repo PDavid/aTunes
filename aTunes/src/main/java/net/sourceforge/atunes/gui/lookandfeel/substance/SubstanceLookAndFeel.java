@@ -54,6 +54,7 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.PreviousButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.SecondaryControl;
 import net.sourceforge.atunes.gui.views.controls.playerControls.StopButton;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
+import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 import org.jvnet.lafwidget.LafWidget;
@@ -287,13 +288,13 @@ public class SubstanceLookAndFeel extends LookAndFeel {
             GuiUtils.setBorderColor(org.jvnet.substance.SubstanceLookAndFeel.getCurrentSkin().getMainActiveColorScheme().getMidColor());
 
         } catch (ClassNotFoundException e) {
-            getLogger().internalError(e);
+        	new Logger().internalError(e);
         } catch (InstantiationException e) {
-            getLogger().internalError(e);
+        	new Logger().internalError(e);
         } catch (IllegalAccessException e) {
-            getLogger().internalError(e);
+        	new Logger().internalError(e);
         } catch (UnsupportedLookAndFeelException e) {
-            getLogger().internalError(e);
+        	new Logger().internalError(e);
         }
     }
 

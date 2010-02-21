@@ -24,6 +24,7 @@ import javax.swing.SwingUtilities;
 import jxgrabkey.HotkeyConflictException;
 import jxgrabkey.JXGrabKey;
 import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 class X11Hotkeys extends Hotkeys implements jxgrabkey.HotkeyListener {
@@ -59,7 +60,7 @@ class X11Hotkeys extends Hotkeys implements jxgrabkey.HotkeyListener {
         try {
             JXGrabKey.getInstance().registerAwtHotkey(hotkey.getId(), hotkey.getMod(), hotkey.getKey());
         } catch (HotkeyConflictException e) {
-            logger.error(LogCategories.HOTKEYS, StringUtils.getString("Hotkey '", hotkey.getKeyDescription(), "' is in use by another application"));
+            new Logger().error(LogCategories.HOTKEYS, StringUtils.getString("Hotkey '", hotkey.getKeyDescription(), "' is in use by another application"));
             return false;
         }
         return true;

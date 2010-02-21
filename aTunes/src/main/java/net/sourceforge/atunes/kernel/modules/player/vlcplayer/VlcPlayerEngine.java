@@ -37,6 +37,7 @@ import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
 import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.ClosingUtils;
 
@@ -108,7 +109,7 @@ public class VlcPlayerEngine extends PlayerEngine {
             PropertyResourceBundle vlcConfig = new PropertyResourceBundle(VlcPlayerEngine.class.getResourceAsStream(Constants.VLC_CONFIG_FILE));
             REMOTE_PORT = Integer.valueOf(vlcConfig.getString("vlc.telnet.client.port")).intValue();
         } catch (IOException ioe) {
-        	getLogger().internalError(ioe);
+        	new Logger().internalError(ioe);
         }
     }
 

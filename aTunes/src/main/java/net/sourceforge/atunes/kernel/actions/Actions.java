@@ -32,11 +32,6 @@ import net.sourceforge.atunes.model.AudioObject;
 public final class Actions {
 
     /**
-     * Common logger for actions
-     */
-    private static Logger logger;
-
-    /**
      * Map of actions.
      */
     private static Map<ActionInstance, Action> actions = new HashMap<ActionInstance, Action>();
@@ -71,9 +66,9 @@ public final class Actions {
                 action.initialize();
                 actions.put(actionInstance, action);
             } catch (InstantiationException e) {
-                getLogger().internalError(e);
+                new Logger().internalError(e);
             } catch (IllegalAccessException e) {
-                getLogger().internalError(e);
+                new Logger().internalError(e);
             }
         }
         return action;
@@ -136,15 +131,5 @@ public final class Actions {
         return menuItem;
     }
     
-    /**
-     * Getter for logger
-     * @return
-     */
-    protected static Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
-    }
 
 }

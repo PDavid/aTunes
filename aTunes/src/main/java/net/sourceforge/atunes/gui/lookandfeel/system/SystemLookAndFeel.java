@@ -27,6 +27,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeel;
+import net.sourceforge.atunes.misc.log.Logger;
 
 public class SystemLookAndFeel extends LookAndFeel {
 
@@ -64,13 +65,13 @@ public class SystemLookAndFeel extends LookAndFeel {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException e) {
-            getLogger().internalError(e);
+        	new Logger().internalError(e);
         } catch (InstantiationException e) {
-            getLogger().internalError(e);
+        	new Logger().internalError(e);
         } catch (IllegalAccessException e) {
-            getLogger().internalError(e);
+        	new Logger().internalError(e);
         } catch (UnsupportedLookAndFeelException e) {
-            getLogger().internalError(e);
+        	new Logger().internalError(e);
         }
     }
 }

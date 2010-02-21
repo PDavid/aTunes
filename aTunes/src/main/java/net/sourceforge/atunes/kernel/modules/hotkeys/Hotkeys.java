@@ -28,8 +28,6 @@ import net.sourceforge.atunes.misc.log.Logger;
 
 public abstract class Hotkeys {
 
-    protected static Logger logger;
-
     private HotkeyListener hotkeyListener;
 
     protected Hotkeys(HotkeyListener hotkeyListener) {
@@ -67,25 +65,12 @@ public abstract class Hotkeys {
                 return null;
             }
         } catch (Throwable e) {
-            getLogger().info(LogCategories.HOTKEYS, "No hotkeys supported");
+            new Logger().info(LogCategories.HOTKEYS, "No hotkeys supported");
             return null;
         }
     }
 
     protected HotkeyListener getHotkeyListener() {
         return hotkeyListener;
-    }
-    
-    /**
-     * Getter for logger
-     * @return
-     */
-    private static Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
-    }
-
-
+    }    
 }
