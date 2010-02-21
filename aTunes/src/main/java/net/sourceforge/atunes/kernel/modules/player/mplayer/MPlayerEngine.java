@@ -142,14 +142,16 @@ public class MPlayerEngine extends PlayerEngine {
     @Override
     protected void resumePlayback() {
         commandWriter.sendResumeCommand();
-        /*
-         * Mplayer volume problem workaround If player was paused, set volume
-         * again as it could be changed when paused
-         */
-        commandWriter.sendVolumeCommand(ApplicationState.getInstance().getVolume());
-        /*
-         * End Mplayer volume problem workaround
-         */
+    	/*
+    	 * Mplayer volume problem workaround If player was paused, set volume
+    	 * again as it could be changed when paused
+    	 */
+        if (!isMuteEnabled()) {
+        	commandWriter.sendVolumeCommand(ApplicationState.getInstance().getVolume());
+        }
+    	/*
+    	 * End Mplayer volume problem workaround
+    	 */
     }
 
     @Override
