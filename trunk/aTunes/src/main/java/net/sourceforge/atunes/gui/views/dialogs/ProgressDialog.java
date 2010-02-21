@@ -44,25 +44,25 @@ public class ProgressDialog extends CustomFrame {
     private static final long serialVersionUID = 5792663290880992661L;
 
     /** The progress bar. */
-    protected JProgressBar progressBar;
+    private JProgressBar progressBar;
 
     /** The image label. */
-    protected JLabel imagelabel;
+    private JLabel imagelabel;
 
     /** The info label. */
-    protected JLabel infoLabel;
+    private JLabel infoLabel;
 
     /** The received label. */
-    protected JLabel currentLabel;
+    private JLabel currentLabel;
 
     /** The separator label. */
-    protected JLabel separatorLabel;
+    private JLabel separatorLabel;
 
     /** The total label. */
-    protected JLabel totalLabel;
+    private JLabel totalLabel;
 
     /** The cancel button. */
-    protected JButton cancelButton;
+    private JButton cancelButton;
 
     /**
      * Instantiates a new transfer progress dialog.
@@ -218,4 +218,18 @@ public class ProgressDialog extends CustomFrame {
         dialog.setProgressBarValue(20);
         dialog.setVisible(true);
     }
+
+	/**
+	 * @return the currentLabel
+	 */
+	protected JLabel getCurrentLabel() {
+		return currentLabel;
+	}
+
+	/**
+	 * @return the totalLabel
+	 */
+	protected JLabel getTotalLabel() {
+		return totalLabel;
+	}
 }

@@ -73,7 +73,7 @@ public class DeviceSearchableObject extends CommonAudioFileSearchableObject {
     @Override
     public synchronized FSDirectory getIndexDirectory() throws IOException {
         if (indexDirectory == null) {
-            indexDirectory = new SimpleFSDirectory(new File(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.DEVICE_INDEX_DIR)));
+            indexDirectory = new SimpleFSDirectory(new File(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.isDebug()), "/", Constants.DEVICE_INDEX_DIR)));
         }
         return indexDirectory;
     }

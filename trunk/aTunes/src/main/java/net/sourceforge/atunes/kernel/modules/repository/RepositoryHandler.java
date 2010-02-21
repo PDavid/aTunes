@@ -1092,6 +1092,6 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
      */
     public String getRepositoryConfigurationFolder() {
         String customRepositoryConfigFolder = SystemProperties.getCustomRepositoryConfigFolder();
-        return customRepositoryConfigFolder != null ? customRepositoryConfigFolder : SystemProperties.getUserConfigFolder(Kernel.DEBUG);
+        return customRepositoryConfigFolder != null ? customRepositoryConfigFolder : SystemProperties.getUserConfigFolder(Kernel.isDebug());
     }
 }

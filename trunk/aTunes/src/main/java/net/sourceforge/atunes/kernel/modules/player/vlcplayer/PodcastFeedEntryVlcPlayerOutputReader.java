@@ -47,7 +47,7 @@ class PodcastFeedEntryVlcPlayerOutputReader extends VlcPlayerOutputReader {
     @Override
     protected void init() {
         super.init();
-        engine.setCurrentLength(podcastFeedEntry.getDuration() * 1000);
+        getEngine().setCurrentLength(podcastFeedEntry.getDuration() * 1000);
 
         //it's reasonable to enable the slide bar if playing
         //feed entry is a valid audio file, even if it was not downloaded  

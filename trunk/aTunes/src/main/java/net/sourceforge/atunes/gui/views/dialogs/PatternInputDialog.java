@@ -123,21 +123,21 @@ public final class PatternInputDialog extends CustomModalDialog {
 	private static final long serialVersionUID = -5789081662254435503L;
 
     /** The combo box used to enter or select pattern */
-    JComboBox patternComboBox;
+    private JComboBox patternComboBox;
 
     /** Table used to show pattern replace preview */
-    JTable patternPreviewTable;
+    private JTable patternPreviewTable;
 
     /** Table used to show available patterns */
-    JTable availablePatternsTable;
+    private JTable availablePatternsTable;
 
     /** String used to preview pattern entered */
-    String previewString = null;
+    private String previewString = null;
 
     /** The pattern entered */
-    String result = null;
+    private String result = null;
 
-    static final String[] PREVIEW_COLUMN_NAMES = new String[] { I18nUtils.getString("NAME"), I18nUtils.getString("VALUE") };
+    private static final String[] PREVIEW_COLUMN_NAMES = new String[] { I18nUtils.getString("NAME"), I18nUtils.getString("VALUE") };
 
     /**
      * Instantiates a new pattern input dialog.

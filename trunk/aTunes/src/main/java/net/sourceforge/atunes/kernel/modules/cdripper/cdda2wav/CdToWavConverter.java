@@ -31,11 +31,11 @@ import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
  */
 public abstract class CdToWavConverter {
 
-    protected ProgressListener listener;
-    protected NoCdListener noCdListener;
-    protected Process process;
+	private ProgressListener listener;
+	private NoCdListener noCdListener;
+	private Process process;
     // Cd must be initialized here, otherwise it wont work
-    protected CDInfo cd = new CDInfo();
+	private CDInfo cdInfo = new CDInfo();
 
     /*
      * Public methods
@@ -100,7 +100,7 @@ public abstract class CdToWavConverter {
 
     public abstract boolean cdda2wav(int track, File file, boolean useParanoia);
 
-    public abstract CDInfo getCDInfo();
+    public abstract CDInfo retrieveDiscInformation();
 
     /*
      * Getters and Setters
@@ -125,5 +125,47 @@ public abstract class CdToWavConverter {
     public void setNoCdListener(NoCdListener noCdListener) {
         this.noCdListener = noCdListener;
     }
+
+	/**
+	 * @return the process
+	 */
+	protected Process getProcess() {
+		return process;
+	}
+
+	/**
+	 * @param process the process to set
+	 */
+	protected void setProcess(Process process) {
+		this.process = process;
+	}
+
+	/**
+	 * @return the listener
+	 */
+	protected ProgressListener getListener() {
+		return listener;
+	}
+
+	/**
+	 * @return the cd
+	 */
+	protected CDInfo getCdInfo() {
+		return cdInfo;
+	}
+
+	/**
+	 * @param cdInfo the cdInfo to set
+	 */
+	protected void setCdInfo(CDInfo cdInfo) {
+		this.cdInfo = cdInfo;
+	}
+
+	/**
+	 * @return the noCdListener
+	 */
+	protected NoCdListener getNoCdListener() {
+		return noCdListener;
+	}
 
 }

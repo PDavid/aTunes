@@ -76,7 +76,7 @@ public class Logger {
      *            the cat
      */
     public void debug(String cat) {
-        if (!Kernel.DEBUG) {
+        if (!Kernel.isDebug()) {
             return;
         }
 
@@ -104,7 +104,7 @@ public class Logger {
      *            the objects to show in log
      */
     public void debug(String cat, Object... objects) {
-        if (!Kernel.DEBUG) {
+        if (!Kernel.isDebug()) {
             return;
         }
 
@@ -130,7 +130,7 @@ public class Logger {
      *            the args
      */
     public void debugMethodCall(String cat, String... args) {
-        if (!Kernel.DEBUG) {
+        if (!Kernel.isDebug()) {
             return;
         }
 

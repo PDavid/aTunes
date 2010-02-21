@@ -56,29 +56,29 @@ public abstract class Process {
     /**
      * List of listeners notified when Process ends or is canceled
      */
-    volatile List<ProcessListener> listeners;
+    private volatile List<ProcessListener> listeners;
 
     /**
      * Flag indicating if process has been canceled
      */
-    protected volatile boolean cancel = false;
+    private volatile boolean canceled = false;
 
     /**
      * Size of this process. This can be for example the total number of files
      * to copy, to delete, ...
      */
-    protected volatile long processSize;
+    private volatile long processSize;
 
     /**
      * The dialog used to show the progress of this process
      */
-    protected ProgressDialog progressDialog;
+    private ProgressDialog progressDialog;
 
     /**
      * The Swing component owner of this process. Needed to set owner of
      * progress dialog. Can be null
      */
-    protected Component owner;
+    private Component owner;
 
     /**
      * Adds a listener to this process
@@ -117,7 +117,7 @@ public abstract class Process {
      * Used to cancel this process
      */
     protected final void cancelProcess() {
-        cancel = true;
+        canceled = true;
     }
 
     /**
@@ -152,14 +152,14 @@ public abstract class Process {
                 hideProgressDialog();
 
                 // If process has been canceled then execute cancel code
-                if (cancel) {
+                if (canceled) {
                     runCancel();
                 }
 
                 // Notify all listeners
                 if (listeners != null && !listeners.isEmpty()) {
                     for (ProcessListener listener : listeners) {
-                        if (cancel) {
+                        if (canceled) {
                             listener.processCanceled();
                         } else {
                             listener.processFinished(ok);
@@ -321,5 +321,19 @@ public abstract class Process {
      * @return
      */
     protected abstract long getProcessSize();
+
+	/**
+	 * @return the canceled
+	 */
+	protected boolean isCanceled() {
+		return canceled;
+	}
+
+	/**
+	 * @return the owner
+	 */
+	protected Component getOwner() {
+		return owner;
+	}
 
 }

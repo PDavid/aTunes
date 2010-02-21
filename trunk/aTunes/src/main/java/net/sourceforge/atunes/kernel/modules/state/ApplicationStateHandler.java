@@ -226,7 +226,7 @@ public final class ApplicationStateHandler extends Handler {
 
         ObjectOutputStream stream = null;
         try {
-            stream = new ObjectOutputStream(new FileOutputStream(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.CACHE_FAVORITES_NAME)));
+            stream = new ObjectOutputStream(new FileOutputStream(StringUtils.getString(getUserConfigFolder(), "/", Constants.CACHE_FAVORITES_NAME)));
             getLogger().info(LogCategories.HANDLER, "Storing favorites information...");
             stream.writeObject(favorites);
         } catch (Exception e) {
@@ -238,7 +238,7 @@ public final class ApplicationStateHandler extends Handler {
 
         if (ApplicationState.getInstance().isSaveRepositoryAsXml()) {
             try {
-                XMLUtils.writeObjectToFile(favorites, StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.XML_CACHE_FAVORITES_NAME));
+                XMLUtils.writeObjectToFile(favorites, StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_FAVORITES_NAME));
                 getLogger().info(LogCategories.HANDLER, "Storing favorites information...");
             } catch (Exception e) {
                 getLogger().error(LogCategories.HANDLER, "Could not write favorites");
@@ -258,7 +258,7 @@ public final class ApplicationStateHandler extends Handler {
 
         ObjectOutputStream stream = null;
         try {
-            stream = new ObjectOutputStream(new FileOutputStream(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.CACHE_STATISTICS_NAME)));
+            stream = new ObjectOutputStream(new FileOutputStream(StringUtils.getString(getUserConfigFolder(), "/", Constants.CACHE_STATISTICS_NAME)));
             getLogger().info(LogCategories.HANDLER, "Storing statistics information...");
             stream.writeObject(statistics);
         } catch (Exception e) {
@@ -270,7 +270,7 @@ public final class ApplicationStateHandler extends Handler {
 
         if (ApplicationState.getInstance().isSaveRepositoryAsXml()) {
             try {
-                XMLUtils.writeObjectToFile(statistics, StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.XML_CACHE_STATISTICS_NAME));
+                XMLUtils.writeObjectToFile(statistics, StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_STATISTICS_NAME));
                 getLogger().info(LogCategories.HANDLER, "Storing statistics information...");
             } catch (Exception e) {
                 getLogger().error(LogCategories.HANDLER, "Could not write statistics");
@@ -286,7 +286,7 @@ public final class ApplicationStateHandler extends Handler {
         getLogger().debug(LogCategories.HANDLER);
 
         try {
-            XMLUtils.writeObjectToFile(listOfPlayLists, StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.PLAYLISTS_FILE));
+            XMLUtils.writeObjectToFile(listOfPlayLists, StringUtils.getString(getUserConfigFolder(), "/", Constants.PLAYLISTS_FILE));
             getLogger().info(LogCategories.HANDLER, "Playlists definition saved");
         } catch (Exception e) {
             getLogger().error(LogCategories.HANDLER, "Could not persist playlists definition");
@@ -302,7 +302,7 @@ public final class ApplicationStateHandler extends Handler {
     public void persistPlayListsContents(List<List<AudioObject>> playListsContents) {
         ObjectOutputStream stream = null;
         try {
-            stream = new ObjectOutputStream(new FileOutputStream(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.PLAYLISTS_CONTENTS_FILE)));
+            stream = new ObjectOutputStream(new FileOutputStream(StringUtils.getString(getUserConfigFolder(), "/", Constants.PLAYLISTS_CONTENTS_FILE)));
             stream.writeObject(playListsContents);
             getLogger().info(LogCategories.HANDLER, "Playlists contents saved");
         } catch (Exception e) {
@@ -323,7 +323,7 @@ public final class ApplicationStateHandler extends Handler {
         getLogger().debug(LogCategories.HANDLER);
 
         try {
-            XMLUtils.writeObjectToFile(podcastFeeds, StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.PODCAST_FEED_CACHE));
+            XMLUtils.writeObjectToFile(podcastFeeds, StringUtils.getString(getUserConfigFolder(), "/", Constants.PODCAST_FEED_CACHE));
         } catch (Exception e) {
             getLogger().error(LogCategories.HANDLER, "Could not persist podcast feeds");
             getLogger().debug(LogCategories.HANDLER, e);
@@ -340,7 +340,7 @@ public final class ApplicationStateHandler extends Handler {
         getLogger().debug(LogCategories.HANDLER);
 
         try {
-            XMLUtils.writeObjectToFile(radios, StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.RADIO_CACHE));
+            XMLUtils.writeObjectToFile(radios, StringUtils.getString(getUserConfigFolder(), "/", Constants.RADIO_CACHE));
         } catch (Exception e) {
             getLogger().error(LogCategories.HANDLER, "Could not persist radios");
             getLogger().debug(LogCategories.HANDLER, e);
@@ -357,7 +357,7 @@ public final class ApplicationStateHandler extends Handler {
         getLogger().debug(LogCategories.HANDLER);
 
         try {
-            XMLUtils.writeObjectToFile(radios, StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.PRESET_RADIO_CACHE));
+            XMLUtils.writeObjectToFile(radios, StringUtils.getString(getUserConfigFolder(), "/", Constants.PRESET_RADIO_CACHE));
         } catch (Exception e) {
             getLogger().error(LogCategories.HANDLER, "Could not persist radios");
             getLogger().debug(LogCategories.HANDLER, e);
@@ -411,7 +411,7 @@ public final class ApplicationStateHandler extends Handler {
 
         ObjectOutputStream oos = null;
         try {
-            FileOutputStream fout = new FileOutputStream(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), SystemProperties.FILE_SEPARATOR,
+            FileOutputStream fout = new FileOutputStream(StringUtils.getString(getUserConfigFolder(), SystemProperties.FILE_SEPARATOR,
                     Constants.DEVICE_CACHE_FILE_PREFIX, deviceId));
             oos = new ObjectOutputStream(fout);
             getLogger().info(LogCategories.HANDLER, "Serialize device information...");
@@ -437,7 +437,7 @@ public final class ApplicationStateHandler extends Handler {
         getLogger().debug(LogCategories.HANDLER);
 
         try {
-            ApplicationState state = (ApplicationState) XMLUtils.readBeanFromFile(getPropertiesFile(Kernel.DEBUG));
+            ApplicationState state = (ApplicationState) XMLUtils.readBeanFromFile(getPropertiesFile(Kernel.isDebug()));
 
             // Decrypt passwords
             if (state.getProxy() != null && state.getProxy().getEncryptedPassword() != null && state.getProxy().getEncryptedPassword().length > 0) {
@@ -469,7 +469,7 @@ public final class ApplicationStateHandler extends Handler {
 
         ObjectInputStream stream = null;
         try {
-            stream = new ObjectInputStream(new FileInputStream(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.CACHE_FAVORITES_NAME)));
+            stream = new ObjectInputStream(new FileInputStream(StringUtils.getString(getUserConfigFolder(), "/", Constants.CACHE_FAVORITES_NAME)));
             getLogger().info(LogCategories.HANDLER, "Reading serialized favorites cache");
             return (Favorites) stream.readObject();
         } catch (InvalidClassException e) {
@@ -481,7 +481,7 @@ public final class ApplicationStateHandler extends Handler {
             if (ApplicationState.getInstance().isSaveRepositoryAsXml()) {
                 try {
                     getLogger().info(LogCategories.HANDLER, "Reading xml favorites cache");
-                    Favorites result = (Favorites) XMLUtils.readObjectFromFile(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/",
+                    Favorites result = (Favorites) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/",
                             Constants.XML_CACHE_FAVORITES_NAME));
                     return result;
                 } catch (Exception e1) {
@@ -505,7 +505,7 @@ public final class ApplicationStateHandler extends Handler {
 
         ObjectInputStream stream = null;
         try {
-            stream = new ObjectInputStream(new FileInputStream(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.CACHE_FAVORITES_NAME)));
+            stream = new ObjectInputStream(new FileInputStream(StringUtils.getString(getUserConfigFolder(), "/", Constants.CACHE_FAVORITES_NAME)));
             getLogger().info(LogCategories.HANDLER, "Reading serialized statistics cache");
             return (Statistics) stream.readObject();
         } catch (InvalidClassException e) {
@@ -517,7 +517,7 @@ public final class ApplicationStateHandler extends Handler {
             if (ApplicationState.getInstance().isSaveRepositoryAsXml()) {
                 try {
                     getLogger().info(LogCategories.HANDLER, "Reading xml statistics cache");
-                    Statistics result = (Statistics) XMLUtils.readObjectFromFile(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/",
+                    Statistics result = (Statistics) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/",
                             Constants.XML_CACHE_STATISTICS_NAME));
                     return result;
                 } catch (Exception e1) {
@@ -544,12 +544,12 @@ public final class ApplicationStateHandler extends Handler {
         ObjectInputStream stream = null;
         try {
             // First get list of playlists
-            ListOfPlayLists listOfPlayLists = (ListOfPlayLists) XMLUtils.readObjectFromFile(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/",
+            ListOfPlayLists listOfPlayLists = (ListOfPlayLists) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/",
                     Constants.PLAYLISTS_FILE));
             getLogger().info(LogCategories.HANDLER, StringUtils.getString("List of playlists loaded"));
 
             // Then read contents
-            stream = new ObjectInputStream(new FileInputStream(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.PLAYLISTS_CONTENTS_FILE)));
+            stream = new ObjectInputStream(new FileInputStream(StringUtils.getString(getUserConfigFolder(), "/", Constants.PLAYLISTS_CONTENTS_FILE)));
             List<List<AudioObject>> contents = (List<List<AudioObject>>) stream.readObject();
             getLogger().info(LogCategories.HANDLER, StringUtils.getString("Playlists contents loaded"));
             if (contents.size() == listOfPlayLists.getPlayLists().size()) {
@@ -578,7 +578,7 @@ public final class ApplicationStateHandler extends Handler {
         getLogger().debug(LogCategories.HANDLER);
 
         try {
-            return (List<PodcastFeed>) XMLUtils.readObjectFromFile(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.PODCAST_FEED_CACHE));
+            return (List<PodcastFeed>) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.PODCAST_FEED_CACHE));
         } catch (Exception e) {
             /*
              * java.util.concurrent.CopyOnWriteArrayList instead of e.g.
@@ -597,7 +597,7 @@ public final class ApplicationStateHandler extends Handler {
     public List<Radio> retrieveRadioCache() {
         getLogger().debug(LogCategories.HANDLER);
         try {
-            return (List<Radio>) XMLUtils.readObjectFromFile(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.RADIO_CACHE));
+            return (List<Radio>) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.RADIO_CACHE));
         } catch (Exception e) {
             return new ArrayList<Radio>();
         }
@@ -614,7 +614,7 @@ public final class ApplicationStateHandler extends Handler {
         getLogger().debug(LogCategories.HANDLER);
         try {
             // First try user settings folder
-            return (List<Radio>) XMLUtils.readObjectFromFile(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.PRESET_RADIO_CACHE));
+            return (List<Radio>) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.PRESET_RADIO_CACHE));
         } catch (Exception e) {
             try {
                 // Otherwise use list in application folder
@@ -687,7 +687,7 @@ public final class ApplicationStateHandler extends Handler {
 
         ObjectInputStream ois = null;
         try {
-            FileInputStream fis = new FileInputStream(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), SystemProperties.FILE_SEPARATOR,
+            FileInputStream fis = new FileInputStream(StringUtils.getString(getUserConfigFolder(), SystemProperties.FILE_SEPARATOR,
                     Constants.DEVICE_CACHE_FILE_PREFIX, deviceId));
             ois = new ObjectInputStream(fis);
             getLogger().info(LogCategories.HANDLER, "Reading serialized device cache");
@@ -767,7 +767,7 @@ public final class ApplicationStateHandler extends Handler {
                 }
             }
 
-            XMLUtils.writeBeanToFile(ApplicationState.getInstance(), getPropertiesFile(Kernel.DEBUG));
+            XMLUtils.writeBeanToFile(ApplicationState.getInstance(), getPropertiesFile(Kernel.isDebug()));
         } catch (IOException e) {
             getLogger().error(LogCategories.HANDLER, "Error storing application state");
             getLogger().error(LogCategories.HANDLER, e);
@@ -775,6 +775,10 @@ public final class ApplicationStateHandler extends Handler {
             getLogger().error(LogCategories.HANDLER, "Error storing application state");
             getLogger().error(LogCategories.HANDLER, e);
         }
+    }
+    
+    private String getUserConfigFolder() {
+    	return SystemProperties.getUserConfigFolder(Kernel.isDebug());
     }
 
 }

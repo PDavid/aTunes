@@ -46,7 +46,7 @@ public class ShowLogAction extends Action {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        final File file = SystemProperties.getFileFromUserConfigFolder(Constants.LOG_FILE, Kernel.DEBUG);
+        final File file = SystemProperties.getFileFromUserConfigFolder(Constants.LOG_FILE, Kernel.isDebug());
         DesktopUtils.openFile(file);
     }
 

@@ -26,11 +26,11 @@ import java.lang.reflect.Proxy;
 
 public class OSXAdapter implements InvocationHandler {
 
-    protected Object targetObject;
-    protected Method targetMethod;
-    protected String proxySignature;
+    private Object targetObject;
+    private Method targetMethod;
+    private String proxySignature;
 
-    static Object macOSXApplication;
+    private static Object macOSXApplication;
 
     // Pass this method an Object and Method equipped to perform application shutdown logic
     // The method passed should return a boolean stating whether or not the quit should occur
@@ -87,7 +87,7 @@ public class OSXAdapter implements InvocationHandler {
                     try {
                         Method getFilenameMethod = appleEvent.getClass().getDeclaredMethod("getFilename", (Class[]) null);
                         String filename = (String) getFilenameMethod.invoke(appleEvent, (Object[]) null);
-                        this.targetMethod.invoke(this.targetObject, new Object[] { filename });
+                        this.getTargetMethod().invoke(this.getTargetObject(), new Object[] { filename });
                     } catch (Exception ex) {
                         // TODO: Add log
                     }
@@ -168,4 +168,18 @@ public class OSXAdapter implements InvocationHandler {
             }
         }
     }
+
+	/**
+	 * @return the targetObject
+	 */
+	protected Object getTargetObject() {
+		return targetObject;
+	}
+
+	/**
+	 * @return the targetMethod
+	 */
+	protected Method getTargetMethod() {
+		return targetMethod;
+	}
 }

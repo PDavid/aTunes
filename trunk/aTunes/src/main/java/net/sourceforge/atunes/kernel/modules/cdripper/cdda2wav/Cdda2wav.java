@@ -30,7 +30,6 @@ import java.util.StringTokenizer;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.kernel.modules.cdripper.ProgressListener;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
@@ -205,23 +204,23 @@ public class Cdda2wav extends CdToWavConverter {
 
             logger.debugMethodCall(LogCategories.CDDA2WAV, command.toArray(new String[command.size()]));
 
-            process = new ProcessBuilder(command).start();
-            stdInput = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+            setProcess(new ProcessBuilder(command).start());
+            stdInput = new BufferedReader(new InputStreamReader(getProcess().getErrorStream()));
             String s = null;
             while ((s = stdInput.readLine()) != null) {
-                if (listener != null && s.matches(".*%.*")) {
+                if (getListener() != null && s.matches(".*%.*")) {
                     int pos = s.indexOf('%');
                     final int percent = Integer.parseInt(s.substring(pos - 3, pos).trim());
                     SwingUtilities.invokeLater(new Runnable() {
                         @Override
                         public void run() {
-                            listener.notifyProgress(percent);
+                        	getListener().notifyProgress(percent);
                         }
                     });
                 }
             }
 
-            int code = process.waitFor();
+            int code = getProcess().waitFor();
             if (code != 0) {
                 logger.error(LogCategories.CDDA2WAV, StringUtils.getString("Process returned code ", code));
                 return false;
@@ -277,8 +276,8 @@ public class Cdda2wav extends CdToWavConverter {
 
                 logger.debugMethodCall(LogCategories.CDDA2WAV, command.toArray(new String[command.size()]));
 
-                process = new ProcessBuilder(command).start();
-                stdInput = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                setProcess(new ProcessBuilder(command).start());
+                stdInput = new BufferedReader(new InputStreamReader(getProcess().getInputStream()));
 
                 // read the output from the command
                 String s = null;
@@ -297,7 +296,7 @@ public class Cdda2wav extends CdToWavConverter {
                     }
                 }
 
-                int code = process.waitFor();
+                int code = getProcess().waitFor();
                 if (code != 0) {
                     logger.error(LogCategories.CDDA2WAV, StringUtils.getString("Process returned code ", code));
                     // Do not return null. Application hangs otherwise
@@ -327,12 +326,12 @@ public class Cdda2wav extends CdToWavConverter {
 
                 logger.debugMethodCall(LogCategories.CDDA2WAV, command.toArray(new String[command.size()]));
 
-                process = new ProcessBuilder(command).start();
+                setProcess(new ProcessBuilder(command).start());
                 // Icedax and cdda2wav seem to behave differently
                 if ((SystemProperties.OS == OperatingSystem.LINUX && !converterCommand.equals(ICEDAX_COMMAND_STRING)) || SystemProperties.OS == OperatingSystem.WINDOWS) {
-                    stdInput = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+                    stdInput = new BufferedReader(new InputStreamReader(getProcess().getErrorStream()));
                 } else {
-                    stdInput = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                    stdInput = new BufferedReader(new InputStreamReader(getProcess().getInputStream()));
                 }
 
                 // read the output from the command
@@ -376,7 +375,7 @@ public class Cdda2wav extends CdToWavConverter {
                     }
                 }
 
-                int code = process.waitFor();
+                int code = getProcess().waitFor();
                 if (code != 0) {
                     logger.error(LogCategories.CDDA2WAV, StringUtils.getString("Process returned code ", code));
                     // Do not return null. Application hangs otherwise
@@ -407,12 +406,12 @@ public class Cdda2wav extends CdToWavConverter {
 
                 logger.debugMethodCall(LogCategories.CDDA2WAV, command.toArray(new String[command.size()]));
 
-                process = new ProcessBuilder(command).start();
+                setProcess(new ProcessBuilder(command).start());
                 // Icedax and cdda2wav seem to behave differently
                 if ((SystemProperties.OS == OperatingSystem.LINUX && !converterCommand.equals(ICEDAX_COMMAND_STRING)) || SystemProperties.OS == OperatingSystem.WINDOWS) {
-                    stdInput = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+                    stdInput = new BufferedReader(new InputStreamReader(getProcess().getErrorStream()));
                 } else {
-                    stdInput = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                    stdInput = new BufferedReader(new InputStreamReader(getProcess().getInputStream()));
                 }
 
                 // Read the output from the command
@@ -443,7 +442,7 @@ public class Cdda2wav extends CdToWavConverter {
                     }
                 }
 
-                int code = process.waitFor();
+                int code = getProcess().waitFor();
                 if (code != 0) {
                     logger.error(LogCategories.CDDA2WAV, StringUtils.getString("Process returned code ", code));
                     // Do not return null. Application hangs otherwise
@@ -489,7 +488,7 @@ public class Cdda2wav extends CdToWavConverter {
      *         duration
      */
     @Override
-    public CDInfo getCDInfo() {
+    public CDInfo retrieveDiscInformation() {
         logger.info(LogCategories.CDDA2WAV, "Getting cd information...");
         cdRecursive = null;
         // If no devices detected do exit
@@ -524,7 +523,7 @@ public class Cdda2wav extends CdToWavConverter {
 
             logger.debugMethodCall(LogCategories.CDDA2WAV, command.toArray(new String[command.size()]));
 
-            process = new ProcessBuilder(command).start();
+            setProcess(new ProcessBuilder(command).start());
             cdLoaded = false;
 
             Thread readCdda = new Thread() {
@@ -532,7 +531,7 @@ public class Cdda2wav extends CdToWavConverter {
                 public void run() {
                     BufferedReader stdInput = null;
                     try {
-                        stdInput = new BufferedReader(new InputStreamReader(process.getErrorStream(), "ISO8859_1"));
+                        stdInput = new BufferedReader(new InputStreamReader(getProcess().getErrorStream(), "ISO8859_1"));
                         logger.info(LogCategories.CDDA2WAV, "Trying to read cdda2wav stream");
 
                         String s = null;
@@ -681,21 +680,21 @@ public class Cdda2wav extends CdToWavConverter {
                         artist = artist != null ? artist.trim() : null;
                         album = album != null ? album.trim() : null;
 
-                        cd.setTracks(tracks);
-                        cd.setDurations(durations);
-                        cd.setDuration(totalDuration);
-                        cd.setId(id);
+                        getCdInfo().setTracks(tracks);
+                        getCdInfo().setDurations(durations);
+                        getCdInfo().setDuration(totalDuration);
+                        getCdInfo().setId(id);
                         if (album != null && !album.equals("")) {
-                            cd.setAlbum(album);
+                            getCdInfo().setAlbum(album);
                         }
 
                         if (artist != null && !artist.equals("")) {
-                            cd.setArtist(artist);
+                            getCdInfo().setArtist(artist);
                         }
 
-                        cd.setTitles(titles);
-                        cd.setArtists(artists);
-                        cd.setComposers(composers);
+                        getCdInfo().setTitles(titles);
+                        getCdInfo().setArtists(artists);
+                        getCdInfo().setComposers(composers);
 
                     } catch (Exception e) {
                         logger.error(LogCategories.CDDA2WAV, e);
@@ -717,7 +716,7 @@ public class Cdda2wav extends CdToWavConverter {
 
             // This produces error outputs but is necessary to avoid cdda2wav 
             // blocking the drive
-            process.destroy();
+            getProcess().destroy();
             readCdda.interrupt();
             logger.info(LogCategories.CDDA2WAV, "Interrupt");
             // cdMonitor.join();
@@ -725,14 +724,14 @@ public class Cdda2wav extends CdToWavConverter {
             // Check if we have either a data CD or no CD inserted at all
             // If this is the case we must check the other devices
             try {
-                if (cd.getTracks() == 0 || cdLoaded == false) {
+                if (getCdInfo().getTracks() == 0 || cdLoaded == false) {
                     devCounter = devCounter + 1;
                     // Go to next drive
                     devices.remove(0);
                     //if there is another drive, try it
                     if (getDriveId() != null) {
                         if (devCounter <= devNumber) {
-                            cdRecursive = getCDInfo();
+                            cdRecursive = retrieveDiscInformation();
                         }
                     }
                 }
@@ -742,10 +741,10 @@ public class Cdda2wav extends CdToWavConverter {
 
             // If the recursive function had some result, assign it to cd
             if (cdRecursive != null) {
-                cd = cdRecursive;
+                setCdInfo(cdRecursive);
             }
             // If no tracks are found, assuming no CD inserted.
-            if (cdLoaded == false || cd.getTracks() == 0) {
+            if (cdLoaded == false || getCdInfo().getTracks() == 0) {
                 // Only print no CD dialog once
                 if (doNotRepeatNoCdDialog == true) {
                     notifyNoCd();
@@ -756,14 +755,14 @@ public class Cdda2wav extends CdToWavConverter {
 
             //  The following is commented because it always returns an error under Windows.
 
-            //	int code = process.waitFor();
+            //	int code = getProcess().waitFor();
 
             //	if (code != 0) {
             //		logger.error(LogCategories.CDDA2WAV, "Process returned code " + code);
             //		return null;
             //	}
-            logger.info(LogCategories.CDDA2WAV, StringUtils.getString("CD info: ", cd));
-            return cd;
+            logger.info(LogCategories.CDDA2WAV, StringUtils.getString("CD info: ", getCdInfo()));
+            return getCdInfo();
 
         } catch (Exception e) {
             logger.error(LogCategories.CDDA2WAV, e);
@@ -788,31 +787,9 @@ public class Cdda2wav extends CdToWavConverter {
      */
     @Override
     public void notifyNoCd() {
-        if (noCdListener != null) {
-            noCdListener.noCd();
+        if (getNoCdListener() != null) {
+            getNoCdListener().noCd();
         }
-    }
-
-    /**
-     * Sets the listener.
-     * 
-     * @param listener
-     *            the new listener
-     */
-    @Override
-    public void setListener(ProgressListener listener) {
-        this.listener = listener;
-    }
-
-    /**
-     * Sets the no cd listener.
-     * 
-     * @param noCdListener
-     *            the new no cd listener
-     */
-    @Override
-    public void setNoCdListener(NoCdListener noCdListener) {
-        this.noCdListener = noCdListener;
     }
 
     /**
@@ -820,7 +797,7 @@ public class Cdda2wav extends CdToWavConverter {
      */
     @Override
     public void stop() {
-        process.destroy();
+        getProcess().destroy();
     }
 
 }

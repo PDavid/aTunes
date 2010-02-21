@@ -53,8 +53,8 @@ public final class NavigatorPanel extends PreferencesPanel {
     private static final long serialVersionUID = -4315748284461119970L;
 
     private JCheckBox showFavorites;
-    JCheckBox showExtendedToolTip;
-    JComboBox extendedToolTipDelay;
+    private JCheckBox showExtendedToolTip;
+    private JComboBox extendedToolTipDelay;
     private JCheckBox useSmartTagViewSorting;
     private JCheckBox useArtistNamesSorting;
 
@@ -72,23 +72,23 @@ public final class NavigatorPanel extends PreferencesPanel {
      * Check box to highlight elements with incomplete tags (selected) or not
      * (unselected)
      */
-    JCheckBox highlightElementsWithIncompleteBasicTags;
+    private JCheckBox highlightElementsWithIncompleteBasicTags;
 
     /**
      * Table to select which tag attributes are used to highlight incomplete tag
      * folders
      */
-    JTable highlighTagAttributesTable;
+    private JTable highlighTagAttributesTable;
 
     /**
      * Scroll pane fot tag attributes
      */
-    JScrollPane highlightTagAttributesScrollPane;
+    private JScrollPane highlightTagAttributesScrollPane;
 
     /**
      * Table model to select tag attributes
      */
-    TagAttributesTableModel tagAttributesTableModel;
+    private TagAttributesTableModel tagAttributesTableModel;
 
     /**
      * The Class TagAttributesTableModel.

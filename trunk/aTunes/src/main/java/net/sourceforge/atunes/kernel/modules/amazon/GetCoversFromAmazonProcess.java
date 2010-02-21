@@ -64,7 +64,7 @@ public class GetCoversFromAmazonProcess extends Process {
     protected boolean runProcess() {
         long coversRetrieved = 0;
         List<Album> albums = new ArrayList<Album>(artist.getAlbums().values());
-        for (int i = 0; i < albums.size() && !cancel; i++) {
+        for (int i = 0; i < albums.size() && !isCanceled(); i++) {
             Album album = albums.get(i);
             if (!album.hasCoverDownloaded()) {
                 AmazonAlbum amazonAlbum = AmazonService.getInstance().getAlbum(artist.getName(), album.getName());

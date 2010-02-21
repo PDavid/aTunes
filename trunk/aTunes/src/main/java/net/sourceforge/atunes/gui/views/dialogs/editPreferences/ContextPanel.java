@@ -177,41 +177,41 @@ public final class ContextPanel extends PreferencesPanel {
     private static final long serialVersionUID = -9216216930198145476L;
 
     /** The activate context information. */
-    JCheckBox activateContext;
+    private JCheckBox activateContext;
 
     /** The save pictures. */
-    JCheckBox savePictures;
+    private JCheckBox savePictures;
 
     /**
      * Checkbox to show text in tabs
      */
-    JCheckBox showTextInTabs;
+    private JCheckBox showTextInTabs;
 
     /**
      * Checkbox to let user select if want to hide albums of "Various Artists"
      */
-    JCheckBox hideVariousArtistsAlbums;
+    private JCheckBox hideVariousArtistsAlbums;
 
     /**
      * Checkbox to select minimum song number for each album
      */
-    JCheckBox minimumSongNumberPerAlbum;
+    private JCheckBox minimumSongNumberPerAlbum;
 
     /**
      * Text field to set minimum song number for each album
      */
-    JTextField minimumSongNumber;
+    private JTextField minimumSongNumber;
 
     /**
      * Checkbox to select if want to show albums in a grid
      */
-    JCheckBox showAlbumsInGrid;
+    private JCheckBox showAlbumsInGrid;
 
     /** The info label. */
     private JLabel info;
 
     /** The lyrics engines table. */
-    JTable enginesTable;
+    private JTable enginesTable;
 
     /**
      * Instantiates a new audio scrobbler panel.

@@ -58,7 +58,7 @@ public class LastFmCache extends AbstractCache {
 
     private Logger logger = new Logger();
 
-    private static File submissionCacheDir = new File(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), SystemProperties.FILE_SEPARATOR,
+    private static File submissionCacheDir = new File(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.isDebug()), SystemProperties.FILE_SEPARATOR,
             Constants.CACHE_DIR, SystemProperties.FILE_SEPARATOR, Constants.LAST_FM_CACHE_DIR, SystemProperties.FILE_SEPARATOR, Constants.LAST_FM_SUBMISSION_CACHE_DIR));
 
     public LastFmCache() {

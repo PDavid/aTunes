@@ -73,7 +73,7 @@ public class FavoritesSearchableObject extends CommonAudioFileSearchableObject {
     @Override
     public FSDirectory getIndexDirectory() throws IOException {
         if (indexDirectory == null) {
-            indexDirectory = new SimpleFSDirectory(new File(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.DEBUG), "/", Constants.FAVORITES_INDEX_DIR)));
+            indexDirectory = new SimpleFSDirectory(new File(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.isDebug()), "/", Constants.FAVORITES_INDEX_DIR)));
         }
         return indexDirectory;
     }

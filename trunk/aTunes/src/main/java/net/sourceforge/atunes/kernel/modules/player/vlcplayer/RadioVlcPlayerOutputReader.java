@@ -52,9 +52,9 @@ class RadioVlcPlayerOutputReader extends VlcPlayerOutputReader {
     @Override
     protected void init() {
         super.init();
-        engine.setCurrentLength(radio.getDuration() * 1000);
+        getEngine().setCurrentLength(radio.getDuration() * 1000);
         //don't try to get length with sending command to VLC
-        super.lenght = Integer.MAX_VALUE;
+        setLength(Integer.MAX_VALUE);
     }
 
     @Override
@@ -62,9 +62,9 @@ class RadioVlcPlayerOutputReader extends VlcPlayerOutputReader {
         super.read(line);
 
         //stream info comes from the VLCOutputReader
-        if (ApplicationState.getInstance().isReadInfoFromRadioStream() && engine.getVlcOutputReader() != null) {
+        if (ApplicationState.getInstance().isReadInfoFromRadioStream() && getEngine().getVlcOutputReader() != null) {
 
-            String newInfoLine = engine.getVlcOutputReader().getLastLineReaded();
+            String newInfoLine = getEngine().getVlcOutputReader().getLastLineReaded();
 
             //only process if informations were updated
             if (!infoLine.equals(newInfoLine)) {

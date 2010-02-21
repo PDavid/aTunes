@@ -60,7 +60,7 @@ public final class Main {
         logger.info(LogCategories.START, StringUtils.getString("Arguments = ", arguments));
 
         // Fourth line: DEBUG mode
-        logger.info(LogCategories.START, StringUtils.getString("Debug mode = ", Kernel.DEBUG));
+        logger.info(LogCategories.START, StringUtils.getString("Debug mode = ", Kernel.isDebug()));
 
         // Fifth line: Execution path
         logger.info(LogCategories.START, StringUtils.getString("Execution path = ", SystemProperties.getWorkingDirectory()));
@@ -78,7 +78,7 @@ public final class Main {
         List<String> arguments = StringUtils.fromStringArrayToList(args);
 
         // Set debug flag in kernel
-        Kernel.DEBUG = arguments.contains(ApplicationArguments.DEBUG);
+        Kernel.setDebug(arguments.contains(ApplicationArguments.DEBUG));
 
         // Save arguments, if application is restarted they will be necessary
         ApplicationArguments.saveArguments(arguments);
@@ -91,10 +91,10 @@ public final class Main {
             // NORMAL APPLICATION STARTUP
 
             // Set ignore look and feel flag in kernel
-            Kernel.IGNORE_LOOK_AND_FEEL = arguments.contains(ApplicationArguments.IGNORE_LOOK_AND_FEEL);
+            Kernel.setIgnoreLookAndFeel(arguments.contains(ApplicationArguments.IGNORE_LOOK_AND_FEEL));
 
             // Set no update flag in kernel
-            Kernel.NO_UPDATE = arguments.contains(ApplicationArguments.NO_UPDATE);
+            Kernel.setNoUpdate(arguments.contains(ApplicationArguments.NO_UPDATE));
 
             // Set custom config folder if passed as argument
             SystemProperties.setCustomConfigFolder(ApplicationArguments.getUserConfigFolder(arguments));
@@ -103,7 +103,7 @@ public final class Main {
             SystemProperties.setCustomRepositoryConfigFolder(ApplicationArguments.getRepositoryConfigFolder(arguments));
 
             // Set log4j properties
-            Log4jPropertiesLoader.loadProperties(Kernel.DEBUG);
+            Log4jPropertiesLoader.loadProperties(Kernel.isDebug());
 
             // Enable uncaught exception catching
             try {
@@ -123,7 +123,7 @@ public final class Main {
             System.err.close();
 
             // For detecting Swing threading violations
-            if (Kernel.DEBUG) {
+            if (Kernel.isDebug()) {
                 RepaintManager.setCurrentManager(new CheckThreadViolationRepaintManager());
             }
 

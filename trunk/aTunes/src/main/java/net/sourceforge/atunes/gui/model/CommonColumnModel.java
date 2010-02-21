@@ -55,19 +55,19 @@ public abstract class CommonColumnModel extends DefaultTableColumnModel {
     private static final long serialVersionUID = -8202322203076350708L;
 
     /** The table. */
-    JTable table;
+    private JTable table;
 
     /** Column set */
-    ColumnSet columnSet;
+    private ColumnSet columnSet;
 
     /** The model. */
-    CommonTableModel model;
+    private CommonTableModel model;
 
     /** The column being moved. */
-    int columnBeingMoved = -1;
+    private int columnBeingMoved = -1;
 
     /** The column moved to. */
-    int columnMovedTo = -1;
+    private int columnMovedTo = -1;
 
     private ColumnMoveListener columnMoveListener;
 
@@ -398,5 +398,12 @@ public abstract class CommonColumnModel extends DefaultTableColumnModel {
     	}
     	return null;
     }
+
+	/**
+	 * @return the table
+	 */
+	protected JTable getTable() {
+		return table;
+	}
 
 }
