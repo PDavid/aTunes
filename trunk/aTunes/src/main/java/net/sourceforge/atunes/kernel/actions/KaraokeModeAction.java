@@ -38,7 +38,7 @@ public class KaraokeModeAction extends Action {
 
     private static final long serialVersionUID = 1614471688413649087L;
 
-    Timer timer;
+    private Timer timer;
 
     KaraokeModeAction() {
         super(I18nUtils.getString("KARAOKE"), Images.getImage(Images.KARAOKE));
@@ -46,7 +46,7 @@ public class KaraokeModeAction extends Action {
         putValue(SELECTED_KEY, ApplicationState.getInstance().isKaraoke());
 
         timer = new Timer(1000, new ActionListener() {
-            boolean showWarning;
+        	private boolean showWarning;
 
             @Override
             public void actionPerformed(ActionEvent arg0) {

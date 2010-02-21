@@ -184,7 +184,7 @@ public abstract class AbstractPattern {
      * only apply to one song at a time
      * 
      */
-    boolean massiveRecognitionPattern = false;
+    private boolean massiveRecognitionPattern = false;
 
     /**
      * <code>true</code> if this pattern can be used for pattern recognition
@@ -194,7 +194,7 @@ public abstract class AbstractPattern {
      * recognition pattern as it is not a complete attribute of a song
      * 
      */
-    boolean recognitionPattern = false;
+    private boolean recognitionPattern = false;
 
     /**
      * Private constructor

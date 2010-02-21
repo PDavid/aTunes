@@ -56,7 +56,7 @@ public final class ImageDialog extends CustomFrame {
 
     private static final long serialVersionUID = -5163960681035103913L;
 
-    JLabel imageLabel;
+    private JLabel imageLabel;
     private JScrollPane scrollPane;
 
     /**

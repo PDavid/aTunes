@@ -42,8 +42,8 @@ public final class CustomJFileChooser extends JPanel {
 
     private static final long serialVersionUID = 4713483251093570020L;
 
-    JTextField textField;
-    String result;
+    private JTextField textField;
+    private String result;
 
     /**
      * Instantiates a new custom file chooser.

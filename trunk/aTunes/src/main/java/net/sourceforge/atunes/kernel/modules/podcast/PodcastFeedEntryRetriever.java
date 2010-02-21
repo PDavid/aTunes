@@ -58,9 +58,9 @@ public class PodcastFeedEntryRetriever implements Runnable {
 		}
 	}
 
-	static Logger logger = new Logger();
+	private static Logger logger = new Logger();
 
-    List<PodcastFeed> podcastFeeds;
+    private List<PodcastFeed> podcastFeeds;
 
     public PodcastFeedEntryRetriever(List<PodcastFeed> podcastFeeds) {
         this.podcastFeeds = podcastFeeds;

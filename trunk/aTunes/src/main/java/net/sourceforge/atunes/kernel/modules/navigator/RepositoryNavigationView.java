@@ -256,11 +256,11 @@ public class RepositoryNavigationView extends NavigationView {
 
         List<String> artistNamesList = new ArrayList<String>(structure.keySet());
         if (ApplicationState.getInstance().isUseSmartTagViewSorting() && !ApplicationState.getInstance().isUsePersonNamesArtistTagViewSorting()) {
-            Collections.sort(artistNamesList, smartComparator);
+            Collections.sort(artistNamesList, getSmartComparator());
         } else if (ApplicationState.getInstance().isUsePersonNamesArtistTagViewSorting()) {
-            Collections.sort(artistNamesList, artistNamesComparator);
+            Collections.sort(artistNamesList, getArtistNamesComparator());
         } else {
-            Collections.sort(artistNamesList, comparator);
+            Collections.sort(artistNamesList, getDefaultComparator());
         }
 
         // Nodes to be selected after refresh
@@ -273,9 +273,9 @@ public class RepositoryNavigationView extends NavigationView {
             DefaultMutableTreeNode artistNode = new DefaultMutableTreeNode(artist);
             List<String> albumNamesList = new ArrayList<String>(artist.getAlbums().keySet());
             if (ApplicationState.getInstance().isUseSmartTagViewSorting()) {
-                Collections.sort(albumNamesList, smartComparator);
+                Collections.sort(albumNamesList, getSmartComparator());
             } else {
-                Collections.sort(albumNamesList, comparator);
+                Collections.sort(albumNamesList, getDefaultComparator());
             }
             if (currentFilter == null || artist.getName().toUpperCase().contains(currentFilter.toUpperCase())) {
                 for (int j = 0; j < albumNamesList.size(); j++) {
@@ -333,9 +333,9 @@ public class RepositoryNavigationView extends NavigationView {
 
         List<String> albumsNamesList = new ArrayList<String>(structure.keySet());
         if (ApplicationState.getInstance().isUseSmartTagViewSorting()) {
-            Collections.sort(albumsNamesList, smartComparator);
+            Collections.sort(albumsNamesList, getSmartComparator());
         } else {
-            Collections.sort(albumsNamesList, comparator);
+            Collections.sort(albumsNamesList, getDefaultComparator());
         }
 
         // Nodes to be selected after refresh
@@ -385,7 +385,7 @@ public class RepositoryNavigationView extends NavigationView {
         root.setUserObject(I18nUtils.getString("REPOSITORY"));
         root.removeAllChildren();
         List<String> genreNamesList = new ArrayList<String>(structure.keySet());
-        Collections.sort(genreNamesList, comparator);
+        Collections.sort(genreNamesList, getDefaultComparator());
 
         for (int i = 0; i < genreNamesList.size(); i++) {
             Genre genre = structure.get(genreNamesList.get(i));
@@ -457,7 +457,7 @@ public class RepositoryNavigationView extends NavigationView {
         // Refresh nodes
         root.setUserObject(I18nUtils.getString("REPOSITORY"));
         root.removeAllChildren();
-        RefreshUtils.addFolderNodes(structure, root, currentFilter, comparator);
+        RefreshUtils.addFolderNodes(structure, root, currentFilter, getDefaultComparator());
 
         treeModel.reload();
 

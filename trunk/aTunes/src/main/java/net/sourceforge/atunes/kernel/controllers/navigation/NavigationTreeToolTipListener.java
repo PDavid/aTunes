@@ -40,7 +40,7 @@ public final class NavigationTreeToolTipListener extends MouseAdapter implements
 
     static final Logger logger = new Logger();
 
-    NavigationController controller;
+    private NavigationController controller;
 
     /**
      * Instantiates a new navigation tree tool tip listener.

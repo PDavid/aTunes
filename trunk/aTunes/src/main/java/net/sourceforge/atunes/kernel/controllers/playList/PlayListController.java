@@ -42,7 +42,7 @@ import net.sourceforge.atunes.misc.log.LogCategories;
 public final class PlayListController extends SimpleController<PlayListPanel> {
 
     /** The visible rect. */
-    Rectangle visibleRect;
+    private Rectangle visibleRect;
 
     /**
      * Instantiates a new play list controller.

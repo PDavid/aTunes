@@ -39,8 +39,8 @@ public class AddRandomSongsAction extends Action {
 
     @Override
     protected void initialize() {
-        putValue(NAME, I18nUtils.getString(actionId));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString(actionId));
+        putValue(NAME, I18nUtils.getString(getActionId()));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString(getActionId()));
     }
 
     @Override
@@ -58,7 +58,7 @@ public class AddRandomSongsAction extends Action {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        SmartPlayListHandler.getInstance().addRandomSongs((Integer) this.properties.get(PARAMETER));
+        SmartPlayListHandler.getInstance().addRandomSongs((Integer) this.getProperties().get(PARAMETER));
     }
 
     @Override

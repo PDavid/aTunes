@@ -44,9 +44,9 @@ import org.commonjukebox.plugins.PluginApi;
 @PluginApi
 public final class DesktopUtils {
 
-    static Logger logger = new Logger();
+    private static Logger logger = new Logger();
     private static boolean isDesktopSupported;
-    static Desktop desktop;
+    private static Desktop desktop;
 
     static {
         isDesktopSupported = Desktop.isDesktopSupported();

@@ -79,7 +79,10 @@ public final class Notify {
      */
     public static final class NotifyNotification extends Structure {
 
+    	/* Must be public in order to JNA work */
         public Pointer parent_object;
+        
+        /* Must be public in order to JNA work */
         public Pointer priv;
 
     }

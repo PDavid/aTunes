@@ -36,8 +36,8 @@ import net.sourceforge.atunes.utils.GuiUtils;
  */
 final class FadingPopup extends Popup {
 
-    JWindow popupWindow;
-    WindowFader windowFader;
+    private JWindow popupWindow;
+    private WindowFader windowFader;
 
     /**
      * Instantiates a new fading popup.

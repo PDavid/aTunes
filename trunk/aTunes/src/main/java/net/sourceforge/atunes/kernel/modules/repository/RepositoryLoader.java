@@ -54,13 +54,13 @@ public class RepositoryLoader extends Thread {
     private static Logger logger = new Logger();
 
     // Some attributes to speed up populate info process
-    LoaderListener listener;
+    private LoaderListener listener;
     private List<File> folders;
     private boolean refresh;
     private boolean interrupt;
     private Repository oldRepository;
     private Repository repository;
-    int totalFilesToLoad;
+    private int totalFilesToLoad;
     private int filesLoaded;
     private long startReadTime;
     private String fastRepositoryPath;

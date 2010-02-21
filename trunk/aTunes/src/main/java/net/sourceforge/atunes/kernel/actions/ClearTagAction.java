@@ -48,7 +48,7 @@ public class ClearTagAction extends ActionOverSelectedObjects<AudioFile> {
 
     @Override
     public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
-        if (NAVIGATOR.equals(actionId)) {
+        if (NAVIGATOR.equals(getActionId())) {
             return !rootSelected && !selection.isEmpty();
         }
         return super.isEnabledForNavigationTreeSelection(rootSelected, selection);
@@ -56,7 +56,7 @@ public class ClearTagAction extends ActionOverSelectedObjects<AudioFile> {
 
     @Override
     public boolean isEnabledForNavigationTableSelection(List<AudioObject> selection) {
-        if (NAVIGATOR.equals(actionId)) {
+        if (NAVIGATOR.equals(getActionId())) {
             return !selection.isEmpty();
         }
         return super.isEnabledForNavigationTableSelection(selection);

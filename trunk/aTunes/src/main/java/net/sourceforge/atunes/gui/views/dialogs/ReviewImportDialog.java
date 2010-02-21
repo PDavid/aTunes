@@ -69,10 +69,10 @@ public final class ReviewImportDialog extends CustomModalDialog {
     private JTextArea reviewInstructions;
 
     /** The table. */
-    JXTreeTable treeTable;
+    private JXTreeTable treeTable;
 
     /** True when user pressed Cancel or closes the window */
-    boolean dialogCancelled = true;
+    private boolean dialogCancelled = true;
 
     /**
      * Instantiates a new ReviewImportDialog

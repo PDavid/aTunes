@@ -87,13 +87,13 @@ public final class NavigationController extends Controller implements AudioFiles
         ARTIST, ALBUM, GENRE, FOLDER
     }
 
-    Logger logger = new Logger();
+    private Logger logger = new Logger();
 
     private NavigationTreePanel navigationTreePanel;
     private NavigationTablePanel navigationTablePanel;
 
     /** The current extended tool tip content. */
-    volatile Object currentExtendedToolTipContent;
+    private volatile Object currentExtendedToolTipContent;
 
     /** The album tool tip. */
     private ExtendedToolTip extendedToolTip;

@@ -48,13 +48,13 @@ public abstract class AudioFileTransferProcess extends Process {
     /**
      * The files to be transferred.
      */
-    protected Collection<AudioFile> filesToTransfer;
+	private Collection<AudioFile> filesToTransfer;
 
     /**
      * List of files transferred. Used if process is canceled to delete these
      * files
      */
-    protected List<File> filesTransferred;
+	private List<File> filesTransferred;
     
     /**
      * The dialog used to show the progress of this process
@@ -64,7 +64,7 @@ public abstract class AudioFileTransferProcess extends Process {
     /**
      * User selection if an error occurs while transferring
      */
-    String userSelectionWhenErrors = null;
+    private String userSelectionWhenErrors = null;
 
     protected AudioFileTransferProcess(Collection<AudioFile> collection) {
         this.filesToTransfer = collection;

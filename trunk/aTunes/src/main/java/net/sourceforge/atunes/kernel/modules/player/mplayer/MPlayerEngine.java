@@ -121,7 +121,7 @@ public class MPlayerEngine extends PlayerEngine {
                 }
             } catch (Exception e) {
                 if (SystemProperties.OS == OperatingSystem.MACOSX && !LINUX_COMMAND.equals(MACOS_COMMAND)) {
-                    logger.info(LogCategories.PLAYER, "Mac OS X: mplayer not found, trying in mac_tools");
+                	getLogger().info(LogCategories.PLAYER, "Mac OS X: mplayer not found, trying in mac_tools");
                     LINUX_COMMAND = MACOS_COMMAND;
                     return isEngineAvailable();
                 }
@@ -257,7 +257,7 @@ public class MPlayerEngine extends PlayerEngine {
     @Override
     public void finishPlayer() {
         stopCurrentAudioObject(false);
-        logger.info(LogCategories.PLAYER, "Stopping player");
+        getLogger().info(LogCategories.PLAYER, "Stopping player");
     }
 
     @Override
@@ -267,7 +267,7 @@ public class MPlayerEngine extends PlayerEngine {
 
     @Override
     public void applyMuteState(boolean mute) {
-        logger.debugMethodCall(LogCategories.PLAYER, Boolean.toString(mute));
+    	getLogger().debugMethodCall(LogCategories.PLAYER, Boolean.toString(mute));
 
         commandWriter.sendMuteCommand();
 
@@ -277,7 +277,7 @@ public class MPlayerEngine extends PlayerEngine {
         // MPlayer bug: paused, demute, muted -> starts playing
         if (isPaused() && !mute) {
             commandWriter.sendPauseCommand();
-            logger.debug(LogCategories.PLAYER, "MPlayer bug (paused, demute, muted -> starts playing) workaround applied");
+            getLogger().debug(LogCategories.PLAYER, "MPlayer bug (paused, demute, muted -> starts playing) workaround applied");
         }
     }
 
@@ -405,7 +405,7 @@ public class MPlayerEngine extends PlayerEngine {
             command.add(KARAOKE);
         }
 
-        logger.debugMethodCall(LogCategories.PLAYER, command.toArray(new String[command.size()]));
+        getLogger().debugMethodCall(LogCategories.PLAYER, command.toArray(new String[command.size()]));
         return pb.command(command).start();
     }
 

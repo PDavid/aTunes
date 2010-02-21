@@ -63,7 +63,7 @@ public final class LastFmPanel extends PreferencesPanel {
      * Checkbox to select if application must send a love request when user adds
      * a favorite song
      */
-    JCheckBox autoLoveFavoriteSongs;
+    private JCheckBox autoLoveFavoriteSongs;
 
     /**
      * Instantiates a new last fm panel.

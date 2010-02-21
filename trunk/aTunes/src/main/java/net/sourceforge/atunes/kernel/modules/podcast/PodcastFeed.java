@@ -50,7 +50,7 @@ public class PodcastFeed implements TreeObject, Serializable {
 
     private Logger logger = new Logger();
 
-    String name;
+    private String name;
     private String url;
     private FeedType feedType;
     private List<PodcastFeedEntry> podcastFeedEntries;

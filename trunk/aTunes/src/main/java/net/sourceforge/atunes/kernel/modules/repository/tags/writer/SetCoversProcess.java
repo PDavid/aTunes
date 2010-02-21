@@ -58,7 +58,7 @@ public class SetCoversProcess extends ChangeTagProcess {
     @Override
     protected void retrieveInformationBeforeChangeTags() {
         super.retrieveInformationBeforeChangeTags();
-        this.filesAndCovers = getCoversForFiles(this.filesToChange);
+        this.filesAndCovers = getCoversForFiles(this.getFilesToChange());
     }
 
     @Override

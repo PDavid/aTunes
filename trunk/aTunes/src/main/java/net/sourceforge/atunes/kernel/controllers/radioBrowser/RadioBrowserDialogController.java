@@ -35,7 +35,7 @@ import net.sourceforge.atunes.misc.log.Logger;
 public final class RadioBrowserDialogController extends SimpleController<RadioBrowserDialog> {
 
     /** The logger. */
-    static Logger logger = new Logger();
+    private static Logger logger = new Logger();
 
     /**
      * Instantiates a new radio browser dialog controller.

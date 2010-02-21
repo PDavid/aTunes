@@ -131,7 +131,7 @@ public final class PlayerControlsPanel extends JPanel {
         final JPanel bottomProgressSliderPanel = new JPanel(new BorderLayout());
         bottomProgressSliderPanel.addComponentListener(new ComponentAdapter() {
 
-            Boolean showProgressOnTop = null;
+        	private Boolean showProgressOnTop = null;
 
             @Override
             public void componentResized(ComponentEvent e) {
@@ -387,9 +387,9 @@ public final class PlayerControlsPanel extends JPanel {
 
         private static final long serialVersionUID = 8921834666233975274L;
 
-        protected JLabel time;
-        protected JLabel remainingTime;
-        protected JSlider progressBar;
+        private JLabel time;
+        private JLabel remainingTime;
+        private JSlider progressBar;
 
         ProgressSlider() {
             super(new GridBagLayout());

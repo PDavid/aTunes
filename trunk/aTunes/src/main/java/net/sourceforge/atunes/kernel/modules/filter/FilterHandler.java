@@ -40,7 +40,7 @@ public final class FilterHandler extends Handler {
     /**
      * Available filters
      */
-    protected Map<String, Filter> filters;
+    private Map<String, Filter> filters;
 
     /**
      * Filter for all current filters at the same time

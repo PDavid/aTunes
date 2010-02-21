@@ -61,7 +61,7 @@ public class LameEncoder implements Encoder {
     private Logger logger = new Logger();
 
     private Process p;
-    ProgressListener listener;
+    private ProgressListener listener;
     private String albumArtist;
     private String album;
     private int year;

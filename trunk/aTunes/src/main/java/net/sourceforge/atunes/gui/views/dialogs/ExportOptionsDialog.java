@@ -70,7 +70,7 @@ public final class ExportOptionsDialog extends CustomModalDialog {
     /**
      * Setted to true when cancelled
      */
-    boolean cancel;
+    private boolean cancel;
 
     /**
      * Instantiates a new export options dialog.

@@ -48,10 +48,10 @@ public final class PopUpButton extends JButton {
     public static final int BOTTOM_LEFT = 3;
     public static final int BOTTOM_RIGHT = 4;
 
-    JPopupMenu menu;
+    private JPopupMenu menu;
     private int location;
-    int xLocation;
-    int yLocation;
+    private int xLocation;
+    private int yLocation;
     private List<Component> items = new ArrayList<Component>();
 
     /**

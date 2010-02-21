@@ -31,7 +31,7 @@ import net.sourceforge.atunes.utils.ClosingUtils;
 
 class VlcOutputReader extends Thread {
 
-    protected static Logger logger = new Logger();
+    private static Logger logger = new Logger();
 
     private BufferedReader in;
     private String lastLineReaded = "";

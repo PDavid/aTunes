@@ -48,7 +48,7 @@ public class SetGenresProcess extends ChangeTagProcess {
     @Override
     protected void retrieveInformationBeforeChangeTags() {
         super.retrieveInformationBeforeChangeTags();
-        this.filesAndGenres = getGenresForFiles(filesToChange);
+        this.filesAndGenres = getGenresForFiles(getFilesToChange());
     }
 
     @Override

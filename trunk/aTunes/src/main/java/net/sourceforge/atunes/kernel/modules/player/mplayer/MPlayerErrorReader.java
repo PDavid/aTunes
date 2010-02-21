@@ -35,7 +35,7 @@ import net.sourceforge.atunes.utils.ClosingUtils;
  */
 class MPlayerErrorReader extends Thread {
 
-    MPlayerEngine engine;
+    private MPlayerEngine engine;
     private BufferedReader in;
     private AudioObject audioObject;
 

@@ -49,7 +49,7 @@ public class SynchronizeDeviceWithPlayListAction extends Action {
 
     private static final long serialVersionUID = -1885495996370465881L;
 
-    protected Logger logger = new Logger();
+    private Logger logger = new Logger();
 
     public SynchronizeDeviceWithPlayListAction() {
         super(I18nUtils.getString("SYNCHRONIZE_DEVICE_WITH_PLAYLIST"));
@@ -62,7 +62,7 @@ public class SynchronizeDeviceWithPlayListAction extends Action {
 
         SwingWorker<Map<String, List<AudioFile>>, Void> worker = new SwingWorker<Map<String, List<AudioFile>>, Void>() {
 
-            protected int filesRemoved = 0;
+            private int filesRemoved = 0;
 
             protected void showMessage(final boolean added) {
                 // Show message
@@ -76,7 +76,7 @@ public class SynchronizeDeviceWithPlayListAction extends Action {
                 });
             }
 
-            protected ProcessListener listener = new ProcessListener() {
+            private ProcessListener listener = new ProcessListener() {
                 @Override
                 public void processCanceled() {
                     // Nothing to do

@@ -98,7 +98,7 @@ public final class ImportExportPanel extends PreferencesPanel {
     private JRadioButton fileNameCustomizedRadioButton;
 
     /** Text Field used to define custom file name pattern */
-    JTextField fileNamePatternTextField;
+    private JTextField fileNamePatternTextField;
 
     /**
      * The radio button used to select no changes in folder name when importing
@@ -113,7 +113,7 @@ public final class ImportExportPanel extends PreferencesPanel {
     private JRadioButton folderPathCustomizedRadioButton;
 
     /** Text Field used to define custom folder path */
-    JTextField folderPathPatternTextField;
+    private JTextField folderPathPatternTextField;
 
     /** A table to show available pattern transformations */
     private JTable availablePatternsTable;
@@ -122,7 +122,7 @@ public final class ImportExportPanel extends PreferencesPanel {
     private JCheckBox reviewTagsBeforeImportCheckBox;
 
     /** Check box to apply changes in tags to original files before copy them */
-    JCheckBox applyChangesToSourceFilesCheckBox;
+    private JCheckBox applyChangesToSourceFilesCheckBox;
 
     /** Check box to enable track number auto complete when importing */
     private JCheckBox setTrackNumberWhenImportingCheckBox;

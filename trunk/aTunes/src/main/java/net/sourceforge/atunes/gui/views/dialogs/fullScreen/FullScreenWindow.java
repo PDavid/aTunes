@@ -138,9 +138,9 @@ public final class FullScreenWindow extends CustomWindow {
     /** The volume level */
     private VolumeLevel volumeLevel;
 
-    protected JPanel textPanel;
+    private JPanel textPanel;
 
-    protected JPanel controlsPanel;
+    private JPanel controlsPanel;
 
     /** The playing. */
     private boolean playing;

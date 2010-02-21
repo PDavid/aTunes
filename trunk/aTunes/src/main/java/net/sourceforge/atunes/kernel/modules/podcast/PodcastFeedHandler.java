@@ -108,7 +108,7 @@ public final class PodcastFeedHandler extends Handler {
      */
     private ExecutorService podcastFeedEntryDownloaderExecutorService = Executors.newCachedThreadPool();
     /** The running downloads. */
-    volatile List<PodcastFeedEntryDownloader> runningDownloads = Collections.synchronizedList(new ArrayList<PodcastFeedEntryDownloader>());
+    private volatile List<PodcastFeedEntryDownloader> runningDownloads = Collections.synchronizedList(new ArrayList<PodcastFeedEntryDownloader>());
     /**
      * Podcast Feed Entry download checker
      */

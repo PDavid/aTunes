@@ -99,7 +99,7 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
     private JLabel statusBarDeviceLabel;
     private JLabel statusBarNewPodcastEntriesLabel;
     private JLabel statusBarNewVersionLabel;
-    UpdateDialog updateDialog;
+    private UpdateDialog updateDialog;
     private JProgressBar progressBar;
     private ApplicationMenuBar appMenuBar;
     private PlayListPanel playListPanel;
@@ -111,7 +111,7 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
 
     private WindowAdapter fullFrameStateListener;
 
-    Timer statusBarNewVersionInfoTimer = new Timer(1000, new ActionListener() {
+    private Timer statusBarNewVersionInfoTimer = new Timer(1000, new ActionListener() {
         private boolean b;
 
         @Override
@@ -125,7 +125,7 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
         }
     });
 
-    Logger logger = new Logger();
+    private Logger logger = new Logger();
 
     /**
      * Instantiates a new standard frame.

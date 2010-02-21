@@ -48,7 +48,7 @@ import net.sourceforge.atunes.misc.log.LogCategories;
 public final class EditPreferencesDialogController extends SimpleController<EditPreferencesDialog> {
 
     /** The panels of the edit preferences dialog */
-    PreferencesPanel[] panels = new PreferencesPanel[] { new GeneralPanel(), new RepositoryPanel(), new PlayerPanel(), new NavigatorPanel(), new PlayListPrefPanel(),
+    private PreferencesPanel[] panels = new PreferencesPanel[] { new GeneralPanel(), new RepositoryPanel(), new PlayerPanel(), new NavigatorPanel(), new PlayListPrefPanel(),
             new OSDPanel(), new ContextPanel(), new InternetPanel(), new LastFmPanel(), new DevicePanel(), new RadioPanel(), new PodcastFeedPanel(), new ImportExportPanel(),
             new PluginsPanel() };
 

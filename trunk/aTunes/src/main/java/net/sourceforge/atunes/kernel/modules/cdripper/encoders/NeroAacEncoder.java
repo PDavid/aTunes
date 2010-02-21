@@ -58,7 +58,7 @@ public class NeroAacEncoder implements Encoder {
     static final String DEFAULT_NERO_AAC_QUALITY = "0.4";
 
     private Logger logger = new Logger();
-    ProgressListener listener;
+    private ProgressListener listener;
     private Process p;
     private String albumArtist;
     private String album;
