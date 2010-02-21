@@ -43,7 +43,7 @@ import net.sourceforge.atunes.misc.log.Logger;
 public class PlayListToDeviceDragAndDropListener implements DropTargetListener {
 
     /** The logger. */
-    private static Logger logger = new Logger();
+    private Logger logger;
 
     /**
      * Instantiates a new drag and drop listener.
@@ -122,7 +122,7 @@ public class PlayListToDeviceDragAndDropListener implements DropTargetListener {
                     }
                 }
             } catch (Exception e) {
-                logger.internalError(e);
+                getLogger().internalError(e);
             }
             dtde.getDropTargetContext().dropComplete(true);
         }
@@ -138,4 +138,16 @@ public class PlayListToDeviceDragAndDropListener implements DropTargetListener {
     public void dropActionChanged(DropTargetDragEvent dtde) {
         // Nothing to do
     }
+    
+    /**
+     * Getter for logger
+     * @return
+     */
+    private Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
+    }
+
 }

@@ -68,7 +68,7 @@ public abstract class NavigationView implements AudioObjectsSource {
     /**
      * Common logger for all navigation views
      */
-    private static Logger logger = new Logger();
+    private Logger logger;
 
     /**
      * Scroll pane used for tree
@@ -333,7 +333,7 @@ public abstract class NavigationView implements AudioObjectsSource {
      * @param objects
      */
     protected final void debug(Object... objects) {
-        logger.debug(LogCategories.VIEW, objects);
+        getLogger().debug(LogCategories.VIEW, objects);
     }
 
     /**
@@ -597,4 +597,16 @@ public abstract class NavigationView implements AudioObjectsSource {
 	        }
 	    };
 	}
+	
+    /**
+     * Getter for logger
+     * @return
+     */
+    private Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
+    }
+
 }

@@ -33,7 +33,6 @@ public class LoggerService {
      * Creates a new logger service to be used by plugins
      */
     public LoggerService() {
-        this.logger = new Logger();
     }
 
     /**
@@ -42,7 +41,7 @@ public class LoggerService {
      * @param message
      */
     public void info(String message) {
-        this.logger.info(LogCategories.PLUGINS, message);
+        getLogger().info(LogCategories.PLUGINS, message);
     }
 
     /**
@@ -51,7 +50,7 @@ public class LoggerService {
      * @param message
      */
     public void debug(String message) {
-        this.logger.debug(LogCategories.PLUGINS, message);
+    	getLogger().debug(LogCategories.PLUGINS, message);
     }
 
     /**
@@ -60,7 +59,7 @@ public class LoggerService {
      * @param message
      */
     public void error(String message) {
-        this.logger.error(LogCategories.PLUGINS, message);
+    	getLogger().error(LogCategories.PLUGINS, message);
     }
 
     /**
@@ -69,7 +68,18 @@ public class LoggerService {
      * @param exception
      */
     public void error(Exception exception) {
-        this.logger.error(LogCategories.PLUGINS, exception);
+    	getLogger().error(LogCategories.PLUGINS, exception);
+    }
+
+    /**
+     * Getter for logger
+     * @return
+     */
+    private Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
     }
 
 }

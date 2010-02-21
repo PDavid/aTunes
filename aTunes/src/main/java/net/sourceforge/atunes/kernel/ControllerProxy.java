@@ -56,7 +56,7 @@ import net.sourceforge.atunes.misc.log.Logger;
 public class ControllerProxy {
 
     /** Logger. */
-    private static Logger logger = new Logger();
+    private Logger logger;
 
     /** Singleton instance of controller. */
     private static ControllerProxy instance;
@@ -110,7 +110,7 @@ public class ControllerProxy {
      * Instantiates a new controller proxy.
      */
     private ControllerProxy() {
-        logger.debug(LogCategories.CONTROLLER, "Creating ControllerProxy");
+        getLogger().debug(LogCategories.CONTROLLER, "Creating ControllerProxy");
         // Force creation of non-autocreated controllers
         getPlayListTabController();
     }
@@ -320,5 +320,15 @@ public class ControllerProxy {
         }
         return toolBarFilterController;
     }
-
+    
+    /**
+     * Getter for logger
+     * @return
+     */
+    private Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
+    }
 }

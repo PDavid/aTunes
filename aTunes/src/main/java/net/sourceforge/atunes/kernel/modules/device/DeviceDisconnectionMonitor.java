@@ -34,7 +34,7 @@ public class DeviceDisconnectionMonitor extends Thread {
     private static List<DeviceDisconnectionListener> listeners = new ArrayList<DeviceDisconnectionListener>();
     private static int TIME_TO_WAIT = 5000;
 
-    private Logger logger = new Logger();
+    private Logger logger;
 
     /**
      * Instantiates a new device disconnection monitor.
@@ -84,7 +84,7 @@ public class DeviceDisconnectionMonitor extends Thread {
 
             final File deviceLocationFile = DeviceHandler.getInstance().getDeviceRepository().getFolders().get(0);
             if (!deviceLocationFile.exists()) {
-                logger.info(LogCategories.PROCESS, "Device disconnected");
+                getLogger().info(LogCategories.PROCESS, "Device disconnected");
                 for (final DeviceDisconnectionListener l : listeners) {
                     SwingUtilities.invokeLater(new DeviceDisconnectedRunnable(l, deviceLocationFile.getAbsolutePath()));
                 }
@@ -93,7 +93,7 @@ public class DeviceDisconnectionMonitor extends Thread {
             try {
                 Thread.sleep(TIME_TO_WAIT);
             } catch (InterruptedException e) {
-                logger.error(LogCategories.PROCESS, e);
+                getLogger().error(LogCategories.PROCESS, e);
             }
         }
     }
@@ -113,6 +113,17 @@ public class DeviceDisconnectionMonitor extends Thread {
         public void run() {
         	listener.deviceDisconnected(deviceLocation);
         }
+    }
+
+    /**
+     * Getter for logger
+     * @return
+     */
+    private Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
     }
 
 }

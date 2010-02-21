@@ -36,7 +36,7 @@ import net.sourceforge.atunes.utils.ImageUtils;
 
 public class LibnotifyNotifications implements Notifications {
 
-    private Logger logger = new Logger();
+    private Logger logger;
 
     private ExecutorService executorService;
 
@@ -56,11 +56,11 @@ public class LibnotifyNotifications implements Notifications {
             @Override
             public void run() {
                 if (!Notify.isNotifyPresent()) {
-                    logger.error(LogCategories.NOTIFICATIONS, "libnotify is not available");
+                    getLogger().error(LogCategories.NOTIFICATIONS, "libnotify is not available");
                     return;
                 }
                 if (!Notify.init("aTunes")) {
-                    logger.error(LogCategories.NOTIFICATIONS, "could not init libnotify");
+                    getLogger().error(LogCategories.NOTIFICATIONS, "could not init libnotify");
                     return;
                 }
                 ImageIcon imageForAudioObject = audioObject.getImage(ImageSize.SIZE_200);
@@ -71,7 +71,7 @@ public class LibnotifyNotifications implements Notifications {
                         .getAbsolutePath();
                 NotifyNotification n = Notify.newNotification(audioObject.getTitle(), audioObject.getArtist(), image);
                 if (!Notify.show(n)) {
-                    logger.error(LogCategories.NOTIFICATIONS, "could not show notification - libnotify");
+                    getLogger().error(LogCategories.NOTIFICATIONS, "could not show notification - libnotify");
                     return;
                 }
                 Notify.uninit();
@@ -79,4 +79,16 @@ public class LibnotifyNotifications implements Notifications {
         };
         executorService.execute(r);
     }
+    
+    /**
+     * Getter for logger
+     * @return
+     */
+    private Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
+    }
+
 }

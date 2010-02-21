@@ -35,7 +35,7 @@ public class DeviceConnectionMonitor extends Thread {
     private static List<DeviceConnectionListener> listeners = new ArrayList<DeviceConnectionListener>();
     private static int TIME_TO_WAIT = 5000;
 
-    private Logger logger = new Logger();
+    private Logger logger;
 
     /**
      * Instantiates a new device connection monitor.
@@ -84,7 +84,7 @@ public class DeviceConnectionMonitor extends Thread {
                 File deviceLocationFile = new File(deviceLocation);
                 if (!DeviceHandler.getInstance().isDeviceConnected()) {
                     if (deviceLocationFile.exists()) {
-                        logger.info(LogCategories.PROCESS, "Device connected");
+                        getLogger().info(LogCategories.PROCESS, "Device connected");
                         for (final DeviceConnectionListener l : listeners) {
                             SwingUtilities.invokeLater(new DeviceConnectedRunnable(l, deviceLocation));
                         }
@@ -96,7 +96,7 @@ public class DeviceConnectionMonitor extends Thread {
             try {
                 Thread.sleep(TIME_TO_WAIT);
             } catch (InterruptedException e) {
-                logger.error(LogCategories.PROCESS, e);
+                getLogger().error(LogCategories.PROCESS, e);
             }
         }
     }
@@ -116,6 +116,17 @@ public class DeviceConnectionMonitor extends Thread {
         public void run() {
         	listener.deviceConnected(deviceLocation);
         }
+    }
+
+    /**
+     * Getter for logger
+     * @return
+     */
+    private Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
     }
 
 }

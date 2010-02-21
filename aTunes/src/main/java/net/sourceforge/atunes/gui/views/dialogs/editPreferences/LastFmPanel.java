@@ -52,7 +52,7 @@ public final class LastFmPanel extends PreferencesPanel {
 
     private static final long serialVersionUID = -9216216930198145476L;
 
-    private Logger logger = new Logger();
+    private Logger logger;
 
     private JCheckBox lastFmEnabled;
     private JTextField lastFmUser;
@@ -101,9 +101,9 @@ public final class LastFmPanel extends PreferencesPanel {
                                 GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("LOGIN_FAILED"));
                             }
                         } catch (InterruptedException e) {
-                            logger.error(LogCategories.SERVICE, e);
+                            getLogger().error(LogCategories.SERVICE, e);
                         } catch (ExecutionException e) {
-                            logger.error(LogCategories.SERVICE, e);
+                            getLogger().error(LogCategories.SERVICE, e);
                         } finally {
                             testLogin.setEnabled(true);
                         }
@@ -248,6 +248,18 @@ public final class LastFmPanel extends PreferencesPanel {
     @Override
     public ImageIcon getIcon() {
         return Images.getImage(Images.LASTFM);
+    }
+
+    /**
+     * Getter for logger
+     * 
+     * @return
+     */
+    private Logger getLogger() {
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
     }
 
 }

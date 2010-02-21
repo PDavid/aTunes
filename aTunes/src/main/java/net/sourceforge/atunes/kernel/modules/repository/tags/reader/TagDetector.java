@@ -32,7 +32,7 @@ import net.sourceforge.atunes.misc.log.Logger;
 public class TagDetector {
 
     /** The logger. */
-    private static Logger logger = new Logger();
+    private static Logger logger;
 
     private TagDetector() {
     	
@@ -47,7 +47,7 @@ public class TagDetector {
     public static void getTags(AudioFile file) {
 
         try {
-            logger.debug(LogCategories.FILE_READ, file);
+            getLogger().debug(LogCategories.FILE_READ, file);
 
             org.jaudiotagger.audio.AudioFile f = org.jaudiotagger.audio.AudioFileIO.read(file.getFile().getAbsoluteFile());
             org.jaudiotagger.tag.Tag tag = f.getTag();
@@ -58,7 +58,19 @@ public class TagDetector {
             }
 
         } catch (Exception e) {
-            logger.error(LogCategories.FILE_READ, e.getMessage());
+            getLogger().error(LogCategories.FILE_READ, e.getMessage());
         }
     }
+    
+    /**
+     * Getter for logger
+     * @return
+     */
+    private static Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
+    }
+
 }

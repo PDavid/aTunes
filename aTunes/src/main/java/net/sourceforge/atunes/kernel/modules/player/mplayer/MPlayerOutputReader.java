@@ -38,7 +38,7 @@ abstract class MPlayerOutputReader extends Thread {
     /** Pattern of end of play back */
     private static final Pattern END_PATTERN = Pattern.compile(".*\\x2e\\x2e\\x2e\\x20\\(.*\\x20.*\\).*");
 
-    private Logger logger = new Logger();
+    private Logger logger;
 
     private MPlayerEngine engine;
     private BufferedReader in;
@@ -152,10 +152,6 @@ abstract class MPlayerOutputReader extends Thread {
         }
     }
 
-    protected final Logger getLogger() {
-        return logger;
-    }
-
     protected final void setTime(int time) {
         this.time = time;
     }
@@ -174,6 +170,17 @@ abstract class MPlayerOutputReader extends Thread {
 
     protected final MPlayerEngine getEngine() {
         return engine;
+    }
+
+    /**
+     * Getter for logger
+     * @return
+     */
+    protected Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
     }
 
 }

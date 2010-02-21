@@ -34,7 +34,7 @@ public final class Actions {
     /**
      * Common logger for actions
      */
-    private static Logger logger = new Logger();
+    private static Logger logger;
 
     /**
      * Map of actions.
@@ -71,9 +71,9 @@ public final class Actions {
                 action.initialize();
                 actions.put(actionInstance, action);
             } catch (InstantiationException e) {
-                logger.internalError(e);
+                getLogger().internalError(e);
             } catch (IllegalAccessException e) {
-                logger.internalError(e);
+                getLogger().internalError(e);
             }
         }
         return action;
@@ -135,4 +135,16 @@ public final class Actions {
         menuItem.setAction(Actions.getActionAndBind(clazz, actionId, menuItem, audioObjectsSource));
         return menuItem;
     }
+    
+    /**
+     * Getter for logger
+     * @return
+     */
+    protected static Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
+    }
+
 }

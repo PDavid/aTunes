@@ -30,12 +30,8 @@ import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
-import net.sourceforge.atunes.misc.log.Logger;
 
 public final class RadioBrowserDialogController extends SimpleController<RadioBrowserDialog> {
-
-    /** The logger. */
-    private static Logger logger = new Logger();
 
     /**
      * Instantiates a new radio browser dialog controller.
@@ -75,9 +71,9 @@ public final class RadioBrowserDialogController extends SimpleController<RadioBr
                     List<Radio> radios = get();
                     getComponentControlled().getTreeTable().setTreeTableModel(new RadioBrowserTreeTableModel(radios));
                 } catch (InterruptedException e) {
-                    logger.error(LogCategories.CONTROLLER, e);
+                    getLogger().error(LogCategories.CONTROLLER, e);
                 } catch (ExecutionException e) {
-                    logger.error(LogCategories.CONTROLLER, e);
+                    getLogger().error(LogCategories.CONTROLLER, e);
                 } finally {
                     //getFrameControlled().setCursor(Cursor.getDefaultCursor());
                 }

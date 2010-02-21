@@ -33,7 +33,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 final class LanguageSelector {
 
     /** Logger. */
-    private static Logger logger = new Logger();
+    private static Logger logger;
 
     private LanguageSelector() {
     	
@@ -48,13 +48,24 @@ final class LanguageSelector {
         LocaleBean locale = ApplicationState.getInstance().getLocale();
         if (locale != null) {
             I18nUtils.setLocale(locale.getLocale());
-            logger.info(LogCategories.START, StringUtils.getString("Setting language: ", locale.getLocale()));
+            getLogger().info(LogCategories.START, StringUtils.getString("Setting language: ", locale.getLocale()));
         } else {
-            logger.info(LogCategories.START, "Language not configured; using default language");
+            getLogger().info(LogCategories.START, "Language not configured; using default language");
             I18nUtils.setLocale(null);
             ApplicationState.getInstance().setLocale(new LocaleBean(I18nUtils.getSelectedLocale()));
         }
         // Set Locale for DateUtils
         DateUtils.setLocale(ApplicationState.getInstance().getLocale().getLocale());
+    }
+    
+    /**
+     * Getter tfor logger
+     * @return
+     */
+    private static Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
     }
 }

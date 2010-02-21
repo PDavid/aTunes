@@ -35,7 +35,7 @@ class RepositoryFiller {
     /**
      * Logger
      */
-    private static Logger logger = new Logger();
+    private static Logger logger;
 
     private RepositoryFiller() {
     	
@@ -81,7 +81,7 @@ class RepositoryFiller {
 
             albumObject.addAudioFile(audioFile);
         } catch (Exception e) {
-            logger.error(LogCategories.FILE_READ, e.getMessage());
+            getLogger().error(LogCategories.FILE_READ, e.getMessage());
         }
     }
 
@@ -105,7 +105,7 @@ class RepositoryFiller {
 
             genreObject.addAudioFile(audioFile);
         } catch (Exception e) {
-            logger.error(LogCategories.FILE_READ, e.getMessage());
+            getLogger().error(LogCategories.FILE_READ, e.getMessage());
         }
     }
 
@@ -151,6 +151,17 @@ class RepositoryFiller {
             parentFolder = new Folder(".");
         }
         parentFolder.addAudioFile(file);
+    }
+
+    /**
+     * Getter for logger
+     * @return
+     */
+    private static Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
     }
 
 }

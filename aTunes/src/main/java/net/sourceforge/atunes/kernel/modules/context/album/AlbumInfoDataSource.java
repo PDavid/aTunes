@@ -79,7 +79,7 @@ public class AlbumInfoDataSource implements ContextInformationDataSource {
     /**
      * Logger
      */
-    private static Logger logger = new Logger();
+    private static Logger logger;
 
     @Override
     public Map<String, ?> getData(Map<String, ?> parameters) {
@@ -218,7 +218,7 @@ public class AlbumInfoDataSource implements ContextInformationDataSource {
                     // Update file properties panel
                     ControllerProxy.getInstance().getFilePropertiesController().refreshPicture();
                 } catch (IOException e) {
-                    logger.internalError(e);
+                    getLogger().internalError(e);
                 }
             }
         }
@@ -247,6 +247,17 @@ public class AlbumInfoDataSource implements ContextInformationDataSource {
      */
     private boolean forbiddenToken(String t) {
         return t.contains("/");
+    }
+
+    /**
+     * Getter for logger
+     * @return
+     */
+    private Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
     }
 
 }

@@ -19,8 +19,6 @@
  */
 package net.sourceforge.atunes.kernel.modules.player.vlcplayer;
 
-import javax.swing.SwingUtilities;
-
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
@@ -29,7 +27,7 @@ public class VlcPlayerCommandWriter extends Thread {
 
     protected static final int VOLUME_FACTOR = 5;
 
-    private Logger logger = new Logger();
+    private Logger logger;
 
     private volatile Process process;
     /** The audio object to play. */
@@ -66,11 +64,11 @@ public class VlcPlayerCommandWriter extends Thread {
                     break;
 
                 } catch (VlcTelnetClientException ex) {
-                    logger.info(LogCategories.PLAYER, "Error while getting new vlcTelnetClient (" + ex.getMessage() + "), retry " + (i + 1) + " of " + tries);
+                    getLogger().info(LogCategories.PLAYER, "Error while getting new vlcTelnetClient (" + ex.getMessage() + "), retry " + (i + 1) + " of " + tries);
 
                     if (i == (tries - 1)) {
                         process.destroy();
-                        logger.error(LogCategories.PLAYER, ex);
+                        getLogger().error(LogCategories.PLAYER, ex);
                         engine.handlePlayerEngineError(new VlcTelnetClientException("Communication problem with vlc remote interface"));
                         break;
                     }
@@ -93,7 +91,7 @@ public class VlcPlayerCommandWriter extends Thread {
         if (vlcTelnetClient != null && process != null) {
             vlcTelnetClient.sendCommand(command);
         }/*
-          * else { logger.error(LogCategories.PLAYER, "Command : " + command +
+          * else { getLogger().error(LogCategories.PLAYER, "Command : " + command +
           * " not sent (vlcTelnetClient is null)"); }
           */
     }
@@ -150,6 +148,17 @@ public class VlcPlayerCommandWriter extends Thread {
 
     protected VlcTelnetClient getVlcTelnetClient() {
         return vlcTelnetClient;
+    }
+
+    /**
+     * Getter for logger
+     * @return
+     */
+    private Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
     }
 
 }

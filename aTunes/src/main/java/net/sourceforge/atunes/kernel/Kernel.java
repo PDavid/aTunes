@@ -54,7 +54,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class Kernel {
 
-	private static Logger logger = new Logger();
+	private static Logger logger;
 
     /**
      * Unique instance of Kernel. To access Kernel, Kernel.getInstance() must be
@@ -128,7 +128,7 @@ public class Kernel {
      *            the args
      */
     public static void startKernel(final List<String> args) {
-        logger.debug(LogCategories.START, "Starting Kernel");
+        getLogger().debug(LogCategories.START, "Starting Kernel");
 
         SwingUtilities.invokeLater(new Runnable() {
 
@@ -151,8 +151,8 @@ public class Kernel {
                 }
             });
         } catch (Exception e) {
-            logger.error(LogCategories.START, e);
-            logger.error(LogCategories.START, e.getCause());
+        	getLogger().error(LogCategories.START, e);
+        	getLogger().error(LogCategories.START, e.getCause());
         }
 
         // Create kernel
@@ -173,16 +173,16 @@ public class Kernel {
                     try {
                         Proxy.initProxy(Proxy.getProxy(ApplicationState.getInstance().getProxy()));
                     } catch (UnknownHostException e) {
-                        logger.error(LogCategories.START, e);
+                    	getLogger().error(LogCategories.START, e);
                     } catch (IOException e) {
-                        logger.error(LogCategories.START, e);
+                    	getLogger().error(LogCategories.START, e);
                     }
 
                 }
             });
         } catch (Exception e) {
-            logger.error(LogCategories.START, e);
-            logger.error(LogCategories.START, e.getCause());
+        	getLogger().error(LogCategories.START, e);
+        	getLogger().error(LogCategories.START, e.getCause());
         }
 
         // Find for audio files on arguments
@@ -204,8 +204,8 @@ public class Kernel {
                 }
             });
         } catch (Exception e) {
-            logger.error(LogCategories.START, e);
-            logger.error(LogCategories.START, e.getCause());
+        	getLogger().error(LogCategories.START, e);
+        	getLogger().error(LogCategories.START, e.getCause());
         }
 
         try {
@@ -217,8 +217,8 @@ public class Kernel {
                 }
             });
         } catch (Exception e) {
-            logger.error(LogCategories.START, e);
-            logger.error(LogCategories.START, e.getCause());
+        	getLogger().error(LogCategories.START, e);
+        	getLogger().error(LogCategories.START, e.getCause());
         }
 
     }
@@ -235,7 +235,7 @@ public class Kernel {
                     finishListener.applicationFinish();
                 }
             } catch (Exception e) {
-                logger.error(LogCategories.END, e);
+            	getLogger().error(LogCategories.END, e);
             }
         }
     }
@@ -247,12 +247,12 @@ public class Kernel {
         Timer timer = new Timer();
         try {
             timer.start();
-            logger.info(LogCategories.END, StringUtils.getString("Closing ", Constants.APP_NAME, " ", Constants.VERSION.toString()));
+            getLogger().info(LogCategories.END, StringUtils.getString("Closing ", Constants.APP_NAME, " ", Constants.VERSION.toString()));
             // Call actions needed before closing application
             callActionsBeforeEnd();
         } finally {
-            logger.info(LogCategories.END, StringUtils.getString("Application finished (", StringUtils.toString(timer.stop(), 3), " seconds)"));
-            logger.info(LogCategories.END, "Goodbye!!");
+        	getLogger().info(LogCategories.END, StringUtils.getString("Application finished (", StringUtils.toString(timer.stop(), 3), " seconds)"));
+        	getLogger().info(LogCategories.END, "Goodbye!!");
             // Exit normally
             System.exit(0);
         }
@@ -286,10 +286,10 @@ public class Kernel {
                 }
             });
 
-            logger.info(LogCategories.START, StringUtils.getString("Application started (", StringUtils.toString(timer.stop(), 3), " seconds)"));
+            getLogger().info(LogCategories.START, StringUtils.getString("Application started (", StringUtils.toString(timer.stop(), 3), " seconds)"));
 
         } catch (Exception e) {
-            logger.error(LogCategories.KERNEL, e);
+        	getLogger().error(LogCategories.KERNEL, e);
         }
     }
 
@@ -304,7 +304,7 @@ public class Kernel {
                     startListener.applicationStarted();
                 }
             } catch (Exception e) {
-                logger.error(LogCategories.START, e);
+            	getLogger().error(LogCategories.START, e);
             }
         }
         // TODO: Move this to webservices handler
@@ -322,7 +322,7 @@ public class Kernel {
      * Creates all objects of aTunes: visual objects, controllers, and handlers.
      */
     void startCreation() {
-        logger.debug(LogCategories.START, "Starting components");
+    	getLogger().debug(LogCategories.START, "Starting components");
 
         startVisualization();
         startControllers();
@@ -353,7 +353,7 @@ public class Kernel {
             pb.start();
 
         } catch (IOException e) {
-            logger.error(LogCategories.KERNEL, e);
+        	getLogger().error(LogCategories.KERNEL, e);
         } finally {
             // Exit normally
             System.exit(0);
@@ -420,5 +420,12 @@ public class Kernel {
 	 */
 	public static void setNoUpdate(boolean noUpdate) {
 		Kernel.noUpdate = noUpdate;
+	}
+	
+	private static Logger getLogger() {
+		if (logger == null) {
+			logger = new Logger();
+		}
+		return logger;
 	}
 }

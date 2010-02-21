@@ -30,7 +30,7 @@ import net.sourceforge.atunes.misc.log.Logger;
 public final class TransferableList<T> implements Transferable {
 
     /** The logger. */
-    private static Logger logger = new Logger();
+    private Logger logger;
 
     /** The Constant mimeType. */
     public static final String mimeType = "aTunes/objects; class=java.io.InputStream";
@@ -71,7 +71,7 @@ public final class TransferableList<T> implements Transferable {
         try {
             flavors[0] = new DataFlavor(mimeType);
         } catch (ClassNotFoundException e) {
-            logger.internalError(e);
+            getLogger().internalError(e);
         }
         return flavors;
     }
@@ -86,4 +86,17 @@ public final class TransferableList<T> implements Transferable {
     public boolean isDataFlavorSupported(DataFlavor flavor) {
         return flavor.getMimeType().equalsIgnoreCase(mimeType);
     }
+    
+    /**
+     * Getter for logger
+     * 
+     * @return
+     */
+    private Logger getLogger() {
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
+    }
+
 }

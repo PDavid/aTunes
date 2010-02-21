@@ -65,7 +65,7 @@ public class Cdda2wav extends CdToWavConverter {
 
     private static String converterCommand = CDDA2WAV_COMMAND_STRING;
 
-    private Logger logger = new Logger();
+    private Logger logger;
 
     private int devNumber;
     private CDInfo cdRecursive;
@@ -170,7 +170,7 @@ public class Cdda2wav extends CdToWavConverter {
      */
     @Override
     public boolean cdda2wav(int track, File fileName) {
-        logger.info(LogCategories.CDDA2WAV, StringUtils.getString("Writing wav file for track ", track, " in file ", fileName.getName()));
+        getLogger().info(LogCategories.CDDA2WAV, StringUtils.getString("Writing wav file for track ", track, " in file ", fileName.getName()));
 
         BufferedReader stdInput = null;
         try {
@@ -194,7 +194,7 @@ public class Cdda2wav extends CdToWavConverter {
             command.add(StringUtils.getString(TRACKS, track));
             command.add(NO_INFO_FILE);
             if (useParanoia) {
-                logger.info(LogCategories.CDDA2WAV, "Using paranoia mode");
+                getLogger().info(LogCategories.CDDA2WAV, "Using paranoia mode");
                 command.add(PARANOIA);
             }
             command.add(fileName.getAbsolutePath());
@@ -202,7 +202,7 @@ public class Cdda2wav extends CdToWavConverter {
             /* Check that we've got somewhere to write the track to */
             fileName.getParentFile().mkdirs();
 
-            logger.debugMethodCall(LogCategories.CDDA2WAV, command.toArray(new String[command.size()]));
+            getLogger().debugMethodCall(LogCategories.CDDA2WAV, command.toArray(new String[command.size()]));
 
             setProcess(new ProcessBuilder(command).start());
             stdInput = new BufferedReader(new InputStreamReader(getProcess().getErrorStream()));
@@ -222,14 +222,14 @@ public class Cdda2wav extends CdToWavConverter {
 
             int code = getProcess().waitFor();
             if (code != 0) {
-                logger.error(LogCategories.CDDA2WAV, StringUtils.getString("Process returned code ", code));
+                getLogger().error(LogCategories.CDDA2WAV, StringUtils.getString("Process returned code ", code));
                 return false;
             }
 
-            logger.info(LogCategories.CDDA2WAV, "Wav file ok!!");
+            getLogger().info(LogCategories.CDDA2WAV, "Wav file ok!!");
             return true;
         } catch (Exception e) {
-            logger.error(LogCategories.CDDA2WAV, StringUtils.getString("Process execution caused exception ", e));
+            getLogger().error(LogCategories.CDDA2WAV, StringUtils.getString("Process execution caused exception ", e));
             return false;
         } finally {
             ClosingUtils.close(stdInput);
@@ -258,7 +258,7 @@ public class Cdda2wav extends CdToWavConverter {
      *         outside for now. True if dev=ATA is used.
      */
     private List<String> doScanBus() {
-        logger.info(LogCategories.CDDA2WAV, StringUtils.getString("Scanning bus using ", converterCommand));
+        getLogger().info(LogCategories.CDDA2WAV, StringUtils.getString("Scanning bus using ", converterCommand));
 
         // When icedax is used, try the --devices method, otherwise leave it as the maintainer 
         // of cdda2wav does not seem to like this method.
@@ -274,7 +274,7 @@ public class Cdda2wav extends CdToWavConverter {
                 command.add(SCANDEVICES);
                 command.add(NO_INFO_FILE);
 
-                logger.debugMethodCall(LogCategories.CDDA2WAV, command.toArray(new String[command.size()]));
+                getLogger().debugMethodCall(LogCategories.CDDA2WAV, command.toArray(new String[command.size()]));
 
                 setProcess(new ProcessBuilder(command).start());
                 stdInput = new BufferedReader(new InputStreamReader(getProcess().getInputStream()));
@@ -298,14 +298,14 @@ public class Cdda2wav extends CdToWavConverter {
 
                 int code = getProcess().waitFor();
                 if (code != 0) {
-                    logger.error(LogCategories.CDDA2WAV, StringUtils.getString("Process returned code ", code));
+                    getLogger().error(LogCategories.CDDA2WAV, StringUtils.getString("Process returned code ", code));
                     // Do not return null. Application hangs otherwise
                     // return null;
                 }
 
-                logger.info(LogCategories.CDDA2WAV, StringUtils.getString("Found ", devices.size(), " devices with --device method"));
+                getLogger().info(LogCategories.CDDA2WAV, StringUtils.getString("Found ", devices.size(), " devices with --device method"));
             } catch (Exception e) {
-                logger.error(LogCategories.CDDA2WAV, StringUtils.getString("Process execution caused exception ", e));
+                getLogger().error(LogCategories.CDDA2WAV, StringUtils.getString("Process execution caused exception ", e));
                 return null;
             } finally {
                 ClosingUtils.close(stdInput);
@@ -324,7 +324,7 @@ public class Cdda2wav extends CdToWavConverter {
                 command.add(SCAN_BUS);
                 command.add(NO_INFO_FILE);
 
-                logger.debugMethodCall(LogCategories.CDDA2WAV, command.toArray(new String[command.size()]));
+                getLogger().debugMethodCall(LogCategories.CDDA2WAV, command.toArray(new String[command.size()]));
 
                 setProcess(new ProcessBuilder(command).start());
                 // Icedax and cdda2wav seem to behave differently
@@ -360,14 +360,14 @@ public class Cdda2wav extends CdToWavConverter {
 
                         if (SystemProperties.OS == OperatingSystem.SOLARIS) {
                             /* we need to munge the BTL notation into cXtYdZ */
-                            logger.info(LogCategories.CDDA2WAV, "Operating System is " + SystemProperties.OS.toString() + ", adjusting device path");
+                            getLogger().info(LogCategories.CDDA2WAV, "Operating System is " + SystemProperties.OS.toString() + ", adjusting device path");
                             String devPath = null;
                             Scanner munge = new Scanner(id).useDelimiter(",");
                             devPath = "/dev/rdsk/c" + munge.nextInt();
                             devPath = devPath + "t" + munge.nextInt();
                             devPath = devPath + "d" + munge.nextInt();
                             devPath = devPath + "s2";
-                            logger.info(LogCategories.CDDA2WAV, "device found is " + devPath);
+                            getLogger().info(LogCategories.CDDA2WAV, "device found is " + devPath);
                             devices.add(devPath);
                         } else {
                             devices.add(id);
@@ -377,14 +377,14 @@ public class Cdda2wav extends CdToWavConverter {
 
                 int code = getProcess().waitFor();
                 if (code != 0) {
-                    logger.error(LogCategories.CDDA2WAV, StringUtils.getString("Process returned code ", code));
+                    getLogger().error(LogCategories.CDDA2WAV, StringUtils.getString("Process returned code ", code));
                     // Do not return null. Application hangs otherwise
                     // return null;
                 }
-                logger.info(LogCategories.CDDA2WAV, StringUtils.getString("Found ", devices.size(), " devices with scanbus method"));
+                getLogger().info(LogCategories.CDDA2WAV, StringUtils.getString("Found ", devices.size(), " devices with scanbus method"));
 
             } catch (Exception e) {
-                logger.error(LogCategories.CDDA2WAV, "Process execution caused exception " + e);
+                getLogger().error(LogCategories.CDDA2WAV, "Process execution caused exception " + e);
                 //return null;
             } finally {
                 ClosingUtils.close(stdInput);
@@ -404,7 +404,7 @@ public class Cdda2wav extends CdToWavConverter {
                 command.add(ATA);
                 command.add(NO_INFO_FILE);
 
-                logger.debugMethodCall(LogCategories.CDDA2WAV, command.toArray(new String[command.size()]));
+                getLogger().debugMethodCall(LogCategories.CDDA2WAV, command.toArray(new String[command.size()]));
 
                 setProcess(new ProcessBuilder(command).start());
                 // Icedax and cdda2wav seem to behave differently
@@ -444,11 +444,11 @@ public class Cdda2wav extends CdToWavConverter {
 
                 int code = getProcess().waitFor();
                 if (code != 0) {
-                    logger.error(LogCategories.CDDA2WAV, StringUtils.getString("Process returned code ", code));
+                    getLogger().error(LogCategories.CDDA2WAV, StringUtils.getString("Process returned code ", code));
                     // Do not return null. Application hangs otherwise
                     // return null;
                 }
-                logger.info(LogCategories.CDDA2WAV, StringUtils.getString("Found ", devices.size(), " devices with '-scanbus dev=ATA' method"));
+                getLogger().info(LogCategories.CDDA2WAV, StringUtils.getString("Found ", devices.size(), " devices with '-scanbus dev=ATA' method"));
                 // This is needed to avoid hanging. devNumber is checked further and exits if it equals to zero.
                 // Please always check if devNumber is null and exit/give notification if this is the case.
                 if (devices.size() == 0) {
@@ -456,7 +456,7 @@ public class Cdda2wav extends CdToWavConverter {
                 }
                 return devices;
             } catch (Exception e) {
-                logger.error(LogCategories.CDDA2WAV, StringUtils.getString("Process execution caused exception ", e));
+                getLogger().error(LogCategories.CDDA2WAV, StringUtils.getString("Process execution caused exception ", e));
                 return null;
             } finally {
                 ClosingUtils.close(stdInput);
@@ -489,7 +489,7 @@ public class Cdda2wav extends CdToWavConverter {
      */
     @Override
     public CDInfo retrieveDiscInformation() {
-        logger.info(LogCategories.CDDA2WAV, "Getting cd information...");
+        getLogger().info(LogCategories.CDDA2WAV, "Getting cd information...");
         cdRecursive = null;
         // If no devices detected do exit
         if (devNumber == 0) {
@@ -521,7 +521,7 @@ public class Cdda2wav extends CdToWavConverter {
             command.add(NO_INFO_FILE);
             command.add(CDDB);
 
-            logger.debugMethodCall(LogCategories.CDDA2WAV, command.toArray(new String[command.size()]));
+            getLogger().debugMethodCall(LogCategories.CDDA2WAV, command.toArray(new String[command.size()]));
 
             setProcess(new ProcessBuilder(command).start());
             cdLoaded = false;
@@ -532,7 +532,7 @@ public class Cdda2wav extends CdToWavConverter {
                     BufferedReader stdInput = null;
                     try {
                         stdInput = new BufferedReader(new InputStreamReader(getProcess().getErrorStream(), "ISO8859_1"));
-                        logger.info(LogCategories.CDDA2WAV, "Trying to read cdda2wav stream");
+                        getLogger().info(LogCategories.CDDA2WAV, "Trying to read cdda2wav stream");
 
                         String s = null;
                         int tracks = 0;
@@ -550,7 +550,7 @@ public class Cdda2wav extends CdToWavConverter {
 
                         //	read the output from the command
                         while ((s = stdInput.readLine()) != null) {
-                            logger.info(LogCategories.CDDA2WAV, StringUtils.getString("While loop: ", s));
+                            getLogger().info(LogCategories.CDDA2WAV, StringUtils.getString("While loop: ", s));
 
                             // Used to detect if a CD is present. Don't know if this gets returned on
                             // all drive, so may not work as expected. But if it does, this means a CD
@@ -697,7 +697,7 @@ public class Cdda2wav extends CdToWavConverter {
                         getCdInfo().setComposers(composers);
 
                     } catch (Exception e) {
-                        logger.error(LogCategories.CDDA2WAV, e);
+                        getLogger().error(LogCategories.CDDA2WAV, e);
                     } finally {
                         ClosingUtils.close(stdInput);
                     }
@@ -718,7 +718,7 @@ public class Cdda2wav extends CdToWavConverter {
             // blocking the drive
             getProcess().destroy();
             readCdda.interrupt();
-            logger.info(LogCategories.CDDA2WAV, "Interrupt");
+            getLogger().info(LogCategories.CDDA2WAV, "Interrupt");
             // cdMonitor.join();
 
             // Check if we have either a data CD or no CD inserted at all
@@ -736,7 +736,7 @@ public class Cdda2wav extends CdToWavConverter {
                     }
                 }
             } catch (Exception e) {
-                logger.error(LogCategories.CDDA2WAV, e);
+                getLogger().error(LogCategories.CDDA2WAV, e);
             }
 
             // If the recursive function had some result, assign it to cd
@@ -758,14 +758,14 @@ public class Cdda2wav extends CdToWavConverter {
             //	int code = getProcess().waitFor();
 
             //	if (code != 0) {
-            //		logger.error(LogCategories.CDDA2WAV, "Process returned code " + code);
+            //		getLogger().error(LogCategories.CDDA2WAV, "Process returned code " + code);
             //		return null;
             //	}
-            logger.info(LogCategories.CDDA2WAV, StringUtils.getString("CD info: ", getCdInfo()));
+            getLogger().info(LogCategories.CDDA2WAV, StringUtils.getString("CD info: ", getCdInfo()));
             return getCdInfo();
 
         } catch (Exception e) {
-            logger.error(LogCategories.CDDA2WAV, e);
+            getLogger().error(LogCategories.CDDA2WAV, e);
             return null;
         }
     }
@@ -798,6 +798,17 @@ public class Cdda2wav extends CdToWavConverter {
     @Override
     public void stop() {
         getProcess().destroy();
+    }
+    
+    /**
+     * Getter for logger
+     * @return
+     */
+    private Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
     }
 
 }

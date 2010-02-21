@@ -40,7 +40,7 @@ public final class SmartPlayListHandler {
     /**
      * Logger
      */
-    private Logger logger = new Logger();
+    private Logger logger;
 
     /**
      * Singleton instance
@@ -73,7 +73,7 @@ public final class SmartPlayListHandler {
      *            the n
      */
     public void addAlbumsMostPlayed(int n) {
-        logger.debugMethodCall(LogCategories.HANDLER, new String[] { Integer.toString(n) });
+        getLogger().debugMethodCall(LogCategories.HANDLER, new String[] { Integer.toString(n) });
 
         // Get n most played albums
         List<Album> albums = StatisticsHandler.getInstance().getMostPlayedAlbums(n);
@@ -100,7 +100,7 @@ public final class SmartPlayListHandler {
      *            the n
      */
     public void addArtistsMostPlayed(int n) {
-        logger.debugMethodCall(LogCategories.HANDLER, new String[] { Integer.toString(n) });
+        getLogger().debugMethodCall(LogCategories.HANDLER, new String[] { Integer.toString(n) });
 
         // Get n most played albums
         List<Artist> artists = StatisticsHandler.getInstance().getMostPlayedArtists(n);
@@ -128,7 +128,7 @@ public final class SmartPlayListHandler {
      *            the n
      */
     public void addRandomSongs(int n) {
-        logger.debugMethodCall(LogCategories.HANDLER, new String[] { Integer.toString(n) });
+        getLogger().debugMethodCall(LogCategories.HANDLER, new String[] { Integer.toString(n) });
 
         // Get reference to Repository songs
         List<AudioFile> songs = RepositoryHandler.getInstance().getAudioFilesList();
@@ -162,7 +162,7 @@ public final class SmartPlayListHandler {
      *            the n
      */
     public void addSongsMostPlayed(int n) {
-        logger.debugMethodCall(LogCategories.HANDLER, new String[] { Integer.toString(n) });
+        getLogger().debugMethodCall(LogCategories.HANDLER, new String[] { Integer.toString(n) });
 
         // Get songs
         List<AudioFile> songsSelected = StatisticsHandler.getInstance().getMostPlayedAudioFiles(n);
@@ -182,7 +182,7 @@ public final class SmartPlayListHandler {
      *            the n
      */
     public void addUnplayedSongs(int n) {
-        logger.debugMethodCall(LogCategories.HANDLER, Integer.toString(n));
+        getLogger().debugMethodCall(LogCategories.HANDLER, Integer.toString(n));
 
         // Get unplayed files
         List<AudioFile> unplayedSongs = StatisticsHandler.getInstance().getUnplayedAudioFiles();
@@ -196,5 +196,17 @@ public final class SmartPlayListHandler {
             PlayListHandler.getInstance().addToPlayList(audioObjects);
         }
     }
+    
+    /**
+     * Getter for logger
+     * @return
+     */
+    private Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
+    }
+
 
 }

@@ -58,7 +58,7 @@ public class LameEncoder implements Encoder {
     static final String[] MP3_QUALITIES = { "insane", "extreme", "medium", "standard", "128", "160", "192", "224", "256", "320" };
     static final String MP3_DEFAULT_QUALITY = "medium";
 
-    private Logger logger = new Logger();
+    private Logger logger;
 
     private Process p;
     private ProgressListener listener;
@@ -124,7 +124,7 @@ public class LameEncoder implements Encoder {
      */
     @Override
     public boolean encode(File wavFile, File mp3File, String title, int trackNumber, String artist, String composer) {
-        logger.info(LogCategories.LAME, StringUtils.getString("Mp3 encoding process started... ", wavFile.getName(), " -> ", mp3File.getName()));
+        getLogger().info(LogCategories.LAME, StringUtils.getString("Mp3 encoding process started... ", wavFile.getName(), " -> ", mp3File.getName()));
         BufferedReader stdInput = null;
         try {
             // Prepare and execute the lame command
@@ -179,7 +179,7 @@ public class LameEncoder implements Encoder {
 
             int code = p.waitFor();
             if (code != 0) {
-                logger.error(LogCategories.LAME, StringUtils.getString("Process returned code ", code));
+                getLogger().error(LogCategories.LAME, StringUtils.getString("Process returned code ", code));
                 return false;
             }
 
@@ -200,13 +200,13 @@ public class LameEncoder implements Encoder {
                 TagModifier.setInfo(audiofile, tag);
 
             } catch (Exception e) {
-                logger.error(LogCategories.LAME, StringUtils.getString("Jaudiotagger: Process execution caused exception ", e));
+                getLogger().error(LogCategories.LAME, StringUtils.getString("Jaudiotagger: Process execution caused exception ", e));
                 return false;
             }
-            logger.info(LogCategories.LAME, "Encoded ok!!");
+            getLogger().info(LogCategories.LAME, "Encoded ok!!");
             return true;
         } catch (Exception e) {
-            logger.error(LogCategories.LAME, StringUtils.getString("Process execution caused exception ", e));
+            getLogger().error(LogCategories.LAME, StringUtils.getString("Process execution caused exception ", e));
             return false;
         } finally {
             ClosingUtils.close(stdInput);
@@ -274,4 +274,16 @@ public class LameEncoder implements Encoder {
     public String getFormatName() {
         return FORMAT_NAME;
     }
+    
+    /**
+     * Getter for logger
+     * @return
+     */
+    private Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
+    }
+
 }

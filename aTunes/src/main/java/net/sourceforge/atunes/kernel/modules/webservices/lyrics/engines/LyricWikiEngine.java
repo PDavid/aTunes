@@ -37,7 +37,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class LyricWikiEngine extends LyricsEngine {
 
-    private Logger logger = new Logger();
+    private Logger logger;
 
     private static final String ARTIST_PATTERN = "%artist";
     private static final String TITLE_PATTERN = "%title";
@@ -102,10 +102,10 @@ public class LyricWikiEngine extends LyricsEngine {
             String lyrics = extractLyrics(html);
             return lyrics != null && !lyrics.isEmpty() ? new Lyrics(lyrics, url) : null;
         } catch (UnknownHostException e) {
-            logger.error(LogCategories.SERVICE, "Cannot fetch lyrics for: " + artist + "/" + title);
+            getLogger().error(LogCategories.SERVICE, "Cannot fetch lyrics for: " + artist + "/" + title);
             return null;
         } catch (IOException e) {
-            logger.info(LogCategories.SERVICE, "Cannot fetch lyrics for: " + artist + "/" + title);
+            getLogger().info(LogCategories.SERVICE, "Cannot fetch lyrics for: " + artist + "/" + title);
             return null;
         }
 
@@ -148,4 +148,16 @@ public class LyricWikiEngine extends LyricsEngine {
     public String getUrlForAddingNewLyrics(String artist, String title) {
         return getURL(artist, title);
     }
+    
+    /**
+     * Getter for logger
+     * @return
+     */
+    private Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
+    }
+
 }

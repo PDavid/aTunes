@@ -51,7 +51,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class RepositoryLoader extends Thread {
 
-    private static Logger logger = new Logger();
+    private static Logger logger;
 
     // Some attributes to speed up populate info process
     private LoaderListener listener;
@@ -387,7 +387,7 @@ public class RepositoryLoader extends Thread {
             }
 
         } catch (Exception e) {
-            logger.error(LogCategories.FILE_READ, e.getMessage());
+            getLogger().error(LogCategories.FILE_READ, e.getMessage());
         }
     }
 
@@ -447,7 +447,7 @@ public class RepositoryLoader extends Thread {
      * Interrupt load.
      */
     void interruptLoad() {
-        logger.info(LogCategories.REPOSITORY, "Load interrupted");
+        getLogger().info(LogCategories.REPOSITORY, "Load interrupted");
         interrupt = true;
     }
 
@@ -477,7 +477,7 @@ public class RepositoryLoader extends Thread {
             }
 
         } catch (FileNotFoundException e) {
-            logger.error(LogCategories.REPOSITORY, e.getMessage());
+            getLogger().error(LogCategories.REPOSITORY, e.getMessage());
         }
     }
 
@@ -493,7 +493,7 @@ public class RepositoryLoader extends Thread {
      *             the file not found exception
      */
     private void navigateDir(File relativeTo, File dir) throws FileNotFoundException {
-        logger.debug(LogCategories.REPOSITORY, "Reading dir ", dir.getAbsolutePath());
+        getLogger().debug(LogCategories.REPOSITORY, "Reading dir ", dir.getAbsolutePath());
 
         if (!interrupt) {
             String pathToFile = dir.getAbsolutePath().replace('\\', '/');
@@ -612,19 +612,19 @@ public class RepositoryLoader extends Thread {
 
     @Override
     public void run() {
-        logger.info(LogCategories.REPOSITORY, "Starting repository read");
+        getLogger().info(LogCategories.REPOSITORY, "Starting repository read");
         Timer timer = new Timer();
         timer.start();
         if (!folders.isEmpty()) {
             loadRepository();
         } else {
-            logger.error(LogCategories.REPOSITORY, "No folders selected for repository");
+            getLogger().error(LogCategories.REPOSITORY, "No folders selected for repository");
         }
         if (!interrupt) {
             double time = timer.stop();
             long files = repository.countFiles();
             double averageFileTime = time / files;
-            logger.info(LogCategories.REPOSITORY, StringUtils.getString("Read repository process DONE (", files, " files, ", time, " seconds, ", StringUtils.toString(
+            getLogger().info(LogCategories.REPOSITORY, StringUtils.getString("Read repository process DONE (", files, " files, ", time, " seconds, ", StringUtils.toString(
                     averageFileTime, 4), " seconds / file)"));
 
             notifyFinish();
@@ -786,6 +786,17 @@ public class RepositoryLoader extends Thread {
         audioFile.setFile(newFile);
         RepositoryHandler.getInstance().getRepository().getAudioFiles().remove(oldFile.getAbsolutePath());
         RepositoryHandler.getInstance().getRepository().getAudioFiles().put(newFile.getAbsolutePath(), audioFile);
+    }
+
+    /**
+     * Getter for logger
+     * @return
+     */
+    private static Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
     }
 
 }

@@ -114,7 +114,6 @@ import net.sourceforge.atunes.kernel.modules.tray.SystemTrayHandler;
 import net.sourceforge.atunes.kernel.modules.updates.ApplicationVersion;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -133,8 +132,6 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
 	}
 
 	private static GuiHandler instance = new GuiHandler();
-
-    private Logger logger = new Logger();
 
     private Frame frame;
     private OSDDialog osdDialog;
@@ -278,10 +275,10 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
                 try {
                     frame = clazz.newInstance();
                 } catch (InstantiationException e) {
-                    logger.error(LogCategories.HANDLER, e);
+                    getLogger().error(LogCategories.HANDLER, e);
                     constructDefaultFrame();
                 } catch (IllegalAccessException e) {
-                    logger.error(LogCategories.HANDLER, e);
+                    getLogger().error(LogCategories.HANDLER, e);
                     constructDefaultFrame();
                 }
             } else {
@@ -1480,4 +1477,5 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
     public boolean isStatsDialogVisible() {
         return statsDialog != null && statsDialog.isVisible();
     }
+    
 }

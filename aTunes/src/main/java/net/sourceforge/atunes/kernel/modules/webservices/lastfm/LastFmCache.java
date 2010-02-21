@@ -56,7 +56,7 @@ public class LastFmCache extends AbstractCache {
     private static final String ALBUM_INFO = "albumInfo";
     private static final String ALBUM_COVER = "albumCover";
 
-    private Logger logger = new Logger();
+    private Logger logger;
 
     private static File submissionCacheDir = new File(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.isDebug()), SystemProperties.FILE_SEPARATOR,
             Constants.CACHE_DIR, SystemProperties.FILE_SEPARATOR, Constants.LAST_FM_CACHE_DIR, SystemProperties.FILE_SEPARATOR, Constants.LAST_FM_SUBMISSION_CACHE_DIR));
@@ -75,43 +75,43 @@ public class LastFmCache extends AbstractCache {
         try {
             getAlbumCoverCache().removeAll();
         } catch (Exception e) {
-            logger.info(LogCategories.FILE_DELETE, "Could not delete all files from album cover cache");
+            getLogger().info(LogCategories.FILE_DELETE, "Could not delete all files from album cover cache");
             exception = true;
         }
         try {
             getAlbumInfoCache().removeAll();
         } catch (Exception e) {
-            logger.info(LogCategories.FILE_DELETE, "Could not delete all files from album info cache");
+            getLogger().info(LogCategories.FILE_DELETE, "Could not delete all files from album info cache");
             exception = true;
         }
         try {
             getArtistImageCache().removeAll();
         } catch (Exception e) {
-            logger.info(LogCategories.FILE_DELETE, "Could not delete all files from artist image cache");
+            getLogger().info(LogCategories.FILE_DELETE, "Could not delete all files from artist image cache");
             exception = true;
         }
         try {
             getAlbumListCache().removeAll();
         } catch (Exception e) {
-            logger.info(LogCategories.FILE_DELETE, "Could not delete all files from album list cache");
+            getLogger().info(LogCategories.FILE_DELETE, "Could not delete all files from album list cache");
             exception = true;
         }
         try {
             getSimilarArtistsCache().removeAll();
         } catch (Exception e) {
-            logger.info(LogCategories.FILE_DELETE, "Could not delete all files from similar artist cache");
+            getLogger().info(LogCategories.FILE_DELETE, "Could not delete all files from similar artist cache");
             exception = true;
         }
         try {
             getArtistThumbsCache().removeAll();
         } catch (Exception e) {
-            logger.info(LogCategories.FILE_DELETE, "Could not delete all files from artist thumbs cache");
+            getLogger().info(LogCategories.FILE_DELETE, "Could not delete all files from artist thumbs cache");
             exception = true;
         }
         try {
             getArtistWikiCache().removeAll();
         } catch (Exception e) {
-            logger.info(LogCategories.FILE_DELETE, "Could not delete all files from artist wiki cache");
+            getLogger().info(LogCategories.FILE_DELETE, "Could not delete all files from artist wiki cache");
             exception = true;
         }
 
@@ -271,7 +271,7 @@ public class LastFmCache extends AbstractCache {
 
         Element element = new Element(album, cover);
         getAlbumCoverCache().put(element);
-        logger.debug(LogCategories.CACHE, "Stored album Cover for album ", album.getTitle());
+        getLogger().debug(LogCategories.CACHE, "Stored album Cover for album ", album.getTitle());
     }
 
     /**
@@ -291,7 +291,7 @@ public class LastFmCache extends AbstractCache {
 
         Element element = new Element(artist + album, albumObject);
         getAlbumInfoCache().put(element);
-        logger.debug(LogCategories.CACHE, "Stored album info for album ", artist, " ", album);
+        getLogger().debug(LogCategories.CACHE, "Stored album info for album ", artist, " ", album);
     }
 
     /**
@@ -309,7 +309,7 @@ public class LastFmCache extends AbstractCache {
 
         Element element = new Element(artist, image);
         getArtistImageCache().put(element);
-        logger.debug(LogCategories.CACHE, "Stored artist image for ", artist);
+        getLogger().debug(LogCategories.CACHE, "Stored artist image for ", artist);
     }
 
     /**
@@ -327,7 +327,7 @@ public class LastFmCache extends AbstractCache {
 
         Element element = new Element(artist, list);
         getAlbumListCache().put(element);
-        logger.debug(LogCategories.CACHE, "Stored album list for ", artist);
+        getLogger().debug(LogCategories.CACHE, "Stored album list for ", artist);
     }
 
     /**
@@ -345,7 +345,7 @@ public class LastFmCache extends AbstractCache {
 
         Element element = new Element(artist, similar);
         getSimilarArtistsCache().put(element);
-        logger.debug(LogCategories.CACHE, "Stored artist similar for ", artist);
+        getLogger().debug(LogCategories.CACHE, "Stored artist similar for ", artist);
     }
 
     /**
@@ -363,7 +363,7 @@ public class LastFmCache extends AbstractCache {
 
         Element element = new Element(artist, image);
         getArtistThumbsCache().put(element);
-        logger.debug(LogCategories.CACHE, "Stored artist thumb for ", artist.getName());
+        getLogger().debug(LogCategories.CACHE, "Stored artist thumb for ", artist.getName());
     }
 
     /**
@@ -381,7 +381,7 @@ public class LastFmCache extends AbstractCache {
 
         Element element = new Element(artist, wikiText);
         getArtistWikiCache().put(element);
-        logger.debug(LogCategories.CACHE, "Stored artist wiki for ", artist);
+        getLogger().debug(LogCategories.CACHE, "Stored artist wiki for ", artist);
     }
 
     public synchronized void addSubmissionData(SubmissionData submissionData) {
@@ -392,10 +392,10 @@ public class LastFmCache extends AbstractCache {
             String path = getFileNameForSubmissionCache();
             if (path != null) {
                 XMLUtils.writeObjectToFile(submissionDataList, path);
-                logger.debug(LogCategories.CACHE, "Stored submission data: ", submissionData);
+                getLogger().debug(LogCategories.CACHE, "Stored submission data: ", submissionData);
             }
         } catch (IOException e) {
-            logger.error(LogCategories.CACHE, e);
+            getLogger().error(LogCategories.CACHE, e);
         }
 
     }
@@ -408,7 +408,7 @@ public class LastFmCache extends AbstractCache {
                 return (List<SubmissionData>) XMLUtils.readObjectFromFile(path);
             }
         } catch (IOException e) {
-            logger.error(LogCategories.CACHE, e);
+            getLogger().error(LogCategories.CACHE, e);
         }
         return new ArrayList<SubmissionData>();
     }
@@ -420,7 +420,7 @@ public class LastFmCache extends AbstractCache {
                 XMLUtils.writeObjectToFile(new ArrayList<SubmissionData>(), path);
             }
         } catch (IOException e) {
-            logger.error(LogCategories.CACHE, e);
+            getLogger().error(LogCategories.CACHE, e);
         }
     }
 
@@ -468,4 +468,16 @@ public class LastFmCache extends AbstractCache {
             return Integer.valueOf(o1.getStartTime()).compareTo(o2.getStartTime());
         }
     }
+    
+    /**
+     * Getter for logger
+     * @return
+     */
+    private Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
+    }
+
 }

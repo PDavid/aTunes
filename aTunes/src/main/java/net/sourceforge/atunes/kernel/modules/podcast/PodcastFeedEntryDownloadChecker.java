@@ -69,7 +69,7 @@ public class PodcastFeedEntryDownloadChecker implements Runnable {
 		}
 	}
 
-	private Logger logger = new Logger();
+	private Logger logger;
 
     @Override
     public void run() {
@@ -79,7 +79,7 @@ public class PodcastFeedEntryDownloadChecker implements Runnable {
         } catch (InterruptedException e) {
             return;
         } catch (InvocationTargetException e) {
-            logger.error(LogCategories.PODCAST, e);
+            getLogger().error(LogCategories.PODCAST, e);
         }
         final Map<PodcastFeedEntry, Boolean> downloaded = new HashMap<PodcastFeedEntry, Boolean>();
         for (Entry<PodcastFeedEntry, File> entry : files.entrySet()) {
@@ -87,4 +87,16 @@ public class PodcastFeedEntryDownloadChecker implements Runnable {
         }
         SwingUtilities.invokeLater(new SetDownloadedRunnable(downloaded));
     }
+    
+    /**
+     * Getter for logger
+     * @return
+     */
+    private Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
+    }
+
 }

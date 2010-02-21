@@ -81,7 +81,7 @@ public final class PluginsPanel extends PreferencesPanel {
 
     private static final int CELL_HEIGHT = 30;
 
-    private Logger logger = new Logger();
+    private Logger logger;
 
     /**
      * Plugins modified with their modified configuration
@@ -223,7 +223,7 @@ public final class PluginsPanel extends PreferencesPanel {
                         updatePanel(null);
                     } catch (Exception e1) {
                         GuiHandler.getInstance().showErrorDialog(e1.getMessage());
-                        logger.error(LogCategories.PLUGINS, e1);
+                        getLogger().error(LogCategories.PLUGINS, e1);
                     }
                 }
             }
@@ -245,7 +245,7 @@ public final class PluginsPanel extends PreferencesPanel {
                     updatePanel(null);
                 } catch (Exception e1) {
                     GuiHandler.getInstance().showErrorDialog(e1.getMessage());
-                    logger.error(LogCategories.PLUGINS, e1);
+                    getLogger().error(LogCategories.PLUGINS, e1);
                 }
             }
         });
@@ -257,7 +257,7 @@ public final class PluginsPanel extends PreferencesPanel {
         try {
             // if any plugin has been modified then write configuration
             for (PluginInfo plugin : pluginsModified.keySet()) {
-                logger.debug(LogCategories.PLUGINS, "Writting configuration of plugin: ", plugin.getName());
+            	getLogger().debug(LogCategories.PLUGINS, "Writting configuration of plugin: ", plugin.getName());
 
                 // Avoid plugins throw exceptions when setting configuration
                 try {
@@ -283,9 +283,9 @@ public final class PluginsPanel extends PreferencesPanel {
                 restartNeeded = restartNeeded || PluginsHandler.getInstance().pluginNeedsRestart(plugin);
             }
         } catch (PluginSystemException e) {
-            logger.error(LogCategories.PLUGINS, e);
+        	getLogger().error(LogCategories.PLUGINS, e);
             if (e.getCause() != null) {
-                logger.error(LogCategories.PLUGINS, e.getCause());
+            	getLogger().error(LogCategories.PLUGINS, e.getCause());
             }
         }
         return restartNeeded;
@@ -462,6 +462,17 @@ public final class PluginsPanel extends PreferencesPanel {
     @Override
     public ImageIcon getIcon() {
         return Images.getImage(Images.PLUGIN);
+    }
+    
+    /**
+     * Getter for logger
+     * @return
+     */
+    private Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
     }
 
 }

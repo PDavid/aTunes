@@ -125,7 +125,19 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
         }
     });
 
-    private Logger logger = new Logger();
+    private Logger logger;
+    
+    /**
+     * Getter for logger
+     * 
+     * @return
+     */
+    private Logger getLogger() {
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
+    }
 
     /**
      * Instantiates a new standard frame.
@@ -161,7 +173,7 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
                 OSXAdapter.setQuitHandler(this, getClass().getDeclaredMethod("dispose", (Class[]) null));
                 OSXAdapter.setAboutHandler(this, getClass().getDeclaredMethod("about", (Class[]) null));
             } catch (Exception e) {
-                logger.error(LogCategories.STANDARD_FRAME, e);
+                getLogger().error(LogCategories.STANDARD_FRAME, e);
             }
         }
 
@@ -195,9 +207,9 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
                         if (ApplicationState.getInstance().isShowSystemTray()) {
                             AbstractSingleFrame.this.setVisible(false);
                         }
-                        logger.debug(LogCategories.DESKTOP, "Window Iconified");
+                        getLogger().debug(LogCategories.DESKTOP, "Window Iconified");
                     } else if (e.getNewState() != Frame.ICONIFIED) {
-                        logger.debug(LogCategories.DESKTOP, "Window Deiconified");
+                    	getLogger().debug(LogCategories.DESKTOP, "Window Deiconified");
                         ControllerProxy.getInstance().getPlayListController().scrollPlayList(false);
                     }
                 }

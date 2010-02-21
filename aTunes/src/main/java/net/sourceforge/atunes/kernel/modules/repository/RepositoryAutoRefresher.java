@@ -29,7 +29,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 class RepositoryAutoRefresher extends Thread {
 
-    private Logger logger = new Logger();
+    private Logger logger;
 
     private RepositoryHandler handler;
 
@@ -54,7 +54,7 @@ class RepositoryAutoRefresher extends Thread {
             while (true) {
                 Thread.sleep(ApplicationState.getInstance().getAutoRepositoryRefreshTime() * 60000L);
                 if (!handler.repositoryIsNull() && !handler.isLoaderWorking()) {
-                    logger.info(LogCategories.PROCESS, StringUtils.getString("Checking for repository changes... (", new SimpleDateFormat("HH:mm:ss").format(new Date()), ')'));
+                    getLogger().info(LogCategories.PROCESS, StringUtils.getString("Checking for repository changes... (", new SimpleDateFormat("HH:mm:ss").format(new Date()), ')'));
                     int filesLoaded = handler.getAudioFilesList().size();
                     int newFilesCount = RepositoryLoader.countFilesInRepository(handler.getRepository());
                     if (filesLoaded != newFilesCount) {
@@ -70,4 +70,16 @@ class RepositoryAutoRefresher extends Thread {
             return;
         }
     }
+    
+    /**
+     * Getter for logger
+     * @return
+     */
+    private Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
+    }
+
 }

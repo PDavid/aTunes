@@ -75,7 +75,7 @@ public class YoutubeService {
     /**
      * Logger for this class
      */
-    private Logger logger = new Logger();
+    private Logger logger;
 
     /**
      * The proxy
@@ -94,7 +94,7 @@ public class YoutubeService {
                 proxy = Proxy.getProxy(proxyBean);
             }
         } catch (Exception e) {
-            logger.error(LogCategories.SERVICE, e);
+            getLogger().error(LogCategories.SERVICE, e);
         }
         this.proxy = proxy;
     }
@@ -146,7 +146,7 @@ public class YoutubeService {
                 return analyzeResultXml(startIndex, xml);
             }
         } catch (Exception e) {
-            logger.error(LogCategories.SERVICE, e);
+            getLogger().error(LogCategories.SERVICE, e);
         }
 
         return Collections.emptyList();
@@ -248,7 +248,7 @@ public class YoutubeService {
 
             return downloadurl;
         } catch (Exception e) {
-            logger.error(LogCategories.SERVICE, e);
+            getLogger().error(LogCategories.SERVICE, e);
         }
         return null;
     }
@@ -291,4 +291,16 @@ public class YoutubeService {
 
         return builder.toString();
     }
+    
+    /**
+     * Getter for logger
+     * @return
+     */
+    private Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
+    }
+
 }

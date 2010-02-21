@@ -57,7 +57,7 @@ public class NeroAacEncoder implements Encoder {
     static final String[] NERO_AAC_QUALITY = { "0.3", "0.4", "0.5", "0.6", "0.7", "0.8", "0.9", "1.0" };
     static final String DEFAULT_NERO_AAC_QUALITY = "0.4";
 
-    private Logger logger = new Logger();
+    private Logger logger;
     private ProgressListener listener;
     private Process p;
     private String albumArtist;
@@ -120,7 +120,7 @@ public class NeroAacEncoder implements Encoder {
      */
     @Override
     public boolean encode(File wavFile, File mp4File, String title, int trackNumber, String artist, String composer) {
-        logger.info(LogCategories.NERO_AAC, StringUtils.getString("Mp4 encoding process started... ", wavFile.getName(), " -> ", mp4File.getName()));
+        getLogger().info(LogCategories.NERO_AAC, StringUtils.getString("Mp4 encoding process started... ", wavFile.getName(), " -> ", mp4File.getName()));
         BufferedReader stdInput = null;
         try {
             List<String> command = new ArrayList<String>();
@@ -153,7 +153,7 @@ public class NeroAacEncoder implements Encoder {
             }
             int code = p.waitFor();
             if (code != 0) {
-                logger.error(LogCategories.FAAC, StringUtils.getString("Process returned code ", code));
+                getLogger().error(LogCategories.FAAC, StringUtils.getString("Process returned code ", code));
                 return false;
             }
 
@@ -174,15 +174,15 @@ public class NeroAacEncoder implements Encoder {
                 TagModifier.setInfo(audiofile, tag);
 
             } catch (Exception e) {
-                logger.error(LogCategories.NERO_AAC, StringUtils.getString("Jaudiotagger: Process execution caused exception ", e));
+                getLogger().error(LogCategories.NERO_AAC, StringUtils.getString("Jaudiotagger: Process execution caused exception ", e));
                 return false;
             }
 
-            logger.info(LogCategories.NERO_AAC, "Encoded ok!!");
+            getLogger().info(LogCategories.NERO_AAC, "Encoded ok!!");
             return true;
 
         } catch (Exception e) {
-            logger.error(LogCategories.NERO_AAC, StringUtils.getString("Process execution caused exception ", e));
+            getLogger().error(LogCategories.NERO_AAC, StringUtils.getString("Process execution caused exception ", e));
             return false;
         } finally {
             ClosingUtils.close(stdInput);
@@ -260,4 +260,16 @@ public class NeroAacEncoder implements Encoder {
     public String getFormatName() {
         return FORMAT_NAME;
     }
+    
+    /**
+     * Getter for logger
+     * @return
+     */
+    private Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
+    }
+
 }

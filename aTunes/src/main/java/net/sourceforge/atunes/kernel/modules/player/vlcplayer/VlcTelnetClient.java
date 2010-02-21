@@ -31,7 +31,7 @@ import org.apache.commons.net.telnet.TelnetClient;
 
 public final class VlcTelnetClient {
 
-    protected static final Logger logger = new Logger();
+    protected Logger logger;
 
     /** The TelnetClient implementation (apache) */
     private TelnetClient telnet = new TelnetClient();
@@ -49,7 +49,7 @@ public final class VlcTelnetClient {
         }
 
         // Connect to the specified server
-        logger.debug(LogCategories.NETWORK, "VlcTelnetClient : Connecting to port : ", newPort, " on server : ", newServer);
+        getLogger().debug(LogCategories.NETWORK, "VlcTelnetClient : Connecting to port : ", newPort, " on server : ", newServer);
 
         try {
             telnet.connect(newServer, newPort);
@@ -77,7 +77,7 @@ public final class VlcTelnetClient {
             out.println(value);
             out.flush();
         } catch (Exception e) {
-            logger.error(LogCategories.PLAYER, e);
+            getLogger().error(LogCategories.PLAYER, e);
         }
     }
 
@@ -89,7 +89,7 @@ public final class VlcTelnetClient {
         try {
             telnet.disconnect();
         } catch (IOException e) {
-            logger.error(LogCategories.PLAYER, e);
+            getLogger().error(LogCategories.PLAYER, e);
         }
     }
 
@@ -99,6 +99,17 @@ public final class VlcTelnetClient {
 
     protected PrintStream getOut() {
         return out;
+    }
+
+    /**
+     * Getter for logger
+     * @return
+     */
+    private Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
     }
 
     /**

@@ -45,7 +45,7 @@ import net.sourceforge.atunes.utils.NetworkUtils;
  */
 public class PodcastFeedEntryDownloader extends SwingWorker<Boolean, Void> {
 
-    private Logger logger = new Logger();
+    private Logger logger;
 
     private PodcastFeedEntry podcastFeedEntry;
     /*
@@ -68,13 +68,13 @@ public class PodcastFeedEntryDownloader extends SwingWorker<Boolean, Void> {
     @Override
     protected Boolean doInBackground() throws Exception {
 
-        logger.info(LogCategories.PODCAST, "Downloading PodcastEntry: " + podcastFeedEntry.getUrl());
+        getLogger().info(LogCategories.PODCAST, "Downloading PodcastEntry: " + podcastFeedEntry.getUrl());
 
         OutputStream out = null;
         InputStream in = null;
 
         String podcastFeedEntryFileName = PodcastFeedHandler.getInstance().getDownloadPath(podcastFeedEntry);
-        logger.info(LogCategories.PODCAST, "Downloading to: " + podcastFeedEntryFileName);
+        getLogger().info(LogCategories.PODCAST, "Downloading to: " + podcastFeedEntryFileName);
         File localFile = new File(podcastFeedEntryFileName);
 
         try {
@@ -97,11 +97,11 @@ public class PodcastFeedEntryDownloader extends SwingWorker<Boolean, Void> {
             }
             return !isCancelled();
         } catch (FileNotFoundException e) {
-            logger.info(LogCategories.PODCAST, "file not found");
+            getLogger().info(LogCategories.PODCAST, "file not found");
             setFailed(true);
             return false;
         } catch (IOException e) {
-            logger.info(LogCategories.PODCAST, "Connection to " + podcastFeedEntry.getUrl() + " failed");
+            getLogger().info(LogCategories.PODCAST, "Connection to " + podcastFeedEntry.getUrl() + " failed");
             setFailed(true);
             return false;
         } finally {
@@ -180,14 +180,14 @@ public class PodcastFeedEntryDownloader extends SwingWorker<Boolean, Void> {
     protected void done() {
         try {
             if (!isCancelled() && get()) {
-                logger.info(LogCategories.PODCAST, "Download of " + podcastFeedEntry.getUrl() + " finished.");
+                getLogger().info(LogCategories.PODCAST, "Download of " + podcastFeedEntry.getUrl() + " finished.");
                 podcastFeedEntry.setDownloaded(true);
                 GuiHandler.getInstance().getNavigationTablePanel().getNavigationTable().repaint();
             }
         } catch (InterruptedException e) {
-            logger.error(LogCategories.PODCAST, e);
+            getLogger().error(LogCategories.PODCAST, e);
         } catch (ExecutionException e) {
-            logger.error(LogCategories.PODCAST, e);
+            getLogger().error(LogCategories.PODCAST, e);
         }
     }
 
@@ -198,6 +198,17 @@ public class PodcastFeedEntryDownloader extends SwingWorker<Boolean, Void> {
      */
     public PodcastFeedEntry getPodcastFeedEntry() {
         return podcastFeedEntry;
+    }
+
+    /**
+     * Getter for logger
+     * @return
+     */
+    private Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
     }
 
 }

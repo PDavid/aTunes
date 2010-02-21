@@ -48,7 +48,7 @@ public class PodcastFeed implements TreeObject, Serializable {
         }
     };
 
-    private Logger logger = new Logger();
+    private Logger logger;
 
     private String name;
     private String url;
@@ -181,7 +181,7 @@ public class PodcastFeed implements TreeObject, Serializable {
      *            If old entries should be removed
      */
     public synchronized void addEntries(List<? extends PodcastFeedEntry> entries, boolean removeOld) {
-        logger.debug(LogCategories.PODCAST);
+        getLogger().debug(LogCategories.PODCAST);
 
         List<? extends PodcastFeedEntry> newEntries = new ArrayList<PodcastFeedEntry>(entries);
 
@@ -302,4 +302,16 @@ public class PodcastFeed implements TreeObject, Serializable {
         // TODO Auto-generated method stub
         return false;
     }
+    
+    /**
+     * Getter for logger
+     * @return
+     */
+    private Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
+    }
+
 }
