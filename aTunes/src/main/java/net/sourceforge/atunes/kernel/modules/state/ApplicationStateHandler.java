@@ -43,7 +43,6 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.Kernel;
-import net.sourceforge.atunes.kernel.modules.amazon.AmazonService;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnSets;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeyHandler;
@@ -198,9 +197,6 @@ public final class ApplicationStateHandler extends Handler {
 
         // Mute
         PlayerHandler.getInstance().applyMuteState(ApplicationState.getInstance().isMuteEnabled());
-
-        // Proxy
-        AmazonService.getInstance().setProxyBean(ApplicationState.getInstance().getProxy());
     }
 
     /**

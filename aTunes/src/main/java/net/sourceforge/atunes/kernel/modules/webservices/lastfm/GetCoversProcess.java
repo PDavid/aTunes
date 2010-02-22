@@ -17,7 +17,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package net.sourceforge.atunes.kernel.modules.amazon;
+package net.sourceforge.atunes.kernel.modules.webservices.lastfm;
 
 import java.awt.Component;
 import java.awt.Image;
@@ -28,29 +28,30 @@ import java.util.List;
 import net.sourceforge.atunes.kernel.modules.process.Process;
 import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
+import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
+import net.sourceforge.atunes.utils.StringUtils;
 
 /**
- * The Class GetCoversFromAmazonProcess.
+ * The Class GetCoversProcess.
  */
-public class GetCoversFromAmazonProcess extends Process {
+public class GetCoversProcess extends Process {
 
     /** The artist. */
     private Artist artist;
 
     /**
-     * Instantiates a new gets the covers from amazon process.
+     * Instantiates a new gets the covers process.
      * 
      * @param artist
      *            the artist
      * @param progressDialog
      *            the progress dialog
-     * @param coverNavigatorController
-     *            the cover navigator controller
      */
-    public GetCoversFromAmazonProcess(Artist artist, Component owner) {
+    public GetCoversProcess(Artist artist, Component owner) {
         this.artist = artist;
         setOwner(owner);
     }
@@ -65,20 +66,20 @@ public class GetCoversFromAmazonProcess extends Process {
         long coversRetrieved = 0;
         List<Album> albums = new ArrayList<Album>(artist.getAlbums().values());
         for (int i = 0; i < albums.size() && !isCanceled(); i++) {
-            Album album = albums.get(i);
-            if (!album.hasCoverDownloaded()) {
-                AmazonAlbum amazonAlbum = AmazonService.getInstance().getAlbum(artist.getName(), album.getName());
-                if (amazonAlbum != null) {
-                    Image image = AmazonService.getInstance().getImage(amazonAlbum.getImageURL());
-                    try {
-                        ImageUtils.writeImageToFile(image, AudioFilePictureUtils.getFileNameForCover(album.getAudioFiles().get(0)));
-                    } catch (IOException e1) {
-                        // Don't save image
-                    }
-                }
-            }
-            coversRetrieved++;
-            setCurrentProgress(coversRetrieved);
+        	Album album = albums.get(i);
+        	if (!album.hasCoverDownloaded()) {
+        		Image albumImage = LastFmService.getInstance().getAlbumImage(artist.getName(), album.getName());
+        		if (albumImage != null) {
+        			try {
+        				ImageUtils.writeImageToFile(albumImage, AudioFilePictureUtils.getFileNameForCover(album.getAudioFiles().get(0)));
+        			} catch (IOException e1) {
+        				new Logger().error(LogCategories.CONTEXT, 
+        						StringUtils.getString("Error writing image for artist: ", artist.getName(), " album: ", album.getName(), " Error: ", e1.getMessage()));
+        			}
+        		}
+        	}
+        	coversRetrieved++;
+        	setCurrentProgress(coversRetrieved);
         }
 
         return true;

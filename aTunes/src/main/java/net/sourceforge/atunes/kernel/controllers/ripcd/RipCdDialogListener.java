@@ -93,7 +93,7 @@ public final class RipCdDialogListener extends KeyAdapter implements ActionListe
             ripCdDialog.getQualityComboBox().setEnabled(qualities.length > 0);
             ripCdDialog.getQualityComboBox().setModel(new DefaultComboBoxModel(qualities));
             ripCdDialog.getQualityComboBox().setSelectedItem(RipperHandler.getInstance().getEncoderDefaultQuality((String) ripCdDialog.getFormat().getSelectedItem()));
-        } else if (e.getSource() == ripCdDialog.getAmazonButton()) {
+        } else if (e.getSource() == ripCdDialog.getTitlesButton()) {
             RipperHandler.getInstance().fillSongsFromAmazon(ripCdDialog.getArtistTextField().getText(), ripCdDialog.getAlbumTextField().getText());
         }
     }
@@ -110,7 +110,7 @@ public final class RipCdDialogListener extends KeyAdapter implements ActionListe
                     String album = ripCdDialog.getAlbumTextField().getText();
                     String repositoryPath = RepositoryHandler.getInstance().getRepositoryPath();
                     boolean enabled = !artist.equals("") && !album.equals("");
-                    ripCdDialog.getAmazonButton().setEnabled(enabled);
+                    ripCdDialog.getTitlesButton().setEnabled(enabled);
                     if (!ripCdDialogController.isFolderNameEdited()) {
                         if (enabled) {
                             ripCdDialog.getFolderName().setText(

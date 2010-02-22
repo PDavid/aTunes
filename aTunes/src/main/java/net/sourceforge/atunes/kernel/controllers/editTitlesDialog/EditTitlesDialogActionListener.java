@@ -25,9 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.atunes.gui.views.dialogs.EditTitlesDialog;
-import net.sourceforge.atunes.kernel.modules.amazon.AmazonAlbum;
-import net.sourceforge.atunes.kernel.modules.amazon.AmazonDisc;
-import net.sourceforge.atunes.kernel.modules.amazon.AmazonService;
+import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
+import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
+import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 
 /**
  * The listener interface for receiving editTitlesDialogAction events.
@@ -61,12 +61,12 @@ public final class EditTitlesDialogActionListener implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == dialog.getRetrieveFromAmazon()) {
-            AmazonAlbum amazonAlbum = AmazonService.getInstance().getAlbum(controller.getAlbum().getArtist().toString(), controller.getAlbum().getName());
-            if (amazonAlbum != null) {
+        if (e.getSource() == dialog.getRetrieveTitles()) {
+            AlbumInfo albumInfo = LastFmService.getInstance().getAlbum(controller.getAlbum().getArtist().toString(), controller.getAlbum().getName());
+            if (albumInfo != null) {
                 List<String> tracks = new ArrayList<String>();
-                for (AmazonDisc disc : amazonAlbum.getDiscs()) {
-                    tracks.addAll(disc.getTracks());
+                for (TrackInfo trackInfo : albumInfo.getTracks()) {
+                    tracks.add(trackInfo.getTitle());
                 }
                 controller.setTitles(tracks);
             }

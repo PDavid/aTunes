@@ -99,7 +99,7 @@ public final class RipCdDialogController extends SimpleController<RipCdDialog> {
         getComponentControlled().getFormat().addActionListener(listener);
         getComponentControlled().getFilePattern().addActionListener(listener);
         getComponentControlled().getFolderName().addKeyListener(listener);
-        getComponentControlled().getAmazonButton().addActionListener(listener);
+        getComponentControlled().getTitlesButton().addActionListener(listener);
         getComponentControlled().getArtistTextField().addKeyListener(listener);
         getComponentControlled().getAlbumTextField().addKeyListener(listener);
     }
@@ -296,7 +296,7 @@ public final class RipCdDialogController extends SimpleController<RipCdDialog> {
         } else {
             getComponentControlled().getFolderName().setText(path);
         }
-        getComponentControlled().getAmazonButton().setEnabled(false);
+        getComponentControlled().getTitlesButton().setEnabled(false);
         getComponentControlled().getFormat().setSelectedItem(RipperHandler.getInstance().getEncoder());
         getComponentControlled().getQualityComboBox().setSelectedItem(RipperHandler.getInstance().getEncoderQuality());
         getComponentControlled().getUseCdErrorCorrection().setSelected(RipperHandler.getInstance().getCdErrorCorrection());
