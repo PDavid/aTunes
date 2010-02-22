@@ -172,6 +172,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
      * @param support
      * @return
      */
+    @SuppressWarnings("unchecked")
     private static boolean processInternalImport(TransferSupport support) {
         try {
             List<AudioObject> audioObjectsToAdd = new ArrayList<AudioObject>();
@@ -341,13 +342,14 @@ public class PlayListTableTransferHandler extends TransferHandler {
 
     /**
      * Getter for logger
+     * 
      * @return
      */
     private static Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
     }
 
 }
