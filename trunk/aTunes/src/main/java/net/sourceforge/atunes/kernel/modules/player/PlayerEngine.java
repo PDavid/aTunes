@@ -50,63 +50,63 @@ import net.sourceforge.atunes.utils.StringUtils;
 public abstract class PlayerEngine implements PlaybackStateListener {
 
     private static class ApplyUserSelectionRunnable implements Runnable {
-    	private PlayerEngine engine;
-		private final boolean ignorePlaybackError;
+        private PlayerEngine engine;
+        private final boolean ignorePlaybackError;
 
-		private ApplyUserSelectionRunnable(PlayerEngine engine, boolean ignorePlaybackError) {
-			this.engine = engine;
-			this.ignorePlaybackError = ignorePlaybackError;
-		}
+        private ApplyUserSelectionRunnable(PlayerEngine engine, boolean ignorePlaybackError) {
+            this.engine = engine;
+            this.ignorePlaybackError = ignorePlaybackError;
+        }
 
-		@Override
-		public void run() {
-		    if (ignorePlaybackError) {
-		    	// Move to the next audio object
-		    	engine.playNextAudioObject(true);
-		    } else {
-		    	// Stop playback
-		    	engine.stopCurrentAudioObject(false);
-		    }
-		}
-	}
+        @Override
+        public void run() {
+            if (ignorePlaybackError) {
+                // Move to the next audio object
+                engine.playNextAudioObject(true);
+            } else {
+                // Stop playback
+                engine.stopCurrentAudioObject(false);
+            }
+        }
+    }
 
-	private static class ShowPlaybackErrorRunnable implements Runnable {
-		private final String[] errorMessages;
-		private boolean ignore;
+    private static class ShowPlaybackErrorRunnable implements Runnable {
+        private final String[] errorMessages;
+        private boolean ignore;
 
-		private ShowPlaybackErrorRunnable(String[] errorMessages) {
-			this.errorMessages = errorMessages;
-		}
+        private ShowPlaybackErrorRunnable(String[] errorMessages) {
+            this.errorMessages = errorMessages;
+        }
 
-		@Override
-		public void run() {
-		    String selection = (String) GuiHandler.getInstance().showMessage(StringUtils.getString(errorMessages), I18nUtils.getString("ERROR"), JOptionPane.ERROR_MESSAGE,
-		            new String[] { I18nUtils.getString("IGNORE"), I18nUtils.getString("CANCEL") });
-		    ignore = selection.equals(I18nUtils.getString("IGNORE"));
-		}
+        @Override
+        public void run() {
+            String selection = (String) GuiHandler.getInstance().showMessage(StringUtils.getString((Object) errorMessages), I18nUtils.getString("ERROR"),
+                    JOptionPane.ERROR_MESSAGE, new String[] { I18nUtils.getString("IGNORE"), I18nUtils.getString("CANCEL") });
+            ignore = selection.equals(I18nUtils.getString("IGNORE"));
+        }
 
-		/**
-		 * @return the ignore
-		 */
-		protected boolean isIgnore() {
-			return ignore;
-		}
-	}
+        /**
+         * @return the ignore
+         */
+        protected boolean isIgnore() {
+            return ignore;
+        }
+    }
 
-	private static class ShowErrorDialog implements Runnable {
-		private final Exception e;
+    private static class ShowErrorDialog implements Runnable {
+        private final Exception e;
 
-		private ShowErrorDialog(Exception e) {
-			this.e = e;
-		}
+        private ShowErrorDialog(Exception e) {
+            this.e = e;
+        }
 
-		@Override
-		public void run() {
-		    GuiHandler.getInstance().showErrorDialog(e.getMessage());
-		}
-	}
+        @Override
+        public void run() {
+            GuiHandler.getInstance().showErrorDialog(e.getMessage());
+        }
+    }
 
-	private enum SubmissionState {
+    private enum SubmissionState {
         NOT_SUBMITTED, PENDING, SUBMITTED;
     }
 
@@ -436,61 +436,66 @@ public abstract class PlayerEngine implements PlaybackStateListener {
     /**
      * This method must be called by engine when audio object finishes its
      * playback
+     * 
      * @param ok
-     * 			<code>true</code> if playback finishes ok, <code>false</code> otherwise
+     *            <code>true</code> if playback finishes ok, <code>false</code>
+     *            otherwise
      * @param messages
-     * 			Messages when playback finishes with error
+     *            Messages when playback finishes with error
      */
-    public final void currentAudioObjectFinished(boolean ok, final String...errorMessages) {
-		// Call listeners to notify playback finished
-		callPlaybackStateListeners(PlaybackState.PLAY_FINISHED);
+    public final void currentAudioObjectFinished(boolean ok, final String... errorMessages) {
+        // Call listeners to notify playback finished
+        callPlaybackStateListeners(PlaybackState.PLAY_FINISHED);
 
-		if (!ok) {
+        if (!ok) {
             getLogger().info(LogCategories.PLAYER, StringUtils.getString("Playback finished with errors: ", errorMessages));
-            
+
             boolean ignore = showPlaybackError(errorMessages);
             applyUserSelection(ignore);
 
-    	} else {
-    		getLogger().info(LogCategories.PLAYER, "Playback finished");
+        } else {
+            getLogger().info(LogCategories.PLAYER, "Playback finished");
 
-    		// Move to the next audio object
-    		playNextAudioObject(true);
-    	}
+            // Move to the next audio object
+            playNextAudioObject(true);
+        }
     }
-    
+
     /**
      * Lets user decide if want to ignore playback error or cancel
+     * 
      * @param errorMessages
      * @return
      */
-    private boolean showPlaybackError(String...errorMessages) {
-    	ShowPlaybackErrorRunnable r = new ShowPlaybackErrorRunnable(errorMessages);
-    	if (SwingUtilities.isEventDispatchThread()) {
-    		r.run();
-    	} else {
-    		try {
-    			SwingUtilities.invokeAndWait(r);
-    		} catch (InterruptedException e) {
-    			getLogger().error(LogCategories.PLAYER, e);
-    		} catch (InvocationTargetException e) {
-    			getLogger().error(LogCategories.PLAYER, e);
-    		}
-    	}
-    	return r.isIgnore();
+    private boolean showPlaybackError(String... errorMessages) {
+        ShowPlaybackErrorRunnable r = new ShowPlaybackErrorRunnable(errorMessages);
+        if (SwingUtilities.isEventDispatchThread()) {
+            r.run();
+        } else {
+            try {
+                SwingUtilities.invokeAndWait(r);
+            } catch (InterruptedException e) {
+                getLogger().error(LogCategories.PLAYER, e);
+            } catch (InvocationTargetException e) {
+                getLogger().error(LogCategories.PLAYER, e);
+            }
+        }
+        return r.isIgnore();
     }
-    
+
     /**
-     * if user wants to ignore play back error then play back continues, if not it's stopped
+     * if user wants to ignore play back error then play back continues, if not
+     * it's stopped
+     * 
      * @param ignorePlaybackError
      */
     private void applyUserSelection(boolean ignorePlaybackError) {
-    	ApplyUserSelectionRunnable r = new ApplyUserSelectionRunnable(this, ignorePlaybackError);
-    	if (SwingUtilities.isEventDispatchThread()) {
-    		r.run();
-    	} else {
-   			SwingUtilities.invokeLater(r);
-    	}
+        ApplyUserSelectionRunnable r = new ApplyUserSelectionRunnable(this, ignorePlaybackError);
+        if (SwingUtilities.isEventDispatchThread()) {
+            r.run();
+        } else {
+            SwingUtilities.invokeLater(r);
+        }
     }
 
     /**
@@ -773,14 +778,14 @@ public abstract class PlayerEngine implements PlaybackStateListener {
         return currentAudioObjectLength;
     }
 
-	/**
-	 * @return the logger
-	 */
-	protected Logger getLogger() {
-		if (logger == null) {
-			logger = new Logger();
-		}
-		return logger;
-	}
+    /**
+     * @return the logger
+     */
+    protected Logger getLogger() {
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
+    }
 
 }
