@@ -33,7 +33,7 @@ import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.ListCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
-import net.sourceforge.atunes.kernel.ControllerProxy;
+import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.model.AudioObject;
 
 public class ScoreColumn extends Column {
@@ -91,9 +91,6 @@ public class ScoreColumn extends Column {
     @Override
     public void setValueFor(AudioObject audioObject, Object value) {
         audioObject.setStars((Integer) value);
-
-        // After setting score of an AudioFile, refresh playlist, as the same song can be duplicated
-        ControllerProxy.getInstance().getPlayListController().refreshPlayList();
     }
 
     /**
