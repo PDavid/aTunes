@@ -42,16 +42,16 @@ import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.Handler;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.RipCDAction;
-import net.sourceforge.atunes.kernel.modules.amazon.AmazonAlbum;
-import net.sourceforge.atunes.kernel.modules.amazon.AmazonDisc;
-import net.sourceforge.atunes.kernel.modules.amazon.AmazonService;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.CdToWavConverter;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.NoCdListener;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
 import net.sourceforge.atunes.kernel.modules.cdripper.encoders.Encoder;
+import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
+import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -235,23 +235,23 @@ public final class RipperHandler extends Handler {
      */
     public void fillSongsFromAmazon(final String artist, final String album) {
         GuiHandler.getInstance().getRipCdDialog().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        GuiHandler.getInstance().getRipCdDialog().getAmazonButton().setEnabled(false);
-        new SwingWorker<AmazonAlbum, Void>() {
+        GuiHandler.getInstance().getRipCdDialog().getTitlesButton().setEnabled(false);
+        new SwingWorker<AlbumInfo, Void>() {
             @Override
-            protected AmazonAlbum doInBackground() throws Exception {
-                return AmazonService.getInstance().getAlbum(artist, album);
+            protected AlbumInfo doInBackground() throws Exception {
+                return LastFmService.getInstance().getAlbum(artist, album);
             }
 
             @Override
             protected void done() {
                 try {
                     if (get() != null) {
-                        albumCoverURL = get().getImageURL();
-                        List<String> tracks = new ArrayList<String>();
-                        for (AmazonDisc disc : get().getDiscs()) {
-                            tracks.addAll(disc.getTracks());
+                        albumCoverURL = get().getCoverURL();
+                        List<String> trackNames = new ArrayList<String>();
+                        for (TrackInfo trackInfo : get().getTracks()) {
+                            trackNames.add(trackInfo.getTitle());
                         }
-                        GuiHandler.getInstance().getRipCdDialog().updateTrackNames(tracks);
+                        GuiHandler.getInstance().getRipCdDialog().updateTrackNames(trackNames);
                     }
                 } catch (InterruptedException e) {
                     getLogger().internalError(e);
@@ -259,7 +259,7 @@ public final class RipperHandler extends Handler {
                     getLogger().error(LogCategories.RIPPER, e);
                 } finally {
                     GuiHandler.getInstance().getRipCdDialog().setCursor(Cursor.getDefaultCursor());
-                    GuiHandler.getInstance().getRipCdDialog().getAmazonButton().setEnabled(true);
+                    GuiHandler.getInstance().getRipCdDialog().getTitlesButton().setEnabled(true);
                 }
             }
         }.execute();
@@ -446,7 +446,7 @@ public final class RipperHandler extends Handler {
 
         // Get image from amazon if necessary
         if (albumCoverURL != null) {
-            Image cover = AmazonService.getInstance().getImage(albumCoverURL);
+            Image cover = LastFmService.getInstance().getImage(albumCoverURL);
             dialog.setCover(cover);
             savePicture(cover, folderFile, artist, album);
         }

@@ -51,7 +51,7 @@ public final class EditTitlesDialogController extends SimpleController<EditTitle
     @Override
     protected void addBindings() {
         EditTitlesDialogActionListener actionListener = new EditTitlesDialogActionListener(getComponentControlled(), this);
-        getComponentControlled().getRetrieveFromAmazon().addActionListener(actionListener);
+        getComponentControlled().getRetrieveTitles().addActionListener(actionListener);
         getComponentControlled().getOkButton().addActionListener(actionListener);
         getComponentControlled().getCancelButton().addActionListener(actionListener);
     }

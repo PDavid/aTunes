@@ -119,9 +119,16 @@ public final class AudioFilePictureUtils {
      * @return the external picture
      */
     private static ImageIcon getExternalPicture(AudioFile file, int index, int width, int height) {
-        if (file != null && file.getExternalPictures() != null && file.getExternalPictures().size() > index) {
+    	// Try first to get picture with file name "ARTIST_ALBUM_COVER" pattern
+    	String coverFileName = getFileNameForCover(file); 
+    	ImageIcon image = null;
+    	if (new File(coverFileName).exists()) {
+    		image = new ImageIcon(coverFileName);
+    	} else if (file != null && file.getExternalPictures() != null && file.getExternalPictures().size() > index) {
             File firstPicture = file.getExternalPictures().get(index);
-            ImageIcon image = new ImageIcon(firstPicture.getAbsolutePath());
+            image = new ImageIcon(firstPicture.getAbsolutePath());
+    	}
+    	if (image != null) {
             if (width == -1 || height == -1) {
                 return image;
             }
@@ -130,7 +137,7 @@ public final class AudioFilePictureUtils {
             int newHeight = (int) ((float) image.getIconHeight() / (float) maxSize * height);
             return ImageUtils.scaleImageBicubic(image.getImage(), newWidth, newHeight);
         }
-        return null;
+        return image;
     }
 
     /**

@@ -45,7 +45,7 @@ public final class EditTitlesDialog extends CustomModalDialog {
     private JTable table;
 
     /** The retrieve from amazon. */
-    private JButton retrieveFromAmazon;
+    private JButton retrieveTitles;
 
     /** The ok button. */
     private JButton okButton;
@@ -97,7 +97,7 @@ public final class EditTitlesDialog extends CustomModalDialog {
         table = new JTable();
         table.setOpaque(false);
         JScrollPane scrollPane = new JScrollPane(table);
-        retrieveFromAmazon = new CustomButton(null, I18nUtils.getString("GET_TITLES_FROM_AMAZON"));
+        retrieveTitles = new CustomButton(null, I18nUtils.getString("GET_TITLES"));
         okButton = new CustomButton(null, I18nUtils.getString("OK"));
         cancelButton = new CustomButton(null, I18nUtils.getString("CANCEL"));
 
@@ -110,7 +110,7 @@ public final class EditTitlesDialog extends CustomModalDialog {
         c.weightx = 1;
         c.fill = GridBagConstraints.NONE;
         c.anchor = GridBagConstraints.WEST;
-        auxPanel.add(retrieveFromAmazon, c);
+        auxPanel.add(retrieveTitles, c);
         c.gridx = 1;
         c.weightx = 0;
         c.anchor = GridBagConstraints.CENTER;
@@ -150,8 +150,8 @@ public final class EditTitlesDialog extends CustomModalDialog {
      * 
      * @return the retrieve from amazon
      */
-    public JButton getRetrieveFromAmazon() {
-        return retrieveFromAmazon;
+    public JButton getRetrieveTitles() {
+        return retrieveTitles;
     }
 
     /**

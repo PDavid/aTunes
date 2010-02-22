@@ -228,7 +228,7 @@ public final class RipCdDialog extends CustomModalDialog {
     private JTextField albumTextField;
     private JTextField yearTextField;
     private JComboBox genreComboBox;
-    private JButton amazonButton;
+    private JButton titlesButton;
     private JComboBox format;
     private JComboBox quality;
     private JComboBox filePattern;
@@ -278,8 +278,8 @@ public final class RipCdDialog extends CustomModalDialog {
      * 
      * @return the amazon button
      */
-    public JButton getAmazonButton() {
-        return amazonButton;
+    public JButton getTitlesButton() {
+        return titlesButton;
     }
 
     /**
@@ -362,8 +362,8 @@ public final class RipCdDialog extends CustomModalDialog {
 
         genreComboBox = new JComboBox();
         genreComboBox.setEditable(true);
-        amazonButton = new CustomButton(null, I18nUtils.getString("GET_TITLES_FROM_AMAZON"));
-        amazonButton.setEnabled(false);
+        titlesButton = new CustomButton(null, I18nUtils.getString("GET_TITLES"));
+        titlesButton.setEnabled(false);
         JLabel formatLabel = new JLabel(I18nUtils.getString("ENCODE_TO"));
 
         format = new JComboBox();
@@ -441,7 +441,7 @@ public final class RipCdDialog extends CustomModalDialog {
         c.gridx = 1;
         c.gridwidth = 3;
         c.gridy = 4;
-        panel.add(amazonButton, c);
+        panel.add(titlesButton, c);
         c.gridx = 0;
         c.gridy = 5;
         c.fill = GridBagConstraints.NONE;

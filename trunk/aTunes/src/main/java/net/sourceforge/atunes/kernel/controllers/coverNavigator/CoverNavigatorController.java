@@ -42,10 +42,10 @@ import javax.swing.event.ListSelectionListener;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.dialogs.CoverNavigatorFrame;
 import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
-import net.sourceforge.atunes.kernel.modules.amazon.GetCoversFromAmazonProcess;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
+import net.sourceforge.atunes.kernel.modules.webservices.lastfm.GetCoversProcess;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 import org.jdesktop.swingx.border.DropShadowBorder;
@@ -103,7 +103,7 @@ public final class CoverNavigatorController extends SimpleController<CoverNaviga
             public void actionPerformed(ActionEvent e) {
                 Artist selectedArtist = (Artist) frame.getList().getSelectedValue();
                 if (selectedArtist != null) {
-                    GetCoversFromAmazonProcess process = new GetCoversFromAmazonProcess(selectedArtist, getComponentControlled());
+                    GetCoversProcess process = new GetCoversProcess(selectedArtist, getComponentControlled());
                     process.addProcessListener(new ProcessListener() {
                         @Override
                         public void processCanceled() {
