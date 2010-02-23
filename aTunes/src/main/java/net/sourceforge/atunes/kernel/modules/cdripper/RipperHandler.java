@@ -226,14 +226,14 @@ public final class RipperHandler extends Handler {
     }
 
     /**
-     * Fill songs from amazon.
+     * Fill songs titles
      * 
      * @param artist
      *            the artist
      * @param album
      *            the album
      */
-    public void fillSongsFromAmazon(final String artist, final String album) {
+    public void fillSongTitles(final String artist, final String album) {
         GuiHandler.getInstance().getRipCdDialog().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         GuiHandler.getInstance().getRipCdDialog().getTitlesButton().setEnabled(false);
         new SwingWorker<AlbumInfo, Void>() {
