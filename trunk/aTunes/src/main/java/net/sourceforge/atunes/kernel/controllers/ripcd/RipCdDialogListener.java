@@ -94,7 +94,7 @@ public final class RipCdDialogListener extends KeyAdapter implements ActionListe
             ripCdDialog.getQualityComboBox().setModel(new DefaultComboBoxModel(qualities));
             ripCdDialog.getQualityComboBox().setSelectedItem(RipperHandler.getInstance().getEncoderDefaultQuality((String) ripCdDialog.getFormat().getSelectedItem()));
         } else if (e.getSource() == ripCdDialog.getTitlesButton()) {
-            RipperHandler.getInstance().fillSongsFromAmazon(ripCdDialog.getArtistTextField().getText(), ripCdDialog.getAlbumTextField().getText());
+            RipperHandler.getInstance().fillSongTitles(ripCdDialog.getArtistTextField().getText(), ripCdDialog.getAlbumTextField().getText());
         }
     }
 
@@ -102,7 +102,9 @@ public final class RipCdDialogListener extends KeyAdapter implements ActionListe
     public void keyTyped(KeyEvent e) {
         if (e.getSource() == ripCdDialog.getFolderName() || e.getSource() == ripCdDialog.getAlbumTextField()) {
             ripCdDialogController.setFolderNameEdited(true);
-        } else if (e.getSource() == ripCdDialog.getArtistTextField()) {
+        }
+        
+        if (e.getSource() == ripCdDialog.getArtistTextField() || e.getSource() == ripCdDialog.getAlbumTextField()) {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {

@@ -363,7 +363,6 @@ public final class RipCdDialog extends CustomModalDialog {
         genreComboBox = new JComboBox();
         genreComboBox.setEditable(true);
         titlesButton = new CustomButton(null, I18nUtils.getString("GET_TITLES"));
-        titlesButton.setEnabled(false);
         JLabel formatLabel = new JLabel(I18nUtils.getString("ENCODE_TO"));
 
         format = new JComboBox();
