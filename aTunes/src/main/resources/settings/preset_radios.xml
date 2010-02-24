@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+﻿<?xml version='1.0' encoding='UTF-8'?>
 <list version='1.0'>
 	<Radio>
 		<name>Buureradio</name>
@@ -337,9 +337,16 @@
 		<frequency>44100</frequency>
 	</Radio>
 	<Radio>
+		<name>International Rare Groove</name>
+		<url>http://listen.radionomy.com/international-rare-groove.m3u</url>
+		<label>Soul/Funk/Reggae</label>
+		<isRemoved>false</isRemoved>
+	</Radio>
+	<Radio>
 		<name>Soulful Bits Radio</name>
 		<url>http://www.soulfulbits.com/files/streaming/soulfulbits-radio.m3u</url>
 		<label>Soul/Funk</label>
+		<isRemoved>false</isRemoved>
 	</Radio>
 	<Radio>
 		<name>California-101</name>
@@ -348,6 +355,12 @@
 		<isRemoved>false</isRemoved>
 		<bitrate>128</bitrate>
 		<frequency>44100</frequency>
+	</Radio>
+	<Radio>
+		<name>Radioalterno</name>
+		<url>http://radioalterno.serverroom.us:7970</url>
+		<label>Rock</label>
+		<isRemoved>false</isRemoved>
 	</Radio>
 	<Radio>
 		<name>Raggakings [Reggae]</name>
