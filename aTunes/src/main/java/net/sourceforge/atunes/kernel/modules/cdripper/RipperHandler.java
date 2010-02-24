@@ -661,7 +661,12 @@ public final class RipperHandler extends Handler {
     boolean testTools() {
         if (!CdToWavConverter.testTool()) {
             getLogger().error(LogCategories.RIPPER, "Error testing \"cdda2wav\" or \"cdparanoia\". Check program is installed");
-            GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("CDDA2WAV_NOT_FOUND"));
+            SwingUtilities.invokeLater(new Runnable() {
+            	@Override
+            	public void run() {
+                    GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("CDDA2WAV_NOT_FOUND"));
+            	}
+            });
             return false;
         }
         return true;
