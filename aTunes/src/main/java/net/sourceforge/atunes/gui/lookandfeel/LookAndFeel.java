@@ -41,7 +41,7 @@ import org.commonjukebox.plugins.PluginApi;
 @PluginApi
 public abstract class LookAndFeel {
 
-    private static class LookAndFeelListCellRenderer extends
+    private static final class LookAndFeelListCellRenderer extends
 			DefaultListCellRenderer {
 		private final ListCellRendererCode code;
 		/**
@@ -60,7 +60,7 @@ public abstract class LookAndFeel {
 		}
 	}
 
-	private static class LookAndFeelTableHeaderCellRenderer extends
+	private static final class LookAndFeelTableHeaderCellRenderer extends
 			DefaultTableCellRenderer {
 		private final TableCellRendererCode code;
 		/**
@@ -79,7 +79,7 @@ public abstract class LookAndFeel {
 		}
 	}
 
-	private static class LookAndFeelTableCellRenderer extends
+	private static final class LookAndFeelTableCellRenderer extends
 			DefaultTableCellRenderer {
 		private final TableCellRendererCode code;
 		/**
@@ -98,7 +98,7 @@ public abstract class LookAndFeel {
 		}
 	}
 
-	private static class LookAndFeelTreeCellRenderer extends
+	private static final class LookAndFeelTreeCellRenderer extends
 			DefaultTreeCellRenderer {
 		private final TreeCellRendererCode code;
 		/**

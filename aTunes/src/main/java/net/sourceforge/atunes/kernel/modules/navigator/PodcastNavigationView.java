@@ -255,7 +255,7 @@ public final class PodcastNavigationView extends NavigationView {
     
     private static class PodcastNavigationColumnSet extends CustomNavigatorColumnSet {
     	
-        private static class DurationColumn extends Column {
+        private static final class DurationColumn extends Column {
 			/**
 			 * 
 			 */
@@ -276,7 +276,7 @@ public final class PodcastNavigationView extends NavigationView {
 			}
 		}
 
-		private static class PodcastEntriesColumn extends Column {
+		private static final class PodcastEntriesColumn extends Column {
 			/**
 			 * 
 			 */
@@ -297,7 +297,7 @@ public final class PodcastNavigationView extends NavigationView {
 			}
 		}
 
-		private static class OldEntryPropertyColumn extends Column {
+		private static final class OldEntryPropertyColumn extends Column {
 			/**
 			 * 
 			 */
@@ -318,7 +318,7 @@ public final class PodcastNavigationView extends NavigationView {
 			}
 		}
 
-		private static class DownloadedPropertyColumn extends Column {
+		private static final class DownloadedPropertyColumn extends Column {
 			/**
 			 * 
 			 */
@@ -339,7 +339,7 @@ public final class PodcastNavigationView extends NavigationView {
 			}
 		}
 
-		private static class NotListenedPropertyColumn extends Column {
+		private static final class NotListenedPropertyColumn extends Column {
 			/**
 			 * 
 			 */
