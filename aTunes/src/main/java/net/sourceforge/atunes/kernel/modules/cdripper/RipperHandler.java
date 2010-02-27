@@ -590,7 +590,7 @@ public final class RipperHandler extends Handler {
     public void startCdRipper() {
         interrupted = false;
         final RipCdDialog dialog = GuiHandler.getInstance().getRipCdDialog();
-        GuiHandler.getInstance().showIndeterminateProgressDialog("");
+        GuiHandler.getInstance().showIndeterminateProgressDialog(I18nUtils.getString("RIP_CD"));
 
         SwingWorker<CDInfo, Void> getCdInfoAndStartRipping = new SwingWorker<CDInfo, Void>() {
             @Override
