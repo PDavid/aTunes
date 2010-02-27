@@ -124,7 +124,6 @@ public final class Images {
     public static final String PLAY = "play.png";
     public static final String PLAY_LIST_CONTROLS = "playListControls.png";
     public static final String PLAY_TINY = "playTiny.png";
-    public static final String PLAY_MENU = "playMenu.png";
     public static final String PLAY_TRAY = SystemProperties.OS.isWindowsVista() ? "playTrayVista.png" : "playTray.png";
     public static final String PLAY_TRAY_MENU = "playTrayMenu.png";
     public static final String PLAYLIST = "playlist.png";

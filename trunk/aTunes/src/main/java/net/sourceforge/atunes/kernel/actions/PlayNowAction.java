@@ -34,7 +34,7 @@ public class PlayNowAction extends Action {
     private static final long serialVersionUID = -2099290583376403144L;
 
     PlayNowAction() {
-        super(I18nUtils.getString("PLAY_NOW"), Images.getImage(Images.PLAY_MENU));
+        super(I18nUtils.getString("PLAY_NOW"), Images.getImage(Images.PLAY_TINY));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("PLAY_NOW"));
     }
 
