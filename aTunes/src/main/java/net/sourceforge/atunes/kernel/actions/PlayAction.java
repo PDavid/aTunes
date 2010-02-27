@@ -35,7 +35,7 @@ public class PlayAction extends Action {
     private static final long serialVersionUID = -1122746023245126869L;
 
     PlayAction() {
-        super(I18nUtils.getString("PLAY"), Images.getImage(Images.PLAY_MENU));
+        super(I18nUtils.getString("PLAY"), Images.getImage(Images.PLAY_TINY));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("PLAY"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0));
     }
@@ -47,7 +47,8 @@ public class PlayAction extends Action {
 
     @Override
     public boolean isEnabledForPlayListSelection(List<AudioObject> selection) {
-        return !selection.isEmpty();
+    	// Play action is always enabled even if play list or selection are empty, because this action is used in play button
+        return true;
     }
 
     @Override
