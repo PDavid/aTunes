@@ -252,7 +252,7 @@ public final class AutoCompleteDocument extends PlainDocument {
     	private Object matchingItem;
     	private String matchingString;
 
-        public LookupResult(Object matchingItem, String matchingString) {
+        protected LookupResult(Object matchingItem, String matchingString) {
             this.matchingItem = matchingItem;
             this.matchingString = matchingString;
         }
