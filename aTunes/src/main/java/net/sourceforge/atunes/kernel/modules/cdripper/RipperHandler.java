@@ -60,7 +60,14 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 public final class RipperHandler extends Handler {
 
-    private static class TotalProgressListener implements ProgressListener {
+    private static class ShowErrorDialogRunnable implements Runnable {
+		@Override
+		public void run() {
+		    GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("CDDA2WAV_NOT_FOUND"));
+		}
+	}
+
+	private static class TotalProgressListener implements ProgressListener {
 		private final RipperProgressDialog dialog;
 		private final List<File> filesImported;
 
@@ -661,12 +668,7 @@ public final class RipperHandler extends Handler {
     boolean testTools() {
         if (!CdToWavConverter.testTool()) {
             getLogger().error(LogCategories.RIPPER, "Error testing \"cdda2wav\" or \"cdparanoia\". Check program is installed");
-            SwingUtilities.invokeLater(new Runnable() {
-            	@Override
-            	public void run() {
-                    GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("CDDA2WAV_NOT_FOUND"));
-            	}
-            });
+            SwingUtilities.invokeLater(new ShowErrorDialogRunnable());
             return false;
         }
         return true;
