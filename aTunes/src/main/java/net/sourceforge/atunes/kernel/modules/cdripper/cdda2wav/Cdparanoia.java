@@ -197,9 +197,9 @@ public class Cdparanoia extends CdToWavConverter {
                         while (stringTokenizer.hasMoreTokens()) {
                             tokens.add(stringTokenizer.nextToken());
                         }
-                        String duration = tokens.get(1);
-                        duration = duration.replace("[", "").replace("[", "").replace(".", ":");
-                        durations.add(tokens.get(1));
+                        String duration = tokens.get(2);
+                        duration = duration.replace("[", "").replace("]", "");
+                        durations.add(duration);
                         titles.add("");
                         artists.add("");
                         composers.add("");
