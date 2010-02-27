@@ -182,7 +182,7 @@ public class TagAttributesReviewed {
     	return -1;
     }
 
-    private static class DiscNumberTagAttributeReviewed extends
+    private static final class DiscNumberTagAttributeReviewed extends
     TagAttributeReviewed {
     	private DiscNumberTagAttributeReviewed(String name) {
     		super(name);
@@ -204,7 +204,7 @@ public class TagAttributesReviewed {
     	}
     }
 
-    private static class YearTagAttributeReviewed extends TagAttributeReviewed {
+    private static final class YearTagAttributeReviewed extends TagAttributeReviewed {
     	private YearTagAttributeReviewed(String name) {
     		super(name);
     	}
@@ -225,7 +225,7 @@ public class TagAttributesReviewed {
     	}
     }
 
-    private static class GenreTagAttributeReviewed extends TagAttributeReviewed {
+    private static final class GenreTagAttributeReviewed extends TagAttributeReviewed {
     	private GenreTagAttributeReviewed(String name) {
     		super(name);
     	}
@@ -256,7 +256,7 @@ public class TagAttributesReviewed {
     	}
     }
 
-    private static class AlbumTagAttributeReviewed extends TagAttributeReviewed {
+    private static final class AlbumTagAttributeReviewed extends TagAttributeReviewed {
     	private AlbumTagAttributeReviewed(String name) {
     		super(name);
     	}
@@ -274,7 +274,7 @@ public class TagAttributesReviewed {
     	}
     }
 
-    private static class ComposerTagAttributeReviewed extends
+    private static final class ComposerTagAttributeReviewed extends
     TagAttributeReviewed {
     	private ComposerTagAttributeReviewed(String name) {
     		super(name);
@@ -292,7 +292,7 @@ public class TagAttributesReviewed {
     	}
     }
 
-    private static class AlbumArtistTagAttributeReviewed extends
+    private static final class AlbumArtistTagAttributeReviewed extends
     TagAttributeReviewed {
     	private AlbumArtistTagAttributeReviewed(String name) {
     		super(name);
@@ -310,7 +310,7 @@ public class TagAttributesReviewed {
     	}
     }
 
-    private static class ArtistTagAttributeReviewed extends
+    private static final class ArtistTagAttributeReviewed extends
     TagAttributeReviewed {
     	private ArtistTagAttributeReviewed(String name) {
     		super(name);

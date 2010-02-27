@@ -70,7 +70,7 @@ import org.jvnet.substance.fonts.FontSet;
 
 public class SubstanceLookAndFeel extends LookAndFeel {
 
-    private static class CustomFontPolicy implements FontPolicy {
+    private static final class CustomFontPolicy implements FontPolicy {
 		private final Font baseFont;
 
 		private CustomFontPolicy(Font baseFont) {
@@ -121,7 +121,7 @@ public class SubstanceLookAndFeel extends LookAndFeel {
 		}
 	}
 
-	private static class SubstanceLookAndFeelListCellRenderer extends
+	private static final class SubstanceLookAndFeelListCellRenderer extends
 			SubstanceDefaultListCellRenderer {
 		private final ListCellRendererCode code;
 		/**
@@ -140,7 +140,7 @@ public class SubstanceLookAndFeel extends LookAndFeel {
 		}
 	}
 
-	private static class SubstanceLookAndFeelTableHeaderCellRenderer extends
+	private static final class SubstanceLookAndFeelTableHeaderCellRenderer extends
 			SubstanceDefaultTableHeaderCellRenderer {
 		private final TableCellRendererCode code;
 		/**
@@ -160,7 +160,7 @@ public class SubstanceLookAndFeel extends LookAndFeel {
 		}
 	}
 
-	private static class SubstanceLookAndFeelTableCellRenderer extends
+	private static final class SubstanceLookAndFeelTableCellRenderer extends
 			SubstanceDefaultTableCellRenderer {
 		private final TableCellRendererCode code;
 		/**
@@ -179,7 +179,7 @@ public class SubstanceLookAndFeel extends LookAndFeel {
 		}
 	}
 
-	private static class SubstanceLookAndFeelTreeCellRenderer extends
+	private static final class SubstanceLookAndFeelTreeCellRenderer extends
 			SubstanceDefaultTreeCellRenderer {
 		private final TreeCellRendererCode code;
 		/**
@@ -198,7 +198,7 @@ public class SubstanceLookAndFeel extends LookAndFeel {
 		}
 	}
 
-	private static class SkinsComparator implements Comparator<String> {
+	private static final class SkinsComparator implements Comparator<String> {
 		@Override
 		public int compare(String o1, String o2) {
 		    return o1.toLowerCase().compareTo(o2.toLowerCase());
