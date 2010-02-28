@@ -69,23 +69,30 @@ public class Lyrics implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Lyrics other = (Lyrics) obj;
         if (lyrics == null) {
-            if (other.lyrics != null)
+            if (other.lyrics != null) {
                 return false;
-        } else if (!lyrics.equals(other.lyrics))
-            return false;
+            }
+        } else if (!lyrics.equals(other.lyrics)) {
+            return false; 
+        }
         if (url == null) {
-            if (other.url != null)
+            if (other.url != null) {
                 return false;
-        } else if (!url.equals(other.url))
+            }
+        } else if (!url.equals(other.url)) {
             return false;
+        }
         return true;
     }
 

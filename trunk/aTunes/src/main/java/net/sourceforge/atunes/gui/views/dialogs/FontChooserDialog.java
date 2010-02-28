@@ -105,22 +105,29 @@ public final class FontChooserDialog extends CustomModalDialog {
 
         @Override
         public boolean equals(Object obj) {
-            if (this == obj)
+            if (this == obj) {
                 return true;
-            if (obj == null)
+            }
+            if (obj == null) {
                 return false;
-            if (getClass() != obj.getClass())
+            }
+            if (getClass() != obj.getClass()) {
                 return false;
+            }
             FontSettings other = (FontSettings) obj;
             if (font == null) {
-                if (other.font != null)
+                if (other.font != null) {
                     return false;
-            } else if (!font.equals(other.font))
+                }
+            } else if (!font.equals(other.font)) {
                 return false;
-            if (useFontSmoothing != other.useFontSmoothing)
+            }
+            if (useFontSmoothing != other.useFontSmoothing) {
                 return false;
-            if (useFontSmoothingSettingsFromOs != other.useFontSmoothingSettingsFromOs)
+            }
+            if (useFontSmoothingSettingsFromOs != other.useFontSmoothingSettingsFromOs) {
                 return false;
+            }
             return true;
         }
 
