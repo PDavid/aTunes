@@ -30,6 +30,7 @@ public class RepositoryStructure implements Serializable {
     private Map<String, Artist> artistStructure;
     private Map<String, Folder> folderStructure;
     private Map<String, Genre> genreStructure;
+    private Map<String, Year> yearStructure;
 
     //private Map<String, Album> albumStructure;
 
@@ -40,6 +41,7 @@ public class RepositoryStructure implements Serializable {
         artistStructure = new HashMap<String, Artist>();
         folderStructure = new HashMap<String, Folder>();
         genreStructure = new HashMap<String, Genre>();
+        yearStructure = new HashMap<String, Year>();
         //albumStructure = new HashMap<String, Album>();
     }
 
@@ -68,6 +70,15 @@ public class RepositoryStructure implements Serializable {
      */
     public Map<String, Artist> getArtistStructure() {
         return artistStructure;
+    }
+
+    /**
+     * Gets the year structure.
+     *
+     * @return the year structure
+     */
+    public Map<String, Year> getYearStructure() {
+        return yearStructure;
     }
 
     //    /**

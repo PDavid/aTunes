@@ -52,6 +52,7 @@ public class Columns {
             classes.add(ComposerColumn.class);
             classes.add(GenreColumn.class);
             classes.add(YearColumn.class);
+            classes.add(DateColumn.class);
             classes.add(LengthColumn.class);
             classes.add(ScoreColumn.class);
             classes.add(FileNameColumn.class);

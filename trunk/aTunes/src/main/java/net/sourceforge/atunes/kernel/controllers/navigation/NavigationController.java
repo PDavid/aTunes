@@ -61,6 +61,7 @@ import net.sourceforge.atunes.kernel.actions.ShowAlbumsInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowArtistsInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowFoldersInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowGenresInNavigatorAction;
+import net.sourceforge.atunes.kernel.actions.ShowYearsInNavigatorAction;
 import net.sourceforge.atunes.kernel.controllers.model.Controller;
 import net.sourceforge.atunes.kernel.modules.columns.Column;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnSet;
@@ -83,7 +84,7 @@ public final class NavigationController extends Controller implements AudioFiles
 
     public enum ViewMode {
 
-        ARTIST, ALBUM, GENRE, FOLDER
+        ARTIST, ALBUM, GENRE, FOLDER, YEAR
     }
 
     private NavigationTreePanel navigationTreePanel;
@@ -376,6 +377,7 @@ public final class NavigationController extends Controller implements AudioFiles
         Actions.getAction(ShowArtistsInNavigatorAction.class).setEnabled(viewModeSupported);
         Actions.getAction(ShowFoldersInNavigatorAction.class).setEnabled(viewModeSupported);
         Actions.getAction(ShowGenresInNavigatorAction.class).setEnabled(viewModeSupported);
+        Actions.getAction(ShowYearsInNavigatorAction.class).setEnabled(viewModeSupported);
 
         // Change column set
         boolean useDefaultNavigatorColumns = NavigationHandler.getInstance().getView(navigationView).isUseDefaultNavigatorColumnSet();

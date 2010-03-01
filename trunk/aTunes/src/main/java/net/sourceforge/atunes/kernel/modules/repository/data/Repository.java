@@ -122,6 +122,10 @@ public class Repository implements Serializable {
         return structure.getGenreStructure();
     }
 
+    public Map<String, Year> getYearStructure() {
+        return structure.getYearStructure();
+    }
+
     /**
      * Gets the total duration in seconds.
      * 

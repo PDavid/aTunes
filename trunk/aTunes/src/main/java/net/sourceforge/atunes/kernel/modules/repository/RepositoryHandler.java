@@ -61,6 +61,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Folder;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Repository;
+import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.kernel.modules.repository.processes.ImportFilesProcess;
 import net.sourceforge.atunes.kernel.modules.repository.statistics.StatisticsHandler;
 import net.sourceforge.atunes.kernel.modules.repository.tags.TagAttributesReviewed;
@@ -314,6 +315,18 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
         return new HashMap<String, Genre>();
     }
 
+    /**
+     * Gets the year structure.
+     *
+     * @return the year structure
+     */
+    public Map<String, Year> getYearStructure() {
+        if (repository != null) {
+            return repository.getYearStructure();
+        }
+        return new HashMap<String, Year>();
+    }
+    
     /**
      * Gets the album structure
      * 
