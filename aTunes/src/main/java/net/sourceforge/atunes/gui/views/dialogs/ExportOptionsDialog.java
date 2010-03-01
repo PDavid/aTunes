@@ -101,7 +101,6 @@ public final class ExportOptionsDialog extends CustomModalDialog {
      */
     private JPanel getContent() {
         JPanel container = new JPanel(new GridBagLayout());
-        container.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // Export instructions
         JTextArea exportInstructions = new CustomTextArea(I18nUtils.getString("EXPORT_INSTRUCTIONS"));
@@ -155,6 +154,7 @@ public final class ExportOptionsDialog extends CustomModalDialog {
         c.gridy = 0;
         c.weightx = 1;
         c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(10, 10, 0, 10);
         container.add(exportInstructions, c);
 
         c.gridy = 1;
@@ -171,7 +171,7 @@ public final class ExportOptionsDialog extends CustomModalDialog {
         c.anchor = GridBagConstraints.EAST;
         c.weighty = 0;
         c.fill = GridBagConstraints.NONE;
-        c.insets = new Insets(10, 0, 0, 0);
+        c.insets = new Insets(10, 0, 10, 10);
         container.add(buttons, c);
         return container;
     }

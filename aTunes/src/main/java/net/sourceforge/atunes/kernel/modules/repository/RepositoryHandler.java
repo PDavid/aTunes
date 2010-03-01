@@ -880,6 +880,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
      */
     private boolean selectRepository(boolean repositoryNotFound) {
         MultiFolderSelectionDialog dialog = GuiHandler.getInstance().getMultiFolderSelectionDialog();
+        dialog.setTitle(I18nUtils.getString("SELECT_REPOSITORY"));
         dialog.setText(I18nUtils.getString("SELECT_REPOSITORY_FOLDERS"));
         dialog.startDialog((repository != null && !repositoryNotFound) ? repository.getFolders() : null);
         if (!dialog.isCancelled()) {

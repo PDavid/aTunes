@@ -34,7 +34,7 @@ import javax.swing.JSlider;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.Fonts;
-import net.sourceforge.atunes.gui.views.controls.CustomModalFrame;
+import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -47,7 +47,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * 
  * @author sylvain
  */
-public final class EqualizerDialog extends CustomModalFrame {
+public final class EqualizerDialog extends CustomModalDialog {
 
     private static final long serialVersionUID = 7295438534550341824L;
 
@@ -65,7 +65,7 @@ public final class EqualizerDialog extends CustomModalFrame {
      */
     public EqualizerDialog(JFrame owner) {
         // Width required by german translation
-        super(owner, 510, 300);
+        super(owner, 510, 300, true);
         setTitle(StringUtils.getString(I18nUtils.getString("EQUALIZER"), " - ", Constants.APP_NAME, " ", Constants.VERSION.toShortString()));
         add(getContent());
         setResizable(false);

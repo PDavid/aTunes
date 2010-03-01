@@ -23,13 +23,13 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -75,8 +75,9 @@ public final class SelectorDialog extends JDialog {
      * @param cellRenderer
      *            the cell renderer
      */
-    public SelectorDialog(JFrame owner, String title, String[] strings, ListCellRenderer cellRenderer) {
-        super(owner, title, true);
+    public SelectorDialog(Window owner, String title, String[] strings, ListCellRenderer cellRenderer) {
+        super(owner, title);
+        setModal(true);
         setSize(250, 350);
         setLocationRelativeTo(owner);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

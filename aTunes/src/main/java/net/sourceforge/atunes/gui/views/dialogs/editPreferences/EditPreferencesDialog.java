@@ -37,14 +37,14 @@ import javax.swing.ListModel;
 import net.sourceforge.atunes.gui.lookandfeel.ListCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
-import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.CustomModalFrame;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * General characteristics of the preference dialog
  */
-public final class EditPreferencesDialog extends CustomModalDialog {
+public final class EditPreferencesDialog extends CustomModalFrame {
 
     private static final long serialVersionUID = -4759149194433605946L;
 
@@ -61,7 +61,7 @@ public final class EditPreferencesDialog extends CustomModalDialog {
      *            the owner
      */
     public EditPreferencesDialog(JFrame owner) {
-        super(owner, GuiUtils.getComponentWidthForResolution(1280, 1000), GuiUtils.getComponentHeightForResolution(1024, 700), true);
+        super(owner, GuiUtils.getComponentWidthForResolution(1280, 1000), GuiUtils.getComponentHeightForResolution(1024, 700));
         setResizable(true);
         setTitle(I18nUtils.getString("PREFERENCES"));
         add(getContent());
