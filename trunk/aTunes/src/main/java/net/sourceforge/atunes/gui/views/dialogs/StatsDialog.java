@@ -30,6 +30,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.images.Images;
@@ -77,7 +78,7 @@ public final class StatsDialog extends CustomFrame {
      */
     public StatsDialog(Component owner) {
         super(StringUtils.getString(I18nUtils.getString("STATS"), " - ", Constants.APP_NAME, " ", Constants.VERSION.toShortString()), 750, 750, owner);
-        setResizable(false);
+        setResizable(true);
         add(getContent());
         GuiUtils.applyComponentOrientation(this);
         enableCloseActionWithEscapeKey();
@@ -143,6 +144,7 @@ public final class StatsDialog extends CustomFrame {
         generalTable.setShowGrid(false);
         JScrollPane generalScrollPane = new JScrollPane(generalTable);
         generalChart = new JLabel();
+        generalChart.setHorizontalAlignment(SwingConstants.CENTER);
 
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
@@ -164,6 +166,7 @@ public final class StatsDialog extends CustomFrame {
         songsTable.setShowGrid(false);
         JScrollPane songsScrollPane = new JScrollPane(songsTable);
         songsChart = new JLabel();
+        songsChart.setHorizontalAlignment(SwingConstants.CENTER);
 
         c.gridx = 0;
         c.gridy = 0;
@@ -184,6 +187,7 @@ public final class StatsDialog extends CustomFrame {
         albumsTable.setShowGrid(false);
         JScrollPane albumsScrollPane = new JScrollPane(albumsTable);
         albumsChart = new JLabel();
+        albumsChart.setHorizontalAlignment(SwingConstants.CENTER);
 
         c.gridx = 0;
         c.gridy = 0;
@@ -202,6 +206,7 @@ public final class StatsDialog extends CustomFrame {
         artistsTable.setShowGrid(false);
         JScrollPane artistsScrollPane = new JScrollPane(artistsTable);
         artistsChart = new JLabel();
+        artistsChart.setHorizontalAlignment(SwingConstants.CENTER);
 
         c.gridx = 0;
         c.gridy = 0;

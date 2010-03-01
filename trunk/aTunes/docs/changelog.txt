@@ -33,6 +33,7 @@ aTunes 2.0.0
 - Use mp4 instead of flv for Youtube download
 - Added edition options to all text components
 - Highlight audio files with incomplete tags in navigator table (feature request [2383156])
+- Support for netbook-size windows (feature request [2807546])
 - Added translation to Catalan (thanks to perru002)
 - INTERNAL: Avoid unnecessary refresh view operations
 - INTERNAL: Share actions between play list and navigation tree and table
