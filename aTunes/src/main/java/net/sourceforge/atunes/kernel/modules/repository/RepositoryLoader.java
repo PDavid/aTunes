@@ -37,6 +37,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Folder;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Repository;
+import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.kernel.modules.repository.statistics.StatisticsHandler;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.Tag;
 import net.sourceforge.atunes.misc.SystemProperties;
@@ -137,6 +138,7 @@ public class RepositoryLoader extends Thread {
                     RepositoryFiller.addToArtistStructure(rep, audioFile);
                     RepositoryFiller.addToFolderStructure(rep, getRepositoryFolderContaining(rep, folder), relativePath, audioFile);
                     RepositoryFiller.addToGenreStructure(rep, audioFile);
+                    RepositoryFiller.addToYearStructure(rep, audioFile);
 
                     rep.setTotalSizeInBytes(rep.getTotalSizeInBytes() + audioFile.getFile().length());
                     rep.addDurationInSeconds(audioFile.getDuration());
@@ -289,11 +291,13 @@ public class RepositoryLoader extends Thread {
             String artist = null;
             String album = null;
             String genre = null;
+            String year = null;
             if (oldTag != null) {
                 albumArtist = oldTag.getAlbumArtist();
                 artist = oldTag.getArtist();
                 album = oldTag.getAlbum();
                 genre = oldTag.getGenre();
+                year = oldTag.getYear() > 0 ? Integer.toString(oldTag.getYear()) : "";
             }
             if (artist == null || artist.equals("")) {
                 artist = Artist.getUnknownArtist();
@@ -303,6 +307,9 @@ public class RepositoryLoader extends Thread {
             }
             if (genre == null || genre.equals("")) {
                 genre = Genre.getUnknownGenre();
+            }
+            if (year == null || year.equals("")) {
+                year = Year.getUnknownYear();
             }
 
             // Remove from tree structure if necessary
@@ -355,10 +362,21 @@ public class RepositoryLoader extends Thread {
                 }
             }
 
+            // Remove from year structure if necessary
+            Year y = repository.getYearStructure().get(year);
+            if (y != null) {
+                y.removeAudioFile(file);
+
+                if (y.getAudioObjects().size() <= 1) {
+                    repository.getYearStructure().remove(year);
+                }
+            }
+
             // Update tag
             file.refreshTag();
             RepositoryFiller.addToArtistStructure(repository, file);
             RepositoryFiller.addToGenreStructure(repository, file);
+            RepositoryFiller.addToYearStructure(repository, file);
             // There is no need to update folder as audio file is in the same folder
 
             // Compare old tag with new tag
@@ -562,6 +580,7 @@ public class RepositoryLoader extends Thread {
                         RepositoryFiller.addToArtistStructure(repository, audioFile);
                         RepositoryFiller.addToFolderStructure(repository, relativeTo, relativePath, audioFile);
                         RepositoryFiller.addToGenreStructure(repository, audioFile);
+                        RepositoryFiller.addToYearStructure(repository, audioFile);
 
                         // Update remaining time every 50 files
                         if (filesLoaded % 50 == 0) {
@@ -680,6 +699,7 @@ public class RepositoryLoader extends Thread {
         String artist = file.getArtist();
         String album = file.getAlbum();
         String genre = file.getGenre();
+        String year = file.getYear();
 
         // Only do this if file is in repository
         if (getFolderForFile(file) != null) {
@@ -722,6 +742,15 @@ public class RepositoryLoader extends Thread {
                 g.removeAudioFile(file);
                 if (g.getAudioObjects().size() <= 1) {
                     RepositoryHandler.getInstance().getGenreStructure().remove(genre);
+                }
+            }
+
+            // Remove from year structure
+            Year y = RepositoryHandler.getInstance().getYearStructure().get(year);
+            if (y != null) {
+                y.removeAudioFile(file);
+                if (y.getAudioObjects().size() <= 1) {
+                    RepositoryHandler.getInstance().getYearStructure().remove(year);
                 }
             }
 

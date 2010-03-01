@@ -19,6 +19,11 @@
  */
 package net.sourceforge.atunes.kernel.modules.repository.tags.tag;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import net.sourceforge.atunes.utils.DateUtils;
 import org.jaudiotagger.tag.FieldKey;
 
 /**
@@ -27,6 +32,9 @@ import org.jaudiotagger.tag.FieldKey;
 public class DefaultTag extends Tag {
 
     private static final long serialVersionUID = 6200185803652819029L;
+
+    /** Date format without time information. */
+    private transient final SimpleDateFormat dateOnlyFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     /**
      * Instantiates a new default tag.
@@ -98,6 +106,17 @@ public class DefaultTag extends Tag {
         setComposer(tag.getFirst(FieldKey.COMPOSER));
         setAlbumArtist(tag.getFirst(FieldKey.ALBUM_ARTIST));
         setInternalImage(tag.hasField(FieldKey.COVER_ART.name()));
+
+        result = getTagDateField(tag);
+        Date date = DateUtils.parseRFC3339Date(result);
+        if (date == null) {
+            try {
+                date = dateOnlyFormat.parse(result);
+            } catch (ParseException e) {
+                date = null;
+            }
+        }
+        setDate(date);
 
         // Disc Number
         String discNumberStr = tag.getFirst(FieldKey.DISC_NO);
@@ -208,5 +227,31 @@ public class DefaultTag extends Tag {
         }
 
         return defaultTag;
+    }
+
+    private String getTagDateField(org.jaudiotagger.tag.Tag tag) {
+        if (tag instanceof org.jaudiotagger.tag.vorbiscomment.VorbisCommentTag ||
+            tag instanceof org.jaudiotagger.tag.flac.FlacTag) {
+            return tag.getFirst("DATE");
+        } else if (tag instanceof org.jaudiotagger.tag.id3.ID3v24Tag) {
+            return tag.getFirst("TDRC");
+        } else if (tag instanceof org.jaudiotagger.tag.id3.ID3v23Tag) {
+            // assembles year tag TYER and date/month tag TDAT into some ISO-like date string
+            StringBuilder buffer = new StringBuilder();
+            String yearPart = tag.getFirst("TYER");
+            if (!yearPart.isEmpty()) {
+                buffer.append(yearPart);
+                String dateMonthPart = tag.getFirst("TDAT");
+                if (dateMonthPart.length() >= 4) {
+                    buffer.append('-');
+                    buffer.append(dateMonthPart.substring(2, 4));
+                    buffer.append('-');
+                    buffer.append(dateMonthPart.substring(0, 2));
+                }
+            }
+            return buffer.toString();
+        } else {
+            return "";
+        }
     }
 }

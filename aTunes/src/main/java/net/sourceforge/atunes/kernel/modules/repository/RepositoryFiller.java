@@ -27,6 +27,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Folder;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Repository;
+import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
@@ -101,6 +102,30 @@ class RepositoryFiller {
             genreObject.addAudioFile(audioFile);
         } catch (Exception e) {
         	new Logger().error(LogCategories.FILE_READ, e.getMessage());
+        }
+    }
+
+    /**
+     * Adds given audio file to year structure of given repository
+     *
+     * @param repository
+     *            the repository
+     * @param audioFile
+     *            the audio file
+     */
+    static void addToYearStructure(Repository repository, AudioFile audioFile) {
+        try {
+            String year = audioFile.getYear();
+
+            Year yearObject = repository.getYearStructure().get(year);
+            if (yearObject == null) {
+                yearObject = new Year(year);
+                repository.getYearStructure().put(year, yearObject);
+            }
+
+            yearObject.addAudioFile(audioFile);
+        } catch (Exception e) {
+            new Logger().error(LogCategories.FILE_READ, e.getMessage());
         }
     }
 

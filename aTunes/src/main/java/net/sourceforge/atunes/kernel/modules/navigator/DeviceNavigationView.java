@@ -43,6 +43,7 @@ import net.sourceforge.atunes.gui.views.decorators.GenreTreeCellDecorator;
 import net.sourceforge.atunes.gui.views.decorators.IncompleteTagsTreeCellDecorator;
 import net.sourceforge.atunes.gui.views.decorators.StringTreeCellDecorator;
 import net.sourceforge.atunes.gui.views.decorators.UnknownElementTreeCellDecorator;
+import net.sourceforge.atunes.gui.views.decorators.YearTreeCellDecorator;
 import net.sourceforge.atunes.gui.views.menus.EditTagMenu;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAction;
@@ -453,6 +454,7 @@ public final class DeviceNavigationView extends NavigationView {
             decorators.add(new ArtistTreeCellDecorator());
             decorators.add(new AlbumTreeCellDecorator());
             decorators.add(new GenreTreeCellDecorator());
+            decorators.add(new YearTreeCellDecorator());
             decorators.add(new FolderTreeCellDecorator());
             decorators.add(new StringTreeCellDecorator());
             decorators.add(new UnknownElementTreeCellDecorator());

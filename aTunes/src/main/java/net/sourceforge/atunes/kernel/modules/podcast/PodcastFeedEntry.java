@@ -158,6 +158,7 @@ public final class PodcastFeedEntry implements AudioObject, Serializable, Compar
      * 
      * @return the date
      */
+    @Override
     public Date getDate() {
         return date == null ? null : new Date(date.getTime());
     }

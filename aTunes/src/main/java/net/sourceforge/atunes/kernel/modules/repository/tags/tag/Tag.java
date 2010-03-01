@@ -20,6 +20,10 @@
 package net.sourceforge.atunes.kernel.modules.repository.tags.tag;
 
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
+
+import net.sourceforge.atunes.utils.DateUtils;
 
 /**
  * The abstract class for tags.
@@ -54,6 +58,9 @@ public abstract class Tag implements Serializable {
 
     /** The year. */
     private int year;
+
+    /** The date. */
+    private Date date;
 
     /** The comment. */
     private String comment;
@@ -211,7 +218,24 @@ public abstract class Tag implements Serializable {
      * @return the year
      */
     public int getYear() {
-        return year >= 0 ? year : 0;
+        if (date != null) {
+            Calendar calendar = DateUtils.getCalendar();
+            calendar.setTime(date);
+            return calendar.get(Calendar.YEAR);
+        } else if (year >= 0) {
+            return year;
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * Gets the date.
+     *
+     * @return the date
+     */
+    public Date getDate() {
+        return date;
     }
 
     /**
@@ -321,7 +345,20 @@ public abstract class Tag implements Serializable {
      *            the new year
      */
     public void setYear(int year) {
-        this.year = year;
+        // only update year if it is not derived from the date
+        if (date == null) {
+            this.year = year;
+        }
+    }
+
+    /**
+     * Sets the date.
+     *
+     * @param date
+     *            the new date
+     */
+    public void setDate(Date date) {
+        this.date = date != null ? new Date(date.getTime()) : null;
     }
 
     /**

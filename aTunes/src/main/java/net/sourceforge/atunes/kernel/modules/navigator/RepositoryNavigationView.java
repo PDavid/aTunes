@@ -44,6 +44,7 @@ import net.sourceforge.atunes.gui.views.decorators.IncompleteTagsTreeCellDecorat
 import net.sourceforge.atunes.gui.views.decorators.StringTreeCellDecorator;
 import net.sourceforge.atunes.gui.views.decorators.TooltipTreeCellDecorator;
 import net.sourceforge.atunes.gui.views.decorators.UnknownElementTreeCellDecorator;
+import net.sourceforge.atunes.gui.views.decorators.YearTreeCellDecorator;
 import net.sourceforge.atunes.gui.views.menus.EditTagMenu;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAction;
@@ -69,6 +70,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.data.Folder;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
+import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
@@ -96,7 +98,7 @@ public class RepositoryNavigationView extends NavigationView {
     private JPopupMenu treePopupMenu;
 
     private JPopupMenu tablePopupMenu;
-    
+
     private List<TreeCellDecorator> decorators;
 
     @Override
@@ -178,7 +180,9 @@ public class RepositoryNavigationView extends NavigationView {
 
     @Override
     protected Map<String, ?> getViewData(ViewMode viewMode) {
-        if (viewMode == ViewMode.GENRE) {
+        if (viewMode == ViewMode.YEAR) {
+            return RepositoryHandler.getInstance().getYearStructure();
+        } else if (viewMode == ViewMode.GENRE) {
             return RepositoryHandler.getInstance().getGenreStructure();
         } else if (viewMode == ViewMode.FOLDER) {
             return RepositoryHandler.getInstance().getFolderStructure();
@@ -203,7 +207,9 @@ public class RepositoryNavigationView extends NavigationView {
         // Get objects expanded before refreshing tree
         List<TreeObject> objectsExpanded = getTreeObjectsExpanded(tree, root);
 
-        if (viewMode == ViewMode.GENRE) {
+        if (viewMode == ViewMode.YEAR) {
+            refreshYearTree((Map<String, Year>) getViewData(viewMode), treeFilter, root, treeModel, objectsSelected, objectsExpanded);
+        } else if (viewMode == ViewMode.GENRE) {
             refreshGenreTree((Map<String, Genre>) getViewData(viewMode), treeFilter, root, treeModel, objectsSelected, objectsExpanded);
         } else if (viewMode == ViewMode.FOLDER) {
             refreshFolderView((Map<String, Folder>) getViewData(viewMode), treeFilter, root, treeModel, objectsSelected, objectsExpanded);
@@ -441,6 +447,83 @@ public class RepositoryNavigationView extends NavigationView {
     }
 
     /**
+     * Refresh year tree.
+     *
+     * @param structure
+     *            the structure
+     * @param tree
+     *            the tree
+     * @param treeModel
+     *            the tree model
+     * @param currentFilter
+     *            the current filter
+     */
+    private void refreshYearTree(Map<String, Year> structure, String currentFilter, DefaultMutableTreeNode root, DefaultTreeModel treeModel, List<TreeObject> objectsSelected, List<TreeObject> objectsExpanded) {
+        // Nodes to be selected after refresh
+        List<DefaultMutableTreeNode> nodesToSelect = new ArrayList<DefaultMutableTreeNode>();
+        // Nodes to be expanded after refresh
+        List<DefaultMutableTreeNode> nodesToExpand = new ArrayList<DefaultMutableTreeNode>();
+
+        // Refresh nodes
+        root.setUserObject(I18nUtils.getString("REPOSITORY"));
+        root.removeAllChildren();
+        List<String> yearNamesList = new ArrayList<String>(structure.keySet());
+        Collections.sort(yearNamesList, getDefaultComparator());
+
+        for (int i = 0; i < yearNamesList.size(); i++) {
+            Year year = structure.get(yearNamesList.get(i));
+            if (currentFilter == null || year.getName().toUpperCase().contains(currentFilter.toUpperCase())) {
+                DefaultMutableTreeNode yearNode = new DefaultMutableTreeNode(year);
+                // If node was selected before refreshing...
+                if (objectsSelected.contains(yearNode.getUserObject())) {
+                    nodesToSelect.add(yearNode);
+                }
+                // If node was expanded before refreshing...
+                if (objectsExpanded.contains(yearNode.getUserObject())) {
+                    nodesToExpand.add(yearNode);
+                }
+                List<String> artistNamesList = new ArrayList<String>(year.getArtistSet());
+                Collections.sort(artistNamesList);
+                Map<String, Artist> yearArtists = year.getArtistObjects();
+                for (int j = 0; j < artistNamesList.size(); j++) {
+                    Artist artist = yearArtists.get(artistNamesList.get(j));
+                    DefaultMutableTreeNode artistNode = new DefaultMutableTreeNode(artist);
+                    List<String> albumNamesList = new ArrayList<String>(artist.getAlbums().keySet());
+                    Collections.sort(albumNamesList);
+                    for (int k = 0; k < albumNamesList.size(); k++) {
+                        Album album = artist.getAlbum(albumNamesList.get(k));
+                        DefaultMutableTreeNode albumNode = new DefaultMutableTreeNode(album);
+                        artistNode.add(albumNode);
+                        yearNode.add(artistNode);
+                        // If node was selected before refreshing...
+                        if (objectsSelected.contains(artistNode.getUserObject())) {
+                            nodesToSelect.add(artistNode);
+                        }
+                        // If node was selected before refreshing...
+                        if (objectsSelected.contains(albumNode.getUserObject())) {
+                            nodesToSelect.add(albumNode);
+                        }
+                        // If node was expanded before refreshing...
+                        if (objectsExpanded.contains(artistNode.getUserObject()) && objectsExpanded.contains(((DefaultMutableTreeNode) artistNode.getParent()).getUserObject())) {
+                            nodesToExpand.add(artistNode);
+                        }
+                    }
+                }
+                root.add(yearNode);
+            }
+        }
+
+        // Reload the tree to refresh content
+        treeModel.reload();
+
+        // Expand nodes
+        expandNodes(tree, nodesToExpand);
+
+        // Once tree has been refreshed, select previously selected nodes
+        selectNodes(tree, nodesToSelect);
+    }
+
+    /**
      * Refresh folder view
      * 
      * @param structure
@@ -506,6 +589,7 @@ public class RepositoryNavigationView extends NavigationView {
             decorators.add(new ArtistTreeCellDecorator());
             decorators.add(new AlbumTreeCellDecorator());
             decorators.add(new GenreTreeCellDecorator());
+            decorators.add(new YearTreeCellDecorator());
             decorators.add(new FolderTreeCellDecorator());
             decorators.add(new StringTreeCellDecorator());
             decorators.add(new TooltipTreeCellDecorator());

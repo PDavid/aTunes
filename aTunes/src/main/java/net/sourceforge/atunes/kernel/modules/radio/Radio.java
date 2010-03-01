@@ -24,6 +24,7 @@ import java.io.Serializable;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -226,6 +227,11 @@ public final class Radio implements AudioObject, Serializable, TreeObject, Compa
     @Override
     public String getYear() {
         return "";
+    }
+
+    @Override
+    public Date getDate() {
+        return null;
     }
 
     @Override
