@@ -79,21 +79,20 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 public class RepositoryNavigationView extends NavigationView {
 
-    private static class AlbumDefaultMutableTreeNode extends
-			DefaultMutableTreeNode {
-		private static final long serialVersionUID = -1276777390072754207L;
+    private static class AlbumDefaultMutableTreeNode extends DefaultMutableTreeNode {
+        private static final long serialVersionUID = -1276777390072754207L;
 
-		private AlbumDefaultMutableTreeNode(Object userObject) {
-			super(userObject);
-		}
+        private AlbumDefaultMutableTreeNode(Object userObject) {
+            super(userObject);
+        }
 
-		@Override
-		public String toString() {
-		    return ((Album) getUserObject()).getNameAndArtist();
-		}
-	}
+        @Override
+        public String toString() {
+            return ((Album) getUserObject()).getNameAndArtist();
+        }
+    }
 
-	private JTree tree;
+    private JTree tree;
 
     private JPopupMenu treePopupMenu;
 
@@ -448,7 +447,7 @@ public class RepositoryNavigationView extends NavigationView {
 
     /**
      * Refresh year tree.
-     *
+     * 
      * @param structure
      *            the structure
      * @param tree
@@ -584,8 +583,8 @@ public class RepositoryNavigationView extends NavigationView {
 
     @Override
     protected List<TreeCellDecorator> getTreeCellDecorators() {
-    	if (decorators == null) {
-    		decorators = new ArrayList<TreeCellDecorator>();
+        if (decorators == null) {
+            decorators = new ArrayList<TreeCellDecorator>();
             decorators.add(new ArtistTreeCellDecorator());
             decorators.add(new AlbumTreeCellDecorator());
             decorators.add(new GenreTreeCellDecorator());
@@ -595,8 +594,8 @@ public class RepositoryNavigationView extends NavigationView {
             decorators.add(new TooltipTreeCellDecorator());
             decorators.add(new UnknownElementTreeCellDecorator());
             decorators.add(new IncompleteTagsTreeCellDecorator());
-    	}
-    	return decorators;
+        }
+        return decorators;
     }
 
     /**

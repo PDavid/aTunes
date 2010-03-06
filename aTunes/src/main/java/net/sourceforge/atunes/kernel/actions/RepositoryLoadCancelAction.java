@@ -34,7 +34,7 @@ public class RepositoryLoadCancelAction extends Action {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-    	RepositoryHandler.getInstance().notifyCancel();
+        RepositoryHandler.getInstance().notifyCancel();
     }
 
 }

@@ -48,7 +48,7 @@ public class ColumnSets implements PluginListener {
      * Singleton instance
      */
     private static ColumnSets instance;
-    
+
     private Logger logger;
 
     public static ColumnSets getInstance() {
@@ -112,15 +112,16 @@ public class ColumnSets implements PluginListener {
             columnSet.removeColumn(columnClass);
         }
     }
-    
+
     /**
      * Getter for logger
+     * 
      * @return
      */
     private Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
     }
 }

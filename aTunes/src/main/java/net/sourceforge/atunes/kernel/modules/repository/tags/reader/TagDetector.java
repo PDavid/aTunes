@@ -35,9 +35,9 @@ public class TagDetector {
     private static Logger logger;
 
     private TagDetector() {
-    	
+
     }
-    
+
     /**
      * Calls appropriate tag reader and sends tag to AudioFile class.
      * 
@@ -61,16 +61,17 @@ public class TagDetector {
             getLogger().error(LogCategories.FILE_READ, e.getMessage());
         }
     }
-    
+
     /**
      * Getter for logger
+     * 
      * @return
      */
     private static Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
     }
 
 }

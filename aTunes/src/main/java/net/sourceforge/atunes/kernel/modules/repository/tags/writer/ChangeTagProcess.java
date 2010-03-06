@@ -104,17 +104,18 @@ public abstract class ChangeTagProcess extends Process {
         // Nothing to do
     }
 
-	/**
-	 * @return the filesToChange
-	 */
-	protected List<AudioFile> getFilesToChange() {
-		return filesToChange;
-	}
+    /**
+     * @return the filesToChange
+     */
+    protected List<AudioFile> getFilesToChange() {
+        return filesToChange;
+    }
 
-	/**
-	 * @param filesToChange the filesToChange to set
-	 */
-	protected void setFilesToChange(List<AudioFile> filesToChange) {
-		this.filesToChange = filesToChange;
-	}
+    /**
+     * @param filesToChange
+     *            the filesToChange to set
+     */
+    protected void setFilesToChange(List<AudioFile> filesToChange) {
+        this.filesToChange = filesToChange;
+    }
 }

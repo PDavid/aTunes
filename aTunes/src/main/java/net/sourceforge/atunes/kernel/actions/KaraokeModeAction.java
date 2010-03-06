@@ -46,7 +46,7 @@ public class KaraokeModeAction extends Action {
         putValue(SELECTED_KEY, ApplicationState.getInstance().isKaraoke());
 
         timer = new Timer(1000, new ActionListener() {
-        	private boolean showWarning;
+            private boolean showWarning;
 
             @Override
             public void actionPerformed(ActionEvent arg0) {

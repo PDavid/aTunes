@@ -80,8 +80,8 @@ public class SimilarArtistsContent extends ContextPanelContent {
         similarArtistsTable = new ContextImageJTable();
         similarArtistsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         similarArtistsTable.setShowGrid(false);
-        similarArtistsTable.setDefaultRenderer(ArtistInfo.class, 
-        		LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new SimilarArtistTableCellRendererCode()));
+        similarArtistsTable.setDefaultRenderer(ArtistInfo.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(
+                new SimilarArtistTableCellRendererCode()));
         similarArtistsTable.setColumnSelectionAllowed(false);
         similarArtistsTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
         similarArtistsTable.getTableHeader().setReorderingAllowed(false);
@@ -101,14 +101,15 @@ public class SimilarArtistsContent extends ContextPanelContent {
 
         return similarArtistsTable;
     }
-    
+
     /**
      * Special renderer for table
+     * 
      * @author fleax
-     *
+     * 
      */
     private static class SimilarArtistTableCellRendererCode extends TableCellRendererCode {
-    	
+
         @Override
         public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             return getPanelForTableRenderer(((ArtistInfo) value).getImage(), StringUtils.getString("<html><br>", ((ArtistInfo) value).getName(), "<br>", ((ArtistInfo) value)

@@ -56,30 +56,30 @@ import org.apache.commons.io.FileUtils;
 public class RemoveFromDiskAction extends Action {
 
     private static class DeleteFilesWorker extends SwingWorker<Void, Void> {
-		private final List<AudioFile> files;
+        private final List<AudioFile> files;
 
-		private DeleteFilesWorker(List<AudioFile> files) {
-			this.files = files;
-		}
+        private DeleteFilesWorker(List<AudioFile> files) {
+            this.files = files;
+        }
 
-		@Override
-		protected Void doInBackground() {
-		    for (AudioFile audioFile : files) {
-		        File file = audioFile.getFile();
-		        if (file != null) {
-		            file.delete();
-		        }
-		    }
-		    return null;
-		}
+        @Override
+        protected Void doInBackground() {
+            for (AudioFile audioFile : files) {
+                File file = audioFile.getFile();
+                if (file != null) {
+                    file.delete();
+                }
+            }
+            return null;
+        }
 
-		@Override
-		protected void done() {
-		    GuiHandler.getInstance().hideIndeterminateProgressDialog();
-		}
-	}
+        @Override
+        protected void done() {
+            GuiHandler.getInstance().hideIndeterminateProgressDialog();
+        }
+    }
 
-	private static final long serialVersionUID = -6958409532399604195L;
+    private static final long serialVersionUID = -6958409532399604195L;
 
     private Logger logger;
 
@@ -181,16 +181,17 @@ public class RemoveFromDiskAction extends Action {
         }
         return !selection.isEmpty();
     }
-    
+
     /**
      * Getter for logger
+     * 
      * @return
      */
     private Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
     }
 
 }

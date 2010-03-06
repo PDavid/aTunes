@@ -81,7 +81,7 @@ public class CreatePlayListWithSelectedAlbumsAction extends ActionOverSelectedOb
             PlayListHandler.getInstance().newPlayList(album.getName(), audioObjects);
         }
     }
-    
+
     @Override
     public boolean isEnabledForPlayListSelection(List<AudioObject> selection) {
         return !selection.isEmpty();

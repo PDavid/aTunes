@@ -65,13 +65,13 @@ public class SystemLookAndFeel extends LookAndFeel {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException e) {
-        	new Logger().internalError(e);
+            new Logger().internalError(e);
         } catch (InstantiationException e) {
-        	new Logger().internalError(e);
+            new Logger().internalError(e);
         } catch (IllegalAccessException e) {
-        	new Logger().internalError(e);
+            new Logger().internalError(e);
         } catch (UnsupportedLookAndFeelException e) {
-        	new Logger().internalError(e);
+            new Logger().internalError(e);
         }
     }
 }

@@ -121,7 +121,7 @@ public class MPlayerEngine extends PlayerEngine {
                 }
             } catch (Exception e) {
                 if (SystemProperties.OS == OperatingSystem.MACOSX && !LINUX_COMMAND.equals(MACOS_COMMAND)) {
-                	getLogger().info(LogCategories.PLAYER, "Mac OS X: mplayer not found, trying in mac_tools");
+                    getLogger().info(LogCategories.PLAYER, "Mac OS X: mplayer not found, trying in mac_tools");
                     LINUX_COMMAND = MACOS_COMMAND;
                     return isEngineAvailable();
                 }
@@ -142,16 +142,16 @@ public class MPlayerEngine extends PlayerEngine {
     @Override
     protected void resumePlayback() {
         commandWriter.sendResumeCommand();
-    	/*
-    	 * Mplayer volume problem workaround If player was paused, set volume
-    	 * again as it could be changed when paused
-    	 */
+        /*
+         * Mplayer volume problem workaround If player was paused, set volume
+         * again as it could be changed when paused
+         */
         if (!isMuteEnabled()) {
-        	commandWriter.sendVolumeCommand(ApplicationState.getInstance().getVolume());
+            commandWriter.sendVolumeCommand(ApplicationState.getInstance().getVolume());
         }
-    	/*
-    	 * End Mplayer volume problem workaround
-    	 */
+        /*
+         * End Mplayer volume problem workaround
+         */
     }
 
     @Override
@@ -267,7 +267,7 @@ public class MPlayerEngine extends PlayerEngine {
 
     @Override
     public void applyMuteState(boolean mute) {
-    	getLogger().debugMethodCall(LogCategories.PLAYER, Boolean.toString(mute));
+        getLogger().debugMethodCall(LogCategories.PLAYER, Boolean.toString(mute));
 
         commandWriter.sendMuteCommand();
 

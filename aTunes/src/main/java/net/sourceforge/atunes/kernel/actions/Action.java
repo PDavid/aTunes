@@ -133,17 +133,17 @@ public abstract class Action extends AbstractAction implements Command {
         return "";
     }
 
-	/**
-	 * @return the actionId
-	 */
-	protected String getActionId() {
-		return actionId;
-	}
+    /**
+     * @return the actionId
+     */
+    protected String getActionId() {
+        return actionId;
+    }
 
-	/**
-	 * @return the properties
-	 */
-	protected Properties getProperties() {
-		return properties;
-	}
+    /**
+     * @return the properties
+     */
+    protected Properties getProperties() {
+        return properties;
+    }
 }

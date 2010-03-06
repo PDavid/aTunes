@@ -56,7 +56,6 @@ import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
 import net.sourceforge.atunes.kernel.modules.columns.Column;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnSet;
-import net.sourceforge.atunes.kernel.modules.columns.DateColumn;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
@@ -66,8 +65,8 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 public final class PodcastNavigationView extends NavigationView {
 
-	private List<TreeCellDecorator> decorators;
-	
+    private List<TreeCellDecorator> decorators;
+
     /** The podcast feed tree. */
     private JTree podcastFeedTree;
 
@@ -239,133 +238,133 @@ public final class PodcastNavigationView extends NavigationView {
         return columnSet;
     }
 
-                @Override
+    @Override
     public boolean isViewModeSupported() {
         return false;
     }
 
     @Override
     protected List<TreeCellDecorator> getTreeCellDecorators() {
-    	if (decorators == null) {
-    		decorators = new ArrayList<TreeCellDecorator>();
+        if (decorators == null) {
+            decorators = new ArrayList<TreeCellDecorator>();
             decorators.add(new StringTreeCellDecorator());
             decorators.add(new PodcastFeedTreeCellDecorator());
-    	}
-    	return decorators;
+        }
+        return decorators;
     }
-    
+
     private static class PodcastNavigationColumnSet extends CustomNavigatorColumnSet {
-    	
+
         private static final class DurationColumn extends Column {
-			/**
+            /**
 			 * 
 			 */
-			private static final long serialVersionUID = -5577224920500040774L;
+            private static final long serialVersionUID = -5577224920500040774L;
 
-			private DurationColumn(String name, Class<?> columnClass) {
-				super(name, columnClass);
-			}
+            private DurationColumn(String name, Class<?> columnClass) {
+                super(name, columnClass);
+            }
 
-			@Override
-			public Object getValueFor(AudioObject audioObject) {
-			    return StringUtils.seconds2String(audioObject.getDuration());
-			}
+            @Override
+            public Object getValueFor(AudioObject audioObject) {
+                return StringUtils.seconds2String(audioObject.getDuration());
+            }
 
-			@Override
-			protected int ascendingCompare(AudioObject o1, AudioObject o2) {
-			    return Integer.valueOf(o1.getDuration()).compareTo(Integer.valueOf(o2.getDuration()));
-			}
-		}
+            @Override
+            protected int ascendingCompare(AudioObject o1, AudioObject o2) {
+                return Integer.valueOf(o1.getDuration()).compareTo(Integer.valueOf(o2.getDuration()));
+            }
+        }
 
-		private static final class PodcastEntriesColumn extends Column {
-			/**
+        private static final class PodcastEntriesColumn extends Column {
+            /**
 			 * 
 			 */
-			private static final long serialVersionUID = -1788596965509543581L;
+            private static final long serialVersionUID = -1788596965509543581L;
 
-			private PodcastEntriesColumn(String name, Class<?> columnClass) {
-				super(name, columnClass);
-			}
+            private PodcastEntriesColumn(String name, Class<?> columnClass) {
+                super(name, columnClass);
+            }
 
-			@Override
-			public Object getValueFor(AudioObject audioObject) {
-			    return audioObject.getTitleOrFileName();
-			}
+            @Override
+            public Object getValueFor(AudioObject audioObject) {
+                return audioObject.getTitleOrFileName();
+            }
 
-			@Override
-			protected int ascendingCompare(AudioObject o1, AudioObject o2) {
-			    return o1.getTitleOrFileName().compareTo(o2.getTitleOrFileName());
-			}
-		}
+            @Override
+            protected int ascendingCompare(AudioObject o1, AudioObject o2) {
+                return o1.getTitleOrFileName().compareTo(o2.getTitleOrFileName());
+            }
+        }
 
-		private static final class OldEntryPropertyColumn extends Column {
-			/**
+        private static final class OldEntryPropertyColumn extends Column {
+            /**
 			 * 
 			 */
-			private static final long serialVersionUID = 1L;
+            private static final long serialVersionUID = 1L;
 
-			private OldEntryPropertyColumn(String name, Class<?> columnClass) {
-				super(name, columnClass);
-			}
+            private OldEntryPropertyColumn(String name, Class<?> columnClass) {
+                super(name, columnClass);
+            }
 
-			@Override
-			public Object getValueFor(AudioObject audioObject) {
-			    return ((PodcastFeedEntry) audioObject).isOld() ? Property.OLD_ENTRY : Property.NO_PROPERTIES;
-			}
+            @Override
+            public Object getValueFor(AudioObject audioObject) {
+                return ((PodcastFeedEntry) audioObject).isOld() ? Property.OLD_ENTRY : Property.NO_PROPERTIES;
+            }
 
-			@Override
-			protected int ascendingCompare(AudioObject o1, AudioObject o2) {
-			    return Boolean.valueOf(((PodcastFeedEntry) o1).isOld()).compareTo(Boolean.valueOf(((PodcastFeedEntry) o2).isOld()));
-			}
-		}
+            @Override
+            protected int ascendingCompare(AudioObject o1, AudioObject o2) {
+                return Boolean.valueOf(((PodcastFeedEntry) o1).isOld()).compareTo(Boolean.valueOf(((PodcastFeedEntry) o2).isOld()));
+            }
+        }
 
-		private static final class DownloadedPropertyColumn extends Column {
-			/**
+        private static final class DownloadedPropertyColumn extends Column {
+            /**
 			 * 
 			 */
-			private static final long serialVersionUID = 1L;
+            private static final long serialVersionUID = 1L;
 
-			private DownloadedPropertyColumn(String name, Class<?> columnClass) {
-				super(name, columnClass);
-			}
+            private DownloadedPropertyColumn(String name, Class<?> columnClass) {
+                super(name, columnClass);
+            }
 
-			@Override
-			public Object getValueFor(AudioObject audioObject) {
-			    return ((PodcastFeedEntry) audioObject).isDownloaded() ? Property.DOWNLOADED_ENTRY : Property.NO_PROPERTIES;
-			}
+            @Override
+            public Object getValueFor(AudioObject audioObject) {
+                return ((PodcastFeedEntry) audioObject).isDownloaded() ? Property.DOWNLOADED_ENTRY : Property.NO_PROPERTIES;
+            }
 
-			@Override
-			protected int ascendingCompare(AudioObject o1, AudioObject o2) {
-			    return Boolean.valueOf(((PodcastFeedEntry) o1).isDownloaded()).compareTo(Boolean.valueOf(((PodcastFeedEntry) o2).isDownloaded()));
-			}
-		}
+            @Override
+            protected int ascendingCompare(AudioObject o1, AudioObject o2) {
+                return Boolean.valueOf(((PodcastFeedEntry) o1).isDownloaded()).compareTo(Boolean.valueOf(((PodcastFeedEntry) o2).isDownloaded()));
+            }
+        }
 
-		private static final class NotListenedPropertyColumn extends Column {
-			/**
+        private static final class NotListenedPropertyColumn extends Column {
+            /**
 			 * 
 			 */
-			private static final long serialVersionUID = 1L;
+            private static final long serialVersionUID = 1L;
 
-			private NotListenedPropertyColumn(String name, Class<?> columnClass) {
-				super(name, columnClass);
-			}
+            private NotListenedPropertyColumn(String name, Class<?> columnClass) {
+                super(name, columnClass);
+            }
 
-			@Override
-			public Object getValueFor(AudioObject audioObject) {
-			    return ((PodcastFeedEntry) audioObject).isListened() ? Property.NO_PROPERTIES : Property.NOT_LISTENED_ENTRY;
-			}
+            @Override
+            public Object getValueFor(AudioObject audioObject) {
+                return ((PodcastFeedEntry) audioObject).isListened() ? Property.NO_PROPERTIES : Property.NOT_LISTENED_ENTRY;
+            }
 
-			@Override
-			protected int ascendingCompare(AudioObject o1, AudioObject o2) {
-			    return Boolean.valueOf(((PodcastFeedEntry) o1).isListened()).compareTo(Boolean.valueOf(((PodcastFeedEntry) o2).isListened()));
-			}
-		}
+            @Override
+            protected int ascendingCompare(AudioObject o1, AudioObject o2) {
+                return Boolean.valueOf(((PodcastFeedEntry) o1).isListened()).compareTo(Boolean.valueOf(((PodcastFeedEntry) o2).isListened()));
+            }
+        }
 
-		public PodcastNavigationColumnSet(String columnSetName) {
-			super(columnSetName);
-		}
+        public PodcastNavigationColumnSet(String columnSetName) {
+            super(columnSetName);
+        }
 
-		@Override
+        @Override
         protected List<Column> getAllowedColumns() {
             List<Column> columns = new ArrayList<Column>();
 

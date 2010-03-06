@@ -66,39 +66,39 @@ import net.sourceforge.atunes.utils.I18nUtils;
 public final class MultipleFrame implements Frame {
 
     private static class FrameWindowAdapter extends WindowAdapter {
-		@Override
-		public void windowClosing(WindowEvent e) {
-		    GuiHandler.getInstance().finish();
-		}
-	}
+        @Override
+        public void windowClosing(WindowEvent e) {
+            GuiHandler.getInstance().finish();
+        }
+    }
 
-	private static class FrameComponentAdapter extends ComponentAdapter {
-		private final Timer t;
+    private static class FrameComponentAdapter extends ComponentAdapter {
+        private final Timer t;
 
-		private FrameComponentAdapter(Timer t) {
-			this.t = t;
-		}
+        private FrameComponentAdapter(Timer t) {
+            this.t = t;
+        }
 
-		@Override
-		public void componentMoved(ComponentEvent e) {
-		    t.start();
-		}
-	}
+        @Override
+        public void componentMoved(ComponentEvent e) {
+            t.start();
+        }
+    }
 
-	private static class CustomDialogComponentAdapter extends ComponentAdapter {
-		private final Timer t;
+    private static class CustomDialogComponentAdapter extends ComponentAdapter {
+        private final Timer t;
 
-		private CustomDialogComponentAdapter(Timer t) {
-			this.t = t;
-		}
+        private CustomDialogComponentAdapter(Timer t) {
+            this.t = t;
+        }
 
-		@Override
-		public void componentMoved(ComponentEvent e) {
-		    t.start();
-		}
-	}
+        @Override
+        public void componentMoved(ComponentEvent e) {
+            t.start();
+        }
+    }
 
-	private static final int STICKY_INSET = 30;
+    private static final int STICKY_INSET = 30;
 
     private static int SCREEN_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
     private static int SCREEN_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height;

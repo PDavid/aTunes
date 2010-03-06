@@ -50,15 +50,15 @@ import org.w3c.dom.NodeList;
 public class PodcastFeedEntryRetriever implements Runnable {
 
     private static class RefreshViewRunnable implements Runnable {
-		@Override
-		public void run() {
-		    // refresh view
-		    NavigationHandler.getInstance().refreshView(PodcastNavigationView.class);
-		    new Logger().info(LogCategories.PODCAST, "Podcast feed entries retrieval done");
-		}
-	}
+        @Override
+        public void run() {
+            // refresh view
+            NavigationHandler.getInstance().refreshView(PodcastNavigationView.class);
+            new Logger().info(LogCategories.PODCAST, "Podcast feed entries retrieval done");
+        }
+    }
 
-	private Logger logger;
+    private Logger logger;
 
     private List<PodcastFeed> podcastFeeds;
 
@@ -109,8 +109,8 @@ public class PodcastFeedEntryRetriever implements Runnable {
                         // Check if audio podcast feed entry
                         Node typeNode = XMLUtils.evaluateXPathExpressionAndReturnNode(feedType.getTypeXPath(), entries.item(i));
                         if (typeNode == null || !typeNode.getTextContent().matches(".*audio.*")) {
-                            getLogger().info(LogCategories.PODCAST, StringUtils.getString("podcast feed entry is not from type audio: ", (typeNode != null ? typeNode.getTextContent()
-                                    : "no type node")));
+                            getLogger().info(LogCategories.PODCAST,
+                                    StringUtils.getString("podcast feed entry is not from type audio: ", (typeNode != null ? typeNode.getTextContent() : "no type node")));
                             continue;
                         }
 
@@ -254,13 +254,14 @@ public class PodcastFeedEntryRetriever implements Runnable {
 
     /**
      * Getter for logger
+     * 
      * @return
      */
     private Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
     }
 
 }

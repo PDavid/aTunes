@@ -184,17 +184,17 @@ public class LyrcEngine extends LyricsEngine {
     public String getUrlForAddingNewLyrics(String artist, String title) {
         return ADD_LYRICS_URL.replace(SONG_WILDCARD, encodeString(title)).replace(ARTIST_WILDCARD, encodeString(artist));
     }
-    
+
     /**
      * Getter for logger
+     * 
      * @return
      */
     private Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
     }
-
 
 }

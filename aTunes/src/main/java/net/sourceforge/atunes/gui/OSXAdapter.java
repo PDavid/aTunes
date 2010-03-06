@@ -169,17 +169,17 @@ public class OSXAdapter implements InvocationHandler {
         }
     }
 
-	/**
-	 * @return the targetObject
-	 */
-	protected Object getTargetObject() {
-		return targetObject;
-	}
+    /**
+     * @return the targetObject
+     */
+    protected Object getTargetObject() {
+        return targetObject;
+    }
 
-	/**
-	 * @return the targetMethod
-	 */
-	protected Method getTargetMethod() {
-		return targetMethod;
-	}
+    /**
+     * @return the targetMethod
+     */
+    protected Method getTargetMethod() {
+        return targetMethod;
+    }
 }

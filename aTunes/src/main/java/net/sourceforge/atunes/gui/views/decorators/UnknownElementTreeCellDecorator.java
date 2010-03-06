@@ -12,12 +12,13 @@ import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 
 public class UnknownElementTreeCellDecorator extends TreeCellDecorator {
-    
+
     @Override
     public Component decorateTreeCellComponent(Component component, Object userObject) {
         if (userObject.toString() != null) {
-            if (Artist.isUnknownArtist(userObject.toString()) || Album.isUnknownAlbum(userObject.toString()) || Genre.isUnknownGenre(userObject.toString()) || Year.isUnknownYear(userObject.toString())) {
-                ((JLabel)component).setForeground(ColorDefinitions.GENERAL_UNKNOWN_ELEMENT_FOREGROUND_COLOR);
+            if (Artist.isUnknownArtist(userObject.toString()) || Album.isUnknownAlbum(userObject.toString()) || Genre.isUnknownGenre(userObject.toString())
+                    || Year.isUnknownYear(userObject.toString())) {
+                ((JLabel) component).setForeground(ColorDefinitions.GENERAL_UNKNOWN_ELEMENT_FOREGROUND_COLOR);
             }
         }
         return component;

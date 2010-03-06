@@ -161,8 +161,8 @@ public class LogCategories {
 
     /** The Constant FAVORITES. */
     public static final String FAVORITES = "FAVORITES   ";
-    
+
     private LogCategories() {
-    	
+
     }
 }

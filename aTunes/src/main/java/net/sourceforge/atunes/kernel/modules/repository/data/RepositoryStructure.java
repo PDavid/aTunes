@@ -74,7 +74,7 @@ public class RepositoryStructure implements Serializable {
 
     /**
      * Gets the year structure.
-     *
+     * 
      * @return the year structure
      */
     public Map<String, Year> getYearStructure() {

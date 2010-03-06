@@ -148,16 +148,17 @@ public class LyricWikiEngine extends LyricsEngine {
     public String getUrlForAddingNewLyrics(String artist, String title) {
         return getURL(artist, title);
     }
-    
+
     /**
      * Getter for logger
+     * 
      * @return
      */
     private Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
     }
 
 }

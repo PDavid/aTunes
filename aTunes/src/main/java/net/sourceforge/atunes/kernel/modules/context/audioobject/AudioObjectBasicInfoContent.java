@@ -50,20 +50,20 @@ import org.jdesktop.swingx.border.DropShadowBorder;
 public class AudioObjectBasicInfoContent extends ContextPanelContent {
 
     private static class AddBannedSongActionListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-		    LastFmService.getInstance().addBannedSong(ContextHandler.getInstance().getCurrentAudioObject());
-		}
-	}
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            LastFmService.getInstance().addBannedSong(ContextHandler.getInstance().getCurrentAudioObject());
+        }
+    }
 
-	private static class AddLovedSongActionListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-		    LastFmService.getInstance().addLovedSong(ContextHandler.getInstance().getCurrentAudioObject());
-		}
-	}
+    private static class AddLovedSongActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            LastFmService.getInstance().addLovedSong(ContextHandler.getInstance().getCurrentAudioObject());
+        }
+    }
 
-	private static final long serialVersionUID = 996227362636450601L;
+    private static final long serialVersionUID = 996227362636450601L;
 
     /**
      * Image for Audio Object

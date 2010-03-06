@@ -126,7 +126,7 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
     });
 
     private Logger logger;
-    
+
     /**
      * Getter for logger
      * 
@@ -209,7 +209,7 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
                         }
                         getLogger().debug(LogCategories.DESKTOP, "Window Iconified");
                     } else if (e.getNewState() != Frame.ICONIFIED) {
-                    	getLogger().debug(LogCategories.DESKTOP, "Window Deiconified");
+                        getLogger().debug(LogCategories.DESKTOP, "Window Deiconified");
                         ControllerProxy.getInstance().getPlayListController().scrollPlayList(false);
                     }
                 }

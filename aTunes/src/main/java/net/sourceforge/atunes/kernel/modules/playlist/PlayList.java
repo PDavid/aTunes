@@ -70,22 +70,21 @@ public class PlayList implements Serializable, Cloneable {
     private PointedList<AudioObject> audioObjects = new PlayListPointedList();
 
     private static class UpdateUIRunnable implements Runnable {
-		@Override
-		public void run() {
-		    ControllerProxy.getInstance().getPlayListController().refreshPlayList();
-		    ControllerProxy.getInstance().getPlayListController().scrollPlayList(false);
-		}
-	}
+        @Override
+        public void run() {
+            ControllerProxy.getInstance().getPlayListController().refreshPlayList();
+            ControllerProxy.getInstance().getPlayListController().scrollPlayList(false);
+        }
+    }
 
-	private static class PlayListAudioObjectComparator implements
-			Comparator<PlayListAudioObject> {
-		@Override
-		public int compare(PlayListAudioObject o1, PlayListAudioObject o2) {
-		    return -Integer.valueOf(o1.getPosition()).compareTo(Integer.valueOf(o2.getPosition()));
-		}
-	}
+    private static class PlayListAudioObjectComparator implements Comparator<PlayListAudioObject> {
+        @Override
+        public int compare(PlayListAudioObject o1, PlayListAudioObject o2) {
+            return -Integer.valueOf(o1.getPosition()).compareTo(Integer.valueOf(o2.getPosition()));
+        }
+    }
 
-	static class PlayListPointedList extends PointedList<AudioObject> {
+    static class PlayListPointedList extends PointedList<AudioObject> {
         private static final long serialVersionUID = -6966402482637754615L;
 
         PlayListPointedList() {

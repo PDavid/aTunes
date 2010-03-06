@@ -32,6 +32,6 @@ public class ToggleWindowVisibilityAction extends Action {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-    	GuiHandler.getInstance().toggleWindowVisibility();
+        GuiHandler.getInstance().toggleWindowVisibility();
     }
 }

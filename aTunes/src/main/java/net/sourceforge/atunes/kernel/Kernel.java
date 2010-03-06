@@ -54,22 +54,22 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class Kernel {
 
-	private static Logger logger;
+    private static Logger logger;
 
     /**
      * Unique instance of Kernel. To access Kernel, Kernel.getInstance() must be
      * called
      */
-	private static Kernel instance;
+    private static Kernel instance;
 
     /** Defines if aTunes is running in debug mode. */
-	private static boolean debug;
+    private static boolean debug;
 
     /** Defines if aTunes will ignore look and feel. */
-	private static boolean ignoreLookAndFeel;
+    private static boolean ignoreLookAndFeel;
 
     /** Defines if aTunes should not try to update (for Linux packages). */
-	private static boolean noUpdate;
+    private static boolean noUpdate;
 
     /**
      * List of start listeners
@@ -151,8 +151,8 @@ public class Kernel {
                 }
             });
         } catch (Exception e) {
-        	getLogger().error(LogCategories.START, e);
-        	getLogger().error(LogCategories.START, e.getCause());
+            getLogger().error(LogCategories.START, e);
+            getLogger().error(LogCategories.START, e.getCause());
         }
 
         // Create kernel
@@ -173,16 +173,16 @@ public class Kernel {
                     try {
                         Proxy.initProxy(Proxy.getProxy(ApplicationState.getInstance().getProxy()));
                     } catch (UnknownHostException e) {
-                    	getLogger().error(LogCategories.START, e);
+                        getLogger().error(LogCategories.START, e);
                     } catch (IOException e) {
-                    	getLogger().error(LogCategories.START, e);
+                        getLogger().error(LogCategories.START, e);
                     }
 
                 }
             });
         } catch (Exception e) {
-        	getLogger().error(LogCategories.START, e);
-        	getLogger().error(LogCategories.START, e.getCause());
+            getLogger().error(LogCategories.START, e);
+            getLogger().error(LogCategories.START, e.getCause());
         }
 
         // Find for audio files on arguments
@@ -204,8 +204,8 @@ public class Kernel {
                 }
             });
         } catch (Exception e) {
-        	getLogger().error(LogCategories.START, e);
-        	getLogger().error(LogCategories.START, e.getCause());
+            getLogger().error(LogCategories.START, e);
+            getLogger().error(LogCategories.START, e.getCause());
         }
 
         try {
@@ -217,8 +217,8 @@ public class Kernel {
                 }
             });
         } catch (Exception e) {
-        	getLogger().error(LogCategories.START, e);
-        	getLogger().error(LogCategories.START, e.getCause());
+            getLogger().error(LogCategories.START, e);
+            getLogger().error(LogCategories.START, e.getCause());
         }
 
     }
@@ -235,7 +235,7 @@ public class Kernel {
                     finishListener.applicationFinish();
                 }
             } catch (Exception e) {
-            	getLogger().error(LogCategories.END, e);
+                getLogger().error(LogCategories.END, e);
             }
         }
     }
@@ -251,8 +251,8 @@ public class Kernel {
             // Call actions needed before closing application
             callActionsBeforeEnd();
         } finally {
-        	getLogger().info(LogCategories.END, StringUtils.getString("Application finished (", StringUtils.toString(timer.stop(), 3), " seconds)"));
-        	getLogger().info(LogCategories.END, "Goodbye!!");
+            getLogger().info(LogCategories.END, StringUtils.getString("Application finished (", StringUtils.toString(timer.stop(), 3), " seconds)"));
+            getLogger().info(LogCategories.END, "Goodbye!!");
             // Exit normally
             System.exit(0);
         }
@@ -289,7 +289,7 @@ public class Kernel {
             getLogger().info(LogCategories.START, StringUtils.getString("Application started (", StringUtils.toString(timer.stop(), 3), " seconds)"));
 
         } catch (Exception e) {
-        	getLogger().error(LogCategories.KERNEL, e);
+            getLogger().error(LogCategories.KERNEL, e);
         }
     }
 
@@ -304,7 +304,7 @@ public class Kernel {
                     startListener.applicationStarted();
                 }
             } catch (Exception e) {
-            	getLogger().error(LogCategories.START, e);
+                getLogger().error(LogCategories.START, e);
             }
         }
         // TODO: Move this to webservices handler
@@ -322,7 +322,7 @@ public class Kernel {
      * Creates all objects of aTunes: visual objects, controllers, and handlers.
      */
     void startCreation() {
-    	getLogger().debug(LogCategories.START, "Starting components");
+        getLogger().debug(LogCategories.START, "Starting components");
 
         startVisualization();
         startControllers();
@@ -353,21 +353,21 @@ public class Kernel {
             pb.start();
 
         } catch (IOException e) {
-        	getLogger().error(LogCategories.KERNEL, e);
+            getLogger().error(LogCategories.KERNEL, e);
         } finally {
             // Exit normally
             System.exit(0);
         }
     }
-    
+
     private static class RepositoryAndPlayListLoadRunnable implements Runnable {
-    	
-    	private List<AudioObject> playList;
-    	
-    	public RepositoryAndPlayListLoadRunnable(List<AudioObject> playList) {
-    		this.playList = playList;
-    	}
-    	
+
+        private List<AudioObject> playList;
+
+        public RepositoryAndPlayListLoadRunnable(List<AudioObject> playList) {
+            this.playList = playList;
+        }
+
         @Override
         public void run() {
             RepositoryHandler.getInstance().applyRepository();
@@ -380,52 +380,55 @@ public class Kernel {
         }
     }
 
-	/**
-	 * @return the debug
-	 */
-	public static boolean isDebug() {
-		return debug;
-	}
+    /**
+     * @return the debug
+     */
+    public static boolean isDebug() {
+        return debug;
+    }
 
-	/**
-	 * @param debug the debug to set
-	 */
-	public static void setDebug(boolean debug) {
-		Kernel.debug = debug;
-	}
+    /**
+     * @param debug
+     *            the debug to set
+     */
+    public static void setDebug(boolean debug) {
+        Kernel.debug = debug;
+    }
 
-	/**
-	 * @return the ignoreLookAndFeel
-	 */
-	public static boolean isIgnoreLookAndFeel() {
-		return ignoreLookAndFeel;
-	}
+    /**
+     * @return the ignoreLookAndFeel
+     */
+    public static boolean isIgnoreLookAndFeel() {
+        return ignoreLookAndFeel;
+    }
 
-	/**
-	 * @param ignoreLookAndFeel the ignoreLookAndFeel to set
-	 */
-	public static void setIgnoreLookAndFeel(boolean ignoreLookAndFeel) {
-		Kernel.ignoreLookAndFeel = ignoreLookAndFeel;
-	}
+    /**
+     * @param ignoreLookAndFeel
+     *            the ignoreLookAndFeel to set
+     */
+    public static void setIgnoreLookAndFeel(boolean ignoreLookAndFeel) {
+        Kernel.ignoreLookAndFeel = ignoreLookAndFeel;
+    }
 
-	/**
-	 * @return the noUpdate
-	 */
-	public static boolean isNoUpdate() {
-		return noUpdate;
-	}
+    /**
+     * @return the noUpdate
+     */
+    public static boolean isNoUpdate() {
+        return noUpdate;
+    }
 
-	/**
-	 * @param noUpdate the noUpdate to set
-	 */
-	public static void setNoUpdate(boolean noUpdate) {
-		Kernel.noUpdate = noUpdate;
-	}
-	
-	private static Logger getLogger() {
-		if (logger == null) {
-			logger = new Logger();
-		}
-		return logger;
-	}
+    /**
+     * @param noUpdate
+     *            the noUpdate to set
+     */
+    public static void setNoUpdate(boolean noUpdate) {
+        Kernel.noUpdate = noUpdate;
+    }
+
+    private static Logger getLogger() {
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
+    }
 }

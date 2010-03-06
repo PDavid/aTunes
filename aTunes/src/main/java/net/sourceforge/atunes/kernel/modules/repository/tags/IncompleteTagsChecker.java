@@ -35,10 +35,10 @@ import net.sourceforge.atunes.model.TreeObject;
 
 public class IncompleteTagsChecker {
 
-	private IncompleteTagsChecker() {
-		
-	}
-	
+    private IncompleteTagsChecker() {
+
+    }
+
     /**
      * Returns a list with default attributes to highlight folders
      * 
@@ -134,8 +134,9 @@ public class IncompleteTagsChecker {
     }
 
     /**
-     * Returns <code>true</code> if tree object contains audio objects with incomplete
-     * tags
+     * Returns <code>true</code> if tree object contains audio objects with
+     * incomplete tags
+     * 
      * @param treeObject
      * @return
      */
@@ -147,18 +148,17 @@ public class IncompleteTagsChecker {
         }
         return false;
     }
-    
+
     /**
-     * Returns <code>true</code> if object has incomplete tag
-     * tags
+     * Returns <code>true</code> if object has incomplete tag tags
      * 
      * @return
      */
     public static boolean hasIncompleteTags(AudioObject audioObject) {
-    	if (audioObject instanceof AudioFile) {
-    		return !hasTagAttributesFilled((AudioFile)audioObject);
-    	}
-    	return false;
+        if (audioObject instanceof AudioFile) {
+            return !hasTagAttributesFilled((AudioFile) audioObject);
+        }
+        return false;
     }
 
 }

@@ -35,9 +35,9 @@ public class Columns {
     private static List<Class<? extends Column>> classes;
 
     private Columns() {
-    	
+
     }
-    
+
     private static List<Class<? extends Column>> getClasses() {
         if (classes == null) {
             classes = new ArrayList<Class<? extends Column>>();

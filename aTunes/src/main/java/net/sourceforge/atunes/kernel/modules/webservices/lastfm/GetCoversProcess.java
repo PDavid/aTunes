@@ -66,20 +66,20 @@ public class GetCoversProcess extends Process {
         long coversRetrieved = 0;
         List<Album> albums = new ArrayList<Album>(artist.getAlbums().values());
         for (int i = 0; i < albums.size() && !isCanceled(); i++) {
-        	Album album = albums.get(i);
-        	if (!album.hasCoverDownloaded()) {
-        		Image albumImage = LastFmService.getInstance().getAlbumImage(artist.getName(), album.getName());
-        		if (albumImage != null) {
-        			try {
-        				ImageUtils.writeImageToFile(albumImage, AudioFilePictureUtils.getFileNameForCover(album.getAudioFiles().get(0)));
-        			} catch (IOException e1) {
-        				new Logger().error(LogCategories.CONTEXT, 
-        						StringUtils.getString("Error writing image for artist: ", artist.getName(), " album: ", album.getName(), " Error: ", e1.getMessage()));
-        			}
-        		}
-        	}
-        	coversRetrieved++;
-        	setCurrentProgress(coversRetrieved);
+            Album album = albums.get(i);
+            if (!album.hasCoverDownloaded()) {
+                Image albumImage = LastFmService.getInstance().getAlbumImage(artist.getName(), album.getName());
+                if (albumImage != null) {
+                    try {
+                        ImageUtils.writeImageToFile(albumImage, AudioFilePictureUtils.getFileNameForCover(album.getAudioFiles().get(0)));
+                    } catch (IOException e1) {
+                        new Logger().error(LogCategories.CONTEXT, StringUtils.getString("Error writing image for artist: ", artist.getName(), " album: ", album.getName(),
+                                " Error: ", e1.getMessage()));
+                    }
+                }
+            }
+            coversRetrieved++;
+            setCurrentProgress(coversRetrieved);
         }
 
         return true;

@@ -231,7 +231,7 @@ public abstract class Tag implements Serializable {
 
     /**
      * Gets the date.
-     *
+     * 
      * @return the date
      */
     public Date getDate() {
@@ -353,7 +353,7 @@ public abstract class Tag implements Serializable {
 
     /**
      * Sets the date.
-     *
+     * 
      * @param date
      *            the new date
      */

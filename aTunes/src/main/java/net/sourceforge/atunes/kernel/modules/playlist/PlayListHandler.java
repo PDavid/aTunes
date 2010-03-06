@@ -56,26 +56,26 @@ import net.sourceforge.atunes.utils.StringUtils;
 public final class PlayListHandler extends Handler implements AudioFilesRemovedListener, PlayListEventListener {
 
     private static class RowListComparator implements Comparator<Integer> {
-		private final boolean up;
+        private final boolean up;
 
-		private RowListComparator(boolean up) {
-			this.up = up;
-		}
+        private RowListComparator(boolean up) {
+            this.up = up;
+        }
 
-		@Override
-		public int compare(Integer o1, Integer o2) {
-		    return (up ? 1 : -1) * o1.compareTo(o2);
-		}
-	}
+        @Override
+        public int compare(Integer o1, Integer o2) {
+            return (up ? 1 : -1) * o1.compareTo(o2);
+        }
+    }
 
-	private static class PreviousInitializationTaskRunnable implements Runnable {
-		@Override
-		public void run() {
-		    playListsRetrievedFromCache = ApplicationStateHandler.getInstance().retrievePlayListsCache();
-		}
-	}
+    private static class PreviousInitializationTaskRunnable implements Runnable {
+        @Override
+        public void run() {
+            playListsRetrievedFromCache = ApplicationStateHandler.getInstance().retrievePlayListsCache();
+        }
+    }
 
-	/** Singleton instance. */
+    /** Singleton instance. */
     private static PlayListHandler instance = new PlayListHandler();
 
     /**

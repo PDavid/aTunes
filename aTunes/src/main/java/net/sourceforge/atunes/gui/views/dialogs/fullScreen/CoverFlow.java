@@ -184,16 +184,17 @@ public final class CoverFlow extends JPanel {
             return Constants.FULL_SCREEN_COVER * 9 / 16;
         }
     }
-    
+
     /**
      * Getter for logger
+     * 
      * @return
      */
     private Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
     }
 
 }

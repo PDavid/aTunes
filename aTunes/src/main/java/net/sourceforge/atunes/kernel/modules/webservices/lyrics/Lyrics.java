@@ -84,7 +84,7 @@ public class Lyrics implements Serializable {
                 return false;
             }
         } else if (!lyrics.equals(other.lyrics)) {
-            return false; 
+            return false;
         }
         if (url == null) {
             if (other.url != null) {

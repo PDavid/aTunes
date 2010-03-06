@@ -46,7 +46,7 @@ import org.jdesktop.swingx.combobox.ListComboBoxModel;
  */
 public class TagAttributesReviewed {
 
-	/**
+    /**
      * List of tag attributes to be reviewed
      */
     private List<TagAttributeReviewed> tagAttributes;
@@ -147,24 +147,24 @@ public class TagAttributesReviewed {
      * @return
      */
     public Tag getTagForAudioFile(AudioFile file) {
-    	File parentFolder = file.getFile().getParentFile();
-    	Tag tag = null;
-    	for (TagAttributeReviewed tagAttribute : getTagAttributes()) {
-    		if (tagAttribute.getChangesMade().containsKey(parentFolder)) {
-    			if (tag == null) {
-    				tag = file.getTag() != null ? file.getTag() : new DefaultTag();
-    			}
-    			tag = tagAttribute.changeTag(tag, tagAttribute.getChangesMade().get(parentFolder));
-    		}
-    	}
-    	return tag;
+        File parentFolder = file.getFile().getParentFile();
+        Tag tag = null;
+        for (TagAttributeReviewed tagAttribute : getTagAttributes()) {
+            if (tagAttribute.getChangesMade().containsKey(parentFolder)) {
+                if (tag == null) {
+                    tag = file.getTag() != null ? file.getTag() : new DefaultTag();
+                }
+                tag = tagAttribute.changeTag(tag, tagAttribute.getChangesMade().get(parentFolder));
+            }
+        }
+        return tag;
     }
 
     public TableCellEditor getCellEditorForTagAttribute(int index) {
-    	if (getTagAttributes().size() <= index) {
-    		return null;
-    	}
-    	return getTagAttributes().get(index).getCellEditor();
+        if (getTagAttributes().size() <= index) {
+            return null;
+        }
+        return getTagAttributes().get(index).getCellEditor();
     }
 
     /**
@@ -174,174 +174,169 @@ public class TagAttributesReviewed {
      * @return
      */
     public int getTagAttributeIndex(String tagAttributeName) {
-    	for (int i = 0; i < tagAttributes.size(); i++) {
-    		if (tagAttributes.get(i).getName().equals(tagAttributeName)) {
-    			return i;
-    		}
-    	}
-    	return -1;
+        for (int i = 0; i < tagAttributes.size(); i++) {
+            if (tagAttributes.get(i).getName().equals(tagAttributeName)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
-    private static final class DiscNumberTagAttributeReviewed extends
-    TagAttributeReviewed {
-    	private DiscNumberTagAttributeReviewed(String name) {
-    		super(name);
-    	}
+    private static final class DiscNumberTagAttributeReviewed extends TagAttributeReviewed {
+        private DiscNumberTagAttributeReviewed(String name) {
+            super(name);
+        }
 
-    	@Override
-    	String getValue(AudioFile audioFile) {
-    		return audioFile.getDiscNumber() > 0 ? String.valueOf(audioFile.getDiscNumber()) : "";
-    	}
+        @Override
+        String getValue(AudioFile audioFile) {
+            return audioFile.getDiscNumber() > 0 ? String.valueOf(audioFile.getDiscNumber()) : "";
+        }
 
-    	@Override
-    	Tag changeTag(Tag tag, String value) {
-    		try {
-    			tag.setDiscNumber(Integer.parseInt(value));
-    		} catch (NumberFormatException e) {
-    			tag.setDiscNumber(0);
-    		}
-    		return tag;
-    	}
+        @Override
+        Tag changeTag(Tag tag, String value) {
+            try {
+                tag.setDiscNumber(Integer.parseInt(value));
+            } catch (NumberFormatException e) {
+                tag.setDiscNumber(0);
+            }
+            return tag;
+        }
     }
 
     private static final class YearTagAttributeReviewed extends TagAttributeReviewed {
-    	private YearTagAttributeReviewed(String name) {
-    		super(name);
-    	}
+        private YearTagAttributeReviewed(String name) {
+            super(name);
+        }
 
-    	@Override
-    	String getValue(AudioFile audioFile) {
-    		return audioFile.getYear();
-    	}
+        @Override
+        String getValue(AudioFile audioFile) {
+            return audioFile.getYear();
+        }
 
-    	@Override
-    	Tag changeTag(Tag tag, String value) {
-    		try {
-    			tag.setYear(Integer.parseInt(value));
-    		} catch (NumberFormatException e) {
-    			tag.setYear(0);
-    		}
-    		return tag;
-    	}
+        @Override
+        Tag changeTag(Tag tag, String value) {
+            try {
+                tag.setYear(Integer.parseInt(value));
+            } catch (NumberFormatException e) {
+                tag.setYear(0);
+            }
+            return tag;
+        }
     }
 
     private static final class GenreTagAttributeReviewed extends TagAttributeReviewed {
-    	private GenreTagAttributeReviewed(String name) {
-    		super(name);
-    	}
+        private GenreTagAttributeReviewed(String name) {
+            super(name);
+        }
 
-    	@Override
-    	String getValue(AudioFile audioFile) {
-    		// we use getTag().getGenre() to avoid returning unknown genre
-    		return audioFile.getTag() != null ? audioFile.getTag().getGenre() : null;
-    	}
+        @Override
+        String getValue(AudioFile audioFile) {
+            // we use getTag().getGenre() to avoid returning unknown genre
+            return audioFile.getTag() != null ? audioFile.getTag().getGenre() : null;
+        }
 
-    	@Override
-    	Tag changeTag(Tag tag, String value) {
-    		tag.setGenre(value);
-    		return tag;
-    	}
+        @Override
+        Tag changeTag(Tag tag, String value) {
+            tag.setGenre(value);
+            return tag;
+        }
 
-    	@Override
-    	TableCellEditor getCellEditor() {
-    		// Add genres combo box items
-    		List<String> genresSorted = Arrays.asList(Tag.genres);
-    		Collections.sort(genresSorted);
-    		JComboBox genreComboBox = new JComboBox(new ListComboBoxModel<String>(genresSorted));
-    		genreComboBox.setEditable(true);
-    		// Activate auto completion of genres
-    		// Automcomplete seems to work incorrectly when using it in a cell editor
-    		//AutoCompleteDecorator.decorate(genreComboBox);
-    		return new DefaultCellEditor(genreComboBox);
-    	}
+        @Override
+        TableCellEditor getCellEditor() {
+            // Add genres combo box items
+            List<String> genresSorted = Arrays.asList(Tag.genres);
+            Collections.sort(genresSorted);
+            JComboBox genreComboBox = new JComboBox(new ListComboBoxModel<String>(genresSorted));
+            genreComboBox.setEditable(true);
+            // Activate auto completion of genres
+            // Automcomplete seems to work incorrectly when using it in a cell editor
+            //AutoCompleteDecorator.decorate(genreComboBox);
+            return new DefaultCellEditor(genreComboBox);
+        }
     }
 
     private static final class AlbumTagAttributeReviewed extends TagAttributeReviewed {
-    	private AlbumTagAttributeReviewed(String name) {
-    		super(name);
-    	}
+        private AlbumTagAttributeReviewed(String name) {
+            super(name);
+        }
 
-    	@Override
-    	String getValue(AudioFile audioFile) {
-    		// we use getTag().getAlbum() to avoid returning unknown album
-    		return audioFile.getTag() != null ? audioFile.getTag().getAlbum() : null;
-    	}
+        @Override
+        String getValue(AudioFile audioFile) {
+            // we use getTag().getAlbum() to avoid returning unknown album
+            return audioFile.getTag() != null ? audioFile.getTag().getAlbum() : null;
+        }
 
-    	@Override
-    	Tag changeTag(Tag tag, String value) {
-    		tag.setAlbum(value);
-    		return tag;
-    	}
+        @Override
+        Tag changeTag(Tag tag, String value) {
+            tag.setAlbum(value);
+            return tag;
+        }
     }
 
-    private static final class ComposerTagAttributeReviewed extends
-    TagAttributeReviewed {
-    	private ComposerTagAttributeReviewed(String name) {
-    		super(name);
-    	}
+    private static final class ComposerTagAttributeReviewed extends TagAttributeReviewed {
+        private ComposerTagAttributeReviewed(String name) {
+            super(name);
+        }
 
-    	@Override
-    	String getValue(AudioFile audioFile) {
-    		return audioFile.getComposer();
-    	}
+        @Override
+        String getValue(AudioFile audioFile) {
+            return audioFile.getComposer();
+        }
 
-    	@Override
-    	Tag changeTag(Tag tag, String value) {
-    		tag.setComposer(value);
-    		return tag;
-    	}
+        @Override
+        Tag changeTag(Tag tag, String value) {
+            tag.setComposer(value);
+            return tag;
+        }
     }
 
-    private static final class AlbumArtistTagAttributeReviewed extends
-    TagAttributeReviewed {
-    	private AlbumArtistTagAttributeReviewed(String name) {
-    		super(name);
-    	}
+    private static final class AlbumArtistTagAttributeReviewed extends TagAttributeReviewed {
+        private AlbumArtistTagAttributeReviewed(String name) {
+            super(name);
+        }
 
-    	@Override
-    	String getValue(AudioFile audioFile) {
-    		return audioFile.getAlbumArtist();
-    	}
+        @Override
+        String getValue(AudioFile audioFile) {
+            return audioFile.getAlbumArtist();
+        }
 
-    	@Override
-    	Tag changeTag(Tag tag, String value) {
-    		tag.setAlbumArtist(value);
-    		return tag;
-    	}
+        @Override
+        Tag changeTag(Tag tag, String value) {
+            tag.setAlbumArtist(value);
+            return tag;
+        }
     }
 
-    private static final class ArtistTagAttributeReviewed extends
-    TagAttributeReviewed {
-    	private ArtistTagAttributeReviewed(String name) {
-    		super(name);
-    	}
+    private static final class ArtistTagAttributeReviewed extends TagAttributeReviewed {
+        private ArtistTagAttributeReviewed(String name) {
+            super(name);
+        }
 
-    	@Override
-    	String getValue(AudioFile audioFile) {
-    		// we use getTag().getArtist() to avoid returning unknown artist
-    		return audioFile.getTag() != null ? audioFile.getTag().getArtist() : null;
-    	}
+        @Override
+        String getValue(AudioFile audioFile) {
+            // we use getTag().getArtist() to avoid returning unknown artist
+            return audioFile.getTag() != null ? audioFile.getTag().getArtist() : null;
+        }
 
-    	@Override
-    	Tag changeTag(Tag tag, String value) {
-    		tag.setArtist(value);
-    		return tag;
-    	}
+        @Override
+        Tag changeTag(Tag tag, String value) {
+            tag.setArtist(value);
+            return tag;
+        }
 
-    	@Override
-    	TableCellEditor getCellEditor() {
-    		List<Artist> artistList = RepositoryHandler.getInstance().getArtists();
-    		List<String> artistNames = new ArrayList<String>();
-    		for (Artist a : artistList) {
-    			artistNames.add(a.getName());
-    		}
-    		JComboBox artistsCombo = new JComboBox(new ListComboBoxModel<String>(artistNames));
-    		artistsCombo.setEditable(true);
-    		// Automcomplete seems to work incorrectly when using it in a cell editor
-    		// AutoCompleteDecorator.decorate(artistsCombo);
-    		return new DefaultCellEditor(artistsCombo);
-    	}
+        @Override
+        TableCellEditor getCellEditor() {
+            List<Artist> artistList = RepositoryHandler.getInstance().getArtists();
+            List<String> artistNames = new ArrayList<String>();
+            for (Artist a : artistList) {
+                artistNames.add(a.getName());
+            }
+            JComboBox artistsCombo = new JComboBox(new ListComboBoxModel<String>(artistNames));
+            artistsCombo.setEditable(true);
+            // Automcomplete seems to work incorrectly when using it in a cell editor
+            // AutoCompleteDecorator.decorate(artistsCombo);
+            return new DefaultCellEditor(artistsCombo);
+        }
     }
-
 
 }

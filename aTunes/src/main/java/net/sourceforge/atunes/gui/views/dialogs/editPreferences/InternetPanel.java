@@ -49,7 +49,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 public final class InternetPanel extends PreferencesPanel {
 
     private static final long serialVersionUID = -1872565673079044088L;
-    
+
     private Logger logger;
 
     private JRadioButton noProxyRadioButton;
@@ -289,7 +289,7 @@ public final class InternetPanel extends PreferencesPanel {
     public ImageIcon getIcon() {
         return Images.getImage(Images.NETWORK_LITTLE);
     }
-    
+
     /**
      * Getter for logger
      * 
@@ -301,6 +301,5 @@ public final class InternetPanel extends PreferencesPanel {
         }
         return logger;
     }
-
 
 }

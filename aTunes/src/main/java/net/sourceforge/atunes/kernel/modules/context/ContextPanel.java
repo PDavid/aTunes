@@ -175,7 +175,7 @@ public abstract class ContextPanel {
         JXTaskPaneContainer container = new JXTaskPaneContainer();
         container.setOpaque(false);
         for (ContextPanelContent content : getContents()) {
-        	JXTaskPane taskPane = new CustomJXTaskPane();
+            JXTaskPane taskPane = new CustomJXTaskPane();
             content.setParentTaskPane(taskPane);
             taskPane.setTitle(content.getContentName());
 

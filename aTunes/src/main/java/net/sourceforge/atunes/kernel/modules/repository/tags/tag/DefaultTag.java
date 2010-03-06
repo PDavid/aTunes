@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import net.sourceforge.atunes.utils.DateUtils;
+
 import org.jaudiotagger.tag.FieldKey;
 
 /**
@@ -230,8 +231,7 @@ public class DefaultTag extends Tag {
     }
 
     private String getTagDateField(org.jaudiotagger.tag.Tag tag) {
-        if (tag instanceof org.jaudiotagger.tag.vorbiscomment.VorbisCommentTag ||
-            tag instanceof org.jaudiotagger.tag.flac.FlacTag) {
+        if (tag instanceof org.jaudiotagger.tag.vorbiscomment.VorbisCommentTag || tag instanceof org.jaudiotagger.tag.flac.FlacTag) {
             return tag.getFirst("DATE");
         } else if (tag instanceof org.jaudiotagger.tag.id3.ID3v24Tag) {
             return tag.getFirst("TDRC");

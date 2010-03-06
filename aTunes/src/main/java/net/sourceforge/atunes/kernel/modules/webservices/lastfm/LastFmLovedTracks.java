@@ -54,9 +54,9 @@ public class LastFmLovedTracks {
     private static final String NEXT_LINK_CLASS = "class=\"nextlink\"";
 
     private LastFmLovedTracks() {
-    	
+
     }
-    
+
     /**
      * Returns a list of loved tracks of given user. Params are used for
      * pagination and must be null in first call

@@ -44,7 +44,7 @@ abstract class MPlayerOutputReader extends Thread {
     private BufferedReader in;
     private int length;
     private int time;
-    
+
     private volatile boolean readStopped = false;
 
     /**
@@ -107,15 +107,15 @@ abstract class MPlayerOutputReader extends Thread {
 
         // End
         if (END_PATTERN.matcher(line).matches()) {
-        	// Playback finished
-        	if (!readStopped) {
-        		getEngine().currentAudioObjectFinished(true);
-        	}
+            // Playback finished
+            if (!readStopped) {
+                getEngine().currentAudioObjectFinished(true);
+            }
         }
     }
-    
+
     protected void stopRead() {
-    	readStopped = true;
+        readStopped = true;
     }
 
     @Override
@@ -149,12 +149,12 @@ abstract class MPlayerOutputReader extends Thread {
             // Length still inaccurate with mp3 VBR files!
             // Apply workaround to get length from audio file properties (read by jaudiotagger) instead of mplayer
             if (readOnlyFromTags) {
-                setLength((int) (audioObject.getDuration() * 1000));
+                setLength((audioObject.getDuration() * 1000));
             } else {
                 setLength((int) (Float.parseFloat(line.substring(line.indexOf('=') + 1)) * 1000.0));
                 if (getLength() == 0) {
                     // Length zero is unlikely, so try if tagging library did not do a better job
-                    setLength((int) (audioObject.getDuration() * 1000));
+                    setLength((audioObject.getDuration() * 1000));
                 }
             }
             getEngine().setCurrentLength(getLength());
@@ -183,13 +183,14 @@ abstract class MPlayerOutputReader extends Thread {
 
     /**
      * Getter for logger
+     * 
      * @return
      */
     protected Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
     }
 
 }

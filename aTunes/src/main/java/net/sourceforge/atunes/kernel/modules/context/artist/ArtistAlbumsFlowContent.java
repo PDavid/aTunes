@@ -46,31 +46,31 @@ import org.jdesktop.swingx.border.DropShadowBorder;
 public class ArtistAlbumsFlowContent extends ContextPanelContent {
 
     private static class CoverMouseAdapter extends MouseAdapter {
-		private final AlbumInfo album;
-		private final JLabel coverLabel;
+        private final AlbumInfo album;
+        private final JLabel coverLabel;
 
-		private CoverMouseAdapter(AlbumInfo album, JLabel coverLabel) {
-			this.album = album;
-			this.coverLabel = coverLabel;
-		}
+        private CoverMouseAdapter(AlbumInfo album, JLabel coverLabel) {
+            this.album = album;
+            this.coverLabel = coverLabel;
+        }
 
-		@Override
-		public void mouseEntered(MouseEvent e) {
-		    coverLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		}
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            coverLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        }
 
-		@Override
-		public void mouseExited(MouseEvent e) {
-		    coverLabel.setCursor(Cursor.getDefaultCursor());
-		}
+        @Override
+        public void mouseExited(MouseEvent e) {
+            coverLabel.setCursor(Cursor.getDefaultCursor());
+        }
 
-		@Override
-		public void mouseClicked(MouseEvent e) {
-		    DesktopUtils.openURL(album.getUrl());
-		}
-	}
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            DesktopUtils.openURL(album.getUrl());
+        }
+    }
 
-	private ScrollableFlowPanel coversPanel;
+    private ScrollableFlowPanel coversPanel;
 
     public ArtistAlbumsFlowContent() {
         super(new ArtistInfoDataSource());
@@ -111,6 +111,7 @@ public class ArtistAlbumsFlowContent extends ContextPanelContent {
         }
     }
 
+    @Override
     protected void clearContextPanelContent() {
         super.clearContextPanelContent();
         coversPanel.removeAll();

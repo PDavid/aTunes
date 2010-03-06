@@ -98,17 +98,17 @@ class FadeAwayRunnable implements Runnable {
         interrupted = true;
         handler.finishedFadeAway();
     }
-    
+
     /**
      * Getter for logger
+     * 
      * @return
      */
     private Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
     }
-
 
 }

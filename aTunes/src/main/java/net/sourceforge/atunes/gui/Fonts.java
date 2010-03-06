@@ -32,7 +32,7 @@ import net.sourceforge.atunes.kernel.modules.state.beans.FontBean;
 public final class Fonts {
 
     private static final boolean USE_FONT_SMOOTHING_SETTINGS_FROM_OS_DEFAULT_VALUE = false;
-	private static final boolean USE_FONT_SMOOTHING_DEFAULT_VALUE = true;
+    private static final boolean USE_FONT_SMOOTHING_DEFAULT_VALUE = true;
 
     private static Font aboutBigFont;
     private static Font appVersionLittleFont;
@@ -97,154 +97,154 @@ public final class Fonts {
             System.setProperty("awt.useSystemAAFontSettings", "lcd");
         }
     }
-    
-	/**
-	 * @return the aboutBigFont
-	 */
-    public static Font getAboutBigFont() {
-    	if (aboutBigFont == null) {
-    		aboutBigFont = font.deriveFont(font.getSize() + 8f);
-    	}
-    	return aboutBigFont;
-    }
-
-	/**
-	 * @return the appVersionLittleFont
-	 */
-	public static Font getAppVersionLittleFont() {
-		if (appVersionLittleFont == null) {
-			appVersionLittleFont = font.deriveFont(font.getSize() + 2f);
-		}
-		return appVersionLittleFont;
-	}
-
-	/**
-	 * @return the buttonFont
-	 */
-	public static Font getButtonFont() {
-		if (buttonFont == null) {
-			buttonFont = font;
-		}
-		return buttonFont;
-	}
-
-	/**
-	 * @return the generalBoldFont
-	 */
-	public static Font getGeneralBoldFont() {
-		if (generalBoldFont == null) {
-	        generalBoldFont = font.deriveFont(Font.BOLD, font.getSize() + 1);
-		}
-		return generalBoldFont;
-	}
-
-	/**
-	 * @return the smallFont
-	 */
-	public static Font getSmallFont() {
-		if (smallFont == null) {
-	        smallFont = font.deriveFont(font.getSize() - 1f);
-		}
-		return smallFont;
-	}
-
-	/**
-	 * @return the playListFont
-	 */
-	public static Font getPlayListFont() {
-		if (playListFont == null) {
-	        playListFont = font;
-		}
-		return playListFont;
-	}
-
-	/**
-	 * @return the playListSelectedItemFont
-	 */
-	public static Font getPlayListSelectedItemFont() {
-		if (playListSelectedItemFont == null) {
-	        playListSelectedItemFont = getPlayListFont().deriveFont(Font.BOLD);
-		}
-		return playListSelectedItemFont;
-	}
-
-	/**
-	 * @return the contextInformationBigFont
-	 */
-	public static Font getContextInformationBigFont() {
-		if (contextInformationBigFont == null) {
-	        contextInformationBigFont = font.deriveFont(font.getSize() + 8f);
-		}
-		return contextInformationBigFont;
-	}
 
     /**
-	 * @return the propertiesDialogBigFont
-	 */
-	public static Font getPropertiesDialogBigFont() {
-		if (propertiesDialogBigFont == null) {
-	        propertiesDialogBigFont = font.deriveFont(font.getSize() + 4f);
-		}
-		return propertiesDialogBigFont;
-	}
+     * @return the aboutBigFont
+     */
+    public static Font getAboutBigFont() {
+        if (aboutBigFont == null) {
+            aboutBigFont = font.deriveFont(font.getSize() + 8f);
+        }
+        return aboutBigFont;
+    }
 
-	/**
-	 * @return the chartTitleFont
-	 */
-	public static Font getChartTitleFont() {
-		if (chartTitleFont == null) {
-	        chartTitleFont = font.deriveFont(font.getSize() - 1f);
-		}
-		return chartTitleFont;
-	}
+    /**
+     * @return the appVersionLittleFont
+     */
+    public static Font getAppVersionLittleFont() {
+        if (appVersionLittleFont == null) {
+            appVersionLittleFont = font.deriveFont(font.getSize() + 2f);
+        }
+        return appVersionLittleFont;
+    }
 
-	/**
-	 * @return the chartTickLabelFont
-	 */
-	public static Font getChartTickLabelFont() {
-		if (chartTickLabelFont == null) {
-	        chartTickLabelFont = font.deriveFont(font.getSize() - 2f);
-		}
-		return chartTickLabelFont;
-	}
+    /**
+     * @return the buttonFont
+     */
+    public static Font getButtonFont() {
+        if (buttonFont == null) {
+            buttonFont = font;
+        }
+        return buttonFont;
+    }
 
-	/**
-	 * @return the osdLine1Font
-	 */
-	public static Font getOsdLine1Font() {
-		if (osdLine1Font == null) {
-	        osdLine1Font = font.deriveFont(Font.BOLD, font.getSize() + 4f);
-		}
-		return osdLine1Font;
-	}
+    /**
+     * @return the generalBoldFont
+     */
+    public static Font getGeneralBoldFont() {
+        if (generalBoldFont == null) {
+            generalBoldFont = font.deriveFont(Font.BOLD, font.getSize() + 1);
+        }
+        return generalBoldFont;
+    }
 
-	/**
-	 * @return the osdLine2Font
-	 */
-	public static Font getOsdLine2Font() {
-		if (osdLine2Font == null) {
-	        osdLine2Font = font.deriveFont(font.getSize() + 2f);
-		}
-		return osdLine2Font;
-	}
+    /**
+     * @return the smallFont
+     */
+    public static Font getSmallFont() {
+        if (smallFont == null) {
+            smallFont = font.deriveFont(font.getSize() - 1f);
+        }
+        return smallFont;
+    }
 
-	/**
-	 * @return the osdLine3Font
-	 */
-	public static Font getOsdLine3Font() {
-		if (osdLine3Font == null) {
-			osdLine3Font = getOsdLine2Font();
-		}
-		return osdLine3Font;
-	}
+    /**
+     * @return the playListFont
+     */
+    public static Font getPlayListFont() {
+        if (playListFont == null) {
+            playListFont = font;
+        }
+        return playListFont;
+    }
 
-	/**
-	 * @return the fullScreenLine1Font
-	 */
-	public static Font getFullScreenLine1Font() {
-		if (fullScreenLine1Font == null) {
-	        fullScreenLine1Font = font.deriveFont(font.getSize() + 25f);
-		}
-		return fullScreenLine1Font;
-	}
+    /**
+     * @return the playListSelectedItemFont
+     */
+    public static Font getPlayListSelectedItemFont() {
+        if (playListSelectedItemFont == null) {
+            playListSelectedItemFont = getPlayListFont().deriveFont(Font.BOLD);
+        }
+        return playListSelectedItemFont;
+    }
+
+    /**
+     * @return the contextInformationBigFont
+     */
+    public static Font getContextInformationBigFont() {
+        if (contextInformationBigFont == null) {
+            contextInformationBigFont = font.deriveFont(font.getSize() + 8f);
+        }
+        return contextInformationBigFont;
+    }
+
+    /**
+     * @return the propertiesDialogBigFont
+     */
+    public static Font getPropertiesDialogBigFont() {
+        if (propertiesDialogBigFont == null) {
+            propertiesDialogBigFont = font.deriveFont(font.getSize() + 4f);
+        }
+        return propertiesDialogBigFont;
+    }
+
+    /**
+     * @return the chartTitleFont
+     */
+    public static Font getChartTitleFont() {
+        if (chartTitleFont == null) {
+            chartTitleFont = font.deriveFont(font.getSize() - 1f);
+        }
+        return chartTitleFont;
+    }
+
+    /**
+     * @return the chartTickLabelFont
+     */
+    public static Font getChartTickLabelFont() {
+        if (chartTickLabelFont == null) {
+            chartTickLabelFont = font.deriveFont(font.getSize() - 2f);
+        }
+        return chartTickLabelFont;
+    }
+
+    /**
+     * @return the osdLine1Font
+     */
+    public static Font getOsdLine1Font() {
+        if (osdLine1Font == null) {
+            osdLine1Font = font.deriveFont(Font.BOLD, font.getSize() + 4f);
+        }
+        return osdLine1Font;
+    }
+
+    /**
+     * @return the osdLine2Font
+     */
+    public static Font getOsdLine2Font() {
+        if (osdLine2Font == null) {
+            osdLine2Font = font.deriveFont(font.getSize() + 2f);
+        }
+        return osdLine2Font;
+    }
+
+    /**
+     * @return the osdLine3Font
+     */
+    public static Font getOsdLine3Font() {
+        if (osdLine3Font == null) {
+            osdLine3Font = getOsdLine2Font();
+        }
+        return osdLine3Font;
+    }
+
+    /**
+     * @return the fullScreenLine1Font
+     */
+    public static Font getFullScreenLine1Font() {
+        if (fullScreenLine1Font == null) {
+            fullScreenLine1Font = font.deriveFont(font.getSize() + 25f);
+        }
+        return fullScreenLine1Font;
+    }
 }

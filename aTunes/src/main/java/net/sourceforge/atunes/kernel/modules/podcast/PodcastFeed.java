@@ -302,16 +302,17 @@ public class PodcastFeed implements TreeObject, Serializable {
         // TODO Auto-generated method stub
         return false;
     }
-    
+
     /**
      * Getter for logger
+     * 
      * @return
      */
     private Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
     }
 
 }

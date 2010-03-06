@@ -31,11 +31,11 @@ import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
  */
 public abstract class CdToWavConverter {
 
-	private ProgressListener listener;
-	private NoCdListener noCdListener;
-	private Process process;
+    private ProgressListener listener;
+    private NoCdListener noCdListener;
+    private Process process;
     // Cd must be initialized here, otherwise it wont work
-	private CDInfo cdInfo = new CDInfo();
+    private CDInfo cdInfo = new CDInfo();
 
     /*
      * Public methods
@@ -126,46 +126,48 @@ public abstract class CdToWavConverter {
         this.noCdListener = noCdListener;
     }
 
-	/**
-	 * @return the process
-	 */
-	protected Process getProcess() {
-		return process;
-	}
+    /**
+     * @return the process
+     */
+    protected Process getProcess() {
+        return process;
+    }
 
-	/**
-	 * @param process the process to set
-	 */
-	protected void setProcess(Process process) {
-		this.process = process;
-	}
+    /**
+     * @param process
+     *            the process to set
+     */
+    protected void setProcess(Process process) {
+        this.process = process;
+    }
 
-	/**
-	 * @return the listener
-	 */
-	protected ProgressListener getListener() {
-		return listener;
-	}
+    /**
+     * @return the listener
+     */
+    protected ProgressListener getListener() {
+        return listener;
+    }
 
-	/**
-	 * @return the cd
-	 */
-	protected CDInfo getCdInfo() {
-		return cdInfo;
-	}
+    /**
+     * @return the cd
+     */
+    protected CDInfo getCdInfo() {
+        return cdInfo;
+    }
 
-	/**
-	 * @param cdInfo the cdInfo to set
-	 */
-	protected void setCdInfo(CDInfo cdInfo) {
-		this.cdInfo = cdInfo;
-	}
+    /**
+     * @param cdInfo
+     *            the cdInfo to set
+     */
+    protected void setCdInfo(CDInfo cdInfo) {
+        this.cdInfo = cdInfo;
+    }
 
-	/**
-	 * @return the noCdListener
-	 */
-	protected NoCdListener getNoCdListener() {
-		return noCdListener;
-	}
+    /**
+     * @return the noCdListener
+     */
+    protected NoCdListener getNoCdListener() {
+        return noCdListener;
+    }
 
 }

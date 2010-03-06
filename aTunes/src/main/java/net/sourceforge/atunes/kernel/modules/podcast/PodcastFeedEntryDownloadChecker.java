@@ -37,39 +37,38 @@ import net.sourceforge.atunes.misc.log.Logger;
 public class PodcastFeedEntryDownloadChecker implements Runnable {
 
     private static class SetDownloadedRunnable implements Runnable {
-		private final Map<PodcastFeedEntry, Boolean> downloaded;
+        private final Map<PodcastFeedEntry, Boolean> downloaded;
 
-		private SetDownloadedRunnable(Map<PodcastFeedEntry, Boolean> downloaded) {
-			this.downloaded = downloaded;
-		}
+        private SetDownloadedRunnable(Map<PodcastFeedEntry, Boolean> downloaded) {
+            this.downloaded = downloaded;
+        }
 
-		@Override
-		public void run() {
-		    for (Entry<PodcastFeedEntry, Boolean> entry : downloaded.entrySet()) {
-		        entry.getKey().setDownloaded(entry.getValue());
-		    }
-		    GuiHandler.getInstance().getNavigationTablePanel().getNavigationTable().repaint();
-		}
-	}
+        @Override
+        public void run() {
+            for (Entry<PodcastFeedEntry, Boolean> entry : downloaded.entrySet()) {
+                entry.getKey().setDownloaded(entry.getValue());
+            }
+            GuiHandler.getInstance().getNavigationTablePanel().getNavigationTable().repaint();
+        }
+    }
 
-	private static class GetPodcastFeedEntriesFilesRunnable implements Runnable {
-		private final Map<PodcastFeedEntry, File> files;
+    private static class GetPodcastFeedEntriesFilesRunnable implements Runnable {
+        private final Map<PodcastFeedEntry, File> files;
 
-		private GetPodcastFeedEntriesFilesRunnable(
-				Map<PodcastFeedEntry, File> files) {
-			this.files = files;
-		}
+        private GetPodcastFeedEntriesFilesRunnable(Map<PodcastFeedEntry, File> files) {
+            this.files = files;
+        }
 
-		@Override
-		public void run() {
-		    for (PodcastFeedEntry podcastFeedEntry : PodcastFeedHandler.getInstance().getPodcastFeedEntries()) {
-		        File f = new File(PodcastFeedHandler.getInstance().getDownloadPath(podcastFeedEntry));
-		        files.put(podcastFeedEntry, f);
-		    }
-		}
-	}
+        @Override
+        public void run() {
+            for (PodcastFeedEntry podcastFeedEntry : PodcastFeedHandler.getInstance().getPodcastFeedEntries()) {
+                File f = new File(PodcastFeedHandler.getInstance().getDownloadPath(podcastFeedEntry));
+                files.put(podcastFeedEntry, f);
+            }
+        }
+    }
 
-	private Logger logger;
+    private Logger logger;
 
     @Override
     public void run() {
@@ -87,16 +86,17 @@ public class PodcastFeedEntryDownloadChecker implements Runnable {
         }
         SwingUtilities.invokeLater(new SetDownloadedRunnable(downloaded));
     }
-    
+
     /**
      * Getter for logger
+     * 
      * @return
      */
     private Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
     }
 
 }

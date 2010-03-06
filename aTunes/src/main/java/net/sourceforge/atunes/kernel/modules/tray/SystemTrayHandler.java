@@ -183,14 +183,15 @@ public final class SystemTrayHandler extends Handler {
             getLogger().error(LogCategories.TRAY, "No system tray supported");
         }
     }
-    
+
     /**
      * Adds given tray icon
+     * 
      * @param icon
      */
     private void addTrayIcon(TrayIcon icon) {
-    	try {
-    		tray.add(icon);
+        try {
+            tray.add(icon);
         } catch (AWTException e) {
             getLogger().error(LogCategories.TRAY, e);
         }
@@ -204,13 +205,13 @@ public final class SystemTrayHandler extends Handler {
      */
     public void setPlaying(boolean playing) {
         if (playing) {
-           	getPlayMenuItem().setText(I18nUtils.getString("PAUSE"));
-           	getPlayMenuItem().setIcon(Images.getImage(Images.PAUSE_TRAY_MENU));
+            getPlayMenuItem().setText(I18nUtils.getString("PAUSE"));
+            getPlayMenuItem().setIcon(Images.getImage(Images.PAUSE_TRAY_MENU));
             getPlayTrayIcon().setImage(Images.getImage(Images.PAUSE_TRAY).getImage());
         } else {
-           	getPlayMenuItem().setText(I18nUtils.getString("PLAY"));
-           	getPlayMenuItem().setIcon(Images.getImage(Images.PLAY_TRAY_MENU));
-           	getPlayTrayIcon().setImage(Images.getImage(Images.PLAY_TRAY).getImage());
+            getPlayMenuItem().setText(I18nUtils.getString("PLAY"));
+            getPlayMenuItem().setIcon(Images.getImage(Images.PLAY_TRAY_MENU));
+            getPlayTrayIcon().setImage(Images.getImage(Images.PLAY_TRAY).getImage());
         }
 
     }
@@ -272,7 +273,7 @@ public final class SystemTrayHandler extends Handler {
     private void trayIconAdvice() {
         // For some reason, in Linux systems display message causes Swing freeze
         if (SystemProperties.OS != OperatingSystem.LINUX) {
-        	getTrayIcon().displayMessage(Constants.APP_NAME, I18nUtils.getString("TRAY_ICON_MESSAGE"), TrayIcon.MessageType.INFO);
+            getTrayIcon().displayMessage(Constants.APP_NAME, I18nUtils.getString("TRAY_ICON_MESSAGE"), TrayIcon.MessageType.INFO);
         }
     }
 
@@ -281,21 +282,23 @@ public final class SystemTrayHandler extends Handler {
         setTrayIconVisible(newState.isShowSystemTray());
         setTrayPlayerVisible(newState.isShowTrayPlayer());
     }
-    
+
     /**
      * Getter of play menu item
+     * 
      * @return
      */
     private JMenuItem getPlayMenuItem() {
-    	if (playMenuItem == null) {
+        if (playMenuItem == null) {
             playMenuItem = new JMenuItem(Actions.getAction(PlayAction.class));
             playMenuItem.setIcon(Images.getImage(Images.PLAY_TRAY_MENU));
-    	}
-    	return playMenuItem;
+        }
+        return playMenuItem;
     }
-    
+
     /**
      * Getter of stop menu item
+     * 
      * @return
      */
     private JMenuItem getStopMenuItem() {
@@ -304,9 +307,10 @@ public final class SystemTrayHandler extends Handler {
         stop.setIcon(Images.getImage(Images.STOP_TRAY_MENU));
         return stop;
     }
-    
+
     /**
      * Getter of previous menu item
+     * 
      * @return
      */
     private JMenuItem getPreviousMenuItem() {
@@ -315,9 +319,10 @@ public final class SystemTrayHandler extends Handler {
         previous.setIcon(Images.getImage(Images.PREVIOUS_TRAY_MENU));
         return previous;
     }
-    
+
     /**
      * Getter for next menu item
+     * 
      * @return
      */
     private JMenuItem getNextMenuItem() {
@@ -326,110 +331,120 @@ public final class SystemTrayHandler extends Handler {
         next.setIcon(Images.getImage(Images.NEXT_TRAY_MENU));
         return next;
     }
-    
+
     /**
      * Getter for mute menu item
+     * 
      * @return
      */
     private JCheckBoxMenuItem getMuteCheckBoxMenuItem() {
-    	JCheckBoxMenuItem mute = new JCheckBoxMenuItem(Actions.getAction(MuteAction.class));
-    	mute.setText(I18nUtils.getString("MUTE"));
-    	mute.setIcon(Images.getImage(Images.VOLUME_MUTE_TRAY_MENU));
-    	return mute;
+        JCheckBoxMenuItem mute = new JCheckBoxMenuItem(Actions.getAction(MuteAction.class));
+        mute.setText(I18nUtils.getString("MUTE"));
+        mute.setIcon(Images.getImage(Images.VOLUME_MUTE_TRAY_MENU));
+        return mute;
     }
-    
+
     /**
      * Getter for shuffle menu item
+     * 
      * @return
      */
     private JCheckBoxMenuItem getShuffleCheckBoxMenuItem() {
-    	return new JCheckBoxMenuItem(Actions.getAction(ShuffleModeAction.class));
+        return new JCheckBoxMenuItem(Actions.getAction(ShuffleModeAction.class));
     }
-    
+
     /**
      * Getter for repeat menu item
      */
     private JCheckBoxMenuItem getRepeatCheckBoxMenuItem() {
-    	return new JCheckBoxMenuItem(Actions.getAction(RepeatModeAction.class));
+        return new JCheckBoxMenuItem(Actions.getAction(RepeatModeAction.class));
     }
-    
+
     /**
      * Getter for showOSD menu item
+     * 
      * @return
      */
     private JCheckBoxMenuItem getShowOSDCheckBoxMenuItem() {
-    	return new JCheckBoxMenuItem(Actions.getAction(OSDSettingAction.class));
+        return new JCheckBoxMenuItem(Actions.getAction(OSDSettingAction.class));
     }
-    
+
     /**
      * Getter for about menu item
+     * 
      * @return
      */
     private JMenuItem getAboutMenuItem() {
-    	return new JMenuItem(Actions.getAction(ShowAboutAction.class));
+        return new JMenuItem(Actions.getAction(ShowAboutAction.class));
     }
 
     /**
      * Getter for exit menu item
+     * 
      * @return
      */
     private JMenuItem getExitMenuItem() {
-    	return new JMenuItem(Actions.getAction(ExitAction.class));
+        return new JMenuItem(Actions.getAction(ExitAction.class));
     }
-    
+
     /**
      * Getter for trayIcon
+     * 
      * @return
      */
     private JTrayIcon getTrayIcon() {
-    	if (trayIcon == null) {
-    		trayIcon = new JTrayIcon(Images.getImage(Images.APP_ICON_TRAY).getImage(), SystemProperties.OS == OperatingSystem.LINUX, 
-    				Actions.getAction(ToggleWindowVisibilityAction.class));
-    		trayIcon.setToolTip(StringUtils.getString(Constants.APP_NAME, " ", Constants.VERSION.toShortString()));
-    		trayIcon.setJTrayIconJPopupMenu(fillMenu(trayIcon.new JTrayIconPopupMenu()));
-    		trayIcon.setImageAutoSize(true);
-    	} 
-    	return trayIcon;
+        if (trayIcon == null) {
+            trayIcon = new JTrayIcon(Images.getImage(Images.APP_ICON_TRAY).getImage(), SystemProperties.OS == OperatingSystem.LINUX, Actions
+                    .getAction(ToggleWindowVisibilityAction.class));
+            trayIcon.setToolTip(StringUtils.getString(Constants.APP_NAME, " ", Constants.VERSION.toShortString()));
+            trayIcon.setJTrayIconJPopupMenu(fillMenu(trayIcon.new JTrayIconPopupMenu()));
+            trayIcon.setImageAutoSize(true);
+        }
+        return trayIcon;
     }
 
     /**
      * Getter for nextIcon
+     * 
      * @return
      */
     private TrayIcon getNextTrayIcon() {
-    	if (nextIcon == null) {
+        if (nextIcon == null) {
             nextIcon = new ActionTrayIcon(Images.getImage(Images.NEXT_TRAY).getImage(), Actions.getAction(PlayNextAudioObjectAction.class));
             nextIcon.setImageAutoSize(true);
-    	}
-    	return nextIcon;
+        }
+        return nextIcon;
     }
 
     /**
      * Getter for stopIcon
+     * 
      * @return
      */
     private TrayIcon getStopTrayIcon() {
-    	if (stopIcon == null) {
-    	    stopIcon = new ActionTrayIcon(Images.getImage(Images.STOP_TRAY).getImage(), Actions.getAction(StopCurrentAudioObjectAction.class));
-    	    stopIcon.setImageAutoSize(true);
-    	}
-    	return stopIcon;
+        if (stopIcon == null) {
+            stopIcon = new ActionTrayIcon(Images.getImage(Images.STOP_TRAY).getImage(), Actions.getAction(StopCurrentAudioObjectAction.class));
+            stopIcon.setImageAutoSize(true);
+        }
+        return stopIcon;
     }
 
     /**
      * Getter for playIcon
+     * 
      * @return
      */
     private TrayIcon getPlayTrayIcon() {
-    	if (playIcon == null) {
+        if (playIcon == null) {
             playIcon = new ActionTrayIcon(Images.getImage(Images.PLAY_TRAY).getImage(), Actions.getAction(PlayAction.class));
             playIcon.setImageAutoSize(true);
-    	}
-    	return playIcon;
+        }
+        return playIcon;
     }
 
     /**
      * Getter for previousIcon
+     * 
      * @return
      */
     private TrayIcon getPreviousTrayIcon() {
@@ -437,5 +452,5 @@ public final class SystemTrayHandler extends Handler {
         previousIcon.setImageAutoSize(true);
         return previousIcon;
     }
-    
+
 }

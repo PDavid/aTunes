@@ -13,7 +13,7 @@ public class YearTreeCellDecorator extends TreeCellDecorator {
     @Override
     public Component decorateTreeCellComponent(Component component, Object userObject) {
         if (userObject instanceof Year) {
-            ((JLabel)component).setIcon(Images.getImage(Images.DATE));
+            ((JLabel) component).setIcon(Images.getImage(Images.DATE));
         }
         return component;
     }

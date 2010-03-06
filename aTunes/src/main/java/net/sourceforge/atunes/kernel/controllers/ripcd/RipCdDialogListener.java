@@ -103,7 +103,7 @@ public final class RipCdDialogListener extends KeyAdapter implements ActionListe
         if (e.getSource() == ripCdDialog.getFolderName() || e.getSource() == ripCdDialog.getAlbumTextField()) {
             ripCdDialogController.setFolderNameEdited(true);
         }
-        
+
         if (e.getSource() == ripCdDialog.getArtistTextField() || e.getSource() == ripCdDialog.getAlbumTextField()) {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override

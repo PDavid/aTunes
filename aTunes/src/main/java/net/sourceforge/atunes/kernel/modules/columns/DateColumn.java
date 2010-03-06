@@ -19,10 +19,11 @@
  */
 package net.sourceforge.atunes.kernel.modules.columns;
 
-import net.sourceforge.atunes.model.AudioObject;
-
 import java.text.DateFormat;
+
 import javax.swing.SwingConstants;
+
+import net.sourceforge.atunes.model.AudioObject;
 
 public class DateColumn extends Column {
 
@@ -56,6 +57,6 @@ public class DateColumn extends Column {
 
     @Override
     public String getValueForFilter(AudioObject audioObject) {
-    	return dateFormat.format(audioObject.getDate());
+        return dateFormat.format(audioObject.getDate());
     }
 }

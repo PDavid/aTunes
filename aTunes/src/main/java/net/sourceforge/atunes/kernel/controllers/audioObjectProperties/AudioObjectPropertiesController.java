@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.controllers.audioObjectProperties;
 import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.concurrent.ExecutionException;
 
@@ -184,7 +183,8 @@ public final class AudioObjectPropertiesController extends SimpleController<Audi
             }
 
             if (currentAudioObject.getDate() != null) {
-                getComponentControlled().getYearLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("DATE"), ":</b>    ", new SimpleDateFormat().format(currentAudioObject.getDate())));
+                getComponentControlled().getYearLabel().setText(
+                        StringUtils.getString("<html><b>", I18nUtils.getString("DATE"), ":</b>    ", new SimpleDateFormat().format(currentAudioObject.getDate())));
             } else if (!currentAudioObject.getYear().isEmpty()) {
                 getComponentControlled().getYearLabel().setText(StringUtils.getString("<html><b>", I18nUtils.getString("YEAR"), ":</b>    ", currentAudioObject.getYear()));
             } else {

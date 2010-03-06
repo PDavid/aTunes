@@ -274,16 +274,17 @@ public class LameEncoder implements Encoder {
     public String getFormatName() {
         return FORMAT_NAME;
     }
-    
+
     /**
      * Getter for logger
+     * 
      * @return
      */
     private Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
     }
 
 }

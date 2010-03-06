@@ -125,13 +125,13 @@ import org.jdesktop.swingx.error.ErrorInfo;
 public final class GuiHandler extends Handler implements PlaybackStateListener {
 
     private static class RipperCancelAction implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-		    RipperHandler.getInstance().cancelProcess();
-		}
-	}
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            RipperHandler.getInstance().cancelProcess();
+        }
+    }
 
-	private static GuiHandler instance = new GuiHandler();
+    private static GuiHandler instance = new GuiHandler();
 
     private Frame frame;
     private OSDDialog osdDialog;
@@ -1477,5 +1477,5 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
     public boolean isStatsDialogVisible() {
         return statsDialog != null && statsDialog.isVisible();
     }
-    
+
 }

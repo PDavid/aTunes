@@ -643,8 +643,8 @@ public class RepositoryLoader extends Thread {
             double time = timer.stop();
             long files = repository.countFiles();
             double averageFileTime = time / files;
-            getLogger().info(LogCategories.REPOSITORY, StringUtils.getString("Read repository process DONE (", files, " files, ", time, " seconds, ", StringUtils.toString(
-                    averageFileTime, 4), " seconds / file)"));
+            getLogger().info(LogCategories.REPOSITORY,
+                    StringUtils.getString("Read repository process DONE (", files, " files, ", time, " seconds, ", StringUtils.toString(averageFileTime, 4), " seconds / file)"));
 
             notifyFinish();
         }
@@ -819,13 +819,14 @@ public class RepositoryLoader extends Thread {
 
     /**
      * Getter for logger
+     * 
      * @return
      */
     private Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
     }
 
 }

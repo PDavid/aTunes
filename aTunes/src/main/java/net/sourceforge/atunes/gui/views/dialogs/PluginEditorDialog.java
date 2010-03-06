@@ -113,28 +113,27 @@ public class PluginEditorDialog extends CustomModalDialog {
     private static class PluginConfigurationPanel extends JPanel {
 
         private static class TextFieldKeyAdapter extends KeyAdapter {
-			private final JTextField textField;
-			private final PluginProperty<?> property;
+            private final JTextField textField;
+            private final PluginProperty<?> property;
 
-			private TextFieldKeyAdapter(JTextField textField,
-					PluginProperty<?> property) {
-				this.textField = textField;
-				this.property = property;
-			}
+            private TextFieldKeyAdapter(JTextField textField, PluginProperty<?> property) {
+                this.textField = textField;
+                this.property = property;
+            }
 
-			@Override
-			public void keyTyped(KeyEvent e) {
-			    super.keyTyped(e);
-			    SwingUtilities.invokeLater(new Runnable() {
-			        @Override
-			        public void run() {
-			            property.setValue(textField.getText());
-			        }
-			    });
-			}
-		}
+            @Override
+            public void keyTyped(KeyEvent e) {
+                super.keyTyped(e);
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        property.setValue(textField.getText());
+                    }
+                });
+            }
+        }
 
-		private static final long serialVersionUID = 8063088904049173181L;
+        private static final long serialVersionUID = 8063088904049173181L;
 
         private PluginConfiguration configuration;
 

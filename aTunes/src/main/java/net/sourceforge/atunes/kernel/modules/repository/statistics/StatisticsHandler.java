@@ -374,6 +374,7 @@ public final class StatisticsHandler extends Handler {
      */
     private void storeStatistics() {
         Thread t = new Thread() {
+            @Override
             public void run() {
                 ApplicationStateHandler.getInstance().persistStatisticsCache(statistics);
             };

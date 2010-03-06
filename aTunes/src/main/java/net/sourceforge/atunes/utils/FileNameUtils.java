@@ -306,5 +306,5 @@ public final class FileNameUtils {
             return "";
         }
         return buffer.getString(0, true);
-    }    
+    }
 }

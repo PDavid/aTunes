@@ -12,9 +12,9 @@ import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 
 public class PropertyTableCellRendererCode extends TableCellRendererCode {
 
-	public PropertyTableCellRendererCode() {
-	}
-	
+    public PropertyTableCellRendererCode() {
+    }
+
     @Override
     public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         Component comp = superComponent;

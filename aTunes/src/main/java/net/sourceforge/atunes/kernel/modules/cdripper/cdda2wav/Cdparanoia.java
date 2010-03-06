@@ -111,7 +111,7 @@ public class Cdparanoia extends CdToWavConverter {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                	getListener().notifyProgress(100);
+                    getListener().notifyProgress(100);
                 }
             });
 
@@ -233,16 +233,17 @@ public class Cdparanoia extends CdToWavConverter {
             return null;
         }
     }
-    
+
     /**
      * Getter for logger
+     * 
      * @return
      */
     private Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
     }
 
 }

@@ -51,33 +51,33 @@ import net.sourceforge.atunes.utils.StringUtils;
 public final class RepositoryProgressDialog extends CustomModalDialog {
 
     private static class GlassPaneMouseListener implements MouseListener {
-		@Override
+        @Override
         public void mouseClicked(MouseEvent e) {
             // Nothing to do
         }
 
-		@Override
+        @Override
         public void mouseEntered(MouseEvent e) {
             // Nothing to do
         }
 
-		@Override
+        @Override
         public void mouseExited(MouseEvent e) {
             // Nothing to do
         }
 
-		@Override
+        @Override
         public void mousePressed(MouseEvent e) {
             // Nothing to do
         }
 
-		@Override
+        @Override
         public void mouseReleased(MouseEvent e) {
             // Nothing to do
         }
-	}
+    }
 
-	private static final long serialVersionUID = -3071934230042256578L;
+    private static final long serialVersionUID = -3071934230042256578L;
 
     private JLabel pictureLabel;
     private JLabel label;

@@ -63,13 +63,13 @@ import net.sourceforge.atunes.utils.I18nUtils;
 public final class ContextPanel extends PreferencesPanel {
 
     private static class OpenLastFmMouseAdapter extends MouseAdapter {
-		@Override
-		public void mousePressed(MouseEvent e) {
-		    DesktopUtils.openURL("http://www.last.fm");
-		}
-	}
+        @Override
+        public void mousePressed(MouseEvent e) {
+            DesktopUtils.openURL("http://www.last.fm");
+        }
+    }
 
-	private class LyricsEnginesTableModel implements TableModel {
+    private class LyricsEnginesTableModel implements TableModel {
 
         /** The lyrics engines info. */
         private List<LyricsEngineInfo> lyricsEnginesInfo = new ArrayList<LyricsEngineInfo>();;
@@ -266,8 +266,8 @@ public final class ContextPanel extends PreferencesPanel {
         enginesTable.getColumnModel().getColumn(0).setMaxWidth(20);
         enginesTable.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JCheckBox()));
         enginesTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        enginesTable.setDefaultRenderer(String.class, 
-        		LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(GuiUtils.getComponentOrientationTableCellRendererCode()));
+        enginesTable.setDefaultRenderer(String.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(
+                GuiUtils.getComponentOrientationTableCellRendererCode()));
         JButton upButton = new JButton(Images.getImage(Images.GO_UP));
         upButton.addActionListener(new ActionListener() {
             @Override

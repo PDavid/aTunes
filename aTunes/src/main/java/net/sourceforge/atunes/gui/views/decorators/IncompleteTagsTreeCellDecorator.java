@@ -11,15 +11,15 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.TreeObject;
 
 public class IncompleteTagsTreeCellDecorator extends TreeCellDecorator {
-	
-	@Override
-	public Component decorateTreeCellComponent(Component component, Object userObject) {
-    	if (ApplicationState.getInstance().isHighlightIncompleteTagElements() && userObject instanceof TreeObject) {
-    		if (IncompleteTagsChecker.hasIncompleteTags((TreeObject) userObject)) {
-    			((JLabel)component).setForeground(ColorDefinitions.GENERAL_UNKNOWN_ELEMENT_FOREGROUND_COLOR);
-    		}
-    	}
+
+    @Override
+    public Component decorateTreeCellComponent(Component component, Object userObject) {
+        if (ApplicationState.getInstance().isHighlightIncompleteTagElements() && userObject instanceof TreeObject) {
+            if (IncompleteTagsChecker.hasIncompleteTags((TreeObject) userObject)) {
+                ((JLabel) component).setForeground(ColorDefinitions.GENERAL_UNKNOWN_ELEMENT_FOREGROUND_COLOR);
+            }
+        }
         return component;
-	}
+    }
 
 }

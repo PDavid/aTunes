@@ -85,22 +85,22 @@ import org.apache.commons.io.FilenameUtils;
 public final class RepositoryHandler extends Handler implements LoaderListener, AudioFilesRemovedListener {
 
     private static class ShowProgressBarRunnable implements Runnable {
-		@Override
-		public void run() {
-		    GuiHandler.getInstance().showProgressBar(true, StringUtils.getString(I18nUtils.getString("REFRESHING"), "..."));
-		}
-	}
+        @Override
+        public void run() {
+            GuiHandler.getInstance().showProgressBar(true, StringUtils.getString(I18nUtils.getString("REFRESHING"), "..."));
+        }
+    }
 
-	private static class ExitRunnable implements Runnable {
-		@Override
-		public void run() {
-		    Actions.getAction(ExitAction.class).actionPerformed(null);
-		}
-	}
+    private static class ExitRunnable implements Runnable {
+        @Override
+        public void run() {
+            Actions.getAction(ExitAction.class).actionPerformed(null);
+        }
+    }
 
-	private static RepositoryHandler instance = new RepositoryHandler();
+    private static RepositoryHandler instance = new RepositoryHandler();
 
-	private Repository repository;
+    private Repository repository;
     private int filesLoaded;
     private RepositoryLoader currentLoader;
     private boolean backgroundLoad = false;
@@ -112,6 +112,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
     private RepositoryProgressDialog progressDialog;
 
     private MouseListener progressBarMouseAdapter = new MouseAdapter() {
+        @Override
         public void mouseClicked(MouseEvent e) {
             backgroundLoad = false;
             currentLoader.setPriority(Thread.MAX_PRIORITY);
@@ -317,7 +318,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
 
     /**
      * Gets the year structure.
-     *
+     * 
      * @return the year structure
      */
     public Map<String, Year> getYearStructure() {
@@ -326,7 +327,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
         }
         return new HashMap<String, Year>();
     }
-    
+
     /**
      * Gets the album structure
      * 

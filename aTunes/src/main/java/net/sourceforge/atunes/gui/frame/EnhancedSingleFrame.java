@@ -49,6 +49,7 @@ public final class EnhancedSingleFrame extends AbstractSingleFrame implements ne
      * 
      * @return the content panel
      */
+    @Override
     protected Container getContentPanel() {
         // Main Container
         JPanel panel = new JPanel(new GridBagLayout());

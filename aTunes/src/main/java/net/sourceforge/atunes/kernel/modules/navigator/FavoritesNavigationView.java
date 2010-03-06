@@ -69,8 +69,8 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class FavoritesNavigationView extends NavigationView {
 
-	private List<TreeCellDecorator> decorators;
-	
+    private List<TreeCellDecorator> decorators;
+
     private JTree favoritesTree;
 
     /** The favorite tree menu. */
@@ -319,16 +319,15 @@ public final class FavoritesNavigationView extends NavigationView {
 
     @Override
     protected List<TreeCellDecorator> getTreeCellDecorators() {
-    	if (decorators == null) {
-    		decorators = new ArrayList<TreeCellDecorator>();
+        if (decorators == null) {
+            decorators = new ArrayList<TreeCellDecorator>();
             decorators.add(new ArtistTreeCellDecorator());
             decorators.add(new AlbumTreeCellDecorator());
             decorators.add(new StringTreeCellDecorator());
             decorators.add(new UnknownElementTreeCellDecorator());
             decorators.add(new IncompleteTagsTreeCellDecorator());
-    	}
-    	return decorators;
+        }
+        return decorators;
     }
-
 
 }

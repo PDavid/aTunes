@@ -158,10 +158,10 @@ public final class PlayListControlsPanel extends JPanel {
 
         favoriteSongButton = new CustomButton(Actions.getAction(SetPlayListSelectionAsFavoriteSongAction.class));
         favoriteSongButton.setText(null);
-        
+
         favoriteAlbumButton = new CustomButton(Actions.getAction(SetPlayListSelectionAsFavoriteAlbumAction.class));
         favoriteAlbumButton.setText(null);
-        
+
         favoriteArtistButton = new CustomButton(Actions.getAction(SetPlayListSelectionAsFavoriteArtistAction.class));
         favoriteArtistButton.setText(null);
 

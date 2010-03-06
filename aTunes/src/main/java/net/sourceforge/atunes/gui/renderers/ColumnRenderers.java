@@ -43,10 +43,10 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public final class ColumnRenderers {
 
-	private ColumnRenderers() {
-		
-	}
-	
+    private ColumnRenderers() {
+
+    }
+
     /**
      * Add renderers to table
      * 
@@ -57,25 +57,20 @@ public final class ColumnRenderers {
      */
     public static void addRenderers(final JTable jtable, final CommonColumnModel model) {
 
-    	// Integer renderer
-    	jtable.setDefaultRenderer(Integer.class, 
-    			LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(model.getRendererCodeFor(Integer.class)));
-    	
+        // Integer renderer
+        jtable.setDefaultRenderer(Integer.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(model.getRendererCodeFor(Integer.class)));
+
         // ImageIcon renderer
-        jtable.setDefaultRenderer(ImageIcon.class, 
-        		LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(model.getRendererCodeFor(ImageIcon.class)));
+        jtable.setDefaultRenderer(ImageIcon.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(model.getRendererCodeFor(ImageIcon.class)));
 
         // STRING renderer
-        jtable.setDefaultRenderer(String.class, 
-        		LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(model.getRendererCodeFor(String.class)));
+        jtable.setDefaultRenderer(String.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(model.getRendererCodeFor(String.class)));
 
         // JLabel renderer
-        jtable.setDefaultRenderer(JLabel.class, 
-        		LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(model.getRendererCodeFor(JLabel.class)));
+        jtable.setDefaultRenderer(JLabel.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(model.getRendererCodeFor(JLabel.class)));
 
         // Property renderer
-        jtable.setDefaultRenderer(Property.class, 
-        		LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(model.getRendererCodeFor(Property.class)));
+        jtable.setDefaultRenderer(Property.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(model.getRendererCodeFor(Property.class)));
 
     }
 

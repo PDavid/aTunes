@@ -61,82 +61,81 @@ import net.sourceforge.atunes.utils.StringUtils;
 public final class RipperHandler extends Handler {
 
     private static class ShowErrorDialogRunnable implements Runnable {
-		@Override
-		public void run() {
-		    GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("CDDA2WAV_NOT_FOUND"));
-		}
-	}
+        @Override
+        public void run() {
+            GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("CDDA2WAV_NOT_FOUND"));
+        }
+    }
 
-	private static class TotalProgressListener implements ProgressListener {
-		private final RipperProgressDialog dialog;
-		private final List<File> filesImported;
+    private static class TotalProgressListener implements ProgressListener {
+        private final RipperProgressDialog dialog;
+        private final List<File> filesImported;
 
-		private TotalProgressListener(RipperProgressDialog dialog,
-				List<File> filesImported) {
-			this.dialog = dialog;
-			this.filesImported = filesImported;
-		}
+        private TotalProgressListener(RipperProgressDialog dialog, List<File> filesImported) {
+            this.dialog = dialog;
+            this.filesImported = filesImported;
+        }
 
-		@Override
-		public void notifyFileFinished(File file) {
-		    filesImported.add(file);
-		}
+        @Override
+        public void notifyFileFinished(File file) {
+            filesImported.add(file);
+        }
 
-		@Override
-		public void notifyProgress(int value) {
-		    dialog.setTotalProgressValue(value);
-		    dialog.setDecodeProgressValue(0);
-		    dialog.setDecodeProgressValue(StringUtils.getString(0, "%"));
-		    dialog.setEncodeProgressValue(0);
-		    dialog.setEncodeProgressValue(StringUtils.getString(0, "%"));
-		}
-	}
+        @Override
+        public void notifyProgress(int value) {
+            dialog.setTotalProgressValue(value);
+            dialog.setDecodeProgressValue(0);
+            dialog.setDecodeProgressValue(StringUtils.getString(0, "%"));
+            dialog.setEncodeProgressValue(0);
+            dialog.setEncodeProgressValue(StringUtils.getString(0, "%"));
+        }
+    }
 
-	private static class EncoderProgressListener implements ProgressListener {
-		private final RipperProgressDialog dialog;
+    private static class EncoderProgressListener implements ProgressListener {
+        private final RipperProgressDialog dialog;
 
-		private EncoderProgressListener(RipperProgressDialog dialog) {
-			this.dialog = dialog;
-		}
+        private EncoderProgressListener(RipperProgressDialog dialog) {
+            this.dialog = dialog;
+        }
 
-		@Override
-		public void notifyFileFinished(File f) {
-		    // Nothing to do
-		}
+        @Override
+        public void notifyFileFinished(File f) {
+            // Nothing to do
+        }
 
-		@Override
-		public void notifyProgress(int percent) {
-		    dialog.setEncodeProgressValue(percent);
-		    if (!(percent < 0)) {
-		        dialog.setEncodeProgressValue(StringUtils.getString(percent, "%"));
-		    }
-		}
-	}
+        @Override
+        public void notifyProgress(int percent) {
+            dialog.setEncodeProgressValue(percent);
+            if (!(percent < 0)) {
+                dialog.setEncodeProgressValue(StringUtils.getString(percent, "%"));
+            }
+        }
+    }
 
-	private static class DecoderProgressListener implements ProgressListener {
-		private final RipperProgressDialog dialog;
+    private static class DecoderProgressListener implements ProgressListener {
+        private final RipperProgressDialog dialog;
 
-		private DecoderProgressListener(RipperProgressDialog dialog) {
-			this.dialog = dialog;
-		}
+        private DecoderProgressListener(RipperProgressDialog dialog) {
+            this.dialog = dialog;
+        }
 
-		@Override
-		public void notifyFileFinished(File f) {
-		    // Nothing to do
-		}
+        @Override
+        public void notifyFileFinished(File f) {
+            // Nothing to do
+        }
 
-		@Override
-		public void notifyProgress(int percent) {
-		    dialog.setDecodeProgressValue(percent);
-		    if (percent > 0) {
-		        dialog.setDecodeProgressValue(StringUtils.getString(percent, "%"));
-		    } else {
-		        dialog.setDecodeProgressValue("");
-		    }
-		}
-	}
+        @Override
+        public void notifyProgress(int percent) {
+            dialog.setDecodeProgressValue(percent);
+            if (percent > 0) {
+                dialog.setDecodeProgressValue(StringUtils.getString(percent, "%"));
+            } else {
+                dialog.setDecodeProgressValue("");
+            }
+        }
+    }
 
-	private static RipperHandler instance = new RipperHandler();
+    private static RipperHandler instance = new RipperHandler();
 
     private CdRipper ripper;
     private volatile boolean interrupted;

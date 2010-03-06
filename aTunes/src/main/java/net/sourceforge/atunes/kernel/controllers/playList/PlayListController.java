@@ -252,8 +252,8 @@ public final class PlayListController extends SimpleController<PlayListPanel> {
         int[] selectedRows = GuiHandler.getInstance().getPlayListTable().getSelectedRows();
         ((PlayListTableModel) GuiHandler.getInstance().getPlayListTable().getModel()).refresh(TableModelEvent.UPDATE);
         // Select previous selected rows
-        for (int i = 0; i < selectedRows.length; i++) {
-            GuiHandler.getInstance().getPlayListTable().getSelectionModel().addSelectionInterval(selectedRows[i], selectedRows[i]);
+        for (int selectedRow : selectedRows) {
+            GuiHandler.getInstance().getPlayListTable().getSelectionModel().addSelectionInterval(selectedRow, selectedRow);
         }
     }
 

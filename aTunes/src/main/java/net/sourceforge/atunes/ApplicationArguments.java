@@ -74,11 +74,11 @@ public final class ApplicationArguments {
         String configFolder = null;
 
         if (args != null) {
-        	for (String arg : args) {
-        		if (arg.toLowerCase().startsWith(USE_CONFIG_FOLDER)) {
-        			configFolder = arg.substring(USE_CONFIG_FOLDER.length());
-        		}
-        	}
+            for (String arg : args) {
+                if (arg.toLowerCase().startsWith(USE_CONFIG_FOLDER)) {
+                    configFolder = arg.substring(USE_CONFIG_FOLDER.length());
+                }
+            }
         }
 
         return configFolder;
@@ -96,11 +96,11 @@ public final class ApplicationArguments {
         String configFolder = null;
 
         if (args != null) {
-        	for (String arg : args) {
-        		if (arg.toLowerCase().startsWith(USE_REPOSITORY_CONFIG_FOLDER)) {
-        			configFolder = arg.substring(USE_REPOSITORY_CONFIG_FOLDER.length());
-        		}
-        	}
+            for (String arg : args) {
+                if (arg.toLowerCase().startsWith(USE_REPOSITORY_CONFIG_FOLDER)) {
+                    configFolder = arg.substring(USE_REPOSITORY_CONFIG_FOLDER.length());
+                }
+            }
         }
 
         return configFolder;
@@ -113,7 +113,7 @@ public final class ApplicationArguments {
      * @param arguments
      */
     public static void saveArguments(List<String> arguments) {
-    	savedArguments = new ArrayList<String>();
+        savedArguments = new ArrayList<String>();
         checkAndSave(arguments, DEBUG);
         checkAndSave(arguments, IGNORE_LOOK_AND_FEEL);
         checkAndSave(arguments, ALLOW_MULTIPLE_INSTANCE);
@@ -130,13 +130,13 @@ public final class ApplicationArguments {
      * @param arg
      */
     private static void checkAndSave(List<String> arguments, String arg) {
-    	if (arguments != null) {
-    		for (String argument : arguments) {
-    			if (argument.toLowerCase().startsWith(arg.toLowerCase())) {
-    				savedArguments.add(argument);
-    			}
-    		}
-    	}
+        if (arguments != null) {
+            for (String argument : arguments) {
+                if (argument.toLowerCase().startsWith(arg.toLowerCase())) {
+                    savedArguments.add(argument);
+                }
+            }
+        }
     }
 
     /**

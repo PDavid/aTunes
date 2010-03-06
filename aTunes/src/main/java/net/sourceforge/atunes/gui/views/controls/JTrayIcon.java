@@ -65,7 +65,7 @@ public final class JTrayIcon extends TrayIcon {
     private MouseListener trayIconMouseListener;
     private PopupMenuListener popupMenuListener;
     private boolean isLinux;
-    
+
     private Action action;
 
     /**
@@ -114,15 +114,15 @@ public final class JTrayIcon extends TrayIcon {
         trayParent.setUndecorated(true);
         trayParent.setAlwaysOnTop(true);
         trayParent.setVisible(false);
-        
+
         addMouseListener(new MouseAdapter() {
-        	@Override
-        	public void mouseClicked(MouseEvent e) {
-        		if (e.getButton() == MouseEvent.BUTTON1) {
-        			action.actionPerformed(null);
-        		}
-        	}
-		});
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON1) {
+                    action.actionPerformed(null);
+                }
+            }
+        });
     }
 
     @Override

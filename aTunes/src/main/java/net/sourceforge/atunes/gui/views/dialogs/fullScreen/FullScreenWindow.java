@@ -167,7 +167,7 @@ public final class FullScreenWindow extends CustomWindow {
         }
     };
 
-    private  MouseMotionListener moveListener = new MouseMotionAdapter() {
+    private MouseMotionListener moveListener = new MouseMotionAdapter() {
         @Override
         public void mouseMoved(MouseEvent e) {
             activateTimer();

@@ -81,6 +81,7 @@ public final class ApplicationStateHandler extends Handler {
      */
     private Set<ApplicationStateChangeListener> stateChangeListeners;
 
+    @Override
     protected void initHandler() {
     }
 
@@ -407,8 +408,8 @@ public final class ApplicationStateHandler extends Handler {
 
         ObjectOutputStream oos = null;
         try {
-            FileOutputStream fout = new FileOutputStream(StringUtils.getString(getUserConfigFolder(), SystemProperties.FILE_SEPARATOR,
-                    Constants.DEVICE_CACHE_FILE_PREFIX, deviceId));
+            FileOutputStream fout = new FileOutputStream(StringUtils
+                    .getString(getUserConfigFolder(), SystemProperties.FILE_SEPARATOR, Constants.DEVICE_CACHE_FILE_PREFIX, deviceId));
             oos = new ObjectOutputStream(fout);
             getLogger().info(LogCategories.HANDLER, "Serialize device information...");
             long t0 = System.currentTimeMillis();
@@ -477,8 +478,7 @@ public final class ApplicationStateHandler extends Handler {
             if (ApplicationState.getInstance().isSaveRepositoryAsXml()) {
                 try {
                     getLogger().info(LogCategories.HANDLER, "Reading xml favorites cache");
-                    Favorites result = (Favorites) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/",
-                            Constants.XML_CACHE_FAVORITES_NAME));
+                    Favorites result = (Favorites) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_FAVORITES_NAME));
                     return result;
                 } catch (Exception e1) {
                     getLogger().info(LogCategories.HANDLER, "No xml favorites info found");
@@ -513,8 +513,7 @@ public final class ApplicationStateHandler extends Handler {
             if (ApplicationState.getInstance().isSaveRepositoryAsXml()) {
                 try {
                     getLogger().info(LogCategories.HANDLER, "Reading xml statistics cache");
-                    Statistics result = (Statistics) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/",
-                            Constants.XML_CACHE_STATISTICS_NAME));
+                    Statistics result = (Statistics) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_STATISTICS_NAME));
                     return result;
                 } catch (Exception e1) {
                     getLogger().info(LogCategories.HANDLER, "No xml statistics info found");
@@ -540,8 +539,7 @@ public final class ApplicationStateHandler extends Handler {
         ObjectInputStream stream = null;
         try {
             // First get list of playlists
-            ListOfPlayLists listOfPlayLists = (ListOfPlayLists) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/",
-                    Constants.PLAYLISTS_FILE));
+            ListOfPlayLists listOfPlayLists = (ListOfPlayLists) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.PLAYLISTS_FILE));
             getLogger().info(LogCategories.HANDLER, StringUtils.getString("List of playlists loaded"));
 
             // Then read contents
@@ -683,8 +681,7 @@ public final class ApplicationStateHandler extends Handler {
 
         ObjectInputStream ois = null;
         try {
-            FileInputStream fis = new FileInputStream(StringUtils.getString(getUserConfigFolder(), SystemProperties.FILE_SEPARATOR,
-                    Constants.DEVICE_CACHE_FILE_PREFIX, deviceId));
+            FileInputStream fis = new FileInputStream(StringUtils.getString(getUserConfigFolder(), SystemProperties.FILE_SEPARATOR, Constants.DEVICE_CACHE_FILE_PREFIX, deviceId));
             ois = new ObjectInputStream(fis);
             getLogger().info(LogCategories.HANDLER, "Reading serialized device cache");
             long t0 = System.currentTimeMillis();
@@ -772,9 +769,9 @@ public final class ApplicationStateHandler extends Handler {
             getLogger().error(LogCategories.HANDLER, e);
         }
     }
-    
+
     private String getUserConfigFolder() {
-    	return SystemProperties.getUserConfigFolder(Kernel.isDebug());
+        return SystemProperties.getUserConfigFolder(Kernel.isDebug());
     }
 
 }

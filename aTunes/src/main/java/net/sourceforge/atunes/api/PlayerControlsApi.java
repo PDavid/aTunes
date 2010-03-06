@@ -28,10 +28,10 @@ import org.commonjukebox.plugins.PluginApi;
 @PluginApi
 public final class PlayerControlsApi {
 
-	private PlayerControlsApi() {
-		
-	}
-	
+    private PlayerControlsApi() {
+
+    }
+
     /**
      * Adds a secondary toggle button in player controls
      * 

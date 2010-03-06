@@ -37,6 +37,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.WindowConstants;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
@@ -54,7 +55,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public final class ColumnSetSelectorDialog extends CustomModalDialog {
 
-	private class ColumnsTableModel implements TableModel {
+    private class ColumnsTableModel implements TableModel {
 
         private static final long serialVersionUID = 5251001708812824836L;
 
@@ -206,7 +207,7 @@ public final class ColumnSetSelectorDialog extends CustomModalDialog {
         super(owner, 250, 300, true);
         setContent(getContent());
         setTitle(I18nUtils.getString("ARRANGE_COLUMNS"));
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         GuiUtils.applyComponentOrientation(this);
     }
 
@@ -236,8 +237,8 @@ public final class ColumnSetSelectorDialog extends CustomModalDialog {
         columnsList.getColumnModel().getColumn(0).setMaxWidth(20);
         columnsList.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JCheckBox()));
         columnsList.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        columnsList.setDefaultRenderer(String.class, 
-        		LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(GuiUtils.getComponentOrientationTableCellRendererCode()));
+        columnsList.setDefaultRenderer(String.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(
+                GuiUtils.getComponentOrientationTableCellRendererCode()));
 
         JScrollPane scrollPane = new JScrollPane(columnsList);
         JLabel label = new JLabel(I18nUtils.getString("SELECT_COLUMNS"));

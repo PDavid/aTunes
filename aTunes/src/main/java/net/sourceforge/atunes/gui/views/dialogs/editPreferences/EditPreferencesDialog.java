@@ -196,7 +196,7 @@ public final class EditPreferencesDialog extends CustomModalFrame {
     public void showPanel(int index) {
         ((CardLayout) options.getLayout()).show(options, Integer.toString(index));
     }
-    
+
     private static class PreferencesListCellRendererCode extends ListCellRendererCode {
         @Override
         public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {

@@ -206,34 +206,33 @@ public abstract class CommonColumnModel extends DefaultTableColumnModel {
         columnSet.setCurrentColumns();
     }
 
-    private static class HeaderTableCellRendererCode extends
-			TableCellRendererCode {
-		private final Column column;
+    private static class HeaderTableCellRendererCode extends TableCellRendererCode {
+        private final Column column;
 
-		private HeaderTableCellRendererCode(Column column) {
-			this.column = column;
-		}
+        private HeaderTableCellRendererCode(Column column) {
+            this.column = column;
+        }
 
-		@Override
-		public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
-		    Component c = superComponent;
+        @Override
+        public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
+            Component c = superComponent;
 
-		    ColumnSort columnSort = column.getColumnSort();
+            ColumnSort columnSort = column.getColumnSort();
 
-		    if (columnSort != null) {
-		        ((JLabel) c).setHorizontalTextPosition(SwingConstants.LEFT);
-		        if (columnSort.equals(ColumnSort.ASCENDING)) {
-		            ((JLabel) c).setIcon(Images.getImage(Images.ARROW_UP));
-		        } else if (columnSort.equals(ColumnSort.DESCENDING)) {
-		            ((JLabel) c).setIcon(Images.getImage(Images.ARROW_DOWN));
-		        }
-		    }
+            if (columnSort != null) {
+                ((JLabel) c).setHorizontalTextPosition(SwingConstants.LEFT);
+                if (columnSort.equals(ColumnSort.ASCENDING)) {
+                    ((JLabel) c).setIcon(Images.getImage(Images.ARROW_UP));
+                } else if (columnSort.equals(ColumnSort.DESCENDING)) {
+                    ((JLabel) c).setIcon(Images.getImage(Images.ARROW_DOWN));
+                }
+            }
 
-		    return c;
-		}
-	}
+            return c;
+        }
+    }
 
-	private class ColumnMoveListener extends MouseAdapter {
+    private class ColumnMoveListener extends MouseAdapter {
         @Override
         public void mouseReleased(MouseEvent e) {
             if (columnBeingMoved != -1) {
@@ -378,32 +377,33 @@ public abstract class CommonColumnModel extends DefaultTableColumnModel {
     public void setColumnSet(ColumnSet columnSet) {
         this.columnSet = columnSet;
     }
-    
+
     /**
      * Returns renderer code for given class
+     * 
      * @param clazz
      * @return
      */
     public TableCellRendererCode getRendererCodeFor(Class<?> clazz) {
-    	if (clazz.equals(Integer.class)) {
-    		return new IntegerTableCellRendererCode();
-    	} else if (clazz.equals(ImageIcon.class)) {
-    		return new ImageIconTableCellRendererCode(this);
-    	} else if (clazz.equals(String.class)) {
-    		return new StringTableCellRendererCode(this);
-    	} else if (clazz.equals(JLabel.class)) {
-    		return new JLabelTableCellRendererCode(this);
-    	} else if (clazz.equals(Property.class)) {
-    		return new PropertyTableCellRendererCode();
-    	}
-    	return null;
+        if (clazz.equals(Integer.class)) {
+            return new IntegerTableCellRendererCode();
+        } else if (clazz.equals(ImageIcon.class)) {
+            return new ImageIconTableCellRendererCode(this);
+        } else if (clazz.equals(String.class)) {
+            return new StringTableCellRendererCode(this);
+        } else if (clazz.equals(JLabel.class)) {
+            return new JLabelTableCellRendererCode(this);
+        } else if (clazz.equals(Property.class)) {
+            return new PropertyTableCellRendererCode();
+        }
+        return null;
     }
 
-	/**
-	 * @return the table
-	 */
-	protected JTable getTable() {
-		return table;
-	}
+    /**
+     * @return the table
+     */
+    protected JTable getTable() {
+        return table;
+    }
 
 }

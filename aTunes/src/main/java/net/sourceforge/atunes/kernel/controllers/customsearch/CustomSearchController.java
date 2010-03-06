@@ -448,9 +448,9 @@ public final class CustomSearchController extends SimpleController<CustomSearchD
     protected void notifyReload() {
         // Nothing to do
     }
-    
+
     private static class TranslatedAttributesList implements Comparator<String> {
-    	
+
         @Override
         public int compare(String o1, String o2) {
             return -Integer.valueOf(o1.length()).compareTo(Integer.valueOf(o2.length()));

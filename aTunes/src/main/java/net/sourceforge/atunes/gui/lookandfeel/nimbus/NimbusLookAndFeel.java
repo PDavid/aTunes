@@ -58,13 +58,13 @@ public class NimbusLookAndFeel extends LookAndFeel {
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (ClassNotFoundException e) {
-        	new Logger().internalError(e);
+            new Logger().internalError(e);
         } catch (InstantiationException e) {
-        	new Logger().internalError(e);
+            new Logger().internalError(e);
         } catch (IllegalAccessException e) {
-        	new Logger().internalError(e);
+            new Logger().internalError(e);
         } catch (UnsupportedLookAndFeelException e) {
-        	new Logger().internalError(e);
+            new Logger().internalError(e);
         }
     }
 }

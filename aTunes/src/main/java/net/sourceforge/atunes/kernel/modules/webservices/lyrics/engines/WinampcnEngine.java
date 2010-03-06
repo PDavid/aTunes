@@ -184,5 +184,5 @@ public class WinampcnEngine extends LyricsEngine {
             }
             return this.lyrcs;
         }
-    }    
+    }
 }

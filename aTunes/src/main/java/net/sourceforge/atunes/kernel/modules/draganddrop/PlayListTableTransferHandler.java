@@ -145,8 +145,8 @@ public class PlayListTableTransferHandler extends TransferHandler {
     }
 
     private static boolean hasURIListFlavor(DataFlavor[] flavors) {
-        for (int i = 0; i < flavors.length; i++) {
-            if (uriListFlavor.equals(flavors[i])) {
+        for (DataFlavor flavor : flavors) {
+            if (uriListFlavor.equals(flavor)) {
                 return true;
             }
         }

@@ -164,20 +164,20 @@ public class CommandHandler extends Handler {
         Actions.getAction(PlayPreviousAudioObjectAction.class);
         Actions.getAction(ShowOSDAction.class);
     }
-    
+
     private static class RunCommandRunnable implements Runnable {
-    	
-    	private Command command;
-    	
-    	public RunCommandRunnable(Command command) {
-    		this.command = command;
-    	}
-    	
+
+        private Command command;
+
+        public RunCommandRunnable(Command command) {
+            this.command = command;
+        }
+
         @Override
         public void run() {
-        	command.runCommand();
+            command.runCommand();
         }
-    	
+
     }
 
 }

@@ -322,30 +322,30 @@ public abstract class Process {
      */
     protected abstract long getProcessSize();
 
-	/**
-	 * @return the canceled
-	 */
-	protected boolean isCanceled() {
-		return canceled;
-	}
+    /**
+     * @return the canceled
+     */
+    protected boolean isCanceled() {
+        return canceled;
+    }
 
-	/**
-	 * @return the owner
-	 */
-	protected Component getOwner() {
-		return owner;
-	}
-	
+    /**
+     * @return the owner
+     */
+    protected Component getOwner() {
+        return owner;
+    }
+
     /**
      * Getter for logger
+     * 
      * @return
      */
     private Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
     }
-
 
 }

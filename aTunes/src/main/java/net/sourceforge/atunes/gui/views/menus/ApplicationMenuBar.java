@@ -314,7 +314,7 @@ public final class ApplicationMenuBar extends JMenuBar {
         add(newMenu);
         add(getCustomHelpMenu());
     }
-    
+
     private static class PlayListMenuListener implements MenuListener {
         @Override
         public void menuSelected(MenuEvent e) {

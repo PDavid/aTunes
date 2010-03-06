@@ -113,10 +113,10 @@ public class PlayListTableModel extends ColumnSetTableModel {
 
         // Call column set value
         getColumn(columnIndex).setValueFor(audioObject, aValue);
-        
+
         // After changing audio object refresh playlist, as the same object can be duplicated
         ControllerProxy.getInstance().getPlayListController().refreshPlayList();
-        
+
         // Mark repository as dirty
         RepositoryHandler.getInstance().getRepository().setDirty(true);
     }

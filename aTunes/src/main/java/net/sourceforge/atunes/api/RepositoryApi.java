@@ -27,10 +27,10 @@ import org.commonjukebox.plugins.PluginApi;
 @PluginApi
 public class RepositoryApi {
 
-	private RepositoryApi() {
-		
-	}
-	
+    private RepositoryApi() {
+
+    }
+
     /**
      * Returns artist information for the given artist name or <code>null</code>
      * if there is no information about

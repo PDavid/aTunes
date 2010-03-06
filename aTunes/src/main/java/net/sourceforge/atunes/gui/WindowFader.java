@@ -33,10 +33,10 @@ import net.sourceforge.atunes.utils.GuiUtils;
  */
 public class WindowFader {
 
-	private WeakReference<Window> window;
-	private Timer fadeInTimer;
-	private Timer fadeOutTimer;
-	private int currentOpacity;
+    private WeakReference<Window> window;
+    private Timer fadeInTimer;
+    private Timer fadeOutTimer;
+    private int currentOpacity;
     private int duration;
 
     public WindowFader(Window window, int duration) {

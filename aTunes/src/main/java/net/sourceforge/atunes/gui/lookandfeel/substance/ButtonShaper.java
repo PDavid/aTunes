@@ -38,19 +38,18 @@ import org.jvnet.substance.utils.border.SubstanceButtonBorder;
  */
 public abstract class ButtonShaper implements SubstanceButtonShaper {
 
-    private static class CustomSubstanceButtonBorder extends
-			SubstanceButtonBorder {
-		private CustomSubstanceButtonBorder(Class<?> buttonShaperClass) {
-			super(buttonShaperClass);
-		}
+    private static class CustomSubstanceButtonBorder extends SubstanceButtonBorder {
+        private CustomSubstanceButtonBorder(Class<?> buttonShaperClass) {
+            super(buttonShaperClass);
+        }
 
-		@Override
-		public Insets getBorderInsets(Component c) {
-		    return new Insets(0, 0, 0, 0);
-		}
-	}
+        @Override
+        public Insets getBorderInsets(Component c) {
+            return new Insets(0, 0, 0, 0);
+        }
+    }
 
-	@Override
+    @Override
     public Shape getButtonOutline(AbstractButton button) {
         return getButtonOutline(button, null, button.getWidth(), button.getHeight(), true);
     }

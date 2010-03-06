@@ -249,8 +249,8 @@ public final class AutoCompleteDocument extends PlainDocument {
     }
 
     private static class LookupResult {
-    	private Object matchingItem;
-    	private String matchingString;
+        private Object matchingItem;
+        private String matchingString;
 
         protected LookupResult(Object matchingItem, String matchingString) {
             this.matchingItem = matchingItem;

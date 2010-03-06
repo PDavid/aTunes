@@ -461,23 +461,24 @@ public class LastFmCache extends AbstractCache {
         getArtistThumbsCache().dispose();
         getArtistWikiCache().dispose();
     }
-    
+
     private static class SubmissionDataComparator implements Comparator<SubmissionData> {
         @Override
         public int compare(SubmissionData o1, SubmissionData o2) {
             return Integer.valueOf(o1.getStartTime()).compareTo(o2.getStartTime());
         }
     }
-    
+
     /**
      * Getter for logger
+     * 
      * @return
      */
     private Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
     }
 
 }
