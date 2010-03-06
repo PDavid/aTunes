@@ -48,14 +48,14 @@ public final class PlayerControlsListener extends MouseAdapter {
 
     @Override
     public void mousePressed(final MouseEvent e) {
-    	if (e.getSource().equals(panel.getProgressBar()) && panel.getProgressBar().isEnabled()) {        	
-    		// Progress bar width is greater than real slider width so calculate value assuming 5 pixels in both left and right of track 
-    		int value = (panel.getProgressBar().getMaximum()*(e.getX()-5))/(panel.getProgressBar().getWidth()-10);
-    		// Force new value to avoid jump to next major tick
-    		panel.getProgressBar().setValue(value);
-    		// Calculate percent
-    		double perCent = (double) value / ((JSlider)e.getSource()).getMaximum();
-    		PlayerHandler.getInstance().seekCurrentAudioObject(perCent);
-    	}
+        if (e.getSource().equals(panel.getProgressBar()) && panel.getProgressBar().isEnabled()) {
+            // Progress bar width is greater than real slider width so calculate value assuming 5 pixels in both left and right of track 
+            int value = (panel.getProgressBar().getMaximum() * (e.getX() - 5)) / (panel.getProgressBar().getWidth() - 10);
+            // Force new value to avoid jump to next major tick
+            panel.getProgressBar().setValue(value);
+            // Calculate percent
+            double perCent = (double) value / ((JSlider) e.getSource()).getMaximum();
+            PlayerHandler.getInstance().seekCurrentAudioObject(perCent);
+        }
     }
 }

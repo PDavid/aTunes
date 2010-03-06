@@ -53,7 +53,7 @@ public final class ClosingUtils {
             try {
                 closable.close();
             } catch (IOException e) {
-            	new Logger().error(LogCategories.INTERNAL_ERROR, e);
+                new Logger().error(LogCategories.INTERNAL_ERROR, e);
             }
         }
     }
@@ -73,7 +73,7 @@ public final class ClosingUtils {
             try {
                 zipFile.close();
             } catch (IOException e) {
-            	new Logger().error(LogCategories.INTERNAL_ERROR, e);
+                new Logger().error(LogCategories.INTERNAL_ERROR, e);
             }
         }
     }
@@ -93,7 +93,7 @@ public final class ClosingUtils {
             try {
                 socket.close();
             } catch (IOException e) {
-            	new Logger().error(LogCategories.INTERNAL_ERROR, e);
+                new Logger().error(LogCategories.INTERNAL_ERROR, e);
             }
         }
     }
@@ -113,7 +113,7 @@ public final class ClosingUtils {
             try {
                 socket.close();
             } catch (IOException e) {
-            	new Logger().error(LogCategories.INTERNAL_ERROR, e);
+                new Logger().error(LogCategories.INTERNAL_ERROR, e);
             }
         }
     }

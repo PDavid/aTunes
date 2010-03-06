@@ -26,10 +26,10 @@ import org.commonjukebox.plugins.PluginApi;
 @PluginApi
 public class I18nApi {
 
-	private I18nApi() {
+    private I18nApi() {
 
-	}
-	
+    }
+
     /**
      * Returns a text for the given key in the currently selected language
      * 

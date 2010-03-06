@@ -70,6 +70,7 @@ public final class ContextHandler extends Handler implements PluginListener {
      */
     private List<ContextPanel> contextPanels;
 
+    @Override
     protected void initHandler() {
         // TODO: Move to a web services handler
         LastFmService.getInstance().updateService();
@@ -270,7 +271,7 @@ public final class ContextHandler extends Handler implements PluginListener {
     @Override
     public void pluginDeactivated(PluginInfo plugin, Collection<Plugin> createdInstances) {
         for (Plugin instance : createdInstances) {
-            getContextPanels().remove((ContextPanel) instance);
+            getContextPanels().remove(instance);
             GuiHandler.getInstance().getContextPanel().removeContextPanel((ContextPanel) instance);
         }
     }

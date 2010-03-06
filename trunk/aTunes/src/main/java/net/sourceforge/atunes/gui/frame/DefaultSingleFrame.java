@@ -52,6 +52,7 @@ public final class DefaultSingleFrame extends AbstractSingleFrame implements net
      * 
      * @return the content panel
      */
+    @Override
     protected Container getContentPanel() {
         // Main Container
         JPanel panel = new JPanel(new GridBagLayout());
@@ -140,6 +141,7 @@ public final class DefaultSingleFrame extends AbstractSingleFrame implements net
         return panel;
     }
 
+    @Override
     protected void setupSplitPaneDividerPosition(FrameState frameState) {
         applySplitPaneDividerPosition(leftVerticalSplitPane, frameState.getSplitPaneDividerPos(LEFT_VERTICAL_SPLIT_PANE), 0.5);
         applySplitPaneDividerPosition(rightVerticalSplitPane, frameState.getSplitPaneDividerPos(RIGHT_VERTICAL_SPLIT_PANE), 0.5);

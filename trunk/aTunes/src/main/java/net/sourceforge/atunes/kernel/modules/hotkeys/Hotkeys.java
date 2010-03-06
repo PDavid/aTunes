@@ -72,5 +72,5 @@ public abstract class Hotkeys {
 
     protected HotkeyListener getHotkeyListener() {
         return hotkeyListener;
-    }    
+    }
 }

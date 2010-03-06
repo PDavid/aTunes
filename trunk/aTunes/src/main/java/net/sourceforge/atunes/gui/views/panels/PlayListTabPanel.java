@@ -196,15 +196,15 @@ public final class PlayListTabPanel extends JPanel {
     public JMenuItem getArrangeColumnsMenuItem() {
         return arrangeColumnsMenuItem;
     }
-    
+
     private static class SwitchPlayList implements Runnable {
-    	
-    	private int targetTabIndex;
-    	
-    	public SwitchPlayList(int targetTabIndex) {
-    		this.targetTabIndex = targetTabIndex;
-    	}
-    	
+
+        private int targetTabIndex;
+
+        public SwitchPlayList(int targetTabIndex) {
+            this.targetTabIndex = targetTabIndex;
+        }
+
         @Override
         public void run() {
             PlayListHandler.getInstance().switchToPlaylist(targetTabIndex);

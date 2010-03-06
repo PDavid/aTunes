@@ -48,14 +48,14 @@ public abstract class AudioFileTransferProcess extends Process {
     /**
      * The files to be transferred.
      */
-	private Collection<AudioFile> filesToTransfer;
+    private Collection<AudioFile> filesToTransfer;
 
     /**
      * List of files transferred. Used if process is canceled to delete these
      * files
      */
-	private List<File> filesTransferred;
-    
+    private List<File> filesTransferred;
+
     /**
      * The dialog used to show the progress of this process
      */

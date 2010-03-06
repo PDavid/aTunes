@@ -61,38 +61,36 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class PodcastFeedHandler extends Handler {
 
-    private static class DeleteDownloadedPodcastFeedEntryWorker extends
-			SwingWorker<Boolean, Void> {
-		private final File f;
-		private final PodcastFeedEntry podcastFeedEntry;
+    private static class DeleteDownloadedPodcastFeedEntryWorker extends SwingWorker<Boolean, Void> {
+        private final File f;
+        private final PodcastFeedEntry podcastFeedEntry;
 
-		private DeleteDownloadedPodcastFeedEntryWorker(File f,
-				PodcastFeedEntry podcastFeedEntry) {
-			this.f = f;
-			this.podcastFeedEntry = podcastFeedEntry;
-		}
+        private DeleteDownloadedPodcastFeedEntryWorker(File f, PodcastFeedEntry podcastFeedEntry) {
+            this.f = f;
+            this.podcastFeedEntry = podcastFeedEntry;
+        }
 
-		@Override
-		protected Boolean doInBackground() {
-		    return f.delete();
-		}
+        @Override
+        protected Boolean doInBackground() {
+            return f.delete();
+        }
 
-		@Override
-		protected void done() {
-		    try {
-		        if (get()) {
-		            podcastFeedEntry.setDownloaded(false);
-		            GuiHandler.getInstance().getNavigationTablePanel().getNavigationTable().repaint();
-		        }
-		    } catch (InterruptedException e) {
-		        getLogger().error(LogCategories.PODCAST, e);
-		    } catch (ExecutionException e) {
-		        getLogger().error(LogCategories.PODCAST, e);
-		    }
-		}
-	}
+        @Override
+        protected void done() {
+            try {
+                if (get()) {
+                    podcastFeedEntry.setDownloaded(false);
+                    GuiHandler.getInstance().getNavigationTablePanel().getNavigationTable().repaint();
+                }
+            } catch (InterruptedException e) {
+                getLogger().error(LogCategories.PODCAST, e);
+            } catch (ExecutionException e) {
+                getLogger().error(LogCategories.PODCAST, e);
+            }
+        }
+    }
 
-	private static PodcastFeedHandler instance = new PodcastFeedHandler();
+    private static PodcastFeedHandler instance = new PodcastFeedHandler();
 
     public static final long DEFAULT_PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL = 180000;
 

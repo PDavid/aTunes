@@ -47,7 +47,7 @@ public class PlayAction extends Action {
 
     @Override
     public boolean isEnabledForPlayListSelection(List<AudioObject> selection) {
-    	// Play action is always enabled even if play list or selection are empty, because this action is used in play button
+        // Play action is always enabled even if play list or selection are empty, because this action is used in play button
         return true;
     }
 

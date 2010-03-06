@@ -10,20 +10,20 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.TreeObject;
 
 public class TooltipTreeCellDecorator extends TreeCellDecorator {
-	
-	@Override
-	public Component decorateTreeCellComponent(Component component, Object userObject) {
+
+    @Override
+    public Component decorateTreeCellComponent(Component component, Object userObject) {
         if (!ApplicationState.getInstance().isShowExtendedTooltip() || !ExtendedToolTip.canObjectBeShownInExtendedToolTip(userObject)) {
             if (userObject instanceof TreeObject) {
-                ((JLabel)component).setToolTipText(((TreeObject) userObject).getToolTip());
+                ((JLabel) component).setToolTipText(((TreeObject) userObject).getToolTip());
             } else {
-            	((JLabel)component).setToolTipText(userObject.toString());
+                ((JLabel) component).setToolTipText(userObject.toString());
             }
         } else {
             // If using extended tooltip we must set tooltip to null. If not will appear the tooltip of the parent node
-        	((JLabel)component).setToolTipText(null);
+            ((JLabel) component).setToolTipText(null);
         }
         return component;
-	}
+    }
 
 }

@@ -119,16 +119,16 @@ public final class AudioFilePictureUtils {
      * @return the external picture
      */
     private static ImageIcon getExternalPicture(AudioFile file, int index, int width, int height) {
-    	// Try first to get picture with file name "ARTIST_ALBUM_COVER" pattern
-    	String coverFileName = getFileNameForCover(file); 
-    	ImageIcon image = null;
-    	if (new File(coverFileName).exists()) {
-    		image = new ImageIcon(coverFileName);
-    	} else if (file != null && file.getExternalPictures() != null && file.getExternalPictures().size() > index) {
+        // Try first to get picture with file name "ARTIST_ALBUM_COVER" pattern
+        String coverFileName = getFileNameForCover(file);
+        ImageIcon image = null;
+        if (new File(coverFileName).exists()) {
+            image = new ImageIcon(coverFileName);
+        } else if (file != null && file.getExternalPictures() != null && file.getExternalPictures().size() > index) {
             File firstPicture = file.getExternalPictures().get(index);
             image = new ImageIcon(firstPicture.getAbsolutePath());
-    	}
-    	if (image != null) {
+        }
+        if (image != null) {
             if (width == -1 || height == -1) {
                 return image;
             }
@@ -200,7 +200,7 @@ public final class AudioFilePictureUtils {
             return null;
         } catch (FileNotFoundException e) {
             new Logger().error(LogCategories.IMAGE, StringUtils.getString("File not found: ", file.getFile().getAbsolutePath()));
-            return null;        	
+            return null;
         } catch (Exception e) {
             new Logger().error(LogCategories.IMAGE, e);
             return null;
@@ -269,5 +269,5 @@ public final class AudioFilePictureUtils {
         ImageIcon image = getInsidePicture(song, -1, -1);
         ImageUtils.writeImageToFile(image.getImage(), file.getAbsolutePath());
     }
-    
+
 }

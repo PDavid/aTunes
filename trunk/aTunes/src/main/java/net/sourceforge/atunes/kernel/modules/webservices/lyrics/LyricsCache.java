@@ -100,16 +100,17 @@ public class LyricsCache extends AbstractCache {
     public void shutdown() {
         getCache().dispose();
     }
-    
+
     /**
      * Getter for logger
+     * 
      * @return
      */
     private Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
     }
 
 }

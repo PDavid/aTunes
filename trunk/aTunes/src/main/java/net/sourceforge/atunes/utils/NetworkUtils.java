@@ -242,13 +242,14 @@ public final class NetworkUtils {
 
     /**
      * Getter for logger
+     * 
      * @return
      */
     private static Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
     }
 
 }

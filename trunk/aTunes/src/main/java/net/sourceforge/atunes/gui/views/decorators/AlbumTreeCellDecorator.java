@@ -11,17 +11,17 @@ import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandl
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 
 public class AlbumTreeCellDecorator extends TreeCellDecorator {
-	
-	@Override
-	public Component decorateTreeCellComponent(Component component, Object userObject) {
+
+    @Override
+    public Component decorateTreeCellComponent(Component component, Object userObject) {
         if (userObject instanceof Album) {
             if (!ApplicationState.getInstance().isShowFavoritesInNavigator() || !FavoritesHandler.getInstance().getFavoriteAlbumsInfo().containsValue(userObject)) {
-                ((JLabel)component).setIcon(Images.getImage(Images.ALBUM));
+                ((JLabel) component).setIcon(Images.getImage(Images.ALBUM));
             } else {
-            	((JLabel)component).setIcon(Images.getImage(Images.ALBUM_FAVORITE));
+                ((JLabel) component).setIcon(Images.getImage(Images.ALBUM_FAVORITE));
             }
         }
         return component;
-	}
+    }
 
 }

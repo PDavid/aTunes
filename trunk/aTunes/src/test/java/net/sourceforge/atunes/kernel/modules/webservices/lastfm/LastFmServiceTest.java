@@ -23,7 +23,6 @@ import java.util.List;
 
 import junit.framework.Assert;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmLovedTrack;
 
 import org.junit.Test;

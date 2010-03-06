@@ -16,9 +16,9 @@ public class IntegerTableCellRendererCode extends TableCellRendererCode {
         Integer intValue = (Integer) value;
         String stringValue;
         if (intValue <= 0) {
-        	stringValue = "";
+            stringValue = "";
         } else {
-        	stringValue = String.valueOf(intValue);
+            stringValue = String.valueOf(intValue);
         }
         ((JLabel) c).setText(stringValue);
         ((JLabel) c).setHorizontalAlignment(SwingConstants.CENTER);

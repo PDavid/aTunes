@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 
 import junit.framework.Assert;
-import net.sourceforge.atunes.utils.CryptoUtils;
 
 import org.junit.Test;
 

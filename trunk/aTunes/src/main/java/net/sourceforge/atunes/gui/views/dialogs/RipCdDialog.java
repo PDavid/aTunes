@@ -347,8 +347,8 @@ public final class RipCdDialog extends CustomModalDialog {
         table.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(textfield2));
         table.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(textfield3));
 
-        table.setDefaultRenderer(String.class, 
-        		LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(GuiUtils.getComponentOrientationTableCellRendererCode()));
+        table.setDefaultRenderer(String.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(
+                GuiUtils.getComponentOrientationTableCellRendererCode()));
 
         JScrollPane scrollPane = new JScrollPane(table);
         JLabel artistLabel = new JLabel(I18nUtils.getString("ALBUM_ARTIST"));
@@ -681,5 +681,5 @@ public final class RipCdDialog extends CustomModalDialog {
         tableModel.setTrackNames(names);
         tableModel.fireTableDataChanged();
     }
-    
+
 }

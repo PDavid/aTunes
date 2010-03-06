@@ -49,43 +49,42 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class DevicePanel extends PreferencesPanel {
 
-    private static class AvailablePatternsDefaultTableModel extends
-			DefaultTableModel {
-		/**
+    private static class AvailablePatternsDefaultTableModel extends DefaultTableModel {
+        /**
 		 * 
 		 */
-		private static final long serialVersionUID = -3054134384773947174L;
+        private static final long serialVersionUID = -3054134384773947174L;
 
-		@Override
-		public int getRowCount() {
-		    return AbstractPattern.getPatterns().size();
-		}
+        @Override
+        public int getRowCount() {
+            return AbstractPattern.getPatterns().size();
+        }
 
-		@Override
-		public int getColumnCount() {
-		    return 2;
-		}
+        @Override
+        public int getColumnCount() {
+            return 2;
+        }
 
-		@Override
-		public boolean isCellEditable(int row, int column) {
-		    return false;
-		}
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
 
-		@Override
-		public Object getValueAt(int row, int column) {
-		    if (column == 0) {
-		        return AbstractPattern.getPatterns().get(row).getPattern();
-		    }
-		    return AbstractPattern.getPatterns().get(row).getDescription();
-		}
+        @Override
+        public Object getValueAt(int row, int column) {
+            if (column == 0) {
+                return AbstractPattern.getPatterns().get(row).getPattern();
+            }
+            return AbstractPattern.getPatterns().get(row).getDescription();
+        }
 
-		@Override
-		public String getColumnName(int column) {
-		    return column == 0 ? I18nUtils.getString("PATTERN") : I18nUtils.getString("VALUE");
-		}
-	}
+        @Override
+        public String getColumnName(int column) {
+            return column == 0 ? I18nUtils.getString("PATTERN") : I18nUtils.getString("VALUE");
+        }
+    }
 
-	private static final long serialVersionUID = 3331810461314007217L;
+    private static final long serialVersionUID = 3331810461314007217L;
 
     /** The location file chooser. */
     private CustomJFileChooser locationFileChooser;

@@ -37,9 +37,9 @@ public class ColorDefinitions {
     public static final Color GENERAL_UNKNOWN_ELEMENT_FOREGROUND_COLOR = Color.RED;
 
     private ColorDefinitions() {
-    	
+
     }
-    
+
     /**
      * Inits the colors.
      */

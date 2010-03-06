@@ -62,15 +62,15 @@ class LoadPlayListProcess extends Process {
         SwingUtilities.invokeLater(new AddToPlayListRunnable(songsLoaded));
         return true;
     }
-    
+
     private static class AddToPlayListRunnable implements Runnable {
-    	
-    	private List<AudioObject> songsLoaded;
-    	
-    	public AddToPlayListRunnable(List<AudioObject> songsLoaded) {
-    		this.songsLoaded = songsLoaded;
-    	}
-    	
+
+        private List<AudioObject> songsLoaded;
+
+        public AddToPlayListRunnable(List<AudioObject> songsLoaded) {
+            this.songsLoaded = songsLoaded;
+        }
+
         @Override
         public void run() {
             if (songsLoaded.size() >= 1) {

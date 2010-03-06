@@ -54,36 +54,35 @@ public final class NavigationTableColumnModel extends CommonColumnModel {
         ControllerProxy.getInstance().getNavigationController().updateTableContent(NavigationHandler.getInstance().getCurrentView().getTree());
     }
 
-	@Override
-	public TableCellRendererCode getRendererCodeFor(Class<?> clazz) {
-		TableCellRendererCode renderer = super.getRendererCodeFor(clazz);
-		return new NavigationTableCellRendererCode(renderer);
-	}
-	
-	private static class NavigationTableCellRendererCode extends TableCellRendererCode {
-		
-		private TableCellRendererCode renderer;
-		
-		public NavigationTableCellRendererCode(TableCellRendererCode renderer) {
-			this.renderer = renderer;
-		}
-		
-		@Override
-		public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-			// Get result from super renderer
-			Component c = renderer.getComponent(superComponent, t, value, isSelected, hasFocus, row, column);
-			
-			// Check incomplete tags if necessary
-			if (ApplicationState.getInstance().isHighlightIncompleteTagElements()) {
-				AudioObject audioObject = ControllerProxy.getInstance().getNavigationController().getAudioObjectInNavigationTable(row);
-				if (IncompleteTagsChecker.hasIncompleteTags(audioObject)) {
-					((JLabel)c).setForeground(Color.red);
-				}
-			}
-			
-			return c;
-		}
-	}
-	
-    
+    @Override
+    public TableCellRendererCode getRendererCodeFor(Class<?> clazz) {
+        TableCellRendererCode renderer = super.getRendererCodeFor(clazz);
+        return new NavigationTableCellRendererCode(renderer);
+    }
+
+    private static class NavigationTableCellRendererCode extends TableCellRendererCode {
+
+        private TableCellRendererCode renderer;
+
+        public NavigationTableCellRendererCode(TableCellRendererCode renderer) {
+            this.renderer = renderer;
+        }
+
+        @Override
+        public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            // Get result from super renderer
+            Component c = renderer.getComponent(superComponent, t, value, isSelected, hasFocus, row, column);
+
+            // Check incomplete tags if necessary
+            if (ApplicationState.getInstance().isHighlightIncompleteTagElements()) {
+                AudioObject audioObject = ControllerProxy.getInstance().getNavigationController().getAudioObjectInNavigationTable(row);
+                if (IncompleteTagsChecker.hasIncompleteTags(audioObject)) {
+                    ((JLabel) c).setForeground(Color.red);
+                }
+            }
+
+            return c;
+        }
+    }
+
 }

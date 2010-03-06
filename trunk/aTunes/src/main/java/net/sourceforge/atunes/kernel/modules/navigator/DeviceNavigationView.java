@@ -73,8 +73,8 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 public final class DeviceNavigationView extends NavigationView {
 
-	private List<TreeCellDecorator> decorators;
-	
+    private List<TreeCellDecorator> decorators;
+
     /** The device tree. */
     private JTree deviceTree;
 
@@ -449,8 +449,8 @@ public final class DeviceNavigationView extends NavigationView {
 
     @Override
     protected List<TreeCellDecorator> getTreeCellDecorators() {
-    	if (decorators == null) {
-    		decorators = new ArrayList<TreeCellDecorator>();
+        if (decorators == null) {
+            decorators = new ArrayList<TreeCellDecorator>();
             decorators.add(new ArtistTreeCellDecorator());
             decorators.add(new AlbumTreeCellDecorator());
             decorators.add(new GenreTreeCellDecorator());
@@ -459,21 +459,21 @@ public final class DeviceNavigationView extends NavigationView {
             decorators.add(new StringTreeCellDecorator());
             decorators.add(new UnknownElementTreeCellDecorator());
             decorators.add(new IncompleteTagsTreeCellDecorator());
-    	}
-    	return decorators;
+        }
+        return decorators;
     }
-    
+
     private static class DeviceTreeNode extends DefaultMutableTreeNode {
 
-    	/**
+        /**
 		 * 
 		 */
-		private static final long serialVersionUID = 4339839224598007751L;
+        private static final long serialVersionUID = 4339839224598007751L;
 
-		public DeviceTreeNode(Album album) {
-    		super(album);
-    	}
-    	
+        public DeviceTreeNode(Album album) {
+            super(album);
+        }
+
         @Override
         public String toString() {
             return ((Album) getUserObject()).getNameAndArtist();

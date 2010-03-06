@@ -86,7 +86,7 @@ public final class TransferableList<T> implements Transferable {
     public boolean isDataFlavorSupported(DataFlavor flavor) {
         return flavor.getMimeType().equalsIgnoreCase(mimeType);
     }
-    
+
     /**
      * Getter for logger
      * 

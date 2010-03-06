@@ -101,5 +101,5 @@ public class ClipboardFacade implements ClipboardOwner {
     public void lostOwnership(Clipboard arg0, Transferable arg1) {
         // Nothing to do
     }
-    
+
 }

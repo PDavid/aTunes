@@ -517,96 +517,99 @@ public abstract class NavigationView implements AudioObjectsSource {
 
         return viewAction;
     }
-    
+
     /**
      * Returns tree renderer used
+     * 
      * @return
      */
     protected final TreeCellRenderer getTreeRenderer() {
         return LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTreeCellRenderer(new TreeCellRendererCode() {
-			
-			@Override
-			public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
-            	final Object content = ((DefaultMutableTreeNode) value).getUserObject();
-            	for (TreeCellDecorator decorator : getTreeCellDecorators()) {
-            		decorator.decorateTreeCellComponent(superComponent, content);
-            	}
+
+            @Override
+            public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
+                final Object content = ((DefaultMutableTreeNode) value).getUserObject();
+                for (TreeCellDecorator decorator : getTreeCellDecorators()) {
+                    decorator.decorateTreeCellComponent(superComponent, content);
+                }
                 return superComponent;
-			}
-		});
+            }
+        });
     }
 
-	/**
-	 * @return New collator
-	 */
-	protected Collator getCollator() {
-	    return Collator.getInstance(ApplicationState.getInstance().getLocale().getLocale());
-	}
+    /**
+     * @return New collator
+     */
+    protected Collator getCollator() {
+        return Collator.getInstance(ApplicationState.getInstance().getLocale().getLocale());
+    }
 
-	/**
-	 * The smart comparator ignores a leading "The"
-	 * @return the smartComparator
-	 */
-	protected Comparator<String> getSmartComparator() {
-		return new Comparator<String>() {
-			private String removeThe(String str) {
-				if (str.toLowerCase().startsWith("the ") && str.length() > 4) {
-					return str.substring(4);
-				}
-				return str;
-			}
+    /**
+     * The smart comparator ignores a leading "The"
+     * 
+     * @return the smartComparator
+     */
+    protected Comparator<String> getSmartComparator() {
+        return new Comparator<String>() {
+            private String removeThe(String str) {
+                if (str.toLowerCase().startsWith("the ") && str.length() > 4) {
+                    return str.substring(4);
+                }
+                return str;
+            }
 
-			@Override
-			public int compare(String s1, String s2) {
-				return getCollator().compare(removeThe(s1).toLowerCase(), removeThe(s2).toLowerCase());
-			}
-		};
-	}
+            @Override
+            public int compare(String s1, String s2) {
+                return getCollator().compare(removeThe(s1).toLowerCase(), removeThe(s2).toLowerCase());
+            }
+        };
+    }
 
-	/**
-	 * @return the artistNamesComparator
-	 */
-	protected Comparator<String> getArtistNamesComparator() {
-		return new Comparator<String>() {
+    /**
+     * @return the artistNamesComparator
+     */
+    protected Comparator<String> getArtistNamesComparator() {
+        return new Comparator<String>() {
 
-		    private final Pattern PATTERN = Pattern.compile("(.*)\\s+(.*?)");
+            private final Pattern PATTERN = Pattern.compile("(.*)\\s+(.*?)");
 
-	        @Override
-	        public int compare(String s1, String s2) {
-	            String[] ss1 = s1.split("[,\\&]");
-	            String[] ss2 = s2.split("[,\\&]");
-	            String d1 = getStringForSorting(s1, ss1);
-	            String d2 = getStringForSorting(s2, ss2);
-	            return getCollator().compare(d1.toLowerCase(), d2.toLowerCase());
-	        }
+            @Override
+            public int compare(String s1, String s2) {
+                String[] ss1 = s1.split("[,\\&]");
+                String[] ss2 = s2.split("[,\\&]");
+                String d1 = getStringForSorting(s1, ss1);
+                String d2 = getStringForSorting(s2, ss2);
+                return getCollator().compare(d1.toLowerCase(), d2.toLowerCase());
+            }
 
-	        private String getStringForSorting(String s, String[] ss) {
-	            StringBuilder sb = new StringBuilder();
-	            for (String k : ss) {
-	                Matcher matcher = PATTERN.matcher(k.trim());
-	                String m = s;
-	                String n = "";
-	                if (matcher.matches()) {
-	                    m = matcher.group(2);
-	                    n = matcher.group(1);
-	                }
-	                sb.append(m);
-	                sb.append(n);
-	            }
-	            return sb.toString();
-	        }
-	    };
-	}
-	
+            private String getStringForSorting(String s, String[] ss) {
+                StringBuilder sb = new StringBuilder();
+                for (String k : ss) {
+                    Matcher matcher = PATTERN.matcher(k.trim());
+                    String m = s;
+                    String n = "";
+                    if (matcher.matches()) {
+                        m = matcher.group(2);
+                        n = matcher.group(1);
+                    }
+                    sb.append(m);
+                    sb.append(n);
+                }
+                return sb.toString();
+            }
+        };
+    }
+
     /**
      * Getter for logger
+     * 
      * @return
      */
     private Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
     }
 
 }

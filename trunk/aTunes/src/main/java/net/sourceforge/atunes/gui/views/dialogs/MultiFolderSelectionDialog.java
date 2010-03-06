@@ -73,7 +73,7 @@ public final class MultiFolderSelectionDialog extends CustomModalDialog {
      * Width of a check box. This is used to calculate if user pressed mouse
      * button inside checkbox
      */
-	private int checkBoxWidth = new JCheckBox().getPreferredSize().width;
+    private int checkBoxWidth = new JCheckBox().getPreferredSize().width;
 
     /**
      * The Class CheckNode.
@@ -695,17 +695,17 @@ public final class MultiFolderSelectionDialog extends CustomModalDialog {
         setTree();
         setVisible(true);
     }
-    
+
     /**
      * Getter for logger
+     * 
      * @return
      */
     private Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
     }
-
 
 }

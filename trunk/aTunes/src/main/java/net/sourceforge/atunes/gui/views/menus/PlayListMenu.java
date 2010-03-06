@@ -59,10 +59,10 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class PlayListMenu {
 
-	private PlayListMenu() {
-		
-	}
-	
+    private PlayListMenu() {
+
+    }
+
     /**
      * Fills a pop up with play list menu items
      * 

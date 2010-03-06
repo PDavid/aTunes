@@ -47,20 +47,19 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class AlbumTracksContent extends ContextPanelContent {
 
-    private static class TracksDefaultTableColumnModel extends
-			DefaultTableColumnModel {
-		private static final long serialVersionUID = 1338172152164826400L;
+    private static class TracksDefaultTableColumnModel extends DefaultTableColumnModel {
+        private static final long serialVersionUID = 1338172152164826400L;
 
-		@Override
-		public void addColumn(TableColumn column) {
-		    super.addColumn(column);
-		    if (column.getModelIndex() == 0) {
-		        column.setMaxWidth(25);
-		    }
-		}
-	}
+        @Override
+        public void addColumn(TableColumn column) {
+            super.addColumn(column);
+            if (column.getModelIndex() == 0) {
+                column.setMaxWidth(25);
+            }
+        }
+    }
 
-	private static final long serialVersionUID = -5538266144953409867L;
+    private static final long serialVersionUID = -5538266144953409867L;
 
     private JTable tracksTable;
 
@@ -99,11 +98,11 @@ public class AlbumTracksContent extends ContextPanelContent {
         tracksTable = new JTable();
         tracksTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tracksTable.setShowGrid(false);
-        tracksTable.setDefaultRenderer(String.class, 
-        		LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(GuiUtils.getComponentOrientationTableCellRendererCode()));
+        tracksTable.setDefaultRenderer(String.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(
+                GuiUtils.getComponentOrientationTableCellRendererCode()));
 
-        tracksTable.setDefaultRenderer(Integer.class, 
-        		LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(GuiUtils.getComponentOrientationTableCellRendererCode()));
+        tracksTable.setDefaultRenderer(Integer.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(
+                GuiUtils.getComponentOrientationTableCellRendererCode()));
 
         tracksTable.getTableHeader().setReorderingAllowed(true);
         tracksTable.getTableHeader().setResizingAllowed(false);

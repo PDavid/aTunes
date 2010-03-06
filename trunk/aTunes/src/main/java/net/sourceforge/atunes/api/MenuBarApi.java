@@ -28,10 +28,10 @@ import org.commonjukebox.plugins.PluginApi;
 @PluginApi
 public final class MenuBarApi {
 
-	private MenuBarApi() {
-		
-	}
-	
+    private MenuBarApi() {
+
+    }
+
     /**
      * Adds a new menu just before "Help"
      * 

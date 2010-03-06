@@ -34,7 +34,7 @@ public class RepositoryLoadInBackgroundAction extends Action {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-    	RepositoryHandler.getInstance().doInBackground();
+        RepositoryHandler.getInstance().doInBackground();
     }
 
 }

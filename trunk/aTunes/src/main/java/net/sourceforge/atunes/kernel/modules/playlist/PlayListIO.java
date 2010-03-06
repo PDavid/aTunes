@@ -66,9 +66,9 @@ public class PlayListIO {
     private static final String M3U_HTTP_PREFIX = "http://";
 
     private PlayListIO() {
-    	
+
     }
-    
+
     /**
      * Returns a list of files contained in a list of file names.
      * 

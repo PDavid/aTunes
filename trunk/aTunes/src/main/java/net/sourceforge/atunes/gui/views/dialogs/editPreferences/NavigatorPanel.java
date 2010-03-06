@@ -229,8 +229,8 @@ public final class NavigatorPanel extends PreferencesPanel {
         highlighTagAttributesTable.getColumnModel().getColumn(0).setMaxWidth(20);
         highlighTagAttributesTable.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JCheckBox()));
         highlighTagAttributesTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        highlighTagAttributesTable.setDefaultRenderer(String.class, 
-        		LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(GuiUtils.getComponentOrientationTableCellRendererCode()));
+        highlighTagAttributesTable.setDefaultRenderer(String.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(
+                GuiUtils.getComponentOrientationTableCellRendererCode()));
 
         highlightTagAttributesScrollPane = new JScrollPane(highlighTagAttributesTable);
         highlightTagAttributesScrollPane.setMinimumSize(new Dimension(300, 150));

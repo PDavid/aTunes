@@ -23,8 +23,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import junit.framework.Assert;
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntryRetriever;
 
 import org.junit.Before;
 import org.junit.Test;

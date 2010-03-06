@@ -375,6 +375,7 @@ public final class PlayerHandler extends Handler implements PluginListener, Play
     /**
      * Initializes handler
      */
+    @Override
     public void initHandler() {
     }
 

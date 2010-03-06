@@ -20,6 +20,7 @@
 package net.sourceforge.atunes.model;
 
 import java.util.Date;
+
 import javax.swing.ImageIcon;
 
 import org.commonjukebox.plugins.PluginApi;

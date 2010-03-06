@@ -196,17 +196,17 @@ public final class SmartPlayListHandler {
             PlayListHandler.getInstance().addToPlayList(audioObjects);
         }
     }
-    
+
     /**
      * Getter for logger
+     * 
      * @return
      */
     private Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
     }
-
 
 }

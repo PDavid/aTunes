@@ -46,9 +46,9 @@ public abstract class Controller {
      * @return
      */
     protected Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
+        if (logger == null) {
+            logger = new Logger();
+        }
         return logger;
     }
 }

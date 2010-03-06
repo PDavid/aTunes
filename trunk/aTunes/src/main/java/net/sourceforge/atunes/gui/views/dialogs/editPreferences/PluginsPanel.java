@@ -257,7 +257,7 @@ public final class PluginsPanel extends PreferencesPanel {
         try {
             // if any plugin has been modified then write configuration
             for (PluginInfo plugin : pluginsModified.keySet()) {
-            	getLogger().debug(LogCategories.PLUGINS, "Writting configuration of plugin: ", plugin.getName());
+                getLogger().debug(LogCategories.PLUGINS, "Writting configuration of plugin: ", plugin.getName());
 
                 // Avoid plugins throw exceptions when setting configuration
                 try {
@@ -283,9 +283,9 @@ public final class PluginsPanel extends PreferencesPanel {
                 restartNeeded = restartNeeded || PluginsHandler.getInstance().pluginNeedsRestart(plugin);
             }
         } catch (PluginSystemException e) {
-        	getLogger().error(LogCategories.PLUGINS, e);
+            getLogger().error(LogCategories.PLUGINS, e);
             if (e.getCause() != null) {
-            	getLogger().error(LogCategories.PLUGINS, e.getCause());
+                getLogger().error(LogCategories.PLUGINS, e.getCause());
             }
         }
         return restartNeeded;
@@ -320,36 +320,34 @@ public final class PluginsPanel extends PreferencesPanel {
         }
     }
 
-    private static class PluginsTableCellRendererCode extends
-			TableCellRendererCode {
-		@Override
-		public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-		    Component c = superComponent;
-		    ((JLabel) c).setText(((PluginInfo) value).getName());
-		    if (((PluginInfo) value).getIcon() != null) {
-		        ((JLabel) c).setIcon(ImageUtils.scaleImageBicubic(((PluginInfo) value).getIcon(), CELL_HEIGHT - 5, CELL_HEIGHT - 5));
-		    } else {
-		        ((JLabel) c).setIcon(ImageUtils.scaleImageBicubic(Images.getImage(Images.EMPTY).getImage(), CELL_HEIGHT - 5, CELL_HEIGHT - 5));
-		    }
-		    return c;
-		}
-	}
+    private static class PluginsTableCellRendererCode extends TableCellRendererCode {
+        @Override
+        public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            Component c = superComponent;
+            ((JLabel) c).setText(((PluginInfo) value).getName());
+            if (((PluginInfo) value).getIcon() != null) {
+                ((JLabel) c).setIcon(ImageUtils.scaleImageBicubic(((PluginInfo) value).getIcon(), CELL_HEIGHT - 5, CELL_HEIGHT - 5));
+            } else {
+                ((JLabel) c).setIcon(ImageUtils.scaleImageBicubic(Images.getImage(Images.EMPTY).getImage(), CELL_HEIGHT - 5, CELL_HEIGHT - 5));
+            }
+            return c;
+        }
+    }
 
-	private static class PluginsTableDefaultTableColumnModel extends
-			DefaultTableColumnModel {
-		private static final long serialVersionUID = -4128210690358582389L;
+    private static class PluginsTableDefaultTableColumnModel extends DefaultTableColumnModel {
+        private static final long serialVersionUID = -4128210690358582389L;
 
-		@Override
-		public void addColumn(TableColumn column) {
-		    super.addColumn(column);
-		    if (column.getHeaderValue().equals(I18nUtils.getString("ACTIVE"))) {
-		        column.setMinWidth(80);
-		        column.setMaxWidth(100);
-		    }
-		}
-	}
+        @Override
+        public void addColumn(TableColumn column) {
+            super.addColumn(column);
+            if (column.getHeaderValue().equals(I18nUtils.getString("ACTIVE"))) {
+                column.setMinWidth(80);
+                column.setMaxWidth(100);
+            }
+        }
+    }
 
-	private class PluginsTableModel implements TableModel {
+    private class PluginsTableModel implements TableModel {
 
         private List<PluginInfo> plugins;
 
@@ -463,16 +461,17 @@ public final class PluginsPanel extends PreferencesPanel {
     public ImageIcon getIcon() {
         return Images.getImage(Images.PLUGIN);
     }
-    
+
     /**
      * Getter for logger
+     * 
      * @return
      */
     private Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
     }
 
 }

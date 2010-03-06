@@ -190,10 +190,10 @@ public final class DateUtils {
         static class MailDateParser {
 
             /** The index. */
-        	private int index = 0;
+            private int index = 0;
 
             /** The orig. */
-        	private char[] orig = null;
+            private char[] orig = null;
 
             /**
              * Instantiates a new mail date parser.

@@ -173,7 +173,7 @@ public final class ImageUtils {
             g.drawImage(image, 0, 0, null);
             g.dispose();
         } catch (IllegalArgumentException e) {
-        	Logger logger = new Logger();
+            Logger logger = new Logger();
             logger.info(LogCategories.IMAGE, "Maybe picture file with wrong ending?");
             logger.error(LogCategories.IMAGE, e);
             return null;

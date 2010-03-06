@@ -214,7 +214,7 @@ public class Cdda2wav extends CdToWavConverter {
                     SwingUtilities.invokeLater(new Runnable() {
                         @Override
                         public void run() {
-                        	getListener().notifyProgress(percent);
+                            getListener().notifyProgress(percent);
                         }
                     });
                 }
@@ -612,7 +612,7 @@ public class Cdda2wav extends CdToWavConverter {
                                     artist = albumInfoTokenizer.nextToken();
                                 }
                                 // Artist names can contain "'" so check if there is something left
-                                sb = new StringBuilder(artist); 
+                                sb = new StringBuilder(artist);
                                 while (albumInfoTokenizer.hasMoreTokens()) {
                                     token = albumInfoTokenizer.nextToken();
                                     sb.append(token);
@@ -799,16 +799,17 @@ public class Cdda2wav extends CdToWavConverter {
     public void stop() {
         getProcess().destroy();
     }
-    
+
     /**
      * Getter for logger
+     * 
      * @return
      */
     private Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
     }
 
 }

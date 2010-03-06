@@ -58,41 +58,38 @@ import org.jfree.ui.RectangleInsets;
 
 public final class StatsDialogController extends SimpleController<StatsDialog> {
 
-    private static class RightAlignmentTableCellRendererCode extends
-			TableCellRendererCode {
-		@Override
-		public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-		    JLabel l = (JLabel) superComponent;
-		    l.setHorizontalAlignment(SwingConstants.RIGHT);
-		    return l;
-		}
-	}
+    private static class RightAlignmentTableCellRendererCode extends TableCellRendererCode {
+        @Override
+        public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            JLabel l = (JLabel) superComponent;
+            l.setHorizontalAlignment(SwingConstants.RIGHT);
+            return l;
+        }
+    }
 
-	private static class SwingOrientationTableCellRendererCode extends
-			TableCellRendererCode {
-		@Override
-		public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-		    JLabel l = (JLabel) superComponent;
-		    l.setHorizontalAlignment(GuiUtils.getComponentOrientationAsSwingConstant());
-		    return l;
-		}
-	}
+    private static class SwingOrientationTableCellRendererCode extends TableCellRendererCode {
+        @Override
+        public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            JLabel l = (JLabel) superComponent;
+            l.setHorizontalAlignment(GuiUtils.getComponentOrientationAsSwingConstant());
+            return l;
+        }
+    }
 
-	private static class StatsDialogDefaultTableModel extends DefaultTableModel {
-		private static final long serialVersionUID = 0L;
+    private static class StatsDialogDefaultTableModel extends DefaultTableModel {
+        private static final long serialVersionUID = 0L;
 
-		private StatsDialogDefaultTableModel(Object[][] data,
-				Object[] columnNames) {
-			super(data, columnNames);
-		}
+        private StatsDialogDefaultTableModel(Object[][] data, Object[] columnNames) {
+            super(data, columnNames);
+        }
 
-		@Override
-		public boolean isCellEditable(int row, int column) {
-		    return false;
-		}
-	}
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    }
 
-	/**
+    /**
      * Instantiates a new stats dialog controller.
      * 
      * @param frame
@@ -409,12 +406,15 @@ public final class StatsDialogController extends SimpleController<StatsDialog> {
         table.setModel(new StatsDialogDefaultTableModel(content, headers));
         table.getColumnModel().getColumn(0).setPreferredWidth(420);
         table.getColumnModel().getColumn(0).setWidth(table.getColumnModel().getColumn(0).getWidth());
-        table.getColumnModel().getColumn(0).setCellRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new SwingOrientationTableCellRendererCode()));
+        table.getColumnModel().getColumn(0).setCellRenderer(
+                LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new SwingOrientationTableCellRendererCode()));
         table.getColumnModel().getColumn(2).setPreferredWidth(30);
         table.getColumnModel().getColumn(2).setWidth(table.getColumnModel().getColumn(2).getWidth());
 
-        table.getColumnModel().getColumn(1).setCellRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new RightAlignmentTableCellRendererCode()));
-        table.getColumnModel().getColumn(2).setCellRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new RightAlignmentTableCellRendererCode()));
+        table.getColumnModel().getColumn(1).setCellRenderer(
+                LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new RightAlignmentTableCellRendererCode()));
+        table.getColumnModel().getColumn(2).setCellRenderer(
+                LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new RightAlignmentTableCellRendererCode()));
     }
 
     /**

@@ -290,7 +290,7 @@ public class PluginsHandler extends Handler implements PluginListener {
         }
         return false;
     }
-    
+
     private static class PluginsLoggerHandler extends java.util.logging.Handler {
 
         @Override

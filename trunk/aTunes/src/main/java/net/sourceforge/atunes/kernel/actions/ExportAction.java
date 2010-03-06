@@ -45,32 +45,32 @@ import net.sourceforge.atunes.utils.StringUtils;
 public class ExportAction extends Action {
 
     private static class ExportProcessListener implements ProcessListener {
-		private static class ShowErrorDialogRunnable implements Runnable {
-			private final boolean ok;
+        private static class ShowErrorDialogRunnable implements Runnable {
+            private final boolean ok;
 
-			private ShowErrorDialogRunnable(boolean ok) {
-				this.ok = ok;
-			}
+            private ShowErrorDialogRunnable(boolean ok) {
+                this.ok = ok;
+            }
 
-			@Override
-			public void run() {
-			    if (!ok) {
-			        GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("ERRORS_IN_EXPORT_PROCESS"));
-			    }
-			}
-		}
+            @Override
+            public void run() {
+                if (!ok) {
+                    GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("ERRORS_IN_EXPORT_PROCESS"));
+                }
+            }
+        }
 
-		@Override
-		public void processCanceled() { /* Nothing to do */
-		}
+        @Override
+        public void processCanceled() { /* Nothing to do */
+        }
 
-		@Override
-		public void processFinished(final boolean ok) {
-		    SwingUtilities.invokeLater(new ShowErrorDialogRunnable(ok));
-		}
-	}
+        @Override
+        public void processFinished(final boolean ok) {
+            SwingUtilities.invokeLater(new ShowErrorDialogRunnable(ok));
+        }
+    }
 
-	private static final long serialVersionUID = -6661702915765846089L;
+    private static final long serialVersionUID = -6661702915765846089L;
 
     ExportAction() {
         super(StringUtils.getString(I18nUtils.getString("EXPORT"), "..."));

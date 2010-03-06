@@ -52,7 +52,7 @@ public final class StopButton extends JButton {
         setFocusable(false);
         setIcon(Images.getImage(Images.STOP));
         setText(null);
-        
+
         LookAndFeelSelector.getInstance().getCurrentLookAndFeel().putClientProperties(this);
     }
 }

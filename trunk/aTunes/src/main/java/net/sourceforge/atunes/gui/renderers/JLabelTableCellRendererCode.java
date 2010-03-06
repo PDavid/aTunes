@@ -10,12 +10,12 @@ import net.sourceforge.atunes.gui.model.CommonColumnModel;
 
 public class JLabelTableCellRendererCode extends TableCellRendererCode {
 
-	private CommonColumnModel model;
-	
-	public JLabelTableCellRendererCode(CommonColumnModel model) {
-		this.model = model;
-	}
-	
+    private CommonColumnModel model;
+
+    public JLabelTableCellRendererCode(CommonColumnModel model) {
+        this.model = model;
+    }
+
     @Override
     public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         Component c = superComponent;

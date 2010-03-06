@@ -34,9 +34,9 @@ import net.sourceforge.atunes.misc.log.Logger;
 class RepositoryFiller {
 
     private RepositoryFiller() {
-    	
+
     }
-    
+
     /**
      * Adds basic information of given audio file to repository
      * 
@@ -101,13 +101,13 @@ class RepositoryFiller {
 
             genreObject.addAudioFile(audioFile);
         } catch (Exception e) {
-        	new Logger().error(LogCategories.FILE_READ, e.getMessage());
+            new Logger().error(LogCategories.FILE_READ, e.getMessage());
         }
     }
 
     /**
      * Adds given audio file to year structure of given repository
-     *
+     * 
      * @param repository
      *            the repository
      * @param audioFile

@@ -55,19 +55,19 @@ import net.sourceforge.atunes.utils.I18nUtils;
 public class LyricsContent extends ContextPanelContent {
 
     private static class OpenUrlActionListener implements ActionListener {
-		private final Entry<String, String> entry;
+        private final Entry<String, String> entry;
 
-		private OpenUrlActionListener(Entry<String, String> entry) {
-			this.entry = entry;
-		}
+        private OpenUrlActionListener(Entry<String, String> entry) {
+            this.entry = entry;
+        }
 
-		@Override
-		public void actionPerformed(ActionEvent e) {
-		    DesktopUtils.openURL(entry.getValue());
-		}
-	}
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            DesktopUtils.openURL(entry.getValue());
+        }
+    }
 
-	private static final long serialVersionUID = 962229017133714396L;
+    private static final long serialVersionUID = 962229017133714396L;
 
     private CustomTextPane lyricsContainer;
 

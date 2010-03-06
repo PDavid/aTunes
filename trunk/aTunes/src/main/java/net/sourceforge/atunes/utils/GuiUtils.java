@@ -465,11 +465,11 @@ public final class GuiUtils {
     public static GraphicsDevice getGraphicsDeviceForLocation(Point p) {
         return getGraphicsDeviceForLocation(p.x, p.y);
     }
-    
+
     public static ComponentOrientationTableCellRendererCode getComponentOrientationTableCellRendererCode() {
-    	return new ComponentOrientationTableCellRendererCode();
+        return new ComponentOrientationTableCellRendererCode();
     }
-    
+
     public static class ComponentOrientationTableCellRendererCode extends TableCellRendererCode {
         @Override
         public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -477,16 +477,17 @@ public final class GuiUtils {
             return superComponent;
         }
     }
-    
+
     /**
      * Getter for logger
+     * 
      * @return
      */
     private static Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
     }
 
 }

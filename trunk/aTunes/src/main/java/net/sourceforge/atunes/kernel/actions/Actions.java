@@ -130,6 +130,5 @@ public final class Actions {
         menuItem.setAction(Actions.getActionAndBind(clazz, actionId, menuItem, audioObjectsSource));
         return menuItem;
     }
-    
 
 }

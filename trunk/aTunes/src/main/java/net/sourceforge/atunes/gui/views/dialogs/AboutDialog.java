@@ -66,7 +66,7 @@ public final class AboutDialog extends CustomModalDialog {
     static final String[] JAVA_VERSION = new String[] { "Java Runtime Enviroment", System.getProperty("java.version") };
     static final String[] OS_NAME = new String[] { "OS", StringUtils.getString(System.getProperty("os.name"), " (", System.getProperty("os.arch"), ')') };
 
-	/**
+    /**
      * The Class AboutDialogTableModel.
      */
     private static class AboutDialogTableModel extends AbstractTableModel {
@@ -209,8 +209,8 @@ public final class AboutDialog extends CustomModalDialog {
 
         JTable propertiesTable = new JTable(tableModel);
         propertiesTable.setShowGrid(false);
-        propertiesTable.setDefaultRenderer(Object.class, 
-        		LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(GuiUtils.getComponentOrientationTableCellRendererCode()));
+        propertiesTable.setDefaultRenderer(Object.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(
+                GuiUtils.getComponentOrientationTableCellRendererCode()));
         JScrollPane propertiesScrollPane = new JScrollPane(propertiesTable);
 
         JButton close = new CustomButton(null, I18nUtils.getString("CLOSE"));

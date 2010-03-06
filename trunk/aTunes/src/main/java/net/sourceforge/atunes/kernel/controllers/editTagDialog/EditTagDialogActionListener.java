@@ -181,33 +181,33 @@ public final class EditTagDialogActionListener implements ActionListener {
             return null;
         }
     }
-   
+
     /**
      * Getter for logger
+     * 
      * @return
      */
     private Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
     }
 
-    
     private static class ImagesFileFiler extends FileFilter {
-    	@Override
-    	public boolean accept(File pathname) {
-    		if (pathname.isDirectory()) {
-    			return true;
-    		}
-    		String fileName = pathname.getName().toUpperCase();
-    		return fileName.endsWith("JPG") || fileName.endsWith("JPEG") || fileName.endsWith("PNG");
-    	}
+        @Override
+        public boolean accept(File pathname) {
+            if (pathname.isDirectory()) {
+                return true;
+            }
+            String fileName = pathname.getName().toUpperCase();
+            return fileName.endsWith("JPG") || fileName.endsWith("JPEG") || fileName.endsWith("PNG");
+        }
 
-    	@Override
-    	public String getDescription() {
-    		return I18nUtils.getString("IMAGES");
-    	}
+        @Override
+        public String getDescription() {
+            return I18nUtils.getString("IMAGES");
+        }
     }
-       
+
 }

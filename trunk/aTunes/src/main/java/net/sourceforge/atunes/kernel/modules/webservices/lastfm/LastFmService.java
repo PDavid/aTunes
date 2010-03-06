@@ -526,23 +526,23 @@ public class LastFmService {
         getLogger().info(LogCategories.SERVICE, "Trying to submit song to Last.fm");
         try {
             performHandshakeIfNeeded();
-            SubmissionData submissionData = new SubmissionData(file.getArtist(), file.getTitle(), file.getAlbum(), (int) file.getDuration(), file.getTrackNumber(), Source.USER,
-                    null, startedToPlay);
+            SubmissionData submissionData = new SubmissionData(file.getArtist(), file.getTitle(), file.getAlbum(), file.getDuration(), file.getTrackNumber(), Source.USER, null,
+                    startedToPlay);
             ResponseStatus status = scrobbler.submit(submissionData);
             if (status.ok()) {
                 getLogger().info(LogCategories.SERVICE, "Song submitted to Last.fm");
             } else {
                 handshakePerformed = false;
-                lastFmCache.addSubmissionData(new net.sourceforge.atunes.kernel.modules.webservices.lastfm.SubmissionData(file.getArtist(), file.getTitle(), file.getAlbum(),
-                        (int) file.getDuration(), file.getTrackNumber(), Source.USER.toString(), (int) startedToPlay));
+                lastFmCache.addSubmissionData(new net.sourceforge.atunes.kernel.modules.webservices.lastfm.SubmissionData(file.getArtist(), file.getTitle(), file.getAlbum(), file
+                        .getDuration(), file.getTrackNumber(), Source.USER.toString(), (int) startedToPlay));
                 throw new ScrobblerException(status.getStatus());
             }
 
         } catch (IOException e) {
             getLogger().error(LogCategories.SERVICE, e);
             handshakePerformed = false;
-            lastFmCache.addSubmissionData(new net.sourceforge.atunes.kernel.modules.webservices.lastfm.SubmissionData(file.getArtist(), file.getTitle(), file.getAlbum(),
-                    (int) file.getDuration(), file.getTrackNumber(), Source.USER.toString(), (int) startedToPlay));
+            lastFmCache.addSubmissionData(new net.sourceforge.atunes.kernel.modules.webservices.lastfm.SubmissionData(file.getArtist(), file.getTitle(), file.getAlbum(), file
+                    .getDuration(), file.getTrackNumber(), Source.USER.toString(), (int) startedToPlay));
             throw new ScrobblerException(e.getMessage());
         }
     }
@@ -654,7 +654,7 @@ public class LastFmService {
         getLogger().info(LogCategories.SERVICE, "Trying to submit now playing info to Last.fm");
         try {
             performHandshakeIfNeeded();
-            ResponseStatus status = scrobbler.nowPlaying(file.getArtist(), file.getTitle(), file.getAlbum(), (int) file.getDuration(), file.getTrackNumber());
+            ResponseStatus status = scrobbler.nowPlaying(file.getArtist(), file.getTitle(), file.getAlbum(), file.getDuration(), file.getTrackNumber());
             if (status.ok()) {
                 getLogger().info(LogCategories.SERVICE, "Now playing info submitted to Last.fm");
             } else {
@@ -995,16 +995,17 @@ public class LastFmService {
     private Session getSession() {
         return Authenticator.getMobileSession(user, password, getApiKey(), getApiSecret());
     }
-    
+
     /**
      * Getter for logger
+     * 
      * @return
      */
     private static Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
     }
 
 }

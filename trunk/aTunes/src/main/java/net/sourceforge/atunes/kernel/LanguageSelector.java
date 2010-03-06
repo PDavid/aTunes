@@ -33,9 +33,9 @@ import net.sourceforge.atunes.utils.StringUtils;
 final class LanguageSelector {
 
     private LanguageSelector() {
-    	
+
     }
-    
+
     /**
      * Sets application language. If a language is defined in the state, it's
      * used. If not, a dialog is shown to let the user choose. The language
@@ -54,5 +54,5 @@ final class LanguageSelector {
         }
         // Set Locale for DateUtils
         DateUtils.setLocale(ApplicationState.getInstance().getLocale().getLocale());
-    }    
+    }
 }

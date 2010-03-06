@@ -48,16 +48,15 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class ArtistAlbumsContent extends ContextPanelContent {
 
-    private static class AlbumsTableCellRendererCode extends
-			TableCellRendererCode {
-		@Override
-		public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-		    return getPanelForTableRenderer(((AlbumInfo) value).getCover(), StringUtils.getString("<html>", ((AlbumInfo) value).getTitle(), "</html>"), superComponent
-		            .getBackground(), Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT);
-		}
-	}
+    private static class AlbumsTableCellRendererCode extends TableCellRendererCode {
+        @Override
+        public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            return getPanelForTableRenderer(((AlbumInfo) value).getCover(), StringUtils.getString("<html>", ((AlbumInfo) value).getTitle(), "</html>"), superComponent
+                    .getBackground(), Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT);
+        }
+    }
 
-	private static final long serialVersionUID = -5538266144953409867L;
+    private static final long serialVersionUID = -5538266144953409867L;
     private ContextImageJTable albumsTable;
 
     public ArtistAlbumsContent() {

@@ -51,7 +51,7 @@ import org.libxinejna.XineEventListener;
  */
 public class XineEngine extends PlayerEngine {
 
-	private XineController xineController;
+    private XineController xineController;
     private Timer durationUpdater;
     private final Object xineLock = new Object();
 
@@ -110,7 +110,6 @@ public class XineEngine extends PlayerEngine {
         // Apply equalizer
         applyEqualization(getEqualizer().getEqualizerValues());
 
-        
         String errorMessage = null;
         int streamLength = xineController.getStreamLength();
         if (audioObjectToPlay instanceof PodcastFeedEntry || audioObjectToPlay instanceof Radio) {
@@ -311,7 +310,7 @@ public class XineEngine extends PlayerEngine {
     }
 
     protected void error(Exception o) {
-    	getLogger().error(LogCategories.PLAYER, o);
+        getLogger().error(LogCategories.PLAYER, o);
     }
 
     protected class XineListener implements XineEventListener {

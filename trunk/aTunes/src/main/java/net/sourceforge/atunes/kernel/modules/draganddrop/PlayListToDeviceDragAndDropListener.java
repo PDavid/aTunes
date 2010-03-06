@@ -138,16 +138,17 @@ public class PlayListToDeviceDragAndDropListener implements DropTargetListener {
     public void dropActionChanged(DropTargetDragEvent dtde) {
         // Nothing to do
     }
-    
+
     /**
      * Getter for logger
+     * 
      * @return
      */
     private Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
     }
 
 }

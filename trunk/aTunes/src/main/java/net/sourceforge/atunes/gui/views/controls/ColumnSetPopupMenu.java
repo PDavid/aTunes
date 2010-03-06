@@ -36,38 +36,37 @@ import net.sourceforge.atunes.utils.I18nUtils;
 public class ColumnSetPopupMenu {
 
     private static class ColumnSetTableHeaderMouseAdapter extends MouseAdapter {
-		private final JPopupMenu rightMenu;
-		private final JTable table;
+        private final JPopupMenu rightMenu;
+        private final JTable table;
 
-		private ColumnSetTableHeaderMouseAdapter(JPopupMenu rightMenu,
-				JTable table) {
-			this.rightMenu = rightMenu;
-			this.table = table;
-		}
+        private ColumnSetTableHeaderMouseAdapter(JPopupMenu rightMenu, JTable table) {
+            this.rightMenu = rightMenu;
+            this.table = table;
+        }
 
-		@Override
-		public void mouseClicked(MouseEvent e) {
-		    // Use right button to arrange columns
-		    if (e.getButton() == MouseEvent.BUTTON3) {
-		        rightMenu.show(table.getTableHeader(), e.getX(), e.getY());
-		    }
-		}
-	}
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            // Use right button to arrange columns
+            if (e.getButton() == MouseEvent.BUTTON3) {
+                rightMenu.show(table.getTableHeader(), e.getX(), e.getY());
+            }
+        }
+    }
 
-	private static class SelectColumnsActionListener implements ActionListener {
-		private final CommonColumnModel model;
+    private static class SelectColumnsActionListener implements ActionListener {
+        private final CommonColumnModel model;
 
-		private SelectColumnsActionListener(CommonColumnModel model) {
-			this.model = model;
-		}
+        private SelectColumnsActionListener(CommonColumnModel model) {
+            this.model = model;
+        }
 
-		@Override
-		public void actionPerformed(ActionEvent e) {
-		    selectColumns(model);
-		}
-	}
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            selectColumns(model);
+        }
+    }
 
-	private JMenuItem arrangeColumns;
+    private JMenuItem arrangeColumns;
 
     /**
      * Adds a right-button popup menu to column set tables

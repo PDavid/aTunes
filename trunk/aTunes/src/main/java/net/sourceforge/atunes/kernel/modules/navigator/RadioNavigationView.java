@@ -62,8 +62,8 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class RadioNavigationView extends NavigationView {
 
-	private List<TreeCellDecorator> decorators;
-	
+    private List<TreeCellDecorator> decorators;
+
     /** The radio tree. */
     private JTree radioTree;
 
@@ -353,87 +353,87 @@ public final class RadioNavigationView extends NavigationView {
     public boolean isViewModeSupported() {
         return false;
     }
-    
+
     @Override
     protected List<TreeCellDecorator> getTreeCellDecorators() {
-    	if (decorators == null) {
-    		decorators = new ArrayList<TreeCellDecorator>();
+        if (decorators == null) {
+            decorators = new ArrayList<TreeCellDecorator>();
             decorators.add(new StringTreeCellDecorator());
             decorators.add(new RadioTreeCellDecorator());
-    	}
-    	return decorators;
+        }
+        return decorators;
     }
-    
+
     private static class RadioNavigationColumnSet extends CustomNavigatorColumnSet {
-        
-    	private static class UrlColumn extends Column {
-			/**
+
+        private static class UrlColumn extends Column {
+            /**
 			 * 
 			 */
-			private static final long serialVersionUID = -1615880013918017198L;
+            private static final long serialVersionUID = -1615880013918017198L;
 
-			private UrlColumn(String name, Class<?> columnClass) {
-				super(name, columnClass);
-			}
+            private UrlColumn(String name, Class<?> columnClass) {
+                super(name, columnClass);
+            }
 
-			@Override
-			protected int ascendingCompare(AudioObject o1, AudioObject o2) {
-			    return o1.getUrl().compareTo(o2.getUrl());
-			}
+            @Override
+            protected int ascendingCompare(AudioObject o1, AudioObject o2) {
+                return o1.getUrl().compareTo(o2.getUrl());
+            }
 
-			@Override
-			public Object getValueFor(AudioObject audioObject) {
-			    return audioObject.getUrl();
-			}
-		}
+            @Override
+            public Object getValueFor(AudioObject audioObject) {
+                return audioObject.getUrl();
+            }
+        }
 
-		private static class NameColumn extends Column {
-			/**
+        private static class NameColumn extends Column {
+            /**
 			 * 
 			 */
-			private static final long serialVersionUID = 3613237620716484881L;
+            private static final long serialVersionUID = 3613237620716484881L;
 
-			private NameColumn(String name, Class<?> columnClass) {
-				super(name, columnClass);
-			}
+            private NameColumn(String name, Class<?> columnClass) {
+                super(name, columnClass);
+            }
 
-			@Override
-			public Object getValueFor(AudioObject audioObject) {
-			    return ((Radio) audioObject).getName();
-			}
+            @Override
+            public Object getValueFor(AudioObject audioObject) {
+                return ((Radio) audioObject).getName();
+            }
 
-			@Override
-			protected int ascendingCompare(AudioObject o1, AudioObject o2) {
-			    return ((Radio) o1).getName().compareTo(((Radio) o2).getName());
-			}
-		}
+            @Override
+            protected int ascendingCompare(AudioObject o1, AudioObject o2) {
+                return ((Radio) o1).getName().compareTo(((Radio) o2).getName());
+            }
+        }
 
-		private static class EmptyColumn extends Column {
-			/**
+        private static class EmptyColumn extends Column {
+            /**
 			 * 
 			 */
-			private static final long serialVersionUID = 3613237620716484881L;
+            private static final long serialVersionUID = 3613237620716484881L;
 
-			private EmptyColumn(String name, Class<?> columnClass) {
-				super(name, columnClass);
-			}
+            private EmptyColumn(String name, Class<?> columnClass) {
+                super(name, columnClass);
+            }
 
-			@Override
-			protected int ascendingCompare(AudioObject o1, AudioObject o2) {
-			    return 0;
-			}
+            @Override
+            protected int ascendingCompare(AudioObject o1, AudioObject o2) {
+                return 0;
+            }
 
-			@Override
-			public Object getValueFor(AudioObject audioObject) {
-			    return Property.NO_PROPERTIES;
-			}
-		}
+            @Override
+            public Object getValueFor(AudioObject audioObject) {
+                return Property.NO_PROPERTIES;
+            }
+        }
 
-		public RadioNavigationColumnSet(String columnSetName) {
-			super(columnSetName);
-		}
+        public RadioNavigationColumnSet(String columnSetName) {
+            super(columnSetName);
+        }
 
-		@Override
+        @Override
         protected List<Column> getAllowedColumns() {
             List<Column> columns = new ArrayList<Column>();
 

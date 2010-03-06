@@ -50,7 +50,7 @@ public class Year implements Serializable, TreeObject {
 
     /**
      * Constructor.
-     *
+     * 
      * @param name
      *            the name
      */
@@ -61,7 +61,7 @@ public class Year implements Serializable, TreeObject {
 
     /**
      * Adds an audio file
-     *
+     * 
      * @param a
      *            the a
      */
@@ -80,7 +80,7 @@ public class Year implements Serializable, TreeObject {
     /**
      * Returns all songs of this year (all songs of all artists) from the given
      * repository
-     *
+     * 
      * @return the audio objects
      */
     @Override
@@ -94,7 +94,7 @@ public class Year implements Serializable, TreeObject {
 
     /**
      * Returns the year as a string.
-     *
+     * 
      * @return the year
      */
     public String getName() {
@@ -111,7 +111,7 @@ public class Year implements Serializable, TreeObject {
 
     /**
      * Removes an artist from this year.
-     *
+     * 
      * @param a
      *            the a
      */
@@ -121,7 +121,7 @@ public class Year implements Serializable, TreeObject {
 
     /**
      * String representation.
-     *
+     * 
      * @return the string
      */
     @Override
@@ -162,7 +162,7 @@ public class Year implements Serializable, TreeObject {
 
     /**
      * Return unknown year text
-     *
+     * 
      * @return
      */
     public static String getUnknownYear() {
@@ -171,7 +171,7 @@ public class Year implements Serializable, TreeObject {
 
     /**
      * Return <code>true</code> if year is unknown
-     *
+     * 
      * @return
      */
     public boolean isUnknownYear() {
@@ -180,7 +180,7 @@ public class Year implements Serializable, TreeObject {
 
     /**
      * Return <code>true</code> if year is unknown
-     *
+     * 
      * @return
      */
     public static boolean isUnknownYear(String year) {
@@ -189,7 +189,7 @@ public class Year implements Serializable, TreeObject {
 
     /**
      * Returns an structure of artists and albums containing songs of this year
-     *
+     * 
      * @return the artists
      */
     public Map<String, Artist> getArtistObjects() {

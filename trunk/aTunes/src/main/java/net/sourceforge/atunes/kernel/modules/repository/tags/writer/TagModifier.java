@@ -57,9 +57,9 @@ public final class TagModifier {
     private static Logger logger;
 
     private TagModifier() {
-    	
+
     }
-    
+
     /**
      * Delete tags.
      * 
@@ -353,17 +353,17 @@ public final class TagModifier {
             getLogger().error(LogCategories.FILE_WRITE, StringUtils.getString("Could not edit tag. File: ", file.getUrl(), " Error: ", e));
         }
     }
-    
+
     /**
      * Getter for logger
+     * 
      * @return
      */
     private static Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
     }
-
 
 }

@@ -38,6 +38,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.Fonts;
@@ -64,45 +65,44 @@ import org.jdesktop.swingx.combobox.ListComboBoxModel;
  */
 public final class GeneralPanel extends PreferencesPanel {
 
-    private static class LanguageListCellRendererCode extends
-			ListCellRendererCode {
-		@Override
-		public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-		    if (!(value instanceof Locale)) {
-		        throw new IllegalArgumentException("Argument value must be instance of Locale");
-		    }
+    private static class LanguageListCellRendererCode extends ListCellRendererCode {
+        @Override
+        public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            if (!(value instanceof Locale)) {
+                throw new IllegalArgumentException("Argument value must be instance of Locale");
+            }
 
-		    Component c = superComponent;
+            Component c = superComponent;
 
-		    Locale displayingLocale = (Locale) value;
-		    Locale currentLocale = ApplicationState.getInstance().getLocale().getLocale();
+            Locale displayingLocale = (Locale) value;
+            Locale currentLocale = ApplicationState.getInstance().getLocale().getLocale();
 
-		    String name = displayingLocale.getDisplayName(currentLocale);
-		    name = StringUtils.getString(String.valueOf(name.charAt(0)).toUpperCase(currentLocale), name.substring(1));
-		    ((JLabel) c).setText(name);
+            String name = displayingLocale.getDisplayName(currentLocale);
+            name = StringUtils.getString(String.valueOf(name.charAt(0)).toUpperCase(currentLocale), name.substring(1));
+            ((JLabel) c).setText(name);
 
-		    // The name of flag file should be flag_<locale>.png
-		    // if the name of bundle is MainBundle_<locale>.properties
-		    String flag = StringUtils.getString("flag_", displayingLocale.toString(), ".png");
-		    ((JLabel) c).setIcon(new ImageIcon(GeneralPanel.class.getResource(StringUtils.getString("/", Constants.TRANSLATIONS_DIR, "/", flag))));
-		    return c;
-		}
-	}
+            // The name of flag file should be flag_<locale>.png
+            // if the name of bundle is MainBundle_<locale>.properties
+            String flag = StringUtils.getString("flag_", displayingLocale.toString(), ".png");
+            ((JLabel) c).setIcon(new ImageIcon(GeneralPanel.class.getResource(StringUtils.getString("/", Constants.TRANSLATIONS_DIR, "/", flag))));
+            return c;
+        }
+    }
 
-	private static class LocaleComparator implements Comparator<Locale> {
-		private final Locale currentLocale;
+    private static class LocaleComparator implements Comparator<Locale> {
+        private final Locale currentLocale;
 
-		private LocaleComparator(Locale currentLocale) {
-			this.currentLocale = currentLocale;
-		}
+        private LocaleComparator(Locale currentLocale) {
+            this.currentLocale = currentLocale;
+        }
 
-		@Override
-		public int compare(Locale l1, Locale l2) {
-		    return Collator.getInstance().compare(l1.getDisplayName(currentLocale), l2.getDisplayName(currentLocale));
-		}
-	}
+        @Override
+        public int compare(Locale l1, Locale l2) {
+            return Collator.getInstance().compare(l1.getDisplayName(currentLocale), l2.getDisplayName(currentLocale));
+        }
+    }
 
-	private static final long serialVersionUID = -9216216930198145476L;
+    private static final long serialVersionUID = -9216216930198145476L;
 
     private JCheckBox showTitle;
     private JComboBox language;
@@ -226,7 +226,7 @@ public final class GeneralPanel extends PreferencesPanel {
         c.weighty = 1;
         c.fill = GridBagConstraints.BOTH;
         JScrollPane sp = new JScrollPane(windowTypeChoosingPanel);
-        sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         sp.getVerticalScrollBar().setUnitIncrement(20);
         add(sp, c);
         c.gridx = 0;

@@ -94,15 +94,15 @@ final class PlayListTabListener extends MouseAdapter implements ActionListener, 
     public void stateChanged(ChangeEvent e) {
         PlayListHandler.getInstance().switchToPlaylist(panel.getPlayListTabbedPane().getSelectedIndex());
     }
-    
+
     private static class SwitchPlayListListener implements ActionListener {
 
-    	private int index;
-    	
-    	public SwitchPlayListListener(int index) {
-			this.index = index;
-		}
-    	
+        private int index;
+
+        public SwitchPlayListListener(int index) {
+            this.index = index;
+        }
+
         public void actionPerformed(ActionEvent e1) {
             ControllerProxy.getInstance().getPlayListTabController().forceSwitchTo(index);
         }

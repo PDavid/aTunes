@@ -62,39 +62,37 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public final class FileSelectionDialog extends CustomModalDialog {
 
-    private static class FileSystemTreeCellRendererCode extends
-			TreeCellRendererCode {
-		@Override
-		public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
-		    DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
+    private static class FileSystemTreeCellRendererCode extends TreeCellRendererCode {
+        @Override
+        public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
 
-		    if (node.getUserObject() instanceof String) {
-		        ((JLabel) superComponent).setText(null);
-		        return superComponent;
-		    }
+            if (node.getUserObject() instanceof String) {
+                ((JLabel) superComponent).setText(null);
+                return superComponent;
+            }
 
-		    Directory content = (Directory) node.getUserObject();
-		    JLabel icon = (JLabel) superComponent;
-		    icon.setIcon(fsView.getSystemIcon(content.file));
+            Directory content = (Directory) node.getUserObject();
+            JLabel icon = (JLabel) superComponent;
+            icon.setIcon(fsView.getSystemIcon(content.file));
 
-		    return icon;
-		}
-	}
+            return icon;
+        }
+    }
 
-	private static class FileSystemListCellRendererCode extends
-			ListCellRendererCode {
-		@Override
-		public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-		    JLabel icon = (JLabel) superComponent;
-		    File f = (File) value;
-		    icon.setText(fsView.getSystemDisplayName(f));
-		    icon.setIcon(fsView.getSystemIcon(f));
-		    icon.setHorizontalAlignment(GuiUtils.getComponentOrientationAsSwingConstant());
-		    return icon;
-		}
-	}
+    private static class FileSystemListCellRendererCode extends ListCellRendererCode {
+        @Override
+        public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            JLabel icon = (JLabel) superComponent;
+            File f = (File) value;
+            icon.setText(fsView.getSystemDisplayName(f));
+            icon.setIcon(fsView.getSystemIcon(f));
+            icon.setHorizontalAlignment(GuiUtils.getComponentOrientationAsSwingConstant());
+            return icon;
+        }
+    }
 
-	/**
+    /**
      * The Class Directory.
      */
     private static class Directory {

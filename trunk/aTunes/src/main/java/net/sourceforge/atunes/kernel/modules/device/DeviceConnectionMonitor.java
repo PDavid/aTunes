@@ -100,33 +100,34 @@ public class DeviceConnectionMonitor extends Thread {
             }
         }
     }
-    
+
     private static class DeviceConnectedRunnable implements Runnable {
-    	
-    	private DeviceConnectionListener listener;
-    	
-    	private String deviceLocation;
-    	
-    	public DeviceConnectedRunnable(DeviceConnectionListener listener, String deviceLocation) {
-    		this.listener = listener;
-    		this.deviceLocation = deviceLocation;
-    	}
-    	
+
+        private DeviceConnectionListener listener;
+
+        private String deviceLocation;
+
+        public DeviceConnectedRunnable(DeviceConnectionListener listener, String deviceLocation) {
+            this.listener = listener;
+            this.deviceLocation = deviceLocation;
+        }
+
         @Override
         public void run() {
-        	listener.deviceConnected(deviceLocation);
+            listener.deviceConnected(deviceLocation);
         }
     }
 
     /**
      * Getter for logger
+     * 
      * @return
      */
     private Logger getLogger() {
-    	if (logger == null) {
-    		logger = new Logger();
-    	}
-    	return logger;
+        if (logger == null) {
+            logger = new Logger();
+        }
+        return logger;
     }
 
 }

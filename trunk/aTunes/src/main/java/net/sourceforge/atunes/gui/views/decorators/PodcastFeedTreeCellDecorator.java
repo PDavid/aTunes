@@ -9,13 +9,13 @@ import net.sourceforge.atunes.gui.lookandfeel.TreeCellDecorator;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 
 public class PodcastFeedTreeCellDecorator extends TreeCellDecorator {
-	
-	@Override
-	public Component decorateTreeCellComponent(Component component, Object userObject) {
+
+    @Override
+    public Component decorateTreeCellComponent(Component component, Object userObject) {
         if (userObject instanceof PodcastFeed) {
-        	((JLabel)component).setIcon(Images.getImage(Images.RSS_LITTLE));
+            ((JLabel) component).setIcon(Images.getImage(Images.RSS_LITTLE));
         }
         return component;
-	}
+    }
 
 }

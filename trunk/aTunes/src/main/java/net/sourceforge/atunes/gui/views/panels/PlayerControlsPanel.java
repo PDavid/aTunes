@@ -131,7 +131,7 @@ public final class PlayerControlsPanel extends JPanel {
         final JPanel bottomProgressSliderPanel = new JPanel(new BorderLayout());
         bottomProgressSliderPanel.addComponentListener(new ComponentAdapter() {
 
-        	private Boolean showProgressOnTop = null;
+            private Boolean showProgressOnTop = null;
 
             @Override
             public void componentResized(ComponentEvent e) {

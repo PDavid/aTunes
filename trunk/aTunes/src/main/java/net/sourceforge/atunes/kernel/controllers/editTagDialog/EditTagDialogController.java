@@ -55,38 +55,38 @@ import org.jdesktop.swingx.combobox.ListComboBoxModel;
 public final class EditTagDialogController extends SimpleController<EditTagDialog> {
 
     private static class TitleTextFieldKeyAdapter extends KeyAdapter {
-		private final JTextField textField;
-		private final String fileName;
-		private int lenght = 0;
+        private final JTextField textField;
+        private final String fileName;
+        private int lenght = 0;
 
-		private TitleTextFieldKeyAdapter(JTextField textField, String fileName) {
-			this.textField = textField;
-			this.fileName = fileName;
-		}
+        private TitleTextFieldKeyAdapter(JTextField textField, String fileName) {
+            this.textField = textField;
+            this.fileName = fileName;
+        }
 
-		@Override
-		public void keyTyped(KeyEvent e) {
-		    SwingUtilities.invokeLater(new Runnable() {
-		        @Override
-		        public void run() {
-		            String text = textField.getText();
+        @Override
+        public void keyTyped(KeyEvent e) {
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    String text = textField.getText();
 
-		            // User added a char
-		            if (text.length() > lenght) {
-		                if (text.length() >= 3) {
-		                    int index = fileName.indexOf(text);
-		                    if (index != -1) {
-		                        textField.setText(fileName.substring(index));
-		                        textField.setSelectionStart(text.length());
-		                        textField.setSelectionEnd(textField.getText().length());
-		                    }
-		                }
-		            }
-		            lenght = text.length();
-		        }
-		    });
-		}
-	}
+                    // User added a char
+                    if (text.length() > lenght) {
+                        if (text.length() >= 3) {
+                            int index = fileName.indexOf(text);
+                            if (index != -1) {
+                                textField.setText(fileName.substring(index));
+                                textField.setSelectionStart(text.length());
+                                textField.setSelectionEnd(textField.getText().length());
+                            }
+                        }
+                    }
+                    lenght = text.length();
+                }
+            });
+        }
+    }
 
     /** The audio files editing. */
     private List<AudioFile> audioFilesEditing;
@@ -488,5 +488,5 @@ public final class EditTagDialogController extends SimpleController<EditTagDialo
     protected void notifyReload() {
         // Nothing to do
     }
-    
+
 }

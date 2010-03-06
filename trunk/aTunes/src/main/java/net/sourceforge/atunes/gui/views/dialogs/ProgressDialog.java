@@ -219,17 +219,17 @@ public class ProgressDialog extends CustomFrame {
         dialog.setVisible(true);
     }
 
-	/**
-	 * @return the currentLabel
-	 */
-	protected JLabel getCurrentLabel() {
-		return currentLabel;
-	}
+    /**
+     * @return the currentLabel
+     */
+    protected JLabel getCurrentLabel() {
+        return currentLabel;
+    }
 
-	/**
-	 * @return the totalLabel
-	 */
-	protected JLabel getTotalLabel() {
-		return totalLabel;
-	}
+    /**
+     * @return the totalLabel
+     */
+    protected JLabel getTotalLabel() {
+        return totalLabel;
+    }
 }
