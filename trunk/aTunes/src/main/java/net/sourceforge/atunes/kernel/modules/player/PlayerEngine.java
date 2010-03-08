@@ -80,7 +80,11 @@ public abstract class PlayerEngine implements PlaybackStateListener {
 
         @Override
         public void run() {
-            String selection = (String) GuiHandler.getInstance().showMessage(StringUtils.getString((Object) errorMessages), I18nUtils.getString("ERROR"),
+        	StringBuilder sb = new StringBuilder();
+        	for (String errorMessage : errorMessages) {
+        		sb.append(errorMessage).append(" ");
+        	}
+            String selection = (String) GuiHandler.getInstance().showMessage(StringUtils.getString(sb.toString()), I18nUtils.getString("ERROR"),
                     JOptionPane.ERROR_MESSAGE, new String[] { I18nUtils.getString("IGNORE"), I18nUtils.getString("CANCEL") });
             ignore = selection.equals(I18nUtils.getString("IGNORE"));
         }
