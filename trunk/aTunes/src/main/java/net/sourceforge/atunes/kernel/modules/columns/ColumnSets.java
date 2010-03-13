@@ -35,7 +35,6 @@ import org.commonjukebox.plugins.PluginSystemException;
  * Class to handle column sets and plugins
  * 
  * @author fleax
- * 
  */
 public class ColumnSets implements PluginListener {
 

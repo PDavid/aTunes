@@ -30,9 +30,7 @@ import net.sourceforge.atunes.model.AudioObject;
 
 public class TimesPlayedColumn extends Column {
 
-    /**
-     * 
-     */
+    
     private static final long serialVersionUID = 7879150472122090859L;
 
     public TimesPlayedColumn() {

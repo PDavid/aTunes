@@ -26,9 +26,6 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 public class FrequencyColumn extends Column {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = -198950195313638217L;
 
     public FrequencyColumn() {
