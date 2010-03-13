@@ -26,9 +26,7 @@ import net.sourceforge.atunes.model.AudioObject;
 
 public class FileNameColumn extends Column {
 
-    /**
-     * 
-     */
+    
     private static final long serialVersionUID = -6243616734204965925L;
 
     public FileNameColumn() {

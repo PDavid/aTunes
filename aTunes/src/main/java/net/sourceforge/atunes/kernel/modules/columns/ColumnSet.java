@@ -32,7 +32,6 @@ import net.sourceforge.atunes.model.AudioObject;
  * A set of columns used in a component
  * 
  * @author fleax
- * 
  */
 public abstract class ColumnSet {
 

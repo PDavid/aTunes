@@ -26,9 +26,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 public class BitrateColumn extends Column {
 
-    /**
-     * 
-     */
+    
     private static final long serialVersionUID = 7541146903350085592L;
 
     public BitrateColumn() {

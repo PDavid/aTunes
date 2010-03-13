@@ -28,9 +28,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 public class LengthColumn extends Column {
 
-    /**
-     * 
-     */
+   
     private static final long serialVersionUID = -4428276519530619107L;
 
     public LengthColumn() {

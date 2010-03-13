@@ -28,9 +28,7 @@ import net.sourceforge.atunes.model.AudioObject;
 
 public class ArtistColumn extends Column {
 
-    /**
-     * 
-     */
+    
     private static final long serialVersionUID = 8144686293055648148L;
 
     public ArtistColumn() {

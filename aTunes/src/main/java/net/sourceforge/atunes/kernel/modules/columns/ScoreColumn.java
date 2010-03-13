@@ -37,9 +37,7 @@ import net.sourceforge.atunes.model.AudioObject;
 
 public class ScoreColumn extends Column {
 
-    /**
-     * 
-     */
+   
     private static final long serialVersionUID = -2673502888298485650L;
 
     public ScoreColumn() {
