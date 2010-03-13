@@ -138,6 +138,7 @@
 			<file src="win_tools/cdda2wav.exe" targetdir="$INSTALL_PATH/win_tools"/>
 			<file src="win_tools/oggenc.exe" targetdir="$INSTALL_PATH/win_tools"/>
 			<file src="win_tools/cygwin1.dll" targetdir="$INSTALL_PATH/win_tools"/>
+			<file src="win_tools/cyggcc_s-1.dll" targetdir="$INSTALL_PATH/win_tools"/>
 			<file src="win_tools/pthreadGC2.dll" targetdir="$INSTALL_PATH/win_tools"/>
 		</pack>
 		<pack name="Sources" id="source.package" required="no"
