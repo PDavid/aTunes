@@ -81,14 +81,11 @@ public final class SystemTrayHandler extends Handler {
 
     @Override
     protected void initHandler() {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void applicationStarted() {
-        // TODO Auto-generated method stub
-
     }
 
     /**
@@ -155,13 +152,7 @@ public final class SystemTrayHandler extends Handler {
         initSystemTray();
         if (tray != null) {
             trayIconVisible = true;
-
-            try {
-                tray.add(getTrayIcon());
-            } catch (AWTException e) {
-                getLogger().error(LogCategories.TRAY, e);
-            }
-
+            addTrayIcon(getTrayIcon());
             GuiHandler.getInstance().setFrameDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         } else {
             getLogger().error(LogCategories.TRAY, "No system tray supported");
@@ -175,10 +166,10 @@ public final class SystemTrayHandler extends Handler {
         initSystemTray();
         if (tray != null) {
             trayPlayerVisible = true;
-            addTrayIcon(getNextTrayIcon());
+            addTrayIcon(getPreviousTrayIcon());
             addTrayIcon(getStopTrayIcon());
             addTrayIcon(getPlayTrayIcon());
-            addTrayIcon(getPreviousTrayIcon());
+            addTrayIcon(getNextTrayIcon());
         } else {
             getLogger().error(LogCategories.TRAY, "No system tray supported");
         }
