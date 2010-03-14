@@ -19,15 +19,15 @@
  */
 package net.sourceforge.atunes.gui.views.dialogs;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.ColorDefinitions;
-import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.CustomWindow;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -40,11 +40,19 @@ public final class SplashScreenDialog extends CustomWindow {
 
     private static final long serialVersionUID = -7279259267018738903L;
 
+    private Font versionAndCopyrightFont;
+    
+    private Color versionAndCopyrightColor;
+    
     /**
      * Instantiates a new splash screen dialog.
+     * @param versionAndCopyrightFont
+     * @param versionAndCopyrightColor
      */
-    public SplashScreenDialog() {
-        super(null, 475, 200);
+    public SplashScreenDialog(Font versionAndCopyrightFont, Color versionAndCopyrightColor) {
+        super(null, 500, 200);
+        this.versionAndCopyrightColor = versionAndCopyrightColor;
+        this.versionAndCopyrightFont = versionAndCopyrightFont;
         add(getContent());
         GuiUtils.applyComponentOrientation(this);
     }
@@ -56,7 +64,7 @@ public final class SplashScreenDialog extends CustomWindow {
      *            the arguments
      */
     public static void main(String[] args) {
-        new SplashScreenDialog().setVisible(true);
+        new SplashScreenDialog(null, null).setVisible(true);
     }
 
     /**
@@ -69,17 +77,33 @@ public final class SplashScreenDialog extends CustomWindow {
         panel.setOpaque(false);
 
         JLabel image = new JLabel(Images.getImage(Images.APP_TITLE));
-        image.setSize(new Dimension(475, 200));
+        image.setSize(new Dimension(500, 200));
         image.setLocation(0, 0);
 
-        JLabel label = new JLabel(StringUtils.getString(Constants.APP_VERSION, "  ", Character.valueOf((char) 169), " ", Constants.APP_AUTHOR));
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-        label.setFont(Fonts.getAppVersionLittleFont());
-        label.setForeground(ColorDefinitions.TITLE_DIALOG_FONT_COLOR);
-        label.setSize(475, 20);
-        label.setLocation(0, 170);
+        JLabel version = new JLabel(Constants.APP_VERSION);
+        version.setHorizontalAlignment(SwingConstants.CENTER);
+        if (versionAndCopyrightColor != null) {
+        	version.setForeground(versionAndCopyrightColor);
+        }
+        version.setSize(265, 20);
+        version.setLocation(200, 120);
+        if (versionAndCopyrightFont != null) {
+        	version.setFont(versionAndCopyrightFont);
+        }
+        
+        JLabel copyright = new JLabel(StringUtils.getString(Character.valueOf((char) 169), " ", Constants.APP_AUTHOR));
+        copyright.setHorizontalAlignment(SwingConstants.CENTER);
+        if (versionAndCopyrightColor != null) {
+        	copyright.setForeground(versionAndCopyrightColor);
+        }
+        copyright.setSize(265, 20);
+        copyright.setLocation(200, 140);
+        if (versionAndCopyrightFont != null) {
+        	copyright.setFont(versionAndCopyrightFont);
+        }
 
-        panel.add(label);
+        panel.add(version);
+        panel.add(copyright);
         panel.add(image);
 
         return panel;

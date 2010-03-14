@@ -32,7 +32,7 @@ import net.sourceforge.atunes.utils.GuiUtils;
  */
 public class ColorDefinitions {
 
-    public static final Color TITLE_DIALOG_FONT_COLOR = Color.WHITE;
+    public static final Color TITLE_DIALOG_FONT_COLOR = new Color(0.0f, 0.0f, 0.0f, 0.5f);
     public static final Color WARNING_COLOR = Color.RED;
     public static final Color GENERAL_UNKNOWN_ELEMENT_FOREGROUND_COLOR = Color.RED;
 
