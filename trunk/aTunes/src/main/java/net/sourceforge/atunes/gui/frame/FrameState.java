@@ -19,13 +19,14 @@
  */
 package net.sourceforge.atunes.gui.frame;
 
+import java.beans.ConstructorProperties;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * State of aTunes main frame.
  */
-public class FrameState {
+public final class FrameState {
 
     private Map<String, Integer> splitPaneDividerPositions;
 
@@ -35,6 +36,11 @@ public class FrameState {
 
     public FrameState(FrameState frameState) {
         this.splitPaneDividerPositions = new HashMap<String, Integer>(frameState.splitPaneDividerPositions);
+    }
+
+    @ConstructorProperties("splitPaneDividerPositions")
+    public FrameState(Map<String, Integer> splitPaneDividerPositions) {
+        this.splitPaneDividerPositions = splitPaneDividerPositions;
     }
 
     public void putSplitPaneDividerPos(String s, int pos) {
@@ -48,4 +54,9 @@ public class FrameState {
         }
         return value;
     }
+
+    public Map<String, Integer> getSplitPaneDividerPositions() {
+        return splitPaneDividerPositions;
+    }
+
 }
