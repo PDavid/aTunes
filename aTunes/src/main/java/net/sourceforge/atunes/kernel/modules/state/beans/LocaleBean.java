@@ -25,12 +25,9 @@ import java.util.Locale;
 /**
  * Bean for java.util.Locale
  */
-public class LocaleBean {
+public final class LocaleBean {
 
-    /** The language. */
     private String language;
-
-    /** The country. */
     private String country;
 
     /**

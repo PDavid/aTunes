@@ -25,7 +25,7 @@ import java.beans.ConstructorProperties;
 /**
  * Bean for java.awt.Font
  */
-public class FontBean {
+public final class FontBean {
 
     private String name;
     private int style;

@@ -28,7 +28,7 @@ import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 /**
  * Bean for net.sourceforge.atunes.kernel.modules.proxy.Proxy
  */
-public class ProxyBean {
+public final class ProxyBean {
 
     public static final String HTTP_PROXY = "HTTP_PROXY";
     public static final String SOCKS_PROXY = "SOCKS_PROXY";
