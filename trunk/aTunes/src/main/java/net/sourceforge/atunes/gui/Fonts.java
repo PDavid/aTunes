@@ -113,7 +113,7 @@ public final class Fonts {
      */
     public static Font getAppVersionLittleFont() {
         if (appVersionLittleFont == null) {
-            appVersionLittleFont = font.deriveFont(font.getSize() + 2f);
+            appVersionLittleFont = font.deriveFont(font.getSize() + 1f);
         }
         return appVersionLittleFont;
     }
