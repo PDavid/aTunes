@@ -113,7 +113,7 @@ public final class PodcastNavigationView extends NavigationView {
             podcastFeedTreeMenu.add(Actions.getAction(AddPodcastFeedAction.class));
             podcastFeedTreeMenu.add(Actions.getAction(RenamePodcastFeedAction.class));
             podcastFeedTreeMenu.add(Actions.getAction(MarkPodcastListenedAction.class));
-            podcastFeedTreeMenu.add(getMenuItemForAction(RemovePodcastFeedAction.class));
+            podcastFeedTreeMenu.add(Actions.getAction(RemovePodcastFeedAction.class));
         }
         return podcastFeedTreeMenu;
     }
