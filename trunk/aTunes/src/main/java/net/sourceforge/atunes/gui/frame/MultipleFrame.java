@@ -153,7 +153,7 @@ public final class MultipleFrame implements Frame {
      * Adds the content to frame.
      */
     private void addContentToFrame() {
-        frame.setIconImage(Images.getImage(Images.APP_ICON).getImage());
+        frame.setIconImage(Images.getImage(Images.APP_LOGO_16).getImage());
         playerControlsPanel = new PlayerControlsPanel();
 
         JPanel auxPanel = new JPanel(new BorderLayout());

@@ -53,7 +53,7 @@ public abstract class CustomModalFrame extends JFrame {
         setSize(width, height);
         // Use normal frame decoration to allow maximize window
         //        getRootPane().setWindowDecorationStyle(JRootPane.PLAIN_DIALOG);
-        setIconImage(Images.getImage(Images.APP_ICON).getImage());
+        setIconImage(Images.getImage(Images.APP_LOGO_16).getImage());
         setLocationRelativeTo(owner);
         this.owner = owner;
     }
