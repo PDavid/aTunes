@@ -195,7 +195,7 @@ public final class AboutDialog extends CustomModalDialog {
         title.setFocusPainted(false);
         JLabel description = new JLabel(Constants.APP_DESCRIPTION);
 
-        JLabel icon = new JLabel(Images.getImage(Images.APP_ICON_BIG));
+        JLabel icon = new JLabel(Images.getImage(Images.APP_LOGO_90));
 
         JTextArea license = new CustomTextArea(licenseText);
         license.setEditable(false);

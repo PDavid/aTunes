@@ -40,11 +40,10 @@ public final class Images {
     public static final String ALBUM = "album.png";
     public static final String ALBUM_FAVORITE = "albumFavorite.png";
     public static final String APP_TITLE = "title.png";
-    public static final String APP_ICON = "appIcon.png";
-    public static final String APP_ICON_TRAY = "appIconTray.png";
-    public static final String APP_ICON_MEDIUM = "appIconMedium.png";
-    public static final String APP_ICON_TINY = "appIconTiny.png";
-    public static final String APP_ICON_BIG = "appIconBig.png";
+    public static final String APP_LOGO_16 = "logo16x16.png";
+    public static final String APP_LOGO_24 = "logo24x24.png";
+    public static final String APP_LOGO_32 = "logo32x32.png";
+    public static final String APP_LOGO_90 = "logo90x90.png";
     public static final String ARROW_UP = "arrowUp.png";
     public static final String ARROW_DOWN = "arrowDown.png";
     public static final String ARTIST = "artist.png";

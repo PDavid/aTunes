@@ -185,7 +185,7 @@ public final class GuiUtils {
     }
 
     public static void addAppIcons(Window w) {
-        w.setIconImages(Arrays.asList(Images.getImage(Images.APP_ICON).getImage(), Images.getImage(Images.APP_ICON_MEDIUM).getImage(), Images.getImage(Images.APP_ICON_BIG)
+        w.setIconImages(Arrays.asList(Images.getImage(Images.APP_LOGO_16).getImage(), Images.getImage(Images.APP_LOGO_32).getImage(), Images.getImage(Images.APP_LOGO_90)
                 .getImage()));
     }
 

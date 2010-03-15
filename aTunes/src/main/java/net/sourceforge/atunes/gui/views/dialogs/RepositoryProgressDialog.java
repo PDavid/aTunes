@@ -138,7 +138,7 @@ public final class RepositoryProgressDialog extends CustomModalDialog {
      */
     private JPanel getContent() {
         JPanel panel = new JPanel(new GridBagLayout());
-        pictureLabel = new JLabel(Images.getImage(Images.APP_ICON_BIG));
+        pictureLabel = new JLabel(Images.getImage(Images.APP_LOGO_90));
         label = new JLabel(StringUtils.getString(I18nUtils.getString("LOADING"), "..."));
         progressLabel = new JLabel();
         separatorLabel = new JLabel(" / ");
