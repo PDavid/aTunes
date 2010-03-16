@@ -27,77 +27,81 @@ import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.NetworkUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
+import org.pushingpixels.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
 public class LastFmEventContent extends ContextPanelContent {
 
-	private JTable eventsTable;
-	
-	protected LastFmEventContent() {
-		super(new LastFmEventDataSource());
-	}
+    private JTable eventsTable;
 
-	@Override
-	protected Component getComponent() {
-		eventsTable = new JTable();
-		eventsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		eventsTable.setShowGrid(false);
-		eventsTable.setRowHeight(50);
-		eventsTable.setDefaultRenderer(Event.class, new SubstanceDefaultTableCellRenderer() {
+    protected LastFmEventContent() {
+        super(new LastFmEventDataSource());
+    }
+
+    @Override
+    protected Component getComponent() {
+        eventsTable = new JTable();
+        eventsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        eventsTable.setShowGrid(false);
+        eventsTable.setRowHeight(50);
+        eventsTable.setDefaultRenderer(Event.class, new SubstanceDefaultTableCellRenderer() {
+
+            private static final long serialVersionUID = -6660398915330438358L;
+
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean arg2, boolean arg3, int arg4, int arg5) {
-                return getPanelForEvent((Event)value);
+                return getPanelForEvent((Event) value);
             }
-		});
-		
-		final JPopupMenu menu = new JPopupMenu();
-		JMenuItem item = new JMenuItem("Show in Google Maps");
-		item.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Event event = (Event) ((LastFmEventTableModel)eventsTable.getModel()).getValueAt(eventsTable.getSelectedRow(), 0);
-				if (event.getVenue() != null) {
-					String url = StringUtils.getString("http://maps.google.com/maps?q=", event.getVenue().getLatitude(), ",+", event.getVenue().getLongitude(), 
-							"+(", NetworkUtils.encodeString(event.getVenue().getName()), ")");
-					DesktopUtils.openURL(url);
-				}
-			}
-		});
-		menu.add(item);
-		
-		eventsTable.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (e.getButton() == MouseEvent.BUTTON3) {
-					menu.show(eventsTable, e.getX(), e.getY());
-				}
-			}
-		});
-		
-		return eventsTable;
-	}
+        });
 
-	@Override
-	protected String getContentName() {
-		return "Events";
-	}
+        final JPopupMenu menu = new JPopupMenu();
+        JMenuItem item = new JMenuItem("Show in Google Maps");
+        item.addActionListener(new ActionListener() {
 
-	@Override
-	protected Map<String, ?> getDataSourceParameters(AudioObject audioObject) {
-		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put(LastFmEventDataSource.INPUT_ARTIST, audioObject.getArtist());
-		return parameters;
-	}
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Event event = (Event) ((LastFmEventTableModel) eventsTable.getModel()).getValueAt(eventsTable.getSelectedRow(), 0);
+                if (event.getVenue() != null) {
+                    String url = StringUtils.getString("http://maps.google.com/maps?q=", event.getVenue().getLatitude(), ",+", event.getVenue().getLongitude(), "+(", NetworkUtils
+                            .encodeString(event.getVenue().getName()), ")");
+                    DesktopUtils.openURL(url);
+                }
+            }
+        });
+        menu.add(item);
 
-	@Override
-	protected void updateContentWithDataSourceResult(Map<String, ?> result) {
-		Collection<Event> events = (Collection<Event>) result.get(LastFmEventDataSource.OUTPUT_EVENTS);
-		final List<Event> eventList = new ArrayList<Event>(events);
-		eventsTable.setModel(new LastFmEventTableModel(eventList)); 
-	}
-	
-	private JPanel getPanelForEvent(Event event) {
+        eventsTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON3) {
+                    menu.show(eventsTable, e.getX(), e.getY());
+                }
+            }
+        });
+
+        return eventsTable;
+    }
+
+    @Override
+    protected String getContentName() {
+        return "Events";
+    }
+
+    @Override
+    protected Map<String, ?> getDataSourceParameters(AudioObject audioObject) {
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put(LastFmEventDataSource.INPUT_ARTIST, audioObject.getArtist());
+        return parameters;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    protected void updateContentWithDataSourceResult(Map<String, ?> result) {
+        Collection<Event> events = (Collection<Event>) result.get(LastFmEventDataSource.OUTPUT_EVENTS);
+        final List<Event> eventList = new ArrayList<Event>(events);
+        eventsTable.setModel(new LastFmEventTableModel(eventList));
+    }
+
+    private JPanel getPanelForEvent(Event event) {
         JPanel panel = new JPanel(new GridLayout(4, 1));
         JLabel line1 = new JLabel(event.getTitle());
         JLabel line2 = new JLabel(event.getStartDate().toString());
@@ -109,6 +113,6 @@ public class LastFmEventContent extends ContextPanelContent {
         panel.add(line4);
         GuiUtils.applyComponentOrientation(panel);
         return panel;
-	}
+    }
 
 }
