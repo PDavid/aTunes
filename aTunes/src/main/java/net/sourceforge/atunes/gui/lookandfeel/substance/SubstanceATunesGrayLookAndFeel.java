@@ -19,12 +19,10 @@
  */
 package net.sourceforge.atunes.gui.lookandfeel.substance;
 
-import org.jvnet.substance.SubstanceLookAndFeel;
-
 /**
  * The Class SubstanceATunesLookAndFeel.
  */
-public final class SubstanceATunesGrayLookAndFeel extends SubstanceLookAndFeel {
+public final class SubstanceATunesGrayLookAndFeel extends org.pushingpixels.substance.api.SubstanceLookAndFeel {
 
     private static final long serialVersionUID = -3907225219153995877L;
 

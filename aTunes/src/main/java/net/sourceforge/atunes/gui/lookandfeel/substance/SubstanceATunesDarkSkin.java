@@ -19,52 +19,61 @@
  */
 package net.sourceforge.atunes.gui.lookandfeel.substance;
 
-import org.jvnet.substance.api.ComponentState;
-import org.jvnet.substance.api.SubstanceColorScheme;
-import org.jvnet.substance.api.SubstanceColorSchemeBundle;
-import org.jvnet.substance.api.SubstanceSkin;
-import org.jvnet.substance.colorscheme.DarkGrayColorScheme;
-import org.jvnet.substance.colorscheme.EbonyColorScheme;
-import org.jvnet.substance.colorscheme.TintColorScheme;
-import org.jvnet.substance.painter.border.ClassicBorderPainter;
-import org.jvnet.substance.painter.decoration.ArcDecorationPainter;
-import org.jvnet.substance.painter.decoration.DecorationAreaType;
-import org.jvnet.substance.painter.gradient.GlassGradientPainter;
-import org.jvnet.substance.painter.highlight.ClassicHighlightPainter;
-import org.jvnet.substance.shaper.ClassicButtonShaper;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.DecorationAreaType;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceColorSchemeBundle;
+import org.pushingpixels.substance.api.SubstanceSkin;
+import org.pushingpixels.substance.api.colorscheme.DarkGrayColorScheme;
+import org.pushingpixels.substance.api.colorscheme.EbonyColorScheme;
+import org.pushingpixels.substance.api.painter.border.ClassicBorderPainter;
+import org.pushingpixels.substance.api.painter.decoration.ArcDecorationPainter;
+import org.pushingpixels.substance.api.painter.fill.GlassFillPainter;
+import org.pushingpixels.substance.api.painter.highlight.ClassicHighlightPainter;
+import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
+import org.pushingpixels.substance.internal.colorscheme.TintColorScheme;
 
 public final class SubstanceATunesDarkSkin extends SubstanceSkin {
 
-    /**
-     * Creates a new skin.
-     */
-    public SubstanceATunesDarkSkin() {
+	/**
+	 * Creates a new skin.
+	 */
+	public SubstanceATunesDarkSkin() {
 
-        SubstanceColorScheme activeScheme = new TintColorScheme(new EbonyColorScheme(), 0.1f);
-        SubstanceColorScheme defaultScheme = new EbonyColorScheme();
-        SubstanceColorScheme disabledScheme = new TintColorScheme(new DarkGrayColorScheme(), 0.2);
+		SubstanceColorScheme activeScheme = new TintColorScheme(
+				new EbonyColorScheme(), 0.1f);
+		SubstanceColorScheme defaultScheme = new EbonyColorScheme();
+		SubstanceColorScheme disabledScheme = new TintColorScheme(
+				new DarkGrayColorScheme(), 0.2);
 
-        // the default theme bundle
-        SubstanceColorSchemeBundle defaultSchemeBundle = new SubstanceColorSchemeBundle(activeScheme, defaultScheme, disabledScheme);
-        defaultSchemeBundle.registerHighlightColorScheme(activeScheme, 0.7f, ComponentState.SELECTED);
-        this.registerDecorationAreaSchemeBundle(defaultSchemeBundle, DecorationAreaType.NONE);
+		// the default theme bundle
+		SubstanceColorSchemeBundle defaultSchemeBundle = new SubstanceColorSchemeBundle(
+				activeScheme, defaultScheme, disabledScheme);
+		defaultSchemeBundle.registerHighlightColorScheme(activeScheme, 0.7f,
+				ComponentState.SELECTED);
+		this.registerDecorationAreaSchemeBundle(defaultSchemeBundle,
+				DecorationAreaType.NONE);
 
-        // the special theme bundle
-        SubstanceColorSchemeBundle specialSchemeBundle = new SubstanceColorSchemeBundle(activeScheme, activeScheme, disabledScheme);
-        this.registerDecorationAreaSchemeBundle(specialSchemeBundle, DecorationAreaType.PRIMARY_TITLE_PANE, DecorationAreaType.SECONDARY_TITLE_PANE, DecorationAreaType.TOOLBAR,
-                DecorationAreaType.FOOTER, DecorationAreaType.HEADER, DecorationAreaType.GENERAL);
+		// the special theme bundle
+		SubstanceColorSchemeBundle specialSchemeBundle = new SubstanceColorSchemeBundle(
+				activeScheme, activeScheme, disabledScheme);
+		this.registerDecorationAreaSchemeBundle(specialSchemeBundle,
+				DecorationAreaType.PRIMARY_TITLE_PANE,
+				DecorationAreaType.SECONDARY_TITLE_PANE,
+				DecorationAreaType.TOOLBAR, DecorationAreaType.FOOTER,
+				DecorationAreaType.HEADER, DecorationAreaType.GENERAL);
 
-        this.buttonShaper = new ClassicButtonShaper();
-        this.gradientPainter = new GlassGradientPainter();
-        this.borderPainter = new ClassicBorderPainter();
-        this.decorationPainter = new ArcDecorationPainter();
-        this.highlightPainter = new ClassicHighlightPainter();
+		this.buttonShaper = new ClassicButtonShaper();
+		this.fillPainter = new GlassFillPainter();
+		this.borderPainter = new ClassicBorderPainter();
+		this.decorationPainter = new ArcDecorationPainter();
+		this.highlightPainter = new ClassicHighlightPainter();
 
-    }
+	}
 
-    @Override
-    public String getDisplayName() {
-        return "aTunes Dark skin";
-    }
+	@Override
+	public String getDisplayName() {
+		return "aTunes Dark skin";
+	}
 
 }

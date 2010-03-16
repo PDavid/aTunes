@@ -57,18 +57,18 @@ import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.GuiUtils;
 
-import org.jvnet.lafwidget.LafWidget;
-import org.jvnet.lafwidget.utils.LafConstants;
-import org.jvnet.lafwidget.utils.ShadowPopupBorder;
-import org.jvnet.substance.api.SubstanceConstants;
-import org.jvnet.substance.api.renderers.SubstanceDefaultListCellRenderer;
-import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
-import org.jvnet.substance.api.renderers.SubstanceDefaultTableHeaderCellRenderer;
-import org.jvnet.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
-import org.jvnet.substance.fonts.FontPolicy;
-import org.jvnet.substance.fonts.FontSet;
+import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
+import org.pushingpixels.lafwidget.utils.ShadowPopupBorder;
+import org.pushingpixels.substance.api.DecorationAreaType;
+import org.pushingpixels.substance.api.SubstanceConstants;
+import org.pushingpixels.substance.api.fonts.FontPolicy;
+import org.pushingpixels.substance.api.fonts.FontSet;
+import org.pushingpixels.substance.api.renderers.SubstanceDefaultListCellRenderer;
+import org.pushingpixels.substance.api.renderers.SubstanceDefaultTableCellRenderer;
+import org.pushingpixels.substance.api.renderers.SubstanceDefaultTableHeaderCellRenderer;
+import org.pushingpixels.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
 
-public class SubstanceLookAndFeel extends LookAndFeel {
+public final class SubstanceLookAndFeel extends LookAndFeel {
 
     private static final class CustomFontPolicy implements FontPolicy {
         private final Font baseFont;
@@ -123,9 +123,7 @@ public class SubstanceLookAndFeel extends LookAndFeel {
 
     private static final class SubstanceLookAndFeelListCellRenderer extends SubstanceDefaultListCellRenderer {
         private final ListCellRendererCode code;
-        /**
-		 * 
-		 */
+
         private static final long serialVersionUID = 2572603555660744197L;
 
         private SubstanceLookAndFeelListCellRenderer(ListCellRendererCode code) {
@@ -141,9 +139,7 @@ public class SubstanceLookAndFeel extends LookAndFeel {
 
     private static final class SubstanceLookAndFeelTableHeaderCellRenderer extends SubstanceDefaultTableHeaderCellRenderer {
         private final TableCellRendererCode code;
-        /**
-		 * 
-		 */
+
         private static final long serialVersionUID = 1L;
 
         private SubstanceLookAndFeelTableHeaderCellRenderer(TableCellRendererCode code) {
@@ -159,9 +155,7 @@ public class SubstanceLookAndFeel extends LookAndFeel {
 
     private static final class SubstanceLookAndFeelTableCellRenderer extends SubstanceDefaultTableCellRenderer {
         private final TableCellRendererCode code;
-        /**
-		 * 
-		 */
+
         private static final long serialVersionUID = 2844251523912028654L;
 
         private SubstanceLookAndFeelTableCellRenderer(TableCellRendererCode code) {
@@ -177,9 +171,7 @@ public class SubstanceLookAndFeel extends LookAndFeel {
 
     private static final class SubstanceLookAndFeelTreeCellRenderer extends SubstanceDefaultTreeCellRenderer {
         private final TreeCellRendererCode code;
-        /**
-		 * 
-		 */
+
         private static final long serialVersionUID = 3830003466764008228L;
 
         private SubstanceLookAndFeelTreeCellRenderer(TreeCellRendererCode code) {
@@ -214,32 +206,32 @@ public class SubstanceLookAndFeel extends LookAndFeel {
     private static Map<String, String> setMapOfSkins() {
         Map<String, String> result = new HashMap<String, String>();
 
-        result.put("BusinessBlackSteel", "org.jvnet.substance.skin.SubstanceBusinessBlackSteelLookAndFeel");
-        result.put("Creme", "org.jvnet.substance.skin.SubstanceCremeLookAndFeel");
-        result.put("Business", "org.jvnet.substance.skin.SubstanceBusinessLookAndFeel");
-        result.put("BusinessBlueSteel", "org.jvnet.substance.skin.SubstanceBusinessBlueSteelLookAndFeel");
-        result.put("CremeCoffee", "org.jvnet.substance.skin.SubstanceCremeCoffeeLookAndFeel");
-        result.put("Sahara", "org.jvnet.substance.skin.SubstanceSaharaLookAndFeel");
+        result.put("BusinessBlackSteel", "org.pushingpixels.substance.api.skin.SubstanceBusinessBlackSteelLookAndFeel");
+        result.put("Creme", "org.pushingpixels.substance.api.skin.SubstanceCremeLookAndFeel");
+        result.put("Business", "org.pushingpixels.substance.api.skin.SubstanceBusinessLookAndFeel");
+        result.put("BusinessBlueSteel", "org.pushingpixels.substance.api.skin.SubstanceBusinessBlueSteelLookAndFeel");
+        result.put("CremeCoffee", "org.pushingpixels.substance.api.skin.SubstanceCremeCoffeeLookAndFeel");
+        result.put("Sahara", "org.pushingpixels.substance.api.skin.SubstanceSaharaLookAndFeel");
         result.put("Moderate", "org.jvnet.substance.skin.SubstanceModerateLookAndFeel");
-        result.put("OfficeSilver2007", "org.jvnet.substance.skin.SubstanceOfficeSilver2007LookAndFeel");
-        result.put("Nebula", "org.jvnet.substance.skin.SubstanceNebulaLookAndFeel");
-        result.put("NebulaBrickWall", "org.jvnet.substance.skin.SubstanceNebulaBrickWallLookAndFeel");
-        result.put("Autumn", "org.jvnet.substance.skin.SubstanceAutumnLookAndFeel");
+        result.put("OfficeSilver2007", "org.pushingpixels.substance.api.skin.SubstanceOfficeSilver2007LookAndFeel");
+        result.put("Nebula", "org.pushingpixels.substance.api.skin.SubstanceNebulaLookAndFeel");
+        result.put("NebulaBrickWall", "org.pushingpixels.substance.api.skin.SubstanceNebulaBrickWallLookAndFeel");
+        result.put("Autumn", "org.pushingpixels.substance.api.skin.SubstanceAutumnLookAndFeel");
         result.put("MistSilver", "org.jvnet.substance.skin.SubstanceMistSilverLookAndFeel");
         result.put("MistAqua", "org.jvnet.substance.skin.SubstanceMistAquaLookAndFeel");
-        result.put("DustCoffee", "org.jvnet.substance.skin.SubstanceDustCoffeeLookAndFeel");
-        result.put("Dust", "org.jvnet.substance.skin.SubstanceDustLookAndFeel");
-        result.put("RavenGraphite", "org.jvnet.substance.skin.SubstanceRavenGraphiteLookAndFeel");
-        result.put("RavenGraphiteGlass", "org.jvnet.substance.skin.SubstanceRavenGraphiteGlassLookAndFeel");
-        result.put("Raven", "org.jvnet.substance.skin.SubstanceRavenLookAndFeel");
-        result.put("Magma", "org.jvnet.substance.skin.SubstanceMagmaLookAndFeel");
-        result.put("ChallengerDeep", "org.jvnet.substance.skin.SubstanceChallengerDeepLookAndFeel");
-        result.put("EmeraldDusk", "org.jvnet.substance.skin.SubstanceEmeraldDuskLookAndFeel");
-        result.put("Twilight", "org.jvnet.substance.skin.SubstanceTwilightLookAndFeel");
-        result.put("OfficeBlue2007", "org.jvnet.substance.skin.SubstanceOfficeBlue2007LookAndFeel");
-        result.put("Gemini", "org.jvnet.substance.api.skin.SubstanceGeminiLookAndFeel");
-        result.put("Magellan", "org.jvnet.substance.api.skin.SubstanceMagellanLookAndFeel");
-        result.put("GraphiteAqua", "org.jvnet.substance.api.skin.SubstanceGraphiteAquaLookAndFeel");
+        result.put("DustCoffee", "org.pushingpixels.substance.api.skin.SubstanceDustCoffeeLookAndFeel");
+        result.put("Dust", "org.pushingpixels.substance.api.skin.SubstanceDustLookAndFeel");
+        result.put("RavenGraphite", "org.pushingpixels.substance.api.skin.SubstanceRavenGraphiteLookAndFeel");
+        result.put("RavenGraphiteGlass", "org.pushingpixels.substance.api.skin.SubstanceRavenGraphiteGlassLookAndFeel");
+        result.put("Raven", "org.pushingpixels.substance.api.skin.SubstanceRavenLookAndFeel");
+        result.put("Magma", "org.pushingpixels.substance.api.skin.SubstanceMagmaLookAndFeel");
+        result.put("ChallengerDeep", "org.pushingpixels.substance.api.skin.SubstanceChallengerDeepLookAndFeel");
+        result.put("EmeraldDusk", "org.pushingpixels.substance.api.skin.SubstanceEmeraldDuskLookAndFeel");
+        result.put("Twilight", "org.pushingpixels.substance.api.skin.SubstanceTwilightLookAndFeel");
+        result.put("OfficeBlue2007", "org.pushingpixels.substance.api.skin.SubstanceOfficeBlue2007LookAndFeel");
+        result.put("Gemini", "org.pushingpixels.substance.api.skin.api.skin.SubstanceGeminiLookAndFeel");
+        result.put("Magellan", "org.pushingpixels.substance.api.skin.api.skin.SubstanceMagellanLookAndFeel");
+        result.put("GraphiteAqua", "org.pushingpixels.substance.api.skin.api.skin.SubstanceGraphiteAquaLookAndFeel");
 
         /*
          * custom skins
@@ -263,8 +255,8 @@ public class SubstanceLookAndFeel extends LookAndFeel {
 
     @Override
     public void initializeLookAndFeel() {
-        UIManager.put(LafWidget.ANIMATION_KIND, LafConstants.AnimationKind.NONE);
-        UIManager.put(org.jvnet.substance.SubstanceLookAndFeel.TABBED_PANE_CONTENT_BORDER_KIND, SubstanceConstants.TabContentPaneBorderKind.SINGLE_FULL);
+        AnimationConfigurationManager.getInstance().setTimelineDuration(0);
+        UIManager.put(org.pushingpixels.substance.api.SubstanceLookAndFeel.TABBED_PANE_CONTENT_BORDER_KIND, SubstanceConstants.TabContentPaneBorderKind.SINGLE_FULL);
 
         JFrame.setDefaultLookAndFeelDecorated(true);
         JDialog.setDefaultLookAndFeelDecorated(true);
@@ -280,7 +272,7 @@ public class SubstanceLookAndFeel extends LookAndFeel {
             }
 
             // Get border color
-            GuiUtils.setBorderColor(org.jvnet.substance.SubstanceLookAndFeel.getCurrentSkin().getMainActiveColorScheme().getMidColor());
+            GuiUtils.setBorderColor(org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin().getActiveColorScheme(DecorationAreaType.GENERAL).getMidColor());
 
         } catch (ClassNotFoundException e) {
             new Logger().internalError(e);
@@ -347,15 +339,17 @@ public class SubstanceLookAndFeel extends LookAndFeel {
     @Override
     public void putClientProperties(JComponent c) {
         if (c instanceof SecondaryControl || c instanceof MuteButton || c instanceof StopButton) {
-            c.putClientProperty(org.jvnet.substance.SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY, new RoundRectButtonShaper());
+            c.putClientProperty(org.pushingpixels.substance.api.SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY, new RoundRectButtonShaper());
         } else if (c instanceof NextButton) {
-            c.putClientProperty(org.jvnet.substance.SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY, GuiUtils.getComponentOrientation().isLeftToRight() ? new LeftConcaveButtonShaper(
-                    PlayerControlsPanel.PLAY_BUTTON_SIZE.height) : new RightConcaveButtonShaper(PlayerControlsPanel.PLAY_BUTTON_SIZE.height));
+            c.putClientProperty(org.pushingpixels.substance.api.SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY,
+                    GuiUtils.getComponentOrientation().isLeftToRight() ? new LeftConcaveButtonShaper(PlayerControlsPanel.PLAY_BUTTON_SIZE.height) : new RightConcaveButtonShaper(
+                            PlayerControlsPanel.PLAY_BUTTON_SIZE.height));
         } else if (c instanceof PlayPauseButton) {
-            c.putClientProperty(org.jvnet.substance.SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY, new CircleButtonShaper());
+            c.putClientProperty(org.pushingpixels.substance.api.SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY, new CircleButtonShaper());
         } else if (c instanceof PreviousButton) {
-            c.putClientProperty(org.jvnet.substance.SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY, GuiUtils.getComponentOrientation().isLeftToRight() ? new RightConcaveButtonShaper(
-                    PlayerControlsPanel.PLAY_BUTTON_SIZE.height) : new LeftConcaveButtonShaper(PlayerControlsPanel.PLAY_BUTTON_SIZE.height));
+            c.putClientProperty(org.pushingpixels.substance.api.SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY,
+                    GuiUtils.getComponentOrientation().isLeftToRight() ? new RightConcaveButtonShaper(PlayerControlsPanel.PLAY_BUTTON_SIZE.height) : new LeftConcaveButtonShaper(
+                            PlayerControlsPanel.PLAY_BUTTON_SIZE.height));
         }
     }
 
@@ -371,11 +365,11 @@ public class SubstanceLookAndFeel extends LookAndFeel {
 
     @Override
     public void initializeFonts(final Font baseFont) {
-        org.jvnet.substance.SubstanceLookAndFeel.setFontPolicy(new CustomFontPolicy(baseFont));
+        org.pushingpixels.substance.api.SubstanceLookAndFeel.setFontPolicy(new CustomFontPolicy(baseFont));
     }
 
     @Override
     public Font getDefaultFont() {
-        return org.jvnet.substance.SubstanceLookAndFeel.getFontPolicy().getFontSet("Substance", null).getControlFont();
+        return org.pushingpixels.substance.api.SubstanceLookAndFeel.getFontPolicy().getFontSet("Substance", null).getControlFont();
     }
 }
