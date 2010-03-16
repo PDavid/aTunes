@@ -22,79 +22,64 @@ package net.sourceforge.atunes.gui.lookandfeel.substance;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
-import java.awt.Shape;
-import java.awt.geom.GeneralPath;
 
 import javax.swing.AbstractButton;
 import javax.swing.border.Border;
 
-import org.jvnet.substance.SubstanceButtonUI;
-import org.jvnet.substance.shaper.StandardButtonShaper;
-import org.jvnet.substance.shaper.SubstanceButtonShaper;
-import org.jvnet.substance.utils.border.SubstanceButtonBorder;
+import org.pushingpixels.substance.api.shaper.StandardButtonShaper;
+import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
+import org.pushingpixels.substance.internal.ui.SubstanceButtonUI;
+import org.pushingpixels.substance.internal.utils.border.SubstanceButtonBorder;
 
 /*
  * based on code from Xtreme Media Player
  */
 public abstract class ButtonShaper implements SubstanceButtonShaper {
 
-    private static class CustomSubstanceButtonBorder extends SubstanceButtonBorder {
-        private CustomSubstanceButtonBorder(Class<?> buttonShaperClass) {
-            super(buttonShaperClass);
-        }
+	private static class CustomSubstanceButtonBorder extends
+			SubstanceButtonBorder {
+		private CustomSubstanceButtonBorder(Class<?> buttonShaperClass) {
+			super(buttonShaperClass);
+		}
 
-        @Override
-        public Insets getBorderInsets(Component c) {
-            return new Insets(0, 0, 0, 0);
-        }
-    }
+		@Override
+		public Insets getBorderInsets(Component c) {
+			return new Insets(0, 0, 0, 0);
+		}
+	}
 
-    @Override
-    public Shape getButtonOutline(AbstractButton button) {
-        return getButtonOutline(button, null, button.getWidth(), button.getHeight(), true);
-    }
+	@Override
+	public Dimension getPreferredSize(AbstractButton button,
+			Dimension uiPreferredSize) {
+		if (button.getClientProperty(SubstanceButtonUI.BORDER_COMPUTED) == null) {
+			boolean isBorderComputing = (button
+					.getClientProperty(SubstanceButtonUI.BORDER_COMPUTING) != null);
+			Border border = button.getBorder();
+			int uiw = uiPreferredSize.width;
+			int uih = uiPreferredSize.height;
+			Insets bi = border.getBorderInsets(button);
+			if (!isBorderComputing) {
+				button.setBorder(null);
+			}
+			uiPreferredSize.setSize(uiw - bi.left - bi.right, uih - bi.top
+					- bi.bottom);
 
-    @Override
-    @Deprecated
-    public GeneralPath getButtonOutline(AbstractButton button, Insets insets) {
-        throw new UnsupportedOperationException();
-    }
+			if (!isBorderComputing) {
+				button.setBorder(this.getButtonBorder(button));
+				button.putClientProperty(SubstanceButtonUI.BORDER_COMPUTED, "");
+			}
+		}
+		return uiPreferredSize;
+	}
 
-    @Override
-    @Deprecated
-    public GeneralPath getButtonOutline(AbstractButton button, Insets insets, int width, int height) {
-        throw new UnsupportedOperationException();
-    }
+	@Override
+	public Border getButtonBorder(AbstractButton button) {
+		return new CustomSubstanceButtonBorder(StandardButtonShaper.class);
+	}
 
-    @Override
-    public Dimension getPreferredSize(AbstractButton button, Dimension uiPreferredSize) {
-        if (button.getClientProperty(SubstanceButtonUI.BORDER_COMPUTED) == null) {
-            boolean isBorderComputing = (button.getClientProperty(SubstanceButtonUI.BORDER_COMPUTING) != null);
-            Border border = button.getBorder();
-            int uiw = uiPreferredSize.width;
-            int uih = uiPreferredSize.height;
-            Insets bi = border.getBorderInsets(button);
-            if (!isBorderComputing) {
-                button.setBorder(null);
-            }
-            uiPreferredSize.setSize(uiw - bi.left - bi.right, uih - bi.top - bi.bottom);
-
-            if (!isBorderComputing) {
-                button.setBorder(this.getButtonBorder(button));
-                button.putClientProperty(SubstanceButtonUI.BORDER_COMPUTED, "");
-            }
-        }
-        return uiPreferredSize;
-    }
-
-    @Override
-    public Border getButtonBorder(AbstractButton button) {
-        return new CustomSubstanceButtonBorder(StandardButtonShaper.class);
-    }
-
-    @Override
-    public boolean isProportionate() {
-        return true;
-    }
+	@Override
+	public boolean isProportionate() {
+		return true;
+	}
 
 }

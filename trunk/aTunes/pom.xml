@@ -301,12 +301,17 @@
 		<dependency>
 			<groupId>substance</groupId>
 			<artifactId>substance</artifactId>
-			<version>5.3</version>
+			<version>6.0-RC</version>
 		</dependency>
 		<dependency>
 			<groupId>substance</groupId>
 			<artifactId>substance-swingx</artifactId>
-			<version>5.3</version>
+			<version>6.0-RC</version>
+		</dependency>
+		<dependency>
+			<groupId>trident</groupId>
+			<artifactId>trident</artifactId>
+			<version>1.2-RC</version>
 		</dependency>
 		<dependency>
 			<groupId>libxine</groupId>
