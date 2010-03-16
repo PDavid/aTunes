@@ -638,8 +638,12 @@ public final class ApplicationStateHandler extends Handler {
             timer.start();
             Repository result = (Repository) ois.readObject();
             // check repository integrity
-            if (result.getAudioFiles() == null || result.getFolders() == null || result.getArtistStructure() == null || result.getFolderStructure() == null
-                    || result.getGenreStructure() == null) {
+            if (result.getAudioFiles() == null || 
+            	result.getFolders() == null || 
+            	result.getArtistStructure() == null || 
+            	result.getFolderStructure() == null || 
+            	result.getGenreStructure() == null ||
+            	result.getYearStructure() == null) {
                 throw new InconsistentRepositoryException();
             }
 
