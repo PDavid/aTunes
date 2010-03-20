@@ -26,6 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.sourceforge.atunes.kernel.modules.repository.exception.InconsistentRepositoryException;
+
 public class Repository implements Serializable {
 
     private static final long serialVersionUID = -8278937514875788175L;
@@ -186,6 +188,23 @@ public class Repository implements Serializable {
      */
     public void setDirty(boolean dirty) {
         this.dirty = dirty;
+    }
+    
+    /**
+     * Validates this repository throwing exception if object is not consistent. 
+     * For example when a new attribute is added a repository object without that attribute can be considered invalid
+     * @throws InconsistentRepositoryException
+     */
+    public void validateRepository() throws InconsistentRepositoryException {
+        if (getAudioFiles() == null || 
+            getFolders() == null || 
+            getArtistStructure() == null || 
+            getFolderStructure() == null || 
+            getGenreStructure() == null ||
+            getYearStructure() == null) {
+                throw new InconsistentRepositoryException();
+        }
+
     }
 
 }
