@@ -637,15 +637,9 @@ public final class ApplicationStateHandler extends Handler {
             Timer timer = new Timer();
             timer.start();
             Repository result = (Repository) ois.readObject();
-            // check repository integrity
-            if (result.getAudioFiles() == null || 
-            	result.getFolders() == null || 
-            	result.getArtistStructure() == null || 
-            	result.getFolderStructure() == null || 
-            	result.getGenreStructure() == null ||
-            	result.getYearStructure() == null) {
-                throw new InconsistentRepositoryException();
-            }
+
+            // Check repository integrity
+            result.validateRepository();
 
             getLogger().info(LogCategories.HANDLER, StringUtils.getString("Reading repository cache done (", timer.stop(), " seconds)"));
             return result;
@@ -660,6 +654,10 @@ public final class ApplicationStateHandler extends Handler {
                     getLogger().info(LogCategories.HANDLER, "Reading xml repository cache");
                     long t0 = System.currentTimeMillis();
                     Repository repository = (Repository) XMLUtils.readObjectFromFile(StringUtils.getString(folder, "/", Constants.XML_CACHE_REPOSITORY_NAME));
+
+                    // Check repository integrity
+                    repository.validateRepository();
+
                     long t1 = System.currentTimeMillis();
                     getLogger().info(LogCategories.HANDLER, StringUtils.getString("Reading repository cache done (", (t1 - t0) / 1000.0, " seconds)"));
                     return repository;
