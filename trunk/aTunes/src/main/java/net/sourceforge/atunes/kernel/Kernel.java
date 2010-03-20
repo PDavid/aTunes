@@ -130,23 +130,17 @@ public class Kernel {
     public static void startKernel(final List<String> args) {
         getLogger().debug(LogCategories.START, "Starting Kernel");
 
-        SwingUtilities.invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                LanguageSelector.setLanguage();
-                Fonts.setFontSmoothing();
-                LookAndFeelSelector.getInstance().setLookAndFeel(ApplicationState.getInstance().getLookAndFeel());
-                Fonts.initializeFonts();
-                ColorDefinitions.initColors();
-            }
-        });
-
-        // Show title dialog
         try {
             SwingUtilities.invokeAndWait(new Runnable() {
                 @Override
                 public void run() {
+                    LanguageSelector.setLanguage();
+                    Fonts.setFontSmoothing();
+                    LookAndFeelSelector.getInstance().setLookAndFeel(ApplicationState.getInstance().getLookAndFeel());
+                    Fonts.initializeFonts();
+                    ColorDefinitions.initColors();
+
+                    // Show title dialog
                     GuiHandler.getInstance().showSplashScreen();
                 }
             });

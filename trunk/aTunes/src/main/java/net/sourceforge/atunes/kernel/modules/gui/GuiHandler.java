@@ -20,6 +20,7 @@
 package net.sourceforge.atunes.kernel.modules.gui;
 
 import java.awt.Component;
+import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GraphicsDevice;
@@ -112,6 +113,7 @@ import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
 import net.sourceforge.atunes.kernel.modules.tray.SystemTrayHandler;
 import net.sourceforge.atunes.kernel.modules.updates.ApplicationVersion;
 import net.sourceforge.atunes.misc.SystemProperties;
@@ -1274,7 +1276,11 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
         }
 
         FrameState frameState = ApplicationState.getInstance().getFrameStates().get(getFrame().getClass());
-        if (frameState == null) {
+        LocaleBean locale = ApplicationState.getInstance().getLocale();
+        LocaleBean oldLocale = ApplicationState.getInstance().getOldLocale();
+        // Reset fame state if no frame state in state or if component orientation of locale has changed
+        if (frameState == null || locale == null || locale != null && oldLocale != null
+                && !(ComponentOrientation.getOrientation(locale.getLocale()).equals(ComponentOrientation.getOrientation(oldLocale.getLocale())))) {
             frameState = new FrameState();
             ApplicationState.getInstance().getFrameStates().put(getFrame().getClass(), frameState);
         }
