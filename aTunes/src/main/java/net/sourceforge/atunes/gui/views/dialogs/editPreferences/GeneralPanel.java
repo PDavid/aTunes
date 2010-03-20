@@ -271,6 +271,7 @@ public final class GeneralPanel extends PreferencesPanel {
         state.setLocale(newLocale);
         if (!oldLocale.equals(newLocale)) {
             needRestart = true;
+            state.setOldLocale(new LocaleBean(Locale.getDefault()));
         }
 
         FontSettings oldFontSettings = state.getFontSettings();

@@ -68,6 +68,7 @@ public class ApplicationState {
     private String navigationView = RepositoryNavigationView.class.getName();
     private ViewMode viewMode = ViewMode.ARTIST;
     private LocaleBean locale;
+    private LocaleBean oldLocale;
     private String defaultSearch;
     private boolean useContext = true;
     private int selectedContextTab;
@@ -408,6 +409,14 @@ public class ApplicationState {
 
     public void setLocale(LocaleBean locale) {
         this.locale = locale;
+    }
+
+    public LocaleBean getOldLocale() {
+        return oldLocale;
+    }
+
+    public void setOldLocale(LocaleBean oldLocale) {
+        this.oldLocale = oldLocale;
     }
 
     public String getDefaultSearch() {
