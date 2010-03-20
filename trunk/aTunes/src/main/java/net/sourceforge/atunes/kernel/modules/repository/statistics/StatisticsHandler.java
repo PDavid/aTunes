@@ -215,8 +215,13 @@ public final class StatisticsHandler extends Handler {
         if (statisticsAlbums != null) {
             List<Album> albums = new ArrayList<Album>();
             for (StatisticsAlbum statisticAlbum : statisticsAlbums) {
-                Album album = RepositoryHandler.getInstance().getArtistStructure().get(statisticAlbum.getArtist()).getAlbum(statisticAlbum.getAlbum());
-                albums.add(album);
+            	Artist artist = RepositoryHandler.getInstance().getArtistStructure().get(statisticAlbum.getArtist());
+            	if (artist != null) {
+            		Album album = artist.getAlbum(statisticAlbum.getAlbum());
+            		if (album != null) {
+            			albums.add(album);
+            		}
+            	}
             }
             return albums;
         }

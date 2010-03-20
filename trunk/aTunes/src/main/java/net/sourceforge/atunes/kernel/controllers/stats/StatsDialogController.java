@@ -265,10 +265,12 @@ public final class StatsDialogController extends SimpleController<StatsDialog> {
         List<Integer> count = StatisticsHandler.getInstance().getMostPlayedArtistsCount(n);
         if (artists != null) {
             for (int i = 0; i < artists.size(); i++) {
-                Object[] obj = new Object[2];
-                obj[0] = artists.get(i).toString();
-                obj[1] = count.get(i);
-                result.add(obj);
+                if (artists.get(i) != null) {
+                    Object[] obj = new Object[2];
+                	obj[0] = artists.get(i).toString();
+                	obj[1] = count.get(i);
+                	result.add(obj);
+                }
             }
         }
         return result;
@@ -384,9 +386,11 @@ public final class StatsDialogController extends SimpleController<StatsDialog> {
             for (int i = 0; i < audioFiles.size(); i++) {
                 Object[] obj = new Object[2];
                 AudioFile audioFile = audioFiles.get(i);
-                obj[0] = StringUtils.getString(audioFile.getTitleOrFileName(), " (", audioFile.getArtist(), ")");
-                obj[1] = count.get(i);
-                result.add(obj);
+                if (audioFile != null) {
+                	obj[0] = StringUtils.getString(audioFile.getTitleOrFileName(), " (", audioFile.getArtist(), ")");
+                	obj[1] = count.get(i);
+                	result.add(obj);
+                }
             }
         }
         return result;
