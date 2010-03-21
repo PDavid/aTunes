@@ -459,7 +459,11 @@ public abstract class PlayerEngine implements PlaybackStateListener {
         callPlaybackStateListeners(PlaybackState.PLAY_FINISHED);
 
         if (!ok) {
-            getLogger().info(LogCategories.PLAYER, StringUtils.getString("Playback finished with errors: ", errorMessages));
+        	StringBuilder sb = new StringBuilder();
+        	for (String errorMessage : errorMessages) {
+        		sb.append(errorMessage).append(" ");
+        	}
+            getLogger().info(LogCategories.PLAYER, StringUtils.getString("Playback finished with errors: ", sb.toString()));
 
             boolean ignore = showPlaybackError(errorMessages);
             applyUserSelection(ignore);
