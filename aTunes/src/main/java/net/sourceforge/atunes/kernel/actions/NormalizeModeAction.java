@@ -46,14 +46,14 @@ public class NormalizeModeAction extends Action {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if (showWarning) {
-                    putValue(SMALL_ICON, Images.NORMALIZATION);
+                    putValue(SMALL_ICON, Images.getImage(Images.NORMALIZATION));
                 } else {
-                    putValue(SMALL_ICON, Images.WARNING);
+                    putValue(SMALL_ICON, Images.getImage(Images.WARNING));
                 }
                 showWarning = !showWarning;
             }
         });
-        if (ApplicationState.getInstance().isKaraoke()) {
+        if (ApplicationState.getInstance().isUseNormalisation()) {
             timer.start();
         }
     }
