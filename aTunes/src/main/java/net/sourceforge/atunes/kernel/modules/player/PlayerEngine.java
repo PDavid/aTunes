@@ -123,6 +123,11 @@ public abstract class PlayerEngine implements PlaybackStateListener {
      * Listeners of playback state
      */
     private List<PlaybackStateListener> playbackStateListeners;
+    
+    /**
+     * Setting this attribute to <code>true</code> avoid calling playback state listeners
+     */
+    private boolean callToPlaybackStateListenersDisabled = false;
 
     /**
      * Paused property: <code>true</code> if audio object playback is paused
@@ -323,9 +328,11 @@ public abstract class PlayerEngine implements PlaybackStateListener {
      * @param currentAudioObject
      */
     final void callPlaybackStateListeners(PlaybackState newState) {
-        for (PlaybackStateListener listener : playbackStateListeners) {
-            listener.playbackStateChanged(newState, audioObject);
-        }
+    	if (!isCallToPlaybackStateListenersDisabled()) {
+    		for (PlaybackStateListener listener : playbackStateListeners) {
+    			listener.playbackStateChanged(newState, audioObject);
+    		}
+    	}
     }
 
     @Override
@@ -770,6 +777,24 @@ public abstract class PlayerEngine implements PlaybackStateListener {
         }
     }
 
+    /**
+     * Restarts playback (stops and starts playback, seeking to previous position)
+     * This is normally used after apply a change in configuration (normalization, equalization)
+     */
+    protected void restartPlayback() {
+        float cent = ((float) getCurrentAudioObjectPlayedTime() / getCurrentAudioObjectLength());
+
+        // Disable playback state listeners while restarting playback
+        setCallToPlaybackStateListenersDisabled(true);
+        
+        finishPlayer();        
+        playCurrentAudioObject(true);
+        seekCurrentAudioObject(cent);
+        
+        // Enable playback state listeners again
+        setCallToPlaybackStateListenersDisabled(false);
+    }
+    
     public AudioObject getAudioObject() {
         return audioObject;
     }
@@ -791,5 +816,20 @@ public abstract class PlayerEngine implements PlaybackStateListener {
         }
         return logger;
     }
+
+	/**
+	 * @return the callToPlaybackStateListenersDisabled
+	 */
+	private boolean isCallToPlaybackStateListenersDisabled() {
+		return callToPlaybackStateListenersDisabled;
+	}
+
+	/**
+	 * @param callToPlaybackStateListenersDisabled the callToPlaybackStateListenersDisabled to set
+	 */
+	private void setCallToPlaybackStateListenersDisabled(
+			boolean callToPlaybackStateListenersDisabled) {
+		this.callToPlaybackStateListenersDisabled = callToPlaybackStateListenersDisabled;
+	}
 
 }
