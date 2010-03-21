@@ -449,7 +449,7 @@ public class MPlayerEngine extends PlayerEngine {
         // its last position when users applied the EQ
         // test to avoid non desired startup of player
         if (isEnginePlaying()) {
-            stopStartSeekToCurrentPosition();
+            restartPlayback();
         }
     }
 
@@ -457,7 +457,7 @@ public class MPlayerEngine extends PlayerEngine {
     public void applyNormalization() {
         // same comment as above, but for normalization mode
         if (isEnginePlaying()) {
-            stopStartSeekToCurrentPosition();
+            restartPlayback();
         }
     }
 
@@ -496,12 +496,4 @@ public class MPlayerEngine extends PlayerEngine {
     protected void killPlayer() {
         commandWriter.sendStopCommand();
     }
-
-    private void stopStartSeekToCurrentPosition() {
-        float cent = ((float) getCurrentAudioObjectPlayedTime() / getCurrentAudioObjectLength());
-        finishPlayer();
-        playCurrentAudioObject(true);
-        seekCurrentAudioObject(cent);
-    }
-
 }
