@@ -84,7 +84,11 @@ public final class GeneralPanel extends PreferencesPanel {
             // The name of flag file should be flag_<locale>.png
             // if the name of bundle is MainBundle_<locale>.properties
             String flag = StringUtils.getString("flag_", displayingLocale.toString(), ".png");
-            ((JLabel) c).setIcon(new ImageIcon(GeneralPanel.class.getResource(StringUtils.getString("/", Constants.TRANSLATIONS_DIR, "/", flag))));
+            try {
+                ((JLabel) c).setIcon(new ImageIcon(GeneralPanel.class.getResource(StringUtils.getString("/", Constants.TRANSLATIONS_DIR, "/", flag))));
+            } catch (NullPointerException e) {
+
+            }
             return c;
         }
     }
