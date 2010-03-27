@@ -24,6 +24,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -84,10 +85,10 @@ public final class GeneralPanel extends PreferencesPanel {
             // The name of flag file should be flag_<locale>.png
             // if the name of bundle is MainBundle_<locale>.properties
             String flag = StringUtils.getString("flag_", displayingLocale.toString(), ".png");
-            try {
-                ((JLabel) c).setIcon(new ImageIcon(GeneralPanel.class.getResource(StringUtils.getString("/", Constants.TRANSLATIONS_DIR, "/", flag))));
-            } catch (NullPointerException e) {
-
+            
+            URL flagURL = GeneralPanel.class.getResource(StringUtils.getString("/", Constants.TRANSLATIONS_DIR, "/", flag));
+            if (flagURL != null) {
+            	((JLabel) c).setIcon(new ImageIcon(flagURL));
             }
             return c;
         }
