@@ -49,7 +49,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public abstract class PlayerEngine implements PlaybackStateListener {
 
-    private static class ApplyUserSelectionRunnable implements Runnable {
+    private static final class ApplyUserSelectionRunnable implements Runnable {
         private PlayerEngine engine;
         private final boolean ignorePlaybackError;
 
@@ -70,7 +70,7 @@ public abstract class PlayerEngine implements PlaybackStateListener {
         }
     }
 
-    private static class ShowPlaybackErrorRunnable implements Runnable {
+    private static final class ShowPlaybackErrorRunnable implements Runnable {
         private final String[] errorMessages;
         private boolean ignore;
 
@@ -97,7 +97,7 @@ public abstract class PlayerEngine implements PlaybackStateListener {
         }
     }
 
-    private static class ShowErrorDialog implements Runnable {
+    private static final class ShowErrorDialog implements Runnable {
         private final Exception e;
 
         private ShowErrorDialog(Exception e) {

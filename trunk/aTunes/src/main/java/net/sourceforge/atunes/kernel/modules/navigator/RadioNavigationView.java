@@ -364,9 +364,9 @@ public final class RadioNavigationView extends NavigationView {
         return decorators;
     }
 
-    private static class RadioNavigationColumnSet extends CustomNavigatorColumnSet {
+    private static final class RadioNavigationColumnSet extends CustomNavigatorColumnSet {
 
-        private static class UrlColumn extends Column {
+        private static final class UrlColumn extends Column {
             /**
 			 * 
 			 */
@@ -387,7 +387,7 @@ public final class RadioNavigationView extends NavigationView {
             }
         }
 
-        private static class NameColumn extends Column {
+        private static final class NameColumn extends Column {
             /**
 			 * 
 			 */
@@ -408,7 +408,7 @@ public final class RadioNavigationView extends NavigationView {
             }
         }
 
-        private static class EmptyColumn extends Column {
+        private static final class EmptyColumn extends Column {
             /**
 			 * 
 			 */

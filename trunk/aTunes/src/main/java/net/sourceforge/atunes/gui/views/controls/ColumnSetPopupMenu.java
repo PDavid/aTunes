@@ -35,7 +35,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 public class ColumnSetPopupMenu {
 
-    private static class ColumnSetTableHeaderMouseAdapter extends MouseAdapter {
+    private static final class ColumnSetTableHeaderMouseAdapter extends MouseAdapter {
         private final JPopupMenu rightMenu;
         private final JTable table;
 
@@ -53,7 +53,7 @@ public class ColumnSetPopupMenu {
         }
     }
 
-    private static class SelectColumnsActionListener implements ActionListener {
+    private static final class SelectColumnsActionListener implements ActionListener {
         private final CommonColumnModel model;
 
         private SelectColumnsActionListener(CommonColumnModel model) {
