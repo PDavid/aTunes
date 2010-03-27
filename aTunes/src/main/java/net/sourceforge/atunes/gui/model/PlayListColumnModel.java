@@ -41,7 +41,7 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
  */
 public final class PlayListColumnModel extends CommonColumnModel {
 
-    private static class PlayListJLabelTableCellRendererCode extends JLabelTableCellRendererCode {
+    private static final class PlayListJLabelTableCellRendererCode extends JLabelTableCellRendererCode {
         private PlayListJLabelTableCellRendererCode(CommonColumnModel model) {
             super(model);
         }
@@ -54,7 +54,7 @@ public final class PlayListColumnModel extends CommonColumnModel {
         }
     }
 
-    private static class PlayListStringTableCellRendererCode extends StringTableCellRendererCode {
+    private static final class PlayListStringTableCellRendererCode extends StringTableCellRendererCode {
         private PlayListStringTableCellRendererCode(CommonColumnModel model) {
             super(model);
         }

@@ -36,7 +36,7 @@ import net.sourceforge.atunes.misc.log.Logger;
  */
 public class PodcastFeedEntryDownloadChecker implements Runnable {
 
-    private static class SetDownloadedRunnable implements Runnable {
+    private static final class SetDownloadedRunnable implements Runnable {
         private final Map<PodcastFeedEntry, Boolean> downloaded;
 
         private SetDownloadedRunnable(Map<PodcastFeedEntry, Boolean> downloaded) {
@@ -52,7 +52,7 @@ public class PodcastFeedEntryDownloadChecker implements Runnable {
         }
     }
 
-    private static class GetPodcastFeedEntriesFilesRunnable implements Runnable {
+    private static final class GetPodcastFeedEntriesFilesRunnable implements Runnable {
         private final Map<PodcastFeedEntry, File> files;
 
         private GetPodcastFeedEntriesFilesRunnable(Map<PodcastFeedEntry, File> files) {

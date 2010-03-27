@@ -65,7 +65,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public final class PatternInputDialog extends CustomModalDialog {
 
-    private static class AvailablePatternsDefaultTableModel extends DefaultTableModel {
+    private static final class AvailablePatternsDefaultTableModel extends DefaultTableModel {
         /**
 		 * 
 		 */
@@ -81,7 +81,7 @@ public final class PatternInputDialog extends CustomModalDialog {
         }
     }
 
-    private static class PatternPreviewDefaultTableModel extends DefaultTableModel {
+    private static final class PatternPreviewDefaultTableModel extends DefaultTableModel {
         /**
 		 * 
 		 */
@@ -97,7 +97,7 @@ public final class PatternInputDialog extends CustomModalDialog {
         }
     }
 
-    private static class PatternPreviewDefaultTableColumnModel extends DefaultTableColumnModel {
+    private static final class PatternPreviewDefaultTableColumnModel extends DefaultTableColumnModel {
         /**
 		 * 
 		 */

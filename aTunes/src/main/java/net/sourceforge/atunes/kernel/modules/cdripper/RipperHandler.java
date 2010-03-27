@@ -67,7 +67,7 @@ public final class RipperHandler extends Handler {
         }
     }
 
-    private static class TotalProgressListener implements ProgressListener {
+    private static final class TotalProgressListener implements ProgressListener {
         private final RipperProgressDialog dialog;
         private final List<File> filesImported;
 
@@ -91,7 +91,7 @@ public final class RipperHandler extends Handler {
         }
     }
 
-    private static class EncoderProgressListener implements ProgressListener {
+    private static final class EncoderProgressListener implements ProgressListener {
         private final RipperProgressDialog dialog;
 
         private EncoderProgressListener(RipperProgressDialog dialog) {
@@ -112,7 +112,7 @@ public final class RipperHandler extends Handler {
         }
     }
 
-    private static class DecoderProgressListener implements ProgressListener {
+    private static final class DecoderProgressListener implements ProgressListener {
         private final RipperProgressDialog dialog;
 
         private DecoderProgressListener(RipperProgressDialog dialog) {

@@ -72,7 +72,7 @@ public final class MultipleFrame implements Frame {
         }
     }
 
-    private static class FrameComponentAdapter extends ComponentAdapter {
+    private static final class FrameComponentAdapter extends ComponentAdapter {
         private final Timer t;
 
         private FrameComponentAdapter(Timer t) {
@@ -85,7 +85,7 @@ public final class MultipleFrame implements Frame {
         }
     }
 
-    private static class CustomDialogComponentAdapter extends ComponentAdapter {
+    private static final class CustomDialogComponentAdapter extends ComponentAdapter {
         private final Timer t;
 
         private CustomDialogComponentAdapter(Timer t) {
