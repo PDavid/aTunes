@@ -20,6 +20,7 @@
 package net.sourceforge.atunes.kernel.modules.repository.tags.writer;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.List;
 
 import javax.swing.SwingUtilities;
@@ -36,9 +37,14 @@ import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
+import org.jaudiotagger.audio.exceptions.CannotReadException;
+import org.jaudiotagger.audio.exceptions.CannotWriteException;
+import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
+import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
 import org.jaudiotagger.tag.FieldDataInvalidException;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.KeyNotFoundException;
+import org.jaudiotagger.tag.TagException;
 import org.jaudiotagger.tag.datatype.Artwork;
 import org.jaudiotagger.tag.reference.PictureTypes;
 
@@ -71,9 +77,19 @@ public final class TagModifier {
         file.setWritable();
         try {
             org.jaudiotagger.audio.AudioFileIO.delete(org.jaudiotagger.audio.AudioFileIO.read(file.getFile()));
-        } catch (Exception e) {
-            getLogger().error(LogCategories.FILE_WRITE, e);
-        }
+        } catch (IOException e) {
+        	reportWriteError(file, e);
+        } catch (CannotReadException e) {
+        	reportWriteError(file, e);
+		} catch (CannotWriteException e) {
+        	reportWriteError(file, e);
+		} catch (TagException e) {
+        	reportWriteError(file, e);
+		} catch (ReadOnlyFileException e) {
+        	reportWriteError(file, e);
+		} catch (InvalidAudioFrameException e) {
+        	reportWriteError(file, e);
+		}
 
     }
 
@@ -128,9 +144,19 @@ public final class TagModifier {
             org.jaudiotagger.tag.Tag newTag = audioFile.getTagOrCreateAndSetDefault();
             newTag.setField(FieldKey.ALBUM, album);
             audioFile.commit();
-        } catch (Exception e) {
-            getLogger().error(LogCategories.FILE_WRITE, StringUtils.getString("Could not edit tag. File: ", file.getUrl(), " Error: ", e));
-        }
+        } catch (IOException e) {
+            reportWriteError(file, e);
+        } catch (CannotReadException e) {
+            reportWriteError(file, e);
+		} catch (TagException e) {
+            reportWriteError(file, e);
+		} catch (ReadOnlyFileException e) {
+            reportWriteError(file, e);
+		} catch (InvalidAudioFrameException e) {
+            reportWriteError(file, e);
+		} catch (CannotWriteException e) {
+            reportWriteError(file, e);
+		}
     }
 
     /**
@@ -150,11 +176,21 @@ public final class TagModifier {
             //newTag.setGenre(genre);
             newTag.setField(newTag.createField(FieldKey.GENRE, genre));
             audioFile.commit();
-        } catch (Exception e) {
-            getLogger().error(LogCategories.FILE_WRITE, StringUtils.getString("Could not edit tag. File: ", file.getUrl(), " Error: ", e));
+        } catch (TagException e) {
+            reportWriteError(file, e);
+        } catch (ReadOnlyFileException e) {
+            reportWriteError(file, e);
+        } catch (InvalidAudioFrameException e) {
+            reportWriteError(file, e);
+        } catch (CannotWriteException e) {
+            reportWriteError(file, e);
+        } catch (CannotReadException e) {
+            reportWriteError(file, e);
+        } catch (IOException e) {
+            reportWriteError(file, e);
         }
     }
-
+    
     /**
      * Writes tag to audiofile using JAudiotagger.
      * 
@@ -213,7 +249,7 @@ public final class TagModifier {
                 try {
                     newTag.deleteArtworkField();
                 } catch (KeyNotFoundException e) {
-                    getLogger().error(LogCategories.IMAGE, e);
+                	getLogger().error(LogCategories.IMAGE, StringUtils.getString("Could not delte artwork field. File: ", file.getUrl(), " Error: ", e));
                 }
 
                 if (cover != null) {
@@ -234,13 +270,13 @@ public final class TagModifier {
                 newTag.deleteField(FieldKey.GENRE);
             }
 
-            setStringTagField(newTag, FieldKey.ALBUM, album);
-            setStringTagField(newTag, FieldKey.ARTIST, artist);
-            setStringTagField(newTag, FieldKey.COMMENT, comment);
-            setStringTagField(newTag, FieldKey.GENRE, genre);
-            setStringTagField(newTag, FieldKey.TITLE, title);
-            setNumberTagField(newTag, FieldKey.YEAR, year);
-            setNumberTagField(newTag, FieldKey.TRACK, track);
+            setStringTagField(file, newTag, FieldKey.ALBUM, album);
+            setStringTagField(file, newTag, FieldKey.ARTIST, artist);
+            setStringTagField(file, newTag, FieldKey.COMMENT, comment);
+            setStringTagField(file, newTag, FieldKey.GENRE, genre);
+            setStringTagField(file, newTag, FieldKey.TITLE, title);
+            setNumberTagField(file, newTag, FieldKey.YEAR, year);
+            setNumberTagField(file, newTag, FieldKey.TRACK, track);
             if (discNumber == 0) {
                 newTag.deleteField(FieldKey.DISC_NO);
             } else {
@@ -250,18 +286,28 @@ public final class TagModifier {
                     newTag.setField(FieldKey.DISC_NO, Integer.toString(discNumber));
                 }
             }
-            setStringTagField(newTag, FieldKey.LYRICS, lyrics);
-            setStringTagField(newTag, FieldKey.ALBUM_ARTIST, albumArtist);
-            setStringTagField(newTag, FieldKey.COMPOSER, composer);
+            setStringTagField(file, newTag, FieldKey.LYRICS, lyrics);
+            setStringTagField(file, newTag, FieldKey.ALBUM_ARTIST, albumArtist);
+            setStringTagField(file, newTag, FieldKey.COMPOSER, composer);
 
             audioFile.setTag(newTag);
             audioFile.commit();
-        } catch (Exception e) {
-            getLogger().error(LogCategories.FILE_WRITE, StringUtils.getString("Could not edit tag. File: ", file.getUrl(), " Error: ", e.getMessage()));
-        }
+        } catch (IOException e) {
+            reportWriteError(file, e);
+        } catch (CannotReadException e) {
+            reportWriteError(file, e);
+		} catch (TagException e) {
+            reportWriteError(file, e);
+		} catch (ReadOnlyFileException e) {
+            reportWriteError(file, e);
+		} catch (InvalidAudioFrameException e) {
+            reportWriteError(file, e);
+		} catch (CannotWriteException e) {
+            reportWriteError(file, e);
+		}
     }
 
-    private static void setStringTagField(org.jaudiotagger.tag.Tag tag, FieldKey fieldKey, String fieldValue) {
+    private static void setStringTagField(AudioFile file, org.jaudiotagger.tag.Tag tag, FieldKey fieldKey, String fieldValue) {
         if (fieldValue.isEmpty()) {
             // Delete tag field if value is empty
             tag.deleteField(fieldKey);
@@ -269,23 +315,23 @@ public final class TagModifier {
             try {
                 tag.setField(tag.createField(fieldKey, fieldValue));
             } catch (FieldDataInvalidException e) {
-                getLogger().error(LogCategories.FILE_WRITE, e);
+            	reportWriteFieldError(file, fieldKey, fieldValue, e);
             } catch (KeyNotFoundException e) {
-                getLogger().error(LogCategories.FILE_WRITE, e);
+            	reportWriteFieldError(file, fieldKey, fieldValue, e);
             }
         }
     }
 
-    private static void setNumberTagField(org.jaudiotagger.tag.Tag tag, FieldKey fieldKey, int fieldValue) {
+    private static void setNumberTagField(AudioFile file, org.jaudiotagger.tag.Tag tag, FieldKey fieldKey, int fieldValue) {
         if (fieldValue == -1) {
             tag.deleteField(fieldKey);
         } else {
             try {
                 tag.setField(fieldKey, String.valueOf(fieldValue));
             } catch (KeyNotFoundException e) {
-                getLogger().error(LogCategories.FILE_WRITE, e);
+            	reportWriteFieldError(file, fieldKey, Integer.toString(fieldValue), e);
             } catch (FieldDataInvalidException e) {
-                getLogger().error(LogCategories.FILE_WRITE, e);
+            	reportWriteFieldError(file, fieldKey, Integer.toString(fieldValue), e);
 
             }
         }
@@ -307,9 +353,19 @@ public final class TagModifier {
             org.jaudiotagger.tag.Tag newTag = audioFile.getTagOrCreateAndSetDefault();
             newTag.setField(newTag.createField(FieldKey.LYRICS, lyrics));
             audioFile.commit();
-        } catch (Exception e) {
-            getLogger().error(LogCategories.FILE_WRITE, StringUtils.getString("Could not edit tag. File: ", file.getUrl(), " Error: ", e));
-        }
+        } catch (IOException e) {
+            reportWriteError(file, e);
+        } catch (CannotReadException e) {
+            reportWriteError(file, e);
+		} catch (TagException e) {
+            reportWriteError(file, e);
+		} catch (ReadOnlyFileException e) {
+            reportWriteError(file, e);
+		} catch (InvalidAudioFrameException e) {
+            reportWriteError(file, e);
+		} catch (CannotWriteException e) {
+            reportWriteError(file, e);
+		}
     }
 
     /**
@@ -328,9 +384,19 @@ public final class TagModifier {
             org.jaudiotagger.tag.Tag newTag = audioFile.getTagOrCreateAndSetDefault();
             newTag.setField(FieldKey.TITLE, newTitle);
             audioFile.commit();
-        } catch (Exception e) {
-            getLogger().error(LogCategories.FILE_WRITE, StringUtils.getString("Could not edit tag. File: ", file.getUrl(), " Error: ", e));
-        }
+        } catch (IOException e) {
+        	reportWriteError(file, e);
+        } catch (CannotReadException e) {
+        	reportWriteError(file, e);
+		} catch (TagException e) {
+        	reportWriteError(file, e);
+		} catch (ReadOnlyFileException e) {
+        	reportWriteError(file, e);
+		} catch (InvalidAudioFrameException e) {
+        	reportWriteError(file, e);
+		} catch (CannotWriteException e) {
+        	reportWriteError(file, e);
+		}
     }
 
     /**
@@ -349,9 +415,19 @@ public final class TagModifier {
             org.jaudiotagger.tag.Tag newTag = audioFile.getTagOrCreateAndSetDefault();
             newTag.setField(FieldKey.TRACK, track.toString());
             audioFile.commit();
-        } catch (Exception e) {
-            getLogger().error(LogCategories.FILE_WRITE, StringUtils.getString("Could not edit tag. File: ", file.getUrl(), " Error: ", e));
-        }
+        } catch (IOException e) {
+            reportWriteError(file, e);
+        } catch (CannotReadException e) {
+            reportWriteError(file, e);
+		} catch (TagException e) {
+            reportWriteError(file, e);
+		} catch (ReadOnlyFileException e) {
+            reportWriteError(file, e);
+		} catch (InvalidAudioFrameException e) {
+            reportWriteError(file, e);
+		} catch (CannotWriteException e) {
+            reportWriteError(file, e);
+		}
     }
 
     /**
@@ -365,5 +441,25 @@ public final class TagModifier {
         }
         return logger;
     }
+
+    /**
+     * Logs error while writing
+     * @param file
+     * @param e
+     */
+    private static final void reportWriteError(AudioFile file, Exception e) {
+        getLogger().error(LogCategories.FILE_WRITE, StringUtils.getString("Could not edit tag. File: ", file.getUrl(), " Error: ", e));
+    }
+    
+    /**
+     * Logs error while writing a field
+     * @param file
+     * @param fieldKey
+     * @param fieldValue
+     */
+    private static final void reportWriteFieldError(AudioFile file, FieldKey fieldKey, String fieldValue, Exception e) {
+    	getLogger().error(LogCategories.FILE_WRITE, StringUtils.getString("Could not edit tag field ", fieldKey.name(), " with value \"", fieldValue, "\" for file: ", file.getUrl(), " Error: ", e));
+    }
+
 
 }
