@@ -226,7 +226,7 @@ public final class ApplicationStateHandler extends Handler {
             stream = new ObjectOutputStream(new FileOutputStream(StringUtils.getString(getUserConfigFolder(), "/", Constants.CACHE_FAVORITES_NAME)));
             getLogger().info(LogCategories.HANDLER, "Storing favorites information...");
             stream.writeObject(favorites);
-        } catch (Exception e) {
+        } catch (IOException e) {
             getLogger().error(LogCategories.HANDLER, "Could not write favorites");
             getLogger().debug(LogCategories.HANDLER, e);
         } finally {
@@ -258,7 +258,7 @@ public final class ApplicationStateHandler extends Handler {
             stream = new ObjectOutputStream(new FileOutputStream(StringUtils.getString(getUserConfigFolder(), "/", Constants.CACHE_STATISTICS_NAME)));
             getLogger().info(LogCategories.HANDLER, "Storing statistics information...");
             stream.writeObject(statistics);
-        } catch (Exception e) {
+        } catch (IOException e) {
             getLogger().error(LogCategories.HANDLER, "Could not write statistics");
             getLogger().debug(LogCategories.HANDLER, e);
         } finally {
@@ -285,7 +285,7 @@ public final class ApplicationStateHandler extends Handler {
         try {
             XMLUtils.writeObjectToFile(listOfPlayLists, StringUtils.getString(getUserConfigFolder(), "/", Constants.PLAYLISTS_FILE));
             getLogger().info(LogCategories.HANDLER, "Playlists definition saved");
-        } catch (Exception e) {
+        } catch (IOException e) {
             getLogger().error(LogCategories.HANDLER, "Could not persist playlists definition");
             getLogger().debug(LogCategories.HANDLER, e);
         }
@@ -302,7 +302,7 @@ public final class ApplicationStateHandler extends Handler {
             stream = new ObjectOutputStream(new FileOutputStream(StringUtils.getString(getUserConfigFolder(), "/", Constants.PLAYLISTS_CONTENTS_FILE)));
             stream.writeObject(playListsContents);
             getLogger().info(LogCategories.HANDLER, "Playlists contents saved");
-        } catch (Exception e) {
+        } catch (IOException e) {
             getLogger().error(LogCategories.HANDLER, "Could not persist playlists contents");
             getLogger().debug(LogCategories.HANDLER, e);
         } finally {
@@ -321,7 +321,7 @@ public final class ApplicationStateHandler extends Handler {
 
         try {
             XMLUtils.writeObjectToFile(podcastFeeds, StringUtils.getString(getUserConfigFolder(), "/", Constants.PODCAST_FEED_CACHE));
-        } catch (Exception e) {
+        } catch (IOException e) {
             getLogger().error(LogCategories.HANDLER, "Could not persist podcast feeds");
             getLogger().debug(LogCategories.HANDLER, e);
         }
@@ -338,7 +338,7 @@ public final class ApplicationStateHandler extends Handler {
 
         try {
             XMLUtils.writeObjectToFile(radios, StringUtils.getString(getUserConfigFolder(), "/", Constants.RADIO_CACHE));
-        } catch (Exception e) {
+        } catch (IOException e) {
             getLogger().error(LogCategories.HANDLER, "Could not persist radios");
             getLogger().debug(LogCategories.HANDLER, e);
         }
@@ -355,7 +355,7 @@ public final class ApplicationStateHandler extends Handler {
 
         try {
             XMLUtils.writeObjectToFile(radios, StringUtils.getString(getUserConfigFolder(), "/", Constants.PRESET_RADIO_CACHE));
-        } catch (Exception e) {
+        } catch (IOException e) {
             getLogger().error(LogCategories.HANDLER, "Could not persist radios");
             getLogger().debug(LogCategories.HANDLER, e);
         }
@@ -382,7 +382,7 @@ public final class ApplicationStateHandler extends Handler {
             timer.start();
             oos.writeObject(repository);
             getLogger().info(LogCategories.HANDLER, StringUtils.getString("DONE (", timer.stop(), " seconds)"));
-        } catch (Exception e) {
+        } catch (IOException e) {
             getLogger().error(LogCategories.HANDLER, "Could not write serialized repository");
             getLogger().debug(LogCategories.HANDLER, e);
         } finally {
@@ -396,7 +396,7 @@ public final class ApplicationStateHandler extends Handler {
                 timer.start();
                 XMLUtils.writeObjectToFile(repository, StringUtils.getString(folder, "/", Constants.XML_CACHE_REPOSITORY_NAME));
                 getLogger().info(LogCategories.HANDLER, StringUtils.getString("DONE (", timer.stop(), " seconds)"));
-            } catch (Exception e) {
+            } catch (IOException e) {
                 getLogger().error(LogCategories.HANDLER, "Could not write repository as xml");
                 getLogger().debug(LogCategories.HANDLER, e);
             }
@@ -416,7 +416,7 @@ public final class ApplicationStateHandler extends Handler {
             oos.writeObject(deviceRepository);
             long t1 = System.currentTimeMillis();
             getLogger().info(LogCategories.HANDLER, StringUtils.getString("DONE (", (t1 - t0) / 1000.0, " seconds)"));
-        } catch (Exception e) {
+        } catch (IOException e) {
             getLogger().error(LogCategories.HANDLER, "Could not write serialized device");
             getLogger().debug(LogCategories.HANDLER, e);
         } finally {
@@ -473,14 +473,27 @@ public final class ApplicationStateHandler extends Handler {
             //TODO remove in next version
             getLogger().error(LogCategories.HANDLER, e);
             return new Favorites();
-        } catch (Exception e) {
+        } catch (IOException e) {
             getLogger().info(LogCategories.HANDLER, "No serialized favorites info found");
             if (ApplicationState.getInstance().isSaveRepositoryAsXml()) {
                 try {
                     getLogger().info(LogCategories.HANDLER, "Reading xml favorites cache");
                     Favorites result = (Favorites) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_FAVORITES_NAME));
                     return result;
-                } catch (Exception e1) {
+                } catch (IOException e1) {
+                    getLogger().info(LogCategories.HANDLER, "No xml favorites info found");
+                    return new Favorites();
+                }
+            }
+            return new Favorites();
+        } catch (ClassNotFoundException e) {
+            getLogger().info(LogCategories.HANDLER, "No serialized favorites info found");
+            if (ApplicationState.getInstance().isSaveRepositoryAsXml()) {
+                try {
+                    getLogger().info(LogCategories.HANDLER, "Reading xml favorites cache");
+                    Favorites result = (Favorites) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_FAVORITES_NAME));
+                    return result;
+                } catch (IOException e1) {
                     getLogger().info(LogCategories.HANDLER, "No xml favorites info found");
                     return new Favorites();
                 }
@@ -508,14 +521,27 @@ public final class ApplicationStateHandler extends Handler {
             //TODO remove in next version
             getLogger().error(LogCategories.HANDLER, e);
             return new Statistics();
-        } catch (Exception e) {
+        } catch (IOException e) {
             getLogger().info(LogCategories.HANDLER, "No serialized statistics info found");
             if (ApplicationState.getInstance().isSaveRepositoryAsXml()) {
                 try {
                     getLogger().info(LogCategories.HANDLER, "Reading xml statistics cache");
                     Statistics result = (Statistics) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_STATISTICS_NAME));
                     return result;
-                } catch (Exception e1) {
+                } catch (IOException e1) {
+                    getLogger().info(LogCategories.HANDLER, "No xml statistics info found");
+                    return new Statistics();
+                }
+            }
+            return new Statistics();
+        } catch (ClassNotFoundException e) {
+            getLogger().info(LogCategories.HANDLER, "No serialized statistics info found");
+            if (ApplicationState.getInstance().isSaveRepositoryAsXml()) {
+                try {
+                    getLogger().info(LogCategories.HANDLER, "Reading xml statistics cache");
+                    Statistics result = (Statistics) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_STATISTICS_NAME));
+                    return result;
+                } catch (IOException e1) {
                     getLogger().info(LogCategories.HANDLER, "No xml statistics info found");
                     return new Statistics();
                 }
@@ -554,7 +580,10 @@ public final class ApplicationStateHandler extends Handler {
         } catch (FileNotFoundException e) {
             getLogger().info(LogCategories.HANDLER, "No playlist information found");
             return ListOfPlayLists.getEmptyPlayList();
-        } catch (Exception e) {
+        } catch (IOException e) {
+            getLogger().error(LogCategories.HANDLER, e);
+            return ListOfPlayLists.getEmptyPlayList();
+        } catch (ClassNotFoundException e) {
             getLogger().error(LogCategories.HANDLER, e);
             return ListOfPlayLists.getEmptyPlayList();
         } finally {
@@ -573,7 +602,7 @@ public final class ApplicationStateHandler extends Handler {
 
         try {
             return (List<PodcastFeed>) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.PODCAST_FEED_CACHE));
-        } catch (Exception e) {
+        } catch (IOException e) {
             /*
              * java.util.concurrent.CopyOnWriteArrayList instead of e.g.
              * java.util.ArrayList to avoid ConcurrentModificationException
@@ -592,7 +621,7 @@ public final class ApplicationStateHandler extends Handler {
         getLogger().debug(LogCategories.HANDLER);
         try {
             return (List<Radio>) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.RADIO_CACHE));
-        } catch (Exception e) {
+        } catch (IOException e) {
             return new ArrayList<Radio>();
         }
 
@@ -609,11 +638,11 @@ public final class ApplicationStateHandler extends Handler {
         try {
             // First try user settings folder
             return (List<Radio>) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.PRESET_RADIO_CACHE));
-        } catch (Exception e) {
+        } catch (IOException e) {
             try {
                 // Otherwise use list in application folder
                 return (List<Radio>) XMLUtils.readObjectFromFile(ApplicationStateHandler.class.getResourceAsStream("/settings/" + Constants.PRESET_RADIO_CACHE));
-            } catch (Exception e2) {
+            } catch (IOException e2) {
                 return new ArrayList<Radio>();
             }
         }
@@ -647,29 +676,40 @@ public final class ApplicationStateHandler extends Handler {
             //TODO remove in next version
             getLogger().error(LogCategories.HANDLER, e);
             return null;
-        } catch (Exception e) {
-            getLogger().info(LogCategories.HANDLER, "No serialized repository info found");
-            if (ApplicationState.getInstance().isSaveRepositoryAsXml()) {
-                try {
-                    getLogger().info(LogCategories.HANDLER, "Reading xml repository cache");
-                    long t0 = System.currentTimeMillis();
-                    Repository repository = (Repository) XMLUtils.readObjectFromFile(StringUtils.getString(folder, "/", Constants.XML_CACHE_REPOSITORY_NAME));
-
-                    // Check repository integrity
-                    repository.validateRepository();
-
-                    long t1 = System.currentTimeMillis();
-                    getLogger().info(LogCategories.HANDLER, StringUtils.getString("Reading repository cache done (", (t1 - t0) / 1000.0, " seconds)"));
-                    return repository;
-                } catch (Exception e1) {
-                    getLogger().info(LogCategories.HANDLER, "No xml repository info found");
-                    return null;
-                }
-            }
-            return null;
+        } catch (IOException e) {
+        	return exceptionReadingRepository(folder);
+        } catch (ClassNotFoundException e) {
+        	return exceptionReadingRepository(folder);
+        } catch (InconsistentRepositoryException e) {
+        	return exceptionReadingRepository(folder);
         } finally {
             ClosingUtils.close(ois);
         }
+    }
+    
+    private Repository exceptionReadingRepository(String folder) {
+        getLogger().info(LogCategories.HANDLER, "No serialized repository info found");
+        if (ApplicationState.getInstance().isSaveRepositoryAsXml()) {
+            try {
+                getLogger().info(LogCategories.HANDLER, "Reading xml repository cache");
+                long t0 = System.currentTimeMillis();
+                Repository repository = (Repository) XMLUtils.readObjectFromFile(StringUtils.getString(folder, "/", Constants.XML_CACHE_REPOSITORY_NAME));
+
+                // Check repository integrity
+                repository.validateRepository();
+
+                long t1 = System.currentTimeMillis();
+                getLogger().info(LogCategories.HANDLER, StringUtils.getString("Reading repository cache done (", (t1 - t0) / 1000.0, " seconds)"));
+                return repository;
+            } catch (IOException e1) {
+                getLogger().info(LogCategories.HANDLER, "No xml repository info found");
+                return null;
+            } catch (InconsistentRepositoryException e1) {
+                getLogger().info(LogCategories.HANDLER, "No xml repository info found");
+                return null;
+            }
+        }
+        return null;    	
     }
 
     /**
@@ -691,7 +731,10 @@ public final class ApplicationStateHandler extends Handler {
             long t1 = System.currentTimeMillis();
             getLogger().info(LogCategories.HANDLER, StringUtils.getString("Reading device cache done (", (t1 - t0) / 1000.0, " seconds)"));
             return result;
-        } catch (Exception e) {
+        } catch (IOException e) {
+            getLogger().info(LogCategories.HANDLER, StringUtils.getString("No serialized device info found for deviceId: ", deviceId));
+            return null;
+        } catch (ClassNotFoundException e) {
             getLogger().info(LogCategories.HANDLER, StringUtils.getString("No serialized device info found for deviceId: ", deviceId));
             return null;
         } finally {
