@@ -21,6 +21,7 @@ package net.sourceforge.atunes.kernel.modules.cdripper.encoders;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -97,9 +98,11 @@ public class FlacEncoder implements Encoder {
                 return false;
             }
             return true;
-        } catch (Exception e) {
+        } catch (IOException e) {
             return false;
-        } finally {
+        } catch (InterruptedException e) {
+        	return false;
+		} finally {
             ClosingUtils.close(stdInput);
         }
     }
@@ -202,10 +205,12 @@ public class FlacEncoder implements Encoder {
             getLogger().info(LogCategories.FLAC, "Encoded ok!!");
             return true;
 
-        } catch (Exception e) {
+        } catch (IOException e) {
             getLogger().error(LogCategories.FLAC, StringUtils.getString("Process execution caused exception ", e));
             return false;
-        } finally {
+        } catch (InterruptedException e) {
+        	return false;
+		} finally {
             ClosingUtils.close(stdInput);
         }
     }

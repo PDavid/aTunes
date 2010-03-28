@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel.modules.repository;
 import javax.swing.ImageIcon;
 
 import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheException;
 import net.sf.ehcache.Element;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsCache;
@@ -49,7 +50,10 @@ public class ImageCache extends AbstractCache {
         try {
             getCache().removeAll();
             getCache().flush();
-        } catch (Exception e) {
+        } catch (IllegalStateException e) {
+            getLogger().info(LogCategories.FILE_DELETE, "Could not delete all files from cover cache");
+            return true;
+        } catch (CacheException e) {
             getLogger().info(LogCategories.FILE_DELETE, "Could not delete all files from cover cache");
             return true;
         }
@@ -62,7 +66,10 @@ public class ImageCache extends AbstractCache {
                 getCache().remove(id(audioFile, imageSize));
             }
             getCache().flush();
-        } catch (Exception e) {
+        } catch (IllegalStateException e) {
+            getLogger().info(LogCategories.FILE_DELETE, "Could not delete all files from cover cache");
+            return true;
+        } catch (CacheException e) {
             getLogger().info(LogCategories.FILE_DELETE, "Could not delete all files from cover cache");
             return true;
         }
