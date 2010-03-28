@@ -478,8 +478,7 @@ public final class ApplicationStateHandler extends Handler {
             if (ApplicationState.getInstance().isSaveRepositoryAsXml()) {
                 try {
                     getLogger().info(LogCategories.HANDLER, "Reading xml favorites cache");
-                    Favorites result = (Favorites) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_FAVORITES_NAME));
-                    return result;
+                    return (Favorites) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_FAVORITES_NAME));
                 } catch (IOException e1) {
                     getLogger().info(LogCategories.HANDLER, "No xml favorites info found");
                     return new Favorites();
@@ -491,8 +490,7 @@ public final class ApplicationStateHandler extends Handler {
             if (ApplicationState.getInstance().isSaveRepositoryAsXml()) {
                 try {
                     getLogger().info(LogCategories.HANDLER, "Reading xml favorites cache");
-                    Favorites result = (Favorites) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_FAVORITES_NAME));
-                    return result;
+                    return (Favorites) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_FAVORITES_NAME));
                 } catch (IOException e1) {
                     getLogger().info(LogCategories.HANDLER, "No xml favorites info found");
                     return new Favorites();
@@ -526,8 +524,7 @@ public final class ApplicationStateHandler extends Handler {
             if (ApplicationState.getInstance().isSaveRepositoryAsXml()) {
                 try {
                     getLogger().info(LogCategories.HANDLER, "Reading xml statistics cache");
-                    Statistics result = (Statistics) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_STATISTICS_NAME));
-                    return result;
+                    return (Statistics) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_STATISTICS_NAME));
                 } catch (IOException e1) {
                     getLogger().info(LogCategories.HANDLER, "No xml statistics info found");
                     return new Statistics();
@@ -539,8 +536,7 @@ public final class ApplicationStateHandler extends Handler {
             if (ApplicationState.getInstance().isSaveRepositoryAsXml()) {
                 try {
                     getLogger().info(LogCategories.HANDLER, "Reading xml statistics cache");
-                    Statistics result = (Statistics) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_STATISTICS_NAME));
-                    return result;
+                    return (Statistics) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_STATISTICS_NAME));
                 } catch (IOException e1) {
                     getLogger().info(LogCategories.HANDLER, "No xml statistics info found");
                     return new Statistics();
