@@ -24,6 +24,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.utils.StringUtils;
+
 public class OSXAdapter implements InvocationHandler {
 
     private Object targetObject;
@@ -31,6 +35,8 @@ public class OSXAdapter implements InvocationHandler {
     private String proxySignature;
 
     private static Object macOSXApplication;
+    
+    private static Logger logger;
 
     // Pass this method an Object and Method equipped to perform application shutdown logic
     // The method passed should return a boolean stating whether or not the quit should occur
@@ -50,10 +56,22 @@ public class OSXAdapter implements InvocationHandler {
         try {
             Method enableAboutMethod = macOSXApplication.getClass().getDeclaredMethod("setEnabledAboutMenu", new Class[] { boolean.class });
             enableAboutMethod.invoke(macOSXApplication, new Object[] { Boolean.valueOf(enableAboutMenu) });
-        } catch (Exception ex) {
-            System.err.println("OSXAdapter could not access the About Menu");
-            ex.printStackTrace();
-        }
+        } catch (SecurityException e) {
+        	logAboutMenuException(e);
+		} catch (NoSuchMethodException e) {
+        	logAboutMenuException(e);
+		} catch (IllegalArgumentException e) {
+        	logAboutMenuException(e);
+		} catch (IllegalAccessException e) {
+        	logAboutMenuException(e);
+		} catch (InvocationTargetException e) {
+        	logAboutMenuException(e);
+		}
+    }
+    
+    private static void logAboutMenuException(Exception e) {
+        getLogger().error(LogCategories.DESKTOP, "OSXAdapter could not access the About Menu");
+        getLogger().error(LogCategories.DESKTOP, e);
     }
 
     // Pass this method an Object and a Method equipped to display application options
@@ -68,10 +86,22 @@ public class OSXAdapter implements InvocationHandler {
         try {
             Method enablePrefsMethod = macOSXApplication.getClass().getDeclaredMethod("setEnabledPreferencesMenu", new Class[] { boolean.class });
             enablePrefsMethod.invoke(macOSXApplication, new Object[] { Boolean.valueOf(enablePrefsMenu) });
-        } catch (Exception ex) {
-            System.err.println("OSXAdapter could not access the About Menu");
-            ex.printStackTrace();
-        }
+        } catch (SecurityException e) {
+        	logPreferencesMenuException(e);
+        } catch (NoSuchMethodException e) {
+        	logPreferencesMenuException(e);
+		} catch (IllegalArgumentException e) {
+        	logPreferencesMenuException(e);
+		} catch (IllegalAccessException e) {
+        	logPreferencesMenuException(e);
+		} catch (InvocationTargetException e) {
+        	logPreferencesMenuException(e);
+		}
+    }
+    
+    private static void logPreferencesMenuException(Exception e) {
+        getLogger().error(LogCategories.DESKTOP, "OSXAdapter could not access the Preferences Menu");
+        getLogger().error(LogCategories.DESKTOP, e);
     }
 
     // Pass this method an Object and a Method equipped to handle document events from the Finder
@@ -84,19 +114,33 @@ public class OSXAdapter implements InvocationHandler {
             @Override
             public boolean callTarget(Object appleEvent) {
                 if (appleEvent != null) {
+                	String filename = null;
                     try {
                         Method getFilenameMethod = appleEvent.getClass().getDeclaredMethod("getFilename", (Class[]) null);
-                        String filename = (String) getFilenameMethod.invoke(appleEvent, (Object[]) null);
+                        filename = (String) getFilenameMethod.invoke(appleEvent, (Object[]) null);
                         this.getTargetMethod().invoke(this.getTargetObject(), new Object[] { filename });
-                    } catch (Exception ex) {
-                        // TODO: Add log
-                    }
+                    } catch (SecurityException e) {
+                    	logCallTargetException(filename, e);
+					} catch (NoSuchMethodException e) {
+                    	logCallTargetException(filename, e);
+					} catch (IllegalArgumentException e) {
+                    	logCallTargetException(filename, e);
+					} catch (IllegalAccessException e) {
+                    	logCallTargetException(filename, e);
+					} catch (InvocationTargetException e) {
+                    	logCallTargetException(filename, e);
+					}
                 }
                 return true;
             }
         });
     }
-
+    
+    private static void logCallTargetException(String fileName, Exception e) {
+        getLogger().error(LogCategories.DESKTOP, StringUtils.getString("OSXAdapter could not handle file: ", fileName));
+        getLogger().error(LogCategories.DESKTOP, e);
+    }
+    
     // setHandler creates a Proxy object from the passed OSXAdapter and adds it as an ApplicationListener
     public static void setHandler(OSXAdapter adapter) {
         try {
@@ -110,11 +154,25 @@ public class OSXAdapter implements InvocationHandler {
             Object osxAdapterProxy = Proxy.newProxyInstance(OSXAdapter.class.getClassLoader(), new Class[] { applicationListenerClass }, adapter);
             addListenerMethod.invoke(macOSXApplication, new Object[] { osxAdapterProxy });
         } catch (ClassNotFoundException cnfe) {
-            System.err.println("This version of Mac OS X does not support the Apple EAWT.  ApplicationEvent handling has been disabled (" + cnfe + ")");
-        } catch (Exception ex) { // Likely a NoSuchMethodException or an IllegalAccessException loading/invoking eawt.Application methods
-            System.err.println("Mac OS X Adapter could not talk to EAWT:");
-            ex.printStackTrace();
-        }
+            getLogger().error(LogCategories.DESKTOP, StringUtils.getString("This version of Mac OS X does not support the Apple EAWT.  ApplicationEvent handling has been disabled (", cnfe, ")"));
+        } catch (IllegalArgumentException e) {
+        	logHandlerException(e);
+		} catch (SecurityException e) {
+        	logHandlerException(e);
+		} catch (InstantiationException e) {
+        	logHandlerException(e);
+		} catch (IllegalAccessException e) {
+        	logHandlerException(e);
+		} catch (InvocationTargetException e) {
+        	logHandlerException(e);
+		} catch (NoSuchMethodException e) {
+        	logHandlerException(e);
+		}
+    }
+    
+    private static void logHandlerException(Exception e) {
+    	getLogger().error(LogCategories.DESKTOP, "Mac OS X Adapter could not talk to EAWT:");
+    	getLogger().error(LogCategories.DESKTOP, e);
     }
 
     // Each OSXAdapter has the name of the EAWT method it intends to listen for (handleAbout, for example),
@@ -162,11 +220,23 @@ public class OSXAdapter implements InvocationHandler {
                 Method setHandledMethod = event.getClass().getDeclaredMethod("setHandled", new Class[] { boolean.class });
                 // If the target method returns a boolean, use that as a hint
                 setHandledMethod.invoke(event, new Object[] { Boolean.valueOf(handled) });
-            } catch (Exception ex) {
-                System.err.println("OSXAdapter was unable to handle an ApplicationEvent: " + event);
-                ex.printStackTrace();
-            }
+            } catch (SecurityException e) {
+            	logApplicationEventException(event, e);
+			} catch (NoSuchMethodException e) {
+            	logApplicationEventException(event, e);
+			} catch (IllegalArgumentException e) {
+            	logApplicationEventException(event, e);
+			} catch (IllegalAccessException e) {
+            	logApplicationEventException(event, e);
+			} catch (InvocationTargetException e) {
+            	logApplicationEventException(event, e);
+			}
         }
+    }
+
+    private static void logApplicationEventException(Object event, Exception e) {
+        getLogger().error(LogCategories.DESKTOP, StringUtils.getString("OSXAdapter was unable to handle an ApplicationEvent: ", event));
+        getLogger().error(LogCategories.DESKTOP, e);
     }
 
     /**
@@ -182,4 +252,12 @@ public class OSXAdapter implements InvocationHandler {
     protected Method getTargetMethod() {
         return targetMethod;
     }
+    
+    private static Logger getLogger() {
+    	if (logger == null) {
+    		logger = new Logger();
+    	}
+    	return logger;
+    }
+    
 }
