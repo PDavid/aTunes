@@ -21,6 +21,7 @@ package net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,8 +71,10 @@ public class Cdparanoia extends CdToWavConverter {
                     return false;
                 }
                 return true;
-            } catch (Exception e) {
+            } catch (IOException e) {
                 return false;
+            } catch (InterruptedException e) {
+            	return false;
             } finally {
                 ClosingUtils.close(stdInput);
             }
@@ -122,7 +125,10 @@ public class Cdparanoia extends CdToWavConverter {
 
             getLogger().info(LogCategories.CDPARANOIA, "Wav file ok!!");
             return true;
-        } catch (Exception e) {
+        } catch (InterruptedException e) {
+            getLogger().error(LogCategories.CDPARANOIA, StringUtils.getString("Process execution caused exception ", e));
+            return false;
+        } catch (IOException e) {
             getLogger().error(LogCategories.CDPARANOIA, StringUtils.getString("Process execution caused exception ", e));
             return false;
         }
@@ -219,7 +225,7 @@ public class Cdparanoia extends CdToWavConverter {
                 getCdInfo().setArtists(artists);
                 getCdInfo().setComposers(composers);
 
-            } catch (Exception e) {
+            } catch (IOException e) {
                 getLogger().error(LogCategories.CDDA2WAV, e);
             } finally {
                 ClosingUtils.close(stdInput);
