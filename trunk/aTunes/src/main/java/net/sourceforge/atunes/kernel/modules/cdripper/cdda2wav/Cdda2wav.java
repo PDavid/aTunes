@@ -21,6 +21,7 @@ package net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -125,7 +126,7 @@ public class Cdda2wav extends CdToWavConverter {
                 return false;
             }
             return true;
-        } catch (Exception e) {
+        } catch (IOException e) {
             // cdda2wav is not present. Maybe we have more luck with icedax.
             try {
                 converterCommand = ICEDAX_COMMAND_STRING;
@@ -146,9 +147,13 @@ public class Cdda2wav extends CdToWavConverter {
                     return false;
                 }
                 return true;
-            } catch (Exception e2) {
+            } catch (IOException e2) {
                 return false;
+            } catch (InterruptedException e3) {
+            	return false;
             }
+        } catch (InterruptedException e) {
+        	return false;
         } finally {
             ClosingUtils.close(stdInput);
             ClosingUtils.close(stdInput2);
@@ -228,7 +233,10 @@ public class Cdda2wav extends CdToWavConverter {
 
             getLogger().info(LogCategories.CDDA2WAV, "Wav file ok!!");
             return true;
-        } catch (Exception e) {
+        } catch (IOException e) {
+            getLogger().error(LogCategories.CDDA2WAV, StringUtils.getString("Process execution caused exception ", e));
+            return false;
+        } catch (InterruptedException e) {
             getLogger().error(LogCategories.CDDA2WAV, StringUtils.getString("Process execution caused exception ", e));
             return false;
         } finally {
@@ -304,7 +312,10 @@ public class Cdda2wav extends CdToWavConverter {
                 }
 
                 getLogger().info(LogCategories.CDDA2WAV, StringUtils.getString("Found ", devices.size(), " devices with --device method"));
-            } catch (Exception e) {
+            } catch (IOException e) {
+                getLogger().error(LogCategories.CDDA2WAV, StringUtils.getString("Process execution caused exception ", e));
+                return null;
+            } catch (InterruptedException e) {
                 getLogger().error(LogCategories.CDDA2WAV, StringUtils.getString("Process execution caused exception ", e));
                 return null;
             } finally {
@@ -764,7 +775,10 @@ public class Cdda2wav extends CdToWavConverter {
             getLogger().info(LogCategories.CDDA2WAV, StringUtils.getString("CD info: ", getCdInfo()));
             return getCdInfo();
 
-        } catch (Exception e) {
+        } catch (IOException e) {
+            getLogger().error(LogCategories.CDDA2WAV, e);
+            return null;
+        } catch (InterruptedException e) {
             getLogger().error(LogCategories.CDDA2WAV, e);
             return null;
         }
