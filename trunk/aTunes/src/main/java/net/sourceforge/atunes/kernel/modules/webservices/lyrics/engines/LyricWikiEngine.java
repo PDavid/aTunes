@@ -130,7 +130,7 @@ public class LyricWikiEngine extends LyricsEngine {
                     // element toString is slightly different from main element toString (it contains a white space after ">" so
                     // in order to remove ocurrences from main element we must first replace "> " with ">"
                     if ("rtMatcher".equals(element2.getAttributeValue(LYRICS_ELEMENT_ATTRIBUTE))) {
-                        lyrics = lyrics.replace(element2.getRenderer().toString().replaceAll("> ", ">"), "");
+                        lyrics = lyrics.replace(element2.getRenderer().toString().replaceAll("> ", ">").trim(), "");
                     }
                 }
                 return lyrics;
