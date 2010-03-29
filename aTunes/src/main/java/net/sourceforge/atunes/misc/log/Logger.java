@@ -196,7 +196,11 @@ public class Logger {
             }
             
             if (((Throwable)o).getCause() != null) {
-            	error(cat, ((Throwable)o).getCause());
+                StackTraceElement[] causeTrace = ((Throwable) o).getCause().getStackTrace();
+
+                for (StackTraceElement element : causeTrace) {
+                    error(cat, className, methodName, timer, element);
+                }
             }
         }
     }
@@ -246,7 +250,11 @@ public class Logger {
     public void internalError(Object o) {
         error(LogCategories.INTERNAL_ERROR, o);
         if (o instanceof Throwable && ((Throwable)o).getCause() != null) {
-        	error(LogCategories.INTERNAL_ERROR, ((Throwable)o).getCause());
+            StackTraceElement[] causeTrace = ((Throwable) o).getCause().getStackTrace();
+
+            for (StackTraceElement element : causeTrace) {
+                error(LogCategories.INTERNAL_ERROR,  element);
+            }
         }
         if (o instanceof InvocationTargetException) {
             error(LogCategories.INTERNAL_ERROR, ((InvocationTargetException) o).getTargetException());
