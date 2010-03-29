@@ -76,7 +76,7 @@ public final class CryptoUtils {
         BufferedReader reader = new BufferedReader(new InputStreamReader(cis));
         String string = reader.readLine();
         reader.close();
-        return string.getBytes();
+        return string != null ? string.getBytes() : new byte[0];
     }
 
     /**

@@ -117,6 +117,9 @@ public class ScoreColumn extends Column {
         case 5:
             label.setIcon(Images.getImage(Images.FIVE_STAR));
             break;
+        default:
+        	label.setIcon(Images.getImage(Images.EMPTY));
+        	break;
         }
     }
 
