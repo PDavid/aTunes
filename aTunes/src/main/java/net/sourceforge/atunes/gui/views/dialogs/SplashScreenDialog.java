@@ -25,6 +25,7 @@ import java.awt.Font;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.Constants;
@@ -101,9 +102,16 @@ public final class SplashScreenDialog extends CustomWindow {
         if (versionAndCopyrightFont != null) {
         	copyright.setFont(versionAndCopyrightFont);
         }
+        
+        JProgressBar progressBar = new JProgressBar();
+        progressBar.setIndeterminate(true);
+        progressBar.setSize(180, 12);
+        progressBar.setLocation(243, 170);
+        progressBar.setBorder(null);
 
         panel.add(version);
         panel.add(copyright);
+        panel.add(progressBar);
         panel.add(image);
 
         return panel;
