@@ -34,6 +34,7 @@ import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.panels.AudioObjectPropertiesPanel;
 import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -123,6 +124,7 @@ public final class AudioObjectPropertiesController extends SimpleController<Audi
                     if (imageForAudioObject == null) {
                         imageForAudioObject = currentAudioObject.getGenericImage(GenericImageSize.MEDIUM);
                     }
+                    shadowBorder = currentAudioObject instanceof AudioFile;
                     return imageForAudioObject;
                 }
 
@@ -130,17 +132,17 @@ public final class AudioObjectPropertiesController extends SimpleController<Audi
                 protected void done() {
                     try {
                         ImageIcon imageIcon = get();
+                        if (shadowBorder) {
+                            getComponentControlled().getPictureLabel().setBorder(new DropShadowBorder());
+                        } else {
+                            getComponentControlled().getPictureLabel().setBorder(BorderFactory.createEmptyBorder());
+                        }
                         if (imageIcon != null) {
                             getComponentControlled().getPictureLabel().setIcon(imageIcon);
                             getComponentControlled().getPictureLabel().setVisible(true);
                         } else {
                             getComponentControlled().getPictureLabel().setIcon(null);
                             getComponentControlled().getPictureLabel().setVisible(false);
-                        }
-                        if (shadowBorder) {
-                            getComponentControlled().getPictureLabel().setBorder(new DropShadowBorder());
-                        } else {
-                            getComponentControlled().getPictureLabel().setBorder(BorderFactory.createEmptyBorder());
                         }
                     } catch (InterruptedException e) {
                         getLogger().internalError(e);
