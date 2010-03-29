@@ -68,7 +68,7 @@ class ContextInformationSwingWorker extends SwingWorker<Map<String, ?>, Void> {
 
     @Override
     protected Map<String, ?> doInBackground() throws Exception {
-        return dataSource.getData(parameters);
+   		return dataSource.getData(parameters);
     }
 
     @Override

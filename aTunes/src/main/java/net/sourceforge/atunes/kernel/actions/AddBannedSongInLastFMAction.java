@@ -27,6 +27,8 @@ import javax.swing.SwingWorker;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
+import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -71,7 +73,9 @@ public class AddBannedSongInLastFMAction extends Action {
                 try {
                     get();
                 } catch (InterruptedException e) {
+                	new Logger().error(LogCategories.CONTEXT, e);
                 } catch (ExecutionException e) {
+                	new Logger().error(LogCategories.CONTEXT, e);
                 } finally {
                     setEnabled(true);
                 }
