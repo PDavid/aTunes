@@ -68,6 +68,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -602,16 +603,18 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
      */
     private String getDeviceIndentificationInfo() {
         String id = null;
+        BufferedReader br = null;
+        BufferedWriter bw = null;
         try {
             File f = new File(StringUtils.getString(devicePath, SystemProperties.FILE_SEPARATOR, Constants.DEVICE_ID_FILE));
             if (f.exists()) {
-                BufferedReader br = new BufferedReader(new FileReader(f));
+                br = new BufferedReader(new FileReader(f));
                 id = br.readLine();
                 br.close();
             } else {
                 // New device identifier is current system time
                 id = Long.toString(System.currentTimeMillis());
-                BufferedWriter bw = new BufferedWriter(new FileWriter(f));
+                bw = new BufferedWriter(new FileWriter(f));
                 bw.append(id);
                 bw.newLine();
                 bw.flush();
@@ -619,6 +622,9 @@ public final class DeviceHandler extends Handler implements LoaderListener, Devi
             }
         } catch (IOException e) {
             getLogger().error(LogCategories.HANDLER, e);
+        } finally {
+        	ClosingUtils.close(br);
+        	ClosingUtils.close(bw);
         }
         return id;
     }
