@@ -83,9 +83,10 @@ public final class NavigationTableMouseListener extends MouseAdapter {
                 if (songs != null && songs.size() >= 1) {
                     PlayListHandler.getInstance().addToPlayList(songs);
                 }
-            } else if (panel.getNavigationTable().getSelectedRowCount() > 0) {
-                // Nothing to do
             }
+//          } else if (panel.getNavigationTable().getSelectedRowCount() > 0) {
+//              // Nothing to do
+//          }
         }
     }
 }
