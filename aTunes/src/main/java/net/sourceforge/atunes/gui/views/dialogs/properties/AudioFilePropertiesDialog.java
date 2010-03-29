@@ -25,7 +25,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.concurrent.ExecutionException;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -41,6 +40,8 @@ import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
+
+import org.jdesktop.swingx.border.DropShadowBorder;
 
 /**
  * The properties dialog for audio files
@@ -104,8 +105,7 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
         JPanel panel = new JPanel(new GridBagLayout());
 
         pictureLabel = new JLabel();
-        pictureLabel.setPreferredSize(new Dimension(Constants.DIALOG_IMAGE_SIZE.getSize(), Constants.DIALOG_IMAGE_SIZE.getSize()));
-        pictureLabel.setBorder(BorderFactory.createLineBorder(GuiUtils.getBorderColor()));
+        pictureLabel.setBorder(new DropShadowBorder());
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
