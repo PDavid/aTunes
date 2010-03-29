@@ -196,6 +196,8 @@ public class Logger {
             }
             
             if (((Throwable)o).getCause() != null) {
+            	error(cat,  StringUtils.getString(((Throwable)o).getCause().getClass().getName(), ": ", ((Throwable)o).getCause().getMessage()));
+
                 StackTraceElement[] causeTrace = ((Throwable) o).getCause().getStackTrace();
 
                 for (StackTraceElement element : causeTrace) {
@@ -250,6 +252,7 @@ public class Logger {
     public void internalError(Object o) {
         error(LogCategories.INTERNAL_ERROR, o);
         if (o instanceof Throwable && ((Throwable)o).getCause() != null) {
+        	error(LogCategories.INTERNAL_ERROR,  StringUtils.getString(((Throwable)o).getCause().getClass().getName(), ": ", ((Throwable)o).getCause().getMessage()));
             StackTraceElement[] causeTrace = ((Throwable) o).getCause().getStackTrace();
 
             for (StackTraceElement element : causeTrace) {
