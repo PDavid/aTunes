@@ -109,7 +109,7 @@ public class LyricsService implements ApplicationStateChangeListener {
         Lyrics lyric = lyricsCache.retrieveLyric(artist, song);
         
         // Discard stored lyrics containing HTML
-        if (lyric.getLyrics().contains("<") && lyric.getLyrics().contains(">")) {
+        if (lyric != null && lyric.getLyrics().contains("<") && lyric.getLyrics().contains(">")) {
         	getLogger().debug(LogCategories.SERVICE, "Discarding lyrics. Seems to contain some HTML code: ");
         	getLogger().debug(LogCategories.SERVICE, lyric.getLyrics());
         	lyric = null;
