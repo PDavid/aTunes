@@ -512,13 +512,13 @@ public final class ApplicationStateHandler extends Handler {
 
         ObjectInputStream stream = null;
         try {
-            stream = new ObjectInputStream(new FileInputStream(StringUtils.getString(getUserConfigFolder(), "/", Constants.CACHE_FAVORITES_NAME)));
+            stream = new ObjectInputStream(new FileInputStream(StringUtils.getString(getUserConfigFolder(), "/", Constants.CACHE_STATISTICS_NAME)));
             getLogger().info(LogCategories.HANDLER, "Reading serialized statistics cache");
             return (Statistics) stream.readObject();
         } catch (InvalidClassException e) {
-            //TODO remove in next version
             getLogger().error(LogCategories.HANDLER, e);
-            return new Statistics();
+        } catch (ClassCastException e) {
+            getLogger().error(LogCategories.HANDLER, e);
         } catch (IOException e) {
             getLogger().info(LogCategories.HANDLER, "No serialized statistics info found");
             if (ApplicationState.getInstance().isSaveRepositoryAsXml()) {
@@ -527,10 +527,8 @@ public final class ApplicationStateHandler extends Handler {
                     return (Statistics) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_STATISTICS_NAME));
                 } catch (IOException e1) {
                     getLogger().info(LogCategories.HANDLER, "No xml statistics info found");
-                    return new Statistics();
                 }
             }
-            return new Statistics();
         } catch (ClassNotFoundException e) {
             getLogger().info(LogCategories.HANDLER, "No serialized statistics info found");
             if (ApplicationState.getInstance().isSaveRepositoryAsXml()) {
@@ -539,13 +537,13 @@ public final class ApplicationStateHandler extends Handler {
                     return (Statistics) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_STATISTICS_NAME));
                 } catch (IOException e1) {
                     getLogger().info(LogCategories.HANDLER, "No xml statistics info found");
-                    return new Statistics();
                 }
             }
-            return new Statistics();
         } finally {
             ClosingUtils.close(stream);
         }
+        // If some 
+        return new Statistics();
     }
 
     /**
