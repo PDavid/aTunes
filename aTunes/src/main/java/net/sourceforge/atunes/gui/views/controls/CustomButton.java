@@ -49,6 +49,7 @@ public final class CustomButton extends JButton {
      */
     public CustomButton(Action action) {
         super(action);
+        setFont(Fonts.getButtonFont());
     }
 
     /**
@@ -56,5 +57,6 @@ public final class CustomButton extends JButton {
      */
     public CustomButton() {
         super();
+        setFont(Fonts.getButtonFont());
     }
 }
