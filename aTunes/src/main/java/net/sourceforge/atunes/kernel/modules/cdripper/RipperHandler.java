@@ -60,7 +60,116 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 public final class RipperHandler extends Handler {
 
-    private static class ShowErrorDialogRunnable implements Runnable {
+    private final class FillSongTitlesSwingWorker extends
+			SwingWorker<AlbumInfo, Void> {
+		private final String artist;
+		private final String album;
+
+		private FillSongTitlesSwingWorker(String artist, String album) {
+			this.artist = artist;
+			this.album = album;
+		}
+
+		@Override
+		protected AlbumInfo doInBackground() throws Exception {
+		    return LastFmService.getInstance().getAlbum(artist, album);
+		}
+
+		@Override
+		protected void done() {
+		    try {
+		        if (get() != null) {
+		            albumCoverURL = get().getCoverURL();
+		            List<String> trackNames = new ArrayList<String>();
+		            for (TrackInfo trackInfo : get().getTracks()) {
+		                trackNames.add(trackInfo.getTitle());
+		            }
+		            GuiHandler.getInstance().getRipCdDialog().updateTrackNames(trackNames);
+		        }
+		    } catch (InterruptedException e) {
+		        getLogger().internalError(e);
+		    } catch (ExecutionException e) {
+		        getLogger().error(LogCategories.RIPPER, e);
+		    } finally {
+		        GuiHandler.getInstance().getRipCdDialog().setCursor(Cursor.getDefaultCursor());
+		        GuiHandler.getInstance().getRipCdDialog().getTitlesButton().setEnabled(true);
+		    }
+		}
+	}
+
+	private final class GetCdInfoAndStartRippingSwingWorker extends
+			SwingWorker<CDInfo, Void> {
+		private final RipCdDialog dialog;
+
+		private GetCdInfoAndStartRippingSwingWorker(RipCdDialog dialog) {
+			this.dialog = dialog;
+		}
+
+		@Override
+		protected CDInfo doInBackground() throws Exception {
+		    if (!testTools()) {
+		        return null;
+		    }
+		    ripper = new CdRipper();
+		    ripper.setNoCdListener(new NoCdListener() {
+		        @Override
+		        public void noCd() {
+		            getLogger().error(LogCategories.RIPPER, "No cd inserted");
+		            interrupted = true;
+		            SwingUtilities.invokeLater(new Runnable() {
+		                @Override
+		                public void run() {
+		                    GuiHandler.getInstance().hideIndeterminateProgressDialog();
+		                    GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("NO_CD_INSERTED"));
+		                }
+		            });
+		        }
+		    });
+		    return ripper.getCDInfo();
+		}
+
+		@Override
+		protected void done() {
+		    GuiHandler.getInstance().hideIndeterminateProgressDialog();
+		    CDInfo cdInfo;
+		    try {
+		        cdInfo = get();
+		        if (cdInfo != null) {
+		            ControllerProxy.getInstance().getRipCdDialogController().showCdInfo(cdInfo, RepositoryHandler.getInstance().getPathForNewAudioFilesRipped());
+		            if (!ControllerProxy.getInstance().getRipCdDialogController().isCancelled()) {
+		                String artist = ControllerProxy.getInstance().getRipCdDialogController().getArtist();
+		                String album = ControllerProxy.getInstance().getRipCdDialogController().getAlbum();
+		                int year = ControllerProxy.getInstance().getRipCdDialogController().getYear();
+		                String genre = ControllerProxy.getInstance().getRipCdDialogController().getGenre();
+		                String folder = ControllerProxy.getInstance().getRipCdDialogController().getFolder();
+		                List<Integer> tracks = dialog.getTracksSelected();
+		                List<String> trckNames = dialog.getTrackNames();
+		                List<String> artistNames = dialog.getArtistNames();
+		                List<String> composerNames = dialog.getComposerNames();
+		                setUseCdErrorCorrection(dialog.getUseCdErrorCorrection().isSelected());
+		                setEncoder(dialog.getFormat().getSelectedItem().toString());
+		                setEncoderQuality(dialog.getQuality());
+		                setFileNamePattern(dialog.getFileNamePattern());
+		                importSongs(folder, artist, album, year, genre, tracks, trckNames, artistNames, composerNames, dialog.getFormat().getSelectedItem().toString(), dialog
+		                        .getQuality(), dialog.getUseCdErrorCorrection().isSelected());
+		            } else {
+		                setUseCdErrorCorrection(dialog.getUseCdErrorCorrection().isSelected());
+		                setEncoder(dialog.getFormat().getSelectedItem().toString());
+		                setEncoderQuality(dialog.getQuality());
+		                setFileNamePattern(dialog.getFileNamePattern());
+		            }
+		        }
+		    } catch (InterruptedException e) {
+		        GuiHandler.getInstance().getRipCdDialog().setVisible(false);
+		        getLogger().internalError(e);
+		    } catch (ExecutionException e) {
+		        GuiHandler.getInstance().getRipCdDialog().setVisible(false);
+		        getLogger().internalError(e);
+		    }
+		}
+	}
+
+	private static class ShowErrorDialogRunnable implements Runnable {
         @Override
         public void run() {
             GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("CDDA2WAV_NOT_FOUND"));
@@ -242,33 +351,7 @@ public final class RipperHandler extends Handler {
     public void fillSongTitles(final String artist, final String album) {
         GuiHandler.getInstance().getRipCdDialog().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         GuiHandler.getInstance().getRipCdDialog().getTitlesButton().setEnabled(false);
-        new SwingWorker<AlbumInfo, Void>() {
-            @Override
-            protected AlbumInfo doInBackground() throws Exception {
-                return LastFmService.getInstance().getAlbum(artist, album);
-            }
-
-            @Override
-            protected void done() {
-                try {
-                    if (get() != null) {
-                        albumCoverURL = get().getCoverURL();
-                        List<String> trackNames = new ArrayList<String>();
-                        for (TrackInfo trackInfo : get().getTracks()) {
-                            trackNames.add(trackInfo.getTitle());
-                        }
-                        GuiHandler.getInstance().getRipCdDialog().updateTrackNames(trackNames);
-                    }
-                } catch (InterruptedException e) {
-                    getLogger().internalError(e);
-                } catch (ExecutionException e) {
-                    getLogger().error(LogCategories.RIPPER, e);
-                } finally {
-                    GuiHandler.getInstance().getRipCdDialog().setCursor(Cursor.getDefaultCursor());
-                    GuiHandler.getInstance().getRipCdDialog().getTitlesButton().setEnabled(true);
-                }
-            }
-        }.execute();
+        new FillSongTitlesSwingWorker(artist, album).execute();
     }
 
     /**
@@ -591,70 +674,7 @@ public final class RipperHandler extends Handler {
         final RipCdDialog dialog = GuiHandler.getInstance().getRipCdDialog();
         GuiHandler.getInstance().showIndeterminateProgressDialog(I18nUtils.getString("RIP_CD"));
 
-        SwingWorker<CDInfo, Void> getCdInfoAndStartRipping = new SwingWorker<CDInfo, Void>() {
-            @Override
-            protected CDInfo doInBackground() throws Exception {
-                if (!testTools()) {
-                    return null;
-                }
-                ripper = new CdRipper();
-                ripper.setNoCdListener(new NoCdListener() {
-                    @Override
-                    public void noCd() {
-                        getLogger().error(LogCategories.RIPPER, "No cd inserted");
-                        interrupted = true;
-                        SwingUtilities.invokeLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                GuiHandler.getInstance().hideIndeterminateProgressDialog();
-                                GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("NO_CD_INSERTED"));
-                            }
-                        });
-                    }
-                });
-                return ripper.getCDInfo();
-            }
-
-            @Override
-            protected void done() {
-                GuiHandler.getInstance().hideIndeterminateProgressDialog();
-                CDInfo cdInfo;
-                try {
-                    cdInfo = get();
-                    if (cdInfo != null) {
-                        ControllerProxy.getInstance().getRipCdDialogController().showCdInfo(cdInfo, RepositoryHandler.getInstance().getPathForNewAudioFilesRipped());
-                        if (!ControllerProxy.getInstance().getRipCdDialogController().isCancelled()) {
-                            String artist = ControllerProxy.getInstance().getRipCdDialogController().getArtist();
-                            String album = ControllerProxy.getInstance().getRipCdDialogController().getAlbum();
-                            int year = ControllerProxy.getInstance().getRipCdDialogController().getYear();
-                            String genre = ControllerProxy.getInstance().getRipCdDialogController().getGenre();
-                            String folder = ControllerProxy.getInstance().getRipCdDialogController().getFolder();
-                            List<Integer> tracks = dialog.getTracksSelected();
-                            List<String> trckNames = dialog.getTrackNames();
-                            List<String> artistNames = dialog.getArtistNames();
-                            List<String> composerNames = dialog.getComposerNames();
-                            setUseCdErrorCorrection(dialog.getUseCdErrorCorrection().isSelected());
-                            setEncoder(dialog.getFormat().getSelectedItem().toString());
-                            setEncoderQuality(dialog.getQuality());
-                            setFileNamePattern(dialog.getFileNamePattern());
-                            importSongs(folder, artist, album, year, genre, tracks, trckNames, artistNames, composerNames, dialog.getFormat().getSelectedItem().toString(), dialog
-                                    .getQuality(), dialog.getUseCdErrorCorrection().isSelected());
-                        } else {
-                            setUseCdErrorCorrection(dialog.getUseCdErrorCorrection().isSelected());
-                            setEncoder(dialog.getFormat().getSelectedItem().toString());
-                            setEncoderQuality(dialog.getQuality());
-                            setFileNamePattern(dialog.getFileNamePattern());
-                        }
-                    }
-                } catch (InterruptedException e) {
-                    GuiHandler.getInstance().getRipCdDialog().setVisible(false);
-                    getLogger().internalError(e);
-                } catch (ExecutionException e) {
-                    GuiHandler.getInstance().getRipCdDialog().setVisible(false);
-                    getLogger().internalError(e);
-                }
-            }
-        };
+        SwingWorker<CDInfo, Void> getCdInfoAndStartRipping = new GetCdInfoAndStartRippingSwingWorker(dialog);
         getCdInfoAndStartRipping.execute();
     }
 

@@ -50,7 +50,42 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public final class LastFmPanel extends PreferencesPanel {
 
-    private static final long serialVersionUID = -9216216930198145476L;
+    private final class TestLoginActionListener implements ActionListener {
+		private final class TestLoginSwingWorker extends
+				SwingWorker<Boolean, Void> {
+			@Override
+			protected Boolean doInBackground() {
+			    return LastFmService.getInstance().testLogin(lastFmUser.getText(), String.valueOf(lastFmPassword.getPassword()));
+			}
+
+			@Override
+			protected void done() {
+			    try {
+			        boolean loginSuccessful;
+			        loginSuccessful = get();
+			        if (loginSuccessful) {
+			            GuiHandler.getInstance().showMessage(I18nUtils.getString("LOGIN_SUCCESSFUL"));
+			        } else {
+			            GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("LOGIN_FAILED"));
+			        }
+			    } catch (InterruptedException e) {
+			        getLogger().error(LogCategories.SERVICE, e);
+			    } catch (ExecutionException e) {
+			        getLogger().error(LogCategories.SERVICE, e);
+			    } finally {
+			        testLogin.setEnabled(true);
+			    }
+			}
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		    testLogin.setEnabled(false);
+		    new TestLoginSwingWorker().execute();
+		}
+	}
+
+	private static final long serialVersionUID = -9216216930198145476L;
 
     private Logger logger;
 
@@ -79,38 +114,7 @@ public final class LastFmPanel extends PreferencesPanel {
         autoLoveFavoriteSongs = new JCheckBox(I18nUtils.getString("AUTOMATICALLY_LOVE_IN_LASTFM_FAVORITE_SONGS"));
         testLogin = new JButton(I18nUtils.getString("TEST_LOGIN"));
 
-        testLogin.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                testLogin.setEnabled(false);
-                new SwingWorker<Boolean, Void>() {
-                    @Override
-                    protected Boolean doInBackground() {
-                        return LastFmService.getInstance().testLogin(lastFmUser.getText(), String.valueOf(lastFmPassword.getPassword()));
-                    }
-
-                    @Override
-                    protected void done() {
-                        try {
-                            boolean loginSuccessful;
-                            loginSuccessful = get();
-                            if (loginSuccessful) {
-                                GuiHandler.getInstance().showMessage(I18nUtils.getString("LOGIN_SUCCESSFUL"));
-                            } else {
-                                GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("LOGIN_FAILED"));
-                            }
-                        } catch (InterruptedException e) {
-                            getLogger().error(LogCategories.SERVICE, e);
-                        } catch (ExecutionException e) {
-                            getLogger().error(LogCategories.SERVICE, e);
-                        } finally {
-                            testLogin.setEnabled(true);
-                        }
-                    }
-                }.execute();
-            }
-        });
+        testLogin.addActionListener(new TestLoginActionListener());
 
         lastFmEnabled.addActionListener(new ActionListener() {
 
