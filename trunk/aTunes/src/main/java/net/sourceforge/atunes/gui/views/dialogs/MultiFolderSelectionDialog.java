@@ -75,7 +75,169 @@ public final class MultiFolderSelectionDialog extends CustomModalDialog {
      */
     private int checkBoxWidth = new JCheckBox().getPreferredSize().width;
 
-    /**
+    private final class SetTreeSwingWorker extends SwingWorker<CheckNode, Void> {
+		@Override
+		protected CheckNode doInBackground() throws Exception {
+		    File[] roots = fsView.getRoots();
+
+		    CheckNode root = new CheckNode();
+
+		    for (File f : roots) {
+		        CheckNode treeNode = new CheckNode(new Directory(f, fsView.getSystemDisplayName(f)), fsView.getSystemIcon(f));
+		        root.add(treeNode);
+		        File[] files = fsView.getFiles(f, true);
+		        Arrays.sort(files);
+		        for (File f2 : files) {
+		            File[] f2Childs = f2.listFiles();
+		            if (f2Childs != null) {
+		                boolean hasDirs = hasDirectories(f2Childs);
+		                CheckNode treeNode2 = new CheckNode(new Directory(f2, fsView.getSystemDisplayName(f2)), fsView.getSystemIcon(f2));
+		                treeNode.add(treeNode2);
+		                if (hasDirs) {
+		                    treeNode2.add(new DefaultMutableTreeNode("Dummy node"));
+		                }
+		            }
+		        }
+		    }
+		    return root;
+		}
+
+		@Override
+		protected void done() {
+		    try {
+		        DefaultTreeModel model = new DefaultTreeModel(get());
+		        fileSystemTree.setModel(model);
+		        fileSystemTree.setRootVisible(false);
+		        fileSystemTree.expandRow(0);
+		        fileSystemTree.setSelectionRow(0);
+
+		        fileSystemTree.addMouseListener(new MouseAdapter() {
+		            @Override
+		            public void mouseClicked(MouseEvent e) {
+		                if (e.getButton() == MouseEvent.BUTTON1) {
+		                    int x = e.getX();
+		                    int y = e.getY();
+		                    int row = fileSystemTree.getRowForLocation(x, y);
+		                    TreePath path = fileSystemTree.getPathForRow(row);
+
+		                    // If user pressed button over text area, don't select node
+		                    if (x > fileSystemTree.getPathBounds(path).x + checkBoxWidth) {
+		                        return;
+		                    }
+
+		                    if (path != null) {
+		                        //fileSystemTree.expandPath(path);
+		                        CheckNode node = (CheckNode) path.getLastPathComponent();
+
+		                        if (node.isEnabled()) {
+
+		                            boolean isSelected = !(node.isSelected());
+		                            node.setSelected(isSelected);
+
+		                            if (isSelected) {
+		                                // Find if another child folder has been added before
+		                                List<File> childFolders = new ArrayList<File>();
+		                                for (File f : selectedFolders) {
+		                                    if (f.getAbsolutePath().startsWith(node.getDir().getFile().getAbsolutePath())) {
+		                                        childFolders.add(f);
+		                                    }
+		                                }
+		                                for (File f : childFolders) {
+		                                    selectedFolders.remove(f);
+		                                }
+
+		                                selectedFolders.add(node.getDir().getFile());
+		                            } else {
+		                                selectedFolders.remove(node.getDir().getFile());
+		                            }
+
+		                            // I need revalidate if node is root.  but why?
+		                            if (row == 0) {
+		                                fileSystemTree.revalidate();
+		                                fileSystemTree.repaint();
+		                            }
+		                        }
+		                    }
+		                }
+		            }
+		        });
+		        fileSystemTree.addTreeWillExpandListener(new TreeWillExpandListener() {
+		            @Override
+		            public void treeWillCollapse(TreeExpansionEvent event) throws ExpandVetoException {
+		                // Nothing to do
+		            }
+
+		            @Override
+		            public void treeWillExpand(TreeExpansionEvent event) throws ExpandVetoException {
+
+		                final CheckNode selectedNode = (CheckNode) event.getPath().getLastPathComponent();
+		                fileSystemTree.setSelectionPath(event.getPath());
+		                selectedNode.removeAllChildren();
+
+		                selectedNode.add(new DefaultMutableTreeNode(I18nUtils.getString("PLEASE_WAIT") + "..."));
+
+		                new SwingWorker<List<CheckNode>, Void>() {
+
+		                    @Override
+		                    protected List<CheckNode> doInBackground() throws Exception {
+
+		                        List<CheckNode> result = new ArrayList<CheckNode>();
+
+		                        Directory dir = (Directory) selectedNode.getUserObject();
+		                        File[] files = fsView.getFiles(dir.getFile(), true);
+		                        Arrays.sort(files);
+		                        for (File f : files) {
+		                            File[] fChilds = f.listFiles();
+		                            if (fChilds != null) {
+		                                boolean hasDirs = hasDirectories(fChilds);
+
+		                                CheckNode treeNode2 = new CheckNode(new Directory(f, fsView.getSystemDisplayName(f)), fsView.getSystemIcon(f));
+		                                result.add(treeNode2);
+		                                if (hasDirs) {
+		                                    treeNode2.add(new DefaultMutableTreeNode("Dummy node"));
+		                                }
+		                                treeNode2.setSelected(selectedNode.isSelected() || selectedFolders.contains(f));
+		                                treeNode2.setEnabled(!selectedNode.isSelected());
+		                            }
+		                        }
+		                        return result;
+		                    }
+
+		                    @Override
+		                    protected void done() {
+		                        selectedNode.removeAllChildren();
+		                        try {
+		                            List<CheckNode> nodes = get();
+		                            for (CheckNode node : nodes) {
+		                                selectedNode.add(node);
+		                            }
+		                            ((DefaultTreeModel) fileSystemTree.getModel()).reload(selectedNode);
+		                        } catch (InterruptedException e) {
+		                            getLogger().internalError(e);
+		                        } catch (ExecutionException e) {
+		                            getLogger().internalError(e);
+		                        }
+		                    }
+
+		                }.execute();
+
+		            }
+		        });
+
+		        fileSystemTree.revalidate();
+		        fileSystemTree.repaint();
+		    } catch (Exception e) {
+		        getLogger().internalError(e);
+		    } finally {
+		        okButton.setEnabled(true);
+		        // Show default cursor
+		        MultiFolderSelectionDialog.this.setCursor(Cursor.getDefaultCursor());
+		    }
+
+		}
+	}
+
+	/**
      * The Class CheckNode.
      */
     private class CheckNode extends DefaultMutableTreeNode {
@@ -202,7 +364,37 @@ public final class MultiFolderSelectionDialog extends CustomModalDialog {
      */
     private class CheckRenderer extends DefaultTreeCellRenderer {
 
-        private static final long serialVersionUID = 5564069979708271654L;
+        private final class CheckRendererTreeCellRendererCode extends
+				TreeCellRendererCode {
+			@Override
+			public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
+			    String stringValue = value.toString();
+			    setEnabled(tree.isEnabled());
+			    if (value instanceof CheckNode) {
+			        check.setSelected(((CheckNode) value).isSelected());
+			        check.setEnabled(((CheckNode) value).isEnabled());
+			        label.setFont(tree.getFont());
+			        label.setText(stringValue);
+			        if (((CheckNode) value).getUserObject() instanceof Directory) {
+			            Directory content = (Directory) ((CheckNode) value).getUserObject();
+			            label.setIcon(((CheckNode) value).getIcon());
+			            if (isInPathOfSelectedFolders(content.getFile()) || ((CheckNode) value).isSelected()) {
+			                label.setFont(label.getFont().deriveFont(Font.BOLD));
+			            }
+			        }
+			    } else if (value instanceof DefaultMutableTreeNode) {
+			        check.setEnabled(false);
+			        check.setSelected(false);
+			        label.setText(stringValue);
+			        label.setIcon(null);
+			        label.setFont(tree.getFont());
+			    }
+
+			    return CheckRenderer.this;
+			}
+		}
+
+		private static final long serialVersionUID = 5564069979708271654L;
 
         /** The check. */
         private JCheckBox check;
@@ -221,35 +413,7 @@ public final class MultiFolderSelectionDialog extends CustomModalDialog {
             check.setOpaque(false);
             add(check);
             add(label = new JLabel());
-            rendererCode = new TreeCellRendererCode() {
-
-                @Override
-                public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
-                    String stringValue = value.toString();
-                    setEnabled(tree.isEnabled());
-                    if (value instanceof CheckNode) {
-                        check.setSelected(((CheckNode) value).isSelected());
-                        check.setEnabled(((CheckNode) value).isEnabled());
-                        label.setFont(tree.getFont());
-                        label.setText(stringValue);
-                        if (((CheckNode) value).getUserObject() instanceof Directory) {
-                            Directory content = (Directory) ((CheckNode) value).getUserObject();
-                            label.setIcon(((CheckNode) value).getIcon());
-                            if (isInPathOfSelectedFolders(content.getFile()) || ((CheckNode) value).isSelected()) {
-                                label.setFont(label.getFont().deriveFont(Font.BOLD));
-                            }
-                        }
-                    } else if (value instanceof DefaultMutableTreeNode) {
-                        check.setEnabled(false);
-                        check.setSelected(false);
-                        label.setText(stringValue);
-                        label.setIcon(null);
-                        label.setFont(tree.getFont());
-                    }
-
-                    return CheckRenderer.this;
-                }
-            };
+            rendererCode = new CheckRendererTreeCellRendererCode();
         }
 
         // TODO this method should be aware of component orientation
@@ -494,169 +658,7 @@ public final class MultiFolderSelectionDialog extends CustomModalDialog {
         scrollPane.setViewportView(fileSystemTree);
         scrollPane.setVisible(true);
 
-        new SwingWorker<CheckNode, Void>() {
-
-            @Override
-            protected CheckNode doInBackground() throws Exception {
-                File[] roots = fsView.getRoots();
-
-                CheckNode root = new CheckNode();
-
-                for (File f : roots) {
-                    CheckNode treeNode = new CheckNode(new Directory(f, fsView.getSystemDisplayName(f)), fsView.getSystemIcon(f));
-                    root.add(treeNode);
-                    File[] files = fsView.getFiles(f, true);
-                    Arrays.sort(files);
-                    for (File f2 : files) {
-                        File[] f2Childs = f2.listFiles();
-                        if (f2Childs != null) {
-                            boolean hasDirs = hasDirectories(f2Childs);
-                            CheckNode treeNode2 = new CheckNode(new Directory(f2, fsView.getSystemDisplayName(f2)), fsView.getSystemIcon(f2));
-                            treeNode.add(treeNode2);
-                            if (hasDirs) {
-                                treeNode2.add(new DefaultMutableTreeNode("Dummy node"));
-                            }
-                        }
-                    }
-                }
-                return root;
-            }
-
-            @Override
-            protected void done() {
-                try {
-                    DefaultTreeModel model = new DefaultTreeModel(get());
-                    fileSystemTree.setModel(model);
-                    fileSystemTree.setRootVisible(false);
-                    fileSystemTree.expandRow(0);
-                    fileSystemTree.setSelectionRow(0);
-
-                    fileSystemTree.addMouseListener(new MouseAdapter() {
-                        @Override
-                        public void mouseClicked(MouseEvent e) {
-                            if (e.getButton() == MouseEvent.BUTTON1) {
-                                int x = e.getX();
-                                int y = e.getY();
-                                int row = fileSystemTree.getRowForLocation(x, y);
-                                TreePath path = fileSystemTree.getPathForRow(row);
-
-                                // If user pressed button over text area, don't select node
-                                if (x > fileSystemTree.getPathBounds(path).x + checkBoxWidth) {
-                                    return;
-                                }
-
-                                if (path != null) {
-                                    //fileSystemTree.expandPath(path);
-                                    CheckNode node = (CheckNode) path.getLastPathComponent();
-
-                                    if (node.isEnabled()) {
-
-                                        boolean isSelected = !(node.isSelected());
-                                        node.setSelected(isSelected);
-
-                                        if (isSelected) {
-                                            // Find if another child folder has been added before
-                                            List<File> childFolders = new ArrayList<File>();
-                                            for (File f : selectedFolders) {
-                                                if (f.getAbsolutePath().startsWith(node.getDir().getFile().getAbsolutePath())) {
-                                                    childFolders.add(f);
-                                                }
-                                            }
-                                            for (File f : childFolders) {
-                                                selectedFolders.remove(f);
-                                            }
-
-                                            selectedFolders.add(node.getDir().getFile());
-                                        } else {
-                                            selectedFolders.remove(node.getDir().getFile());
-                                        }
-
-                                        // I need revalidate if node is root.  but why?
-                                        if (row == 0) {
-                                            fileSystemTree.revalidate();
-                                            fileSystemTree.repaint();
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    });
-                    fileSystemTree.addTreeWillExpandListener(new TreeWillExpandListener() {
-                        @Override
-                        public void treeWillCollapse(TreeExpansionEvent event) throws ExpandVetoException {
-                            // Nothing to do
-                        }
-
-                        @Override
-                        public void treeWillExpand(TreeExpansionEvent event) throws ExpandVetoException {
-
-                            final CheckNode selectedNode = (CheckNode) event.getPath().getLastPathComponent();
-                            fileSystemTree.setSelectionPath(event.getPath());
-                            selectedNode.removeAllChildren();
-
-                            selectedNode.add(new DefaultMutableTreeNode(I18nUtils.getString("PLEASE_WAIT") + "..."));
-
-                            new SwingWorker<List<CheckNode>, Void>() {
-
-                                @Override
-                                protected List<CheckNode> doInBackground() throws Exception {
-
-                                    List<CheckNode> result = new ArrayList<CheckNode>();
-
-                                    Directory dir = (Directory) selectedNode.getUserObject();
-                                    File[] files = fsView.getFiles(dir.getFile(), true);
-                                    Arrays.sort(files);
-                                    for (File f : files) {
-                                        File[] fChilds = f.listFiles();
-                                        if (fChilds != null) {
-                                            boolean hasDirs = hasDirectories(fChilds);
-
-                                            CheckNode treeNode2 = new CheckNode(new Directory(f, fsView.getSystemDisplayName(f)), fsView.getSystemIcon(f));
-                                            result.add(treeNode2);
-                                            if (hasDirs) {
-                                                treeNode2.add(new DefaultMutableTreeNode("Dummy node"));
-                                            }
-                                            treeNode2.setSelected(selectedNode.isSelected() || selectedFolders.contains(f));
-                                            treeNode2.setEnabled(!selectedNode.isSelected());
-                                        }
-                                    }
-                                    return result;
-                                }
-
-                                @Override
-                                protected void done() {
-                                    selectedNode.removeAllChildren();
-                                    try {
-                                        List<CheckNode> nodes = get();
-                                        for (CheckNode node : nodes) {
-                                            selectedNode.add(node);
-                                        }
-                                        ((DefaultTreeModel) fileSystemTree.getModel()).reload(selectedNode);
-                                    } catch (InterruptedException e) {
-                                        getLogger().internalError(e);
-                                    } catch (ExecutionException e) {
-                                        getLogger().internalError(e);
-                                    }
-                                }
-
-                            }.execute();
-
-                        }
-                    });
-
-                    fileSystemTree.revalidate();
-                    fileSystemTree.repaint();
-                } catch (Exception e) {
-                    getLogger().internalError(e);
-                } finally {
-                    okButton.setEnabled(true);
-                    // Show default cursor
-                    MultiFolderSelectionDialog.this.setCursor(Cursor.getDefaultCursor());
-                }
-
-            }
-
-        }.execute();
+        new SetTreeSwingWorker().execute();
 
         // Show wait cursor
         MultiFolderSelectionDialog.this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
