@@ -60,7 +60,40 @@ import org.jaudiotagger.tag.reference.PictureTypes;
  */
 public final class TagModifier {
 
-    private static Logger logger;
+    private static final class RefreshTagAfterModifyRunnable implements Runnable {
+		private final List<AudioFile> audioFilesEditing;
+
+		private RefreshTagAfterModifyRunnable(List<AudioFile> audioFilesEditing) {
+			this.audioFilesEditing = audioFilesEditing;
+		}
+
+		@Override
+		public void run() {
+		    // update Swing components if necessary
+		    boolean playListContainsRefreshedFile = false;
+		    for (int i = 0; i < audioFilesEditing.size(); i++) {
+		        if (PlayListHandler.getInstance().getCurrentPlayList(true).contains(audioFilesEditing.get(i))) {
+		            playListContainsRefreshedFile = true;
+		        }
+
+		        // Changed current playing song
+		        if (PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList() != null
+		                && PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList().equals(audioFilesEditing.get(i))) {
+		            PlayListHandler.getInstance().selectedAudioObjectChanged(audioFilesEditing.get(i));
+
+		            if (PlayerHandler.getInstance().isEnginePlaying()) {
+		                GuiHandler.getInstance().updateTitleBar(audioFilesEditing.get(i));
+		            }
+		        }
+		    }
+		    if (playListContainsRefreshedFile) {
+		        ControllerProxy.getInstance().getPlayListController().refreshPlayList();
+		    }
+		    ControllerProxy.getInstance().getNavigationController().notifyReload();
+		}
+	}
+
+	private static Logger logger;
 
     private TagModifier() {
 
@@ -100,32 +133,7 @@ public final class TagModifier {
      *            the audio files editing
      */
     static void refreshAfterTagModify(final List<AudioFile> audioFilesEditing) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                // update Swing components if necessary
-                boolean playListContainsRefreshedFile = false;
-                for (int i = 0; i < audioFilesEditing.size(); i++) {
-                    if (PlayListHandler.getInstance().getCurrentPlayList(true).contains(audioFilesEditing.get(i))) {
-                        playListContainsRefreshedFile = true;
-                    }
-
-                    // Changed current playing song
-                    if (PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList() != null
-                            && PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList().equals(audioFilesEditing.get(i))) {
-                        PlayListHandler.getInstance().selectedAudioObjectChanged(audioFilesEditing.get(i));
-
-                        if (PlayerHandler.getInstance().isEnginePlaying()) {
-                            GuiHandler.getInstance().updateTitleBar(audioFilesEditing.get(i));
-                        }
-                    }
-                }
-                if (playListContainsRefreshedFile) {
-                    ControllerProxy.getInstance().getPlayListController().refreshPlayList();
-                }
-                ControllerProxy.getInstance().getNavigationController().notifyReload();
-            }
-        });
+        SwingUtilities.invokeLater(new RefreshTagAfterModifyRunnable(audioFilesEditing));
     }
 
     /**
