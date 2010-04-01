@@ -84,7 +84,131 @@ import org.apache.commons.io.FilenameUtils;
  */
 public final class RepositoryHandler extends Handler implements LoaderListener, AudioFilesRemovedListener {
 
-    private static class ShowProgressBarRunnable implements Runnable {
+    private final class ImportFoldersSwingWorker extends
+			SwingWorker<List<AudioFile>, Void> {
+		private final List<File> folders;
+		private final String path;
+		private final ProgressDialog progressDialog;
+
+		private ImportFoldersSwingWorker(List<File> folders, String path,
+				ProgressDialog progressDialog) {
+			this.folders = folders;
+			this.path = path;
+			this.progressDialog = progressDialog;
+		}
+
+		@Override
+		protected List<AudioFile> doInBackground() throws Exception {
+		    return RepositoryLoader.getSongsForFolders(folders, new LoaderListener() {
+
+		        private int filesLoaded = 0;
+
+		        private int totalFiles;
+
+		        @Override
+		        public void notifyRemainingTime(long time) {
+		        }
+
+		        @Override
+		        public void notifyReadProgress() {
+		        }
+
+		        @Override
+		        public void notifyFinishRefresh(RepositoryLoader loader) {
+		        }
+
+		        @Override
+		        public void notifyFinishRead(RepositoryLoader loader) {
+		            progressDialog.setVisible(false);
+		        }
+
+		        @Override
+		        public void notifyFilesInRepository(final int files) {
+		            this.totalFiles = files;
+		            SwingUtilities.invokeLater(new Runnable() {
+		                @Override
+		                public void run() {
+		                    progressDialog.setTotalProgress(files);
+		                }
+		            });
+		        }
+
+		        @Override
+		        public void notifyFileLoaded() {
+		            this.filesLoaded++;
+		            SwingUtilities.invokeLater(new Runnable() {
+		                @Override
+		                public void run() {
+		                    progressDialog.setCurrentProgress(filesLoaded);
+		                    progressDialog.setProgressBarValue((int) (filesLoaded * 100.0 / totalFiles));
+		                }
+		            });
+		        }
+
+		        @Override
+		        public void notifyCurrentPath(String path) {
+		        }
+		    });
+		}
+
+		@Override
+		protected void done() {
+		    super.done();
+		    GuiHandler.getInstance().hideIndeterminateProgressDialog();
+
+		    try {
+		        final List<AudioFile> filesToLoad = get();
+
+		        TagAttributesReviewed tagAttributesReviewed = null;
+		        // Review tags if selected in settings
+		        if (ApplicationState.getInstance().isReviewTagsBeforeImport()) {
+		            ReviewImportDialog reviewImportDialog = GuiHandler.getInstance().getReviewImportDialog();
+		            reviewImportDialog.show(folders, filesToLoad);
+		            if (reviewImportDialog.isDialogCancelled()) {
+		                return;
+		            }
+		            tagAttributesReviewed = reviewImportDialog.getResult();
+		        }
+
+		        final ImportFilesProcess process = new ImportFilesProcess(filesToLoad, folders, path, tagAttributesReviewed);
+		        process.addProcessListener(new ProcessListener() {
+		            @Override
+		            public void processCanceled() {
+		                // Nothing to do, files copied will be removed before calling this method 
+		            }
+
+		            @Override
+		            public void processFinished(final boolean ok) {
+		                if (!ok) {
+		                    try {
+		                        SwingUtilities.invokeAndWait(new Runnable() {
+		                            @Override
+		                            public void run() {
+		                                GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("ERRORS_IN_IMPORT_PROCESS"));
+		                            }
+		                        });
+		                    } catch (InterruptedException e) {
+		                        // Do nothing
+		                    } catch (InvocationTargetException e) {
+		                        // Do nothing
+		                    }
+		                } else {
+		                    // If import is ok then add files to repository
+		                    addFilesAndRefresh(process.getFilesTransferred());
+		                }
+		            }
+		        });
+		        process.execute();
+
+		    } catch (InterruptedException e) {
+		        getLogger().error(LogCategories.REPOSITORY, e);
+		    } catch (ExecutionException e) {
+		        getLogger().error(LogCategories.REPOSITORY, e);
+		    }
+		}
+	}
+
+	private static class ShowProgressBarRunnable implements Runnable {
         @Override
         public void run() {
             GuiHandler.getInstance().showProgressBar(true, StringUtils.getString(I18nUtils.getString("REFRESHING"), "..."));
@@ -924,117 +1048,7 @@ public final class RepositoryHandler extends Handler implements LoaderListener, 
                 GuiHandler.getInstance().getFrame().getFrame());
         progressDialog.disableCancelButton();
         progressDialog.setVisible(true);
-        SwingWorker<List<AudioFile>, Void> worker = new SwingWorker<List<AudioFile>, Void>() {
-            @Override
-            protected List<AudioFile> doInBackground() throws Exception {
-                return RepositoryLoader.getSongsForFolders(folders, new LoaderListener() {
-
-                    private int filesLoaded = 0;
-
-                    private int totalFiles;
-
-                    @Override
-                    public void notifyRemainingTime(long time) {
-                    }
-
-                    @Override
-                    public void notifyReadProgress() {
-                    }
-
-                    @Override
-                    public void notifyFinishRefresh(RepositoryLoader loader) {
-                    }
-
-                    @Override
-                    public void notifyFinishRead(RepositoryLoader loader) {
-                        progressDialog.setVisible(false);
-                    }
-
-                    @Override
-                    public void notifyFilesInRepository(final int files) {
-                        this.totalFiles = files;
-                        SwingUtilities.invokeLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                progressDialog.setTotalProgress(files);
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void notifyFileLoaded() {
-                        this.filesLoaded++;
-                        SwingUtilities.invokeLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                progressDialog.setCurrentProgress(filesLoaded);
-                                progressDialog.setProgressBarValue((int) (filesLoaded * 100.0 / totalFiles));
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void notifyCurrentPath(String path) {
-                    }
-                });
-            }
-
-            @Override
-            protected void done() {
-                super.done();
-                GuiHandler.getInstance().hideIndeterminateProgressDialog();
-
-                try {
-                    final List<AudioFile> filesToLoad = get();
-
-                    TagAttributesReviewed tagAttributesReviewed = null;
-                    // Review tags if selected in settings
-                    if (ApplicationState.getInstance().isReviewTagsBeforeImport()) {
-                        ReviewImportDialog reviewImportDialog = GuiHandler.getInstance().getReviewImportDialog();
-                        reviewImportDialog.show(folders, filesToLoad);
-                        if (reviewImportDialog.isDialogCancelled()) {
-                            return;
-                        }
-                        tagAttributesReviewed = reviewImportDialog.getResult();
-                    }
-
-                    final ImportFilesProcess process = new ImportFilesProcess(filesToLoad, folders, path, tagAttributesReviewed);
-                    process.addProcessListener(new ProcessListener() {
-                        @Override
-                        public void processCanceled() {
-                            // Nothing to do, files copied will be removed before calling this method 
-                        }
-
-                        @Override
-                        public void processFinished(final boolean ok) {
-                            if (!ok) {
-                                try {
-                                    SwingUtilities.invokeAndWait(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("ERRORS_IN_IMPORT_PROCESS"));
-                                        }
-                                    });
-                                } catch (InterruptedException e) {
-                                    // Do nothing
-                                } catch (InvocationTargetException e) {
-                                    // Do nothing
-                                }
-                            } else {
-                                // If import is ok then add files to repository
-                                addFilesAndRefresh(process.getFilesTransferred());
-                            }
-                        }
-                    });
-                    process.execute();
-
-                } catch (InterruptedException e) {
-                    getLogger().error(LogCategories.REPOSITORY, e);
-                } catch (ExecutionException e) {
-                    getLogger().error(LogCategories.REPOSITORY, e);
-                }
-            }
-        };
+        SwingWorker<List<AudioFile>, Void> worker = new ImportFoldersSwingWorker(folders, path, progressDialog);
         worker.execute();
     }
 

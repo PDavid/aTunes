@@ -62,7 +62,112 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public final class FileSelectionDialog extends CustomModalDialog {
 
-    private static class FileSystemTreeCellRendererCode extends TreeCellRendererCode {
+    private final class FileSystemListMouseAdapter extends MouseAdapter {
+		@Override
+		public void mousePressed(MouseEvent e) {
+		    File f = (File) fileSystemList.getSelectedValue();
+		    setSelectionText(f);
+		    if (e.getClickCount() == 2) {
+		        DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) fileSystemTree.getSelectionPath().getLastPathComponent();
+		        TreePath path = new TreePath(parentNode.getPath());
+		        fileSystemTree.expandPath(path);
+		        int i = 0;
+		        DefaultMutableTreeNode childToSelect = null;
+		        while (i < parentNode.getChildCount() || childToSelect == null) {
+		            DefaultMutableTreeNode child = (DefaultMutableTreeNode) parentNode.getChildAt(i);
+		            if (((Directory) child.getUserObject()).file.equals(f)) {
+		                childToSelect = child;
+		            }
+		            i++;
+		        }
+		        TreeNode[] newPath = new TreeNode[parentNode.getPath().length + 1];
+		        for (int j = 0; j < parentNode.getPath().length; j++) {
+		            newPath[j] = parentNode.getPath()[j];
+		        }
+		        newPath[parentNode.getPath().length] = childToSelect;
+
+		        fileSystemTree.setSelectionPath(new TreePath(newPath));
+		    }
+		}
+	}
+
+	private final class FileSystemTreeTreeSelectionListener implements
+			TreeSelectionListener {
+		@Override
+		public void valueChanged(TreeSelectionEvent e) {
+		    DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
+		    Directory dir = (Directory) node.getUserObject();
+		    setSelectionText(dir.file);
+		    File[] files = getFiles(dir.file);
+		    List<File> dirsList = new ArrayList<File>();
+		    List<File> filesList = new ArrayList<File>();
+		    for (File element : files) {
+		        if (element.isDirectory()) {
+		            dirsList.add(element);
+		        } else {
+		            filesList.add(element);
+		        }
+		    }
+		    Collections.sort(dirsList);
+		    Collections.sort(filesList);
+		    dirsList.addAll(filesList);
+		    fileSystemList.setListData(dirsList.toArray());
+		}
+	}
+
+	private final class FileSystemTreeTreeWillExpandListener implements
+			TreeWillExpandListener {
+		@Override
+		public void treeWillCollapse(TreeExpansionEvent event) throws ExpandVetoException {
+		    // Nothing to do
+		}
+
+		@Override
+		public void treeWillExpand(TreeExpansionEvent event) throws ExpandVetoException {
+		    DefaultMutableTreeNode nodeSelected = (DefaultMutableTreeNode) fileSystemTree.getSelectionPath().getLastPathComponent();
+		    nodeSelected.removeAllChildren();
+		    Directory dir = (Directory) nodeSelected.getUserObject();
+		    File[] files = fsView.getFiles(dir.file, true);
+		    Arrays.sort(files);
+		    for (File f : files) {
+		        if (fsView.isTraversable(f)) {
+		            DefaultMutableTreeNode treeNode2 = new DefaultMutableTreeNode(new Directory(f));
+		            nodeSelected.add(treeNode2);
+		            treeNode2.add(new DefaultMutableTreeNode("Dummy node"));
+		        }
+		    }
+		}
+	}
+
+	private final class OkButtonActionListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		    selectedDir = null;
+		    selectedFiles = null;
+		    if (dirOnly) {
+		        if (fileSystemList.getSelectedValue() != null) {
+		            selectedDir = new File(((File) fileSystemList.getSelectedValue()).getAbsolutePath());
+		        } else {
+		            DefaultMutableTreeNode node = (DefaultMutableTreeNode) fileSystemTree.getSelectionPath().getLastPathComponent();
+		            selectedDir = ((Directory) node.getUserObject()).file;
+		        }
+		    } else {
+		        if (fileSystemList.getSelectedValues().length > 0) {
+		            Object[] files = fileSystemList.getSelectedValues();
+		            selectedFiles = new File[files.length];
+		            System.arraycopy(files, 0, selectedFiles, 0, files.length);
+		        } else {
+		            selectedFiles = new File[1];
+		            DefaultMutableTreeNode node = (DefaultMutableTreeNode) fileSystemTree.getSelectionPath().getLastPathComponent();
+		            selectedFiles[0] = ((Directory) node.getUserObject()).file;
+		        }
+		    }
+		    canceled = false;
+		    setVisible(false);
+		}
+	}
+
+	private static class FileSystemTreeCellRendererCode extends TreeCellRendererCode {
         @Override
         public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
@@ -199,33 +304,7 @@ public final class FileSelectionDialog extends CustomModalDialog {
         selection = new JLabel();
 
         okButton = new CustomButton(null, I18nUtils.getString("OK"));
-        okButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                selectedDir = null;
-                selectedFiles = null;
-                if (dirOnly) {
-                    if (fileSystemList.getSelectedValue() != null) {
-                        selectedDir = new File(((File) fileSystemList.getSelectedValue()).getAbsolutePath());
-                    } else {
-                        DefaultMutableTreeNode node = (DefaultMutableTreeNode) fileSystemTree.getSelectionPath().getLastPathComponent();
-                        selectedDir = ((Directory) node.getUserObject()).file;
-                    }
-                } else {
-                    if (fileSystemList.getSelectedValues().length > 0) {
-                        Object[] files = fileSystemList.getSelectedValues();
-                        selectedFiles = new File[files.length];
-                        System.arraycopy(files, 0, selectedFiles, 0, files.length);
-                    } else {
-                        selectedFiles = new File[1];
-                        DefaultMutableTreeNode node = (DefaultMutableTreeNode) fileSystemTree.getSelectionPath().getLastPathComponent();
-                        selectedFiles[0] = ((Directory) node.getUserObject()).file;
-                    }
-                }
-                canceled = false;
-                setVisible(false);
-            }
-        });
+        okButton.addActionListener(new OkButtonActionListener());
         cancelButton = new CustomButton(null, I18nUtils.getString("CANCEL"));
         cancelButton.addActionListener(new ActionListener() {
             @Override
@@ -359,78 +438,9 @@ public final class FileSelectionDialog extends CustomModalDialog {
         fileSystemList.setListData(getFiles(roots[0]));
         setSelectionText(roots[0]);
         setTreeRenderer();
-        fileSystemTree.addTreeWillExpandListener(new TreeWillExpandListener() {
-            @Override
-            public void treeWillCollapse(TreeExpansionEvent event) throws ExpandVetoException {
-                // Nothing to do
-            }
-
-            @Override
-            public void treeWillExpand(TreeExpansionEvent event) throws ExpandVetoException {
-                DefaultMutableTreeNode nodeSelected = (DefaultMutableTreeNode) fileSystemTree.getSelectionPath().getLastPathComponent();
-                nodeSelected.removeAllChildren();
-                Directory dir = (Directory) nodeSelected.getUserObject();
-                File[] files = fsView.getFiles(dir.file, true);
-                Arrays.sort(files);
-                for (File f : files) {
-                    if (fsView.isTraversable(f)) {
-                        DefaultMutableTreeNode treeNode2 = new DefaultMutableTreeNode(new Directory(f));
-                        nodeSelected.add(treeNode2);
-                        treeNode2.add(new DefaultMutableTreeNode("Dummy node"));
-                    }
-                }
-            }
-        });
-        fileSystemTree.addTreeSelectionListener(new TreeSelectionListener() {
-            @Override
-            public void valueChanged(TreeSelectionEvent e) {
-                DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
-                Directory dir = (Directory) node.getUserObject();
-                setSelectionText(dir.file);
-                File[] files = getFiles(dir.file);
-                List<File> dirsList = new ArrayList<File>();
-                List<File> filesList = new ArrayList<File>();
-                for (File element : files) {
-                    if (element.isDirectory()) {
-                        dirsList.add(element);
-                    } else {
-                        filesList.add(element);
-                    }
-                }
-                Collections.sort(dirsList);
-                Collections.sort(filesList);
-                dirsList.addAll(filesList);
-                fileSystemList.setListData(dirsList.toArray());
-            }
-        });
-        fileSystemList.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                File f = (File) fileSystemList.getSelectedValue();
-                setSelectionText(f);
-                if (e.getClickCount() == 2) {
-                    DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) fileSystemTree.getSelectionPath().getLastPathComponent();
-                    TreePath path = new TreePath(parentNode.getPath());
-                    fileSystemTree.expandPath(path);
-                    int i = 0;
-                    DefaultMutableTreeNode childToSelect = null;
-                    while (i < parentNode.getChildCount() || childToSelect == null) {
-                        DefaultMutableTreeNode child = (DefaultMutableTreeNode) parentNode.getChildAt(i);
-                        if (((Directory) child.getUserObject()).file.equals(f)) {
-                            childToSelect = child;
-                        }
-                        i++;
-                    }
-                    TreeNode[] newPath = new TreeNode[parentNode.getPath().length + 1];
-                    for (int j = 0; j < parentNode.getPath().length; j++) {
-                        newPath[j] = parentNode.getPath()[j];
-                    }
-                    newPath[parentNode.getPath().length] = childToSelect;
-
-                    fileSystemTree.setSelectionPath(new TreePath(newPath));
-                }
-            }
-        });
+        fileSystemTree.addTreeWillExpandListener(new FileSystemTreeTreeWillExpandListener());
+        fileSystemTree.addTreeSelectionListener(new FileSystemTreeTreeSelectionListener());
+        fileSystemList.addMouseListener(new FileSystemListMouseAdapter());
     }
 
     /**
