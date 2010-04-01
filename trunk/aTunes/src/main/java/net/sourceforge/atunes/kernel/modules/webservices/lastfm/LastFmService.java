@@ -81,7 +81,67 @@ import org.commonjukebox.plugins.PluginApi;
 @PluginApi
 public class LastFmService {
 
-    /*
+    private final class SubmitNowPlayingInfoRunnable implements Runnable {
+		private final AudioFile audioFile;
+
+		private SubmitNowPlayingInfoRunnable(AudioFile audioFile) {
+			this.audioFile = audioFile;
+		}
+
+		@Override
+		public void run() {
+		    try {
+		        submitNowPlayingInfo(audioFile);
+		    } catch (ScrobblerException e) {
+		        if (e.getStatus() == 2) {
+		            getLogger().error(LogCategories.SERVICE, "Authentication failure on Last.fm service");
+		            SwingUtilities.invokeLater(new Runnable() {
+		                @Override
+		                public void run() {
+		                    GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("LASTFM_USER_ERROR"));
+		                    // Disable service by deleting password
+		                    ApplicationState.getInstance().setLastFmEnabled(false);
+		                }
+		            });
+		        } else {
+		            getLogger().error(LogCategories.SERVICE, e.getMessage());
+		        }
+		    }
+		}
+	}
+
+	private final class SubmitToLastFmRunnable implements Runnable {
+		private final long secondsPlayed;
+		private final AudioFile audioFile;
+
+		private SubmitToLastFmRunnable(long secondsPlayed, AudioFile audioFile) {
+			this.secondsPlayed = secondsPlayed;
+			this.audioFile = audioFile;
+		}
+
+		@Override
+		public void run() {
+		    try {
+		        submit(audioFile, secondsPlayed);
+		    } catch (ScrobblerException e) {
+		        if (e.getStatus() == 2) {
+		            getLogger().error(LogCategories.SERVICE, "Authentication failure on Last.fm service");
+		            SwingUtilities.invokeLater(new Runnable() {
+		                @Override
+		                public void run() {
+		                    GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("LASTFM_USER_ERROR"));
+		                    // Disable service by deleting password
+		                    ApplicationState.getInstance().setLastFmEnabled(false);
+		                }
+		            });
+		        } else {
+		            getLogger().error(LogCategories.SERVICE, e.getMessage());
+		        }
+		    }
+		}
+	}
+
+	/*
      * DO NOT USE THESE KEYS FOR OTHER APPLICATIONS THAN aTunes!
      */
     private static final byte[] API_KEY = { 78, 119, -39, -5, -89, -107, -38, 41, -87, -107, 122, 98, -33, 46, 32, -47, -44, 54, 97, 67, 105, 122, 11, -26, -81, 90, 94, 55, 121,
@@ -848,28 +908,7 @@ public class LastFmService {
      */
     public void submitToLastFm(final AudioFile audioFile, final long secondsPlayed) {
         if (ApplicationState.getInstance().isLastFmEnabled()) {
-            Runnable r = new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        submit(audioFile, secondsPlayed);
-                    } catch (ScrobblerException e) {
-                        if (e.getStatus() == 2) {
-                            getLogger().error(LogCategories.SERVICE, "Authentication failure on Last.fm service");
-                            SwingUtilities.invokeLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("LASTFM_USER_ERROR"));
-                                    // Disable service by deleting password
-                                    ApplicationState.getInstance().setLastFmEnabled(false);
-                                }
-                            });
-                        } else {
-                            getLogger().error(LogCategories.SERVICE, e.getMessage());
-                        }
-                    }
-                }
-            };
+            Runnable r = new SubmitToLastFmRunnable(secondsPlayed, audioFile);
             try {
                 scrobblerExecutorService.submit(r);
             } catch (RejectedExecutionException e) {
@@ -913,28 +952,7 @@ public class LastFmService {
      */
     public void submitNowPlayingInfoToLastFm(final AudioFile audioFile) {
         if (ApplicationState.getInstance().isLastFmEnabled()) {
-            Runnable r = new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        submitNowPlayingInfo(audioFile);
-                    } catch (ScrobblerException e) {
-                        if (e.getStatus() == 2) {
-                            getLogger().error(LogCategories.SERVICE, "Authentication failure on Last.fm service");
-                            SwingUtilities.invokeLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("LASTFM_USER_ERROR"));
-                                    // Disable service by deleting password
-                                    ApplicationState.getInstance().setLastFmEnabled(false);
-                                }
-                            });
-                        } else {
-                            getLogger().error(LogCategories.SERVICE, e.getMessage());
-                        }
-                    }
-                }
-            };
+            Runnable r = new SubmitNowPlayingInfoRunnable(audioFile);
             try {
                 scrobblerExecutorService.submit(r);
             } catch (RejectedExecutionException e) {
