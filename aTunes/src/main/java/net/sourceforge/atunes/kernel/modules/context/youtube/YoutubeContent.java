@@ -230,8 +230,9 @@ public class YoutubeContent extends ContextPanelContent {
      * @param file
      */
     protected void downloadYoutubeVideo(final YoutubeResultEntry entry, final File file) {
-        if (entry == null || entry.getUrl() == null)
+        if (entry == null || entry.getUrl() == null) {
             return;
+        }
 
         final YoutubeVideoDownloader downloader = new YoutubeVideoDownloader(entry, file);
         downloader.execute();

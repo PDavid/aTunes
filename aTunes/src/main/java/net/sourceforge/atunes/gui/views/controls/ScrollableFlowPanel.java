@@ -74,8 +74,9 @@ public class ScrollableFlowPanel extends JPanel implements Scrollable {
             Component comp = getComponent(k);
             Rectangle r = comp.getBounds();
             int height = r.y + r.height;
-            if (height > rv)
+            if (height > rv) {
                 rv = height;
+            }
         }
         rv += ((FlowLayout) getLayout()).getVgap();
         return rv;

@@ -245,8 +245,9 @@ public final class RadioHandler extends Handler {
                     newResult.add(i, label);
                     i = result.size();
                 } else if (i == newResult.size() - 1) {
-                    if (newResult.get(i) != label)
+                    if (newResult.get(i) != label) {
                         newResult.add(label);
+                    }
                     i = result.size();
                 } else {
                     i = i + 1;

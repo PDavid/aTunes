@@ -134,18 +134,23 @@ public class LastFmSimilarArtists implements SimilarArtistsInfo {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         LastFmSimilarArtists other = (LastFmSimilarArtists) obj;
         if (artistName == null) {
-            if (other.artistName != null)
+            if (other.artistName != null) {
                 return false;
-        } else if (!artistName.equals(other.artistName))
+            }
+        } else if (!artistName.equals(other.artistName)) {
             return false;
+        }
         return true;
     }
 

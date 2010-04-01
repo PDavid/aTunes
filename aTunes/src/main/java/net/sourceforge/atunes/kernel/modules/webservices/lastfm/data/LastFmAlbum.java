@@ -363,18 +363,23 @@ public class LastFmAlbum implements AlbumInfo {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         LastFmAlbum other = (LastFmAlbum) obj;
         if (bigCoverURL == null) {
-            if (other.bigCoverURL != null)
+            if (other.bigCoverURL != null) {
                 return false;
-        } else if (!bigCoverURL.equals(other.bigCoverURL))
+            }
+        } else if (!bigCoverURL.equals(other.bigCoverURL)) {
             return false;
+        }
         return true;
     }
 

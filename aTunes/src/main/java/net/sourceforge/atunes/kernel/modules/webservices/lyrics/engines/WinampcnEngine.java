@@ -80,8 +80,9 @@ public class WinampcnEngine extends LyricsEngine {
         try {
             String xml = readURL(getConnection(url), "gbk");
             String lyrcUrl = getMostPopularLyrcUrl(xml);
-            if (lyrcUrl == null)
+            if (lyrcUrl == null) {
                 return null;
+            }                
 
             String lyrics = readURL(getConnection(lyrcUrl), "gbk");
             lyrics = lyrics.replaceAll("\\[.+\\]", "");

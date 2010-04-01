@@ -76,23 +76,30 @@ public class StatisticsAlbum implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         StatisticsAlbum other = (StatisticsAlbum) obj;
         if (album == null) {
-            if (other.album != null)
+            if (other.album != null) {
                 return false;
-        } else if (!album.equals(other.album))
+            }
+        } else if (!album.equals(other.album)) {
             return false;
+        }
         if (artist == null) {
-            if (other.artist != null)
+            if (other.artist != null) {
                 return false;
-        } else if (!artist.equals(other.artist))
+            }
+        } else if (!artist.equals(other.artist)) {
             return false;
+        }
         return true;
     }
 
