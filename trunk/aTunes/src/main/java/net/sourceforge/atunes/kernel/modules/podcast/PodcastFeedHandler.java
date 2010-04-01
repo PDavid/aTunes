@@ -61,7 +61,41 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class PodcastFeedHandler extends Handler {
 
-    private static class DeleteDownloadedPodcastFeedEntryWorker extends SwingWorker<Boolean, Void> {
+    private final class DownloadPodcastFeedEntryPropertyChangeListener
+			implements PropertyChangeListener {
+		private final PodcastFeedEntry podcastFeedEntry;
+		private final TransferProgressDialog d;
+		private final PodcastFeedEntryDownloader downloadPodcastFeedEntry;
+
+		private DownloadPodcastFeedEntryPropertyChangeListener(
+				PodcastFeedEntry podcastFeedEntry, TransferProgressDialog d,
+				PodcastFeedEntryDownloader downloadPodcastFeedEntry) {
+			this.podcastFeedEntry = podcastFeedEntry;
+			this.d = d;
+			this.downloadPodcastFeedEntry = downloadPodcastFeedEntry;
+		}
+
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+		    if (evt.getPropertyName().equals("progress")) {
+		        d.setProgressBarValue((Integer) evt.getNewValue());
+		        if ((Integer) evt.getNewValue() == 100) {
+		            d.dispose();
+		            synchronized (runningDownloads) {
+		                runningDownloads.remove(downloadPodcastFeedEntry);
+		            }
+		        }
+		    } else if (evt.getPropertyName().equals("byteProgress")) {
+		        d.setCurrentProgress((Long) evt.getNewValue());
+		    } else if (evt.getPropertyName().equals("totalBytes")) {
+		        d.setTotalProgress((Long) evt.getNewValue());
+		    } else if (evt.getPropertyName().equals("failed")) {
+		        cancelDownloading(podcastFeedEntry, d, downloadPodcastFeedEntry);
+		    }
+		}
+	}
+
+	private static class DeleteDownloadedPodcastFeedEntryWorker extends SwingWorker<Boolean, Void> {
         private final File f;
         private final PodcastFeedEntry podcastFeedEntry;
 
@@ -305,27 +339,8 @@ public final class PodcastFeedHandler extends Handler {
         synchronized (runningDownloads) {
             runningDownloads.add(downloadPodcastFeedEntry);
         }
-        downloadPodcastFeedEntry.addPropertyChangeListener(new PropertyChangeListener() {
-
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                if (evt.getPropertyName().equals("progress")) {
-                    d.setProgressBarValue((Integer) evt.getNewValue());
-                    if ((Integer) evt.getNewValue() == 100) {
-                        d.dispose();
-                        synchronized (runningDownloads) {
-                            runningDownloads.remove(downloadPodcastFeedEntry);
-                        }
-                    }
-                } else if (evt.getPropertyName().equals("byteProgress")) {
-                    d.setCurrentProgress((Long) evt.getNewValue());
-                } else if (evt.getPropertyName().equals("totalBytes")) {
-                    d.setTotalProgress((Long) evt.getNewValue());
-                } else if (evt.getPropertyName().equals("failed")) {
-                    cancelDownloading(podcastFeedEntry, d, downloadPodcastFeedEntry);
-                }
-            }
-        });
+        downloadPodcastFeedEntry.addPropertyChangeListener(new DownloadPodcastFeedEntryPropertyChangeListener(podcastFeedEntry, d,
+				downloadPodcastFeedEntry));
         d.addCancelButtonActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

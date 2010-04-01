@@ -129,27 +129,8 @@ public final class PlayerControlsPanel extends JPanel {
     protected void addContent() {
         final JPanel topProgressSliderPanel = new JPanel(new BorderLayout());
         final JPanel bottomProgressSliderPanel = new JPanel(new BorderLayout());
-        bottomProgressSliderPanel.addComponentListener(new ComponentAdapter() {
-
-            private Boolean showProgressOnTop = null;
-
-            @Override
-            public void componentResized(ComponentEvent e) {
-                boolean showOnTop = bottomProgressSliderPanel.getWidth() < PROGRESS_BAR_BOTTOM_MINIMUM_SIZE;
-
-                if (showProgressOnTop == null || showProgressOnTop != showOnTop) {
-                    if (showOnTop) {
-                        bottomProgressSliderPanel.remove(progressSlider);
-                        topProgressSliderPanel.add(progressSlider, BorderLayout.CENTER);
-                    } else {
-                        topProgressSliderPanel.remove(progressSlider);
-                        bottomProgressSliderPanel.add(progressSlider, BorderLayout.WEST);
-                    }
-                    progressSlider.setExpandable(showOnTop);
-                    showProgressOnTop = showOnTop;
-                }
-            }
-        });
+        bottomProgressSliderPanel.addComponentListener(new BottomProgressSliderPanelComponentAdapter(
+				bottomProgressSliderPanel, topProgressSliderPanel));
 
         progressSlider = new ProgressSlider();
 
@@ -383,7 +364,37 @@ public final class PlayerControlsPanel extends JPanel {
         getSecondaryControls().add(button, c);
     }
 
-    static class ProgressSlider extends JPanel {
+    private final class BottomProgressSliderPanelComponentAdapter extends
+			ComponentAdapter {
+		private final JPanel bottomProgressSliderPanel;
+		private final JPanel topProgressSliderPanel;
+		private Boolean showProgressOnTop = null;
+
+		private BottomProgressSliderPanelComponentAdapter(
+				JPanel bottomProgressSliderPanel, JPanel topProgressSliderPanel) {
+			this.bottomProgressSliderPanel = bottomProgressSliderPanel;
+			this.topProgressSliderPanel = topProgressSliderPanel;
+		}
+
+		@Override
+		public void componentResized(ComponentEvent e) {
+		    boolean showOnTop = bottomProgressSliderPanel.getWidth() < PROGRESS_BAR_BOTTOM_MINIMUM_SIZE;
+
+		    if (showProgressOnTop == null || showProgressOnTop != showOnTop) {
+		        if (showOnTop) {
+		            bottomProgressSliderPanel.remove(progressSlider);
+		            topProgressSliderPanel.add(progressSlider, BorderLayout.CENTER);
+		        } else {
+		            topProgressSliderPanel.remove(progressSlider);
+		            bottomProgressSliderPanel.add(progressSlider, BorderLayout.WEST);
+		        }
+		        progressSlider.setExpandable(showOnTop);
+		        showProgressOnTop = showOnTop;
+		    }
+		}
+	}
+
+	static class ProgressSlider extends JPanel {
 
         private static final long serialVersionUID = 8921834666233975274L;
 

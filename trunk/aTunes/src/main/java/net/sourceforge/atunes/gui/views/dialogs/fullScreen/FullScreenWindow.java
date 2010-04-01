@@ -86,7 +86,37 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 public final class FullScreenWindow extends CustomWindow {
 
-    private static final long serialVersionUID = 3422799994808333945L;
+    private final class SelectBackgroundActionListener implements
+			ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		    setVisible(false);
+		    JFileChooser fileChooser = new JFileChooser();
+		    fileChooser.setFileFilter(new FileFilter() {
+		        @Override
+		        public boolean accept(File pathname) {
+		            if (pathname.isDirectory()) {
+		                return true;
+		            }
+		            String fileName = pathname.getName().toUpperCase();
+		            return fileName.endsWith("JPG") || fileName.endsWith("JPEG") || fileName.endsWith("PNG");
+		        }
+
+		        @Override
+		        public String getDescription() {
+		            return I18nUtils.getString("IMAGES");
+		        }
+		    });
+		    if (fileChooser.showOpenDialog(FullScreenWindow.this) == JFileChooser.APPROVE_OPTION) {
+		        File selectedBackground = fileChooser.getSelectedFile();
+		        setBackground(selectedBackground);
+		        FullScreenWindow.this.invalidate();
+		        FullScreenWindow.this.repaint();
+		    }
+		}
+	}
+
+	private static final long serialVersionUID = 3422799994808333945L;
 
     private CoverFlow covers;
 
@@ -360,34 +390,7 @@ public final class FullScreenWindow extends CustomWindow {
 
         selectBackground = new JMenuItem(I18nUtils.getString("SELECT_BACKGROUND"));
 
-        selectBackground.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setFileFilter(new FileFilter() {
-                    @Override
-                    public boolean accept(File pathname) {
-                        if (pathname.isDirectory()) {
-                            return true;
-                        }
-                        String fileName = pathname.getName().toUpperCase();
-                        return fileName.endsWith("JPG") || fileName.endsWith("JPEG") || fileName.endsWith("PNG");
-                    }
-
-                    @Override
-                    public String getDescription() {
-                        return I18nUtils.getString("IMAGES");
-                    }
-                });
-                if (fileChooser.showOpenDialog(FullScreenWindow.this) == JFileChooser.APPROVE_OPTION) {
-                    File selectedBackground = fileChooser.getSelectedFile();
-                    setBackground(selectedBackground);
-                    FullScreenWindow.this.invalidate();
-                    FullScreenWindow.this.repaint();
-                }
-            }
-        });
+        selectBackground.addActionListener(new SelectBackgroundActionListener());
 
         removeBackground = new JMenuItem(I18nUtils.getString("REMOVE_BACKGROUND"));
         removeBackground.addActionListener(new ActionListener() {

@@ -199,35 +199,7 @@ public final class PluginsPanel extends PreferencesPanel {
         c.gridy = 1;
         add(installNewPluginButton, c);
 
-        installNewPluginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fileChooser = new JFileChooser();
-                FileFilter filter = new FileFilter() {
-                    @Override
-                    public boolean accept(File f) {
-                        return f.isDirectory() || f.getName().toUpperCase().endsWith("ZIP");
-                    }
-
-                    @Override
-                    public String getDescription() {
-                        return I18nUtils.getString("ZIP_FILES");
-                    }
-                };
-                fileChooser.setFileFilter(filter);
-                if (fileChooser.showOpenDialog(GuiHandler.getInstance().getFrame().getFrame()) == JFileChooser.APPROVE_OPTION) {
-                    File zipFile = fileChooser.getSelectedFile();
-                    try {
-                        PluginsHandler.getInstance().installPlugin(zipFile);
-                        // Update panel after installing a new plugin
-                        updatePanel(null);
-                    } catch (Exception e1) {
-                        GuiHandler.getInstance().showErrorDialog(e1.getMessage());
-                        getLogger().error(LogCategories.PLUGINS, e1);
-                    }
-                }
-            }
-        });
+        installNewPluginButton.addActionListener(new InstallNewPluginActionListener());
 
         uninstallPluginButton = new JButton(I18nUtils.getString("UNINSTALL"));
         uninstallPluginButton.setEnabled(false);
@@ -320,7 +292,38 @@ public final class PluginsPanel extends PreferencesPanel {
         }
     }
 
-    private static class PluginsTableCellRendererCode extends TableCellRendererCode {
+    private final class InstallNewPluginActionListener implements
+			ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		    JFileChooser fileChooser = new JFileChooser();
+		    FileFilter filter = new FileFilter() {
+		        @Override
+		        public boolean accept(File f) {
+		            return f.isDirectory() || f.getName().toUpperCase().endsWith("ZIP");
+		        }
+
+		        @Override
+		        public String getDescription() {
+		            return I18nUtils.getString("ZIP_FILES");
+		        }
+		    };
+		    fileChooser.setFileFilter(filter);
+		    if (fileChooser.showOpenDialog(GuiHandler.getInstance().getFrame().getFrame()) == JFileChooser.APPROVE_OPTION) {
+		        File zipFile = fileChooser.getSelectedFile();
+		        try {
+		            PluginsHandler.getInstance().installPlugin(zipFile);
+		            // Update panel after installing a new plugin
+		            updatePanel(null);
+		        } catch (Exception e1) {
+		            GuiHandler.getInstance().showErrorDialog(e1.getMessage());
+		            getLogger().error(LogCategories.PLUGINS, e1);
+		        }
+		    }
+		}
+	}
+
+	private static class PluginsTableCellRendererCode extends TableCellRendererCode {
         @Override
         public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             Component c = superComponent;

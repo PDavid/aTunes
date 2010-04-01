@@ -47,7 +47,34 @@ import net.sourceforge.atunes.utils.XMLUtils;
  */
 public final class RadioHandler extends Handler {
 
-    private static RadioHandler instance = new RadioHandler();
+    private final class RetrieveRadiosSwingWorker extends
+			SwingWorker<List<Radio>, Void> {
+		private final ProxyBean proxy = ApplicationState.getInstance().getProxy();
+
+		@Override
+		protected List<Radio> doInBackground() throws Exception {
+		    String xml = NetworkUtils.readURL(NetworkUtils.getConnection(Constants.RADIO_LIST_DOWNLOAD, Proxy.getProxy(proxy)));
+		    List<Radio> list = (List<Radio>) XMLUtils.readObjectFromString(xml);
+		    return list;
+		}
+
+		@Override
+		protected void done() {
+		    try {
+		        retrievedPresetRadios.clear();
+		        retrievedPresetRadios.addAll(get());
+		        getRadioPresets();
+		        NavigationHandler.getInstance().refreshView(RadioNavigationView.class);
+		    } catch (InterruptedException e) {
+		        getLogger().error(LogCategories.HANDLER, e);
+		    } catch (ExecutionException e) {
+		        getLogger().error(LogCategories.HANDLER, e);
+		    }
+
+		}
+	}
+
+	private static RadioHandler instance = new RadioHandler();
 
     private List<Radio> radios;
     private List<Radio> presetRadios;
@@ -292,33 +319,7 @@ public final class RadioHandler extends Handler {
      * Get radios from the internet (update preset list)
      */
     public void retrieveRadios() {
-        new SwingWorker<List<Radio>, Void>() {
-
-            private final ProxyBean proxy = ApplicationState.getInstance().getProxy();
-
-            @Override
-            protected List<Radio> doInBackground() throws Exception {
-                String xml = NetworkUtils.readURL(NetworkUtils.getConnection(Constants.RADIO_LIST_DOWNLOAD, Proxy.getProxy(proxy)));
-                List<Radio> list = (List<Radio>) XMLUtils.readObjectFromString(xml);
-                return list;
-            }
-
-            @Override
-            protected void done() {
-                try {
-                    retrievedPresetRadios.clear();
-                    retrievedPresetRadios.addAll(get());
-                    getRadioPresets();
-                    NavigationHandler.getInstance().refreshView(RadioNavigationView.class);
-                } catch (InterruptedException e) {
-                    getLogger().error(LogCategories.HANDLER, e);
-                } catch (ExecutionException e) {
-                    getLogger().error(LogCategories.HANDLER, e);
-                }
-
-            }
-
-        }.execute();
+        new RetrieveRadiosSwingWorker().execute();
     }
 
     /**

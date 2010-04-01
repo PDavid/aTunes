@@ -53,7 +53,46 @@ import org.jdesktop.swingx.border.DropShadowBorder;
  */
 public final class AudioObjectPropertiesController extends SimpleController<AudioObjectPropertiesPanel> {
 
-    /** The current audio object. */
+    private final class FillPictureSwingWorker extends
+			SwingWorker<ImageIcon, Void> {
+		private boolean shadowBorder;
+
+		@Override
+		protected ImageIcon doInBackground() throws Exception {
+		    ImageIcon imageForAudioObject;
+		    imageForAudioObject = currentAudioObject.getImage(ImageSize.SIZE_90);
+		    if (imageForAudioObject == null) {
+		        imageForAudioObject = currentAudioObject.getGenericImage(GenericImageSize.MEDIUM);
+		    }
+		    shadowBorder = currentAudioObject instanceof AudioFile;
+		    return imageForAudioObject;
+		}
+
+		@Override
+		protected void done() {
+		    try {
+		        ImageIcon imageIcon = get();
+		        if (shadowBorder) {
+		            getComponentControlled().getPictureLabel().setBorder(new DropShadowBorder());
+		        } else {
+		            getComponentControlled().getPictureLabel().setBorder(BorderFactory.createEmptyBorder());
+		        }
+		        if (imageIcon != null) {
+		            getComponentControlled().getPictureLabel().setIcon(imageIcon);
+		            getComponentControlled().getPictureLabel().setVisible(true);
+		        } else {
+		            getComponentControlled().getPictureLabel().setIcon(null);
+		            getComponentControlled().getPictureLabel().setVisible(false);
+		        }
+		    } catch (InterruptedException e) {
+		        getLogger().internalError(e);
+		    } catch (ExecutionException e) {
+		        getLogger().internalError(e);
+		    }
+		}
+	}
+
+	/** The current audio object. */
     private AudioObject currentAudioObject;
 
     /**
@@ -114,43 +153,7 @@ public final class AudioObjectPropertiesController extends SimpleController<Audi
      */
     void fillPicture() {
         if (currentAudioObject != null) {
-            new SwingWorker<ImageIcon, Void>() {
-                private boolean shadowBorder;
-
-                @Override
-                protected ImageIcon doInBackground() throws Exception {
-                    ImageIcon imageForAudioObject;
-                    imageForAudioObject = currentAudioObject.getImage(ImageSize.SIZE_90);
-                    if (imageForAudioObject == null) {
-                        imageForAudioObject = currentAudioObject.getGenericImage(GenericImageSize.MEDIUM);
-                    }
-                    shadowBorder = currentAudioObject instanceof AudioFile;
-                    return imageForAudioObject;
-                }
-
-                @Override
-                protected void done() {
-                    try {
-                        ImageIcon imageIcon = get();
-                        if (shadowBorder) {
-                            getComponentControlled().getPictureLabel().setBorder(new DropShadowBorder());
-                        } else {
-                            getComponentControlled().getPictureLabel().setBorder(BorderFactory.createEmptyBorder());
-                        }
-                        if (imageIcon != null) {
-                            getComponentControlled().getPictureLabel().setIcon(imageIcon);
-                            getComponentControlled().getPictureLabel().setVisible(true);
-                        } else {
-                            getComponentControlled().getPictureLabel().setIcon(null);
-                            getComponentControlled().getPictureLabel().setVisible(false);
-                        }
-                    } catch (InterruptedException e) {
-                        getLogger().internalError(e);
-                    } catch (ExecutionException e) {
-                        getLogger().internalError(e);
-                    }
-                }
-            }.execute();
+            new FillPictureSwingWorker().execute();
         }
 
     }

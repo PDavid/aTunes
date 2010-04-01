@@ -30,7 +30,39 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 public class OSXAdapter implements InvocationHandler {
 
-    private Object targetObject;
+    private static final class FileHandlerOSXAdapter extends OSXAdapter {
+		private FileHandlerOSXAdapter(String proxySignature, Object target,
+				Method handler) {
+			super(proxySignature, target, handler);
+		}
+
+		// Override OSXAdapter.callTarget to send information on the
+		// file to be opened
+		@Override
+		public boolean callTarget(Object appleEvent) {
+		    if (appleEvent != null) {
+		    	String filename = null;
+		        try {
+		            Method getFilenameMethod = appleEvent.getClass().getDeclaredMethod("getFilename", (Class[]) null);
+		            filename = (String) getFilenameMethod.invoke(appleEvent, (Object[]) null);
+		            this.getTargetMethod().invoke(this.getTargetObject(), new Object[] { filename });
+		        } catch (SecurityException e) {
+		        	logCallTargetException(filename, e);
+				} catch (NoSuchMethodException e) {
+		        	logCallTargetException(filename, e);
+				} catch (IllegalArgumentException e) {
+		        	logCallTargetException(filename, e);
+				} catch (IllegalAccessException e) {
+		        	logCallTargetException(filename, e);
+				} catch (InvocationTargetException e) {
+		        	logCallTargetException(filename, e);
+				}
+		    }
+		    return true;
+		}
+	}
+
+	private Object targetObject;
     private Method targetMethod;
     private String proxySignature;
 
@@ -108,32 +140,7 @@ public class OSXAdapter implements InvocationHandler {
     // Documents are registered with the Finder via the CFBundleDocumentTypes dictionary in the 
     // application bundle's Info.plist
     public static void setFileHandler(Object target, Method fileHandler) {
-        setHandler(new OSXAdapter("handleOpenFile", target, fileHandler) {
-            // Override OSXAdapter.callTarget to send information on the
-            // file to be opened
-            @Override
-            public boolean callTarget(Object appleEvent) {
-                if (appleEvent != null) {
-                	String filename = null;
-                    try {
-                        Method getFilenameMethod = appleEvent.getClass().getDeclaredMethod("getFilename", (Class[]) null);
-                        filename = (String) getFilenameMethod.invoke(appleEvent, (Object[]) null);
-                        this.getTargetMethod().invoke(this.getTargetObject(), new Object[] { filename });
-                    } catch (SecurityException e) {
-                    	logCallTargetException(filename, e);
-					} catch (NoSuchMethodException e) {
-                    	logCallTargetException(filename, e);
-					} catch (IllegalArgumentException e) {
-                    	logCallTargetException(filename, e);
-					} catch (IllegalAccessException e) {
-                    	logCallTargetException(filename, e);
-					} catch (InvocationTargetException e) {
-                    	logCallTargetException(filename, e);
-					}
-                }
-                return true;
-            }
-        });
+        setHandler(new FileHandlerOSXAdapter("handleOpenFile", target, fileHandler));
     }
     
     private static void logCallTargetException(String fileName, Exception e) {

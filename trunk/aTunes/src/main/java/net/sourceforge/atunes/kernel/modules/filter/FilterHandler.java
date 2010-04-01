@@ -32,7 +32,29 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class FilterHandler extends Handler {
 
-    /**
+    private final class AllFilter extends Filter {
+		@Override
+        public String getName() {
+            return "ALL";
+        }
+
+		@Override
+        public String getDescription() {
+            return I18nUtils.getString("ALL");
+        }
+
+		@Override
+        public void applyFilter(String filterString) {
+            for (Filter filter : filters.values()) {
+                if (!filter.equals(this)) {
+                    filter.applyFilter(filterString);
+                }
+            }
+
+        }
+	}
+
+	/**
      * Singleton instance
      */
     private static FilterHandler instance;
@@ -45,28 +67,7 @@ public final class FilterHandler extends Handler {
     /**
      * Filter for all current filters at the same time
      */
-    private Filter allFilter = new Filter() {
-
-        @Override
-        public String getName() {
-            return "ALL";
-        }
-
-        @Override
-        public String getDescription() {
-            return I18nUtils.getString("ALL");
-        }
-
-        @Override
-        public void applyFilter(String filterString) {
-            for (Filter filter : filters.values()) {
-                if (!filter.equals(this)) {
-                    filter.applyFilter(filterString);
-                }
-            }
-
-        }
-    };
+    private Filter allFilter = new AllFilter();
 
     /**
      * Selected filter (by default all)

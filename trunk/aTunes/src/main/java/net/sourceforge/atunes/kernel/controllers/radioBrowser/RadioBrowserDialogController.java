@@ -33,7 +33,29 @@ import net.sourceforge.atunes.misc.log.LogCategories;
 
 public final class RadioBrowserDialogController extends SimpleController<RadioBrowserDialog> {
 
-    /**
+    private final class RetrieveDataSwingWorker extends
+			SwingWorker<List<Radio>, Void> {
+		@Override
+		protected List<Radio> doInBackground() throws Exception {
+		    return RadioHandler.getInstance().retrieveRadiosForBrowser();
+		}
+
+		@Override
+		protected void done() {
+		    try {
+		        List<Radio> radios = get();
+		        getComponentControlled().getTreeTable().setTreeTableModel(new RadioBrowserTreeTableModel(radios));
+		    } catch (InterruptedException e) {
+		        getLogger().error(LogCategories.CONTROLLER, e);
+		    } catch (ExecutionException e) {
+		        getLogger().error(LogCategories.CONTROLLER, e);
+		    } finally {
+		        //getFrameControlled().setCursor(Cursor.getDefaultCursor());
+		    }
+		}
+	}
+
+	/**
      * Instantiates a new radio browser dialog controller.
      * 
      * @param frameControlled
@@ -59,27 +81,7 @@ public final class RadioBrowserDialogController extends SimpleController<RadioBr
     public void retrieveData() {
         //getFrameControlled().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-        new SwingWorker<List<Radio>, Void>() {
-            @Override
-            protected List<Radio> doInBackground() throws Exception {
-                return RadioHandler.getInstance().retrieveRadiosForBrowser();
-            }
-
-            @Override
-            protected void done() {
-                try {
-                    List<Radio> radios = get();
-                    getComponentControlled().getTreeTable().setTreeTableModel(new RadioBrowserTreeTableModel(radios));
-                } catch (InterruptedException e) {
-                    getLogger().error(LogCategories.CONTROLLER, e);
-                } catch (ExecutionException e) {
-                    getLogger().error(LogCategories.CONTROLLER, e);
-                } finally {
-                    //getFrameControlled().setCursor(Cursor.getDefaultCursor());
-                }
-            }
-
-        }.execute();
+        new RetrieveDataSwingWorker().execute();
     }
 
     @Override

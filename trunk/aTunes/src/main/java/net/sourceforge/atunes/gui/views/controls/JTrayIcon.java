@@ -43,7 +43,31 @@ import javax.swing.event.PopupMenuListener;
  */
 public final class JTrayIcon extends TrayIcon {
 
-    /**
+    private final class TrayIconMouseAdapter extends MouseAdapter {
+		@Override
+		public void mousePressed(MouseEvent e) {
+		    if (e.isPopupTrigger()) {
+		        showPopup(e.getPoint());
+		        if (!isLinux) {
+		            trayParent.setVisible(false);
+		        }
+		    }
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+		    if (e.isPopupTrigger()) {
+		        if (trayParent.isVisible()) {
+		            trayParent.setVisible(false);
+		        } else {
+		            showPopup(e.getPoint());
+		        }
+
+		    }
+		}
+	}
+
+	/**
      * This special JPopupMenu prevents the user from removing the popup menu
      * listener.
      */
@@ -171,29 +195,7 @@ public final class JTrayIcon extends TrayIcon {
      */
     private void setTrayIconMouseListener() {
         if (trayIconMouseListener == null) {
-            trayIconMouseListener = new MouseAdapter() {
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    if (e.isPopupTrigger()) {
-                        showPopup(e.getPoint());
-                        if (!isLinux) {
-                            trayParent.setVisible(false);
-                        }
-                    }
-                }
-
-                @Override
-                public void mouseReleased(MouseEvent e) {
-                    if (e.isPopupTrigger()) {
-                        if (trayParent.isVisible()) {
-                            trayParent.setVisible(false);
-                        } else {
-                            showPopup(e.getPoint());
-                        }
-
-                    }
-                }
-            };
+            trayIconMouseListener = new TrayIconMouseAdapter();
             addMouseListener(trayIconMouseListener);
         }
     }

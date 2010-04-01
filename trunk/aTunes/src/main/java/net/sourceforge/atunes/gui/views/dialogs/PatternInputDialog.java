@@ -65,7 +65,51 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public final class PatternInputDialog extends CustomModalDialog {
 
-    private static final class AvailablePatternsDefaultTableModel extends DefaultTableModel {
+    private final class OkActionListener implements ActionListener {
+		private final boolean massiveRecognition;
+
+		private OkActionListener(boolean massiveRecognition) {
+			this.massiveRecognition = massiveRecognition;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		    result = (String) patternComboBox.getSelectedItem();
+
+		    if (result != null && !result.trim().equals("")) {
+		        // Upper case all patterns found in result
+		        for (AbstractPattern pattern : AbstractPattern.getPatterns()) {
+		            result.replaceAll(pattern.getPattern().toLowerCase(), pattern.getPattern());
+		        }
+
+		        // If pattern was not already used add to list of previously used patterns
+		        List<String> previousPatterns = null;
+		        if (massiveRecognition) {
+		            previousPatterns = ApplicationState.getInstance().getMassiveRecognitionPatterns();
+		        } else {
+		            previousPatterns = ApplicationState.getInstance().getRecognitionPatterns();
+		        }
+
+		        // Create previous list if necessary
+		        if (previousPatterns == null) {
+		            previousPatterns = new ArrayList<String>();
+		            if (massiveRecognition) {
+		                ApplicationState.getInstance().setMassiveRecognitionPatterns(previousPatterns);
+		            } else {
+		                ApplicationState.getInstance().setRecognitionPatterns(previousPatterns);
+		            }
+		        }
+
+		        // Test
+		        if (!previousPatterns.contains(result)) {
+		            previousPatterns.add(result);
+		        }
+		    }
+		    dispose();
+		}
+	}
+
+	private static final class AvailablePatternsDefaultTableModel extends DefaultTableModel {
         /**
 		 * 
 		 */
@@ -186,43 +230,7 @@ public final class PatternInputDialog extends CustomModalDialog {
         availablePatternsPanel.setBorder(BorderFactory.createTitledBorder(I18nUtils.getString("AVAILABLE_PATTERNS")));
 
         JButton okButton = new JButton(I18nUtils.getString("OK"));
-        ActionListener okListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                result = (String) patternComboBox.getSelectedItem();
-
-                if (result != null && !result.trim().equals("")) {
-                    // Upper case all patterns found in result
-                    for (AbstractPattern pattern : AbstractPattern.getPatterns()) {
-                        result.replaceAll(pattern.getPattern().toLowerCase(), pattern.getPattern());
-                    }
-
-                    // If pattern was not already used add to list of previously used patterns
-                    List<String> previousPatterns = null;
-                    if (massiveRecognition) {
-                        previousPatterns = ApplicationState.getInstance().getMassiveRecognitionPatterns();
-                    } else {
-                        previousPatterns = ApplicationState.getInstance().getRecognitionPatterns();
-                    }
-
-                    // Create previous list if necessary
-                    if (previousPatterns == null) {
-                        previousPatterns = new ArrayList<String>();
-                        if (massiveRecognition) {
-                            ApplicationState.getInstance().setMassiveRecognitionPatterns(previousPatterns);
-                        } else {
-                            ApplicationState.getInstance().setRecognitionPatterns(previousPatterns);
-                        }
-                    }
-
-                    // Test
-                    if (!previousPatterns.contains(result)) {
-                        previousPatterns.add(result);
-                    }
-                }
-                dispose();
-            }
-        };
+        ActionListener okListener = new OkActionListener(massiveRecognition);
         okButton.addActionListener(okListener);
         JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
         cancelButton.addActionListener(new ActionListener() {

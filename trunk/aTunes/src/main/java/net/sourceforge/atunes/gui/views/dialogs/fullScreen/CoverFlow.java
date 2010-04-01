@@ -47,7 +47,45 @@ import net.sourceforge.atunes.utils.ImageUtils;
 
 public final class CoverFlow extends JPanel {
 
-    private static final long serialVersionUID = -5982158797052430789L;
+    private final class PaintCoversSwingWorker extends SwingWorker<Image, Void> {
+		private final Cover3D cover;
+		private final AudioObject audioObject;
+
+		private PaintCoversSwingWorker(Cover3D cover, AudioObject audioObject) {
+			this.cover = cover;
+			this.audioObject = audioObject;
+		}
+
+		@Override
+		protected Image doInBackground() throws Exception {
+		    if (audioObject instanceof Radio) {
+		        return Images.getImage(Images.RADIO_BIG).getImage();
+		    } else if (audioObject instanceof PodcastFeedEntry) {
+		        return Images.getImage(Images.RSS_BIG).getImage();
+		    }
+		    if (cachedImages.containsKey(audioObject)) {
+		        return cachedImages.get(audioObject);
+		    }
+		    Image image = getPicture((AudioFile) audioObject);
+		    cachedImages.put(audioObject, image);
+		    return image;
+		}
+
+		@Override
+		protected void done() {
+		    Image image;
+		    try {
+		        image = get();
+		        setPicture(audioObject, image, cover);
+		    } catch (InterruptedException e) {
+		        getLogger().error(LogCategories.IMAGE, e);
+		    } catch (ExecutionException e) {
+		        getLogger().error(LogCategories.IMAGE, e);
+		    }
+		}
+	}
+
+	private static final long serialVersionUID = -5982158797052430789L;
 
     private Logger logger;
 
@@ -109,35 +147,7 @@ public final class CoverFlow extends JPanel {
         }
 
         // Fetch cover
-        new SwingWorker<Image, Void>() {
-            @Override
-            protected Image doInBackground() throws Exception {
-                if (audioObject instanceof Radio) {
-                    return Images.getImage(Images.RADIO_BIG).getImage();
-                } else if (audioObject instanceof PodcastFeedEntry) {
-                    return Images.getImage(Images.RSS_BIG).getImage();
-                }
-                if (cachedImages.containsKey(audioObject)) {
-                    return cachedImages.get(audioObject);
-                }
-                Image image = getPicture((AudioFile) audioObject);
-                cachedImages.put(audioObject, image);
-                return image;
-            }
-
-            @Override
-            protected void done() {
-                Image image;
-                try {
-                    image = get();
-                    setPicture(audioObject, image, cover);
-                } catch (InterruptedException e) {
-                    getLogger().error(LogCategories.IMAGE, e);
-                } catch (ExecutionException e) {
-                    getLogger().error(LogCategories.IMAGE, e);
-                }
-            }
-        }.execute();
+        new PaintCoversSwingWorker(cover, audioObject).execute();
     }
 
     /**

@@ -61,7 +61,31 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class PlayerPanel extends PreferencesPanel {
 
-    class HotkeyTableModel extends AbstractTableModel {
+    private final class HotkeyTableTableCellRendererCode extends
+			TableCellRendererCode {
+		@Override
+		public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+		    Component c = superComponent;
+		    GuiUtils.applyComponentOrientation((JLabel) c);
+		    if (conflicts.contains(row) || notRecommendedKeys.contains(row)) {
+		        ((JLabel) c).setForeground(ColorDefinitions.WARNING_COLOR);
+		    }
+		    String keyWarnings = "";
+		    if (conflicts.contains(row)) {
+		        keyWarnings += I18nUtils.getString("DUPLICATE_HOTKEYS");
+		    }
+		    if (notRecommendedKeys.contains(row)) {
+		        if (conflicts.contains(row)) {
+		            keyWarnings += " ";
+		        }
+		        keyWarnings += I18nUtils.getString("NOT_RECOMMENDED_HOTKEYS");
+		    }
+		    ((JLabel) c).setToolTipText(keyWarnings.isEmpty() ? null : keyWarnings);
+		    return c;
+		}
+	}
+
+	class HotkeyTableModel extends AbstractTableModel {
 
         private static final long serialVersionUID = -5726677745418003289L;
 
@@ -165,29 +189,7 @@ public final class PlayerPanel extends PreferencesPanel {
         hotkeyTable.getTableHeader().setResizingAllowed(false);
         hotkeyTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         hotkeyTable.setEnabled(HotkeyHandler.getInstance().areHotkeysSupported());
-        hotkeyTable.setDefaultRenderer(Object.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new TableCellRendererCode() {
-
-            @Override
-            public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                Component c = superComponent;
-                GuiUtils.applyComponentOrientation((JLabel) c);
-                if (conflicts.contains(row) || notRecommendedKeys.contains(row)) {
-                    ((JLabel) c).setForeground(ColorDefinitions.WARNING_COLOR);
-                }
-                String keyWarnings = "";
-                if (conflicts.contains(row)) {
-                    keyWarnings += I18nUtils.getString("DUPLICATE_HOTKEYS");
-                }
-                if (notRecommendedKeys.contains(row)) {
-                    if (conflicts.contains(row)) {
-                        keyWarnings += " ";
-                    }
-                    keyWarnings += I18nUtils.getString("NOT_RECOMMENDED_HOTKEYS");
-                }
-                ((JLabel) c).setToolTipText(keyWarnings.isEmpty() ? null : keyWarnings);
-                return c;
-            }
-        }));
+        hotkeyTable.setDefaultRenderer(Object.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new HotkeyTableTableCellRendererCode()));
 
         hotkeyTable.addKeyListener(new KeyAdapter() {
             @Override
