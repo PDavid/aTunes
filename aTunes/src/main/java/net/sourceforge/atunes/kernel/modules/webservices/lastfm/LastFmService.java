@@ -509,6 +509,28 @@ public class LastFmService {
         try {
             // Try to get from cache
             SimilarArtistsInfo similar = lastFmCache.retrieveArtistSimilar(artist);
+            
+            // Check cache content. Since "match" value changed in last.fm api can be entries in cache with old value.
+            // For those entries match is equal or less than 1.0, so discard entries where maximum match is that value
+            if (similar != null) {
+            	float maxMatch = 0;
+            	for (ArtistInfo artistInfo : similar.getArtists()) {
+            		float match = 0;
+            		try {
+            			match = Float.parseFloat(artistInfo.getMatch());
+                		if (match > maxMatch) {
+                			maxMatch = match;
+                		}
+            		} catch (NumberFormatException e) {
+            			// Not a valid match value, better to discard cache content
+            			similar = null;
+            		}
+            	}
+            	if (maxMatch <= 1) {
+            		similar = null;
+            	}
+            }
+            
             if (similar == null) {
                 Collection<Artist> as = Artist.getSimilar(artist, getApiKey());
                 Artist a = Artist.getInfo(artist, getApiKey());
