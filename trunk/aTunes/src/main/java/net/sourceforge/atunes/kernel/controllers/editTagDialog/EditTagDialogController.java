@@ -54,7 +54,39 @@ import org.jdesktop.swingx.combobox.ListComboBoxModel;
 
 public final class EditTagDialogController extends SimpleController<EditTagDialog> {
 
-    private static class TitleTextFieldKeyAdapter extends KeyAdapter {
+    private final class GetInsidePictureSwingWorker extends
+			SwingWorker<ImageIcon, Void> {
+		private final List<AudioFile> audioFiles;
+
+		private GetInsidePictureSwingWorker(List<AudioFile> audioFiles) {
+			this.audioFiles = audioFiles;
+		}
+
+		@Override
+		protected ImageIcon doInBackground() throws Exception {
+		    return AudioFilePictureUtils.getInsidePicture(audioFiles.get(0), Constants.DIALOG_LARGE_IMAGE_WIDTH, Constants.DIALOG_LARGE_IMAGE_HEIGHT);
+		}
+
+		@Override
+		protected void done() {
+		    try {
+		        // Check if it's the right dialog
+		        if (audioFilesEditing.equals(audioFiles)) {
+		            ImageIcon cover = get();
+		            getEditTagDialog().getCover().setIcon(cover);
+		            getEditTagDialog().getCoverButton().setEnabled(true);
+		            getEditTagDialog().getRemoveCoverButton().setEnabled(true);
+		            getEditTagDialog().getOkButton().setEnabled(true);
+		        }
+		    } catch (InterruptedException e) {
+		        getLogger().error(LogCategories.IMAGE, e);
+		    } catch (ExecutionException e) {
+		        getLogger().error(LogCategories.IMAGE, e);
+		    }
+		}
+	}
+
+	private static class TitleTextFieldKeyAdapter extends KeyAdapter {
         private final JTextField textField;
         private final String fileName;
         private int lenght = 0;
@@ -213,30 +245,7 @@ public final class EditTagDialogController extends SimpleController<EditTagDialo
                 getEditTagDialog().getOkButton().setEnabled(false);
                 getComponentControlled().getCoverCheckBox().setSelected(true);
 
-                new SwingWorker<ImageIcon, Void>() {
-                    @Override
-                    protected ImageIcon doInBackground() throws Exception {
-                        return AudioFilePictureUtils.getInsidePicture(audioFiles.get(0), Constants.DIALOG_LARGE_IMAGE_WIDTH, Constants.DIALOG_LARGE_IMAGE_HEIGHT);
-                    }
-
-                    @Override
-                    protected void done() {
-                        try {
-                            // Check if it's the right dialog
-                            if (audioFilesEditing.equals(audioFiles)) {
-                                ImageIcon cover = get();
-                                getEditTagDialog().getCover().setIcon(cover);
-                                getEditTagDialog().getCoverButton().setEnabled(true);
-                                getEditTagDialog().getRemoveCoverButton().setEnabled(true);
-                                getEditTagDialog().getOkButton().setEnabled(true);
-                            }
-                        } catch (InterruptedException e) {
-                            getLogger().error(LogCategories.IMAGE, e);
-                        } catch (ExecutionException e) {
-                            getLogger().error(LogCategories.IMAGE, e);
-                        }
-                    }
-                }.execute();
+                new GetInsidePictureSwingWorker(audioFiles).execute();
             }
 
         } else {

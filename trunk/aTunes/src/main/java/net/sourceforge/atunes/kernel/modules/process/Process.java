@@ -48,7 +48,37 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public abstract class Process {
 
-    /**
+    private final class ProcessRunnable implements Runnable {
+		@Override
+		public void run() {
+		    // Show progress dialog
+		    showProgressDialog();
+
+		    // Run process code
+		    boolean ok = runProcess();
+
+		    // Process finished: hide progress dialog
+		    hideProgressDialog();
+
+		    // If process has been canceled then execute cancel code
+		    if (canceled) {
+		        runCancel();
+		    }
+
+		    // Notify all listeners
+		    if (listeners != null && !listeners.isEmpty()) {
+		        for (ProcessListener listener : listeners) {
+		            if (canceled) {
+		                listener.processCanceled();
+		            } else {
+		                listener.processFinished(ok);
+		            }
+		        }
+		    }
+		}
+	}
+
+	/**
      * Logger shared by all processes
      */
     private Logger logger;
@@ -139,35 +169,7 @@ public abstract class Process {
         });
 
         // Create new thread to run process
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                // Show progress dialog
-                showProgressDialog();
-
-                // Run process code
-                boolean ok = runProcess();
-
-                // Process finished: hide progress dialog
-                hideProgressDialog();
-
-                // If process has been canceled then execute cancel code
-                if (canceled) {
-                    runCancel();
-                }
-
-                // Notify all listeners
-                if (listeners != null && !listeners.isEmpty()) {
-                    for (ProcessListener listener : listeners) {
-                        if (canceled) {
-                            listener.processCanceled();
-                        } else {
-                            listener.processFinished(ok);
-                        }
-                    }
-                }
-            }
-        });
+        Thread t = new Thread(new ProcessRunnable());
 
         // Run...
         t.start();

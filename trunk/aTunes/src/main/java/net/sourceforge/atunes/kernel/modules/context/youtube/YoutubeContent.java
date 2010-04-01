@@ -64,7 +64,37 @@ import org.jfree.ui.ExtensionFileFilter;
  */
 public class YoutubeContent extends ContextPanelContent {
 
-    private static class YoutubeResultsTableCellRendererCode extends TableCellRendererCode {
+    private final class YoutubeResultsTableMouseAdapter extends MouseAdapter {
+		private final JPopupMenu youtubeTableMenu;
+
+		private YoutubeResultsTableMouseAdapter(JPopupMenu youtubeTableMenu) {
+			this.youtubeTableMenu = youtubeTableMenu;
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+		    if (e.isPopupTrigger()) {
+		        showPopup(e);
+		    }
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+		    if (e.isPopupTrigger()) {
+		        showPopup(e);
+		    }
+		    if (e.getButton() == MouseEvent.BUTTON1) {
+		        playVideoAtYoutube();
+		    }
+		}
+
+		private void showPopup(MouseEvent e) {
+		    youtubeResultTable.getSelectionModel().setSelectionInterval(youtubeResultTable.rowAtPoint(e.getPoint()), youtubeResultTable.rowAtPoint(e.getPoint()));
+		    youtubeTableMenu.show(e.getComponent(), e.getX(), e.getY());
+		}
+	}
+
+	private static class YoutubeResultsTableCellRendererCode extends TableCellRendererCode {
         @Override
         public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             return getPanelForTableRenderer(((YoutubeResultEntry) value).getImage(), StringUtils.getString("<html>", ((YoutubeResultEntry) value).getName(), "<br>(",
@@ -137,29 +167,7 @@ public class YoutubeContent extends ContextPanelContent {
         youtubeTableMenu.add(downloadMenuItem);
         youtubeTableMenu.setInvoker(youtubeResultTable);
 
-        youtubeResultTable.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                if (e.isPopupTrigger()) {
-                    showPopup(e);
-                }
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if (e.isPopupTrigger()) {
-                    showPopup(e);
-                }
-                if (e.getButton() == MouseEvent.BUTTON1) {
-                    playVideoAtYoutube();
-                }
-            }
-
-            private void showPopup(MouseEvent e) {
-                youtubeResultTable.getSelectionModel().setSelectionInterval(youtubeResultTable.rowAtPoint(e.getPoint()), youtubeResultTable.rowAtPoint(e.getPoint()));
-                youtubeTableMenu.show(e.getComponent(), e.getX(), e.getY());
-            }
-        });
+        youtubeResultTable.addMouseListener(new YoutubeResultsTableMouseAdapter(youtubeTableMenu));
 
         return youtubeResultTable;
     }

@@ -72,33 +72,52 @@ public class EditionPopUpMenu extends JPopupMenu {
         add(new JSeparator());
         add(selectAllAction);
 
-        this.textComponent.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if (e.getButton() == MouseEvent.BUTTON3) {
-                    // Cut and delete if text selected and component editable
-                    boolean textSelected = EditionPopUpMenu.this.textComponent.getSelectionStart() < EditionPopUpMenu.this.textComponent.getSelectionEnd();
-                    cutAction.setEnabled(textSelected && EditionPopUpMenu.this.textComponent.isEditable());
-                    deleteAction.setEnabled(textSelected && EditionPopUpMenu.this.textComponent.isEditable());
-
-                    // Copy if text selected
-                    copyAction.setEnabled(textSelected);
-
-                    // Paste if clipboard contains text and component editable
-                    pasteAction.setEnabled(ClipboardFacade.clipboardContainsText() && EditionPopUpMenu.this.textComponent.isEditable());
-
-                    // Select all if text field contains text
-                    selectAllAction.setEnabled(EditionPopUpMenu.this.textComponent.getText().length() > 0);
-
-                    // Show menu
-                    show(EditionPopUpMenu.this.textComponent, e.getX(), e.getY());
-                }
-            }
-        });
+        this.textComponent.addMouseListener(new TextComponentMouseAdapter(copyAction, deleteAction,
+				selectAllAction, pasteAction, cutAction));
     }
 
-    /**
+    private final class TextComponentMouseAdapter extends MouseAdapter {
+		private final Action copyAction;
+		private final Action deleteAction;
+		private final Action selectAllAction;
+		private final Action pasteAction;
+		private final Action cutAction;
+
+		private TextComponentMouseAdapter(Action copyAction,
+				Action deleteAction, Action selectAllAction,
+				Action pasteAction, Action cutAction) {
+			this.copyAction = copyAction;
+			this.deleteAction = deleteAction;
+			this.selectAllAction = selectAllAction;
+			this.pasteAction = pasteAction;
+			this.cutAction = cutAction;
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+		    super.mouseClicked(e);
+		    if (e.getButton() == MouseEvent.BUTTON3) {
+		        // Cut and delete if text selected and component editable
+		        boolean textSelected = EditionPopUpMenu.this.textComponent.getSelectionStart() < EditionPopUpMenu.this.textComponent.getSelectionEnd();
+		        cutAction.setEnabled(textSelected && EditionPopUpMenu.this.textComponent.isEditable());
+		        deleteAction.setEnabled(textSelected && EditionPopUpMenu.this.textComponent.isEditable());
+
+		        // Copy if text selected
+		        copyAction.setEnabled(textSelected);
+
+		        // Paste if clipboard contains text and component editable
+		        pasteAction.setEnabled(ClipboardFacade.clipboardContainsText() && EditionPopUpMenu.this.textComponent.isEditable());
+
+		        // Select all if text field contains text
+		        selectAllAction.setEnabled(EditionPopUpMenu.this.textComponent.getText().length() > 0);
+
+		        // Show menu
+		        show(EditionPopUpMenu.this.textComponent, e.getX(), e.getY());
+		    }
+		}
+	}
+
+	/**
      * Cut action
      */
     private static class CutAction extends AbstractAction {
