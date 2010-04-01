@@ -65,7 +65,87 @@ public final class SearchHandler extends Handler {
     /** Singleton instance. */
     private static SearchHandler instance = new SearchHandler();
 
-    /**
+    private final class RefreshSearchIndexSwingWorker extends
+			SwingWorker<Void, Void> {
+		private final SearchableObject searchableObject;
+		private IndexWriter indexWriter;
+
+		private RefreshSearchIndexSwingWorker(SearchableObject searchableObject) {
+			this.searchableObject = searchableObject;
+		}
+
+		@Override
+		protected Void doInBackground() {
+		    ReadWriteLock searchIndexLock = indexLocks.get(searchableObject);
+		    try {
+		        searchIndexLock.writeLock().lock();
+		        initSearchIndex();
+		        updateSearchIndex(searchableObject.getElementsToIndex());
+		        finishSearchIndex();
+		        return null;
+		    } finally {
+		        searchIndexLock.writeLock().unlock();
+		        ClosingUtils.close(indexWriter);
+		        currentIndexingWorks.put(searchableObject, Boolean.FALSE);
+		    }
+		}
+
+		@Override
+		protected void done() {
+		    // Nothing to do
+		}
+
+		private void initSearchIndex() {
+		    getLogger().info(LogCategories.HANDLER, "Updating index for " + searchableObject.getClass());
+		    try {
+		        FileUtils.deleteDirectory(searchableObject.getIndexDirectory().getFile());
+		        indexWriter = new IndexWriter(searchableObject.getIndexDirectory(), new SimpleAnalyzer(), IndexWriter.MaxFieldLength.UNLIMITED);
+		    } catch (CorruptIndexException e) {
+		        getLogger().error(LogCategories.HANDLER, e);
+		    } catch (LockObtainFailedException e) {
+		        getLogger().error(LogCategories.HANDLER, e);
+		    } catch (IOException e) {
+		        getLogger().error(LogCategories.HANDLER, e);
+		    }
+		}
+
+		private void updateSearchIndex(List<AudioObject> audioObjects) {
+		    getLogger().info(LogCategories.HANDLER, "update search index");
+		    if (indexWriter != null) {
+		        for (AudioObject audioObject : audioObjects) {
+		            Document d = searchableObject.getDocumentForElement(audioObject);
+		            // Add dummy field
+		            d.add(new Field(INDEX_FIELD_DUMMY, INDEX_FIELD_DUMMY, Field.Store.YES, Field.Index.NOT_ANALYZED_NO_NORMS));
+
+		            try {
+		                indexWriter.addDocument(d);
+		            } catch (CorruptIndexException e) {
+		                getLogger().error(LogCategories.HANDLER, e);
+		            } catch (IOException e) {
+		                getLogger().error(LogCategories.HANDLER, e);
+		            }
+		        }
+		    }
+		}
+
+		private void finishSearchIndex() {
+		    getLogger().info(LogCategories.HANDLER, StringUtils.getString("Update index for ", searchableObject.getClass(), " finished"));
+		    if (indexWriter != null) {
+		        try {
+		            indexWriter.optimize();
+		            indexWriter.close();
+
+		            indexWriter = null;
+		        } catch (CorruptIndexException e) {
+		            getLogger().error(LogCategories.HANDLER, e);
+		        } catch (IOException e) {
+		            getLogger().error(LogCategories.HANDLER, e);
+		        }
+		    }
+		}
+	}
+
+	/**
      * Logical operators used to create complex rules.
      */
     public enum LogicalOperator {
@@ -250,80 +330,7 @@ public final class SearchHandler extends Handler {
      *            the searchable object
      */
     private void updateSearchIndex(final SearchableObject searchableObject) {
-        SwingWorker<Void, Void> refreshSearchIndex = new SwingWorker<Void, Void>() {
-            private IndexWriter indexWriter;
-
-            @Override
-            protected Void doInBackground() {
-                ReadWriteLock searchIndexLock = indexLocks.get(searchableObject);
-                try {
-                    searchIndexLock.writeLock().lock();
-                    initSearchIndex();
-                    updateSearchIndex(searchableObject.getElementsToIndex());
-                    finishSearchIndex();
-                    return null;
-                } finally {
-                    searchIndexLock.writeLock().unlock();
-                    ClosingUtils.close(indexWriter);
-                    currentIndexingWorks.put(searchableObject, Boolean.FALSE);
-                }
-            }
-
-            @Override
-            protected void done() {
-                // Nothing to do
-            }
-
-            private void initSearchIndex() {
-                getLogger().info(LogCategories.HANDLER, "Updating index for " + searchableObject.getClass());
-                try {
-                    FileUtils.deleteDirectory(searchableObject.getIndexDirectory().getFile());
-                    indexWriter = new IndexWriter(searchableObject.getIndexDirectory(), new SimpleAnalyzer(), IndexWriter.MaxFieldLength.UNLIMITED);
-                } catch (CorruptIndexException e) {
-                    getLogger().error(LogCategories.HANDLER, e);
-                } catch (LockObtainFailedException e) {
-                    getLogger().error(LogCategories.HANDLER, e);
-                } catch (IOException e) {
-                    getLogger().error(LogCategories.HANDLER, e);
-                }
-            }
-
-            private void updateSearchIndex(List<AudioObject> audioObjects) {
-                getLogger().info(LogCategories.HANDLER, "update search index");
-                if (indexWriter != null) {
-                    for (AudioObject audioObject : audioObjects) {
-                        Document d = searchableObject.getDocumentForElement(audioObject);
-                        // Add dummy field
-                        d.add(new Field(INDEX_FIELD_DUMMY, INDEX_FIELD_DUMMY, Field.Store.YES, Field.Index.NOT_ANALYZED_NO_NORMS));
-
-                        try {
-                            indexWriter.addDocument(d);
-                        } catch (CorruptIndexException e) {
-                            getLogger().error(LogCategories.HANDLER, e);
-                        } catch (IOException e) {
-                            getLogger().error(LogCategories.HANDLER, e);
-                        }
-                    }
-                }
-            }
-
-            private void finishSearchIndex() {
-                getLogger().info(LogCategories.HANDLER, StringUtils.getString("Update index for ", searchableObject.getClass(), " finished"));
-                if (indexWriter != null) {
-                    try {
-                        indexWriter.optimize();
-                        indexWriter.close();
-
-                        indexWriter = null;
-                    } catch (CorruptIndexException e) {
-                        getLogger().error(LogCategories.HANDLER, e);
-                    } catch (IOException e) {
-                        getLogger().error(LogCategories.HANDLER, e);
-                    }
-                }
-            }
-
-        };
+        SwingWorker<Void, Void> refreshSearchIndex = new RefreshSearchIndexSwingWorker(searchableObject);
         if (currentIndexingWorks.get(searchableObject) == null || !currentIndexingWorks.get(searchableObject)) {
             currentIndexingWorks.put(searchableObject, Boolean.TRUE);
             refreshSearchIndex.execute();

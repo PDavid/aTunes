@@ -48,7 +48,42 @@ import org.w3c.dom.Element;
  */
 public final class UpdateHandler extends Handler {
 
-    /** Url to look for new version. */
+    private final class CheckUpdatesSwingWorker extends
+			SwingWorker<ApplicationVersion, Void> {
+		private final boolean showNoNewVersion;
+		private final ProxyBean p;
+		private final boolean alwaysInDialog;
+
+		private CheckUpdatesSwingWorker(boolean showNoNewVersion, ProxyBean p,
+				boolean alwaysInDialog) {
+			this.showNoNewVersion = showNoNewVersion;
+			this.p = p;
+			this.alwaysInDialog = alwaysInDialog;
+		}
+
+		@Override
+		protected ApplicationVersion doInBackground() throws Exception {
+		    return getLastVersion(p);
+		}
+
+		@Override
+		protected void done() {
+		    try {
+		        ApplicationVersion version = get();
+		        if (version != null && version.compareTo(Constants.VERSION) == 1) {
+		            GuiHandler.getInstance().showNewVersionInfo(version, alwaysInDialog);
+		        } else if (showNoNewVersion) {
+		            GuiHandler.getInstance().showMessage(I18nUtils.getString("NOT_NEW_VERSION"));
+		        }
+		    } catch (InterruptedException e) {
+		        getLogger().internalError(e);
+		    } catch (ExecutionException e) {
+		        getLogger().internalError(e);
+		    }
+		}
+	}
+
+	/** Url to look for new version. */
     private static final String updatesURL = "http://www.atunes.org/latest.xml";
 
     /** Instance */
@@ -91,28 +126,7 @@ public final class UpdateHandler extends Handler {
      *            the show no new version
      */
     public void checkUpdates(final ProxyBean p, final boolean alwaysInDialog, final boolean showNoNewVersion) {
-        new SwingWorker<ApplicationVersion, Void>() {
-            @Override
-            protected ApplicationVersion doInBackground() throws Exception {
-                return getLastVersion(p);
-            }
-
-            @Override
-            protected void done() {
-                try {
-                    ApplicationVersion version = get();
-                    if (version != null && version.compareTo(Constants.VERSION) == 1) {
-                        GuiHandler.getInstance().showNewVersionInfo(version, alwaysInDialog);
-                    } else if (showNoNewVersion) {
-                        GuiHandler.getInstance().showMessage(I18nUtils.getString("NOT_NEW_VERSION"));
-                    }
-                } catch (InterruptedException e) {
-                    getLogger().internalError(e);
-                } catch (ExecutionException e) {
-                    getLogger().internalError(e);
-                }
-            }
-        }.execute();
+        new CheckUpdatesSwingWorker(showNoNewVersion, p, alwaysInDialog).execute();
     }
 
     /**

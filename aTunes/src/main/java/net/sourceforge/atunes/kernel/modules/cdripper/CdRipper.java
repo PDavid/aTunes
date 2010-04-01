@@ -41,7 +41,63 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 public class CdRipper {
 
-    public static final String ARTIST_PATTERN = "%A";
+    private final class EncodeFileRunnable implements Runnable {
+		private final int trackNumber;
+		private final List<String> artistNames;
+		private final List<String> composerNames;
+		private final boolean ripResultFinal;
+		private final File resultFileTemp;
+		private final File infFileTemp;
+		private final List<String> titles;
+		private final File wavFileTemp;
+
+		private EncodeFileRunnable(int trackNumber, List<String> artistNames,
+				List<String> composerNames, boolean ripResultFinal,
+				File resultFileTemp, File infFileTemp, List<String> titles,
+				File wavFileTemp) {
+			this.trackNumber = trackNumber;
+			this.artistNames = artistNames;
+			this.composerNames = composerNames;
+			this.ripResultFinal = ripResultFinal;
+			this.resultFileTemp = resultFileTemp;
+			this.infFileTemp = infFileTemp;
+			this.titles = titles;
+			this.wavFileTemp = wavFileTemp;
+		}
+
+		@Override
+		public void run() {
+		    if (!interrupted && ripResultFinal && encoder != null) {
+		        boolean encodeResult = encoder.encode(wavFileTemp, resultFileTemp,
+		                (titles != null && titles.size() >= trackNumber ? titles.get(trackNumber - 1) : null), trackNumber,
+		                artistNames.size() > trackNumber - 1 ? artistNames.get(trackNumber - 1) : Artist.getUnknownArtist(),
+		                composerNames.size() > trackNumber - 1 ? composerNames.get(trackNumber - 1) : "");
+		        if (encodeResult && encoderListener != null && !interrupted) {
+		            SwingUtilities.invokeLater(new Runnable() {
+		                @Override
+		                public void run() {
+		                    encoderListener.notifyFileFinished(resultFileTemp);
+		                }
+		            });
+		        }
+
+		        getLogger().info(LogCategories.RIPPER, "Deleting wav file...");
+		        wavFileTemp.delete();
+		        infFileTemp.delete();
+
+		        if (interrupted && resultFileTemp != null) {
+		            resultFileTemp.delete();
+		        }
+		    } else if (interrupted) {
+		        wavFileTemp.delete();
+		        infFileTemp.delete();
+		    } else if (!ripResultFinal) {
+		        getLogger().error(LogCategories.RIPPER, StringUtils.getString("Rip failed. Skipping track ", trackNumber, "..."));
+		    }
+		}
+	}
+
+	public static final String ARTIST_PATTERN = "%A";
     public static final String ALBUM_PATTERN = "%L";
     public static final String TITLE_PATTERN = "%T";
     public static final String TRACK_NUMBER = "%N";
@@ -189,38 +245,9 @@ public class CdRipper {
                  * ripping can happen in parallel. This allows to import CD's
                  * faster.
                  */
-                Runnable encodeFile = new Runnable() {
-                    @Override
-                    public void run() {
-                        if (!interrupted && ripResultFinal && encoder != null) {
-                            boolean encodeResult = encoder.encode(wavFileTemp, resultFileTemp,
-                                    (titles != null && titles.size() >= trackNumber ? titles.get(trackNumber - 1) : null), trackNumber,
-                                    artistNames.size() > trackNumber - 1 ? artistNames.get(trackNumber - 1) : Artist.getUnknownArtist(),
-                                    composerNames.size() > trackNumber - 1 ? composerNames.get(trackNumber - 1) : "");
-                            if (encodeResult && encoderListener != null && !interrupted) {
-                                SwingUtilities.invokeLater(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        encoderListener.notifyFileFinished(resultFileTemp);
-                                    }
-                                });
-                            }
-
-                            getLogger().info(LogCategories.RIPPER, "Deleting wav file...");
-                            wavFileTemp.delete();
-                            infFileTemp.delete();
-
-                            if (interrupted && resultFileTemp != null) {
-                                resultFileTemp.delete();
-                            }
-                        } else if (interrupted) {
-                            wavFileTemp.delete();
-                            infFileTemp.delete();
-                        } else if (!ripResultFinal) {
-                            getLogger().error(LogCategories.RIPPER, StringUtils.getString("Rip failed. Skipping track ", trackNumber, "..."));
-                        }
-                    }
-                };
+                Runnable encodeFile = new EncodeFileRunnable(trackNumber, artistNames, composerNames,
+						ripResultFinal, resultFileTemp, infFileTemp, titles,
+						wavFileTemp);
 
                 executorService.execute(encodeFile);
                 /*

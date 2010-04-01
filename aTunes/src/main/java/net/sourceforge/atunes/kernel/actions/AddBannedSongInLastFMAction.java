@@ -40,7 +40,34 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class AddBannedSongInLastFMAction extends Action {
 
-    private static final long serialVersionUID = -2687851398606488392L;
+    private final class BanSongSwingWorker extends SwingWorker<Void, Void> {
+		private final AudioObject song;
+
+		private BanSongSwingWorker(AudioObject song) {
+			this.song = song;
+		}
+
+		@Override
+		protected Void doInBackground() throws Exception {
+		    LastFmService.getInstance().addBannedSong(song);
+		    return null;
+		}
+
+		@Override
+		protected void done() {
+		    try {
+		        get();
+		    } catch (InterruptedException e) {
+		    	new Logger().error(LogCategories.CONTEXT, e);
+		    } catch (ExecutionException e) {
+		    	new Logger().error(LogCategories.CONTEXT, e);
+		    } finally {
+		        setEnabled(true);
+		    }
+		}
+	}
+
+	private static final long serialVersionUID = -2687851398606488392L;
 
     AddBannedSongInLastFMAction() {
         super(I18nUtils.getString("ADD_BANNED_SONG_IN_LASTFM"));
@@ -60,27 +87,7 @@ public class AddBannedSongInLastFMAction extends Action {
      */
     public void banSong(final AudioObject song) {
         setEnabled(false);
-        new SwingWorker<Void, Void>() {
-
-            @Override
-            protected Void doInBackground() throws Exception {
-                LastFmService.getInstance().addBannedSong(song);
-                return null;
-            }
-
-            @Override
-            protected void done() {
-                try {
-                    get();
-                } catch (InterruptedException e) {
-                	new Logger().error(LogCategories.CONTEXT, e);
-                } catch (ExecutionException e) {
-                	new Logger().error(LogCategories.CONTEXT, e);
-                } finally {
-                    setEnabled(true);
-                }
-            }
-        }.execute();
+        new BanSongSwingWorker(song).execute();
     }
 
 }

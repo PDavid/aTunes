@@ -19,7 +19,6 @@
  */
 package net.sourceforge.atunes.gui.views.dialogs.properties;
 
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -48,7 +47,33 @@ import org.jdesktop.swingx.border.DropShadowBorder;
  */
 final class AudioFilePropertiesDialog extends PropertiesDialog {
 
-    private static final long serialVersionUID = 7504320983331038543L;
+    private final class FillPictureSwingWorker extends
+			SwingWorker<ImageIcon, Void> {
+		@Override
+		protected ImageIcon doInBackground() throws Exception {
+		    return file.getImage(Constants.DIALOG_IMAGE_SIZE);
+		}
+
+		@Override
+		protected void done() {
+		    ImageIcon cover;
+		    try {
+		        cover = get();
+		        if (cover != null) {
+		            pictureLabel.setIcon(cover);
+		        } else {
+		            pictureLabel.setIcon(Images.getImage(Images.NO_COVER_AUDIOFILE_PROPERTIES));
+		        }
+		        pictureLabel.setVisible(true);
+		    } catch (InterruptedException e) {
+		        getLogger().error(LogCategories.IMAGE, e);
+		    } catch (ExecutionException e) {
+		        getLogger().error(LogCategories.IMAGE, e);
+		    }
+		}
+	}
+
+	private static final long serialVersionUID = 7504320983331038543L;
 
     private Logger logger;
 
@@ -199,30 +224,7 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
      * Fill picture.
      */
     private void fillPicture() {
-        new SwingWorker<ImageIcon, Void>() {
-            @Override
-            protected ImageIcon doInBackground() throws Exception {
-                return file.getImage(Constants.DIALOG_IMAGE_SIZE);
-            }
-
-            @Override
-            protected void done() {
-                ImageIcon cover;
-                try {
-                    cover = get();
-                    if (cover != null) {
-                        pictureLabel.setIcon(cover);
-                    } else {
-                        pictureLabel.setIcon(Images.getImage(Images.NO_COVER_AUDIOFILE_PROPERTIES));
-                    }
-                    pictureLabel.setVisible(true);
-                } catch (InterruptedException e) {
-                    getLogger().error(LogCategories.IMAGE, e);
-                } catch (ExecutionException e) {
-                    getLogger().error(LogCategories.IMAGE, e);
-                }
-            }
-        }.execute();
+        new FillPictureSwingWorker().execute();
 
     }
 

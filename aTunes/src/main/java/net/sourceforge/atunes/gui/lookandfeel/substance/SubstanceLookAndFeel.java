@@ -71,7 +71,46 @@ import org.pushingpixels.substance.api.renderers.SubstanceDefaultTreeCellRendere
 public final class SubstanceLookAndFeel extends LookAndFeel {
 
     private static final class CustomFontPolicy implements FontPolicy {
-        private final Font baseFont;
+        private final class CustomFontSet implements FontSet {
+			private FontUIResource windowTitleFont = new FontUIResource(baseFont.deriveFont(Font.BOLD, baseFont.getSize() + 1f));
+			private FontUIResource titleFont = new FontUIResource(baseFont.deriveFont((float) baseFont.getSize()));
+			private FontUIResource smallFont = new FontUIResource(baseFont.deriveFont(baseFont.getSize() - 1f));
+			private FontUIResource messageFont = new FontUIResource(baseFont.deriveFont(baseFont.getSize() - 1f));
+			private FontUIResource menuFont = new FontUIResource(baseFont.deriveFont((float) baseFont.getSize()));
+			private FontUIResource controlFont = new FontUIResource(baseFont.deriveFont((float) baseFont.getSize()));
+
+			@Override
+			public FontUIResource getWindowTitleFont() {
+			    return windowTitleFont;
+			}
+
+			@Override
+			public FontUIResource getTitleFont() {
+			    return titleFont;
+			}
+
+			@Override
+			public FontUIResource getSmallFont() {
+			    return smallFont;
+			}
+
+			@Override
+			public FontUIResource getMessageFont() {
+			    return messageFont;
+			}
+
+			@Override
+			public FontUIResource getMenuFont() {
+			    return menuFont;
+			}
+
+			@Override
+			public FontUIResource getControlFont() {
+			    return controlFont;
+			}
+		}
+
+		private final Font baseFont;
 
         private CustomFontPolicy(Font baseFont) {
             this.baseFont = baseFont;
@@ -79,45 +118,7 @@ public final class SubstanceLookAndFeel extends LookAndFeel {
 
         @Override
         public FontSet getFontSet(String arg0, UIDefaults arg1) {
-            return new FontSet() {
-
-                private FontUIResource windowTitleFont = new FontUIResource(baseFont.deriveFont(Font.BOLD, baseFont.getSize() + 1f));
-                private FontUIResource titleFont = new FontUIResource(baseFont.deriveFont((float) baseFont.getSize()));
-                private FontUIResource smallFont = new FontUIResource(baseFont.deriveFont(baseFont.getSize() - 1f));
-                private FontUIResource messageFont = new FontUIResource(baseFont.deriveFont(baseFont.getSize() - 1f));
-                private FontUIResource menuFont = new FontUIResource(baseFont.deriveFont((float) baseFont.getSize()));
-                private FontUIResource controlFont = new FontUIResource(baseFont.deriveFont((float) baseFont.getSize()));
-
-                @Override
-                public FontUIResource getWindowTitleFont() {
-                    return windowTitleFont;
-                }
-
-                @Override
-                public FontUIResource getTitleFont() {
-                    return titleFont;
-                }
-
-                @Override
-                public FontUIResource getSmallFont() {
-                    return smallFont;
-                }
-
-                @Override
-                public FontUIResource getMessageFont() {
-                    return messageFont;
-                }
-
-                @Override
-                public FontUIResource getMenuFont() {
-                    return menuFont;
-                }
-
-                @Override
-                public FontUIResource getControlFont() {
-                    return controlFont;
-                }
-            };
+            return new CustomFontSet();
         }
     }
 

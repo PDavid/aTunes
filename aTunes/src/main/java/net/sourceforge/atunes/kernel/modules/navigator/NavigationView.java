@@ -65,7 +65,36 @@ import net.sourceforge.atunes.model.TreeObject;
 
 public abstract class NavigationView implements AudioObjectsSource {
 
-    /**
+    private final class ArtistNamesComparator implements Comparator<String> {
+		private final Pattern PATTERN = Pattern.compile("(.*)\\s+(.*?)");
+
+		@Override
+		public int compare(String s1, String s2) {
+		    String[] ss1 = s1.split("[,\\&]");
+		    String[] ss2 = s2.split("[,\\&]");
+		    String d1 = getStringForSorting(s1, ss1);
+		    String d2 = getStringForSorting(s2, ss2);
+		    return getCollator().compare(d1.toLowerCase(), d2.toLowerCase());
+		}
+
+		private String getStringForSorting(String s, String[] ss) {
+		    StringBuilder sb = new StringBuilder();
+		    for (String k : ss) {
+		        Matcher matcher = PATTERN.matcher(k.trim());
+		        String m = s;
+		        String n = "";
+		        if (matcher.matches()) {
+		            m = matcher.group(2);
+		            n = matcher.group(1);
+		        }
+		        sb.append(m);
+		        sb.append(n);
+		    }
+		    return sb.toString();
+		}
+	}
+
+	/**
      * Common logger for all navigation views
      */
     private Logger logger;
@@ -569,35 +598,7 @@ public abstract class NavigationView implements AudioObjectsSource {
      * @return the artistNamesComparator
      */
     protected Comparator<String> getArtistNamesComparator() {
-        return new Comparator<String>() {
-
-            private final Pattern PATTERN = Pattern.compile("(.*)\\s+(.*?)");
-
-            @Override
-            public int compare(String s1, String s2) {
-                String[] ss1 = s1.split("[,\\&]");
-                String[] ss2 = s2.split("[,\\&]");
-                String d1 = getStringForSorting(s1, ss1);
-                String d2 = getStringForSorting(s2, ss2);
-                return getCollator().compare(d1.toLowerCase(), d2.toLowerCase());
-            }
-
-            private String getStringForSorting(String s, String[] ss) {
-                StringBuilder sb = new StringBuilder();
-                for (String k : ss) {
-                    Matcher matcher = PATTERN.matcher(k.trim());
-                    String m = s;
-                    String n = "";
-                    if (matcher.matches()) {
-                        m = matcher.group(2);
-                        n = matcher.group(1);
-                    }
-                    sb.append(m);
-                    sb.append(n);
-                }
-                return sb.toString();
-            }
-        };
+        return new ArtistNamesComparator();
     }
 
     /**

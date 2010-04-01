@@ -37,7 +37,35 @@ import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 
 public class ToolBarFilterController extends SimpleController<ToolBarFilterPanel> {
 
-    /**
+    private final class FilterTextFieldDocumentListener implements
+			DocumentListener {
+		@Override
+		public void removeUpdate(DocumentEvent e) {
+		    update();
+		}
+
+		@Override
+		public void insertUpdate(DocumentEvent e) {
+		    update();
+		}
+
+		@Override
+		public void changedUpdate(DocumentEvent e) {
+		    update();
+		}
+
+		private void update() {
+		    // Search as user type
+		    SwingUtilities.invokeLater(new Runnable() {
+		        @Override
+		        public void run() {
+		            applyFilter(getFilter());
+		        }
+		    });
+		}
+	}
+
+	/**
      * Group of controls (filters)
      */
     private ButtonGroup group;
@@ -57,33 +85,7 @@ public class ToolBarFilterController extends SimpleController<ToolBarFilterPanel
     @Override
     protected void addBindings() {
         // Add listeners
-        getComponentControlled().getFilterTextField().getDocument().addDocumentListener(new DocumentListener() {
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                update();
-            }
-
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                update();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                update();
-            }
-
-            private void update() {
-                // Search as user type
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        applyFilter(getFilter());
-                    }
-                });
-            }
-        });
+        getComponentControlled().getFilterTextField().getDocument().addDocumentListener(new FilterTextFieldDocumentListener());
 
         getComponentControlled().getClearFilterButton().addActionListener(new ActionListener() {
             @Override
