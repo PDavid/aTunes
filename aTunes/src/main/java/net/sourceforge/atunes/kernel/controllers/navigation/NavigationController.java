@@ -82,7 +82,48 @@ import net.sourceforge.atunes.model.TreeObject;
 
 public final class NavigationController extends Controller implements AudioFilesRemovedListener {
 
-    public enum ViewMode {
+    private final class ExtendedToolTipActionListener implements ActionListener {
+		private final class GetAndSetImageSwingWorker extends
+				SwingWorker<ImageIcon, Void> {
+			private final Object currentObject;
+
+			private GetAndSetImageSwingWorker(Object currentObject) {
+				this.currentObject = currentObject;
+			}
+
+			@Override
+			protected ImageIcon doInBackground() throws Exception {
+			    // Get image for albums
+			    return ExtendedToolTip.getImage(currentObject);
+			}
+
+			@Override
+			protected void done() {
+			    try {
+			        // Set image in tooltip when done (tooltip can be not visible then)
+			        if (currentExtendedToolTipContent != null && currentExtendedToolTipContent.equals(currentObject)) {
+			            getExtendedToolTip().setImage(get());
+			        }
+			    } catch (InterruptedException e) {
+			        getLogger().error(LogCategories.IMAGE, e);
+			    } catch (ExecutionException e) {
+			        getLogger().error(LogCategories.IMAGE, e);
+			    }
+			}
+		}
+
+		@Override
+        public void actionPerformed(ActionEvent arg0) {
+            getExtendedToolTip().setVisible(true);
+
+            final Object currentObject = currentExtendedToolTipContent;
+            SwingWorker<ImageIcon, Void> getAndSetImage = new GetAndSetImageSwingWorker(currentObject);
+            getAndSetImage.execute();
+
+        }
+	}
+
+	public enum ViewMode {
 
         ARTIST, ALBUM, GENRE, FOLDER, YEAR
     }
@@ -105,37 +146,7 @@ public final class NavigationController extends Controller implements AudioFiles
     private ColumnSetPopupMenu columnSetPopupMenu;
 
     /** The timer. */
-    private Timer timer = new Timer(0, new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent arg0) {
-            getExtendedToolTip().setVisible(true);
-
-            final Object currentObject = currentExtendedToolTipContent;
-            SwingWorker<ImageIcon, Void> getAndSetImage = new SwingWorker<ImageIcon, Void>() {
-                @Override
-                protected ImageIcon doInBackground() throws Exception {
-                    // Get image for albums
-                    return ExtendedToolTip.getImage(currentObject);
-                }
-
-                @Override
-                protected void done() {
-                    try {
-                        // Set image in tooltip when done (tooltip can be not visible then)
-                        if (currentExtendedToolTipContent != null && currentExtendedToolTipContent.equals(currentObject)) {
-                            getExtendedToolTip().setImage(get());
-                        }
-                    } catch (InterruptedException e) {
-                        getLogger().error(LogCategories.IMAGE, e);
-                    } catch (ExecutionException e) {
-                        getLogger().error(LogCategories.IMAGE, e);
-                    }
-                }
-            };
-            getAndSetImage.execute();
-
-        }
-    });
+    private Timer timer = new Timer(0, new ExtendedToolTipActionListener());
 
     /**
      * Instantiates a new navigation controller.

@@ -76,6 +76,128 @@ public final class MultiFolderSelectionDialog extends CustomModalDialog {
     private int checkBoxWidth = new JCheckBox().getPreferredSize().width;
 
     private final class SetTreeSwingWorker extends SwingWorker<CheckNode, Void> {
+		private final class FileSystemTreeTreeWillExpandListener implements
+				TreeWillExpandListener {
+			private final class TreeWillExpandSwingWorker extends
+					SwingWorker<List<CheckNode>, Void> {
+				private final CheckNode selectedNode;
+
+				private TreeWillExpandSwingWorker(CheckNode selectedNode) {
+					this.selectedNode = selectedNode;
+				}
+
+				@Override
+				protected List<CheckNode> doInBackground() throws Exception {
+
+				    List<CheckNode> result = new ArrayList<CheckNode>();
+
+				    Directory dir = (Directory) selectedNode.getUserObject();
+				    File[] files = fsView.getFiles(dir.getFile(), true);
+				    Arrays.sort(files);
+				    for (File f : files) {
+				        File[] fChilds = f.listFiles();
+				        if (fChilds != null) {
+				            boolean hasDirs = hasDirectories(fChilds);
+
+				            CheckNode treeNode2 = new CheckNode(new Directory(f, fsView.getSystemDisplayName(f)), fsView.getSystemIcon(f));
+				            result.add(treeNode2);
+				            if (hasDirs) {
+				                treeNode2.add(new DefaultMutableTreeNode("Dummy node"));
+				            }
+				            treeNode2.setSelected(selectedNode.isSelected() || selectedFolders.contains(f));
+				            treeNode2.setEnabled(!selectedNode.isSelected());
+				        }
+				    }
+				    return result;
+				}
+
+				@Override
+				protected void done() {
+				    selectedNode.removeAllChildren();
+				    try {
+				        List<CheckNode> nodes = get();
+				        for (CheckNode node : nodes) {
+				            selectedNode.add(node);
+				        }
+				        ((DefaultTreeModel) fileSystemTree.getModel()).reload(selectedNode);
+				    } catch (InterruptedException e) {
+				        getLogger().internalError(e);
+				    } catch (ExecutionException e) {
+				        getLogger().internalError(e);
+				    }
+				}
+			}
+
+			@Override
+			public void treeWillCollapse(TreeExpansionEvent event) throws ExpandVetoException {
+			    // Nothing to do
+			}
+
+			@Override
+			public void treeWillExpand(TreeExpansionEvent event) throws ExpandVetoException {
+
+			    final CheckNode selectedNode = (CheckNode) event.getPath().getLastPathComponent();
+			    fileSystemTree.setSelectionPath(event.getPath());
+			    selectedNode.removeAllChildren();
+
+			    selectedNode.add(new DefaultMutableTreeNode(I18nUtils.getString("PLEASE_WAIT") + "..."));
+
+			    new TreeWillExpandSwingWorker(selectedNode).execute();
+
+			}
+		}
+
+		private final class FileSystemTreeMouseAdapter extends MouseAdapter {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			    if (e.getButton() == MouseEvent.BUTTON1) {
+			        int x = e.getX();
+			        int y = e.getY();
+			        int row = fileSystemTree.getRowForLocation(x, y);
+			        TreePath path = fileSystemTree.getPathForRow(row);
+
+			        // If user pressed button over text area, don't select node
+			        if (x > fileSystemTree.getPathBounds(path).x + checkBoxWidth) {
+			            return;
+			        }
+
+			        if (path != null) {
+			            //fileSystemTree.expandPath(path);
+			            CheckNode node = (CheckNode) path.getLastPathComponent();
+
+			            if (node.isEnabled()) {
+
+			                boolean isSelected = !(node.isSelected());
+			                node.setSelected(isSelected);
+
+			                if (isSelected) {
+			                    // Find if another child folder has been added before
+			                    List<File> childFolders = new ArrayList<File>();
+			                    for (File f : selectedFolders) {
+			                        if (f.getAbsolutePath().startsWith(node.getDir().getFile().getAbsolutePath())) {
+			                            childFolders.add(f);
+			                        }
+			                    }
+			                    for (File f : childFolders) {
+			                        selectedFolders.remove(f);
+			                    }
+
+			                    selectedFolders.add(node.getDir().getFile());
+			                } else {
+			                    selectedFolders.remove(node.getDir().getFile());
+			                }
+
+			                // I need revalidate if node is root.  but why?
+			                if (row == 0) {
+			                    fileSystemTree.revalidate();
+			                    fileSystemTree.repaint();
+			                }
+			            }
+			        }
+			    }
+			}
+		}
+
 		@Override
 		protected CheckNode doInBackground() throws Exception {
 		    File[] roots = fsView.getRoots();
@@ -111,118 +233,8 @@ public final class MultiFolderSelectionDialog extends CustomModalDialog {
 		        fileSystemTree.expandRow(0);
 		        fileSystemTree.setSelectionRow(0);
 
-		        fileSystemTree.addMouseListener(new MouseAdapter() {
-		            @Override
-		            public void mouseClicked(MouseEvent e) {
-		                if (e.getButton() == MouseEvent.BUTTON1) {
-		                    int x = e.getX();
-		                    int y = e.getY();
-		                    int row = fileSystemTree.getRowForLocation(x, y);
-		                    TreePath path = fileSystemTree.getPathForRow(row);
-
-		                    // If user pressed button over text area, don't select node
-		                    if (x > fileSystemTree.getPathBounds(path).x + checkBoxWidth) {
-		                        return;
-		                    }
-
-		                    if (path != null) {
-		                        //fileSystemTree.expandPath(path);
-		                        CheckNode node = (CheckNode) path.getLastPathComponent();
-
-		                        if (node.isEnabled()) {
-
-		                            boolean isSelected = !(node.isSelected());
-		                            node.setSelected(isSelected);
-
-		                            if (isSelected) {
-		                                // Find if another child folder has been added before
-		                                List<File> childFolders = new ArrayList<File>();
-		                                for (File f : selectedFolders) {
-		                                    if (f.getAbsolutePath().startsWith(node.getDir().getFile().getAbsolutePath())) {
-		                                        childFolders.add(f);
-		                                    }
-		                                }
-		                                for (File f : childFolders) {
-		                                    selectedFolders.remove(f);
-		                                }
-
-		                                selectedFolders.add(node.getDir().getFile());
-		                            } else {
-		                                selectedFolders.remove(node.getDir().getFile());
-		                            }
-
-		                            // I need revalidate if node is root.  but why?
-		                            if (row == 0) {
-		                                fileSystemTree.revalidate();
-		                                fileSystemTree.repaint();
-		                            }
-		                        }
-		                    }
-		                }
-		            }
-		        });
-		        fileSystemTree.addTreeWillExpandListener(new TreeWillExpandListener() {
-		            @Override
-		            public void treeWillCollapse(TreeExpansionEvent event) throws ExpandVetoException {
-		                // Nothing to do
-		            }
-
-		            @Override
-		            public void treeWillExpand(TreeExpansionEvent event) throws ExpandVetoException {
-
-		                final CheckNode selectedNode = (CheckNode) event.getPath().getLastPathComponent();
-		                fileSystemTree.setSelectionPath(event.getPath());
-		                selectedNode.removeAllChildren();
-
-		                selectedNode.add(new DefaultMutableTreeNode(I18nUtils.getString("PLEASE_WAIT") + "..."));
-
-		                new SwingWorker<List<CheckNode>, Void>() {
-
-		                    @Override
-		                    protected List<CheckNode> doInBackground() throws Exception {
-
-		                        List<CheckNode> result = new ArrayList<CheckNode>();
-
-		                        Directory dir = (Directory) selectedNode.getUserObject();
-		                        File[] files = fsView.getFiles(dir.getFile(), true);
-		                        Arrays.sort(files);
-		                        for (File f : files) {
-		                            File[] fChilds = f.listFiles();
-		                            if (fChilds != null) {
-		                                boolean hasDirs = hasDirectories(fChilds);
-
-		                                CheckNode treeNode2 = new CheckNode(new Directory(f, fsView.getSystemDisplayName(f)), fsView.getSystemIcon(f));
-		                                result.add(treeNode2);
-		                                if (hasDirs) {
-		                                    treeNode2.add(new DefaultMutableTreeNode("Dummy node"));
-		                                }
-		                                treeNode2.setSelected(selectedNode.isSelected() || selectedFolders.contains(f));
-		                                treeNode2.setEnabled(!selectedNode.isSelected());
-		                            }
-		                        }
-		                        return result;
-		                    }
-
-		                    @Override
-		                    protected void done() {
-		                        selectedNode.removeAllChildren();
-		                        try {
-		                            List<CheckNode> nodes = get();
-		                            for (CheckNode node : nodes) {
-		                                selectedNode.add(node);
-		                            }
-		                            ((DefaultTreeModel) fileSystemTree.getModel()).reload(selectedNode);
-		                        } catch (InterruptedException e) {
-		                            getLogger().internalError(e);
-		                        } catch (ExecutionException e) {
-		                            getLogger().internalError(e);
-		                        }
-		                    }
-
-		                }.execute();
-
-		            }
-		        });
+		        fileSystemTree.addMouseListener(new FileSystemTreeMouseAdapter());
+		        fileSystemTree.addTreeWillExpandListener(new FileSystemTreeTreeWillExpandListener());
 
 		        fileSystemTree.revalidate();
 		        fileSystemTree.repaint();

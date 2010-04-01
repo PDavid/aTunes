@@ -135,29 +135,7 @@ public class XineEngine extends PlayerEngine {
         if (valid) {
             startPlayback(0);
             info("Starting duration thread");
-            durationUpdater = new Timer(250, new ActionListener() {
-                int prevPosition;
-
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    if (isEnginePlaying()) {
-                        int s = -1;
-                        synchronized (xineLock) {
-                            s = xineController.getStreamPos();
-                        }
-                        // TODO perform better checks. May be >= is better here, but there is some bug with seek
-                        if (s >= 0) {
-                            prevPosition = s;
-                            setTime(prevPosition);
-                            //if ((audioObjectToPlay instanceof PodcastFeedEntry || audioObjectToPlay instanceof Radio) && s < 1000) {
-                            if (s < 1000) {
-                                GuiHandler.getInstance().updateStatusBar(audioObjectToPlay);
-                                GuiHandler.getInstance().updateTitleBar(audioObjectToPlay);
-                            }
-                        }
-                    }
-                }
-            });
+            durationUpdater = new Timer(250, new DurationUpdaterActionListener(audioObjectToPlay));
             durationUpdater.start();
         } else {
             currentAudioObjectFinished(false, errorMessage);
@@ -176,33 +154,7 @@ public class XineEngine extends PlayerEngine {
         stopDurationUpdater();
         if (useFadeAway) {
             info("Fading away...");
-            new Thread("FadeAway") {
-
-                @Override
-                public void run() {
-                    // xineController.getVolume() always returns 0 ??
-                    // Using volume value from app instead of xine
-                    int vol = ApplicationState.getInstance().getVolume();
-                    int i = 0;
-                    while (i < 50 && vol > 0) {
-                        vol = vol - 2;
-                        vol = vol < 0 ? 0 : vol;
-                        xineController.setVolume(vol);
-                        try {
-                            Thread.sleep(25);
-                        } catch (Exception e) {
-                            // Nothing to do
-                        }
-                        i++;
-                    }
-
-                    internalStop();
-                    // Volume restored after stop
-                    // If we don't do this, volume is 0 in next audio object
-                    xineController.setVolume(ApplicationState.getInstance().getVolume());
-                }
-
-            }.start();
+            new FadeAwayThread("FadeAway").start();
         } else {
             info("Stopping without fade");
             internalStop();
@@ -313,7 +265,66 @@ public class XineEngine extends PlayerEngine {
         getLogger().error(LogCategories.PLAYER, o);
     }
 
-    protected class XineListener implements XineEventListener {
+    private final class FadeAwayThread extends Thread {
+		private FadeAwayThread(String name) {
+			super(name);
+		}
+
+		@Override
+		public void run() {
+		    // xineController.getVolume() always returns 0 ??
+		    // Using volume value from app instead of xine
+		    int vol = ApplicationState.getInstance().getVolume();
+		    int i = 0;
+		    while (i < 50 && vol > 0) {
+		        vol = vol - 2;
+		        vol = vol < 0 ? 0 : vol;
+		        xineController.setVolume(vol);
+		        try {
+		            Thread.sleep(25);
+		        } catch (Exception e) {
+		            // Nothing to do
+		        }
+		        i++;
+		    }
+
+		    internalStop();
+		    // Volume restored after stop
+		    // If we don't do this, volume is 0 in next audio object
+		    xineController.setVolume(ApplicationState.getInstance().getVolume());
+		}
+	}
+
+	private final class DurationUpdaterActionListener implements ActionListener {
+		private final AudioObject audioObjectToPlay;
+		int prevPosition;
+
+		private DurationUpdaterActionListener(AudioObject audioObjectToPlay) {
+			this.audioObjectToPlay = audioObjectToPlay;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		    if (isEnginePlaying()) {
+		        int s = -1;
+		        synchronized (xineLock) {
+		            s = xineController.getStreamPos();
+		        }
+		        // TODO perform better checks. May be >= is better here, but there is some bug with seek
+		        if (s >= 0) {
+		            prevPosition = s;
+		            setTime(prevPosition);
+		            //if ((audioObjectToPlay instanceof PodcastFeedEntry || audioObjectToPlay instanceof Radio) && s < 1000) {
+		            if (s < 1000) {
+		                GuiHandler.getInstance().updateStatusBar(audioObjectToPlay);
+		                GuiHandler.getInstance().updateTitleBar(audioObjectToPlay);
+		            }
+		        }
+		    }
+		}
+	}
+
+	protected class XineListener implements XineEventListener {
 
         public void handleXineEvent(int eventID, byte[] data) {
             if (eventID == 1) {

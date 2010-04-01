@@ -55,7 +55,91 @@ public final class CoverNavigatorController extends SimpleController<CoverNaviga
     private static final int COVER_PANEL_WIDTH = Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize() + 20;
     private static final int COVER_PANEL_HEIGHT = Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize() + 40;
 
-    private static class IntermediateResult {
+    private final class GenerateAndShowAlbumPanelsSwingWorker extends
+			SwingWorker<Void, IntermediateResult> {
+		private final Artist artistSelected;
+
+		private GenerateAndShowAlbumPanelsSwingWorker(Artist artistSelected) {
+			this.artistSelected = artistSelected;
+		}
+
+		@Override
+		protected Void doInBackground() throws Exception {
+
+		    final List<Album> albums = new ArrayList<Album>(artistSelected.getAlbums().values());
+		    Collections.sort(albums);
+
+		    int coversAdded = 0;
+		    for (Album album : albums) {
+		        ImageIcon cover = album.getPicture(Constants.COVER_NAVIGATOR_IMAGE_SIZE);
+		        publish(new IntermediateResult(album, cover));
+		        coversAdded++;
+		    }
+		    return null;
+		}
+
+		@Override
+		protected void done() {
+		    getComponentControlled().setCursor(Cursor.getDefaultCursor());
+		    getComponentControlled().getList().setEnabled(true);
+		    getComponentControlled().getCoversButton().setEnabled(true);
+		}
+
+		@Override
+		protected void process(List<IntermediateResult> intermediateResults) {
+		    for (IntermediateResult intermediateResult : intermediateResults) {
+		        getComponentControlled().getCoversPanel().add(getPanelForAlbum(intermediateResult.getAlbum(), intermediateResult.getCover()));
+		        getComponentControlled().getCoversPanel().revalidate();
+		        getComponentControlled().getCoversPanel().repaint();
+		        getComponentControlled().getCoversPanel().validate();
+		    }
+		}
+	}
+
+	private final class GetCoversButtonActionListener implements ActionListener {
+		private final class GetCoversProcessListener implements ProcessListener {
+			@Override
+			public void processCanceled() {
+			    update();
+			}
+
+			@Override
+			public void processFinished(boolean ok) {
+			    update();
+			}
+
+			private void update() {
+			    try {
+			        SwingUtilities.invokeAndWait(new Runnable() {
+			            @Override
+			            public void run() {
+			                updateCovers();
+			            }
+			        });
+			    } catch (Exception e) {
+			        // Nothing to do
+			    }
+			}
+		}
+
+		private final CoverNavigatorFrame frame;
+
+		private GetCoversButtonActionListener(CoverNavigatorFrame frame) {
+			this.frame = frame;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		    Artist selectedArtist = (Artist) frame.getList().getSelectedValue();
+		    if (selectedArtist != null) {
+		        GetCoversProcess process = new GetCoversProcess(selectedArtist, getComponentControlled());
+		        process.addProcessListener(new GetCoversProcessListener());
+		        process.execute();
+		    }
+		}
+	}
+
+	private static class IntermediateResult {
 
         private Album album;
         private ImageIcon cover;
@@ -98,40 +182,7 @@ public final class CoverNavigatorController extends SimpleController<CoverNaviga
             }
 
         });
-        frame.getCoversButton().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Artist selectedArtist = (Artist) frame.getList().getSelectedValue();
-                if (selectedArtist != null) {
-                    GetCoversProcess process = new GetCoversProcess(selectedArtist, getComponentControlled());
-                    process.addProcessListener(new ProcessListener() {
-                        @Override
-                        public void processCanceled() {
-                            update();
-                        }
-
-                        @Override
-                        public void processFinished(boolean ok) {
-                            update();
-                        }
-
-                        private void update() {
-                            try {
-                                SwingUtilities.invokeAndWait(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        updateCovers();
-                                    }
-                                });
-                            } catch (Exception e) {
-                                // Nothing to do
-                            }
-                        }
-                    });
-                    process.execute();
-                }
-            }
-        });
+        frame.getCoversButton().addActionListener(new GetCoversButtonActionListener(frame));
     }
 
     @Override
@@ -194,39 +245,7 @@ public final class CoverNavigatorController extends SimpleController<CoverNaviga
         getComponentControlled().getCoversButton().setEnabled(false);
         getComponentControlled().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-        SwingWorker<Void, IntermediateResult> generateAndShowAlbumPanels = new SwingWorker<Void, IntermediateResult>() {
-            @Override
-            protected Void doInBackground() throws Exception {
-
-                final List<Album> albums = new ArrayList<Album>(artistSelected.getAlbums().values());
-                Collections.sort(albums);
-
-                int coversAdded = 0;
-                for (Album album : albums) {
-                    ImageIcon cover = album.getPicture(Constants.COVER_NAVIGATOR_IMAGE_SIZE);
-                    publish(new IntermediateResult(album, cover));
-                    coversAdded++;
-                }
-                return null;
-            }
-
-            @Override
-            protected void done() {
-                getComponentControlled().setCursor(Cursor.getDefaultCursor());
-                getComponentControlled().getList().setEnabled(true);
-                getComponentControlled().getCoversButton().setEnabled(true);
-            }
-
-            @Override
-            protected void process(List<IntermediateResult> intermediateResults) {
-                for (IntermediateResult intermediateResult : intermediateResults) {
-                    getComponentControlled().getCoversPanel().add(getPanelForAlbum(intermediateResult.getAlbum(), intermediateResult.getCover()));
-                    getComponentControlled().getCoversPanel().revalidate();
-                    getComponentControlled().getCoversPanel().repaint();
-                    getComponentControlled().getCoversPanel().validate();
-                }
-            }
-        };
+        SwingWorker<Void, IntermediateResult> generateAndShowAlbumPanels = new GenerateAndShowAlbumPanelsSwingWorker(artistSelected);
         generateAndShowAlbumPanels.execute();
     }
 
