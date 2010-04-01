@@ -184,30 +184,7 @@ public final class AutoCompleteDecorator {
         decorate(editorComponent, document, adaptor);
 
         // show the popup list when the user presses a key
-        final KeyListener keyListener = new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent keyEvent) {
-                // don't popup on action keys (cursor movements, etc...)
-                if (keyEvent.isActionKey()) {
-                    return;
-                }
-
-                // don't popup if the combobox isn't visible anyway
-                if (comboBox.isDisplayable() && !comboBox.isPopupVisible()) {
-                    int keyCode = keyEvent.getKeyCode();
-                    // don't popup when the user hits shift,ctrl or alt
-                    if (keyCode == KeyEvent.VK_SHIFT || keyCode == KeyEvent.VK_CONTROL || keyCode == KeyEvent.VK_ALT) {
-                        return;
-                    }
-                    // don't popup when the user hits escape (see issue #311)
-                    if (keyCode == KeyEvent.VK_ESCAPE) {
-                        return;
-                    }
-
-                    comboBox.setPopupVisible(true);
-                }
-            }
-        };
+        final KeyListener keyListener = new PopUpListKeyAdapter(comboBox);
         editorComponent.addKeyListener(keyListener);
 
         if (stringConverter != ObjectToStringConverter.DEFAULT_IMPLEMENTATION) {
@@ -285,7 +262,38 @@ public final class AutoCompleteDecorator {
         }
     }
 
-    static class NonStrictBackspaceAction extends TextAction {
+    private static final class PopUpListKeyAdapter extends KeyAdapter {
+		private final JComboBox comboBox;
+
+		private PopUpListKeyAdapter(JComboBox comboBox) {
+			this.comboBox = comboBox;
+		}
+
+		@Override
+		public void keyPressed(KeyEvent keyEvent) {
+		    // don't popup on action keys (cursor movements, etc...)
+		    if (keyEvent.isActionKey()) {
+		        return;
+		    }
+
+		    // don't popup if the combobox isn't visible anyway
+		    if (comboBox.isDisplayable() && !comboBox.isPopupVisible()) {
+		        int keyCode = keyEvent.getKeyCode();
+		        // don't popup when the user hits shift,ctrl or alt
+		        if (keyCode == KeyEvent.VK_SHIFT || keyCode == KeyEvent.VK_CONTROL || keyCode == KeyEvent.VK_ALT) {
+		            return;
+		        }
+		        // don't popup when the user hits escape (see issue #311)
+		        if (keyCode == KeyEvent.VK_ESCAPE) {
+		            return;
+		        }
+
+		        comboBox.setPopupVisible(true);
+		    }
+		}
+	}
+
+	static class NonStrictBackspaceAction extends TextAction {
         private static final long serialVersionUID = -5508607690462561673L;
 
         private Action backspace;
