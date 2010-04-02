@@ -61,18 +61,24 @@ public final class StatsDialogController extends SimpleController<StatsDialog> {
     private static class RightAlignmentTableCellRendererCode extends TableCellRendererCode {
         @Override
         public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            JLabel l = (JLabel) superComponent;
-            l.setHorizontalAlignment(SwingConstants.RIGHT);
-            return l;
+        	if (superComponent instanceof JLabel) {
+        		JLabel l = (JLabel) superComponent;
+        		l.setHorizontalAlignment(SwingConstants.RIGHT);
+        		return l;
+        	}
+        	return superComponent;
         }
     }
 
     private static class SwingOrientationTableCellRendererCode extends TableCellRendererCode {
         @Override
         public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            JLabel l = (JLabel) superComponent;
-            l.setHorizontalAlignment(GuiUtils.getComponentOrientationAsSwingConstant());
-            return l;
+        	if (superComponent instanceof JLabel) {
+        		JLabel l = (JLabel) superComponent;
+        		l.setHorizontalAlignment(GuiUtils.getComponentOrientationAsSwingConstant());
+        		return l;
+        	}
+        	return superComponent;
         }
     }
 

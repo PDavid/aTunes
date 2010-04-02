@@ -32,7 +32,7 @@ public class FolderTreeCellDecorator extends TreeCellDecorator {
 
     @Override
     public Component decorateTreeCellComponent(Component component, Object userObject) {
-        if (userObject instanceof Folder) {
+        if (userObject instanceof Folder && component instanceof JLabel) {
             ((JLabel) component).setIcon(Images.getImage(Images.FOLDER));
         }
         return component;

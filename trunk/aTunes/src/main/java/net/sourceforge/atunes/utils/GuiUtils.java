@@ -473,7 +473,9 @@ public final class GuiUtils {
     public static class ComponentOrientationTableCellRendererCode extends TableCellRendererCode {
         @Override
         public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            GuiUtils.applyComponentOrientation((JLabel) superComponent);
+        	if (superComponent instanceof JLabel) {
+        		GuiUtils.applyComponentOrientation((JLabel) superComponent);
+        	}
             return superComponent;
         }
     }
