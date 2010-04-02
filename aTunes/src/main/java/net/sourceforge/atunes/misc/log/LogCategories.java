@@ -22,7 +22,7 @@ package net.sourceforge.atunes.misc.log;
 /**
  * The Class LogCategories.
  */
-public class LogCategories {
+public final class LogCategories {
 
     /** The Constant START. */
     public static final String START = "START       ";

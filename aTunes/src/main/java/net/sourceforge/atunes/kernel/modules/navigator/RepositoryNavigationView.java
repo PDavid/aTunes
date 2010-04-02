@@ -79,7 +79,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 public class RepositoryNavigationView extends NavigationView {
 
-    private static class AlbumDefaultMutableTreeNode extends DefaultMutableTreeNode {
+    private static final class AlbumDefaultMutableTreeNode extends DefaultMutableTreeNode {
         private static final long serialVersionUID = -1276777390072754207L;
 
         private AlbumDefaultMutableTreeNode(Object userObject) {

@@ -29,7 +29,7 @@ import net.sourceforge.atunes.kernel.actions.MuteAction;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 
-public class Volume {
+public final class Volume {
 
     private Volume() {
 

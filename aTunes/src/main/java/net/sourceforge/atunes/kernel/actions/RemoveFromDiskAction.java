@@ -55,7 +55,7 @@ import org.apache.commons.io.FileUtils;
 
 public class RemoveFromDiskAction extends Action {
 
-    private static class DeleteFilesWorker extends SwingWorker<Void, Void> {
+    private static final class DeleteFilesWorker extends SwingWorker<Void, Void> {
         private final List<AudioFile> files;
 
         private DeleteFilesWorker(List<AudioFile> files) {

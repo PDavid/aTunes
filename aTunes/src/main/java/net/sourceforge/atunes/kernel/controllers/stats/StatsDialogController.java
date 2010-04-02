@@ -76,7 +76,7 @@ public final class StatsDialogController extends SimpleController<StatsDialog> {
         }
     }
 
-    private static class StatsDialogDefaultTableModel extends DefaultTableModel {
+    private static final class StatsDialogDefaultTableModel extends DefaultTableModel {
         private static final long serialVersionUID = 0L;
 
         private StatsDialogDefaultTableModel(Object[][] data, Object[] columnNames) {

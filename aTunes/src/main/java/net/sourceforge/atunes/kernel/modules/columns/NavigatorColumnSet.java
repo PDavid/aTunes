@@ -31,7 +31,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
  * 
  * @author fleax
  */
-public class NavigatorColumnSet extends ColumnSet {
+public final class NavigatorColumnSet extends ColumnSet {
 
     /**
      * Singleton instance

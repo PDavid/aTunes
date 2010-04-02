@@ -27,7 +27,7 @@ import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import org.commonjukebox.plugins.PluginApi;
 
 @PluginApi
-public class WebServicesApi {
+public final class WebServicesApi {
 
     private WebServicesApi() {
 

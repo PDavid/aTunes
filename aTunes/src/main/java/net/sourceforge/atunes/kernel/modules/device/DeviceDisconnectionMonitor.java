@@ -28,7 +28,7 @@ import javax.swing.SwingUtilities;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
-public class DeviceDisconnectionMonitor extends Thread {
+public final class DeviceDisconnectionMonitor extends Thread {
 
     private static DeviceDisconnectionMonitor instance;
     private static List<DeviceDisconnectionListener> listeners = new ArrayList<DeviceDisconnectionListener>();

@@ -53,7 +53,7 @@ import net.sourceforge.atunes.misc.log.Logger;
  * Static class to access controllers by calling
  * ControllerProxy.getInstance().get<Name of controller>()
  */
-public class ControllerProxy {
+public final class ControllerProxy {
 
     /** Logger. */
     private Logger logger;

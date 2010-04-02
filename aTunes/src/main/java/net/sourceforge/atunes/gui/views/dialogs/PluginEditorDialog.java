@@ -112,7 +112,7 @@ public class PluginEditorDialog extends CustomModalDialog {
 
     private static class PluginConfigurationPanel extends JPanel {
 
-        private static class TextFieldKeyAdapter extends KeyAdapter {
+        private static final class TextFieldKeyAdapter extends KeyAdapter {
             private final JTextField textField;
             private final PluginProperty<?> property;
 

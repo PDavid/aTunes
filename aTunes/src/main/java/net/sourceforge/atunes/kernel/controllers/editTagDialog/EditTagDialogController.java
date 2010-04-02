@@ -86,7 +86,7 @@ public final class EditTagDialogController extends SimpleController<EditTagDialo
 		}
 	}
 
-	private static class TitleTextFieldKeyAdapter extends KeyAdapter {
+	private static final class TitleTextFieldKeyAdapter extends KeyAdapter {
         private final JTextField textField;
         private final String fileName;
         private int lenght = 0;

@@ -29,7 +29,7 @@ import net.sourceforge.atunes.misc.log.Logger;
  * 
  * @author fleax
  */
-public class TagDetector {
+public final class TagDetector {
 
     /** The logger. */
     private static Logger logger;

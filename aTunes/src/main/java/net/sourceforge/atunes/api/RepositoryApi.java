@@ -25,7 +25,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import org.commonjukebox.plugins.PluginApi;
 
 @PluginApi
-public class RepositoryApi {
+public final class RepositoryApi {
 
     private RepositoryApi() {
 

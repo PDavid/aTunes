@@ -36,7 +36,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 public class CopyToRepositoryAction extends ActionOverSelectedObjects<AudioFile> {
 
     private static class ImportProcessListener implements ProcessListener {
-        private static class ImportProcessFinishedRunnable implements Runnable {
+        private static final class ImportProcessFinishedRunnable implements Runnable {
             private final boolean ok;
 
             private ImportProcessFinishedRunnable(boolean ok) {

@@ -55,7 +55,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class PlayListHandler extends Handler implements AudioFilesRemovedListener, PlayListEventListener {
 
-    private static class RowListComparator implements Comparator<Integer> {
+    private static final class RowListComparator implements Comparator<Integer> {
         private final boolean up;
 
         private RowListComparator(boolean up) {

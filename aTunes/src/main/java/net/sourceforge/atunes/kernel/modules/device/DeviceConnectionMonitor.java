@@ -29,7 +29,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
-public class DeviceConnectionMonitor extends Thread {
+public final class DeviceConnectionMonitor extends Thread {
 
     private static DeviceConnectionMonitor instance;
     private static List<DeviceConnectionListener> listeners = new ArrayList<DeviceConnectionListener>();

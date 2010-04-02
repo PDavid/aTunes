@@ -30,7 +30,7 @@ import net.sourceforge.atunes.utils.GuiUtils;
 /**
  * Colors used on app.
  */
-public class ColorDefinitions {
+public final class ColorDefinitions {
 
     public static final Color TITLE_DIALOG_FONT_COLOR = new Color(0.0f, 0.0f, 0.0f, 0.5f);
     public static final Color WARNING_COLOR = Color.RED;

@@ -54,7 +54,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class LyricsContent extends ContextPanelContent {
 
-    private static class OpenUrlActionListener implements ActionListener {
+    private static final class OpenUrlActionListener implements ActionListener {
         private final Entry<String, String> entry;
 
         private OpenUrlActionListener(Entry<String, String> entry) {

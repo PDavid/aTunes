@@ -26,7 +26,7 @@ import java.util.List;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
 
-class PlayListMode implements PlayListChangedListener {
+final class PlayListMode implements PlayListChangedListener {
 
     /**
      * List with play list positions in random order. This list is updated when

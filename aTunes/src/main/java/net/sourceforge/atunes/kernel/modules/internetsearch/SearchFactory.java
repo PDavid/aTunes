@@ -30,7 +30,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * A factory for creating Search objects.
  */
-public class SearchFactory {
+public final class SearchFactory {
 
     /** The searches. */
     private static HashMap<String, Search> searches;

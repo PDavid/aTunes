@@ -79,7 +79,7 @@ import org.commonjukebox.plugins.PluginApi;
  * This class is responsible of retrieve information from Last.fm web services.
  */
 @PluginApi
-public class LastFmService {
+public final class LastFmService {
 
     private final class SubmitNowPlayingInfoRunnable implements Runnable {
 		private final AudioFile audioFile;

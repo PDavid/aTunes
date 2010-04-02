@@ -94,7 +94,7 @@ public final class GeneralPanel extends PreferencesPanel {
         }
     }
 
-    private static class LocaleComparator implements Comparator<Locale> {
+    private static final class LocaleComparator implements Comparator<Locale> {
         private final Locale currentLocale;
 
         private LocaleComparator(Locale currentLocale) {
