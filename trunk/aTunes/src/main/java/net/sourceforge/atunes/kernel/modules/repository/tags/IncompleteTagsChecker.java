@@ -33,7 +33,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 
-public class IncompleteTagsChecker {
+public final class IncompleteTagsChecker {
 
     private IncompleteTagsChecker() {
 

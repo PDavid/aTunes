@@ -95,7 +95,7 @@ public final class PodcastFeedHandler extends Handler {
 		}
 	}
 
-	private static class DeleteDownloadedPodcastFeedEntryWorker extends SwingWorker<Boolean, Void> {
+	private static final class DeleteDownloadedPodcastFeedEntryWorker extends SwingWorker<Boolean, Void> {
         private final File f;
         private final PodcastFeedEntry podcastFeedEntry;
 

@@ -33,7 +33,7 @@ import net.sourceforge.atunes.model.TreeObject;
 /**
  * The Class RefreshUtils.
  */
-public class RefreshUtils {
+public final class RefreshUtils {
 
     private RefreshUtils() {
 

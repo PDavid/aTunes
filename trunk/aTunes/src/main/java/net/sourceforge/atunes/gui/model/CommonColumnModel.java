@@ -206,7 +206,7 @@ public abstract class CommonColumnModel extends DefaultTableColumnModel {
         columnSet.setCurrentColumns();
     }
 
-    private static class HeaderTableCellRendererCode extends TableCellRendererCode {
+    private static final class HeaderTableCellRendererCode extends TableCellRendererCode {
         private final Column column;
 
         private HeaderTableCellRendererCode(Column column) {

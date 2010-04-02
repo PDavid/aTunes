@@ -36,7 +36,7 @@ import net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsEn
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
-public class LyricsService implements ApplicationStateChangeListener {
+public final class LyricsService implements ApplicationStateChangeListener {
 
     private static final List<LyricsEngineInfo> DEFAULT_LYRICS_ENGINES;
     static {

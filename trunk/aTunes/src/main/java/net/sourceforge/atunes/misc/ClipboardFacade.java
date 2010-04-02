@@ -32,7 +32,7 @@ import org.commonjukebox.plugins.PluginApi;
  * The Class ClipboardFacade.
  */
 @PluginApi
-public class ClipboardFacade implements ClipboardOwner {
+public final class ClipboardFacade implements ClipboardOwner {
 
     /** Private singleton instance. */
     private static ClipboardFacade instance = new ClipboardFacade();

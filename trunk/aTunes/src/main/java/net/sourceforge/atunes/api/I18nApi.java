@@ -24,7 +24,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 import org.commonjukebox.plugins.PluginApi;
 
 @PluginApi
-public class I18nApi {
+public final class I18nApi {
 
     private I18nApi() {
 

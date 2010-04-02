@@ -30,7 +30,7 @@ import net.sourceforge.atunes.misc.log.Logger;
  * 
  * @author fleax
  */
-public class Columns {
+public final class Columns {
 
     private static List<Class<? extends Column>> classes;
 

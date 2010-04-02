@@ -45,7 +45,7 @@ import org.jdesktop.swingx.border.DropShadowBorder;
 
 public class ArtistAlbumsFlowContent extends ContextPanelContent {
 
-    private static class CoverMouseAdapter extends MouseAdapter {
+    private static final class CoverMouseAdapter extends MouseAdapter {
         private final AlbumInfo album;
         private final JLabel coverLabel;
 

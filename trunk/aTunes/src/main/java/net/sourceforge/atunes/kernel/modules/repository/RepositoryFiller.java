@@ -31,7 +31,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
-class RepositoryFiller {
+final class RepositoryFiller {
 
     private RepositoryFiller() {
 

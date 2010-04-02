@@ -48,7 +48,7 @@ import org.w3c.dom.NodeList;
  * 
  * @author Tobias Melcher
  */
-public class YoutubeService {
+public final class YoutubeService {
 
     /**
      * Query string wildcard

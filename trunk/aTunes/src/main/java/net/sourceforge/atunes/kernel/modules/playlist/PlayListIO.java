@@ -44,7 +44,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The Class PlayListIO.
  */
-public class PlayListIO {
+public final class PlayListIO {
 
     // The different Strings used
     /** The Constant M3U_HEADER. */

@@ -29,7 +29,7 @@ import net.sourceforge.atunes.model.AudioObject;
 import org.commonjukebox.plugins.PluginApi;
 
 @PluginApi
-public class PlayListApi {
+public final class PlayListApi {
 
     private PlayListApi() {
 

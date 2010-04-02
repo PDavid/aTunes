@@ -35,7 +35,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * @author fleax
  * 
  */
-public class LastFmLovedTracks {
+public final class LastFmLovedTracks {
 
     private static final String USER_WILDCARD = "(%USER%)";
 

@@ -31,7 +31,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
  * 
  * @author fleax
  */
-public class SearchResultsColumnSet extends ColumnSet {
+public final class SearchResultsColumnSet extends ColumnSet {
 
     /**
      * Singleton instance

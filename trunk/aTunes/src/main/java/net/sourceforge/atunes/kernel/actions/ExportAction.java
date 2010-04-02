@@ -45,7 +45,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 public class ExportAction extends Action {
 
     private static class ExportProcessListener implements ProcessListener {
-        private static class ShowErrorDialogRunnable implements Runnable {
+        private static final class ShowErrorDialogRunnable implements Runnable {
             private final boolean ok;
 
             private ShowErrorDialogRunnable(boolean ok) {

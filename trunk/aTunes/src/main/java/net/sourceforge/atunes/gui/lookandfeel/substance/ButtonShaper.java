@@ -36,7 +36,7 @@ import org.pushingpixels.substance.internal.utils.border.SubstanceButtonBorder;
  */
 public abstract class ButtonShaper implements SubstanceButtonShaper {
 
-	private static class CustomSubstanceButtonBorder extends
+	private static final class CustomSubstanceButtonBorder extends
 			SubstanceButtonBorder {
 		private CustomSubstanceButtonBorder(Class<?> buttonShaperClass) {
 			super(buttonShaperClass);

@@ -32,7 +32,7 @@ import net.sourceforge.atunes.kernel.actions.PlayPreviousAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.ShowOSDAction;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 
-public class CommandHandler extends Handler {
+public final class CommandHandler extends Handler {
 
     /**
      * Singleton instance

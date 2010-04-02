@@ -22,7 +22,7 @@ package net.sourceforge.atunes.misc.log;
 /**
  * Used to count log events.
  */
-public class LoggerTimer {
+public final class LoggerTimer {
 
     /** Counter. */
     private static long timer = 1;
