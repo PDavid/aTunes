@@ -884,11 +884,9 @@ public final class LastFmService {
                 && !net.sourceforge.atunes.kernel.modules.repository.data.Album.isUnknownAlbum(f.getAlbum()) && f.getTrackNumber() > 0) {
             // Find album
             AlbumInfo albumRetrieved = getAlbum(f.getArtist(), f.getAlbum());
-            if (albumRetrieved != null) {
-                if (albumRetrieved.getTracks().size() >= f.getTrackNumber()) {
-                    // Get track
-                    return albumRetrieved.getTracks().get(f.getTrackNumber() - 1).getTitle();
-                }
+            if (albumRetrieved != null && albumRetrieved.getTracks().size() >= f.getTrackNumber()) {
+            	// Get track
+            	return albumRetrieved.getTracks().get(f.getTrackNumber() - 1).getTitle();
             }
         }
         return null;

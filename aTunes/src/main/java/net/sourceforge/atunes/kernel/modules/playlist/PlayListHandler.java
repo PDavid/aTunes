@@ -630,24 +630,22 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
         setPlayList(playLists.get(activePlayListIndex));
 
         // If play list is not empty
-        if (lastPlayList.size() > 0) {
-            // TODO: Do this for all play lists
-            // Check that at least first entry exists. This is to avoid loading a play list that contains audio object deleted or moved
-            if (lastPlayList.get(0) instanceof Radio || lastPlayList.get(0) instanceof PodcastFeedEntry || lastPlayList.get(0) instanceof AudioFile) {
+        // TODO: Do this for all play lists
+        // Check that at least first entry exists. This is to avoid loading a play list that contains audio object deleted or moved
+        if (lastPlayList.size() > 0 && (lastPlayList.get(0) instanceof Radio || lastPlayList.get(0) instanceof PodcastFeedEntry || lastPlayList.get(0) instanceof AudioFile)) {
 
-                // When possible, take audio objects from Repository instead of from PlayList stored.
-                // This way we prevent to have duplicated objects in PlayList for same audio object, one of PlayList and one of Repository
-                List<AudioObject> audioObjects = new ArrayList<AudioObject>(lastPlayList.getAudioObjects());
-                // lastPlayList.clear();
-                //TODO also for radios and podcast feed entries
-                for (int i = 0; i < audioObjects.size(); i++) {
-                    AudioObject ao = audioObjects.get(i);
-                    AudioFile repositoryFile = RepositoryHandler.getInstance().getFileIfLoaded(ao.getUrl());
-                    if (repositoryFile != null) {
-                        lastPlayList.replace(i, repositoryFile);
-                    }
-                }
-            }
+        	// When possible, take audio objects from Repository instead of from PlayList stored.
+        	// This way we prevent to have duplicated objects in PlayList for same audio object, one of PlayList and one of Repository
+        	List<AudioObject> audioObjects = new ArrayList<AudioObject>(lastPlayList.getAudioObjects());
+        	// lastPlayList.clear();
+        	//TODO also for radios and podcast feed entries
+        	for (int i = 0; i < audioObjects.size(); i++) {
+        		AudioObject ao = audioObjects.get(i);
+        		AudioFile repositoryFile = RepositoryHandler.getInstance().getFileIfLoaded(ao.getUrl());
+        		if (repositoryFile != null) {
+        			lastPlayList.replace(i, repositoryFile);
+        		}
+        	}
         }
 
         // Update table model

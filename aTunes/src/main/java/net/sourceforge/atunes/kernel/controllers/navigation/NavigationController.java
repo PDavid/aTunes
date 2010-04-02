@@ -211,10 +211,9 @@ public final class NavigationController extends Controller implements AudioFiles
             public void stateChanged(ChangeEvent e) {
                 int view = navigationTreePanel.getTabbedPane().getSelectedIndex();
                 // Maybe tabbed pane is empty so set navigation only if it contains tabs
-                if (view != -1) {
-                    if (view != NavigationHandler.getInstance().indexOf(NavigationHandler.getInstance().getViewByName(ApplicationState.getInstance().getNavigationView()))) {
-                        setNavigationView(NavigationHandler.getInstance().getNavigationViews().get(view).getClass().getName());
-                    }
+                if (view != -1 &&
+                	view != NavigationHandler.getInstance().indexOf(NavigationHandler.getInstance().getViewByName(ApplicationState.getInstance().getNavigationView()))) {
+                    setNavigationView(NavigationHandler.getInstance().getNavigationViews().get(view).getClass().getName());
                 }
             }
         });

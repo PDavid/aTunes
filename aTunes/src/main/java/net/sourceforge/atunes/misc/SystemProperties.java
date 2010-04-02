@@ -208,10 +208,8 @@ public final class SystemProperties {
         String userHomePath = SystemProperties.USER_HOME;
         if (userHomePath != null) {
             File userConfigFolder = new File(StringUtils.getString(userHomePath, "/.aTunes"));
-            if (!userConfigFolder.exists()) {
-                if (!userConfigFolder.mkdir()) {
-                    return ".";
-                }
+            if (!userConfigFolder.exists() && !userConfigFolder.mkdir()) {
+                return ".";
             }
             return userConfigFolder.getAbsolutePath();
         }
@@ -265,10 +263,8 @@ public final class SystemProperties {
         String userConfigFolder = getUserConfigFolder(Kernel.isDebug());
         String tempFolder = StringUtils.getString(userConfigFolder, FILE_SEPARATOR, Constants.TEMP_DIR);
         File tempFile = new File(tempFolder);
-        if (!tempFile.exists()) {
-            if (!tempFile.mkdir()) {
-                return userConfigFolder;
-            }
+        if (!tempFile.exists() && !tempFile.mkdir()) {
+            return userConfigFolder;
         }
         return tempFolder;
     }

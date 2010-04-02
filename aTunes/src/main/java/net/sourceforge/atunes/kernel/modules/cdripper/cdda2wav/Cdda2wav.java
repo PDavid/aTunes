@@ -742,10 +742,8 @@ public class Cdda2wav extends CdToWavConverter {
                     // Go to next drive
                     devices.remove(0);
                     //if there is another drive, try it
-                    if (getDriveId() != null) {
-                        if (devCounter <= devNumber) {
-                            cdRecursive = retrieveDiscInformation();
-                        }
+                    if (getDriveId() != null && devCounter <= devNumber) {
+                        cdRecursive = retrieveDiscInformation();
                     }
                 }
             } catch (Exception e) {

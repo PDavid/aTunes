@@ -152,20 +152,18 @@ public class FlacEncoder implements Encoder {
             // Read progress
             while ((s = stdInput.readLine()) != null) {
                 int index = s.indexOf('%');
-                if (listener != null) {
-                    if (s.contains("% complete, ratio")) {
-                        aux = Integer.parseInt(s.substring(index - 2, index).trim());
-                        if (aux != percent) {
-                            percent = aux;
-                            final int percentHelp = percent;
-                            SwingUtilities.invokeLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    listener.notifyProgress(percentHelp);
-                                }
-                            });
-                        }
-                    }
+                if (listener != null && s.contains("% complete, ratio")) {
+                	aux = Integer.parseInt(s.substring(index - 2, index).trim());
+                	if (aux != percent) {
+                		percent = aux;
+                		final int percentHelp = percent;
+                		SwingUtilities.invokeLater(new Runnable() {
+                			@Override
+                			public void run() {
+                				listener.notifyProgress(percentHelp);
+                			}
+                		});
+                	}
                 }
             }
 

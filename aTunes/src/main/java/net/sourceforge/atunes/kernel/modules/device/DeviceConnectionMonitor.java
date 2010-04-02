@@ -82,15 +82,13 @@ public final class DeviceConnectionMonitor extends Thread {
             final String deviceLocation = ApplicationState.getInstance().getDefaultDeviceLocation();
             if (deviceLocation != null && !deviceLocation.equals("")) {
                 File deviceLocationFile = new File(deviceLocation);
-                if (!DeviceHandler.getInstance().isDeviceConnected()) {
-                    if (deviceLocationFile.exists()) {
-                        getLogger().info(LogCategories.PROCESS, "Device connected");
-                        for (final DeviceConnectionListener l : listeners) {
-                            SwingUtilities.invokeLater(new DeviceConnectedRunnable(l, deviceLocation));
-                        }
-                        instance = null;
-                        return;
-                    }
+                if (!DeviceHandler.getInstance().isDeviceConnected() && deviceLocationFile.exists()) {
+                	getLogger().info(LogCategories.PROCESS, "Device connected");
+                	for (final DeviceConnectionListener l : listeners) {
+                		SwingUtilities.invokeLater(new DeviceConnectedRunnable(l, deviceLocation));
+                	}
+                	instance = null;
+                	return;
                 }
             }
             try {

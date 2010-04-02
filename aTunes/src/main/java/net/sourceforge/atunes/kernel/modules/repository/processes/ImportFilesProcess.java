@@ -213,19 +213,17 @@ public class ImportFilesProcess extends AudioFileTransferProcess {
      * @param fileToImport
      */
     private void setTrackNumber(AudioFile fileToImport) {
-        if (ApplicationState.getInstance().isSetTrackNumbersWhenImporting()) {
-            if (fileToImport.getTrackNumber() < 1) {
-                int newTrackNumber = TagEditionOperations.getTrackNumber(fileToImport);
-                if (newTrackNumber > 0) {
-                    if (fileToImport.getTag() == null) {
-                        fileToImport.setTag(new DefaultTag());
-                    }
-                    fileToImport.getTag().setTrackNumber(newTrackNumber);
-                    if (!filesToChangeTag.contains(fileToImport)) {
-                        filesToChangeTag.add(fileToImport);
-                    }
-                }
-            }
+        if (ApplicationState.getInstance().isSetTrackNumbersWhenImporting() && fileToImport.getTrackNumber() < 1) {
+        	int newTrackNumber = TagEditionOperations.getTrackNumber(fileToImport);
+        	if (newTrackNumber > 0) {
+        		if (fileToImport.getTag() == null) {
+        			fileToImport.setTag(new DefaultTag());
+        		}
+        		fileToImport.getTag().setTrackNumber(newTrackNumber);
+        		if (!filesToChangeTag.contains(fileToImport)) {
+        			filesToChangeTag.add(fileToImport);
+        		}
+        	}
         }
     }
 

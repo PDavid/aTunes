@@ -72,11 +72,9 @@ public final class NotifyHandler extends Handler implements PlaybackStateListene
 
     @Override
     public void playbackStateChanged(PlaybackState newState, AudioObject currentAudioObject) {
-        if (newState == PlaybackState.PLAYING) {
+        if (ApplicationState.getInstance().isShowOSD() && newState == PlaybackState.PLAYING) {
             // Playing
-            if (ApplicationState.getInstance().isShowOSD()) {
-                NotifyHandler.getInstance().showNotification(currentAudioObject);
-            }
+            NotifyHandler.getInstance().showNotification(currentAudioObject);
         }
     }
 }

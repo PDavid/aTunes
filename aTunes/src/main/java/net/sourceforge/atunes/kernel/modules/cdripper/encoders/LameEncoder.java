@@ -163,16 +163,14 @@ public class LameEncoder implements Encoder {
                                 }
                             });
                         }
-                    } else if (s.matches(".*\\(100%\\).*")) {
-                        if (percent != 100) {
-                            percent = 100;
-                            SwingUtilities.invokeLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    listener.notifyProgress(100);
-                                }
-                            });
-                        }
+                    } else if (s.matches(".*\\(100%\\).*") && percent != 100) {
+                    	percent = 100;
+                    	SwingUtilities.invokeLater(new Runnable() {
+                    		@Override
+                    		public void run() {
+                    			listener.notifyProgress(100);
+                    		}
+                    	});
                     }
                 }
             }

@@ -104,15 +104,13 @@ public final class EditTagDialogController extends SimpleController<EditTagDialo
                     String text = textField.getText();
 
                     // User added a char
-                    if (text.length() > lenght) {
-                        if (text.length() >= 3) {
-                            int index = fileName.indexOf(text);
-                            if (index != -1) {
-                                textField.setText(fileName.substring(index));
-                                textField.setSelectionStart(text.length());
-                                textField.setSelectionEnd(textField.getText().length());
-                            }
-                        }
+                    if (text.length() > lenght && text.length() >= 3) {
+                    	int index = fileName.indexOf(text);
+                    	if (index != -1) {
+                    		textField.setText(fileName.substring(index));
+                    		textField.setSelectionStart(text.length());
+                    		textField.setSelectionEnd(textField.getText().length());
+                    	}
                     }
                     lenght = text.length();
                 }

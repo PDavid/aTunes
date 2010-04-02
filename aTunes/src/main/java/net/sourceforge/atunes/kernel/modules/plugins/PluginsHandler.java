@@ -189,10 +189,8 @@ public class PluginsHandler extends Handler implements PluginListener {
         String userConfigFolder = SystemProperties.getUserConfigFolder(Kernel.isDebug());
         String pluginsFolder = StringUtils.getString(userConfigFolder, SystemProperties.FILE_SEPARATOR, Constants.PLUGINS_DIR);
         File pluginFile = new File(pluginsFolder);
-        if (!pluginFile.exists()) {
-            if (!pluginFile.mkdir()) {
-                return userConfigFolder;
-            }
+        if (!pluginFile.exists() && !pluginFile.mkdir()) {
+            return userConfigFolder;
         }
         return pluginsFolder;
     }
