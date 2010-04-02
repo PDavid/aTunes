@@ -83,7 +83,7 @@ public class PodcastFeed implements TreeObject, Serializable {
 
     @Override
     public synchronized boolean equals(Object o) {
-        if (o == null || !(o instanceof PodcastFeed)) {
+        if (!(o instanceof PodcastFeed)) {
             return false;
         }
         return (name + url).equals(((PodcastFeed) o).getName() + ((PodcastFeed) o).getUrl());

@@ -117,7 +117,7 @@ public final class PodcastFeedEntry implements AudioObject, Serializable, Compar
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || !(o instanceof PodcastFeedEntry)) {
+        if (!(o instanceof PodcastFeedEntry)) {
             return false;
         }
         return getUrl().equals(((PodcastFeedEntry) o).getUrl());

@@ -88,7 +88,7 @@ public class Album implements Serializable, TreeObject, Comparable<Album> {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || !(o instanceof Album)) {
+        if (!(o instanceof Album)) {
             return false;
         }
         return ((Album) o).name.equals(name) && ((Album) o).artist.equals(artist);

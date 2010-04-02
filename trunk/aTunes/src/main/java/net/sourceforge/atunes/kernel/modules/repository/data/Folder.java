@@ -257,7 +257,7 @@ public class Folder implements Serializable, TreeObject {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || !(o instanceof Folder)) {
+        if (!(o instanceof Folder)) {
             return false;
         }
         Folder folder = (Folder) o;

@@ -90,7 +90,7 @@ public class Artist implements Serializable, TreeObject, Comparable<Artist> {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || !(o instanceof Artist)) {
+        if (!(o instanceof Artist)) {
             return false;
         }
         return ((Artist) o).name.equals(name);

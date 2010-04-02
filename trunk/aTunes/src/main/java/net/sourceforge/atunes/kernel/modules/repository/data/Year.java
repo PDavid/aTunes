@@ -71,7 +71,7 @@ public class Year implements Serializable, TreeObject {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || !(o instanceof Year)) {
+        if (!(o instanceof Year)) {
             return false;
         }
         return ((Year) o).year.equals(year);
