@@ -151,10 +151,8 @@ public final class StatisticsHandler extends Handler {
      */
 
     public Integer getAlbumTimesPlayed(AudioFile audioFile) {
-        if (audioFile != null) {
-            if (statistics.getAlbumsRanking().getCount(new StatisticsAlbum(audioFile.getArtist(), audioFile.getAlbum())) != null) {
-                return statistics.getAlbumsRanking().getCount(new StatisticsAlbum(audioFile.getArtist(), audioFile.getAlbum()));
-            }
+        if (audioFile != null && statistics.getAlbumsRanking().getCount(new StatisticsAlbum(audioFile.getArtist(), audioFile.getAlbum())) != null) {
+            return statistics.getAlbumsRanking().getCount(new StatisticsAlbum(audioFile.getArtist(), audioFile.getAlbum()));
         }
         return 0;
     }

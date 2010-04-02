@@ -65,10 +65,8 @@ public class TimesPlayedColumn extends Column {
         }
         // Return times played
         AudioFileStats stats = StatisticsHandler.getInstance().getAudioFileStatistics((AudioFile) audioObject);
-        if (stats != null) {
-            if (stats.getTimesPlayed() > 0) {
-                return Integer.toString(stats.getTimesPlayed());
-            }
+        if (stats != null && stats.getTimesPlayed() > 0) {
+            return Integer.toString(stats.getTimesPlayed());
         }
         return "";
     }

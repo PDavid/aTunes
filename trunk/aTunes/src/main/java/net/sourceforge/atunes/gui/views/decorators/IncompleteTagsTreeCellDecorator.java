@@ -34,10 +34,11 @@ public class IncompleteTagsTreeCellDecorator extends TreeCellDecorator {
 
     @Override
     public Component decorateTreeCellComponent(Component component, Object userObject) {
-        if (ApplicationState.getInstance().isHighlightIncompleteTagElements() && userObject instanceof TreeObject) {
-            if (IncompleteTagsChecker.hasIncompleteTags((TreeObject) userObject)) {
-                ((JLabel) component).setForeground(ColorDefinitions.GENERAL_UNKNOWN_ELEMENT_FOREGROUND_COLOR);
-            }
+        if (ApplicationState.getInstance().isHighlightIncompleteTagElements() && 
+        		userObject instanceof TreeObject && 
+        		IncompleteTagsChecker.hasIncompleteTags((TreeObject) userObject)) {
+
+        	((JLabel) component).setForeground(ColorDefinitions.GENERAL_UNKNOWN_ELEMENT_FOREGROUND_COLOR);
         }
         return component;
     }

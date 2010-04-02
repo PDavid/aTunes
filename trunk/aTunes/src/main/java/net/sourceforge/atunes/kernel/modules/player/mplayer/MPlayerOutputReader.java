@@ -106,11 +106,9 @@ abstract class MPlayerOutputReader extends Thread {
         }
 
         // End
-        if (END_PATTERN.matcher(line).matches()) {
+        if (END_PATTERN.matcher(line).matches() && !readStopped) {
             // Playback finished
-            if (!readStopped) {
-                getEngine().currentAudioObjectFinished(true);
-            }
+            getEngine().currentAudioObjectFinished(true);
         }
     }
 

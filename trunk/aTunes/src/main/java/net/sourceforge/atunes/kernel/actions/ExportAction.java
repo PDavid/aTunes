@@ -91,11 +91,10 @@ public class ExportAction extends Action {
                 boolean userWantsToCreate = false;
 
                 // If path does not exist, then ask user to create it
-                if (!pathExists) {
-                    if (GuiHandler.getInstance().showConfirmationDialog(I18nUtils.getString("DIR_NO_EXISTS"), I18nUtils.getString("INFO")) == JOptionPane.OK_OPTION) {
-                        pathExists = new File(path).mkdir();
-                        userWantsToCreate = true;
-                    }
+                if (!pathExists &&
+                		GuiHandler.getInstance().showConfirmationDialog(I18nUtils.getString("DIR_NO_EXISTS"), I18nUtils.getString("INFO")) == JOptionPane.OK_OPTION) {
+                	pathExists = new File(path).mkdir();
+                	userWantsToCreate = true;
                 }
 
                 // If path exists then start export

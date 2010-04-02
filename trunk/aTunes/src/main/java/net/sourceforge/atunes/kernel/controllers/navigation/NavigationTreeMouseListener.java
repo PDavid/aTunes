@@ -98,12 +98,10 @@ public final class NavigationTreeMouseListener extends MouseAdapter {
         } else {
             int selRow = currentView.getTree().getRowForLocation(e.getX(), e.getY());
             TreePath selPath = currentView.getTree().getPathForLocation(e.getX(), e.getY());
-            if (selRow != -1) {
-                if (e.getClickCount() == 2) {
-                    DefaultMutableTreeNode node = (DefaultMutableTreeNode) selPath.getLastPathComponent();
-                    List<AudioObject> songs = controller.getAudioObjectsForTreeNode(currentView.getClass(), node);
-                    PlayListHandler.getInstance().addToPlayList(songs);
-                }
+            if (selRow != -1 && e.getClickCount() == 2) {
+            	DefaultMutableTreeNode node = (DefaultMutableTreeNode) selPath.getLastPathComponent();
+            	List<AudioObject> songs = controller.getAudioObjectsForTreeNode(currentView.getClass(), node);
+            	PlayListHandler.getInstance().addToPlayList(songs);
             }
         }
     }

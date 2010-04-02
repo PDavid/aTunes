@@ -158,15 +158,13 @@ public class PointedList<T> implements Serializable {
         if (this.pointer != null && index < this.pointer) {
             // If position to remove is under pointer, move pointer one position 
             this.pointer--;
-        } else if (this.pointer != null && index == this.pointer) {
+        } else if (this.pointer != null && index == this.pointer && this.pointer == size() - 1) {
             // If pointed and removed object is the last one, update pointer to previous
-            if (this.pointer == size() - 1) {
-                this.pointer = size() - 2;
-                // Only one item, put pointer to null
-                if (this.pointer == -1) {
-                    this.pointer = null;
-                }
-            }
+        	this.pointer = size() - 2;
+        	// Only one item, put pointer to null
+        	if (this.pointer == -1) {
+        		this.pointer = null;
+        	}
         }
         return getList().remove(index);
     }
