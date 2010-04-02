@@ -255,7 +255,7 @@ public abstract class AbstractTag implements Serializable {
      *            the new album artist
      */
     public void setAlbumArtist(String albumArtist) {
-        this.albumArtist = albumArtist;
+        this.albumArtist = albumArtist != null ? albumArtist.trim() : "";
     }
 
     /**
@@ -285,7 +285,7 @@ public abstract class AbstractTag implements Serializable {
      *            the new composer
      */
     public void setComposer(String composer) {
-        this.composer = composer;
+        this.composer = composer != null ? composer.trim() : "";
     }
 
     /**
@@ -315,7 +315,7 @@ public abstract class AbstractTag implements Serializable {
      *            the new lyrics
      */
     public void setLyrics(String lyrics) {
-        this.lyrics = lyrics;
+        this.lyrics = lyrics != null ? lyrics : "";
     }
 
     /**

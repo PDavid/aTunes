@@ -236,17 +236,17 @@ public final class TagModifier {
         // Be sure file is writable before setting info
         file.setWritable();
 
-        String title = tag.getTitle() != null ? tag.getTitle() : "";
-        String album = tag.getAlbum() != null ? tag.getAlbum() : "";
-        String artist = tag.getArtist() != null ? tag.getArtist() : "";
+        String title = tag.getTitle();
+        String album = tag.getAlbum();
+        String artist = tag.getArtist();
         int year = tag.getYear();
-        String comment = tag.getComment() != null ? tag.getComment() : "";
-        String genre = tag.getGenre() != null ? tag.getGenre() : "";
-        String lyrics = tag.getLyrics() != null ? tag.getLyrics() : "";
-        String composer = tag.getComposer() != null ? tag.getComposer() : "";
+        String comment = tag.getComment();
+        String genre = tag.getGenre();
+        String lyrics = tag.getLyrics();
+        String composer = tag.getComposer();
         int track = tag.getTrackNumber();
         int discNumber = tag.getDiscNumber();
-        String albumArtist = tag.getAlbumArtist() != null ? tag.getAlbumArtist() : "";
+        String albumArtist = tag.getAlbumArtist();
 
         try {
             org.jaudiotagger.audio.AudioFile audioFile = org.jaudiotagger.audio.AudioFileIO.read(file.getFile());
