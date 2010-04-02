@@ -122,6 +122,9 @@ public final class TagModifier {
         	reportWriteError(file, e);
 		} catch (InvalidAudioFrameException e) {
         	reportWriteError(file, e);
+		} catch (Exception e) {
+			// We must catch any other exception to avoid throw exceptions outside this method
+			reportWriteError(file, e);
 		}
 
     }
@@ -164,6 +167,9 @@ public final class TagModifier {
             reportWriteError(file, e);
 		} catch (CannotWriteException e) {
             reportWriteError(file, e);
+		} catch (Exception e) {
+			// We must catch any other exception to avoid throw exceptions outside this method
+			reportWriteError(file, e);
 		}
     }
 
@@ -196,6 +202,9 @@ public final class TagModifier {
             reportWriteError(file, e);
         } catch (IOException e) {
             reportWriteError(file, e);
+        } catch (Exception e) {
+			// We must catch any other exception to avoid throw exceptions outside this method
+			reportWriteError(file, e);
         }
     }
     
@@ -312,6 +321,9 @@ public final class TagModifier {
             reportWriteError(file, e);
 		} catch (CannotWriteException e) {
             reportWriteError(file, e);
+		} catch (Exception e) {
+			// We must catch any other exception to avoid throw exceptions outside this method
+			reportWriteError(file, e);
 		}
     }
 
@@ -373,6 +385,9 @@ public final class TagModifier {
             reportWriteError(file, e);
 		} catch (CannotWriteException e) {
             reportWriteError(file, e);
+		} catch (Exception e) {
+			// We must catch any other exception to avoid throw exceptions outside this method
+			reportWriteError(file, e);
 		}
     }
 
@@ -404,6 +419,9 @@ public final class TagModifier {
         	reportWriteError(file, e);
 		} catch (CannotWriteException e) {
         	reportWriteError(file, e);
+		} catch (Exception e) {
+			// We must catch any other exception to avoid throw exceptions outside this method
+			reportWriteError(file, e);
 		}
     }
 
@@ -435,6 +453,9 @@ public final class TagModifier {
             reportWriteError(file, e);
 		} catch (CannotWriteException e) {
             reportWriteError(file, e);
+		} catch (Exception e) {
+			// We must catch any other exception to avoid throw exceptions outside this method
+			reportWriteError(file, e);
 		}
     }
 
