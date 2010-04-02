@@ -7,26 +7,26 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
-import org.commonjukebox.plugins.InvalidPluginConfigurationException;
-import org.commonjukebox.plugins.Plugin;
-import org.commonjukebox.plugins.PluginConfiguration;
-import org.commonjukebox.plugins.PluginInfo;
-
-import net.sourceforge.atunes.kernel.modules.context.ContextPanel;
-import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
+import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
+import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.AudioObject;
 
-public class LastFmEventContextPanel extends ContextPanel implements Plugin {
+import org.commonjukebox.plugins.InvalidPluginConfigurationException;
+import org.commonjukebox.plugins.Plugin;
+import org.commonjukebox.plugins.PluginConfiguration;
+import org.commonjukebox.plugins.PluginInfo;
 
-    private List<ContextPanelContent> contents;
+public class LastFmEventContextPanel extends AbstractContextPanel implements Plugin {
+
+    private List<AbstractContextPanelContent> contents;
 
 	@Override
-	protected List<ContextPanelContent> getContents() {
+	protected List<AbstractContextPanelContent> getContents() {
 		if (contents == null) {
-			contents = new ArrayList<ContextPanelContent>();
+			contents = new ArrayList<AbstractContextPanelContent>();
 			contents.add(new LastFmEventContent());
 		}
 		return contents;
