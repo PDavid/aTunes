@@ -56,6 +56,16 @@ public final class SystemProperties {
         }
 
         /**
+         * Returns <code>true</code> if Windows 7 is the current operating
+         * system.
+         * 
+         * @return If Windows 7 is the current operating system
+         */
+        public boolean isWindows7() {
+            return (this.equals(OperatingSystem.WINDOWS) && System.getProperty("os.name").toLowerCase().contains("7"));
+        }
+
+        /**
          * Returns <code>true</code> if Windows is the current operating system,
          * but is not Windows Vista.
          * 
@@ -205,15 +215,23 @@ public final class SystemProperties {
         if (customConfigFolder != null) {
             return customConfigFolder;
         }
-        String userHomePath = SystemProperties.USER_HOME;
-        if (userHomePath != null) {
-            File userConfigFolder = new File(StringUtils.getString(userHomePath, "/.aTunes"));
-            if (!userConfigFolder.exists() && !userConfigFolder.mkdir()) {
-                return ".";
-            }
-            return userConfigFolder.getAbsolutePath();
+
+        String appDataFolder;
+        if (OS == OperatingSystem.WINDOWS) {
+            appDataFolder = System.getenv("APPDATA") + "/aTunes";
+        } else if (OS == OperatingSystem.MACOSX) {
+            appDataFolder = SystemProperties.USER_HOME + "/Library/Preferences/aTunes";
+
+        } else {
+            appDataFolder = SystemProperties.USER_HOME + "/.aTunes";
         }
-        return ".";
+
+        File userConfigFolder = new File(appDataFolder);
+        if (!userConfigFolder.exists() && !userConfigFolder.mkdir()) {
+            return ".";
+        }
+        return userConfigFolder.getAbsolutePath();
+
     }
 
     /**
