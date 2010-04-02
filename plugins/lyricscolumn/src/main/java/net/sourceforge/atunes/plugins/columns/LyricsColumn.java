@@ -1,6 +1,6 @@
 package net.sourceforge.atunes.plugins.columns;
 
-import net.sourceforge.atunes.kernel.modules.columns.Column;
+import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.AudioObject;
 
@@ -9,7 +9,7 @@ import org.commonjukebox.plugins.Plugin;
 import org.commonjukebox.plugins.PluginConfiguration;
 import org.commonjukebox.plugins.PluginInfo;
 
-public class LyricsColumn extends Column implements Plugin {
+public class LyricsColumn extends AbstractColumn implements Plugin {
 
     private static final long serialVersionUID = 409180231407332024L;
 

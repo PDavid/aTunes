@@ -20,7 +20,7 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
 import net.roarsoftware.lastfm.Event;
-import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
+import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -29,7 +29,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 import org.pushingpixels.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
-public class LastFmEventContent extends ContextPanelContent {
+public class LastFmEventContent extends AbstractContextPanelContent {
 
     private JTable eventsTable;
 

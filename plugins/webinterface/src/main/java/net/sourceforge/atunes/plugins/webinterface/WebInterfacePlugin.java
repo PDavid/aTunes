@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import net.sourceforge.atunes.api.LoggerService;
-import net.sourceforge.atunes.kernel.modules.plugins.GeneralPurposePlugin;
+import net.sourceforge.atunes.kernel.modules.plugins.AbstractGeneralPurposePlugin;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.commonjukebox.plugins.InvalidPluginConfigurationException;
@@ -13,7 +13,7 @@ import org.commonjukebox.plugins.PluginConfiguration;
 import org.commonjukebox.plugins.PluginInfo;
 import org.commonjukebox.plugins.PluginProperty;
 
-public class WebInterfacePlugin extends GeneralPurposePlugin implements Plugin {
+public class WebInterfacePlugin extends AbstractGeneralPurposePlugin implements Plugin {
 	
 	/**
 	 * Directory where plugin is installed
