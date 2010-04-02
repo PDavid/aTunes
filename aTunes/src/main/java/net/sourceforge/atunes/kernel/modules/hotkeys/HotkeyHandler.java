@@ -21,7 +21,7 @@ package net.sourceforge.atunes.kernel.modules.hotkeys;
 
 import java.awt.event.InputEvent;
 
-import net.sourceforge.atunes.kernel.Handler;
+import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
@@ -36,7 +36,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * Handler for global hotkeys keys.
  */
-public final class HotkeyHandler extends Handler implements HotkeyListener {
+public final class HotkeyHandler extends AbstractHandler implements HotkeyListener {
 
     private static HotkeyHandler instance;
 
@@ -57,7 +57,7 @@ public final class HotkeyHandler extends Handler implements HotkeyListener {
 
     private boolean supported;
     private boolean enabled;
-    private Hotkeys hotkeys;
+    private AbstractHotkeys hotkeys;
     private HotkeysConfig hotkeysConfig;
 
     private static final HotkeysConfig DEFAULT_HOTKEYS_CONFIG;
@@ -84,7 +84,7 @@ public final class HotkeyHandler extends Handler implements HotkeyListener {
 
     @Override
     protected void initHandler() {
-        hotkeys = Hotkeys.createInstance(this);
+        hotkeys = AbstractHotkeys.createInstance(this);
         HotkeysConfig hc = ApplicationState.getInstance().getHotkeysConfig();
         hotkeysConfig = hc != null ? hc : DEFAULT_HOTKEYS_CONFIG;
         if (hotkeys != null) {

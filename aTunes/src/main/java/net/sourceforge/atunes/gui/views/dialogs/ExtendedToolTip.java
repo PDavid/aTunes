@@ -31,7 +31,7 @@ import javax.swing.JPanel;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.Fonts;
-import net.sourceforge.atunes.gui.views.controls.CustomWindow;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomWindow;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
@@ -42,7 +42,7 @@ import org.jdesktop.swingx.border.DropShadowBorder;
  * The Class ExtendedToolTip. This is a special window shown as tooltip for
  * navigator tree objects
  */
-public final class ExtendedToolTip extends CustomWindow {
+public final class ExtendedToolTip extends AbstractCustomWindow {
 
     private static final long serialVersionUID = -5041702404982493070L;
 

@@ -33,7 +33,7 @@ import javax.swing.JTextArea;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
-import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -41,7 +41,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 /**
  * The Class RepositorySelectionInfoDialog.
  */
-public final class RepositorySelectionInfoDialog extends CustomModalDialog {
+public final class RepositorySelectionInfoDialog extends AbstractCustomModalDialog {
 
     private static final long serialVersionUID = 4369595555397951445L;
 

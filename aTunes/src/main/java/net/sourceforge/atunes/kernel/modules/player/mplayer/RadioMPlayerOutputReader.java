@@ -29,7 +29,7 @@ import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 
-class RadioMPlayerOutputReader extends MPlayerOutputReader {
+class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
 
     /** Pattern of end of play back */
     private static final Pattern END_PATTERN = Pattern.compile(".*\\x2e\\x2e\\x2e.*\\(.*\\).*");

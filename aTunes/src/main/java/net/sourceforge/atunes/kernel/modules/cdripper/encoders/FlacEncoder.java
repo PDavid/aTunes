@@ -32,7 +32,7 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.modules.cdripper.ProgressListener;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.DefaultTag;
-import net.sourceforge.atunes.kernel.modules.repository.tags.tag.Tag;
+import net.sourceforge.atunes.kernel.modules.repository.tags.tag.AbstractTag;
 import net.sourceforge.atunes.kernel.modules.repository.tags.writer.TagModifier;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
@@ -183,7 +183,7 @@ public class FlacEncoder implements Encoder {
             // Gather the info and write the tag
             try {
                 AudioFile audiofile = new AudioFile(oggFile.getAbsolutePath());
-                Tag tag = new DefaultTag();
+                AbstractTag tag = new DefaultTag();
 
                 tag.setAlbum(album);
                 tag.setAlbumArtist(albumArtist);

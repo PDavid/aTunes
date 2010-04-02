@@ -23,16 +23,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.sourceforge.atunes.kernel.ControllerProxy;
-import net.sourceforge.atunes.kernel.Handler;
+import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public final class FilterHandler extends Handler {
+public final class FilterHandler extends AbstractHandler {
 
-    private final class AllFilter extends Filter {
+    private final class AllFilter extends AbstractFilter {
 		@Override
         public String getName() {
             return "ALL";
@@ -45,7 +45,7 @@ public final class FilterHandler extends Handler {
 
 		@Override
         public void applyFilter(String filterString) {
-            for (Filter filter : filters.values()) {
+            for (AbstractFilter filter : filters.values()) {
                 if (!filter.equals(this)) {
                     filter.applyFilter(filterString);
                 }
@@ -62,12 +62,12 @@ public final class FilterHandler extends Handler {
     /**
      * Available filters
      */
-    private Map<String, Filter> filters;
+    private Map<String, AbstractFilter> filters;
 
     /**
      * Filter for all current filters at the same time
      */
-    private Filter allFilter = new AllFilter();
+    private AbstractFilter allFilter = new AllFilter();
 
     /**
      * Selected filter (by default all)
@@ -83,7 +83,7 @@ public final class FilterHandler extends Handler {
      * Private constructor
      */
     private FilterHandler() {
-        this.filters = new HashMap<String, Filter>();
+        this.filters = new HashMap<String, AbstractFilter>();
     }
 
     @Override
@@ -107,7 +107,7 @@ public final class FilterHandler extends Handler {
      * 
      * @param filter
      */
-    private void addFilter(Filter filter) {
+    private void addFilter(AbstractFilter filter) {
         this.filters.put(filter.getName(), filter);
         // Update UI to show new available filter
         ControllerProxy.getInstance().getToolBarFilterController().addFilter(filter);
@@ -118,7 +118,7 @@ public final class FilterHandler extends Handler {
      * 
      * @param filter
      */
-    public void removeFilter(Filter filter) {
+    public void removeFilter(AbstractFilter filter) {
         this.filters.remove(filter.getName());
         // Update UI to hide filter
         ControllerProxy.getInstance().getToolBarFilterController().removeFilter(filter.getName());
@@ -184,7 +184,7 @@ public final class FilterHandler extends Handler {
      * @param filter
      * @return
      */
-    public boolean isFilterSelected(Filter filter) {
+    public boolean isFilterSelected(AbstractFilter filter) {
         return (this.selectedFilter.equals(allFilter.getName()) || this.selectedFilter.equals(filter.getName())) && getFilter() != null;
     }
 
@@ -194,7 +194,7 @@ public final class FilterHandler extends Handler {
      * @param filter
      * @param enabled
      */
-    public void setFilterEnabled(Filter filter, boolean enabled) {
+    public void setFilterEnabled(AbstractFilter filter, boolean enabled) {
         // If filter is selected and must be disabled change to "all" and set filter null
         if (this.selectedFilter.equals(filter.getName()) && !enabled) {
             this.selectedFilter = allFilter.getName();

@@ -31,10 +31,10 @@ import javax.swing.event.ListSelectionListener;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
 import net.sourceforge.atunes.kernel.modules.context.ContextImageJTable;
-import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
+import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -46,9 +46,9 @@ import net.sourceforge.atunes.utils.StringUtils;
  * @author alex
  * 
  */
-public class ArtistAlbumsContent extends ContextPanelContent {
+public class ArtistAlbumsContent extends AbstractContextPanelContent {
 
-    private static class AlbumsTableCellRendererCode extends TableCellRendererCode {
+    private static class AlbumsTableCellRendererCode extends AbstractTableCellRendererCode {
         @Override
         public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             return getPanelForTableRenderer(((AlbumInfo) value).getCover(), StringUtils.getString("<html>", ((AlbumInfo) value).getTitle(), "</html>"), superComponent

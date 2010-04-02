@@ -33,7 +33,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class ShowEqualizerAction extends Action {
+public class ShowEqualizerAction extends AbstractAction {
 
     private static final long serialVersionUID = 2511199136727155747L;
 

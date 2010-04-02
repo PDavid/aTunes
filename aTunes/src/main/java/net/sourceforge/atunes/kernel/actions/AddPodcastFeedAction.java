@@ -34,7 +34,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class AddPodcastFeedAction extends Action {
+public class AddPodcastFeedAction extends AbstractAction {
 
     private static final long serialVersionUID = 2866782020999148427L;
 

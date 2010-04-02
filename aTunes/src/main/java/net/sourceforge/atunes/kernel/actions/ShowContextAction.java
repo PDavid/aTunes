@@ -30,7 +30,7 @@ import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class ShowContextAction extends Action {
+public class ShowContextAction extends AbstractAction {
 
     private static final long serialVersionUID = 5939730387818346294L;
 

@@ -34,7 +34,7 @@ import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class RemovePodcastFeedAction extends Action {
+public class RemovePodcastFeedAction extends AbstractAction {
 
     private static final long serialVersionUID = -7470658878101801512L;
 

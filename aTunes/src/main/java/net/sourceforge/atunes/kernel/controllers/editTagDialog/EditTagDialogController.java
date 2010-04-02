@@ -37,13 +37,13 @@ import javax.swing.SwingWorker;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.autocomplete.AutoCompleteDecorator;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
-import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
+import net.sourceforge.atunes.kernel.controllers.model.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.EditTagInfo;
-import net.sourceforge.atunes.kernel.modules.repository.tags.tag.Tag;
+import net.sourceforge.atunes.kernel.modules.repository.tags.tag.AbstractTag;
 import net.sourceforge.atunes.kernel.modules.repository.tags.writer.EditTagsProcess;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
@@ -52,7 +52,7 @@ import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
 
-public final class EditTagDialogController extends SimpleController<EditTagDialog> {
+public final class EditTagDialogController extends AbstractSimpleController<EditTagDialog> {
 
     private final class GetInsidePictureSwingWorker extends
 			SwingWorker<ImageIcon, Void> {
@@ -138,7 +138,7 @@ public final class EditTagDialogController extends SimpleController<EditTagDialo
     @Override
     protected void addBindings() {
         // Add genres combo box items
-        List<String> genresSorted = Arrays.asList(Tag.genres);
+        List<String> genresSorted = Arrays.asList(AbstractTag.genres);
         Collections.sort(genresSorted);
         getComponentControlled().getGenreComboBox().setModel(new ListComboBoxModel<String>(genresSorted));
         // Add autocompletion
@@ -274,7 +274,7 @@ public final class EditTagDialogController extends SimpleController<EditTagDialo
         Set<String> lyrics = new HashSet<String>();
         Set<String> albumArtists = new HashSet<String>();
         for (AudioFile audioFile : audioFiles) {
-            Tag tag = audioFile.getTag();
+            AbstractTag tag = audioFile.getTag();
             if (tag != null) {
                 titles.add(tag.getTitle());
                 trackNumbers.add(tag.getTrackNumber());

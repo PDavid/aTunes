@@ -25,8 +25,8 @@ import java.util.List;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.kernel.modules.context.ContextPanel;
-import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
+import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
+import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
@@ -40,11 +40,11 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author alex
  * 
  */
-public class AlbumContextPanel extends ContextPanel {
+public class AlbumContextPanel extends AbstractContextPanel {
 
     private static final long serialVersionUID = -7910261492394049289L;
 
-    private List<ContextPanelContent> contents;
+    private List<AbstractContextPanelContent> contents;
 
     @Override
     protected ImageIcon getContextPanelIcon(AudioObject audioObject) {
@@ -62,9 +62,9 @@ public class AlbumContextPanel extends ContextPanel {
     }
 
     @Override
-    protected List<ContextPanelContent> getContents() {
+    protected List<AbstractContextPanelContent> getContents() {
         if (contents == null) {
-            contents = new ArrayList<ContextPanelContent>();
+            contents = new ArrayList<AbstractContextPanelContent>();
             contents.add(new AlbumBasicInfoContent());
             contents.add(new AlbumTracksContent());
         }

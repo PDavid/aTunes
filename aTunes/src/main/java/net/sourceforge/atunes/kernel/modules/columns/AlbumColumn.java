@@ -26,7 +26,7 @@ import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.model.AudioObject;
 
-public class AlbumColumn extends Column {
+public class AlbumColumn extends AbstractColumn {
 
     private static final long serialVersionUID = -6162621108007788707L;
 

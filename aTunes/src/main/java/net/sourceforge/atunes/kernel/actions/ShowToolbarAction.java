@@ -31,7 +31,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class ShowToolbarAction extends Action {
+public class ShowToolbarAction extends AbstractAction {
 
     private static final long serialVersionUID = -6045235796588795737L;
 

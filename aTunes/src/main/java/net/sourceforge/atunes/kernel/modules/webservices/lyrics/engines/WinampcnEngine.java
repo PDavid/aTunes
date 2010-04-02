@@ -65,7 +65,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * 
  * @author Taylor Tang
  */
-public class WinampcnEngine extends LyricsEngine {
+public class WinampcnEngine extends AbstractLyricsEngine {
 
     private static final String QUERY_URL = "http://www.winampcn.com/lyrictransfer/get.aspx?song=%1&artist=%2&lsong=%3";
     private static final String LYRC_URL = "http://www.winampcn.com/lyrictransfer/lrc.aspx?id=%1&ti=%2";

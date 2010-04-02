@@ -41,7 +41,7 @@ class ContextInformationSwingWorker extends SwingWorker<Map<String, ?>, Void> {
      * The context panel content where information must be shown after
      * retrieving data
      */
-    private ContextPanelContent content;
+    private AbstractContextPanelContent content;
 
     /**
      * The context information data source used to retrieve information
@@ -60,7 +60,7 @@ class ContextInformationSwingWorker extends SwingWorker<Map<String, ?>, Void> {
      * @param dataSource
      * @param parameters
      */
-    ContextInformationSwingWorker(ContextPanelContent content, ContextInformationDataSource dataSource, Map<String, ?> parameters) {
+    ContextInformationSwingWorker(AbstractContextPanelContent content, ContextInformationDataSource dataSource, Map<String, ?> parameters) {
         this.content = content;
         this.dataSource = dataSource;
         this.parameters = parameters;

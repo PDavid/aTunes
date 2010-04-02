@@ -32,7 +32,7 @@ import javax.swing.tree.DefaultTreeModel;
 
 import net.sourceforge.atunes.gui.views.dialogs.CustomSearchDialog;
 import net.sourceforge.atunes.kernel.ControllerProxy;
-import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
+import net.sourceforge.atunes.kernel.controllers.model.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.search.EmptyRule;
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
@@ -48,7 +48,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
 
-public final class CustomSearchController extends SimpleController<CustomSearchDialog> {
+public final class CustomSearchController extends AbstractSimpleController<CustomSearchDialog> {
 
     /** List of searchable objects. */
     private List<SearchableObject> searchableObjects;

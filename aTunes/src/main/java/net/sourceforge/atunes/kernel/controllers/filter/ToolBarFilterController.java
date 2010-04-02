@@ -31,11 +31,11 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import net.sourceforge.atunes.gui.views.panels.ToolBarFilterPanel;
-import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
-import net.sourceforge.atunes.kernel.modules.filter.Filter;
+import net.sourceforge.atunes.kernel.controllers.model.AbstractSimpleController;
+import net.sourceforge.atunes.kernel.modules.filter.AbstractFilter;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 
-public class ToolBarFilterController extends SimpleController<ToolBarFilterPanel> {
+public class ToolBarFilterController extends AbstractSimpleController<ToolBarFilterPanel> {
 
     private final class FilterTextFieldDocumentListener implements
 			DocumentListener {
@@ -118,7 +118,7 @@ public class ToolBarFilterController extends SimpleController<ToolBarFilterPanel
      * @param name
      * @param filterListener
      */
-    public void addFilter(final Filter filter) {
+    public void addFilter(final AbstractFilter filter) {
         JRadioButtonMenuItem radioButton = new JRadioButtonMenuItem(filter.getDescription());
         radioButton.addActionListener(new ActionListener() {
             @Override

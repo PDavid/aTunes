@@ -31,7 +31,7 @@ import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class EditTitlesAction extends Action {
+public class EditTitlesAction extends AbstractAction {
 
     private static final long serialVersionUID = -2883223880879440970L;
 

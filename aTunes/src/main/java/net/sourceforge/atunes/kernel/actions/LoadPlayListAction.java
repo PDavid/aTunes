@@ -37,7 +37,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * @author fleax
  * 
  */
-public class LoadPlayListAction extends Action {
+public class LoadPlayListAction extends AbstractAction {
 
     private static final long serialVersionUID = 3409230917351152853L;
 

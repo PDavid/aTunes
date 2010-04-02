@@ -28,9 +28,9 @@ import javax.swing.JTabbedPane;
 
 import net.sourceforge.atunes.gui.views.panels.ButtonTabComponent;
 import net.sourceforge.atunes.gui.views.panels.PlayListTabPanel;
-import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
+import net.sourceforge.atunes.kernel.controllers.model.AbstractSimpleController;
 
-public final class PlayListTabController extends SimpleController<PlayListTabPanel> {
+public final class PlayListTabController extends AbstractSimpleController<PlayListTabPanel> {
 
     /**
      * Instantiates a new play list tab controller.

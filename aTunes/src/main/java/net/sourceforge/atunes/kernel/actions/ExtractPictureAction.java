@@ -28,7 +28,7 @@ import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class ExtractPictureAction extends ActionOverSelectedObjects<AudioFile> {
+public class ExtractPictureAction extends AbstractActionOverSelectedObjects<AudioFile> {
 
     private static final long serialVersionUID = -8618297820141610193L;
 

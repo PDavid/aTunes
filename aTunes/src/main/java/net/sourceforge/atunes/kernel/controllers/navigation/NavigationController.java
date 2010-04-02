@@ -45,7 +45,7 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.gui.model.CommonColumnModel;
+import net.sourceforge.atunes.gui.model.AbstractCommonColumnModel;
 import net.sourceforge.atunes.gui.model.NavigationTableColumnModel;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
 import net.sourceforge.atunes.gui.renderers.ColumnRenderers;
@@ -62,15 +62,15 @@ import net.sourceforge.atunes.kernel.actions.ShowArtistsInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowFoldersInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowGenresInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowYearsInNavigatorAction;
-import net.sourceforge.atunes.kernel.controllers.model.Controller;
-import net.sourceforge.atunes.kernel.modules.columns.Column;
-import net.sourceforge.atunes.kernel.modules.columns.ColumnSet;
+import net.sourceforge.atunes.kernel.controllers.model.AbstractController;
+import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
+import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.columns.NavigatorColumnSet;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
 import net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationView;
+import net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.RepositoryNavigationView;
 import net.sourceforge.atunes.kernel.modules.repository.AudioFilesRemovedListener;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
@@ -80,7 +80,7 @@ import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 
-public final class NavigationController extends Controller implements AudioFilesRemovedListener {
+public final class NavigationController extends AbstractController implements AudioFilesRemovedListener {
 
     private final class ExtendedToolTipActionListener implements ActionListener {
 		private final class GetAndSetImageSwingWorker extends
@@ -141,7 +141,7 @@ public final class NavigationController extends Controller implements AudioFiles
     private JComponent popupMenuCaller;
 
     /** The column model */
-    private CommonColumnModel columnModel;
+    private AbstractCommonColumnModel columnModel;
 
     private ColumnSetPopupMenu columnSetPopupMenu;
 
@@ -185,7 +185,7 @@ public final class NavigationController extends Controller implements AudioFiles
         columnSetPopupMenu = new ColumnSetPopupMenu(navigationTablePanel.getNavigationTable(), columnModel);
 
         // Add tree selection listeners to all views
-        for (NavigationView view : NavigationHandler.getInstance().getNavigationViews()) {
+        for (AbstractNavigationView view : NavigationHandler.getInstance().getNavigationViews()) {
             view.getTree().addTreeSelectionListener(new TreeSelectionListener() {
                 @Override
                 public void valueChanged(TreeSelectionEvent e) {
@@ -198,7 +198,7 @@ public final class NavigationController extends Controller implements AudioFiles
         // Add tree tool tip listener to all views
         NavigationTreeMouseListener treeMouseListener = new NavigationTreeMouseListener(this);
         NavigationTreeToolTipListener tooltipListener = new NavigationTreeToolTipListener(this);
-        for (NavigationView view : NavigationHandler.getInstance().getNavigationViews()) {
+        for (AbstractNavigationView view : NavigationHandler.getInstance().getNavigationViews()) {
             view.getTree().addMouseListener(treeMouseListener);
             view.getTree().addMouseListener(tooltipListener);
             view.getTree().addMouseMotionListener(tooltipListener);
@@ -311,16 +311,16 @@ public final class NavigationController extends Controller implements AudioFiles
      * @param node
      * @return
      */
-    public List<AudioObject> getAudioObjectsForTreeNode(Class<? extends NavigationView> navigationViewClass, DefaultMutableTreeNode node) {
+    public List<AudioObject> getAudioObjectsForTreeNode(Class<? extends AbstractNavigationView> navigationViewClass, DefaultMutableTreeNode node) {
         List<AudioObject> audioObjects = NavigationHandler.getInstance().getView(navigationViewClass).getAudioObjectForTreeNode(node, ApplicationState.getInstance().getViewMode(),
                 FilterHandler.getInstance().isFilterSelected(NavigationHandler.getInstance().getTreeFilter()) ? FilterHandler.getInstance().getFilter() : null);
 
-        ColumnSet columnSet = NavigationHandler.getInstance().getCurrentView().getCustomColumnSet();
+        AbstractColumnSet columnSet = NavigationHandler.getInstance().getCurrentView().getCustomColumnSet();
         if (columnSet == null) {
             columnSet = NavigatorColumnSet.getInstance();
         }
 
-        Column columnSorted = columnSet.getSortedColumn();
+        AbstractColumn columnSorted = columnSet.getSortedColumn();
         if (columnSorted != null) {
             Collections.sort(audioObjects, columnSorted.getComparator(false));
         }
@@ -367,7 +367,7 @@ public final class NavigationController extends Controller implements AudioFiles
     public void setNavigationView(String view) {
         getLogger().debugMethodCall(LogCategories.CONTROLLER, new String[] { view });
 
-        Class<? extends NavigationView> navigationView = NavigationHandler.getInstance().getViewByName(view);
+        Class<? extends AbstractNavigationView> navigationView = NavigationHandler.getInstance().getViewByName(view);
         if (navigationView == null) {
             navigationView = RepositoryNavigationView.class;
         }
@@ -391,7 +391,7 @@ public final class NavigationController extends Controller implements AudioFiles
 
         // Change column set
         boolean useDefaultNavigatorColumns = NavigationHandler.getInstance().getView(navigationView).isUseDefaultNavigatorColumnSet();
-        ColumnSet columnSet = null;
+        AbstractColumnSet columnSet = null;
         if (useDefaultNavigatorColumns) {
             columnSet = NavigatorColumnSet.getInstance();
         } else {

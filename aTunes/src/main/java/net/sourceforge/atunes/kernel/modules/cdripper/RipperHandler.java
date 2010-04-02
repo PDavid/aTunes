@@ -39,10 +39,10 @@ import javax.swing.SwingWorker;
 import net.sourceforge.atunes.gui.views.dialogs.RipCdDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RipperProgressDialog;
 import net.sourceforge.atunes.kernel.ControllerProxy;
-import net.sourceforge.atunes.kernel.Handler;
+import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.RipCDAction;
-import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.CdToWavConverter;
+import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavConverter;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.NoCdListener;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
 import net.sourceforge.atunes.kernel.modules.cdripper.encoders.Encoder;
@@ -58,7 +58,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public final class RipperHandler extends Handler {
+public final class RipperHandler extends AbstractHandler {
 
     private final class FillSongTitlesSwingWorker extends
 			SwingWorker<AlbumInfo, Void> {
@@ -685,7 +685,7 @@ public final class RipperHandler extends Handler {
      * @return Returns true if cdda2wav/icedax is present, false otherwise
      */
     boolean testTools() {
-        if (!CdToWavConverter.testTool()) {
+        if (!AbstractCdToWavConverter.testTool()) {
             getLogger().error(LogCategories.RIPPER, "Error testing \"cdda2wav\" or \"cdparanoia\". Check program is installed");
             SwingUtilities.invokeLater(new ShowErrorDialogRunnable());
             return false;

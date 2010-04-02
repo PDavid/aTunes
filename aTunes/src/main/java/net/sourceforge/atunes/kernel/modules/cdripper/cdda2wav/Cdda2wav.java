@@ -43,7 +43,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * Detects CD drives, gathers CD information and rip CD's all using cdda2wav
  * (icedax).
  */
-public class Cdda2wav extends CdToWavConverter {
+public class Cdda2wav extends AbstractCdToWavConverter {
 
     private final class ReadCddaThread extends Thread {
 		@Override

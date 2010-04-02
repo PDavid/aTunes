@@ -34,7 +34,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class OpenFolderAction extends ActionOverSelectedObjects<AudioFile> {
+public class OpenFolderAction extends AbstractActionOverSelectedObjects<AudioFile> {
 
     private static final long serialVersionUID = 1682289345922375850L;
 

@@ -37,18 +37,18 @@ import net.sourceforge.atunes.gui.views.dialogs.editPreferences.PlayListPrefPane
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.PlayerPanel;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.PluginsPanel;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.PodcastFeedPanel;
-import net.sourceforge.atunes.gui.views.dialogs.editPreferences.PreferencesPanel;
+import net.sourceforge.atunes.gui.views.dialogs.editPreferences.AbstractPreferencesPanel;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.RadioPanel;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.RepositoryPanel;
-import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
+import net.sourceforge.atunes.kernel.controllers.model.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 
-public final class EditPreferencesDialogController extends SimpleController<EditPreferencesDialog> {
+public final class EditPreferencesDialogController extends AbstractSimpleController<EditPreferencesDialog> {
 
     /** The panels of the edit preferences dialog */
-    private PreferencesPanel[] panels = new PreferencesPanel[] { new GeneralPanel(), new RepositoryPanel(), new PlayerPanel(), new NavigatorPanel(), new PlayListPrefPanel(),
+    private AbstractPreferencesPanel[] panels = new AbstractPreferencesPanel[] { new GeneralPanel(), new RepositoryPanel(), new PlayerPanel(), new NavigatorPanel(), new PlayListPrefPanel(),
             new OSDPanel(), new ContextPanel(), new InternetPanel(), new LastFmPanel(), new DevicePanel(), new RadioPanel(), new PodcastFeedPanel(), new ImportExportPanel(),
             new PluginsPanel() };
 
@@ -72,7 +72,7 @@ public final class EditPreferencesDialogController extends SimpleController<Edit
             @Override
             public void componentShown(ComponentEvent e) {
                 // Call dialogVisibilityChanged
-                for (PreferencesPanel panel : panels) {
+                for (AbstractPreferencesPanel panel : panels) {
                     panel.dialogVisibilityChanged(true);
                 }
             }
@@ -80,7 +80,7 @@ public final class EditPreferencesDialogController extends SimpleController<Edit
             @Override
             public void componentHidden(ComponentEvent e) {
                 // Call dialogVisibilityChanged
-                for (PreferencesPanel panel : panels) {
+                for (AbstractPreferencesPanel panel : panels) {
                     panel.dialogVisibilityChanged(false);
                 }
             }
@@ -98,7 +98,7 @@ public final class EditPreferencesDialogController extends SimpleController<Edit
     private void buildList() {
         DefaultListModel listModel = new DefaultListModel();
 
-        for (PreferencesPanel p : panels) {
+        for (AbstractPreferencesPanel p : panels) {
             listModel.addElement(p);
         }
 
@@ -116,7 +116,7 @@ public final class EditPreferencesDialogController extends SimpleController<Edit
      * @return
      */
     boolean arePreferencesValid() {
-        for (PreferencesPanel p : panels) {
+        for (AbstractPreferencesPanel p : panels) {
             if (!p.validatePanel()) {
                 return false;
             }
@@ -132,7 +132,7 @@ public final class EditPreferencesDialogController extends SimpleController<Edit
     boolean processPreferences() {
         boolean needRestart = false;
         // Apply preferences from panels
-        for (PreferencesPanel p : panels) {
+        for (AbstractPreferencesPanel p : panels) {
             needRestart = needRestart || p.applyPreferences(ApplicationState.getInstance());
         }
         return needRestart;
@@ -142,7 +142,7 @@ public final class EditPreferencesDialogController extends SimpleController<Edit
      * reset immediate changes of panels
      */
     void resetImmediateChanges() {
-        for (PreferencesPanel p : panels) {
+        for (AbstractPreferencesPanel p : panels) {
             p.resetImmediateChanges(ApplicationState.getInstance());
         }
     }
@@ -154,12 +154,12 @@ public final class EditPreferencesDialogController extends SimpleController<Edit
         getLogger().debug(LogCategories.CONTROLLER);
 
         // Update panels
-        for (PreferencesPanel panel : panels) {
+        for (AbstractPreferencesPanel panel : panels) {
             panel.updatePanel(ApplicationState.getInstance());
         }
 
         // Call dialogVisibilityChanged
-        for (PreferencesPanel panel : panels) {
+        for (AbstractPreferencesPanel panel : panels) {
             panel.dialogVisibilityChanged(true);
         }
 

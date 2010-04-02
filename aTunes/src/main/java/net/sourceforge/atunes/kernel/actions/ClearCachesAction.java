@@ -35,7 +35,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author alex
  * 
  */
-public class ClearCachesAction extends Action {
+public class ClearCachesAction extends AbstractAction {
 
     /**
 	 * 

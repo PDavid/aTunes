@@ -26,7 +26,7 @@ import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class RenamePlaylistAction extends Action {
+public class RenamePlaylistAction extends AbstractAction {
 
     /**
 	 * 

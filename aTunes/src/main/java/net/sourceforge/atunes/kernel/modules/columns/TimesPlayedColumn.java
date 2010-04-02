@@ -28,7 +28,7 @@ import net.sourceforge.atunes.kernel.modules.repository.statistics.AudioFileStat
 import net.sourceforge.atunes.kernel.modules.repository.statistics.StatisticsHandler;
 import net.sourceforge.atunes.model.AudioObject;
 
-public class TimesPlayedColumn extends Column {
+public class TimesPlayedColumn extends AbstractColumn {
 
     
     private static final long serialVersionUID = 7879150472122090859L;

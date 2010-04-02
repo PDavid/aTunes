@@ -33,7 +33,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.lookandfeel.TreeCellDecorator;
+import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.gui.views.decorators.PodcastFeedTreeCellDecorator;
@@ -54,8 +54,8 @@ import net.sourceforge.atunes.kernel.actions.RenamePodcastFeedAction;
 import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
-import net.sourceforge.atunes.kernel.modules.columns.Column;
-import net.sourceforge.atunes.kernel.modules.columns.ColumnSet;
+import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
+import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
@@ -63,9 +63,9 @@ import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public final class PodcastNavigationView extends NavigationView {
+public final class PodcastNavigationView extends AbstractNavigationView {
 
-    private List<TreeCellDecorator> decorators;
+    private List<AbstractTreeCellDecorator> decorators;
 
     /** The podcast feed tree. */
     private JTree podcastFeedTree;
@@ -75,7 +75,7 @@ public final class PodcastNavigationView extends NavigationView {
     private JPopupMenu podcastFeedTableMenu;
 
     /** The column set */
-    private ColumnSet columnSet;
+    private AbstractColumnSet columnSet;
 
     @Override
     public ImageIcon getIcon() {
@@ -231,7 +231,7 @@ public final class PodcastNavigationView extends NavigationView {
     }
 
     @Override
-    public ColumnSet getCustomColumnSet() {
+    public AbstractColumnSet getCustomColumnSet() {
         if (columnSet == null) {
             columnSet = new PodcastNavigationColumnSet(this.getClass().getName());
         }
@@ -244,18 +244,18 @@ public final class PodcastNavigationView extends NavigationView {
     }
 
     @Override
-    protected List<TreeCellDecorator> getTreeCellDecorators() {
+    protected List<AbstractTreeCellDecorator> getTreeCellDecorators() {
         if (decorators == null) {
-            decorators = new ArrayList<TreeCellDecorator>();
+            decorators = new ArrayList<AbstractTreeCellDecorator>();
             decorators.add(new StringTreeCellDecorator());
             decorators.add(new PodcastFeedTreeCellDecorator());
         }
         return decorators;
     }
 
-    private static class PodcastNavigationColumnSet extends CustomNavigatorColumnSet {
+    private static class PodcastNavigationColumnSet extends AbstractCustomNavigatorColumnSet {
 
-        private static final class DurationColumn extends Column {
+        private static final class DurationColumn extends AbstractColumn {
             /**
 			 * 
 			 */
@@ -276,7 +276,7 @@ public final class PodcastNavigationView extends NavigationView {
             }
         }
 
-        private static final class PodcastEntriesColumn extends Column {
+        private static final class PodcastEntriesColumn extends AbstractColumn {
             /**
 			 * 
 			 */
@@ -297,7 +297,7 @@ public final class PodcastNavigationView extends NavigationView {
             }
         }
 
-        private static final class OldEntryPropertyColumn extends Column {
+        private static final class OldEntryPropertyColumn extends AbstractColumn {
             /**
 			 * 
 			 */
@@ -318,7 +318,7 @@ public final class PodcastNavigationView extends NavigationView {
             }
         }
 
-        private static final class DownloadedPropertyColumn extends Column {
+        private static final class DownloadedPropertyColumn extends AbstractColumn {
             /**
 			 * 
 			 */
@@ -339,7 +339,7 @@ public final class PodcastNavigationView extends NavigationView {
             }
         }
 
-        private static final class NotListenedPropertyColumn extends Column {
+        private static final class NotListenedPropertyColumn extends AbstractColumn {
             /**
 			 * 
 			 */
@@ -365,34 +365,34 @@ public final class PodcastNavigationView extends NavigationView {
         }
 
         @Override
-        protected List<Column> getAllowedColumns() {
-            List<Column> columns = new ArrayList<Column>();
+        protected List<AbstractColumn> getAllowedColumns() {
+            List<AbstractColumn> columns = new ArrayList<AbstractColumn>();
 
-            Column property1 = new NotListenedPropertyColumn("", Property.class);
+            AbstractColumn property1 = new NotListenedPropertyColumn("", Property.class);
             property1.setVisible(true);
             property1.setWidth(20);
             property1.setResizable(false);
             columns.add(property1);
 
-            Column property2 = new DownloadedPropertyColumn("", Property.class);
+            AbstractColumn property2 = new DownloadedPropertyColumn("", Property.class);
             property2.setVisible(true);
             property2.setWidth(20);
             property2.setResizable(false);
             columns.add(property2);
 
-            Column property3 = new OldEntryPropertyColumn("", Property.class);
+            AbstractColumn property3 = new OldEntryPropertyColumn("", Property.class);
             property3.setVisible(true);
             property3.setWidth(20);
             property3.setResizable(false);
             columns.add(property3);
 
-            Column entries = new PodcastEntriesColumn("PODCAST_ENTRIES", String.class);
+            AbstractColumn entries = new PodcastEntriesColumn("PODCAST_ENTRIES", String.class);
             entries.setVisible(true);
             entries.setWidth(300);
             entries.setUsedForFilter(true);
             columns.add(entries);
 
-            Column duration = new DurationColumn("DURATION", String.class);
+            AbstractColumn duration = new DurationColumn("DURATION", String.class);
             duration.setVisible(true);
             duration.setWidth(60);
             duration.setUsedForFilter(true);

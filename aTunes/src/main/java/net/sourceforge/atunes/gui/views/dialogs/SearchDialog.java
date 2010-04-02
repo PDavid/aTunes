@@ -36,7 +36,7 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
-import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
 import net.sourceforge.atunes.kernel.modules.internetsearch.SearchFactory;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -46,7 +46,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The Class SearchDialog.
  */
-public final class SearchDialog extends CustomModalDialog {
+public final class SearchDialog extends AbstractCustomModalDialog {
 
     private static final long serialVersionUID = 89888215541058798L;
 

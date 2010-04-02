@@ -30,14 +30,14 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.views.controls.CustomWindow;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomWindow;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * The Class SplashScreenDialog.
  */
-public final class SplashScreenDialog extends CustomWindow {
+public final class SplashScreenDialog extends AbstractCustomWindow {
 
     private static final long serialVersionUID = -7279259267018738903L;
 

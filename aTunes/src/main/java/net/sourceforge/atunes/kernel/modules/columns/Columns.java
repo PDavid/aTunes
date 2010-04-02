@@ -32,15 +32,15 @@ import net.sourceforge.atunes.misc.log.Logger;
  */
 public final class Columns {
 
-    private static List<Class<? extends Column>> classes;
+    private static List<Class<? extends AbstractColumn>> classes;
 
     private Columns() {
 
     }
 
-    private static List<Class<? extends Column>> getClasses() {
+    private static List<Class<? extends AbstractColumn>> getClasses() {
         if (classes == null) {
-            classes = new ArrayList<Class<? extends Column>>();
+            classes = new ArrayList<Class<? extends AbstractColumn>>();
             classes.add(PlayingColumn.class);
             classes.add(FavoriteColumn.class);
             classes.add(TypeColumn.class);
@@ -74,12 +74,12 @@ public final class Columns {
      * 
      * @return the columns by default
      */
-    public static List<Column> getColumns(boolean playListExclusive) {
-        List<Column> result = new ArrayList<Column>();
+    public static List<AbstractColumn> getColumns(boolean playListExclusive) {
+        List<AbstractColumn> result = new ArrayList<AbstractColumn>();
 
         int order = 0;
-        for (Class<? extends Column> columnClass : getClasses()) {
-            Column column = null;
+        for (Class<? extends AbstractColumn> columnClass : getClasses()) {
+            AbstractColumn column = null;
             try {
                 column = columnClass.newInstance();
                 if (!playListExclusive && !column.isPlayListExclusive() || playListExclusive) {

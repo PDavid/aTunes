@@ -31,7 +31,7 @@ import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateChangeListener;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
-import net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsEngine;
+import net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.AbstractLyricsEngine;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsEngineInfo;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -55,7 +55,7 @@ public final class LyricsService implements ApplicationStateChangeListener {
     private Logger logger;
 
     /** Contains a list of LyricsEngine to get lyrics. */
-    private List<LyricsEngine> lyricsEngines;
+    private List<AbstractLyricsEngine> lyricsEngines;
 
     /**
      * Singleton instance
@@ -146,7 +146,7 @@ public final class LyricsService implements ApplicationStateChangeListener {
      */
     public Map<String, String> getUrlsForAddingNewLyrics(String artist, String title) {
         Map<String, String> result = new HashMap<String, String>();
-        for (LyricsEngine lyricsEngine : lyricsEngines) {
+        for (AbstractLyricsEngine lyricsEngine : lyricsEngines) {
             String url = lyricsEngine.getUrlForAddingNewLyrics(artist, title);
             if (url != null && !url.trim().equals("")) {
                 result.put(lyricsEngine.getLyricsProviderName(), url);
@@ -159,7 +159,7 @@ public final class LyricsService implements ApplicationStateChangeListener {
      * @param lyricsEngines
      *            the lyricsEngines to set
      */
-    private void setLyricsEngines(List<LyricsEngine> lyricsEngines) {
+    private void setLyricsEngines(List<AbstractLyricsEngine> lyricsEngines) {
         this.lyricsEngines = lyricsEngines;
     }
 
@@ -168,7 +168,7 @@ public final class LyricsService implements ApplicationStateChangeListener {
      * 
      * @return the lyrics engines
      */
-    private List<LyricsEngine> loadEngines(ProxyBean proxy) {
+    private List<AbstractLyricsEngine> loadEngines(ProxyBean proxy) {
         List<LyricsEngineInfo> lyricsEnginesInfo = ApplicationState.getInstance().getLyricsEnginesInfo();
 
         Proxy p = null;
@@ -204,14 +204,14 @@ public final class LyricsService implements ApplicationStateChangeListener {
         }
         ApplicationState.getInstance().setLyricsEnginesInfo(lyricsEnginesInfo);
 
-        List<LyricsEngine> result = new ArrayList<LyricsEngine>();
+        List<AbstractLyricsEngine> result = new ArrayList<AbstractLyricsEngine>();
         // Get engines
         for (LyricsEngineInfo lyricsEngineInfo : lyricsEnginesInfo) {
             if (lyricsEngineInfo.isEnabled()) {
                 try {
                     Class<?> clazz = Class.forName(lyricsEngineInfo.getClazz());
                     Constructor<?> constructor = clazz.getConstructor(Proxy.class);
-                    result.add((LyricsEngine) constructor.newInstance(p));
+                    result.add((AbstractLyricsEngine) constructor.newInstance(p));
                 } catch (ClassNotFoundException e) {
                     getLogger().error(LogCategories.HANDLER, e);
                 } catch (InstantiationException e) {
@@ -239,7 +239,7 @@ public final class LyricsService implements ApplicationStateChangeListener {
      *            the lyrics engines info
      */
     private void setLyricsEngines(ProxyBean p, List<LyricsEngineInfo> lyricsEnginesInfo) {
-        List<LyricsEngine> result = new ArrayList<LyricsEngine>();
+        List<AbstractLyricsEngine> result = new ArrayList<AbstractLyricsEngine>();
 
         // Get engines
         for (LyricsEngineInfo lyricsEngineInfo : lyricsEnginesInfo) {
@@ -247,7 +247,7 @@ public final class LyricsService implements ApplicationStateChangeListener {
                 try {
                     Class<?> clazz = Class.forName(lyricsEngineInfo.getClazz());
                     Constructor<?> constructor = clazz.getConstructor(Proxy.class);
-                    result.add((LyricsEngine) constructor.newInstance(p));
+                    result.add((AbstractLyricsEngine) constructor.newInstance(p));
                 } catch (ClassNotFoundException e) {
                     getLogger().error(LogCategories.HANDLER, e);
                 } catch (InstantiationException e) {

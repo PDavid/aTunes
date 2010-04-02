@@ -29,7 +29,7 @@ import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 /**
  * The Class ChangeTitlesProcess.
  */
-public class EditTitlesProcess extends ChangeTagProcess {
+public class EditTitlesProcess extends AbstractChangeTagProcess {
 
     /** The files and titles. */
     private Map<AudioFile, String> filesAndTitles;

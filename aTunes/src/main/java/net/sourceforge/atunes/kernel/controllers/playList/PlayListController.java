@@ -30,7 +30,7 @@ import javax.swing.event.TableModelEvent;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.panels.PlayListControlsPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
-import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
+import net.sourceforge.atunes.kernel.controllers.model.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
@@ -39,7 +39,7 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListTableModel;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 
-public final class PlayListController extends SimpleController<PlayListPanel> {
+public final class PlayListController extends AbstractSimpleController<PlayListPanel> {
 
     /** The visible rect. */
     private Rectangle visibleRect;

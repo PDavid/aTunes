@@ -30,17 +30,17 @@ import javax.swing.event.ListSelectionListener;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.kernel.modules.context.ArtistInfo;
 import net.sourceforge.atunes.kernel.modules.context.ContextImageJTable;
-import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
+import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.context.SimilarArtistsInfo;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public class SimilarArtistsContent extends ContextPanelContent {
+public class SimilarArtistsContent extends AbstractContextPanelContent {
 
     private static final long serialVersionUID = 5041098100868186051L;
     private ContextImageJTable similarArtistsTable;
@@ -108,7 +108,7 @@ public class SimilarArtistsContent extends ContextPanelContent {
      * @author fleax
      * 
      */
-    private static class SimilarArtistTableCellRendererCode extends TableCellRendererCode {
+    private static class SimilarArtistTableCellRendererCode extends AbstractTableCellRendererCode {
 
         @Override
         public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {

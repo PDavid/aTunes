@@ -78,7 +78,7 @@ import net.sourceforge.atunes.kernel.actions.ShowYearsInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.VolumeDownAction;
 import net.sourceforge.atunes.kernel.actions.VolumeUpAction;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationView;
+import net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -166,7 +166,7 @@ public final class ApplicationMenuBar extends JMenuBar {
 
             // Add dinamically actions to show each navigation view loaded
             int acceleratorIndex = 1;
-            for (NavigationView navigationView : NavigationHandler.getInstance().getNavigationViews()) {
+            for (AbstractNavigationView navigationView : NavigationHandler.getInstance().getNavigationViews()) {
                 view.add(navigationView.getActionToShowView(acceleratorIndex++));
             }
 

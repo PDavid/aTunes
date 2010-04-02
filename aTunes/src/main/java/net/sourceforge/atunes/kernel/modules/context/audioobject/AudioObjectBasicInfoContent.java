@@ -38,7 +38,7 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
-import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
+import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
@@ -47,7 +47,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jdesktop.swingx.border.DropShadowBorder;
 
-public class AudioObjectBasicInfoContent extends ContextPanelContent {
+public class AudioObjectBasicInfoContent extends AbstractContextPanelContent {
 
     private static class AddBannedSongActionListener implements ActionListener {
         @Override

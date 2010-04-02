@@ -27,7 +27,7 @@ import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class ShowAlbumsInNavigatorAction extends Action {
+public class ShowAlbumsInNavigatorAction extends AbstractAction {
 
     private static final long serialVersionUID = -3691606154694473768L;
 

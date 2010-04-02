@@ -26,12 +26,12 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.gui.model.RadioBrowserTreeTableModel;
 import net.sourceforge.atunes.gui.views.dialogs.RadioBrowserDialog;
-import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
+import net.sourceforge.atunes.kernel.controllers.model.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 
-public final class RadioBrowserDialogController extends SimpleController<RadioBrowserDialog> {
+public final class RadioBrowserDialogController extends AbstractSimpleController<RadioBrowserDialog> {
 
     private final class RetrieveDataSwingWorker extends
 			SwingWorker<List<Radio>, Void> {

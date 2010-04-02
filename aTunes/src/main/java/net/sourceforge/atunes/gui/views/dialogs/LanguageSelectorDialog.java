@@ -41,7 +41,7 @@ import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.lookandfeel.ListCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.AbstractListCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -52,7 +52,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class LanguageSelectorDialog extends JDialog {
 
-    private static class LanguageSelectorListCellRendererCode extends ListCellRendererCode {
+    private static class LanguageSelectorListCellRendererCode extends AbstractListCellRendererCode {
         @Override
         public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             Component c = superComponent;

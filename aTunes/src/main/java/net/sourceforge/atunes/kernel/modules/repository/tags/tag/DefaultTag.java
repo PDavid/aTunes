@@ -30,7 +30,7 @@ import org.jaudiotagger.tag.FieldKey;
 /**
  * The default tag. Can read tags from JAudiotagger and from properties.
  */
-public class DefaultTag extends Tag {
+public class DefaultTag extends AbstractTag {
 
     private static final long serialVersionUID = 6200185803652819029L;
 
@@ -63,7 +63,7 @@ public class DefaultTag extends Tag {
         if (result.matches("\\(.*\\).*")) {
             result = result.substring(1, result.indexOf(')'));
             try {
-                result = Tag.getGenreForCode(Integer.parseInt(result));
+                result = AbstractTag.getGenreForCode(Integer.parseInt(result));
             } catch (Exception e) {
                 setGenre(""); // error, return unknown
             }
@@ -71,8 +71,8 @@ public class DefaultTag extends Tag {
         // If genre is a number mapping a known style, use this style
         try {
             int number = Integer.parseInt(result);
-            if (number >= 0 && Tag.getGenreForCode(number) != "") {
-                result = Tag.getGenreForCode(Integer.parseInt(result));
+            if (number >= 0 && AbstractTag.getGenreForCode(number) != "") {
+                result = AbstractTag.getGenreForCode(Integer.parseInt(result));
             }
         } catch (NumberFormatException e) {
             // nothing wrong here
@@ -141,7 +141,7 @@ public class DefaultTag extends Tag {
     }
 
     @Override
-    public Tag getTagFromProperties(EditTagInfo editTagInfo, Tag oldTag) {
+    public AbstractTag getTagFromProperties(EditTagInfo editTagInfo, AbstractTag oldTag) {
 
         DefaultTag defaultTag = new DefaultTag();
         if (editTagInfo.isTagEdited("TITLE")) {

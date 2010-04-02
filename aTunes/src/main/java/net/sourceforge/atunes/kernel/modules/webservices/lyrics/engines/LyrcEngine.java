@@ -34,7 +34,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The Class LyrcEngine.
  */
-public class LyrcEngine extends LyricsEngine {
+public class LyrcEngine extends AbstractLyricsEngine {
 
     private Logger logger;
 

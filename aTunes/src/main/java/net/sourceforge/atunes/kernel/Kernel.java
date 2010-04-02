@@ -153,10 +153,10 @@ public class Kernel {
         instance = new Kernel();
 
         // Register handlers
-        Handler.registerHandlers();
+        AbstractHandler.registerHandlers();
 
         // Initialize handlers
-        Handler.initHandlers();
+        AbstractHandler.initHandlers();
 
         try {
             SwingUtilities.invokeAndWait(new Runnable() {

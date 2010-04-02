@@ -26,7 +26,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 /**
  * The Class ClearTagsProcess.
  */
-public class ClearTagsProcess extends ChangeTagProcess {
+public class ClearTagsProcess extends AbstractChangeTagProcess {
 
     public ClearTagsProcess(List<AudioFile> filesToClear) {
         super(filesToClear);

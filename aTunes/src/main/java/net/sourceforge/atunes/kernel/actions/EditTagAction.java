@@ -38,7 +38,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class EditTagAction extends ActionOverSelectedObjects<AudioFile> {
+public class EditTagAction extends AbstractActionOverSelectedObjects<AudioFile> {
 
     private static final long serialVersionUID = -4310895355731333072L;
 

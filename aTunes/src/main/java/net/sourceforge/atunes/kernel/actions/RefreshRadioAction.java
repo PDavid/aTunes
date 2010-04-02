@@ -28,7 +28,7 @@ import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class RefreshRadioAction extends Action {
+public class RefreshRadioAction extends AbstractAction {
 
     private static final long serialVersionUID = 2614238225399634969L;
 

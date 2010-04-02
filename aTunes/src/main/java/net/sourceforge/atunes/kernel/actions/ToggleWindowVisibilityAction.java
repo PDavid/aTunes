@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 
-public class ToggleWindowVisibilityAction extends Action {
+public class ToggleWindowVisibilityAction extends AbstractAction {
 
     private static final long serialVersionUID = -1177020643937370678L;
 

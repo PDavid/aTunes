@@ -60,7 +60,7 @@ import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public final class ContextPanel extends PreferencesPanel {
+public final class ContextPanel extends AbstractPreferencesPanel {
 
     private static class OpenLastFmMouseAdapter extends MouseAdapter {
         @Override

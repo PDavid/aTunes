@@ -33,7 +33,7 @@ import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.ActionTrayIcon;
 import net.sourceforge.atunes.gui.views.controls.JTrayIcon;
 import net.sourceforge.atunes.gui.views.controls.JTrayIcon.JTrayIconPopupMenu;
-import net.sourceforge.atunes.kernel.Handler;
+import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ExitAction;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
@@ -58,7 +58,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The system tray handler.
  */
-public final class SystemTrayHandler extends Handler {
+public final class SystemTrayHandler extends AbstractHandler {
 
     private static SystemTrayHandler instance = new SystemTrayHandler();
 

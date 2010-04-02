@@ -29,7 +29,7 @@ import net.sourceforge.atunes.kernel.modules.repository.tags.writer.ClearTagsPro
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class ClearTagAction extends ActionOverSelectedObjects<AudioFile> {
+public class ClearTagAction extends AbstractActionOverSelectedObjects<AudioFile> {
 
     private static final long serialVersionUID = 4476719536754930347L;
 

@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.process.AudioFileTransferProcess;
+import net.sourceforge.atunes.kernel.modules.process.AbstractAudioFileTransferProcess;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.SystemProperties;
@@ -36,7 +36,7 @@ import org.apache.commons.io.FileUtils;
 /**
  * Transfer files to a partition/device and checks if filename is valid.
  */
-public class TransferToDeviceProcess extends AudioFileTransferProcess {
+public class TransferToDeviceProcess extends AbstractAudioFileTransferProcess {
 
     private String path;
 

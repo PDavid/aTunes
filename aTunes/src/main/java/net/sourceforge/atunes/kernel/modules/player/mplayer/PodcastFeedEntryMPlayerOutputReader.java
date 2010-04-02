@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.modules.player.mplayer;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 
-class PodcastFeedEntryMPlayerOutputReader extends MPlayerOutputReader {
+class PodcastFeedEntryMPlayerOutputReader extends AbstractMPlayerOutputReader {
 
     /** The podcast feed entry. */
     private PodcastFeedEntry podcastFeedEntry;

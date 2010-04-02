@@ -41,7 +41,7 @@ public class ColumnSets implements PluginListener {
     /**
      * Column sets
      */
-    private static List<ColumnSet> columnSets;
+    private static List<AbstractColumnSet> columnSets;
 
     /**
      * Singleton instance
@@ -62,9 +62,9 @@ public class ColumnSets implements PluginListener {
      * 
      * @return
      */
-    private static List<ColumnSet> getColumnSets() {
+    private static List<AbstractColumnSet> getColumnSets() {
         if (columnSets == null) {
-            columnSets = new ArrayList<ColumnSet>();
+            columnSets = new ArrayList<AbstractColumnSet>();
         }
         return columnSets;
     }
@@ -74,7 +74,7 @@ public class ColumnSets implements PluginListener {
      * 
      * @param columnSet
      */
-    protected static void registerColumnSet(ColumnSet columnSet) {
+    protected static void registerColumnSet(AbstractColumnSet columnSet) {
         getColumnSets().add(columnSet);
     }
 
@@ -82,7 +82,7 @@ public class ColumnSets implements PluginListener {
      * Store columns settings
      */
     public static void storeColumnSettings() {
-        for (ColumnSet columnSet : getColumnSets()) {
+        for (AbstractColumnSet columnSet : getColumnSets()) {
             columnSet.storeCurrentColumnSettings();
         }
     }
@@ -90,8 +90,8 @@ public class ColumnSets implements PluginListener {
     @Override
     public void pluginActivated(PluginInfo plugin) {
         try {
-            for (ColumnSet columnSet : getColumnSets()) {
-                columnSet.addNewColumn((Column) plugin.getInstance());
+            for (AbstractColumnSet columnSet : getColumnSets()) {
+                columnSet.addNewColumn((AbstractColumn) plugin.getInstance());
             }
         } catch (PluginSystemException e) {
             getLogger().error(LogCategories.COLUMNS, e);
@@ -107,7 +107,7 @@ public class ColumnSets implements PluginListener {
             break;
         }
 
-        for (ColumnSet columnSet : getColumnSets()) {
+        for (AbstractColumnSet columnSet : getColumnSets()) {
             columnSet.removeColumn(columnClass);
         }
     }

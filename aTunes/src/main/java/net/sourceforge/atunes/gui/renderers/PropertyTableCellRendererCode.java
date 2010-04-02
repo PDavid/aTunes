@@ -27,10 +27,10 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 
-public class PropertyTableCellRendererCode extends TableCellRendererCode {
+public class PropertyTableCellRendererCode extends AbstractTableCellRendererCode {
 
     public PropertyTableCellRendererCode() {
     }

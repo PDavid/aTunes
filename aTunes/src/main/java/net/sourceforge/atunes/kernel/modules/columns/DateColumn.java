@@ -25,7 +25,7 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.model.AudioObject;
 
-public class DateColumn extends Column {
+public class DateColumn extends AbstractColumn {
 
     private static final long serialVersionUID = 6832826017182272636L;
     private final DateFormat dateFormat = DateFormat.getDateInstance();

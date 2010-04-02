@@ -38,10 +38,10 @@ import javax.swing.ListSelectionModel;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.context.ContextImageJTable;
-import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
+import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.internetsearch.SearchFactory;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
@@ -62,7 +62,7 @@ import org.jfree.ui.ExtensionFileFilter;
  * @author alex
  * 
  */
-public class YoutubeContent extends ContextPanelContent {
+public class YoutubeContent extends AbstractContextPanelContent {
 
     private final class YoutubeResultsTableMouseAdapter extends MouseAdapter {
 		private final JPopupMenu youtubeTableMenu;
@@ -94,7 +94,7 @@ public class YoutubeContent extends ContextPanelContent {
 		}
 	}
 
-	private static class YoutubeResultsTableCellRendererCode extends TableCellRendererCode {
+	private static class YoutubeResultsTableCellRendererCode extends AbstractTableCellRendererCode {
         @Override
         public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             return getPanelForTableRenderer(((YoutubeResultEntry) value).getImage(), StringUtils.getString("<html>", ((YoutubeResultEntry) value).getName(), "<br>(",

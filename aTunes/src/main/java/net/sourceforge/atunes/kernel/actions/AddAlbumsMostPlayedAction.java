@@ -33,7 +33,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class AddAlbumsMostPlayedAction extends Action {
+public class AddAlbumsMostPlayedAction extends AbstractAction {
 
     private static final long serialVersionUID = -5006402582163507581L;
 

@@ -29,7 +29,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.Fonts;
-import net.sourceforge.atunes.gui.views.controls.CustomWindow;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomWindow;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 
@@ -38,7 +38,7 @@ import org.jdesktop.swingx.border.DropShadowBorder;
 /**
  * The Class OSDDialog.
  */
-public final class OSDDialog extends CustomWindow {
+public final class OSDDialog extends AbstractCustomWindow {
 
     private static final long serialVersionUID = 8991547440913162267L;
     private static final int IMAGE_SIZE = 80;

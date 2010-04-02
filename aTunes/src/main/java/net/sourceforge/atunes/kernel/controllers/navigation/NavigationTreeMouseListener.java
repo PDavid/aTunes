@@ -28,7 +28,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationView;
+import net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
@@ -81,7 +81,7 @@ public final class NavigationTreeMouseListener extends MouseAdapter {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        NavigationView currentView = NavigationHandler.getInstance().getCurrentView();
+        AbstractNavigationView currentView = NavigationHandler.getInstance().getCurrentView();
         controller.setPopupMenuCaller(currentView.getTree());
 
         if (e.getButton() == MouseEvent.BUTTON3) {

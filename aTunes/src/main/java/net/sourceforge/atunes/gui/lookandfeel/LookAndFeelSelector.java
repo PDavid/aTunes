@@ -57,23 +57,23 @@ public final class LookAndFeelSelector implements PluginListener {
     /**
      * Current look and feel
      */
-    private LookAndFeel currentLookAndFeel;
+    private AbstractLookAndFeel currentLookAndFeel;
 
     /**
      * Map containing look and feels
      */
-    private Map<String, LookAndFeel> lookAndFeels;
+    private Map<String, AbstractLookAndFeel> lookAndFeels;
 
     /**
      * Default look and feel
      */
-    private static LookAndFeel defaultLookAndFeel = new SubstanceLookAndFeel();
+    private static AbstractLookAndFeel defaultLookAndFeel = new SubstanceLookAndFeel();
 
     /**
      * Default constructor
      */
     private LookAndFeelSelector() {
-        lookAndFeels = new HashMap<String, LookAndFeel>();
+        lookAndFeels = new HashMap<String, AbstractLookAndFeel>();
 
         // Default look and feel
         lookAndFeels.put(defaultLookAndFeel.getName(), defaultLookAndFeel);
@@ -104,7 +104,7 @@ public final class LookAndFeelSelector implements PluginListener {
     @Override
     public void pluginActivated(PluginInfo plugin) {
         try {
-            LookAndFeel laf = (LookAndFeel) plugin.getInstance();
+            AbstractLookAndFeel laf = (AbstractLookAndFeel) plugin.getInstance();
             lookAndFeels.put(laf.getName(), laf);
         } catch (PluginSystemException e) {
             getLogger().error(LogCategories.PLUGINS, e);
@@ -114,7 +114,7 @@ public final class LookAndFeelSelector implements PluginListener {
     @Override
     public void pluginDeactivated(PluginInfo arg0, Collection<Plugin> instances) {
         for (Plugin instance : instances) {
-            lookAndFeels.remove(((LookAndFeel) instance).getName());
+            lookAndFeels.remove(((AbstractLookAndFeel) instance).getName());
         }
     }
 
@@ -161,7 +161,7 @@ public final class LookAndFeelSelector implements PluginListener {
      * @return
      */
     public List<String> getAvailableSkins(String lookAndFeelName) {
-        LookAndFeel lookAndFeel = lookAndFeels.get(lookAndFeelName);
+        AbstractLookAndFeel lookAndFeel = lookAndFeels.get(lookAndFeelName);
         if (lookAndFeel != null) {
             return lookAndFeel.getSkins() != null ? lookAndFeel.getSkins() : new ArrayList<String>();
         }
@@ -196,7 +196,7 @@ public final class LookAndFeelSelector implements PluginListener {
     /**
      * @return the currentLookAndFeel
      */
-    public LookAndFeel getCurrentLookAndFeel() {
+    public AbstractLookAndFeel getCurrentLookAndFeel() {
         return currentLookAndFeel;
     }
 
@@ -207,7 +207,7 @@ public final class LookAndFeelSelector implements PluginListener {
      * @return
      */
     public String getDefaultSkin(String lookAndFeelName) {
-        LookAndFeel lookAndFeel = lookAndFeels.get(lookAndFeelName);
+        AbstractLookAndFeel lookAndFeel = lookAndFeels.get(lookAndFeelName);
         if (lookAndFeel != null) {
             return lookAndFeel.getDefaultSkin();
         }
@@ -229,7 +229,7 @@ public final class LookAndFeelSelector implements PluginListener {
     /**
      * @return the defaultLookAndFeel
      */
-    public static LookAndFeel getDefaultLookAndFeel() {
+    public static AbstractLookAndFeel getDefaultLookAndFeel() {
         return defaultLookAndFeel;
     }
 }

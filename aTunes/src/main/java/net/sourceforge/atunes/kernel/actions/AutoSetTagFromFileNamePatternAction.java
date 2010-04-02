@@ -38,7 +38,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * @author fleax
  * 
  */
-public class AutoSetTagFromFileNamePatternAction extends ActionOverSelectedObjects<AudioFile> {
+public class AutoSetTagFromFileNamePatternAction extends AbstractActionOverSelectedObjects<AudioFile> {
 
     private static final long serialVersionUID = -8458591967408812850L;
 

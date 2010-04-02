@@ -41,7 +41,7 @@ import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.ControllerProxy;
-import net.sourceforge.atunes.kernel.Handler;
+import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnSets;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
@@ -71,7 +71,7 @@ import net.sourceforge.atunes.utils.XMLUtils;
  * This class is responsible of read, write and apply application state, and
  * caches.
  */
-public final class ApplicationStateHandler extends Handler {
+public final class ApplicationStateHandler extends AbstractHandler {
 
     /** The instance. */
     private static ApplicationStateHandler instance = new ApplicationStateHandler();

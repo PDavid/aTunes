@@ -28,7 +28,7 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.kernel.Handler;
+import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
@@ -46,7 +46,7 @@ import org.w3c.dom.Element;
 /**
  * Handler for updates
  */
-public final class UpdateHandler extends Handler {
+public final class UpdateHandler extends AbstractHandler {
 
     private final class CheckUpdatesSwingWorker extends
 			SwingWorker<ApplicationVersion, Void> {

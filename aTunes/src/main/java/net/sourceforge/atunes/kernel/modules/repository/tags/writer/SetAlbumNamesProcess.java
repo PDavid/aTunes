@@ -27,7 +27,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 /**
  * The Class SetAlbumNamesProcess.
  */
-public class SetAlbumNamesProcess extends ChangeTagProcess {
+public class SetAlbumNamesProcess extends AbstractChangeTagProcess {
 
     /**
      * Instantiates a new sets the album names process.

@@ -27,7 +27,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public class SizeColumn extends Column {
+public class SizeColumn extends AbstractColumn {
 
     
     private static final long serialVersionUID = 6971729868799630776L;

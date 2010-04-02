@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 import net.sourceforge.atunes.kernel.modules.repository.tags.writer.TagEditionOperations;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class RepairTrackNumbersAction extends Action {
+public class RepairTrackNumbersAction extends AbstractAction {
 
     private static final long serialVersionUID = 4117130815173907225L;
 

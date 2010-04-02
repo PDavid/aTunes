@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
-import net.sourceforge.atunes.kernel.modules.player.PlayerEngine;
+import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -43,7 +43,7 @@ import org.gstreamer.GstObject;
 import org.gstreamer.elements.PlayBin;
 
 //TODO:  radio?, podcast?, proxy?, normalization?, karaoke?
-public class GStreamerEngine extends PlayerEngine {
+public class GStreamerEngine extends AbstractPlayerEngine {
 
     private PlayBin playBin;
     private Runnable remainingTimeRunnable;

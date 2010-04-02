@@ -26,10 +26,10 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeel;
+import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
 import net.sourceforge.atunes.misc.log.Logger;
 
-public class SystemLookAndFeel extends LookAndFeel {
+public class SystemLookAndFeel extends AbstractLookAndFeel {
 
     @Override
     public String getName() {

@@ -31,7 +31,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class ShuffleModeAction extends Action {
+public class ShuffleModeAction extends AbstractAction {
 
     private static final long serialVersionUID = 6841858742889010498L;
 

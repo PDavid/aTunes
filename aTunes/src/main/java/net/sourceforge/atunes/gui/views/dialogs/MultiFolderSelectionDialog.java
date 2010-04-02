@@ -55,9 +55,9 @@ import javax.swing.tree.ExpandVetoException;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import net.sourceforge.atunes.gui.lookandfeel.TreeCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellRendererCode;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
-import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -67,7 +67,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * The Class MultiFolderSelectionDialog. Allows the selection of the repository
  * folders.
  */
-public final class MultiFolderSelectionDialog extends CustomModalDialog {
+public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog {
 
     /**
      * Width of a check box. This is used to calculate if user pressed mouse
@@ -377,7 +377,7 @@ public final class MultiFolderSelectionDialog extends CustomModalDialog {
     private class CheckRenderer extends DefaultTreeCellRenderer {
 
         private final class CheckRendererTreeCellRendererCode extends
-				TreeCellRendererCode {
+				AbstractTreeCellRendererCode {
 			@Override
 			public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
 			    String stringValue = value.toString();
@@ -414,7 +414,7 @@ public final class MultiFolderSelectionDialog extends CustomModalDialog {
         /** The label. */
         private JLabel label;
 
-        private TreeCellRendererCode rendererCode;
+        private AbstractTreeCellRendererCode rendererCode;
 
         /**
          * Instantiates a new check renderer.

@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class RepositoryLoadInBackgroundAction extends Action {
+public class RepositoryLoadInBackgroundAction extends AbstractAction {
 
     private static final long serialVersionUID = -9039622325405324974L;
 

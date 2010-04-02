@@ -40,7 +40,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * Detects CD drives, gathers CD information and rip CD's all using cdparanoia
  */
-public class Cdparanoia extends CdToWavConverter {
+public class Cdparanoia extends AbstractCdToWavConverter {
 
     // Define cdparanoia command strings
     private static final String CDPARANOIA_COMMAND_STRING = "cdparanoia";

@@ -28,7 +28,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 
-import net.sourceforge.atunes.gui.model.CommonColumnModel;
+import net.sourceforge.atunes.gui.model.AbstractCommonColumnModel;
 import net.sourceforge.atunes.gui.views.dialogs.ColumnSetSelectorDialog;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -54,9 +54,9 @@ public class ColumnSetPopupMenu {
     }
 
     private static final class SelectColumnsActionListener implements ActionListener {
-        private final CommonColumnModel model;
+        private final AbstractCommonColumnModel model;
 
-        private SelectColumnsActionListener(CommonColumnModel model) {
+        private SelectColumnsActionListener(AbstractCommonColumnModel model) {
             this.model = model;
         }
 
@@ -74,7 +74,7 @@ public class ColumnSetPopupMenu {
      * @param table
      * @param model
      */
-    public ColumnSetPopupMenu(final JTable table, final CommonColumnModel model) {
+    public ColumnSetPopupMenu(final JTable table, final AbstractCommonColumnModel model) {
         final JPopupMenu rightMenu = new JPopupMenu();
         arrangeColumns = new JMenuItem(I18nUtils.getString("ARRANGE_COLUMNS"));
         rightMenu.add(arrangeColumns);
@@ -88,7 +88,7 @@ public class ColumnSetPopupMenu {
      * 
      * @param model
      */
-    public static void selectColumns(CommonColumnModel model) {
+    public static void selectColumns(AbstractCommonColumnModel model) {
         // Show column selector
         ColumnSetSelectorDialog selector = GuiHandler.getInstance().getColumnSelector();
         selector.setColumnSet(model.getColumnSet());

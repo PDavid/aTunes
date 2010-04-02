@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.process.Process;
+import net.sourceforge.atunes.kernel.modules.process.AbstractProcess;
 import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.misc.log.LogCategories;
@@ -38,7 +38,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The Class GetCoversProcess.
  */
-public class GetCoversProcess extends Process {
+public class GetCoversProcess extends AbstractProcess {
 
     /** The artist. */
     private Artist artist;

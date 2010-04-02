@@ -35,7 +35,7 @@ import net.sourceforge.atunes.kernel.modules.repository.ImageCache;
 import net.sourceforge.atunes.kernel.modules.repository.tags.reader.TagDetector;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.DefaultTag;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.EditTagInfo;
-import net.sourceforge.atunes.kernel.modules.repository.tags.tag.Tag;
+import net.sourceforge.atunes.kernel.modules.repository.tags.tag.AbstractTag;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
@@ -60,7 +60,7 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
 
     private static ImageCache imageCache = new ImageCache();
 
-    private Tag tag;
+    private AbstractTag tag;
     private List<File> externalPictures;
     private int duration;
     private long bitrate;
@@ -140,7 +140,7 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
      * 
      * @return the new tag
      */
-    public static Tag getNewTag(AudioFile file, EditTagInfo editTagInfo) {
+    public static AbstractTag getNewTag(AudioFile file, EditTagInfo editTagInfo) {
         return new DefaultTag().getTagFromProperties(editTagInfo, file.getTag());
     }
 
@@ -390,7 +390,7 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
      * 
      * @return the tag
      */
-    public Tag getTag() {
+    public AbstractTag getTag() {
         return tag;
     }
 
@@ -543,7 +543,7 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
      * @param tag
      *            the new tag
      */
-    public void setTag(Tag tag) {
+    public void setTag(AbstractTag tag) {
         this.tag = tag;
     }
 

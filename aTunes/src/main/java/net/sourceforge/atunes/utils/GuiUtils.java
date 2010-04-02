@@ -48,7 +48,7 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
@@ -470,7 +470,7 @@ public final class GuiUtils {
         return new ComponentOrientationTableCellRendererCode();
     }
 
-    public static class ComponentOrientationTableCellRendererCode extends TableCellRendererCode {
+    public static class ComponentOrientationTableCellRendererCode extends AbstractTableCellRendererCode {
         @Override
         public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         	if (superComponent instanceof JLabel) {

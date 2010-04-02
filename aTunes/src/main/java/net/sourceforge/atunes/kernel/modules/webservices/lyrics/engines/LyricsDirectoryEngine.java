@@ -30,7 +30,7 @@ import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
-public class LyricsDirectoryEngine extends LyricsEngine {
+public class LyricsDirectoryEngine extends AbstractLyricsEngine {
 
     private static final String BASE_URL = "http://www.lyricsdir.com/";
     private static final String CHARSET = "UTF-8";

@@ -25,7 +25,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.Handler;
+import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.notify.NotifyHandler;
@@ -46,7 +46,7 @@ import org.commonjukebox.plugins.PluginSystemException;
 /**
  * This class is resopnsible for handling the player engine.
  */
-public final class PlayerHandler extends Handler implements PluginListener, PlaybackStateListener {
+public final class PlayerHandler extends AbstractHandler implements PluginListener, PlaybackStateListener {
 
     /**
      * The player engine used
@@ -66,7 +66,7 @@ public final class PlayerHandler extends Handler implements PluginListener, Play
     /**
      * The player engine
      */
-    private PlayerEngine playerEngine;
+    private AbstractPlayerEngine playerEngine;
 
     /**
      * The current playback state
@@ -270,8 +270,8 @@ public final class PlayerHandler extends Handler implements PluginListener, Play
      * 
      * @return list with player engines
      */
-    private static List<PlayerEngine> getEngines() {
-        List<PlayerEngine> result = new ArrayList<PlayerEngine>();
+    private static List<AbstractPlayerEngine> getEngines() {
+        List<AbstractPlayerEngine> result = new ArrayList<AbstractPlayerEngine>();
         result.add(new MPlayerEngine());
         result.add(new XineEngine());
         //result.add(new VlcPlayerEngine());
@@ -293,10 +293,10 @@ public final class PlayerHandler extends Handler implements PluginListener, Play
         if (instance == null) {
             instance = new PlayerHandler();
             // Get engines list
-            List<PlayerEngine> engines = getEngines();
+            List<AbstractPlayerEngine> engines = getEngines();
 
             // Remove unsupported engines
-            Iterator<PlayerEngine> it = engines.iterator();
+            Iterator<AbstractPlayerEngine> it = engines.iterator();
             while (it.hasNext()) {
                 if (!it.next().isEngineAvailable()) {
                     it.remove();
@@ -333,7 +333,7 @@ public final class PlayerHandler extends Handler implements PluginListener, Play
                     ApplicationState.getInstance().setPlayerEngine(selectedEngine);
                 }
 
-                for (PlayerEngine engine : engines) {
+                for (AbstractPlayerEngine engine : engines) {
                     if (engine.getEngineName().equals(selectedEngine)) {
                         instance.playerEngine = engine;
                         getLogger().info(LogCategories.PLAYER, "Engine initialized : " + selectedEngine);

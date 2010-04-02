@@ -29,7 +29,7 @@ import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class NormalizeModeAction extends Action {
+public class NormalizeModeAction extends AbstractAction {
 
     private static final long serialVersionUID = 6993968558006979367L;
 

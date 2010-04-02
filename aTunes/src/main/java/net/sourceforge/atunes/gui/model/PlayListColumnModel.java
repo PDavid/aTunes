@@ -27,7 +27,7 @@ import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.JLabelTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.StringTableCellRendererCode;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
@@ -39,10 +39,10 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 /**
  * The Class PlayListColumnModel.
  */
-public final class PlayListColumnModel extends CommonColumnModel {
+public final class PlayListColumnModel extends AbstractCommonColumnModel {
 
     private static final class PlayListJLabelTableCellRendererCode extends JLabelTableCellRendererCode {
-        private PlayListJLabelTableCellRendererCode(CommonColumnModel model) {
+        private PlayListJLabelTableCellRendererCode(AbstractCommonColumnModel model) {
             super(model);
         }
 
@@ -55,7 +55,7 @@ public final class PlayListColumnModel extends CommonColumnModel {
     }
 
     private static final class PlayListStringTableCellRendererCode extends StringTableCellRendererCode {
-        private PlayListStringTableCellRendererCode(CommonColumnModel model) {
+        private PlayListStringTableCellRendererCode(AbstractCommonColumnModel model) {
             super(model);
         }
 
@@ -95,9 +95,9 @@ public final class PlayListColumnModel extends CommonColumnModel {
     }
 
     @Override
-    public TableCellRendererCode getRendererCodeFor(Class<?> clazz) {
+    public AbstractTableCellRendererCode getRendererCodeFor(Class<?> clazz) {
         if (clazz.equals(Integer.class)) {
-            return new TableCellRendererCode() {
+            return new AbstractTableCellRendererCode() {
 
                 @Override
                 public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {

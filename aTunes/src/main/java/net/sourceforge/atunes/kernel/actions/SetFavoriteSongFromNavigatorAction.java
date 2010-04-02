@@ -28,7 +28,7 @@ import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandl
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class SetFavoriteSongFromNavigatorAction extends ActionOverSelectedObjects<AudioFile> {
+public class SetFavoriteSongFromNavigatorAction extends AbstractActionOverSelectedObjects<AudioFile> {
 
     private static final long serialVersionUID = 4023700964403110853L;
 

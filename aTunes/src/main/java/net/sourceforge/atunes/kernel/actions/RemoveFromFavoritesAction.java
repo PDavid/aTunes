@@ -39,7 +39,7 @@ import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class RemoveFromFavoritesAction extends Action {
+public class RemoveFromFavoritesAction extends AbstractAction {
 
     private static final long serialVersionUID = -4288879781314486222L;
 

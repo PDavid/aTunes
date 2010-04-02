@@ -37,7 +37,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.SimpleFSDirectory;
 
-public final class RepositorySearchableObject extends CommonAudioFileSearchableObject {
+public final class RepositorySearchableObject extends AbstractCommonAudioFileSearchableObject {
 
     /**
      * Singleton instance of this class

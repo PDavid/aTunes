@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.kernel.ControllerProxy;
-import net.sourceforge.atunes.kernel.Handler;
+import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
@@ -43,7 +43,7 @@ import net.sourceforge.atunes.model.TreeObject;
 /**
  * The Class FavoritesHandler.
  */
-public final class FavoritesHandler extends Handler implements AudioFilesRemovedListener {
+public final class FavoritesHandler extends AbstractHandler implements AudioFilesRemovedListener {
 
     /** The instance. */
     private static FavoritesHandler instance = new FavoritesHandler();

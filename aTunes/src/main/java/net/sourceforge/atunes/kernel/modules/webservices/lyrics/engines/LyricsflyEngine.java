@@ -38,7 +38,7 @@ import org.w3c.dom.Document;
  * See API documentation: <a
  * href="http://www.lyricsfly.com/api/">http://www.lyricsfly.com/api/</a>
  */
-public class LyricsflyEngine extends LyricsEngine {
+public class LyricsflyEngine extends AbstractLyricsEngine {
 
     private static final int RETRY_COUNT = 3;
     private static final int SLEEP_TIME = 1500;

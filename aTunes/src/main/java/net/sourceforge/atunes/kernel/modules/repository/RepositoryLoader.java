@@ -39,7 +39,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Repository;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.kernel.modules.repository.statistics.StatisticsHandler;
-import net.sourceforge.atunes.kernel.modules.repository.tags.tag.Tag;
+import net.sourceforge.atunes.kernel.modules.repository.tags.tag.AbstractTag;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.Timer;
 import net.sourceforge.atunes.misc.log.LogCategories;
@@ -286,7 +286,7 @@ public class RepositoryLoader extends Thread {
         repository.setDirty(true);
 
         try {
-            Tag oldTag = file.getTag();
+            AbstractTag oldTag = file.getTag();
             String albumArtist = null;
             String artist = null;
             String album = null;
@@ -380,7 +380,7 @@ public class RepositoryLoader extends Thread {
             // There is no need to update folder as audio file is in the same folder
 
             // Compare old tag with new tag
-            Tag newTag = file.getTag();
+            AbstractTag newTag = file.getTag();
             if (newTag != null) {
                 boolean artistChanged = !oldTag.getArtist().equals(newTag.getArtist());
                 boolean albumChanged = !oldTag.getAlbum().equals(newTag.getAlbum());

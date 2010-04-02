@@ -33,9 +33,9 @@ import javax.swing.table.DefaultTableModel;
 
 import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.views.dialogs.StatsDialog;
-import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
+import net.sourceforge.atunes.kernel.controllers.model.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
@@ -56,9 +56,9 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.ui.RectangleInsets;
 
-public final class StatsDialogController extends SimpleController<StatsDialog> {
+public final class StatsDialogController extends AbstractSimpleController<StatsDialog> {
 
-    private static class RightAlignmentTableCellRendererCode extends TableCellRendererCode {
+    private static class RightAlignmentTableCellRendererCode extends AbstractTableCellRendererCode {
         @Override
         public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         	if (superComponent instanceof JLabel) {
@@ -70,7 +70,7 @@ public final class StatsDialogController extends SimpleController<StatsDialog> {
         }
     }
 
-    private static class SwingOrientationTableCellRendererCode extends TableCellRendererCode {
+    private static class SwingOrientationTableCellRendererCode extends AbstractTableCellRendererCode {
         @Override
         public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         	if (superComponent instanceof JLabel) {

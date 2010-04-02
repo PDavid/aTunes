@@ -31,7 +31,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
  * 
  * @author fleax
  */
-public final class PlayListColumnSet extends ColumnSet {
+public final class PlayListColumnSet extends AbstractColumnSet {
 
     /**
      * Singleton instance
@@ -58,7 +58,7 @@ public final class PlayListColumnSet extends ColumnSet {
     }
 
     @Override
-    protected List<Column> getAllowedColumns() {
+    protected List<AbstractColumn> getAllowedColumns() {
         return Columns.getColumns(true);
     }
 

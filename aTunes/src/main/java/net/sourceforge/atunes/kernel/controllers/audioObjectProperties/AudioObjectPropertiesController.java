@@ -32,7 +32,7 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.panels.AudioObjectPropertiesPanel;
-import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
+import net.sourceforge.atunes.kernel.controllers.model.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
@@ -51,7 +51,7 @@ import org.jdesktop.swingx.border.DropShadowBorder;
  * 
  * @author fleax
  */
-public final class AudioObjectPropertiesController extends SimpleController<AudioObjectPropertiesPanel> {
+public final class AudioObjectPropertiesController extends AbstractSimpleController<AudioObjectPropertiesPanel> {
 
     private final class FillPictureSwingWorker extends
 			SwingWorker<ImageIcon, Void> {

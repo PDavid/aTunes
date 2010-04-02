@@ -25,10 +25,10 @@ import java.awt.Component;
 import javax.swing.JLabel;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.lookandfeel.TreeCellDecorator;
+import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.kernel.modules.repository.data.Folder;
 
-public class FolderTreeCellDecorator extends TreeCellDecorator {
+public class FolderTreeCellDecorator extends AbstractTreeCellDecorator {
 
     @Override
     public Component decorateTreeCellComponent(Component component, Object userObject) {

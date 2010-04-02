@@ -34,7 +34,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class FullScreenAction extends Action {
+public class FullScreenAction extends AbstractAction {
 
     private static final long serialVersionUID = 916565212685861604L;
 

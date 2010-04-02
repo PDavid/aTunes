@@ -33,7 +33,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.lookandfeel.TreeCellDecorator;
+import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.gui.views.decorators.AlbumTreeCellDecorator;
 import net.sourceforge.atunes.gui.views.decorators.ArtistTreeCellDecorator;
@@ -57,7 +57,7 @@ import net.sourceforge.atunes.kernel.actions.SearchArtistAtAction;
 import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
-import net.sourceforge.atunes.kernel.modules.columns.ColumnSet;
+import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
@@ -67,9 +67,9 @@ import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public final class FavoritesNavigationView extends NavigationView {
+public final class FavoritesNavigationView extends AbstractNavigationView {
 
-    private List<TreeCellDecorator> decorators;
+    private List<AbstractTreeCellDecorator> decorators;
 
     private JTree favoritesTree;
 
@@ -307,7 +307,7 @@ public final class FavoritesNavigationView extends NavigationView {
     }
 
     @Override
-    public ColumnSet getCustomColumnSet() {
+    public AbstractColumnSet getCustomColumnSet() {
         // Returns null since uses default column set
         return null;
     }
@@ -318,9 +318,9 @@ public final class FavoritesNavigationView extends NavigationView {
     }
 
     @Override
-    protected List<TreeCellDecorator> getTreeCellDecorators() {
+    protected List<AbstractTreeCellDecorator> getTreeCellDecorators() {
         if (decorators == null) {
-            decorators = new ArrayList<TreeCellDecorator>();
+            decorators = new ArrayList<AbstractTreeCellDecorator>();
             decorators.add(new ArtistTreeCellDecorator());
             decorators.add(new AlbumTreeCellDecorator());
             decorators.add(new StringTreeCellDecorator());

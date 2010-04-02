@@ -34,7 +34,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.lookandfeel.TreeCellDecorator;
+import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.gui.views.decorators.AlbumTreeCellDecorator;
 import net.sourceforge.atunes.gui.views.decorators.ArtistTreeCellDecorator;
@@ -59,7 +59,7 @@ import net.sourceforge.atunes.kernel.actions.SearchArtistAction;
 import net.sourceforge.atunes.kernel.actions.SearchArtistAtAction;
 import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
-import net.sourceforge.atunes.kernel.modules.columns.ColumnSet;
+import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
@@ -71,9 +71,9 @@ import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public final class DeviceNavigationView extends NavigationView {
+public final class DeviceNavigationView extends AbstractNavigationView {
 
-    private List<TreeCellDecorator> decorators;
+    private List<AbstractTreeCellDecorator> decorators;
 
     /** The device tree. */
     private JTree deviceTree;
@@ -438,7 +438,7 @@ public final class DeviceNavigationView extends NavigationView {
     }
 
     @Override
-    public ColumnSet getCustomColumnSet() {
+    public AbstractColumnSet getCustomColumnSet() {
         return null;
     }
 
@@ -448,9 +448,9 @@ public final class DeviceNavigationView extends NavigationView {
     }
 
     @Override
-    protected List<TreeCellDecorator> getTreeCellDecorators() {
+    protected List<AbstractTreeCellDecorator> getTreeCellDecorators() {
         if (decorators == null) {
-            decorators = new ArrayList<TreeCellDecorator>();
+            decorators = new ArrayList<AbstractTreeCellDecorator>();
             decorators.add(new ArtistTreeCellDecorator());
             decorators.add(new AlbumTreeCellDecorator());
             decorators.add(new GenreTreeCellDecorator());

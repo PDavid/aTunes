@@ -44,7 +44,7 @@ import javax.swing.JTextField;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
-import net.sourceforge.atunes.gui.views.controls.CustomModalFrame;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalFrame;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -53,7 +53,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 /**
  * The dialog for tag editing
  */
-public final class EditTagDialog extends CustomModalFrame {
+public final class EditTagDialog extends AbstractCustomModalFrame {
 
     private static final long serialVersionUID = 3395292301087643037L;
 

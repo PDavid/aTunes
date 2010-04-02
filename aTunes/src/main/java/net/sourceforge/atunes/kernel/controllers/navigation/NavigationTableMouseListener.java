@@ -26,7 +26,7 @@ import java.util.List;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationView;
+import net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.model.AudioObject;
 
@@ -53,7 +53,7 @@ public final class NavigationTableMouseListener extends MouseAdapter {
 
     @Override
     public void mouseClicked(MouseEvent event) {
-        NavigationView currentView = NavigationHandler.getInstance().getCurrentView();
+        AbstractNavigationView currentView = NavigationHandler.getInstance().getCurrentView();
 
         if (event.getButton() == MouseEvent.BUTTON3) {
             controller.setPopupMenuCaller(panel.getNavigationTable());
