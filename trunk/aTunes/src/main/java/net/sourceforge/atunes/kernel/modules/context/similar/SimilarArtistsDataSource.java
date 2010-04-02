@@ -21,7 +21,9 @@ package net.sourceforge.atunes.kernel.modules.context.similar;
 
 import java.awt.Image;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.modules.context.ArtistInfo;
@@ -69,11 +71,15 @@ public class SimilarArtistsDataSource implements ContextInformationDataSource {
         if (!Artist.isUnknownArtist(audioObject.getArtist())) {
             SimilarArtistsInfo artists = LastFmService.getInstance().getSimilarArtists(audioObject.getArtist());
             if (artists != null) {
+            	Set<String> artistNamesSet = new HashSet<String>();
+            	for (Artist a : RepositoryHandler.getInstance().getArtists()) {
+            		artistNamesSet.add(a.getName().toUpperCase());
+            	}
                 for (int i = 0; i < artists.getArtists().size(); i++) {
                     ArtistInfo a = artists.getArtists().get(i);
                     Image img = LastFmService.getInstance().getImage(a);
                     a.setImage(ImageUtils.scaleImageBicubic(img, Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT));
-                    a.setAvailable(RepositoryHandler.getInstance().getArtistStructure().containsKey(a.getName()));
+                    a.setAvailable(artistNamesSet.contains(a.getName().toUpperCase()));
                 }
             }
             return artists;
