@@ -32,7 +32,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class ShowStatusBarAction extends Action {
+public class ShowStatusBarAction extends AbstractAction {
 
     private static final long serialVersionUID = 2303076465024539635L;
 

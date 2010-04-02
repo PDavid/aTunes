@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.Handler;
+import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
@@ -35,7 +35,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.misc.RankList;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public final class StatisticsHandler extends Handler {
+public final class StatisticsHandler extends AbstractHandler {
 
     private static StatisticsHandler instance;
 

@@ -25,13 +25,13 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.gui.views.dialogs.EditTitlesDialog;
-import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
+import net.sourceforge.atunes.kernel.controllers.model.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.tags.writer.EditTitlesProcess;
 import net.sourceforge.atunes.misc.log.LogCategories;
 
-public final class EditTitlesDialogController extends SimpleController<EditTitlesDialog> {
+public final class EditTitlesDialogController extends AbstractSimpleController<EditTitlesDialog> {
 
     private List<AudioFile> filesToEdit;
     private Album album;

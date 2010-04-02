@@ -28,7 +28,7 @@ import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.AudioObject;
 
-public class TypeColumn extends Column {
+public class TypeColumn extends AbstractColumn {
 
     /**
      * 

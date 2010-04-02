@@ -42,7 +42,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class CreatePlayListWithSelectedArtistsAction extends ActionOverSelectedObjects<AudioObject> {
+public class CreatePlayListWithSelectedArtistsAction extends AbstractActionOverSelectedObjects<AudioObject> {
 
     private static final long serialVersionUID = 242525309967706255L;
 

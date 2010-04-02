@@ -34,17 +34,17 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListModel;
 
-import net.sourceforge.atunes.gui.lookandfeel.ListCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.AbstractListCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
-import net.sourceforge.atunes.gui.views.controls.CustomModalFrame;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalFrame;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * General characteristics of the preference dialog
  */
-public final class EditPreferencesDialog extends CustomModalFrame {
+public final class EditPreferencesDialog extends AbstractCustomModalFrame {
 
     private static final long serialVersionUID = -4759149194433605946L;
 
@@ -52,7 +52,7 @@ public final class EditPreferencesDialog extends CustomModalFrame {
     private JButton cancel;
     private JPanel options;
     private JList list;
-    private PreferencesPanel[] panels;
+    private AbstractPreferencesPanel[] panels;
 
     /**
      * Instantiates a new edits the preferences dialog.
@@ -178,7 +178,7 @@ public final class EditPreferencesDialog extends CustomModalFrame {
      * @param panels
      *            the new panels
      */
-    public void setPanels(PreferencesPanel[] panels) {
+    public void setPanels(AbstractPreferencesPanel[] panels) {
         this.panels = panels;
         options.setLayout(new CardLayout());
         for (int i = 0; i < panels.length; i++) {
@@ -197,11 +197,11 @@ public final class EditPreferencesDialog extends CustomModalFrame {
         ((CardLayout) options.getLayout()).show(options, Integer.toString(index));
     }
 
-    private static class PreferencesListCellRendererCode extends ListCellRendererCode {
+    private static class PreferencesListCellRendererCode extends AbstractListCellRendererCode {
         @Override
         public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             JLabel label = (JLabel) superComponent;
-            PreferencesPanel p = (PreferencesPanel) value;
+            AbstractPreferencesPanel p = (AbstractPreferencesPanel) value;
             label.setText(p.getTitle());
             label.setIcon(p.getIcon());
             return label;

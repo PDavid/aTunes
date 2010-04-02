@@ -21,14 +21,14 @@ package net.sourceforge.atunes.kernel.modules.repository.processes;
 
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.process.AudioFileTransferProcess;
+import net.sourceforge.atunes.kernel.modules.process.AbstractAudioFileTransferProcess;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Exports (song) files to a partition/device and checks if filename is valid.
  */
-public class ExportFilesProcess extends AudioFileTransferProcess {
+public class ExportFilesProcess extends AbstractAudioFileTransferProcess {
 
     /** The path. */
     private String path;

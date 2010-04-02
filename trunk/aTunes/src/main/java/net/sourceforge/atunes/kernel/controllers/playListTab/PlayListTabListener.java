@@ -29,7 +29,7 @@ import javax.swing.JMenuItem;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import net.sourceforge.atunes.gui.model.CommonColumnModel;
+import net.sourceforge.atunes.gui.model.AbstractCommonColumnModel;
 import net.sourceforge.atunes.gui.views.controls.ColumnSetPopupMenu;
 import net.sourceforge.atunes.gui.views.panels.PlayListTabPanel;
 import net.sourceforge.atunes.kernel.ControllerProxy;
@@ -75,7 +75,7 @@ final class PlayListTabListener extends MouseAdapter implements ActionListener, 
                 panel.getPlayListsPopUpButton().add(plMenuItem);
             }
         } else if (e.getSource() == panel.getArrangeColumnsMenuItem()) {
-            ColumnSetPopupMenu.selectColumns((CommonColumnModel) ControllerProxy.getInstance().getPlayListController().getMainPlayListTable().getColumnModel());
+            ColumnSetPopupMenu.selectColumns((AbstractCommonColumnModel) ControllerProxy.getInstance().getPlayListController().getMainPlayListTable().getColumnModel());
         }
     }
 

@@ -33,7 +33,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class CopyToRepositoryAction extends ActionOverSelectedObjects<AudioFile> {
+public class CopyToRepositoryAction extends AbstractActionOverSelectedObjects<AudioFile> {
 
     private static class ImportProcessListener implements ProcessListener {
         private static final class ImportProcessFinishedRunnable implements Runnable {

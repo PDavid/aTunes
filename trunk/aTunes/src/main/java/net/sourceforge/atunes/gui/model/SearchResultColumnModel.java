@@ -24,7 +24,7 @@ import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.kernel.modules.columns.SearchResultsColumnSet;
 
-public class SearchResultColumnModel extends CommonColumnModel {
+public class SearchResultColumnModel extends AbstractCommonColumnModel {
 
     private static final long serialVersionUID = -2211160302611944001L;
 

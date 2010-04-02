@@ -52,7 +52,7 @@ import javax.swing.table.TableModel;
 import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.gui.views.dialogs.PluginEditorDialog;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
@@ -69,7 +69,7 @@ import org.commonjukebox.plugins.PluginConfiguration;
 import org.commonjukebox.plugins.PluginInfo;
 import org.commonjukebox.plugins.PluginSystemException;
 
-public final class PluginsPanel extends PreferencesPanel {
+public final class PluginsPanel extends AbstractPreferencesPanel {
 
     private static final long serialVersionUID = 8611795969151425262L;
 
@@ -323,7 +323,7 @@ public final class PluginsPanel extends PreferencesPanel {
 		}
 	}
 
-	private static class PluginsTableCellRendererCode extends TableCellRendererCode {
+	private static class PluginsTableCellRendererCode extends AbstractTableCellRendererCode {
         @Override
         public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             Component c = superComponent;

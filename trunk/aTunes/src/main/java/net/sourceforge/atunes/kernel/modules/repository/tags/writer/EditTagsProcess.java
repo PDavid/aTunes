@@ -23,12 +23,12 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.EditTagInfo;
-import net.sourceforge.atunes.kernel.modules.repository.tags.tag.Tag;
+import net.sourceforge.atunes.kernel.modules.repository.tags.tag.AbstractTag;
 
 /**
  * The Class EditTagsProcess.
  */
-public class EditTagsProcess extends ChangeTagProcess {
+public class EditTagsProcess extends AbstractChangeTagProcess {
 
     private EditTagInfo editTagInfo;
 
@@ -48,8 +48,8 @@ public class EditTagsProcess extends ChangeTagProcess {
 
     @Override
     protected void changeTag(AudioFile audioFile) {
-        Tag newTag = AudioFile.getNewTag(audioFile, editTagInfo);
-        Tag oldTag = audioFile.getTag();
+        AbstractTag newTag = AudioFile.getNewTag(audioFile, editTagInfo);
+        AbstractTag oldTag = audioFile.getTag();
 
         byte[] c = null;
         boolean shouldEditCover = editTagInfo.isTagEdited("COVER");

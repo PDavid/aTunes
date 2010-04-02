@@ -34,7 +34,7 @@ import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public final class OSDPanel extends PreferencesPanel {
+public final class OSDPanel extends AbstractPreferencesPanel {
 
     private static final long serialVersionUID = 4489293347321979288L;
 

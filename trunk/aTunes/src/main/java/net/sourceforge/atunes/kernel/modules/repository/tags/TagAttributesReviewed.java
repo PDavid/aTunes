@@ -33,7 +33,7 @@ import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.DefaultTag;
-import net.sourceforge.atunes.kernel.modules.repository.tags.tag.Tag;
+import net.sourceforge.atunes.kernel.modules.repository.tags.tag.AbstractTag;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
 
@@ -49,16 +49,16 @@ public class TagAttributesReviewed {
     /**
      * List of tag attributes to be reviewed
      */
-    private List<TagAttributeReviewed> tagAttributes;
+    private List<AbstractTagAttributeReviewed> tagAttributes;
 
     /**
      * Returns all TagAttributeReviewed objects to be used
      * 
      * @return
      */
-    private List<TagAttributeReviewed> getTagAttributes() {
+    private List<AbstractTagAttributeReviewed> getTagAttributes() {
         if (tagAttributes == null) {
-            tagAttributes = new ArrayList<TagAttributeReviewed>();
+            tagAttributes = new ArrayList<AbstractTagAttributeReviewed>();
 
             tagAttributes.add(new ArtistTagAttributeReviewed("ARTIST"));
             tagAttributes.add(new AlbumArtistTagAttributeReviewed("ALBUM_ARTIST"));
@@ -146,10 +146,10 @@ public class TagAttributesReviewed {
      * @param file
      * @return
      */
-    public Tag getTagForAudioFile(AudioFile file) {
+    public AbstractTag getTagForAudioFile(AudioFile file) {
         File parentFolder = file.getFile().getParentFile();
-        Tag tag = null;
-        for (TagAttributeReviewed tagAttribute : getTagAttributes()) {
+        AbstractTag tag = null;
+        for (AbstractTagAttributeReviewed tagAttribute : getTagAttributes()) {
             if (tagAttribute.getChangesMade().containsKey(parentFolder)) {
                 if (tag == null) {
                     tag = file.getTag() != null ? file.getTag() : new DefaultTag();
@@ -182,7 +182,7 @@ public class TagAttributesReviewed {
         return -1;
     }
 
-    private static final class DiscNumberTagAttributeReviewed extends TagAttributeReviewed {
+    private static final class DiscNumberTagAttributeReviewed extends AbstractTagAttributeReviewed {
         private DiscNumberTagAttributeReviewed(String name) {
             super(name);
         }
@@ -193,7 +193,7 @@ public class TagAttributesReviewed {
         }
 
         @Override
-        Tag changeTag(Tag tag, String value) {
+        AbstractTag changeTag(AbstractTag tag, String value) {
             try {
                 tag.setDiscNumber(Integer.parseInt(value));
             } catch (NumberFormatException e) {
@@ -203,7 +203,7 @@ public class TagAttributesReviewed {
         }
     }
 
-    private static final class YearTagAttributeReviewed extends TagAttributeReviewed {
+    private static final class YearTagAttributeReviewed extends AbstractTagAttributeReviewed {
         private YearTagAttributeReviewed(String name) {
             super(name);
         }
@@ -214,7 +214,7 @@ public class TagAttributesReviewed {
         }
 
         @Override
-        Tag changeTag(Tag tag, String value) {
+        AbstractTag changeTag(AbstractTag tag, String value) {
             try {
                 tag.setYear(Integer.parseInt(value));
             } catch (NumberFormatException e) {
@@ -224,7 +224,7 @@ public class TagAttributesReviewed {
         }
     }
 
-    private static final class GenreTagAttributeReviewed extends TagAttributeReviewed {
+    private static final class GenreTagAttributeReviewed extends AbstractTagAttributeReviewed {
         private GenreTagAttributeReviewed(String name) {
             super(name);
         }
@@ -236,7 +236,7 @@ public class TagAttributesReviewed {
         }
 
         @Override
-        Tag changeTag(Tag tag, String value) {
+        AbstractTag changeTag(AbstractTag tag, String value) {
             tag.setGenre(value);
             return tag;
         }
@@ -244,7 +244,7 @@ public class TagAttributesReviewed {
         @Override
         TableCellEditor getCellEditor() {
             // Add genres combo box items
-            List<String> genresSorted = Arrays.asList(Tag.genres);
+            List<String> genresSorted = Arrays.asList(AbstractTag.genres);
             Collections.sort(genresSorted);
             JComboBox genreComboBox = new JComboBox(new ListComboBoxModel<String>(genresSorted));
             genreComboBox.setEditable(true);
@@ -255,7 +255,7 @@ public class TagAttributesReviewed {
         }
     }
 
-    private static final class AlbumTagAttributeReviewed extends TagAttributeReviewed {
+    private static final class AlbumTagAttributeReviewed extends AbstractTagAttributeReviewed {
         private AlbumTagAttributeReviewed(String name) {
             super(name);
         }
@@ -267,13 +267,13 @@ public class TagAttributesReviewed {
         }
 
         @Override
-        Tag changeTag(Tag tag, String value) {
+        AbstractTag changeTag(AbstractTag tag, String value) {
             tag.setAlbum(value);
             return tag;
         }
     }
 
-    private static final class ComposerTagAttributeReviewed extends TagAttributeReviewed {
+    private static final class ComposerTagAttributeReviewed extends AbstractTagAttributeReviewed {
         private ComposerTagAttributeReviewed(String name) {
             super(name);
         }
@@ -284,13 +284,13 @@ public class TagAttributesReviewed {
         }
 
         @Override
-        Tag changeTag(Tag tag, String value) {
+        AbstractTag changeTag(AbstractTag tag, String value) {
             tag.setComposer(value);
             return tag;
         }
     }
 
-    private static final class AlbumArtistTagAttributeReviewed extends TagAttributeReviewed {
+    private static final class AlbumArtistTagAttributeReviewed extends AbstractTagAttributeReviewed {
         private AlbumArtistTagAttributeReviewed(String name) {
             super(name);
         }
@@ -301,13 +301,13 @@ public class TagAttributesReviewed {
         }
 
         @Override
-        Tag changeTag(Tag tag, String value) {
+        AbstractTag changeTag(AbstractTag tag, String value) {
             tag.setAlbumArtist(value);
             return tag;
         }
     }
 
-    private static final class ArtistTagAttributeReviewed extends TagAttributeReviewed {
+    private static final class ArtistTagAttributeReviewed extends AbstractTagAttributeReviewed {
         private ArtistTagAttributeReviewed(String name) {
             super(name);
         }
@@ -319,7 +319,7 @@ public class TagAttributesReviewed {
         }
 
         @Override
-        Tag changeTag(Tag tag, String value) {
+        AbstractTag changeTag(AbstractTag tag, String value) {
             tag.setArtist(value);
             return tag;
         }

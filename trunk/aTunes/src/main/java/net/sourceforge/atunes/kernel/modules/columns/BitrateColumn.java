@@ -24,7 +24,7 @@ import javax.swing.SwingConstants;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public class BitrateColumn extends Column {
+public class BitrateColumn extends AbstractColumn {
 
     
     private static final long serialVersionUID = 7541146903350085592L;

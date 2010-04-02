@@ -37,7 +37,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * 
  * @author fleax
  */
-public class ClearPlayListAction extends Action {
+public class ClearPlayListAction extends AbstractAction {
 
     private static final long serialVersionUID = 7784228526804232608L;
 

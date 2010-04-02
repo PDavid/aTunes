@@ -26,7 +26,7 @@ import java.util.List;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import net.sourceforge.atunes.kernel.Handler;
+import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.context.album.AlbumContextPanel;
 import net.sourceforge.atunes.kernel.modules.context.artist.ArtistContextPanel;
 import net.sourceforge.atunes.kernel.modules.context.audioobject.AudioObjectContextPanel;
@@ -47,7 +47,7 @@ import org.commonjukebox.plugins.PluginInfo;
 import org.commonjukebox.plugins.PluginListener;
 import org.commonjukebox.plugins.PluginSystemException;
 
-public final class ContextHandler extends Handler implements PluginListener {
+public final class ContextHandler extends AbstractHandler implements PluginListener {
 
     /**
      * Singleton instance of handler
@@ -68,7 +68,7 @@ public final class ContextHandler extends Handler implements PluginListener {
     /**
      * Context panels defined
      */
-    private List<ContextPanel> contextPanels;
+    private List<AbstractContextPanel> contextPanels;
 
     @Override
     protected void initHandler() {
@@ -98,9 +98,9 @@ public final class ContextHandler extends Handler implements PluginListener {
      * 
      * @return
      */
-    public List<ContextPanel> getContextPanels() {
+    public List<AbstractContextPanel> getContextPanels() {
         if (contextPanels == null) {
-            contextPanels = new ArrayList<ContextPanel>();
+            contextPanels = new ArrayList<AbstractContextPanel>();
             // TODO: Put here every new context panel
             contextPanels.add(new AudioObjectContextPanel());
             contextPanels.add(new AlbumContextPanel());
@@ -151,7 +151,7 @@ public final class ContextHandler extends Handler implements PluginListener {
      */
     private void clearTabsContent() {
         // Clear all context panels
-        for (ContextPanel panel : getContextPanels()) {
+        for (AbstractContextPanel panel : getContextPanels()) {
             panel.clearContextPanel();
         }
     }
@@ -260,7 +260,7 @@ public final class ContextHandler extends Handler implements PluginListener {
     @Override
     public void pluginActivated(PluginInfo plugin) {
         try {
-            ContextPanel newPanel = (ContextPanel) plugin.getInstance();
+            AbstractContextPanel newPanel = (AbstractContextPanel) plugin.getInstance();
             getContextPanels().add(newPanel);
             GuiHandler.getInstance().getContextPanel().addContextPanel(newPanel);
         } catch (PluginSystemException e) {
@@ -272,7 +272,7 @@ public final class ContextHandler extends Handler implements PluginListener {
     public void pluginDeactivated(PluginInfo plugin, Collection<Plugin> createdInstances) {
         for (Plugin instance : createdInstances) {
             getContextPanels().remove(instance);
-            GuiHandler.getInstance().getContextPanel().removeContextPanel((ContextPanel) instance);
+            GuiHandler.getInstance().getContextPanel().removeContextPanel((AbstractContextPanel) instance);
         }
     }
 }

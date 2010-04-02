@@ -33,7 +33,7 @@ import net.sourceforge.atunes.model.AudioObject;
  * 
  * @author fleax
  */
-public final class NavigationTableModel extends ColumnSetTableModel {
+public final class NavigationTableModel extends AbstractColumnSetTableModel {
 
     /**
      * Enum for properties

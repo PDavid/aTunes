@@ -24,11 +24,11 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.process.AudioFileTransferProcess;
+import net.sourceforge.atunes.kernel.modules.process.AbstractAudioFileTransferProcess;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.tags.TagAttributesReviewed;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.DefaultTag;
-import net.sourceforge.atunes.kernel.modules.repository.tags.tag.Tag;
+import net.sourceforge.atunes.kernel.modules.repository.tags.tag.AbstractTag;
 import net.sourceforge.atunes.kernel.modules.repository.tags.writer.TagEditionOperations;
 import net.sourceforge.atunes.kernel.modules.repository.tags.writer.TagModifier;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -43,7 +43,7 @@ import org.apache.commons.io.FileUtils;
 /**
  * Imports (song) files to repository
  */
-public class ImportFilesProcess extends AudioFileTransferProcess {
+public class ImportFilesProcess extends AbstractAudioFileTransferProcess {
 
     /**
      * Folders to import
@@ -197,7 +197,7 @@ public class ImportFilesProcess extends AudioFileTransferProcess {
      */
     private void replaceTag(AudioFile fileToImport, TagAttributesReviewed tagAttributesReviewed) {
         if (tagAttributesReviewed != null) {
-            Tag modifiedTag = tagAttributesReviewed.getTagForAudioFile(fileToImport);
+            AbstractTag modifiedTag = tagAttributesReviewed.getTagForAudioFile(fileToImport);
             // This file must be changed
             if (modifiedTag != null) {
                 fileToImport.setTag(modifiedTag);

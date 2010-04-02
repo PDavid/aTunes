@@ -33,7 +33,7 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.kernel.Handler;
+import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.command.CommandHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
@@ -48,7 +48,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The Class MultipleInstancesHandler.
  */
-public final class MultipleInstancesHandler extends Handler {
+public final class MultipleInstancesHandler extends AbstractHandler {
 
     /**
      * Used to ignore errors in sockets when closing application

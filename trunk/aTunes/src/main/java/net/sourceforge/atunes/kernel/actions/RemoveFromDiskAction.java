@@ -53,7 +53,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.commons.io.FileUtils;
 
-public class RemoveFromDiskAction extends Action {
+public class RemoveFromDiskAction extends AbstractAction {
 
     private static final class DeleteFilesWorker extends SwingWorker<Void, Void> {
         private final List<AudioFile> files;

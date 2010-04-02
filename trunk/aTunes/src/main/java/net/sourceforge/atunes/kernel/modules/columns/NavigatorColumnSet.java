@@ -31,7 +31,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
  * 
  * @author fleax
  */
-public final class NavigatorColumnSet extends ColumnSet {
+public final class NavigatorColumnSet extends AbstractColumnSet {
 
     /**
      * Singleton instance
@@ -58,7 +58,7 @@ public final class NavigatorColumnSet extends ColumnSet {
     }
 
     @Override
-    protected List<Column> getAllowedColumns() {
+    protected List<AbstractColumn> getAllowedColumns() {
         return Columns.getColumns(false);
     }
 

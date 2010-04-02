@@ -38,7 +38,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class AddBannedSongInLastFMAction extends Action {
+public class AddBannedSongInLastFMAction extends AbstractAction {
 
     private final class BanSongSwingWorker extends SwingWorker<Void, Void> {
 		private final AudioObject song;

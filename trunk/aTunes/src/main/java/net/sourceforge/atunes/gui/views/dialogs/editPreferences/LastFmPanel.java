@@ -48,7 +48,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 /**
  * The preferences panel for Last.fm settings.
  */
-public final class LastFmPanel extends PreferencesPanel {
+public final class LastFmPanel extends AbstractPreferencesPanel {
 
     private final class TestLoginActionListener implements ActionListener {
 		private final class TestLoginSwingWorker extends

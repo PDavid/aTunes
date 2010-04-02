@@ -31,7 +31,7 @@ import javax.swing.Timer;
 
 import net.sourceforge.atunes.gui.WindowFader;
 import net.sourceforge.atunes.gui.views.dialogs.OSDDialog;
-import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
+import net.sourceforge.atunes.kernel.controllers.model.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
@@ -39,7 +39,7 @@ import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.GuiUtils;
 
-public final class OSDDialogController extends SimpleController<OSDDialog> {
+public final class OSDDialogController extends AbstractSimpleController<OSDDialog> {
 
     private WindowFader windowFader;
     private Point location;

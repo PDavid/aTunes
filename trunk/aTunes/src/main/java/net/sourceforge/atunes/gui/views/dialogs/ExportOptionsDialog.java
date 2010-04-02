@@ -41,7 +41,7 @@ import javax.swing.JTextArea;
 
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
-import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -51,7 +51,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * 
  * @author fleax
  */
-public final class ExportOptionsDialog extends CustomModalDialog {
+public final class ExportOptionsDialog extends AbstractCustomModalDialog {
 
     private static final long serialVersionUID = 4403091324599627762L;
 

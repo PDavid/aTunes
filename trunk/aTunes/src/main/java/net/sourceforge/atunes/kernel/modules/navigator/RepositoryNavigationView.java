@@ -34,7 +34,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.lookandfeel.TreeCellDecorator;
+import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.gui.views.decorators.AlbumTreeCellDecorator;
 import net.sourceforge.atunes.gui.views.decorators.ArtistTreeCellDecorator;
@@ -64,7 +64,7 @@ import net.sourceforge.atunes.kernel.actions.SetFavoriteArtistFromNavigatorActio
 import net.sourceforge.atunes.kernel.actions.SetFavoriteSongFromNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
-import net.sourceforge.atunes.kernel.modules.columns.ColumnSet;
+import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
@@ -77,7 +77,7 @@ import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public class RepositoryNavigationView extends NavigationView {
+public class RepositoryNavigationView extends AbstractNavigationView {
 
     private static final class AlbumDefaultMutableTreeNode extends DefaultMutableTreeNode {
         private static final long serialVersionUID = -1276777390072754207L;
@@ -98,7 +98,7 @@ public class RepositoryNavigationView extends NavigationView {
 
     private JPopupMenu tablePopupMenu;
 
-    private List<TreeCellDecorator> decorators;
+    private List<AbstractTreeCellDecorator> decorators;
 
     @Override
     public ImageIcon getIcon() {
@@ -571,7 +571,7 @@ public class RepositoryNavigationView extends NavigationView {
     }
 
     @Override
-    public ColumnSet getCustomColumnSet() {
+    public AbstractColumnSet getCustomColumnSet() {
         // Return null since use default navigator column set
         return null;
     }
@@ -582,9 +582,9 @@ public class RepositoryNavigationView extends NavigationView {
     }
 
     @Override
-    protected List<TreeCellDecorator> getTreeCellDecorators() {
+    protected List<AbstractTreeCellDecorator> getTreeCellDecorators() {
         if (decorators == null) {
-            decorators = new ArrayList<TreeCellDecorator>();
+            decorators = new ArrayList<AbstractTreeCellDecorator>();
             decorators.add(new ArtistTreeCellDecorator());
             decorators.add(new AlbumTreeCellDecorator());
             decorators.add(new GenreTreeCellDecorator());

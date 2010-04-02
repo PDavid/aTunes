@@ -43,10 +43,10 @@ import javax.swing.plaf.FontUIResource;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
-import net.sourceforge.atunes.gui.lookandfeel.ListCellRendererCode;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeel;
-import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
-import net.sourceforge.atunes.gui.lookandfeel.TreeCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.AbstractListCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
+import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellRendererCode;
 import net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.NextButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.PlayPauseButton;
@@ -68,7 +68,7 @@ import org.pushingpixels.substance.api.renderers.SubstanceDefaultTableCellRender
 import org.pushingpixels.substance.api.renderers.SubstanceDefaultTableHeaderCellRenderer;
 import org.pushingpixels.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
 
-public final class SubstanceLookAndFeel extends LookAndFeel {
+public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
 
     private static final class CustomFontPolicy implements FontPolicy {
         private final class CustomFontSet implements FontSet {
@@ -123,11 +123,11 @@ public final class SubstanceLookAndFeel extends LookAndFeel {
     }
 
     private static final class SubstanceLookAndFeelListCellRenderer extends SubstanceDefaultListCellRenderer {
-        private final ListCellRendererCode code;
+        private final AbstractListCellRendererCode code;
 
         private static final long serialVersionUID = 2572603555660744197L;
 
-        private SubstanceLookAndFeelListCellRenderer(ListCellRendererCode code) {
+        private SubstanceLookAndFeelListCellRenderer(AbstractListCellRendererCode code) {
             this.code = code;
         }
 
@@ -139,11 +139,11 @@ public final class SubstanceLookAndFeel extends LookAndFeel {
     }
 
     private static final class SubstanceLookAndFeelTableHeaderCellRenderer extends SubstanceDefaultTableHeaderCellRenderer {
-        private final TableCellRendererCode code;
+        private final AbstractTableCellRendererCode code;
 
         private static final long serialVersionUID = 1L;
 
-        private SubstanceLookAndFeelTableHeaderCellRenderer(TableCellRendererCode code) {
+        private SubstanceLookAndFeelTableHeaderCellRenderer(AbstractTableCellRendererCode code) {
             this.code = code;
         }
 
@@ -155,11 +155,11 @@ public final class SubstanceLookAndFeel extends LookAndFeel {
     }
 
     private static final class SubstanceLookAndFeelTableCellRenderer extends SubstanceDefaultTableCellRenderer {
-        private final TableCellRendererCode code;
+        private final AbstractTableCellRendererCode code;
 
         private static final long serialVersionUID = 2844251523912028654L;
 
-        private SubstanceLookAndFeelTableCellRenderer(TableCellRendererCode code) {
+        private SubstanceLookAndFeelTableCellRenderer(AbstractTableCellRendererCode code) {
             this.code = code;
         }
 
@@ -171,11 +171,11 @@ public final class SubstanceLookAndFeel extends LookAndFeel {
     }
 
     private static final class SubstanceLookAndFeelTreeCellRenderer extends SubstanceDefaultTreeCellRenderer {
-        private final TreeCellRendererCode code;
+        private final AbstractTreeCellRendererCode code;
 
         private static final long serialVersionUID = 3830003466764008228L;
 
-        private SubstanceLookAndFeelTreeCellRenderer(TreeCellRendererCode code) {
+        private SubstanceLookAndFeelTreeCellRenderer(AbstractTreeCellRendererCode code) {
             this.code = code;
         }
 
@@ -299,7 +299,7 @@ public final class SubstanceLookAndFeel extends LookAndFeel {
     }
 
     @Override
-    public TreeCellRenderer getTreeCellRenderer(final TreeCellRendererCode code) {
+    public TreeCellRenderer getTreeCellRenderer(final AbstractTreeCellRendererCode code) {
         return new SubstanceLookAndFeelTreeCellRenderer(code);
     }
 
@@ -311,7 +311,7 @@ public final class SubstanceLookAndFeel extends LookAndFeel {
      * @return
      */
     @Override
-    public TableCellRenderer getTableCellRenderer(final TableCellRendererCode code) {
+    public TableCellRenderer getTableCellRenderer(final AbstractTableCellRendererCode code) {
         return new SubstanceLookAndFeelTableCellRenderer(code);
     }
 
@@ -323,12 +323,12 @@ public final class SubstanceLookAndFeel extends LookAndFeel {
      * @return
      */
     @Override
-    public TableCellRenderer getTableHeaderCellRenderer(final TableCellRendererCode code) {
+    public TableCellRenderer getTableHeaderCellRenderer(final AbstractTableCellRendererCode code) {
         return new SubstanceLookAndFeelTableHeaderCellRenderer(code);
     }
 
     @Override
-    public ListCellRenderer getListCellRenderer(final ListCellRendererCode code) {
+    public ListCellRenderer getListCellRenderer(final AbstractListCellRendererCode code) {
         return new SubstanceLookAndFeelListCellRenderer(code);
     }
 

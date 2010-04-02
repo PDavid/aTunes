@@ -26,14 +26,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 
-import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
-import net.sourceforge.atunes.gui.model.CommonColumnModel;
+import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
+import net.sourceforge.atunes.gui.model.AbstractCommonColumnModel;
 
-public class ImageIconTableCellRendererCode extends TableCellRendererCode {
+public class ImageIconTableCellRendererCode extends AbstractTableCellRendererCode {
 
-    private CommonColumnModel model;
+    private AbstractCommonColumnModel model;
 
-    public ImageIconTableCellRendererCode(CommonColumnModel model) {
+    public ImageIconTableCellRendererCode(AbstractCommonColumnModel model) {
         this.model = model;
     }
 

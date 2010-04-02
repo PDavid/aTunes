@@ -44,22 +44,22 @@ import javax.swing.table.TableModel;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
-import net.sourceforge.atunes.kernel.modules.columns.Column;
-import net.sourceforge.atunes.kernel.modules.columns.ColumnSet;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
+import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
+import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Dialog to select column set
  */
-public final class ColumnSetSelectorDialog extends CustomModalDialog {
+public final class ColumnSetSelectorDialog extends AbstractCustomModalDialog {
 
     private class ColumnsTableModel implements TableModel {
 
         private static final long serialVersionUID = 5251001708812824836L;
 
-        private List<Column> columns;
+        private List<AbstractColumn> columns;
         private List<TableModelListener> listeners = new ArrayList<TableModelListener>();
 
         /**
@@ -118,8 +118,8 @@ public final class ColumnSetSelectorDialog extends CustomModalDialog {
          */
         public void moveDown(int columnPos) {
             // Get this column and previous
-            Column columnSelected = columns.get(columnPos);
-            Column nextColumn = columns.get(columnPos + 1);
+            AbstractColumn columnSelected = columns.get(columnPos);
+            AbstractColumn nextColumn = columns.get(columnPos + 1);
 
             // Swap order
             int aux = columnSelected.getOrder();
@@ -150,8 +150,8 @@ public final class ColumnSetSelectorDialog extends CustomModalDialog {
          */
         public void moveUp(int columnPos) {
             // Get this column and previous
-            Column columnSelected = columns.get(columnPos);
-            Column previousColumn = columns.get(columnPos - 1);
+            AbstractColumn columnSelected = columns.get(columnPos);
+            AbstractColumn previousColumn = columns.get(columnPos - 1);
 
             // Swap order
             int aux = columnSelected.getOrder();
@@ -179,7 +179,7 @@ public final class ColumnSetSelectorDialog extends CustomModalDialog {
             listeners.remove(l);
         }
 
-        public void setColumns(List<Column> columns) {
+        public void setColumns(List<AbstractColumn> columns) {
             this.columns = columns;
             Collections.sort(this.columns);
         }
@@ -319,7 +319,7 @@ public final class ColumnSetSelectorDialog extends CustomModalDialog {
      *            set
      * 
      */
-    public void setColumnSet(ColumnSet columnSet) {
+    public void setColumnSet(AbstractColumnSet columnSet) {
         model.setColumns(columnSet.getColumnsForSelection());
     }
 

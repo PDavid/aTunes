@@ -29,7 +29,7 @@ import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class AddFavoriteRadioAction extends ActionOverSelectedObjects<Radio> {
+public class AddFavoriteRadioAction extends AbstractActionOverSelectedObjects<Radio> {
 
     private static final long serialVersionUID = 82199784140877040L;
 

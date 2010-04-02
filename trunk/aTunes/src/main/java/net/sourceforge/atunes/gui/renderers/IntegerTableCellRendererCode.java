@@ -26,9 +26,9 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 
-import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 
-public class IntegerTableCellRendererCode extends TableCellRendererCode {
+public class IntegerTableCellRendererCode extends AbstractTableCellRendererCode {
 
     @Override
     public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {

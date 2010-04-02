@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 import net.sourceforge.atunes.kernel.modules.notify.NotifyHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 
-public class ShowOSDAction extends Action {
+public class ShowOSDAction extends AbstractAction {
 
     private static final long serialVersionUID = 646318992035897920L;
 

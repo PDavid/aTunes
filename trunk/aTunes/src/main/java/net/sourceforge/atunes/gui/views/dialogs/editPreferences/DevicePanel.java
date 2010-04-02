@@ -47,7 +47,7 @@ import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public final class DevicePanel extends PreferencesPanel {
+public final class DevicePanel extends AbstractPreferencesPanel {
 
     private static class AvailablePatternsDefaultTableModel extends DefaultTableModel {
         /**

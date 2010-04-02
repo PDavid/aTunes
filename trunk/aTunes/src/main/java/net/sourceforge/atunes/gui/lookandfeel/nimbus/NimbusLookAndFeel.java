@@ -24,10 +24,10 @@ import java.util.List;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeel;
+import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
 import net.sourceforge.atunes.misc.log.Logger;
 
-public class NimbusLookAndFeel extends LookAndFeel {
+public class NimbusLookAndFeel extends AbstractLookAndFeel {
 
     @Override
     public String getName() {

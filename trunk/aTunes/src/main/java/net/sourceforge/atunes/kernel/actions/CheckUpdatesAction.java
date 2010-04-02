@@ -32,7 +32,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class CheckUpdatesAction extends Action {
+public class CheckUpdatesAction extends AbstractAction {
 
     private static final long serialVersionUID = 999420226547524484L;
 

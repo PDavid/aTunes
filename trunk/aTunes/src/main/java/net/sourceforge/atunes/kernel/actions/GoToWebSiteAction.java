@@ -31,7 +31,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class GoToWebSiteAction extends Action {
+public class GoToWebSiteAction extends AbstractAction {
 
     private static final long serialVersionUID = -2614037760672140565L;
 

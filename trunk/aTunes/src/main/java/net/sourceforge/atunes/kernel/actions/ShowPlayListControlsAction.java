@@ -26,7 +26,7 @@ import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class ShowPlayListControlsAction extends Action {
+public class ShowPlayListControlsAction extends AbstractAction {
 
     private static final long serialVersionUID = 4338048323889228870L;
 

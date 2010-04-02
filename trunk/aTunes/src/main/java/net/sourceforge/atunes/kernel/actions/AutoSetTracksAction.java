@@ -34,7 +34,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class AutoSetTracksAction extends ActionOverSelectedObjects<AudioFile> {
+public class AutoSetTracksAction extends AbstractActionOverSelectedObjects<AudioFile> {
 
     private static final long serialVersionUID = 1378739676496602001L;
 

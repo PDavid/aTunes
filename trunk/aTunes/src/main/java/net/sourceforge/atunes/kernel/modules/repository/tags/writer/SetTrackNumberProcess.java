@@ -28,7 +28,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 /**
  * The Class SetTrackNumberProcess.
  */
-public class SetTrackNumberProcess extends ChangeTagProcess {
+public class SetTrackNumberProcess extends AbstractChangeTagProcess {
 
     /** The files and tracks. */
     private Map<AudioFile, Integer> filesAndTracks;

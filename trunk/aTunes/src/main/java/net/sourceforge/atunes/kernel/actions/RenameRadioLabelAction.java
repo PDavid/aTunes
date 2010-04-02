@@ -33,7 +33,7 @@ import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class RenameRadioLabelAction extends Action {
+public class RenameRadioLabelAction extends AbstractAction {
 
     private static final long serialVersionUID = -606790181321223318L;
 

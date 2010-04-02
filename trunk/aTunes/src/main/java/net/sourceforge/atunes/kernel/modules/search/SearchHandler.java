@@ -31,7 +31,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.kernel.ControllerProxy;
-import net.sourceforge.atunes.kernel.Handler;
+import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.AudioObject;
@@ -54,7 +54,7 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.LockObtainFailedException;
 import org.apache.lucene.util.Version;
 
-public final class SearchHandler extends Handler {
+public final class SearchHandler extends AbstractHandler {
 
     /** Default lucene field. */
     public static final String DEFAULT_INDEX = "any";

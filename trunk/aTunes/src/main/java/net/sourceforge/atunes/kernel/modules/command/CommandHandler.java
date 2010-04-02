@@ -25,14 +25,14 @@ import java.util.Map;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.ApplicationArguments;
-import net.sourceforge.atunes.kernel.Handler;
+import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.PlayNextAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.PlayPreviousAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.ShowOSDAction;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 
-public final class CommandHandler extends Handler {
+public final class CommandHandler extends AbstractHandler {
 
     /**
      * Singleton instance

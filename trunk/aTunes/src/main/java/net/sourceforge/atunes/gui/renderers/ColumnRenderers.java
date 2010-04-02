@@ -25,7 +25,7 @@ import javax.swing.JTable;
 
 import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.model.CommonColumnModel;
+import net.sourceforge.atunes.gui.model.AbstractCommonColumnModel;
 import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
@@ -55,7 +55,7 @@ public final class ColumnRenderers {
      * 
      * @param model
      */
-    public static void addRenderers(final JTable jtable, final CommonColumnModel model) {
+    public static void addRenderers(final JTable jtable, final AbstractCommonColumnModel model) {
 
         // Integer renderer
         jtable.setDefaultRenderer(Integer.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(model.getRendererCodeFor(Integer.class)));

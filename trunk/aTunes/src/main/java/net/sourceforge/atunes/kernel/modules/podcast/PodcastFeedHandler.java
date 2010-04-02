@@ -43,7 +43,7 @@ import javax.swing.SwingWorker;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.dialogs.TransferProgressDialog;
-import net.sourceforge.atunes.kernel.Handler;
+import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
@@ -59,7 +59,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The handler for podcast feeds.
  */
-public final class PodcastFeedHandler extends Handler {
+public final class PodcastFeedHandler extends AbstractHandler {
 
     private final class DownloadPodcastFeedEntryPropertyChangeListener
 			implements PropertyChangeListener {

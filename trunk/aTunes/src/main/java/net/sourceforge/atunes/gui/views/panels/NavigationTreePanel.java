@@ -27,7 +27,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationView;
+import net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.GuiUtils;
 
@@ -67,7 +67,7 @@ public final class NavigationTreePanel extends JPanel {
         add(treePanel);
 
         // Apply component orientation to all popup menus
-        for (NavigationView view : NavigationHandler.getInstance().getNavigationViews()) {
+        for (AbstractNavigationView view : NavigationHandler.getInstance().getNavigationViews()) {
             GuiUtils.applyComponentOrientation(view.getTreePopupMenu());
         }
     }
@@ -87,7 +87,7 @@ public final class NavigationTreePanel extends JPanel {
     private void addTabs() {
         tabbedPane.removeAll();
 
-        for (NavigationView view : NavigationHandler.getInstance().getNavigationViews()) {
+        for (AbstractNavigationView view : NavigationHandler.getInstance().getNavigationViews()) {
             tabbedPane.addTab(view.getTitle(), view.getIcon(), view.getTreeScrollPane(), view.getTooltip());
         }
     }
@@ -99,7 +99,7 @@ public final class NavigationTreePanel extends JPanel {
      */
     public void setNavigatorTabsText(boolean set) {
         int i = 0;
-        for (NavigationView view : NavigationHandler.getInstance().getNavigationViews()) {
+        for (AbstractNavigationView view : NavigationHandler.getInstance().getNavigationViews()) {
             tabbedPane.setTitleAt(i++, set ? view.getTitle() : null);
         }
     }

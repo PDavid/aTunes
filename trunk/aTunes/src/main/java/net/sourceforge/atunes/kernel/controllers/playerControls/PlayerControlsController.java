@@ -29,12 +29,12 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
-import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
+import net.sourceforge.atunes.kernel.controllers.model.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public final class PlayerControlsController extends SimpleController<PlayerControlsPanel> {
+public final class PlayerControlsController extends AbstractSimpleController<PlayerControlsPanel> {
 
     private static final int SECONDS_10 = 10000;
     private static final int SECONDS_30 = 30000;

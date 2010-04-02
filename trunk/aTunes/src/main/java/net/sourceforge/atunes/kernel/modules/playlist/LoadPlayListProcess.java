@@ -24,11 +24,11 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.modules.process.Process;
+import net.sourceforge.atunes.kernel.modules.process.AbstractProcess;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-class LoadPlayListProcess extends Process {
+class LoadPlayListProcess extends AbstractProcess {
 
     private List<String> filenamesToLoad;
 

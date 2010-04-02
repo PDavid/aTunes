@@ -24,12 +24,12 @@ import java.awt.Component;
 
 import javax.swing.JLabel;
 
-import net.sourceforge.atunes.gui.lookandfeel.TreeCellDecorator;
+import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.TreeObject;
 
-public class TooltipTreeCellDecorator extends TreeCellDecorator {
+public class TooltipTreeCellDecorator extends AbstractTreeCellDecorator {
 
     @Override
     public Component decorateTreeCellComponent(Component component, Object userObject) {

@@ -24,7 +24,7 @@ import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.AudioObject;
 
-public class PathColumn extends Column {
+public class PathColumn extends AbstractColumn {
 
     private static final long serialVersionUID = 2053462205073873545L;
 

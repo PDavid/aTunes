@@ -35,7 +35,7 @@ class MPlayerErrorReader extends Thread {
     private MPlayerEngine engine;
     private BufferedReader in;
     private AudioObject audioObject;
-    private MPlayerOutputReader outputReader;
+    private AbstractMPlayerOutputReader outputReader;
 
     /**
      * Instantiates a new m player error reader.
@@ -47,7 +47,7 @@ class MPlayerErrorReader extends Thread {
      * @param audioObject
      *            the audio object
      */
-    MPlayerErrorReader(MPlayerEngine engine, Process process, MPlayerOutputReader outputReader, AudioObject audioObject) {
+    MPlayerErrorReader(MPlayerEngine engine, Process process, AbstractMPlayerOutputReader outputReader, AudioObject audioObject) {
         this.engine = engine;
         in = new BufferedReader(new InputStreamReader(process.getErrorStream()));
         this.audioObject = audioObject;

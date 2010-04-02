@@ -31,7 +31,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * 
  * @author fleax
  */
-public class ExitAction extends Action {
+public class ExitAction extends AbstractAction {
 
     private static final long serialVersionUID = 1900672708942690561L;
 

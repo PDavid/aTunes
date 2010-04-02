@@ -32,7 +32,7 @@ import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandl
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class SetFavoriteArtistFromNavigatorAction extends ActionOverSelectedObjects<AudioFile> {
+public class SetFavoriteArtistFromNavigatorAction extends AbstractActionOverSelectedObjects<AudioFile> {
 
     private static final long serialVersionUID = -3551889307264609825L;
 

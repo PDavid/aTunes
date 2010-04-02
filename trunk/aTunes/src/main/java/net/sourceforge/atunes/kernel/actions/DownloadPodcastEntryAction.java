@@ -27,7 +27,7 @@ import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class DownloadPodcastEntryAction extends ActionOverSelectedObjects<PodcastFeedEntry> {
+public class DownloadPodcastEntryAction extends AbstractActionOverSelectedObjects<PodcastFeedEntry> {
 
     private static final long serialVersionUID = 1081237259786604605L;
 

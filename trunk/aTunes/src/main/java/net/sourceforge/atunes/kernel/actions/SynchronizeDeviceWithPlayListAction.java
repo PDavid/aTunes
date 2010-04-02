@@ -45,7 +45,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * 
  * @author fleax
  */
-public class SynchronizeDeviceWithPlayListAction extends Action {
+public class SynchronizeDeviceWithPlayListAction extends AbstractAction {
 
     private final class SynchronizeDeviceWithPlayListSwingWorker extends
 			SwingWorker<Map<String, List<AudioFile>>, Void> {

@@ -45,12 +45,12 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.kernel.modules.state.beans.FontBean;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public final class FontChooserDialog extends CustomModalDialog {
+public final class FontChooserDialog extends AbstractCustomModalDialog {
 
     public static class FontSettings {
 

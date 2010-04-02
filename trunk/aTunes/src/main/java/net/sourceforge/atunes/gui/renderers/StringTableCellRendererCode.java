@@ -25,14 +25,14 @@ import java.awt.Component;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 
-import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
-import net.sourceforge.atunes.gui.model.CommonColumnModel;
+import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
+import net.sourceforge.atunes.gui.model.AbstractCommonColumnModel;
 
-public class StringTableCellRendererCode extends TableCellRendererCode {
+public class StringTableCellRendererCode extends AbstractTableCellRendererCode {
 
-    private CommonColumnModel model;
+    private AbstractCommonColumnModel model;
 
-    public StringTableCellRendererCode(CommonColumnModel model) {
+    public StringTableCellRendererCode(AbstractCommonColumnModel model) {
         this.model = model;
     }
 

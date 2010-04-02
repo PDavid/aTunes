@@ -32,7 +32,7 @@ import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
-import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
+import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.DesktopUtils;
@@ -45,7 +45,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author alex
  * 
  */
-public class AlbumTracksContent extends ContextPanelContent {
+public class AlbumTracksContent extends AbstractContextPanelContent {
 
     private static class TracksDefaultTableColumnModel extends DefaultTableColumnModel {
         private static final long serialVersionUID = 1338172152164826400L;

@@ -46,7 +46,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 /**
  * The preferences panel for internet settings.
  */
-public final class InternetPanel extends PreferencesPanel {
+public final class InternetPanel extends AbstractPreferencesPanel {
 
     private static final long serialVersionUID = -1872565673079044088L;
 

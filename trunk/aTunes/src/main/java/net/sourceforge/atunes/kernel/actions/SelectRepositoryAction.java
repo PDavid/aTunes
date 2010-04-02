@@ -31,7 +31,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class SelectRepositoryAction extends Action {
+public class SelectRepositoryAction extends AbstractAction {
 
     private static final long serialVersionUID = 6921256152199287639L;
 

@@ -43,7 +43,7 @@ import net.sourceforge.atunes.gui.views.dialogs.ProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RepositoryProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ReviewImportDialog;
 import net.sourceforge.atunes.kernel.ControllerProxy;
-import net.sourceforge.atunes.kernel.Handler;
+import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ConnectDeviceAction;
@@ -82,7 +82,7 @@ import org.apache.commons.io.FilenameUtils;
 /**
  * The repository handler.
  */
-public final class RepositoryHandler extends Handler implements LoaderListener, AudioFilesRemovedListener {
+public final class RepositoryHandler extends AbstractHandler implements LoaderListener, AudioFilesRemovedListener {
 
     private final class ImportFoldersSwingWorker extends
 			SwingWorker<List<AudioFile>, Void> {

@@ -49,18 +49,18 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import net.sourceforge.atunes.gui.lookandfeel.ListCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.AbstractListCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.lookandfeel.TreeCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellRendererCode;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
-import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The Class FileSelectionDialog.
  */
-public final class FileSelectionDialog extends CustomModalDialog {
+public final class FileSelectionDialog extends AbstractCustomModalDialog {
 
     private final class FileSystemListMouseAdapter extends MouseAdapter {
 		@Override
@@ -167,7 +167,7 @@ public final class FileSelectionDialog extends CustomModalDialog {
 		}
 	}
 
-	private static class FileSystemTreeCellRendererCode extends TreeCellRendererCode {
+	private static class FileSystemTreeCellRendererCode extends AbstractTreeCellRendererCode {
         @Override
         public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
             if (superComponent instanceof JLabel) {
@@ -187,7 +187,7 @@ public final class FileSelectionDialog extends CustomModalDialog {
         }
     }
 
-    private static class FileSystemListCellRendererCode extends ListCellRendererCode {
+    private static class FileSystemListCellRendererCode extends AbstractListCellRendererCode {
         @Override
         public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         	if (superComponent instanceof JLabel) {

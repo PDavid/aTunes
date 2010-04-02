@@ -30,14 +30,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
-import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The Class EditTitlesDialog.
  */
-public final class EditTitlesDialog extends CustomModalDialog {
+public final class EditTitlesDialog extends AbstractCustomModalDialog {
 
     private static final long serialVersionUID = -7937735545263913179L;
 

@@ -28,7 +28,7 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class SetAsPlayListAction extends ActionOverSelectedObjects<AudioObject> {
+public class SetAsPlayListAction extends AbstractActionOverSelectedObjects<AudioObject> {
 
     private static final long serialVersionUID = -8993769615827375740L;
 

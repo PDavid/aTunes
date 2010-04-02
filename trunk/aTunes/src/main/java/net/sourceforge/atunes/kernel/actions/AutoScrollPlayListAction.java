@@ -31,7 +31,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class AutoScrollPlayListAction extends Action {
+public class AutoScrollPlayListAction extends AbstractAction {
 
     private static final long serialVersionUID = -9039622325405324974L;
 

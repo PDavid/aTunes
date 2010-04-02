@@ -63,7 +63,7 @@ import javax.swing.filechooser.FileFilter;
 
 import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.views.controls.CustomWindow;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomWindow;
 import net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.NextButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.PlayPauseButton;
@@ -84,7 +84,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public final class FullScreenWindow extends CustomWindow {
+public final class FullScreenWindow extends AbstractCustomWindow {
 
     private final class SelectBackgroundActionListener implements
 			ActionListener {

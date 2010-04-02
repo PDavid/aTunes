@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.CdToWavConverter;
+import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavConverter;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.NoCdListener;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
 import net.sourceforge.atunes.kernel.modules.cdripper.encoders.Encoder;
@@ -103,7 +103,7 @@ public class CdRipper {
     public static final String TRACK_NUMBER = "%N";
 
     private Logger logger;
-    private CdToWavConverter cdToWavConverter;
+    private AbstractCdToWavConverter cdToWavConverter;
     private Encoder encoder;
     private ProgressListener listener;
     private ProgressListener encoderListener;
@@ -120,7 +120,7 @@ public class CdRipper {
      * Instantiates a new cd ripper.
      */
     public CdRipper() {
-        cdToWavConverter = CdToWavConverter.createNewConverterForOS();
+        cdToWavConverter = AbstractCdToWavConverter.createNewConverterForOS();
     }
 
     /**

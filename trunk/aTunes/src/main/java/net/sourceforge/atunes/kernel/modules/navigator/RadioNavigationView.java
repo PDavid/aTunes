@@ -33,7 +33,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.lookandfeel.TreeCellDecorator;
+import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.gui.views.decorators.RadioTreeCellDecorator;
@@ -51,8 +51,8 @@ import net.sourceforge.atunes.kernel.actions.RenameRadioLabelAction;
 import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
-import net.sourceforge.atunes.kernel.modules.columns.Column;
-import net.sourceforge.atunes.kernel.modules.columns.ColumnSet;
+import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
+import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -60,9 +60,9 @@ import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public final class RadioNavigationView extends NavigationView {
+public final class RadioNavigationView extends AbstractNavigationView {
 
-    private List<TreeCellDecorator> decorators;
+    private List<AbstractTreeCellDecorator> decorators;
 
     /** The radio tree. */
     private JTree radioTree;
@@ -74,7 +74,7 @@ public final class RadioNavigationView extends NavigationView {
     private JPopupMenu radioTableMenu;
 
     /** The column set */
-    private ColumnSet columnSet;
+    private AbstractColumnSet columnSet;
 
     @Override
     public ImageIcon getIcon() {
@@ -342,7 +342,7 @@ public final class RadioNavigationView extends NavigationView {
     }
 
     @Override
-    public ColumnSet getCustomColumnSet() {
+    public AbstractColumnSet getCustomColumnSet() {
         if (columnSet == null) {
             columnSet = new RadioNavigationColumnSet(this.getClass().getName());
         }
@@ -355,18 +355,18 @@ public final class RadioNavigationView extends NavigationView {
     }
 
     @Override
-    protected List<TreeCellDecorator> getTreeCellDecorators() {
+    protected List<AbstractTreeCellDecorator> getTreeCellDecorators() {
         if (decorators == null) {
-            decorators = new ArrayList<TreeCellDecorator>();
+            decorators = new ArrayList<AbstractTreeCellDecorator>();
             decorators.add(new StringTreeCellDecorator());
             decorators.add(new RadioTreeCellDecorator());
         }
         return decorators;
     }
 
-    private static final class RadioNavigationColumnSet extends CustomNavigatorColumnSet {
+    private static final class RadioNavigationColumnSet extends AbstractCustomNavigatorColumnSet {
 
-        private static final class UrlColumn extends Column {
+        private static final class UrlColumn extends AbstractColumn {
             /**
 			 * 
 			 */
@@ -387,7 +387,7 @@ public final class RadioNavigationView extends NavigationView {
             }
         }
 
-        private static final class NameColumn extends Column {
+        private static final class NameColumn extends AbstractColumn {
             /**
 			 * 
 			 */
@@ -408,7 +408,7 @@ public final class RadioNavigationView extends NavigationView {
             }
         }
 
-        private static final class EmptyColumn extends Column {
+        private static final class EmptyColumn extends AbstractColumn {
             /**
 			 * 
 			 */
@@ -434,22 +434,22 @@ public final class RadioNavigationView extends NavigationView {
         }
 
         @Override
-        protected List<Column> getAllowedColumns() {
-            List<Column> columns = new ArrayList<Column>();
+        protected List<AbstractColumn> getAllowedColumns() {
+            List<AbstractColumn> columns = new ArrayList<AbstractColumn>();
 
-            Column property = new EmptyColumn("", Property.class);
+            AbstractColumn property = new EmptyColumn("", Property.class);
             property.setVisible(true);
             property.setWidth(20);
             property.setResizable(false);
             columns.add(property);
 
-            Column name = new NameColumn("NAME", String.class);
+            AbstractColumn name = new NameColumn("NAME", String.class);
             name.setVisible(true);
             name.setWidth(150);
             name.setUsedForFilter(true);
             columns.add(name);
 
-            Column url = new UrlColumn("URL", String.class);
+            AbstractColumn url = new UrlColumn("URL", String.class);
             url.setVisible(true);
             url.setWidth(400);
             url.setUsedForFilter(true);

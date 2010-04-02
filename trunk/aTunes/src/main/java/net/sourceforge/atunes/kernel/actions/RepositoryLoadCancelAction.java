@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class RepositoryLoadCancelAction extends Action {
+public class RepositoryLoadCancelAction extends AbstractAction {
 
     private static final long serialVersionUID = -9039622325405324974L;
 

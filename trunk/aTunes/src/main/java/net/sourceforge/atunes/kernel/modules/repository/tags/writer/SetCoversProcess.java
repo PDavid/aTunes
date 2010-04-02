@@ -34,14 +34,14 @@ import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.EditTagInfo;
-import net.sourceforge.atunes.kernel.modules.repository.tags.tag.Tag;
+import net.sourceforge.atunes.kernel.modules.repository.tags.tag.AbstractTag;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.utils.ImageUtils;
 
 /**
  * The Class SetGenresProcess.
  */
-public class SetCoversProcess extends ChangeTagProcess {
+public class SetCoversProcess extends AbstractChangeTagProcess {
 
     private Map<AudioFile, Image> filesAndCovers;
 
@@ -64,7 +64,7 @@ public class SetCoversProcess extends ChangeTagProcess {
     @Override
     protected void changeTag(AudioFile file) throws IOException {
         BufferedImage bufferedCover = ImageUtils.toBufferedImage(this.filesAndCovers.get(file));
-        Tag newTag = AudioFile.getNewTag(file, new EditTagInfo());
+        AbstractTag newTag = AudioFile.getNewTag(file, new EditTagInfo());
         newTag.setInternalImage(true);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ImageIO.write(bufferedCover, "PNG", byteArrayOutputStream);

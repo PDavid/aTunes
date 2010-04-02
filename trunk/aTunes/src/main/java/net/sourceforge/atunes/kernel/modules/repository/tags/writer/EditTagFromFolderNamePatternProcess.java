@@ -30,7 +30,7 @@ import net.sourceforge.atunes.kernel.modules.repository.tags.tag.EditTagInfo;
 /**
  * The Class EditTagFromFolderNamePatternProcess.
  */
-public class EditTagFromFolderNamePatternProcess extends ChangeTagProcess {
+public class EditTagFromFolderNamePatternProcess extends AbstractChangeTagProcess {
 
     /**
      * Pattern used to get tag from folder name

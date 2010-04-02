@@ -44,7 +44,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import net.sourceforge.atunes.gui.model.ReviewImportTreeTableModel;
-import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
@@ -58,7 +58,7 @@ import org.jdesktop.swingx.JXTreeTable;
 /**
  * The Class ReviewImportDialog.
  */
-public final class ReviewImportDialog extends CustomModalDialog {
+public final class ReviewImportDialog extends AbstractCustomModalDialog {
 
     private static final long serialVersionUID = 8523236886848649698L;
 

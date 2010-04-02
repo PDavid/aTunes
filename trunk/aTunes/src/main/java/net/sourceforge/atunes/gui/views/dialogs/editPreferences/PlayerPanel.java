@@ -48,7 +48,7 @@ import javax.swing.table.AbstractTableModel;
 import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.kernel.modules.hotkeys.Hotkey;
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeyHandler;
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeysConfig;
@@ -59,10 +59,10 @@ import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public final class PlayerPanel extends PreferencesPanel {
+public final class PlayerPanel extends AbstractPreferencesPanel {
 
     private final class HotkeyTableTableCellRendererCode extends
-			TableCellRendererCode {
+			AbstractTableCellRendererCode {
 		@Override
 		public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 		    Component c = superComponent;

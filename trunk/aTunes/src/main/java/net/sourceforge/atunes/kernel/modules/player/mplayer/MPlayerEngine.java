@@ -27,7 +27,7 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.modules.player.PlayerEngine;
+import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
@@ -46,7 +46,7 @@ import net.sourceforge.atunes.utils.FileNameUtils;
 /**
  * Engine for MPlayer
  */
-public class MPlayerEngine extends PlayerEngine {
+public class MPlayerEngine extends AbstractPlayerEngine {
 
     /**
      * Command to be executed on Linux systems to launch mplayer. Mplayer should
@@ -93,7 +93,7 @@ public class MPlayerEngine extends PlayerEngine {
 
     private Process process;
     private MPlayerCommandWriter commandWriter;
-    private MPlayerOutputReader mPlayerOutputReader;
+    private AbstractMPlayerOutputReader mPlayerOutputReader;
     private MPlayerErrorReader mPlayerErrorReader;
     private MPlayerPositionThread mPlayerPositionThread;
     /** The current fade away process running */
@@ -171,7 +171,7 @@ public class MPlayerEngine extends PlayerEngine {
             commandWriter = new MPlayerCommandWriter(process);
             // Output reader needs original audio object, specially when cacheFilesBeforePlaying is true, as
             // statistics must be applied over original audio object, not the cached one
-            mPlayerOutputReader = MPlayerOutputReader.newInstance(this, process, audioObject);
+            mPlayerOutputReader = AbstractMPlayerOutputReader.newInstance(this, process, audioObject);
             mPlayerErrorReader = new MPlayerErrorReader(this, process, mPlayerOutputReader, audioObjectToPlay);
             mPlayerOutputReader.start();
             mPlayerErrorReader.start();

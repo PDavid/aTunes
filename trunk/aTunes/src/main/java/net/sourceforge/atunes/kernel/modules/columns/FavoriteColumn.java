@@ -27,7 +27,7 @@ import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.model.AudioObject;
 
-public class FavoriteColumn extends Column {
+public class FavoriteColumn extends AbstractColumn {
 
     /**
      * 

@@ -29,16 +29,16 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeel;
+import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.kernel.Handler;
+import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
-import net.sourceforge.atunes.kernel.modules.columns.Column;
+import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnSets;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
-import net.sourceforge.atunes.kernel.modules.context.ContextPanel;
+import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationView;
+import net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView;
 import net.sourceforge.atunes.kernel.modules.player.PlaybackStateListener;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -55,7 +55,7 @@ import org.commonjukebox.plugins.PluginSystemException;
 import org.commonjukebox.plugins.PluginSystemLogger;
 import org.commonjukebox.plugins.PluginsFactory;
 
-public class PluginsHandler extends Handler implements PluginListener {
+public class PluginsHandler extends AbstractHandler implements PluginListener {
 
     /** Singleton instance */
     private static PluginsHandler instance;
@@ -138,11 +138,11 @@ public class PluginsHandler extends Handler implements PluginListener {
         if (pluginTypes == null) {
             pluginTypes = new HashSet<PluginType>();
             pluginTypes.add(new PluginType(PlaybackStateListener.class.getName(), PlayerHandler.getInstance(), false));
-            pluginTypes.add(new PluginType(Column.class.getName(), ColumnSets.getInstance(), false));
-            pluginTypes.add(new PluginType(NavigationView.class.getName(), NavigationHandler.getInstance(), false));
-            pluginTypes.add(new PluginType(ContextPanel.class.getName(), ContextHandler.getInstance(), false));
-            pluginTypes.add(new PluginType(LookAndFeel.class.getName(), LookAndFeelSelector.getInstance(), false));
-            pluginTypes.add(new PluginType(GeneralPurposePlugin.class.getName(), GeneralPurposePluginsHandler.getInstance(), false));
+            pluginTypes.add(new PluginType(AbstractColumn.class.getName(), ColumnSets.getInstance(), false));
+            pluginTypes.add(new PluginType(AbstractNavigationView.class.getName(), NavigationHandler.getInstance(), false));
+            pluginTypes.add(new PluginType(AbstractContextPanel.class.getName(), ContextHandler.getInstance(), false));
+            pluginTypes.add(new PluginType(AbstractLookAndFeel.class.getName(), LookAndFeelSelector.getInstance(), false));
+            pluginTypes.add(new PluginType(AbstractGeneralPurposePlugin.class.getName(), GeneralPurposePluginsHandler.getInstance(), false));
         }
         return pluginTypes;
     }

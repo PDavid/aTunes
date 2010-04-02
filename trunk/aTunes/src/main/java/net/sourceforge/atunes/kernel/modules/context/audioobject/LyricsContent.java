@@ -37,7 +37,7 @@ import javax.swing.text.StyleConstants;
 import net.sourceforge.atunes.gui.views.controls.CustomTextPane;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.actions.EditTagAction.EditTagSources;
-import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
+import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService;
@@ -52,7 +52,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author alex
  * 
  */
-public class LyricsContent extends ContextPanelContent {
+public class LyricsContent extends AbstractContextPanelContent {
 
     private static final class OpenUrlActionListener implements ActionListener {
         private final Entry<String, String> entry;

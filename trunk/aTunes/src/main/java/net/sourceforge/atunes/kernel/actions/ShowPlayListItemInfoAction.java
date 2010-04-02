@@ -38,7 +38,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class ShowPlayListItemInfoAction extends Action {
+public class ShowPlayListItemInfoAction extends AbstractAction {
 
     private static final long serialVersionUID = -2006569851431046347L;
 

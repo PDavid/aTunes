@@ -33,7 +33,7 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -42,7 +42,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 /**
  * The Class AddPodcastFeedDialog.
  */
-public final class AddPodcastFeedDialog extends CustomModalDialog {
+public final class AddPodcastFeedDialog extends AbstractCustomModalDialog {
 
     private static final long serialVersionUID = 7295438534550341824L;
 

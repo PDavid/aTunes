@@ -29,7 +29,7 @@ import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class FillDeviceWithRandomSongsAction extends Action {
+public class FillDeviceWithRandomSongsAction extends AbstractAction {
 
     private static final long serialVersionUID = -201250351035880261L;
 

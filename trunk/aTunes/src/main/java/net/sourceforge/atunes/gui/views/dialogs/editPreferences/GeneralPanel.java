@@ -46,7 +46,7 @@ import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.frame.Frame;
 import net.sourceforge.atunes.gui.frame.Frames;
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.lookandfeel.ListCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.AbstractListCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelBean;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.ByImageChoosingPanel;
@@ -64,9 +64,9 @@ import org.jdesktop.swingx.combobox.ListComboBoxModel;
 /**
  * The preferences panel for general settings.
  */
-public final class GeneralPanel extends PreferencesPanel {
+public final class GeneralPanel extends AbstractPreferencesPanel {
 
-    private static class LanguageListCellRendererCode extends ListCellRendererCode {
+    private static class LanguageListCellRendererCode extends AbstractListCellRendererCode {
         @Override
         public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             if (!(value instanceof Locale)) {

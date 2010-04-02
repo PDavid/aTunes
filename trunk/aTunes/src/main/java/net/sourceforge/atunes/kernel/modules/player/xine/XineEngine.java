@@ -28,7 +28,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
-import net.sourceforge.atunes.kernel.modules.player.PlayerEngine;
+import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
@@ -49,7 +49,7 @@ import org.libxinejna.XineEventListener;
  * 
  * @author <a href="mailto:Helbrass@gmail.com">Aekold Helbrass</a>
  */
-public class XineEngine extends PlayerEngine {
+public class XineEngine extends AbstractPlayerEngine {
 
     private XineController xineController;
     private Timer durationUpdater;

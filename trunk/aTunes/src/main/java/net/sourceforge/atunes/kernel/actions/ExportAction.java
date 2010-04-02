@@ -42,7 +42,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * @author fleax
  * 
  */
-public class ExportAction extends Action {
+public class ExportAction extends AbstractAction {
 
     private static class ExportProcessListener implements ProcessListener {
         private static final class ShowErrorDialogRunnable implements Runnable {

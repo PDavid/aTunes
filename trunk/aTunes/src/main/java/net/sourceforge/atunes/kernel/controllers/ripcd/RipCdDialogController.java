@@ -28,13 +28,13 @@ import javax.swing.DefaultComboBoxModel;
 
 import net.sourceforge.atunes.gui.autocomplete.AutoCompleteDecorator;
 import net.sourceforge.atunes.gui.views.dialogs.RipCdDialog;
-import net.sourceforge.atunes.kernel.controllers.model.SimpleController;
+import net.sourceforge.atunes.kernel.controllers.model.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.cdripper.CdRipper;
 import net.sourceforge.atunes.kernel.modules.cdripper.RipperHandler;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
 import net.sourceforge.atunes.kernel.modules.cdripper.encoders.Encoder;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.kernel.modules.repository.tags.tag.Tag;
+import net.sourceforge.atunes.kernel.modules.repository.tags.tag.AbstractTag;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.FileNameUtils;
@@ -42,7 +42,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
 
-public final class RipCdDialogController extends SimpleController<RipCdDialog> {
+public final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> {
 
     // Encoder options and file name patterns. Add here for more options
     public static final String[] FILENAMEPATTERN = { StringUtils.getString(CdRipper.TRACK_NUMBER, " - ", CdRipper.TITLE_PATTERN),
@@ -77,7 +77,7 @@ public final class RipCdDialogController extends SimpleController<RipCdDialog> {
     protected void addBindings() {
 
         // Add genres combo box items
-        List<String> genresSorted = Arrays.asList(Tag.genres);
+        List<String> genresSorted = Arrays.asList(AbstractTag.genres);
         Collections.sort(genresSorted);
         getComponentControlled().getGenreComboBox().setModel(new ListComboBoxModel<String>(genresSorted));
 

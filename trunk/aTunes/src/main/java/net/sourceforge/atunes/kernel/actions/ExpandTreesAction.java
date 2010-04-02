@@ -23,11 +23,11 @@ import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationView;
+import net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class ExpandTreesAction extends Action {
+public class ExpandTreesAction extends AbstractAction {
 
     private static final long serialVersionUID = -2632581565309673327L;
 
@@ -38,7 +38,7 @@ public class ExpandTreesAction extends Action {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        for (NavigationView view : NavigationHandler.getInstance().getNavigationViews()) {
+        for (AbstractNavigationView view : NavigationHandler.getInstance().getNavigationViews()) {
             GuiUtils.expandTree(view.getTree());
         }
     }

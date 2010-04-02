@@ -27,7 +27,7 @@ import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
-class X11Hotkeys extends Hotkeys implements jxgrabkey.HotkeyListener {
+class X11Hotkeys extends AbstractHotkeys implements jxgrabkey.HotkeyListener {
 
     public X11Hotkeys(HotkeyListener hotkeyListener) {
         super(hotkeyListener);

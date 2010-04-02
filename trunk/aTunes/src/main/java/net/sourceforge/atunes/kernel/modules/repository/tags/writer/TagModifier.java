@@ -32,7 +32,7 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Format;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.ImageInfo;
-import net.sourceforge.atunes.kernel.modules.repository.tags.tag.Tag;
+import net.sourceforge.atunes.kernel.modules.repository.tags.tag.AbstractTag;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -207,7 +207,7 @@ public final class TagModifier {
      * @param tag
      *            Tag to be written
      */
-    public static void setInfo(AudioFile file, Tag tag) {
+    public static void setInfo(AudioFile file, AbstractTag tag) {
         setInfo(file, tag, false, null);
     }
 
@@ -223,7 +223,7 @@ public final class TagModifier {
      * @param cover
      *            cover data as byte array
      */
-    static void setInfo(AudioFile file, Tag tag, boolean shouldEditCover, byte[] cover) {
+    static void setInfo(AudioFile file, AbstractTag tag, boolean shouldEditCover, byte[] cover) {
         // Be sure file is writable before setting info
         file.setWritable();
 

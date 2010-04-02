@@ -31,7 +31,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 /**
  * The Class RadioPanel.
  */
-public final class RadioPanel extends PreferencesPanel {
+public final class RadioPanel extends AbstractPreferencesPanel {
 
     private static final long serialVersionUID = 4489293347321979288L;
 

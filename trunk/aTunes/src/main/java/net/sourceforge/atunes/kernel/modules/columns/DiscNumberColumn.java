@@ -23,7 +23,7 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.model.AudioObject;
 
-public class DiscNumberColumn extends Column {
+public class DiscNumberColumn extends AbstractColumn {
 
     private static final long serialVersionUID = -6226391762384061708L;
 

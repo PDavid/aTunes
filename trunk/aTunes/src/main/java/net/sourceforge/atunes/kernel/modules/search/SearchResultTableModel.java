@@ -23,14 +23,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import net.sourceforge.atunes.gui.model.ColumnSetTableModel;
+import net.sourceforge.atunes.gui.model.AbstractColumnSetTableModel;
 import net.sourceforge.atunes.kernel.modules.columns.SearchResultsColumnSet;
 import net.sourceforge.atunes.model.AudioObject;
 
 /**
  * The table model for search results.
  */
-public class SearchResultTableModel extends ColumnSetTableModel {
+public class SearchResultTableModel extends AbstractColumnSetTableModel {
 
     private List<AudioObject> results;
 

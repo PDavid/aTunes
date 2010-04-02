@@ -181,8 +181,8 @@ public final class PlayListMenu {
                 updatePlayListMenuItems((JMenu) c, selection);
             }
 
-            if (action != null && action instanceof net.sourceforge.atunes.kernel.actions.Action) {
-                boolean enabled = ((net.sourceforge.atunes.kernel.actions.Action) action).isEnabledForPlayListSelection(selection);
+            if (action != null && action instanceof net.sourceforge.atunes.kernel.actions.AbstractAction) {
+                boolean enabled = ((net.sourceforge.atunes.kernel.actions.AbstractAction) action).isEnabledForPlayListSelection(selection);
                 action.setEnabled(enabled);
             }
         }
@@ -205,8 +205,8 @@ public final class PlayListMenu {
                     updatePlayListMenuItems((JMenu) menuItem, selection);
                 }
 
-                if (action != null && action instanceof net.sourceforge.atunes.kernel.actions.Action) {
-                    boolean enabled = ((net.sourceforge.atunes.kernel.actions.Action) action).isEnabledForPlayListSelection(selection);
+                if (action != null && action instanceof net.sourceforge.atunes.kernel.actions.AbstractAction) {
+                    boolean enabled = ((net.sourceforge.atunes.kernel.actions.AbstractAction) action).isEnabledForPlayListSelection(selection);
                     action.setEnabled(enabled);
                 }
             }

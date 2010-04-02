@@ -28,7 +28,7 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.kernel.Handler;
+import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.RadioNavigationView;
@@ -45,7 +45,7 @@ import net.sourceforge.atunes.utils.XMLUtils;
  * 
  * @author sylvain
  */
-public final class RadioHandler extends Handler {
+public final class RadioHandler extends AbstractHandler {
 
     private final class RetrieveRadiosSwingWorker extends
 			SwingWorker<List<Radio>, Void> {

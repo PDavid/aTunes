@@ -34,7 +34,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class ShowNavigationTableAction extends Action {
+public class ShowNavigationTableAction extends AbstractAction {
 
     private static final long serialVersionUID = -3275592274940501407L;
 

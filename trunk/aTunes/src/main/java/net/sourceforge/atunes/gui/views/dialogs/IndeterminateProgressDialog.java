@@ -32,7 +32,7 @@ import javax.swing.JProgressBar;
 import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -42,7 +42,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * 
  * @author fleax
  */
-public final class IndeterminateProgressDialog extends CustomModalDialog {
+public final class IndeterminateProgressDialog extends AbstractCustomModalDialog {
 
     private static final long serialVersionUID = -3071934230042256578L;
 

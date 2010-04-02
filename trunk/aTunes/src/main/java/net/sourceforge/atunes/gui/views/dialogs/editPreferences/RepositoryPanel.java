@@ -36,7 +36,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 /**
  * The preferences panel for respository settings.
  */
-public final class RepositoryPanel extends PreferencesPanel {
+public final class RepositoryPanel extends AbstractPreferencesPanel {
 
     private static final long serialVersionUID = 3331810461314007217L;
 

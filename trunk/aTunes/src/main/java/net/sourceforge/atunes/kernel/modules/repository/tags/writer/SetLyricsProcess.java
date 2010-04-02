@@ -29,7 +29,7 @@ import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService;
 /**
  * The Class SetLyricsProcess.
  */
-public class SetLyricsProcess extends ChangeTagProcess {
+public class SetLyricsProcess extends AbstractChangeTagProcess {
 
     /**
      * Writes lyrics to files if any is found. Context handler is used for

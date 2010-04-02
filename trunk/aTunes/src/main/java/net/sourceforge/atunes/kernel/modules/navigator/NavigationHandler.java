@@ -26,9 +26,9 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.kernel.ControllerProxy;
-import net.sourceforge.atunes.kernel.Handler;
+import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
-import net.sourceforge.atunes.kernel.modules.filter.Filter;
+import net.sourceforge.atunes.kernel.modules.filter.AbstractFilter;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
@@ -39,19 +39,19 @@ import org.commonjukebox.plugins.PluginInfo;
 import org.commonjukebox.plugins.PluginListener;
 import org.commonjukebox.plugins.PluginSystemException;
 
-public final class NavigationHandler extends Handler implements PluginListener {
+public final class NavigationHandler extends AbstractHandler implements PluginListener {
 
     /**
      * Singleton instance
      */
     private static NavigationHandler instance;
 
-    private List<NavigationView> navigationViews;
+    private List<AbstractNavigationView> navigationViews;
 
     /**
      * Filter for navigation table
      */
-    private Filter tableFilter = new Filter() {
+    private AbstractFilter tableFilter = new AbstractFilter() {
 
         @Override
         public String getName() {
@@ -72,7 +72,7 @@ public final class NavigationHandler extends Handler implements PluginListener {
     /**
      * Filter for tree
      */
-    private Filter treeFilter = new Filter() {
+    private AbstractFilter treeFilter = new AbstractFilter() {
 
         @Override
         public String getName() {
@@ -117,9 +117,9 @@ public final class NavigationHandler extends Handler implements PluginListener {
     public void applicationStarted() {
     }
 
-    public List<NavigationView> getNavigationViews() {
+    public List<AbstractNavigationView> getNavigationViews() {
         if (navigationViews == null) {
-            navigationViews = new ArrayList<NavigationView>();
+            navigationViews = new ArrayList<AbstractNavigationView>();
             // TODO: Dynamic load of navigation views, possibly from a config file
             navigationViews.add(new RepositoryNavigationView());
             navigationViews.add(new FavoritesNavigationView());
@@ -136,15 +136,15 @@ public final class NavigationHandler extends Handler implements PluginListener {
      * 
      * @return
      */
-    private Map<Class<? extends NavigationView>, NavigationView> getNavigationViewsMap() {
-        Map<Class<? extends NavigationView>, NavigationView> navigationViewsMap = new HashMap<Class<? extends NavigationView>, NavigationView>();
-        for (NavigationView view : getNavigationViews()) {
+    private Map<Class<? extends AbstractNavigationView>, AbstractNavigationView> getNavigationViewsMap() {
+        Map<Class<? extends AbstractNavigationView>, AbstractNavigationView> navigationViewsMap = new HashMap<Class<? extends AbstractNavigationView>, AbstractNavigationView>();
+        for (AbstractNavigationView view : getNavigationViews()) {
             navigationViewsMap.put(view.getClass(), view);
         }
         return navigationViewsMap;
     }
 
-    public NavigationView getCurrentView() {
+    public AbstractNavigationView getCurrentView() {
         return getView(getViewByName(ApplicationState.getInstance().getNavigationView()));
     }
 
@@ -152,7 +152,7 @@ public final class NavigationHandler extends Handler implements PluginListener {
         return getCurrentView().getCurrentViewMode();
     }
 
-    public NavigationView getView(Class<? extends NavigationView> navigationViewClass) {
+    public AbstractNavigationView getView(Class<? extends AbstractNavigationView> navigationViewClass) {
         return getNavigationViewsMap().get(navigationViewClass);
     }
 
@@ -170,18 +170,18 @@ public final class NavigationHandler extends Handler implements PluginListener {
      * 
      * @param navigationViewClass
      */
-    public void refreshView(Class<? extends NavigationView> navigationViewClass) {
+    public void refreshView(Class<? extends AbstractNavigationView> navigationViewClass) {
         if (getView(navigationViewClass).equals(getCurrentView())) {
             getView(navigationViewClass).refreshView(ApplicationState.getInstance().getViewMode(),
                     FilterHandler.getInstance().isFilterSelected(getTreeFilter()) ? FilterHandler.getInstance().getFilter() : null);
         }
     }
 
-    public Class<? extends NavigationView> getViewByName(String className) {
+    public Class<? extends AbstractNavigationView> getViewByName(String className) {
         if (className == null) {
             return null;
         }
-        for (Class<? extends NavigationView> viewFromMap : getNavigationViewsMap().keySet()) {
+        for (Class<? extends AbstractNavigationView> viewFromMap : getNavigationViewsMap().keySet()) {
             if (viewFromMap.getName().equals(className)) {
                 return viewFromMap;
             }
@@ -191,14 +191,14 @@ public final class NavigationHandler extends Handler implements PluginListener {
         return RepositoryNavigationView.class;
     }
 
-    public int indexOf(Class<? extends NavigationView> view) {
+    public int indexOf(Class<? extends AbstractNavigationView> view) {
         return getNavigationViews().indexOf(getNavigationViewsMap().get(view));
     }
 
     @Override
     public void pluginActivated(PluginInfo plugin) {
         try {
-            getNavigationViews().add((NavigationView) plugin.getInstance());
+            getNavigationViews().add((AbstractNavigationView) plugin.getInstance());
             // Set tabs and text for navigator
             ControllerProxy.getInstance().getNavigationController().getNavigationTreePanel().updateTabs();
         } catch (PluginSystemException e) {
@@ -224,14 +224,14 @@ public final class NavigationHandler extends Handler implements PluginListener {
     /**
      * @return the tableFilter
      */
-    public Filter getTableFilter() {
+    public AbstractFilter getTableFilter() {
         return tableFilter;
     }
 
     /**
      * @return the treeFilter
      */
-    public Filter getTreeFilter() {
+    public AbstractFilter getTreeFilter() {
         return treeFilter;
     }
 }

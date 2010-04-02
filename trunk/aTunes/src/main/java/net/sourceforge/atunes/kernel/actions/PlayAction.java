@@ -30,7 +30,7 @@ import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class PlayAction extends Action {
+public class PlayAction extends AbstractAction {
 
     private static final long serialVersionUID = -1122746023245126869L;
 

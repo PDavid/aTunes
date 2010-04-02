@@ -38,7 +38,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * @author fleax
  * 
  */
-public class AutoSetTagFromFolderNamePatternAction extends ActionOverSelectedObjects<AudioFile> {
+public class AutoSetTagFromFolderNamePatternAction extends AbstractActionOverSelectedObjects<AudioFile> {
 
     /**
      * 

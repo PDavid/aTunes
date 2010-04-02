@@ -24,7 +24,7 @@ import javax.swing.SwingConstants;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public class FrequencyColumn extends Column {
+public class FrequencyColumn extends AbstractColumn {
 
     private static final long serialVersionUID = -198950195313638217L;
 

@@ -46,7 +46,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public final class ImportExportPanel extends PreferencesPanel {
+public final class ImportExportPanel extends AbstractPreferencesPanel {
 
     private static class AvailablePatternsTableModel extends DefaultTableModel {
         /**

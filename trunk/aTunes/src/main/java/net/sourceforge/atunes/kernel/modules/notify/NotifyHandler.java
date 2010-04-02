@@ -19,13 +19,13 @@
  */
 package net.sourceforge.atunes.kernel.modules.notify;
 
-import net.sourceforge.atunes.kernel.Handler;
+import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlaybackState;
 import net.sourceforge.atunes.kernel.modules.player.PlaybackStateListener;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
 
-public final class NotifyHandler extends Handler implements PlaybackStateListener {
+public final class NotifyHandler extends AbstractHandler implements PlaybackStateListener {
 
     private static NotifyHandler instance;
 

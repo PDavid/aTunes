@@ -29,13 +29,13 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
 import net.sourceforge.atunes.kernel.ControllerProxy;
-import net.sourceforge.atunes.kernel.Handler;
+import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.SavePlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
 import net.sourceforge.atunes.kernel.modules.columns.PlayListColumnSet;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
-import net.sourceforge.atunes.kernel.modules.filter.Filter;
+import net.sourceforge.atunes.kernel.modules.filter.AbstractFilter;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
@@ -53,7 +53,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The Class PlayListHandler.
  */
-public final class PlayListHandler extends Handler implements AudioFilesRemovedListener, PlayListEventListener {
+public final class PlayListHandler extends AbstractHandler implements AudioFilesRemovedListener, PlayListEventListener {
 
     private static final class RowListComparator implements Comparator<Integer> {
         private final boolean up;
@@ -107,7 +107,7 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
     /**
      * Filter for play list
      */
-    private Filter playListFilter = new Filter() {
+    private AbstractFilter playListFilter = new AbstractFilter() {
 
         @Override
         public String getName() {
@@ -1168,7 +1168,7 @@ public final class PlayListHandler extends Handler implements AudioFilesRemovedL
     /**
      * @return the playListFilter
      */
-    public Filter getPlayListFilter() {
+    public AbstractFilter getPlayListFilter() {
         return playListFilter;
     }
 

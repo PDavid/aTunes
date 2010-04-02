@@ -26,14 +26,14 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 
-import net.sourceforge.atunes.gui.lookandfeel.TableCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.repository.tags.IncompleteTagsChecker;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
 
-public final class NavigationTableColumnModel extends CommonColumnModel {
+public final class NavigationTableColumnModel extends AbstractCommonColumnModel {
 
     private static final long serialVersionUID = 1071222881574684439L;
 
@@ -55,16 +55,16 @@ public final class NavigationTableColumnModel extends CommonColumnModel {
     }
 
     @Override
-    public TableCellRendererCode getRendererCodeFor(Class<?> clazz) {
-        TableCellRendererCode renderer = super.getRendererCodeFor(clazz);
+    public AbstractTableCellRendererCode getRendererCodeFor(Class<?> clazz) {
+        AbstractTableCellRendererCode renderer = super.getRendererCodeFor(clazz);
         return new NavigationTableCellRendererCode(renderer);
     }
 
-    private static class NavigationTableCellRendererCode extends TableCellRendererCode {
+    private static class NavigationTableCellRendererCode extends AbstractTableCellRendererCode {
 
-        private TableCellRendererCode renderer;
+        private AbstractTableCellRendererCode renderer;
 
-        public NavigationTableCellRendererCode(TableCellRendererCode renderer) {
+        public NavigationTableCellRendererCode(AbstractTableCellRendererCode renderer) {
             this.renderer = renderer;
         }
 

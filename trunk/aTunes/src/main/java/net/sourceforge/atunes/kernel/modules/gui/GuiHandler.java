@@ -91,7 +91,7 @@ import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.ControllerProxy;
-import net.sourceforge.atunes.kernel.Handler;
+import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ShowToolbarAction;
@@ -126,7 +126,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 import org.jdesktop.swingx.JXErrorPane;
 import org.jdesktop.swingx.error.ErrorInfo;
 
-public final class GuiHandler extends Handler implements PlaybackStateListener {
+public final class GuiHandler extends AbstractHandler implements PlaybackStateListener {
 
     private static class RipperCancelAction implements ActionListener {
         @Override

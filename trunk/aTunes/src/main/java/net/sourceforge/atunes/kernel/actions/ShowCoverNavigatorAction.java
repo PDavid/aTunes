@@ -31,7 +31,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class ShowCoverNavigatorAction extends Action {
+public class ShowCoverNavigatorAction extends AbstractAction {
 
     private static final long serialVersionUID = 4927892497869144235L;
 

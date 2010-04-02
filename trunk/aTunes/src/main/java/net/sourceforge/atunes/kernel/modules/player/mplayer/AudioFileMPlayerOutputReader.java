@@ -23,7 +23,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Format;
 import net.sourceforge.atunes.misc.log.LogCategories;
 
-class AudioFileMPlayerOutputReader extends MPlayerOutputReader {
+class AudioFileMPlayerOutputReader extends AbstractMPlayerOutputReader {
 
     private AudioFile audioFile;
 

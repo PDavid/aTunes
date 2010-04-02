@@ -26,18 +26,18 @@ import java.util.Comparator;
 import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;
 
-import net.sourceforge.atunes.gui.model.ColumnSetTableModel;
-import net.sourceforge.atunes.gui.model.CommonColumnModel;
-import net.sourceforge.atunes.kernel.modules.columns.Column;
+import net.sourceforge.atunes.gui.model.AbstractColumnSetTableModel;
+import net.sourceforge.atunes.gui.model.AbstractCommonColumnModel;
+import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.model.AudioObject;
 
 public class ColumnSetRowSorter {
 
     private JTable table;
-    private ColumnSetTableModel model;
-    private CommonColumnModel columnModel;
+    private AbstractColumnSetTableModel model;
+    private AbstractCommonColumnModel columnModel;
 
-    public ColumnSetRowSorter(JTable table, ColumnSetTableModel model, CommonColumnModel columnModel) {
+    public ColumnSetRowSorter(JTable table, AbstractColumnSetTableModel model, AbstractCommonColumnModel columnModel) {
         this.table = table;
         this.model = model;
         this.columnModel = columnModel;
@@ -52,8 +52,8 @@ public class ColumnSetRowSorter {
                     int columnClickedIndex = table.getTableHeader().getColumnModel().getColumnIndexAtX(e.getX());
                     if (columnClickedIndex != -1) {
                         // Get column
-                        Column columnClicked = ColumnSetRowSorter.this.columnModel.getColumnObject(columnClickedIndex);
-                        Column lastColumnSorted = getColumnSorted();
+                        AbstractColumn columnClicked = ColumnSetRowSorter.this.columnModel.getColumnObject(columnClickedIndex);
+                        AbstractColumn lastColumnSorted = getColumnSorted();
                         if (lastColumnSorted != null && !lastColumnSorted.equals(columnClicked)) {
                             lastColumnSorted.setColumnSort(null);
                         }
@@ -71,7 +71,7 @@ public class ColumnSetRowSorter {
      * 
      * @return
      */
-    private Column getColumnSorted() {
+    private AbstractColumn getColumnSorted() {
         for (int i = 0; i < this.columnModel.getColumnCount(); i++) {
             if (this.columnModel.getColumnObject(i).getColumnSort() != null) {
                 return this.columnModel.getColumnObject(i);

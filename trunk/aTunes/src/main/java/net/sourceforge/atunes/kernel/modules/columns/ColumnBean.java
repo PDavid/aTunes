@@ -19,7 +19,7 @@
  */
 package net.sourceforge.atunes.kernel.modules.columns;
 
-import net.sourceforge.atunes.kernel.modules.columns.Column.ColumnSort;
+import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn.ColumnSort;
 
 /**
  * This class represents information about a column to be saved into application

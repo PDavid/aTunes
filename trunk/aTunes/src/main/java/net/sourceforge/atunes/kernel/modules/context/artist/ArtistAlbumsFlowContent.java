@@ -35,7 +35,7 @@ import javax.swing.JLabel;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.controls.ScrollableFlowPanel;
 import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
-import net.sourceforge.atunes.kernel.modules.context.ContextPanelContent;
+import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -43,7 +43,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jdesktop.swingx.border.DropShadowBorder;
 
-public class ArtistAlbumsFlowContent extends ContextPanelContent {
+public class ArtistAlbumsFlowContent extends AbstractContextPanelContent {
 
     private static final class CoverMouseAdapter extends MouseAdapter {
         private final AlbumInfo album;

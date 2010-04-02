@@ -31,7 +31,7 @@ import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 /**
  * The Class SetGenresProcess.
  */
-public class SetGenresProcess extends ChangeTagProcess {
+public class SetGenresProcess extends AbstractChangeTagProcess {
 
     private Map<AudioFile, String> filesAndGenres;
 

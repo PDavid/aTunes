@@ -36,7 +36,7 @@ import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmLoved
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public class ImportLovedTracksFromLastFM extends Action {
+public class ImportLovedTracksFromLastFM extends AbstractAction {
 
     private static class ImportLovedTracksWorker extends SwingWorker<List<AudioFile>, Void> {
         @Override

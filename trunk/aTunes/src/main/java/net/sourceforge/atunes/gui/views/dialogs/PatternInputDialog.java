@@ -50,7 +50,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.views.controls.CustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -63,7 +63,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * 
  * @author fleax
  */
-public final class PatternInputDialog extends CustomModalDialog {
+public final class PatternInputDialog extends AbstractCustomModalDialog {
 
     private final class OkActionListener implements ActionListener {
 		private final boolean massiveRecognition;

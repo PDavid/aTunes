@@ -35,7 +35,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The lyric engine for LyricWiki.
  */
-public class LyricWikiEngine extends LyricsEngine {
+public class LyricWikiEngine extends AbstractLyricsEngine {
 
     private Logger logger;
 

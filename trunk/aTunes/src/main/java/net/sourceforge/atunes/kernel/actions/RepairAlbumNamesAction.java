@@ -30,7 +30,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class RepairAlbumNamesAction extends Action {
+public class RepairAlbumNamesAction extends AbstractAction {
 
     private static final long serialVersionUID = -7828819966696617838L;
 

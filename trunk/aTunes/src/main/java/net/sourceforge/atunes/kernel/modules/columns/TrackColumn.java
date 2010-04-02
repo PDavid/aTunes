@@ -23,7 +23,7 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.model.AudioObject;
 
-public class TrackColumn extends Column {
+public class TrackColumn extends AbstractColumn {
 
     private static final long serialVersionUID = 6114834986452693757L;
 
