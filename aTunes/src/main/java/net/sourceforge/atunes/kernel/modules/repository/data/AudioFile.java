@@ -231,7 +231,7 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || !(o instanceof AudioFile)) {
+        if (!(o instanceof AudioFile)) {
             return false;
         }
         return ((AudioFile) o).getUrl().equals(getUrl());

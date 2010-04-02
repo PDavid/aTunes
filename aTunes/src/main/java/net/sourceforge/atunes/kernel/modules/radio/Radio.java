@@ -123,7 +123,7 @@ public final class Radio implements AudioObject, Serializable, TreeObject, Compa
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || !(o instanceof Radio)) {
+        if (!(o instanceof Radio)) {
             return false;
         }
         return (name + url).equals(((Radio) o).getName() + ((Radio) o).getUrl());

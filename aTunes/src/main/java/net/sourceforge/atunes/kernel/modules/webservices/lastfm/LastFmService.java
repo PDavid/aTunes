@@ -802,7 +802,7 @@ public final class LastFmService {
      * @return
      */
     private boolean checkAudioFile(AudioObject ao) {
-        if (ao == null || !(ao instanceof AudioFile)) {
+        if (!(ao instanceof AudioFile)) {
             return false;
         }
         return true;

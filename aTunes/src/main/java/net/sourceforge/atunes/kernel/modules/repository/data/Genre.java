@@ -72,7 +72,7 @@ public class Genre implements Serializable, TreeObject {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || !(o instanceof Genre)) {
+        if (!(o instanceof Genre)) {
             return false;
         }
         return ((Genre) o).name.equals(name);
