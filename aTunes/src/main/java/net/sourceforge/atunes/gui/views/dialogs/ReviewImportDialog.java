@@ -20,7 +20,6 @@
 package net.sourceforge.atunes.gui.views.dialogs;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -77,8 +76,8 @@ public final class ReviewImportDialog extends CustomModalDialog {
     /**
      * Instantiates a new ReviewImportDialog
      */
-    public ReviewImportDialog(Component owner) {
-        super((JFrame) owner, GuiUtils.getComponentWidthForResolution(1280, 1200), GuiUtils.getComponentHeightForResolution(1024, 700), true);
+    public ReviewImportDialog(JFrame owner) {
+        super(owner, GuiUtils.getComponentWidthForResolution(1280, 1200), GuiUtils.getComponentHeightForResolution(1024, 700), true);
         setTitle(I18nUtils.getString("REVIEW_TAGS"));
         setContent();
         GuiUtils.applyComponentOrientation(this);

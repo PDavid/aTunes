@@ -96,7 +96,7 @@ public class PropertiesDialog extends CustomDialog {
                 dialog = new PodcastFeedEntryPropertiesDialog((PodcastFeedEntry) a, owner);
             } else if (a instanceof Radio) {
                 dialog = new RadioPropertiesDialog((Radio) a, owner);
-            } else {
+            } else if (a instanceof AudioFile) {
                 dialog = new AudioFilePropertiesDialog((AudioFile) a, owner);
             }
             getDialogsOpened().put(a, dialog);

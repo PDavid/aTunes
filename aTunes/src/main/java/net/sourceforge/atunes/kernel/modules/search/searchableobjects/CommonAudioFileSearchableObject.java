@@ -115,32 +115,35 @@ public abstract class CommonAudioFileSearchableObject implements SearchableObjec
 
     @Override
     public Document getDocumentForElement(AudioObject audioObject) {
-        AudioFile audioFile = (AudioFile) audioObject;
+    	if (audioObject instanceof AudioFile) {
+    		AudioFile audioFile = (AudioFile) audioObject;
 
-        Document d = new Document();
+    		Document d = new Document();
 
-        d.add(new Field(INDEX_FIELD_TITLE, audioFile.getTitle(), Field.Store.YES, Field.Index.ANALYZED));
-        d.add(new Field(INDEX_FIELD_TRACK_NUMBER, String.valueOf(audioFile.getTrackNumber()), Field.Store.YES, Field.Index.NOT_ANALYZED));
-        d.add(new Field(INDEX_FIELD_ARTIST, audioFile.getArtist(), Field.Store.YES, Field.Index.ANALYZED));
-        d.add(new Field(INDEX_FIELD_ALBUM_ARTIST, audioFile.getAlbumArtist(), Field.Store.YES, Field.Index.ANALYZED));
-        d.add(new Field(INDEX_FIELD_ALBUM, audioFile.getAlbum(), Field.Store.YES, Field.Index.ANALYZED));
-        d.add(new Field(INDEX_FIELD_COMPOSER, audioFile.getComposer(), Field.Store.YES, Field.Index.ANALYZED));
-        d.add(new Field(INDEX_FIELD_YEAR, audioFile.getYear(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-        d.add(new Field(INDEX_FIELD_GENRE, audioFile.getGenre(), Field.Store.YES, Field.Index.ANALYZED));
-        d.add(new Field(INDEX_FIELD_DURATION, String.valueOf(audioFile.getDuration()), Field.Store.YES, Field.Index.NOT_ANALYZED));
-        d.add(new Field(INDEX_FIELD_BITRATE, String.valueOf(audioFile.getBitrate()), Field.Store.YES, Field.Index.NOT_ANALYZED));
-        d.add(new Field(INDEX_FIELD_FREQUENCY, String.valueOf(audioFile.getFrequency()), Field.Store.YES, Field.Index.NOT_ANALYZED));
-        d.add(new Field(INDEX_FIELD_SCORE, String.valueOf(audioFile.getStars()), Field.Store.YES, Field.Index.NOT_ANALYZED));
-        d.add(new Field(INDEX_FIELD_LYRICS, audioFile.getLyrics(), Field.Store.YES, Field.Index.ANALYZED));
-        d.add(new Field(INDEX_FIELD_FILENAME, audioFile.getNameWithoutExtension(), Field.Store.YES, Field.Index.ANALYZED));
-        d.add(new Field(INDEX_FIELD_URL, audioFile.getUrl(), Field.Store.YES, Field.Index.NO));
-        /*
-         * All important fields
-         */
-        d.add(new Field(SearchHandler.DEFAULT_INDEX, StringUtils.getString(audioFile.getTitle(), " ", audioFile.getTrackNumber(), " ", audioFile.getArtist(), " ", audioFile
-                .getAlbumArtist(), " ", audioFile.getAlbum(), " ", audioFile.getComposer(), " ", audioFile.getYear(), " ", audioFile.getGenre()), Field.Store.YES,
-                Field.Index.ANALYZED));
+    		d.add(new Field(INDEX_FIELD_TITLE, audioFile.getTitle(), Field.Store.YES, Field.Index.ANALYZED));
+    		d.add(new Field(INDEX_FIELD_TRACK_NUMBER, String.valueOf(audioFile.getTrackNumber()), Field.Store.YES, Field.Index.NOT_ANALYZED));
+    		d.add(new Field(INDEX_FIELD_ARTIST, audioFile.getArtist(), Field.Store.YES, Field.Index.ANALYZED));
+    		d.add(new Field(INDEX_FIELD_ALBUM_ARTIST, audioFile.getAlbumArtist(), Field.Store.YES, Field.Index.ANALYZED));
+    		d.add(new Field(INDEX_FIELD_ALBUM, audioFile.getAlbum(), Field.Store.YES, Field.Index.ANALYZED));
+    		d.add(new Field(INDEX_FIELD_COMPOSER, audioFile.getComposer(), Field.Store.YES, Field.Index.ANALYZED));
+    		d.add(new Field(INDEX_FIELD_YEAR, audioFile.getYear(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+    		d.add(new Field(INDEX_FIELD_GENRE, audioFile.getGenre(), Field.Store.YES, Field.Index.ANALYZED));
+    		d.add(new Field(INDEX_FIELD_DURATION, String.valueOf(audioFile.getDuration()), Field.Store.YES, Field.Index.NOT_ANALYZED));
+    		d.add(new Field(INDEX_FIELD_BITRATE, String.valueOf(audioFile.getBitrate()), Field.Store.YES, Field.Index.NOT_ANALYZED));
+    		d.add(new Field(INDEX_FIELD_FREQUENCY, String.valueOf(audioFile.getFrequency()), Field.Store.YES, Field.Index.NOT_ANALYZED));
+    		d.add(new Field(INDEX_FIELD_SCORE, String.valueOf(audioFile.getStars()), Field.Store.YES, Field.Index.NOT_ANALYZED));
+    		d.add(new Field(INDEX_FIELD_LYRICS, audioFile.getLyrics(), Field.Store.YES, Field.Index.ANALYZED));
+    		d.add(new Field(INDEX_FIELD_FILENAME, audioFile.getNameWithoutExtension(), Field.Store.YES, Field.Index.ANALYZED));
+    		d.add(new Field(INDEX_FIELD_URL, audioFile.getUrl(), Field.Store.YES, Field.Index.NO));
+    		/*
+    		 * All important fields
+    		 */
+    		d.add(new Field(SearchHandler.DEFAULT_INDEX, StringUtils.getString(audioFile.getTitle(), " ", audioFile.getTrackNumber(), " ", audioFile.getArtist(), " ", audioFile
+    				.getAlbumArtist(), " ", audioFile.getAlbum(), " ", audioFile.getComposer(), " ", audioFile.getYear(), " ", audioFile.getGenre()), Field.Store.YES,
+    				Field.Index.ANALYZED));
 
-        return d;
+    		return d;
+    	}
+    	return null;
     }
 }

@@ -170,30 +170,35 @@ public final class FileSelectionDialog extends CustomModalDialog {
 	private static class FileSystemTreeCellRendererCode extends TreeCellRendererCode {
         @Override
         public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
+            if (superComponent instanceof JLabel) {
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
+            	if (node.getUserObject() instanceof String) {
+            		((JLabel) superComponent).setText(null);
+            		return superComponent;
+            	}
 
-            if (node.getUserObject() instanceof String) {
-                ((JLabel) superComponent).setText(null);
-                return superComponent;
+            	Directory content = (Directory) node.getUserObject();
+            	JLabel icon = (JLabel) superComponent;
+            	icon.setIcon(fsView.getSystemIcon(content.file));
+
+            	return icon;
             }
-
-            Directory content = (Directory) node.getUserObject();
-            JLabel icon = (JLabel) superComponent;
-            icon.setIcon(fsView.getSystemIcon(content.file));
-
-            return icon;
+            return superComponent;
         }
     }
 
     private static class FileSystemListCellRendererCode extends ListCellRendererCode {
         @Override
         public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            JLabel icon = (JLabel) superComponent;
-            File f = (File) value;
-            icon.setText(fsView.getSystemDisplayName(f));
-            icon.setIcon(fsView.getSystemIcon(f));
-            icon.setHorizontalAlignment(GuiUtils.getComponentOrientationAsSwingConstant());
-            return icon;
+        	if (superComponent instanceof JLabel) {
+        		JLabel icon = (JLabel) superComponent;
+        		File f = (File) value;
+        		icon.setText(fsView.getSystemDisplayName(f));
+        		icon.setIcon(fsView.getSystemIcon(f));
+        		icon.setHorizontalAlignment(GuiUtils.getComponentOrientationAsSwingConstant());
+        		return icon;
+        	}
+        	return superComponent;
         }
     }
 

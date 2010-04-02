@@ -32,7 +32,7 @@ public class RadioTreeCellDecorator extends TreeCellDecorator {
 
     @Override
     public Component decorateTreeCellComponent(Component component, Object userObject) {
-        if (userObject instanceof Radio) {
+        if (userObject instanceof Radio && component instanceof JLabel) {
             ((JLabel) component).setIcon(Images.getImage(Images.RADIO_LITTLE));
         }
         return component;

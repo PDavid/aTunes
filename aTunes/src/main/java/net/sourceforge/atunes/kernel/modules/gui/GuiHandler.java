@@ -1392,7 +1392,7 @@ public final class GuiHandler extends Handler implements PlaybackStateListener {
             }
 
             StringBuilder strBuilder = new StringBuilder();
-            if (((AudioFile) song).getTag() == null) {
+            if (song instanceof AudioFile && ((AudioFile) song).getTag() == null) {
                 strBuilder.append(((AudioFile) song).getFile().getName());
             } else {
                 strBuilder.append(song.getTitleOrFileName());
