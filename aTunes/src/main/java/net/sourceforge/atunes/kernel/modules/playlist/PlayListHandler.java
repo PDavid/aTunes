@@ -622,7 +622,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
             playLists.add(playlist);
             ControllerProxy.getInstance().getPlayListTabController().newPlayList(getNameForPlaylist(playlist));
         }
-        activePlayListIndex = listOfPlayLists.getSelectedPlayList();
+        activePlayListIndex = selected;
         // Initially active play list and visible play list are the same
         visiblePlayListIndex = activePlayListIndex;
         ControllerProxy.getInstance().getPlayListTabController().forceSwitchTo(visiblePlayListIndex);
