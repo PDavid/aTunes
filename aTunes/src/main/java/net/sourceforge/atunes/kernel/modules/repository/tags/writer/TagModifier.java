@@ -294,12 +294,13 @@ public final class TagModifier {
             setStringTagField(file, newTag, FieldKey.TITLE, title);
             setNumberTagField(file, newTag, FieldKey.YEAR, year);
             setNumberTagField(file, newTag, FieldKey.TRACK, track);
-            if (discNumber == 0) {
+            if (discNumber <= 0) {
                 newTag.deleteField(FieldKey.DISC_NO);
             } else {
-                // only set the discnumber if we have a useful one
+                // only set the discnumber if we have a useful one. remove previous one to avoid errors
                 String discno = newTag.getFirst(FieldKey.DISC_NO);
                 if (!StringUtils.isEmpty(discno)) {
+                	newTag.deleteField(FieldKey.DISC_NO);
                     newTag.setField(FieldKey.DISC_NO, Integer.toString(discNumber));
                 }
             }
@@ -478,6 +479,7 @@ public final class TagModifier {
      */
     private static final void reportWriteError(AudioFile file, Exception e) {
         getLogger().error(LogCategories.FILE_WRITE, StringUtils.getString("Could not edit tag. File: ", file.getUrl(), " Error: ", e));
+        getLogger().error(LogCategories.FILE_WRITE, e);
     }
     
     /**
