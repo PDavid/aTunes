@@ -218,12 +218,12 @@ public final class SystemProperties {
 
         String appDataFolder;
         if (OS == OperatingSystem.WINDOWS) {
-            appDataFolder = System.getenv("APPDATA") + "/aTunes";
+            appDataFolder = System.getenv("APPDATA") + "/atunes";
         } else if (OS == OperatingSystem.MACOSX) {
             appDataFolder = SystemProperties.USER_HOME + "/Library/Preferences/aTunes";
 
         } else {
-            appDataFolder = SystemProperties.USER_HOME + "/.aTunes";
+            appDataFolder = SystemProperties.USER_HOME + "/.atunes";
         }
 
         File userConfigFolder = new File(appDataFolder);
