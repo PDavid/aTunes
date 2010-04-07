@@ -20,12 +20,15 @@
 package net.sourceforge.atunes.misc;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.utils.StringUtils;
+
+import org.apache.commons.io.FileUtils;
 
 /**
  * The system properties.
@@ -209,6 +212,7 @@ public final class SystemProperties {
      * @return The folder where the state is stored
      */
     public static String getUserConfigFolder(boolean useWorkDir) {
+    	long t0 = System.currentTimeMillis();
         if (useWorkDir) {
             return "./debug";
         }
@@ -227,13 +231,44 @@ public final class SystemProperties {
         }
 
         File userConfigFolder = new File(appDataFolder);
-        if (!userConfigFolder.exists() && !userConfigFolder.mkdir()) {
-            return ".";
+        String newAppDataFolder = userConfigFolder.getAbsolutePath();
+
+        
+        /* Move config folder from old one if necessary */
+        if (!userConfigFolder.exists()) {
+            /* Try to read old config folder. If found, move contents to new location */
+            String userHomePath = SystemProperties.USER_HOME;
+            String oldAppDataFolder = null;
+            if (userHomePath != null) {
+                File oldConfigFolder = new File(StringUtils.getString(userHomePath, "/.aTunes"));
+                if (oldConfigFolder.exists() && oldConfigFolder.isDirectory()) {
+                	oldAppDataFolder = oldConfigFolder.getAbsolutePath();
+                }            
+            }
+
+            if (oldAppDataFolder != null && !oldAppDataFolder.equals(newAppDataFolder)) {
+            	System.out.println(StringUtils.getString("Moving configuration from ", oldAppDataFolder, " to ", newAppDataFolder));
+            	try {
+            		FileUtils.moveDirectory(new File(oldAppDataFolder), new File(newAppDataFolder));
+            		System.out.println("Configuration moved");
+            	} catch (IOException e) {
+            		System.out.println(StringUtils.getString("Error moving configuration: ", e.getMessage()));
+            		e.printStackTrace();
+            	}
+            }
         }
-        return userConfigFolder.getAbsolutePath();
-
+        
+        if (!userConfigFolder.exists() && !userConfigFolder.mkdir()) {
+        	newAppDataFolder = ".";
+        }
+        
+        long t1 = System.currentTimeMillis();
+        
+        System.out.println(t1 - t0);
+        
+        return newAppDataFolder;
     }
-
+    
     /**
      * Returns file from the user config folder.
      * 
