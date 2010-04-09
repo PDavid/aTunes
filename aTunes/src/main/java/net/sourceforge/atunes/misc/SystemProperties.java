@@ -212,7 +212,6 @@ public final class SystemProperties {
      * @return The folder where the state is stored
      */
     public static String getUserConfigFolder(boolean useWorkDir) {
-    	long t0 = System.currentTimeMillis();
         if (useWorkDir) {
             return "./debug";
         }
@@ -222,12 +221,12 @@ public final class SystemProperties {
 
         String appDataFolder;
         if (OS == OperatingSystem.WINDOWS) {
-            appDataFolder = System.getenv("APPDATA") + "/atunes";
+            appDataFolder = StringUtils.getString(System.getenv("APPDATA"), "/atunes");
         } else if (OS == OperatingSystem.MACOSX) {
-            appDataFolder = SystemProperties.USER_HOME + "/Library/Preferences/aTunes";
+            appDataFolder = StringUtils.getString(SystemProperties.USER_HOME, "/Library/Preferences/aTunes");
 
         } else {
-            appDataFolder = SystemProperties.USER_HOME + "/.atunes";
+            appDataFolder = StringUtils.getString(SystemProperties.USER_HOME, "/.atunes");
         }
 
         File userConfigFolder = new File(appDataFolder);
@@ -262,10 +261,6 @@ public final class SystemProperties {
         	newAppDataFolder = ".";
         }
         
-        long t1 = System.currentTimeMillis();
-        
-        System.out.println(t1 - t0);
-        
         return newAppDataFolder;
     }
     
@@ -284,7 +279,7 @@ public final class SystemProperties {
         if (userConfigFolder.equals(".")) {
             return new File(name);
         }
-        return new File(userConfigFolder + "/" + name);
+        return new File(StringUtils.getString(userConfigFolder, "/", name));
     }
 
     /**
