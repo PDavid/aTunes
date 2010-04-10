@@ -338,6 +338,7 @@ public final class RadioHandler extends AbstractHandler {
             }
             r.setLabel(label);
         }
+        radioListDirty = true;
     }
 
     /**
@@ -353,6 +354,7 @@ public final class RadioHandler extends AbstractHandler {
             addRadio(radio);
         }
         radio.setName(name);
+        radioListDirty = true;
     }
 
     /**
