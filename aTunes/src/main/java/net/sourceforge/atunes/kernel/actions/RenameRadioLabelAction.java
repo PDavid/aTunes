@@ -52,7 +52,7 @@ public class RenameRadioLabelAction extends AbstractAction {
             if (result != null) {
                 List<Radio> radios = RadioHandler.getInstance().getRadios(label);
                 RadioHandler.getInstance().setLabel(radios, result);
-                //controller.refreshRadioTreeContent();
+                NavigationHandler.getInstance().refreshView(RadioNavigationView.class);
             }
         } else if (o instanceof Radio) {
             Radio radio = (Radio) o;
