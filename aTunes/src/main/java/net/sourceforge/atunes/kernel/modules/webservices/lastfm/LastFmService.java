@@ -398,7 +398,9 @@ public final class LastFmService {
 
             return img;
         } catch (IOException e) {
-            getLogger().error(LogCategories.SERVICE, e);
+        	// Sometimes urls given by last.fm are forbidden, so avoid show full error stack traces
+        	getLogger().error(LogCategories.SERVICE, e.getMessage());
+            getLogger().debug(LogCategories.SERVICE, e);
         }
         return null;
     }
