@@ -473,15 +473,17 @@ public class RepositoryLoader extends Thread {
      * Load repository.
      */
     private void loadRepository() {
-        totalFilesToLoad = countFilesInDir(folders);
-        if (listener != null) {
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    listener.notifyFilesInRepository(totalFilesToLoad);
-                }
-            });
-        }
+    	if (!refresh) {
+    		totalFilesToLoad = countFilesInDir(folders);
+    		if (listener != null) {
+    			SwingUtilities.invokeLater(new Runnable() {
+    				@Override
+    				public void run() {
+    					listener.notifyFilesInRepository(totalFilesToLoad);
+    				}
+    			});
+    		}
+    	}
         startReadTime = System.currentTimeMillis();
         try {
             for (File folder : folders) {
@@ -524,7 +526,7 @@ public class RepositoryLoader extends Thread {
                 relativePath = ".";
             }
 
-            if (listener != null) {
+            if (listener != null && !refresh) {
                 listener.notifyCurrentPath(relativePath);
             }
 
@@ -572,7 +574,7 @@ public class RepositoryLoader extends Thread {
 
                     for (AudioFile audioFile : audioFilesList) {
                         audioFile.setExternalPictures(pictures);
-                        if (listener != null) {
+                        if (listener != null && !refresh) {
                             listener.notifyFileLoaded();
                         }
                         filesLoaded++;
@@ -583,16 +585,16 @@ public class RepositoryLoader extends Thread {
                         RepositoryFiller.addToYearStructure(repository, audioFile);
 
                         // Update remaining time every 50 files
-                        if (filesLoaded % 50 == 0) {
-                            long t1 = System.currentTimeMillis();
-                            final long remainingTime = filesLoaded != 0 ? (totalFilesToLoad - filesLoaded) * (t1 - startReadTime) / filesLoaded : 0;
+                        if (listener != null && !refresh) {
+                        	if (filesLoaded % 50 == 0) {
+                        		long t1 = System.currentTimeMillis();
+                        		final long remainingTime = filesLoaded != 0 ? (totalFilesToLoad - filesLoaded) * (t1 - startReadTime) / filesLoaded : 0;
 
-                            if (listener != null) {
-                                listener.notifyRemainingTime(remainingTime);
-                                if (!refresh) {
-                                    listener.notifyReadProgress();
-                                }
-                            }
+                        		if (listener != null) {
+                        			listener.notifyRemainingTime(remainingTime);
+                       				listener.notifyReadProgress();
+                        		}
+                        	}
                         }
                     }
                 }
