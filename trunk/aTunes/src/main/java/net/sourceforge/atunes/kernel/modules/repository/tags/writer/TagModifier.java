@@ -329,7 +329,7 @@ public final class TagModifier {
     }
 
     private static void setStringTagField(AudioFile file, org.jaudiotagger.tag.Tag tag, FieldKey fieldKey, String fieldValue) {
-        if (fieldValue.isEmpty()) {
+        if (fieldValue == null || fieldValue.isEmpty()) {
             // Delete tag field if value is empty
             tag.deleteField(fieldKey);
         } else {
