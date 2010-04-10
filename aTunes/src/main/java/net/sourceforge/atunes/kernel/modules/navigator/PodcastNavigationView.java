@@ -56,6 +56,7 @@ import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
+import net.sourceforge.atunes.kernel.modules.columns.DateColumn;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
@@ -397,6 +398,11 @@ public final class PodcastNavigationView extends AbstractNavigationView {
             duration.setWidth(60);
             duration.setUsedForFilter(true);
             columns.add(duration);
+            
+            AbstractColumn date = new DateColumn();
+            date.setVisible(true);
+            date.setUsedForFilter(true);
+            columns.add(date);
 
             return columns;
         }
