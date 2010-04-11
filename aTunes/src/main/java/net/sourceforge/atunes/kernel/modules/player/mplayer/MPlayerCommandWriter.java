@@ -142,8 +142,9 @@ class MPlayerCommandWriter {
      *            the new process
      */
     void finishProcess() {
+    	// Set process to null before streamToProcess to avoid NPE in sendCommand method
+        this.process = null;
         this.streamToProcess.close();
         this.streamToProcess = null;
-        this.process = null;
     }
 }
