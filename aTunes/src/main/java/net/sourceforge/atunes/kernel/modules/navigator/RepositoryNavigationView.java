@@ -467,7 +467,7 @@ public class RepositoryNavigationView extends AbstractNavigationView {
         root.setUserObject(I18nUtils.getString("REPOSITORY"));
         root.removeAllChildren();
         List<String> yearNamesList = new ArrayList<String>(structure.keySet());
-        Collections.sort(yearNamesList, getDefaultComparator());
+        Collections.sort(yearNamesList, getIntegerComparator());
 
         for (int i = 0; i < yearNamesList.size(); i++) {
             Year year = structure.get(yearNamesList.get(i));

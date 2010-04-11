@@ -389,6 +389,29 @@ public abstract class AbstractNavigationView implements AudioObjectsSource {
     }
 
     /**
+     * Returns the integer comparator
+     * 
+     * @return the default comparator
+     */
+    public Comparator<String> getIntegerComparator() {
+        return new Comparator<String>() {
+            @Override
+            public int compare(String s1, String s2) {
+            	if (s1 == null || s2 == null) {
+            		return 0;
+            	}
+            	int compare;
+            	try {
+            		compare = Integer.valueOf(s1).compareTo(Integer.valueOf(s2));
+            	} catch (NumberFormatException e) {
+            		compare = 0;
+            	}
+                return compare;
+            }
+        };
+    }
+
+    /**
      * Return current view mode
      * 
      * @return
