@@ -330,7 +330,7 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
 
     @Override
     public String getGenre() {
-        if (tag != null && tag.getGenre() != null) {
+        if (tag != null && tag.getGenre() != null && !tag.getGenre().isEmpty()) {
             return tag.getGenre();
         }
         return Genre.getUnknownGenre();
