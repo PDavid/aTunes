@@ -40,8 +40,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.AbstractHandler;
+import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnSets;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
@@ -198,6 +198,9 @@ public final class ApplicationStateHandler extends AbstractHandler {
 
         // Mute
         PlayerHandler.getInstance().applyMuteState(ApplicationState.getInstance().isMuteEnabled());
+        
+        // Progress bar ticks
+        ControllerProxy.getInstance().getPlayerControlsController().getComponentControlled().setShowTicksAndLabels(ApplicationState.getInstance().isShowTicks());
     }
 
     /**

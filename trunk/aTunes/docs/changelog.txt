@@ -56,6 +56,7 @@ aTunes 2.0.0
 - FIX: Progress bar should work for downloaded podcast entries
 - FIX: Progress bar improvements [2942626]
 - FIX: Normalization button causes multiple submissions to last.fm [2836230]
+- FIX: Ticks in progress bar not shown at start
 
 aTunes 1.13.6
 -------------
