@@ -54,8 +54,7 @@ public final class RadioHandler extends AbstractHandler {
         @Override
         protected List<Radio> doInBackground() throws Exception {
             String xml = NetworkUtils.readURL(NetworkUtils.getConnection(Constants.RADIO_LIST_DOWNLOAD, Proxy.getProxy(proxy)));
-            List<Radio> list = (List<Radio>) XMLUtils.readObjectFromString(xml);
-            return list;
+            return (List<Radio>) XMLUtils.readObjectFromString(xml);
         }
 
         @Override
