@@ -104,6 +104,9 @@ public final class NavigationTreeMouseListener extends MouseAdapter {
             	PlayListHandler.getInstance().addToPlayList(songs);
             }
         }
+        
+        // When clicking in tree, table selection must be cleared
+        controller.getNavigationTablePanel().getNavigationTable().getSelectionModel().clearSelection();
     }
 
     @Override
