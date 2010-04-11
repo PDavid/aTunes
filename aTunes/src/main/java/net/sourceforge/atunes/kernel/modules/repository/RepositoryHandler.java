@@ -84,43 +84,45 @@ import org.apache.commons.io.FilenameUtils;
  */
 public final class RepositoryHandler extends AbstractHandler implements LoaderListener, AudioFilesRemovedListener {
 
-    private final class ImportFoldersSwingWorker extends
-			SwingWorker<List<AudioFile>, Void> {
-		private final class ImportFilesProcessListener implements
-				ProcessListener {
-			private final ImportFilesProcess process;
+	private final class ImportFilesProcessListener implements ProcessListener {
+		private final ImportFilesProcess process;
 
-			private ImportFilesProcessListener(ImportFilesProcess process) {
-				this.process = process;
-			}
-
-			@Override
-			public void processCanceled() {
-			    // Nothing to do, files copied will be removed before calling this method 
-			}
-
-			@Override
-			public void processFinished(final boolean ok) {
-			    if (!ok) {
-			        try {
-			            SwingUtilities.invokeAndWait(new Runnable() {
-			                @Override
-			                public void run() {
-			                    GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("ERRORS_IN_IMPORT_PROCESS"));
-			                }
-			            });
-			        } catch (InterruptedException e) {
-			            // Do nothing
-			        } catch (InvocationTargetException e) {
-			            // Do nothing
-			        }
-			    } else {
-			        // If import is ok then add files to repository
-			        addFilesAndRefresh(process.getFilesTransferred());
-			    }
-			}
+		private ImportFilesProcessListener(ImportFilesProcess process) {
+			this.process = process;
 		}
 
+		@Override
+		public void processCanceled() {
+			// Nothing to do, files copied will be removed before calling this method 
+		}
+
+		@Override
+		public void processFinished(final boolean ok) {
+			if (!ok) {
+				try {
+					SwingUtilities.invokeAndWait(new Runnable() {
+						@Override
+						public void run() {
+							GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("ERRORS_IN_IMPORT_PROCESS"));
+						}
+					});
+				} catch (InterruptedException e) {
+					// Do nothing
+				} catch (InvocationTargetException e) {
+					// Do nothing
+				}
+			} else {
+				// If import is ok then add files to repository
+				addFilesAndRefresh(process.getFilesTransferred());
+			}
+		}
+	}
+
+
+
+    private final class ImportFoldersSwingWorker extends
+			SwingWorker<List<AudioFile>, Void> {
+    	
 		private final class ImportFoldersLoaderListener implements
 				LoaderListener {
 			private int filesLoaded = 0;
