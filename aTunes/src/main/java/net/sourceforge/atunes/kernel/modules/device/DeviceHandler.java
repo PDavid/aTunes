@@ -61,6 +61,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Folder;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Repository;
+import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
 import net.sourceforge.atunes.kernel.modules.search.searchableobjects.DeviceSearchableObject;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -755,4 +756,18 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
     public void applicationStateChanged(ApplicationState newState) {
         DeviceConnectionMonitor.startMonitor();
     }
+    
+    /**
+     * Gets the year structure.
+     * 
+     * @return the year structure
+     */
+    public Map<String, Year> getYearStructure() {
+        if (isDeviceConnected()) {
+            return deviceRepository.getYearStructure();
+        }
+        return new HashMap<String, Year>();
+    }
+
+
 }

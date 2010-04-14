@@ -68,10 +68,16 @@ import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.columns.NavigatorColumnSet;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
+import net.sourceforge.atunes.kernel.modules.navigator.AlbumTreeGenerator;
+import net.sourceforge.atunes.kernel.modules.navigator.ArtistTreeGenerator;
 import net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView;
+import net.sourceforge.atunes.kernel.modules.navigator.FolderTreeGenerator;
+import net.sourceforge.atunes.kernel.modules.navigator.GenreTreeGenerator;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.RepositoryNavigationView;
+import net.sourceforge.atunes.kernel.modules.navigator.TreeGenerator;
+import net.sourceforge.atunes.kernel.modules.navigator.YearTreeGenerator;
 import net.sourceforge.atunes.kernel.modules.repository.AudioFilesRemovedListener;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
@@ -125,7 +131,23 @@ public final class NavigationController extends AbstractController implements Au
 
 	public enum ViewMode {
 
-        ARTIST, ALBUM, GENRE, FOLDER, YEAR
+        ARTIST, ALBUM, GENRE, FOLDER, YEAR;
+        
+        public TreeGenerator getTreeGenerator() {
+            TreeGenerator treeGenerator = null;
+            if (this == ViewMode.YEAR) {
+            	treeGenerator = new YearTreeGenerator(); 
+            } else if (this == ViewMode.ARTIST) {
+            	treeGenerator = new ArtistTreeGenerator();
+            } else if (this == ViewMode.ALBUM) {
+            	treeGenerator = new AlbumTreeGenerator();
+            } else if (this == ViewMode.GENRE) {
+                treeGenerator = new GenreTreeGenerator();
+            } else { // Folder view
+            	treeGenerator = new FolderTreeGenerator();
+            }
+            return treeGenerator;
+        }
     }
 
     private NavigationTreePanel navigationTreePanel;
