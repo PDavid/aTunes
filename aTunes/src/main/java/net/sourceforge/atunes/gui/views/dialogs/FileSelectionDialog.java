@@ -179,7 +179,9 @@ public final class FileSelectionDialog extends AbstractCustomModalDialog {
 
             	Directory content = (Directory) node.getUserObject();
             	JLabel icon = (JLabel) superComponent;
-            	icon.setIcon(fsView.getSystemIcon(content.file));
+            	if (content != null) {
+            		icon.setIcon(fsView.getSystemIcon(content.file));
+            	}
 
             	return icon;
             }
