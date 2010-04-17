@@ -159,7 +159,7 @@ public class LyrcEngine extends AbstractLyricsEngine {
 
             return html;
         } catch (Exception e) {
-            getLogger().error(LogCategories.SERVICE, e);
+            getLogger().error(LogCategories.SERVICE, StringUtils.getString(e.getClass().getCanonicalName(), " (", e.getMessage(), ")"));
 
             return null;
         }

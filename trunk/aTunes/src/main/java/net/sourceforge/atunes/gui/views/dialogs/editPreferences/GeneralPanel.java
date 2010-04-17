@@ -118,6 +118,8 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
     private JLabel skinLabel;
     private JComboBox skin;
     private ByImageChoosingPanel<Class<? extends Frame>> windowTypeChoosingPanel;
+    
+    private ActionListener applySkinActionListener;
 
     private FontSettings currentFontSettings;
 
@@ -181,17 +183,6 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
         });
 
         skin = new JComboBox();
-        skin.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String selectedSkin = (String) skin.getSelectedItem();
-                boolean isCurrentLookAndFeel = LookAndFeelSelector.getInstance().getCurrentLookAndFeelName().equals(lookAndFeel.getSelectedItem());
-                if (isCurrentLookAndFeel) {
-                    LookAndFeelSelector.getInstance().applySkin(selectedSkin);
-                }
-            }
-
-        });
         List<ImageEntry<Class<? extends Frame>>> data = new ArrayList<ImageEntry<Class<? extends Frame>>>();
         for (Class<? extends Frame> clazz : Frames.getClasses()) {
             data.add(new ImageEntry<Class<? extends Frame>>(clazz, Frames.getImage(clazz)));
@@ -356,7 +347,14 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
      *            the new theme
      */
     private void setSkin(String t) {
+    	if (applySkinActionListener != null) {
+    		skin.removeActionListener(applySkinActionListener);
+    	}
         skin.setSelectedItem(t);
+        if (applySkinActionListener == null) {
+        	applySkinActionListener = new ApplySkinActionListener();
+        }
+        skin.addActionListener(applySkinActionListener);
     }
 
     /**
@@ -418,8 +416,26 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
         boolean hasSkins = !LookAndFeelSelector.getInstance().getAvailableSkins(selectedLookAndFeel).isEmpty();
         skinLabel.setEnabled(hasSkins);
         skin.setEnabled(hasSkins);
+        // Remove all listeners when setting skin list to avoid events fired
+        if (applySkinActionListener != null) {
+        	skin.removeActionListener(applySkinActionListener);
+        }
         skin.setModel(new ListComboBoxModel<String>(LookAndFeelSelector.getInstance().getAvailableSkins(selectedLookAndFeel)));
         skin.setSelectedItem(LookAndFeelSelector.getInstance().getDefaultSkin(selectedLookAndFeel));
+        if (applySkinActionListener == null) {
+        	applySkinActionListener = new ApplySkinActionListener();
+        }
+        skin.addActionListener(applySkinActionListener);
     }
 
+    private class ApplySkinActionListener implements ActionListener {
+    	@Override
+    	public void actionPerformed(ActionEvent e) {
+    		String selectedSkin = (String) skin.getSelectedItem();
+    		boolean isCurrentLookAndFeel = LookAndFeelSelector.getInstance().getCurrentLookAndFeelName().equals(lookAndFeel.getSelectedItem());
+    		if (isCurrentLookAndFeel) {
+    			LookAndFeelSelector.getInstance().applySkin(selectedSkin);
+    		}
+    	}
+    }
 }

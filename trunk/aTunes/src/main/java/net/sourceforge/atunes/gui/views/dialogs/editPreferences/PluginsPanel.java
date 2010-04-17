@@ -267,10 +267,6 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
     public void updatePanel(ApplicationState state) {
         List<PluginInfo> plugins = PluginsHandler.getInstance().getAvailablePlugins();
         pluginsTable.setModel(new PluginsTableModel(plugins));
-        // Select first plugin
-        if (!plugins.isEmpty()) {
-            pluginsTable.getSelectionModel().setSelectionInterval(0, 0);
-        }
     }
 
     @Override
@@ -289,6 +285,10 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
             // Initialize plugins modified 
             pluginsModified = new HashMap<PluginInfo, PluginConfiguration>();
             pluginsActivation = new HashMap<PluginInfo, Boolean>();
+            // Select first plugin
+            if (!PluginsHandler.getInstance().getAvailablePlugins().isEmpty()) {
+                pluginsTable.getSelectionModel().setSelectionInterval(0, 0);
+            }
         }
     }
 

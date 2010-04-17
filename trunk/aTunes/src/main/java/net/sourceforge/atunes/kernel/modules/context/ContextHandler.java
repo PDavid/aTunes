@@ -262,7 +262,6 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
         try {
             AbstractContextPanel newPanel = (AbstractContextPanel) plugin.getInstance();
             getContextPanels().add(newPanel);
-            GuiHandler.getInstance().getContextPanel().addContextPanel(newPanel);
         } catch (PluginSystemException e) {
             getLogger().error(LogCategories.PLUGINS, e);
         }

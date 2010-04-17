@@ -48,7 +48,7 @@ public class PodcastFeed implements TreeObject, Serializable {
         }
     };
 
-    private Logger logger;
+    private transient Logger logger;
 
     private String name;
     private String url;

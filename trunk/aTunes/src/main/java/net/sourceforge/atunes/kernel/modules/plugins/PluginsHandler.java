@@ -89,7 +89,7 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
             factory = new PluginsFactory();
 
             PluginSystemLogger.addHandler(new PluginsLoggerHandler());
-            PluginSystemLogger.setLevel(Kernel.isDebug() ? Level.FINE : Level.OFF);
+            PluginSystemLogger.setLevel(Level.ALL);
 
             // User plugins folder
             factory.addPluginsFolder(getUserPluginsFolder());
@@ -296,7 +296,7 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
             if (record.getLevel().equals(Level.SEVERE)) {
                 getLogger().error(LogCategories.PLUGINS, record.getMessage());
             } else {
-                getLogger().debug(LogCategories.PLUGINS, record.getMessage());
+                getLogger().info(LogCategories.PLUGINS, record.getMessage());
             }
         }
 
