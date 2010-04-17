@@ -102,10 +102,10 @@ public class LyricWikiEngine extends AbstractLyricsEngine {
             String lyrics = extractLyrics(html);
             return lyrics != null && !lyrics.isEmpty() ? new Lyrics(lyrics, url) : null;
         } catch (UnknownHostException e) {
-            getLogger().error(LogCategories.SERVICE, "Cannot fetch lyrics for: " + artist + "/" + title);
+        	getLogger().error(LogCategories.SERVICE, StringUtils.getString(e.getClass().getCanonicalName(), " (", e.getMessage(), ")"));
             return null;
         } catch (IOException e) {
-            getLogger().info(LogCategories.SERVICE, "Cannot fetch lyrics for: " + artist + "/" + title);
+        	getLogger().error(LogCategories.SERVICE, StringUtils.getString(e.getClass().getCanonicalName(), " (", e.getMessage(), ")"));
             return null;
         }
 

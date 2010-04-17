@@ -35,6 +35,7 @@ import net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.Abstract
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsEngineInfo;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.utils.StringUtils;
 
 public final class LyricsService implements ApplicationStateChangeListener {
 
@@ -42,7 +43,6 @@ public final class LyricsService implements ApplicationStateChangeListener {
     static {
         List<LyricsEngineInfo> list = new ArrayList<LyricsEngineInfo>();
         list.add(new LyricsEngineInfo("LyricWiki", "net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricWikiEngine", true));
-        list.add(new LyricsEngineInfo("Lyricsfly", "net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsflyEngine", true));
         list.add(new LyricsEngineInfo("LyricsDirectory", "net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsDirectoryEngine", false));
         list.add(new LyricsEngineInfo("LyrcEngine", "net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyrcEngine", false));
         list.add(new LyricsEngineInfo("Winampcn", "net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.WinampcnEngine", false));
@@ -121,7 +121,11 @@ public final class LyricsService implements ApplicationStateChangeListener {
                 // Ask for lyrics until a lyric is found in some engine
                 int i = 0;
                 while (i < lyricsEngines.size() && (lyric == null || lyric.getLyrics().trim().isEmpty())) {
-                    lyric = lyricsEngines.get(i++).getLyricsFor(artist, song);
+                    lyric = lyricsEngines.get(i).getLyricsFor(artist, song);
+                    if (lyric == null) {
+                    	getLogger().info(LogCategories.SERVICE, StringUtils.getString("Lyrics for: ", artist, "/", song, " not found with engine: ", lyricsEngines.get(i).getLyricsProviderName()));
+                    }
+                    i++;
                 }
             }
             if (lyric != null) {
@@ -202,10 +206,10 @@ public final class LyricsService implements ApplicationStateChangeListener {
                 }
             }
         }
-        ApplicationState.getInstance().setLyricsEnginesInfo(lyricsEnginesInfo);
-
         List<AbstractLyricsEngine> result = new ArrayList<AbstractLyricsEngine>();
         // Get engines
+        // If some engine can't be loaded will be removed from settings
+        List<LyricsEngineInfo> enginesToUnload = new ArrayList<LyricsEngineInfo>();
         for (LyricsEngineInfo lyricsEngineInfo : lyricsEnginesInfo) {
             if (lyricsEngineInfo.isEnabled()) {
                 try {
@@ -213,25 +217,49 @@ public final class LyricsService implements ApplicationStateChangeListener {
                     Constructor<?> constructor = clazz.getConstructor(Proxy.class);
                     result.add((AbstractLyricsEngine) constructor.newInstance(p));
                 } catch (ClassNotFoundException e) {
-                    getLogger().error(LogCategories.HANDLER, e);
+                	enginesToUnload.add(lyricsEngineInfo);
+                	logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
                 } catch (InstantiationException e) {
-                    getLogger().error(LogCategories.HANDLER, e);
+                	enginesToUnload.add(lyricsEngineInfo);
+                	logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
                 } catch (IllegalAccessException e) {
-                    getLogger().error(LogCategories.HANDLER, e);
+                	enginesToUnload.add(lyricsEngineInfo);
+                	logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
                 } catch (SecurityException e) {
-                    getLogger().error(LogCategories.HANDLER, e);
+                	enginesToUnload.add(lyricsEngineInfo);
+                	logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
                 } catch (NoSuchMethodException e) {
-                    getLogger().error(LogCategories.HANDLER, e);
+                	enginesToUnload.add(lyricsEngineInfo);
+                	logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
                 } catch (IllegalArgumentException e) {
-                    getLogger().error(LogCategories.HANDLER, e);
+                	enginesToUnload.add(lyricsEngineInfo);
+                	logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
                 } catch (InvocationTargetException e) {
-                    getLogger().error(LogCategories.HANDLER, e);
+                	enginesToUnload.add(lyricsEngineInfo);
+                	logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
                 }
             }
         }
+
+        for (LyricsEngineInfo engineToUnload : enginesToUnload) {
+        	lyricsEnginesInfo.remove(engineToUnload);
+        }
+        
+        ApplicationState.getInstance().setLyricsEnginesInfo(lyricsEnginesInfo);
+        
         return result;
     }
-
+    
+    /**
+     * Logs an error loading a lyric engine
+     * @param lyricEngineClass
+     * @param e
+     */
+    private void logLyricEngineLoadError(String lyricEngineClass, Exception e) {
+    	getLogger().error(LogCategories.HANDLER, StringUtils.getString("Error loading lyrics engine: ", lyricEngineClass));
+    	getLogger().error(LogCategories.HANDLER, StringUtils.getString("Error was: ", e.getClass().getCanonicalName(), " (", e.getMessage(), ")"));
+    }
+ 
     /**
      * Sets the lyric engines for the lyrics service
      * 
