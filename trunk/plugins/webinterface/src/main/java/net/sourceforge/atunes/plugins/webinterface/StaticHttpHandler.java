@@ -37,7 +37,6 @@ public class StaticHttpHandler extends AbstractHttpHandler {
         String mimeType = getMimeType(file);
         FileEntity body = new FileEntity(file, mimeType);
         response.setEntity(body);
-        System.out.println(file.getAbsolutePath() + "= " + mimeType);
 	}
 	
 	private String getUri(HttpRequest request) {
