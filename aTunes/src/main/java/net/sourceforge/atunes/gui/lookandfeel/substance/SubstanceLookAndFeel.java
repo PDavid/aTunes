@@ -213,26 +213,25 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
         result.put("BusinessBlueSteel", "org.pushingpixels.substance.api.skin.SubstanceBusinessBlueSteelLookAndFeel");
         result.put("CremeCoffee", "org.pushingpixels.substance.api.skin.SubstanceCremeCoffeeLookAndFeel");
         result.put("Sahara", "org.pushingpixels.substance.api.skin.SubstanceSaharaLookAndFeel");
-        result.put("Moderate", "org.jvnet.substance.skin.SubstanceModerateLookAndFeel");
+        result.put("Moderate", "org.pushingpixels.substance.api.skin.SubstanceModerateLookAndFeel");
         result.put("OfficeSilver2007", "org.pushingpixels.substance.api.skin.SubstanceOfficeSilver2007LookAndFeel");
         result.put("Nebula", "org.pushingpixels.substance.api.skin.SubstanceNebulaLookAndFeel");
         result.put("NebulaBrickWall", "org.pushingpixels.substance.api.skin.SubstanceNebulaBrickWallLookAndFeel");
         result.put("Autumn", "org.pushingpixels.substance.api.skin.SubstanceAutumnLookAndFeel");
-        result.put("MistSilver", "org.jvnet.substance.skin.SubstanceMistSilverLookAndFeel");
-        result.put("MistAqua", "org.jvnet.substance.skin.SubstanceMistAquaLookAndFeel");
+        result.put("MistSilver", "org.pushingpixels.substance.api.skin.SubstanceMistSilverLookAndFeel");
+        result.put("MistAqua", "org.pushingpixels.substance.api.skin.SubstanceMistAquaLookAndFeel");
         result.put("DustCoffee", "org.pushingpixels.substance.api.skin.SubstanceDustCoffeeLookAndFeel");
         result.put("Dust", "org.pushingpixels.substance.api.skin.SubstanceDustLookAndFeel");
-        result.put("RavenGraphite", "org.pushingpixels.substance.api.skin.SubstanceRavenGraphiteLookAndFeel");
-        result.put("RavenGraphiteGlass", "org.pushingpixels.substance.api.skin.SubstanceRavenGraphiteGlassLookAndFeel");
         result.put("Raven", "org.pushingpixels.substance.api.skin.SubstanceRavenLookAndFeel");
-        result.put("Magma", "org.pushingpixels.substance.api.skin.SubstanceMagmaLookAndFeel");
         result.put("ChallengerDeep", "org.pushingpixels.substance.api.skin.SubstanceChallengerDeepLookAndFeel");
         result.put("EmeraldDusk", "org.pushingpixels.substance.api.skin.SubstanceEmeraldDuskLookAndFeel");
         result.put("Twilight", "org.pushingpixels.substance.api.skin.SubstanceTwilightLookAndFeel");
         result.put("OfficeBlue2007", "org.pushingpixels.substance.api.skin.SubstanceOfficeBlue2007LookAndFeel");
-        result.put("Gemini", "org.pushingpixels.substance.api.skin.api.skin.SubstanceGeminiLookAndFeel");
-        result.put("Magellan", "org.pushingpixels.substance.api.skin.api.skin.SubstanceMagellanLookAndFeel");
-        result.put("GraphiteAqua", "org.pushingpixels.substance.api.skin.api.skin.SubstanceGraphiteAquaLookAndFeel");
+        result.put("Gemini", "org.pushingpixels.substance.api.skin.SubstanceGeminiLookAndFeel");
+        result.put("Magellan", "org.pushingpixels.substance.api.skin.SubstanceMagellanLookAndFeel");
+        result.put("GraphiteAqua", "org.pushingpixels.substance.api.skin.SubstanceGraphiteAquaLookAndFeel");
+        result.put("GraphiteGlass", "org.pushingpixels.substance.api.skin.SubstanceGraphiteGlassLookAndFeel");
+        result.put("Graphite", "org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel");
 
         /*
          * custom skins
