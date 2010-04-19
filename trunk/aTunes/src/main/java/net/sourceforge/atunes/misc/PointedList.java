@@ -112,24 +112,28 @@ public class PointedList<T> implements Serializable {
      * @param c
      */
     public void sort(Comparator<T> c) {
-        if (isEmpty() || getCurrentObject() == null) {
+        if (isEmpty()) {
             return;
         }
         T currentObject = getCurrentObject();
         Collections.sort(getList(), c);
-        setPointer(indexOf(currentObject));
+        if (currentObject != null) {
+        	setPointer(indexOf(currentObject));
+        }
     }
 
     /**
      * Shuffles this list keeping pointed object
      */
     public void shuffle() {
-        if (isEmpty() || getCurrentObject() == null) {
+        if (isEmpty()) {
             return;
         }
         T currentObject = getCurrentObject();
         Collections.shuffle(getList());
-        setPointer(indexOf(currentObject));
+        if (currentObject != null) {
+        	setPointer(indexOf(currentObject));
+        }
     }
 
     public void add(T element) {
