@@ -1,5 +1,5 @@
 /*
- * aTunes 2.0.0-SNAPSHOT
+ * aTunes 2.1.0-SNAPSHOT
  * Copyright (C) 2006-2010 Alex Aranda, Sylvain Gaudard, Thomas Beckers and contributors
  *
  * See http://www.atunes.org/wiki/index.php?title=Contributing for information about contributors
@@ -17,6 +17,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
+
 package net.sourceforge.atunes.kernel.modules.player;
 
 import java.io.File;
