@@ -44,6 +44,7 @@ aTunes 2.0.0
 - Add date column for podcast feed entries in navigation table (Patch by Tobias Rapp)
 - Added translation to Catalan (thanks to perru002)
 - Basic support for plugins
+- Removed cue sheet support
 - INTERNAL: Avoid unnecessary refresh view operations
 - INTERNAL: Share actions between play list and navigation tree and table
 - INTERNAL: Refactoring of play list
