@@ -10,7 +10,7 @@
 	</dependencySets>
 	<fileSets>
 		<fileSet>
-			<directory>${basedir}/deployable</directory>
+			<directory>${basedir}/build_resources</directory>
 			<outputDirectory />
 			<includes>
 				<include>**.*</include>
@@ -24,17 +24,11 @@
 			</includes>
 		</fileSet>
 		<fileSet>
-			<directory>${basedir}/core_plugins</directory>
-			<outputDirectory>/core_plugins</outputDirectory>
-			<includes>
-				<include>**/</include>
-			</includes>
-		</fileSet>
-		<fileSet>
-			<directory>${basedir}/deploy/aTunes</directory>
+			<directory>${basedir}/target/aTunes</directory>
 			<outputDirectory />
 			<includes>
-				<include>aTunes.exe</include>
+				<include>**.*</include>
+				<include>src/**/**.*</include>				
 			</includes>
 		</fileSet>
 		<fileSet>
