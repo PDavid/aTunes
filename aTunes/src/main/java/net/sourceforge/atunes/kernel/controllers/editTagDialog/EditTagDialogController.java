@@ -43,8 +43,8 @@ import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.repository.tags.tag.EditTagInfo;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.AbstractTag;
+import net.sourceforge.atunes.kernel.modules.repository.tags.tag.EditTagInfo;
 import net.sourceforge.atunes.kernel.modules.repository.tags.writer.EditTagsProcess;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
@@ -55,39 +55,38 @@ import org.jdesktop.swingx.combobox.ListComboBoxModel;
 
 public final class EditTagDialogController extends AbstractSimpleController<EditTagDialog> {
 
-    private final class GetInsidePictureSwingWorker extends
-			SwingWorker<ImageIcon, Void> {
-		private final List<AudioFile> audioFiles;
+    private final class GetInsidePictureSwingWorker extends SwingWorker<ImageIcon, Void> {
+        private final List<AudioFile> audioFiles;
 
-		private GetInsidePictureSwingWorker(List<AudioFile> audioFiles) {
-			this.audioFiles = audioFiles;
-		}
+        private GetInsidePictureSwingWorker(List<AudioFile> audioFiles) {
+            this.audioFiles = audioFiles;
+        }
 
-		@Override
-		protected ImageIcon doInBackground() throws Exception {
-		    return AudioFilePictureUtils.getInsidePicture(audioFiles.get(0), Constants.DIALOG_LARGE_IMAGE_WIDTH, Constants.DIALOG_LARGE_IMAGE_HEIGHT);
-		}
+        @Override
+        protected ImageIcon doInBackground() throws Exception {
+            return AudioFilePictureUtils.getInsidePicture(audioFiles.get(0), Constants.DIALOG_LARGE_IMAGE_WIDTH, Constants.DIALOG_LARGE_IMAGE_HEIGHT);
+        }
 
-		@Override
-		protected void done() {
-		    try {
-		        // Check if it's the right dialog
-		        if (audioFilesEditing.equals(audioFiles)) {
-		            ImageIcon cover = get();
-		            getEditTagDialog().getCover().setIcon(cover);
-		            getEditTagDialog().getCoverButton().setEnabled(true);
-		            getEditTagDialog().getRemoveCoverButton().setEnabled(true);
-		            getEditTagDialog().getOkButton().setEnabled(true);
-		        }
-		    } catch (InterruptedException e) {
-		        getLogger().error(LogCategories.IMAGE, e);
-		    } catch (ExecutionException e) {
-		        getLogger().error(LogCategories.IMAGE, e);
-		    }
-		}
-	}
+        @Override
+        protected void done() {
+            try {
+                // Check if it's the right dialog
+                if (audioFilesEditing.equals(audioFiles)) {
+                    ImageIcon cover = get();
+                    getEditTagDialog().getCover().setIcon(cover);
+                    getEditTagDialog().getCoverButton().setEnabled(true);
+                    getEditTagDialog().getRemoveCoverButton().setEnabled(true);
+                    getEditTagDialog().getOkButton().setEnabled(true);
+                }
+            } catch (InterruptedException e) {
+                getLogger().error(LogCategories.IMAGE, e);
+            } catch (ExecutionException e) {
+                getLogger().error(LogCategories.IMAGE, e);
+            }
+        }
+    }
 
-	private static final class TitleTextFieldKeyAdapter extends KeyAdapter {
+    private static final class TitleTextFieldKeyAdapter extends KeyAdapter {
         private final JTextField textField;
         private final String fileName;
         private int lenght = 0;
@@ -106,12 +105,12 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
 
                     // User added a char
                     if (text.length() > lenght && text.length() >= 3) {
-                    	int index = fileName.indexOf(text);
-                    	if (index != -1) {
-                    		textField.setText(fileName.substring(index));
-                    		textField.setSelectionStart(text.length());
-                    		textField.setSelectionEnd(textField.getText().length());
-                    	}
+                        int index = fileName.indexOf(text);
+                        if (index != -1) {
+                            textField.setText(fileName.substring(index));
+                            textField.setSelectionStart(text.length());
+                            textField.setSelectionEnd(textField.getText().length());
+                        }
                     }
                     lenght = text.length();
                 }
@@ -450,7 +449,7 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
             // Text area line breaks are \n so in some OS (Windows) is not a correct line break -> Replace with OS line terminator
             String lyrics = getComponentControlled().getLyricsTextArea().getText();
             if (SystemProperties.OS.equals(OperatingSystem.WINDOWS)) {
-                lyrics = lyrics.replaceAll("\n", "\r\n");
+                lyrics = lyrics.replaceAll("^[\r]\n", "\r\n");
             }
             editTagInfo.put("LYRICS", lyrics);
         }
