@@ -2,6 +2,7 @@ aTunes 2.0.1
 -------------
 - FIX: Some Substance L&F skins were not working
 - FIX: Can't sort or shuffle a new created playlist
+- FIX: Too many CRs in lyrics [2991316]
 
 
 aTunes 2.0.0
