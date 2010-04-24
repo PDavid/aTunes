@@ -138,9 +138,8 @@ public class GStreamerEngine extends AbstractPlayerEngine {
     }
 
     @Override
-    protected void seekTo(double perCent) {
-        long pos = (long) (getCurrentAudioObjectLength() * perCent);
-        playBin.seek(pos, TimeUnit.MILLISECONDS);
+    protected void seekTo(long milliseconds) {
+        playBin.seek(milliseconds, TimeUnit.MILLISECONDS);
     }
 
     @Override

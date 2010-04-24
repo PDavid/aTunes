@@ -61,7 +61,9 @@ public final class PlayerControlsController extends AbstractSimpleController<Pla
     protected void addBindings() {
         PlayerControlsListener listener = new PlayerControlsListener(getComponentControlled(), this);
 
-        getComponentControlled().getProgressBar().addMouseListener(listener);
+        ProgressBarSeekListener seekListener = new ProgressBarSeekListener(getComponentControlled().getProgressBar());        
+        getComponentControlled().getProgressBar().addMouseListener(seekListener);
+        
         //bind a mouse wheel listener
         getComponentControlled().getVolumeSlider().addMouseWheelListener(listener);
     }

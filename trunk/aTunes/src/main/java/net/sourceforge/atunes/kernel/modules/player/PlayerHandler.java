@@ -226,14 +226,14 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 
     /**
      * Seek function: play current audio object from position defined by
-     * parameter (0-100%)
+     * parameter milliseconds
      * 
-     * @param position
-     *            From start of audio object (0) to end of audio object (1)
+     * @param milliseconds
+     *            Milliseconds from start of audio object
      * 
      */
-    public final void seekCurrentAudioObject(double position) {
-        playerEngine.seekCurrentAudioObject(position);
+    public final void seekCurrentAudioObject(long milliseconds) {
+        playerEngine.seekCurrentAudioObject(milliseconds);
     }
 
     /**
