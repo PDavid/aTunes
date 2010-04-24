@@ -104,8 +104,8 @@ class MPlayerCommandWriter {
      *            the per cent
      */
 
-    void sendSeekCommand(double perCent) {
-        sendCommand(StringUtils.getString("seek ", perCent * 100, " 1"));
+    void sendSeekCommand(long milliseconds) {
+        sendCommand(StringUtils.getString("seek ", milliseconds / 1000, " 2"));
         sendPauseCommand();
     }
 

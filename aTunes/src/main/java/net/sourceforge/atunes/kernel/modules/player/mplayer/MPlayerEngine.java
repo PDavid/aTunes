@@ -251,7 +251,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
     }
 
     @Override
-    protected void seekTo(double position) {
+    protected void seekTo(long position) {
         commandWriter.sendSeekCommand(position);
     }
 

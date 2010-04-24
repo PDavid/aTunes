@@ -163,9 +163,9 @@ public class XineEngine extends AbstractPlayerEngine {
     }
 
     @Override
-    protected void seekTo(double position) {
+    protected void seekTo(long milliseconds) {
         if (xineController != null) {
-            startPlayback(percentToXine(position));
+            startPlayback(milliseconds);
         }
     }
 
@@ -234,17 +234,10 @@ public class XineEngine extends AbstractPlayerEngine {
         }
     }
 
-    private int percentToXine(double percent) {
-        if (percent == 0) {
-            return 0;
-        }
-        return (int) (65535 * percent);
-    }
-
-    private void startPlayback(final int startPosition) {
+    private void startPlayback(final long milliseconds) {
         info("Starting playback");
         try {
-            xineController.start(startPosition, 0);
+            xineController.start(0, (int) milliseconds);
         } catch (Exception e) {
             info("Xine encountered an error: " + e);
             currentAudioObjectFinished(false, "Xine encountered an error: ", e.getMessage());

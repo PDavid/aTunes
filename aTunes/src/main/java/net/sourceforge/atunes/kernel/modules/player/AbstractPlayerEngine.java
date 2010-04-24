@@ -223,10 +223,10 @@ public abstract class AbstractPlayerEngine implements PlaybackStateListener {
      * This method must be implemented by player engines. Applies a seek
      * operation in player engine
      * 
-     * @param perCent
-     *            0-1
+     * @param milliseconds
+     *           
      */
-    protected abstract void seekTo(double perCent);
+    protected abstract void seekTo(long milliseconds);
 
     /**
      * This method must be implemented by player engines. Applies volume value
@@ -515,14 +515,13 @@ public abstract class AbstractPlayerEngine implements PlaybackStateListener {
     }
 
     /**
-     * Seek function: play current audio object from position defined by
-     * parameter (0-100%)
+     * Seek function: play current audio object from milliseconds defined by parameter
      * 
-     * @param position
-     *            From start of audio object (0) to end of audio object (100)
+     * @param milliseconds
+     *            
      * 
      */
-    public final void seekCurrentAudioObject(double position) {
+    public final void seekCurrentAudioObject(long milliseconds) {
         // If paused first resume and then seek
         if (paused) {
             paused = false;
@@ -532,7 +531,7 @@ public abstract class AbstractPlayerEngine implements PlaybackStateListener {
             }
         }
 
-        seekTo(position);
+        seekTo(milliseconds);
     }
 
     /**
@@ -787,14 +786,13 @@ public abstract class AbstractPlayerEngine implements PlaybackStateListener {
      * This is normally used after apply a change in configuration (normalization, equalization)
      */
     protected void restartPlayback() {
-        float cent = ((float) getCurrentAudioObjectPlayedTime() / getCurrentAudioObjectLength());
-
+    	long position = getCurrentAudioObjectPlayedTime();
         // Disable playback state listeners while restarting playback
         setCallToPlaybackStateListenersDisabled(true);
         
         finishPlayer();        
         playCurrentAudioObject(true);
-        seekCurrentAudioObject(cent);
+        seekCurrentAudioObject(position);
         
         // Enable playback state listeners again
         setCallToPlaybackStateListenersDisabled(false);

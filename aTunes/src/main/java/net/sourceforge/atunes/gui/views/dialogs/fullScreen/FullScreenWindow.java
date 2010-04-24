@@ -73,8 +73,8 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.StopButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeLevel;
 import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
+import net.sourceforge.atunes.kernel.controllers.playerControls.ProgressBarSeekListener;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
-import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -458,17 +458,8 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 
         progressBar = new JSlider();
         progressBar.setOpaque(false);
-        progressBar.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                if (progressBar.isEnabled()) {
-                    int widthClicked = e.getPoint().x;
-                    int widthOfProgressBar = progressBar.getSize().width;
-                    double perCent = (double) widthClicked / (double) widthOfProgressBar;
-                    PlayerHandler.getInstance().seekCurrentAudioObject(perCent);
-                }
-            }
-        });
+        ProgressBarSeekListener seekListener = new ProgressBarSeekListener(progressBar);
+        progressBar.addMouseListener(seekListener);
         progressBar.addKeyListener(keyAdapter);
         progressBar.setToolTipText(I18nUtils.getString("CLICK_TO_SEEK"));
         progressBar.setMinimum(0);
