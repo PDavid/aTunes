@@ -698,6 +698,10 @@ public final class ApplicationStateHandler extends AbstractHandler {
 
                 long t1 = System.currentTimeMillis();
                 getLogger().info(LogCategories.HANDLER, StringUtils.getString("Reading repository cache done (", (t1 - t0) / 1000.0, " seconds)"));
+                
+                // Save repository again to avoid reading XML in next start
+                repository.setDirty(true);
+                
                 return repository;
             } catch (IOException e1) {
                 getLogger().info(LogCategories.HANDLER, "No xml repository info found");
