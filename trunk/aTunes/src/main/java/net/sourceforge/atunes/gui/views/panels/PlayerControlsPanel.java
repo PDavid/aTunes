@@ -407,6 +407,8 @@ public final class PlayerControlsPanel extends JPanel {
             super(new GridBagLayout());
             time = new JLabel("0:00");
             time.setHorizontalAlignment(SwingConstants.CENTER);
+            // Set enough width to allow more than three digits
+            time.setPreferredSize(new Dimension(50, 10));
 
             progressBar = new JSlider();
             progressBar.setToolTipText(I18nUtils.getString("CLICK_TO_SEEK"));
@@ -417,6 +419,8 @@ public final class PlayerControlsPanel extends JPanel {
 
             remainingTime = new JLabel("0:00");
             remainingTime.setHorizontalAlignment(SwingConstants.CENTER);
+            // Set enough width to allow more than three digits
+            remainingTime.setPreferredSize(new Dimension(50, 10));
             setOpaque(false);
 
             setExpandable(true);
