@@ -5,6 +5,7 @@ aTunes 2.0.1
 - FIX: Too many CRs in lyrics [2991316]
 - FIX: Problems with accuracy of progress bar [2989229]
 - FIX: Write repository after reading XML [2991957]
+- FIX: Avoid progress bar move when time labels needs extra space
 
 
 aTunes 2.0.0
