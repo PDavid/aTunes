@@ -1320,6 +1320,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      *            the song
      */
     public void updateStatusBar(AudioObject song) {
+    	// TODO: Refactor this method
         if (!(song instanceof Radio || song instanceof PodcastFeedEntry)) {
             if (GuiUtils.getComponentOrientation().isLeftToRight()) {
                 String text = StringUtils.getString(I18nUtils.getString("PLAYING"), ": ");
@@ -1360,7 +1361,11 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
                 setLeftStatusBarText(text, text);
             }
         } else {
-            updateStatusBar(StringUtils.getString("<html>", I18nUtils.getString("BUFFERING"), " <b>", song.getTitle(), "</b>...</html>"));
+        	if (song instanceof PodcastFeedEntry && ((PodcastFeedEntry)song).isDownloaded()) {
+        		updateStatusBar(StringUtils.getString(I18nUtils.getString("PLAYING"), ": ", song.getTitle()));
+        	} else {
+        		updateStatusBar(StringUtils.getString(I18nUtils.getString("BUFFERING"), " ", song.getTitle(), "..."));
+        	}
         }
     }
 
