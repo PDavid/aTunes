@@ -69,6 +69,11 @@ public final class LookAndFeelSelector implements PluginListener {
      * Default look and feel
      */
     private static AbstractLookAndFeel defaultLookAndFeel = new SubstanceLookAndFeel();
+    
+    /**
+     * Look and Feel change listeners
+     */
+    private static List<LookAndFeelChangeListener> changeListeners;
 
     /**
      * Default constructor
@@ -192,6 +197,10 @@ public final class LookAndFeelSelector implements PluginListener {
         for (Window window : Window.getWindows()) {
             SwingUtilities.updateComponentTreeUI(window);
         }
+        // Notify listeners
+        for (LookAndFeelChangeListener listener : getChangeListeners()) {
+        	listener.lookAndFeelChanged();
+        }
     }
 
     /**
@@ -233,4 +242,30 @@ public final class LookAndFeelSelector implements PluginListener {
     public static AbstractLookAndFeel getDefaultLookAndFeel() {
         return defaultLookAndFeel;
     }
+
+	/**
+	 * @return the changeListeners
+	 */
+	protected static List<LookAndFeelChangeListener> getChangeListeners() {
+		if (changeListeners == null) {
+			changeListeners = new ArrayList<LookAndFeelChangeListener>();
+		}
+		return changeListeners;
+	}
+	
+	/**
+	 * Adds a new look and feel change listener
+	 * @param listener
+	 */
+	public void addLookAndFeelChangeListener(LookAndFeelChangeListener listener) {
+		getChangeListeners().add(listener);
+	}
+	
+	/**
+	 * Removes a look and feel change listener
+	 * @param listener
+	 */
+	public void removeLookAndFeelChangeListener(LookAndFeelChangeListener listener) {
+		getChangeListeners().remove(listener);
+	}
 }
