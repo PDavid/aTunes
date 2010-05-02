@@ -26,25 +26,51 @@ import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelChangeListener;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+
 /**
  * A CustomTextPane is a JTextPane using the fonts and colors configured for all
  * application
  * 
- * @author alex
+ * @author fleax
  * 
  */
-public final class CustomTextPane extends JTextPane {
+public final class CustomTextPane extends JTextPane implements LookAndFeelChangeListener {
 
     private static final long serialVersionUID = -3601855261867415475L;
 
+    private int alignment;
+    
     public CustomTextPane(int alignment) {
         super();
+        this.alignment = alignment;
+        updateStyle(false);
+        new EditionPopUpMenu(this);
+        // Register look and feel change listener
+        LookAndFeelSelector.getInstance().addLookAndFeelChangeListener(this);
+    }
+    
+    @Override
+    public void lookAndFeelChanged() {
+    	updateStyle(true);
+    }
+    
+    /**
+     * Updates style of text pane
+     * @param forceUpdate
+     *            if <code>true</code> will update component to use new style
+     */
+    private void updateStyle(boolean forceUpdate) {
         MutableAttributeSet mainStyle = new SimpleAttributeSet();
         StyleConstants.setAlignment(mainStyle, alignment);
         StyleConstants.setFontFamily(mainStyle, UIManager.getFont("Label.font").getFamily());
         StyleConstants.setFontSize(mainStyle, UIManager.getFont("Label.font").getSize());
         StyleConstants.setForeground(mainStyle, UIManager.getColor("Label.foreground"));
         getStyledDocument().setParagraphAttributes(0, 0, mainStyle, true);
-        new EditionPopUpMenu(this);
+        if (forceUpdate) {
+        	// Setting text again to use new style
+        	setText(getText());
+        }
     }
 }
