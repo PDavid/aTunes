@@ -151,7 +151,7 @@ public final class SystemTrayHandler extends AbstractHandler {
      */
     public void initTrayIcon() {
         initSystemTray();
-        if (tray != null) {
+        if (isTrayInitialized()) {
             trayIconVisible = true;
             addTrayIcon(getTrayIcon());
             GuiHandler.getInstance().setFrameDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
@@ -165,7 +165,7 @@ public final class SystemTrayHandler extends AbstractHandler {
      */
     public void initTrayPlayerIcons() {
         initSystemTray();
-        if (tray != null) {
+        if (isTrayInitialized()) {
             trayPlayerVisible = true;
             addTrayIcon(getPreviousTrayIcon());
             addTrayIcon(getStopTrayIcon());
@@ -183,7 +183,7 @@ public final class SystemTrayHandler extends AbstractHandler {
      */
     private void addTrayIcon(TrayIcon icon) {
         try {
-            tray.add(icon);
+       		tray.add(icon);
         } catch (AWTException e) {
             getLogger().error(LogCategories.TRAY, e);
         }
@@ -196,16 +196,17 @@ public final class SystemTrayHandler extends AbstractHandler {
      *            the new playing
      */
     public void setPlaying(boolean playing) {
-        if (playing) {
-            getPlayMenuItem().setText(I18nUtils.getString("PAUSE"));
-            getPlayMenuItem().setIcon(Images.getImage(Images.PAUSE_TRAY_MENU));
-            getPlayTrayIcon().setImage(Images.getImage(Images.PAUSE_TRAY).getImage());
-        } else {
-            getPlayMenuItem().setText(I18nUtils.getString("PLAY"));
-            getPlayMenuItem().setIcon(Images.getImage(Images.PLAY_TRAY_MENU));
-            getPlayTrayIcon().setImage(Images.getImage(Images.PLAY_TRAY).getImage());
-        }
-
+    	if (isTrayInitialized()) {
+            if (playing) {
+                getPlayMenuItem().setText(I18nUtils.getString("PAUSE"));
+                getPlayMenuItem().setIcon(Images.getImage(Images.PAUSE_TRAY_MENU));
+                getPlayTrayIcon().setImage(Images.getImage(Images.PAUSE_TRAY).getImage());
+            } else {
+                getPlayMenuItem().setText(I18nUtils.getString("PLAY"));
+                getPlayMenuItem().setIcon(Images.getImage(Images.PLAY_TRAY_MENU));
+                getPlayTrayIcon().setImage(Images.getImage(Images.PLAY_TRAY).getImage());
+            }
+    	}
     }
 
     /**
@@ -217,11 +218,11 @@ public final class SystemTrayHandler extends AbstractHandler {
     private void setTrayIconVisible(boolean visible) {
         if (visible && !trayIconVisible) {
             initTrayIcon();
-            if (tray != null) {
+            if (isTrayInitialized()) {
                 trayIconAdvice();
             }
         } else {
-            if (!visible && trayIconVisible) {
+            if (!visible && trayIconVisible && isTrayInitialized()) {
                 tray.remove(getTrayIcon());
                 GuiHandler.getInstance().setFrameDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
                 trayIconVisible = false;
@@ -239,7 +240,7 @@ public final class SystemTrayHandler extends AbstractHandler {
         if (visible && !trayPlayerVisible) {
             initTrayPlayerIcons();
         } else {
-            if (!visible && trayPlayerVisible) {
+            if (!visible && trayPlayerVisible && isTrayInitialized()) {
                 tray.remove(getPreviousTrayIcon());
                 tray.remove(getPlayTrayIcon());
                 tray.remove(getStopTrayIcon());
@@ -256,7 +257,9 @@ public final class SystemTrayHandler extends AbstractHandler {
      *            the new tray tool tip
      */
     public void setTrayToolTip(String msg) {
-        getTrayIcon().setToolTip(msg);
+    	if (isTrayInitialized()) {
+    		getTrayIcon().setToolTip(msg);
+    	}
     }
 
     /**
@@ -264,7 +267,7 @@ public final class SystemTrayHandler extends AbstractHandler {
      */
     private void trayIconAdvice() {
         // For some reason, in Linux systems display message causes Swing freeze
-        if (SystemProperties.OS != OperatingSystem.LINUX) {
+        if (SystemProperties.OS != OperatingSystem.LINUX && isTrayInitialized()) {
             getTrayIcon().displayMessage(Constants.APP_NAME, I18nUtils.getString("TRAY_ICON_MESSAGE"), TrayIcon.MessageType.INFO);
         }
     }
@@ -444,5 +447,12 @@ public final class SystemTrayHandler extends AbstractHandler {
         previousIcon.setImageAutoSize(true);
         return previousIcon;
     }
+
+	/**
+	 * @return the trayInitialized
+	 */
+	protected boolean isTrayInitialized() {
+		return trayInitialized;
+	}
 
 }
