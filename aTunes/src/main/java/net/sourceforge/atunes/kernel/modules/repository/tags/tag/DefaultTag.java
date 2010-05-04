@@ -36,7 +36,7 @@ public class DefaultTag extends AbstractTag {
     private static final long serialVersionUID = 6200185803652819029L;
 
     /** Date format without time information. */
-    private transient final SimpleDateFormat dateOnlyFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private static transient final SimpleDateFormat dateOnlyFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     /**
      * Instantiates a new default tag.
