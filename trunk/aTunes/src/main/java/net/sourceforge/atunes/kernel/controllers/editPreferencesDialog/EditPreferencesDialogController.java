@@ -134,7 +134,11 @@ public final class EditPreferencesDialogController extends AbstractSimpleControl
         boolean needRestart = false;
         // Apply preferences from panels
         for (AbstractPreferencesPanel p : panels) {
-            needRestart = needRestart || p.applyPreferences(ApplicationState.getInstance());
+        	// WARNING: There was a bug when call to applyPreferences was made as second operand of OR due to shortcut
+        	// So call method and after do OR (method call as first operand is also valid)
+        	// See bug https://sourceforge.net/tracker/?func=detail&aid=2999531&group_id=161929&atid=821812 for more information
+        	boolean panelNeedRestart = p.applyPreferences(ApplicationState.getInstance());
+            needRestart = needRestart || panelNeedRestart;
         }
         return needRestart;
     }
