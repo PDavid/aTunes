@@ -34,14 +34,17 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 public class LyricsDirectoryEngine extends AbstractLyricsEngine {
 
-    private static final String BASE_URL = "http://www.lyricsdir.com/";
+	/**
+	 * Text showing lyrics are incomplete
+	 */
+    private static final String WE_ARE_CURRENTLY_UNABLE_TO_SHOW_YOU_THE_LYRICS = "We are currently unable to show you the lyrics";
+	private static final String BASE_URL = "http://www.lyricsdir.com/";
     private static final String CHARSET = "UTF-8";
 
     private Logger logger;
 
     public LyricsDirectoryEngine(Proxy proxy) {
         super(proxy);
-        // TODO Auto-generated constructor stub
     }
 
     @Override
@@ -63,6 +66,9 @@ public class LyricsDirectoryEngine extends AbstractLyricsEngine {
                     lyrics = element.getRenderer().toString();
                 }
             }
+            
+            lyrics = reviewLyrics(lyrics);
+            
             return lyrics != null && !lyrics.isEmpty() ? new Lyrics(lyrics, sb.toString()) : null;
         } catch (UnknownHostException e) {
         	getLogger().error(LogCategories.SERVICE, StringUtils.getString(e.getClass().getCanonicalName(), " (", e.getMessage(), ")"));
@@ -71,6 +77,18 @@ public class LyricsDirectoryEngine extends AbstractLyricsEngine {
         	getLogger().error(LogCategories.SERVICE, StringUtils.getString(e.getClass().getCanonicalName(), " (", e.getMessage(), ")"));
             return null;
         }
+    }
+    
+    /**
+     * Test if lyrics are partial. If so, discard them
+     * @param lyrics
+     * @return
+     */
+    private String reviewLyrics(String lyrics) {
+    	if (lyrics.contains(WE_ARE_CURRENTLY_UNABLE_TO_SHOW_YOU_THE_LYRICS)) {
+    		return null;
+    	}
+    	return lyrics;
     }
 
     private String getString(String a, String t) {

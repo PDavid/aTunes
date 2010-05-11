@@ -11,6 +11,7 @@ aTunes 2.0.1
 - FIX: Some components where not updated when changing look and feel
 - FIX: Application not able to play in Linux using a desktop different from Gnome or KDE [2995302]
 - FIX: Preferences not saved if some requires restart [2999531]
+- FIX: Avoid incomplete lyrics from some engines
 
 aTunes 2.0.0
 -------------

@@ -125,18 +125,35 @@ public final class LyricsService implements ApplicationStateChangeListener {
                     lyric = lyricsEngines.get(i).getLyricsFor(artist, song);
                     if (lyric == null) {
                     	getLogger().info(LogCategories.SERVICE, StringUtils.getString("Lyrics for: ", artist, "/", song, " not found with engine: ", lyricsEngines.get(i).getLyricsProviderName()));
+                    } else {
+                    	getLogger().debug(LogCategories.SERVICE, "Engine: ", lyricsEngines.get(i).getLyricsProviderName(), " returned lyrics for: ", artist, "/", song, ": ", lyric.getLyrics());
                     }
+                    
                     i++;
                 }
             }
-            if (lyric != null) {
-                lyric.setLyrics(lyric.getLyrics().replaceAll("'", "\'"));
-                lyric.setLyrics(lyric.getLyrics().replaceAll("\n\n", "\n"));
-            }
+            
+            fixLyrics(lyric);
+            
             lyricsCache.storeLyric(artist, song, lyric);
         }
         // Return lyric
         return lyric;
+    }
+    
+    /**
+     * Applies several common string manipulation to improve lyrics
+     * @param lyrics
+     */
+    private void fixLyrics(Lyrics lyrics) {
+        if (lyrics != null) {
+        	String lyricsString = lyrics.getLyrics()
+            						.replaceAll("'", "\'")
+            						.replaceAll("\n\n", "\n") // Remove duplicate \n            	
+            						.replaceAll("<.*>", "")   // Remove HTML
+            						.trim();
+            lyrics.setLyrics(lyricsString);
+        }
     }
 
     /**
