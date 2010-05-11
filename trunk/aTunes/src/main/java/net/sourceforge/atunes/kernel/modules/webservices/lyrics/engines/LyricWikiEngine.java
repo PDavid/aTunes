@@ -38,7 +38,12 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class LyricWikiEngine extends AbstractLyricsEngine {
 
-    private Logger logger;
+	/**
+	 * Text showing lyrics are incomplete
+	 */
+    private static final String UNFORTUNATELY_WE_ARE_NOT_LICENSED_TO_DISPLAY_THE_FULL_LYRICS = "Unfortunately, we are not licensed to display the full lyrics";
+
+	private Logger logger;
 
     private static final String ARTIST_PATTERN = "%artist";
     private static final String TITLE_PATTERN = "%title";
@@ -101,6 +106,9 @@ public class LyricWikiEngine extends AbstractLyricsEngine {
             String url = getURL(artist, title);
             String html = readURL(getConnection(url), RESPONSE_ENCODING);
             String lyrics = extractLyrics(html);
+            
+            lyrics = reviewLyrics(lyrics);
+            
             return lyrics != null && !lyrics.isEmpty() ? new Lyrics(lyrics, url) : null;
         } catch (UnknownHostException e) {
         	getLogger().error(LogCategories.SERVICE, StringUtils.getString(e.getClass().getCanonicalName(), " (", e.getMessage(), ")"));
@@ -138,6 +146,18 @@ public class LyricWikiEngine extends AbstractLyricsEngine {
             }
         }
         return lyrics;
+    }
+    
+    /**
+     * Test if lyrics are partial. If so, discard them
+     * @param lyrics
+     * @return
+     */
+    private String reviewLyrics(String lyrics) {
+    	if (lyrics.contains(UNFORTUNATELY_WE_ARE_NOT_LICENSED_TO_DISPLAY_THE_FULL_LYRICS)) {
+    		return null;
+    	}
+    	return lyrics;
     }
 
     @Override
