@@ -12,6 +12,7 @@ aTunes 2.0.1
 - FIX: Application not able to play in Linux using a desktop different from Gnome or KDE [2995302]
 - FIX: Preferences not saved if some requires restart [2999531]
 - FIX: Avoid incomplete lyrics from some engines
+- FIX: ID3v1.1 tags not read if not valid ID3v2.3 tag present (Jaudiotagger problem) [2997621]
 
 aTunes 2.0.0
 -------------
