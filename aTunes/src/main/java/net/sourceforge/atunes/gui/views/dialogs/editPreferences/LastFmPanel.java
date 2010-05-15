@@ -39,6 +39,7 @@ import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddBannedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction;
+import net.sourceforge.atunes.kernel.actions.ImportLovedTracksFromLastFMAction;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
@@ -173,6 +174,7 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
         state.setAutoLoveFavoriteSong(autoLoveFavoriteSongs.isSelected());
         Actions.getAction(AddLovedSongInLastFMAction.class).setEnabled(state.isLastFmEnabled());
         Actions.getAction(AddBannedSongInLastFMAction.class).setEnabled(state.isLastFmEnabled());
+        Actions.getAction(ImportLovedTracksFromLastFMAction.class).setEnabled(state.isLastFmEnabled());
         return false;
     }
 

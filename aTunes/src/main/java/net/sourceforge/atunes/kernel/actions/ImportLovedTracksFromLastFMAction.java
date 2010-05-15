@@ -32,12 +32,13 @@ import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
+import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmLovedTrack;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public class ImportLovedTracksFromLastFM extends AbstractAction {
+public class ImportLovedTracksFromLastFMAction extends AbstractAction {
 
     private static class ImportLovedTracksWorker extends SwingWorker<List<AudioFile>, Void> {
         @Override
@@ -79,8 +80,9 @@ public class ImportLovedTracksFromLastFM extends AbstractAction {
 
     private static final long serialVersionUID = 5620935204300321285L;
 
-    ImportLovedTracksFromLastFM() {
+    ImportLovedTracksFromLastFMAction() {
         super(I18nUtils.getString("IMPORT_LOVED_TRACKS_FROM_LASTFM"));
+        setEnabled(ApplicationState.getInstance().isLastFmEnabled());
     }
 
     @Override

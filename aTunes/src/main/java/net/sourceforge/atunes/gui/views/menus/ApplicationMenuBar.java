@@ -46,7 +46,7 @@ import net.sourceforge.atunes.kernel.actions.ExportAction;
 import net.sourceforge.atunes.kernel.actions.FullScreenAction;
 import net.sourceforge.atunes.kernel.actions.GoToWebSiteAction;
 import net.sourceforge.atunes.kernel.actions.GoToWikiAction;
-import net.sourceforge.atunes.kernel.actions.ImportLovedTracksFromLastFM;
+import net.sourceforge.atunes.kernel.actions.ImportLovedTracksFromLastFMAction;
 import net.sourceforge.atunes.kernel.actions.ImportToRepositoryAction;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
 import net.sourceforge.atunes.kernel.actions.OSDSettingAction;
@@ -251,7 +251,7 @@ public final class ApplicationMenuBar extends JMenuBar {
             tools.add(new JSeparator());
             tools.add(Actions.getAction(CustomSearchAction.class));
             tools.add(new JSeparator());
-            tools.add(Actions.getAction(ImportLovedTracksFromLastFM.class));
+            tools.add(Actions.getAction(ImportLovedTracksFromLastFMAction.class));
         }
         return tools;
     }
