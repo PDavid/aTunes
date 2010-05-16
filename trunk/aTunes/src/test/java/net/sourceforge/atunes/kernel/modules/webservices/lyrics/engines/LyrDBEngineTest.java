@@ -20,49 +20,17 @@
 
 package net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines;
 
-import java.util.UUID;
-
-import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
-
-import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Test;
 
-public class LyrDBEngineTest {
+public class LyrDBEngineTest extends AbstractLyricEngineTest {
 
-    private LyrDBEngine testedObject;
-
-    private static final String ARTIST = "The Beatles";
-    private static final String SONG = "Yesterday";
-    private static final String LYRIC_CONTENT = "all my troubles seemed so far away";
-    
     @Before
     public void init() {
         testedObject = new LyrDBEngine(null);
+        engineUrl = "lyrdb.com";
+        artist = "The Beatles";
+        song = "Yesterday";
+        lyricContent = "all my troubles seemed so far away";
     }
 
-    @Test
-    public void testGetLyricsFor() {
-        Lyrics lyrics = testedObject.getLyricsFor(ARTIST, SONG);
-        Assert.assertNotNull(lyrics);
-        Assert.assertTrue(lyrics.getUrl().contains("lyrdb.com"));
-        Assert.assertTrue(lyrics.getLyrics().toLowerCase().contains(LYRIC_CONTENT.toLowerCase()));
-    }
-
-    @Test
-    public void testCaseInsensitivity() {
-        Lyrics lyrics1 = testedObject.getLyricsFor(ARTIST, SONG);
-        Lyrics lyrics2 = testedObject.getLyricsFor(ARTIST.toLowerCase(), SONG);
-        Lyrics lyrics3 = testedObject.getLyricsFor(ARTIST, SONG.toUpperCase());
-
-        Assert.assertEquals(lyrics1, lyrics2);
-        Assert.assertEquals(lyrics2, lyrics3);
-        Assert.assertEquals(lyrics3, lyrics1);
-    }
-
-    @Test
-    public void testGetLyricsForWhereArtistAndTitleNotExist() {
-        Lyrics lyrics = testedObject.getLyricsFor(UUID.randomUUID().toString(), UUID.randomUUID().toString());
-        Assert.assertEquals(null, lyrics);
-    }
 }
