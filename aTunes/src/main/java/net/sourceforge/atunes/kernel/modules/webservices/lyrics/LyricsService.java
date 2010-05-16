@@ -43,6 +43,7 @@ public final class LyricsService implements ApplicationStateChangeListener {
     private static final List<LyricsEngineInfo> DEFAULT_LYRICS_ENGINES;
     static {
         List<LyricsEngineInfo> list = new ArrayList<LyricsEngineInfo>();
+        list.add(new LyricsEngineInfo("LyrDB", "net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyrDBEngine", true));
         list.add(new LyricsEngineInfo("LyricWiki", "net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricWikiEngine", true));
         list.add(new LyricsEngineInfo("LyricsDirectory", "net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsDirectoryEngine", false));
         list.add(new LyricsEngineInfo("LyrcEngine", "net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyrcEngine", false));
