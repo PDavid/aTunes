@@ -1,3 +1,7 @@
+aTunes 2.1.0
+------------
+- New lyric engine: LyrDB (www.lyrdb.com)
+
 aTunes 2.0.1
 -------------
 - FIX: Some Substance L&F skins were not working
