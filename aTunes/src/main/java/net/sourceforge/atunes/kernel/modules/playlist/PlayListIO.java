@@ -59,6 +59,9 @@ public final class PlayListIO {
 
     /** The Constant M3U_WINDOWS_ABSOLUTE_PATH. */
     private static final String M3U_WINDOWS_ABSOLUTE_PATH = ":\\";
+    
+    /** The Constant UNC_ABSOLUTE_PATH. */
+    private static final String M3U_UNC_ABSOLUTE_PATH = "\\\\";
 
     /** The Constant M3U_FILE_EXTENSION. */
     public static final String M3U_FILE_EXTENSION = "m3u";
@@ -198,8 +201,10 @@ public final class PlayListIO {
                 return Collections.emptyList();
             }
             // First absolute path. Windows path detection is very rudimentary, but should work
-            if (line.startsWith(M3U_WINDOWS_ABSOLUTE_PATH, 1) || line.startsWith(M3U_UNIX_ABSOLUTE_PATH)) {
-                // Let's check if we are at least using the right OS. Maybe a message should be returned, but for now it doesn't
+            if (line.startsWith(M3U_WINDOWS_ABSOLUTE_PATH, 1) || 
+            	line.startsWith(M3U_UNIX_ABSOLUTE_PATH) ||
+            	line.startsWith(M3U_UNC_ABSOLUTE_PATH)) {
+                // Let's check if we are at least using the right OS. Maybe a message should be returned, but for now it doesn't. UNC paths are allowed for all OS
                 if (((SystemProperties.OS == OperatingSystem.WINDOWS) && line.startsWith(M3U_UNIX_ABSOLUTE_PATH))
                         || (!(SystemProperties.OS == OperatingSystem.WINDOWS) && line.startsWith(M3U_WINDOWS_ABSOLUTE_PATH, 1))) {
                     return Collections.emptyList();
