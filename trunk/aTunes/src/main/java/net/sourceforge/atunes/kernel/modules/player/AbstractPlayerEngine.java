@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.player;
 
+import java.awt.Cursor;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
@@ -50,7 +52,95 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public abstract class AbstractPlayerEngine implements PlaybackStateListener {
 
-    private static final class ApplyUserSelectionRunnable implements Runnable {
+	/**
+	 * SwingWorker to play audio objects and (if needed) cache files
+	 * @author fleax
+	 *
+	 */
+    private final class PlayAudioObjectSwingWorker extends SwingWorker<Void, Void> {
+    	
+		private final AudioObject audioObject;
+		AudioObject audioObjectToPlay = null;
+
+		private PlayAudioObjectSwingWorker(AudioObject audioObject) {
+			this.audioObject = audioObject;			
+			GuiHandler.getInstance().getFrame().getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		}
+				
+		@Override
+		protected Void doInBackground() throws Exception {
+	        // If cacheFilesBeforePlaying is true and audio object is an audio file, copy it to temp folder
+	        // and start player process from this copied file
+		    if (audioObject instanceof AudioFile && ApplicationState.getInstance().isCacheFilesBeforePlaying()) {
+		    	
+		    	getLogger().debug(LogCategories.PLAYER, "Start caching file: ", audioObject.getUrl());
+		    	
+		        // Remove previous cached file
+		        if (lastFileCached != null) {
+		            TempFolder.getInstance().removeFile(lastFileCached);
+		        }
+
+		        File tempFile = TempFolder.getInstance().copyToTempFolder(((AudioFile) audioObject).getFile());
+		        if (tempFile != null) {
+		            audioObjectToPlay = new AudioFile(tempFile.getAbsolutePath());
+		            lastFileCached = tempFile;
+		        } else {
+		            lastFileCached = null;
+		        }
+		        
+		        getLogger().debug(LogCategories.PLAYER, "End caching file: ", audioObject.getUrl());
+		    } else {
+		        audioObjectToPlay = audioObject;
+		    }
+		    return null;
+		}
+		
+		@Override
+		protected void done() {
+			// Set default cursor again
+			GuiHandler.getInstance().getFrame().getFrame().setCursor(Cursor.getDefaultCursor());
+			
+			if (!isCancelled()) {
+				// This audio object has not been listened yet
+				submissionState = SubmissionState.NOT_SUBMITTED;
+
+				// If we are playing a podcast, mark entry as listened
+				if (audioObject instanceof PodcastFeedEntry) {
+					((PodcastFeedEntry) audioObject).setListened(true);
+					// Update pod cast navigator
+					NavigationHandler.getInstance().refreshView(PodcastNavigationView.class);
+				}
+
+				// Send Now Playing info to Last.fm
+				if (audioObject instanceof AudioFile) {
+					LastFmService.getInstance().submitNowPlayingInfoToLastFm((AudioFile) audioObject);
+				}
+
+				AbstractPlayerEngine.this.audioObject = audioObject;
+
+				// Add audio object to playback history
+				PlayListHandler.getInstance().addToPlaybackHistory(audioObject);
+
+				startPlayback(audioObjectToPlay, audioObject);
+
+				// Setting volume and balance
+				if (ApplicationState.getInstance().isMuteEnabled()) {
+					applyMuteState(true);
+				} else {
+					setVolume(ApplicationState.getInstance().getVolume());
+				}
+
+				// Call listeners
+				callPlaybackStateListeners(PlaybackState.PLAYING);
+			} else {
+				getLogger().debug(LogCategories.PLAYER, "PlayAudioObjectSwingWorker cancelled");
+			}
+			
+		    playAudioObjectSwingWorker = null;
+		}
+	}
+
+	private static final class ApplyUserSelectionRunnable implements Runnable {
         private AbstractPlayerEngine engine;
         private final boolean ignorePlaybackError;
 
@@ -161,7 +251,15 @@ public abstract class AbstractPlayerEngine implements PlaybackStateListener {
      */
     private long currentAudioObjectPlayedTime;
 
+    /**
+     * Equalizer used
+     */
     private Equalizer equalizer;
+    
+    /**
+     * A SwingWorker invoking play in engine
+     */
+    private PlayAudioObjectSwingWorker playAudioObjectSwingWorker;
 
     /**
      * Checks if engine is currently playing (<code>true</code>) or not (
@@ -338,11 +436,15 @@ public abstract class AbstractPlayerEngine implements PlaybackStateListener {
 
     @Override
     public void playbackStateChanged(PlaybackState newState, AudioObject currentAudioObject) {
+    	getLogger().debug(LogCategories.PLAYER, "Playback state changed to:", newState );
         if (newState == PlaybackState.PLAY_FINISHED || newState == PlaybackState.PLAY_INTERRUPTED || newState == PlaybackState.STOPPED) {
             submitToLastFmAndUpdateStats();
         }
         if (newState == PlaybackState.STOPPED) {
             setCurrentAudioObjectPlayedTime(0);
+            if (playAudioObjectSwingWorker != null) {
+            	playAudioObjectSwingWorker.cancel(true);
+            }
         }
     }
 
@@ -688,60 +790,11 @@ public abstract class AbstractPlayerEngine implements PlaybackStateListener {
      * 
      * @param audioObject
      */
-    private void playAudioObject(AudioObject audioObject) {
+    private void playAudioObject(final AudioObject audioObject) {
         getLogger().info(LogCategories.PLAYER, StringUtils.getString("Started play of file ", audioObject));
 
-        // If cacheFilesBeforePlaying is true and audio object is an audio file, copy it to temp folder
-        // and start mplayer process from this copied file
-        AudioObject audioObjectToPlay = null;
-        if (audioObject instanceof AudioFile && ApplicationState.getInstance().isCacheFilesBeforePlaying()) {
-            // Remove previous cached file
-            if (lastFileCached != null) {
-                TempFolder.getInstance().removeFile(lastFileCached);
-            }
-
-            File tempFile = TempFolder.getInstance().copyToTempFolder(((AudioFile) audioObject).getFile());
-            if (tempFile != null) {
-                audioObjectToPlay = new AudioFile(tempFile.getAbsolutePath());
-                lastFileCached = tempFile;
-            } else {
-                lastFileCached = null;
-            }
-        } else {
-            audioObjectToPlay = audioObject;
-        }
-
-        // This audio object has not been listened yet
-        submissionState = SubmissionState.NOT_SUBMITTED;
-
-        // If we are playing a podcast, mark entry as listened
-        if (audioObject instanceof PodcastFeedEntry) {
-            ((PodcastFeedEntry) audioObject).setListened(true);
-            // Update pod cast navigator
-            NavigationHandler.getInstance().refreshView(PodcastNavigationView.class);
-        }
-
-        // Send Now Playing info to Last.fm
-        if (audioObject instanceof AudioFile) {
-            LastFmService.getInstance().submitNowPlayingInfoToLastFm((AudioFile) audioObject);
-        }
-
-        this.audioObject = audioObject;
-
-        // Add audio object to playback history
-        PlayListHandler.getInstance().addToPlaybackHistory(audioObject);
-
-        startPlayback(audioObjectToPlay, audioObject);
-
-        // Setting volume and balance
-        if (ApplicationState.getInstance().isMuteEnabled()) {
-            applyMuteState(true);
-        } else {
-            setVolume(ApplicationState.getInstance().getVolume());
-        }
-
-        // Call listeners
-        callPlaybackStateListeners(PlaybackState.PLAYING);
+        playAudioObjectSwingWorker = new PlayAudioObjectSwingWorker(audioObject);
+        playAudioObjectSwingWorker.execute();
     }
 
     /**
