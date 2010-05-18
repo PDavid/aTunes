@@ -19,6 +19,7 @@ aTunes 2.0.1
 - FIX: ID3v1.1 tags not read if not valid ID3v2.3 tag present (Jaudiotagger problem) [2997621]
 - FIX: Import loved tracks from last.fm enabled even if last.fm disabled
 - FIX: Load UNC resources from an M3U file [2988771]
+- FIX: Interface freeze when caching files before play [2998158]
 
 aTunes 2.0.0
 -------------
