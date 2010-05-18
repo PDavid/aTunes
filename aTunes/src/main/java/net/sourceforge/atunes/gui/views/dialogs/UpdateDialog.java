@@ -51,7 +51,6 @@ public final class UpdateDialog extends CustomFrame {
     public UpdateDialog(ApplicationVersion version, Component owner) {
         super(I18nUtils.getString("NEW_VERSION_AVAILABLE"), 400, 150, owner);
         setResizable(false);
-        setIconImage(Images.getImage(Images.APP_LOGO_16).getImage());
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         JPanel panel = new JPanel(new GridBagLayout());
