@@ -27,6 +27,7 @@ import java.util.List;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComponent;
 import javax.swing.JList;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.ListCellRenderer;
@@ -244,5 +245,21 @@ public abstract class AbstractLookAndFeel {
     public Font getDefaultFont() {
         return UIManager.getFont("Label.font");
     }
-
+    
+    /**
+     * Returns if look and feel supports tab close buttons (not by default)
+     * @return
+     */
+    public boolean isTabCloseButtonsSupported() {
+    	return false;
+    }    
+    
+    /**
+     * Adds tab close buttons to tabbed pane. When tabs are closed listener is called
+     * @param tabbedPane
+     * @param tabCloseListener
+     */
+    public void addTabCloseButtons(JTabbedPane tabbedPane, TabCloseListener tabCloseListener) {
+    	// Does nothing by default
+    }
 }

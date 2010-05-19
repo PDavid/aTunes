@@ -79,7 +79,8 @@ public final class ButtonTabComponent extends JPanel {
         public void actionPerformed(ActionEvent e) {
             int i = pane.indexOfTabComponent(ButtonTabComponent.this);
             if (i != -1) {
-                PlayListHandler.getInstance().removePlayList(i);
+            	// As this action is not called when pressing look and feel close button in tab set removeTab argument to true
+                PlayListHandler.getInstance().removePlayList(i, true);
             }
         }
 

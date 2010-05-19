@@ -42,11 +42,13 @@ public class CloseOtherPlaylistsAction extends AbstractAction {
         if (i != -1) {
             // Remove play lists from 0 to i. Remove first play list until current play list is at index 0  
             for (int j = 0; j < i; j++) {
-                PlayListHandler.getInstance().removePlayList(0);
+            	// As this action is not called when pressing close button in tab set removeTab argument to true
+                PlayListHandler.getInstance().removePlayList(0, true);
             }
             // Now current play list is at index 0, so delete from play list size down to 1
             while (PlayListHandler.getInstance().getPlayListCount() > 1) {
-                PlayListHandler.getInstance().removePlayList(PlayListHandler.getInstance().getPlayListCount() - 1);
+            	// As this action is not called when pressing close button in tab set removeTab argument to true
+                PlayListHandler.getInstance().removePlayList(PlayListHandler.getInstance().getPlayListCount() - 1, true);
             }
         }
     }

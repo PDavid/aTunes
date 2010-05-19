@@ -164,8 +164,10 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      * 
      * @param index
      *            the index
+     * @param removeTab
+     * 			  true if call must remove tab (when look and feel does not remove tab when closing it or when method is not called from the action of pressing close button)
      */
-    public void removePlayList(int index) {
+    public void removePlayList(int index, boolean removeTab) {
         // If index is not valid, do nothing
         if (index < 0 || playLists.size() <= index) {
             return;
@@ -200,7 +202,9 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
             }
 
             // Delete tab
-            ControllerProxy.getInstance().getPlayListTabController().deletePlayList(index);
+            if (removeTab) {
+            	ControllerProxy.getInstance().getPlayListTabController().deletePlayList(index);
+            }
 
             // Refresh table
             ControllerProxy.getInstance().getPlayListController().refreshPlayList();
@@ -212,7 +216,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
             } else {
                 switchToPlaylist(visiblePlayListIndex - 1);
             }
-            removePlayList(index);
+            removePlayList(index, removeTab);
         }
     }
 
