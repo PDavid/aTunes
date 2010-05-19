@@ -40,7 +40,8 @@ public class ClosePlaylistAction extends AbstractAction {
         // The current selected play list when this action is fired
         int i = ControllerProxy.getInstance().getPlayListTabController().getSelectedTabIndex();
         if (i != -1) {
-            PlayListHandler.getInstance().removePlayList(i);
+        	// As this action is not called when pressing close button in tab set removeTab argument to true
+            PlayListHandler.getInstance().removePlayList(i, true);
         }
     }
 

@@ -33,6 +33,7 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.ListCellRenderer;
@@ -48,6 +49,7 @@ import net.sourceforge.atunes.gui.lookandfeel.AbstractListCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.TabCloseListener;
 import net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.NextButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.PlayPauseButton;
@@ -68,6 +70,7 @@ import org.pushingpixels.substance.api.renderers.SubstanceDefaultListCellRendere
 import org.pushingpixels.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 import org.pushingpixels.substance.api.renderers.SubstanceDefaultTableHeaderCellRenderer;
 import org.pushingpixels.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
+import org.pushingpixels.substance.api.tabbed.VetoableTabCloseListener;
 
 public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
 
@@ -372,5 +375,32 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
     @Override
     public Font getDefaultFont() {
         return org.pushingpixels.substance.api.SubstanceLookAndFeel.getFontPolicy().getFontSet("Substance", null).getControlFont();
+    }
+    
+    @Override
+    public boolean isTabCloseButtonsSupported() {
+    	return true;
+    }
+    
+    @Override
+    public void addTabCloseButtons(JTabbedPane tabbedPane, final TabCloseListener tabCloseListener) {
+    	tabbedPane.putClientProperty(org.pushingpixels.substance.api.SubstanceLookAndFeel.TABBED_PANE_CLOSE_BUTTONS_PROPERTY, Boolean.TRUE);
+    	org.pushingpixels.substance.api.SubstanceLookAndFeel.registerTabCloseChangeListener(tabbedPane, new VetoableTabCloseListener() {
+
+			@Override
+			public boolean vetoTabClosing(JTabbedPane arg0, Component arg1) {
+				return tabCloseListener.vetoTabClosing(arg0, arg1);
+			}
+
+			@Override
+			public void tabClosed(JTabbedPane arg0, Component arg1) {
+				tabCloseListener.tabClosed(arg0, arg1);
+			}
+
+			@Override
+			public void tabClosing(JTabbedPane arg0, Component arg1) {
+				tabCloseListener.tabClosing(arg0, arg1);				
+			}    		
+    	});
     }
 }

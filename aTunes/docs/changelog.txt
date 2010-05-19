@@ -1,6 +1,7 @@
 aTunes 2.1.0
 ------------
 - New lyric engine: LyrDB (www.lyrdb.com)
+- Use close buttons for playlists tabs when using Substance
 
 aTunes 2.0.1
 -------------

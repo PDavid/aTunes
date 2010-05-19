@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.controllers.playListTab;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +28,13 @@ import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.gui.lookandfeel.TabCloseListener;
 import net.sourceforge.atunes.gui.views.panels.ButtonTabComponent;
 import net.sourceforge.atunes.gui.views.panels.PlayListTabPanel;
 import net.sourceforge.atunes.kernel.controllers.model.AbstractSimpleController;
+import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
+import net.sourceforge.atunes.misc.log.LogCategories;
 
 public final class PlayListTabController extends AbstractSimpleController<PlayListTabPanel> {
 
@@ -52,6 +57,36 @@ public final class PlayListTabController extends AbstractSimpleController<PlayLi
         getComponentControlled().getPlayListTabbedPane().addChangeListener(listener);
         getComponentControlled().getPlayListTabbedPane().addMouseListener(listener);
         getComponentControlled().getPlayListsPopUpButton().addActionListener(listener);
+        
+        if (LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isTabCloseButtonsSupported()) {
+        	LookAndFeelSelector.getInstance().getCurrentLookAndFeel().addTabCloseButtons(getComponentControlled().getPlayListTabbedPane(), new TabCloseListener() {
+
+        		private int tabIndex = -1;
+        		
+				@Override
+				public void tabClosed(JTabbedPane tabbedPane, Component c) {
+				}
+
+				@Override
+				public void tabClosing(JTabbedPane tabbedPane, Component c) {
+					// Get tab index
+		            tabIndex = tabbedPane.indexOfComponent(c);
+		            if (tabIndex != -1) {
+		            	getLogger().debug(LogCategories.CONTROLLER, "Closing playlist with index", tabIndex);
+		            	// Remove play list (look and feel will remove tab so we explicitly set removeTab argument to false
+		                PlayListHandler.getInstance().removePlayList(tabIndex, false);
+		            }
+				}
+
+				@Override
+				public boolean vetoTabClosing(JTabbedPane tabbedPane, Component c) {
+					// Veto if there is only one tab
+					return tabbedPane.getTabCount() == 1;
+				}
+        		
+        	});
+        }
+
     }
 
     @Override
@@ -66,7 +101,7 @@ public final class PlayListTabController extends AbstractSimpleController<PlayLi
      *            the index
      */
     public void deletePlayList(int index) {
-        getComponentControlled().getPlayListTabbedPane().removeTabAt(index);
+   		getComponentControlled().getPlayListTabbedPane().removeTabAt(index);
     }
 
     /**
@@ -90,10 +125,12 @@ public final class PlayListTabController extends AbstractSimpleController<PlayLi
         emptyPanel.setPreferredSize(new Dimension(0, 0));
         emptyPanel.setSize(0, 0);
         getComponentControlled().getPlayListTabbedPane().addTab(name, emptyPanel);
-        getComponentControlled().getPlayListTabbedPane().setTabComponentAt(getComponentControlled().getPlayListTabbedPane().indexOfComponent(emptyPanel),
-                new ButtonTabComponent(name, getComponentControlled().getPlayListTabbedPane()));
-        // Force size of tabbed pane to avoid increasing height
-        getComponentControlled().getPlayListTabbedPane().setPreferredSize(new Dimension(0, PlayListTabPanel.TAB_HEIGHT));
+        
+        // Use custom tab component if close buttons are not supported by look and feel
+        if (!LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isTabCloseButtonsSupported()) {        
+        	getComponentControlled().getPlayListTabbedPane().setTabComponentAt(getComponentControlled().getPlayListTabbedPane().indexOfComponent(emptyPanel),
+        			new ButtonTabComponent(name, getComponentControlled().getPlayListTabbedPane()));
+        }
     }
 
     @Override

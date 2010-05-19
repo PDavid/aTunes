@@ -97,8 +97,6 @@ public final class PlayListTabPanel extends JPanel {
 
     private static final long serialVersionUID = 7382098268271937439L;
 
-    public static final int TAB_HEIGHT = 26;
-
     private PopUpButton playListsPopUpButton;
 
     /** Button to create a new play list. */
@@ -118,7 +116,6 @@ public final class PlayListTabPanel extends JPanel {
     public PlayListTabPanel() {
         super(new BorderLayout());
         addContent();
-        setPreferredSize(new Dimension(10, TAB_HEIGHT));
     }
 
     /**
@@ -129,6 +126,9 @@ public final class PlayListTabPanel extends JPanel {
         newPlayListMenuItem = new JMenuItem(Actions.getAction(NewPlayListAction.class));
         arrangeColumnsMenuItem = new JMenuItem(I18nUtils.getString("ARRANGE_COLUMNS"));
         playListTabbedPane = new JTabbedPane();
+        
+        setPreferredSize(new Dimension(0, playListsPopUpButton.getPreferredSize().height + 5));
+        
         playListTabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         new TabReorderer(playListTabbedPane).enableReordering(playListTabbedPane);
 
@@ -141,8 +141,6 @@ public final class PlayListTabPanel extends JPanel {
 
         add(auxPanel, GuiUtils.getComponentOrientation().isLeftToRight() ? BorderLayout.WEST : BorderLayout.EAST);
         add(playListTabbedPane, BorderLayout.CENTER);
-
-        playListTabbedPane.setPreferredSize(new Dimension(0, TAB_HEIGHT));
 
         popupMenu = new JPopupMenu();
         popupMenu.add(new JMenuItem(Actions.getAction(RenamePlaylistAction.class)));
