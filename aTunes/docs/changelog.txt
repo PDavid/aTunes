@@ -26,6 +26,7 @@ aTunes 2.0.1
 - FIX: Wrong foreground color in navigation table
 - UI improvements in repository selection dialog
 
+
 aTunes 2.0.0
 -------------
 - Support for libnotify (Gnome) (Patch by Marco Biscaro)
