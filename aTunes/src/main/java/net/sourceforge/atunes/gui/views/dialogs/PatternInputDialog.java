@@ -30,6 +30,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -57,6 +59,7 @@ import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * This class represents a dialog used to enter a pattern It contains a preview
@@ -116,13 +119,25 @@ public final class PatternInputDialog extends AbstractCustomModalDialog {
 		 */
         private static final long serialVersionUID = 7475413284696491261L;
 
+        private Object[][] data;
+        
         private AvailablePatternsDefaultTableModel(Object[][] data, Object[] columnNames) {
             super(data, columnNames);
+            this.data = data;
         }
 
         @Override
-        public boolean isCellEditable(int row, int column) {
+        public boolean isCellEditable(int row, int column) {        	
             return false;
+        }
+        
+        /**
+         * Returns pattern at given row
+         * @param row
+         * @return pattern at given row
+         */
+        public String getPatternAtRow(int row) {
+        	return (String) data[row][0];
         }
     }
 
@@ -226,6 +241,21 @@ public final class PatternInputDialog extends AbstractCustomModalDialog {
 
         JPanel availablePatternsPanel = new JPanel(new BorderLayout());
         availablePatternsTable = new JTable();
+        availablePatternsTable.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		if (e.getClickCount() == 2) {
+        			// Get pattern being clicked
+        			int row = availablePatternsTable.rowAtPoint(e.getPoint());
+        			// Access model to get pattern selected
+        			String pattern = ((AvailablePatternsDefaultTableModel)availablePatternsTable.getModel()).getPatternAtRow(row);
+        			// Add pattern to current one        			
+        			patternComboBox.getEditor().setItem(StringUtils.getString(patternComboBox.getEditor().getItem(), pattern));
+        			// Update pattern preview
+        			previewPattern(massiveRecognition);
+        		}
+        	}
+        });
         JScrollPane availablePatternsScrollPane = new JScrollPane(availablePatternsTable);
         availablePatternsPanel.add(availablePatternsScrollPane, BorderLayout.CENTER);
         availablePatternsPanel.setBorder(BorderFactory.createTitledBorder(I18nUtils.getString("AVAILABLE_PATTERNS")));
