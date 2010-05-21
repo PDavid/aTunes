@@ -80,9 +80,6 @@ public final class NavigationTableColumnModel extends AbstractCommonColumnModel 
                 AudioObject audioObject = ControllerProxy.getInstance().getNavigationController().getAudioObjectInNavigationTable(row);
                 if (IncompleteTagsChecker.hasIncompleteTags(audioObject)) {
                     ((JLabel) c).setForeground(Color.red);
-                } else {
-                	// Use default label foreground
-                	((JLabel) c).setForeground((Color)UIManager.get("Label.foreground"));
                 }
             }
 

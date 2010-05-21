@@ -23,6 +23,8 @@ aTunes 2.0.1
 - FIX: Import loved tracks from last.fm enabled even if last.fm disabled
 - FIX: Load UNC resources from an M3U file [2988771]
 - FIX: Interface freeze when caching files before play [2998158]
+- FIX: Wrong foreground color in navigation table
+- UI improvements in repository selection dialog
 
 aTunes 2.0.0
 -------------
