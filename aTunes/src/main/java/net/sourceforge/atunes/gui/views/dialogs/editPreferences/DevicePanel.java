@@ -132,7 +132,7 @@ public final class DevicePanel extends AbstractPreferencesPanel {
         locationFileChooser = new CustomJFileChooser(this, 20, JFileChooser.DIRECTORIES_ONLY);
 
         JPanel fileNamePanel = new JPanel(new GridBagLayout());
-        fileNamePanel.setBorder(BorderFactory.createTitledBorder(I18nUtils.getString("FILE_NAME")));
+        fileNamePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(0,0,10,0), I18nUtils.getString("FILE_NAME")));
         fileNameNoChangeRadioButton = new JRadioButton(I18nUtils.getString("NO_CHANGE"));
         fileNameNoChangeRadioButton.addActionListener(new ActionListener() {
             @Override
@@ -153,7 +153,7 @@ public final class DevicePanel extends AbstractPreferencesPanel {
         group.add(fileNameCustomizedRadioButton);
 
         JPanel folderPathPanel = new JPanel(new GridBagLayout());
-        folderPathPanel.setBorder(BorderFactory.createTitledBorder(I18nUtils.getString("FOLDER")));
+        folderPathPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(0,0,10,0), I18nUtils.getString("FOLDER")));
         folderPathNoChangeRadioButton = new JRadioButton(I18nUtils.getString("FLAT"));
         folderPathNoChangeRadioButton.addActionListener(new ActionListener() {
             @Override
@@ -178,7 +178,7 @@ public final class DevicePanel extends AbstractPreferencesPanel {
 
         JPanel patternsPanel = new JPanel(new BorderLayout());
         patternsPanel.setPreferredSize(new Dimension(250, 200));
-        patternsPanel.setBorder(BorderFactory.createTitledBorder(I18nUtils.getString("AVAILABLE_PATTERNS")));
+        patternsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(0,0,0,0), I18nUtils.getString("AVAILABLE_PATTERNS")));
         patternsPanel.add(new JScrollPane(availablePatternsTable), BorderLayout.CENTER);
 
         copySameSongForDifferentAlbums = new JCheckBox(I18nUtils.getString("ALLOW_COPY_TO_DEVICE_SAME_SONG_FOR_DIFFERENT_ALBUMS"));

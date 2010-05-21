@@ -137,7 +137,7 @@ public final class ImportExportPanel extends AbstractPreferencesPanel {
     public ImportExportPanel() {
         super(StringUtils.getString(I18nUtils.getString("IMPORT"), "/", I18nUtils.getString("EXPORT")));
         JPanel fileNamePanel = new JPanel(new GridBagLayout());
-        fileNamePanel.setBorder(BorderFactory.createTitledBorder(I18nUtils.getString("FILE_NAME")));
+        fileNamePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(0,0,10,0), I18nUtils.getString("FILE_NAME")));
         fileNameNoChangeRadioButton = new JRadioButton(I18nUtils.getString("NO_CHANGE"));
         fileNameNoChangeRadioButton.addActionListener(new ActionListener() {
             @Override
@@ -158,7 +158,7 @@ public final class ImportExportPanel extends AbstractPreferencesPanel {
         group.add(fileNameCustomizedRadioButton);
 
         JPanel folderPathPanel = new JPanel(new GridBagLayout());
-        folderPathPanel.setBorder(BorderFactory.createTitledBorder(I18nUtils.getString("FOLDER")));
+        folderPathPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(0,0,10,0), I18nUtils.getString("FOLDER")));
         folderPathNoChangeRadioButton = new JRadioButton(I18nUtils.getString("NO_CHANGE"));
         folderPathNoChangeRadioButton.addActionListener(new ActionListener() {
             @Override
@@ -183,7 +183,7 @@ public final class ImportExportPanel extends AbstractPreferencesPanel {
 
         JPanel patternsPanel = new JPanel(new BorderLayout());
         patternsPanel.setPreferredSize(new Dimension(250, 200));
-        patternsPanel.setBorder(BorderFactory.createTitledBorder(I18nUtils.getString("AVAILABLE_PATTERNS")));
+        patternsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(0,0,0,0), I18nUtils.getString("AVAILABLE_PATTERNS")));
         patternsPanel.add(new JScrollPane(availablePatternsTable), BorderLayout.CENTER);
 
         reviewTagsBeforeImportCheckBox = new JCheckBox(I18nUtils.getString("REVIEW_TAGS_BEFORE_IMPORTING"));
@@ -251,7 +251,7 @@ public final class ImportExportPanel extends AbstractPreferencesPanel {
         c.weighty = 1;
 
         JPanel specificImportOptions = new JPanel(new GridLayout(4, 1));
-        specificImportOptions.setBorder(BorderFactory.createTitledBorder(I18nUtils.getString("SPECIFIC_IMPORT_OPTIONS")));
+        specificImportOptions.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(0,0,10,0), I18nUtils.getString("SPECIFIC_IMPORT_OPTIONS")));
         specificImportOptions.add(reviewTagsBeforeImportCheckBox);
         specificImportOptions.add(applyChangesToSourceFilesCheckBox);
         specificImportOptions.add(setTrackNumberWhenImportingCheckBox);
