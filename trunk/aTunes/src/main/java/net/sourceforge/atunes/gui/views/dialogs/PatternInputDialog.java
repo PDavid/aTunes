@@ -237,7 +237,7 @@ public final class PatternInputDialog extends AbstractCustomModalDialog {
         patternPreviewTable = new JTable();
         JScrollPane patternPreviewTableScrollPane = new JScrollPane(patternPreviewTable);
         patternPreviewPanel.add(patternPreviewTableScrollPane, BorderLayout.CENTER);
-        patternPreviewPanel.setBorder(BorderFactory.createTitledBorder(I18nUtils.getString("PREVIEW")));
+        patternPreviewPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), I18nUtils.getString("PREVIEW")));
 
         JPanel availablePatternsPanel = new JPanel(new BorderLayout());
         availablePatternsTable = new JTable();
@@ -258,7 +258,7 @@ public final class PatternInputDialog extends AbstractCustomModalDialog {
         });
         JScrollPane availablePatternsScrollPane = new JScrollPane(availablePatternsTable);
         availablePatternsPanel.add(availablePatternsScrollPane, BorderLayout.CENTER);
-        availablePatternsPanel.setBorder(BorderFactory.createTitledBorder(I18nUtils.getString("AVAILABLE_PATTERNS")));
+        availablePatternsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), I18nUtils.getString("AVAILABLE_PATTERNS")));
 
         JButton okButton = new JButton(I18nUtils.getString("OK"));
         ActionListener okListener = new OkActionListener(massiveRecognition);
