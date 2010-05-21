@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.gui.views.dialogs;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -36,6 +37,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -57,8 +59,8 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellRendererCode;
-import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -388,6 +390,7 @@ public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog 
 			        check.setEnabled(((CheckNode) value).isEnabled());
 			        label.setFont(tree.getFont());
 			        label.setText(stringValue);
+			        label.setForeground(superComponent.getForeground());
 			        if (((CheckNode) value).getUserObject() instanceof Directory) {
 			            Directory content = (Directory) ((CheckNode) value).getUserObject();
 			            label.setIcon(((CheckNode) value).getIcon());
@@ -401,6 +404,7 @@ public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog 
 			        label.setText(stringValue);
 			        label.setIcon(null);
 			        label.setFont(tree.getFont());
+			        label.setForeground(superComponent.getForeground());
 			    }
 
 			    return CheckRenderer.this;
@@ -441,18 +445,18 @@ public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog 
             } else {
                 y_label = (d_check.height - d_label.height) / 2;
             }
-            check.setLocation(0, y_check);
-            check.setBounds(0, y_check, d_check.width, d_check.height);
-            label.setLocation(d_check.width, y_label);
+            check.setLocation(5, y_check);
+            check.setBounds(5, y_check, d_check.width + 5, d_check.height);
+            label.setLocation(d_check.width + 5, y_label);
 
-            label.setBounds(d_check.width, y_label, d_label.width + 350, d_label.height);
+            label.setBounds(d_check.width + 5, y_label, d_label.width + 350, d_label.height);
         }
 
         @Override
         public Dimension getPreferredSize() {
             Dimension d_check = check.getPreferredSize();
             Dimension d_label = label.getPreferredSize();
-            return new Dimension(d_check.width + d_label.width, (d_check.height < d_label.height ? d_label.height : d_check.height));
+            return new Dimension(d_check.width + d_label.width + 10, (d_check.height < d_label.height ? d_label.height : d_check.height));
         }
 
         @Override
