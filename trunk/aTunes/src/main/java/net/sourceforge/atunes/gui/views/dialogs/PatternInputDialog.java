@@ -249,8 +249,10 @@ public final class PatternInputDialog extends AbstractCustomModalDialog {
         			int row = availablePatternsTable.rowAtPoint(e.getPoint());
         			// Access model to get pattern selected
         			String pattern = ((AvailablePatternsDefaultTableModel)availablePatternsTable.getModel()).getPatternAtRow(row);
-        			// Add pattern to current one        			
-        			patternComboBox.getEditor().setItem(StringUtils.getString(patternComboBox.getEditor().getItem(), pattern));
+        			// Add pattern to current one       
+        			String newPattern = StringUtils.getString(patternComboBox.getEditor().getItem(), pattern);
+        			patternComboBox.getEditor().setItem(newPattern);
+        			patternComboBox.setSelectedItem(newPattern);
         			// Update pattern preview
         			previewPattern(massiveRecognition);
         		}
