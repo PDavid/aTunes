@@ -55,7 +55,7 @@ public class AutoSetTagFromFolderNamePatternAction extends AbstractActionOverSel
     protected void performAction(List<AudioFile> objects) {
         // Show pattern input dialog
         PatternInputDialog inputDialog = new PatternInputDialog(GuiHandler.getInstance().getFrame().getFrame(), false);
-        inputDialog.show(AbstractPattern.getRecognitionPatterns(), objects.get(0).getFile().getParentFile().getName());
+        inputDialog.show(AbstractPattern.getRecognitionPatterns(), objects.get(0).getFile().getParentFile().getAbsolutePath());
         String pattern = inputDialog.getResult();
 
         // If user entered a pattern apply to files

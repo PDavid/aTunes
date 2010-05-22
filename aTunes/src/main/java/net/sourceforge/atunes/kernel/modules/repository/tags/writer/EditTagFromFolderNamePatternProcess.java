@@ -58,7 +58,7 @@ public class EditTagFromFolderNamePatternProcess extends AbstractChangeTagProces
         if (filesAndTags == null) {
             filesAndTags = new HashMap<AudioFile, EditTagInfo>();
             for (AudioFile file : getFilesToChange()) {
-                Map<String, String> matches = AbstractPattern.getPatternMatches(pattern, file.getFile().getParentFile().getName(), true);
+                Map<String, String> matches = AbstractPattern.getPatternMatches(pattern, file.getFile().getParentFile().getAbsolutePath(), true);
                 EditTagInfo editTagInfo = AbstractPattern.getEditTagInfoFromMatches(matches);
                 filesAndTags.put(file, editTagInfo);
             }

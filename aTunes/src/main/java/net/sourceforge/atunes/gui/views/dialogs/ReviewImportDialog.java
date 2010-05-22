@@ -43,6 +43,7 @@ import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.gui.model.ReviewImportTreeTableModel;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
@@ -55,6 +56,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jdesktop.swingx.JXTreeTable;
+import org.jdesktop.swingx.treetable.DefaultMutableTreeTableNode;
 
 /**
  * The Class ReviewImportDialog.
@@ -127,15 +129,19 @@ public final class ReviewImportDialog extends AbstractCustomModalDialog {
         fillTagsFromFolderName.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int[] selectedRows = treeTable.getSelectedRows();
-                if (selectedRows.length > 0) {
+                TreePath[] selectedNodes = treeTable.getTreeSelectionModel().getSelectionPaths();
+                if (selectedNodes.length > 0) {
                     PatternInputDialog inputDialog = new PatternInputDialog(ReviewImportDialog.this, true);
-                    inputDialog.show(AbstractPattern.getMassiveRecognitionPatterns(), (String) treeTable.getValueAt(selectedRows[0], 0));
+                    Object node = selectedNodes[0].getLastPathComponent();
+                    Object folder = ((DefaultMutableTreeTableNode)node).getUserObject();
+                    inputDialog.show(AbstractPattern.getMassiveRecognitionPatterns(), ((File)folder).getAbsolutePath());
                     String pattern = inputDialog.getResult();
-                    for (int row : selectedRows) {
-                        Map<String, String> matches = AbstractPattern.getPatternMatches(pattern, (String) treeTable.getValueAt(row, 0), true);
+                    for (TreePath treePath : selectedNodes) {
+                        node = treePath.getLastPathComponent();                        
+                        folder = ((DefaultMutableTreeTableNode)node).getUserObject();
+                        Map<String, String> matches = AbstractPattern.getPatternMatches(pattern, ((File)folder).getAbsolutePath(), true);
                         for (Entry<String, String> entry : matches.entrySet()) {
-                            ((ReviewImportTreeTableModel) treeTable.getTreeTableModel()).setValueForColumn(row, entry.getKey(), entry.getValue());
+                            ((ReviewImportTreeTableModel) treeTable.getTreeTableModel()).setValueForColumn(treeTable.getRowForPath(treePath), entry.getKey(), entry.getValue());
                         }
                     }
                 }
