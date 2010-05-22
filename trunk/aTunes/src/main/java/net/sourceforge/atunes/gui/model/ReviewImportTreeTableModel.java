@@ -224,7 +224,7 @@ public final class ReviewImportTreeTableModel extends AbstractTreeTableModel {
         }
         return value;
     }
-
+    
     @Override
     public boolean isCellEditable(Object node, int column) {
         return column != 0;

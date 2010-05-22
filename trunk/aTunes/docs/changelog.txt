@@ -4,6 +4,7 @@ aTunes 2.1.0
 - Use close buttons for playlists tabs when using Substance
 - Allow creating patterns for tag edition by double-clicking on available patterns
 - UI: Removed line border from titled borders
+- Use absolute folder name when setting tags from patterns
 
 aTunes 2.0.1
 -------------
