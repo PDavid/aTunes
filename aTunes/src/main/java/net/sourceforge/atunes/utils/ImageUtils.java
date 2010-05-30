@@ -34,7 +34,7 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
-import org.commonjukebox.plugins.PluginApi;
+import org.commonjukebox.plugins.model.PluginApi;
 import org.jdesktop.swingx.graphics.GraphicsUtilities;
 
 /**

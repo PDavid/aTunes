@@ -25,6 +25,7 @@ import java.awt.event.ComponentEvent;
 
 import javax.swing.DefaultListModel;
 
+import net.sourceforge.atunes.gui.views.dialogs.editPreferences.AbstractPreferencesPanel;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.ContextPanel;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.DevicePanel;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.EditPreferencesDialog;
@@ -38,7 +39,6 @@ import net.sourceforge.atunes.gui.views.dialogs.editPreferences.PlayListPrefPane
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.PlayerPanel;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.PluginsPanel;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.PodcastFeedPanel;
-import net.sourceforge.atunes.gui.views.dialogs.editPreferences.AbstractPreferencesPanel;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.RadioPanel;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.RepositoryPanel;
 import net.sourceforge.atunes.kernel.controllers.model.AbstractSimpleController;

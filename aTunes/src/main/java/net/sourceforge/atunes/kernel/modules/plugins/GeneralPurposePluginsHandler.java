@@ -28,10 +28,10 @@ import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 
-import org.commonjukebox.plugins.Plugin;
-import org.commonjukebox.plugins.PluginInfo;
-import org.commonjukebox.plugins.PluginListener;
-import org.commonjukebox.plugins.PluginSystemException;
+import org.commonjukebox.plugins.exceptions.PluginSystemException;
+import org.commonjukebox.plugins.model.Plugin;
+import org.commonjukebox.plugins.model.PluginInfo;
+import org.commonjukebox.plugins.model.PluginListener;
 
 public class GeneralPurposePluginsHandler extends AbstractHandler implements PluginListener {
 
@@ -80,7 +80,7 @@ public class GeneralPurposePluginsHandler extends AbstractHandler implements Plu
     @Override
     public void pluginActivated(PluginInfo plugin) {
         try {
-            AbstractGeneralPurposePlugin instance = (AbstractGeneralPurposePlugin) plugin.getInstance();
+            AbstractGeneralPurposePlugin instance = (AbstractGeneralPurposePlugin) PluginsHandler.getInstance().getNewInstance(plugin);
             if (plugins == null) {
                 plugins = new ArrayList<AbstractGeneralPurposePlugin>();
             }

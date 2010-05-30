@@ -38,8 +38,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.Fonts;
-import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
+import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;

@@ -32,6 +32,7 @@ import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.notify.NotifyHandler;
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.xine.XineEngine;
+import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.AudioObject;
@@ -39,10 +40,10 @@ import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.commons.lang.ArrayUtils;
-import org.commonjukebox.plugins.Plugin;
-import org.commonjukebox.plugins.PluginInfo;
-import org.commonjukebox.plugins.PluginListener;
-import org.commonjukebox.plugins.PluginSystemException;
+import org.commonjukebox.plugins.exceptions.PluginSystemException;
+import org.commonjukebox.plugins.model.Plugin;
+import org.commonjukebox.plugins.model.PluginInfo;
+import org.commonjukebox.plugins.model.PluginListener;
 
 /**
  * This class is resopnsible for handling the player engine.
@@ -400,7 +401,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     @Override
     public void pluginActivated(PluginInfo plugin) {
         try {
-            PlaybackStateListener listener = (PlaybackStateListener) plugin.getInstance();
+            PlaybackStateListener listener = (PlaybackStateListener) PluginsHandler.getInstance().getNewInstance(plugin);
             addPlaybackStateListener(listener);
         } catch (PluginSystemException e) {
             getLogger().error(LogCategories.PLUGINS, e);

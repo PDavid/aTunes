@@ -23,8 +23,8 @@ package net.sourceforge.atunes.kernel.modules.repository.tags.writer;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.repository.tags.tag.EditTagInfo;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.AbstractTag;
+import net.sourceforge.atunes.kernel.modules.repository.tags.tag.EditTagInfo;
 
 /**
  * The Class EditTagsProcess.

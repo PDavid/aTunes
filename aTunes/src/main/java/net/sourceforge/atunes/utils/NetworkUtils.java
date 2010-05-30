@@ -37,7 +37,7 @@ import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
-import org.commonjukebox.plugins.PluginApi;
+import org.commonjukebox.plugins.model.PluginApi;
 
 /**
  * Utility methods for network access.

@@ -37,7 +37,7 @@ import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-import org.commonjukebox.plugins.PluginApi;
+import org.commonjukebox.plugins.model.PluginApi;
 
 /**
  * This class represents an artist, with a name, and a list of albums.

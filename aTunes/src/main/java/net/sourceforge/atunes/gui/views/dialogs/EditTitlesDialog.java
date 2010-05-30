@@ -30,8 +30,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 

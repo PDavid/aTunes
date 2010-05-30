@@ -31,7 +31,7 @@ import net.sourceforge.atunes.kernel.modules.repository.tags.tag.EditTagInfo;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-import org.commonjukebox.plugins.PluginApi;
+import org.commonjukebox.plugins.model.PluginApi;
 
 /**
  * Defines patterns based on AudioFile properties to get strings to be used in

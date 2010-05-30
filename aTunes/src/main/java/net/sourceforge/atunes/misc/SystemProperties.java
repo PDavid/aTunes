@@ -304,9 +304,9 @@ public final class SystemProperties {
     }
 
     /**
-     * Return path to temp folder, which is inside user config folder.
+     * Return path to temporal folder, which is inside user's configuration folder.
      * 
-     * @return the temp folder
+     * @return the temporal folder
      */
     public static String getTempFolder() {
         String userConfigFolder = getUserConfigFolder(Kernel.isDebug());

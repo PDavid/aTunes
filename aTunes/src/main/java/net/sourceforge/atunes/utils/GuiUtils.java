@@ -55,7 +55,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
-import org.commonjukebox.plugins.PluginApi;
+import org.commonjukebox.plugins.model.PluginApi;
 
 /**
  * GUI related utility methods.

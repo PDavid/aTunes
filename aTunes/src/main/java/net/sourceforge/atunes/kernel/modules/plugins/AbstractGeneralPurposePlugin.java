@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.plugins;
 
-import org.commonjukebox.plugins.PluginApi;
+import org.commonjukebox.plugins.model.PluginApi;
 
 /**
  * Abstract class for general purpose plugin (those that don't need to implement

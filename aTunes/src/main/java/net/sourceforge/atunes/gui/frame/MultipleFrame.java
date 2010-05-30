@@ -42,7 +42,6 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.Timer;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.bars.ToolBar;
 import net.sourceforge.atunes.gui.views.controls.CustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomFrame;

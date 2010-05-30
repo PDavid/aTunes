@@ -36,8 +36,8 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
 import net.sourceforge.atunes.kernel.modules.internetsearch.SearchFactory;
 import net.sourceforge.atunes.utils.GuiUtils;

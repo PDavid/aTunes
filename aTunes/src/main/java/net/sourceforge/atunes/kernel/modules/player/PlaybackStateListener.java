@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.modules.player;
 
 import net.sourceforge.atunes.model.AudioObject;
 
-import org.commonjukebox.plugins.PluginApi;
+import org.commonjukebox.plugins.model.PluginApi;
 
 @PluginApi
 public interface PlaybackStateListener {

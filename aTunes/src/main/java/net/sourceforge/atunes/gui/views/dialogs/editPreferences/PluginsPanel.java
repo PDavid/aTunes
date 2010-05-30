@@ -52,8 +52,8 @@ import javax.swing.table.TableModel;
 
 import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.gui.views.dialogs.PluginEditorDialog;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
@@ -65,10 +65,10 @@ import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-import org.commonjukebox.plugins.InvalidPluginConfigurationException;
-import org.commonjukebox.plugins.PluginConfiguration;
-import org.commonjukebox.plugins.PluginInfo;
-import org.commonjukebox.plugins.PluginSystemException;
+import org.commonjukebox.plugins.exceptions.InvalidPluginConfigurationException;
+import org.commonjukebox.plugins.exceptions.PluginSystemException;
+import org.commonjukebox.plugins.model.PluginConfiguration;
+import org.commonjukebox.plugins.model.PluginInfo;
 
 public final class PluginsPanel extends AbstractPreferencesPanel {
 
@@ -154,7 +154,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
                     pluginNameLabel.setText(StringUtils.getString("<html><b>", I18nUtils.getString("NAME"), ":</b> ", plugin.getName(), "</html>"));
                     pluginVersionLabel.setText(StringUtils.getString("<html><b>", I18nUtils.getString("VERSION"), ":</b> ", plugin.getVersion(), "</html>"));
                     pluginClassNameLabel.setText(StringUtils.getString("<html><b>", I18nUtils.getString("CLASS_NAME"), ":</b> ", plugin.getClassName(), "</html>"));
-                    pluginLocationLabel.setText(StringUtils.getString("<html><b>", I18nUtils.getString("LOCATION"), ":</b> ", plugin.getPluginLocation(), "</html>"));
+                    pluginLocationLabel.setText(StringUtils.getString("<html><b>", I18nUtils.getString("LOCATION"), ":</b> ", plugin.getPluginFolder().getAbsolutePath(), "</html>"));
                     pluginAuthorLabel.setText(StringUtils.getString("<html><b>", I18nUtils.getString("AUTHOR"), ":</b> ", plugin.getAuthor(), "</html>"));
                     pluginUrlLabel.setText(plugin.getUrl(), plugin.getUrl());
                     pluginPreferencesButton.setEnabled(((PluginsTableModel) pluginsTable.getModel()).getPluginConfigurationAt(pluginsTable.getSelectedRow()) != null);
@@ -187,7 +187,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
                 if (configuration != null) {
                     // Validate plugin configuration
                     try {
-                        PluginConfiguration.validateConfiguration(plugin, configuration);
+                    	PluginsHandler.getInstance().validateConfiguration(plugin, configuration);
                         pluginsModified.put(plugin, configuration);
                     } catch (InvalidPluginConfigurationException ex) {
                         GuiHandler.getInstance().showErrorDialog(StringUtils.getString(I18nUtils.getString("PLUGIN_CONFIGURATION_INVALID"), ex.getMessage()));
@@ -234,8 +234,8 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 
                 // Avoid plugins throw exceptions when setting configuration
                 try {
-                    PluginConfiguration.setConfiguration(plugin, pluginsModified.get(plugin));
-                } catch (Exception t) {
+                    PluginsHandler.getInstance().setConfiguration(plugin, pluginsModified.get(plugin));
+                } catch (PluginSystemException t) {
                     StringBuilder sb = new StringBuilder();
                     sb.append(I18nUtils.getString("PLUGIN_CONFIGURATION_ERROR"));
                     sb.append(" ");
@@ -248,9 +248,9 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
             // If any plugin has been activated or deactivated then apply changes
             for (PluginInfo plugin : pluginsActivation.keySet()) {
                 if (pluginsActivation.get(plugin)) {
-                    plugin.activate();
+                	PluginsHandler.getInstance().activatePlugin(plugin);
                 } else {
-                    plugin.deactivate();
+                	PluginsHandler.getInstance().deactivatePlugin(plugin);
                 }
 
                 restartNeeded = restartNeeded || PluginsHandler.getInstance().pluginNeedsRestart(plugin);
@@ -448,7 +448,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 
         public PluginConfiguration getPluginConfigurationAt(int row) {
             try {
-                return PluginConfiguration.getConfiguration(this.plugins.get(row));
+                return PluginsHandler.getInstance().getConfiguration(this.plugins.get(row));
             } catch (PluginSystemException e) {
                 logger.error(LogCategories.PLUGINS, e);
                 return null;

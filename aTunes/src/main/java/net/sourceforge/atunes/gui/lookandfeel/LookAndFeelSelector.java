@@ -33,15 +33,16 @@ import net.sourceforge.atunes.gui.lookandfeel.nimbus.NimbusLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.system.SystemLookAndFeel;
 import net.sourceforge.atunes.kernel.Kernel;
+import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
-import org.commonjukebox.plugins.Plugin;
-import org.commonjukebox.plugins.PluginInfo;
-import org.commonjukebox.plugins.PluginListener;
-import org.commonjukebox.plugins.PluginSystemException;
+import org.commonjukebox.plugins.exceptions.PluginSystemException;
+import org.commonjukebox.plugins.model.Plugin;
+import org.commonjukebox.plugins.model.PluginInfo;
+import org.commonjukebox.plugins.model.PluginListener;
 
 public final class LookAndFeelSelector implements PluginListener {
 
@@ -110,7 +111,7 @@ public final class LookAndFeelSelector implements PluginListener {
     @Override
     public void pluginActivated(PluginInfo plugin) {
         try {
-            AbstractLookAndFeel laf = (AbstractLookAndFeel) plugin.getInstance();
+        	AbstractLookAndFeel laf = (AbstractLookAndFeel) PluginsHandler.getInstance().getNewInstance(plugin);
             lookAndFeels.put(laf.getName(), laf);
         } catch (PluginSystemException e) {
             getLogger().error(LogCategories.PLUGINS, e);

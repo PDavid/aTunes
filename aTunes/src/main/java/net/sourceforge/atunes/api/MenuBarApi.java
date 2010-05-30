@@ -24,7 +24,7 @@ import javax.swing.JMenu;
 
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 
-import org.commonjukebox.plugins.PluginApi;
+import org.commonjukebox.plugins.model.PluginApi;
 
 @PluginApi
 public final class MenuBarApi {

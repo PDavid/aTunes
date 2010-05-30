@@ -35,8 +35,8 @@ import javax.swing.JLabel;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.controls.ScrollableFlowPanel;
-import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
+import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.GuiUtils;

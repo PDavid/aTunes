@@ -34,9 +34,9 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.repository.ImageCache;
 import net.sourceforge.atunes.kernel.modules.repository.tags.reader.TagDetector;
+import net.sourceforge.atunes.kernel.modules.repository.tags.tag.AbstractTag;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.DefaultTag;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.EditTagInfo;
-import net.sourceforge.atunes.kernel.modules.repository.tags.tag.AbstractTag;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
@@ -44,7 +44,7 @@ import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 
-import org.commonjukebox.plugins.PluginApi;
+import org.commonjukebox.plugins.model.PluginApi;
 import org.jaudiotagger.audio.AudioFileIO;
 
 /**

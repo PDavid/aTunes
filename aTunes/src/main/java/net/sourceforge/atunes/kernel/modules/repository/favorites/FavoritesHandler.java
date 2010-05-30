@@ -23,8 +23,8 @@ package net.sourceforge.atunes.kernel.modules.repository.favorites;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.AbstractHandler;
+import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;

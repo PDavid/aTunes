@@ -39,8 +39,8 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.gui.views.dialogs.RipCdDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RipperProgressDialog;
-import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.AbstractHandler;
+import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.RipCDAction;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavConverter;

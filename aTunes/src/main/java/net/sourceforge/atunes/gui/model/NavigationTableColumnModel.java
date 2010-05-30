@@ -25,7 +25,6 @@ import java.awt.Component;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
-import javax.swing.UIManager;
 import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;

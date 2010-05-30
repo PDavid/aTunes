@@ -48,8 +48,8 @@ import javax.swing.table.AbstractTableModel;
 
 import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.modules.hotkeys.Hotkey;
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeyHandler;
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeysConfig;

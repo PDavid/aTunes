@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.player;
 
-import org.commonjukebox.plugins.PluginApi;
+import org.commonjukebox.plugins.model.PluginApi;
 
 /**
  * This enum defined all possible states of player
