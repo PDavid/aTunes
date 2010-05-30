@@ -26,19 +26,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.AbstractHandler;
+import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
 import net.sourceforge.atunes.kernel.modules.filter.AbstractFilter;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
+import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-import org.commonjukebox.plugins.Plugin;
-import org.commonjukebox.plugins.PluginInfo;
-import org.commonjukebox.plugins.PluginListener;
-import org.commonjukebox.plugins.PluginSystemException;
+import org.commonjukebox.plugins.exceptions.PluginSystemException;
+import org.commonjukebox.plugins.model.Plugin;
+import org.commonjukebox.plugins.model.PluginInfo;
+import org.commonjukebox.plugins.model.PluginListener;
 
 public final class NavigationHandler extends AbstractHandler implements PluginListener {
 
@@ -199,7 +200,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
     @Override
     public void pluginActivated(PluginInfo plugin) {
         try {
-            getNavigationViews().add((AbstractNavigationView) plugin.getInstance());
+            getNavigationViews().add((AbstractNavigationView) PluginsHandler.getInstance().getNewInstance(plugin));
             // Set tabs and text for navigator
             ControllerProxy.getInstance().getNavigationController().getNavigationTreePanel().updateTabs();
         } catch (PluginSystemException e) {

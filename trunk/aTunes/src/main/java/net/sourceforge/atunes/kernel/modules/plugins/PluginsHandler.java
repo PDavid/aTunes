@@ -36,10 +36,10 @@ import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnSets;
-import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView;
+import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlaybackStateListener;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -47,14 +47,15 @@ import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.Timer;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.utils.StringUtils;
-import net.sourceforge.atunes.utils.ZipUtils;
 
-import org.commonjukebox.plugins.Plugin;
-import org.commonjukebox.plugins.PluginInfo;
-import org.commonjukebox.plugins.PluginListener;
-import org.commonjukebox.plugins.PluginSystemException;
 import org.commonjukebox.plugins.PluginSystemLogger;
 import org.commonjukebox.plugins.PluginsFactory;
+import org.commonjukebox.plugins.exceptions.InvalidPluginConfigurationException;
+import org.commonjukebox.plugins.exceptions.PluginSystemException;
+import org.commonjukebox.plugins.model.Plugin;
+import org.commonjukebox.plugins.model.PluginConfiguration;
+import org.commonjukebox.plugins.model.PluginInfo;
+import org.commonjukebox.plugins.model.PluginListener;
 
 public class PluginsHandler extends AbstractHandler implements PluginListener {
 
@@ -93,7 +94,10 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
             PluginSystemLogger.setLevel(Level.ALL);
 
             // User plugins folder
-            factory.addPluginsFolder(getUserPluginsFolder());
+            factory.setPluginsRepository(getUserPluginsFolder());
+            
+            // Temporal plugins folder
+            factory.setTemporalPluginRepository(getTemporalPluginsFolder());
 
             addPluginListeners();
             int plugins = factory.start(getPluginClassNames(), true, "net.sourceforge.atunes");
@@ -104,7 +108,12 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
             if (e.getCause() != null) {
                 getLogger().error(LogCategories.PLUGINS, e.getCause());
             }
-        }
+        } catch (IOException e) {
+            getLogger().error(LogCategories.PLUGINS, e);
+            if (e.getCause() != null) {
+                getLogger().error(LogCategories.PLUGINS, e.getCause());
+            }
+		}
     }
 
     @Override
@@ -195,6 +204,20 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
         }
         return pluginsFolder;
     }
+    
+    /**
+     * Returns path to temporal plugins folder
+     * @return path to temporal plugins folder
+     * @throws IOException
+     */
+    private static String getTemporalPluginsFolder() throws IOException {
+    	String temporalPluginsFolder = StringUtils.getString(SystemProperties.getTempFolder(), SystemProperties.FILE_SEPARATOR, Constants.PLUGINS_DIR);
+    	File temporalPluginsFile = new File(temporalPluginsFolder);
+    	if (!temporalPluginsFile.exists() && !temporalPluginsFile.mkdirs()) {
+    		throw new IOException(StringUtils.getString("Can't create temporal plugins folder: ", temporalPluginsFolder));
+    	}
+    	return temporalPluginsFolder;
+    }
 
     /**
      * Unzips a zip file in user plugins directory and updates plugins
@@ -205,11 +228,7 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
      */
     public void installPlugin(File zipFile) throws IOException, PluginSystemException {
         try {
-            ZipUtils.unzipArchive(zipFile, new File(getUserPluginsFolder()));
-            factory.refresh();
-        } catch (IOException e) {
-            getLogger().error(LogCategories.PLUGINS, e);
-            throw e;
+        	factory.installPlugin(zipFile);
         } catch (PluginSystemException e) {
             getLogger().error(LogCategories.PLUGINS, e);
             if (e.getCause() != null) {
@@ -228,11 +247,10 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
      */
     public void uninstallPlugin(PluginInfo plugin) throws IOException, PluginSystemException {
         // Only remove plugins if are contained in a separate folder under user plugins folder
-        File pluginLocation = new File(plugin.getPluginLocation());
+        File pluginLocation = plugin.getPluginFolder();
         if (pluginLocation.getParent().equals(new File(getUserPluginsFolder()).getAbsolutePath())) {
             try {
                 factory.uninstallPlugin(plugin);
-                factory.refresh();
             } catch (PluginSystemException e) {
                 getLogger().error(LogCategories.PLUGINS, e);
                 if (e.getCause() != null) {
@@ -252,9 +270,9 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
     public void setPluginActive(PluginInfo plugin, boolean active) {
         try {
             if (active) {
-                plugin.activate();
+                PluginsHandler.getInstance().activatePlugin(plugin);
             } else {
-                plugin.deactivate();
+            	PluginsHandler.getInstance().deactivatePlugin(plugin);
             }
         } catch (PluginSystemException e) {
             getLogger().error(LogCategories.PLUGINS, e);
@@ -290,6 +308,64 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
         return false;
     }
 
+    /**
+     * Returns new instance of plugin
+     * @param pluginInfo
+     * @return
+     * @throws PluginSystemException
+     */
+    public Plugin getNewInstance(PluginInfo pluginInfo) throws PluginSystemException {
+    	return factory.getNewInstance(pluginInfo);
+    }
+    
+    /**
+     * Activates plugin
+     * @param plugin
+     * @throws PluginSystemException
+     */
+    public void activatePlugin(PluginInfo plugin) throws PluginSystemException {
+    	factory.activatePlugin(plugin);
+    }
+    
+    /**
+     * Deactivates plugin
+     * @param plugin
+     * @throws PluginSystemException 
+     */
+    public void deactivatePlugin(PluginInfo plugin) throws PluginSystemException {
+    	factory.deactivatePlugin(plugin);
+    }
+
+    /**
+     * Validates plugin configuration
+     * @param plugin
+     * @param configuration
+     * @throws InvalidPluginConfigurationException
+     */
+    public void validateConfiguration(PluginInfo plugin, PluginConfiguration configuration) throws InvalidPluginConfigurationException {
+    	factory.validateConfiguration(plugin, configuration);
+    }
+    
+    /**
+     * Sets plugin configuration
+     * @param plugin
+     * @param configuration
+     * @throws PluginSystemException
+     */
+    public void setConfiguration(PluginInfo plugin, PluginConfiguration configuration) throws PluginSystemException {
+    	factory.setConfiguration(plugin, configuration);
+    }
+    
+    /**
+     * Returns plugin configuration
+     * @param plugin
+     * @return plugin configuration
+     * @throws PluginSystemException
+     */
+    public PluginConfiguration getConfiguration(PluginInfo plugin) throws PluginSystemException {
+    	return factory.getConfiguration(plugin);
+    }
+    
     private static class PluginsLoggerHandler extends java.util.logging.Handler {
 
         @Override

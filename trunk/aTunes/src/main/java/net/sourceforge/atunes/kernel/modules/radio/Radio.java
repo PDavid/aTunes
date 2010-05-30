@@ -39,7 +39,7 @@ import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.NetworkUtils;
 
-import org.commonjukebox.plugins.PluginApi;
+import org.commonjukebox.plugins.model.PluginApi;
 
 /**
  * A radio station.

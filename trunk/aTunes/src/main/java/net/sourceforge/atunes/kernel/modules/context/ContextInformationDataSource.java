@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.modules.context;
 
 import java.util.Map;
 
-import org.commonjukebox.plugins.PluginApi;
+import org.commonjukebox.plugins.model.PluginApi;
 
 /**
  * This interface must be implemented by classes responsible of retrieve data

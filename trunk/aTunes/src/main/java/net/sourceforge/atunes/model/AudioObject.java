@@ -24,7 +24,7 @@ import java.util.Date;
 
 import javax.swing.ImageIcon;
 
-import org.commonjukebox.plugins.PluginApi;
+import org.commonjukebox.plugins.model.PluginApi;
 
 /**
  * Interface for all audio objects (e.g. AudioFile, Radio, PodcastFeedEntry)

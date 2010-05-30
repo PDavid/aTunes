@@ -244,5 +244,5 @@ public final class Constants {
 
     /** Plugins dir */
     public static final String PLUGINS_DIR = "plugins";
-
+    
 }

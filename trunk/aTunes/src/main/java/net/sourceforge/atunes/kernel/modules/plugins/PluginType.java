@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.plugins;
 
-import org.commonjukebox.plugins.PluginListener;
+import org.commonjukebox.plugins.model.PluginListener;
 
 public class PluginType {
 

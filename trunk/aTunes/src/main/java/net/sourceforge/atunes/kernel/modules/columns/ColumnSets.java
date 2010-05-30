@@ -24,13 +24,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
-import org.commonjukebox.plugins.Plugin;
-import org.commonjukebox.plugins.PluginInfo;
-import org.commonjukebox.plugins.PluginListener;
-import org.commonjukebox.plugins.PluginSystemException;
+import org.commonjukebox.plugins.exceptions.PluginSystemException;
+import org.commonjukebox.plugins.model.Plugin;
+import org.commonjukebox.plugins.model.PluginInfo;
+import org.commonjukebox.plugins.model.PluginListener;
 
 /**
  * Class to handle column sets and plugins
@@ -92,7 +93,7 @@ public class ColumnSets implements PluginListener {
     public void pluginActivated(PluginInfo plugin) {
         try {
             for (AbstractColumnSet columnSet : getColumnSets()) {
-                columnSet.addNewColumn((AbstractColumn) plugin.getInstance());
+                columnSet.addNewColumn((AbstractColumn) PluginsHandler.getInstance().getNewInstance(plugin));
             }
         } catch (PluginSystemException e) {
             getLogger().error(LogCategories.COLUMNS, e);

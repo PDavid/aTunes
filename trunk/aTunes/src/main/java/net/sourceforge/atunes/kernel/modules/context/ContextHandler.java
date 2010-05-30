@@ -34,6 +34,7 @@ import net.sourceforge.atunes.kernel.modules.context.audioobject.AudioObjectCont
 import net.sourceforge.atunes.kernel.modules.context.similar.SimilarArtistsContextPanel;
 import net.sourceforge.atunes.kernel.modules.context.youtube.YoutubeContextPanel;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -43,10 +44,10 @@ import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeService;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.AudioObject;
 
-import org.commonjukebox.plugins.Plugin;
-import org.commonjukebox.plugins.PluginInfo;
-import org.commonjukebox.plugins.PluginListener;
-import org.commonjukebox.plugins.PluginSystemException;
+import org.commonjukebox.plugins.exceptions.PluginSystemException;
+import org.commonjukebox.plugins.model.Plugin;
+import org.commonjukebox.plugins.model.PluginInfo;
+import org.commonjukebox.plugins.model.PluginListener;
 
 public final class ContextHandler extends AbstractHandler implements PluginListener {
 
@@ -261,7 +262,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     @Override
     public void pluginActivated(PluginInfo plugin) {
         try {
-            AbstractContextPanel newPanel = (AbstractContextPanel) plugin.getInstance();
+            AbstractContextPanel newPanel = (AbstractContextPanel) PluginsHandler.getInstance().getNewInstance(plugin);
             getContextPanels().add(newPanel);
         } catch (PluginSystemException e) {
             getLogger().error(LogCategories.PLUGINS, e);
