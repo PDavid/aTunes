@@ -11,11 +11,11 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.StringUtils;
 
-import org.commonjukebox.plugins.InvalidPluginConfigurationException;
-import org.commonjukebox.plugins.Plugin;
-import org.commonjukebox.plugins.PluginConfiguration;
-import org.commonjukebox.plugins.PluginInfo;
-import org.commonjukebox.plugins.PluginProperty;
+import org.commonjukebox.plugins.exceptions.InvalidPluginConfigurationException;
+import org.commonjukebox.plugins.model.Plugin;
+import org.commonjukebox.plugins.model.PluginConfiguration;
+import org.commonjukebox.plugins.model.PluginInfo;
+import org.commonjukebox.plugins.model.PluginProperty;
 
 public abstract class UpdateMessagePlugin implements PlaybackStateListener, Plugin {
     
@@ -61,7 +61,7 @@ public abstract class UpdateMessagePlugin implements PlaybackStateListener, Plug
     
     @Override
     public void setPluginInfo(PluginInfo info) {
-        this.resourceDir = info.getPluginLocation();
+        this.resourceDir = info.getPluginFolder().getAbsolutePath();
     }
     
     @Override
@@ -72,7 +72,8 @@ public abstract class UpdateMessagePlugin implements PlaybackStateListener, Plug
         textProperty.setValue("Listening with aTunes: %T - %A");
         List<PluginProperty<?>> properties = new ArrayList<PluginProperty<?>>();
         properties.add(textProperty);
-        PluginConfiguration defaultConfiguration = new PluginConfiguration(properties);
+        PluginConfiguration defaultConfiguration = new PluginConfiguration();
+        defaultConfiguration.setProperties(properties);
         return defaultConfiguration;
     }
     
