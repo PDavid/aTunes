@@ -4,10 +4,10 @@ import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.AudioObject;
 
-import org.commonjukebox.plugins.InvalidPluginConfigurationException;
-import org.commonjukebox.plugins.Plugin;
-import org.commonjukebox.plugins.PluginConfiguration;
-import org.commonjukebox.plugins.PluginInfo;
+import org.commonjukebox.plugins.exceptions.InvalidPluginConfigurationException;
+import org.commonjukebox.plugins.model.Plugin;
+import org.commonjukebox.plugins.model.PluginConfiguration;
+import org.commonjukebox.plugins.model.PluginInfo;
 
 public class LyricsColumn extends AbstractColumn implements Plugin {
 

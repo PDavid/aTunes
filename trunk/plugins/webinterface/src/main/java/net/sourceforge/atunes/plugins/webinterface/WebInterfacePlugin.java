@@ -7,11 +7,11 @@ import net.sourceforge.atunes.api.LoggerService;
 import net.sourceforge.atunes.kernel.modules.plugins.AbstractGeneralPurposePlugin;
 import net.sourceforge.atunes.utils.StringUtils;
 
-import org.commonjukebox.plugins.InvalidPluginConfigurationException;
-import org.commonjukebox.plugins.Plugin;
-import org.commonjukebox.plugins.PluginConfiguration;
-import org.commonjukebox.plugins.PluginInfo;
-import org.commonjukebox.plugins.PluginProperty;
+import org.commonjukebox.plugins.exceptions.InvalidPluginConfigurationException;
+import org.commonjukebox.plugins.model.Plugin;
+import org.commonjukebox.plugins.model.PluginConfiguration;
+import org.commonjukebox.plugins.model.PluginInfo;
+import org.commonjukebox.plugins.model.PluginProperty;
 
 public class WebInterfacePlugin extends AbstractGeneralPurposePlugin implements Plugin {
 	
@@ -64,7 +64,8 @@ public class WebInterfacePlugin extends AbstractGeneralPurposePlugin implements 
 		property.setValue("8000");
 		Collection<PluginProperty<?>> properties = new ArrayList<PluginProperty<?>>();
 		properties.add(property);
-		PluginConfiguration defaultConfiguration = new PluginConfiguration(properties);
+		PluginConfiguration defaultConfiguration = new PluginConfiguration();
+		defaultConfiguration.setProperties(properties);
 		return defaultConfiguration;
 	}
 	
@@ -75,7 +76,7 @@ public class WebInterfacePlugin extends AbstractGeneralPurposePlugin implements 
 	
 	@Override
 	public void setPluginInfo(PluginInfo pluginInfo) {
-		this.pluginLocation = pluginInfo.getPluginLocation();		
+		this.pluginLocation = pluginInfo.getPluginFolder().getAbsolutePath();		
 		this.pubResourceDir = StringUtils.getString(this.pluginLocation, "/pub/");
 		this.templateResourceDir = StringUtils.getString(this.pluginLocation, "/templates/");
 	}
