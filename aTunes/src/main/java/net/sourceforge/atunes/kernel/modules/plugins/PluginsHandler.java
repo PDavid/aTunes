@@ -105,14 +105,8 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
             getLogger().info(LogCategories.PLUGINS, StringUtils.getString("Found ", plugins, " plugins (", t.stop(), " seconds)"));
         } catch (PluginSystemException e) {
             getLogger().error(LogCategories.PLUGINS, e);
-            if (e.getCause() != null) {
-                getLogger().error(LogCategories.PLUGINS, e.getCause());
-            }
         } catch (IOException e) {
             getLogger().error(LogCategories.PLUGINS, e);
-            if (e.getCause() != null) {
-                getLogger().error(LogCategories.PLUGINS, e.getCause());
-            }
 		}
     }
 
@@ -226,14 +220,11 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
      * @throws PluginSystemException
      *             , IOException
      */
-    public void installPlugin(File zipFile) throws IOException, PluginSystemException {
+    public void installPlugin(File zipFile) throws PluginSystemException {
         try {
         	factory.installPlugin(zipFile);
         } catch (PluginSystemException e) {
             getLogger().error(LogCategories.PLUGINS, e);
-            if (e.getCause() != null) {
-                getLogger().error(LogCategories.PLUGINS, e.getCause());
-            }
             throw e;
         }
     }
@@ -253,9 +244,6 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
                 factory.uninstallPlugin(plugin);
             } catch (PluginSystemException e) {
                 getLogger().error(LogCategories.PLUGINS, e);
-                if (e.getCause() != null) {
-                    getLogger().error(LogCategories.PLUGINS, e.getCause());
-                }
                 throw e;
             }
         }
@@ -276,9 +264,6 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
             }
         } catch (PluginSystemException e) {
             getLogger().error(LogCategories.PLUGINS, e);
-            if (e.getCause() != null) {
-                getLogger().error(LogCategories.PLUGINS, e.getCause());
-            }
         }
     }
 
