@@ -317,7 +317,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 		            // Update panel after installing a new plugin
 		            updatePanel(null);
 		        } catch (Exception e1) {
-		            GuiHandler.getInstance().showErrorDialog(e1.getMessage());
+		            GuiHandler.getInstance().showExceptionDialog(I18nUtils.getString("PLUGIN_INSTALLATION_ERROR"), e1);
 		            getLogger().error(LogCategories.PLUGINS, e1);
 		        }
 		    }
