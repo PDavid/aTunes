@@ -27,6 +27,7 @@ aTunes 2.0.1
 - FIX: Wrong foreground color in navigation table
 - FIX: Improvements in plugin installation
 - FIX: Can't add UI controls from plugins
+- FIX: Improvements in plugins panel
 - UI improvements in repository selection dialog
 
 
