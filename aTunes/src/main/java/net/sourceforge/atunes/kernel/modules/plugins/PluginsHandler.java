@@ -31,6 +31,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
+import javax.swing.JOptionPane;
+
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
@@ -52,6 +54,7 @@ import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
+import org.apache.commons.io.FileUtils;
 import org.commonjukebox.plugins.PluginSystemLogger;
 import org.commonjukebox.plugins.PluginsFactory;
 import org.commonjukebox.plugins.exceptions.InvalidPluginConfigurationException;
@@ -142,7 +145,17 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
     public void applicationStarted() {
     	if (problemsLoadingPlugins != null) {
     		for (PluginFolder pluginFolder : problemsLoadingPlugins.keySet()) {
+    			// Show a message with detailed information about the error
     			GuiHandler.getInstance().showExceptionDialog(pluginFolder.getName(), I18nUtils.getString("PLUGIN_LOAD_ERROR"), problemsLoadingPlugins.get(pluginFolder));
+    			
+    			// Ask user to remove plugin folder
+    			if (GuiHandler.getInstance().showConfirmationDialog(I18nUtils.getString("PLUGIN_LOAD_ERROR_REMOVE_CONFIRMATION")) == JOptionPane.YES_OPTION) {
+    				try {
+						FileUtils.deleteDirectory(pluginFolder);
+					} catch (IOException e) {
+						GuiHandler.getInstance().showExceptionDialog(pluginFolder.getName(), I18nUtils.getString("PLUGIN_UNINSTALLATION_ERROR"), e);
+					}
+    			}
     		}
     	}
     }

@@ -833,6 +833,17 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     }
 
     /**
+     * Show confirmation dialog.
+     * 
+     * @param message
+     *            the message
+     * @return the int
+     */
+    public int showConfirmationDialog(String message) {
+        return showConfirmationDialog(message, I18nUtils.getString("CONFIRMATION"));
+    }
+
+    /**
      * Show cover navigator.
      */
     public void showCoverNavigator() {
