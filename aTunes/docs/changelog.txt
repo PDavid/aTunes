@@ -26,6 +26,7 @@ aTunes 2.0.1
 - FIX: Interface freeze when caching files before play [2998158]
 - FIX: Wrong foreground color in navigation table
 - FIX: Improvements in plugin installation
+- FIX: Can't add UI controls from plugins
 - UI improvements in repository selection dialog
 
 
