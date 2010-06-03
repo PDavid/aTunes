@@ -99,8 +99,6 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
      */
     private void initPlugins() {
         try {
-            Timer t = new Timer();
-            t.start();
             factory = new PluginsFactory();
 
             PluginSystemLogger.addHandler(new PluginsLoggerHandler());
@@ -112,11 +110,6 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
             // Temporal plugins folder
             factory.setTemporalPluginRepository(getTemporalPluginsFolder());
 
-            addPluginListeners();
-            problemsLoadingPlugins = factory.start(getPluginClassNames(), true, "net.sourceforge.atunes");
-
-            getLogger().info(LogCategories.PLUGINS, StringUtils.getString("Found ", factory.getPlugins().size(), " plugins (", t.stop(), " seconds)"));
-            getLogger().info(LogCategories.PLUGINS, StringUtils.getString("Problems loading ", problemsLoadingPlugins.size(), " plugins"));
         } catch (PluginSystemException e) {
             getLogger().error(LogCategories.PLUGINS, e);
         } catch (IOException e) {
@@ -143,6 +136,21 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
 
     @Override
     public void applicationStarted() {
+        addPluginListeners();
+
+        Timer t = new Timer();
+        t.start();
+
+        try {
+        	// PLUGINS MUST BE STARTED WHEN APPLICATION IS STARTED, OTHERWISE THEY CAN TRY TO ACCESS TO COMPONENTS NOT CREATED OR INITIALIZED YET
+			problemsLoadingPlugins = factory.start(getPluginClassNames(), true, "net.sourceforge.atunes");
+		} catch (PluginSystemException e) {
+			getLogger().error(LogCategories.PLUGINS, e);
+		}
+
+        getLogger().info(LogCategories.PLUGINS, StringUtils.getString("Found ", factory.getPlugins().size(), " plugins (", t.stop(), " seconds)"));
+        getLogger().info(LogCategories.PLUGINS, StringUtils.getString("Problems loading ", problemsLoadingPlugins != null ? problemsLoadingPlugins.size() : 0, " plugins"));
+
     	if (problemsLoadingPlugins != null) {
     		for (PluginFolder pluginFolder : problemsLoadingPlugins.keySet()) {
     			// Show a message with detailed information about the error
