@@ -20,9 +20,10 @@
 
 package net.sourceforge.atunes.gui.views.dialogs.editPreferences;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
-import java.awt.GridLayout;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,6 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -111,13 +113,13 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
         c.gridx = 0;
         c.gridy = 0;
         c.weightx = 1;
-        c.weighty = 0.6;
+        c.weighty = 1;
         c.fill = GridBagConstraints.BOTH;
         c.gridheight = 3;
 
         add(scrollPane, c);
 
-        JPanel pluginDetailPanel = new JPanel(new GridLayout(6, 1));
+        JPanel pluginDetailPanel = new JPanel(new GridBagLayout());
         final JLabel pluginNameLabel = new JLabel();
         pluginNameLabel.setFont(Fonts.getSmallFont());
         final JLabel pluginVersionLabel = new JLabel();
@@ -130,18 +132,32 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
         pluginAuthorLabel.setFont(Fonts.getSmallFont());
         final UrlLabel pluginUrlLabel = new UrlLabel();
         pluginUrlLabel.setFont(Fonts.getSmallFont());
-        pluginDetailPanel.add(pluginNameLabel);
-        pluginDetailPanel.add(pluginVersionLabel);
-        pluginDetailPanel.add(pluginClassNameLabel);
-        pluginDetailPanel.add(pluginLocationLabel);
-        pluginDetailPanel.add(pluginAuthorLabel);
-        pluginDetailPanel.add(pluginUrlLabel);
+        
+        GridBagConstraints c2 = new GridBagConstraints();
+
+        c2.gridx = 0;
+        c2.weightx = 1;
+        c2.fill = GridBagConstraints.HORIZONTAL;
+        c2.anchor = GridBagConstraints.WEST;
+        c2.gridy = 0;
+        pluginDetailPanel.add(pluginNameLabel, c2);
+        c2.gridy = 1;
+        pluginDetailPanel.add(pluginVersionLabel, c2);
+        c2.gridy = 2;
+        pluginDetailPanel.add(pluginClassNameLabel, c2);
+        c2.gridy = 3;
+        pluginDetailPanel.add(pluginLocationLabel, c2);
+        c2.gridy = 4;
+        pluginDetailPanel.add(pluginAuthorLabel, c2);
+        c2.gridy = 5;
+        pluginDetailPanel.add(pluginUrlLabel, c2);
 
         c.gridy = 3;
         c.insets = new Insets(10, 5, 10, 5);
         c.gridheight = 1;
-        c.weighty = 0.4;
         c.gridwidth = 2;
+        c.weighty = 0;
+        c.fill = GridBagConstraints.HORIZONTAL;
         add(pluginDetailPanel, c);
 
         pluginsTable.setDefaultRenderer(PluginInfo.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new PluginsTableCellRendererCode()));
@@ -155,7 +171,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
                     pluginNameLabel.setText(StringUtils.getString("<html><b>", I18nUtils.getString("NAME"), ":</b> ", plugin.getName(), "</html>"));
                     pluginVersionLabel.setText(StringUtils.getString("<html><b>", I18nUtils.getString("VERSION"), ":</b> ", plugin.getVersion(), "</html>"));
                     pluginClassNameLabel.setText(StringUtils.getString("<html><b>", I18nUtils.getString("CLASS_NAME"), ":</b> ", plugin.getClassName(), "</html>"));
-                    pluginLocationLabel.setText(StringUtils.getString("<html><b>", I18nUtils.getString("LOCATION"), ":</b> ", plugin.getPluginFolder().getAbsolutePath(), "</html>"));
+                    pluginLocationLabel.setText(StringUtils.getString("<html><b>", I18nUtils.getString("LOCATION"), ":</b> ", plugin.getPluginFolder().getName(), "</html>"));
                     pluginAuthorLabel.setText(StringUtils.getString("<html><b>", I18nUtils.getString("AUTHOR"), ":</b> ", plugin.getAuthor(), "</html>"));
                     pluginUrlLabel.setText(plugin.getUrl(), plugin.getUrl());
                     pluginPreferencesButton.setEnabled(((PluginsTableModel) pluginsTable.getModel()).getPluginConfigurationAt(pluginsTable.getSelectedRow()) != null);
