@@ -71,6 +71,9 @@ public class Kernel {
 
     /** Defines if aTunes should not try to update (for Linux packages). */
     private static boolean noUpdate;
+    
+    /** Timer used to measure start time */
+    private static Timer timer;
 
     /**
      * List of start listeners
@@ -130,6 +133,9 @@ public class Kernel {
      */
     public static void startKernel(final List<String> args) {
         getLogger().debug(LogCategories.START, "Starting Kernel");
+        
+        timer = new Timer();
+        timer.start();
 
         try {
             SwingUtilities.invokeAndWait(new Runnable() {
@@ -262,9 +268,6 @@ public class Kernel {
      */
     void start(List<AudioObject> playList) {
         try {
-            Timer timer = new Timer();
-            timer.start();
-
             ApplicationStateHandler.getInstance().applyState();
 
             GuiHandler.getInstance().setFullFrameVisible(true);
@@ -282,7 +285,8 @@ public class Kernel {
             });
 
             getLogger().info(LogCategories.START, StringUtils.getString("Application started (", StringUtils.toString(timer.stop(), 3), " seconds)"));
-
+            timer = null;
+            
         } catch (Exception e) {
             getLogger().error(LogCategories.KERNEL, e);
         }
