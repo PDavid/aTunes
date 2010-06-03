@@ -68,6 +68,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 import org.commonjukebox.plugins.exceptions.InvalidPluginConfigurationException;
 import org.commonjukebox.plugins.exceptions.PluginSystemException;
 import org.commonjukebox.plugins.model.PluginConfiguration;
+import org.commonjukebox.plugins.model.PluginFolder;
 import org.commonjukebox.plugins.model.PluginInfo;
 
 public final class PluginsPanel extends AbstractPreferencesPanel {
@@ -213,7 +214,13 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
                 int row = pluginsTable.getSelectedRow();
                 PluginInfo plugin = ((PluginsTableModel) pluginsTable.getModel()).getPluginAt(row);
                 try {
-                    PluginsHandler.getInstance().uninstallPlugin(plugin);
+		            Map<PluginFolder, PluginSystemException> problemsFound = PluginsHandler.getInstance().uninstallPlugin(plugin);
+		            if (problemsFound != null) {
+		            	for (PluginFolder pluginFolder : problemsFound.keySet()) {
+		            		GuiHandler.getInstance().showExceptionDialog(pluginFolder.getName(), I18nUtils.getString("PLUGIN_UNINSTALLATION_ERROR"), problemsFound.get(pluginFolder));
+		            	}
+		            }
+                    
                     // Update panel after uninstalling a plugin
                     updatePanel(null);
                 } catch (Exception e1) {
@@ -313,7 +320,13 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 		    if (fileChooser.showOpenDialog(GuiHandler.getInstance().getFrame().getFrame()) == JFileChooser.APPROVE_OPTION) {
 		        File zipFile = fileChooser.getSelectedFile();
 		        try {
-		            PluginsHandler.getInstance().installPlugin(zipFile);
+		            Map<PluginFolder, PluginSystemException> problemsFound = PluginsHandler.getInstance().installPlugin(zipFile);
+		            if (problemsFound != null) {
+		            	for (PluginFolder pluginFolder : problemsFound.keySet()) {
+		            		GuiHandler.getInstance().showExceptionDialog(pluginFolder.getName(), I18nUtils.getString("PLUGIN_INSTALLATION_ERROR"), problemsFound.get(pluginFolder));
+		            	}
+		            }
+		            
 		            // Update panel after installing a new plugin
 		            updatePanel(null);
 		        } catch (Exception e1) {

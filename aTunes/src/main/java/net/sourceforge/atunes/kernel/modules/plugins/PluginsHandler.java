@@ -23,8 +23,10 @@ package net.sourceforge.atunes.kernel.modules.plugins;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -38,6 +40,7 @@ import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnSets;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlaybackStateListener;
@@ -46,6 +49,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.Timer;
 import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.commonjukebox.plugins.PluginSystemLogger;
@@ -54,6 +58,7 @@ import org.commonjukebox.plugins.exceptions.InvalidPluginConfigurationException;
 import org.commonjukebox.plugins.exceptions.PluginSystemException;
 import org.commonjukebox.plugins.model.Plugin;
 import org.commonjukebox.plugins.model.PluginConfiguration;
+import org.commonjukebox.plugins.model.PluginFolder;
 import org.commonjukebox.plugins.model.PluginInfo;
 import org.commonjukebox.plugins.model.PluginListener;
 
@@ -69,6 +74,11 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
 
     private static Set<PluginType> pluginTypes;
 
+    /**
+     * Contains problems while last plugin load operation
+     */
+    private Map<PluginFolder, PluginSystemException> problemsLoadingPlugins;
+    
     /**
      * Getter of singleton instance
      * 
@@ -100,9 +110,10 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
             factory.setTemporalPluginRepository(getTemporalPluginsFolder());
 
             addPluginListeners();
-            int plugins = factory.start(getPluginClassNames(), true, "net.sourceforge.atunes");
+            problemsLoadingPlugins = factory.start(getPluginClassNames(), true, "net.sourceforge.atunes");
 
-            getLogger().info(LogCategories.PLUGINS, StringUtils.getString("Found ", plugins, " plugins (", t.stop(), " seconds)"));
+            getLogger().info(LogCategories.PLUGINS, StringUtils.getString("Found ", factory.getPlugins().size(), " plugins (", t.stop(), " seconds)"));
+            getLogger().info(LogCategories.PLUGINS, StringUtils.getString("Problems loading ", problemsLoadingPlugins.size(), " plugins"));
         } catch (PluginSystemException e) {
             getLogger().error(LogCategories.PLUGINS, e);
         } catch (IOException e) {
@@ -129,8 +140,11 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
 
     @Override
     public void applicationStarted() {
-        // TODO Auto-generated method stub
-
+    	if (problemsLoadingPlugins != null) {
+    		for (PluginFolder pluginFolder : problemsLoadingPlugins.keySet()) {
+    			GuiHandler.getInstance().showExceptionDialog(pluginFolder.getName(), I18nUtils.getString("PLUGIN_LOAD_ERROR"), problemsLoadingPlugins.get(pluginFolder));
+    		}
+    	}
     }
 
     /**
@@ -220,9 +234,9 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
      * @throws PluginSystemException
      *             , IOException
      */
-    public void installPlugin(File zipFile) throws PluginSystemException {
+    public Map<PluginFolder, PluginSystemException> installPlugin(File zipFile) throws PluginSystemException {
         try {
-        	factory.installPlugin(zipFile);
+        	return factory.installPlugin(zipFile);
         } catch (PluginSystemException e) {
             getLogger().error(LogCategories.PLUGINS, e);
             throw e;
@@ -236,17 +250,18 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
      * @throws IOException
      * @throws PluginSystemException
      */
-    public void uninstallPlugin(PluginInfo plugin) throws IOException, PluginSystemException {
+    public Map<PluginFolder, PluginSystemException> uninstallPlugin(PluginInfo plugin) throws IOException, PluginSystemException {
         // Only remove plugins if are contained in a separate folder under user plugins folder
         File pluginLocation = plugin.getPluginFolder();
         if (pluginLocation.getParent().equals(new File(getUserPluginsFolder()).getAbsolutePath())) {
             try {
-                factory.uninstallPlugin(plugin);
+                return factory.uninstallPlugin(plugin);
             } catch (PluginSystemException e) {
                 getLogger().error(LogCategories.PLUGINS, e);
                 throw e;
             }
         }
+        return new HashMap<PluginFolder, PluginSystemException>();
     }
 
     /**
