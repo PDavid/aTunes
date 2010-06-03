@@ -870,6 +870,17 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      * @param t
      */
     public void showExceptionDialog(String message, Exception t) {
+        showExceptionDialog(I18nUtils.getString("ERROR"), message, t);
+    }
+
+    /**
+     * Shows a exception report dialog
+     * 
+     * @param title
+     * @param message
+     * @param t
+     */
+    public void showExceptionDialog(String title, String message, Exception t) {
         JXErrorPane pane = new JXErrorPane();
         StringBuilder sb = new StringBuilder();
         sb.append(t.getClass().getName());
@@ -881,7 +892,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
             sb.append(s.toString());
             sb.append("<br/>");
         }
-        pane.setErrorInfo(new ErrorInfo(I18nUtils.getString("ERROR"), message, sb.toString(), null, t, Level.SEVERE, null));
+        pane.setErrorInfo(new ErrorInfo(title, message, sb.toString(), null, t, Level.SEVERE, null));
         JXErrorPane.showDialog(null, pane);
 
     }

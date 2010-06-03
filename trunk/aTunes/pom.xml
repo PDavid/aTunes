@@ -345,7 +345,7 @@
 		<dependency>
 			<groupId>common-jukebox</groupId>
 			<artifactId>plugin-system</artifactId>
-			<version>1.9</version>
+			<version>1.10</version>
 		</dependency>
 		<dependency>
 			<groupId>jfree</groupId>
