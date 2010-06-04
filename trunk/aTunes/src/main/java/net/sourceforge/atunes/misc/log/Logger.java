@@ -21,9 +21,9 @@
 package net.sourceforge.atunes.misc.log;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.PropertyResourceBundle;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import net.sourceforge.atunes.Constants;
@@ -36,14 +36,14 @@ import net.sourceforge.atunes.utils.StringUtils;
 public class Logger {
 
     /** Categories to filter, i.e. will not be logged */
-    private static List<String> filteredCategories;
+    private static Set<String> filteredCategories;
 
     /**
      * Initialize logger
      */
     static {
         // Read filtered categories
-        filteredCategories = new ArrayList<String>();
+        filteredCategories = new HashSet<String>();
         try {
             PropertyResourceBundle bundle = new PropertyResourceBundle(Logger.class.getResourceAsStream(Constants.EXTENDED_LOG_FILE));
             String value = bundle.getString("log.filter");
