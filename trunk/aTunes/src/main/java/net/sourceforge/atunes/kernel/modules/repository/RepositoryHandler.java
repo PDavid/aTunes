@@ -665,8 +665,8 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     @Override
     public void notifyFileLoaded() {
         this.filesLoaded++;
-        // Update GUI every 25 files
-        if (this.filesLoaded % 25 == 0) {
+        // Update GUI every 50 files
+        if (this.filesLoaded % 50 == 0) {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
@@ -742,7 +742,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
             progressDialog = null;
         }
         ControllerProxy.getInstance().getNavigationController().notifyReload();
-        GuiHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
+        GuiHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository != null ? repository.getTotalDurationInSeconds() : 0);
 
         currentLoader = null;
     }
