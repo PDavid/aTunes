@@ -37,15 +37,12 @@ import net.sourceforge.atunes.kernel.modules.repository.tags.reader.TagDetector;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.AbstractTag;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.DefaultTag;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.EditTagInfo;
-import net.sourceforge.atunes.misc.log.LogCategories;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 
 import org.commonjukebox.plugins.model.PluginApi;
-import org.jaudiotagger.audio.AudioFileIO;
 
 /**
  * AudioFile class initializes audio files so that tags and audio information
@@ -64,12 +61,22 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
     private AbstractTag tag;
     private List<File> externalPictures;
     private int duration;
-    private long bitrate;
+	private long bitrate;
     private int frequency;
     private long readTime;
     private int stars;
     /** The file on disk. */
     private File file;
+
+    /**
+     * Instantiates a new audio file.
+     * 
+     * @param file
+     *            the file
+     */
+    public AudioFile(File file) {
+        readFile(file);
+    }
 
     /**
      * Instantiates a new audio file.
@@ -91,8 +98,7 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
         this.file = file;
         // Don't read from formats not supported by Jaudiotagger
         if (!isValidAudioFile(file, Format.APE, Format.MPC)) {
-            introspectTags();
-            readAudioProperties();
+            readInformation(true);
         }
         this.readTime = System.currentTimeMillis();
     }
@@ -189,23 +195,6 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
     public static boolean isValidAudioFile(String file) {
         File f = new File(file);
         return f.exists() && isValidAudioFile(f);
-    }
-
-    /**
-     * Read audio properties.
-     * 
-     * @param audioFile
-     *            the audio file
-     */
-    private void readAudioProperties() {
-        try {
-            org.jaudiotagger.audio.AudioFile af = AudioFileIO.read(this.getFile());
-            duration = af.getAudioHeader().getTrackLength();
-            bitrate = af.getAudioHeader().getBitRateAsNumber();
-            frequency = af.getAudioHeader().getSampleRateAsNumber();
-        } catch (Exception e) {
-            new Logger().error(LogCategories.FILE_READ, e.getMessage());
-        }
     }
 
     /**
@@ -479,8 +468,8 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
     /**
      * Introspect tags. Get the tag for the file.
      */
-    private void introspectTags() {
-        TagDetector.getTags(this);
+    private void readInformation(boolean readAudioProperties) {
+        TagDetector.readInformation(this, readAudioProperties);
     }
 
     /**
@@ -500,7 +489,7 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
      */
     public void refreshTag() {
         deleteTags();
-        introspectTags();
+        readInformation(false);
         readTime = System.currentTimeMillis();
     }
 
@@ -688,5 +677,27 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
     public static ImageCache getImageCache() {
         return imageCache;
     }
+
+    /**
+     * Sets duration
+     * @param duration
+     */
+    public void setDuration(int duration) {
+		this.duration = duration;
+	}
+
+	/**
+	 * @param bitrate the bitrate to set
+	 */
+	public void setBitrate(long bitrate) {
+		this.bitrate = bitrate;
+	}
+
+	/**
+	 * @param frequency the frequency to set
+	 */
+	public void setFrequency(int frequency) {
+		this.frequency = frequency;
+	}
 
 }

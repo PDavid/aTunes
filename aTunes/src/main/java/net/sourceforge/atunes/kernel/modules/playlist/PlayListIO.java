@@ -164,6 +164,18 @@ public final class PlayListIO {
     }
 
     /**
+     * Checks if is valid play list.
+     * 
+     * @param playListFile
+     *            the play list file
+     * 
+     * @return true, if is valid play list
+     */
+    public static boolean isValidPlayList(File playListFile) {
+        return playListFile.getName().endsWith(M3U_FILE_EXTENSION) && playListFile.exists();
+    }
+
+    /**
      * This function reads the filenames from the playlist file (m3u). It will
      * return all filenames with absolute path. For this playlists with relative
      * pathname must be detected and the path must be added. Current problem of

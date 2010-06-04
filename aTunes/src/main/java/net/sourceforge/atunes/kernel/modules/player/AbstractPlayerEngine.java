@@ -82,7 +82,7 @@ public abstract class AbstractPlayerEngine implements PlaybackStateListener {
 
 		        File tempFile = TempFolder.getInstance().copyToTempFolder(((AudioFile) audioObject).getFile());
 		        if (tempFile != null) {
-		            audioObjectToPlay = new AudioFile(tempFile.getAbsolutePath());
+		            audioObjectToPlay = new AudioFile(tempFile);
 		            lastFileCached = tempFile;
 		        } else {
 		            lastFileCached = null;

@@ -319,7 +319,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
                 if (f.isDirectory()) {
                     filesToAdd.addAll(RepositoryLoader.getSongsForFolder(f, null));
                 } else if (AudioFile.isValidAudioFile(f)) {
-                    AudioFile song = new AudioFile(f.getAbsolutePath());
+                    AudioFile song = new AudioFile(f);
                     filesToAdd.add(song);
                 } else if (f.getName().toLowerCase().endsWith("m3u")) {
                     filesToAdd.addAll(PlayListIO.getFilesFromList(f));

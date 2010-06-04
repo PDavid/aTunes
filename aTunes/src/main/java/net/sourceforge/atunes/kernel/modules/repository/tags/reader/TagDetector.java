@@ -25,6 +25,8 @@ import net.sourceforge.atunes.kernel.modules.repository.tags.tag.DefaultTag;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
+import org.jaudiotagger.audio.AudioHeader;
+
 /**
  * Reads the tag of an audio file using JAudiotagger.
  * 
@@ -44,18 +46,26 @@ public final class TagDetector {
      * 
      * @param file
      *            File to be read
+     * @return reference to jaudiotagger file
      */
-    public static void getTags(AudioFile file) {
+    public static void readInformation(AudioFile file, boolean readAudioProperties) {
+        getLogger().debug(LogCategories.FILE_READ, file);
 
         try {
-            getLogger().debug(LogCategories.FILE_READ, file);
-
-            org.jaudiotagger.audio.AudioFile f = org.jaudiotagger.audio.AudioFileIO.read(file.getFile().getAbsoluteFile());
+        	org.jaudiotagger.audio.AudioFile f = org.jaudiotagger.audio.AudioFileIO.read(file.getFile());
             org.jaudiotagger.tag.Tag tag = f.getTag();
 
             if (tag != null) {
-                DefaultTag tagForAudioFile = new DefaultTag(tag);
-                file.setTag(tagForAudioFile);
+                file.setTag(new DefaultTag(tag));
+            }
+            
+            if (readAudioProperties) {
+                AudioHeader header = f.getAudioHeader();
+                if (header != null) {
+                	file.setDuration(header.getTrackLength());
+                	file.setBitrate(header.getBitRateAsNumber());
+                	file.setFrequency(header.getSampleRateAsNumber());
+                }
             }
 
         } catch (Exception e) {

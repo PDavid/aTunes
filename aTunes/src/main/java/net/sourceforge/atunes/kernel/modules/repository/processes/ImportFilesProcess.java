@@ -138,7 +138,7 @@ public class ImportFilesProcess extends AbstractAudioFileTransferProcess {
 
         // Change tag if necessary after import
         if (!ApplicationState.getInstance().isApplyChangesToSourceFilesBeforeImport()) {
-            changeTag(file, new AudioFile(destFile.getAbsolutePath()));
+            changeTag(file, new AudioFile(destFile));
         }
 
         return destFile;
