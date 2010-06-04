@@ -29,20 +29,34 @@ import net.sourceforge.atunes.model.AudioObject;
 public final class NotifyHandler extends AbstractHandler implements PlaybackStateListener {
 
     private static NotifyHandler instance;
+    
+    private Notifications notifications;
 
     private NotifyHandler() {
     }
 
     @Override
     public void applicationFinish() {
+    	notifications.disposeNotifications();
     }
 
     @Override
     public void applicationStateChanged(ApplicationState newState) {
+    	if (newState.isUseLibnotify()) {
+    		notifications = new LibnotifyNotifications();
+    	} else {
+    		notifications = new DefaultNotifications();
+    	}
     }
 
     @Override
     protected void initHandler() {
+        ApplicationState state = ApplicationState.getInstance();
+        if (state.isUseLibnotify()) {
+            notifications = new LibnotifyNotifications();
+        } else {
+            notifications = new DefaultNotifications();
+        }
     };
 
     public static NotifyHandler getInstance() {
@@ -60,14 +74,6 @@ public final class NotifyHandler extends AbstractHandler implements PlaybackStat
      * Show notification
      */
     public void showNotification(AudioObject audioObject) {
-        ApplicationState state = ApplicationState.getInstance();
-        boolean useLibNotify = state.isUseLibnotify();
-        Notifications notifications = null;
-        if (useLibNotify) {
-            notifications = new LibnotifyNotifications();
-        } else {
-            notifications = new DefaultNotifications();
-        }
         notifications.showNotification(audioObject);
     }
 
@@ -75,7 +81,7 @@ public final class NotifyHandler extends AbstractHandler implements PlaybackStat
     public void playbackStateChanged(PlaybackState newState, AudioObject currentAudioObject) {
         if (ApplicationState.getInstance().isShowOSD() && newState == PlaybackState.PLAYING) {
             // Playing
-            NotifyHandler.getInstance().showNotification(currentAudioObject);
+            showNotification(currentAudioObject);
         }
     }
 }

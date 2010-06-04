@@ -34,5 +34,8 @@ public class DefaultNotifications implements Notifications {
     public void showNotification(AudioObject audioObject) {
         ControllerProxy.getInstance().getOSDDialogController().showOSD(audioObject);
     }
-
+    
+    @Override
+    public void disposeNotifications() {
+    }
 }

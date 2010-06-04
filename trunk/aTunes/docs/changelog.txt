@@ -29,6 +29,7 @@ aTunes 2.0.1
 - FIX: Can't add UI controls from plugins
 - FIX: Improvements in plugins panel
 - FIX: Improvements in repository read speed
+- FIX: libnotify doesn't work after a call to uninit method
 - UI improvements in repository selection dialog
 
 

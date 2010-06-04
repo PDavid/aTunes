@@ -46,35 +46,39 @@ public class LibnotifyNotifications implements Notifications {
 
 		@Override
 		public void run() {
-		    if (!Notify.isNotifyPresent()) {
-		        getLogger().error(LogCategories.NOTIFICATIONS, "libnotify is not available");
-		        return;
-		    }
-		    if (!Notify.init("aTunes")) {
-		        getLogger().error(LogCategories.NOTIFICATIONS, "could not init libnotify");
-		        return;
-		    }
-		    ImageIcon imageForAudioObject = audioObject.getImage(ImageSize.SIZE_200);
-		    if (imageForAudioObject == null) {
-		        imageForAudioObject = audioObject.getGenericImage(GenericImageSize.MEDIUM);
-		    }
-		    String image = TempFolder.getInstance().writeImageToTempFolder(ImageUtils.toBufferedImage(imageForAudioObject.getImage()), UUID.randomUUID().toString())
-		            .getAbsolutePath();
-		    NotifyNotification n = Notify.newNotification(audioObject.getTitle(), audioObject.getArtist(), image);
-		    if (!Notify.show(n)) {
-		        getLogger().error(LogCategories.NOTIFICATIONS, "could not show notification - libnotify");
-		        return;
-		    }
-		    Notify.uninit();
+			if (available) {
+				ImageIcon imageForAudioObject = audioObject.getImage(ImageSize.SIZE_200);
+				if (imageForAudioObject == null) {
+					imageForAudioObject = audioObject.getGenericImage(GenericImageSize.MEDIUM);
+				}
+				String image = TempFolder.getInstance().writeImageToTempFolder(ImageUtils.toBufferedImage(imageForAudioObject.getImage()), UUID.randomUUID().toString()).getAbsolutePath();
+				NotifyNotification n = Notify.newNotification(audioObject.getTitle(), audioObject.getArtist(), image);
+				if (!Notify.show(n)) {
+					getLogger().error(LogCategories.NOTIFICATIONS, "could not show notification - libnotify");
+				}
+			} else {
+				getLogger().error(LogCategories.NOTIFICATIONS, "libnotify is not available or could not be initialized");
+			}
 		}
 	}
 
 	private Logger logger;
 
     private ExecutorService executorService;
+    
+    private boolean available = false;
 
     public LibnotifyNotifications() {
+	    if (!Notify.isNotifyPresent()) {
+	        getLogger().error(LogCategories.NOTIFICATIONS, "libnotify is not available");
+	        return;
+	    }
+	    if (!Notify.init("aTunes")) {
+	        getLogger().error(LogCategories.NOTIFICATIONS, "could not init libnotify");
+	        return;
+	    }
         executorService = Executors.newSingleThreadExecutor();
+        available = true;
     }
 
     @Override
@@ -86,6 +90,12 @@ public class LibnotifyNotifications implements Notifications {
     public void showNotification(final AudioObject audioObject) {
         Runnable r = new ShowNotificationRunnable(audioObject);
         executorService.execute(r);
+    }
+    
+    @Override
+    public void disposeNotifications() {
+    	// This method can only be called when closing application
+	    Notify.uninit();
     }
 
     /**
