@@ -27,5 +27,7 @@ public interface Notifications {
     public String getName();
 
     public void showNotification(AudioObject audioObject);
+    
+    public void disposeNotifications();
 
 }
