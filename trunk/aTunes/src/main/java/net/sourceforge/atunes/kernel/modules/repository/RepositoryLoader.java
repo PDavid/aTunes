@@ -127,7 +127,7 @@ public class RepositoryLoader extends Thread {
 			for (File f : files) {
 				if (f.getParentFile().equals(folder)) {
 					AudioFile audioFile = null;
-					audioFile = new AudioFile(f.getAbsolutePath());
+					audioFile = new AudioFile(f);
 					audioFile.setExternalPictures(pictures);
 					repositoryFiles.put(audioFile.getUrl(), audioFile);
 
@@ -248,7 +248,7 @@ public class RepositoryLoader extends Thread {
 
 			for (int i = 0; i < files.size(); i++) {
 				AudioFile mp3 = null;
-				mp3 = new AudioFile(files.get(i).getAbsolutePath());
+				mp3 = new AudioFile(files.get(i));
 				mp3.setExternalPictures(pictures);
 				result.add(mp3);
 				if (listener != null) {
@@ -626,13 +626,13 @@ public class RepositoryLoader extends Thread {
             // don't read file again
 
             if (oldRepository == null) {
-                audio = new AudioFile(audiofile.getAbsolutePath());
+                audio = new AudioFile(audiofile);
             } else {
                 AudioFile oldAudioFile = oldRepository.getFile(audiofile.getAbsolutePath());
                 if (oldAudioFile != null && oldAudioFile.isUpToDate()) {
                     audio = oldAudioFile;
                 } else {
-                    audio = new AudioFile(audiofile.getAbsolutePath());
+                    audio = new AudioFile(audiofile);
                 }
             }
 

@@ -28,6 +28,7 @@ aTunes 2.0.1
 - FIX: Improvements in plugin installation
 - FIX: Can't add UI controls from plugins
 - FIX: Improvements in plugins panel
+- FIX: Improvements in repository read speed
 - UI improvements in repository selection dialog
 
 

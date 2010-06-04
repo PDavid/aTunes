@@ -99,18 +99,19 @@ public final class MultipleInstancesHandler extends AbstractHandler {
                     br = new BufferedReader(new InputStreamReader(s.getInputStream()));
                     String str;
                     while ((str = br.readLine()) != null) {
+                    	File fileStr = new File(str);
                         getLogger().info(LogCategories.HANDLER, StringUtils.getString("Received connection with content: \"", str, "\""));
-                        if (PlayListIO.isValidPlayList(str)) {
-                            List<String> songs = PlayListIO.read(new File(str));
+                        if (PlayListIO.isValidPlayList(fileStr)) {
+                            List<String> songs = PlayListIO.read(fileStr);
                             List<AudioObject> files = PlayListIO.getAudioObjectsFromFileNamesList(songs);
                             for (AudioObject file : files) {
                                 queue.addSong(file);
                             }
-                        } else if (AudioFile.isValidAudioFile(str)) {
+                        } else if (AudioFile.isValidAudioFile(fileStr)) {
                             AudioFile file = RepositoryHandler.getInstance().getFileIfLoaded(str);
                             if (file == null) {
                                 // file not in repository, and don't add it now
-                                file = new AudioFile(str);
+                                file = new AudioFile(fileStr);
                             }
                             queue.addSong(file);
                         } else if (CommandHandler.getInstance().isValidCommand(str)) {

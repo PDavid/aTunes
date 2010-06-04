@@ -160,7 +160,7 @@ public class NeroAacEncoder implements Encoder {
 
             // Gather the info and write the tag
             try {
-                AudioFile audiofile = new AudioFile(mp4File.getAbsolutePath());
+                AudioFile audiofile = new AudioFile(mp4File);
                 AbstractTag tag = new DefaultTag();
 
                 tag.setAlbum(album);

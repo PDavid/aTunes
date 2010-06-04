@@ -183,7 +183,7 @@ public class FlacEncoder implements Encoder {
 
             // Gather the info and write the tag
             try {
-                AudioFile audiofile = new AudioFile(oggFile.getAbsolutePath());
+                AudioFile audiofile = new AudioFile(oggFile);
                 AbstractTag tag = new DefaultTag();
 
                 tag.setAlbum(album);

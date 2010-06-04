@@ -184,7 +184,7 @@ public class LameEncoder implements Encoder {
 
             // Gather the info and write the tag
             try {
-                AudioFile audiofile = new AudioFile(mp3File.getAbsolutePath());
+                AudioFile audiofile = new AudioFile(mp3File);
                 AbstractTag tag = new DefaultTag();
 
                 tag.setAlbum(album);
