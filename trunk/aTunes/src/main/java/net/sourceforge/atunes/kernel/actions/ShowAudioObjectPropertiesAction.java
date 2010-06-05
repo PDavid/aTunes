@@ -45,7 +45,7 @@ public class ShowAudioObjectPropertiesAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        GuiHandler.getInstance().showSongProperties((Boolean) getValue(SELECTED_KEY), true);
+        GuiHandler.getInstance().showSongProperties((Boolean) getValue(SELECTED_KEY));
     }
 
 }

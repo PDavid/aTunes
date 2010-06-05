@@ -35,8 +35,11 @@ import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.panels.AudioObjectPropertiesPanel;
 import net.sourceforge.atunes.kernel.controllers.model.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.kernel.modules.playlist.PlayListEventListener;
+import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
+import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
@@ -52,7 +55,7 @@ import org.jdesktop.swingx.border.DropShadowBorder;
  * 
  * @author fleax
  */
-public final class AudioObjectPropertiesController extends AbstractSimpleController<AudioObjectPropertiesPanel> {
+public final class AudioObjectPropertiesController extends AbstractSimpleController<AudioObjectPropertiesPanel> implements PlayListEventListener {
 
     private final class FillPictureSwingWorker extends
 			SwingWorker<ImageIcon, Void> {
@@ -103,9 +106,11 @@ public final class AudioObjectPropertiesController extends AbstractSimpleControl
      *            the panel controlled
      */
     public AudioObjectPropertiesController(AudioObjectPropertiesPanel pControlled) {
-        super(pControlled);
+        super(pControlled);        
         addBindings();
         addStateBindings();
+        
+        PlayListHandler.getInstance().addPlayListEventListener(this);
     }
 
     @Override
@@ -126,7 +131,7 @@ public final class AudioObjectPropertiesController extends AbstractSimpleControl
     /**
      * Clears the main panel.
      */
-    public void clear() {
+    public void clearPanel() {
         currentAudioObject = null;
         getComponentControlled().getPictureLabel().setIcon(null);
         getComponentControlled().getPictureLabel().setVisible(false);
@@ -296,8 +301,23 @@ public final class AudioObjectPropertiesController extends AbstractSimpleControl
             fillPicture();
             getComponentControlled().getMainPanel().setVisible(true);
         } else {
-            clear();
+            clearPanel();
         }
     }
 
+    @Override
+    public void clear() {
+        // Next actions must be done ONLY if stopPlayerWhenPlayListClear is enabled
+        if (ApplicationState.getInstance().isStopPlayerOnPlayListClear() && ApplicationState.getInstance().isShowAudioObjectProperties()) {
+        	clearPanel();
+        }
+    }
+    
+    @Override
+    public void selectedAudioObjectChanged(AudioObject audioObject) {
+        // Update file properties
+        if (ApplicationState.getInstance().isShowAudioObjectProperties()) {
+            updateValues(audioObject);
+        }
+    }
 }
