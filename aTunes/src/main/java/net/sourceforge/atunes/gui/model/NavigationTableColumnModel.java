@@ -25,6 +25,7 @@ import java.awt.Component;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.UIManager;
 import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
@@ -73,15 +74,20 @@ public final class NavigationTableColumnModel extends AbstractCommonColumnModel 
         public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             // Get result from super renderer
             Component c = renderer.getComponent(superComponent, t, value, isSelected, hasFocus, row, column);
-
             // Check incomplete tags if necessary
             if (ApplicationState.getInstance().isHighlightIncompleteTagElements()) {
                 AudioObject audioObject = ControllerProxy.getInstance().getNavigationController().getAudioObjectInNavigationTable(row);
                 if (IncompleteTagsChecker.hasIncompleteTags(audioObject)) {
                     ((JLabel) c).setForeground(Color.red);
-                }
+                } else {
+                    if( isSelected ) {
+                        ((JLabel) c).setForeground(UIManager.getColor("List.selectionForeground"));
+                    }
+                    else {
+                        ((JLabel) c).setForeground(UIManager.getColor("List.foreground"));
+                    }
+                }    
             }
-
             return c;
         }
     }

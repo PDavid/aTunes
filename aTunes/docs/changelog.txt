@@ -15,7 +15,7 @@ aTunes 2.0.1
 - FIX: Write repository after reading XML [2991957]
 - FIX: Avoid progress bar move when time labels needs extra space
 - FIX: Don't show "Buffering" message for downloaded podcast feed entries
-- FIX: Shown wrong incomplete tags with System LAF [2992481]
+- FIX: Shown wrong incomplete tags with System LAF [2992481][3008889]
 - FIX: Some components where not updated when changing look and feel
 - FIX: Application not able to play in Linux using a desktop different from Gnome or KDE [2995302]
 - FIX: Preferences not saved if some requires restart [2999531]
