@@ -25,8 +25,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
@@ -842,15 +840,8 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
         }
 
         addToPlaybackHistory(audioObject);
-
-        ExecutorService executorService = Executors.newFixedThreadPool(2);        
     	for (final PlayListEventListener listener : playListEventListeners) {
-    		executorService.submit(new Runnable() {
-    			@Override
-    			public void run() {
-    	    		listener.selectedAudioObjectChanged(audioObject);
-    			}
-    		});
+    		listener.selectedAudioObjectChanged(audioObject);
     	}
     }
 
