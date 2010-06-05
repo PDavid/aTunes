@@ -460,11 +460,11 @@ public class PlayList implements Serializable, Cloneable {
         return previousObject;
     }
 
-    protected AudioObject getNextAudioObject(int index) {
+    public AudioObject getNextAudioObject(int index) {
         return getMode().getNextAudioObject(index);
     }
 
-    protected AudioObject getPreviousAudioObject(int index) {
+    public AudioObject getPreviousAudioObject(int index) {
         return getMode().getPreviousAudioObject(index);
     }
 

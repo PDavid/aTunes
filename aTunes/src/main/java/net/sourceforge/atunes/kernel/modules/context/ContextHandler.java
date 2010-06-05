@@ -34,6 +34,8 @@ import net.sourceforge.atunes.kernel.modules.context.audioobject.AudioObjectCont
 import net.sourceforge.atunes.kernel.modules.context.similar.SimilarArtistsContextPanel;
 import net.sourceforge.atunes.kernel.modules.context.youtube.YoutubeContextPanel;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.kernel.modules.playlist.PlayListEventListener;
+import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
@@ -49,7 +51,7 @@ import org.commonjukebox.plugins.model.Plugin;
 import org.commonjukebox.plugins.model.PluginInfo;
 import org.commonjukebox.plugins.model.PluginListener;
 
-public final class ContextHandler extends AbstractHandler implements PluginListener {
+public final class ContextHandler extends AbstractHandler implements PluginListener, PlayListEventListener {
 
     /**
      * Singleton instance of handler
@@ -77,6 +79,8 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
         // TODO: Move to a web services handler
         LastFmService.getInstance().updateService();
         LyricsService.getInstance().updateService();
+        
+        PlayListHandler.getInstance().addPlayListEventListener(this);
     }
 
     @Override
@@ -139,7 +143,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
      * Clears all context panels
      * 
      */
-    public void clear() {
+    public void clearContextPanels() {
         clearTabsContent();
         currentAudioObject = null;
 
@@ -199,7 +203,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
 
             if (ao == null) {
                 // Clear all tabs
-                clear();
+                clearContextPanels();
             } else {
                 if (audioObjectModified) {
                     clearTabsContent();
@@ -274,6 +278,24 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
         for (Plugin instance : createdInstances) {
             getContextPanels().remove(instance);
             GuiHandler.getInstance().getContextPanel().removeContextPanel((AbstractContextPanel) instance);
+        }
+    }
+    
+    @Override
+    public void selectedAudioObjectChanged(AudioObject audioObject) {
+        if (ApplicationState.getInstance().isUseContext()) {
+            retrieveInfoAndShowInPanel(audioObject);
+        }
+    }
+    
+    @Override
+    public void clear() {
+        if (ApplicationState.getInstance().isUseContext()) {
+            retrieveInfoAndShowInPanel(null);
+            
+            if (ApplicationState.getInstance().isStopPlayerOnPlayListClear()) {
+            	ContextHandler.getInstance().clearContextPanels();
+            }
         }
     }
 }

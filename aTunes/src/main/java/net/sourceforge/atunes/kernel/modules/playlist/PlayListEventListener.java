@@ -25,7 +25,7 @@ import net.sourceforge.atunes.model.AudioObject;
 /**
  * The listener interface for receiving playListEvent events.
  */
-interface PlayListEventListener {
+public interface PlayListEventListener {
 
     /**
      * Called when play list is cleared.

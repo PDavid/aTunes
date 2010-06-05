@@ -80,7 +80,7 @@ public final class TagModifier {
 		        // Changed current playing song
 		        if (PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList() != null
 		                && PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList().equals(audioFilesEditing.get(i))) {
-		            PlayListHandler.getInstance().selectedAudioObjectChanged(audioFilesEditing.get(i));
+		            PlayListHandler.getInstance().selectedAudioObjectHasChanged(audioFilesEditing.get(i));
 
 		            if (PlayerHandler.getInstance().isEnginePlaying()) {
 		                GuiHandler.getInstance().updateTitleBar(audioFilesEditing.get(i));

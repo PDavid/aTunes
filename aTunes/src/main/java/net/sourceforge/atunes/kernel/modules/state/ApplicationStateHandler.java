@@ -182,7 +182,7 @@ public final class ApplicationStateHandler extends AbstractHandler {
         GuiHandler.getInstance().showStatusBar(ApplicationState.getInstance().isShowStatusBar());
 
         // Song properties visible
-        GuiHandler.getInstance().showSongProperties(ApplicationState.getInstance().isShowAudioObjectProperties(), false);
+        GuiHandler.getInstance().showSongProperties(ApplicationState.getInstance().isShowAudioObjectProperties());
 
         // Show Context
         GuiHandler.getInstance().showContextPanel(ApplicationState.getInstance().isUseContext());

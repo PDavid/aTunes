@@ -1207,13 +1207,11 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      * 
      * @param show
      *            the show
-     * @param update
-     *            the update
      */
-    public void showSongProperties(boolean show, boolean update) {
+    public void showSongProperties(boolean show) {
         ApplicationState.getInstance().setShowAudioObjectProperties(show);
         frame.showSongProperties(show);
-        if (show && update) {
+        if (show) {
             if (PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList() != null) {
                 ControllerProxy.getInstance().getFilePropertiesController().updateValues(PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList());
             } else {

@@ -484,7 +484,7 @@ public abstract class AbstractPlayerEngine implements PlaybackStateListener {
 
                         // We need to update current object and active playlist first
                         PlayListHandler.setVisiblePlayListActive();
-                        PlayListHandler.getInstance().selectedAudioObjectChanged(nextAudioObject);
+                        PlayListHandler.getInstance().selectedAudioObjectHasChanged(nextAudioObject);
 
                         playAudioObject(nextAudioObject);
                     }
@@ -814,7 +814,7 @@ public abstract class AbstractPlayerEngine implements PlaybackStateListener {
     private void switchPlaybackTo(AudioObject audioObjectToSwitchTo, boolean resetIfNoObject, boolean autoNext) {
         if (audioObjectToSwitchTo != null) {
             try {
-                PlayListHandler.getInstance().selectedAudioObjectChanged(audioObjectToSwitchTo);
+                PlayListHandler.getInstance().selectedAudioObjectHasChanged(audioObjectToSwitchTo);
                 if (isEnginePlaying() || isPaused() || autoNext) {
                     stopCurrentAudioObject(false);
                     if (!isPaused()) {
@@ -829,7 +829,7 @@ public abstract class AbstractPlayerEngine implements PlaybackStateListener {
             if (resetIfNoObject) {
                 stopCurrentAudioObject(false);
                 PlayListHandler.getInstance().setPositionToPlayInCurrentPlayList(0);
-                PlayListHandler.getInstance().selectedAudioObjectChanged(PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList());
+                PlayListHandler.getInstance().selectedAudioObjectHasChanged(PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList());
             }
         }
     }

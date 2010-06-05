@@ -30,6 +30,7 @@ aTunes 2.0.1
 - FIX: Improvements in plugins panel
 - FIX: Improvements in repository read speed
 - FIX: libnotify doesn't work after a call to uninit method
+- FIX: Context panel updates are blocking playback
 - UI improvements in repository selection dialog
 
 

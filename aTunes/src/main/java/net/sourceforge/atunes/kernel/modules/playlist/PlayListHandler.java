@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
@@ -35,7 +37,6 @@ import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.SavePlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
 import net.sourceforge.atunes.kernel.modules.columns.PlayListColumnSet;
-import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.filter.AbstractFilter;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
@@ -54,7 +55,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The Class PlayListHandler.
  */
-public final class PlayListHandler extends AbstractHandler implements AudioFilesRemovedListener, PlayListEventListener {
+public final class PlayListHandler extends AbstractHandler implements AudioFilesRemovedListener {
 
     private static final class RowListComparator implements Comparator<Integer> {
         private final boolean up;
@@ -105,6 +106,11 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      */
     private boolean playListsChanged;
 
+    /**
+     * Listeners to be called when play list changes
+     */
+    private List<PlayListEventListener> playListEventListeners = new ArrayList<PlayListEventListener>();
+    
     /**
      * Filter for play list
      */
@@ -366,7 +372,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
         Actions.getAction(ShufflePlayListAction.class).setEnabled(!instance.getCurrentPlayList(true).isEmpty());
         GuiHandler.getInstance().showPlayListInformation(playList);
         if (getInstance().isActivePlayListVisible()) {
-            getInstance().selectedAudioObjectChanged(playList.getCurrentAudioObject());
+            getInstance().selectedAudioObjectHasChanged(playList.getCurrentAudioObject());
         }
     }
 
@@ -477,7 +483,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
                 selectedAudioObject = playList.getRandomPosition();
             }
 
-            selectedAudioObjectChanged(audioObjects.get(selectedAudioObject));
+            selectedAudioObjectHasChanged(audioObjects.get(selectedAudioObject));
             playList.setCurrentAudioObjectIndex(selectedAudioObject);
         }
 
@@ -496,34 +502,6 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
     public void addToActivePlayList(List<? extends AudioObject> audioObjects) {
         PlayList playList = getCurrentPlayList(false);
         addToPlayList(playList.getCurrentAudioObjectIndex() + 1, audioObjects, false);
-    }
-
-    /**
-     * Method of PlayListEventListener. Called when play list is cleared
-     */
-    @Override
-    public void clear() {
-        // Update context information
-        if (ApplicationState.getInstance().isUseContext()) {
-            ContextHandler.getInstance().retrieveInfoAndShowInPanel(null);
-        }
-
-        // Next actions must be done ONLY if stopPlayerWhenPlayListClear is enabled
-        // New actions added to this method might be called with property enabled or disabled
-        if (ApplicationState.getInstance().isStopPlayerOnPlayListClear()) {
-            // Clear file properties
-            if (ApplicationState.getInstance().isShowAudioObjectProperties()) {
-                ControllerProxy.getInstance().getFilePropertiesController().clear();
-            }
-
-            // Clear context information
-            if (ApplicationState.getInstance().isUseContext()) {
-                ContextHandler.getInstance().clear();
-            }
-
-            // Remove audio object information from full screen mode
-            GuiHandler.getInstance().getFullScreenWindow().setAudioObjects(null);
-        }
     }
 
     /**
@@ -822,13 +800,13 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
                     currentPlayList.setCurrentAudioObjectIndex(currentPlayList.size() - 1);
                 }
                 if (isActivePlayListVisible()) {
-                    selectedAudioObjectChanged(currentPlayList.getCurrentAudioObject());
+                    selectedAudioObjectHasChanged(currentPlayList.getCurrentAudioObject());
                 }
             }
         } else {
             currentPlayList.setCurrentAudioObjectIndex(currentPlayList.indexOf(playingAudioObject));
             if (isActivePlayListVisible()) {
-                selectedAudioObjectChanged(currentPlayList.getCurrentAudioObject());
+                selectedAudioObjectHasChanged(currentPlayList.getCurrentAudioObject());
             }
         }
 
@@ -844,45 +822,36 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
     }
 
     /**
-     * Method of PlayListEventListener. Called when current audio object changes
+     * Called when play list is cleared. Calls to all PlayListEventListener
+     */
+    private void clear() {
+    	for (PlayListEventListener listener : playListEventListeners) {
+    		listener.clear();
+    	}
+    }
+
+    /**
+     * Called when current audio object changes. Calls to all PlayListEventListener
      * 
      * @param audioObject
      *            the audio object
      */
-    @Override
-    public void selectedAudioObjectChanged(AudioObject audioObject) {
+    public void selectedAudioObjectHasChanged(final AudioObject audioObject) {
         if (audioObject == null) {
             return;
         }
 
         addToPlaybackHistory(audioObject);
 
-        // Update file properties
-        if (ApplicationState.getInstance().isShowAudioObjectProperties()) {
-            ControllerProxy.getInstance().getFilePropertiesController().updateValues(audioObject);
-        }
-
-        // Update context information
-        if (ApplicationState.getInstance().isUseContext()) {
-            ContextHandler.getInstance().retrieveInfoAndShowInPanel(audioObject);
-        }
-
-        // Update full screen information when play back history has been updated
-        List<AudioObject> objects = new ArrayList<AudioObject>();
-        objects.add(getCurrentPlayList(false).getPreviousAudioObject(2));
-        objects.add(getCurrentPlayList(false).getPreviousAudioObject(1));
-        objects.add(audioObject);
-        objects.add(getCurrentPlayList(false).getNextAudioObject(1));
-        objects.add(getCurrentPlayList(false).getNextAudioObject(2));
-
-        GuiHandler.getInstance().getFullScreenWindow().setAudioObjects(objects);
-
-        // Disable slider if audio object is a radio or podcast feed entry
-        boolean b = audioObject.isSeekable();
-        if (b && audioObject instanceof PodcastFeedEntry) {
-            b = ApplicationState.getInstance().isUseDownloadedPodcastFeedEntries();
-        }
-        ControllerProxy.getInstance().getPlayerControlsController().setSlidable(b);
+        ExecutorService executorService = Executors.newFixedThreadPool(2);        
+    	for (final PlayListEventListener listener : playListEventListeners) {
+    		executorService.submit(new Runnable() {
+    			@Override
+    			public void run() {
+    	    		listener.selectedAudioObjectChanged(audioObject);
+    			}
+    		});
+    	}
     }
 
     /**
@@ -1204,5 +1173,13 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
             }
             return result;
         }
+    }
+    
+    /**
+     * Adds a new play list event listener
+     * @param listener
+     */
+    public void addPlayListEventListener(PlayListEventListener listener) {
+    	this.playListEventListeners.add(listener);
     }
 }
