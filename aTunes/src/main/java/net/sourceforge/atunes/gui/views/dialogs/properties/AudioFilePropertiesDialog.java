@@ -23,12 +23,18 @@ package net.sourceforge.atunes.gui.views.dialogs.properties;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.Dimension;
+import java.awt.datatransfer.*;
+import java.awt.Toolkit;
+import java.awt.event.ActionListener;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JButton;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Constants;
@@ -40,6 +46,9 @@ import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
+
+import net.sourceforge.atunes.kernel.controllers.editTagDialog.EditTagDialogController;
+import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
 
 import org.jdesktop.swingx.border.DropShadowBorder;
 
@@ -79,13 +88,13 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
     private Logger logger;
 
     private JLabel pictureLabel;
-    private JLabel fileNameLabel;
-    private JLabel pathLabel;
-    private JLabel songLabel;
-    private JLabel artistLabel;
-    private JLabel albumArtistLabel;
+    private ProviderLabel fileNameLabel;
+    private ProviderLabel pathLabel;
+    private ProviderLabel songLabel;
+    private ProviderLabel artistLabel;
+    private ProviderLabel albumArtistLabel;
     private JLabel composerLabel;
-    private JLabel albumLabel;
+    private ProviderLabel albumLabel;
     private JLabel durationLabel;
     private JLabel trackLabel;
     private JLabel discNumberLabel;
@@ -110,6 +119,7 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
         setContent();
 
         GuiUtils.applyComponentOrientation(this);
+        this.pack();
     }
 
     /**
@@ -136,12 +146,12 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
         c.gridx = 0;
         c.gridy = 0;
         c.gridheight = 4;
-        c.insets = new Insets(5, 10, 5, 10);
+        c.insets = new Insets(10, 10, 5, 10);
         c.anchor = GridBagConstraints.CENTER;
         c.fill = GridBagConstraints.NONE;
         panel.add(pictureLabel, c);
 
-        songLabel = new JLabel();
+        songLabel = new ProviderLabel(songProvider);
         songLabel.setFont(Fonts.getPropertiesDialogBigFont());
         c.gridx = 1;
         c.gridy = 0;
@@ -149,34 +159,61 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
         c.weightx = 1;
         c.fill = GridBagConstraints.HORIZONTAL;
         panel.add(songLabel, c);
+        
+        // copy button
+        c.gridx = 2;
+        c.gridy = 0;
+        c.weightx = 0;
+        panel.add(new CopyButton(songLabel), c);
 
-        artistLabel = new JLabel();
+        artistLabel = new ProviderLabel(artistProvider);
         artistLabel.setFont(Fonts.getPropertiesDialogBigFont());
         c.gridx = 1;
         c.gridy = 1;
         panel.add(artistLabel, c);
+        
+        // copy button
+        c.gridx = 2;
+        c.gridy = 1;
+        panel.add(new CopyButton(artistLabel), c);
 
-        albumArtistLabel = new JLabel();
+        albumArtistLabel = new ProviderLabel(albumArtistProvider);
         albumArtistLabel.setFont(Fonts.getPropertiesDialogBigFont());
         c.gridx = 1;
         c.gridy = 2;
         panel.add(albumArtistLabel, c);
+        
+        c.gridx = 2;
+        c.gridy = 2;
+        panel.add(new CopyButton(albumArtistLabel), c);
 
-        albumLabel = new JLabel();
+        albumLabel = new ProviderLabel(albumProvider);
         albumLabel.setFont(Fonts.getPropertiesDialogBigFont());
         c.gridx = 1;
         c.gridy = 3;
         panel.add(albumLabel, c);
+        
+        c.gridx = 2;
+        c.gridy = 3;
+        panel.add(new CopyButton(albumLabel), c);
 
-        fileNameLabel = new JLabel();
+        fileNameLabel = new ProviderLabel(fileNameProvider);
         c.gridx = 1;
         c.gridy = 4;
         panel.add(fileNameLabel, c);
+        
+        c.gridx = 2;
+        c.gridy = 4;
+        panel.add(new CopyButton(fileNameLabel), c);
 
-        pathLabel = new JLabel();
+        pathLabel = new ProviderLabel(filePathProvider);
         c.gridx = 1;
         c.gridy = 5;
         panel.add(pathLabel, c);
+        
+        c.gridx = 2;
+        c.gridy = 5;
+        panel.add(new CopyButton(pathLabel), c);
 
         durationLabel = new JLabel();
         c.gridx = 1;
@@ -217,6 +254,21 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
         c.gridx = 1;
         c.gridy = 13;
         panel.add(frequencyLabel, c);
+        
+        JButton editTagsButton = new JButton();
+        editTagsButton.setText( I18nUtils.getString( "EDIT_TAG" ) );
+        editTagsButton.addActionListener( new ActionListener() {
+                public void actionPerformed( ActionEvent evt ) {
+                    EditTagDialogController ctl = new EditTagDialogController( new EditTagDialog( null, false ) );
+                    ctl.editFiles( java.util.Collections.singletonList( file ) );
+                }
+        });
+        
+        c.gridx = 0;
+        c.gridy = 14;
+        c.insets = new Insets(10, 5, 15, 10);
+        panel.add(editTagsButton, c);
+        
 
         add(panel);
     }
@@ -234,12 +286,13 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
      */
     private void setContent() {
         fillPicture();
-        songLabel.setText(getHtmlFormatted(I18nUtils.getString("SONG"), StringUtils.isEmpty(file.getTitle()) ? "-" : file.getTitle()));
-        artistLabel.setText(getHtmlFormatted(I18nUtils.getString("ARTIST"), StringUtils.isEmpty(file.getArtist()) ? "-" : file.getArtist()));
-        albumArtistLabel.setText(getHtmlFormatted(I18nUtils.getString("ALBUM_ARTIST"), StringUtils.isEmpty(file.getAlbumArtist()) ? "-" : file.getAlbumArtist()));
-        albumLabel.setText(getHtmlFormatted(I18nUtils.getString("ALBUM"), StringUtils.isEmpty(file.getAlbum()) ? "-" : file.getAlbum()));
-        fileNameLabel.setText(getHtmlFormatted(I18nUtils.getString("FILE"), file.getFile().getName()));
-        pathLabel.setText(getHtmlFormatted(I18nUtils.getString("LOCATION"), file.getFile().getParent()));
+        songLabel.fillText();
+        artistLabel.fillText();
+        albumArtistLabel.fillText();
+        albumLabel.fillText();
+        fileNameLabel.fillText();
+        pathLabel.fillText();
+        
         durationLabel.setText(getHtmlFormatted(I18nUtils.getString("DURATION"), StringUtils.seconds2String(file.getDuration())));
         trackLabel.setText(getHtmlFormatted(I18nUtils.getString("TRACK"), file.getTrackNumber() > 0 ? String.valueOf(file.getTrackNumber()) : "-"));
         discNumberLabel.setText(getHtmlFormatted(I18nUtils.getString("DISC_NUMBER"), file.getDiscNumber() > 0 ? String.valueOf(file.getDiscNumber()) : "-"));
@@ -262,4 +315,152 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
         return logger;
     }
 
+    private interface ValueProvider {
+
+        String getDisplayValue();
+
+        String getClearValue();
+    }
+
+    private abstract class AbstractFieldProvider implements ValueProvider {
+
+        public abstract String getI18Name();
+
+        private String getValue() {
+            String v = getClearValue();
+            return StringUtils.isEmpty(v)? "-" : v;
+        }
+
+        @Override
+        public String getDisplayValue() {
+            return getHtmlFormatted(I18nUtils.getString(getI18Name()), getValue());
+        }        
+
+    }
+
+    private class ProviderLabel extends JLabel {
+
+        private final ValueProvider provider;
+
+        public ProviderLabel( ValueProvider provider ) {
+            if( (this.provider = provider) == null )
+                throw new IllegalArgumentException( "provider pointer should not be null" );
+        }
+
+        public ValueProvider getProvider() {
+            return this.provider;
+        }
+
+        public void fillText() {
+            super.setText(provider.getDisplayValue());
+        }
+    }
+
+    private class SongProvider extends AbstractFieldProvider {
+
+        public String getI18Name() {
+            return "SONG"; // noi18n
+        }
+
+        public String getClearValue() {
+            return file.getTitle();
+        }
+    }
+
+    private SongProvider songProvider = new SongProvider();
+
+    private class ArtistProvider extends AbstractFieldProvider {
+
+        public String getI18Name() {
+            return "ARTIST";
+        }
+
+        public String getClearValue() {
+            return file.getArtist();
+        }
+    }
+
+    private ArtistProvider artistProvider = new ArtistProvider();
+
+    private class AlbumArtistProvider extends AbstractFieldProvider {
+
+        public String getI18Name() {
+            return "ALBUM_ARTIST";
+        }
+
+        public String getClearValue() {
+            return file.getAlbumArtist();
+        }
+    }
+
+    private AlbumArtistProvider albumArtistProvider = new AlbumArtistProvider();
+
+    private class AlbumProvider extends AbstractFieldProvider {
+
+        public String getI18Name() {
+            return "ALBUM";
+        }
+
+        public String getClearValue() {
+            return file.getAlbum();
+        }
+    }
+
+    private AlbumProvider albumProvider = new AlbumProvider(); 
+
+    private class FileNameProvider extends AbstractFieldProvider {
+
+        public String getI18Name() {
+            return "FILE";
+        }
+
+        public String getClearValue() {
+            return file.getFile().getName();
+        }
+    }
+
+    private FileNameProvider fileNameProvider = new FileNameProvider();
+
+    private class FilePathProvider extends AbstractFieldProvider {
+
+        public String getI18Name() {
+            return "LOCATION";
+        }
+
+        public String getClearValue() {
+            return file.getFile().getAbsolutePath();
+        }
+    }
+
+    private FilePathProvider filePathProvider = new FilePathProvider();
+
+    private class CopyButton extends JButton implements ActionListener {
+
+        private final JLabel refLabel;
+
+        public CopyButton( JLabel refLabel ) {
+            if( (this.refLabel = refLabel) == null )
+                throw new IllegalArgumentException("Reference label name should not be null or empty");
+            setIcon(Images.getImage(Images.COPY));
+            setPreferredSize(new Dimension(20, 20));
+            setText(null);
+            addActionListener(this);
+        }
+
+        private String getFieldValue() {
+            if( refLabel instanceof ProviderLabel )
+                return ((ProviderLabel)refLabel).getProvider().getClearValue();
+            else
+                return refLabel.getText();
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            String value = getFieldValue();
+            if( !StringUtils.isEmpty(value) ) { 
+                StringSelection data = new StringSelection(getFieldValue());
+                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                clipboard.setContents(data, data);
+            }
+        }
+    }
 }
