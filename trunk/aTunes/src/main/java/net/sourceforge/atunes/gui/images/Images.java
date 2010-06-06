@@ -69,6 +69,7 @@ public final class Images {
     public static final String CLOSE_TAB = "closeTab.png";
     public static final String COLLAPSE = "collapse.png";
     public static final String CONTEXT = "context.png";
+    public static final String COPY = "copy.png";
     public static final String DATE = "date.png";
     public static final String DELETE_FILE = "delete.png";
     public static final String DELETE_TAG = "erase.png";
