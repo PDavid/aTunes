@@ -75,7 +75,15 @@ public final class PlayListController extends AbstractSimpleController<PlayListP
     protected void addStateBindings() {
         // Nothing to do
     }
+    
+    private static int arrMin(int[] array) {
+        int rs = Integer.MAX_VALUE;
+        for(int i : array)
+            if(i < rs)
+                rs = i;
 
+        return rs;
+    }
     /**
      * Delete selection.
      */
@@ -85,8 +93,19 @@ public final class PlayListController extends AbstractSimpleController<PlayListP
         PlayListTable table = GuiHandler.getInstance().getPlayListTable();
         int[] rows = table.getSelectedRows();
         if (rows.length > 0) {
-            getComponentControlled().getPlayListTable().getSelectionModel().clearSelection();
+            javax.swing.JTable aTable = getComponentControlled().getPlayListTable();
+            aTable.getSelectionModel().clearSelection();
             PlayListHandler.getInstance().removeAudioObjects(rows);
+            
+            int rowCount = aTable.getRowCount();
+            if(rowCount > 0) {
+                int newIndex = arrMin(rows);
+
+                if(newIndex >= rowCount)
+                    newIndex = rowCount - 1;
+
+                aTable.getSelectionModel().setSelectionInterval(newIndex, newIndex);
+            }
         }
     }
 
