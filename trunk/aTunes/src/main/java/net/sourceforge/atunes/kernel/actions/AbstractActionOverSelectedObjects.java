@@ -32,6 +32,9 @@ import javax.swing.Icon;
 import net.sourceforge.atunes.gui.model.AudioObjectsSource;
 import net.sourceforge.atunes.model.AudioObject;
 
+import org.commonjukebox.plugins.model.PluginApi;
+
+@PluginApi
 public abstract class AbstractActionOverSelectedObjects<T extends AudioObject> extends AbstractAction {
 
     private static final long serialVersionUID = 1673432955671008277L;

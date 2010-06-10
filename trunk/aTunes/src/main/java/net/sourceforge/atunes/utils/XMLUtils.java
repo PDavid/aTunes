@@ -58,6 +58,7 @@ import net.sourceforge.atunes.kernel.modules.repository.tags.tag.DefaultTag;
 import net.sourceforge.atunes.misc.PointedList;
 import net.sourceforge.atunes.misc.RankList;
 
+import org.commonjukebox.plugins.model.PluginApi;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -69,6 +70,7 @@ import com.thoughtworks.xstream.XStream;
 /**
  * Utility methods for XML.
  */
+@PluginApi
 public final class XMLUtils {
 
     private XMLUtils() {

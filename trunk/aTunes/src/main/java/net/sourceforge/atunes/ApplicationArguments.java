@@ -23,11 +23,14 @@ package net.sourceforge.atunes;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.commonjukebox.plugins.model.PluginApi;
+
 import net.sourceforge.atunes.kernel.modules.command.CommandHandler;
 
 /**
  * This class defines accepted arguments by application.
  */
+@PluginApi
 public final class ApplicationArguments {
 
     private ApplicationArguments() {
