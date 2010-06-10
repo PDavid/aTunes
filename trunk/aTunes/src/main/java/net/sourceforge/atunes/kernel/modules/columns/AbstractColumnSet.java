@@ -26,6 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.commonjukebox.plugins.model.PluginApi;
+
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 
@@ -34,6 +36,7 @@ import net.sourceforge.atunes.model.AudioObject;
  * 
  * @author fleax
  */
+@PluginApi
 public abstract class AbstractColumnSet {
 
     /** Available columns */
