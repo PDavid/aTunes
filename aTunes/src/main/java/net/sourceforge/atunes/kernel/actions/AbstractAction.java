@@ -30,6 +30,9 @@ import net.sourceforge.atunes.kernel.modules.command.Command;
 import net.sourceforge.atunes.kernel.modules.command.CommandHandler;
 import net.sourceforge.atunes.model.AudioObject;
 
+import org.commonjukebox.plugins.model.PluginApi;
+
+@PluginApi
 public abstract class AbstractAction extends javax.swing.AbstractAction implements Command {
 
     private static final long serialVersionUID = 1648027023533465104L;

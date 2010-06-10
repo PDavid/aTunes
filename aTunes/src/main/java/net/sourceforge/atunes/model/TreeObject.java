@@ -26,10 +26,13 @@ import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 
+import org.commonjukebox.plugins.model.PluginApi;
+
 /**
  * All objects that can be shown in Navigator tree must implement this
  * interface.
  */
+@PluginApi
 public interface TreeObject {
 
     /**

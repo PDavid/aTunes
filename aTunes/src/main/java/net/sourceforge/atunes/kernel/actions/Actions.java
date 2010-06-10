@@ -30,6 +30,9 @@ import net.sourceforge.atunes.gui.model.AudioObjectsSource;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 
+import org.commonjukebox.plugins.model.PluginApi;
+
+@PluginApi
 public final class Actions {
 
     /**

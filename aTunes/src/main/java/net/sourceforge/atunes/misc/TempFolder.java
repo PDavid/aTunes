@@ -31,10 +31,12 @@ import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.commons.io.FileUtils;
+import org.commonjukebox.plugins.model.PluginApi;
 
 /**
  * The Class TempFolder.
  */
+@PluginApi
 public class TempFolder implements ApplicationFinishListener {
 
     private static final TempFolder instance = new TempFolder();

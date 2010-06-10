@@ -30,10 +30,12 @@ import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.commons.io.FileUtils;
+import org.commonjukebox.plugins.model.PluginApi;
 
 /**
  * The system properties.
  */
+@PluginApi
 public final class SystemProperties {
 
     /** Path to config folder as passed as argument to app. */
