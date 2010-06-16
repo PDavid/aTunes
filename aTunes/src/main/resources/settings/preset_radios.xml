@@ -587,54 +587,6 @@
 		<frequency>48000</frequency>
 	</Radio>
 	<Radio>
-		<name>Europe 1</name>
-		<url>mms://viplagardere.yacast.net/encodereurope1</url>
-		<label>France</label>
-		<isRemoved>false</isRemoved>
-		<bitrate>32</bitrate>
-		<frequency>32000</frequency>
-	</Radio>
-	<Radio>
-		<name>France Culture</name>
-		<url>http://viphttp.yacast.net/V4/radiofrance/franceculture_bd.m3u</url>
-		<label>France</label>
-		<isRemoved>false</isRemoved>
-		<bitrate>32</bitrate>
-		<frequency>16000</frequency>
-	</Radio>
-	<Radio>
-		<name>France Info</name>
-		<url>http://viphttp.yacast.net/V4/radiofrance/franceinfo_bd.m3u</url>
-		<label>France</label>
-		<isRemoved>false</isRemoved>
-		<bitrate>32</bitrate>
-		<frequency>16000</frequency>
-	</Radio>
-	<Radio>
-		<name>France Inter</name>
-		<url>http://viphttp.yacast.net/V4/radiofrance/franceinter_bd.m3u</url>
-		<label>France</label>
-		<isRemoved>false</isRemoved>
-		<bitrate>32</bitrate>
-		<frequency>16000</frequency>
-	</Radio>
-	<Radio>
-		<name>France Musiques</name>
-		<url>http://viphttp.yacast.net/V4/radiofrance/francemusique_bd.m3u</url>
-		<label>France</label>
-		<isRemoved>false</isRemoved>
-		<bitrate>32</bitrate>
-		<frequency>16000</frequency>
-	</Radio>
-	<Radio>
-		<name>Le Mouv</name>
-		<url>http://viphttp.yacast.net/V4/radiofrance/lemouv_bd.m3u</url>
-		<label>France</label>
-		<isRemoved>false</isRemoved>
-		<bitrate>32</bitrate>
-		<frequency>16000</frequency>
-	</Radio>
-	<Radio>
 		<name>Nostalgie</name>
 		<url>mms://vipnrj.yacast.net/encodernostalgie</url>
 		<label>France</label>
@@ -771,14 +723,6 @@
 		<frequency>44100</frequency>
 	</Radio>
 	<Radio>
-		<name>Radio Trafic FM 107.7 - Escota (En continu)</name>
-		<url>rtsp://a1251.l252147898.c2521.e.lr.akamaistream.net/live/D/1251/2521/666/reflector:47898</url>
-		<label>France</label>
-		<isRemoved>false</isRemoved>
-		<bitrate>32</bitrate>
-		<frequency>44100</frequency>
-	</Radio>
-	<Radio>
 		<name>France Bleu Drôme Ardèche</name>
 		<url>http://www.tv-radio.com/station/france_bleu_drome_ardeche_mp3/france_bleu_drome_ardeche_mp3-32k.pls</url>
 		<label>France</label>
@@ -845,22 +789,6 @@
 	<Radio>
 		<name>st tropez fm</name>
 		<url>http://stream.saint-tropez-web-radio.com/sttropezwebradio.asx</url>
-		<label>France</label>
-		<isRemoved>false</isRemoved>
-		<bitrate>128</bitrate>
-		<frequency>44100</frequency>
-	</Radio>
-	<Radio>
-		<name>W3 Blues Radio</name>
-		<url>http://88.191.26.244:8000/live</url>
-		<label>France</label>
-		<isRemoved>false</isRemoved>
-		<bitrate>128</bitrate>
-		<frequency>44100</frequency>
-	</Radio>
-	<Radio>
-		<name>FreeDom</name>
-		<url>http://213.246.51.79/</url>
 		<label>France</label>
 		<isRemoved>false</isRemoved>
 		<bitrate>128</bitrate>
@@ -1089,5 +1017,165 @@
 		<isRemoved>false</isRemoved>
 		<bitrate>0</bitrate>
 		<frequency>0</frequency>
+	</Radio>
+	<Radio>
+		<name>Bayern 1</name>
+		<url>http://streams.br-online.de/bayern1_1.asx</url>;
+		<label>German Public Radio</label>
+	</Radio>
+	<Radio>
+		<name>Bayern 2</name>
+		<url>http://streams.br-online.de/bayern2_1.asx</url>;
+		<label>German Public Radio</label>
+	</Radio>
+	<Radio>
+		<name>Bayern 3</name>
+		<url>http://streams.br-online.de/bayern3_1.asx</url>;
+		<label>German Public Radio</label>
+	</Radio>
+	<Radio>
+		<name>Bayern Aktuell</name>
+		<url>http://streams.br-online.de/b5aktuell_1.asx</url>;
+		<label>German Public Radio</label>
+	</Radio>
+	<Radio>
+		<name>Bayern Klassik</name>
+		<url>http://streams.br-online.de/br-klassik_1.asx</url>;
+		<label>German Public Radio</label>
+	</Radio>
+	<Radio>
+		<name>Deutsche Welle</name>
+		<url>mms://c13010-ls.w.core.cdn.streamfarm.net/dwworldlive-live/13010dwren50</url>
+		<label>German Public Radio</label>
+	</Radio>
+	<Radio>
+		<name>Deutschlandfunk</name>
+		<url>http://www.dradio.de/streaming/dlf.asx</url>;
+		<label>German Public Radio</label>
+	</Radio>
+	<Radio>
+		<name>Deutschlandradio Kultur</name>
+		<url>http://www.dradio.de/streaming/dkultur.asx</url>;
+		<label>German Public Radio</label>
+	</Radio>
+	<Radio>
+		<name>Deutschlandadio Wissen</name>
+		<url>http://www.dradio.de/streaming/dradiowissen.asx</url>;
+		<label>German Public Radio</label>
+	</Radio>
+	<Radio>
+		<name>NDR 2</name>
+		<url>http://ndr-ndr2-hi-wma.wm.llnwd.net/ndr_ndr2_hi_wma</url>;
+		<label>German Public Radio</label>
+	</Radio>
+	<Radio>
+		<name>NDR Info</name>
+		<url>http://ndr-ndrinfo-hi-wma.wm.llnwd.net/ndr_ndrinfo_hi_wma</url>;
+		<label>German Public Radio</label>
+	</Radio>
+	<Radio>
+		<name>NDR Kultur</name>
+		<url>http://ndr-ndrkultur-hi-wma.wm.llnwd.net/ndr_ndrkultur_hi_wma</url>;
+		<label>German Public Radio</label>
+	</Radio>
+	<Radio>
+		<name>Radio 1</name>
+		<url>http://www.bbc.co.uk/radio/listen/live/r1.asx</url>;
+		<label>BBC</label>
+	</Radio>
+	<Radio>
+		<name>Radio 1xtra</name>
+		<url>http://www.bbc.co.uk/radio/listen/live/r1x.asx</url>;
+		<label>BBC</label>
+	</Radio>
+	<Radio>
+		<name>Radio 2</name>
+		<url>http://www.bbc.co.uk/radio/listen/live/r2.asx</url>;
+		<label>BBC</label>
+	</Radio>
+	<Radio>
+		<name>Radio 3</name>
+		<url>http://www.bbc.co.uk/radio/listen/live/r3.asx</url>;
+		<label>BBC</label>
+	</Radio>
+	<Radio>
+		<name>Radio 4</name>
+		<url>http://www.bbc.co.uk/radio/listen/live/r4.asx</url>;
+		<label>BBC</label>
+	</Radio>
+	<Radio>
+		<name>Radio 5 live</name>
+		<url>http://www.bbc.co.uk/radio/listen/live/r5l.asx</url>;
+		<label>BBC</label>
+	</Radio>
+	<Radio>
+		<name>Radio 5 live Sports Extra</name>
+		<url>http://www.bbc.co.uk/radio/listen/live/r5lsp.asx</url>;
+		<label>BBC</label>
+	</Radio>
+	<Radio>
+		<name>Radio 6</name>
+		<url>http://www.bbc.co.uk/radio/listen/live/r6.asx</url>;
+		<label>BBC</label>
+	</Radio>
+	<Radio>
+		<name>Radio 7</name>
+		<url>http://www.bbc.co.uk/radio/listen/live/r7.asx</url>;
+		<label>BBC</label>
+	</Radio>
+	<Radio>
+		<name>RBB Antenne Brandenburg</name>
+		<url>http://www.antennebrandenburg.de/live.wax</url>;
+		<label>German Public Radio</label>
+	</Radio>
+	<Radio>
+		<name>RBB Fritz</name>
+		<url>http://www.fritz.de/live.wax</url>;
+		<label>German Public Radio</label>
+	</Radio>
+	<Radio>
+		<name>RBB InfoRadio</name>
+		<url>http://www.inforadio.de/live.wax</url>;
+		<label>German Public Radio</label>
+	</Radio>
+	<Radio>
+		<name>RBB Kulturradio</name>
+		<url>http://www.kulturradio.de/live.wax</url>;
+		<label>German Public Radio</label>
+	</Radio>
+	<Radio>
+		<name>RBB Radio 1</name>
+		<url>http://www.radioeins.de/live.wax</url>;
+		<label>German Public Radio</label>
+	</Radio>
+	<Radio>
+		<name>WDR 1live</name>
+		<url>http://www.wdr.de/wdrlive/media/einslive-wm32.asx</url>;
+		<label>German Public Radio</label>
+	</Radio>
+	<Radio>
+		<name>WDR 2</name>
+		<url>http://www.wdr.de/wdrlive/media/wdr2-wm32.asx</url>;
+		<label>German Public Radio</label>
+	</Radio>
+	<Radio>
+		<name>WDR 3</name>
+		<url>http://www.wdr.de/wdrlive/media/wdr3-wm32.asx</url>;
+		<label>German Public Radio</label>
+	</Radio>
+	<Radio>
+		<name>WDR 4</name>
+		<url>http://www.wdr.de/wdrlive/media/wdr4-wm32.asx</url>;
+		<label>German Public Radio</label>
+	</Radio>
+	<Radio>
+		<name>WDR 5</name>
+		<url>http://www.wdr.de/wdrlive/media/wdr5-wm32.asx</url>;
+		<label>German Public Radio</label>
+	</Radio>
+	<Radio>
+		<name>Worldservice</name>
+		<url>http://www.bbc.co.uk/worldservice/ram/live_infent.ram</url>;
+		<label>BBC</label>
 	</Radio>
 </list>
