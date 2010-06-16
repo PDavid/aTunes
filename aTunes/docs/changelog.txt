@@ -5,6 +5,8 @@ aTunes 2.1.0
 - Allow creating patterns for tag edition by double-clicking on available patterns
 - UI: Removed line border from titled borders
 - Use absolute folder name when setting tags from patterns
+- Restore selection after track deletion in playlist [3007538] (patch by cy6ergnOm)
+- Song properties dialog improved [3002167] (patch by cy6ergnOm)
 
 aTunes 2.0.1
 -------------
