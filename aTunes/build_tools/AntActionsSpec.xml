@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <antactions>
-	<pack name="clean_lib">
-		<antcall buildfile="$INSTALL_PATH/clean_lib.xml" order="afterpack">
+	<pack name="aTunes Base">
+		<antcall buildfile="$INSTALL_PATH/clean_lib.xml" order="beforepack">
 			<property name="lib_dir" value="$INSTALL_PATH/lib"/>
 			<target name="clean_lib"/>
 		</antcall>

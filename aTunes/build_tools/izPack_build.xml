@@ -81,8 +81,9 @@
     	<listener installer="AntActionInstallerListener" uninstaller="AntActionUninstallerListener" />
 	</listeners>
 	<packs>
-	    <pack name="clean_lib" id="clean.lib" hidden="true" required="yes" >
-	    	<description>Cleans lib directory</description>
+	    <!--  Can't be hidden, otherwise pack is not installed the first one !! -->
+	    <pack name="clean_lib" id="clean.lib" required="yes" >
+	    	<description>Cleans lib directory before installation</description>
 	    	<file src="clean_lib.xml" targetdir="$INSTALL_PATH" />	    
 	    </pack>
 		<pack name="aTunes Base" id="core.package" required="yes">
