@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="clean" basedir=".">
+	<target name="clean_lib">
+		<delete dir="${lib_dir}" />
+	</target>
+</project>
