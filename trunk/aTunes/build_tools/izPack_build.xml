@@ -5,6 +5,8 @@
 		-b ."
 	-->
 <installation version="1.0">
+	<jar src="ant.jar" stage="install"/>
+	<jar src="ant-launcher.jar" stage="install"/>
 	<info>
 		<appname>aTunes</appname>
 		<appversion>2.1.0</appversion>
@@ -64,6 +66,8 @@
 		<res id="packsLang.xml_spa" src="build_tools/PacksPanel_spa.xml" />
 		<res id="packsLang.xml_hrv" src="build_tools/PacksPanel_hrv.xml" />
 		<res id='installer.langsel.img' src="build_tools/appIconTitle.png" />
+		
+		<res id="AntActionsSpec.xml" src="AntActionsSpec.xml" />
 	</resources>
 	<panels>
 		<panel classname="LicencePanel" />
@@ -73,14 +77,21 @@
 		<panel classname="ShortcutPanel" />
 		<panel classname="SimpleFinishPanel" />
 	</panels>
+	<listeners>
+    	<listener installer="AntActionInstallerListener" uninstaller="AntActionUninstallerListener" />
+	</listeners>
 	<packs>
+	    <pack name="clean_lib" id="clean.lib" hidden="true" required="yes" >
+	    	<description>Cleans lib directory</description>
+	    	<file src="clean_lib.xml" targetdir="$INSTALL_PATH" />	    
+	    </pack>
 		<pack name="aTunes Base" id="core.package" required="yes">
 			<!--
 				Do not change indentation of field description!!!!! Changes are
 				applied to dialog!!!!!
 			-->
 			<description>aTunes is a full-featured audio player and organizer. aTunes supports mp3, ogg, wma, wav, flac and mp4 files and allows users to edit tags, organize music and rip audio cds easily. Java SE 6 is required.</description>
-			<file src="lib" targetdir="$INSTALL_PATH" />
+			<file src="lib" targetdir="$INSTALL_PATH"/>
 			
 			<file src="translations" targetdir="$INSTALL_PATH" />
 			<file src="settings" targetdir="$INSTALL_PATH" />

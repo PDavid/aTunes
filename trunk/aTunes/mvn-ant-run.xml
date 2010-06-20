@@ -89,6 +89,10 @@
 
 		<copy todir="${deploy_folder}" file="${build_tools}/shortcutSpec.xml" />
 		
+		<copy todir="${deploy_folder}" file="${build_tools}/AntActionsSpec.xml" />		
+		<copy todir="${deploy_folder}" file="${build_tools}/lib/ant.jar" />
+		<copy todir="${deploy_folder}" file="${build_tools}/lib/ant-launcher.jar" />
+		<copy todir="${deploy_folder}" file="${build_tools}/clean_lib.xml" />
 	</target>
 
 
