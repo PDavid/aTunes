@@ -273,7 +273,7 @@ public final class SearchHandler extends AbstractHandler {
 
             String queryString = applyQueryTransformations(queryStr);
 
-            Query query = new QueryParser(Version.LUCENE_CURRENT, DEFAULT_INDEX, new SimpleAnalyzer()).parse(queryString);
+            Query query = new QueryParser(Version.LUCENE_30, DEFAULT_INDEX, new SimpleAnalyzer()).parse(queryString);
             searcher = new IndexSearcher(searchableObject.getIndexDirectory(), true);
             TopDocs topDocs = searcher.search(query, 1000);
             List<RawSearchResult> rawSearchResults = new ArrayList<RawSearchResult>();
