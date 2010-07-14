@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.gui.views.dialogs;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -37,7 +36,6 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
