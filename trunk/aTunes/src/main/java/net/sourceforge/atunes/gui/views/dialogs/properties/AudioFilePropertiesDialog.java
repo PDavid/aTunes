@@ -20,35 +20,35 @@
 
 package net.sourceforge.atunes.gui.views.dialogs.properties;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.Dimension;
-import java.awt.datatransfer.*;
 import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JButton;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
+import net.sourceforge.atunes.kernel.controllers.editTagDialog.EditTagDialogController;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
-
-import net.sourceforge.atunes.kernel.controllers.editTagDialog.EditTagDialogController;
-import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
 
 import org.jdesktop.swingx.border.DropShadowBorder;
 
@@ -57,33 +57,32 @@ import org.jdesktop.swingx.border.DropShadowBorder;
  */
 final class AudioFilePropertiesDialog extends PropertiesDialog {
 
-    private final class FillPictureSwingWorker extends
-			SwingWorker<ImageIcon, Void> {
-		@Override
-		protected ImageIcon doInBackground() throws Exception {
-		    return file.getImage(Constants.DIALOG_IMAGE_SIZE);
-		}
+    private final class FillPictureSwingWorker extends SwingWorker<ImageIcon, Void> {
+        @Override
+        protected ImageIcon doInBackground() throws Exception {
+            return file.getImage(Constants.DIALOG_IMAGE_SIZE);
+        }
 
-		@Override
-		protected void done() {
-		    ImageIcon cover;
-		    try {
-		        cover = get();
-		        if (cover != null) {
-		            pictureLabel.setIcon(cover);
-		        } else {
-		            pictureLabel.setIcon(Images.getImage(Images.NO_COVER_AUDIOFILE_PROPERTIES));
-		        }
-		        pictureLabel.setVisible(true);
-		    } catch (InterruptedException e) {
-		        getLogger().error(LogCategories.IMAGE, e);
-		    } catch (ExecutionException e) {
-		        getLogger().error(LogCategories.IMAGE, e);
-		    }
-		}
-	}
+        @Override
+        protected void done() {
+            ImageIcon cover;
+            try {
+                cover = get();
+                if (cover != null) {
+                    pictureLabel.setIcon(cover);
+                } else {
+                    pictureLabel.setIcon(Images.getImage(Images.NO_COVER_AUDIOFILE_PROPERTIES));
+                }
+                pictureLabel.setVisible(true);
+            } catch (InterruptedException e) {
+                getLogger().error(LogCategories.IMAGE, e);
+            } catch (ExecutionException e) {
+                getLogger().error(LogCategories.IMAGE, e);
+            }
+        }
+    }
 
-	private static final long serialVersionUID = 7504320983331038543L;
+    private static final long serialVersionUID = 7504320983331038543L;
 
     private Logger logger;
 
@@ -159,7 +158,7 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
         c.weightx = 1;
         c.fill = GridBagConstraints.HORIZONTAL;
         panel.add(songLabel, c);
-        
+
         // copy button
         c.gridx = 2;
         c.gridy = 0;
@@ -171,7 +170,7 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
         c.gridx = 1;
         c.gridy = 1;
         panel.add(artistLabel, c);
-        
+
         // copy button
         c.gridx = 2;
         c.gridy = 1;
@@ -182,7 +181,7 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
         c.gridx = 1;
         c.gridy = 2;
         panel.add(albumArtistLabel, c);
-        
+
         c.gridx = 2;
         c.gridy = 2;
         panel.add(new CopyButton(albumArtistLabel), c);
@@ -192,7 +191,7 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
         c.gridx = 1;
         c.gridy = 3;
         panel.add(albumLabel, c);
-        
+
         c.gridx = 2;
         c.gridy = 3;
         panel.add(new CopyButton(albumLabel), c);
@@ -201,7 +200,7 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
         c.gridx = 1;
         c.gridy = 4;
         panel.add(fileNameLabel, c);
-        
+
         c.gridx = 2;
         c.gridy = 4;
         panel.add(new CopyButton(fileNameLabel), c);
@@ -210,7 +209,7 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
         c.gridx = 1;
         c.gridy = 5;
         panel.add(pathLabel, c);
-        
+
         c.gridx = 2;
         c.gridy = 5;
         panel.add(new CopyButton(pathLabel), c);
@@ -254,21 +253,20 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
         c.gridx = 1;
         c.gridy = 13;
         panel.add(frequencyLabel, c);
-        
+
         JButton editTagsButton = new JButton();
-        editTagsButton.setText( I18nUtils.getString( "EDIT_TAG" ) );
-        editTagsButton.addActionListener( new ActionListener() {
-                public void actionPerformed( ActionEvent evt ) {
-                    EditTagDialogController ctl = new EditTagDialogController( new EditTagDialog( null, false ) );
-                    ctl.editFiles( java.util.Collections.singletonList( file ) );
-                }
+        editTagsButton.setText(I18nUtils.getString("EDIT_TAG"));
+        editTagsButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                EditTagDialogController ctl = new EditTagDialogController(new EditTagDialog(null, false));
+                ctl.editFiles(java.util.Collections.singletonList(file));
+            }
         });
-        
+
         c.gridx = 0;
         c.gridy = 14;
         c.insets = new Insets(10, 5, 15, 10);
         panel.add(editTagsButton, c);
-        
 
         add(panel);
     }
@@ -292,7 +290,7 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
         albumLabel.fillText();
         fileNameLabel.fillText();
         pathLabel.fillText();
-        
+
         durationLabel.setText(getHtmlFormatted(I18nUtils.getString("DURATION"), StringUtils.seconds2String(file.getDuration())));
         trackLabel.setText(getHtmlFormatted(I18nUtils.getString("TRACK"), file.getTrackNumber() > 0 ? String.valueOf(file.getTrackNumber()) : "-"));
         discNumberLabel.setText(getHtmlFormatted(I18nUtils.getString("DISC_NUMBER"), file.getDiscNumber() > 0 ? String.valueOf(file.getDiscNumber()) : "-"));
@@ -328,23 +326,25 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
 
         private String getValue() {
             String v = getClearValue();
-            return StringUtils.isEmpty(v)? "-" : v;
+            return StringUtils.isEmpty(v) ? "-" : v;
         }
 
         @Override
         public String getDisplayValue() {
             return getHtmlFormatted(I18nUtils.getString(getI18Name()), getValue());
-        }        
+        }
 
     }
 
     private class ProviderLabel extends JLabel {
 
+        private static final long serialVersionUID = -2928151775717411054L;
+
         private final ValueProvider provider;
 
-        public ProviderLabel( ValueProvider provider ) {
-            if( (this.provider = provider) == null )
-                throw new IllegalArgumentException( "provider pointer should not be null" );
+        public ProviderLabel(ValueProvider provider) {
+            if ((this.provider = provider) == null)
+                throw new IllegalArgumentException("provider pointer should not be null");
         }
 
         public ValueProvider getProvider() {
@@ -406,7 +406,7 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
         }
     }
 
-    private AlbumProvider albumProvider = new AlbumProvider(); 
+    private AlbumProvider albumProvider = new AlbumProvider();
 
     private class FileNameProvider extends AbstractFieldProvider {
 
@@ -436,10 +436,12 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
 
     private class CopyButton extends JButton implements ActionListener {
 
+        private static final long serialVersionUID = -7406795882274463315L;
+
         private final JLabel refLabel;
 
-        public CopyButton( JLabel refLabel ) {
-            if( (this.refLabel = refLabel) == null )
+        public CopyButton(JLabel refLabel) {
+            if ((this.refLabel = refLabel) == null)
                 throw new IllegalArgumentException("Reference label name should not be null or empty");
             setIcon(Images.getImage(Images.COPY));
             setPreferredSize(new Dimension(20, 20));
@@ -448,15 +450,15 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
         }
 
         private String getFieldValue() {
-            if( refLabel instanceof ProviderLabel )
-                return ((ProviderLabel)refLabel).getProvider().getClearValue();
+            if (refLabel instanceof ProviderLabel)
+                return ((ProviderLabel) refLabel).getProvider().getClearValue();
             else
                 return refLabel.getText();
         }
 
         public void actionPerformed(ActionEvent e) {
             String value = getFieldValue();
-            if( !StringUtils.isEmpty(value) ) { 
+            if (!StringUtils.isEmpty(value)) {
                 StringSelection data = new StringSelection(getFieldValue());
                 Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
                 clipboard.setContents(data, data);

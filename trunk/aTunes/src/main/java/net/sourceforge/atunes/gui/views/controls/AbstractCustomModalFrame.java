@@ -25,7 +25,6 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JFrame;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
