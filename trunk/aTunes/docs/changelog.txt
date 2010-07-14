@@ -7,6 +7,7 @@ aTunes 2.1.0
 - Use absolute folder name when setting tags from patterns
 - Restore selection after track deletion in playlist [3007538] (patch by cy6ergnOm)
 - Song properties dialog improved [3002167] (patch by cy6ergnOm)
+- FIX: Exception during renaming of file name
 
 aTunes 2.0.1
 -------------
