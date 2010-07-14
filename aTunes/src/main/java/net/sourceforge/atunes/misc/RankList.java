@@ -159,12 +159,14 @@ public class RankList<T> implements Serializable {
      */
     public void replaceItem(T oldItem, T newItem) {
         int order1 = this.order.indexOf(oldItem);
-        this.order.remove(order1);
-        this.order.add(order1, newItem);
-
         Integer count1 = this.count.get(oldItem);
-        this.count.remove(oldItem);
-        this.count.put(newItem, count1);
+        if (order1 != -1 && count1 != null) {
+            this.order.remove(order1);
+            this.order.add(order1, newItem);
+
+            this.count.remove(oldItem);
+            this.count.put(newItem, count1);
+        }
     }
 
     /**
