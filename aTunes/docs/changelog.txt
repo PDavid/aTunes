@@ -9,6 +9,10 @@ aTunes 2.1.0
 - Song properties dialog improved [3002167] (patch by cy6ergnOm)
 - FIX: Exception during renaming of file name
 
+aTunes 2.0.2
+-------------
+- FIX: Repository refresh never ends in certain situations [3024433]
+
 aTunes 2.0.1
 -------------
 - FIX: Some Substance L&F skins were not working
