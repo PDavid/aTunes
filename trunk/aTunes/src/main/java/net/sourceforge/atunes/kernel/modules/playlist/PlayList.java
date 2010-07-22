@@ -64,6 +64,11 @@ public class PlayList implements Serializable, Cloneable {
      * Flag indicating if this playlist contents need to be written to disk
      */
     private transient boolean dirty;
+    
+    /**
+     * Flag indicating if selected item need to be written to disk
+     */
+    private transient boolean selectedItemDirty;
 
     /**
      * Pointed List of audio objects of this play list
@@ -589,6 +594,8 @@ public class PlayList implements Serializable, Cloneable {
 
     void addToPlaybackHistory(AudioObject object) {
         this.mode.addToPlaybackHistory(object);
+        // Mark selected item as dirty
+        setSelectedItemDirty(true);
     }
 
     /**
@@ -617,4 +624,18 @@ public class PlayList implements Serializable, Cloneable {
         // As this method is used when reading from disk playlist can't be dirty
         setDirty(false);
     }
+
+	/**
+	 * @return the selectedItemDirty
+	 */
+    protected boolean isSelectedItemDirty() {
+		return selectedItemDirty;
+	}
+
+	/**
+	 * @param selectedItemDirty the selectedItemDirty to set
+	 */
+    protected void setSelectedItemDirty(boolean selectedItemDirty) {
+		this.selectedItemDirty = selectedItemDirty;
+	}
 }

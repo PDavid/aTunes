@@ -12,6 +12,7 @@ aTunes 2.1.0
 aTunes 2.0.2
 -------------
 - FIX: Repository refresh never ends in certain situations [3024433]
+- FIX: Selected playlist element not saved when closing application
 
 aTunes 2.0.1
 -------------

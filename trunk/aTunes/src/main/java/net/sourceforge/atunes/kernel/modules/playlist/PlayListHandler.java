@@ -559,19 +559,25 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      * Called by kernel when application is finishing.
      */
     public void applicationFinish() {
-        // Store play list definition
-        ApplicationStateHandler.getInstance().persistPlayListsDefinition(getListOfPlayLists());
-
         // Store contents if play lists are dirty or list of play lists have changed
         boolean playListsDirty = false;
+        boolean selectedItemDirty = false;
         for (PlayList playList : playLists) {
             playListsDirty = playListsDirty || playList.isDirty();
+            selectedItemDirty = selectedItemDirty || playList.isSelectedItemDirty();
         }
 
+        if (selectedItemDirty || playListsChanged) {
+            // Store play list definition
+            ApplicationStateHandler.getInstance().persistPlayListsDefinition(getListOfPlayLists());
+        }
         if (playListsDirty || playListsChanged) {
+        	// Store play list contents
             ApplicationStateHandler.getInstance().persistPlayListsContents(getPlayListsContents());
-        } else {
-            getLogger().info(LogCategories.PLAYLIST, "Playlists contents are clean");
+        }
+        
+        if (!playListsDirty && !selectedItemDirty && !playListsChanged) {
+            getLogger().info(LogCategories.PLAYLIST, "Playlists are clean");
         }
     }
 
