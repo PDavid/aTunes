@@ -54,12 +54,12 @@ public abstract class AbstractHotkeys {
 
     public static AbstractHotkeys createInstance(HotkeyListener hotkeyListener) {
         try {
-            if (SystemProperties.OS == OperatingSystem.WINDOWS && !SystemProperties.OS.is64Bit() && Win32Hotkeys.isSupported()) {
-                Class<?> clazz = Class.forName("net.sourceforge.atunes.kernel.modules.hotkeys.Win32Hotkeys");
+            if (SystemProperties.OS == OperatingSystem.WINDOWS && WindowsHotkeys.isSupported()) {
+                Class<?> clazz = Class.forName(WindowsHotkeys.class.getName());
                 Constructor<?> constructor = clazz.getConstructor(HotkeyListener.class);
                 return (AbstractHotkeys) constructor.newInstance(hotkeyListener);
             } else if (SystemProperties.OS == OperatingSystem.LINUX) {
-                Class<?> clazz = Class.forName("net.sourceforge.atunes.kernel.modules.hotkeys.X11Hotkeys");
+                Class<?> clazz = Class.forName(X11Hotkeys.class.getName());
                 Constructor<?> constructor = clazz.getConstructor(HotkeyListener.class);
                 return (AbstractHotkeys) constructor.newInstance(hotkeyListener);
             } else {

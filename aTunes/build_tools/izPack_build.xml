@@ -118,6 +118,9 @@
 			<file src="JIntellitype.dll" targetdir="$INSTALL_PATH" >
 				<os family="win" />
 			</file>
+			<file src="JIntellitype64.dll" targetdir="$INSTALL_PATH" >
+				<os family="win" />
+			</file>
 			<file src="libJXGrabKey.so" targetdir="$INSTALL_PATH" >
 				<os family="unix" />
 			</file>
