@@ -83,7 +83,8 @@ public final class PlayerControlsPanel extends JPanel {
     public static final Dimension OTHER_BUTTONS_SIZE = new Dimension(25, 23);
 
     /** Minimum size of this panel to show progress bar at bottom */
-    private static final int PROGRESS_BAR_BOTTOM_MINIMUM_SIZE = 270;
+    // TODO: If we add new secondary controls this should change
+    private static final int PROGRESS_BAR_BOTTOM_MINIMUM_SIZE = 310;
 
     /** Width of progress bar when it's placed at bottom of panel */
     private static final int PROGRESS_BAR_WIDTH_AT_BOTTOM = 190;
