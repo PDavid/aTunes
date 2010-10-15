@@ -14,6 +14,7 @@ aTunes 2.0.2
 - FIX: Repository refresh never ends in certain situations [3024433]
 - FIX: Selected playlist element not saved when closing application
 - FIX: Hotkeys supported for Windows 64 bits (path by Johannes Lerch)
+- FIX: Changes to fit progress bar completely at bottom of player controls panel
 
 aTunes 2.0.1
 -------------
