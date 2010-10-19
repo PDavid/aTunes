@@ -15,6 +15,7 @@ aTunes 2.0.2
 - FIX: Selected playlist element not saved when closing application
 - FIX: Hotkeys supported for Windows 64 bits (path by Johannes Lerch)
 - FIX: Changes to fit progress bar completely at bottom of player controls panel
+- FIX: Wrong capitalization for LyricWiki [3020431]
 
 aTunes 2.0.1
 -------------

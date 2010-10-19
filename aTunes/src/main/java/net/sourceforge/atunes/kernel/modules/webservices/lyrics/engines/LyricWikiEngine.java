@@ -64,6 +64,8 @@ public class LyricWikiEngine extends AbstractLyricsEngine {
      * Artists and songs with spaces are replaced with an underscore "_" and the
      * first character of every word is converted to uppercase.
      * 
+     * For more information on this see: http://lyrics.wikia.com/LyricWiki:Page_Names#Capitalization
+     * 
      * @param str
      *            the string to convert
      * 
@@ -71,7 +73,7 @@ public class LyricWikiEngine extends AbstractLyricsEngine {
      */
     private static String getStringForWikiURL(String str) {
         StringBuilder b = new StringBuilder();
-        for (String s : str.toLowerCase().split(" ")) {
+        for (String s : str.split(" ")) {
             b.append(StringUtils.convertFirstCharacterToUppercase(s));
             b.append(" ");
         }
