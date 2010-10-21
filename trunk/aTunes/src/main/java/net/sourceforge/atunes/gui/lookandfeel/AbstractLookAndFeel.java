@@ -262,4 +262,12 @@ public abstract class AbstractLookAndFeel {
     public void addTabCloseButtons(JTabbedPane tabbedPane, TabCloseListener tabCloseListener) {
     	// Does nothing by default
     }
+    
+    /**
+     * @return <code>true</code> if this look and feel implements skins or themes 
+     */
+    public boolean allowsSkins() {
+    	return getSkins() != null && !getSkins().isEmpty();
+    }
+
 }
