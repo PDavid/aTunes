@@ -606,5 +606,9 @@ public final class MultipleFrame implements Frame {
     public FrameState getFrameState() {
         return frameState;
     }
+    
+    @Override
+    public void applicationStarted(FrameState frameState) {
+    }
 
 }

@@ -152,9 +152,6 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
         this.frameState = frameState;
         this.oldFrameState = new FrameState(frameState);
 
-        // Set frame basic attributes
-        setWindowSize();
-
         // Set window location
         Point windowLocation = null;
         if (ApplicationState.getInstance().getWindowXPosition() >= 0 && ApplicationState.getInstance().getWindowYPosition() >= 0) {
@@ -185,10 +182,12 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
         // Create frame content
         setContentPane(getContentPanel());
 
+        // Add menu bar
+        ApplicationMenuBar bar = getAppMenuBar();
+        setJMenuBar(bar);
+
         // Apply component orientation
         GuiUtils.applyComponentOrientation(this);
-
-        setupSplitPaneDividerPosition(frameState);
     }
 
     protected abstract void setupSplitPaneDividerPosition(FrameState frameState);
@@ -604,5 +603,11 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
         } else {
             splitPane.setDividerLocation(relPos);
         }
+    }
+    
+    @Override
+    public void applicationStarted(FrameState frameState) {
+        setWindowSize();
+    	setupSplitPaneDividerPosition(frameState);    	
     }
 }

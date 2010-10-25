@@ -20,55 +20,59 @@
 
 package net.sourceforge.atunes.gui.frame;
 
-import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
 import net.sourceforge.atunes.gui.views.controls.CustomSplitPane;
 
-public final class EnhancedSingleFrame extends AbstractSingleFrame implements net.sourceforge.atunes.gui.frame.Frame {
+public final class EnhancedSingleFrame extends CommonSingleFrame implements net.sourceforge.atunes.gui.frame.Frame {
 
     private static final long serialVersionUID = 1L;
 
-    private static final String RIGHT_VERTICAL_SPLIT_PANE = "2";
-    private static final String LEFT_VERTICAL_SPLIT_PANE = "1";
     private static final String PLAYLIST_SPLIT_PANE = "3";
 
-    private CustomSplitPane leftVerticalSplitPane;
-    private CustomSplitPane rightVerticalSplitPane;
     private CustomSplitPane playListSplitPane;
 
-    /**
-     * Gets the content panel.
-     * 
-     * @return the content panel
-     */
+    public EnhancedSingleFrame() {
+    	super();
+    }
+    
     @Override
-    protected Container getContentPanel() {
-        // Main Container
-        JPanel panel = new JPanel(new GridBagLayout());
+    protected void setupSplitPaneDividerPosition(FrameState frameState) {
+    	super.setupSplitPaneDividerPosition(frameState);
+        applySplitPaneDividerPosition(playListSplitPane, frameState.getSplitPaneDividerPos(PLAYLIST_SPLIT_PANE), 0.5);
+    }
 
-        // Main Split Pane          
-        leftVerticalSplitPane = new CustomSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+    @Override
+    public void showContextPanel(boolean show) {
+        applyVisibility(show, RIGHT_VERTICAL_SPLIT_PANE, getContextPanel(), rightVerticalSplitPane);
+    }
 
-        // Create menu bar
-        setJMenuBar(getAppMenuBar());
+    @Override
+    public void showNavigationTree(boolean show) {
+        applyVisibility(show, LEFT_VERTICAL_SPLIT_PANE, getNavigationTreePanel(), leftVerticalSplitPane);
+    }
 
-        GridBagConstraints c = new GridBagConstraints();
-
-        JPanel nonNavigatorPanel = new JPanel(new BorderLayout());
-        rightVerticalSplitPane = new CustomSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-        rightVerticalSplitPane.setBorder(BorderFactory.createEmptyBorder());
-        rightVerticalSplitPane.setResizeWeight(1);
-
+    @Override
+    public void showNavigationTable(boolean show) {
+        applyVisibility(show, PLAYLIST_SPLIT_PANE, getNavigationTablePanel(), playListSplitPane);
+    }
+    
+    @Override
+    protected JComponent getComponentA() {
+    	return getNavigationTreePanel();
+    }
+    
+    @Override
+    protected JComponent getComponentB() {
         JPanel centerPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
         c.weightx = 1;
@@ -93,72 +97,11 @@ public final class EnhancedSingleFrame extends AbstractSingleFrame implements ne
                 getFrameState().putSplitPaneDividerPos(PLAYLIST_SPLIT_PANE, (Integer) evt.getNewValue());
             }
         });
-
-        rightVerticalSplitPane.setLeftComponent(playListSplitPane);
-        rightVerticalSplitPane.setRightComponent(getContextPanel());
-
-        nonNavigatorPanel.add(rightVerticalSplitPane, BorderLayout.CENTER);
-
-        leftVerticalSplitPane.setLeftComponent(getNavigationTreePanel());
-        leftVerticalSplitPane.setRightComponent(nonNavigatorPanel);
-        leftVerticalSplitPane.setResizeWeight(0.2);
-
-        leftVerticalSplitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
-
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                getFrameState().putSplitPaneDividerPos(LEFT_VERTICAL_SPLIT_PANE, (Integer) evt.getNewValue());
-            }
-        });
-
-        rightVerticalSplitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
-
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                getFrameState().putSplitPaneDividerPos(RIGHT_VERTICAL_SPLIT_PANE, ((Integer) evt.getNewValue()));
-            }
-        });
-
-        c.gridx = 0;
-        c.gridy = 0;
-        panel.add(getToolBar(), c);
-
-        c.gridx = 0;
-        c.gridy = 1;
-        c.weightx = 1;
-        c.weighty = 1;
-        c.fill = GridBagConstraints.BOTH;
-        panel.add(leftVerticalSplitPane, c);
-
-        c.gridy = 2;
-        c.weighty = 0;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        panel.add(getStatusBar(), c);
-
-        return panel;
+        return playListSplitPane;
     }
-
+    
     @Override
-    protected void setupSplitPaneDividerPosition(FrameState frameState) {
-        applySplitPaneDividerPosition(leftVerticalSplitPane, frameState.getSplitPaneDividerPos(LEFT_VERTICAL_SPLIT_PANE), 0.5);
-        applySplitPaneDividerPosition(rightVerticalSplitPane, frameState.getSplitPaneDividerPos(RIGHT_VERTICAL_SPLIT_PANE), 0.5);
-        applySplitPaneDividerPosition(playListSplitPane, frameState.getSplitPaneDividerPos(PLAYLIST_SPLIT_PANE), 0.5);
-        setWindowSize();
+    protected JComponent getComponentC() {
+    	return getContextPanel();
     }
-
-    @Override
-    public void showContextPanel(boolean show) {
-        applyVisibility(show, RIGHT_VERTICAL_SPLIT_PANE, getContextPanel(), rightVerticalSplitPane);
-    }
-
-    @Override
-    public void showNavigationTree(boolean show) {
-        applyVisibility(show, LEFT_VERTICAL_SPLIT_PANE, getNavigationTreePanel(), leftVerticalSplitPane);
-    }
-
-    @Override
-    public void showNavigationTable(boolean show) {
-        applyVisibility(show, PLAYLIST_SPLIT_PANE, getNavigationTablePanel(), playListSplitPane);
-    }
-
 }

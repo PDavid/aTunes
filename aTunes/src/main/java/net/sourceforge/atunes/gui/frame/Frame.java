@@ -319,5 +319,11 @@ public interface Frame {
      * @param version
      */
     public void showNewVersionInfo(boolean show, ApplicationVersion version);
+    
+    /**
+     * Actions to perform when application is started and frame is visible
+     * @param frameState
+     */
+    public void applicationStarted(FrameState frameState);
 
 }
