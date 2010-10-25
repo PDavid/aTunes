@@ -45,6 +45,7 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.frame.DefaultSingleFrame;
+import net.sourceforge.atunes.gui.frame.EnhancedSingleFrame;
 import net.sourceforge.atunes.gui.frame.Frame;
 import net.sourceforge.atunes.gui.frame.FrameState;
 import net.sourceforge.atunes.gui.frame.MultipleFrame;
@@ -178,6 +179,8 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
 
     @Override
     public void applicationStarted() {
+    	FrameState frameState = ApplicationState.getInstance().getFrameStates().get(getFrame().getClass());
+    	getFrame().applicationStarted(frameState);
     }
 
     /**
@@ -684,7 +687,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
 
         // Workaround fot setExtendedState bug: setExtendedState must be called after
         // setVisible in Linux systems
-        if (firstTimeShow && frame instanceof DefaultSingleFrame) {
+        if (SystemProperties.OS.isLinux() && firstTimeShow && (frame instanceof DefaultSingleFrame || frame instanceof EnhancedSingleFrame)) {
             ((DefaultSingleFrame) frame).setWindowSize();
         }
         firstTimeShow = false;
