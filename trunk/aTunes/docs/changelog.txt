@@ -18,6 +18,7 @@ aTunes 2.0.2
 - FIX: Changes to fit progress bar completely at bottom of player controls panel
 - FIX: Wrong capitalization for LyricWiki [3020431]
 - FIX: Problems changing Look and Feel / Theme [2998976]
+- FIX: Avoid workarounds to set maximixed state in Linux
 
 aTunes 2.0.1
 -------------

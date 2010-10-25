@@ -463,10 +463,6 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);
-        // TODO Workaround for JRE bug 6365898 (will be fixed in Java 7)
-        if (visible && SystemProperties.OS == OperatingSystem.LINUX && ApplicationState.getInstance().isMaximized()) {
-            setWindowSizeMaximized();
-        }
         //TODO
         /*
          * We need this because when switching from LTR to RTL component
@@ -607,6 +603,8 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
     
     @Override
     public void applicationStarted(FrameState frameState) {
+    	// Setting window size after frame is visible avoids using workarounds to set extended state in Linux
+    	// and work both in Windows and Linux
         setWindowSize();
     	setupSplitPaneDividerPosition(frameState);    	
     }

@@ -45,7 +45,6 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.frame.DefaultSingleFrame;
-import net.sourceforge.atunes.gui.frame.EnhancedSingleFrame;
 import net.sourceforge.atunes.gui.frame.Frame;
 import net.sourceforge.atunes.gui.frame.FrameState;
 import net.sourceforge.atunes.gui.frame.MultipleFrame;
@@ -668,15 +667,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     }
 
     /**
-     * Attribute to call setWindowSize of StandardFram on first call to
-     * setFullFrameVisible This workaround fixes setExtendedState bug in Linux
-     * systems:
-     * 
-     * See http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6365898
-     */
-    private boolean firstTimeShow = true;
-
-    /**
      * Sets the full frame visible.
      * 
      * @param visible
@@ -684,13 +674,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      */
     public void setFullFrameVisible(boolean visible) {
         frame.setVisible(visible);
-
-        // Workaround fot setExtendedState bug: setExtendedState must be called after
-        // setVisible in Linux systems
-        if (SystemProperties.OS.isLinux() && firstTimeShow && (frame instanceof DefaultSingleFrame || frame instanceof EnhancedSingleFrame)) {
-            ((DefaultSingleFrame) frame).setWindowSize();
-        }
-        firstTimeShow = false;
     }
 
     /**
