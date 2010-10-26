@@ -110,6 +110,11 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
     private JXStatusBar statusBar;
     private ToolBar toolBar;
 
+    /**
+     * Used to retrieve JSplitPane divider size of current look and feel
+     */
+    protected static int defaultDividerSize;
+    
     private WindowAdapter fullFrameStateListener;
 
     private Timer statusBarNewVersionInfoTimer = new Timer(1000, new ActionListener() {
@@ -591,6 +596,9 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
         if (show && !b) {
             applySplitPaneDividerPosition(sp, oldFrameState.getSplitPaneDividerPos(s), 0);
         }
+        
+        // Depending on visibility, set divider size, so if panel is not shown, its divider is hidden too 
+       	sp.setDividerSize(show ? defaultDividerSize : 0);
     }
 
     protected static void applySplitPaneDividerPosition(JSplitPane splitPane, int location, double relPos) {

@@ -64,6 +64,9 @@ public abstract class CommonSingleFrame extends AbstractSingleFrame {
 
         // Main Split Pane          
         leftVerticalSplitPane = new CustomSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+        
+        // Save divider size
+        defaultDividerSize = leftVerticalSplitPane.getDividerSize();
 
         GridBagConstraints c = new GridBagConstraints();
 
