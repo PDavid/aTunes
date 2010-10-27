@@ -601,7 +601,7 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
        	sp.setDividerSize(show ? defaultDividerSize : 0);
     }
 
-    protected static void applySplitPaneDividerPosition(JSplitPane splitPane, int location, double relPos) {
+    protected void applySplitPaneDividerPosition(JSplitPane splitPane, int location, double relPos) {
         if (location != 0) {
             splitPane.setDividerLocation(location);
         } else {

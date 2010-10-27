@@ -123,6 +123,19 @@ public abstract class CommonSingleFrame extends AbstractSingleFrame {
         applySplitPaneDividerPosition(leftVerticalSplitPane, frameState.getSplitPaneDividerPos(LEFT_VERTICAL_SPLIT_PANE), 0.5);
         applySplitPaneDividerPosition(rightVerticalSplitPane, frameState.getSplitPaneDividerPos(RIGHT_VERTICAL_SPLIT_PANE), 0.5);
 	}
+	
+	@Override
+	protected void applySplitPaneDividerPosition(JSplitPane splitPane, int location, double relPos) {
+		// Avoid right component to have a width less than its minimum size
+		if (splitPane.getWidth() > 0) {
+			int rightWidth = splitPane.getWidth() - location;
+			int rightMinWidth = (int) splitPane.getRightComponent().getMinimumSize().getWidth(); 
+			if (rightMinWidth > rightWidth) {
+				location = location - (rightMinWidth - rightWidth + defaultDividerSize);
+			}
+		}
+		super.applySplitPaneDividerPosition(splitPane, location, relPos);
+	}
 
 	protected abstract JComponent getComponentA();
 	protected abstract JComponent getComponentB();
