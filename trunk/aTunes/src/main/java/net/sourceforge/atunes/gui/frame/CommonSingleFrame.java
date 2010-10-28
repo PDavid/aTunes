@@ -22,6 +22,7 @@ package net.sourceforge.atunes.gui.frame;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.beans.PropertyChangeEvent;
@@ -137,6 +138,87 @@ public abstract class CommonSingleFrame extends AbstractSingleFrame {
 		super.applySplitPaneDividerPosition(splitPane, location, relPos);
 	}
 
+	@Override
+	protected Dimension getContextPanelMinimumSize() {
+		return new Dimension(CommonSingleFrameSizes.CONTEXT_PANEL_MINIMUM_WIDTH, 1);
+	}
+	
+	@Override
+	protected Dimension getContextPanelPreferredSize() {
+		return new Dimension(CommonSingleFrameSizes.CONTEXT_PANEL_PREFERRED_WIDTH, 1);
+	}
+	
+	@Override
+	protected Dimension getContextPanelMaximumSize() {
+		return new Dimension(CommonSingleFrameSizes.CONTEXT_PANEL_MAXIMUM_WIDTH, 1);
+	}
+	
+	@Override
+	protected Dimension getNavigationTablePanelMinimumSize() {
+		return new Dimension(CommonSingleFrameSizes.NAVIGATION_TABLE_MINIMUM_WIDTH, CommonSingleFrameSizes.NAVIGATION_TABLE_MINIMUM_HEIGHT);
+	}
+	
+	@Override
+	protected Dimension getNavigationTablePanelPreferredSize() {
+		return new Dimension(CommonSingleFrameSizes.NAVIGATION_TABLE_PREFERRED_WIDTH, CommonSingleFrameSizes.NAVIGATION_TABLE_PREFERRED_HEIGHT);
+	}
+
+	@Override
+	protected Dimension getNavigationTablePanelMaximumSize() {
+		return new Dimension(CommonSingleFrameSizes.NAVIGATION_TABLE_MAXIMUM_WIDTH, CommonSingleFrameSizes.NAVIGATION_TABLE_MAXIMUM_HEIGHT);
+	}
+	
+	@Override
+	protected Dimension getNavigationTreePanelMinimumSize() {
+		return new Dimension(CommonSingleFrameSizes.NAVIGATION_TREE_MINIMUM_WIDTH, CommonSingleFrameSizes.NAVIGATION_TREE_MINIMUM_HEIGHT);
+	}
+	
+	@Override
+	protected Dimension getNavigationTreePanelPreferredSize() {
+		return new Dimension(CommonSingleFrameSizes.NAVIGATION_TREE_PREFERRED_WIDTH, CommonSingleFrameSizes.NAVIGATION_TREE_PREFERRED_HEIGHT);
+	}
+	
+	@Override
+	protected Dimension getNavigationTreePanelMaximumSize() {
+		return new Dimension(CommonSingleFrameSizes.NAVIGATION_TREE_MAXIMUM_WIDTH, CommonSingleFrameSizes.NAVIGATION_TREE_MAXIMUM_HEIGHT);
+	}
+	
+	@Override
+	protected Dimension getPlayListPanelMinimumSize() {
+		return new Dimension(CommonSingleFrameSizes.PLAY_LIST_PANEL_MINIMUM_WIDTH, 1);
+	}
+	
+	@Override
+	protected Dimension getPlayListPanelPreferredSize() {
+		return new Dimension(CommonSingleFrameSizes.PLAY_LIST_PANEL_PREFERRED_WIDTH, 1);
+	}
+	
+	@Override
+	protected Dimension getPlayListPanelMaximumSize() {
+		return new Dimension(CommonSingleFrameSizes.PLAY_LIST_PANEL_MAXIMUM_WIDTH, 1);
+	}
+	
+	@Override
+	protected Dimension getPropertiesPanelMinimumSize() {
+		return new Dimension(1, CommonSingleFrameSizes.AUDIO_OBJECT_PROPERTIES_PANEL_HEIGHT);
+	}
+	
+	@Override
+	protected Dimension getPropertiesPanelPreferredSize() {
+		return new Dimension(1, CommonSingleFrameSizes.AUDIO_OBJECT_PROPERTIES_PANEL_HEIGHT);
+	}
+	
+	@Override
+	protected Dimension getPropertiesPanelMaximumSize() {
+		return new Dimension(1, CommonSingleFrameSizes.AUDIO_OBJECT_PROPERTIES_PANEL_HEIGHT);
+	}
+	
+	@Override
+	protected Dimension getWindowMinimumSize() {
+		return new Dimension(CommonSingleFrameSizes.WINDOW_MINIMUM_WIDTH, CommonSingleFrameSizes.WINDOW_MINIMUM_HEIGHT);
+	}
+	
+	
 	protected abstract JComponent getComponentA();
 	protected abstract JComponent getComponentB();
 	protected abstract JComponent getComponentC();
