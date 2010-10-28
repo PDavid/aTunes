@@ -75,20 +75,8 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
 
     private static final long serialVersionUID = 1L;
 
-    public static final int NAVIGATION_TREE_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 280);
-    public static final int NAVIGATION_TREE_HEIGHT = GuiUtils.getComponentWidthForResolution(1280, 280);
-
-    public static final int NAVIGATION_TABLE_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 280);
-    public static final int NAVIGATION_TABLE_HEIGHT = GuiUtils.getComponentWidthForResolution(1280, 280);
-
-    public static final int CONTEXT_PANEL_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 295);
-
-    public static final int AUDIO_OBJECT_PROPERTIES_PANEL_HEIGHT = 100;
-
-    public static final int PLAY_LIST_PANEL_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 490);
-
-    public static final int MARGIN = 100;
-
+    private static final int MARGIN = 100;
+    
     private FrameState frameState;
     private FrameState oldFrameState;
 
@@ -248,14 +236,16 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
     public ContextPanel getContextPanel() {
         if (contextPanel == null) {
             contextPanel = new ContextPanel();
-            contextPanel.setPreferredSize(new Dimension(CONTEXT_PANEL_WIDTH, 1));
+            contextPanel.setMinimumSize(getContextPanelMinimumSize());
+            contextPanel.setPreferredSize(getContextPanelPreferredSize());
+            contextPanel.setMaximumSize(getContextPanelMaximumSize());
             if (!ApplicationState.getInstance().isUseContext()) {
                 contextPanel.setVisible(false);
             }
         }
         return contextPanel;
     }
-
+    
     /**
      * Gets the center status bar.
      * 
@@ -296,7 +286,9 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
     public NavigationTreePanel getNavigationTreePanel() {
         if (navigationTreePanel == null) {
             navigationTreePanel = new NavigationTreePanel();
-            navigationTreePanel.setPreferredSize(new Dimension(NAVIGATION_TREE_WIDTH, NAVIGATION_TREE_HEIGHT));
+            navigationTreePanel.setMinimumSize(getNavigationTreePanelMinimumSize());
+            navigationTreePanel.setPreferredSize(getNavigationTreePanelPreferredSize());
+            navigationTreePanel.setMaximumSize(getNavigationTreePanelMaximumSize());
         }
         return navigationTreePanel;
     }
@@ -305,7 +297,9 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
     public NavigationTablePanel getNavigationTablePanel() {
         if (navigationTablePanel == null) {
             navigationTablePanel = new NavigationTablePanel();
-            navigationTablePanel.setPreferredSize(new Dimension(NAVIGATION_TABLE_WIDTH, NAVIGATION_TABLE_HEIGHT));
+            navigationTablePanel.setMinimumSize(getNavigationTablePanelMinimumSize());
+            navigationTablePanel.setPreferredSize(getNavigationTablePanelPreferredSize());
+            navigationTablePanel.setMaximumSize(getNavigationTablePanelMaximumSize());
         }
         return navigationTablePanel;
     }
@@ -322,8 +316,9 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
     public PlayListPanel getPlayListPanel() {
         if (playListPanel == null) {
             playListPanel = new PlayListPanel();
-            playListPanel.setMinimumSize(new Dimension(PLAY_LIST_PANEL_WIDTH, 1));
-            playListPanel.setPreferredSize(new Dimension(PLAY_LIST_PANEL_WIDTH, 1));
+            playListPanel.setMinimumSize(getPlayListPanelPreferredSize());
+            playListPanel.setPreferredSize(getPlayListPanelPreferredSize());
+            playListPanel.setMaximumSize(getPlayListPanelMaximumSize());
         }
         return playListPanel;
     }
@@ -351,7 +346,9 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
     public AudioObjectPropertiesPanel getPropertiesPanel() {
         if (propertiesPanel == null) {
             propertiesPanel = new AudioObjectPropertiesPanel();
-            propertiesPanel.setPreferredSize(new Dimension(1, AUDIO_OBJECT_PROPERTIES_PANEL_HEIGHT));
+            propertiesPanel.setMinimumSize(getPropertiesPanelMinimumSize());
+            propertiesPanel.setPreferredSize(getPropertiesPanelPreferredSize());
+            propertiesPanel.setMaximumSize(getPropertiesPanelMaximumSize());
             if (!ApplicationState.getInstance().isShowAudioObjectProperties()) {
                 propertiesPanel.setVisible(false);
             }
@@ -490,7 +487,7 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
      * Sets the window size.
      */
     public void setWindowSize() {
-        setMinimumSize(new Dimension(655, 410));
+        setMinimumSize(getWindowMinimumSize());
         if (ApplicationState.getInstance().isMaximized()) {
             setWindowSizeMaximized();
         } else {
@@ -506,9 +503,8 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
                 setSize((GuiUtils.getDeviceWidth() > 2000 ? GuiUtils.getDeviceWidth() / 2 : GuiUtils.getDeviceWidth()) - MARGIN, GuiUtils.getDeviceHeight() - MARGIN);
             }
         }
-
     }
-
+    
     private void setWindowSizeMaximized() {
         Dimension screen = getToolkit().getScreenSize();
         setSize(screen.width - MARGIN, screen.height - MARGIN);
@@ -616,4 +612,100 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
         setWindowSize();
     	setupSplitPaneDividerPosition(frameState);    	
     }
+    
+    /**
+     * Returns minimum size of context panel
+     * @return
+     */
+    protected abstract Dimension getContextPanelMinimumSize();
+    
+    /**
+     * Returns preferred size of context panel
+     * @return
+     */
+    protected abstract Dimension getContextPanelPreferredSize();
+
+    /**
+     * Returns maximum size of context panel
+     * @return
+     */
+    protected abstract Dimension getContextPanelMaximumSize();
+
+    /**
+     * Returns minimum size for navigation tree panel
+     * @return
+     */
+    protected abstract Dimension getNavigationTreePanelMinimumSize();
+
+    /**
+     * Returns preferred size for navigation tree panel
+     * @return
+     */
+    protected abstract Dimension getNavigationTreePanelPreferredSize();
+
+    /**
+     * Returns maximum size for navigation tree panel
+     * @return
+     */
+    protected abstract Dimension getNavigationTreePanelMaximumSize();
+
+    /**
+     * Returns navigation table panel minimum size
+     * @return
+     */
+    protected abstract Dimension getNavigationTablePanelMinimumSize();
+
+    /**
+     * Returns navigation table panel preferred size
+     * @return
+     */
+    protected abstract Dimension getNavigationTablePanelPreferredSize();
+
+    /**
+     * Returns navigation table panel maximum size
+     * @return
+     */
+    protected abstract Dimension getNavigationTablePanelMaximumSize();
+
+    /**
+     * Returns minimum size of play list panel
+     * @return
+     */
+    protected abstract Dimension getPlayListPanelMinimumSize();
+
+    /**
+     * Returns preferred size of play list panel
+     * @return
+     */
+    protected abstract Dimension getPlayListPanelPreferredSize();
+
+    /**
+     * Returns maximum size of play list panel
+     * @return
+     */
+    protected abstract Dimension getPlayListPanelMaximumSize();
+
+    /**
+     * Returns minimum size of properties panel
+     * @return
+     */
+    protected abstract Dimension getPropertiesPanelMinimumSize();
+
+    /**
+     * Returns preferred size of properties panel
+     * @return
+     */
+    protected abstract Dimension getPropertiesPanelPreferredSize();
+
+    /**
+     * Returns maximum size of properties panel
+     * @return
+     */
+    protected abstract Dimension getPropertiesPanelMaximumSize();
+
+    /**
+     * Returns minimum size of window
+     * @return
+     */
+    protected abstract Dimension getWindowMinimumSize();
 }
