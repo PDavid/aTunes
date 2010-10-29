@@ -293,9 +293,21 @@ public final class GuiUtils {
      * 
      * @return the component width for resolution
      */
+    @Deprecated
+    // TODO: Remove
     public static int getComponentWidthForResolution(int screenWidth, int desiredWidth) {
         int currentScreenWidth = mainDeviceBounds.width > MAX_COMPONENTS_WIDTH ? MAX_COMPONENTS_WIDTH : mainDeviceBounds.width;
         return desiredWidth * currentScreenWidth / screenWidth;
+    }
+
+    /**
+     * Returns a proportional width according to given factor for the current screen resolution.
+     * @param screenWidthFactor
+     * @return the component width for resolution
+     */
+    public static int getComponentWidthForResolution(float screenWidthFactor) {
+        int currentScreenWidth = mainDeviceBounds.width > MAX_COMPONENTS_WIDTH ? MAX_COMPONENTS_WIDTH : mainDeviceBounds.width;
+        return (int) (currentScreenWidth * screenWidthFactor);
     }
 
     /**
@@ -309,9 +321,26 @@ public final class GuiUtils {
      * 
      * @return the component height for resolution
      */
+    @Deprecated
+    // TODO: Remove
     public static int getComponentHeightForResolution(int screenHeight, int desiredHeight) {
         int currentScreenHeight = mainDeviceBounds.height;
         return desiredHeight * currentScreenHeight / screenHeight;
+    }
+
+    /**
+     * Returns a proportional height according to given screen height factor for the current screen resolution.
+     * 
+     * @param screenHeight
+     *            the screen height
+     * @param desiredHeight
+     *            the desired height
+     * 
+     * @return the component height for resolution
+     */
+    public static int getComponentHeightForResolution(float screenHeightFactor) {
+        int currentScreenHeight = mainDeviceBounds.height;
+        return (int) (currentScreenHeight * screenHeightFactor);
     }
 
     /**

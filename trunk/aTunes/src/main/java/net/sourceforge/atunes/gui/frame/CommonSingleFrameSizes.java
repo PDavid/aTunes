@@ -9,27 +9,27 @@ public class CommonSingleFrameSizes {
 	/*
 	 * Frame minimum size
 	 */
-	public static final int WINDOW_MINIMUM_WIDTH = 655;
-	public static final int WINDOW_MINIMUM_HEIGHT = 410;
+	public static final int WINDOW_MINIMUM_WIDTH = GuiUtils.getComponentWidthForResolution(0.65f);
+	public static final int WINDOW_MINIMUM_HEIGHT = GuiUtils.getComponentHeightForResolution(0.5f);
 	
     /*
-     * Navigation tree sizes
+     * Navigation panel sizes
      */
-	public static final int NAVIGATION_TREE_MINIMUM_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 280);
-    public static final int NAVIGATION_TREE_MINIMUM_HEIGHT = GuiUtils.getComponentHeightForResolution(1024, 280);
+	public static final int NAVIGATION_MINIMUM_WIDTH = GuiUtils.getComponentWidthForResolution(0.12f);
+    public static final int NAVIGATION_MINIMUM_HEIGHT = GuiUtils.getComponentHeightForResolution(0.15f);
     
-	public static final int NAVIGATION_TREE_PREFERRED_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 280);
-    public static final int NAVIGATION_TREE_PREFERRED_HEIGHT = GuiUtils.getComponentHeightForResolution(1024, 350);
+	public static final int NAVIGATION_PREFERRED_WIDTH = GuiUtils.getComponentWidthForResolution(0.15f);
+    public static final int NAVIGATION_PREFERRED_HEIGHT = GuiUtils.getComponentHeightForResolution(0.3f);
     
-	public static final int NAVIGATION_TREE_MAXIMUM_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 280);
-    public static final int NAVIGATION_TREE_MAXIMUM_HEIGHT = GuiUtils.getComponentHeightForResolution(1024, 700);
+	public static final int NAVIGATION_MAXIMUM_WIDTH = GuiUtils.getComponentWidthForResolution(0.2f);
+    public static final int NAVIGATION_MAXIMUM_HEIGHT = GuiUtils.getComponentHeightForResolution(0.6f);
 
     /*
      * Context panel width 
      */
-    public static final int CONTEXT_PANEL_MINIMUM_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 250);
-    public static final int CONTEXT_PANEL_PREFERRED_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 300);
-    public static final int CONTEXT_PANEL_MAXIMUM_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 400);
+    public static final int CONTEXT_PANEL_MINIMUM_WIDTH = GuiUtils.getComponentWidthForResolution(0.2f);
+    public static final int CONTEXT_PANEL_PREFERRED_WIDTH = GuiUtils.getComponentWidthForResolution(0.25f);
+    public static final int CONTEXT_PANEL_MAXIMUM_WIDTH = GuiUtils.getComponentWidthForResolution(0.4f);
 
     /**
      * Properties panel height
@@ -39,8 +39,11 @@ public class CommonSingleFrameSizes {
     /*
      * Play list panel widths 
      */
-    public static final int PLAY_LIST_PANEL_MINIMUM_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 490);
-    public static final int PLAY_LIST_PANEL_PREFERRED_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 600);
-    public static final int PLAY_LIST_PANEL_MAXIMUM_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 700);
+    public static final int PLAY_LIST_PANEL_MINIMUM_WIDTH = GuiUtils.getComponentWidthForResolution(0.38f);
+    public static final int PLAY_LIST_PANEL_MINIMUM_HEIGHT = GuiUtils.getComponentHeightForResolution(0.2f);
+    public static final int PLAY_LIST_PANEL_PREFERRED_WIDTH = GuiUtils.getComponentWidthForResolution(0.48f);
+    public static final int PLAY_LIST_PANEL_PREFERRED_HEIGHT = GuiUtils.getComponentHeightForResolution(0.3f);
+    public static final int PLAY_LIST_PANEL_MAXIMUM_WIDTH = GuiUtils.getComponentWidthForResolution(0.55f);
+    public static final int PLAY_LIST_PANEL_MAXIMUM_HEIGHT = GuiUtils.getComponentHeightForResolution(0.5f);
 
 }
