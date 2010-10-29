@@ -41,14 +41,14 @@ public final class EnhancedSingleFrame extends CommonSingleFrame implements net.
 
     private CustomSplitPane playListSplitPane;
 
-    private static final int NAVIGATION_TABLE_MINIMUM_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 280);
-    private static final int NAVIGATION_TABLE_MINIMUM_HEIGHT = GuiUtils.getComponentHeightForResolution(1024, 150);
+    private static final int NAVIGATION_TABLE_MINIMUM_WIDTH = CommonSingleFrameSizes.PLAY_LIST_PANEL_MINIMUM_WIDTH;
+    private static final int NAVIGATION_TABLE_MINIMUM_HEIGHT = GuiUtils.getComponentHeightForResolution(0.1f);
    
-    private static final int NAVIGATION_TABLE_PREFERRED_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 280);
-    private static final int NAVIGATION_TABLE_PREFERRED_HEIGHT = GuiUtils.getComponentHeightForResolution(1024, 250);
+    private static final int NAVIGATION_TABLE_PREFERRED_WIDTH = CommonSingleFrameSizes.PLAY_LIST_PANEL_PREFERRED_WIDTH;
+    private static final int NAVIGATION_TABLE_PREFERRED_HEIGHT = GuiUtils.getComponentHeightForResolution(0.25f);
     
-    private static final int NAVIGATION_TABLE_MAXIMUM_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 280);
-    private static final int NAVIGATION_TABLE_MAXIMUM_HEIGHT = GuiUtils.getComponentHeightForResolution(1024, 500);
+    private static final int NAVIGATION_TABLE_MAXIMUM_WIDTH = CommonSingleFrameSizes.PLAY_LIST_PANEL_MAXIMUM_WIDTH;
+    private static final int NAVIGATION_TABLE_MAXIMUM_HEIGHT = GuiUtils.getComponentHeightForResolution(0.4f);
 
     public EnhancedSingleFrame() {
     	super();
@@ -130,5 +130,22 @@ public final class EnhancedSingleFrame extends CommonSingleFrame implements net.
 	protected Dimension getNavigationTablePanelMaximumSize() {
 		return new Dimension(NAVIGATION_TABLE_MAXIMUM_WIDTH, NAVIGATION_TABLE_MAXIMUM_HEIGHT);
 	}
+	
+	@Override
+	protected Dimension getNavigationTreePanelMinimumSize() {
+		return new Dimension(CommonSingleFrameSizes.NAVIGATION_MINIMUM_WIDTH, CommonSingleFrameSizes.NAVIGATION_MINIMUM_HEIGHT);
+	}
+	
+	@Override
+	protected Dimension getNavigationTreePanelPreferredSize() {
+		return new Dimension(CommonSingleFrameSizes.NAVIGATION_PREFERRED_WIDTH, CommonSingleFrameSizes.NAVIGATION_PREFERRED_HEIGHT);
+	}
+	
+	@Override
+	protected Dimension getNavigationTreePanelMaximumSize() {
+		return new Dimension(CommonSingleFrameSizes.NAVIGATION_MAXIMUM_WIDTH, CommonSingleFrameSizes.NAVIGATION_MAXIMUM_HEIGHT);
+	}
+	
+
 
 }

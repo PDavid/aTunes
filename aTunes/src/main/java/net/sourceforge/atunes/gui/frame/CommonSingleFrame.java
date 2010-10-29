@@ -154,33 +154,18 @@ public abstract class CommonSingleFrame extends AbstractSingleFrame {
 	}
 	
 	@Override
-	protected Dimension getNavigationTreePanelMinimumSize() {
-		return new Dimension(CommonSingleFrameSizes.NAVIGATION_TREE_MINIMUM_WIDTH, CommonSingleFrameSizes.NAVIGATION_TREE_MINIMUM_HEIGHT);
-	}
-	
-	@Override
-	protected Dimension getNavigationTreePanelPreferredSize() {
-		return new Dimension(CommonSingleFrameSizes.NAVIGATION_TREE_PREFERRED_WIDTH, CommonSingleFrameSizes.NAVIGATION_TREE_PREFERRED_HEIGHT);
-	}
-	
-	@Override
-	protected Dimension getNavigationTreePanelMaximumSize() {
-		return new Dimension(CommonSingleFrameSizes.NAVIGATION_TREE_MAXIMUM_WIDTH, CommonSingleFrameSizes.NAVIGATION_TREE_MAXIMUM_HEIGHT);
-	}
-	
-	@Override
 	protected Dimension getPlayListPanelMinimumSize() {
-		return new Dimension(CommonSingleFrameSizes.PLAY_LIST_PANEL_MINIMUM_WIDTH, CommonSingleFrameSizes.NOT_SIGNIFICANT_DIMENSION);
+		return new Dimension(CommonSingleFrameSizes.PLAY_LIST_PANEL_MINIMUM_WIDTH, CommonSingleFrameSizes.PLAY_LIST_PANEL_MINIMUM_HEIGHT);
 	}
 	
 	@Override
 	protected Dimension getPlayListPanelPreferredSize() {
-		return new Dimension(CommonSingleFrameSizes.PLAY_LIST_PANEL_PREFERRED_WIDTH, CommonSingleFrameSizes.NOT_SIGNIFICANT_DIMENSION);
+		return new Dimension(CommonSingleFrameSizes.PLAY_LIST_PANEL_PREFERRED_WIDTH, CommonSingleFrameSizes.PLAY_LIST_PANEL_PREFERRED_HEIGHT);
 	}
 	
 	@Override
 	protected Dimension getPlayListPanelMaximumSize() {
-		return new Dimension(CommonSingleFrameSizes.PLAY_LIST_PANEL_MAXIMUM_WIDTH, CommonSingleFrameSizes.NOT_SIGNIFICANT_DIMENSION);
+		return new Dimension(CommonSingleFrameSizes.PLAY_LIST_PANEL_MAXIMUM_WIDTH, CommonSingleFrameSizes.PLAY_LIST_PANEL_MAXIMUM_HEIGHT);
 	}
 	
 	@Override
