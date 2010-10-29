@@ -20,17 +20,45 @@
 
 package net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines;
 
-import org.junit.Before;
+import java.util.UUID;
 
-public class LyricWikiEngineTest extends AbstractLyricEngineTest {
+import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
+
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+public class LyricWikiEngineTest {
+
+    private LyricWikiEngine testedObject;
 
     @Before
     public void init() {
         testedObject = new LyricWikiEngine(null);
-        engineUrl = "lyrics.wikia.com";
-        artist = "The Beatles";
-        song = "Yesterday";
-        lyricContent = "all my troubles seemed so far away";
     }
 
+    @Test
+    public void testGetLyricsFor() {
+        Lyrics lyrics = testedObject.getLyricsFor("Louis Armstrong", "We Have All The Time In The World");
+        Assert.assertNotNull(lyrics);
+        Assert.assertTrue(lyrics.getUrl().contains("lyrics.wikia.com"));
+        Assert.assertTrue(lyrics.getLyrics().toLowerCase().contains("Time enough for life to unfold".toLowerCase()));
+    }
+
+    @Test
+    public void testCaseInsensitivity() {
+        Lyrics lyrics1 = testedObject.getLyricsFor("Louis Armstrong", "We Have All The Time In The World");
+        Lyrics lyrics2 = testedObject.getLyricsFor("Louis armstrong", "We Have All The Time In The World");
+        Lyrics lyrics3 = testedObject.getLyricsFor("Louis Armstrong", "We Have All the Time In the world");
+
+        Assert.assertEquals(lyrics1, lyrics2);
+        Assert.assertEquals(lyrics2, lyrics3);
+        Assert.assertEquals(lyrics3, lyrics1);
+    }
+
+    @Test
+    public void testGetLyricsForWhereArtistAndTitleNotExist() {
+        Lyrics lyrics = testedObject.getLyricsFor(UUID.randomUUID().toString(), UUID.randomUUID().toString());
+        Assert.assertEquals(null, lyrics);
+    }
 }
