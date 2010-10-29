@@ -140,32 +140,17 @@ public abstract class CommonSingleFrame extends AbstractSingleFrame {
 
 	@Override
 	protected Dimension getContextPanelMinimumSize() {
-		return new Dimension(CommonSingleFrameSizes.CONTEXT_PANEL_MINIMUM_WIDTH, 1);
+		return new Dimension(CommonSingleFrameSizes.CONTEXT_PANEL_MINIMUM_WIDTH, CommonSingleFrameSizes.NOT_SIGNIFICANT_DIMENSION);
 	}
 	
 	@Override
 	protected Dimension getContextPanelPreferredSize() {
-		return new Dimension(CommonSingleFrameSizes.CONTEXT_PANEL_PREFERRED_WIDTH, 1);
+		return new Dimension(CommonSingleFrameSizes.CONTEXT_PANEL_PREFERRED_WIDTH, CommonSingleFrameSizes.NOT_SIGNIFICANT_DIMENSION);
 	}
 	
 	@Override
 	protected Dimension getContextPanelMaximumSize() {
-		return new Dimension(CommonSingleFrameSizes.CONTEXT_PANEL_MAXIMUM_WIDTH, 1);
-	}
-	
-	@Override
-	protected Dimension getNavigationTablePanelMinimumSize() {
-		return new Dimension(CommonSingleFrameSizes.NAVIGATION_TABLE_MINIMUM_WIDTH, CommonSingleFrameSizes.NAVIGATION_TABLE_MINIMUM_HEIGHT);
-	}
-	
-	@Override
-	protected Dimension getNavigationTablePanelPreferredSize() {
-		return new Dimension(CommonSingleFrameSizes.NAVIGATION_TABLE_PREFERRED_WIDTH, CommonSingleFrameSizes.NAVIGATION_TABLE_PREFERRED_HEIGHT);
-	}
-
-	@Override
-	protected Dimension getNavigationTablePanelMaximumSize() {
-		return new Dimension(CommonSingleFrameSizes.NAVIGATION_TABLE_MAXIMUM_WIDTH, CommonSingleFrameSizes.NAVIGATION_TABLE_MAXIMUM_HEIGHT);
+		return new Dimension(CommonSingleFrameSizes.CONTEXT_PANEL_MAXIMUM_WIDTH, CommonSingleFrameSizes.NOT_SIGNIFICANT_DIMENSION);
 	}
 	
 	@Override
@@ -185,17 +170,17 @@ public abstract class CommonSingleFrame extends AbstractSingleFrame {
 	
 	@Override
 	protected Dimension getPlayListPanelMinimumSize() {
-		return new Dimension(CommonSingleFrameSizes.PLAY_LIST_PANEL_MINIMUM_WIDTH, 1);
+		return new Dimension(CommonSingleFrameSizes.PLAY_LIST_PANEL_MINIMUM_WIDTH, CommonSingleFrameSizes.NOT_SIGNIFICANT_DIMENSION);
 	}
 	
 	@Override
 	protected Dimension getPlayListPanelPreferredSize() {
-		return new Dimension(CommonSingleFrameSizes.PLAY_LIST_PANEL_PREFERRED_WIDTH, 1);
+		return new Dimension(CommonSingleFrameSizes.PLAY_LIST_PANEL_PREFERRED_WIDTH, CommonSingleFrameSizes.NOT_SIGNIFICANT_DIMENSION);
 	}
 	
 	@Override
 	protected Dimension getPlayListPanelMaximumSize() {
-		return new Dimension(CommonSingleFrameSizes.PLAY_LIST_PANEL_MAXIMUM_WIDTH, 1);
+		return new Dimension(CommonSingleFrameSizes.PLAY_LIST_PANEL_MAXIMUM_WIDTH, CommonSingleFrameSizes.NOT_SIGNIFICANT_DIMENSION);
 	}
 	
 	@Override

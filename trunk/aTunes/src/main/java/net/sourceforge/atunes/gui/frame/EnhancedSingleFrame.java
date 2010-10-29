@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.gui.frame;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.beans.PropertyChangeEvent;
@@ -30,6 +31,7 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
 import net.sourceforge.atunes.gui.views.controls.CustomSplitPane;
+import net.sourceforge.atunes.utils.GuiUtils;
 
 public final class EnhancedSingleFrame extends CommonSingleFrame implements net.sourceforge.atunes.gui.frame.Frame {
 
@@ -38,6 +40,15 @@ public final class EnhancedSingleFrame extends CommonSingleFrame implements net.
     private static final String PLAYLIST_SPLIT_PANE = "3";
 
     private CustomSplitPane playListSplitPane;
+
+    private static final int NAVIGATION_TABLE_MINIMUM_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 280);
+    private static final int NAVIGATION_TABLE_MINIMUM_HEIGHT = GuiUtils.getComponentHeightForResolution(1024, 150);
+   
+    private static final int NAVIGATION_TABLE_PREFERRED_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 280);
+    private static final int NAVIGATION_TABLE_PREFERRED_HEIGHT = GuiUtils.getComponentHeightForResolution(1024, 250);
+    
+    private static final int NAVIGATION_TABLE_MAXIMUM_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 280);
+    private static final int NAVIGATION_TABLE_MAXIMUM_HEIGHT = GuiUtils.getComponentHeightForResolution(1024, 500);
 
     public EnhancedSingleFrame() {
     	super();
@@ -104,4 +115,20 @@ public final class EnhancedSingleFrame extends CommonSingleFrame implements net.
     protected JComponent getComponentC() {
     	return getContextPanel();
     }
+    
+	@Override
+	protected Dimension getNavigationTablePanelMinimumSize() {
+		return new Dimension(NAVIGATION_TABLE_MINIMUM_WIDTH, NAVIGATION_TABLE_MINIMUM_HEIGHT);
+	}
+	
+	@Override
+	protected Dimension getNavigationTablePanelPreferredSize() {
+		return new Dimension(NAVIGATION_TABLE_PREFERRED_WIDTH, NAVIGATION_TABLE_PREFERRED_HEIGHT);
+	}
+
+	@Override
+	protected Dimension getNavigationTablePanelMaximumSize() {
+		return new Dimension(NAVIGATION_TABLE_MAXIMUM_WIDTH, NAVIGATION_TABLE_MAXIMUM_HEIGHT);
+	}
+
 }

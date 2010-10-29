@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.gui.frame;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.beans.PropertyChangeEvent;
@@ -30,6 +31,7 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
 import net.sourceforge.atunes.gui.views.controls.CustomSplitPane;
+import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
  * The default frame.
@@ -39,6 +41,15 @@ public final class DefaultSingleFrame extends CommonSingleFrame implements net.s
     private static final long serialVersionUID = 1L;
 
     private static final String NAVIGATOR_SPLIT_PANE = "3";
+
+    private static final int NAVIGATION_TABLE_MINIMUM_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 280);
+    private static final int NAVIGATION_TABLE_MINIMUM_HEIGHT = GuiUtils.getComponentHeightForResolution(1024, 280);
+   
+    private static final int NAVIGATION_TABLE_PREFERRED_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 280);
+    private static final int NAVIGATION_TABLE_PREFERRED_HEIGHT = GuiUtils.getComponentHeightForResolution(1024, 350);
+    
+    private static final int NAVIGATION_TABLE_MAXIMUM_WIDTH = GuiUtils.getComponentWidthForResolution(1280, 280);
+    private static final int NAVIGATION_TABLE_MAXIMUM_HEIGHT = GuiUtils.getComponentHeightForResolution(1024, 700);
 
     private CustomSplitPane navigatorSplitPane;
 
@@ -106,5 +117,20 @@ public final class DefaultSingleFrame extends CommonSingleFrame implements net.s
     protected JComponent getComponentC() {
     	return getContextPanel();
     }
+    
+	@Override
+	protected Dimension getNavigationTablePanelMinimumSize() {
+		return new Dimension(NAVIGATION_TABLE_MINIMUM_WIDTH, NAVIGATION_TABLE_MINIMUM_HEIGHT);
+	}
+	
+	@Override
+	protected Dimension getNavigationTablePanelPreferredSize() {
+		return new Dimension(NAVIGATION_TABLE_PREFERRED_WIDTH, NAVIGATION_TABLE_PREFERRED_HEIGHT);
+	}
+
+	@Override
+	protected Dimension getNavigationTablePanelMaximumSize() {
+		return new Dimension(NAVIGATION_TABLE_MAXIMUM_WIDTH, NAVIGATION_TABLE_MAXIMUM_HEIGHT);
+	}
 }
 
