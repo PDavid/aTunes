@@ -19,6 +19,7 @@ aTunes 2.0.2
 - FIX: Problems changing Look and Feel / Theme [2998976]
 - FIX: Avoid workarounds to set maximixed state in Linux
 - FIX: Wrong panel ratios when starting app after being maximized [2974062]
+- FIX: Wrong song added as favorite in last.fm [3035260]
 
 aTunes 2.0.1
 -------------
