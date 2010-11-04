@@ -130,7 +130,8 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
 
             // Add to LastFM if necessary
             if (ApplicationState.getInstance().isLastFmEnabled() && ApplicationState.getInstance().isAutoLoveFavoriteSong()) {
-                Actions.getAction(AddLovedSongInLastFMAction.class).actionPerformed(null);
+            	// TODO: do this with a listener interface            	
+           		((AddLovedSongInLastFMAction)Actions.getAction(AddLovedSongInLastFMAction.class)).loveSong(song);
             }
         }
         callActionsAfterFavoritesChange();
