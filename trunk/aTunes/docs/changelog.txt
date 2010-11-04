@@ -8,7 +8,6 @@ aTunes 2.1.0
 - Restore selection after track deletion in playlist [3007538] (patch by cy6ergnOm)
 - Song properties dialog improved [3002167] (patch by cy6ergnOm)
 - FIX: Exception during renaming of file name
-- FIX: Problems changing Look and Feel / Theme [2998976]
 
 aTunes 2.0.2
 -------------
@@ -19,6 +18,7 @@ aTunes 2.0.2
 - FIX: Wrong capitalization for LyricWiki [3020431]
 - FIX: Problems changing Look and Feel / Theme [2998976]
 - FIX: Avoid workarounds to set maximixed state in Linux
+- FIX: Wrong panel ratios when starting app after being maximized [2974062]
 
 aTunes 2.0.1
 -------------
