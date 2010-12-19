@@ -1,6 +1,6 @@
 /*
  * aTunes 2.1.0-SNAPSHOT
- * Copyright (C) 2006-2010 Alex Aranda, Sylvain Gaudard, Thomas Beckers and contributors
+ * Copyright (C) 2006-2010 Alex Aranda, Sylvain Gaudard and contributors
  *
  * See http://www.atunes.org/wiki/index.php?title=Contributing for information about contributors
  *
