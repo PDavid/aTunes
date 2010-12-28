@@ -20,6 +20,7 @@ aTunes 2.0.2
 - FIX: Avoid workarounds to set maximixed state in Linux
 - FIX: Wrong panel ratios when starting app after being maximized [2974062]
 - FIX: Wrong song added as favorite in last.fm [3035260]
+- FIX: Music length 0:00 with some MP3 files
 
 aTunes 2.0.1
 -------------
