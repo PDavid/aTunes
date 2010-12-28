@@ -20,12 +20,18 @@
 
 package net.sourceforge.atunes.kernel.modules.repository.tags.reader;
 
+import java.io.IOException;
+
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.tags.tag.DefaultTag;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
 import org.jaudiotagger.audio.AudioHeader;
+import org.jaudiotagger.audio.exceptions.CannotReadException;
+import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
+import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
+import org.jaudiotagger.tag.TagException;
 
 /**
  * Reads the tag of an audio file using JAudiotagger.
@@ -51,26 +57,47 @@ public final class TagDetector {
     public static void readInformation(AudioFile file, boolean readAudioProperties) {
         getLogger().debug(LogCategories.FILE_READ, file);
 
-        try {
-        	org.jaudiotagger.audio.AudioFile f = org.jaudiotagger.audio.AudioFileIO.read(file.getFile());
-            org.jaudiotagger.tag.Tag tag = f.getTag();
+        // Read file
+    	org.jaudiotagger.audio.AudioFile f = null;
+		try {
+			f = org.jaudiotagger.audio.AudioFileIO.read(file.getFile());
+		} catch (CannotReadException e) {
+            getLogger().error(LogCategories.FILE_READ, e);
+		} catch (IOException e) {
+			getLogger().error(LogCategories.FILE_READ, e);
+		} catch (TagException e) {
+			getLogger().error(LogCategories.FILE_READ, e);
+		} catch (ReadOnlyFileException e) {
+			getLogger().error(LogCategories.FILE_READ, e);
+		} catch (InvalidAudioFrameException e) {
+			getLogger().error(LogCategories.FILE_READ, e);
+		}
+    	
+		if (f != null) {
+			// Set audio properties
+			try {
+				if (readAudioProperties) {
+					AudioHeader header = f.getAudioHeader();
+					if (header != null) {
+						file.setDuration(header.getTrackLength());
+						file.setBitrate(header.getBitRateAsNumber());
+						file.setFrequency(header.getSampleRateAsNumber());
+					}
+				}
+			} catch (Exception e) {
+				getLogger().error(LogCategories.FILE_READ, e.getMessage());
+			}
 
-            if (tag != null) {
-                file.setTag(new DefaultTag(tag));
-            }
-            
-            if (readAudioProperties) {
-                AudioHeader header = f.getAudioHeader();
-                if (header != null) {
-                	file.setDuration(header.getTrackLength());
-                	file.setBitrate(header.getBitRateAsNumber());
-                	file.setFrequency(header.getSampleRateAsNumber());
-                }
-            }
-
-        } catch (Exception e) {
-            getLogger().error(LogCategories.FILE_READ, e.getMessage());
-        }
+			// Set tag
+			try {
+				org.jaudiotagger.tag.Tag tag = f.getTag();
+				if (tag != null) {
+					file.setTag(new DefaultTag(tag));
+				}
+			} catch (Exception e) {
+				getLogger().error(LogCategories.FILE_READ, e.getMessage());
+			}
+		}
     }
 
     /**
