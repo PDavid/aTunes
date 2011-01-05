@@ -150,10 +150,15 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
         if (ApplicationState.getInstance().getWindowXPosition() >= 0 && ApplicationState.getInstance().getWindowYPosition() >= 0) {
             windowLocation = new Point(ApplicationState.getInstance().getWindowXPosition(), ApplicationState.getInstance().getWindowYPosition());
         }
+        
+        if (windowLocation == null) {
+        	// Setting location centered in screen according to default size
+        	Dimension defSize = getDefaultWindowSize();
+            windowLocation = new Point((GuiUtils.getDeviceWidth() - defSize.width) / 2, (GuiUtils.getDeviceHeight() - defSize.height) / 2);
+        }
+        
         if (windowLocation != null) {
             setLocation(windowLocation);
-        } else {
-            setLocationRelativeTo(null);
         }
 
         // Mac OS -code
@@ -486,23 +491,32 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
     /**
      * Sets the window size.
      */
-    public void setWindowSize() {
+    void setWindowSize() {
         setMinimumSize(getWindowMinimumSize());
         if (ApplicationState.getInstance().isMaximized()) {
             setWindowSizeMaximized();
         } else {
-            Dimension d = null;
+            Dimension dimension = null;
             if (ApplicationState.getInstance().getWindowWidth() != 0 && ApplicationState.getInstance().getWindowHeight() != 0) {
-                d = new Dimension(ApplicationState.getInstance().getWindowWidth(), ApplicationState.getInstance().getWindowHeight());
+                dimension = new Dimension(ApplicationState.getInstance().getWindowWidth(), ApplicationState.getInstance().getWindowHeight());
             }
-            if (d != null) {
-                setSize(d);
-            } else {
-                // Set size always according to main device dimension 
-                // Avoid create a frame too big: if device width is greater than 2000 pixels then use half width
-                setSize((GuiUtils.getDeviceWidth() > 2000 ? GuiUtils.getDeviceWidth() / 2 : GuiUtils.getDeviceWidth()) - MARGIN, GuiUtils.getDeviceHeight() - MARGIN);
+            if (dimension == null) {
+            	dimension = getDefaultWindowSize();
+            }
+            if (dimension != null) {
+                setSize(dimension);
             }
         }
+    }
+    
+    /**
+     * Calculates default window size
+     * @return
+     */
+    private Dimension getDefaultWindowSize() {
+        // Set size always according to main device dimension 
+        // Avoid create a frame too big: if device width is greater than 2000 pixels then use half width
+    	return new Dimension((GuiUtils.getDeviceWidth() > 2000 ? GuiUtils.getDeviceWidth() / 2 : GuiUtils.getDeviceWidth()) - MARGIN, GuiUtils.getDeviceHeight() - MARGIN);
     }
     
     private void setWindowSizeMaximized() {
