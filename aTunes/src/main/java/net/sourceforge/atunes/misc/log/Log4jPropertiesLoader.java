@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.misc.log;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.Properties;
 import java.util.PropertyResourceBundle;
@@ -46,27 +48,39 @@ public final class Log4jPropertiesLoader {
      *            the debug
      */
     public static void loadProperties(boolean debug) {
-        PropertyResourceBundle bundle;
-        try {
-            bundle = new PropertyResourceBundle(Log4jPropertiesLoader.class.getResourceAsStream(Constants.LOG4J_FILE));
-            Enumeration<String> keys = bundle.getKeys();
-            Properties props = new Properties();
-            while (keys.hasMoreElements()) {
-                String key = keys.nextElement();
-                String value = bundle.getString(key);
+    	PropertyResourceBundle bundle = null;
+    	InputStream log4jProperties = Log4jPropertiesLoader.class.getResourceAsStream(Constants.LOG4J_FILE);
+    	Properties props = new Properties();
+    	if (log4jProperties != null) {
+    		try {
+    			bundle = new PropertyResourceBundle(log4jProperties);
+    		} catch (IOException e) {
+    			System.out.println("ERROR trying to read logger configuration: ");
+    			e.printStackTrace();
+    		}
+    		if (bundle != null) {
+    			Enumeration<String> keys = bundle.getKeys();
+    			while (keys.hasMoreElements()) {
+    				String key = keys.nextElement();
+    				String value = bundle.getString(key);
 
-                // Change to DEBUG MODE if debug
-                if (key.equals("log4j.rootLogger") && debug) {
-                    value = value.replace("INFO", "DEBUG");
-                } else if (key.equals("log4j.appender.A2.file")) {
-                    value = StringUtils.getString(SystemProperties.getUserConfigFolder(debug), SystemProperties.FILE_SEPARATOR, "aTunes.log");
-                }
+    				// Change to DEBUG MODE if debug
+    				if (key.equals("log4j.rootLogger") && debug) {
+    					value = value.replace("INFO", "DEBUG");
+    				} else if (key.equals("log4j.appender.A2.file")) {
+    					value = StringUtils.getString(SystemProperties.getUserConfigFolder(debug), SystemProperties.FILE_SEPARATOR, "aTunes.log");
+    				}
 
-                props.setProperty(key, value);
-            }
-            PropertyConfigurator.configure(props);
-        } catch (Exception e) {
-            System.out.println("ERROR trying to read logger configuration");
-        }
+    				props.setProperty(key, value);
+    			}
+    		}
+    	} else {
+    		// Load default debug log4j properties
+    		props.put("log4j.rootLogger", "DEBUG, A");
+    		props.put("log4j.appender.A", "org.apache.log4j.ConsoleAppender");
+    		props.put("log4j.appender.A.layout", "org.apache.log4j.PatternLayout");
+    		props.put("log4j.appender.A.layout.ConversionPattern", "%-7p %m%n");
+    	}
+		PropertyConfigurator.configure(props);
     }
 }

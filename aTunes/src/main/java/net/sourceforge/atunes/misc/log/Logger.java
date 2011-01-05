@@ -190,16 +190,28 @@ public class Logger {
         logger.error(sb.toString());
 
         if (o instanceof Throwable) {
-            StackTraceElement[] trace = ((Throwable) o).getStackTrace();
+        	Throwable throwable = (Throwable) o;
+            StackTraceElement[] trace = throwable.getStackTrace();
 
             for (StackTraceElement element : trace) {
                 error(cat, className, methodName, timer, element);
             }
             
-            if (((Throwable)o).getCause() != null) {
-            	error(cat,  StringUtils.getString(((Throwable)o).getCause().getClass().getName(), ": ", ((Throwable)o).getCause().getMessage()));
+            if (throwable.getCause() != null) {
+            	error(cat,  StringUtils.getString(throwable.getCause().getClass().getName(), ": ", throwable.getCause().getMessage()));
 
-                StackTraceElement[] causeTrace = ((Throwable) o).getCause().getStackTrace();
+                StackTraceElement[] causeTrace = throwable.getCause().getStackTrace();
+
+                for (StackTraceElement element : causeTrace) {
+                    error(cat, className, methodName, timer, element);
+                }
+            }
+            
+            if (o instanceof InvocationTargetException && ((InvocationTargetException)o).getTargetException() != null) {
+            	Throwable target = ((InvocationTargetException) o).getTargetException();
+            	error(cat,  StringUtils.getString(target.getClass().getName(), ": ", target.getMessage()));
+
+                StackTraceElement[] causeTrace = target.getStackTrace();
 
                 for (StackTraceElement element : causeTrace) {
                     error(cat, className, methodName, timer, element);
