@@ -39,8 +39,11 @@ public class ProgressBarSeekListener extends MouseAdapter {
 	@Override
 	public void mousePressed(MouseEvent e) {
         if (progressBar.isEnabled()) {
-        	// Progress bar width is greater than real slider width so calculate value assuming 5 pixels in both left and right of track 
-        	int value = (progressBar.getMaximum() * (e.getX() - 5)) / (progressBar.getWidth() - 10);
+
+        	// Progress bar width is greater than real slider width so calculate value assuming 5 pixels in both left and right of track
+        	long temp = (long) progressBar.getMaximum() * (e.getX() - 5);
+        	int value = (int) (temp / (progressBar.getWidth() - 10));
+        	
         	// Force new value to avoid jump to next major tick
         	progressBar.setValue(value);
         	PlayerHandler.getInstance().seekCurrentAudioObject(value);
