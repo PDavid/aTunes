@@ -622,41 +622,43 @@ public class RepositoryLoader extends Thread {
         // Process audio files
         if (audiofiles != null) {
         	for (File audiofile : audiofiles) {
-        		AudioFile audio = null;
+        		if (!interrupt) {
+        			AudioFile audio = null;
 
-        		// If a previous repository exists, check if file already was loaded.
-        		// If so, compare modification date. If modification date is equal to last repository load
-        		// don't read file again
+        			// If a previous repository exists, check if file already was loaded.
+        			// If so, compare modification date. If modification date is equal to last repository load
+        			// don't read file again
 
-        		if (oldRepository == null) {
-        			audio = new AudioFile(audiofile);
-        		} else {
-        			AudioFile oldAudioFile = oldRepository.getFile(audiofile.getAbsolutePath());
-        			if (oldAudioFile != null && oldAudioFile.isUpToDate()) {
-        				audio = oldAudioFile;
-        			} else {
+        			if (oldRepository == null) {
         				audio = new AudioFile(audiofile);
+        			} else {
+        				AudioFile oldAudioFile = oldRepository.getFile(audiofile.getAbsolutePath());
+        				if (oldAudioFile != null && oldAudioFile.isUpToDate()) {
+        					audio = oldAudioFile;
+        				} else {
+        					audio = new AudioFile(audiofile);
+        				}
+        			}
+
+        			audio.setExternalPictures(picturesList);
+        			if (!refresh && listener != null) {
+        				listener.notifyFileLoaded();
+        			}
+        			filesLoaded++;
+        			RepositoryFiller.addToRepository(repository, audio);
+        			RepositoryFiller.addToArtistStructure(repository, audio);            
+        			RepositoryFiller.addToFolderStructure(repository, relativeTo, relativePath, audio);
+        			RepositoryFiller.addToGenreStructure(repository, audio);
+        			RepositoryFiller.addToYearStructure(repository, audio);
+
+        			// Update remaining time every 50 files
+        			if (!refresh && listener != null && filesLoaded % 50 == 0) {
+        				long t1 = System.currentTimeMillis();
+        				final long remainingTime = filesLoaded != 0 ? (totalFilesToLoad - filesLoaded) * (t1 - startReadTime) / filesLoaded : 0;
+        				listener.notifyRemainingTime(remainingTime);
+        				listener.notifyReadProgress();
         			}
         		}
-
-        		audio.setExternalPictures(picturesList);
-        		if (!refresh && listener != null) {
-        			listener.notifyFileLoaded();
-        		}
-        		filesLoaded++;
-        		RepositoryFiller.addToRepository(repository, audio);
-        		RepositoryFiller.addToArtistStructure(repository, audio);            
-        		RepositoryFiller.addToFolderStructure(repository, relativeTo, relativePath, audio);
-        		RepositoryFiller.addToGenreStructure(repository, audio);
-        		RepositoryFiller.addToYearStructure(repository, audio);
-
-        		// Update remaining time every 50 files
-        		if (!refresh && listener != null && filesLoaded % 50 == 0) {
-        			long t1 = System.currentTimeMillis();
-        			final long remainingTime = filesLoaded != 0 ? (totalFilesToLoad - filesLoaded) * (t1 - startReadTime) / filesLoaded : 0;
-        			listener.notifyRemainingTime(remainingTime);
-        			listener.notifyReadProgress();
-        		}           
         	}
         }
 	}
