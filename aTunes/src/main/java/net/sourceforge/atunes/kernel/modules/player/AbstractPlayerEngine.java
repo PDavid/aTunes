@@ -669,7 +669,13 @@ public abstract class AbstractPlayerEngine implements PlaybackStateListener {
         ControllerProxy.getInstance().getPlayerControlsController().setCurrentAudioObjectTimePlayed(actualPlayedTime, currentAudioObjectLength);
         GuiHandler.getInstance().getFullScreenWindow().setCurrentAudioObjectPlayedTime(actualPlayedTime, currentAudioObjectLength);
 
-        if ((submissionState == SubmissionState.NOT_SUBMITTED) && (actualPlayedTime > currentAudioObjectLength / 2 || actualPlayedTime >= 240000)) {
+        // Conditions to submit an object:
+        // - Not submitted before
+        // - Length of object is not 0
+        // - Played time is greater than half the length of the object OR is greater than 4 minutes
+        if (submissionState == SubmissionState.NOT_SUBMITTED && 
+        	currentAudioObjectLength > 0 &&
+            (actualPlayedTime > currentAudioObjectLength / 2 || actualPlayedTime >= 240000)) {
             submissionState = SubmissionState.PENDING;
         }
     }
