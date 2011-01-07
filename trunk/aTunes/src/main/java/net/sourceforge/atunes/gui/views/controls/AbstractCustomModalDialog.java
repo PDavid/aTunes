@@ -51,7 +51,7 @@ public abstract class AbstractCustomModalDialog extends JDialog {
         setSize(width, height);
         setUndecorated(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isDialogUndecorated());
         setModalityType(modal ? ModalityType.APPLICATION_MODAL : ModalityType.MODELESS);
-        setLocationRelativeTo(owner);
+        setLocationRelativeTo(null); // Center all modal dialogs in screen
         setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
     }
 
