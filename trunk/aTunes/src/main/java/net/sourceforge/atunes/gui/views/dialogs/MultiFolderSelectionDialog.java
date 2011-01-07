@@ -96,18 +96,21 @@ public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog 
 				    File[] files = fsView.getFiles(dir.getFile(), true);
 				    Arrays.sort(files);
 				    for (File f : files) {
-				        File[] fChilds = f.listFiles();
-				        if (fChilds != null) {
-				            boolean hasDirs = hasDirectories(fChilds);
+				    	// Show only file system elements with path
+				    	if (!"".equals(f.getPath().trim())) {
+				    		File[] fChilds = f.listFiles();
+				    		if (fChilds != null) {
+				    			boolean hasDirs = hasDirectories(fChilds);
 
-				            CheckNode treeNode2 = new CheckNode(new Directory(f, fsView.getSystemDisplayName(f)), fsView.getSystemIcon(f));
-				            result.add(treeNode2);
-				            if (hasDirs) {
-				                treeNode2.add(new DefaultMutableTreeNode("Dummy node"));
-				            }
-				            treeNode2.setSelected(selectedNode.isSelected() || selectedFolders.contains(f));
-				            treeNode2.setEnabled(!selectedNode.isSelected());
-				        }
+				    			CheckNode treeNode2 = new CheckNode(new Directory(f, fsView.getSystemDisplayName(f)), fsView.getSystemIcon(f));
+				    			result.add(treeNode2);
+				    			if (hasDirs) {
+				    				treeNode2.add(new DefaultMutableTreeNode("Dummy node"));
+				    			}
+				    			treeNode2.setSelected(selectedNode.isSelected() || selectedFolders.contains(f));
+				    			treeNode2.setEnabled(!selectedNode.isSelected());
+				    		}
+				    	}
 				    }
 				    return result;
 				}
