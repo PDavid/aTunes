@@ -98,18 +98,11 @@ public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog 
 				    for (File f : files) {
 				    	// Show only file system elements with path
 				    	if (!"".equals(f.getPath().trim())) {
-				    		File[] fChilds = f.listFiles();
-				    		if (fChilds != null) {
-				    			boolean hasDirs = hasDirectories(fChilds);
-
-				    			CheckNode treeNode2 = new CheckNode(new Directory(f, fsView.getSystemDisplayName(f)), fsView.getSystemIcon(f));
-				    			result.add(treeNode2);
-				    			if (hasDirs) {
-				    				treeNode2.add(new DefaultMutableTreeNode("Dummy node"));
-				    			}
-				    			treeNode2.setSelected(selectedNode.isSelected() || selectedFolders.contains(f));
-				    			treeNode2.setEnabled(!selectedNode.isSelected());
-				    		}
+				    		CheckNode treeNode2 = new CheckNode(new Directory(f, fsView.getSystemDisplayName(f)), fsView.getSystemIcon(f));
+				    		result.add(treeNode2);
+				    		treeNode2.add(new DefaultMutableTreeNode(I18nUtils.getString("PLEASE_WAIT") + "..."));
+				    		treeNode2.setSelected(selectedNode.isSelected() || selectedFolders.contains(f));
+				    		treeNode2.setEnabled(!selectedNode.isSelected());
 				    	}
 				    }
 				    return result;
@@ -139,15 +132,8 @@ public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog 
 
 			@Override
 			public void treeWillExpand(TreeExpansionEvent event) throws ExpandVetoException {
-
-			    final CheckNode selectedNode = (CheckNode) event.getPath().getLastPathComponent();
 			    fileSystemTree.setSelectionPath(event.getPath());
-			    selectedNode.removeAllChildren();
-
-			    selectedNode.add(new DefaultMutableTreeNode(I18nUtils.getString("PLEASE_WAIT") + "..."));
-
-			    new TreeWillExpandSwingWorker(selectedNode).execute();
-
+			    new TreeWillExpandSwingWorker((CheckNode) event.getPath().getLastPathComponent()).execute();
 			}
 		}
 
