@@ -20,6 +20,7 @@ aTunes 2.1.0
 - FIX: Music length 0:00 with some MP3 files
 - FIX: SplitPanes size incorrect after restart [3019779]
 - FIX: Skipping songs raises playcount and last.fm count in files with length 0 [3061462]
+- FIX: Problem with seek in large files [3151208]
 
 aTunes 2.0.1
 -------------
