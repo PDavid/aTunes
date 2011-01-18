@@ -61,11 +61,21 @@ public final class DefaultSingleFrame extends CommonSingleFrame implements net.s
     @Override
     public void showNavigationTree(boolean show) {
         applyVisibility(show, NAVIGATOR_SPLIT_PANE, getNavigationTreePanel(), navigatorSplitPane);
+        checkNavigatorSplitPaneVisibility();
     }
 
     @Override
     public void showNavigationTable(boolean show) {
         applyVisibility(show, NAVIGATOR_SPLIT_PANE, getNavigationTablePanel(), navigatorSplitPane);
+        checkNavigatorSplitPaneVisibility();
+    }
+    
+    /**
+     * Check if navigator split pane must be visible or not based on tree and table visibility
+     */
+    private void checkNavigatorSplitPaneVisibility() {
+    	boolean navigatorSplitPaneVisible = getNavigationTreePanel().isVisible() || getNavigationTablePanel().isVisible();
+   		applyVisibility(navigatorSplitPaneVisible, LEFT_VERTICAL_SPLIT_PANE, navigatorSplitPane, leftVerticalSplitPane);
     }
     
     @Override
