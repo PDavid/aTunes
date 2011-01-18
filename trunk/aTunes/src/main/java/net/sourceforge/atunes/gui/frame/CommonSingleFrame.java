@@ -127,12 +127,44 @@ public abstract class CommonSingleFrame extends AbstractSingleFrame {
 	
 	@Override
 	protected void applySplitPaneDividerPosition(JSplitPane splitPane, int location, double relPos) {
+		if (splitPane.getOrientation() == JSplitPane.HORIZONTAL_SPLIT) {
+			applyHorizontalSplitPaneDividerPosition(splitPane, location, relPos);
+		} else {
+			applyVerticalSplitPaneDividerPosition(splitPane, location, relPos);
+		}
+	}
+	
+	/**
+	 * Places split pane divider position in an horizontal split pane
+	 * @param splitPane
+	 * @param location
+	 * @param relPos
+	 */
+	private void applyHorizontalSplitPaneDividerPosition(JSplitPane splitPane, int location, double relPos) {		
 		// Avoid right component to have a width less than its minimum size
 		if (splitPane.getWidth() > 0) {
 			int rightWidth = splitPane.getWidth() - location;
 			int rightMinWidth = (int) splitPane.getRightComponent().getMinimumSize().getWidth(); 
 			if (rightMinWidth > rightWidth) {
 				location = location - (rightMinWidth - rightWidth + defaultDividerSize);
+			}
+		}
+		super.applySplitPaneDividerPosition(splitPane, location, relPos);
+	}
+
+	/**
+	 * Places split pane divider position in a vertical split pane
+	 * @param splitPane
+	 * @param location
+	 * @param relPos
+	 */
+	private void applyVerticalSplitPaneDividerPosition(JSplitPane splitPane, int location, double relPos) {		
+		// Avoid bottom component to have a height less than its minimum size
+		if (splitPane.getHeight() > 0) {
+			int rightHeight = splitPane.getHeight() - location;
+			int rightMinHeight = (int) splitPane.getRightComponent().getMinimumSize().getHeight(); 
+			if (rightMinHeight > rightHeight) {
+				location = location - (rightMinHeight - rightHeight + defaultDividerSize);
 			}
 		}
 		super.applySplitPaneDividerPosition(splitPane, location, relPos);
