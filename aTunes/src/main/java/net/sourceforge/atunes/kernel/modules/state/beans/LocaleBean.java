@@ -21,14 +21,20 @@
 package net.sourceforge.atunes.kernel.modules.state.beans;
 
 import java.beans.ConstructorProperties;
+import java.io.Serializable;
 import java.util.Locale;
 
 /**
  * Bean for java.util.Locale
  */
-public final class LocaleBean {
+public final class LocaleBean implements Serializable {
 
-    private String language;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7198874125338846198L;
+	
+	private String language;
     private String country;
 
     /**

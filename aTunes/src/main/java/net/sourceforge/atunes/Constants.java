@@ -127,9 +127,6 @@ public final class Constants {
     /** Max number of repositories saved. */
     public static final int MAX_RECENT_REPOSITORIES = 5;
 
-    /** File where application configuracion is stored. */
-    public static final String PROPERTIES_FILE = "aTunesConfig.xml";
-
     /** File where playlists are stored. */
     public static final String PLAYLISTS_FILE = "playLists.xml";
 

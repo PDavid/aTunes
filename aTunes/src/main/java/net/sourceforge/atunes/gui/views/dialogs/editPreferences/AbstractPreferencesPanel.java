@@ -35,6 +35,11 @@ public abstract class AbstractPreferencesPanel extends JPanel {
      * Title of this panel
      */
     private String title;
+    
+    /**
+     * True if panel has been shown to user (so it could have been modified)
+     */
+    private boolean dirty;
 
     /**
      * Instantiates a new preferences panel.
@@ -94,4 +99,12 @@ public abstract class AbstractPreferencesPanel extends JPanel {
      * @param visible
      */
     public abstract void dialogVisibilityChanged(boolean visible);
+
+	public final boolean isDirty() {
+		return dirty;
+	}
+
+	public final void setDirty(boolean dirty) {
+		this.dirty = dirty;
+	}
 }

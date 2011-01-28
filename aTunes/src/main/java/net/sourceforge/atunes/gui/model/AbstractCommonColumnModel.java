@@ -23,6 +23,8 @@ package net.sourceforge.atunes.gui.model;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -39,8 +41,8 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.gui.renderers.ImageIconTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.IntegerTableCellRendererCode;
@@ -48,8 +50,8 @@ import net.sourceforge.atunes.gui.renderers.JLabelTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.PropertyTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.StringTableCellRendererCode;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
-import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn.ColumnSort;
+import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 
 public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel {
 
@@ -73,6 +75,8 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
     private ColumnMoveListener columnMoveListener;
 
     private ColumnModelListener columnModelListener;
+    
+    private Timer timer;
 
     /**
      * Instantiates a new column model
@@ -265,12 +269,31 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
     };
 
     private class ColumnModelListener implements TableColumnModelListener {
+    	
+    	private void saveColumnSet() {
+            if (timer != null) {
+            	timer.cancel();
+            	timer = null;
+            }
+            timer = new Timer();
+            timer.schedule(new TimerTask() {
+    			
+    			@Override
+    			public void run() {
+    				// One second after last column width change save column set
+    				// This is to avoid saving column set after each column change event
+    		        columnSet.saveColumnSet();
+    			}
+    		}, 1000);        
+    	}
+    	
         public void columnAdded(TableColumnModelEvent e) {
-            // Nothing to do
+        	saveColumnSet();
         }
 
         public void columnMarginChanged(ChangeEvent e) {
             updateColumnWidth();
+            saveColumnSet();
         }
 
         public void columnMoved(TableColumnModelEvent e) {
@@ -278,10 +301,11 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
                 columnBeingMoved = e.getFromIndex();
             }
             columnMovedTo = e.getToIndex();
+            saveColumnSet();
         }
 
         public void columnRemoved(TableColumnModelEvent e) {
-            // Nothing to do
+        	saveColumnSet();
         }
 
         public void columnSelectionChanged(ListSelectionEvent e) {

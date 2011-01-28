@@ -28,11 +28,14 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Arrays;
+import java.util.TimerTask;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -147,8 +150,8 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
 
         // Set window location
         Point windowLocation = null;
-        if (ApplicationState.getInstance().getWindowXPosition() >= 0 && ApplicationState.getInstance().getWindowYPosition() >= 0) {
-            windowLocation = new Point(ApplicationState.getInstance().getWindowXPosition(), ApplicationState.getInstance().getWindowYPosition());
+        if (frameState.getXPosition() >= 0 && frameState.getYPosition() >= 0) {
+            windowLocation = new Point(frameState.getXPosition(), frameState.getYPosition());
         }
         
         if (windowLocation == null) {
@@ -176,6 +179,46 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
         // Set window state listener
         addWindowStateListener(getWindowStateListener());
         addWindowFocusListener(getWindowStateListener());
+        addComponentListener(new ComponentAdapter() {
+			
+        	private java.util.Timer timer;
+        	
+			@Override
+			public void componentResized(ComponentEvent event) {				
+				saveState(event);
+			}
+			
+			@Override
+			public void componentMoved(ComponentEvent event) {
+				saveState(event);
+			}
+			
+			private void saveState(final ComponentEvent event) {
+				final int width = GuiHandler.getInstance().getWindowSize().width;
+				final int height = GuiHandler.getInstance().getWindowSize().height;
+				
+				if (isVisible() && width != 0 && height != 0) {
+					if (timer != null) {
+						timer.cancel();
+						timer = null;
+					}
+					timer = new java.util.Timer();
+					timer.schedule(new TimerTask() {
+						
+						@Override
+						public void run() {
+							FrameState state = ApplicationState.getInstance().getFrameState(GuiHandler.getInstance().getFrame().getClass());
+							state.setXPosition(event.getComponent().getX());
+							state.setYPosition(event.getComponent().getY());
+							state.setMaximized(GuiHandler.getInstance().isMaximized());
+							state.setWindowWidth(width);
+							state.setWindowHeight(height);
+							ApplicationState.getInstance().setFrameState(GuiHandler.getInstance().getFrame().getClass(), state);
+						}
+					}, 1000);
+				}
+			}
+		});
 
         // Create frame content
         setContentPane(getContentPanel());
@@ -493,12 +536,14 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
      */
     void setWindowSize() {
         setMinimumSize(getWindowMinimumSize());
-        if (ApplicationState.getInstance().isMaximized()) {
+        if (ApplicationState.getInstance().getFrameState(GuiHandler.getInstance().getFrame().getClass()).isMaximized()) {
             setWindowSizeMaximized();
         } else {
             Dimension dimension = null;
-            if (ApplicationState.getInstance().getWindowWidth() != 0 && ApplicationState.getInstance().getWindowHeight() != 0) {
-                dimension = new Dimension(ApplicationState.getInstance().getWindowWidth(), ApplicationState.getInstance().getWindowHeight());
+            if (ApplicationState.getInstance().getFrameState(GuiHandler.getInstance().getFrame().getClass()).getWindowWidth() != 0 && 
+                ApplicationState.getInstance().getFrameState(GuiHandler.getInstance().getFrame().getClass()).getWindowHeight() != 0) {
+                dimension = new Dimension(ApplicationState.getInstance().getFrameState(GuiHandler.getInstance().getFrame().getClass()).getWindowWidth(), 
+                		ApplicationState.getInstance().getFrameState(GuiHandler.getInstance().getFrame().getClass()).getWindowHeight());
             }
             if (dimension == null) {
             	dimension = getDefaultWindowSize();

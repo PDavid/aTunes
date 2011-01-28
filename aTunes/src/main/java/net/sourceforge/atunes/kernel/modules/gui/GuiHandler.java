@@ -39,6 +39,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileFilter;
 
 import net.sourceforge.atunes.Constants;
@@ -178,8 +179,23 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
 
     @Override
     public void applicationStarted() {
-    	FrameState frameState = ApplicationState.getInstance().getFrameStates().get(getFrame().getClass());
+    	ApplicationState state = ApplicationState.getInstance();
+    	FrameState frameState = state.getFrameState(getFrame().getClass());
     	getFrame().applicationStarted(frameState);
+    	
+    	showToolBar(state.isShowToolBar());
+        showStatusBar(state.isShowStatusBar());
+        showSongProperties(state.isShowAudioObjectProperties());
+        showContextPanel(state.isUseContext());
+        showNavigationTree(state.isShowNavigationTree());
+        showNavigationTable(state.isShowNavigationTable());
+        
+        if (!ApplicationState.getInstance().isShowSystemTray()) {
+            GuiHandler.getInstance().setFrameDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        }
+        
+        // Progress bar ticks
+        ControllerProxy.getInstance().getPlayerControlsController().getComponentControlled().setShowTicksAndLabels(ApplicationState.getInstance().isShowTicks());
     }
 
     /**
@@ -1217,8 +1233,9 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
             // For multiple screens
             if (GuiUtils.getNumberOfScreenDevices() > 1) {
                 // Get screen where application is shown
-                GraphicsDevice screen = GuiUtils.getGraphicsDeviceForLocation(ApplicationState.getInstance().getWindowXPosition(), ApplicationState.getInstance()
-                        .getWindowYPosition());
+                GraphicsDevice screen = GuiUtils.getGraphicsDeviceForLocation(
+                		ApplicationState.getInstance().getFrameState(getFrame().getClass()).getXPosition(), 
+                		ApplicationState.getInstance().getFrameState(getFrame().getClass()).getYPosition());
                 GuiUtils.setLocationInScreen(splashScreenDialog, screen);
             }
             splashScreenDialog.setVisible(true);
@@ -1282,14 +1299,14 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
             FadingPopupFactory.install();
         }
 
-        FrameState frameState = ApplicationState.getInstance().getFrameStates().get(getFrame().getClass());
+        FrameState frameState = ApplicationState.getInstance().getFrameState(getFrame().getClass());
         LocaleBean locale = ApplicationState.getInstance().getLocale();
         LocaleBean oldLocale = ApplicationState.getInstance().getOldLocale();
         // Reset fame state if no frame state in state or if component orientation of locale has changed
         if (frameState == null || locale == null || locale != null && oldLocale != null
                 && !(ComponentOrientation.getOrientation(locale.getLocale()).equals(ComponentOrientation.getOrientation(oldLocale.getLocale())))) {
             frameState = new FrameState();
-            ApplicationState.getInstance().getFrameStates().put(getFrame().getClass(), frameState);
+            ApplicationState.getInstance().setFrameState(getFrame().getClass(), frameState);
         }
         getFrame().create(frameState);
 

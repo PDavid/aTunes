@@ -98,8 +98,12 @@ public final class HotkeyHandler extends AbstractHandler implements HotkeyListen
 
     @Override
     public void applicationStarted() {
-        // TODO Auto-generated method stub
-
+        // Hotkeys
+        if (ApplicationState.getInstance().isEnableHotkeys()) {
+            enableHotkeys(ApplicationState.getInstance().getHotkeysConfig());
+        } else {
+            disableHotkeys();
+        }
     }
 
     /**

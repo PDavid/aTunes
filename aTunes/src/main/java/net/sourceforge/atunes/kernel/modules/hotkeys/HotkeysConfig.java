@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.hotkeys;
 
 import java.beans.ConstructorProperties;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -29,9 +30,14 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-public class HotkeysConfig implements Iterable<Hotkey> {
+public class HotkeysConfig implements Iterable<Hotkey>, Serializable {
 
-    private SortedMap<Integer, Hotkey> config;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2980797763805865156L;
+	
+	private SortedMap<Integer, Hotkey> config;
 
     public HotkeysConfig() {
         this.config = new TreeMap<Integer, Hotkey>();

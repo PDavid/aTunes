@@ -196,6 +196,18 @@ public final class EditPreferencesDialog extends AbstractCustomModalFrame {
      */
     public void showPanel(int index) {
         ((CardLayout) options.getLayout()).show(options, Integer.toString(index));
+        // Mark panel as dirty
+        this.panels[index].setDirty(true);
+    }
+    
+    /**
+     * Marks panels as not dirty
+     */
+    public void resetPanels() {
+    	System.out.println("Reseting panels");
+    	for (AbstractPreferencesPanel panel : this.panels) {
+    		panel.setDirty(false);
+    	}
     }
 
     private static class PreferencesListCellRendererCode extends AbstractListCellRendererCode {
@@ -207,6 +219,5 @@ public final class EditPreferencesDialog extends AbstractCustomModalFrame {
             label.setIcon(p.getIcon());
             return label;
         }
-    }
-
+    }    
 }

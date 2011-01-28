@@ -65,12 +65,12 @@ public final class NavigatorColumnSet extends AbstractColumnSet {
 
     @Override
     protected Map<String, ColumnBean> getColumnsConfiguration() {
-        return ApplicationState.getInstance().getDefaultNavigatorColumns();
+        return ApplicationState.getInstance().getNavigatorColumns();
     }
 
     @Override
     protected void setColumnsConfiguration(Map<String, ColumnBean> columnsConfiguration) {
-        ApplicationState.getInstance().setDefaultNavigatorColumns(columnsConfiguration);
+        ApplicationState.getInstance().setNavigatorColumns(columnsConfiguration);
     }
 
     @Override

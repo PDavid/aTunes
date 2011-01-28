@@ -80,15 +80,6 @@ public class ColumnSets implements PluginListener {
         getColumnSets().add(columnSet);
     }
 
-    /**
-     * Store columns settings
-     */
-    public static void storeColumnSettings() {
-        for (AbstractColumnSet columnSet : getColumnSets()) {
-            columnSet.storeCurrentColumnSettings();
-        }
-    }
-
     @Override
     public void pluginActivated(PluginInfo plugin) {
         try {

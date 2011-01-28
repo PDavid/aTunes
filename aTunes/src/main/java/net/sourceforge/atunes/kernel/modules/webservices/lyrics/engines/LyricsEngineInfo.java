@@ -21,13 +21,19 @@
 package net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines;
 
 import java.beans.ConstructorProperties;
+import java.io.Serializable;
 
 /**
  * Class with info about lyrics engines.
  */
-public class LyricsEngineInfo {
+public class LyricsEngineInfo implements Serializable {
 
-    private String name;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8014747196952195246L;
+	
+	private String name;
     private String clazz;
     private boolean enabled;
 

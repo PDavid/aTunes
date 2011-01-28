@@ -35,6 +35,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimerTask;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -202,8 +203,8 @@ public final class MultipleFrame implements Frame {
         frame.setJMenuBar(menuBar);
 
         Point p = null;
-        if (ApplicationState.getInstance().getMultipleViewXPosition() > 0 && ApplicationState.getInstance().getMultipleViewYPosition() > 0) {
-            p = new Point(ApplicationState.getInstance().getMultipleViewXPosition(), ApplicationState.getInstance().getMultipleViewYPosition());
+        if (frameState.getXPosition() > 0 && frameState.getYPosition() > 0) {
+            p = new Point(frameState.getXPosition(), frameState.getYPosition());
         }
         if (p == null) {
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -213,8 +214,8 @@ public final class MultipleFrame implements Frame {
         }
 
         Dimension d = null;
-        if (ApplicationState.getInstance().getMultipleViewWidth() != 0 && ApplicationState.getInstance().getMultipleViewHeight() != 0) {
-            d = new Dimension(ApplicationState.getInstance().getMultipleViewWidth(), ApplicationState.getInstance().getMultipleViewHeight());
+        if (frameState.getWindowWidth() != 0 && frameState.getWindowHeight() != 0) {
+            d = new Dimension(frameState.getWindowWidth(), frameState.getWindowHeight());
         }
         if (d != null) {
             frame.setSize(d);
@@ -271,7 +272,45 @@ public final class MultipleFrame implements Frame {
                 toolBar.getShowContext().getAction().actionPerformed(null);
             }
         });
-
+        
+        frame.addComponentListener(new ComponentAdapter() {
+			
+        	private java.util.Timer timer;
+        	
+			@Override
+			public void componentResized(ComponentEvent event) {				
+				saveState(event);
+			}
+			
+			@Override
+			public void componentMoved(ComponentEvent event) {
+				saveState(event);
+			}
+			
+			private void saveState(final ComponentEvent event) {
+				final int width = GuiHandler.getInstance().getWindowSize().width;
+				final int height = GuiHandler.getInstance().getWindowSize().height;
+				
+				if (isVisible() && width != 0 && height != 0) {
+					if (timer != null) {
+						timer.cancel();
+						timer = null;
+					}
+					timer = new java.util.Timer();
+					timer.schedule(new TimerTask() {
+						public void run() {
+							FrameState state = ApplicationState.getInstance().getFrameState(GuiHandler.getInstance().getFrame().getClass());
+							state.setXPosition(event.getComponent().getX());
+							state.setYPosition(event.getComponent().getY());
+							state.setMaximized(GuiHandler.getInstance().isMaximized());
+							state.setWindowWidth(width);
+							state.setWindowHeight(height);
+							ApplicationState.getInstance().setFrameState(GuiHandler.getInstance().getFrame().getClass(), state);
+						}
+					}, 1000);
+				}
+			}
+		});
     }
 
     @Override

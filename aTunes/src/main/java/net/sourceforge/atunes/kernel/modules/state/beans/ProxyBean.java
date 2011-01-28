@@ -20,26 +20,30 @@
 
 package net.sourceforge.atunes.kernel.modules.state.beans;
 
-import java.beans.ConstructorProperties;
 import java.io.IOException;
-import java.util.Arrays;
+import java.io.Serializable;
 
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
+import net.sourceforge.atunes.kernel.modules.state.PasswordPreference;
 
 /**
  * Bean for net.sourceforge.atunes.kernel.modules.proxy.Proxy
  */
-public final class ProxyBean {
+public final class ProxyBean implements Serializable {
 
-    public static final String HTTP_PROXY = "HTTP_PROXY";
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -9038681249825140374L;
+	
+	public static final String HTTP_PROXY = "HTTP_PROXY";
     public static final String SOCKS_PROXY = "SOCKS_PROXY";
 
     private String type;
     private String url;
     private int port;
     private String user;
-    private String password;
-    private byte[] encryptedPassword;
+    private PasswordPreference password;
 
     /**
      * Instantiates a new proxy bean.
@@ -59,24 +63,14 @@ public final class ProxyBean {
      *            the port
      * @param user
      *            the user
-     * @param encryptedPassword
-     *            the encrypted password
+     * @param password
+     *            the password
      */
-    @ConstructorProperties( { "type", "url", "port", "user", "encryptedPassword" })
-    public ProxyBean(String type, String url, int port, String user, byte[] encryptedPassword) {
+    public ProxyBean(String type, String url, int port, String user, String password) {
         this.type = type;
         this.url = url;
         this.port = port;
-        this.encryptedPassword = encryptedPassword != null ? Arrays.copyOf(encryptedPassword, encryptedPassword.length) : null;
-    }
-
-    /**
-     * Gets the encrypted password.
-     * 
-     * @return the encrypted password
-     */
-    public byte[] getEncryptedPassword() {
-        return encryptedPassword != null ? Arrays.copyOf(encryptedPassword, encryptedPassword.length) : null;
+        this.password = password != null ? new PasswordPreference(password) : null;
     }
 
     /**
@@ -85,7 +79,7 @@ public final class ProxyBean {
      * @return the password
      */
     public String getPassword() {
-        return password;
+        return password.getPassword();        
     }
 
     /**
@@ -125,23 +119,13 @@ public final class ProxyBean {
     }
 
     /**
-     * Sets the encrypted password.
-     * 
-     * @param encryptedPassword
-     *            the new encrypted password
-     */
-    public void setEncryptedPassword(byte[] encryptedPassword) {
-        this.encryptedPassword = Arrays.copyOf(encryptedPassword, encryptedPassword.length);
-    }
-
-    /**
      * Sets the password.
      * 
      * @param password
      *            the new password
      */
     public void setPassword(String password) {
-        this.password = password;
+        this.password = password != null ? new PasswordPreference(password) : null;
     }
 
     /**

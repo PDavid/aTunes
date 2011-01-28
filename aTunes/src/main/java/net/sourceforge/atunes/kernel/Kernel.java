@@ -40,7 +40,6 @@ import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.Timer;
@@ -268,8 +267,6 @@ public class Kernel {
      */
     void start(List<AudioObject> playList) {
         try {
-            ApplicationStateHandler.getInstance().applyState();
-
             GuiHandler.getInstance().setFullFrameVisible(true);
             //Hide title dialog
             GuiHandler.getInstance().hideSplashScreen();
