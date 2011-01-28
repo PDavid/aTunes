@@ -56,10 +56,9 @@ public final class EditPreferencesDialogListener implements ListSelectionListene
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        boolean needRestart = false;
         if (e.getSource() == editPreferencesDialog.getOk()) {
             if (editPreferencesDialogController.arePreferencesValid()) {
-                needRestart = editPreferencesDialogController.processPreferences();
+            	boolean needRestart = editPreferencesDialogController.processPreferences();
                 editPreferencesDialog.setVisible(false);
                 ApplicationStateHandler.getInstance().notifyApplicationStateChanged();
                 if (needRestart) {
@@ -74,15 +73,13 @@ public final class EditPreferencesDialogListener implements ListSelectionListene
             editPreferencesDialogController.resetImmediateChanges();
             editPreferencesDialog.setVisible(false);
         }
-
     }
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
-        if (e.getSource() == editPreferencesDialog.getList()) {
+        if (e.getSource() == editPreferencesDialog.getList() && !e.getValueIsAdjusting()) {
             editPreferencesDialog.showPanel(editPreferencesDialog.getList().getSelectedIndex());
         }
-
     }
 
 }

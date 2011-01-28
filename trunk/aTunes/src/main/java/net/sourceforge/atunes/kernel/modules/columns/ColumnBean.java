@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.kernel.modules.columns;
 
+import java.io.Serializable;
+
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn.ColumnSort;
 
 /**
@@ -28,9 +30,14 @@ import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn.ColumnSort;
  * 
  * @author alex
  */
-public final class ColumnBean {
+public final class ColumnBean implements Serializable {
 
-    /** The order. */
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3224708329958757496L;
+
+	/** The order. */
     private int order;
 
     /** The visible. */

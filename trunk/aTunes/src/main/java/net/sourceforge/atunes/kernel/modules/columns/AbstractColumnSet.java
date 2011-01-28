@@ -106,7 +106,7 @@ public abstract class AbstractColumnSet {
     /**
      * Store current column settings.
      */
-    public final void storeCurrentColumnSettings() {
+    public final void saveColumnSet() {
         // Get ColumnsBean from default columns and store it
         HashMap<String, ColumnBean> newColumnsBeans = new HashMap<String, ColumnBean>();
         for (AbstractColumn column : getAvailableColumns()) {
@@ -314,7 +314,7 @@ public abstract class AbstractColumnSet {
     protected abstract Map<String, ColumnBean> getColumnsConfiguration();
 
     /**
-     * Sets column configuration of this column set
+     * Saves column configuration of this column set
      * 
      * @param columnsConfiguration
      */

@@ -55,9 +55,9 @@ public abstract class AbstractCustomNavigatorColumnSet extends AbstractColumnSet
         Map<String, Map<String, ColumnBean>> configuration = ApplicationState.getInstance().getCustomNavigatorColumns();
         if (configuration == null) {
             configuration = new HashMap<String, Map<String, ColumnBean>>();
-            ApplicationState.getInstance().setCustomNavigatorColumns(configuration);
         }
         configuration.put(this.columnSetName, columnsConfiguration);
+        ApplicationState.getInstance().setCustomNavigatorColumns(configuration);
     }
 
     @Override

@@ -117,6 +117,8 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 
     @Override
     public void applicationStarted() {
+        // Navigation Panel View
+        ControllerProxy.getInstance().getNavigationController().setNavigationView(ApplicationState.getInstance().getNavigationView());
     }
 
     public List<AbstractNavigationView> getNavigationViews() {

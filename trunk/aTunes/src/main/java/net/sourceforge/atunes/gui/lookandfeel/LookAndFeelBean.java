@@ -20,9 +20,16 @@
 
 package net.sourceforge.atunes.gui.lookandfeel;
 
-public class LookAndFeelBean {
+import java.io.Serializable;
+
+public class LookAndFeelBean implements Serializable {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3123539477818725302L;
+
+	/**
      * Name of the look and feel
      */
     private String name;

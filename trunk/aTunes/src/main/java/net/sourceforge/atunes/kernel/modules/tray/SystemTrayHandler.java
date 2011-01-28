@@ -87,6 +87,15 @@ public final class SystemTrayHandler extends AbstractHandler {
 
     @Override
     public void applicationStarted() {
+        // System tray player
+        if (ApplicationState.getInstance().isShowTrayPlayer()) {
+            initTrayPlayerIcons();
+        }
+
+        // System tray
+        if (ApplicationState.getInstance().isShowSystemTray()) {
+            initTrayIcon();
+        }
     }
 
     /**
@@ -149,7 +158,7 @@ public final class SystemTrayHandler extends AbstractHandler {
     /**
      * Inits the tray icon.
      */
-    public void initTrayIcon() {
+    private void initTrayIcon() {
         initSystemTray();
         if (isTrayInitialized()) {
             trayIconVisible = true;
@@ -163,7 +172,7 @@ public final class SystemTrayHandler extends AbstractHandler {
     /**
      * Inits the tray player icons.
      */
-    public void initTrayPlayerIcons() {
+    private void initTrayPlayerIcons() {
         initSystemTray();
         if (isTrayInitialized()) {
             trayPlayerVisible = true;

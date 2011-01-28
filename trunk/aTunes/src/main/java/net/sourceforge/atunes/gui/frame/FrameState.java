@@ -21,17 +21,33 @@
 package net.sourceforge.atunes.gui.frame;
 
 import java.beans.ConstructorProperties;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * State of aTunes main frame.
  */
-public final class FrameState {
+public final class FrameState implements Serializable {
 
-    private Map<String, Integer> splitPaneDividerPositions;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 455297656338188247L;
+	
+	private Map<String, Integer> splitPaneDividerPositions;
+	
+	private int xPosition = -1;
+	
+	private int yPosition = -1;
+	
+	private boolean maximized;
+	
+	private int windowWidth;
+	
+	private int windowHeight;
 
-    public FrameState() {
+	public FrameState() {
         this.splitPaneDividerPositions = new HashMap<String, Integer>();
     }
 
@@ -59,5 +75,44 @@ public final class FrameState {
     public Map<String, Integer> getSplitPaneDividerPositions() {
         return splitPaneDividerPositions;
     }
+    
+    public int getXPosition() {
+		return xPosition;
+	}
 
+	public void setXPosition(int xPosition) {
+		this.xPosition = xPosition;
+	}
+
+	public int getYPosition() {
+		return yPosition;
+	}
+
+	public void setYPosition(int yPosition) {
+		this.yPosition = yPosition;
+	}
+
+	public boolean isMaximized() {
+		return maximized;
+	}
+
+	public void setMaximized(boolean maximized) {
+		this.maximized = maximized;
+	}
+
+	public int getWindowWidth() {
+		return windowWidth;
+	}
+
+	public void setWindowWidth(int windowWidth) {
+		this.windowWidth = windowWidth;
+	}
+
+	public int getWindowHeight() {
+		return windowHeight;
+	}
+
+	public void setWindowHeight(int windowHeight) {
+		this.windowHeight = windowHeight;
+	}
 }

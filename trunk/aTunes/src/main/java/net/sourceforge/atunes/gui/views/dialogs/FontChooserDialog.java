@@ -33,6 +33,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.beans.ConstructorProperties;
+import java.io.Serializable;
 import java.util.Locale;
 
 import javax.swing.JButton;
@@ -53,9 +54,13 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class FontChooserDialog extends AbstractCustomModalDialog {
 
-    public static class FontSettings {
+    public static class FontSettings implements Serializable {
 
-        private FontBean font;
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = -8438133427543514976L;
+		private FontBean font;
         private boolean useFontSmoothing;
         private boolean useFontSmoothingSettingsFromOs;
 

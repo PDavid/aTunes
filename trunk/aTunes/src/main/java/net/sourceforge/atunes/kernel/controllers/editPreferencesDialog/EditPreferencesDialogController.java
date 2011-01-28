@@ -134,11 +134,16 @@ public final class EditPreferencesDialogController extends AbstractSimpleControl
         boolean needRestart = false;
         // Apply preferences from panels
         for (AbstractPreferencesPanel p : panels) {
-        	// WARNING: There was a bug when call to applyPreferences was made as second operand of OR due to shortcut
-        	// So call method and after do OR (method call as first operand is also valid)
-        	// See bug https://sourceforge.net/tracker/?func=detail&aid=2999531&group_id=161929&atid=821812 for more information
-        	boolean panelNeedRestart = p.applyPreferences(ApplicationState.getInstance());
-            needRestart = needRestart || panelNeedRestart;
+        	if (p.isDirty()) {
+        		getLogger().debug(LogCategories.PREFERENCES, "Panel ", p.getTitle(), " is dirty");
+        		// WARNING: There was a bug when call to applyPreferences was made as second operand of OR due to shortcut
+        		// So call method and after do OR (method call as first operand is also valid)
+        		// See bug https://sourceforge.net/tracker/?func=detail&aid=2999531&group_id=161929&atid=821812 for more information
+        		boolean panelNeedRestart = p.applyPreferences(ApplicationState.getInstance());
+        		needRestart = needRestart || panelNeedRestart;
+        	} else {
+        		getLogger().debug(LogCategories.PREFERENCES, "Panel ", p.getTitle(), " is clean");
+        	}
         }
         return needRestart;
     }
@@ -168,7 +173,12 @@ public final class EditPreferencesDialogController extends AbstractSimpleControl
             panel.dialogVisibilityChanged(true);
         }
 
+        getComponentControlled().resetPanels();
+
+        // Set first panel (selected) dirty
+        panels[0].setDirty(true);
         getComponentControlled().getList().setSelectedIndex(0);
+        
         getComponentControlled().setVisible(true);
     }
 }

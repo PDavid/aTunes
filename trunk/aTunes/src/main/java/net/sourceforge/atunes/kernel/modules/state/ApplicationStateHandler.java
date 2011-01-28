@@ -20,10 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.state;
 
-import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -31,24 +27,15 @@ import java.io.IOException;
 import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import javax.swing.WindowConstants;
-
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.Kernel;
-import net.sourceforge.atunes.kernel.modules.columns.ColumnSets;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
-import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeyHandler;
-import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
-import net.sourceforge.atunes.kernel.modules.player.Volume;
 import net.sourceforge.atunes.kernel.modules.playlist.ListOfPlayLists;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
@@ -57,14 +44,11 @@ import net.sourceforge.atunes.kernel.modules.repository.data.Repository;
 import net.sourceforge.atunes.kernel.modules.repository.exception.InconsistentRepositoryException;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.Favorites;
 import net.sourceforge.atunes.kernel.modules.repository.statistics.Statistics;
-import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
-import net.sourceforge.atunes.kernel.modules.tray.SystemTrayHandler;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.Timer;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.ClosingUtils;
-import net.sourceforge.atunes.utils.CryptoUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.XMLUtils;
 
@@ -146,74 +130,6 @@ public final class ApplicationStateHandler extends AbstractHandler {
 
     @Override
     public void applicationFinish() {
-        storeState();
-    }
-
-    /**
-     * Apply state. Some properties (window maximized, position, etc) are
-     * already setted in gui creation
-     */
-    public void applyState() {
-        getLogger().debug(LogCategories.HANDLER);
-
-        // System tray player
-        if (ApplicationState.getInstance().isShowTrayPlayer()) {
-            SystemTrayHandler.getInstance().initTrayPlayerIcons();
-        }
-
-        // System tray
-        if (ApplicationState.getInstance().isShowSystemTray()) {
-            SystemTrayHandler.getInstance().initTrayIcon();
-        } else {
-            GuiHandler.getInstance().setFrameDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        }
-
-        // Hotkeys
-        if (ApplicationState.getInstance().isEnableHotkeys()) {
-            HotkeyHandler.getInstance().enableHotkeys(ApplicationState.getInstance().getHotkeysConfig());
-        } else {
-            HotkeyHandler.getInstance().disableHotkeys();
-        }
-
-        // Tool Bar
-        GuiHandler.getInstance().showToolBar(ApplicationState.getInstance().isShowToolBar());
-
-        // Status Bar
-        GuiHandler.getInstance().showStatusBar(ApplicationState.getInstance().isShowStatusBar());
-
-        // Song properties visible
-        GuiHandler.getInstance().showSongProperties(ApplicationState.getInstance().isShowAudioObjectProperties());
-
-        // Show Context
-        GuiHandler.getInstance().showContextPanel(ApplicationState.getInstance().isUseContext());
-
-        // Show navigation table & tree
-        GuiHandler.getInstance().showNavigationTree(ApplicationState.getInstance().isShowNavigationTree());
-        GuiHandler.getInstance().showNavigationTable(ApplicationState.getInstance().isShowNavigationTable());
-
-        // Navigation Panel View
-        ControllerProxy.getInstance().getNavigationController().setNavigationView(ApplicationState.getInstance().getNavigationView());
-
-        // Set volume on visual components
-        Volume.setVolume(ApplicationState.getInstance().getVolume());
-
-        // Mute
-        PlayerHandler.getInstance().applyMuteState(ApplicationState.getInstance().isMuteEnabled());
-        
-        // Progress bar ticks
-        ControllerProxy.getInstance().getPlayerControlsController().getComponentControlled().setShowTicksAndLabels(ApplicationState.getInstance().isShowTicks());
-    }
-
-    /**
-     * Gets file where state is stored.
-     * 
-     * @param useWorkDir
-     *            if the working diretory should be used for storing the state
-     * 
-     * @return The file where state is stored
-     */
-    private String getPropertiesFile(boolean useWorkDir) {
-        return StringUtils.getString(SystemProperties.getUserConfigFolder(useWorkDir), "/", Constants.PROPERTIES_FILE);
     }
 
     /**
@@ -425,38 +341,6 @@ public final class ApplicationStateHandler extends AbstractHandler {
             getLogger().debug(LogCategories.HANDLER, e);
         } finally {
             ClosingUtils.close(oos);
-        }
-    }
-
-    /**
-     * Read state stored and returns it. If there is any error trying to read
-     * state then returns an object with default state
-     * 
-     * @return the state
-     */
-    public ApplicationState readState() {
-        getLogger().debug(LogCategories.HANDLER);
-
-        try {
-            ApplicationState state = (ApplicationState) XMLUtils.readBeanFromFile(getPropertiesFile(Kernel.isDebug()));
-
-            // Decrypt passwords
-            if (state.getProxy() != null && state.getProxy().getEncryptedPassword() != null && state.getProxy().getEncryptedPassword().length > 0) {
-                state.getProxy().setPassword(new String(CryptoUtils.decrypt(state.getProxy().getEncryptedPassword())));
-            }
-            if (state.getEncryptedLastFmPassword() != null && state.getEncryptedLastFmPassword().length > 0) {
-                state.setLastFmPassword(new String(CryptoUtils.decrypt(state.getEncryptedLastFmPassword())));
-            }
-            return state;
-        } catch (IOException e) {
-            getLogger().info(LogCategories.HANDLER, "Could not read application state");
-            return new ApplicationState();
-        } catch (GeneralSecurityException e) {
-            getLogger().info(LogCategories.HANDLER, "Could not decrypt passord");
-            return new ApplicationState();
-        } catch (Exception e) {
-            getLogger().info(LogCategories.HANDLER, "Could not read application state");
-            return new ApplicationState();
         }
     }
 
@@ -741,79 +625,6 @@ public final class ApplicationStateHandler extends AbstractHandler {
             return null;
         } finally {
             ClosingUtils.close(ois);
-        }
-    }
-
-    /**
-     * Stores state.
-     */
-    private void storeState() {
-        getLogger().debug(LogCategories.HANDLER);
-
-        if (!GuiHandler.getInstance().isMultipleWindow()) {
-            // Set window location on state
-            ApplicationState.getInstance().setWindowXPosition(GuiHandler.getInstance().getWindowLocation().x);
-            ApplicationState.getInstance().setWindowYPosition(GuiHandler.getInstance().getWindowLocation().y);
-            // Window full maximized
-            ApplicationState.getInstance().setMaximized(GuiHandler.getInstance().isMaximized());
-            // Set window size
-            ApplicationState.getInstance().setWindowWidth(GuiHandler.getInstance().getWindowSize().width);
-            ApplicationState.getInstance().setWindowHeight(GuiHandler.getInstance().getWindowSize().height);
-        } else {
-            // Set window location on state
-            ApplicationState.getInstance().setMultipleViewXPosition(GuiHandler.getInstance().getWindowLocation().x);
-            ApplicationState.getInstance().setMultipleViewYPosition(GuiHandler.getInstance().getWindowLocation().y);
-            // Set window size
-            ApplicationState.getInstance().setMultipleViewWidth(GuiHandler.getInstance().getWindowSize().width);
-            ApplicationState.getInstance().setMultipleViewHeight(GuiHandler.getInstance().getWindowSize().height);
-        }
-
-        // Equalizer
-        ApplicationState.getInstance().setEqualizerSettings(PlayerHandler.getInstance().getEqualizer().getEqualizerValues());
-
-        // Save column settings
-        ColumnSets.storeColumnSettings();
-
-        // Encrypt passwords
-        try {
-            ApplicationState.getInstance().setEncryptedLastFmPassword(null);
-            if (ApplicationState.getInstance().getLastFmPassword() != null && !ApplicationState.getInstance().getLastFmPassword().isEmpty()) {
-                ApplicationState.getInstance().setEncryptedLastFmPassword(CryptoUtils.encrypt(ApplicationState.getInstance().getLastFmPassword().getBytes()));
-            }
-            if (ApplicationState.getInstance().getProxy() != null && ApplicationState.getInstance().getProxy().getPassword() != null
-                    && !ApplicationState.getInstance().getProxy().getPassword().isEmpty()) {
-                ApplicationState.getInstance().getProxy().setEncryptedPassword(CryptoUtils.encrypt(ApplicationState.getInstance().getProxy().getPassword().getBytes()));
-            }
-        } catch (GeneralSecurityException e) {
-            getLogger().error(LogCategories.HANDLER, e);
-        } catch (IOException e) {
-            getLogger().error(LogCategories.HANDLER, e);
-        }
-
-        try {
-            // Make not encrypted password transient
-            BeanInfo stateInfo = Introspector.getBeanInfo(ApplicationState.class);
-            for (PropertyDescriptor pd : stateInfo.getPropertyDescriptors()) {
-                if (pd.getName().equals("lastFmPassword")) {
-                    pd.setValue("transient", Boolean.TRUE);
-                }
-            }
-
-            // Make not encrypted password transient
-            BeanInfo proxyInfo = Introspector.getBeanInfo(ProxyBean.class);
-            for (PropertyDescriptor pd : proxyInfo.getPropertyDescriptors()) {
-                if (pd.getName().equals("password")) {
-                    pd.setValue("transient", Boolean.TRUE);
-                }
-            }
-
-            XMLUtils.writeBeanToFile(ApplicationState.getInstance(), getPropertiesFile(Kernel.isDebug()));
-        } catch (IOException e) {
-            getLogger().error(LogCategories.HANDLER, "Error storing application state");
-            getLogger().error(LogCategories.HANDLER, e);
-        } catch (IntrospectionException e) {
-            getLogger().error(LogCategories.HANDLER, "Error storing application state");
-            getLogger().error(LogCategories.HANDLER, e);
         }
     }
 

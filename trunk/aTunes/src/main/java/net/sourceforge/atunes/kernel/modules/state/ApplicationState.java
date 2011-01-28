@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.state;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,253 +57,13 @@ public class ApplicationState {
      */
     private static ApplicationState instance;
 
-    private boolean showAllRadioStations = true;
-    private boolean showNavigationTable = true;
-    private boolean showNavigationTree = true;
-    private boolean showAudioObjectProperties;
-    private boolean showStatusBar = true;
-    private boolean showOSD;
-    private boolean shuffle;
-    private boolean repeat;
-    private boolean showSystemTray;
-    private boolean showTrayPlayer;
-    private String navigationView = RepositoryNavigationView.class.getName();
-    private ViewMode viewMode = ViewMode.ARTIST;
-    private LocaleBean locale;
-    private LocaleBean oldLocale;
-    private String defaultSearch;
-    private boolean useContext = true;
-    private int selectedContextTab;
-    private Class<? extends Frame> frameClass;
-    // Split panes divider location
-    private Map<Class<? extends Frame>, FrameState> frameStates = new HashMap<Class<? extends Frame>, FrameState>();
-    private boolean showPlaylistControls = true;
-    private ProxyBean proxy;
-    private LookAndFeelBean lookAndFeel;
-    private FontSettings fontSettings;
-    private boolean playAtStartup;
-    private boolean cacheFilesBeforePlaying = false;
-
-    // MPlayer options
-    private boolean useNormalisation;
-    private boolean karaoke;
-    private boolean useShortPathNames = true;
-    private float[] equalizerSettings;
-    private boolean useFadeAway;
-    private boolean showTicks;
-    private boolean readInfoFromRadioStream = true;
-    private boolean enableAdvancedSearch;
-    private boolean enableHotkeys;
-    private boolean showTitle = true;
-    private int osdDuration = 2; // In seconds
-    private int volume = 50;
-    /**
-     * Muted property: <code>true</code> if sound is disabled
-     */
-    private boolean muteEnabled;
-
-    private int autoRepositoryRefreshTime = 60; // In minutes
-    private boolean saveRepositoryAsXml = true;
-    private boolean showFavoritesInNavigator = true;
-    private boolean useCdErrorCorrection = false;
-    private boolean useSmartTagViewSorting;
-    private boolean usePersonNamesArtistTagViewSorting;
-    private boolean saveContextPicture;
-    private boolean showExtendedTooltip = true;
-    private int extendedTooltipDelay = 1; // In seconds
-
-    /**
-     * The last fm enabled. It is not enabled until user sets login user and
-     * password
-     */
-    private boolean lastFmEnabled = false;
-    private String lastFmUser;
-    private String lastFmPassword;
-    /** Option to add loved songs in LastFM when adding a song as favorite */
-    private boolean autoLoveFavoriteSong = false;
-    private byte[] encryptedLastFmPassword;
-    private List<LyricsEngineInfo> lyricsEnginesInfo;
-    private String fullScreenBackground;
-    /**
-     * The window x position. Default -1: No window position
-     */
-    private int windowXPosition = -1;
-    /**
-     * The window y position. Default -1: No window position
-     */
-    private int windowYPosition = -1;
-    private boolean maximized;
-    private int windowWidth;
-    private int windowHeight;
-    private int multipleViewXPosition;
-    private int multipleViewYPosition;
-    private int multipleViewWidth;
-    private int multipleViewHeight;
-
-    private String encoder = "OGG";
-    private String encoderQuality = "5";
-    private String mp3EncoderQuality = "medium";
-    private String flacEncoderQuality = "-5";
-    private String cdRipperFileNamePattern;
-
-    // Columns config
-    private Map<String, ColumnBean> columns;
-    private Map<String, ColumnBean> defaultNavigatorColumns;
-    private Map<String, ColumnBean> searchResultsColumns;
-    private Map<String, Map<String, ColumnBean>> customNavigatorColumns;
-
-    /**
-     * Default location where device is plugged. Used to connect device
-     * automatically
-     */
-    private String defaultDeviceLocation;
-    private long podcastFeedEntriesRetrievalInterval = PodcastFeedHandler.DEFAULT_PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL;
-    private String podcastFeedEntryDownloadPath;
-    private boolean useDownloadedPodcastFeedEntries = true;
-    private boolean removePodcastFeedEntriesRemovedFromPodcastFeed;
-    /**
-     * Property to show navigator tabs at left (true) or not (false)
-     */
-    private boolean showNavigatorTabsAtLeft = true;
-    /**
-     * Property to show navigator tabs text or not
-     */
-    private boolean showNavigatorTabsText = true;
-    /**
-     * Property to show context tabs text or not
-     */
-    private boolean showContextTabsText = true;
-    /**
-     * Property to hide albums of artist "Various Artists" in ContextPanel
-     */
-    private boolean hideVariousArtistsAlbums = true;
-    /**
-     * Property of minimum song number per album in ContextPanel. 0 no minimum
-     * value
-     */
-    private int minimumSongNumberPerAlbum = 0;
-    /**
-     * Property to highlight folder with incomplete tags in navigator (true) or
-     * not (false)
-     */
-    private boolean highlightIncompleteTagElements = true;
-
-    /**
-     * list with tag attributes used to hightlight folders
-     */
-    private List<TagAttribute> highlightIncompleteTagFoldersAttributes = IncompleteTagsChecker.getDefaultTagAttributesToHighlightFolders();
-    /**
-     * Property to show tool bar or not
-     */
-    private boolean showToolBar = true;
-    /**
-     * Current PlayerHandler implementation. DEFAULT PLAYER IS MPLAYER
-     */
-    private String playerEngine = PlayerHandler.DEFAULT_ENGINE;
-    /**
-     * Option to scroll automatically play list to current audio object
-     */
-    private boolean autoScrollPlayListEnabled = true;
-    /**
-     * List of folders of last loaded repository
-     */
-    private List<String> lastRepositoryFolders;
-    /**
-     * The last path used for loading a playlist file
-     */
-    private String loadPlaylistPath;
-    /**
-     * The last path used for storing a playlist file
-     */
-    private String savePlaylistPath;
-    /**
-     * Property to stop or not the player when switching between playlists
-     */
-    private boolean stopPlayerOnPlayListSwitch = false;
-    /**
-     * Property to stop or not the player when deleting a playlist
-     */
-    private boolean stopPlayerOnPlayListClear = true;
-    /**
-     * Pattern used to rename files when importing / exporting
-     */
-    private String importExportFileNamePattern;
-    /**
-     * Pattern used to rename files when copying to device
-     */
-    private String deviceFileNamePattern;
-    /**
-     * Pattern used to folder's path where store files when importing /
-     * exporting
-     */
-    private String importExportFolderPathPattern;
-    /**
-     * Pattern used to folder's path where store files when copying to device
-     * exporting
-     */
-    private String deviceFolderPathPattern;
-    /**
-     * Property that indicates if repeated songs are allowed in device for
-     * different albums
-     */
-    private boolean allowRepeatedSongsInDevice;
-    /**
-     * Property to review tags by user before import
-     */
-    private boolean reviewTagsBeforeImport = true;
-    /**
-     * Property to apply changes in tags to source files before import
-     */
-    private boolean applyChangesToSourceFilesBeforeImport = false;
-    /**
-     * Property to set track numbers when importing
-     */
-    private boolean setTrackNumbersWhenImporting = true;
-    /**
-     * Property to set titles when importing
-     */
-    private boolean setTitlesWhenImporting = true;
-    /**
-     * Property to set width of OSD (default 300 pixels)
-     */
-    private int osdWidth = 300;
-    /**
-     * Property to set horizontal alignment of OSD
-     */
-    private int osdHorizontalAlignment = SwingConstants.RIGHT;
-    /**
-     * Property to set vertical alignment of OSD
-     */
-    private int osdVerticalAlignment = SwingConstants.BOTTOM;
-    private HotkeysConfig hotkeysConfig;
-    /**
-     * List of patterns used for recognition
-     */
-    private List<String> recognitionPatterns;
-    /**
-     * List of patterns used for massive recognition
-     */
-    private List<String> massiveRecognitionPatterns;
-    /**
-     * Command to execute before access to repository
-     */
-    private String commandBeforeAccessRepository;
-    /**
-     * Command to execute after access to repository
-     */
-    private String commandAfterAccessRepository;
-    private boolean useLibnotify = false;
-    private boolean showContextAlbumsInGrid;
-
-    private boolean isSimilarArtistsMode;
-
-    //////////////////////////////////////////////////////////// END OF ATTRIBUTES /////////////////////////////////////////////////////////////
-
+    private PreferencesCache cache;
+    
     /**
      * Instantiates a new application state.
      */
-    public ApplicationState() {
-        // Nothing to do
+    private ApplicationState() {
+        this.cache = new PreferencesCache();
     }
 
     /**
@@ -310,912 +71,1055 @@ public class ApplicationState {
      */
     public static ApplicationState getInstance() {
         if (instance == null) {
-            // Read the state
-            instance = ApplicationStateHandler.getInstance().readState();
+            instance = new ApplicationState();
         }
         return instance;
     }
-
+    
+    
+    
     public boolean isShowAllRadioStations() {
-        return showAllRadioStations;
+    	return (Boolean) this.cache.retrievePreference(Preferences.SHOW_ALL_RADIO_STATIONS, true);
     }
 
     public void setShowAllRadioStations(boolean showAllRadioStations) {
-        this.showAllRadioStations = showAllRadioStations;
+        this.cache.storePreference(Preferences.SHOW_ALL_RADIO_STATIONS, showAllRadioStations);
     }
+    
+    
 
     public boolean isShowNavigationTable() {
-        return showNavigationTable;
+    	return (Boolean) this.cache.retrievePreference(Preferences.SHOW_NAVIGATION_TABLE, true);
     }
 
     public void setShowNavigationTable(boolean showNavigationTable) {
-        this.showNavigationTable = showNavigationTable;
+        this.cache.storePreference(Preferences.SHOW_NAVIGATION_TABLE, showNavigationTable);
     }
+    
+    
 
     public boolean isShowAudioObjectProperties() {
-        return showAudioObjectProperties;
+        return (Boolean) this.cache.retrievePreference(Preferences.SHOW_AUDIO_OBJECT_PROPERTIES, false);
     }
 
     public void setShowAudioObjectProperties(boolean showAudioObjectProperties) {
-        this.showAudioObjectProperties = showAudioObjectProperties;
+        this.cache.storePreference(Preferences.SHOW_AUDIO_OBJECT_PROPERTIES, showAudioObjectProperties);
     }
+    
+    
 
     public boolean isShowStatusBar() {
-        return showStatusBar;
+        return (Boolean) this.cache.retrievePreference(Preferences.SHOW_STATUS_BAR, true);
     }
 
     public void setShowStatusBar(boolean showStatusBar) {
-        this.showStatusBar = showStatusBar;
+        this.cache.storePreference(Preferences.SHOW_STATUS_BAR, showStatusBar);
     }
+    
+    
 
     public boolean isShowOSD() {
-        return showOSD;
+        return (Boolean) this.cache.retrievePreference(Preferences.SHOW_OSD, true);
     }
 
     public void setShowOSD(boolean showOSD) {
-        this.showOSD = showOSD;
+    	this.cache.storePreference(Preferences.SHOW_OSD, showOSD);
     }
+    
+    
 
     public boolean isShuffle() {
-        return shuffle;
+    	return (Boolean) this.cache.retrievePreference(Preferences.SHUFFLE, false);
     }
 
     public void setShuffle(boolean shuffle) {
-        this.shuffle = shuffle;
+        this.cache.storePreference(Preferences.SHUFFLE, shuffle);
     }
+    
+    
 
     public boolean isRepeat() {
-        return repeat;
+        return (Boolean) this.cache.retrievePreference(Preferences.REPEAT, false);
     }
 
     public void setRepeat(boolean repeat) {
-        this.repeat = repeat;
+        this.cache.storePreference(Preferences.REPEAT, repeat);
     }
+    
+    
 
     public boolean isShowSystemTray() {
-        return showSystemTray;
+        return (Boolean) this.cache.retrievePreference(Preferences.SHOW_SYSTEM_TRAY, false);
     }
 
     public void setShowSystemTray(boolean showSystemTray) {
-        this.showSystemTray = showSystemTray;
+    	this.cache.storePreference(Preferences.SHOW_SYSTEM_TRAY, showSystemTray);
     }
+    
+    
 
     public boolean isShowTrayPlayer() {
-        return showTrayPlayer;
+        return (Boolean) this.cache.retrievePreference(Preferences.SHOW_TRAY_PLAYER, false);
     }
 
     public void setShowTrayPlayer(boolean showTrayPlayer) {
-        this.showTrayPlayer = showTrayPlayer;
+    	this.cache.storePreference(Preferences.SHOW_TRAY_PLAYER, showTrayPlayer);
     }
+    
+    
 
     public String getNavigationView() {
-        return navigationView;
+        return (String) this.cache.retrievePreference(Preferences.NAVIGATION_VIEW, RepositoryNavigationView.class.getName());
     }
 
     public void setNavigationView(String navigationView) {
-        this.navigationView = navigationView;
+        this.cache.storePreference(Preferences.NAVIGATION_VIEW, navigationView);
     }
+    
+    
 
     public ViewMode getViewMode() {
-        return viewMode;
+        return (ViewMode) this.cache.retrievePreference(Preferences.VIEW_MODE, ViewMode.ARTIST);
     }
 
     public void setViewMode(ViewMode viewMode) {
-        this.viewMode = viewMode;
+        this.cache.storePreference(Preferences.VIEW_MODE, viewMode);
     }
+    
+    
 
     public LocaleBean getLocale() {
-        return locale;
+    	return (LocaleBean) this.cache.retrievePreference(Preferences.LOCALE, null);
     }
 
     public void setLocale(LocaleBean locale) {
-        this.locale = locale;
+        this.cache.storePreference(Preferences.LOCALE, locale);
     }
+    
+    
 
     public LocaleBean getOldLocale() {
-        return oldLocale;
+        return (LocaleBean) this.cache.retrievePreference(Preferences.OLD_LOCALE, null);
     }
 
     public void setOldLocale(LocaleBean oldLocale) {
-        this.oldLocale = oldLocale;
+        this.cache.storePreference(Preferences.OLD_LOCALE, oldLocale);
     }
+    
+    
 
     public String getDefaultSearch() {
-        return defaultSearch;
+        return (String) this.cache.retrievePreference(Preferences.DEFAULT_SEARCH, null);
     }
 
     public void setDefaultSearch(String defaultSearch) {
-        this.defaultSearch = defaultSearch;
+    	this.cache.storePreference(Preferences.DEFAULT_SEARCH, defaultSearch);
     }
+    
+    
 
     public boolean isUseContext() {
-        return useContext;
+        return (Boolean) this.cache.retrievePreference(Preferences.USE_CONTEXT, true);
     }
 
     public void setUseContext(boolean useContext) {
-        this.useContext = useContext;
+        this.cache.storePreference(Preferences.USE_CONTEXT, useContext);
     }
+    
+    
 
     public int getSelectedContextTab() {
-        return selectedContextTab;
+        return (Integer) this.cache.retrievePreference(Preferences.SELECTED_CONTEXT_TAB, 0);
     }
 
     public void setSelectedContextTab(int selectedContextTab) {
-        this.selectedContextTab = selectedContextTab;
+    	this.cache.storePreference(Preferences.SELECTED_CONTEXT_TAB, selectedContextTab);
     }
+    
+    
 
-    public Class<? extends Frame> getFrameClass() {
-        return frameClass;
+    @SuppressWarnings("unchecked")
+	public Class<? extends Frame> getFrameClass() {
+        return (Class<? extends Frame>) this.cache.retrievePreference(Preferences.FRAME_CLASS, null);
     }
 
     public void setFrameClass(Class<? extends Frame> frameClass) {
-        this.frameClass = frameClass;
+    	this.cache.storePreference(Preferences.FRAME_CLASS, frameClass);
     }
+    
+    
 
     public boolean isShowPlaylistControls() {
-        return showPlaylistControls;
+        return (Boolean) this.cache.retrievePreference(Preferences.SHOW_PLAYLIST_CONTROLS, true);
     }
 
     public void setShowPlaylistControls(boolean showPlaylistControls) {
-        this.showPlaylistControls = showPlaylistControls;
+    	this.cache.storePreference(Preferences.SHOW_PLAYLIST_CONTROLS, showPlaylistControls);
     }
+    
+    
 
     public ProxyBean getProxy() {
-        return proxy;
+        return (ProxyBean) this.cache.retrievePreference(Preferences.PROXY, null);
     }
 
     public void setProxy(ProxyBean proxy) {
-        this.proxy = proxy;
+        this.cache.storePreference(Preferences.PROXY, proxy);
     }
+    
+    
 
     public LookAndFeelBean getLookAndFeel() {
-        return lookAndFeel;
+        return (LookAndFeelBean) this.cache.retrievePreference(Preferences.LOOK_AND_FEEL, null);
     }
 
     public void setLookAndFeel(LookAndFeelBean lookAndFeel) {
-        this.lookAndFeel = lookAndFeel;
+    	this.cache.storePreference(Preferences.LOOK_AND_FEEL, lookAndFeel);
     }
+    
+    
 
     public FontSettings getFontSettings() {
-        return fontSettings;
+        return (FontSettings) this.cache.retrievePreference(Preferences.FONT_SETTINGS, null);
     }
 
     public void setFontSettings(FontSettings fontSettings) {
-        this.fontSettings = fontSettings;
+    	this.cache.storePreference(Preferences.FONT_SETTINGS, fontSettings);
     }
+    
+    
 
     public boolean isPlayAtStartup() {
-        return playAtStartup;
+        return (Boolean) this.cache.retrievePreference(Preferences.PLAY_AT_STARTUP, false);
     }
 
     public void setPlayAtStartup(boolean playAtStartup) {
-        this.playAtStartup = playAtStartup;
+    	this.cache.storePreference(Preferences.PLAY_AT_STARTUP, playAtStartup);
     }
+    
+    
 
     public boolean isCacheFilesBeforePlaying() {
-        return cacheFilesBeforePlaying;
+    	return (Boolean) this.cache.retrievePreference(Preferences.CACHE_FILES_BEFORE_PLAYING, false);
     }
 
     public void setCacheFilesBeforePlaying(boolean cacheFilesBeforePlaying) {
-        this.cacheFilesBeforePlaying = cacheFilesBeforePlaying;
+    	this.cache.storePreference(Preferences.CACHE_FILES_BEFORE_PLAYING, cacheFilesBeforePlaying);
     }
+    
+    
 
     public boolean isUseNormalisation() {
-        return useNormalisation;
+    	return (Boolean) this.cache.retrievePreference(Preferences.USE_NORMALIZATION, false);
     }
 
     public void setUseNormalisation(boolean useNormalisation) {
-        this.useNormalisation = useNormalisation;
+    	this.cache.storePreference(Preferences.USE_NORMALIZATION, useNormalisation);
     }
+    
+    
 
     public boolean isKaraoke() {
-        return karaoke;
+    	return (Boolean) this.cache.retrievePreference(Preferences.KARAOKE, false);
     }
 
     public void setKaraoke(boolean karaoke) {
-        this.karaoke = karaoke;
+    	this.cache.storePreference(Preferences.KARAOKE, karaoke);
     }
+    
+    
 
     public boolean isUseShortPathNames() {
-        return useShortPathNames;
+    	return (Boolean) this.cache.retrievePreference(Preferences.USE_SHORT_PATH_NAMES, true);
     }
 
     public void setUseShortPathNames(boolean useShortPathNames) {
-        this.useShortPathNames = useShortPathNames;
+    	this.cache.storePreference(Preferences.USE_SHORT_PATH_NAMES, useShortPathNames);
     }
+    
+    
 
     public float[] getEqualizerSettings() {
-        return equalizerSettings;
+    	return (float[]) this.cache.retrievePreference(Preferences.EQUALIZER_SETTINGS, null);
     }
 
     public void setEqualizerSettings(float[] equalizerSettings) {
-        this.equalizerSettings = equalizerSettings;
+    	this.cache.storePreference(Preferences.EQUALIZER_SETTINGS, equalizerSettings);
     }
+    
+    
 
     public boolean isUseFadeAway() {
-        return useFadeAway;
+    	return (Boolean) this.cache.retrievePreference(Preferences.USE_FADE_AWAY, false);
     }
 
     public void setUseFadeAway(boolean useFadeAway) {
-        this.useFadeAway = useFadeAway;
+    	this.cache.storePreference(Preferences.USE_FADE_AWAY, useFadeAway);
     }
+    
+    
 
     public boolean isShowTicks() {
-        return showTicks;
+    	return (Boolean) this.cache.retrievePreference(Preferences.SHOW_TICKS, false);
     }
 
     public void setShowTicks(boolean showTicks) {
-        this.showTicks = showTicks;
+    	this.cache.storePreference(Preferences.SHOW_TICKS, showTicks);
     }
+    
+    
 
     public boolean isReadInfoFromRadioStream() {
-        return readInfoFromRadioStream;
+    	return (Boolean) this.cache.retrievePreference(Preferences.READ_INFO_FROM_RADIO_STREAM, true);
     }
 
     public void setReadInfoFromRadioStream(boolean readInfoFromRadioStream) {
-        this.readInfoFromRadioStream = readInfoFromRadioStream;
+    	this.cache.storePreference(Preferences.READ_INFO_FROM_RADIO_STREAM, readInfoFromRadioStream);
     }
+    
+    
 
     public boolean isEnableAdvancedSearch() {
-        return enableAdvancedSearch;
+    	return (Boolean) this.cache.retrievePreference(Preferences.ENABLE_ADVANCED_SEARCH, false);
     }
 
     public void setEnableAdvancedSearch(boolean enableAdvancedSearch) {
-        this.enableAdvancedSearch = enableAdvancedSearch;
+    	this.cache.storePreference(Preferences.ENABLE_ADVANCED_SEARCH, enableAdvancedSearch);
     }
+    
+    
 
     public boolean isEnableHotkeys() {
-        return enableHotkeys;
+    	return (Boolean) this.cache.retrievePreference(Preferences.ENABLE_HOTKEYS, false);
     }
 
     public void setEnableHotkeys(boolean enableHotkeys) {
-        this.enableHotkeys = enableHotkeys;
+    	this.cache.storePreference(Preferences.ENABLE_HOTKEYS, enableHotkeys);
     }
+    
+    
 
     public boolean isShowTitle() {
-        return showTitle;
+    	return (Boolean) this.cache.retrievePreference(Preferences.SHOW_TITLE, true);
     }
 
     public void setShowTitle(boolean showTitle) {
-        this.showTitle = showTitle;
+    	this.cache.storePreference(Preferences.SHOW_TITLE, showTitle);
     }
+    
+    
 
     public int getOsdDuration() {
-        return osdDuration;
+    	return (Integer) this.cache.retrievePreference(Preferences.OSD_DURATION, 2);
     }
 
     public void setOsdDuration(int osdDuration) {
-        this.osdDuration = osdDuration;
+    	this.cache.storePreference(Preferences.OSD_DURATION, osdDuration);
     }
+    
+    
 
     public int getVolume() {
-        return volume;
+    	return (Integer) this.cache.retrievePreference(Preferences.VOLUME, 50);
     }
 
     public void setVolume(int volume) {
-        this.volume = volume;
+    	this.cache.storePreference(Preferences.VOLUME, volume);
     }
+    
+    
 
     public boolean isMuteEnabled() {
-        return muteEnabled;
+    	return (Boolean) this.cache.retrievePreference(Preferences.MUTE, false);
     }
 
     public void setMuteEnabled(boolean muteEnabled) {
-        this.muteEnabled = muteEnabled;
+    	this.cache.storePreference(Preferences.MUTE, muteEnabled);
     }
+    
+    
 
     public int getAutoRepositoryRefreshTime() {
-        return autoRepositoryRefreshTime;
+    	return (Integer) this.cache.retrievePreference(Preferences.AUTO_REPOSITORY_REFRESH_TIME, 60);
     }
 
     public void setAutoRepositoryRefreshTime(int autoRepositoryRefreshTime) {
-        this.autoRepositoryRefreshTime = autoRepositoryRefreshTime;
+    	this.cache.storePreference(Preferences.AUTO_REPOSITORY_REFRESH_TIME, autoRepositoryRefreshTime);
     }
+    
+    
 
     public boolean isSaveRepositoryAsXml() {
-        return saveRepositoryAsXml;
+    	return (Boolean) this.cache.retrievePreference(Preferences.SAVE_REPOSITORY_AS_XML, true);
     }
 
     public void setSaveRepositoryAsXml(boolean saveRepositoryAsXml) {
-        this.saveRepositoryAsXml = saveRepositoryAsXml;
+    	this.cache.storePreference(Preferences.SAVE_REPOSITORY_AS_XML, saveRepositoryAsXml);
     }
+    
+    
 
     public boolean isShowFavoritesInNavigator() {
-        return showFavoritesInNavigator;
+    	return (Boolean) this.cache.retrievePreference(Preferences.SHOW_FAVORITES_IN_NAVIGATOR, true);
     }
 
     public void setShowFavoritesInNavigator(boolean showFavoritesInNavigator) {
-        this.showFavoritesInNavigator = showFavoritesInNavigator;
+    	this.cache.storePreference(Preferences.SHOW_FAVORITES_IN_NAVIGATOR, showFavoritesInNavigator);
     }
+    
+    
 
     public boolean isUseCdErrorCorrection() {
-        return useCdErrorCorrection;
+    	return (Boolean) this.cache.retrievePreference(Preferences.USE_CD_ERROR_CORRECTION, false);
     }
 
     public void setUseCdErrorCorrection(boolean useCdErrorCorrection) {
-        this.useCdErrorCorrection = useCdErrorCorrection;
+    	this.cache.storePreference(Preferences.USE_CD_ERROR_CORRECTION, useCdErrorCorrection);
     }
+    
+    
 
     public boolean isUseSmartTagViewSorting() {
-        return useSmartTagViewSorting;
+    	return (Boolean) this.cache.retrievePreference(Preferences.USE_SMART_TAG_VIEW_SORTING, false);
     }
 
     public void setUseSmartTagViewSorting(boolean useSmartTagViewSorting) {
-        this.useSmartTagViewSorting = useSmartTagViewSorting;
+    	this.cache.storePreference(Preferences.USE_SMART_TAG_VIEW_SORTING, useSmartTagViewSorting);
     }
+    
+    
 
     public boolean isUsePersonNamesArtistTagViewSorting() {
-        return usePersonNamesArtistTagViewSorting;
+    	return (Boolean) this.cache.retrievePreference(Preferences.USE_PERSON_NAMES_ARTIST_TAG_SORTING, true);
     }
 
     public void setUsePersonNamesArtistTagViewSorting(boolean usePersonNamesArtistTagViewSorting) {
-        this.usePersonNamesArtistTagViewSorting = usePersonNamesArtistTagViewSorting;
+    	this.cache.storePreference(Preferences.USE_PERSON_NAMES_ARTIST_TAG_SORTING, usePersonNamesArtistTagViewSorting);
     }
+    
+    
 
     public boolean isSaveContextPicture() {
-        return saveContextPicture;
+    	return (Boolean) this.cache.retrievePreference(Preferences.SAVE_CONTEXT_PICTURE, false);
     }
 
     public void setSaveContextPicture(boolean saveContextPicture) {
-        this.saveContextPicture = saveContextPicture;
+    	this.cache.storePreference(Preferences.SAVE_CONTEXT_PICTURE, saveContextPicture);
     }
+    
+    
 
     public boolean isShowExtendedTooltip() {
-        return showExtendedTooltip;
+    	return (Boolean) this.cache.retrievePreference(Preferences.SHOW_EXTENDED_TOOLTIP, true);
     }
 
     public void setShowExtendedTooltip(boolean showExtendedTooltip) {
-        this.showExtendedTooltip = showExtendedTooltip;
+    	this.cache.storePreference(Preferences.SHOW_EXTENDED_TOOLTIP, showExtendedTooltip);
     }
+    
+    
 
     public int getExtendedTooltipDelay() {
-        return extendedTooltipDelay;
+    	return (Integer) this.cache.retrievePreference(Preferences.EXTENDED_TOOLTIP_DELAY, 1);
     }
 
     public void setExtendedTooltipDelay(int extendedTooltipDelay) {
-        this.extendedTooltipDelay = extendedTooltipDelay;
+    	this.cache.storePreference(Preferences.EXTENDED_TOOLTIP_DELAY, extendedTooltipDelay);
     }
+    
+    
 
     public boolean isLastFmEnabled() {
-        return lastFmEnabled;
+    	return (Boolean) this.cache.retrievePreference(Preferences.LASTFM_ENABLED, false);
     }
 
     public void setLastFmEnabled(boolean lastFmEnabled) {
-        this.lastFmEnabled = lastFmEnabled;
+    	this.cache.storePreference(Preferences.LASTFM_ENABLED, lastFmEnabled);
     }
+    
+    
 
     public String getLastFmUser() {
-        return lastFmUser;
+    	return (String) this.cache.retrievePreference(Preferences.LASTFM_USER, null);
     }
 
     public void setLastFmUser(String lastFmUser) {
-        this.lastFmUser = lastFmUser;
+    	this.cache.storePreference(Preferences.LASTFM_USER, lastFmUser);
     }
+    
+    
 
     public String getLastFmPassword() {
-        return lastFmPassword;
+		return this.cache.retrievePasswordPreference(Preferences.LASTFM_PASSWORD);
     }
 
     public void setLastFmPassword(String lastFmPassword) {
-        this.lastFmPassword = lastFmPassword;
+		this.cache.storePasswordPreference(Preferences.LASTFM_PASSWORD, lastFmPassword);
     }
+    
+    
 
     public boolean isAutoLoveFavoriteSong() {
-        return autoLoveFavoriteSong;
+    	return (Boolean) this.cache.retrievePreference(Preferences.AUTO_LOVE_FAVORITE_SONG, false);
     }
 
     public void setAutoLoveFavoriteSong(boolean autoLoveFavoriteSong) {
-        this.autoLoveFavoriteSong = autoLoveFavoriteSong;
+    	this.cache.storePreference(Preferences.AUTO_LOVE_FAVORITE_SONG, autoLoveFavoriteSong);
     }
+    
+    
 
-    public byte[] getEncryptedLastFmPassword() {
-        return encryptedLastFmPassword;
-    }
-
-    public void setEncryptedLastFmPassword(byte[] encryptedLastFmPassword) {
-        this.encryptedLastFmPassword = encryptedLastFmPassword;
-    }
-
-    public List<LyricsEngineInfo> getLyricsEnginesInfo() {
-        return lyricsEnginesInfo;
+    @SuppressWarnings("unchecked")
+	public List<LyricsEngineInfo> getLyricsEnginesInfo() {
+    	return (List<LyricsEngineInfo>) this.cache.retrievePreference(Preferences.LYRICS_ENGINES_INFO, null);
     }
 
     public void setLyricsEnginesInfo(List<LyricsEngineInfo> lyricsEnginesInfo) {
-        this.lyricsEnginesInfo = lyricsEnginesInfo;
+    	this.cache.storePreference(Preferences.LYRICS_ENGINES_INFO, lyricsEnginesInfo);
     }
+    
+    
 
     public String getFullScreenBackground() {
-        return fullScreenBackground;
+    	return (String) this.cache.retrievePreference(Preferences.FULL_SCREEN_BACKGROUND, null);
     }
 
     public void setFullScreenBackground(String fullScreenBackground) {
-        this.fullScreenBackground = fullScreenBackground;
+    	this.cache.storePreference(Preferences.FULL_SCREEN_BACKGROUND, fullScreenBackground);
     }
-
-    public int getWindowXPosition() {
-        return windowXPosition;
-    }
-
-    public void setWindowXPosition(int windowXPosition) {
-        this.windowXPosition = windowXPosition;
-    }
-
-    public int getWindowYPosition() {
-        return windowYPosition;
-    }
-
-    public void setWindowYPosition(int windowYPosition) {
-        this.windowYPosition = windowYPosition;
-    }
-
-    public boolean isMaximized() {
-        return maximized;
-    }
-
-    public void setMaximized(boolean maximized) {
-        this.maximized = maximized;
-    }
-
-    public int getWindowWidth() {
-        return windowWidth;
-    }
-
-    public void setWindowWidth(int windowWidth) {
-        this.windowWidth = windowWidth;
-    }
-
-    public int getWindowHeight() {
-        return windowHeight;
-    }
-
-    public void setWindowHeight(int windowHeight) {
-        this.windowHeight = windowHeight;
-    }
-
-    public int getMultipleViewXPosition() {
-        return multipleViewXPosition;
-    }
-
-    public void setMultipleViewXPosition(int multipleViewXPosition) {
-        this.multipleViewXPosition = multipleViewXPosition;
-    }
-
-    public int getMultipleViewYPosition() {
-        return multipleViewYPosition;
-    }
-
-    public void setMultipleViewYPosition(int multipleViewYPosition) {
-        this.multipleViewYPosition = multipleViewYPosition;
-    }
-
-    public int getMultipleViewWidth() {
-        return multipleViewWidth;
-    }
-
-    public void setMultipleViewWidth(int multipleViewWidth) {
-        this.multipleViewWidth = multipleViewWidth;
-    }
-
-    public int getMultipleViewHeight() {
-        return multipleViewHeight;
-    }
-
-    public void setMultipleViewHeight(int multipleViewHeight) {
-        this.multipleViewHeight = multipleViewHeight;
-    }
-
+    
+   
+    
     public String getEncoder() {
-        return encoder;
+    	return (String) this.cache.retrievePreference(Preferences.ENCODER, "OGG");
     }
 
     public void setEncoder(String encoder) {
-        this.encoder = encoder;
+    	this.cache.storePreference(Preferences.ENCODER, encoder);
     }
 
+    
+    
     public String getEncoderQuality() {
-        return encoderQuality;
+    	return (String) this.cache.retrievePreference(Preferences.ENCODER_QUALITY, "5");
     }
 
     public void setEncoderQuality(String encoderQuality) {
-        this.encoderQuality = encoderQuality;
+    	this.cache.storePreference(Preferences.ENCODER_QUALITY, encoderQuality);
     }
 
+    
+    
     public String getMp3EncoderQuality() {
-        return mp3EncoderQuality;
+    	return (String) this.cache.retrievePreference(Preferences.MP3_ENCODER_QUALITY, "medium");
     }
 
     public void setMp3EncoderQuality(String mp3EncoderQuality) {
-        this.mp3EncoderQuality = mp3EncoderQuality;
+    	this.cache.storePreference(Preferences.MP3_ENCODER_QUALITY, mp3EncoderQuality);
     }
+    
+    
 
     public String getFlacEncoderQuality() {
-        return flacEncoderQuality;
+    	return (String) this.cache.retrievePreference(Preferences.FLAC_ENCODER_QUALITY, "-5");
     }
 
     public void setFlacEncoderQuality(String flacEncoderQuality) {
-        this.flacEncoderQuality = flacEncoderQuality;
+    	this.cache.storePreference(Preferences.FLAC_ENCODER_QUALITY, flacEncoderQuality);
     }
 
+    
+    
     public String getCdRipperFileNamePattern() {
-        return cdRipperFileNamePattern;
+    	return (String) this.cache.retrievePreference(Preferences.CD_RIPPER_FILENAME_PATTERN, null);
     }
 
     public void setCdRipperFileNamePattern(String cdRipperFileNamePattern) {
-        this.cdRipperFileNamePattern = cdRipperFileNamePattern;
+    	this.cache.storePreference(Preferences.CD_RIPPER_FILENAME_PATTERN, cdRipperFileNamePattern);
     }
+    
+    
 
-    public Map<String, ColumnBean> getColumns() {
-        return columns;
+    @SuppressWarnings("unchecked")
+	public Map<String, ColumnBean> getColumns() {
+    	Map<String, ColumnBean> map = (Map<String, ColumnBean>) this.cache.retrievePreference(Preferences.COLUMNS, null);
+    	return map != null ? Collections.unmodifiableMap(map) : null;
     }
 
     public void setColumns(Map<String, ColumnBean> columns) {
-        this.columns = columns;
+    	this.cache.storePreference(Preferences.COLUMNS, columns);
+    }
+    
+    
+
+    @SuppressWarnings("unchecked")
+	public Map<String, ColumnBean> getNavigatorColumns() {
+    	Map<String, ColumnBean> map = (Map<String, ColumnBean>) this.cache.retrievePreference(Preferences.NAVIGATOR_COLUMNS, null);
+    	return map != null ? Collections.unmodifiableMap(map) : null;
     }
 
-    public Map<String, ColumnBean> getDefaultNavigatorColumns() {
-        return defaultNavigatorColumns;
+    public void setNavigatorColumns(Map<String, ColumnBean> navigatorColumns) {
+    	this.cache.storePreference(Preferences.NAVIGATOR_COLUMNS, navigatorColumns);
     }
 
-    public void setDefaultNavigatorColumns(Map<String, ColumnBean> navigatorColumns) {
-        this.defaultNavigatorColumns = navigatorColumns;
-    }
-
-    public Map<String, ColumnBean> getSearchResultsColumns() {
-        return searchResultsColumns;
+    
+    
+    @SuppressWarnings("unchecked")
+	public Map<String, ColumnBean> getSearchResultsColumns() {
+    	Map<String, ColumnBean> map = (Map<String, ColumnBean>) this.cache.retrievePreference(Preferences.SEARCH_RESULTS_COLUMNS, null);
+    	return map != null ? Collections.unmodifiableMap(map) : null;
     }
 
     public void setSearchResultsColumns(Map<String, ColumnBean> searchResultsColumns) {
-        this.searchResultsColumns = searchResultsColumns;
+    	this.cache.storePreference(Preferences.SEARCH_RESULTS_COLUMNS, searchResultsColumns);
+    }
+    
+    
+
+    public FrameState getFrameState(Class<? extends Frame> frame) {
+    	// Map creation is controlled in this class to avoid modification without persistence 
+    	@SuppressWarnings("unchecked")
+		Map<Class<? extends Frame>, FrameState> state = (Map<Class<? extends Frame>, FrameState>) this.cache.retrievePreference(Preferences.FRAME_STATES, null);
+    	if (state == null) {
+    		state = new HashMap<Class<? extends Frame>, FrameState>();
+    		this.cache.storePreference(Preferences.FRAME_STATES, state);
+    	}
+    	return state.get(frame);
     }
 
-    public Map<Class<? extends Frame>, FrameState> getFrameStates() {
-        return frameStates;
+    public void setFrameState(Class<? extends Frame> frame, FrameState frameState) {
+    	@SuppressWarnings("unchecked")
+		Map<Class<? extends Frame>, FrameState> state = (Map<Class<? extends Frame>, FrameState>) this.cache.retrievePreference(Preferences.FRAME_STATES, null);
+    	if (state == null) {
+    		state = new HashMap<Class<? extends Frame>, FrameState>();
+    	}
+    	state.put(frame, frameState);
+        this.cache.storePreference(Preferences.FRAME_STATES, state);
     }
-
-    public void setFrameStates(Map<Class<? extends Frame>, FrameState> frameStates) {
-        this.frameStates = frameStates;
-    }
+    
+    
 
     public String getDefaultDeviceLocation() {
-        return defaultDeviceLocation;
+    	return (String) this.cache.retrievePreference(Preferences.DEFAULT_DEVICE_LOCATION, null);
     }
 
     public void setDefaultDeviceLocation(String defaultDeviceLocation) {
-        this.defaultDeviceLocation = defaultDeviceLocation;
+    	this.cache.storePreference(Preferences.DEFAULT_DEVICE_LOCATION, defaultDeviceLocation);
     }
+    
+    
 
     public long getPodcastFeedEntriesRetrievalInterval() {
-        return podcastFeedEntriesRetrievalInterval;
+    	return (Long) this.cache.retrievePreference(Preferences.PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL, PodcastFeedHandler.DEFAULT_PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL);        
     }
 
     public void setPodcastFeedEntriesRetrievalInterval(long podcastFeedEntriesRetrievalInterval) {
-        this.podcastFeedEntriesRetrievalInterval = podcastFeedEntriesRetrievalInterval;
+    	this.cache.storePreference(Preferences.PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL, podcastFeedEntriesRetrievalInterval);
     }
+    
+    
 
     public String getPodcastFeedEntryDownloadPath() {
-        return podcastFeedEntryDownloadPath;
+    	return (String) this.cache.retrievePreference(Preferences.PODCAST_FEED_ENTRY_DOWNLOAD_PATH, null);
     }
 
     public void setPodcastFeedEntryDownloadPath(String podcastFeedEntryDownloadPath) {
-        this.podcastFeedEntryDownloadPath = podcastFeedEntryDownloadPath;
+    	this.cache.storePreference(Preferences.PODCAST_FEED_ENTRY_DOWNLOAD_PATH, podcastFeedEntryDownloadPath);
     }
+    
+    
 
     public boolean isUseDownloadedPodcastFeedEntries() {
-        return useDownloadedPodcastFeedEntries;
+    	return (Boolean) this.cache.retrievePreference(Preferences.USE_DOWNLOADED_PODCAST_FEED_ENTRIES, true);
     }
 
     public void setUseDownloadedPodcastFeedEntries(boolean useDownloadedPodcastFeedEntries) {
-        this.useDownloadedPodcastFeedEntries = useDownloadedPodcastFeedEntries;
+    	this.cache.storePreference(Preferences.USE_DOWNLOADED_PODCAST_FEED_ENTRIES, useDownloadedPodcastFeedEntries);
     }
+    
+    
 
     public boolean isRemovePodcastFeedEntriesRemovedFromPodcastFeed() {
-        return removePodcastFeedEntriesRemovedFromPodcastFeed;
+    	return (Boolean) this.cache.retrievePreference(Preferences.REMOVE_PODCAST_FEED_ENTRIES_REMOVED_FROM_PODCAST_FEED, false);
     }
 
     public void setRemovePodcastFeedEntriesRemovedFromPodcastFeed(boolean removePodcastFeedEntriesRemovedFromPodcastFeed) {
-        this.removePodcastFeedEntriesRemovedFromPodcastFeed = removePodcastFeedEntriesRemovedFromPodcastFeed;
+    	this.cache.storePreference(Preferences.REMOVE_PODCAST_FEED_ENTRIES_REMOVED_FROM_PODCAST_FEED, removePodcastFeedEntriesRemovedFromPodcastFeed);
     }
+    
+    
 
     public boolean isShowNavigatorTabsAtLeft() {
-        return showNavigatorTabsAtLeft;
+    	return (Boolean) this.cache.retrievePreference(Preferences.SHOW_NAVIGATOR_TABS_AT_LEFT, true);
     }
 
     public void setShowNavigatorTabsAtLeft(boolean showNavigatorTabsAtLeft) {
-        this.showNavigatorTabsAtLeft = showNavigatorTabsAtLeft;
+    	this.cache.storePreference(Preferences.SHOW_NAVIGATOR_TABS_AT_LEFT, showNavigatorTabsAtLeft);
     }
+    
+    
 
     public boolean isShowNavigatorTabsText() {
-        return showNavigatorTabsText;
+    	return (Boolean) this.cache.retrievePreference(Preferences.SHOW_NAVIGATOR_TABS_TEXT, true);
     }
 
     public void setShowNavigatorTabsText(boolean showNavigatorTabsText) {
-        this.showNavigatorTabsText = showNavigatorTabsText;
+    	this.cache.storePreference(Preferences.SHOW_NAVIGATOR_TABS_TEXT, showNavigatorTabsText);
     }
+    
+    
 
     public boolean isShowContextTabsText() {
-        return showContextTabsText;
+    	return (Boolean) this.cache.retrievePreference(Preferences.SHOW_CONTEXT_TABS_TEXT, true);
     }
 
     public void setShowContextTabsText(boolean showContextTabsText) {
-        this.showContextTabsText = showContextTabsText;
+    	this.cache.storePreference(Preferences.SHOW_CONTEXT_TABS_TEXT, showContextTabsText);
     }
+    
+    
 
     public boolean isHideVariousArtistsAlbums() {
-        return hideVariousArtistsAlbums;
+    	return (Boolean) this.cache.retrievePreference(Preferences.HIDE_VARIOUS_ARTISTS_ALBUMS, true);
     }
 
     public void setHideVariousArtistsAlbums(boolean hideVariousArtistsAlbums) {
-        this.hideVariousArtistsAlbums = hideVariousArtistsAlbums;
+    	this.cache.storePreference(Preferences.HIDE_VARIOUS_ARTISTS_ALBUMS, hideVariousArtistsAlbums);
     }
+    
+    
 
     public int getMinimumSongNumberPerAlbum() {
-        return minimumSongNumberPerAlbum;
+    	return (Integer) this.cache.retrievePreference(Preferences.MINIMUM_SONG_NUMER_PER_ALBUM, 0);
     }
 
     public void setMinimumSongNumberPerAlbum(int minimumSongNumberPerAlbum) {
-        this.minimumSongNumberPerAlbum = minimumSongNumberPerAlbum;
+    	this.cache.storePreference(Preferences.MINIMUM_SONG_NUMER_PER_ALBUM, minimumSongNumberPerAlbum);
     }
+    
+    
 
     public boolean isHighlightIncompleteTagElements() {
-        return highlightIncompleteTagElements;
+    	return (Boolean) this.cache.retrievePreference(Preferences.HIGHLIGHT_INCOMPLETE_TAG_ELEMENTS, true);
     }
 
     public void setHighlightIncompleteTagElements(boolean highlightIncompleteTagElements) {
-        this.highlightIncompleteTagElements = highlightIncompleteTagElements;
+    	this.cache.storePreference(Preferences.HIGHLIGHT_INCOMPLETE_TAG_ELEMENTS, highlightIncompleteTagElements);
     }
+    
+    
 
-    public List<TagAttribute> getHighlightIncompleteTagFoldersAttributes() {
-        return highlightIncompleteTagFoldersAttributes;
+    @SuppressWarnings("unchecked")
+	public List<TagAttribute> getHighlightIncompleteTagFoldersAttributes() {
+    	return (List<TagAttribute> ) this.cache.retrievePreference(Preferences.HIGHLIGHT_INCOMPLETE_TAG_FOLDERS_ATTRIBUTES, IncompleteTagsChecker.getDefaultTagAttributesToHighlightFolders());
     }
 
     public void setHighlightIncompleteTagFoldersAttributes(List<TagAttribute> highlightIncompleteTagFoldersAttributes) {
-        this.highlightIncompleteTagFoldersAttributes = highlightIncompleteTagFoldersAttributes;
+    	this.cache.storePreference(Preferences.HIGHLIGHT_INCOMPLETE_TAG_FOLDERS_ATTRIBUTES, highlightIncompleteTagFoldersAttributes);
     }
+    
+    
 
     public boolean isShowToolBar() {
-        return showToolBar;
+    	return (Boolean) this.cache.retrievePreference(Preferences.SHOW_TOOL_BAR, true);
     }
 
     public void setShowToolBar(boolean showToolBar) {
-        this.showToolBar = showToolBar;
+    	this.cache.storePreference(Preferences.SHOW_TOOL_BAR, showToolBar);
     }
+    
+    
 
     public String getPlayerEngine() {
-        return playerEngine;
+    	return (String) this.cache.retrievePreference(Preferences.PLAYER_ENGINE, PlayerHandler.DEFAULT_ENGINE);        
     }
 
     public void setPlayerEngine(String playerEngine) {
-        this.playerEngine = playerEngine;
+    	this.cache.storePreference(Preferences.PLAYER_ENGINE, playerEngine);
     }
+    
+    
 
     public boolean isAutoScrollPlayListEnabled() {
-        return autoScrollPlayListEnabled;
+    	return (Boolean) this.cache.retrievePreference(Preferences.AUTO_SCROLL_PLAYLIST, true);
     }
 
     public void setAutoScrollPlayListEnabled(boolean autoScrollPlayListEnabled) {
-        this.autoScrollPlayListEnabled = autoScrollPlayListEnabled;
+    	this.cache.storePreference(Preferences.AUTO_SCROLL_PLAYLIST, autoScrollPlayListEnabled);
     }
+    
+    
 
-    public List<String> getLastRepositoryFolders() {
-        return lastRepositoryFolders;
+    @SuppressWarnings("unchecked")
+	public List<String> getLastRepositoryFolders() {
+    	return (List<String>) this.cache.retrievePreference(Preferences.LAST_REPOSITORY_FOLDERS, null);
     }
 
     public void setLastRepositoryFolders(List<String> lastRepositoryFolders) {
-        this.lastRepositoryFolders = lastRepositoryFolders;
+    	this.cache.storePreference(Preferences.LAST_REPOSITORY_FOLDERS, lastRepositoryFolders);
     }
+    
+    
 
     public String getLoadPlaylistPath() {
-        return loadPlaylistPath;
+    	return (String) this.cache.retrievePreference(Preferences.LOAD_PLAYLIST_PATH, null); 
     }
 
     public void setLoadPlaylistPath(String loadPlaylistPath) {
-        this.loadPlaylistPath = loadPlaylistPath;
+    	this.cache.storePreference(Preferences.LOAD_PLAYLIST_PATH, loadPlaylistPath);
     }
+    
+    
 
     public String getSavePlaylistPath() {
-        return savePlaylistPath;
+    	return (String) this.cache.retrievePreference(Preferences.SAVE_PLAYLIST_PATH, null);
     }
 
     public void setSavePlaylistPath(String savePlaylistPath) {
-        this.savePlaylistPath = savePlaylistPath;
+    	this.cache.storePreference(Preferences.SAVE_PLAYLIST_PATH, savePlaylistPath);
     }
+    
+    
 
     public boolean isStopPlayerOnPlayListSwitch() {
-        return stopPlayerOnPlayListSwitch;
+    	return (Boolean) this.cache.retrievePreference(Preferences.STOP_PLAYER_ON_PLAYLIST_SWITCH, false);
     }
 
     public void setStopPlayerOnPlayListSwitch(boolean stopPlayerOnPlayListSwitch) {
-        this.stopPlayerOnPlayListSwitch = stopPlayerOnPlayListSwitch;
+    	this.cache.storePreference(Preferences.STOP_PLAYER_ON_PLAYLIST_SWITCH, stopPlayerOnPlayListSwitch);
     }
+    
+    
 
     public boolean isStopPlayerOnPlayListClear() {
-        return stopPlayerOnPlayListClear;
+    	return (Boolean) this.cache.retrievePreference(Preferences.STOP_PLAYER_ON_PLAYLIST_CLEAR, true);
     }
 
     public void setStopPlayerOnPlayListClear(boolean stopPlayerOnPlayListClear) {
-        this.stopPlayerOnPlayListClear = stopPlayerOnPlayListClear;
+    	this.cache.storePreference(Preferences.STOP_PLAYER_ON_PLAYLIST_CLEAR, stopPlayerOnPlayListClear);
     }
+    
+    
 
     public String getImportExportFileNamePattern() {
-        return importExportFileNamePattern;
+    	return (String) this.cache.retrievePreference(Preferences.IMPORT_EXPORT_FILENAME_PATTERN, null);
     }
 
     public void setImportExportFileNamePattern(String importExportFileNamePattern) {
-        this.importExportFileNamePattern = importExportFileNamePattern;
+    	this.cache.storePreference(Preferences.IMPORT_EXPORT_FILENAME_PATTERN, importExportFileNamePattern);
     }
+    
+    
 
     public String getDeviceFileNamePattern() {
-        return deviceFileNamePattern;
+    	return (String) this.cache.retrievePreference(Preferences.DEVICE_FILENAME_PATTERN, null);
     }
 
     public void setDeviceFileNamePattern(String deviceFileNamePattern) {
-        this.deviceFileNamePattern = deviceFileNamePattern;
+    	this.cache.storePreference(Preferences.DEVICE_FILENAME_PATTERN, deviceFileNamePattern);
     }
+    
+    
 
     public String getImportExportFolderPathPattern() {
-        return importExportFolderPathPattern;
+    	return (String) this.cache.retrievePreference(Preferences.IMPORT_EXPORT_FOLDER_PATH_PATTERN, null);
     }
 
     public void setImportExportFolderPathPattern(String importExportFolderPathPattern) {
-        this.importExportFolderPathPattern = importExportFolderPathPattern;
+    	this.cache.storePreference(Preferences.IMPORT_EXPORT_FOLDER_PATH_PATTERN, importExportFolderPathPattern);
     }
+    
+    
 
     public String getDeviceFolderPathPattern() {
-        return deviceFolderPathPattern;
+    	return (String) this.cache.retrievePreference(Preferences.DEVICE_FOLDER_PATH_PATTERN, null);
     }
 
     public void setDeviceFolderPathPattern(String deviceFolderPathPattern) {
-        this.deviceFolderPathPattern = deviceFolderPathPattern;
+    	this.cache.storePreference(Preferences.DEVICE_FOLDER_PATH_PATTERN, deviceFolderPathPattern);
     }
+    
+    
 
     public boolean isAllowRepeatedSongsInDevice() {
-        return allowRepeatedSongsInDevice;
+    	return (Boolean) this.cache.retrievePreference(Preferences.ALLOW_REPEATED_SONGS_IN_DEVICE, true);
     }
 
     public void setAllowRepeatedSongsInDevice(boolean allowRepeatedSongsInDevice) {
-        this.allowRepeatedSongsInDevice = allowRepeatedSongsInDevice;
+    	this.cache.storePreference(Preferences.ALLOW_REPEATED_SONGS_IN_DEVICE, allowRepeatedSongsInDevice);
     }
+    
+    
 
     public boolean isReviewTagsBeforeImport() {
-        return reviewTagsBeforeImport;
+    	return (Boolean) this.cache.retrievePreference(Preferences.REVIEW_TAGS_BEFORE_IMPORT, true);
     }
 
     public void setReviewTagsBeforeImport(boolean reviewTagsBeforeImport) {
-        this.reviewTagsBeforeImport = reviewTagsBeforeImport;
+    	this.cache.storePreference(Preferences.REVIEW_TAGS_BEFORE_IMPORT, reviewTagsBeforeImport);
     }
+    
+    
 
     public boolean isApplyChangesToSourceFilesBeforeImport() {
-        return applyChangesToSourceFilesBeforeImport;
+    	return (Boolean) this.cache.retrievePreference(Preferences.APPLY_CHANGES_TO_SOURCE_FILES_BEFORE_IMPORT, false);
     }
 
     public void setApplyChangesToSourceFilesBeforeImport(boolean applyChangesToSourceFilesBeforeImport) {
-        this.applyChangesToSourceFilesBeforeImport = applyChangesToSourceFilesBeforeImport;
+    	this.cache.storePreference(Preferences.APPLY_CHANGES_TO_SOURCE_FILES_BEFORE_IMPORT, applyChangesToSourceFilesBeforeImport);
     }
+    
+    
 
     public boolean isSetTrackNumbersWhenImporting() {
-        return setTrackNumbersWhenImporting;
+    	return (Boolean) this.cache.retrievePreference(Preferences.SET_TRACK_NUMBERS_WHEN_IMPORTING, true);
     }
 
     public void setSetTrackNumbersWhenImporting(boolean setTrackNumbersWhenImporting) {
-        this.setTrackNumbersWhenImporting = setTrackNumbersWhenImporting;
+    	this.cache.storePreference(Preferences.SET_TRACK_NUMBERS_WHEN_IMPORTING, setTrackNumbersWhenImporting);
     }
+    
+    
 
     public boolean isSetTitlesWhenImporting() {
-        return setTitlesWhenImporting;
+    	return (Boolean) this.cache.retrievePreference(Preferences.SET_TITLES_WHEN_IMPORTING, true);
     }
 
     public void setSetTitlesWhenImporting(boolean setTitlesWhenImporting) {
-        this.setTitlesWhenImporting = setTitlesWhenImporting;
+    	this.cache.storePreference(Preferences.SET_TITLES_WHEN_IMPORTING, setTitlesWhenImporting);
     }
+    
+    
 
     public int getOsdWidth() {
-        return osdWidth;
+    	return (Integer) this.cache.retrievePreference(Preferences.OSD_WIDTH, 300);
     }
 
     public void setOsdWidth(int osdWidth) {
-        this.osdWidth = osdWidth;
+    	this.cache.storePreference(Preferences.OSD_WIDTH, osdWidth);
     }
+    
+    
 
     public int getOsdHorizontalAlignment() {
-        return osdHorizontalAlignment;
+    	return (Integer) this.cache.retrievePreference(Preferences.OSD_HORIZONTAL_ALINGMENT, SwingConstants.RIGHT);        
     }
 
     public void setOsdHorizontalAlignment(int osdHorizontalAlignment) {
-        this.osdHorizontalAlignment = osdHorizontalAlignment;
+    	this.cache.storePreference(Preferences.OSD_HORIZONTAL_ALINGMENT, osdHorizontalAlignment);
     }
+    
+    
 
     public int getOsdVerticalAlignment() {
-        return osdVerticalAlignment;
+    	return (Integer) this.cache.retrievePreference(Preferences.OSD_VERTICAL_ALINGMENT, SwingConstants.BOTTOM);        
     }
 
     public void setOsdVerticalAlignment(int osdVerticalAlignment) {
-        this.osdVerticalAlignment = osdVerticalAlignment;
+    	this.cache.storePreference(Preferences.OSD_VERTICAL_ALINGMENT, osdVerticalAlignment);
     }
+    
+    
 
     public HotkeysConfig getHotkeysConfig() {
-        return hotkeysConfig;
+    	return (HotkeysConfig) this.cache.retrievePreference(Preferences.HOTKEYS_CONFIG, null);
     }
 
     public void setHotkeysConfig(HotkeysConfig hotkeysConfig) {
-        this.hotkeysConfig = hotkeysConfig;
+    	this.cache.storePreference(Preferences.HOTKEYS_CONFIG, hotkeysConfig);
     }
+    
+    
 
-    public List<String> getRecognitionPatterns() {
-        return recognitionPatterns;
+    @SuppressWarnings("unchecked")
+	public List<String> getRecognitionPatterns() {
+    	return (List<String>) this.cache.retrievePreference(Preferences.RECOGNITION_PATTERNS, null);
     }
 
     public void setRecognitionPatterns(List<String> recognitionPatterns) {
-        this.recognitionPatterns = recognitionPatterns;
+    	this.cache.storePreference(Preferences.RECOGNITION_PATTERNS, recognitionPatterns);
     }
+    
+    
 
-    public List<String> getMassiveRecognitionPatterns() {
-        return massiveRecognitionPatterns;
+    @SuppressWarnings("unchecked")
+	public List<String> getMassiveRecognitionPatterns() {
+    	return (List<String>) this.cache.retrievePreference(Preferences.MASSIVE_RECOGNITION_PATTERNS, null);
     }
 
     public void setMassiveRecognitionPatterns(List<String> massiveRecognitionPatterns) {
-        this.massiveRecognitionPatterns = massiveRecognitionPatterns;
+    	this.cache.storePreference(Preferences.MASSIVE_RECOGNITION_PATTERNS, massiveRecognitionPatterns);
     }
+    
+    
 
     public String getCommandBeforeAccessRepository() {
-        return commandBeforeAccessRepository;
+    	return (String) this.cache.retrievePreference(Preferences.COMMAND_BEFORE_ACCESS_REPOSITORY, null);
     }
 
     public void setCommandBeforeAccessRepository(String commandBeforeAccessRepository) {
-        this.commandBeforeAccessRepository = commandBeforeAccessRepository;
+    	this.cache.storePreference(Preferences.COMMAND_BEFORE_ACCESS_REPOSITORY, commandBeforeAccessRepository);
     }
+    
+    
 
     public String getCommandAfterAccessRepository() {
-        return commandAfterAccessRepository;
+    	return (String) this.cache.retrievePreference(Preferences.COMMAND_AFTER_ACCESS_REPOSITORY, null);
     }
 
     public void setCommandAfterAccessRepository(String commandAfterAccessRepository) {
-        this.commandAfterAccessRepository = commandAfterAccessRepository;
+    	this.cache.storePreference(Preferences.COMMAND_AFTER_ACCESS_REPOSITORY, commandAfterAccessRepository);
     }
+    
+    
 
     public boolean isUseLibnotify() {
-        return useLibnotify;
+    	return (Boolean) this.cache.retrievePreference(Preferences.USE_LIBNOTIFY, false);
     }
 
     public void setUseLibnotify(boolean useLibnotify) {
-        this.useLibnotify = useLibnotify;
+    	this.cache.storePreference(Preferences.USE_LIBNOTIFY, useLibnotify);
     }
+    
+    
 
     public boolean isShowContextAlbumsInGrid() {
-        return showContextAlbumsInGrid;
+    	return (Boolean) this.cache.retrievePreference(Preferences.SHOW_CONTEXT_ALBUMS_IN_GRID, false);
     }
 
     public void setShowContextAlbumsInGrid(boolean showContextAlbumsInGrid) {
-        this.showContextAlbumsInGrid = showContextAlbumsInGrid;
+    	this.cache.storePreference(Preferences.SHOW_CONTEXT_ALBUMS_IN_GRID, showContextAlbumsInGrid);
     }
+    
+    
 
     public boolean isShowNavigationTree() {
-        return showNavigationTree;
+        return (Boolean) this.cache.retrievePreference(Preferences.SHOW_NAVIGATION_TREE, true);
     }
 
     public void setShowNavigationTree(boolean showNavigationTree) {
-        this.showNavigationTree = showNavigationTree;
+        this.cache.storePreference(Preferences.SHOW_NAVIGATION_TREE, showNavigationTree);
     }
+    
+    
 
     public boolean isSimilarArtistsMode() {
-        return isSimilarArtistsMode;
+    	return (Boolean) this.cache.retrievePreference(Preferences.SIMILAR_ARTISTS_MODE, false);
     }
 
     public void setSimilarArtistsMode(boolean isSimilarArtistsMode) {
-        this.isSimilarArtistsMode = isSimilarArtistsMode;
+    	this.cache.storePreference(Preferences.SIMILAR_ARTISTS_MODE, isSimilarArtistsMode);
+    }
+    
+    
+
+    @SuppressWarnings("unchecked")
+	public Map<String, Map<String, ColumnBean>> getCustomNavigatorColumns() {
+    	// This map is not unmodifiable
+    	return (Map<String, Map<String, ColumnBean>>) this.cache.retrievePreference(Preferences.CUSTOM_NAVIGATOR_COLUMNS, null); 
     }
 
-    /**
-     * @return the customNavigatorColumns
-     */
-    public Map<String, Map<String, ColumnBean>> getCustomNavigatorColumns() {
-        return customNavigatorColumns;
-    }
-
-    /**
-     * @param customNavigatorColumns
-     *            the customNavigatorColumns to set
-     */
     public void setCustomNavigatorColumns(Map<String, Map<String, ColumnBean>> customNavigatorColumns) {
-        this.customNavigatorColumns = customNavigatorColumns;
+    	this.cache.storePreference(Preferences.CUSTOM_NAVIGATOR_COLUMNS, customNavigatorColumns);
     }
 }
