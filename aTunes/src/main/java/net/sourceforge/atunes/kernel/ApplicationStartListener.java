@@ -20,6 +20,10 @@
 
 package net.sourceforge.atunes.kernel;
 
+import java.util.List;
+
+import net.sourceforge.atunes.model.AudioObject;
+
 /**
  * Interface for classes that must execute code after application start (usually
  * handlers)
@@ -31,6 +35,7 @@ public interface ApplicationStartListener {
 
     /**
      * Called after application start
+     * @param playList 
      */
-    public void applicationStarted();
+    public void applicationStarted(List<AudioObject> playList);
 }

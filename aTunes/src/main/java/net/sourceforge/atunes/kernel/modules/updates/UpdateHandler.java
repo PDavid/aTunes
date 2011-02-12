@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
 import java.net.Proxy.Type;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.SwingWorker;
@@ -36,6 +37,7 @@ import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.NetworkUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -110,7 +112,7 @@ public final class UpdateHandler extends AbstractHandler {
     }
 
     @Override
-    public void applicationStarted() {
+    public void applicationStarted(List<AudioObject> playList) {
         if (!Kernel.isNoUpdate()) {
             checkUpdates(ApplicationState.getInstance().getProxy(), false, false);
         }

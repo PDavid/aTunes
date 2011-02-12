@@ -30,6 +30,7 @@ import java.awt.Point;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.logging.Level;
 
 import javax.swing.Action;
@@ -178,7 +179,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     }
 
     @Override
-    public void applicationStarted() {
+    public void applicationStarted(List<AudioObject> playList) {
     	ApplicationState state = ApplicationState.getInstance();
     	FrameState frameState = state.getFrameState(getFrame().getClass());
     	getFrame().applicationStarted(frameState);
@@ -1232,10 +1233,10 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
             JDialog.setDefaultLookAndFeelDecorated(true);
             // For multiple screens
             if (GuiUtils.getNumberOfScreenDevices() > 1) {
+            	// This method is called before starting visualization so maybe frame state is not yet created
+            	FrameState state = ApplicationState.getInstance().getFrameState(getFrame().getClass());
                 // Get screen where application is shown
-                GraphicsDevice screen = GuiUtils.getGraphicsDeviceForLocation(
-                		ApplicationState.getInstance().getFrameState(getFrame().getClass()).getXPosition(), 
-                		ApplicationState.getInstance().getFrameState(getFrame().getClass()).getYPosition());
+                GraphicsDevice screen = state != null ? GuiUtils.getGraphicsDeviceForLocation(state.getXPosition(), state.getYPosition()) : null;
                 GuiUtils.setLocationInScreen(splashScreenDialog, screen);
             }
             splashScreenDialog.setVisible(true);

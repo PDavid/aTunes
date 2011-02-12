@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.hotkeys;
 
 import java.awt.event.InputEvent;
+import java.util.List;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.actions.Actions;
@@ -31,6 +32,7 @@ import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -97,7 +99,7 @@ public final class HotkeyHandler extends AbstractHandler implements HotkeyListen
     }
 
     @Override
-    public void applicationStarted() {
+    public void applicationStarted(List<AudioObject> playList) {
         // Hotkeys
         if (ApplicationState.getInstance().isEnableHotkeys()) {
             enableHotkeys(ApplicationState.getInstance().getHotkeysConfig());

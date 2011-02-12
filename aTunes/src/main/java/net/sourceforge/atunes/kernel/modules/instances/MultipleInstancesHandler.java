@@ -220,7 +220,7 @@ public final class MultipleInstancesHandler extends AbstractHandler {
     }
 
     @Override
-    public void applicationStarted() {
+    public void applicationStarted(List<AudioObject> playList) {
     }
 
     /**

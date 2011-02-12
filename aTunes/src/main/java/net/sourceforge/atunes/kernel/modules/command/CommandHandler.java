@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.command;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.SwingUtilities;
@@ -32,6 +33,7 @@ import net.sourceforge.atunes.kernel.actions.PlayNextAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.PlayPreviousAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.ShowOSDAction;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.model.AudioObject;
 
 public final class CommandHandler extends AbstractHandler {
 
@@ -69,7 +71,7 @@ public final class CommandHandler extends AbstractHandler {
     }
 
     @Override
-    public void applicationStarted() {
+    public void applicationStarted(List<AudioObject> playList) {
         runCommands(ApplicationArguments.getSavedCommands());
     }
 

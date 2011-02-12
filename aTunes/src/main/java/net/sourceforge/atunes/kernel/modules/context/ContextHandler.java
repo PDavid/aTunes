@@ -84,7 +84,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     }
 
     @Override
-    public void applicationStarted() {
+    public void applicationStarted(List<AudioObject> playList) {
         // Set previous selected tab
         // IMPORTANT: this method must be called before adding change listener to avoid firing events when
         // UI is being created

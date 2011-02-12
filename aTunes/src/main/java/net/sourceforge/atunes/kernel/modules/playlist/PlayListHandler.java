@@ -144,7 +144,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
     }
 
     @Override
-    public void applicationStarted() {
+    public void applicationStarted(List<AudioObject> playList) {
     }
 
     /**

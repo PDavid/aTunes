@@ -103,7 +103,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
     }
 
     @Override
-    public void applicationStarted() {
+    public void applicationStarted(List<AudioObject> playList) {
         // Start device monitor
         DeviceConnectionMonitor.startMonitor();
         DeviceConnectionMonitor.addListener(this);
