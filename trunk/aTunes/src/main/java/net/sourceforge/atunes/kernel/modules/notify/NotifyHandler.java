@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.kernel.modules.notify;
 
+import java.util.List;
+
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlaybackState;
 import net.sourceforge.atunes.kernel.modules.player.PlaybackStateListener;
@@ -67,7 +69,7 @@ public final class NotifyHandler extends AbstractHandler implements PlaybackStat
     }
 
     @Override
-    public void applicationStarted() {
+    public void applicationStarted(List<AudioObject> playList) {
     }
 
     /**

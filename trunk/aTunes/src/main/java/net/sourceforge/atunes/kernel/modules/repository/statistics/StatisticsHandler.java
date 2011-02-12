@@ -34,6 +34,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.misc.RankList;
+import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public final class StatisticsHandler extends AbstractHandler {
@@ -54,7 +55,7 @@ public final class StatisticsHandler extends AbstractHandler {
     }
 
     @Override
-    public void applicationStarted() {
+    public void applicationStarted(List<AudioObject> playList) {
     }
 
     @Override

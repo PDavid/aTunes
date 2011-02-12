@@ -55,6 +55,7 @@ import net.sourceforge.atunes.kernel.actions.RefreshRepositoryAction;
 import net.sourceforge.atunes.kernel.actions.RipCDAction;
 import net.sourceforge.atunes.kernel.actions.SelectRepositoryAction;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
@@ -73,6 +74,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -279,9 +281,17 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     }
 
     @Override
-    public void applicationStarted() {
+    public void applicationStarted(List<AudioObject> playList) {
+        applyRepository();
+        PlayListHandler.getInstance().setPlayLists();
+
+        if (!playList.isEmpty()) {
+            PlayListHandler.getInstance().addToPlayListAndPlay(playList);
+            ControllerProxy.getInstance().getPlayListController().refreshPlayList();
+        }
+
         SearchHandler.getInstance().registerSearchableObject(RepositorySearchableObject.getInstance());
-        RepositoryHandler.this.repositoryRefresher = new RepositoryAutoRefresher(RepositoryHandler.this);
+        repositoryRefresher = new RepositoryAutoRefresher(RepositoryHandler.this);
     }
 
     /**
@@ -796,7 +806,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     /**
      * Sets the repository.
      */
-    public void applyRepository() {
+    private void applyRepository() {
         // Try to read repository cache. If fails or not exists, should be selected again
         Repository rep = repositoryRetrievedFromCache;
         if (rep != null) {

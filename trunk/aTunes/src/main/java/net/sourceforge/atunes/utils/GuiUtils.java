@@ -132,8 +132,12 @@ public final class GuiUtils {
      * @param window
      */
     public static void setLocationInScreen(Window window, GraphicsDevice screen) {
-        Rectangle screenBounds = screen.getDefaultConfiguration().getBounds();
-        window.setLocation(screenBounds.width / 2 - window.getWidth() / 2 + screenBounds.x, screenBounds.height / 2 - window.getHeight() / 2 + screenBounds.y);
+    	if (screen == null) {
+    		window.setLocationRelativeTo(null);
+    	} else {
+    		Rectangle screenBounds = screen.getDefaultConfiguration().getBounds();
+    		window.setLocation(screenBounds.width / 2 - window.getWidth() / 2 + screenBounds.x, screenBounds.height / 2 - window.getHeight() / 2 + screenBounds.y);
+    	}
     }
 
     /**

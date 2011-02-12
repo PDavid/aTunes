@@ -53,6 +53,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -154,7 +155,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
     }
 
     @Override
-    public void applicationStarted() {
+    public void applicationStarted(List<AudioObject> playList) {
         startPodcastFeedEntryDownloadChecker();
         startPodcastFeedEntryRetriever();
     }

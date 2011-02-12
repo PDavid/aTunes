@@ -34,10 +34,8 @@ import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
@@ -136,15 +134,25 @@ public class Kernel {
         timer = new Timer();
         timer.start();
 
+        LanguageSelector.setLanguage();
+        Fonts.setFontSmoothing();
+        ColorDefinitions.initColors();
+        // Init proxy settings
+        try {
+            Proxy.initProxy(Proxy.getProxy(ApplicationState.getInstance().getProxy()));
+        } catch (UnknownHostException e) {
+            getLogger().error(LogCategories.START, e);
+        } catch (IOException e) {
+            getLogger().error(LogCategories.START, e);
+        }
+
+
         try {
             SwingUtilities.invokeAndWait(new Runnable() {
                 @Override
                 public void run() {
-                    LanguageSelector.setLanguage();
-                    Fonts.setFontSmoothing();
                     LookAndFeelSelector.getInstance().setLookAndFeel(ApplicationState.getInstance().getLookAndFeel());
                     Fonts.initializeFonts();
-                    ColorDefinitions.initColors();
 
                     // Show title dialog
                     GuiHandler.getInstance().showSplashScreen();
@@ -158,32 +166,8 @@ public class Kernel {
         // Create kernel
         instance = new Kernel();
 
-        // Register handlers
-        AbstractHandler.registerHandlers();
-
-        // Initialize handlers
-        AbstractHandler.initHandlers();
-
-        try {
-            SwingUtilities.invokeAndWait(new Runnable() {
-                @Override
-                public void run() {
-
-                    // Init proxy settings
-                    try {
-                        Proxy.initProxy(Proxy.getProxy(ApplicationState.getInstance().getProxy()));
-                    } catch (UnknownHostException e) {
-                        getLogger().error(LogCategories.START, e);
-                    } catch (IOException e) {
-                        getLogger().error(LogCategories.START, e);
-                    }
-
-                }
-            });
-        } catch (Exception e) {
-            getLogger().error(LogCategories.START, e);
-            getLogger().error(LogCategories.START, e.getCause());
-        }
+        // Register and initialize handlers
+        AbstractHandler.registerAndInitializeHandlers();
 
         // Find for audio files on arguments
         final List<String> songs = new ArrayList<String>();
@@ -212,7 +196,7 @@ public class Kernel {
             SwingUtilities.invokeAndWait(new Runnable() {
                 @Override
                 public void run() {
-                    // Start bussiness
+                    // Start business
                     instance.start(PlayListIO.getAudioObjectsFromFileNamesList(songs));
                 }
             });
@@ -265,19 +249,16 @@ public class Kernel {
      * @param playList
      *            the play list
      */
-    void start(List<AudioObject> playList) {
+    void start(final List<AudioObject> playList) {
         try {
             GuiHandler.getInstance().setFullFrameVisible(true);
             //Hide title dialog
             GuiHandler.getInstance().hideSplashScreen();
 
-            // Just after all events in EDT are done set repository and play lists, then call post-init actions
-            SwingUtilities.invokeLater(new RepositoryAndPlayListLoadRunnable(playList));
-
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    callActionsAfterStart();
+                    callActionsAfterStart(playList);
                 }
             });
 
@@ -292,12 +273,12 @@ public class Kernel {
     /**
      * Call actions after start.
      */
-    void callActionsAfterStart() {
+    void callActionsAfterStart(List<AudioObject> playList) {
         // Call all ApplicationStartListener instances to finish
         for (ApplicationStartListener startListener : startListeners) {
             try {
                 if (startListener != null) {
-                    startListener.applicationStarted();
+                    startListener.applicationStarted(playList);
                 }
             } catch (Exception e) {
                 getLogger().error(LogCategories.START, e);
@@ -353,26 +334,6 @@ public class Kernel {
         } finally {
             // Exit normally
             System.exit(0);
-        }
-    }
-
-    private static class RepositoryAndPlayListLoadRunnable implements Runnable {
-
-        private List<AudioObject> playList;
-
-        public RepositoryAndPlayListLoadRunnable(List<AudioObject> playList) {
-            this.playList = playList;
-        }
-
-        @Override
-        public void run() {
-            RepositoryHandler.getInstance().applyRepository();
-            PlayListHandler.getInstance().setPlayLists();
-
-            if (!playList.isEmpty()) {
-                PlayListHandler.getInstance().addToPlayListAndPlay(playList);
-                ControllerProxy.getInstance().getPlayListController().refreshPlayList();
-            }
         }
     }
 

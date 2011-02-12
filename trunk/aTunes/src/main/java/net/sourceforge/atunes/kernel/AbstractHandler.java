@@ -20,13 +20,10 @@
 
 package net.sourceforge.atunes.kernel;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 import net.sourceforge.atunes.kernel.modules.cdripper.RipperHandler;
 import net.sourceforge.atunes.kernel.modules.command.CommandHandler;
@@ -52,7 +49,6 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationStateChangeListene
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.kernel.modules.tray.SystemTrayHandler;
 import net.sourceforge.atunes.kernel.modules.updates.UpdateHandler;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
 public abstract class AbstractHandler implements ApplicationStartListener, ApplicationFinishListener, ApplicationStateChangeListener {
@@ -61,40 +57,6 @@ public abstract class AbstractHandler implements ApplicationStartListener, Appli
      * Logger for handlers
      */
     private static Logger logger;
-
-    private static List<Class<? extends AbstractHandler>> handlerClasses;
-
-    private static ExecutorService executorService = Executors.newFixedThreadPool(3);
-
-    static {
-        // TODO: Add here every new Handler
-        handlerClasses = new ArrayList<Class<? extends AbstractHandler>>();
-        handlerClasses.add(ApplicationStateHandler.class);
-        handlerClasses.add(PodcastFeedHandler.class);
-        handlerClasses.add(ContextHandler.class);
-        handlerClasses.add(RipperHandler.class);
-        handlerClasses.add(CommandHandler.class);
-        handlerClasses.add(DeviceHandler.class);
-        handlerClasses.add(FavoritesHandler.class);
-        handlerClasses.add(HotkeyHandler.class);
-        handlerClasses.add(MultipleInstancesHandler.class);
-        handlerClasses.add(NavigationHandler.class);
-        handlerClasses.add(NotifyHandler.class);
-        handlerClasses.add(PlayerHandler.class);
-        handlerClasses.add(FilterHandler.class);
-        handlerClasses.add(PlayListHandler.class);
-        handlerClasses.add(PluginsHandler.class);
-        handlerClasses.add(RadioHandler.class);
-        handlerClasses.add(RepositoryHandler.class);
-        handlerClasses.add(SearchHandler.class);
-        handlerClasses.add(UpdateHandler.class);
-        handlerClasses.add(GuiHandler.class);
-        handlerClasses.add(StatisticsHandler.class);
-        handlerClasses.add(SystemTrayHandler.class);
-        handlerClasses.add(GeneralPurposePluginsHandler.class);
-    }
-
-    private static List<AbstractHandler> handlers = new ArrayList<AbstractHandler>();
 
     /**
      * Initializes handler
@@ -137,58 +99,54 @@ public abstract class AbstractHandler implements ApplicationStartListener, Appli
     /**
      * Creates and registers all defined handlers
      */
-    static void registerHandlers() {
+    static void registerAndInitializeHandlers() {
         // Instance handlers
-        for (Class<? extends AbstractHandler> handlerClass : handlerClasses) {
-            try {
-                Method method = handlerClass.getMethod("getInstance", new Class[] {});
-                handlers.add((AbstractHandler) method.invoke(null, new Object[] {}));
-            } catch (SecurityException e) {
-                getLogger().error(LogCategories.HANDLER, e);
-            } catch (NoSuchMethodException e) {
-                getLogger().error(LogCategories.HANDLER, e);
-            } catch (IllegalArgumentException e) {
-                getLogger().error(LogCategories.HANDLER, e);
-            } catch (IllegalAccessException e) {
-                getLogger().error(LogCategories.HANDLER, e);
-            } catch (InvocationTargetException e) {
-                getLogger().error(LogCategories.HANDLER, e);
-                getLogger().error(LogCategories.HANDLER, e.getCause());
-            }
-        }
+    	// TODO: Add here every new Handler
+    	List<AbstractHandler> handlers = new ArrayList<AbstractHandler>();
+    	handlers.add(ApplicationStateHandler.getInstance());
+    	handlers.add(PodcastFeedHandler.getInstance());
+    	handlers.add(ContextHandler.getInstance());
+    	handlers.add(RipperHandler.getInstance());
+    	handlers.add(CommandHandler.getInstance());
+    	handlers.add(DeviceHandler.getInstance());
+    	handlers.add(FavoritesHandler.getInstance());
+    	handlers.add(HotkeyHandler.getInstance());
+    	handlers.add(MultipleInstancesHandler.getInstance());
+    	handlers.add(NavigationHandler.getInstance());
+        handlers.add(NotifyHandler.getInstance());
+        handlers.add(PlayerHandler.getInstance());
+        handlers.add(FilterHandler.getInstance());
+        handlers.add(PlayListHandler.getInstance());
+        handlers.add(PluginsHandler.getInstance());
+        handlers.add(RadioHandler.getInstance());
+        handlers.add(RepositoryHandler.getInstance());
+        handlers.add(SearchHandler.getInstance());
+        handlers.add(UpdateHandler.getInstance());
+        handlers.add(GuiHandler.getInstance());
+        handlers.add(StatisticsHandler.getInstance());
+        handlers.add(SystemTrayHandler.getInstance());
+        handlers.add(GeneralPurposePluginsHandler.getInstance());
 
+        ExecutorService executorService = Executors.newFixedThreadPool(3);
         // Register handlers
         for (AbstractHandler handler : handlers) {
             registerHandler(handler);
-            getLogger().debug(LogCategories.HANDLER, "Registered handler: ", handler.getClass().getName());
-        }
-
-        // Execute previous initialization tasks
-        for (AbstractHandler handler : handlers) {
             Runnable task = handler.getPreviousInitializationTask();
             if (task != null) {
                 executorService.submit(task);
             }
         }
-        executorService.shutdown();
-    }
-
-    /**
-     * Initialize handlers
-     */
-    static void initHandlers() {
-        // First join to all previous initialization tasks
-        try {
-            executorService.awaitTermination(1000, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            logger.error(LogCategories.HANDLER, e);
-        }
 
         // Initialize handlers
-        for (AbstractHandler handler : handlers) {
-            handler.initHandler();
-            getLogger().debug(LogCategories.HANDLER, "Initialized handler: ", handler.getClass().getName());
+        for (final AbstractHandler handler : handlers) {
+            executorService.submit(new Runnable() {
+            	@Override
+            	public void run() {
+            		handler.initHandler();
+            	}
+            });
         }
 
+        executorService.shutdown();
     }
 }
