@@ -390,8 +390,6 @@ public final class NavigationController extends AbstractController implements Au
      * @param saveNavigationView
      */
     public void setNavigationView(String view, boolean saveNavigationView) {
-        getLogger().debugMethodCall(LogCategories.CONTROLLER, new String[] { view });
-
         Class<? extends AbstractNavigationView> navigationView = NavigationHandler.getInstance().getViewByName(view);
         if (navigationView == null) {
             navigationView = RepositoryNavigationView.class;

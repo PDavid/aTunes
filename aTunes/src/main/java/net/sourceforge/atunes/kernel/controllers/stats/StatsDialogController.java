@@ -432,8 +432,6 @@ public final class StatsDialogController extends AbstractSimpleController<StatsD
      * Show stats.
      */
     public void showStats() {
-        getLogger().debug(LogCategories.CONTROLLER);
-
         updateStats();
         StatsDialog frame = getComponentControlled();
         frame.setVisible(true);

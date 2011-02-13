@@ -139,8 +139,6 @@ public final class ApplicationStateHandler extends AbstractHandler {
      *            Favorites that should be persisted
      */
     public void persistFavoritesCache(Favorites favorites) {
-        getLogger().debug(LogCategories.HANDLER);
-
         ObjectOutputStream stream = null;
         try {
             stream = new ObjectOutputStream(new FileOutputStream(StringUtils.getString(getUserConfigFolder(), "/", Constants.CACHE_FAVORITES_NAME)));
@@ -171,8 +169,6 @@ public final class ApplicationStateHandler extends AbstractHandler {
      *            Statistics that should be persisted
      */
     public synchronized void persistStatisticsCache(Statistics statistics) {
-        getLogger().debug(LogCategories.HANDLER);
-
         ObjectOutputStream stream = null;
         try {
             stream = new ObjectOutputStream(new FileOutputStream(StringUtils.getString(getUserConfigFolder(), "/", Constants.CACHE_STATISTICS_NAME)));
@@ -200,8 +196,6 @@ public final class ApplicationStateHandler extends AbstractHandler {
      * Stores play lists definition
      */
     public void persistPlayListsDefinition(ListOfPlayLists listOfPlayLists) {
-        getLogger().debug(LogCategories.HANDLER);
-
         try {
             XMLUtils.writeObjectToFile(listOfPlayLists, StringUtils.getString(getUserConfigFolder(), "/", Constants.PLAYLISTS_FILE));
             getLogger().info(LogCategories.HANDLER, "Playlists definition saved");
@@ -237,8 +231,6 @@ public final class ApplicationStateHandler extends AbstractHandler {
      *            Podcast feeds that should be persist
      */
     public void persistPodcastFeedCache(List<PodcastFeed> podcastFeeds) {
-        getLogger().debug(LogCategories.HANDLER);
-
         try {
             XMLUtils.writeObjectToFile(podcastFeeds, StringUtils.getString(getUserConfigFolder(), "/", Constants.PODCAST_FEED_CACHE));
         } catch (IOException e) {
@@ -254,8 +246,6 @@ public final class ApplicationStateHandler extends AbstractHandler {
      *            Radios that should be persisted
      */
     public void persistRadioCache(List<Radio> radios) {
-        getLogger().debug(LogCategories.HANDLER);
-
         try {
             XMLUtils.writeObjectToFile(radios, StringUtils.getString(getUserConfigFolder(), "/", Constants.RADIO_CACHE));
         } catch (IOException e) {
@@ -271,8 +261,6 @@ public final class ApplicationStateHandler extends AbstractHandler {
      *            the radios
      */
     public void persistPresetRadioCache(List<Radio> radios) {
-        getLogger().debug(LogCategories.HANDLER);
-
         try {
             XMLUtils.writeObjectToFile(radios, StringUtils.getString(getUserConfigFolder(), "/", Constants.PRESET_RADIO_CACHE));
         } catch (IOException e) {
@@ -289,8 +277,6 @@ public final class ApplicationStateHandler extends AbstractHandler {
      */
 
     public void persistRepositoryCache(Repository repository, boolean asXmlIfEnabled) {
-        getLogger().debug(LogCategories.HANDLER);
-
         String folder = RepositoryHandler.getInstance().getRepositoryConfigurationFolder();
 
         ObjectOutputStream oos = null;
@@ -324,8 +310,6 @@ public final class ApplicationStateHandler extends AbstractHandler {
     }
 
     public void persistDeviceCache(String deviceId, Repository deviceRepository) {
-        getLogger().debug(LogCategories.HANDLER);
-
         ObjectOutputStream oos = null;
         try {
             FileOutputStream fout = new FileOutputStream(StringUtils
@@ -350,8 +334,6 @@ public final class ApplicationStateHandler extends AbstractHandler {
      * @return The retrieved favorites
      */
     public Favorites retrieveFavoritesCache() {
-        getLogger().debug(LogCategories.HANDLER);
-
         ObjectInputStream stream = null;
         try {
             stream = new ObjectInputStream(new FileInputStream(StringUtils.getString(getUserConfigFolder(), "/", Constants.CACHE_FAVORITES_NAME)));
@@ -396,8 +378,6 @@ public final class ApplicationStateHandler extends AbstractHandler {
      * @return The retrieved favorites
      */
     public Statistics retrieveStatisticsCache() {
-        getLogger().debug(LogCategories.HANDLER);
-
         ObjectInputStream stream = null;
         try {
             stream = new ObjectInputStream(new FileInputStream(StringUtils.getString(getUserConfigFolder(), "/", Constants.CACHE_STATISTICS_NAME)));
@@ -442,8 +422,6 @@ public final class ApplicationStateHandler extends AbstractHandler {
 
     @SuppressWarnings("unchecked")
     public ListOfPlayLists retrievePlayListsCache() {
-        getLogger().debug(LogCategories.HANDLER);
-
         ObjectInputStream stream = null;
         try {
             // First get list of playlists
@@ -480,8 +458,6 @@ public final class ApplicationStateHandler extends AbstractHandler {
      */
     @SuppressWarnings("unchecked")
     public List<PodcastFeed> retrievePodcastFeedCache() {
-        getLogger().debug(LogCategories.HANDLER);
-
         try {
             return (List<PodcastFeed>) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.PODCAST_FEED_CACHE));
         } catch (IOException e) {
@@ -500,7 +476,6 @@ public final class ApplicationStateHandler extends AbstractHandler {
      */
     @SuppressWarnings("unchecked")
     public List<Radio> retrieveRadioCache() {
-        getLogger().debug(LogCategories.HANDLER);
         try {
             return (List<Radio>) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.RADIO_CACHE));
         } catch (IOException e) {
@@ -516,7 +491,6 @@ public final class ApplicationStateHandler extends AbstractHandler {
      */
     @SuppressWarnings("unchecked")
     public List<Radio> retrieveRadioPreset() {
-        getLogger().debug(LogCategories.HANDLER);
         try {
             // First try user settings folder
             return (List<Radio>) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.PRESET_RADIO_CACHE));
@@ -536,8 +510,6 @@ public final class ApplicationStateHandler extends AbstractHandler {
      * @return The retrieved repository
      */
     public Repository retrieveRepositoryCache() {
-        getLogger().debug(LogCategories.HANDLER);
-
         String folder = RepositoryHandler.getInstance().getRepositoryConfigurationFolder();
 
         ObjectInputStream ois = null;
@@ -605,8 +577,6 @@ public final class ApplicationStateHandler extends AbstractHandler {
      */
 
     public Repository retrieveDeviceCache(String deviceId) {
-        getLogger().debug(LogCategories.HANDLER);
-
         ObjectInputStream ois = null;
         try {
             FileInputStream fis = new FileInputStream(StringUtils.getString(getUserConfigFolder(), SystemProperties.FILE_SEPARATOR, Constants.DEVICE_CACHE_FILE_PREFIX, deviceId));

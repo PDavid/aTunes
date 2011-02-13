@@ -161,8 +161,6 @@ public final class EditPreferencesDialogController extends AbstractSimpleControl
      * Start.
      */
     public void start() {
-        getLogger().debug(LogCategories.CONTROLLER);
-
         // Update panels
         for (AbstractPreferencesPanel panel : panels) {
             panel.updatePanel(ApplicationState.getInstance());

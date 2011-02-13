@@ -386,7 +386,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
             /* Check that we've got somewhere to write the track to */
             fileName.getParentFile().mkdirs();
 
-            getLogger().debugMethodCall(LogCategories.CDDA2WAV, command.toArray(new String[command.size()]));
+            getLogger().debug(LogCategories.CDDA2WAV, (Object[]) command.toArray(new String[command.size()]));
 
             setProcess(new ProcessBuilder(command).start());
             stdInput = new BufferedReader(new InputStreamReader(getProcess().getErrorStream()));
@@ -461,7 +461,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
                 command.add(SCANDEVICES);
                 command.add(NO_INFO_FILE);
 
-                getLogger().debugMethodCall(LogCategories.CDDA2WAV, command.toArray(new String[command.size()]));
+                getLogger().debug(LogCategories.CDDA2WAV, (Object[]) command.toArray(new String[command.size()]));
 
                 setProcess(new ProcessBuilder(command).start());
                 stdInput = new BufferedReader(new InputStreamReader(getProcess().getInputStream()));
@@ -514,7 +514,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
                 command.add(SCAN_BUS);
                 command.add(NO_INFO_FILE);
 
-                getLogger().debugMethodCall(LogCategories.CDDA2WAV, command.toArray(new String[command.size()]));
+                getLogger().debug(LogCategories.CDDA2WAV, (Object[]) command.toArray(new String[command.size()]));
 
                 setProcess(new ProcessBuilder(command).start());
                 // Icedax and cdda2wav seem to behave differently
@@ -594,7 +594,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
                 command.add(ATA);
                 command.add(NO_INFO_FILE);
 
-                getLogger().debugMethodCall(LogCategories.CDDA2WAV, command.toArray(new String[command.size()]));
+                getLogger().debug(LogCategories.CDDA2WAV, (Object[]) command.toArray(new String[command.size()]));
 
                 setProcess(new ProcessBuilder(command).start());
                 // Icedax and cdda2wav seem to behave differently
@@ -711,7 +711,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
             command.add(NO_INFO_FILE);
             command.add(CDDB);
 
-            getLogger().debugMethodCall(LogCategories.CDDA2WAV, command.toArray(new String[command.size()]));
+            getLogger().debug(LogCategories.CDDA2WAV, (Object[]) command.toArray(new String[command.size()]));
 
             setProcess(new ProcessBuilder(command).start());
             cdLoaded = false;

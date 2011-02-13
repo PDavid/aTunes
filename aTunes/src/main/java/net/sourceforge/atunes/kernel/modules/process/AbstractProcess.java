@@ -186,13 +186,6 @@ public abstract class AbstractProcess {
     }
 
     /**
-     * Adds a default debug log
-     */
-    protected final void addDebugLog() {
-        getLogger().debug(LogCategories.PROCESS);
-    }
-
-    /**
      * Adds a debug log
      * 
      * @param o

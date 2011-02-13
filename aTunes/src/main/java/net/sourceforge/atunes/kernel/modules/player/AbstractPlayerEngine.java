@@ -578,7 +578,6 @@ public abstract class AbstractPlayerEngine implements PlaybackStateListener {
      * Lower volume
      */
     public final void volumeDown() {
-        getLogger().debug(LogCategories.PLAYER);
         Volume.setVolume(ApplicationState.getInstance().getVolume() - 5);
     }
 
@@ -586,7 +585,6 @@ public abstract class AbstractPlayerEngine implements PlaybackStateListener {
      * Raise volume
      */
     public final void volumeUp() {
-        getLogger().debug(LogCategories.PLAYER);
         Volume.setVolume(ApplicationState.getInstance().getVolume() + 5);
     }
 
@@ -726,7 +724,6 @@ public abstract class AbstractPlayerEngine implements PlaybackStateListener {
      * super.initializePlayerEngine()</b>
      */
     protected void initializePlayerEngine() {
-        getLogger().debug(LogCategories.PLAYER);
     }
 
     /**

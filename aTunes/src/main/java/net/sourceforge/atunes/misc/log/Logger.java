@@ -75,32 +75,6 @@ public class Logger {
      * 
      * @param cat
      *            the cat
-     */
-    public void debug(String cat) {
-        if (!Kernel.isDebug()) {
-            return;
-        }
-
-        // If category is filtered, don't log anything
-        if (filteredCategories.contains(cat.trim())) {
-            return;
-        }
-
-        // Find calling method name and class
-        Throwable t = new Throwable();
-        StackTraceElement[] s = t.getStackTrace();
-        String className = s[1].getClassName();
-        className = className.substring(className.lastIndexOf('.') + 1);
-        String methodName = s[1].getMethodName();
-
-        this.debug(cat, "--> ", className, '.', methodName, " [", LoggerTimer.getTimer(), "]");
-    }
-
-    /**
-     * Logs a debug event.
-     * 
-     * @param cat
-     *            the cat
      * @param objects
      *            the objects to show in log
      */
@@ -119,50 +93,6 @@ public class Logger {
             sb.append(object);
         }
         logger.debug(sb.toString());
-    }
-
-    /**
-     * Logs a debug event. This method is specially designed to be called at the
-     * beginning of a method to log the execution of the method
-     * 
-     * @param cat
-     *            the cat
-     * @param args
-     *            the args
-     */
-    public void debugMethodCall(String cat, String... args) {
-        if (!Kernel.isDebug()) {
-            return;
-        }
-
-        if (filteredCategories.contains(cat.trim())) {
-            return;
-        }
-
-        // Find calling method name and class
-        Throwable t = new Throwable();
-        StackTraceElement[] s = t.getStackTrace();
-        String className = s[1].getClassName();
-        className = className.substring(className.lastIndexOf('.') + 1);
-        String methodName = s[1].getMethodName();
-
-        // Build string with arguments
-        StringBuilder sb = new StringBuilder();
-        sb.append("--> ").append(className).append('.').append(methodName);
-        if (args.length > 0) {
-            sb.append('{');
-            for (int i = 0; i < args.length - 1; i++) {
-                sb.append(args[i]);
-                sb.append(", ");
-            }
-            sb.append(args[args.length - 1]);
-            sb.append('}');
-        }
-
-        // Get a timer count
-        sb.append(" [").append(LoggerTimer.getTimer()).append(']');
-
-        this.debug(cat, sb.toString());
     }
 
     /**

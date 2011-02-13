@@ -243,7 +243,6 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
      * Finish context information
      */
     public void applicationFinish() {
-        getLogger().debug(LogCategories.HANDLER);
         LastFmService.getInstance().finishService();
         LyricsService.getInstance().finishService();
     }
