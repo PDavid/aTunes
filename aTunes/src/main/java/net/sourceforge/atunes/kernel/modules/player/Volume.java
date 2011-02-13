@@ -36,14 +36,16 @@ public final class Volume {
 
     }
 
-    public static void setVolume(int volume) {
+    public static void setVolume(int volume, boolean saveVolume) {
         if (volume < 0) {
             volume = 0;
         } else if (volume > 100) {
             volume = 100;
         }
         final int finalVolume = volume;
-        ApplicationState.getInstance().setVolume(volume);
+        if (saveVolume) {
+        	ApplicationState.getInstance().setVolume(volume);
+        }
         PlayerHandler.getInstance().setVolume(volume);
 
         if (!EventQueue.isDispatchThread()) {
@@ -60,6 +62,9 @@ public final class Volume {
             GuiHandler.getInstance().getFullScreenWindow().setVolume(finalVolume);
             ((MuteAction) Actions.getAction(MuteAction.class)).updateIcon();
         }
-
+    }
+    
+    public static void setVolume(int volume) {
+    	setVolume(volume, true);
     }
 }
