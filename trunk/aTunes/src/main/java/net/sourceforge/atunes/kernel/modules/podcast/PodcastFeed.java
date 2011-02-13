@@ -182,8 +182,6 @@ public class PodcastFeed implements TreeObject, Serializable {
      *            If old entries should be removed
      */
     public synchronized void addEntries(List<? extends PodcastFeedEntry> entries, boolean removeOld) {
-        getLogger().debug(LogCategories.PODCAST);
-
         List<? extends PodcastFeedEntry> newEntries = new ArrayList<PodcastFeedEntry>(entries);
 
         List<PodcastFeedEntry> oldEntries = new ArrayList<PodcastFeedEntry>(podcastFeedEntries);

@@ -126,7 +126,6 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
      */
     public void fillWithRandomSongs(long leaveFreeLong) {
         long leaveFree = leaveFreeLong;
-        getLogger().debugMethodCall(LogCategories.HANDLER, new String[] { Long.toString(leaveFree) });
 
         // Get reference to Repository songs
         List<AudioFile> songs = RepositoryHandler.getInstance().getAudioFilesList();

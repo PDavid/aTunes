@@ -73,8 +73,6 @@ public class LyrcEngine extends AbstractLyricsEngine {
             String html = readURL(getConnection(url), "ISO-8859-1");
 
             if (html.contains("Suggestions : <br>")) { // More than one posibility, find the best one
-                getLogger().debugMethodCall(LogCategories.SERVICE, new String[] { "Suggestions found" });
-
                 html = html.substring(html.indexOf("Suggestions : <br>"));
                 html = html.substring(0, html.indexOf("<br><br"));
 
@@ -121,14 +119,11 @@ public class LyrcEngine extends AbstractLyricsEngine {
                     }
                     if (matches) {
                         // We have found it, build url and call again
-                        getLogger().debugMethodCall(LogCategories.SERVICE, new String[] { "Found suggestion", suggestion.getKey() });
-
                         String auxUrl = SUGGESTIONS_URL.concat(suggestion.getValue());
                         return getLyrics(auxUrl, artist, title);
                     }
                 }
 
-                getLogger().debugMethodCall(LogCategories.SERVICE, new String[] { "No suitable suggestion found" });
                 // If we reach this code, no suggestion was found, so return null
                 return null;
             }

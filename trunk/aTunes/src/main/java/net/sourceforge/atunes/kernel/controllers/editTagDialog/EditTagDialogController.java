@@ -420,8 +420,6 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
      * Edits the tag.
      */
     protected void editTag() {
-        getLogger().debug(LogCategories.CONTROLLER);
-
         getComponentControlled().setVisible(true);
 
         // Build editor props

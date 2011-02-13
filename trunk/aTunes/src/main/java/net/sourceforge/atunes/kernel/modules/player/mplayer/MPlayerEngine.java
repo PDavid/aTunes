@@ -268,8 +268,6 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 
     @Override
     public void applyMuteState(boolean mute) {
-        getLogger().debugMethodCall(LogCategories.PLAYER, Boolean.toString(mute));
-
         commandWriter.sendMuteCommand();
 
         // volume must be applied again because of the volume bug
@@ -406,7 +404,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
             command.add(KARAOKE);
         }
 
-        getLogger().debugMethodCall(LogCategories.PLAYER, command.toArray(new String[command.size()]));
+        getLogger().debug(LogCategories.PLAYER, (Object[]) command.toArray(new String[command.size()]));
         return pb.command(command).start();
     }
 

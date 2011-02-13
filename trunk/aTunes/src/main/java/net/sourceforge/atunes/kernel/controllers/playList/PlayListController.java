@@ -88,8 +88,6 @@ public final class PlayListController extends AbstractSimpleController<PlayListP
      * Delete selection.
      */
     public void deleteSelection() {
-        getLogger().debug(LogCategories.CONTROLLER);
-
         PlayListTable table = GuiHandler.getInstance().getPlayListTable();
         int[] rows = table.getSelectedRows();
         if (rows.length > 0) {
@@ -131,8 +129,6 @@ public final class PlayListController extends AbstractSimpleController<PlayListP
      * Move down.
      */
     public void moveDown() {
-        getLogger().debug(LogCategories.CONTROLLER);
-
         PlayListTable table = GuiHandler.getInstance().getPlayListTable();
         int[] rows = table.getSelectedRows();
         if (rows.length > 0 && rows[rows.length - 1] < table.getRowCount() - 1) {
@@ -146,8 +142,6 @@ public final class PlayListController extends AbstractSimpleController<PlayListP
      * Move to bottom.
      */
     public void moveToBottom() {
-        getLogger().debug(LogCategories.CONTROLLER);
-
         PlayListTable table = GuiHandler.getInstance().getPlayListTable();
         int[] rows = table.getSelectedRows();
         if (rows.length > 0 && rows[rows.length - 1] < table.getRowCount() - 1) {
@@ -162,8 +156,6 @@ public final class PlayListController extends AbstractSimpleController<PlayListP
      * Move to top.
      */
     public void moveToTop() {
-        getLogger().debug(LogCategories.CONTROLLER);
-
         PlayListTable table = GuiHandler.getInstance().getPlayListTable();
         int[] rows = table.getSelectedRows();
         if (rows.length > 0 && rows[0] > 0) {
@@ -177,8 +169,6 @@ public final class PlayListController extends AbstractSimpleController<PlayListP
      * Move up.
      */
     public void moveUp() {
-        getLogger().debug(LogCategories.CONTROLLER);
-
         PlayListTable table = GuiHandler.getInstance().getPlayListTable();
         int[] rows = table.getSelectedRows();
         if (rows.length > 0 && rows[0] > 0) {
@@ -278,8 +268,6 @@ public final class PlayListController extends AbstractSimpleController<PlayListP
     }
 
     public void reapplyFilter() {
-        getLogger().debug(LogCategories.CONTROLLER);
-
         if (PlayListHandler.getInstance().isFiltered()) {
             PlayListHandler.getInstance().setFilter(FilterHandler.getInstance().getFilter());
         }

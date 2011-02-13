@@ -691,7 +691,6 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 
     @Override
     public void notifyFilesInRepository(int totalFiles) {
-        getLogger().debugMethodCall(LogCategories.REPOSITORY, new String[] { Integer.toString(totalFiles) });
         // When total files has been calculated change to determinate progress bar
         if (progressDialog != null) {
             progressDialog.getProgressBar().setIndeterminate(false);

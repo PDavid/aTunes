@@ -512,8 +512,6 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      * Removes all audio objects from visible play list.
      */
     public void clearPlayList() {
-        getLogger().debug(LogCategories.HANDLER);
-
         // Remove filter
         setFilter(null);
 
@@ -597,8 +595,6 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      * application, to load play list of previous execution
      */
     public void setPlayLists() {
-        getLogger().debug(LogCategories.HANDLER);
-
         // Get playlists from application cache
         final ListOfPlayLists listOfPlayLists = playListsRetrievedFromCache;
 
@@ -655,7 +651,6 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      * Loads play list from a file.
      */
     public void loadPlaylist() {
-        getLogger().debug(LogCategories.HANDLER);
         JFileChooser fileChooser = new JFileChooser(ApplicationState.getInstance().getLoadPlaylistPath());
         FileFilter filter = PlayListIO.getPlaylistFileFilter();
         // Open file chooser
@@ -720,7 +715,6 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      *            the rows
      */
     public void moveToBottom(int[] rows) {
-        getLogger().debug(LogCategories.HANDLER);
         PlayList currentPlayList = getCurrentPlayList(true);
         int j = 0;
         for (int i = rows.length - 1; i >= 0; i--) {
@@ -742,7 +736,6 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      *            the rows
      */
     public void moveToTop(int[] rows) {
-        getLogger().debug(LogCategories.HANDLER);
         PlayList currentPlayList = getCurrentPlayList(true);
         for (int i = 0; i < rows.length; i++) {
             AudioObject aux = currentPlayList.get(rows[i]);
@@ -861,8 +854,6 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      * Shuffle current play list
      */
     public void shuffle() {
-        getLogger().debug(LogCategories.HANDLER);
-
         PlayList currentPlaylist = getCurrentPlayList(true);
 
         // If current play list is empty, don't shuffle
