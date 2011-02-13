@@ -72,6 +72,13 @@ public abstract class AbstractHandler implements ApplicationStartListener, Appli
     protected Runnable getPreviousInitializationTask() {
         return null;
     }
+    
+    /**
+     * Code to be executed when all handlers have been initialized
+     */
+    public void allHandlersInitialized() {
+    	// Does nothing by default
+    }
 
     /**
      * Registers handler
@@ -79,8 +86,8 @@ public abstract class AbstractHandler implements ApplicationStartListener, Appli
      * @param handler
      */
     private static final void registerHandler(AbstractHandler handler) {
-        Kernel.getInstance().addStartListener(handler);
-        Kernel.getInstance().addFinishListener(handler);
+        Kernel.addStartListener(handler);
+        Kernel.addFinishListener(handler);
         ApplicationStateHandler.getInstance().addStateChangeListener(handler);
     }
 

@@ -32,7 +32,7 @@ import net.sourceforge.atunes.misc.log.Logger;
 class PreferencesCache extends AbstractCache {
 
     private Logger logger;
-
+    
     protected PreferencesCache() {
         super(PreferencesCache.class.getResource("/settings/ehcache-preferences.xml"));
     }
@@ -75,7 +75,7 @@ class PreferencesCache extends AbstractCache {
      * @param preferenceId
      * @param value
      */
-    public synchronized void storePreference(Preferences preferenceId, Object value) {
+    public void storePreference(final Preferences preferenceId, final Object value) {
         if (preferenceId == null) {
             return;
         }

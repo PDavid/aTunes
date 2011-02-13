@@ -145,6 +145,12 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
 
     @Override
     public void applicationStarted(List<AudioObject> playList) {
+        PlayListHandler.getInstance().setPlayLists();
+
+        if (!playList.isEmpty()) {
+            PlayListHandler.getInstance().addToPlayListAndPlay(playList);
+            ControllerProxy.getInstance().getPlayListController().refreshPlayList();
+        }
     }
 
     /**

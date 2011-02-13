@@ -38,4 +38,10 @@ public interface ApplicationStartListener {
      * @param playList 
      */
     public void applicationStarted(List<AudioObject> playList);
+    
+    /**
+     * Code to be executed when all handlers have been initialized
+     */
+    public void allHandlersInitialized();
+
 }

@@ -354,7 +354,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 
                 // Init engine
                 instance.playerEngine.initializePlayerEngine();
-                Kernel.getInstance().addFinishListener(instance);
+                Kernel.addFinishListener(instance);
 
                 // Add core playback listeners
                 instance.playerEngine.addPlaybackStateListener(instance.playerEngine);

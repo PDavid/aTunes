@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,12 +55,6 @@ public class Kernel {
 
     private static Logger logger;
 
-    /**
-     * Unique instance of Kernel. To access Kernel, Kernel.getInstance() must be
-     * called
-     */
-    private static Kernel instance;
-
     /** Defines if aTunes is running in debug mode. */
     private static boolean debug;
 
@@ -75,29 +70,17 @@ public class Kernel {
     /**
      * List of start listeners
      */
-    private List<ApplicationStartListener> startListeners;
+    private static List<ApplicationStartListener> startListeners = new ArrayList<ApplicationStartListener>();
 
     /**
      * List of finish listeners
      */
-    private List<ApplicationFinishListener> finishListeners;
+    private static List<ApplicationFinishListener> finishListeners = new ArrayList<ApplicationFinishListener>();
 
     /**
      * Constructor of Kernel.
      */
-    protected Kernel() {
-        startListeners = new ArrayList<ApplicationStartListener>();
-        finishListeners = new ArrayList<ApplicationFinishListener>();
-    }
-
-    /**
-     * Getter of the Kernel instance.
-     * 
-     * @return Kernel
-     */
-    public static Kernel getInstance() {
-        return instance;
-    }
+    private Kernel() {}
 
     /**
      * Adds a start listener to list of listeners. All classes that implements
@@ -106,8 +89,8 @@ public class Kernel {
      * 
      * @param listener
      */
-    public void addStartListener(ApplicationStartListener listener) {
-        this.startListeners.add(listener);
+    public static void addStartListener(ApplicationStartListener listener) {
+        startListeners.add(listener);
     }
 
     /**
@@ -117,8 +100,8 @@ public class Kernel {
      * 
      * @param listener
      */
-    public void addFinishListener(ApplicationFinishListener listener) {
-        this.finishListeners.add(listener);
+    public static void addFinishListener(ApplicationFinishListener listener) {
+        finishListeners.add(listener);
     }
 
     /**
@@ -148,6 +131,7 @@ public class Kernel {
 
 
         try {
+        	// Call invokeAndWait to wait until splash screen is visible
             SwingUtilities.invokeAndWait(new Runnable() {
                 @Override
                 public void run() {
@@ -158,13 +142,13 @@ public class Kernel {
                     GuiHandler.getInstance().showSplashScreen();
                 }
             });
-        } catch (Exception e) {
+        } catch (InvocationTargetException e) {
             getLogger().error(LogCategories.START, e);
             getLogger().error(LogCategories.START, e.getCause());
-        }
-
-        // Create kernel
-        instance = new Kernel();
+        } catch (InterruptedException e) {
+            getLogger().error(LogCategories.START, e);
+            getLogger().error(LogCategories.START, e.getCause());
+		}
 
         // Register and initialize handlers
         AbstractHandler.registerAndInitializeHandlers();
@@ -179,55 +163,36 @@ public class Kernel {
             }
         }
 
-        try {
-            SwingUtilities.invokeAndWait(new Runnable() {
-                @Override
-                public void run() {
-                    // Start component creation
-                    instance.startCreation();
-                }
-            });
-        } catch (Exception e) {
-            getLogger().error(LogCategories.START, e);
-            getLogger().error(LogCategories.START, e.getCause());
-        }
+        SwingUtilities.invokeLater(new Runnable() {
+        	@Override
+        	public void run() {
+        		// Start component creation
+        		startCreation();
 
-        try {
-            SwingUtilities.invokeAndWait(new Runnable() {
-                @Override
-                public void run() {
-                    // Start business
-                    instance.start(PlayListIO.getAudioObjectsFromFileNamesList(songs));
-                }
-            });
-        } catch (Exception e) {
-            getLogger().error(LogCategories.START, e);
-            getLogger().error(LogCategories.START, e.getCause());
-        }
-
+            	callActionsAfterStart(PlayListIO.getAudioObjectsFromFileNamesList(songs));
+            	getLogger().info(LogCategories.START, StringUtils.getString("Application started (", StringUtils.toString(timer.stop(), 3), " seconds)"));
+            	timer = null;
+        	}
+        });
     }
 
     /**
      * Executes actions needed before closing application, finished all
      * necessary modules and writes configuration.
      */
-    private void callActionsBeforeEnd() {
+    private static void callActionsBeforeEnd() {
         // Call all ApplicationFinishListener instances to finish
         for (ApplicationFinishListener finishListener : finishListeners) {
-            try {
-                if (finishListener != null) {
-                    finishListener.applicationFinish();
-                }
-            } catch (Exception e) {
-                getLogger().error(LogCategories.END, e);
-            }
+        	if (finishListener != null) {
+        		finishListener.applicationFinish();
+        	}
         }
     }
 
     /**
      * Called when closing application
      */
-    public void finish() {
+    public static void finish() {
         Timer timer = new Timer();
         try {
             timer.start();
@@ -243,80 +208,40 @@ public class Kernel {
     }
 
     /**
-     * Once all application is loaded, it's time to load data (repository,
-     * playlist, ...)
-     * 
-     * @param playList
-     *            the play list
-     */
-    void start(final List<AudioObject> playList) {
-        try {
-            GuiHandler.getInstance().setFullFrameVisible(true);
-            //Hide title dialog
-            GuiHandler.getInstance().hideSplashScreen();
-
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    callActionsAfterStart(playList);
-                }
-            });
-
-            getLogger().info(LogCategories.START, StringUtils.getString("Application started (", StringUtils.toString(timer.stop(), 3), " seconds)"));
-            timer = null;
-            
-        } catch (Exception e) {
-            getLogger().error(LogCategories.KERNEL, e);
-        }
-    }
-
-    /**
      * Call actions after start.
      */
-    void callActionsAfterStart(List<AudioObject> playList) {
-        // Call all ApplicationStartListener instances to finish
+    static void callActionsAfterStart(List<AudioObject> playList) {
+        // Call all ApplicationStartListener instances
         for (ApplicationStartListener startListener : startListeners) {
-            try {
-                if (startListener != null) {
-                    startListener.applicationStarted(playList);
-                }
-            } catch (Exception e) {
-                getLogger().error(LogCategories.START, e);
-            }
+        	if (startListener != null) {
+        		startListener.applicationStarted(playList);
+        	}
         }
         // TODO: Move this to webservices handler
         LastFmService.getInstance().submitCacheToLastFm();
-    }
-
-    /**
-     * Starts controllers associated to visual classes.
-     */
-    private void startControllers() {
-        ControllerProxy.getInstance();
+        
+        // Call all ApplicationStartListener instances
+        for (ApplicationStartListener startListener : startListeners) {
+        	if (startListener != null) {
+        		startListener.allHandlersInitialized();
+        	}
+        }
     }
 
     /**
      * Creates all objects of aTunes: visual objects, controllers, and handlers.
      */
-    void startCreation() {
+    static void startCreation() {
         getLogger().debug(LogCategories.START, "Starting components");
-
-        startVisualization();
-        startControllers();
-        GuiHandler.getInstance().setTitleBar("");
-    }
-
-    /**
-     * Starts visual objects.
-     */
-    private void startVisualization() {
         GuiHandler.getInstance().startVisualization();
+        ControllerProxy.getInstance();
+        GuiHandler.getInstance().setTitleBar("");
     }
 
     /**
      * Called when restarting application
      */
-    public void restart() {
+    public static void restart() {
         try {
             // Store all configuration and finish all active modules
             callActionsBeforeEnd();

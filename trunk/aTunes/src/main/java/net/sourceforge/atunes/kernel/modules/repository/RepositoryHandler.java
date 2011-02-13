@@ -55,7 +55,6 @@ import net.sourceforge.atunes.kernel.actions.RefreshRepositoryAction;
 import net.sourceforge.atunes.kernel.actions.RipCDAction;
 import net.sourceforge.atunes.kernel.actions.SelectRepositoryAction;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
@@ -282,16 +281,16 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 
     @Override
     public void applicationStarted(List<AudioObject> playList) {
-        applyRepository();
-        PlayListHandler.getInstance().setPlayLists();
-
-        if (!playList.isEmpty()) {
-            PlayListHandler.getInstance().addToPlayListAndPlay(playList);
-            ControllerProxy.getInstance().getPlayListController().refreshPlayList();
-        }
-
+        applyRepository(false);
         SearchHandler.getInstance().registerSearchableObject(RepositorySearchableObject.getInstance());
         repositoryRefresher = new RepositoryAutoRefresher(RepositoryHandler.this);
+    }
+    
+    @Override
+    public void allHandlersInitialized() {
+    	if (repository == null) {
+    		applyRepository(true);
+    	}
     }
 
     /**
@@ -805,27 +804,34 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 
     /**
      * Sets the repository.
+     * @param askUser
      */
-    private void applyRepository() {
-        // Try to read repository cache. If fails or not exists, should be selected again
+    private void applyRepository(boolean askUser) {
         Repository rep = repositoryRetrievedFromCache;
-        if (rep != null) {
-            if (!rep.exists()) {
-                askUserForRepository(rep);
-                if (!rep.exists() && !selectRepository(true)) {
-                    // select "old" repository if repository was not found and no new repository was selected
-                    repository = rep;
-                } else if (rep.exists()) {
-                    // repository exists
-                    applyExistingRepository(rep);
-                }
-            } else {
-                // repository exists
-                applyExistingRepository(rep);
-            }
-        } else {
-            reloadExistingRepository();
-        }
+        if (!askUser) {
+       		if (rep != null && rep.exists()) {
+       			applyExistingRepository(rep);
+       		}
+   		} else {
+   			// Try to read repository cache. If fails or not exists, should be selected again
+   			if (rep != null) {
+   				if (!rep.exists()) {
+   					askUserForRepository(rep);
+   					if (!rep.exists() && !selectRepository(true)) {
+   						// select "old" repository if repository was not found and no new repository was selected
+   						repository = rep;
+   					} else if (rep.exists()) {
+   						// repository exists
+   						applyExistingRepository(rep);
+   					}
+   				} else {
+   					// repository exists
+   					applyExistingRepository(rep);
+   				}
+   			} else {
+   				reloadExistingRepository();
+   			}
+   		}
     }
 
     /**
