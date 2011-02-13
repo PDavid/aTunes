@@ -189,8 +189,8 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     	FrameState frameState = state.getFrameState(getFrame().getClass());
     	getFrame().applicationStarted(frameState);
     	
-    	showToolBar(state.isShowToolBar());
-        showStatusBar(state.isShowStatusBar());
+    	showToolBar(state.isShowToolBar(), false);
+        showStatusBar(state.isShowStatusBar(), false);
         showSongProperties(state.isShowAudioObjectProperties());
         showContextPanel(state.isUseContext());
         showNavigationTree(state.isShowNavigationTree());
@@ -1253,17 +1253,21 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      * Show status bar.
      * 
      * @param show
-     *            the show
+     * @param save
      */
-    public void showStatusBar(boolean show) {
-        ApplicationState.getInstance().setShowStatusBar(show);
+    public void showStatusBar(boolean show, boolean save) {
+    	if (save) {
+    		ApplicationState.getInstance().setShowStatusBar(show);
+    	}
         frame.showStatusBar(show);
         repaint();
     }
 
-    public void showToolBar(boolean show) {
+    public void showToolBar(boolean show, boolean save) {
         Actions.getAction(ShowToolbarAction.class).putValue(Action.SELECTED_KEY, show);
-        ApplicationState.getInstance().setShowToolBar(show);
+        if (save) {
+        	ApplicationState.getInstance().setShowToolBar(show);
+        }
         frame.showToolBar(show);
         repaint();
     }

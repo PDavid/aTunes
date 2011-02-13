@@ -855,7 +855,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 
     private void applyExistingRepository(Repository rep) {
         repository = rep;
-        notifyFinishRead(null);
+        notifyFinishRepositoryRead();
     }
 
     /**

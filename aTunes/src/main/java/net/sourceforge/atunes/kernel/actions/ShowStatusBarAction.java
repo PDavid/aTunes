@@ -45,7 +45,7 @@ public class ShowStatusBarAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        GuiHandler.getInstance().showStatusBar((Boolean) getValue(SELECTED_KEY));
+        GuiHandler.getInstance().showStatusBar((Boolean) getValue(SELECTED_KEY), true);
     }
 
 }
