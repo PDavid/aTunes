@@ -22,13 +22,18 @@ package net.sourceforge.atunes.kernel.modules.state.beans;
 
 import java.awt.Font;
 import java.beans.ConstructorProperties;
+import java.io.Serializable;
 
 /**
  * Bean for java.awt.Font
  */
-public final class FontBean {
+public final class FontBean implements Serializable {
 
-    private String name;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6799372094994034976L;
+	private String name;
     private int style;
     private int size;
 

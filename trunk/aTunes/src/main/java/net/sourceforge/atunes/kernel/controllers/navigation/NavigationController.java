@@ -382,19 +382,24 @@ public final class NavigationController extends AbstractController implements Au
     }
 
     /**
-     * Sets the navigation view.
+     * Sets the navigation view and optionally saves navigation view
      * 
      * @param view
      *            the new navigation view
+     *            
+     * @param saveNavigationView
      */
-    public void setNavigationView(String view) {
+    public void setNavigationView(String view, boolean saveNavigationView) {
         getLogger().debugMethodCall(LogCategories.CONTROLLER, new String[] { view });
 
         Class<? extends AbstractNavigationView> navigationView = NavigationHandler.getInstance().getViewByName(view);
         if (navigationView == null) {
             navigationView = RepositoryNavigationView.class;
         }
-        ApplicationState.getInstance().setNavigationView(navigationView.getName());
+        
+        if (saveNavigationView) {
+        	ApplicationState.getInstance().setNavigationView(navigationView.getName());
+        }
 
         int currentView = navigationTreePanel.getTabbedPane().getSelectedIndex();
         int newView = NavigationHandler.getInstance().indexOf(navigationView);
@@ -437,6 +442,14 @@ public final class NavigationController extends AbstractController implements Au
         }
     }
 
+    /**
+     * Sets the navigation view and saves state
+     * @param view
+     */
+    public void setNavigationView(String view) {
+    	setNavigationView(view, true);
+    }
+    
     /**
      * Updates table contents when user selects a tree node or the table filter
      * changes

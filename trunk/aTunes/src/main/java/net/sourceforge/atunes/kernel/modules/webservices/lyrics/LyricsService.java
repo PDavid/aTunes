@@ -193,6 +193,7 @@ public final class LyricsService implements ApplicationStateChangeListener {
      */
     private List<AbstractLyricsEngine> loadEngines(ProxyBean proxy) {
         List<LyricsEngineInfo> lyricsEnginesInfo = ApplicationState.getInstance().getLyricsEnginesInfo();
+        boolean enginesModified = false;
 
         Proxy p = null;
         try {
@@ -221,6 +222,7 @@ public final class LyricsService implements ApplicationStateChangeListener {
             lyricsEnginesInfo = new ArrayList<LyricsEngineInfo>(lyricsEnginesInfo);
             for (LyricsEngineInfo defaultLyricsEngine : DEFAULT_LYRICS_ENGINES) {
                 if (!lyricsEnginesInfo.contains(defaultLyricsEngine)) {
+                	enginesModified = true;
                     lyricsEnginesInfo.add(defaultLyricsEngine);
                 }
             }
@@ -261,10 +263,13 @@ public final class LyricsService implements ApplicationStateChangeListener {
         }
 
         for (LyricsEngineInfo engineToUnload : enginesToUnload) {
+        	enginesModified = true;
         	lyricsEnginesInfo.remove(engineToUnload);
         }
         
-        ApplicationState.getInstance().setLyricsEnginesInfo(lyricsEnginesInfo);
+        if (enginesModified) {
+        	ApplicationState.getInstance().setLyricsEnginesInfo(lyricsEnginesInfo);
+        }
         
         return result;
     }

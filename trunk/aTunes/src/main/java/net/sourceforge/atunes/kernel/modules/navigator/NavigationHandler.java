@@ -119,7 +119,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
     @Override
     public void applicationStarted(List<AudioObject> playList) {
         // Navigation Panel View
-        ControllerProxy.getInstance().getNavigationController().setNavigationView(ApplicationState.getInstance().getNavigationView());
+        ControllerProxy.getInstance().getNavigationController().setNavigationView(ApplicationState.getInstance().getNavigationView(), false);
     }
 
     public List<AbstractNavigationView> getNavigationViews() {

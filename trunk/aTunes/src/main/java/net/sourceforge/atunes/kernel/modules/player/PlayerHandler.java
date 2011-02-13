@@ -90,7 +90,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     @Override
     public void applicationStarted(List<AudioObject> playList) {
         // Set volume on visual components
-        Volume.setVolume(ApplicationState.getInstance().getVolume());
+        Volume.setVolume(ApplicationState.getInstance().getVolume(), false);
 
         // Mute
         PlayerHandler.getInstance().applyMuteState(ApplicationState.getInstance().isMuteEnabled());
