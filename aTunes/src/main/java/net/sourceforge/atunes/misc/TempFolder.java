@@ -42,7 +42,7 @@ public class TempFolder implements ApplicationFinishListener {
     private static final TempFolder instance = new TempFolder();
 
     TempFolder() {
-        Kernel.getInstance().addFinishListener(this);
+        Kernel.addFinishListener(this);
     }
 
     /**

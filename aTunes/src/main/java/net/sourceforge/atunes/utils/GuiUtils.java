@@ -35,7 +35,6 @@ import java.awt.event.KeyEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.Locale;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -50,7 +49,6 @@ import javax.swing.UIManager;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
-import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -361,16 +359,14 @@ public final class GuiUtils {
      * Sets the component orientation.
      */
     private static void setComponentOrientation() {
-        if (Kernel.getInstance() == null) {
-            componentOrientation = ComponentOrientation.getOrientation(Locale.getDefault());
-        } else {
-            if ("ug".equalsIgnoreCase(ApplicationState.getInstance().getLocale().getLocale().getLanguage())) {
-                componentOrientation = ComponentOrientation.RIGHT_TO_LEFT;
-            } else {
-                componentOrientation = ComponentOrientation.getOrientation(ApplicationState.getInstance().getLocale().getLocale());
-            }
-
-        }
+    	componentOrientation = ComponentOrientation.LEFT_TO_RIGHT;
+    	if (ApplicationState.getInstance().getLocale() != null) {
+    		if ("ug".equalsIgnoreCase(ApplicationState.getInstance().getLocale().getLocale().getLanguage())) {
+    			componentOrientation = ComponentOrientation.RIGHT_TO_LEFT;
+    		} else {
+    			componentOrientation = ComponentOrientation.getOrientation(ApplicationState.getInstance().getLocale().getLocale());
+    		}
+    	}
     }
 
     /**

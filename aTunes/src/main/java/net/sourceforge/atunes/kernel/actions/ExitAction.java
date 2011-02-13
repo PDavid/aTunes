@@ -43,6 +43,6 @@ public class ExitAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         GuiHandler.getInstance().setFullFrameVisible(false);
-        Kernel.getInstance().finish();
+        Kernel.finish();
     }
 }

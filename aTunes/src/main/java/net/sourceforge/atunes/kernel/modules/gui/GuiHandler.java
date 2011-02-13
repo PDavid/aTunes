@@ -180,6 +180,11 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
 
     @Override
     public void applicationStarted(List<AudioObject> playList) {
+        GuiHandler.getInstance().setFullFrameVisible(true);
+        //Hide title dialog
+        GuiHandler.getInstance().hideSplashScreen();
+
+    	
     	ApplicationState state = ApplicationState.getInstance();
     	FrameState frameState = state.getFrameState(getFrame().getClass());
     	getFrame().applicationStarted(frameState);
@@ -204,7 +209,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      */
     public void finish() {
         if (!ApplicationState.getInstance().isShowSystemTray()) {
-            Kernel.getInstance().finish();
+            Kernel.finish();
         }
     }
 

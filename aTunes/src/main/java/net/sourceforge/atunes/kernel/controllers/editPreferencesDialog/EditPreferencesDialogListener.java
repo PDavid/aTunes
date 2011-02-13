@@ -65,7 +65,7 @@ public final class EditPreferencesDialogListener implements ListSelectionListene
                     // Let user decide if want to restart
                     int result = GuiHandler.getInstance().showConfirmationDialog(I18nUtils.getString("APPLICATION_NEEDS_RESTART"), I18nUtils.getString("CONFIRMATION"));
                     if (result == JOptionPane.OK_OPTION) {
-                        Kernel.getInstance().restart();
+                        Kernel.restart();
                     }
                 }
             }
