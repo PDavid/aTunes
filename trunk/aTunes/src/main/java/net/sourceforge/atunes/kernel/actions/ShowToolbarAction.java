@@ -42,7 +42,7 @@ public class ShowToolbarAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        GuiHandler.getInstance().showToolBar((Boolean) getValue(SELECTED_KEY));
+        GuiHandler.getInstance().showToolBar((Boolean) getValue(SELECTED_KEY), true);
     }
 
 }
