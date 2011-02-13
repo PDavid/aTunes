@@ -211,6 +211,7 @@ public final class LyricsService implements ApplicationStateChangeListener {
                 }
             }
         } else {
+        	enginesModified = true;
             loadDefault = true;
         }
 
