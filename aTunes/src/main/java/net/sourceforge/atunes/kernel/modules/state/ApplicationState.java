@@ -750,7 +750,7 @@ public class ApplicationState {
     
 
     public boolean isShowNavigatorTabsAtLeft() {
-    	return (Boolean) this.cache.retrievePreference(Preferences.SHOW_NAVIGATOR_TABS_AT_LEFT, true);
+    	return (Boolean) this.cache.retrievePreference(Preferences.SHOW_NAVIGATOR_TABS_AT_LEFT, false);
     }
 
     public void setShowNavigatorTabsAtLeft(boolean showNavigatorTabsAtLeft) {
@@ -760,7 +760,7 @@ public class ApplicationState {
     
 
     public boolean isShowNavigatorTabsText() {
-    	return (Boolean) this.cache.retrievePreference(Preferences.SHOW_NAVIGATOR_TABS_TEXT, true);
+    	return (Boolean) this.cache.retrievePreference(Preferences.SHOW_NAVIGATOR_TABS_TEXT, false);
     }
 
     public void setShowNavigatorTabsText(boolean showNavigatorTabsText) {
@@ -770,7 +770,7 @@ public class ApplicationState {
     
 
     public boolean isShowContextTabsText() {
-    	return (Boolean) this.cache.retrievePreference(Preferences.SHOW_CONTEXT_TABS_TEXT, true);
+    	return (Boolean) this.cache.retrievePreference(Preferences.SHOW_CONTEXT_TABS_TEXT, false);
     }
 
     public void setShowContextTabsText(boolean showContextTabsText) {
