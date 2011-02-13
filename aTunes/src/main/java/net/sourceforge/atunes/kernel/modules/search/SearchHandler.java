@@ -154,7 +154,7 @@ public final class SearchHandler extends AbstractHandler {
     }
 
     /** List of searchable objects available. */
-    private List<SearchableObject> searchableObjects;
+    private List<SearchableObject> searchableObjects = new ArrayList<SearchableObject>();
 
     /** List of operators for simple rules. */
     private List<String> searchOperators;
@@ -163,10 +163,10 @@ public final class SearchHandler extends AbstractHandler {
      * List which indicates if an indexing process is currently running for a
      * given searchable object.
      */
-    private volatile Map<SearchableObject, Boolean> currentIndexingWorks;
+    private volatile Map<SearchableObject, Boolean> currentIndexingWorks = new HashMap<SearchableObject, Boolean>();
 
     /** Map with locks for each index. */
-    private Map<SearchableObject, ReadWriteLock> indexLocks;
+    private Map<SearchableObject, ReadWriteLock> indexLocks = new HashMap<SearchableObject, ReadWriteLock>();
 
     /**
      * Constructor.
@@ -188,10 +188,6 @@ public final class SearchHandler extends AbstractHandler {
 
     @Override
     protected void initHandler() {
-        currentIndexingWorks = new HashMap<SearchableObject, Boolean>();
-        searchableObjects = new ArrayList<SearchableObject>();
-        indexLocks = new HashMap<SearchableObject, ReadWriteLock>();
-
         searchOperators = new ArrayList<String>();
         searchOperators.add(":");
     }

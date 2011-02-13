@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import net.sourceforge.atunes.kernel.modules.cdripper.RipperHandler;
 import net.sourceforge.atunes.kernel.modules.command.CommandHandler;
@@ -49,6 +50,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationStateChangeListene
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.kernel.modules.tray.SystemTrayHandler;
 import net.sourceforge.atunes.kernel.modules.updates.UpdateHandler;
+import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
 public abstract class AbstractHandler implements ApplicationStartListener, ApplicationFinishListener, ApplicationStateChangeListener {
@@ -155,5 +157,11 @@ public abstract class AbstractHandler implements ApplicationStartListener, Appli
         }
 
         executorService.shutdown();
+        
+        try {
+			executorService.awaitTermination(100, TimeUnit.SECONDS);
+		} catch (InterruptedException e) {
+			getLogger().error(LogCategories.START, e);
+		}
     }
 }
