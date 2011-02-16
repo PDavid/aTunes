@@ -641,6 +641,10 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
     public FrameState getFrameState() {
         return frameState;
     }
+    
+    protected void storeFrameState() {
+    	ApplicationState.getInstance().setFrameState(GuiHandler.getInstance().getFrame().getClass(), frameState);
+    }
 
     protected final void applyVisibility(boolean show, String s, Component c, JSplitPane sp) {
         if (!show) {
