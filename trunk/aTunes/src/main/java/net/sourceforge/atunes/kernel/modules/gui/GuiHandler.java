@@ -58,7 +58,6 @@ import net.sourceforge.atunes.gui.views.dialogs.AboutDialog;
 import net.sourceforge.atunes.gui.views.dialogs.AddPodcastFeedDialog;
 import net.sourceforge.atunes.gui.views.dialogs.AddRadioDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ColumnSetSelectorDialog;
-import net.sourceforge.atunes.gui.views.dialogs.CoverNavigatorFrame;
 import net.sourceforge.atunes.gui.views.dialogs.CustomSearchDialog;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
 import net.sourceforge.atunes.gui.views.dialogs.EditTitlesDialog;
@@ -83,7 +82,6 @@ import net.sourceforge.atunes.gui.views.dialogs.SplashScreenDialog;
 import net.sourceforge.atunes.gui.views.dialogs.StatsDialog;
 import net.sourceforge.atunes.gui.views.dialogs.TransferProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.UpdateDialog;
-import net.sourceforge.atunes.gui.views.dialogs.editPreferences.EditPreferencesDialog;
 import net.sourceforge.atunes.gui.views.dialogs.fullScreen.FullScreenWindow;
 import net.sourceforge.atunes.gui.views.dialogs.properties.PropertiesDialog;
 import net.sourceforge.atunes.gui.views.menus.ApplicationMenuBar;
@@ -98,7 +96,6 @@ import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ShowToolbarAction;
-import net.sourceforge.atunes.kernel.controllers.coverNavigator.CoverNavigatorController;
 import net.sourceforge.atunes.kernel.modules.cdripper.RipperHandler;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListTableTransferHandler;
@@ -112,7 +109,6 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -836,15 +832,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      */
     public int showConfirmationDialog(String message) {
         return showConfirmationDialog(message, I18nUtils.getString("CONFIRMATION"));
-    }
-
-    /**
-     * Show cover navigator.
-     */
-    public void showCoverNavigator() {
-        CoverNavigatorFrame coverNavigator = new CoverNavigatorFrame(RepositoryHandler.getInstance().getArtists(), frame.getFrame());
-        new CoverNavigatorController(coverNavigator);
-        coverNavigator.setVisible(true);
     }
 
     /**
