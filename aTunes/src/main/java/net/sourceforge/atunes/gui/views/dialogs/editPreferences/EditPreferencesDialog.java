@@ -68,6 +68,7 @@ public final class EditPreferencesDialog extends AbstractCustomModalFrame {
         add(getContent());
         GuiUtils.applyComponentOrientation(this);
         enableCloseActionWithEscapeKey();
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     /**
@@ -204,7 +205,6 @@ public final class EditPreferencesDialog extends AbstractCustomModalFrame {
      * Marks panels as not dirty
      */
     public void resetPanels() {
-    	System.out.println("Reseting panels");
     	for (AbstractPreferencesPanel panel : this.panels) {
     		panel.setDirty(false);
     	}

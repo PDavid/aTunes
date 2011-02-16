@@ -33,7 +33,6 @@ import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.actions.EditTagAction.EditTagSources;
 import net.sourceforge.atunes.kernel.controllers.audioObjectProperties.AudioObjectPropertiesController;
 import net.sourceforge.atunes.kernel.controllers.customsearch.CustomSearchController;
-import net.sourceforge.atunes.kernel.controllers.editPreferencesDialog.EditPreferencesDialogController;
 import net.sourceforge.atunes.kernel.controllers.editTagDialog.EditTagDialogController;
 import net.sourceforge.atunes.kernel.controllers.editTitlesDialog.EditTitlesDialogController;
 import net.sourceforge.atunes.kernel.controllers.filter.ToolBarFilterController;
@@ -86,9 +85,6 @@ public final class ControllerProxy {
     /** The edit titles dialog controller. */
     private EditTitlesDialogController editTitlesDialogController;
 
-    /** The edit preferences dialog controller. */
-    private EditPreferencesDialogController editPreferencesDialogController;
-
     /** The osd dialog controller. */
     private OSDDialogController osdDialogController;
 
@@ -126,18 +122,6 @@ public final class ControllerProxy {
             instance = new ControllerProxy();
         }
         return instance;
-    }
-
-    /**
-     * Gets the edits the preferences dialog controller.
-     * 
-     * @return the edits the preferences dialog controller
-     */
-    public EditPreferencesDialogController getEditPreferencesDialogController() {
-        if (editPreferencesDialogController == null) {
-            editPreferencesDialogController = new EditPreferencesDialogController();
-        }
-        return editPreferencesDialogController;
     }
 
     /**
