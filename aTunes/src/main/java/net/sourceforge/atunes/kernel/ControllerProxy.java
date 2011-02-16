@@ -35,7 +35,6 @@ import net.sourceforge.atunes.kernel.controllers.audioObjectProperties.AudioObje
 import net.sourceforge.atunes.kernel.controllers.customsearch.CustomSearchController;
 import net.sourceforge.atunes.kernel.controllers.editTagDialog.EditTagDialogController;
 import net.sourceforge.atunes.kernel.controllers.editTitlesDialog.EditTitlesDialogController;
-import net.sourceforge.atunes.kernel.controllers.filter.ToolBarFilterController;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController;
 import net.sourceforge.atunes.kernel.controllers.osd.OSDDialogController;
 import net.sourceforge.atunes.kernel.controllers.playList.PlayListController;
@@ -99,9 +98,6 @@ public final class ControllerProxy {
 
     /** The radio browser controller. */
     private RadioBrowserDialogController radioBrowserController;
-
-    /** The tool bar filter controller. */
-    private ToolBarFilterController toolBarFilterController;
 
     /**
      * Instantiates a new controller proxy.
@@ -292,18 +288,6 @@ public final class ControllerProxy {
             radioBrowserController = new RadioBrowserDialogController(GuiHandler.getInstance().getRadioBrowserDialog());
         }
         return radioBrowserController;
-    }
-
-    /**
-     * Gets the tool bar filter controller
-     * 
-     * @return
-     */
-    public ToolBarFilterController getToolBarFilterController() {
-        if (toolBarFilterController == null) {
-            toolBarFilterController = new ToolBarFilterController(GuiHandler.getInstance().getToolBar().getFilterPanel());
-        }
-        return toolBarFilterController;
     }
 
     /**
