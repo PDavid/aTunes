@@ -40,9 +40,6 @@ import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
-import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService;
-import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeService;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.AudioObject;
 
@@ -76,10 +73,6 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
 
     @Override
     protected void initHandler() {
-        // TODO: Move to a web services handler
-        LastFmService.getInstance().updateService();
-        LyricsService.getInstance().updateService();
-        
         PlayListHandler.getInstance().addPlayListEventListener(this);
     }
 
@@ -243,16 +236,10 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
      * Finish context information
      */
     public void applicationFinish() {
-        LastFmService.getInstance().finishService();
-        LyricsService.getInstance().finishService();
     }
 
     @Override
     public void applicationStateChanged(ApplicationState newState) {
-        // TODO: Move this to a webservices handler
-        LastFmService.getInstance().updateService();
-        LyricsService.getInstance().updateService();
-        YoutubeService.getInstance().updateService();
     }
 
     /**
