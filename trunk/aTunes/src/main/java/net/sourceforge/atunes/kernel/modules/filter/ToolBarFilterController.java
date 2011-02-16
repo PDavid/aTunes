@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.controllers.filter;
+package net.sourceforge.atunes.kernel.modules.filter;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,10 +33,8 @@ import javax.swing.event.DocumentListener;
 
 import net.sourceforge.atunes.gui.views.panels.ToolBarFilterPanel;
 import net.sourceforge.atunes.kernel.controllers.model.AbstractSimpleController;
-import net.sourceforge.atunes.kernel.modules.filter.AbstractFilter;
-import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 
-public class ToolBarFilterController extends AbstractSimpleController<ToolBarFilterPanel> {
+class ToolBarFilterController extends AbstractSimpleController<ToolBarFilterPanel> {
 
     private final class FilterTextFieldDocumentListener implements
 			DocumentListener {
@@ -76,7 +74,7 @@ public class ToolBarFilterController extends AbstractSimpleController<ToolBarFil
      */
     private Map<String, JRadioButtonMenuItem> filters;
 
-    public ToolBarFilterController(ToolBarFilterPanel panel) {
+    ToolBarFilterController(ToolBarFilterPanel panel) {
         super(panel);
         addBindings();
         group = new ButtonGroup();
@@ -119,7 +117,7 @@ public class ToolBarFilterController extends AbstractSimpleController<ToolBarFil
      * @param name
      * @param filterListener
      */
-    public void addFilter(final AbstractFilter filter) {
+    void addFilter(final AbstractFilter filter) {
         JRadioButtonMenuItem radioButton = new JRadioButtonMenuItem(filter.getDescription());
         radioButton.addActionListener(new ActionListener() {
             @Override
@@ -142,7 +140,7 @@ public class ToolBarFilterController extends AbstractSimpleController<ToolBarFil
      * 
      * @param name
      */
-    public void removeFilter(String name) {
+    void removeFilter(String name) {
         JRadioButtonMenuItem radioButton = filters.get(name);
         filters.remove(name);
         group.remove(radioButton);
@@ -154,7 +152,7 @@ public class ToolBarFilterController extends AbstractSimpleController<ToolBarFil
      * 
      * @param filterName
      */
-    public void setSelectedFilter(String filterName) {
+    void setSelectedFilter(String filterName) {
         this.filters.get(filterName).setSelected(true);
     }
 
@@ -173,7 +171,7 @@ public class ToolBarFilterController extends AbstractSimpleController<ToolBarFil
      * 
      * @return
      */
-    public String getFilter() {
+    String getFilter() {
         String filter = getComponentControlled().getFilterTextField().getText();
         return filter.trim().equals("") ? null : filter;
     }
@@ -184,7 +182,7 @@ public class ToolBarFilterController extends AbstractSimpleController<ToolBarFil
      * @param name
      * @param enabled
      */
-    public void setFilterEnabled(String name, boolean enabled) {
+    void setFilterEnabled(String name, boolean enabled) {
         JRadioButtonMenuItem filter = this.filters.get(name);
         // Filter can be null if filters have not been added yet
         if (filter != null) {

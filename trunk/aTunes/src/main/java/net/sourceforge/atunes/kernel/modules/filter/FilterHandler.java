@@ -24,8 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.AbstractHandler;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -48,7 +48,7 @@ public final class FilterHandler extends AbstractHandler {
 
 		@Override
         public void applyFilter(String filterString) {
-            for (AbstractFilter filter : filters.values()) {
+            for (AbstractFilter filter : getFilters().values()) {
                 if (!filter.equals(this)) {
                     filter.applyFilter(filterString);
                 }
@@ -62,6 +62,11 @@ public final class FilterHandler extends AbstractHandler {
      */
     private static FilterHandler instance;
 
+    /**
+     * Controller
+     */
+    private ToolBarFilterController toolBarFilterController;
+    
     /**
      * Available filters
      */
@@ -86,7 +91,6 @@ public final class FilterHandler extends AbstractHandler {
      * Private constructor
      */
     private FilterHandler() {
-        this.filters = new HashMap<String, AbstractFilter>();
     }
 
     @Override
@@ -111,9 +115,9 @@ public final class FilterHandler extends AbstractHandler {
      * @param filter
      */
     private void addFilter(AbstractFilter filter) {
-        this.filters.put(filter.getName(), filter);
+    	getFilters().put(filter.getName(), filter);
         // Update UI to show new available filter
-        ControllerProxy.getInstance().getToolBarFilterController().addFilter(filter);
+        getToolBarFilterController().addFilter(filter);
     }
 
     /**
@@ -122,9 +126,9 @@ public final class FilterHandler extends AbstractHandler {
      * @param filter
      */
     public void removeFilter(AbstractFilter filter) {
-        this.filters.remove(filter.getName());
+    	getFilters().remove(filter.getName());
         // Update UI to hide filter
-        ControllerProxy.getInstance().getToolBarFilterController().removeFilter(filter.getName());
+        getToolBarFilterController().removeFilter(filter.getName());
     }
 
     /**
@@ -135,7 +139,7 @@ public final class FilterHandler extends AbstractHandler {
     public void applyFilter(String filter) {
         this.currentFilterText = filter;
         getLogger().debug(LogCategories.HANDLER, "Applying filter: ", filter);
-        filters.get(selectedFilter).applyFilter(filter);
+        getFilters().get(selectedFilter).applyFilter(filter);
     }
 
     @Override
@@ -150,17 +154,15 @@ public final class FilterHandler extends AbstractHandler {
 
         addFilter(PlayListHandler.getInstance().getPlayListFilter());
 
-        ControllerProxy.getInstance().getToolBarFilterController().setSelectedFilter(allFilter.getName());
+        getToolBarFilterController().setSelectedFilter(allFilter.getName());
     }
 
     @Override
     public void applicationFinish() {
-        // TODO Auto-generated method stub
     }
 
     @Override
     public void applicationStateChanged(ApplicationState newState) {
-        // TODO Auto-generated method stub
     }
 
     /**
@@ -201,11 +203,33 @@ public final class FilterHandler extends AbstractHandler {
         // If filter is selected and must be disabled change to "all" and set filter null
         if (this.selectedFilter.equals(filter.getName()) && !enabled) {
             this.selectedFilter = allFilter.getName();
-            ControllerProxy.getInstance().getToolBarFilterController().setSelectedFilter(allFilter.getName());
+            getToolBarFilterController().setSelectedFilter(allFilter.getName());
             applyFilter(null);
         }
-        ControllerProxy.getInstance().getToolBarFilterController().setFilterEnabled(filter.getName(), enabled);
+        getToolBarFilterController().setFilterEnabled(filter.getName(), enabled);
 
     }
-
+    
+    /**
+     * Gets the tool bar filter controller
+     * 
+     * @return
+     */
+    private ToolBarFilterController getToolBarFilterController() {
+        if (toolBarFilterController == null) {
+            toolBarFilterController = new ToolBarFilterController(GuiHandler.getInstance().getToolBar().getFilterPanel());
+        }
+        return toolBarFilterController;
+    }
+    
+    /**
+     * Return filters
+     * @return
+     */
+    private Map<String, AbstractFilter> getFilters() {
+    	if (filters == null) {
+    		filters = new HashMap<String, AbstractFilter>();
+    	}
+    	return filters;
+    }
 }
