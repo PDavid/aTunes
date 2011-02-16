@@ -50,6 +50,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationStateChangeListene
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.kernel.modules.tray.SystemTrayHandler;
 import net.sourceforge.atunes.kernel.modules.updates.UpdateHandler;
+import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
@@ -135,6 +136,7 @@ public abstract class AbstractHandler implements ApplicationStartListener, Appli
         handlers.add(StatisticsHandler.getInstance());
         handlers.add(SystemTrayHandler.getInstance());
         handlers.add(GeneralPurposePluginsHandler.getInstance());
+        handlers.add(WebServicesHandler.getInstance());
 
         ExecutorService executorService = Executors.newFixedThreadPool(3);
         // Register handlers

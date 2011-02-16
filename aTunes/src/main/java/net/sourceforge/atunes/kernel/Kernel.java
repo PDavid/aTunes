@@ -39,7 +39,6 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.Timer;
 import net.sourceforge.atunes.misc.log.LogCategories;
@@ -217,8 +216,6 @@ public class Kernel {
         		startListener.applicationStarted(playList);
         	}
         }
-        // TODO: Move this to webservices handler
-        LastFmService.getInstance().submitCacheToLastFm();
         
         // Call all ApplicationStartListener instances
         for (ApplicationStartListener startListener : startListeners) {
