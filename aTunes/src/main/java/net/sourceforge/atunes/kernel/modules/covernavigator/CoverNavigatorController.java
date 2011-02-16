@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.controllers.coverNavigator;
+package net.sourceforge.atunes.kernel.modules.covernavigator;
 
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -234,7 +234,7 @@ public final class CoverNavigatorController extends AbstractSimpleController<Cov
     /**
      * Update covers.
      */
-    public void updateCovers() {
+    protected void updateCovers() {
         final Artist artistSelected = (Artist) getComponentControlled().getList().getSelectedValue();
         if (artistSelected == null) {
             return;

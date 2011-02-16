@@ -23,7 +23,10 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.views.dialogs.CoverNavigatorFrame;
+import net.sourceforge.atunes.kernel.modules.covernavigator.CoverNavigatorController;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -43,7 +46,9 @@ public class ShowCoverNavigatorAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        GuiHandler.getInstance().showCoverNavigator();
+        CoverNavigatorFrame coverNavigator = new CoverNavigatorFrame(RepositoryHandler.getInstance().getArtists(), GuiHandler.getInstance().getFrame().getFrame());
+        new CoverNavigatorController(coverNavigator);
+        coverNavigator.setVisible(true);
     }
 
 }
