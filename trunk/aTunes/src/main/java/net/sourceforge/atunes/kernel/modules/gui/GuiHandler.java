@@ -149,7 +149,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     private RipperProgressDialog ripperProgressDialog;
     private IndeterminateProgressDialog indeterminateProgressDialog;
     private EditTitlesDialog editTitlesDialog;
-    private EditPreferencesDialog editPreferencesDialog;
     private EqualizerDialog equalizerDialog;
     private AboutDialog aboutDialog;
     private SplashScreenDialog splashScreenDialog;
@@ -220,18 +219,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      */
     public ContextPanel getContextPanel() {
         return frame.getContextPanel();
-    }
-
-    /**
-     * Gets the edits the preferences dialog.
-     * 
-     * @return the edits the preferences dialog
-     */
-    public EditPreferencesDialog getEditPreferencesDialog() {
-        if (editPreferencesDialog == null) {
-            editPreferencesDialog = new EditPreferencesDialog(frame.getFrame());
-        }
-        return editPreferencesDialog;
     }
 
     /**

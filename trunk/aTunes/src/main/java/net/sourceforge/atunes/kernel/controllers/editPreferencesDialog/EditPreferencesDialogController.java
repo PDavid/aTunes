@@ -42,22 +42,34 @@ import net.sourceforge.atunes.gui.views.dialogs.editPreferences.PodcastFeedPanel
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.RadioPanel;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.RepositoryPanel;
 import net.sourceforge.atunes.kernel.controllers.model.AbstractSimpleController;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 
 public final class EditPreferencesDialogController extends AbstractSimpleController<EditPreferencesDialog> {
 
     /** The panels of the edit preferences dialog */
-    private AbstractPreferencesPanel[] panels = new AbstractPreferencesPanel[] { new GeneralPanel(), new RepositoryPanel(), new PlayerPanel(), new NavigatorPanel(), new PlayListPrefPanel(),
-            new OSDPanel(), new ContextPanel(), new InternetPanel(), new LastFmPanel(), new DevicePanel(), new RadioPanel(), new PodcastFeedPanel(), new ImportExportPanel(),
-            new PluginsPanel() };
+    private AbstractPreferencesPanel[] panels;
 
     /**
      * Instantiates a new edits the preferences dialog controller.
      */
-    public EditPreferencesDialogController() {
-        super(GuiHandler.getInstance().getEditPreferencesDialog());
+    public EditPreferencesDialogController(EditPreferencesDialog dialog) {
+        super(dialog);
+        panels = new AbstractPreferencesPanel[] { 
+        		      new GeneralPanel(), 
+        		      new RepositoryPanel(), 
+        		      new PlayerPanel(), 
+        		      new NavigatorPanel(), 
+        		      new PlayListPrefPanel(),
+                      new OSDPanel(), 
+                      new ContextPanel(), 
+                      new InternetPanel(), 
+                      new LastFmPanel(), 
+                      new DevicePanel(), 
+                      new RadioPanel(), 
+                      new PodcastFeedPanel(), 
+                      new ImportExportPanel(),
+                      new PluginsPanel(dialog) };
         getComponentControlled().setPanels(panels);
         buildList();
         addBindings();

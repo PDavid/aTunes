@@ -23,9 +23,10 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 
+import javax.swing.JButton;
+import javax.swing.JPanel;
 import javax.swing.SwingWorker;
 
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -48,7 +49,7 @@ public class ClearCachesAction extends AbstractAction {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(final ActionEvent e) {
         SwingWorker<Boolean, Void> clearCaches = new SwingWorker<Boolean, Void>() {
             @Override
             protected Boolean doInBackground() throws Exception {
@@ -60,12 +61,15 @@ public class ClearCachesAction extends AbstractAction {
 
             @Override
             protected void done() {
-                GuiHandler.getInstance().getEditPreferencesDialog().setCursor(Cursor.getDefaultCursor());
+            	((JPanel)((JButton)e.getSource()).getParent()).setCursor(Cursor.getDefaultCursor());
+
+//                GuiHandler.getInstance().getEditPreferencesDialog().setCursor(Cursor.getDefaultCursor());
                 setEnabled(true);
             }
         };
         setEnabled(false);
-        GuiHandler.getInstance().getEditPreferencesDialog().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+    	((JPanel)((JButton)e.getSource()).getParent()).setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+//        GuiHandler.getInstance().getEditPreferencesDialog().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         clearCaches.execute();
     }
 

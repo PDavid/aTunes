@@ -96,10 +96,16 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
     private Map<PluginInfo, Boolean> pluginsActivation;
 
     /**
+     * Preferences dialog
+     */
+    private EditPreferencesDialog dialog;
+    
+    /**
      * Instantiates a new plugins panel.
      */
-    public PluginsPanel() {
+    public PluginsPanel(EditPreferencesDialog dialog) {
         super(I18nUtils.getString("PLUGINS"));
+        this.dialog = dialog;
         pluginsTable = new JTable();
         pluginsTable.setRowHeight(CELL_HEIGHT);
         pluginsTable.setShowGrid(false);
@@ -196,7 +202,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
                 int row = pluginsTable.getSelectedRow();
                 PluginInfo plugin = ((PluginsTableModel) pluginsTable.getModel()).getPluginAt(row);
                 PluginConfiguration configuration = ((PluginsTableModel) pluginsTable.getModel()).getPluginConfigurationAt(row);
-                PluginEditorDialog dialog = new PluginEditorDialog(GuiHandler.getInstance().getEditPreferencesDialog(), plugin, configuration);
+                PluginEditorDialog dialog = new PluginEditorDialog(PluginsPanel.this.dialog, plugin, configuration);
                 dialog.setVisible(true);
                 configuration = dialog.getConfiguration();
                 if (configuration != null) {
