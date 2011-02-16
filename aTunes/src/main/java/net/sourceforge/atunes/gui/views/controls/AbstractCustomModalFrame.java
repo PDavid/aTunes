@@ -85,5 +85,11 @@ public abstract class AbstractCustomModalFrame extends JFrame {
 
         owner.getGlassPane().setVisible(b);
     }
+    
+    @Override
+    public void dispose() {
+    	owner.getGlassPane().removeMouseListener(mouseListener);
+    	super.dispose();
+    }
 
 }
