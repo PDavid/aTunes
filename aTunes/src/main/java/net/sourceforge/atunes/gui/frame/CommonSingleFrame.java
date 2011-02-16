@@ -89,6 +89,7 @@ public abstract class CommonSingleFrame extends AbstractSingleFrame {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 getFrameState().putSplitPaneDividerPos(LEFT_VERTICAL_SPLIT_PANE, (Integer) evt.getNewValue());
+                storeFrameState();
             }
         });
 
@@ -97,6 +98,7 @@ public abstract class CommonSingleFrame extends AbstractSingleFrame {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 getFrameState().putSplitPaneDividerPos(RIGHT_VERTICAL_SPLIT_PANE, ((Integer) evt.getNewValue()));
+                storeFrameState();
             }
         });
 

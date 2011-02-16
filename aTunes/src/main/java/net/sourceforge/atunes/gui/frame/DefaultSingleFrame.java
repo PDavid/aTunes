@@ -88,6 +88,7 @@ public final class DefaultSingleFrame extends CommonSingleFrame implements net.s
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 getFrameState().putSplitPaneDividerPos(NAVIGATOR_SPLIT_PANE, (Integer) evt.getNewValue());
+                storeFrameState();
             }
         });
     	return navigatorSplitPane;

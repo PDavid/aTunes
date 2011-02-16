@@ -106,6 +106,7 @@ public final class EnhancedSingleFrame extends CommonSingleFrame implements net.
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 getFrameState().putSplitPaneDividerPos(PLAYLIST_SPLIT_PANE, (Integer) evt.getNewValue());
+                storeFrameState();
             }
         });
         return playListSplitPane;
