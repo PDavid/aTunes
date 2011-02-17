@@ -31,8 +31,9 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.swing.SwingWorker;
 
+import net.sourceforge.atunes.gui.views.dialogs.CustomSearchDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.ControllerProxy;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.AudioObject;
@@ -168,12 +169,26 @@ public final class SearchHandler extends AbstractHandler {
     /** Map with locks for each index. */
     private Map<SearchableObject, ReadWriteLock> indexLocks = new HashMap<SearchableObject, ReadWriteLock>();
 
+	private CustomSearchController customSearchController;
+    
     /**
      * Constructor.
      */
     private SearchHandler() {
     }
 
+    /**
+     * Gets the custom search controller.
+     * 
+     * @return the custom search controller
+     */
+    private CustomSearchController getController() {
+        if (customSearchController == null) {
+            customSearchController = new CustomSearchController(new CustomSearchDialog(GuiHandler.getInstance().getFrame().getFrame()));
+        }
+        return customSearchController;
+    }
+    
     @Override
     public void applicationFinish() {
     }
@@ -236,13 +251,13 @@ public final class SearchHandler extends AbstractHandler {
         }
 
         // Set list of searchable objects
-        ControllerProxy.getInstance().getCustomSearchController().setListOfSearchableObjects(searchableObjects);
+        getController().setListOfSearchableObjects(searchableObjects);
 
         // Set list of operators
-        ControllerProxy.getInstance().getCustomSearchController().setListOfOperators(searchOperators);
+        getController().setListOfOperators(searchOperators);
 
         // Show dialog to start search
-        ControllerProxy.getInstance().getCustomSearchController().showSearchDialog();
+        getController().showSearchDialog();
     }
 
     /**

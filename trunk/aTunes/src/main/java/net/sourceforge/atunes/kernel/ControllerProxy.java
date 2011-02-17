@@ -30,7 +30,6 @@ import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListTabPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.actions.EditTagAction.EditTagSources;
-import net.sourceforge.atunes.kernel.controllers.customsearch.CustomSearchController;
 import net.sourceforge.atunes.kernel.controllers.editTagDialog.EditTagDialogController;
 import net.sourceforge.atunes.kernel.controllers.editTitlesDialog.EditTitlesDialogController;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController;
@@ -84,9 +83,6 @@ public final class ControllerProxy {
 
     /** The rip cd dialog controller. */
     private RipCdDialogController ripCdDialogController;
-
-    /** The custom search controller. */
-    private CustomSearchController customSearchController;
 
     /** The search results controller. */
     private SearchResultsController searchResultsController;
@@ -234,18 +230,6 @@ public final class ControllerProxy {
             statsDialogController = new StatsDialogController(GuiHandler.getInstance().getStatsDialog());
         }
         return statsDialogController;
-    }
-
-    /**
-     * Gets the custom search controller.
-     * 
-     * @return the custom search controller
-     */
-    public CustomSearchController getCustomSearchController() {
-        if (customSearchController == null) {
-            customSearchController = new CustomSearchController(GuiHandler.getInstance().getCustomSearchDialog());
-        }
-        return customSearchController;
     }
 
     /**
