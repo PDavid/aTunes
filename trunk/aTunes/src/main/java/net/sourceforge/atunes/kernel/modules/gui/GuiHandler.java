@@ -76,7 +76,6 @@ import net.sourceforge.atunes.gui.views.dialogs.ReviewImportDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RipCdDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RipperProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.SearchDialog;
-import net.sourceforge.atunes.gui.views.dialogs.SearchResultsDialog;
 import net.sourceforge.atunes.gui.views.dialogs.SplashScreenDialog;
 import net.sourceforge.atunes.gui.views.dialogs.StatsDialog;
 import net.sourceforge.atunes.gui.views.dialogs.TransferProgressDialog;
@@ -147,7 +146,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     private EqualizerDialog equalizerDialog;
     private AboutDialog aboutDialog;
     private SplashScreenDialog splashScreenDialog;
-    private SearchResultsDialog searchResultsDialog;
     private RadioBrowserDialog radioBrowserDialog;
     private ReviewImportDialog reviewImportDialog;
     private FullScreenWindow fullScreenWindow;
@@ -744,18 +742,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
             aboutDialog = new AboutDialog(frame.getFrame());
         }
         aboutDialog.setVisible(true);
-    }
-
-    /**
-     * Gets the search results dialog.
-     * 
-     * @return the search results dialog
-     */
-    public SearchResultsDialog getSearchResultsDialog() {
-        if (searchResultsDialog == null) {
-            searchResultsDialog = new SearchResultsDialog(frame.getFrame());
-        }
-        return searchResultsDialog;
     }
 
     /**
