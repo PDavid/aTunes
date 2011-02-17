@@ -27,6 +27,7 @@ import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction;
+import net.sourceforge.atunes.kernel.modules.audioobjetproperties.AudioObjectPropertiesHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.repository.AudioFilesRemovedListener;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
@@ -256,8 +257,8 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
         // Update all views
         NavigationHandler.getInstance().refreshCurrentView();
 
-        // Update file properties panel
-        ControllerProxy.getInstance().getFilePropertiesController().refreshFavoriteIcons();
+        // Update audio object properties panel
+        AudioObjectPropertiesHandler.getInstance().refreshFavoriteIcons();
     }
 
     @Override

@@ -186,7 +186,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     	
     	showToolBar(state.isShowToolBar(), false);
         showStatusBar(state.isShowStatusBar(), false);
-        showSongProperties(state.isShowAudioObjectProperties());
         showContextPanel(state.isUseContext());
         showNavigationTree(state.isShowNavigationTree());
         showNavigationTable(state.isShowNavigationTable());
@@ -1182,24 +1181,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     public int showSaveDialog(JFileChooser fileChooser, FileFilter filter) {
         fileChooser.setFileFilter(filter);
         return fileChooser.showSaveDialog(frame.getFrame());
-    }
-
-    /**
-     * Show song properties.
-     * 
-     * @param show
-     *            the show
-     */
-    public void showSongProperties(boolean show) {
-        ApplicationState.getInstance().setShowAudioObjectProperties(show);
-        frame.showSongProperties(show);
-        if (show) {
-            if (PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList() != null) {
-                ControllerProxy.getInstance().getFilePropertiesController().updateValues(PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList());
-            } else {
-                ControllerProxy.getInstance().getFilePropertiesController().onlyShowPropertiesPanel();
-            }
-        }
     }
 
     /**
