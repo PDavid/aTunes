@@ -31,7 +31,9 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.swing.SwingWorker;
 
+import net.sourceforge.atunes.gui.model.SearchResultColumnModel;
 import net.sourceforge.atunes.gui.views.dialogs.CustomSearchDialog;
+import net.sourceforge.atunes.gui.views.dialogs.SearchResultsDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -170,6 +172,8 @@ public final class SearchHandler extends AbstractHandler {
     private Map<SearchableObject, ReadWriteLock> indexLocks = new HashMap<SearchableObject, ReadWriteLock>();
 
 	private CustomSearchController customSearchController;
+
+	private SearchResultsController searchResultsController;
     
     /**
      * Constructor.
@@ -182,12 +186,26 @@ public final class SearchHandler extends AbstractHandler {
      * 
      * @return the custom search controller
      */
-    private CustomSearchController getController() {
+    private CustomSearchController getSearchController() {
         if (customSearchController == null) {
             customSearchController = new CustomSearchController(new CustomSearchDialog(GuiHandler.getInstance().getFrame().getFrame()));
         }
         return customSearchController;
     }
+    
+    /**
+     * Gets the search results controller.
+     * 
+     * @return the search results controller
+     */
+    private SearchResultsController getSearchResultsController() {
+        if (searchResultsController == null) {
+            searchResultsController = new SearchResultsController(new SearchResultsDialog(GuiHandler.getInstance().getFrame().getFrame()));
+        }
+        return searchResultsController;
+    }
+
+
     
     @Override
     public void applicationFinish() {
@@ -251,13 +269,13 @@ public final class SearchHandler extends AbstractHandler {
         }
 
         // Set list of searchable objects
-        getController().setListOfSearchableObjects(searchableObjects);
+        getSearchController().setListOfSearchableObjects(searchableObjects);
 
         // Set list of operators
-        getController().setListOfOperators(searchOperators);
+        getSearchController().setListOfOperators(searchOperators);
 
         // Show dialog to start search
-        getController().showSearchDialog();
+        getSearchController().showSearchDialog();
     }
 
     /**
@@ -349,5 +367,24 @@ public final class SearchHandler extends AbstractHandler {
         }
 
     }
+
+    /**
+     * Called to show search result.
+     * 
+     * @param searchableObject
+     *            the searchable object
+     * @param result
+     *            the result
+     */
+    void showSearchResults(SearchableObject searchableObject, List<AudioObject> result) {
+        // Open search results dialog
+        getSearchResultsController().showSearchResults(searchableObject, result);
+    }
+
+	public void refreshSearchResultColumns() {
+        ((SearchResultColumnModel) getSearchResultsController().getComponentControlled().getSearchResultsTable().getColumnModel())
+        .arrangeColumns(false);
+	}
+
 
 }

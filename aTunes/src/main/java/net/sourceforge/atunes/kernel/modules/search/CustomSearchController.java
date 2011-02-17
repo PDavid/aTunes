@@ -32,7 +32,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 import net.sourceforge.atunes.gui.views.dialogs.CustomSearchDialog;
-import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.controllers.model.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler.LogicalOperator;
@@ -367,8 +366,10 @@ final class CustomSearchController extends AbstractSimpleController<CustomSearch
                 if (result.isEmpty()) {
                     GuiHandler.getInstance().showMessage(I18nUtils.getString("NO_MATCHES_FOUND"));
                 } else {
+                    // Hide search dialog
+                    getComponentControlled().setVisible(false);
                     // Show result
-                    showSearchResults(selectedSearchableObject, result);
+                    SearchHandler.getInstance().showSearchResults(selectedSearchableObject, result);
                 }
             } catch (SearchIndexNotAvailableException e) {
                 // Thrown when an attribute does not exist on index
@@ -380,21 +381,6 @@ final class CustomSearchController extends AbstractSimpleController<CustomSearch
         } else {
             GuiHandler.getInstance().showMessage(I18nUtils.getString("NO_MATCHES_FOUND"));
         }
-    }
-
-    /**
-     * Called to show search result.
-     * 
-     * @param searchableObject
-     *            the searchable object
-     * @param result
-     *            the result
-     */
-    private void showSearchResults(SearchableObject searchableObject, List<AudioObject> result) {
-        // Hide search dialog
-        getComponentControlled().setVisible(false);
-        // Open search results dialog
-        ControllerProxy.getInstance().getSearchResultsController().showSearchResults(searchableObject, result);
     }
 
     /**

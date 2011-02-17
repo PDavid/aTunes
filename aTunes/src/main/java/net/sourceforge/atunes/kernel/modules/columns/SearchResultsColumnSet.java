@@ -23,8 +23,7 @@ package net.sourceforge.atunes.kernel.modules.columns;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.gui.model.SearchResultColumnModel;
-import net.sourceforge.atunes.kernel.ControllerProxy;
+import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 
 /**
@@ -75,7 +74,6 @@ public final class SearchResultsColumnSet extends AbstractColumnSet {
 
     @Override
     protected void refreshColumns() {
-        ((SearchResultColumnModel) ControllerProxy.getInstance().getSearchResultsController().getComponentControlled().getSearchResultsTable().getColumnModel())
-                .arrangeColumns(false);
+    	SearchHandler.getInstance().refreshSearchResultColumns();
     }
 }

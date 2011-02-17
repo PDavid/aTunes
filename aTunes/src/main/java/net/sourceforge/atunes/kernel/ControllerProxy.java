@@ -39,7 +39,6 @@ import net.sourceforge.atunes.kernel.controllers.playListTab.PlayListTabControll
 import net.sourceforge.atunes.kernel.controllers.playerControls.PlayerControlsController;
 import net.sourceforge.atunes.kernel.controllers.radioBrowser.RadioBrowserDialogController;
 import net.sourceforge.atunes.kernel.controllers.ripcd.RipCdDialogController;
-import net.sourceforge.atunes.kernel.controllers.searchResults.SearchResultsController;
 import net.sourceforge.atunes.kernel.controllers.stats.StatsDialogController;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
@@ -83,9 +82,6 @@ public final class ControllerProxy {
 
     /** The rip cd dialog controller. */
     private RipCdDialogController ripCdDialogController;
-
-    /** The search results controller. */
-    private SearchResultsController searchResultsController;
 
     /** The radio browser controller. */
     private RadioBrowserDialogController radioBrowserController;
@@ -230,18 +226,6 @@ public final class ControllerProxy {
             statsDialogController = new StatsDialogController(GuiHandler.getInstance().getStatsDialog());
         }
         return statsDialogController;
-    }
-
-    /**
-     * Gets the search results controller.
-     * 
-     * @return the search results controller
-     */
-    public SearchResultsController getSearchResultsController() {
-        if (searchResultsController == null) {
-            searchResultsController = new SearchResultsController(GuiHandler.getInstance().getSearchResultsDialog());
-        }
-        return searchResultsController;
     }
 
     /**
