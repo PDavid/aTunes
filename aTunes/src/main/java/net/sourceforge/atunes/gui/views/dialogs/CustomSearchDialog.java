@@ -125,7 +125,7 @@ public final class CustomSearchDialog extends CustomDialog {
     public CustomSearchDialog(JFrame owner) {
         super(owner, 600, 500);
         setResizable(false);
-        setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(I18nUtils.getString("SEARCH"));
         add(getContent());
         GuiUtils.applyComponentOrientation(this);

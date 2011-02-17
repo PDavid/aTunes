@@ -58,7 +58,6 @@ import net.sourceforge.atunes.gui.views.dialogs.AboutDialog;
 import net.sourceforge.atunes.gui.views.dialogs.AddPodcastFeedDialog;
 import net.sourceforge.atunes.gui.views.dialogs.AddRadioDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ColumnSetSelectorDialog;
-import net.sourceforge.atunes.gui.views.dialogs.CustomSearchDialog;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
 import net.sourceforge.atunes.gui.views.dialogs.EditTitlesDialog;
 import net.sourceforge.atunes.gui.views.dialogs.EqualizerDialog;
@@ -148,7 +147,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     private EqualizerDialog equalizerDialog;
     private AboutDialog aboutDialog;
     private SplashScreenDialog splashScreenDialog;
-    private CustomSearchDialog customSearchDialog;
     private SearchResultsDialog searchResultsDialog;
     private RadioBrowserDialog radioBrowserDialog;
     private ReviewImportDialog reviewImportDialog;
@@ -746,18 +744,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
             aboutDialog = new AboutDialog(frame.getFrame());
         }
         aboutDialog.setVisible(true);
-    }
-
-    /**
-     * Gets the custom search dialog.
-     * 
-     * @return the custom search dialog
-     */
-    public CustomSearchDialog getCustomSearchDialog() {
-        if (customSearchDialog == null) {
-            customSearchDialog = new CustomSearchDialog(frame.getFrame());
-        }
-        return customSearchDialog;
     }
 
     /**
