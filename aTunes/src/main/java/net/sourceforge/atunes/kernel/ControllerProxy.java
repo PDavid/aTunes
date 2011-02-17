@@ -24,14 +24,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.sourceforge.atunes.gui.views.dialogs.EditTitlesDialog;
-import net.sourceforge.atunes.gui.views.panels.AudioObjectPropertiesPanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListTabPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.actions.EditTagAction.EditTagSources;
-import net.sourceforge.atunes.kernel.controllers.audioObjectProperties.AudioObjectPropertiesController;
 import net.sourceforge.atunes.kernel.controllers.customsearch.CustomSearchController;
 import net.sourceforge.atunes.kernel.controllers.editTagDialog.EditTagDialogController;
 import net.sourceforge.atunes.kernel.controllers.editTitlesDialog.EditTitlesDialogController;
@@ -71,9 +69,6 @@ public final class ControllerProxy {
 
     /** The player controls controller. */
     private PlayerControlsController playerControlsController;
-
-    /** The file properties controller. */
-    private AudioObjectPropertiesController filePropertiesController;
 
     /** The edit tag dialog controller. */
     private Map<EditTagSources, EditTagDialogController> editTagDialogControllerMap;
@@ -148,19 +143,6 @@ public final class ControllerProxy {
             editTitlesDialogController = new EditTitlesDialogController(dialog);
         }
         return editTitlesDialogController;
-    }
-
-    /**
-     * Gets the file properties controller.
-     * 
-     * @return the file properties controller
-     */
-    public AudioObjectPropertiesController getFilePropertiesController() {
-        if (filePropertiesController == null) {
-            AudioObjectPropertiesPanel panel = GuiHandler.getInstance().getPropertiesPanel();
-            filePropertiesController = new AudioObjectPropertiesController(panel);
-        }
-        return filePropertiesController;
     }
 
     /**

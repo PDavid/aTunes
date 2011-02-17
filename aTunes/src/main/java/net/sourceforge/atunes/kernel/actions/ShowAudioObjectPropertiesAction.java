@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.kernel.modules.audioobjetproperties.AudioObjectPropertiesHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -45,7 +45,7 @@ public class ShowAudioObjectPropertiesAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        GuiHandler.getInstance().showSongProperties((Boolean) getValue(SELECTED_KEY));
+        AudioObjectPropertiesHandler.getInstance().showSongProperties((Boolean) getValue(SELECTED_KEY));
     }
 
 }
