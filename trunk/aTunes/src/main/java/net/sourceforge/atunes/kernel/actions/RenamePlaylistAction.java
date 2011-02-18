@@ -41,12 +41,7 @@ public class RenamePlaylistAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        int selectedPlaylist = ControllerProxy.getInstance().getPlayListTabController().getSelectedTabIndex();
-        String currentName = ControllerProxy.getInstance().getPlayListTabController().getPlayListName(selectedPlaylist);
-        String newName = GuiHandler.getInstance().showInputDialog(I18nUtils.getString("RENAME_PLAYLIST"), currentName);
-        if (newName != null) {
-            PlayListHandler.getInstance().renamePlayList(selectedPlaylist, newName);
-        }
+        PlayListHandler.getInstance().renamePlayList();
     }
 
 }
