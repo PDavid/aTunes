@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -37,20 +36,7 @@ public class CloseOtherPlaylistsAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // The current selected play list when this action is fired
-        int i = ControllerProxy.getInstance().getPlayListTabController().getSelectedTabIndex();
-        if (i != -1) {
-            // Remove play lists from 0 to i. Remove first play list until current play list is at index 0  
-            for (int j = 0; j < i; j++) {
-            	// As this action is not called when pressing close button in tab set removeTab argument to true
-                PlayListHandler.getInstance().removePlayList(0, true);
-            }
-            // Now current play list is at index 0, so delete from play list size down to 1
-            while (PlayListHandler.getInstance().getPlayListCount() > 1) {
-            	// As this action is not called when pressing close button in tab set removeTab argument to true
-                PlayListHandler.getInstance().removePlayList(PlayListHandler.getInstance().getPlayListCount() - 1, true);
-            }
-        }
+    	PlayListHandler.getInstance().closeOtherPlaylists();
     }
 
 }

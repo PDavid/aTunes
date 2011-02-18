@@ -25,18 +25,14 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.MouseEvent;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
-import javax.swing.event.MouseInputAdapter;
 
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
-import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.CloseOtherPlaylistsAction;
 import net.sourceforge.atunes.kernel.actions.ClosePlaylistAction;
@@ -44,56 +40,10 @@ import net.sourceforge.atunes.kernel.actions.CopyPlayListToDeviceAction;
 import net.sourceforge.atunes.kernel.actions.NewPlayListAction;
 import net.sourceforge.atunes.kernel.actions.RenamePlaylistAction;
 import net.sourceforge.atunes.kernel.actions.SynchronizeDeviceWithPlayListAction;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListTableModel;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class PlayListTabPanel extends JPanel {
-
-    public static class TabReorderer extends MouseInputAdapter {
-
-        private JTabbedPane tabPane;
-        private int draggedTabIndex;
-
-        public TabReorderer(JTabbedPane pane) {
-            this.tabPane = pane;
-            draggedTabIndex = -1;
-        }
-
-        public void enableReordering(JTabbedPane pane) {
-            pane.addMouseListener(this);
-            pane.addMouseMotionListener(this);
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-            draggedTabIndex = tabPane.getUI().tabForCoordinate(tabPane, e.getX(), e.getY());
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-            if (draggedTabIndex == -1) {
-                return;
-            }
-
-            int targetTabIndex = tabPane.getUI().tabForCoordinate(tabPane, e.getX(), e.getY());
-            if (targetTabIndex != -1 && targetTabIndex != draggedTabIndex) {
-
-                ControllerProxy.getInstance().getPlayListTabController().switchPlayListTabs(draggedTabIndex, targetTabIndex);
-                PlayListHandler.getInstance().movePlaylistToPosition(draggedTabIndex, targetTabIndex);
-
-                ((PlayListTableModel) GuiHandler.getInstance().getPlayListTable().getModel()).setVisiblePlayList(PlayListHandler.getInstance().getCurrentPlayList(true));
-                ControllerProxy.getInstance().getPlayListTabController().forceSwitchTo(targetTabIndex);
-
-                draggedTabIndex = -1;
-
-                SwingUtilities.invokeLater(new SwitchPlayList(targetTabIndex));
-            }
-        }
-
-    }
 
     private static final long serialVersionUID = 7382098268271937439L;
 
@@ -130,7 +80,6 @@ public final class PlayListTabPanel extends JPanel {
         setPreferredSize(new Dimension(0, playListsPopUpButton.getPreferredSize().height + 5));
         
         playListTabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-        new TabReorderer(playListTabbedPane).enableReordering(playListTabbedPane);
 
         JPanel auxPanel = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -195,19 +144,4 @@ public final class PlayListTabPanel extends JPanel {
     public JMenuItem getArrangeColumnsMenuItem() {
         return arrangeColumnsMenuItem;
     }
-
-    private static class SwitchPlayList implements Runnable {
-
-        private int targetTabIndex;
-
-        public SwitchPlayList(int targetTabIndex) {
-            this.targetTabIndex = targetTabIndex;
-        }
-
-        @Override
-        public void run() {
-            PlayListHandler.getInstance().switchToPlaylist(targetTabIndex);
-        }
-    }
-
 }

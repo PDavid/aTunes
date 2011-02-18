@@ -27,20 +27,17 @@ import net.sourceforge.atunes.gui.views.dialogs.EditTitlesDialog;
 import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
-import net.sourceforge.atunes.gui.views.panels.PlayListTabPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.actions.EditTagAction.EditTagSources;
 import net.sourceforge.atunes.kernel.controllers.editTagDialog.EditTagDialogController;
 import net.sourceforge.atunes.kernel.controllers.editTitlesDialog.EditTitlesDialogController;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController;
 import net.sourceforge.atunes.kernel.controllers.playList.PlayListController;
-import net.sourceforge.atunes.kernel.controllers.playListTab.PlayListTabController;
 import net.sourceforge.atunes.kernel.controllers.playerControls.PlayerControlsController;
 import net.sourceforge.atunes.kernel.controllers.radioBrowser.RadioBrowserDialogController;
 import net.sourceforge.atunes.kernel.controllers.ripcd.RipCdDialogController;
 import net.sourceforge.atunes.kernel.controllers.stats.StatsDialogController;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
 /**
@@ -60,9 +57,6 @@ public final class ControllerProxy {
 
     /** The play list controller. */
     private PlayListController playListController;
-
-    /** The play list tab controller. */
-    private PlayListTabController playListTabController;
 
     /** The player controls controller. */
     private PlayerControlsController playerControlsController;
@@ -86,9 +80,6 @@ public final class ControllerProxy {
      * Instantiates a new controller proxy.
      */
     private ControllerProxy() {
-        getLogger().debug(LogCategories.CONTROLLER, "Creating ControllerProxy");
-        // Force creation of non-autocreated controllers
-        getPlayListTabController();
     }
 
     /**
@@ -176,19 +167,6 @@ public final class ControllerProxy {
     }
 
     /**
-     * Gets the play list tab controller.
-     * 
-     * @return the play list tab controller
-     */
-    public PlayListTabController getPlayListTabController() {
-        if (playListTabController == null) {
-            PlayListTabPanel panel = GuiHandler.getInstance().getPlayListPanel().getPlayListTabPanel();
-            playListTabController = new PlayListTabController(panel);
-        }
-        return playListTabController;
-    }
-
-    /**
      * Gets the rip cd dialog controller.
      * 
      * @return the rip cd dialog controller
@@ -222,17 +200,5 @@ public final class ControllerProxy {
             radioBrowserController = new RadioBrowserDialogController(GuiHandler.getInstance().getRadioBrowserDialog());
         }
         return radioBrowserController;
-    }
-
-    /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
     }
 }
