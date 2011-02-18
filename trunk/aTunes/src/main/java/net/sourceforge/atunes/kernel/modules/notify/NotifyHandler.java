@@ -49,6 +49,7 @@ public final class NotifyHandler extends AbstractHandler implements PlaybackStat
     	} else {
     		notifications = new DefaultNotifications();
     	}
+    	notifications.updateNotification(newState);
     }
 
     @Override
@@ -71,7 +72,7 @@ public final class NotifyHandler extends AbstractHandler implements PlaybackStat
     @Override
     public void applicationStarted(List<AudioObject> playList) {
     }
-
+    
     /**
      * Show notification
      */

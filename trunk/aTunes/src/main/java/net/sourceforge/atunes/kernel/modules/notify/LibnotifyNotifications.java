@@ -27,6 +27,7 @@ import java.util.concurrent.Executors;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.kernel.modules.notify.Notify.NotifyNotification;
+import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.TempFolder;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -96,6 +97,10 @@ public class LibnotifyNotifications implements Notifications {
     public void disposeNotifications() {
     	// This method can only be called when closing application
 	    Notify.uninit();
+    }
+    
+    @Override
+    public void updateNotification(ApplicationState newState) {
     }
 
     /**
