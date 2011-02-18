@@ -20,11 +20,44 @@
 
 package net.sourceforge.atunes.kernel.modules.notify;
 
-import net.sourceforge.atunes.kernel.ControllerProxy;
+import javax.swing.JDialog;
+
+import net.sourceforge.atunes.gui.views.dialogs.OSDDialog;
+import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
 
 public class DefaultNotifications implements Notifications {
 
+	/**
+	 * OSD controller
+	 */
+	private OSDDialogController osdDialogController;
+	
+	/**
+	 * OSD Dialog
+	 */
+	private OSDDialog osdDialog;
+	
+    /**
+     * Gets the oSD dialog controller.
+     * 
+     * @return the oSD dialog controller
+     */
+    private OSDDialogController getOSDDialogController() {
+        if (osdDialogController == null) {
+            JDialog.setDefaultLookAndFeelDecorated(false);
+            osdDialog = new OSDDialog(ApplicationState.getInstance().getOsdWidth());
+            JDialog.setDefaultLookAndFeelDecorated(true);
+            osdDialogController = new OSDDialogController(osdDialog);
+        }
+        return osdDialogController;
+    }
+
+    @Override
+    public void updateNotification(ApplicationState newState) {
+    	osdDialog.setWidth(newState.getOsdWidth());
+    }
+	
     @Override
     public String getName() {
         return "default";
@@ -32,7 +65,7 @@ public class DefaultNotifications implements Notifications {
 
     @Override
     public void showNotification(AudioObject audioObject) {
-        ControllerProxy.getInstance().getOSDDialogController().showOSD(audioObject);
+    	getOSDDialogController().showOSD(audioObject);
     }
     
     @Override

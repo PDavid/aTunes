@@ -33,7 +33,6 @@ import net.sourceforge.atunes.kernel.actions.EditTagAction.EditTagSources;
 import net.sourceforge.atunes.kernel.controllers.editTagDialog.EditTagDialogController;
 import net.sourceforge.atunes.kernel.controllers.editTitlesDialog.EditTitlesDialogController;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController;
-import net.sourceforge.atunes.kernel.controllers.osd.OSDDialogController;
 import net.sourceforge.atunes.kernel.controllers.playList.PlayListController;
 import net.sourceforge.atunes.kernel.controllers.playListTab.PlayListTabController;
 import net.sourceforge.atunes.kernel.controllers.playerControls.PlayerControlsController;
@@ -76,9 +75,6 @@ public final class ControllerProxy {
 
     /** The edit titles dialog controller. */
     private EditTitlesDialogController editTitlesDialogController;
-
-    /** The osd dialog controller. */
-    private OSDDialogController osdDialogController;
 
     /** The rip cd dialog controller. */
     private RipCdDialogController ripCdDialogController;
@@ -149,18 +145,6 @@ public final class ControllerProxy {
             navigationController = new NavigationController(treePanel, tablePanel);
         }
         return navigationController;
-    }
-
-    /**
-     * Gets the oSD dialog controller.
-     * 
-     * @return the oSD dialog controller
-     */
-    public OSDDialogController getOSDDialogController() {
-        if (osdDialogController == null) {
-            osdDialogController = new OSDDialogController(GuiHandler.getInstance().getOSDDialog());
-        }
-        return osdDialogController;
     }
 
     /**

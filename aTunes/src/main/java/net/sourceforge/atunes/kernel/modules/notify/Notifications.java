@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.notify;
 
+import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
 
 public interface Notifications {
@@ -29,5 +30,7 @@ public interface Notifications {
     public void showNotification(AudioObject audioObject);
     
     public void disposeNotifications();
+    
+    public void updateNotification(ApplicationState newState);
 
 }

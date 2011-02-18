@@ -67,7 +67,6 @@ import net.sourceforge.atunes.gui.views.dialogs.ImageDialog;
 import net.sourceforge.atunes.gui.views.dialogs.IndeterminateProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.InputDialog;
 import net.sourceforge.atunes.gui.views.dialogs.MultiFolderSelectionDialog;
-import net.sourceforge.atunes.gui.views.dialogs.OSDDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RadioBrowserDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RepositoryProgressDialog;
@@ -135,7 +134,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     private static GuiHandler instance = new GuiHandler();
 
     private Frame frame;
-    private OSDDialog osdDialog;
     private ExportOptionsDialog exportDialog;
     private StatsDialog statsDialog;
     private SearchDialog searchDialog;
@@ -382,20 +380,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      */
     public TransferProgressDialog getNewTransferProgressDialog(String title, Component owner) {
         return new TransferProgressDialog(title, owner == null ? frame.getFrame() : owner);
-    }
-
-    /**
-     * Gets the oSD dialog.
-     * 
-     * @return the oSD dialog
-     */
-    public OSDDialog getOSDDialog() {
-        if (osdDialog == null) {
-            JDialog.setDefaultLookAndFeelDecorated(false);
-            osdDialog = new OSDDialog(ApplicationState.getInstance().getOsdWidth());
-            JDialog.setDefaultLookAndFeelDecorated(true);
-        }
-        return osdDialog;
     }
 
     /**
@@ -1428,9 +1412,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
 
         // Set location for navigator tabs (left or top)
         getNavigationTreePanel().getTabbedPane().setTabPlacement(newState.isShowNavigatorTabsAtLeft() ? SwingConstants.LEFT : SwingConstants.TOP);
-
-        // Set OSD width
-        getOSDDialog().setWidth(newState.getOsdWidth());
 
         // Set tabs and text for navigator
         getNavigationTreePanel().updateTabs();
