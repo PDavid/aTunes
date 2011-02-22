@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
@@ -46,7 +47,7 @@ import org.commonjukebox.plugins.model.PluginInfo;
 import org.commonjukebox.plugins.model.PluginListener;
 
 /**
- * This class is resopnsible for handling the player engine.
+ * This class is responsible for handling the player engine.
  */
 public final class PlayerHandler extends AbstractHandler implements PluginListener, PlaybackStateListener {
 
@@ -76,6 +77,11 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     private PlaybackState playbackState;
 
     /**
+     * Controller
+     */
+    private PlayerControlsController playerControlsController;
+    
+    /**
      * Instantiates a new player handler.
      */
     private PlayerHandler() {
@@ -101,6 +107,9 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
         if (ApplicationState.getInstance().isPlayAtStartup()) {
             playCurrentAudioObject(true);
         }
+        
+        // Progress bar ticks
+        getPlayerControlsController().getComponentControlled().setShowTicksAndLabels(ApplicationState.getInstance().isShowTicks());
     }
 
     /**
@@ -122,6 +131,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
      */
     public void setVolume(int perCent) {
         playerEngine.setVolume(perCent);
+        getPlayerControlsController().setVolume(perCent);
     }
 
     /**
@@ -451,4 +461,30 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     public long getCurrentAudioObjectLength() {
         return instance.playerEngine.getCurrentAudioObjectLength();
     }
+    
+    /**
+     * Gets the player controls controller.
+     * 
+     * @return the player controls controller
+     */
+    private PlayerControlsController getPlayerControlsController() {
+        if (playerControlsController == null) {
+            PlayerControlsPanel panel = null;
+            panel = GuiHandler.getInstance().getPlayerControls();
+            playerControlsController = new PlayerControlsController(panel);
+        }
+        return playerControlsController;
+    }
+
+	public void setPlaying(boolean playing) {
+		getPlayerControlsController().setPlaying(playing);
+	}
+
+	void setAudioObjectLength(long currentLength) {
+		getPlayerControlsController().setAudioObjectLength(currentLength);		
+	}
+
+	void setCurrentAudioObjectTimePlayed(long actualPlayedTime, long currentAudioObjectLength) {
+		getPlayerControlsController().setCurrentAudioObjectTimePlayed(actualPlayedTime, currentAudioObjectLength);
+	}
 }

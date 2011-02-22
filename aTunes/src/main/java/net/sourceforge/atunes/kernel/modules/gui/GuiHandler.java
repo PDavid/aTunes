@@ -100,6 +100,7 @@ import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlaybackState;
 import net.sourceforge.atunes.kernel.modules.player.PlaybackStateListener;
+import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayList;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
@@ -184,10 +185,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
         
         if (!ApplicationState.getInstance().isShowSystemTray()) {
             GuiHandler.getInstance().setFrameDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        }
-        
-        // Progress bar ticks
-        ControllerProxy.getInstance().getPlayerControlsController().getComponentControlled().setShowTicksAndLabels(ApplicationState.getInstance().isShowTicks());
+        }        
     }
 
     /**
@@ -665,7 +663,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      *            the new playing
      */
     private void setPlaying(boolean playing) {
-        ControllerProxy.getInstance().getPlayerControlsController().setPlaying(playing);
+        PlayerHandler.getInstance().setPlaying(playing);
         GuiHandler.getInstance().getFullScreenWindow().setPlaying(playing);
         SystemTrayHandler.getInstance().setPlaying(playing);
     }
