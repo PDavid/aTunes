@@ -33,7 +33,6 @@ import net.sourceforge.atunes.kernel.controllers.editTitlesDialog.EditTitlesDial
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController;
 import net.sourceforge.atunes.kernel.controllers.playList.PlayListController;
 import net.sourceforge.atunes.kernel.controllers.ripcd.RipCdDialogController;
-import net.sourceforge.atunes.kernel.controllers.stats.StatsDialogController;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 
 /**
@@ -53,9 +52,6 @@ public final class ControllerProxy {
 
     /** The edit tag dialog controller. */
     private Map<EditTagSources, EditTagDialogController> editTagDialogControllerMap;
-
-    /** The stats dialog controller. */
-    private StatsDialogController statsDialogController;
 
     /** The edit titles dialog controller. */
     private EditTitlesDialogController editTitlesDialogController;
@@ -149,18 +145,6 @@ public final class ControllerProxy {
             ripCdDialogController = new RipCdDialogController(GuiHandler.getInstance().getRipCdDialog());
         }
         return ripCdDialogController;
-    }
-
-    /**
-     * Gets the stats dialog controller.
-     * 
-     * @return the stats dialog controller
-     */
-    public StatsDialogController getStatsDialogController() {
-        if (statsDialogController == null) {
-            statsDialogController = new StatsDialogController(GuiHandler.getInstance().getStatsDialog());
-        }
-        return statsDialogController;
     }
 
 }

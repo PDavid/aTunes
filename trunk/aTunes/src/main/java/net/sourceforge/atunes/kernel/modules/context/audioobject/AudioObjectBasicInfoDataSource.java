@@ -33,8 +33,8 @@ import net.sourceforge.atunes.kernel.modules.context.ContextInformationDataSourc
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.repository.statistics.AudioFileStats;
-import net.sourceforge.atunes.kernel.modules.repository.statistics.StatisticsHandler;
+import net.sourceforge.atunes.kernel.modules.statistics.AudioFileStats;
+import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.DateUtils;
