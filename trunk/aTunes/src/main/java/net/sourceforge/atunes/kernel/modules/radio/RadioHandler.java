@@ -29,6 +29,7 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.gui.views.dialogs.RadioBrowserDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
@@ -380,4 +381,12 @@ public final class RadioHandler extends AbstractHandler {
         }
         return null;
     }
+    
+	/**
+	 * Shows radio browser
+	 */
+	public void showRadioBrowser() {
+		new RadioBrowserDialogController(new RadioBrowserDialog(GuiHandler.getInstance().getFrame().getFrame())).showRadioBrowser();
+	}
+
 }

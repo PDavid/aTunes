@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.kernel.ControllerProxy;
+import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -42,7 +42,7 @@ public class ShowRadioBrowserAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        ControllerProxy.getInstance().getRadioBrowserController().showRadioBrowser();
+    	RadioHandler.getInstance().showRadioBrowser();
     }
 
 }
