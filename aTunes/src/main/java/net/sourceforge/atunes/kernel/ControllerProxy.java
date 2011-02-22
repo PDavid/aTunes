@@ -34,20 +34,15 @@ import net.sourceforge.atunes.kernel.controllers.editTitlesDialog.EditTitlesDial
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController;
 import net.sourceforge.atunes.kernel.controllers.playList.PlayListController;
 import net.sourceforge.atunes.kernel.controllers.playerControls.PlayerControlsController;
-import net.sourceforge.atunes.kernel.controllers.radioBrowser.RadioBrowserDialogController;
 import net.sourceforge.atunes.kernel.controllers.ripcd.RipCdDialogController;
 import net.sourceforge.atunes.kernel.controllers.stats.StatsDialogController;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
-import net.sourceforge.atunes.misc.log.Logger;
 
 /**
  * Static class to access controllers by calling
  * ControllerProxy.getInstance().get<Name of controller>()
  */
 public final class ControllerProxy {
-
-    /** Logger. */
-    private Logger logger;
 
     /** Singleton instance of controller. */
     private static ControllerProxy instance;
@@ -72,9 +67,6 @@ public final class ControllerProxy {
 
     /** The rip cd dialog controller. */
     private RipCdDialogController ripCdDialogController;
-
-    /** The radio browser controller. */
-    private RadioBrowserDialogController radioBrowserController;
 
     /**
      * Instantiates a new controller proxy.
@@ -190,15 +182,4 @@ public final class ControllerProxy {
         return statsDialogController;
     }
 
-    /**
-     * Gets the radio browser controller.
-     * 
-     * @return the radio browser controller
-     */
-    public RadioBrowserDialogController getRadioBrowserController() {
-        if (radioBrowserController == null) {
-            radioBrowserController = new RadioBrowserDialogController(GuiHandler.getInstance().getRadioBrowserDialog());
-        }
-        return radioBrowserController;
-    }
 }

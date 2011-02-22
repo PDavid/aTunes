@@ -68,7 +68,6 @@ import net.sourceforge.atunes.gui.views.dialogs.IndeterminateProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.InputDialog;
 import net.sourceforge.atunes.gui.views.dialogs.MultiFolderSelectionDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ProgressDialog;
-import net.sourceforge.atunes.gui.views.dialogs.RadioBrowserDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RepositoryProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RepositorySelectionInfoDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ReviewImportDialog;
@@ -144,7 +143,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     private EqualizerDialog equalizerDialog;
     private AboutDialog aboutDialog;
     private SplashScreenDialog splashScreenDialog;
-    private RadioBrowserDialog radioBrowserDialog;
     private ReviewImportDialog reviewImportDialog;
     private FullScreenWindow fullScreenWindow;
 
@@ -434,18 +432,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      */
     public AudioObjectPropertiesPanel getPropertiesPanel() {
         return frame.getPropertiesPanel();
-    }
-
-    /**
-     * Gets the radio browser dialog.
-     * 
-     * @return the radio browser dialog
-     */
-    public RadioBrowserDialog getRadioBrowserDialog() {
-        if (radioBrowserDialog == null) {
-            radioBrowserDialog = new RadioBrowserDialog(frame.getFrame());
-        }
-        return radioBrowserDialog;
     }
 
     /**
