@@ -44,7 +44,7 @@ import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
-import net.sourceforge.atunes.kernel.controllers.ripcd.RipCdDialogController;
+import net.sourceforge.atunes.kernel.modules.cdripper.RipperHandler;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -373,7 +373,7 @@ public final class RipCdDialog extends AbstractCustomModalDialog {
         quality.setMinimumSize(new Dimension(150, 20));
         JLabel filePatternLabel = new JLabel(I18nUtils.getString("FILEPATTERN"));
 
-        filePattern = new JComboBox(RipCdDialogController.FILENAMEPATTERN);
+        filePattern = new JComboBox(RipperHandler.FILENAMEPATTERN);
         JLabel dir = new JLabel(I18nUtils.getString("FOLDER"));
 
         folderName = new CustomTextField();

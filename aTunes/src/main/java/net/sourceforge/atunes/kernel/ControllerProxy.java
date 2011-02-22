@@ -32,7 +32,6 @@ import net.sourceforge.atunes.kernel.controllers.editTagDialog.EditTagDialogCont
 import net.sourceforge.atunes.kernel.controllers.editTitlesDialog.EditTitlesDialogController;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController;
 import net.sourceforge.atunes.kernel.controllers.playList.PlayListController;
-import net.sourceforge.atunes.kernel.controllers.ripcd.RipCdDialogController;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 
 /**
@@ -55,9 +54,6 @@ public final class ControllerProxy {
 
     /** The edit titles dialog controller. */
     private EditTitlesDialogController editTitlesDialogController;
-
-    /** The rip cd dialog controller. */
-    private RipCdDialogController ripCdDialogController;
 
     /**
      * Instantiates a new controller proxy.
@@ -134,17 +130,4 @@ public final class ControllerProxy {
         }
         return playListController;
     }
-
-    /**
-     * Gets the rip cd dialog controller.
-     * 
-     * @return the rip cd dialog controller
-     */
-    public RipCdDialogController getRipCdDialogController() {
-        if (ripCdDialogController == null) {
-            ripCdDialogController = new RipCdDialogController(GuiHandler.getInstance().getRipCdDialog());
-        }
-        return ripCdDialogController;
-    }
-
 }

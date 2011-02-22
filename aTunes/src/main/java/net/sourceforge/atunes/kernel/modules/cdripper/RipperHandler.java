@@ -40,7 +40,6 @@ import javax.swing.SwingWorker;
 import net.sourceforge.atunes.gui.views.dialogs.RipCdDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RipperProgressDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.RipCDAction;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavConverter;
@@ -61,6 +60,11 @@ import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public final class RipperHandler extends AbstractHandler {
+
+	// Encoder options and file name patterns. Add here for more options
+    public static final String[] FILENAMEPATTERN = { StringUtils.getString(CdRipper.TRACK_NUMBER, " - ", CdRipper.TITLE_PATTERN),
+            StringUtils.getString(CdRipper.ARTIST_PATTERN, " - ", CdRipper.ALBUM_PATTERN, " - ", CdRipper.TRACK_NUMBER, " - ", CdRipper.TITLE_PATTERN),
+            StringUtils.getString(CdRipper.ARTIST_PATTERN, " - ", CdRipper.TITLE_PATTERN) };
 
     private final class FillSongTitlesSwingWorker extends
 			SwingWorker<AlbumInfo, Void> {
@@ -86,15 +90,15 @@ public final class RipperHandler extends AbstractHandler {
 		            for (TrackInfo trackInfo : get().getTracks()) {
 		                trackNames.add(trackInfo.getTitle());
 		            }
-		            GuiHandler.getInstance().getRipCdDialog().updateTrackNames(trackNames);
+		            getRipCdDialogController().getComponentControlled().updateTrackNames(trackNames);
 		        }
 		    } catch (InterruptedException e) {
 		        getLogger().internalError(e);
 		    } catch (ExecutionException e) {
 		        getLogger().error(LogCategories.RIPPER, e);
 		    } finally {
-		        GuiHandler.getInstance().getRipCdDialog().setCursor(Cursor.getDefaultCursor());
-		        GuiHandler.getInstance().getRipCdDialog().getTitlesButton().setEnabled(true);
+		    	getRipCdDialogController().getComponentControlled().setCursor(Cursor.getDefaultCursor());
+		    	getRipCdDialogController().getComponentControlled().getTitlesButton().setEnabled(true);
 		    }
 		}
 	}
@@ -137,13 +141,13 @@ public final class RipperHandler extends AbstractHandler {
 		    try {
 		        cdInfo = get();
 		        if (cdInfo != null) {
-		            ControllerProxy.getInstance().getRipCdDialogController().showCdInfo(cdInfo, RepositoryHandler.getInstance().getPathForNewAudioFilesRipped());
-		            if (!ControllerProxy.getInstance().getRipCdDialogController().isCancelled()) {
-		                String artist = ControllerProxy.getInstance().getRipCdDialogController().getArtist();
-		                String album = ControllerProxy.getInstance().getRipCdDialogController().getAlbum();
-		                int year = ControllerProxy.getInstance().getRipCdDialogController().getYear();
-		                String genre = ControllerProxy.getInstance().getRipCdDialogController().getGenre();
-		                String folder = ControllerProxy.getInstance().getRipCdDialogController().getFolder();
+		        	getRipCdDialogController().showCdInfo(cdInfo, RepositoryHandler.getInstance().getPathForNewAudioFilesRipped());
+		            if (!getRipCdDialogController().isCancelled()) {
+		                String artist = getRipCdDialogController().getArtist();
+		                String album = getRipCdDialogController().getAlbum();
+		                int year = getRipCdDialogController().getYear();
+		                String genre = getRipCdDialogController().getGenre();
+		                String folder = getRipCdDialogController().getFolder();
 		                List<Integer> tracks = dialog.getTracksSelected();
 		                List<String> trckNames = dialog.getTrackNames();
 		                List<String> artistNames = dialog.getArtistNames();
@@ -162,10 +166,10 @@ public final class RipperHandler extends AbstractHandler {
 		            }
 		        }
 		    } catch (InterruptedException e) {
-		        GuiHandler.getInstance().getRipCdDialog().setVisible(false);
+		    	getRipCdDialogController().getComponentControlled().setVisible(false);
 		        getLogger().internalError(e);
 		    } catch (ExecutionException e) {
-		        GuiHandler.getInstance().getRipCdDialog().setVisible(false);
+		    	getRipCdDialogController().getComponentControlled().setVisible(false);
 		        getLogger().internalError(e);
 		    }
 		}
@@ -260,6 +264,11 @@ public final class RipperHandler extends AbstractHandler {
      */
     private Map<String, Encoder> availableEncoders;
 
+	/**
+	 * Controller
+	 */
+	private RipCdDialogController ripCdDialogController;
+
     /**
      * List of encoder classes
      */
@@ -351,8 +360,8 @@ public final class RipperHandler extends AbstractHandler {
      *            the album
      */
     public void fillSongTitles(final String artist, final String album) {
-        GuiHandler.getInstance().getRipCdDialog().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        GuiHandler.getInstance().getRipCdDialog().getTitlesButton().setEnabled(false);
+        getRipCdDialogController().getComponentControlled().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        getRipCdDialogController().getComponentControlled().getTitlesButton().setEnabled(false);
         new FillSongTitlesSwingWorker(artist, album).execute();
     }
 
@@ -673,7 +682,7 @@ public final class RipperHandler extends AbstractHandler {
      */
     public void startCdRipper() {
         interrupted = false;
-        final RipCdDialog dialog = GuiHandler.getInstance().getRipCdDialog();
+        final RipCdDialog dialog = getRipCdDialogController().getComponentControlled();
         GuiHandler.getInstance().showIndeterminateProgressDialog(I18nUtils.getString("RIP_CD"));
 
         SwingWorker<CDInfo, Void> getCdInfoAndStartRipping = new GetCdInfoAndStartRippingSwingWorker(dialog);
@@ -694,4 +703,18 @@ public final class RipperHandler extends AbstractHandler {
         }
         return true;
     }
+    
+    /**
+     * Gets the rip cd dialog controller.
+     * 
+     * @return the rip cd dialog controller
+     */
+    RipCdDialogController getRipCdDialogController() {
+        if (ripCdDialogController == null) {
+            ripCdDialogController = new RipCdDialogController(new RipCdDialog(GuiHandler.getInstance().getFrame().getFrame()));
+        }
+        return ripCdDialogController;
+    }
+
+
 }
