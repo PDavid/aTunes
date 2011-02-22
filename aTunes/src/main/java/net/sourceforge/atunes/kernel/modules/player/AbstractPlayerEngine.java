@@ -29,15 +29,14 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.repository.statistics.StatisticsHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.misc.TempFolder;
 import net.sourceforge.atunes.misc.log.LogCategories;
@@ -685,9 +684,6 @@ public abstract class AbstractPlayerEngine implements PlaybackStateListener {
         if ((submissionState == SubmissionState.PENDING) && audioObject instanceof AudioFile) {
             LastFmService.getInstance().submitToLastFm((AudioFile) audioObject, currentAudioObjectPlayedTime / 1000);
             StatisticsHandler.getInstance().setAudioFileStatistics((AudioFile) audioObject);
-            if (GuiHandler.getInstance().isStatsDialogVisible()) {
-                ControllerProxy.getInstance().getStatsDialogController().updateStats();
-            }
             submissionState = SubmissionState.SUBMITTED;
         }
     }

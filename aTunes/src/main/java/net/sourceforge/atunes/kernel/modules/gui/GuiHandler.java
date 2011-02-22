@@ -75,7 +75,6 @@ import net.sourceforge.atunes.gui.views.dialogs.RipCdDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RipperProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.SearchDialog;
 import net.sourceforge.atunes.gui.views.dialogs.SplashScreenDialog;
-import net.sourceforge.atunes.gui.views.dialogs.StatsDialog;
 import net.sourceforge.atunes.gui.views.dialogs.TransferProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.UpdateDialog;
 import net.sourceforge.atunes.gui.views.dialogs.fullScreen.FullScreenWindow;
@@ -135,7 +134,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
 
     private Frame frame;
     private ExportOptionsDialog exportDialog;
-    private StatsDialog statsDialog;
     private SearchDialog searchDialog;
     private RipCdDialog ripCdDialog;
     private RipperProgressDialog ripperProgressDialog;
@@ -479,18 +477,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
             searchDialog = new SearchDialog(frame.getFrame());
         }
         return searchDialog;
-    }
-
-    /**
-     * Gets the stats dialog.
-     * 
-     * @return the stats dialog
-     */
-    public StatsDialog getStatsDialog() {
-        if (statsDialog == null) {
-            statsDialog = new StatsDialog(frame.getFrame());
-        }
-        return statsDialog;
     }
 
     /**
@@ -1409,12 +1395,4 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
         // Once done graphic changes, repaint the window
         repaint();
     }
-
-    /**
-     * Returns <code>true</code> if stats dialog is visible
-     */
-    public boolean isStatsDialogVisible() {
-        return statsDialog != null && statsDialog.isVisible();
-    }
-
 }
