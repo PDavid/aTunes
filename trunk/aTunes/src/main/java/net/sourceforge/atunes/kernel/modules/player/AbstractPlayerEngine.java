@@ -651,7 +651,7 @@ public abstract class AbstractPlayerEngine implements PlaybackStateListener {
     protected final void setCurrentAudioObjectLength(long currentLength) {
         this.currentAudioObjectLength = currentLength;
         // Update sliders with max length
-        ControllerProxy.getInstance().getPlayerControlsController().setAudioObjectLength(currentLength);
+        PlayerHandler.getInstance().setAudioObjectLength(currentLength);
         GuiHandler.getInstance().getFullScreenWindow().setAudioObjectLength(currentLength);
     }
 
@@ -664,7 +664,7 @@ public abstract class AbstractPlayerEngine implements PlaybackStateListener {
     protected final void setCurrentAudioObjectPlayedTime(long playedTime) {
         long actualPlayedTime = playedTime;
         this.currentAudioObjectPlayedTime = actualPlayedTime;
-        ControllerProxy.getInstance().getPlayerControlsController().setCurrentAudioObjectTimePlayed(actualPlayedTime, currentAudioObjectLength);
+        PlayerHandler.getInstance().setCurrentAudioObjectTimePlayed(actualPlayedTime, currentAudioObjectLength);
         GuiHandler.getInstance().getFullScreenWindow().setCurrentAudioObjectPlayedTime(actualPlayedTime, currentAudioObjectLength);
 
         // Conditions to submit an object:
