@@ -71,7 +71,6 @@ import net.sourceforge.atunes.gui.views.dialogs.ProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RepositoryProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RepositorySelectionInfoDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ReviewImportDialog;
-import net.sourceforge.atunes.gui.views.dialogs.RipCdDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RipperProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.SearchDialog;
 import net.sourceforge.atunes.gui.views.dialogs.SplashScreenDialog;
@@ -135,7 +134,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     private Frame frame;
     private ExportOptionsDialog exportDialog;
     private SearchDialog searchDialog;
-    private RipCdDialog ripCdDialog;
     private RipperProgressDialog ripperProgressDialog;
     private IndeterminateProgressDialog indeterminateProgressDialog;
     private EditTitlesDialog editTitlesDialog;
@@ -440,18 +438,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
             reviewImportDialog = new ReviewImportDialog(frame.getFrame());
         }
         return reviewImportDialog;
-    }
-
-    /**
-     * Gets the rip cd dialog.
-     * 
-     * @return the rip cd dialog
-     */
-    public RipCdDialog getRipCdDialog() {
-        if (ripCdDialog == null) {
-            ripCdDialog = new RipCdDialog(frame.getFrame());
-        }
-        return ripCdDialog;
     }
 
     /**
