@@ -27,12 +27,12 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.process.AbstractAudioFileTransferProcess;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.repository.tags.TagAttributesReviewed;
-import net.sourceforge.atunes.kernel.modules.repository.tags.tag.AbstractTag;
-import net.sourceforge.atunes.kernel.modules.repository.tags.tag.DefaultTag;
-import net.sourceforge.atunes.kernel.modules.repository.tags.writer.TagEditionOperations;
-import net.sourceforge.atunes.kernel.modules.repository.tags.writer.TagModifier;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
+import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
+import net.sourceforge.atunes.kernel.modules.tags.TagAttributesReviewed;
+import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
+import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.utils.FileNameUtils;

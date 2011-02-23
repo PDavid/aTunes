@@ -51,10 +51,10 @@ import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Repository;
 import net.sourceforge.atunes.kernel.modules.repository.data.RepositoryStructure;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.Favorites;
-import net.sourceforge.atunes.kernel.modules.repository.tags.tag.DefaultTag;
 import net.sourceforge.atunes.kernel.modules.statistics.AudioFileStats;
 import net.sourceforge.atunes.kernel.modules.statistics.Statistics;
 import net.sourceforge.atunes.kernel.modules.statistics.StatisticsAlbum;
+import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
 import net.sourceforge.atunes.misc.PointedList;
 import net.sourceforge.atunes.misc.RankList;
 

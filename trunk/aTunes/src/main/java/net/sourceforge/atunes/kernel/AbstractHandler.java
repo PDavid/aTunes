@@ -49,6 +49,7 @@ import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateChangeListener;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
+import net.sourceforge.atunes.kernel.modules.tags.TagHandler;
 import net.sourceforge.atunes.kernel.modules.tray.SystemTrayHandler;
 import net.sourceforge.atunes.kernel.modules.updates.UpdateHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
@@ -139,6 +140,7 @@ public abstract class AbstractHandler implements ApplicationStartListener, Appli
         handlers.add(GeneralPurposePluginsHandler.getInstance());
         handlers.add(WebServicesHandler.getInstance());
         handlers.add(AudioObjectPropertiesHandler.getInstance());
+        handlers.add(TagHandler.getInstance());
 
         ExecutorService executorService = Executors.newFixedThreadPool(3);
         // Register handlers

@@ -65,6 +65,7 @@ public final class EditTitlesDialog extends AbstractCustomModalDialog {
         setContent(getContent());
         GuiUtils.applyComponentOrientation(this);
         enableCloseActionWithEscapeKey();
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     /**
