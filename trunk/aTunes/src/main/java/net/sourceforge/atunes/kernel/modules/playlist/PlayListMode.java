@@ -90,7 +90,6 @@ final class PlayListMode implements PlayListChangedListener {
         }
 
         AudioObject previousAudioObject = playList.getPointedList().moveToPreviousObject();
-        playList.updateUI();
         return previousAudioObject;
     }
 
@@ -119,7 +118,6 @@ final class PlayListMode implements PlayListChangedListener {
         }
 
         AudioObject nextAudioObject = playList.getPointedList().moveToNextObject();
-        playList.updateUI();
         return nextAudioObject;
     }
 
@@ -214,5 +212,9 @@ final class PlayListMode implements PlayListChangedListener {
 
     void addToPlaybackHistory(AudioObject object) {
         this.playbackHistory.addToHistory(object);
+    }
+    
+    @Override
+    public void currentAudioObjectChanged() {
     }
 }

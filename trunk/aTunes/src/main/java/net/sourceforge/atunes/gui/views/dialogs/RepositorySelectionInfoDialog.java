@@ -33,8 +33,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;

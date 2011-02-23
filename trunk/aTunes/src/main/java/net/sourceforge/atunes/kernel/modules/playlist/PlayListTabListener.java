@@ -32,8 +32,8 @@ import javax.swing.event.ChangeListener;
 
 import net.sourceforge.atunes.gui.model.AbstractCommonColumnModel;
 import net.sourceforge.atunes.gui.views.controls.ColumnSetPopupMenu;
+import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.panels.PlayListTabPanel;
-import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.CloseOtherPlaylistsAction;
 import net.sourceforge.atunes.kernel.actions.ClosePlaylistAction;
@@ -47,6 +47,8 @@ final class PlayListTabListener extends MouseAdapter implements ActionListener, 
 	private PlayListTabController controller;
 	
     private PlayListTabPanel panel;
+    
+    private PlayListTable table;
 
     /**
      * Instantiates a new play list tab listener.
@@ -54,9 +56,10 @@ final class PlayListTabListener extends MouseAdapter implements ActionListener, 
      * @param panel
      *            the panel
      */
-    public PlayListTabListener(PlayListTabController controller, PlayListTabPanel panel) {
+    public PlayListTabListener(PlayListTabController controller, PlayListTabPanel panel, PlayListTable table) {
     	this.controller = controller;
         this.panel = panel;
+        this.table = table;
     }
 
     @Override
@@ -78,7 +81,7 @@ final class PlayListTabListener extends MouseAdapter implements ActionListener, 
                 panel.getPlayListsPopUpButton().add(plMenuItem);
             }
         } else if (e.getSource() == panel.getArrangeColumnsMenuItem()) {
-            ColumnSetPopupMenu.selectColumns((AbstractCommonColumnModel) ControllerProxy.getInstance().getPlayListController().getMainPlayListTable().getColumnModel());
+            ColumnSetPopupMenu.selectColumns((AbstractCommonColumnModel) table.getColumnModel());
         }
     }
 

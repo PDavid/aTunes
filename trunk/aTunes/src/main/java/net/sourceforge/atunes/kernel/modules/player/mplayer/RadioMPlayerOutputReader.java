@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.player.mplayer;
 
 import java.util.regex.Pattern;
 
-import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
@@ -92,7 +91,7 @@ class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
                     getLogger().info(LogCategories.PLAYER, "Could not read radio bitrate");
                 }
             }
-            ControllerProxy.getInstance().getPlayListController().refreshPlayList();
+            PlayListHandler.getInstance().refreshPlayList();
         }
 
         // Read song info from radio stream
@@ -107,7 +106,7 @@ class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
                 String title = info.substring(k + 1, info.length()).trim();
                 radio.setTitle(title);
                 radio.setSongInfoAvailable(true);
-                ControllerProxy.getInstance().getPlayListController().refreshPlayList();
+                PlayListHandler.getInstance().refreshPlayList();
                 if ((!title.equals(lastTitle) || !artist.equals(lastArtist)) && radio.equals(PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList())) {
                     ContextHandler.getInstance().retrieveInfoAndShowInPanel(radio);
                 }
@@ -121,7 +120,7 @@ class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
         // End (Quit)
         if (END_PATTERN.matcher(line).matches()) {
             radio.deleteSongInfo();
-            ControllerProxy.getInstance().getPlayListController().refreshPlayList();
+            PlayListHandler.getInstance().refreshPlayList();
         }
     }
 

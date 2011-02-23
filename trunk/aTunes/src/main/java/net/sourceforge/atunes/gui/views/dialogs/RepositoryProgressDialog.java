@@ -35,8 +35,8 @@ import javax.swing.JProgressBar;
 import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.RepositoryLoadCancelAction;
 import net.sourceforge.atunes.kernel.actions.RepositoryLoadInBackgroundAction;

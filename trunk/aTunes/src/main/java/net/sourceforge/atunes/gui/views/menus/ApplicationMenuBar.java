@@ -30,7 +30,6 @@ import javax.swing.JSeparator;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
-import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddPodcastFeedAction;
 import net.sourceforge.atunes.kernel.actions.AddRadioAction;
@@ -82,6 +81,7 @@ import net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
+import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -225,7 +225,7 @@ public final class ApplicationMenuBar extends JMenuBar {
     private JMenu getPlayListMenu() {
         if (playList == null) {
             playList = new JMenu(I18nUtils.getString("PLAYLIST"));
-            PlayListMenu.fillMenu(playList, ControllerProxy.getInstance().getPlayListController().getMainPlayListTable());
+            PlayListMenu.fillMenu(playList, PlayListHandler.getInstance().getPlayListTable());
             // Every time menu is opened all menu items are updated according to play list selection
             playList.addMenuListener(new PlayListMenuListener());
         }
@@ -319,7 +319,7 @@ public final class ApplicationMenuBar extends JMenuBar {
     private static class PlayListMenuListener implements MenuListener {
         @Override
         public void menuSelected(MenuEvent e) {
-            PlayListMenu.updatePlayListMenuItems(ControllerProxy.getInstance().getPlayListController().getMainPlayListTable());
+            PlayListMenu.updatePlayListMenuItems(PlayListHandler.getInstance().getPlayListTable());
         }
 
         @Override

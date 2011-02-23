@@ -30,7 +30,6 @@ import net.sourceforge.atunes.kernel.controllers.model.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.tags.writer.EditTitlesProcess;
-import net.sourceforge.atunes.misc.log.LogCategories;
 
 public final class EditTitlesDialogController extends AbstractSimpleController<EditTitlesDialog> {
 

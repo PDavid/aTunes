@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 

@@ -22,8 +22,6 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.kernel.ControllerProxy;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 

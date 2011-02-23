@@ -40,8 +40,8 @@ import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.dialogs.FileSelectionDialog;
-import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.AbstractHandler;
+import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ConnectDeviceAction;
 import net.sourceforge.atunes.kernel.actions.CopyPlayListToDeviceAction;

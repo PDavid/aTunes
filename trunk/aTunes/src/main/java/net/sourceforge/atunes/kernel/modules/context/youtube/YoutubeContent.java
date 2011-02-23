@@ -38,11 +38,11 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.context.ContextImageJTable;
-import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.internetsearch.SearchFactory;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;

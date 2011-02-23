@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.kernel.ControllerProxy;
+import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -43,7 +43,7 @@ public class AutoScrollPlayListAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        ControllerProxy.getInstance().getPlayListController().scrollPlayList(true);
+        PlayListHandler.getInstance().scrollPlayList(true);
     }
 
 }

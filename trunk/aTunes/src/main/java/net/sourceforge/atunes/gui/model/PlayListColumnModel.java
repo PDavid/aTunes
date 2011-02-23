@@ -33,7 +33,6 @@ import net.sourceforge.atunes.gui.renderers.JLabelTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.StringTableCellRendererCode;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable.PlayState;
-import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.columns.PlayListColumnSet;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 
@@ -83,7 +82,7 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
 
     @Override
     protected void reapplyFilter() {
-        ControllerProxy.getInstance().getPlayListController().reapplyFilter();
+        PlayListHandler.getInstance().reapplyFilter();
     }
 
     @Override

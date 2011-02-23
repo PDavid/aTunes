@@ -24,11 +24,11 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.modules.audioobjetproperties.AudioObjectPropertiesHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.repository.AudioFilesRemovedListener;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.Album;
@@ -252,7 +252,7 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
         getFavorites().setDirty(true);
 
         // Update playlist to remove favorite icon
-        ControllerProxy.getInstance().getPlayListController().refreshPlayList();
+        PlayListHandler.getInstance().refreshPlayList();
 
         // Update all views
         NavigationHandler.getInstance().refreshCurrentView();

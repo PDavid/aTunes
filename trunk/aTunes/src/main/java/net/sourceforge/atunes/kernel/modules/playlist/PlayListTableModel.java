@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 import java.util.Comparator;
 
 import net.sourceforge.atunes.gui.model.AbstractColumnSetTableModel;
-import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.columns.PlayListColumnSet;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.model.AudioObject;
@@ -116,7 +115,7 @@ public class PlayListTableModel extends AbstractColumnSetTableModel {
         getColumn(columnIndex).setValueFor(audioObject, aValue);
 
         // After changing audio object refresh playlist, as the same object can be duplicated
-        ControllerProxy.getInstance().getPlayListController().refreshPlayList();
+        PlayListHandler.getInstance().refreshPlayList();
 
         // Mark repository as dirty
         RepositoryHandler.getInstance().getRepository().setDirty(true);
