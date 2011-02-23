@@ -24,12 +24,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.sourceforge.atunes.gui.views.dialogs.EditTitlesDialog;
-import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
-import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
 import net.sourceforge.atunes.kernel.actions.EditTagAction.EditTagSources;
 import net.sourceforge.atunes.kernel.controllers.editTagDialog.EditTagDialogController;
 import net.sourceforge.atunes.kernel.controllers.editTitlesDialog.EditTitlesDialogController;
-import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 
 /**
@@ -40,9 +37,6 @@ public final class ControllerProxy {
 
     /** Singleton instance of controller. */
     private static ControllerProxy instance;
-
-    /** The navigation controller. */
-    private NavigationController navigationController;
 
     /** The edit tag dialog controller. */
     private Map<EditTagSources, EditTagDialogController> editTagDialogControllerMap;
@@ -98,17 +92,4 @@ public final class ControllerProxy {
         return editTitlesDialogController;
     }
 
-    /**
-     * Gets the navigation controller.
-     * 
-     * @return the navigation controller
-     */
-    public NavigationController getNavigationController() {
-        if (navigationController == null) {
-            NavigationTreePanel treePanel = GuiHandler.getInstance().getNavigationTreePanel();
-            NavigationTablePanel tablePanel = GuiHandler.getInstance().getNavigationTablePanel();
-            navigationController = new NavigationController(treePanel, tablePanel);
-        }
-        return navigationController;
-    }
 }

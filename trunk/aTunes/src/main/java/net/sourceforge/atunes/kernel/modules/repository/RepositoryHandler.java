@@ -44,7 +44,6 @@ import net.sourceforge.atunes.gui.views.dialogs.ProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RepositoryProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ReviewImportDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ConnectDeviceAction;
@@ -55,6 +54,7 @@ import net.sourceforge.atunes.kernel.actions.RefreshRepositoryAction;
 import net.sourceforge.atunes.kernel.actions.RipCDAction;
 import net.sourceforge.atunes.kernel.actions.SelectRepositoryAction;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
@@ -321,9 +321,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
             protected void done() {
                 GuiHandler.getInstance().hideProgressBar();
                 GuiHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
-                if (ControllerProxy.getInstance().getNavigationController() != null) {
-                    ControllerProxy.getInstance().getNavigationController().notifyReload();
-                }
+                NavigationHandler.getInstance().notifyReload();
                 getLogger().info(LogCategories.REPOSITORY, "Repository refresh done");
             }
         };
@@ -731,9 +729,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 
         GuiHandler.getInstance().hideProgressBar();
         GuiHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
-        if (ControllerProxy.getInstance().getNavigationController() != null) {
-            ControllerProxy.getInstance().getNavigationController().notifyReload();
-        }
+        NavigationHandler.getInstance().notifyReload();
         getLogger().info(LogCategories.REPOSITORY, "Repository refresh done");
 
         currentLoader = null;
@@ -749,7 +745,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
             progressDialog.dispose();
             progressDialog = null;
         }
-        ControllerProxy.getInstance().getNavigationController().notifyReload();
+        NavigationHandler.getInstance().notifyReload();
         GuiHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository != null ? repository.getTotalDurationInSeconds() : 0);
 
         currentLoader = null;
@@ -772,7 +768,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                ControllerProxy.getInstance().getNavigationController().notifyReload();
+            	NavigationHandler.getInstance().notifyReload();
                 GuiHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
             }
         });
@@ -943,7 +939,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
             }
 
             // Update navigator
-            ControllerProxy.getInstance().getNavigationController().notifyReload();
+            NavigationHandler.getInstance().notifyReload();
         }
     }
 
@@ -983,7 +979,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         boolean succeeded = file.renameTo(newFile);
         if (succeeded) {
             RepositoryLoader.renameFile(audioFile, file, newFile);
-            ControllerProxy.getInstance().getNavigationController().notifyReload();
+            NavigationHandler.getInstance().notifyReload();
             StatisticsHandler.getInstance().updateFileName(file.getAbsolutePath(), newFile.getAbsolutePath());
         }
     }

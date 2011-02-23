@@ -29,7 +29,6 @@ import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
-import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.navigator.FavoritesNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.Album;
@@ -51,7 +50,7 @@ public class RemoveFromFavoritesAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (ControllerProxy.getInstance().getNavigationController().getPopupMenuCaller() == NavigationHandler.getInstance().getView(FavoritesNavigationView.class).getTree()) {
+        if (NavigationHandler.getInstance().getPopupMenuCaller() == NavigationHandler.getInstance().getView(FavoritesNavigationView.class).getTree()) {
             TreePath[] paths = NavigationHandler.getInstance().getView(FavoritesNavigationView.class).getTree().getSelectionPaths();
             if (paths != null) {
                 List<TreeObject> objects = new ArrayList<TreeObject>();
@@ -61,9 +60,9 @@ public class RemoveFromFavoritesAction extends AbstractAction {
                 FavoritesHandler.getInstance().removeFromFavorites(objects);
             }
         } else {
-            int[] rows = ControllerProxy.getInstance().getNavigationController().getNavigationTablePanel().getNavigationTable().getSelectedRows();
+            int[] rows = NavigationHandler.getInstance().getNavigationTable().getSelectedRows();
             if (rows.length > 0) {
-                List<AudioObject> audioObjects = ((NavigationTableModel) ControllerProxy.getInstance().getNavigationController().getNavigationTablePanel().getNavigationTable()
+                List<AudioObject> audioObjects = ((NavigationTableModel) NavigationHandler.getInstance().getNavigationTable()
                         .getModel()).getAudioObjectsAt(rows);
                 FavoritesHandler.getInstance().removeSongsFromFavorites(audioObjects);
             }

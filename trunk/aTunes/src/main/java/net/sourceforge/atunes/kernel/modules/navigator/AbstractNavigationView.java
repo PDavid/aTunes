@@ -51,12 +51,11 @@ import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.model.AudioObjectsSource;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
-import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedObjects;
 import net.sourceforge.atunes.kernel.actions.Actions;
-import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler.ViewMode;
 import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
@@ -372,7 +371,7 @@ public abstract class AbstractNavigationView implements AudioObjectsSource {
      * @return
      */
     protected JTable getNavigationTable() {
-        return ControllerProxy.getInstance().getNavigationController().getNavigationTablePanel().getNavigationTable();
+        return NavigationHandler.getInstance().getNavigationTable();
     }
 
     /**
@@ -559,7 +558,7 @@ public abstract class AbstractNavigationView implements AudioObjectsSource {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                ControllerProxy.getInstance().getNavigationController().setNavigationView(AbstractNavigationView.this.getClass().getName());
+                NavigationHandler.getInstance().setNavigationView(AbstractNavigationView.this.getClass().getName());
             }
         };
 

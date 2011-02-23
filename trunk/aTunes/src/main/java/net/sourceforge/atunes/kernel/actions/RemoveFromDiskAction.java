@@ -34,11 +34,10 @@ import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
-import net.sourceforge.atunes.kernel.ControllerProxy;
-import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler.ViewMode;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.RepositoryNavigationView;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
@@ -100,7 +99,7 @@ public class RemoveFromDiskAction extends AbstractAction {
                 // Repository or device view with folder view mode, folder selected: delete folders instead of content
             } else if ((NavigationHandler.getInstance().getCurrentView() instanceof RepositoryNavigationView || NavigationHandler.getInstance().getCurrentView() instanceof DeviceNavigationView)
                     && NavigationHandler.getInstance().getCurrentViewMode() == ViewMode.FOLDER
-                    && ControllerProxy.getInstance().getNavigationController().getPopupMenuCaller() instanceof JTree) {
+                    && NavigationHandler.getInstance().getPopupMenuCaller() instanceof JTree) {
                 fromRepositoryOrDeviceView();
 
             } else {
@@ -110,7 +109,7 @@ public class RemoveFromDiskAction extends AbstractAction {
     }
 
     private void fromOtherViews() {
-        final List<AudioFile> files = ControllerProxy.getInstance().getNavigationController().getFilesSelectedInNavigator();
+        final List<AudioFile> files = NavigationHandler.getInstance().getFilesSelectedInNavigator();
         RepositoryHandler.getInstance().remove(files);
         GuiHandler.getInstance().showIndeterminateProgressDialog(I18nUtils.getString("PLEASE_WAIT"));
         new DeleteFilesWorker(files).execute();
@@ -151,11 +150,11 @@ public class RemoveFromDiskAction extends AbstractAction {
     }
 
     private void fromPodcastView() {
-        int[] rows = ControllerProxy.getInstance().getNavigationController().getNavigationTablePanel().getNavigationTable().getSelectedRows();
+        int[] rows = NavigationHandler.getInstance().getNavigationTable().getSelectedRows();
         if (rows.length > 0) {
             List<AudioObject> songs = new ArrayList<AudioObject>();
             for (int element : rows) {
-                songs.add(((NavigationTableModel) ControllerProxy.getInstance().getNavigationController().getNavigationTablePanel().getNavigationTable().getModel())
+                songs.add(((NavigationTableModel) NavigationHandler.getInstance().getNavigationTable().getModel())
                         .getAudioObjectAt(element));
             }
             for (int i = 0; i < songs.size(); i++) {
