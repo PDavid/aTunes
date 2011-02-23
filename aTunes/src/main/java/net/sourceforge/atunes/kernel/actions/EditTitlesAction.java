@@ -27,9 +27,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.Album;
+import net.sourceforge.atunes.kernel.modules.tags.TagHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class EditTitlesAction extends AbstractAction {
@@ -45,7 +45,7 @@ public class EditTitlesAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         TreePath path = NavigationHandler.getInstance().getCurrentView().getTree().getSelectionPath();
         Album a = (Album) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
-        ControllerProxy.getInstance().getEditTitlesDialogController().editFiles(a);
+        TagHandler.getInstance().editFiles(a);
     }
 
     @Override

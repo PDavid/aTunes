@@ -33,10 +33,10 @@ import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.repository.ImageCache;
-import net.sourceforge.atunes.kernel.modules.repository.tags.reader.TagDetector;
-import net.sourceforge.atunes.kernel.modules.repository.tags.tag.AbstractTag;
-import net.sourceforge.atunes.kernel.modules.repository.tags.tag.DefaultTag;
-import net.sourceforge.atunes.kernel.modules.repository.tags.tag.EditTagInfo;
+import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
+import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
+import net.sourceforge.atunes.kernel.modules.tags.EditTagInfo;
+import net.sourceforge.atunes.kernel.modules.tags.TagDetector;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.ImageSize;

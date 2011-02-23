@@ -18,29 +18,10 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.actions;
+package net.sourceforge.atunes.kernel.modules.tags;
 
-import java.awt.event.ActionEvent;
+public enum TagAttribute {
 
-import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
-import net.sourceforge.atunes.utils.I18nUtils;
-
-/**
- * This action invokes process to repair genres of repository
- * 
- * @author fleax
- */
-public class RepairGenresAction extends AbstractAction {
-
-    private static final long serialVersionUID = -7789897583007508598L;
-
-    RepairGenresAction() {
-        super(I18nUtils.getString("REPAIR_GENRES"));
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        TagEditionOperations.repairGenres();
-    }
+    TITLE, ARTIST, ALBUM, YEAR, COMMENT, GENRE, LYRICS, COMPOSER, ALBUM_ARTIST, TRACK;
 
 }

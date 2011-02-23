@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.repository.tags;
+package net.sourceforge.atunes.kernel.modules.tags;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -33,8 +33,6 @@ import javax.swing.table.TableCellEditor;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.repository.tags.tag.AbstractTag;
-import net.sourceforge.atunes.kernel.modules.repository.tags.tag.DefaultTag;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
 

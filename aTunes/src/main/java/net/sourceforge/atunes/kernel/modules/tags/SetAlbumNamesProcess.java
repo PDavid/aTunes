@@ -18,29 +18,34 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.actions;
+package net.sourceforge.atunes.kernel.modules.tags;
 
-import java.awt.event.ActionEvent;
+import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
-import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.kernel.modules.repository.data.Album;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 
 /**
- * This action invokes process to repair genres of repository
- * 
- * @author fleax
+ * The Class SetAlbumNamesProcess.
  */
-public class RepairGenresAction extends AbstractAction {
+public class SetAlbumNamesProcess extends AbstractChangeTagProcess {
 
-    private static final long serialVersionUID = -7789897583007508598L;
-
-    RepairGenresAction() {
-        super(I18nUtils.getString("REPAIR_GENRES"));
+    /**
+     * Instantiates a new sets the album names process.
+     * 
+     * @param files
+     *            the files
+     */
+    SetAlbumNamesProcess(List<AudioFile> files) {
+        super(files);
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        TagEditionOperations.repairGenres();
+    protected void changeTag(AudioFile file) {
+        if (Album.isUnknownAlbum(file.getAlbum())) {
+            // Take name from folder
+            String albumName = file.getFile().getParentFile().getName();
+            TagModifier.setAlbum(file, albumName);
+        }
     }
-
 }

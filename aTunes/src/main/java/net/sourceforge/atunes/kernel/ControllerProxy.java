@@ -23,10 +23,8 @@ package net.sourceforge.atunes.kernel;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sourceforge.atunes.gui.views.dialogs.EditTitlesDialog;
 import net.sourceforge.atunes.kernel.actions.EditTagAction.EditTagSources;
 import net.sourceforge.atunes.kernel.controllers.editTagDialog.EditTagDialogController;
-import net.sourceforge.atunes.kernel.controllers.editTitlesDialog.EditTitlesDialogController;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 
 /**
@@ -40,9 +38,6 @@ public final class ControllerProxy {
 
     /** The edit tag dialog controller. */
     private Map<EditTagSources, EditTagDialogController> editTagDialogControllerMap;
-
-    /** The edit titles dialog controller. */
-    private EditTitlesDialogController editTitlesDialogController;
 
     /**
      * Instantiates a new controller proxy.
@@ -77,19 +72,6 @@ public final class ControllerProxy {
             editTagDialogControllerMap.put(sourceOfEditTagDialog, new EditTagDialogController(GuiHandler.getInstance().getEditTagDialog(arePrevNextButtonsShown)));
         }
         return editTagDialogControllerMap.get(sourceOfEditTagDialog);
-    }
-
-    /**
-     * Gets the edits the titles dialog controller.
-     * 
-     * @return the edits the titles dialog controller
-     */
-    public EditTitlesDialogController getEditTitlesDialogController() {
-        if (editTitlesDialogController == null) {
-            EditTitlesDialog dialog = GuiHandler.getInstance().getEditTitlesDialog();
-            editTitlesDialogController = new EditTitlesDialogController(dialog);
-        }
-        return editTitlesDialogController;
     }
 
 }
