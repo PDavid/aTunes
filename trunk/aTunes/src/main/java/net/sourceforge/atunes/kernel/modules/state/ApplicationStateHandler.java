@@ -34,8 +34,10 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.gui.views.dialogs.editPreferences.EditPreferencesDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.ListOfPlayLists;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
@@ -600,6 +602,14 @@ public final class ApplicationStateHandler extends AbstractHandler {
 
     private String getUserConfigFolder() {
         return SystemProperties.getUserConfigFolder(Kernel.isDebug());
+    }
+    
+    /**
+     * Opens preferences dialog
+     */
+    public void editPreferences() {
+    	EditPreferencesDialog dialog = new EditPreferencesDialog(GuiHandler.getInstance().getFrame().getFrame());
+    	new EditPreferencesDialogController(dialog).start();
     }
 
 }
