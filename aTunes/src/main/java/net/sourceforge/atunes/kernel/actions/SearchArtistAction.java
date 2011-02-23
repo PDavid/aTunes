@@ -28,7 +28,6 @@ import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.dialogs.SearchDialog;
-import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
 import net.sourceforge.atunes.kernel.modules.internetsearch.SearchFactory;
@@ -55,7 +54,7 @@ public class SearchArtistAction extends AbstractAction {
             Search search = SearchFactory.getSearchForName(ApplicationState.getInstance().getDefaultSearch());
             if (search == null) {
                 SearchDialog dialog = GuiHandler.getInstance().getSearchDialog();
-                search = ControllerProxy.getInstance().getNavigationController().openSearchDialog(dialog, false);
+                search = NavigationHandler.getInstance().openSearchDialog(dialog, false);
                 if (search != null) {
                     ApplicationState.getInstance().setDefaultSearch(search.toString());
                 }
@@ -72,13 +71,11 @@ public class SearchArtistAction extends AbstractAction {
         if (selection.isEmpty()) {
             return false;
         }
-
         for (DefaultMutableTreeNode node : selection) {
             if (!(node.getUserObject() instanceof Artist) || ((Artist) node.getUserObject()).isUnknownArtist()) {
                 return false;
             }
         }
-
         return true;
     }
 

@@ -26,8 +26,8 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
@@ -90,7 +90,7 @@ public final class TagModifier {
 		    if (playListContainsRefreshedFile) {
 		    	PlayListHandler.getInstance().refreshPlayList();
 		    }
-		    ControllerProxy.getInstance().getNavigationController().notifyReload();
+		    NavigationHandler.getInstance().notifyReload();
 		}
 	}
 

@@ -41,7 +41,6 @@ import javax.swing.SwingUtilities;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.dialogs.FileSelectionDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ConnectDeviceAction;
 import net.sourceforge.atunes.kernel.actions.CopyPlayListToDeviceAction;
@@ -50,6 +49,7 @@ import net.sourceforge.atunes.kernel.actions.RefreshDeviceAction;
 import net.sourceforge.atunes.kernel.actions.SynchronizeDeviceWithPlayListAction;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView;
+import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.AudioFilesRemovedListener;
@@ -455,26 +455,24 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
      *            the loader
      */
     private void notifyDeviceReload(RepositoryLoader loader) {
-        if (ControllerProxy.getInstance().getNavigationController() != null) {
-            GuiHandler.getInstance().hideProgressBar();
-            ControllerProxy.getInstance().getNavigationController().notifyDeviceReload();
+    	GuiHandler.getInstance().hideProgressBar();
+    	NavigationHandler.getInstance().notifyDeviceReload();
 
-            Actions.getAction(ConnectDeviceAction.class).setEnabled(loader == null);
-            Actions.getAction(RefreshDeviceAction.class).setEnabled(loader != null);
-            Actions.getAction(DisconnectDeviceAction.class).setEnabled(loader != null);
+    	Actions.getAction(ConnectDeviceAction.class).setEnabled(loader == null);
+    	Actions.getAction(RefreshDeviceAction.class).setEnabled(loader != null);
+    	Actions.getAction(DisconnectDeviceAction.class).setEnabled(loader != null);
 
-            // Update status bar info
-            if (loader != null) {
-                GuiHandler.getInstance().showDeviceInfoOnStatusBar(getDeviceData());
-            } else {
-                GuiHandler.getInstance().hideDeviceInfoOnStatusBar();
-            }
+    	// Update status bar info
+    	if (loader != null) {
+    		GuiHandler.getInstance().showDeviceInfoOnStatusBar(getDeviceData());
+    	} else {
+    		GuiHandler.getInstance().hideDeviceInfoOnStatusBar();
+    	}
 
-            if (loader != null) {
-                // Switch to device view in navigator
-                ControllerProxy.getInstance().getNavigationController().setNavigationView(DeviceNavigationView.class.getName());
-            }
-        }
+    	if (loader != null) {
+    		// Switch to device view in navigator
+    		NavigationHandler.getInstance().setNavigationView(DeviceNavigationView.class.getName());
+    	}
     }
 
     @Override

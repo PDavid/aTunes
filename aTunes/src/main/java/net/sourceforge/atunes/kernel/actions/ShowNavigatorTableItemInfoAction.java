@@ -25,8 +25,8 @@ import java.util.List;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
-import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -49,8 +49,8 @@ public class ShowNavigatorTableItemInfoAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        int selectedRow = ControllerProxy.getInstance().getNavigationController().getNavigationTablePanel().getNavigationTable().getSelectedRow();
-        AudioObject audioObject = ((NavigationTableModel) ControllerProxy.getInstance().getNavigationController().getNavigationTablePanel().getNavigationTable().getModel())
+        int selectedRow = NavigationHandler.getInstance().getNavigationTable().getSelectedRow();
+        AudioObject audioObject = ((NavigationTableModel) NavigationHandler.getInstance().getNavigationTable().getModel())
                 .getAudioObjectAt(selectedRow);
         GuiHandler.getInstance().showPropertiesDialog(audioObject);
     }

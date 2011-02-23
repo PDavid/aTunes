@@ -37,7 +37,6 @@ import javax.swing.TransferHandler;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.gui.model.TransferableList;
-import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
@@ -191,7 +190,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
                 Object objectDragged = listOfObjectsDragged.get(i);
                 // DRAG AND DROP FROM TREE
                 if (objectDragged instanceof DefaultMutableTreeNode) {
-                    List<AudioObject> objectsToImport = ControllerProxy.getInstance().getNavigationController().getAudioObjectsForTreeNode(
+                    List<AudioObject> objectsToImport = NavigationHandler.getInstance().getAudioObjectsForTreeNode(
                             NavigationHandler.getInstance().getCurrentView().getClass(), (DefaultMutableTreeNode) objectDragged);
                     if (objectsToImport != null) {
                         audioObjectsToAdd.addAll(objectsToImport);
@@ -199,7 +198,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
                 } else if (objectDragged instanceof Integer) {
                     // DRAG AND DROP FROM TABLE
                     Integer row = (Integer) objectDragged;
-                    audioObjectsToAdd.add(ControllerProxy.getInstance().getNavigationController().getAudioObjectInNavigationTable(row));
+                    audioObjectsToAdd.add(NavigationHandler.getInstance().getAudioObjectInNavigationTable(row));
                 }
             }
 

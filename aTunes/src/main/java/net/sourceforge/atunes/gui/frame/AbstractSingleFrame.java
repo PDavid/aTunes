@@ -57,8 +57,8 @@ import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
-import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -457,7 +457,7 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     showNewPodcastFeedEntriesInfo(false);
-                    ControllerProxy.getInstance().getNavigationController().setNavigationView(PodcastNavigationView.class.getName());
+                    NavigationHandler.getInstance().setNavigationView(PodcastNavigationView.class.getName());
                 }
             });
         }

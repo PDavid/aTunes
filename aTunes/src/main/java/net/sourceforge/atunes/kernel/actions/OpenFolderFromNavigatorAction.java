@@ -24,7 +24,7 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.kernel.ControllerProxy;
+import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.AudioObject;
 
@@ -40,12 +40,12 @@ public class OpenFolderFromNavigatorAction extends OpenFolderAction {
 
     @Override
     public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
-        List<AudioFile> filesSelectedInNavigator = ControllerProxy.getInstance().getNavigationController().getFilesSelectedInNavigator();
-        return ControllerProxy.getInstance().getNavigationController().sameParentFile(filesSelectedInNavigator);
+        List<AudioFile> filesSelectedInNavigator = NavigationHandler.getInstance().getFilesSelectedInNavigator();
+        return NavigationHandler.getInstance().sameParentFile(filesSelectedInNavigator);
     }
 
     @Override
     public boolean isEnabledForNavigationTableSelection(List<AudioObject> selection) {
-        return ControllerProxy.getInstance().getNavigationController().sameParentFile(AudioFile.getAudioFiles(selection));
+        return NavigationHandler.getInstance().sameParentFile(AudioFile.getAudioFiles(selection));
     }
 }

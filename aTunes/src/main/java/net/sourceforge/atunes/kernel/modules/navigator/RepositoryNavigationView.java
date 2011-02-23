@@ -62,8 +62,8 @@ import net.sourceforge.atunes.kernel.actions.SetFavoriteAlbumFromNavigatorAction
 import net.sourceforge.atunes.kernel.actions.SetFavoriteArtistFromNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.SetFavoriteSongFromNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
-import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
+import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler.ViewMode;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.model.AudioObject;

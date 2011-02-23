@@ -29,7 +29,6 @@ import javax.swing.UIManager;
 import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
-import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.repository.tags.IncompleteTagsChecker;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -53,7 +52,7 @@ public final class NavigationTableColumnModel extends AbstractCommonColumnModel 
 
     @Override
     protected void reapplyFilter() {
-        ControllerProxy.getInstance().getNavigationController().updateTableContent(NavigationHandler.getInstance().getCurrentView().getTree());
+        NavigationHandler.getInstance().updateTableContent(NavigationHandler.getInstance().getCurrentView().getTree());
     }
 
     @Override
@@ -76,7 +75,7 @@ public final class NavigationTableColumnModel extends AbstractCommonColumnModel 
             Component c = renderer.getComponent(superComponent, t, value, isSelected, hasFocus, row, column);
             // Check incomplete tags if necessary
             if (ApplicationState.getInstance().isHighlightIncompleteTagElements()) {
-                AudioObject audioObject = ControllerProxy.getInstance().getNavigationController().getAudioObjectInNavigationTable(row);
+                AudioObject audioObject = NavigationHandler.getInstance().getAudioObjectInNavigationTable(row);
                 if (IncompleteTagsChecker.hasIncompleteTags(audioObject)) {
                     ((JLabel) c).setForeground(Color.red);
                 } else {

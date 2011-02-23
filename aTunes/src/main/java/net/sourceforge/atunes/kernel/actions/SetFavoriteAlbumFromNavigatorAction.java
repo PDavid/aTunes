@@ -25,8 +25,8 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.kernel.ControllerProxy;
-import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController.ViewMode;
+import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler.ViewMode;
 import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
@@ -45,7 +45,7 @@ public class SetFavoriteAlbumFromNavigatorAction extends AbstractActionOverSelec
     @Override
     protected void performAction(List<AudioFile> objects) {
         FavoritesHandler.getInstance().addFavoriteAlbums(objects);
-        ControllerProxy.getInstance().getNavigationController().refreshTable();
+        NavigationHandler.getInstance().refreshNavigationTable();
     }
 
     @Override

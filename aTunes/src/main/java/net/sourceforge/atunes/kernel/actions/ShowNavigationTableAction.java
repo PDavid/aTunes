@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -49,6 +48,6 @@ public class ShowNavigationTableAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         ApplicationState.getInstance().setShowNavigationTable((Boolean) getValue(SELECTED_KEY));
         GuiHandler.getInstance().showNavigationTable((Boolean) getValue(SELECTED_KEY));
-        ControllerProxy.getInstance().getNavigationController().updateTableContent(NavigationHandler.getInstance().getCurrentView().getTree());
+        NavigationHandler.getInstance().updateTableContent(NavigationHandler.getInstance().getCurrentView().getTree());
     }
 }

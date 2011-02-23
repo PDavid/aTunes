@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.actions;
 import java.util.List;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.kernel.ControllerProxy;
+import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.model.AudioObject;
@@ -41,7 +41,7 @@ public class SetFavoriteSongFromNavigatorAction extends AbstractActionOverSelect
     @Override
     protected void performAction(List<AudioFile> objects) {
         FavoritesHandler.getInstance().addFavoriteSongs(objects);
-        ControllerProxy.getInstance().getNavigationController().refreshTable();
+        NavigationHandler.getInstance().refreshNavigationTable();
     }
 
     @Override
