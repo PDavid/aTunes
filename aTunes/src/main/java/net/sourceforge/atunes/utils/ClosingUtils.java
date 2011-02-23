@@ -28,10 +28,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.zip.ZipFile;
 
-import org.commonjukebox.plugins.model.PluginApi;
-
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
+
+import org.commonjukebox.plugins.model.PluginApi;
 
 /**
  * Utility methods for closing streams, sockets, ...

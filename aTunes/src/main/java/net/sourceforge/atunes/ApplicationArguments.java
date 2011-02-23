@@ -23,9 +23,9 @@ package net.sourceforge.atunes;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.commonjukebox.plugins.model.PluginApi;
-
 import net.sourceforge.atunes.kernel.modules.command.CommandHandler;
+
+import org.commonjukebox.plugins.model.PluginApi;
 
 /**
  * This class defines accepted arguments by application.

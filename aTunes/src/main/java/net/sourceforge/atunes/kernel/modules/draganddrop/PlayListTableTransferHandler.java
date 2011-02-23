@@ -262,7 +262,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
         }
 
         // Refresh play list after moving
-        ControllerProxy.getInstance().getPlayListController().refreshPlayList();
+        PlayListHandler.getInstance().refreshPlayList();
 
         // Set dragged rows as selected
         for (Integer rowToKeepSelected : rowsToKeepSelected) {

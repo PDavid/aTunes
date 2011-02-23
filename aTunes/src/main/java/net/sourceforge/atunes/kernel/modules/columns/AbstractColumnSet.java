@@ -26,10 +26,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.commonjukebox.plugins.model.PluginApi;
-
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+
+import org.commonjukebox.plugins.model.PluginApi;
 
 /**
  * A set of columns used in a component

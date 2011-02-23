@@ -29,13 +29,16 @@ import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
+import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
+import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListTabPanel;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.SavePlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
 import net.sourceforge.atunes.kernel.modules.columns.PlayListColumnSet;
+import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListTableTransferHandler;
+import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListToDeviceDragAndDropListener;
 import net.sourceforge.atunes.kernel.modules.filter.AbstractFilter;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
@@ -54,7 +57,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The Class PlayListHandler.
  */
-public final class PlayListHandler extends AbstractHandler implements AudioFilesRemovedListener {
+public final class PlayListHandler extends AbstractHandler implements AudioFilesRemovedListener, PlayListChangedListener {
 
     private static final class RowListComparator implements Comparator<Integer> {
         private final boolean up;
@@ -135,6 +138,11 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
     /** The play list tab controller. */
     private PlayListTabController playListTabController;
 
+	/**
+	 * Play list Controller
+	 */
+	private PlayListController playListController;
+
     /**
      * Private constructor.
      */
@@ -153,8 +161,14 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
 
         if (!playList.isEmpty()) {
             PlayListHandler.getInstance().addToPlayListAndPlay(playList);
-            ControllerProxy.getInstance().getPlayListController().refreshPlayList();
+            getPlayListController().refreshPlayList();
         }
+        
+        // Create drag and drop listener
+        PlayListTableTransferHandler playListTransferHandler = new PlayListTableTransferHandler();
+        getPlayListController().getMainPlayListTable().setTransferHandler(playListTransferHandler);
+        getPlayListController().getMainPlayListScrollPane().setTransferHandler(playListTransferHandler);
+        new PlayListToDeviceDragAndDropListener();
     }
 
     /**
@@ -221,7 +235,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
             }
 
             // Refresh table
-            ControllerProxy.getInstance().getPlayListController().refreshPlayList();
+            getPlayListController().refreshPlayList();
         } else {
             // index == visiblePlayList
             // switch play list and then delete
@@ -373,11 +387,11 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
         setPlayList(newSelectedPlayList);
         // Update table model
         ((PlayListTableModel) GuiHandler.getInstance().getPlayListTable().getModel()).setVisiblePlayList(getCurrentPlayList(true));
-        ControllerProxy.getInstance().getPlayListController().refreshPlayList();
+        getPlayListController().refreshPlayList();
 
         // If playlist is active then perform an auto scroll
         if (getInstance().isActivePlayListVisible()) {
-            ControllerProxy.getInstance().getPlayListController().scrollPlayList(false);
+            getPlayListController().scrollPlayList(false);
         }
     }
 
@@ -514,7 +528,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
         GuiHandler.getInstance().showPlayListInformation(playList);
 
         // Update play list table
-        ControllerProxy.getInstance().getPlayListController().refreshPlayList();
+        getPlayListController().refreshPlayList();
 
         getLogger().info(LogCategories.HANDLER, StringUtils.getString(audioObjects.size(), " audio objects added to play list"));
     }
@@ -563,7 +577,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
             GuiHandler.getInstance().getPlayListPanel().repaint();
 
             // Refresh play list
-            ControllerProxy.getInstance().getPlayListController().refreshPlayList();
+            getPlayListController().refreshPlayList();
 
             getLogger().info(LogCategories.HANDLER, "Play list clear");
         }
@@ -658,7 +672,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
 
         // Refresh play list
         // For some strange reason, this is needed even if play list is empty
-        ControllerProxy.getInstance().getPlayListController().refreshPlayList();
+        getPlayListController().refreshPlayList();
 
         playListsRetrievedFromCache = null;
     }
@@ -829,7 +843,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
             }
         }
 
-        ControllerProxy.getInstance().getPlayListController().refreshPlayList();
+        getPlayListController().refreshPlayList();
 
         if (currentPlayList.isEmpty()) {
             Actions.getAction(SavePlayListAction.class).setEnabled(false);
@@ -961,9 +975,9 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
 
         // Update table model
         ((PlayListTableModel) GuiHandler.getInstance().getPlayListTable().getModel()).setVisiblePlayList(playList);
-        ControllerProxy.getInstance().getPlayListController().refreshPlayList();
+        getPlayListController().refreshPlayList();
 
-        ControllerProxy.getInstance().getPlayListController().scrollPlayList(false);
+        getPlayListController().scrollPlayList(false);
 
         //        PlayList currentPlayList = getCurrentPlayList(true);
         //
@@ -1123,7 +1137,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
     @Override
     public void applicationStateChanged(ApplicationState newState) {
         if (newState.isAutoScrollPlayListEnabled()) {
-            ControllerProxy.getInstance().getPlayListController().scrollPlayList(true);
+            getPlayListController().scrollPlayList(true);
         }
     }
 
@@ -1201,7 +1215,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
     private PlayListTabController getPlayListTabController() {
         if (playListTabController == null) {
             PlayListTabPanel panel = GuiHandler.getInstance().getPlayListPanel().getPlayListTabPanel();
-            playListTabController = new PlayListTabController(panel);
+            playListTabController = new PlayListTabController(panel, getPlayListController().getMainPlayListTable());
         }
         return playListTabController;
     }
@@ -1238,5 +1252,74 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
         }
     }
 
+    /**
+     * Gets the play list controller.
+     * 
+     * @return the play list controller
+     */
+    public PlayListController getPlayListController() {
+        if (playListController == null) {
+            PlayListPanel panel = null;
+            panel = GuiHandler.getInstance().getPlayListPanel();
+            playListController = new PlayListController(panel);
+        }
+        return playListController;
+    }
 
+	public void scrollPlayList(boolean isUserAction) {
+		getPlayListController().scrollPlayList(isUserAction);		
+	}
+
+	public void refreshPlayList() {
+		getPlayListController().refreshPlayList();		
+	}
+
+	public void moveDown() {
+		getPlayListController().moveDown();		
+	}
+
+	public void moveToBottom() {
+		getPlayListController().moveToBottom();
+	}
+
+	public void moveToTop() {
+		getPlayListController().moveToTop();
+	}
+
+	public void moveUp() {
+		getPlayListController().moveUp();		
+	}
+
+	public void deleteSelection() {
+		getPlayListController().deleteSelection();
+	}
+
+	public void showPlayListControls(boolean value) {
+		getPlayListController().getPlayListControlsPanel().setVisible(value);
+	}
+	
+	@Override
+	public void audioObjectsAdded(List<PlayListAudioObject> audioObjectsAdded) {
+	}
+	
+	public void audioObjectsRemoved(List<PlayListAudioObject> audioObjectsRemoved) {		
+	}
+	
+	@Override
+	public void audioObjectsRemovedAll() {
+	}
+	
+	@Override
+	public void currentAudioObjectChanged() {
+        getPlayListController().refreshPlayList();
+        getPlayListController().scrollPlayList(false);
+	}
+
+	public void reapplyFilter() {
+		getPlayListController().reapplyFilter();
+	}
+
+	public PlayListTable getPlayListTable() {
+		return getPlayListController().getMainPlayListTable();
+	}
 }

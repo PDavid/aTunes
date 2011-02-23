@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.kernel.ControllerProxy;
+import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -35,13 +35,13 @@ public class ShowPlayListControlsAction extends AbstractAction {
         super(I18nUtils.getString("SHOW_PLAYLIST_CONTROLS"), Images.getImage(Images.PLAY_LIST_CONTROLS));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_PLAYLIST_CONTROLS"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().isShowPlaylistControls());
-        ControllerProxy.getInstance().getPlayListController().getPlayListControlsPanel().setVisible((Boolean) getValue(SELECTED_KEY));
+        PlayListHandler.getInstance().showPlayListControls((Boolean) getValue(SELECTED_KEY));
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         ApplicationState.getInstance().setShowPlaylistControls((Boolean) getValue(SELECTED_KEY));
-        ControllerProxy.getInstance().getPlayListController().getPlayListControlsPanel().setVisible((Boolean) getValue(SELECTED_KEY));
+        PlayListHandler.getInstance().showPlayListControls((Boolean) getValue(SELECTED_KEY));
     }
 
 }

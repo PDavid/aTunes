@@ -88,7 +88,7 @@ public final class TagModifier {
 		        }
 		    }
 		    if (playListContainsRefreshedFile) {
-		        ControllerProxy.getInstance().getPlayListController().refreshPlayList();
+		    	PlayListHandler.getInstance().refreshPlayList();
 		    }
 		    ControllerProxy.getInstance().getNavigationController().notifyReload();
 		}

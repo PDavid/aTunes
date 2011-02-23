@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.playlist;
 
-import java.awt.EventQueue;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,9 +27,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
-import javax.swing.SwingUtilities;
-
-import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.PointedList;
 import net.sourceforge.atunes.model.AudioObject;
@@ -75,14 +71,6 @@ public class PlayList implements Serializable, Cloneable {
      */
     private PointedList<AudioObject> audioObjects = new PlayListPointedList();
 
-    private static class UpdateUIRunnable implements Runnable {
-        @Override
-        public void run() {
-            ControllerProxy.getInstance().getPlayListController().refreshPlayList();
-            ControllerProxy.getInstance().getPlayListController().scrollPlayList(false);
-        }
-    }
-
     private static class PlayListAudioObjectComparator implements Comparator<PlayListAudioObject> {
         @Override
         public int compare(PlayListAudioObject o1, PlayListAudioObject o2) {
@@ -121,6 +109,7 @@ public class PlayList implements Serializable, Cloneable {
      */
     protected PlayList(List<AudioObject> audioObjectsList) {
         this.mode = PlayListMode.getPlayListMode(this);
+        addPlayListChangedListener(PlayListHandler.getInstance());
         if (audioObjectsList != null) {
             add(audioObjectsList);
         }
@@ -135,6 +124,7 @@ public class PlayList implements Serializable, Cloneable {
         this.name = playList.name == null ? null : playList.name;
         this.audioObjects = new PlayListPointedList(playList.audioObjects);
         this.mode = PlayListMode.getPlayListMode(this);
+        addPlayListChangedListener(PlayListHandler.getInstance());
     }
 
     //////////////////////////////////////////////////////////////// ADD OPERATIONS /////////////////////////////////////////////////////////
@@ -300,7 +290,7 @@ public class PlayList implements Serializable, Cloneable {
      */
     protected void shuffle() {
         this.audioObjects.shuffle();
-        updateUI();
+        notifyCurrentAudioObjectChanged();
         // Mark as dirty
         setDirty(true);
     }
@@ -364,16 +354,7 @@ public class PlayList implements Serializable, Cloneable {
      */
     protected void setCurrentAudioObjectIndex(int index) {
         this.audioObjects.setPointer(index);
-        updateUI();
-    }
-
-    protected void updateUI() {
-        if (!EventQueue.isDispatchThread()) {
-            SwingUtilities.invokeLater(new UpdateUIRunnable());
-        } else {
-            ControllerProxy.getInstance().getPlayListController().refreshPlayList();
-            ControllerProxy.getInstance().getPlayListController().scrollPlayList(false);
-        }
+        notifyCurrentAudioObjectChanged();
     }
 
     /**
@@ -450,7 +431,7 @@ public class PlayList implements Serializable, Cloneable {
      */
     protected AudioObject moveToNextAudioObject() {
         AudioObject nextObject = getMode().moveToNextAudioObject();
-        updateUI();
+        notifyCurrentAudioObjectChanged();
         return nextObject;
     }
 
@@ -461,7 +442,7 @@ public class PlayList implements Serializable, Cloneable {
      */
     protected AudioObject moveToPreviousAudioObject() {
         AudioObject previousObject = getMode().moveToPreviousAudioObject();
-        updateUI();
+        notifyCurrentAudioObjectChanged();
         return previousObject;
     }
 
@@ -559,6 +540,15 @@ public class PlayList implements Serializable, Cloneable {
 
         // Mark as dirty
         setDirty(true);
+    }
+
+    /**
+     * Private method to call listeners
+     */
+    private void notifyCurrentAudioObjectChanged() {
+        for (PlayListChangedListener listener : getListeners()) {
+            listener.currentAudioObjectChanged();
+        }
     }
 
     private List<PlayListChangedListener> getListeners() {

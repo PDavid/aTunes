@@ -26,12 +26,10 @@ import java.util.Map;
 import net.sourceforge.atunes.gui.views.dialogs.EditTitlesDialog;
 import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
-import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.kernel.actions.EditTagAction.EditTagSources;
 import net.sourceforge.atunes.kernel.controllers.editTagDialog.EditTagDialogController;
 import net.sourceforge.atunes.kernel.controllers.editTitlesDialog.EditTitlesDialogController;
 import net.sourceforge.atunes.kernel.controllers.navigation.NavigationController;
-import net.sourceforge.atunes.kernel.controllers.playList.PlayListController;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 
 /**
@@ -45,9 +43,6 @@ public final class ControllerProxy {
 
     /** The navigation controller. */
     private NavigationController navigationController;
-
-    /** The play list controller. */
-    private PlayListController playListController;
 
     /** The edit tag dialog controller. */
     private Map<EditTagSources, EditTagDialogController> editTagDialogControllerMap;
@@ -115,19 +110,5 @@ public final class ControllerProxy {
             navigationController = new NavigationController(treePanel, tablePanel);
         }
         return navigationController;
-    }
-
-    /**
-     * Gets the play list controller.
-     * 
-     * @return the play list controller
-     */
-    public PlayListController getPlayListController() {
-        if (playListController == null) {
-            PlayListPanel panel = null;
-            panel = GuiHandler.getInstance().getPlayListPanel();
-            playListController = new PlayListController(panel);
-        }
-        return playListController;
     }
 }

@@ -21,9 +21,9 @@
 package net.sourceforge.atunes.kernel.modules.updates;
 
 import java.io.IOException;
+import java.net.Proxy.Type;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
-import java.net.Proxy.Type;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 

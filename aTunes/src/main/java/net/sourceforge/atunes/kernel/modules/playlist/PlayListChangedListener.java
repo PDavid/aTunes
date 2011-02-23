@@ -29,4 +29,6 @@ interface PlayListChangedListener {
     public void audioObjectsRemoved(List<PlayListAudioObject> audioObjectsRemoved);
 
     public void audioObjectsRemovedAll();
+    
+    public void currentAudioObjectChanged();
 }

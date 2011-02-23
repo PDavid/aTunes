@@ -60,6 +60,7 @@ import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
+import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.updates.ApplicationVersion;
 import net.sourceforge.atunes.misc.SystemProperties;
@@ -251,7 +252,7 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
                         getLogger().debug(LogCategories.DESKTOP, "Window Iconified");
                     } else if (e.getNewState() != Frame.ICONIFIED) {
                         getLogger().debug(LogCategories.DESKTOP, "Window Deiconified");
-                        ControllerProxy.getInstance().getPlayListController().scrollPlayList(false);
+                        PlayListHandler.getInstance().scrollPlayList(false);
                     }
                 }
             };

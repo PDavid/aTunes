@@ -27,7 +27,7 @@ import java.util.List;
 import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.kernel.ControllerProxy;
+import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -50,7 +50,7 @@ public class MoveUpAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        ControllerProxy.getInstance().getPlayListController().moveUp();
+        PlayListHandler.getInstance().moveUp();
     }
 
     @Override

@@ -86,14 +86,11 @@ import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ShowToolbarAction;
 import net.sourceforge.atunes.kernel.modules.cdripper.RipperHandler;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
-import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListTableTransferHandler;
-import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListToDeviceDragAndDropListener;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlaybackState;
@@ -1186,13 +1183,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
             ApplicationState.getInstance().setFrameState(getFrame().getClass(), frameState);
         }
         getFrame().create(frameState);
-
-        // Create drag and drop listener
-        PlayListTableTransferHandler playListTransferHandler = new PlayListTableTransferHandler();
-        ControllerProxy.getInstance().getPlayListController().getMainPlayListTable().setTransferHandler(playListTransferHandler);
-        ControllerProxy.getInstance().getPlayListController().getMainPlayListScrollPane().setTransferHandler(playListTransferHandler);
-
-        new PlayListToDeviceDragAndDropListener();
 
         JProgressBar progressBar = getProgressBar();
         if (progressBar != null) {
