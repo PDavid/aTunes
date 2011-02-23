@@ -23,9 +23,7 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.views.dialogs.editPreferences.EditPreferencesDialog;
-import net.sourceforge.atunes.kernel.controllers.editPreferencesDialog.EditPreferencesDialogController;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -46,8 +44,7 @@ public class EditPreferencesAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-    	EditPreferencesDialog dialog = new EditPreferencesDialog(GuiHandler.getInstance().getFrame().getFrame());
-    	new EditPreferencesDialogController(dialog).start();
+    	ApplicationStateHandler.getInstance().editPreferences();
     }
 
 }
