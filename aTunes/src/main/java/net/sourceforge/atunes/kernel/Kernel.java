@@ -68,25 +68,9 @@ public class Kernel {
     private static Timer timer;
 
     /**
-     * List of life cycle listeners
-     */
-    private static List<ApplicationLifeCycleListener> lifeCycleListeners = new ArrayList<ApplicationLifeCycleListener>();
-
-    /**
      * Constructor of Kernel.
      */
     private Kernel() {}
-
-    /**
-     * Adds a life cycle listener to list of listeners. All classes that implements
-     * ApplicationLifeCycleListener must call this method in order to be notified by
-     * Kernel when application phase changes
-     * 
-     * @param listener
-     */
-    public static void addLifeCycleListener(ApplicationLifeCycleListener listener) {
-        lifeCycleListeners.add(listener);
-    }
 
     /**
      * Static method to create the Kernel instance. This method starts the
@@ -161,18 +145,6 @@ public class Kernel {
     }
 
     /**
-     * Executes actions needed before closing application, finished all
-     * necessary modules and writes configuration.
-     */
-    private static void callActionsBeforeEnd() {
-        for (ApplicationLifeCycleListener listener : lifeCycleListeners) {
-        	if (listener != null) {
-        		listener.applicationFinish();
-        	}
-        }
-    }
-
-    /**
      * Called when closing application
      */
     public static void finish() {
@@ -181,8 +153,8 @@ public class Kernel {
             timer.start();
             getLogger().info(LogCategories.END, StringUtils.getString("Closing ", Constants.APP_NAME, " ", Constants.VERSION.toString()));
             TempFolder.getInstance().removeAllFiles();
-            // Call actions needed before closing application
-            callActionsBeforeEnd();
+            
+            ApplicationLifeCycleListeners.applicationFinish();
         } finally {
             getLogger().info(LogCategories.END, StringUtils.getString("Application finished (", StringUtils.toString(timer.stop(), 3), " seconds)"));
             getLogger().info(LogCategories.END, "Goodbye!!");
@@ -195,19 +167,8 @@ public class Kernel {
      * Call actions after start.
      */
     static void callActionsAfterStart(List<AudioObject> playList) {
-        // Call all ApplicationStartListener instances
-        for (ApplicationLifeCycleListener startListener : lifeCycleListeners) {
-        	if (startListener != null) {
-        		startListener.applicationStarted(playList);
-        	}
-        }
-        
-        // Call all ApplicationStartListener instances
-        for (ApplicationLifeCycleListener startListener : lifeCycleListeners) {
-        	if (startListener != null) {
-        		startListener.allHandlersInitialized();
-        	}
-        }
+    	ApplicationLifeCycleListeners.applicationStarted(playList);
+    	ApplicationLifeCycleListeners.allHandlersInitialized();
     }
 
     /**
@@ -225,7 +186,7 @@ public class Kernel {
     public static void restart() {
         try {
             // Store all configuration and finish all active modules
-            callActionsBeforeEnd();
+        	ApplicationLifeCycleListeners.applicationFinish();
 
             // Build a process builder with OS-specific command and saved arguments
             ProcessBuilder pb = new ProcessBuilder(SystemProperties.OS.getLaunchCommand(), ApplicationArguments.getSavedArguments());

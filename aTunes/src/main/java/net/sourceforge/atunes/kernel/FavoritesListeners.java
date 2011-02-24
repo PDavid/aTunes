@@ -37,7 +37,9 @@ public class FavoritesListeners {
      * @param listener
      */
     public static void addFavoritesListener(FavoritesListener listener) {
-    	listeners.add(listener);
+    	if (listener != null) {
+    		listeners.add(listener);
+    	}
     }
 
     /**
