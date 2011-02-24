@@ -231,7 +231,6 @@ public class Kernel {
     static void startCreation() {
         getLogger().debug(LogCategories.START, "Starting components");
         GuiHandler.getInstance().startVisualization();
-        ControllerProxy.getInstance();
         GuiHandler.getInstance().setTitleBar("");
     }
 

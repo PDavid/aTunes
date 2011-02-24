@@ -41,7 +41,7 @@ import net.sourceforge.atunes.gui.views.dialogs.editPreferences.PluginsPanel;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.PodcastFeedPanel;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.RadioPanel;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.RepositoryPanel;
-import net.sourceforge.atunes.kernel.controllers.model.AbstractSimpleController;
+import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.misc.log.LogCategories;
 
 final class EditPreferencesDialogController extends AbstractSimpleController<EditPreferencesDialog> {

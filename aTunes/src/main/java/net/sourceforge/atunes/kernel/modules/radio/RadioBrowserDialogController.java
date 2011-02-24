@@ -27,7 +27,7 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.gui.model.RadioBrowserTreeTableModel;
 import net.sourceforge.atunes.gui.views.dialogs.RadioBrowserDialog;
-import net.sourceforge.atunes.kernel.controllers.model.AbstractSimpleController;
+import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.misc.log.LogCategories;
 
 final class RadioBrowserDialogController extends AbstractSimpleController<RadioBrowserDialog> {

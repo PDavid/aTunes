@@ -32,7 +32,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import net.sourceforge.atunes.gui.views.panels.ToolBarFilterPanel;
-import net.sourceforge.atunes.kernel.controllers.model.AbstractSimpleController;
+import net.sourceforge.atunes.kernel.AbstractSimpleController;
 
 class ToolBarFilterController extends AbstractSimpleController<ToolBarFilterPanel> {
 

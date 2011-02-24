@@ -27,8 +27,8 @@ import javax.swing.KeyStroke;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.kernel.ControllerProxy;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
+import net.sourceforge.atunes.kernel.modules.tags.TagHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -66,7 +66,7 @@ public class EditTagAction extends AbstractActionOverSelectedObjects<AudioFile> 
         // Start edit by opening edit dialog
         try {
             EditTagSources editTagSource = EditTagSources.valueOf(getActionId());
-            ControllerProxy.getInstance().getEditTagDialogController(editTagSource).editFiles(objects);
+            TagHandler.getInstance().editFiles(editTagSource, objects);
         } catch (IllegalArgumentException iae) {
             getLogger().error("The source that caused this action is not known. No further action initiated.", iae);
         } catch (NullPointerException npe) {
