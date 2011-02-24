@@ -101,7 +101,7 @@ public class AudioObjectPropertiesHandler extends AbstractHandler {
 		getController().refreshPicture();
 	}
 
-	public void refreshFavoriteIcons() {
+	private void refreshFavoriteIcons() {
 		getController().refreshFavoriteIcons();
 	}
 	
@@ -119,5 +119,11 @@ public class AudioObjectPropertiesHandler extends AbstractHandler {
         if (ApplicationState.getInstance().isShowAudioObjectProperties()) {
             getController().updateValues(audioObject);
         }
+    }
+    
+    @Override
+    public void favoritesChanged() {
+        // Update audio object properties panel
+        refreshFavoriteIcons();
     }
 }

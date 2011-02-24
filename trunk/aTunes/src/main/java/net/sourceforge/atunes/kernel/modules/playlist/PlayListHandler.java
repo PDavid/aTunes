@@ -1312,5 +1312,10 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
 	
 	@Override
 	public void selectedAudioObjectChanged(AudioObject audioObject) {};
-	
+
+	@Override
+	public void favoritesChanged() {
+        // Update playlist to remove favorite icon
+        refreshPlayList();
+	}
 }
