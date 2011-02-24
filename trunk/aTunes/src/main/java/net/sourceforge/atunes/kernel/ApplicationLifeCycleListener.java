@@ -20,17 +20,33 @@
 
 package net.sourceforge.atunes.kernel;
 
+import java.util.List;
+
+import net.sourceforge.atunes.model.AudioObject;
+
 /**
- * Interface for classes that must execute code before application ends (usually
+ * Interface for classes that must execute at different phases of application (start, end) (usually
  * handlers)
  * 
  * @author fleax
  * 
  */
-public interface ApplicationFinishListener {
+public interface ApplicationLifeCycleListener {
 
     /**
-     * Called when application finishes
+     * Called after application start
+     * @param playList 
+     */
+    public void applicationStarted(List<AudioObject> playList);
+    
+    /**
+     * Code to be executed when all handlers have been initialized
+     */
+    public void allHandlersInitialized();
+    
+    /**
+     * Code to be executed when application finishes
      */
     public void applicationFinish();
+
 }
