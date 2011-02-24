@@ -26,8 +26,6 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import net.sourceforge.atunes.kernel.ApplicationFinishListener;
-import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.commons.io.FileUtils;
@@ -37,12 +35,11 @@ import org.commonjukebox.plugins.model.PluginApi;
  * The Class TempFolder.
  */
 @PluginApi
-public class TempFolder implements ApplicationFinishListener {
+public class TempFolder {
 
     private static final TempFolder instance = new TempFolder();
 
-    TempFolder() {
-        Kernel.addFinishListener(this);
+    private TempFolder() {
     }
 
     /**
@@ -104,10 +101,5 @@ public class TempFolder implements ApplicationFinishListener {
         for (File f : files) {
             f.delete();
         }
-    }
-
-    @Override
-    public void applicationFinish() {
-        removeAllFiles();
     }
 }

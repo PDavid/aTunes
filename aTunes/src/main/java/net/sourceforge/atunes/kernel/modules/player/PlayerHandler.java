@@ -28,7 +28,6 @@ import java.util.List;
 
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.notify.NotifyHandler;
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
@@ -364,7 +363,6 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 
                 // Init engine
                 instance.playerEngine.initializePlayerEngine();
-                Kernel.addFinishListener(instance);
 
                 // Add core playback listeners
                 instance.playerEngine.addPlaybackStateListener(instance.playerEngine);

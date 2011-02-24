@@ -40,6 +40,7 @@ import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.SystemProperties;
+import net.sourceforge.atunes.misc.TempFolder;
 import net.sourceforge.atunes.misc.Timer;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -67,14 +68,9 @@ public class Kernel {
     private static Timer timer;
 
     /**
-     * List of start listeners
+     * List of life cycle listeners
      */
-    private static List<ApplicationStartListener> startListeners = new ArrayList<ApplicationStartListener>();
-
-    /**
-     * List of finish listeners
-     */
-    private static List<ApplicationFinishListener> finishListeners = new ArrayList<ApplicationFinishListener>();
+    private static List<ApplicationLifeCycleListener> lifeCycleListeners = new ArrayList<ApplicationLifeCycleListener>();
 
     /**
      * Constructor of Kernel.
@@ -82,25 +78,14 @@ public class Kernel {
     private Kernel() {}
 
     /**
-     * Adds a start listener to list of listeners. All classes that implements
-     * ApplicationStartListener must call this method in order to be notified by
-     * Kernel when application has started
+     * Adds a life cycle listener to list of listeners. All classes that implements
+     * ApplicationLifeCycleListener must call this method in order to be notified by
+     * Kernel when application phase changes
      * 
      * @param listener
      */
-    public static void addStartListener(ApplicationStartListener listener) {
-        startListeners.add(listener);
-    }
-
-    /**
-     * Adds a finish listener to list of listeners. All classes that implements
-     * ApplicationFinishListener must call this method in order to be notified
-     * by Kernel when application is finishing
-     * 
-     * @param listener
-     */
-    public static void addFinishListener(ApplicationFinishListener listener) {
-        finishListeners.add(listener);
+    public static void addLifeCycleListener(ApplicationLifeCycleListener listener) {
+        lifeCycleListeners.add(listener);
     }
 
     /**
@@ -180,10 +165,9 @@ public class Kernel {
      * necessary modules and writes configuration.
      */
     private static void callActionsBeforeEnd() {
-        // Call all ApplicationFinishListener instances to finish
-        for (ApplicationFinishListener finishListener : finishListeners) {
-        	if (finishListener != null) {
-        		finishListener.applicationFinish();
+        for (ApplicationLifeCycleListener listener : lifeCycleListeners) {
+        	if (listener != null) {
+        		listener.applicationFinish();
         	}
         }
     }
@@ -196,6 +180,7 @@ public class Kernel {
         try {
             timer.start();
             getLogger().info(LogCategories.END, StringUtils.getString("Closing ", Constants.APP_NAME, " ", Constants.VERSION.toString()));
+            TempFolder.getInstance().removeAllFiles();
             // Call actions needed before closing application
             callActionsBeforeEnd();
         } finally {
@@ -211,14 +196,14 @@ public class Kernel {
      */
     static void callActionsAfterStart(List<AudioObject> playList) {
         // Call all ApplicationStartListener instances
-        for (ApplicationStartListener startListener : startListeners) {
+        for (ApplicationLifeCycleListener startListener : lifeCycleListeners) {
         	if (startListener != null) {
         		startListener.applicationStarted(playList);
         	}
         }
         
         // Call all ApplicationStartListener instances
-        for (ApplicationStartListener startListener : startListeners) {
+        for (ApplicationLifeCycleListener startListener : lifeCycleListeners) {
         	if (startListener != null) {
         		startListener.allHandlersInitialized();
         	}
