@@ -32,7 +32,7 @@ import net.sourceforge.atunes.gui.renderers.ColumnRenderers;
 import net.sourceforge.atunes.gui.views.controls.ColumnSetPopupMenu;
 import net.sourceforge.atunes.gui.views.controls.ColumnSetRowSorter;
 import net.sourceforge.atunes.gui.views.dialogs.SearchResultsDialog;
-import net.sourceforge.atunes.kernel.controllers.model.AbstractSimpleController;
+import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.kernel.modules.columns.SearchResultsColumnSet;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;

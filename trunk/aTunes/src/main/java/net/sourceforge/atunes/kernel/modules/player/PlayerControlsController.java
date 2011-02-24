@@ -30,7 +30,7 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
-import net.sourceforge.atunes.kernel.controllers.model.AbstractSimpleController;
+import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListEventListener;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;

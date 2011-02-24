@@ -32,7 +32,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 import net.sourceforge.atunes.gui.views.dialogs.CustomSearchDialog;
-import net.sourceforge.atunes.kernel.controllers.model.AbstractSimpleController;
+import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler.LogicalOperator;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;

@@ -58,7 +58,6 @@ import net.sourceforge.atunes.gui.views.dialogs.AboutDialog;
 import net.sourceforge.atunes.gui.views.dialogs.AddPodcastFeedDialog;
 import net.sourceforge.atunes.gui.views.dialogs.AddRadioDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ColumnSetSelectorDialog;
-import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
 import net.sourceforge.atunes.gui.views.dialogs.EqualizerDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ExportOptionsDialog;
 import net.sourceforge.atunes.gui.views.dialogs.FileSelectionDialog;
@@ -195,16 +194,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      */
     public ContextPanel getContextPanel() {
         return frame.getContextPanel();
-    }
-
-    /**
-     * Gets the edits the tag dialog.
-     * 
-     * @return the edits the tag dialog
-     */
-    public EditTagDialog getEditTagDialog(boolean arePrevNextButtonsShown) {
-        // EditTagDialog does not need to be cached in a local variable. It is modal and therefore either shown or not.
-        return new EditTagDialog(frame.getFrame(), arePrevNextButtonsShown);
     }
 
     /**
