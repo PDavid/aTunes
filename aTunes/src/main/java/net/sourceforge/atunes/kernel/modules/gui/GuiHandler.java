@@ -74,7 +74,6 @@ import net.sourceforge.atunes.gui.views.dialogs.SearchDialog;
 import net.sourceforge.atunes.gui.views.dialogs.SplashScreenDialog;
 import net.sourceforge.atunes.gui.views.dialogs.TransferProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.UpdateDialog;
-import net.sourceforge.atunes.gui.views.dialogs.fullScreen.FullScreenWindow;
 import net.sourceforge.atunes.gui.views.dialogs.properties.PropertiesDialog;
 import net.sourceforge.atunes.gui.views.menus.ApplicationMenuBar;
 import net.sourceforge.atunes.gui.views.panels.AudioObjectPropertiesPanel;
@@ -90,6 +89,7 @@ import net.sourceforge.atunes.kernel.actions.ShowToolbarAction;
 import net.sourceforge.atunes.kernel.modules.cdripper.RipperHandler;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
+import net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlaybackState;
 import net.sourceforge.atunes.kernel.modules.player.PlaybackStateListener;
@@ -135,7 +135,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     private AboutDialog aboutDialog;
     private SplashScreenDialog splashScreenDialog;
     private ReviewImportDialog reviewImportDialog;
-    private FullScreenWindow fullScreenWindow;
 
     /**
      * Instantiates a new gui handler.
@@ -260,20 +259,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     private void constructDefaultFrame() {
         frame = new DefaultSingleFrame();
         ApplicationState.getInstance().setFrameClass(frame.getClass());
-    }
-
-    /**
-     * Gets the full screen frame.
-     * 
-     * @return the fullScreenFrame
-     */
-    public FullScreenWindow getFullScreenWindow() {
-        if (fullScreenWindow == null) {
-            JDialog.setDefaultLookAndFeelDecorated(false);
-            fullScreenWindow = new FullScreenWindow(frame.getFrame());
-            JDialog.setDefaultLookAndFeelDecorated(true);
-        }
-        return fullScreenWindow;
     }
 
     /**
@@ -608,7 +593,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      */
     private void setPlaying(boolean playing) {
         PlayerHandler.getInstance().setPlaying(playing);
-        GuiHandler.getInstance().getFullScreenWindow().setPlaying(playing);
+        FullScreenHandler.getInstance().setPlaying(playing);
         SystemTrayHandler.getInstance().setPlaying(playing);
     }
 
@@ -1346,4 +1331,11 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
         // Once done graphic changes, repaint the window
         repaint();
     }
+    
+	@Override
+	public void playListCleared() {}
+
+	@Override
+	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+
 }

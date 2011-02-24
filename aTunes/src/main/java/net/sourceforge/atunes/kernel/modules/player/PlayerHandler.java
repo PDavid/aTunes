@@ -483,4 +483,12 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 	void setCurrentAudioObjectTimePlayed(long actualPlayedTime, long currentAudioObjectLength) {
 		getPlayerControlsController().setCurrentAudioObjectTimePlayed(actualPlayedTime, currentAudioObjectLength);
 	}
+
+	@Override
+	public void playListCleared() {}
+
+	@Override
+	public void selectedAudioObjectChanged(AudioObject audioObject) {
+		getPlayerControlsController().updatePlayerControls(audioObject);
+	}
 }

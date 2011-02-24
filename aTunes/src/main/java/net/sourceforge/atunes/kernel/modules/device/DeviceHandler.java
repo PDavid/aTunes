@@ -767,5 +767,10 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
         return new HashMap<String, Year>();
     }
 
+	@Override
+	public void playListCleared() {}
+
+	@Override
+	public void selectedAudioObjectChanged(AudioObject audioObject) {}
 
 }

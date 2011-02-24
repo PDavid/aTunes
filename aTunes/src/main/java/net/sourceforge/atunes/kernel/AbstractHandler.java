@@ -56,7 +56,9 @@ import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
-public abstract class AbstractHandler implements ApplicationLifeCycleListener, ApplicationStateChangeListener {
+public abstract class AbstractHandler implements ApplicationLifeCycleListener, 
+                                                 ApplicationStateChangeListener,
+                                                 PlayListEventListener {
 
     /**
      * Logger for handlers

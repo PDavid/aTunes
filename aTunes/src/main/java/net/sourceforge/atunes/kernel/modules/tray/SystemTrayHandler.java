@@ -466,4 +466,10 @@ public final class SystemTrayHandler extends AbstractHandler {
 		return trayInitialized;
 	}
 
+	@Override
+	public void playListCleared() {}
+
+	@Override
+	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+
 }

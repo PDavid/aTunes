@@ -1147,4 +1147,11 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         String customRepositoryConfigFolder = SystemProperties.getCustomRepositoryConfigFolder();
         return customRepositoryConfigFolder != null ? customRepositoryConfigFolder : SystemProperties.getUserConfigFolder(Kernel.isDebug());
     }
+    
+	@Override
+	public void playListCleared() {}
+
+	@Override
+	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+
 }

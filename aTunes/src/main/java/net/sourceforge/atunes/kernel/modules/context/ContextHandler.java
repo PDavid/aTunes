@@ -34,8 +34,6 @@ import net.sourceforge.atunes.kernel.modules.context.audioobject.AudioObjectCont
 import net.sourceforge.atunes.kernel.modules.context.similar.SimilarArtistsContextPanel;
 import net.sourceforge.atunes.kernel.modules.context.youtube.YoutubeContextPanel;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListEventListener;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
@@ -48,7 +46,7 @@ import org.commonjukebox.plugins.model.Plugin;
 import org.commonjukebox.plugins.model.PluginInfo;
 import org.commonjukebox.plugins.model.PluginListener;
 
-public final class ContextHandler extends AbstractHandler implements PluginListener, PlayListEventListener {
+public final class ContextHandler extends AbstractHandler implements PluginListener {
 
     /**
      * Singleton instance of handler
@@ -73,7 +71,6 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
 
     @Override
     protected void initHandler() {
-        PlayListHandler.getInstance().addPlayListEventListener(this);
     }
 
     @Override
@@ -275,7 +272,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     }
     
     @Override
-    public void clear() {
+    public void playListCleared() {
         if (ApplicationState.getInstance().isUseContext()) {
             retrieveInfoAndShowInPanel(null);
             

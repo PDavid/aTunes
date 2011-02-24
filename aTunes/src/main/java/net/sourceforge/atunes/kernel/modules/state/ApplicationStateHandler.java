@@ -612,4 +612,10 @@ public final class ApplicationStateHandler extends AbstractHandler {
     	new EditPreferencesDialogController(dialog).start();
     }
 
+	@Override
+	public void playListCleared() {}
+
+	@Override
+	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+
 }

@@ -47,7 +47,6 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -76,8 +75,6 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.player.ProgressBarSeekListener;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListEventListener;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -88,7 +85,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public final class FullScreenWindow extends AbstractCustomWindow implements PlayListEventListener {
+public final class FullScreenWindow extends AbstractCustomWindow {
 
     private final class SelectBackgroundActionListener implements
 			ActionListener {
@@ -251,8 +248,6 @@ public final class FullScreenWindow extends AbstractCustomWindow implements Play
         addMouseMotionListener(moveListener);
 
         addMouseListener(clickListener);
-        
-        PlayListHandler.getInstance().addPlayListEventListener(this);
     }
 
     void activateTimer() {
@@ -617,27 +612,5 @@ public final class FullScreenWindow extends AbstractCustomWindow implements Play
     private void updateWindow() {
         setText(objects.get(2));
         covers.paint(objects);
-    }
-    
-    @Override
-    public void clear() {
-        // Next actions must be done ONLY if stopPlayerWhenPlayListClear is enabled
-        if (ApplicationState.getInstance().isStopPlayerOnPlayListClear()) {
-
-            // Remove audio object information from full screen mode
-            setAudioObjects(null);
-        }
-    }
-    
-    @Override
-    public void selectedAudioObjectChanged(AudioObject audioObject) {
-        List<AudioObject> objects = new ArrayList<AudioObject>();
-        objects.add(PlayListHandler.getInstance().getCurrentPlayList(false).getPreviousAudioObject(2));
-        objects.add(PlayListHandler.getInstance().getCurrentPlayList(false).getPreviousAudioObject(1));
-        objects.add(audioObject);
-        objects.add(PlayListHandler.getInstance().getCurrentPlayList(false).getNextAudioObject(1));
-        objects.add(PlayListHandler.getInstance().getCurrentPlayList(false).getNextAudioObject(2));
-
-        setAudioObjects(objects);
-    }
+    }    
 }

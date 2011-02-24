@@ -29,6 +29,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenHandler;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
@@ -651,7 +652,7 @@ public abstract class AbstractPlayerEngine implements PlaybackStateListener {
         this.currentAudioObjectLength = currentLength;
         // Update sliders with max length
         PlayerHandler.getInstance().setAudioObjectLength(currentLength);
-        GuiHandler.getInstance().getFullScreenWindow().setAudioObjectLength(currentLength);
+        FullScreenHandler.getInstance().setAudioObjectLength(currentLength);
     }
 
     /**
@@ -664,7 +665,7 @@ public abstract class AbstractPlayerEngine implements PlaybackStateListener {
         long actualPlayedTime = playedTime;
         this.currentAudioObjectPlayedTime = actualPlayedTime;
         PlayerHandler.getInstance().setCurrentAudioObjectTimePlayed(actualPlayedTime, currentAudioObjectLength);
-        GuiHandler.getInstance().getFullScreenWindow().setCurrentAudioObjectPlayedTime(actualPlayedTime, currentAudioObjectLength);
+        FullScreenHandler.getInstance().setCurrentAudioObjectPlayedTime(actualPlayedTime, currentAudioObjectLength);
 
         // Conditions to submit an object:
         // - Not submitted before

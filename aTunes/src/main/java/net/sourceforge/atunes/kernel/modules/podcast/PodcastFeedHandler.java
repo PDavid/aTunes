@@ -498,4 +498,11 @@ public final class PodcastFeedHandler extends AbstractHandler {
     public void applicationStateChanged(ApplicationState newState) {
         setPodcastFeedEntryRetrievalInterval(newState.getPodcastFeedEntriesRetrievalInterval());
     }
+    
+	@Override
+	public void playListCleared() {}
+
+	@Override
+	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+
 }

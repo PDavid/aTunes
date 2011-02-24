@@ -26,7 +26,7 @@ import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 
 public final class Volume {
@@ -51,12 +51,12 @@ public final class Volume {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    GuiHandler.getInstance().getFullScreenWindow().setVolume(finalVolume);
+                    FullScreenHandler.getInstance().setVolume(finalVolume);
                     ((MuteAction) Actions.getAction(MuteAction.class)).updateIcon();
                 }
             });
         } else {
-            GuiHandler.getInstance().getFullScreenWindow().setVolume(finalVolume);
+        	FullScreenHandler.getInstance().setVolume(finalVolume);
             ((MuteAction) Actions.getAction(MuteAction.class)).updateIcon();
         }
     }

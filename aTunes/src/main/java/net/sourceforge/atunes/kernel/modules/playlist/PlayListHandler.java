@@ -33,6 +33,7 @@ import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListTabPanel;
 import net.sourceforge.atunes.kernel.AbstractHandler;
+import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.SavePlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
@@ -108,11 +109,6 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      */
     private boolean playListsChanged;
 
-    /**
-     * Listeners to be called when play list changes
-     */
-    private List<PlayListEventListener> playListEventListeners = new ArrayList<PlayListEventListener>();
-    
     /**
      * Filter for play list
      */
@@ -858,9 +854,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      * Called when play list is cleared. Calls to all PlayListEventListener
      */
     private void clear() {
-    	for (PlayListEventListener listener : playListEventListeners) {
-    		listener.clear();
-    	}
+    	PlayListEventListeners.playListCleared();
     }
 
     /**
@@ -875,9 +869,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
         }
 
         addToPlaybackHistory(audioObject);
-    	for (final PlayListEventListener listener : playListEventListeners) {
-    		listener.selectedAudioObjectChanged(audioObject);
-    	}
+        PlayListEventListeners.selectedAudioObjectHasChanged(audioObject);
     }
 
     /**
@@ -1200,14 +1192,6 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
     }
     
     /**
-     * Adds a new play list event listener
-     * @param listener
-     */
-    public void addPlayListEventListener(PlayListEventListener listener) {
-    	this.playListEventListeners.add(listener);
-    }
-    
-    /**
      * Gets the play list tab controller.
      * 
      * @return the play list tab controller
@@ -1322,4 +1306,11 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
 	public PlayListTable getPlayListTable() {
 		return getPlayListController().getMainPlayListTable();
 	}
+	
+	@Override
+	public void playListCleared() {}
+	
+	@Override
+	public void selectedAudioObjectChanged(AudioObject audioObject) {};
+	
 }

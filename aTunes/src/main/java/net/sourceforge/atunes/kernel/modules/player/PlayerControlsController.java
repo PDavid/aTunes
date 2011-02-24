@@ -31,15 +31,13 @@ import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListEventListener;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.StringUtils;
 
-final class PlayerControlsController extends AbstractSimpleController<PlayerControlsPanel> implements PlayListEventListener {
+final class PlayerControlsController extends AbstractSimpleController<PlayerControlsPanel> {
 
     private static final int SECONDS_10 = 10000;
     private static final int SECONDS_30 = 30000;
@@ -59,8 +57,6 @@ final class PlayerControlsController extends AbstractSimpleController<PlayerCont
         super(panel);
         addBindings();
         addStateBindings();
-        
-        PlayListHandler.getInstance().addPlayListEventListener(this);
     }
 
     @Override
@@ -261,16 +257,13 @@ final class PlayerControlsController extends AbstractSimpleController<PlayerCont
         Font currentFont = label.getFont();
         label.setFont(new Font(currentFont.getFontName(), Font.ITALIC, Math.max(currentFont.getSize() - 2, 8)));
         return label;
-    }
+    }    
     
-    @Override
-    public void clear() {
-    	// TODO Auto-generated method stub
-    	
-    }
-    
-    @Override
-    public void selectedAudioObjectChanged(AudioObject audioObject) {
+    /**
+     * Updates controls when playing given audio object
+     * @param audioObject
+     */
+    void updatePlayerControls(AudioObject audioObject) {
         // Disable slider if audio object is a radio or podcast feed entry
         boolean b = audioObject.isSeekable();
         if (b && audioObject instanceof PodcastFeedEntry) {

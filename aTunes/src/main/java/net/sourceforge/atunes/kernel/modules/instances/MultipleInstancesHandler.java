@@ -307,4 +307,11 @@ public final class MultipleInstancesHandler extends AbstractHandler {
             ClosingUtils.close(clientSocket);
         }
     }
+    
+	@Override
+	public void playListCleared() {}
+
+	@Override
+	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+
 }

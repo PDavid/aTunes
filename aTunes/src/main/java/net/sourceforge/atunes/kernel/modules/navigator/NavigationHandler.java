@@ -334,4 +334,10 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 		getNavigationController().notifyReload();
 	}
 
+	@Override
+	public void playListCleared() {}
+
+	@Override
+	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+
 }

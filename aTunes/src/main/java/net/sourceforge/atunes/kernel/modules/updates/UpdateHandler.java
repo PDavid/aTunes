@@ -188,4 +188,10 @@ public final class UpdateHandler extends AbstractHandler {
         instance.checkUpdates(null, true, true);
     }
 
+	@Override
+	public void playListCleared() {}
+
+	@Override
+	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+
 }

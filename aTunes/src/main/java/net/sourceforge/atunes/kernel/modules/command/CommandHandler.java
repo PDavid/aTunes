@@ -183,4 +183,10 @@ public final class CommandHandler extends AbstractHandler {
 
     }
 
+	@Override
+	public void playListCleared() {}
+
+	@Override
+	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+
 }

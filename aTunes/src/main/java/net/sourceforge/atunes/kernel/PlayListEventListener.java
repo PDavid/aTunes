@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.playlist;
+package net.sourceforge.atunes.kernel;
 
 import net.sourceforge.atunes.model.AudioObject;
 
@@ -30,7 +30,7 @@ public interface PlayListEventListener {
     /**
      * Called when play list is cleared.
      */
-    public void clear();
+    public void playListCleared();
 
     /**
      * Called when audio object to being played changes.
