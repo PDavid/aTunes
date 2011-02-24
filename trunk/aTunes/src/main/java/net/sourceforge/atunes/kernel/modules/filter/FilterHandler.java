@@ -232,4 +232,11 @@ public final class FilterHandler extends AbstractHandler {
     	}
     	return filters;
     }
+    
+	@Override
+	public void playListCleared() {}
+
+	@Override
+	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+
 }

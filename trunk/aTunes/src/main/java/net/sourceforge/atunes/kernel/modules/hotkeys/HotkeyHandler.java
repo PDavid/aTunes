@@ -277,4 +277,11 @@ public final class HotkeyHandler extends AbstractHandler implements HotkeyListen
             disableHotkeys();
         }
     }
+    
+	@Override
+	public void playListCleared() {}
+
+	@Override
+	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+
 }

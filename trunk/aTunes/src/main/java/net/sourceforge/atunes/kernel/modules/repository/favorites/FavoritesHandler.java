@@ -279,4 +279,10 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
         }
         callActionsAfterFavoritesChange();
     }
+
+	@Override
+	public void playListCleared() {}
+
+	@Override
+	public void selectedAudioObjectChanged(AudioObject audioObject) {}
 }

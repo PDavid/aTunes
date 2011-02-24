@@ -71,4 +71,10 @@ public class WebServicesHandler extends AbstractHandler {
 		return instance;
 	}
 
+	@Override
+	public void playListCleared() {}
+
+	@Override
+	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+
 }

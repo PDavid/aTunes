@@ -103,4 +103,10 @@ public class GeneralPurposePluginsHandler extends AbstractHandler implements Plu
             }
         }
     }
+
+	@Override
+	public void playListCleared() {}
+
+	@Override
+	public void selectedAudioObjectChanged(AudioObject audioObject) {}
 }

@@ -386,5 +386,10 @@ public final class SearchHandler extends AbstractHandler {
         .arrangeColumns(false);
 	}
 
+	@Override
+	public void playListCleared() {}
+
+	@Override
+	public void selectedAudioObjectChanged(AudioObject audioObject) {}
 
 }

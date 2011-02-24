@@ -25,12 +25,11 @@ import java.util.List;
 import net.sourceforge.atunes.gui.views.panels.AudioObjectPropertiesPanel;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListEventListener;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
 
-public class AudioObjectPropertiesHandler extends AbstractHandler implements PlayListEventListener {
+public class AudioObjectPropertiesHandler extends AbstractHandler {
 
 	private static AudioObjectPropertiesHandler instance;
 	
@@ -83,7 +82,6 @@ public class AudioObjectPropertiesHandler extends AbstractHandler implements Pla
 
 	@Override
 	public void applicationStarted(List<AudioObject> playList) {
-        PlayListHandler.getInstance().addPlayListEventListener(this);
         showSongProperties(ApplicationState.getInstance().isShowAudioObjectProperties());
 	}
 
@@ -108,7 +106,7 @@ public class AudioObjectPropertiesHandler extends AbstractHandler implements Pla
 	}
 	
     @Override
-    public void clear() {
+    public void playListCleared() {
         // Next actions must be done ONLY if stopPlayerWhenPlayListClear is enabled
         if (ApplicationState.getInstance().isStopPlayerOnPlayListClear() && ApplicationState.getInstance().isShowAudioObjectProperties()) {
         	getController().clearPanel();

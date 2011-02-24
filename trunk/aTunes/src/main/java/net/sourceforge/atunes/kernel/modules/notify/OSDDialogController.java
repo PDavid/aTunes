@@ -33,7 +33,6 @@ import javax.swing.Timer;
 import net.sourceforge.atunes.gui.WindowFader;
 import net.sourceforge.atunes.gui.views.dialogs.OSDDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.GenericImageSize;
@@ -92,8 +91,7 @@ final class OSDDialogController extends AbstractSimpleController<OSDDialog> {
      *            the audio object
      */
     void showOSD(AudioObject audioObject) {
-
-        if (audioObject == null || GuiHandler.getInstance().getFullScreenWindow().isVisible()) {
+        if (audioObject == null) {
             return;
         }
 

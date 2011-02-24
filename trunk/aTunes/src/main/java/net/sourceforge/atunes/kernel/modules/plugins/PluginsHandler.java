@@ -409,4 +409,10 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
 
     }
 
+	@Override
+	public void playListCleared() {}
+
+	@Override
+	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+
 }

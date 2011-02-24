@@ -389,4 +389,10 @@ public final class RadioHandler extends AbstractHandler {
 		new RadioBrowserDialogController(new RadioBrowserDialog(GuiHandler.getInstance().getFrame().getFrame())).showRadioBrowser();
 	}
 
+	@Override
+	public void playListCleared() {}
+
+	@Override
+	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+
 }

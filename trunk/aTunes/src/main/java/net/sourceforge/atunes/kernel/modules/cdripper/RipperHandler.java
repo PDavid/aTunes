@@ -716,5 +716,10 @@ public final class RipperHandler extends AbstractHandler {
         return ripCdDialogController;
     }
 
+	@Override
+	public void playListCleared() {}
+
+	@Override
+	public void selectedAudioObjectChanged(AudioObject audioObject) {}
 
 }

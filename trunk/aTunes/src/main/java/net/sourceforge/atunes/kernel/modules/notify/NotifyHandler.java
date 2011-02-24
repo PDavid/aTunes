@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.modules.notify;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
+import net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlaybackState;
 import net.sourceforge.atunes.kernel.modules.player.PlaybackStateListener;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -77,7 +78,10 @@ public final class NotifyHandler extends AbstractHandler implements PlaybackStat
      * Show notification
      */
     public void showNotification(AudioObject audioObject) {
-        notifications.showNotification(audioObject);
+    	// only show notification if not in full screen
+    	if (!FullScreenHandler.getInstance().isVisible()) {
+    		notifications.showNotification(audioObject);
+    	}
     }
 
     @Override
@@ -87,4 +91,11 @@ public final class NotifyHandler extends AbstractHandler implements PlaybackStat
             showNotification(currentAudioObject);
         }
     }
+    
+	@Override
+	public void playListCleared() {}
+
+	@Override
+	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+
 }

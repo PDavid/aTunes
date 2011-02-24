@@ -455,4 +455,11 @@ public final class StatisticsHandler extends AbstractHandler {
 		}
 		controller.showStats();
 	}
+	
+	@Override
+	public void playListCleared() {}
+
+	@Override
+	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+
 }
