@@ -88,8 +88,6 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 
     @Override
     public void applicationStateChanged(ApplicationState newState) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -98,10 +96,10 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
         Volume.setVolume(ApplicationState.getInstance().getVolume(), false);
 
         // Mute
-        PlayerHandler.getInstance().applyMuteState(ApplicationState.getInstance().isMuteEnabled());
+        applyMuteState(ApplicationState.getInstance().isMuteEnabled());
     	
         // Initial playback state is stopped
-        getInstance().playerEngine.callPlaybackStateListeners(PlaybackState.STOPPED);
+        playerEngine.callPlaybackStateListeners(PlaybackState.STOPPED);
 
         if (ApplicationState.getInstance().isPlayAtStartup()) {
             playCurrentAudioObject(true);
@@ -268,8 +266,8 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 
     @Override
     public void applicationFinish() {
-        // Stop must be called explicitely to avoid playback after user closed app
-        PlayerHandler.getInstance().stopCurrentAudioObject(true);
+        // Stop must be called explicitly to avoid playback after user closed app
+        stopCurrentAudioObject(true);
         playerEngine.finishPlayer();
     }
 
@@ -426,7 +424,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     public void pluginDeactivated(PluginInfo plugin, Collection<Plugin> createdInstances) {
         getLogger().info(LogCategories.PLUGINS, StringUtils.getString("Plugin deactivated: ", plugin.getName(), " (", plugin.getClassName(), ")"));
         for (Plugin createdInstance : createdInstances) {
-            PlayerHandler.getInstance().removePlaybackStateListener((PlaybackStateListener) createdInstance);
+            removePlaybackStateListener((PlaybackStateListener) createdInstance);
         }
     }
 
