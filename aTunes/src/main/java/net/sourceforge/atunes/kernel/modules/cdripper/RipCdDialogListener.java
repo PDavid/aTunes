@@ -40,7 +40,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The listener interface for receiving ripCdDialog events.
  */
-public final class RipCdDialogListener extends KeyAdapter implements ActionListener {
+final class RipCdDialogListener extends KeyAdapter implements ActionListener {
 
     /** The rip cd dialog. */
     private RipCdDialog ripCdDialog;

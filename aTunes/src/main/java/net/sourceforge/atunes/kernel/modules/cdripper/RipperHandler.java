@@ -359,7 +359,7 @@ public final class RipperHandler extends AbstractHandler {
      * @param album
      *            the album
      */
-    public void fillSongTitles(final String artist, final String album) {
+    void fillSongTitles(final String artist, final String album) {
         getRipCdDialogController().getComponentControlled().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         getRipCdDialogController().getComponentControlled().getTitlesButton().setEnabled(false);
         new FillSongTitlesSwingWorker(artist, album).execute();
@@ -372,7 +372,7 @@ public final class RipperHandler extends AbstractHandler {
      * @return Return the format name of the encoder used the previous time or
      *         default one if it's available
      */
-    public String getEncoder() {
+    String getEncoder() {
         String encoderFormat = ApplicationState.getInstance().getEncoder();
         if (getAvailableEncoders().containsKey(encoderFormat)) {
             return encoderFormat;
@@ -402,7 +402,7 @@ public final class RipperHandler extends AbstractHandler {
      * @param formatName
      * @return
      */
-    public String[] getEncoderQualities(String formatName) {
+    String[] getEncoderQualities(String formatName) {
         if (getAvailableEncoders().containsKey(formatName)) {
             return getAvailableEncoders().get(formatName).getAvailableQualities();
         }
@@ -415,7 +415,7 @@ public final class RipperHandler extends AbstractHandler {
      * @param formatName
      * @return
      */
-    public String getEncoderDefaultQuality(String formatName) {
+    String getEncoderDefaultQuality(String formatName) {
         if (getAvailableEncoders().containsKey(formatName)) {
             return getAvailableEncoders().get(formatName).getDefaultQuality();
         }
@@ -427,7 +427,7 @@ public final class RipperHandler extends AbstractHandler {
      * 
      * @return the encoder quality
      */
-    public String getEncoderQuality() {
+    String getEncoderQuality() {
         return ApplicationState.getInstance().getEncoderQuality();
     }
 
@@ -436,7 +436,7 @@ public final class RipperHandler extends AbstractHandler {
      * 
      * @return The filename pattern
      */
-    public String getFileNamePattern() {
+    String getFileNamePattern() {
         return ApplicationState.getInstance().getCdRipperFileNamePattern();
     }
 
@@ -445,7 +445,7 @@ public final class RipperHandler extends AbstractHandler {
      * 
      * @return the available encoders
      */
-    public Map<String, Encoder> getAvailableEncoders() {
+    Map<String, Encoder> getAvailableEncoders() {
         if (availableEncoders == null) {
             availableEncoders = new HashMap<String, Encoder>();
 
@@ -486,7 +486,7 @@ public final class RipperHandler extends AbstractHandler {
      * 
      * @return true if error correction for cd ripping should be used
      */
-    public boolean getCdErrorCorrection() {
+    boolean getCdErrorCorrection() {
         return ApplicationState.getInstance().isUseCdErrorCorrection();
     }
 
@@ -589,7 +589,7 @@ public final class RipperHandler extends AbstractHandler {
      * @param folder
      *            the folder
      */
-    public void notifyFinishImport(final List<File> filesImported, final File folder) {
+    void notifyFinishImport(final List<File> filesImported, final File folder) {
         GuiHandler.getInstance().getRipperProgressDialog().setVisible(false);
         if (interrupted) { // If process is interrupted delete all imported files
             Runnable deleter = new Runnable() {
