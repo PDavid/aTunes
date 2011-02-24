@@ -40,7 +40,7 @@ import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public class CdRipper {
+class CdRipper {
 
     private final class EncodeFileRunnable implements Runnable {
 		private final int trackNumber;
@@ -98,10 +98,10 @@ public class CdRipper {
 		}
 	}
 
-	public static final String ARTIST_PATTERN = "%A";
-    public static final String ALBUM_PATTERN = "%L";
-    public static final String TITLE_PATTERN = "%T";
-    public static final String TRACK_NUMBER = "%N";
+	static final String ARTIST_PATTERN = "%A";
+    static final String ALBUM_PATTERN = "%L";
+    static final String TITLE_PATTERN = "%T";
+    static final String TRACK_NUMBER = "%N";
 
     private Logger logger;
     private AbstractCdToWavConverter cdToWavConverter;
@@ -120,7 +120,7 @@ public class CdRipper {
     /**
      * Instantiates a new cd ripper.
      */
-    public CdRipper() {
+    CdRipper() {
         cdToWavConverter = AbstractCdToWavConverter.createNewConverterForOS();
     }
 
@@ -141,7 +141,7 @@ public class CdRipper {
      * 
      * @return the cD info
      */
-    public CDInfo getCDInfo() {
+    CDInfo getCDInfo() {
         return cdToWavConverter.retrieveDiscInformation();
     }
 
@@ -196,7 +196,7 @@ public class CdRipper {
      * @return true, if successful
      */
 
-    public boolean ripTracks(List<Integer> tracks, final List<String> titles, File folder, final List<String> artistNames, final List<String> composerNames, boolean useParanoia) {
+    boolean ripTracks(List<Integer> tracks, final List<String> titles, File folder, final List<String> artistNames, final List<String> composerNames, boolean useParanoia) {
         String extension = encoder != null ? encoder.getExtensionOfEncodedFiles() : "wav";
         getLogger().info(LogCategories.RIPPER, StringUtils.getString("Running cd ripping of ", tracks.size(), " to ", extension, "..."));
         long t0 = System.currentTimeMillis();
@@ -286,7 +286,7 @@ public class CdRipper {
      * @param album
      *            the new album
      */
-    public void setAlbum(String album) {
+    void setAlbum(String album) {
         if (album == null || album.equals("")) {
             this.album = Album.getUnknownAlbum();
         } else {
@@ -303,7 +303,7 @@ public class CdRipper {
      * @param artist
      *            the new artist
      */
-    public void setArtist(String artist) {
+    void setArtist(String artist) {
         if (artist == null || artist.equals("")) {
             this.artist = Artist.getUnknownArtist();
         } else {
@@ -320,7 +320,7 @@ public class CdRipper {
      * @param listener
      *            the new decoder listener
      */
-    public void setDecoderListener(ProgressListener listener) {
+    void setDecoderListener(ProgressListener listener) {
         cdToWavConverter.setListener(listener);
     }
 
@@ -330,7 +330,7 @@ public class CdRipper {
      * @param encoder
      *            the new encoder
      */
-    public void setEncoder(Encoder encoder) {
+    void setEncoder(Encoder encoder) {
         this.encoder = encoder;
     }
 
@@ -340,7 +340,7 @@ public class CdRipper {
      * @param listener
      *            the new encoder listener
      */
-    public void setEncoderListener(ProgressListener listener) {
+    void setEncoderListener(ProgressListener listener) {
         if (encoder != null) {
             encoder.setListener(listener);
         }
@@ -352,7 +352,7 @@ public class CdRipper {
      * @param fileNamePattern
      *            the new file name pattern
      */
-    public void setFileNamePattern(String fileNamePattern) {
+    void setFileNamePattern(String fileNamePattern) {
         this.fileNamePattern = fileNamePattern;
     }
 
@@ -362,7 +362,7 @@ public class CdRipper {
      * @param genre
      *            the new genre
      */
-    public void setGenre(String genre) {
+    void setGenre(String genre) {
         this.genre = genre;
         if (encoder != null) {
             encoder.setGenre(this.genre);
@@ -375,7 +375,7 @@ public class CdRipper {
      * @param listener
      *            the new no cd listener
      */
-    public void setNoCdListener(NoCdListener listener) {
+    void setNoCdListener(NoCdListener listener) {
         cdToWavConverter.setNoCdListener(listener);
     }
 
@@ -385,7 +385,7 @@ public class CdRipper {
      * @param listener
      *            the new total progress listener
      */
-    public void setTotalProgressListener(ProgressListener listener) {
+    void setTotalProgressListener(ProgressListener listener) {
         this.listener = listener;
     }
 
@@ -395,7 +395,7 @@ public class CdRipper {
      * @param year
      *            the new year
      */
-    public void setYear(int year) {
+    void setYear(int year) {
         this.year = year;
         if (encoder != null) {
             encoder.setYear(this.year);
@@ -405,7 +405,7 @@ public class CdRipper {
     /**
      * Stop.
      */
-    public void stop() {
+    void stop() {
         interrupted = true;
         cdToWavConverter.stop();
         if (encoder != null) {
