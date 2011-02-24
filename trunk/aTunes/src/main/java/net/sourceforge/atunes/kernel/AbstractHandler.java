@@ -94,7 +94,7 @@ public abstract class AbstractHandler implements ApplicationLifeCycleListener,
      * @param handler
      */
     private static final void registerHandler(AbstractHandler handler) {
-        Kernel.addLifeCycleListener(handler);
+        ApplicationLifeCycleListeners.addApplicationLifeCycleListener(handler);
         FavoritesListeners.addFavoritesListener(handler);
         ApplicationStateHandler.getInstance().addStateChangeListener(handler);
     }

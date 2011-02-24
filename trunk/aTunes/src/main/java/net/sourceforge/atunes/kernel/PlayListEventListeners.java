@@ -39,7 +39,9 @@ public class PlayListEventListeners {
      * @param listener
      */
     public static void addPlayListEventListener(PlayListEventListener listener) {
-    	listeners.add(listener);
+    	if (listener != null) {
+    		listeners.add(listener);
+    	}
     }
 
 	/**
