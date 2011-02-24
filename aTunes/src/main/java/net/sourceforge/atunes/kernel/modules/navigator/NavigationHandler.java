@@ -340,4 +340,9 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 	@Override
 	public void selectedAudioObjectChanged(AudioObject audioObject) {}
 
+	@Override
+	public void favoritesChanged() {
+        // Update all views
+        refreshCurrentView();
+	}
 }

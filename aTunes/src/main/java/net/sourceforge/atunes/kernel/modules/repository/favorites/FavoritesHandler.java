@@ -24,11 +24,9 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
+import net.sourceforge.atunes.kernel.FavoritesListeners;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction;
-import net.sourceforge.atunes.kernel.modules.audioobjetproperties.AudioObjectPropertiesHandler;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.repository.AudioFilesRemovedListener;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.Album;
@@ -248,17 +246,13 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
      * Actions to do after a favorite change (add, remove)
      */
     private void callActionsAfterFavoritesChange() {
+    	FavoritesListeners.favoritesChanged();
+    }
+    
+    @Override
+    public void favoritesChanged() {
         // Mark favorites information as dirty
         getFavorites().setDirty(true);
-
-        // Update playlist to remove favorite icon
-        PlayListHandler.getInstance().refreshPlayList();
-
-        // Update all views
-        NavigationHandler.getInstance().refreshCurrentView();
-
-        // Update audio object properties panel
-        AudioObjectPropertiesHandler.getInstance().refreshFavoriteIcons();
     }
 
     @Override
