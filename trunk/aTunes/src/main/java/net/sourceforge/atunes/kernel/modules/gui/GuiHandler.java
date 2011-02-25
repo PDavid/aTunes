@@ -1335,4 +1335,15 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
 	@Override
 	public void selectedAudioObjectChanged(AudioObject audioObject) {}
 
+	@Override
+	public void deviceDisconnected(String location) {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+		        hideDeviceInfoOnStatusBar();
+		        showMessage(I18nUtils.getString("DEVICE_DISCONNECTION_DETECTED"));		        
+			}
+		});
+	}
+	
 }

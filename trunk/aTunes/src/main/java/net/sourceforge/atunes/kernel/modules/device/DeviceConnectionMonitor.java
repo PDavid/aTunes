@@ -21,11 +21,8 @@
 package net.sourceforge.atunes.kernel.modules.device;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.swing.SwingUtilities;
-
+import net.sourceforge.atunes.kernel.DeviceListeners;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -33,26 +30,13 @@ import net.sourceforge.atunes.misc.log.Logger;
 public final class DeviceConnectionMonitor extends Thread {
 
     private static DeviceConnectionMonitor instance;
-    private static List<DeviceConnectionListener> listeners = new ArrayList<DeviceConnectionListener>();
     private static int TIME_TO_WAIT = 5000;
-
-    private Logger logger;
 
     /**
      * Instantiates a new device connection monitor.
      */
     private DeviceConnectionMonitor() {
         super();
-    }
-
-    /**
-     * Adds the listener.
-     * 
-     * @param listener
-     *            the listener
-     */
-    public static void addListener(DeviceConnectionListener listener) {
-        listeners.add(listener);
     }
 
     /**
@@ -84,10 +68,8 @@ public final class DeviceConnectionMonitor extends Thread {
             if (deviceLocation != null && !deviceLocation.equals("")) {
                 File deviceLocationFile = new File(deviceLocation);
                 if (!DeviceHandler.getInstance().isDeviceConnected() && deviceLocationFile.exists()) {
-                	getLogger().info(LogCategories.PROCESS, "Device connected");
-                	for (final DeviceConnectionListener l : listeners) {
-                		SwingUtilities.invokeLater(new DeviceConnectedRunnable(l, deviceLocation));
-                	}
+                	new Logger().info(LogCategories.PROCESS, "Device connected");
+                	DeviceListeners.deviceConnected(deviceLocationFile.getAbsolutePath());
                 	instance = null;
                 	return;
                 }
@@ -95,38 +77,8 @@ public final class DeviceConnectionMonitor extends Thread {
             try {
                 Thread.sleep(TIME_TO_WAIT);
             } catch (InterruptedException e) {
-                getLogger().error(LogCategories.PROCESS, e);
+                new Logger().error(LogCategories.PROCESS, e);
             }
         }
     }
-
-    private static class DeviceConnectedRunnable implements Runnable {
-
-        private DeviceConnectionListener listener;
-
-        private String deviceLocation;
-
-        public DeviceConnectedRunnable(DeviceConnectionListener listener, String deviceLocation) {
-            this.listener = listener;
-            this.deviceLocation = deviceLocation;
-        }
-
-        @Override
-        public void run() {
-            listener.deviceConnected(deviceLocation);
-        }
-    }
-
-    /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
-    }
-
 }

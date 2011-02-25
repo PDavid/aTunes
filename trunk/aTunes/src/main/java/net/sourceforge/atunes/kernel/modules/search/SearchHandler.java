@@ -36,6 +36,7 @@ import net.sourceforge.atunes.gui.views.dialogs.CustomSearchDialog;
 import net.sourceforge.atunes.gui.views.dialogs.SearchResultsDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.kernel.modules.search.searchableobjects.DeviceSearchableObject;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.AudioObject;
@@ -392,4 +393,8 @@ public final class SearchHandler extends AbstractHandler {
 	@Override
 	public void selectedAudioObjectChanged(AudioObject audioObject) {}
 
+	@Override
+	public void deviceDisconnected(String location) {
+		unregisterSearchableObject(DeviceSearchableObject.getInstance());
+	}
 }

@@ -21,37 +21,21 @@
 package net.sourceforge.atunes.kernel.modules.device;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.swing.SwingUtilities;
-
+import net.sourceforge.atunes.kernel.DeviceListeners;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
 public final class DeviceDisconnectionMonitor extends Thread {
 
     private static DeviceDisconnectionMonitor instance;
-    private static List<DeviceDisconnectionListener> listeners = new ArrayList<DeviceDisconnectionListener>();
     private static int TIME_TO_WAIT = 5000;
-
-    private Logger logger;
 
     /**
      * Instantiates a new device disconnection monitor.
      */
     private DeviceDisconnectionMonitor() {
         super();
-    }
-
-    /**
-     * Adds the listener.
-     * 
-     * @param listener
-     *            the listener
-     */
-    public static void addListener(DeviceDisconnectionListener listener) {
-        listeners.add(listener);
     }
 
     /**
@@ -83,49 +67,17 @@ public final class DeviceDisconnectionMonitor extends Thread {
                 return;
             }
 
-            final File deviceLocationFile = DeviceHandler.getInstance().getDeviceRepository().getFolders().get(0);
+            File deviceLocationFile = DeviceHandler.getInstance().getDeviceRepository().getFolders().get(0);
             if (!deviceLocationFile.exists()) {
-                getLogger().info(LogCategories.PROCESS, "Device disconnected");
-                for (final DeviceDisconnectionListener l : listeners) {
-                    SwingUtilities.invokeLater(new DeviceDisconnectedRunnable(l, deviceLocationFile.getAbsolutePath()));
-                }
+                new Logger().info(LogCategories.PROCESS, "Device disconnected");
+                DeviceListeners.deviceDisconnected(deviceLocationFile.getAbsolutePath());
                 return;
             }
             try {
                 Thread.sleep(TIME_TO_WAIT);
             } catch (InterruptedException e) {
-                getLogger().error(LogCategories.PROCESS, e);
+                new Logger().error(LogCategories.PROCESS, e);
             }
         }
     }
-
-    private static class DeviceDisconnectedRunnable implements Runnable {
-
-        private DeviceDisconnectionListener listener;
-
-        private String deviceLocation;
-
-        public DeviceDisconnectedRunnable(DeviceDisconnectionListener listener, String deviceLocation) {
-            this.listener = listener;
-            this.deviceLocation = deviceLocation;
-        }
-
-        @Override
-        public void run() {
-            listener.deviceDisconnected(deviceLocation);
-        }
-    }
-
-    /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
-    }
-
 }

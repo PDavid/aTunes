@@ -50,7 +50,6 @@ import net.sourceforge.atunes.kernel.actions.SynchronizeDeviceWithPlayListAction
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.AudioFilesRemovedListener;
 import net.sourceforge.atunes.kernel.modules.repository.LoaderListener;
@@ -74,7 +73,7 @@ import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public final class DeviceHandler extends AbstractHandler implements LoaderListener, DeviceConnectionListener, DeviceDisconnectionListener, AudioFilesRemovedListener {
+public final class DeviceHandler extends AbstractHandler implements LoaderListener, AudioFilesRemovedListener {
 
     private static DeviceHandler instance = new DeviceHandler();
 
@@ -106,7 +105,6 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
     public void applicationStarted(List<AudioObject> playList) {
         // Start device monitor
         DeviceConnectionMonitor.startMonitor();
-        DeviceConnectionMonitor.addListener(this);
     }
 
     /**
@@ -262,60 +260,34 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
     }
 
     /**
-     * Called when a device monitor detects a device disconnection.
+     * Called when device is disconnected
      * 
      * @param location
      *            the location
      */
     @Override
     public void deviceDisconnected(String location) {
-        GuiHandler.getInstance().showMessage(I18nUtils.getString("DEVICE_DISCONNECTION_DETECTED"));
-        disconnectDevice();
-
-        // Start device connection monitor
-        DeviceConnectionMonitor.startMonitor();
-    }
-
-    /**
-     * Disconnect device.
-     */
-    public void disconnectDevice() {
         // Persist device metadata
         ApplicationStateHandler.getInstance().persistDeviceCache(deviceId, deviceRepository);
 
-        GuiHandler.getInstance().hideDeviceInfoOnStatusBar();
-
-        List<Integer> songsToRemove = new ArrayList<Integer>();
-        for (AudioObject ao : PlayListHandler.getInstance().getCurrentPlayList(true).getObjectsOfType(AudioFile.class)) {
-            AudioFile audioFile = (AudioFile) ao;
-            if (audioFile.getFile().getPath().startsWith(this.getDeviceRepository().getFolders().get(0).getPath())) {
-                songsToRemove.add(PlayListHandler.getInstance().getCurrentPlayList(true).indexOf(audioFile));
-            }
-        }
-        int[] indexes = new int[songsToRemove.size()];
-        for (int i = 0; i < songsToRemove.size(); i++) {
-            indexes[i] = songsToRemove.get(i);
-        }
-
-        if (indexes.length > 0) {
-            //			PlayListTable table = VisualHandler.getInstance().getPlayListTable();
-            //			((PlayListTableModel) table.getModel()).removeAudioObjects(indexes);
-            GuiHandler.getInstance().getPlayListPanel().getPlayListTable().getSelectionModel().clearSelection();
-            PlayListHandler.getInstance().removeAudioObjects(indexes);
-        }
-
         deviceRepository = null;
-        notifyFinishRefresh(null);
+
+    	SwingUtilities.invokeLater(new Runnable() {
+    		@Override
+    		public void run() {
+    	        notifyFinishRefresh(null);
+    	        Actions.getAction(ConnectDeviceAction.class).setEnabled(true);
+    	        Actions.getAction(RefreshDeviceAction.class).setEnabled(false);
+    	        Actions.getAction(DisconnectDeviceAction.class).setEnabled(false);
+    	        Actions.getAction(SynchronizeDeviceWithPlayListAction.class).setEnabled(false);
+    	        Actions.getAction(CopyPlayListToDeviceAction.class).setEnabled(false);
+    		}
+    	});
+
         getLogger().info(LogCategories.REPOSITORY, "Device disconnected");
 
-        Actions.getAction(ConnectDeviceAction.class).setEnabled(true);
-        Actions.getAction(RefreshDeviceAction.class).setEnabled(false);
-        Actions.getAction(DisconnectDeviceAction.class).setEnabled(false);
-        Actions.getAction(SynchronizeDeviceWithPlayListAction.class).setEnabled(false);
-        Actions.getAction(CopyPlayListToDeviceAction.class).setEnabled(false);
-
-        // Unregister device to search in
-        SearchHandler.getInstance().unregisterSearchableObject(DeviceSearchableObject.getInstance());
+        // Start device connection monitor
+        DeviceConnectionMonitor.startMonitor();
     }
 
     /**
@@ -499,7 +471,6 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
     private void actionsAfterConnectDevice() {
         // Start device disconnection monitor
         DeviceDisconnectionMonitor.startMonitor();
-        DeviceDisconnectionMonitor.addListener(this);
 
         // Register device to search in
         SearchHandler.getInstance().registerSearchableObject(DeviceSearchableObject.getInstance());
@@ -773,4 +744,11 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
 	@Override
 	public void selectedAudioObjectChanged(AudioObject audioObject) {}
 
+	/**
+	 * Returns device location
+	 * @return
+	 */
+	public String getDeviceLocation() {
+		return getDeviceRepository() != null ? getDeviceRepository().getFolders().get(0).getAbsolutePath() : null;
+	}
 }
