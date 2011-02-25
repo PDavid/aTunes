@@ -54,7 +54,7 @@ import org.commonjukebox.plugins.model.PluginListener;
 /**
  * This class is responsible for handling the player engine.
  */
-public final class PlayerHandler extends AbstractHandler implements PluginListener, PlaybackStateListener {
+public final class PlayerHandler extends AbstractHandler implements PluginListener {
 
     /**
      * The player engine used
