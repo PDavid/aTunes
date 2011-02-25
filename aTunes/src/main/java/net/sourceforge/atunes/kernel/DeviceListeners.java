@@ -43,22 +43,32 @@ public class DeviceListeners {
     }
 
 	/**
-	 * Called when device disconnected
-	 * @param location
-	 */
-	public static void deviceDisconnected(String location) {
-        for (DeviceListener l : listeners) {
-        	l.deviceDisconnected(location);
-        }
-	}
-
-	/**
 	 * Called when device connected
 	 * @param path
 	 */
 	public static void deviceConnected(String path) {
         for (DeviceListener l : listeners) {
         	l.deviceConnected(path);
+        }
+	}
+
+	/**
+	 * Called when device is ready
+	 * @param path
+	 */
+	public static void deviceReady(String path) {
+        for (DeviceListener l : listeners) {
+        	l.deviceReady(path);
+        }
+	}
+
+	/**
+	 * Called when device disconnected
+	 * @param location
+	 */
+	public static void deviceDisconnected(String location) {
+        for (DeviceListener l : listeners) {
+        	l.deviceDisconnected(location);
         }
 	}
 }
