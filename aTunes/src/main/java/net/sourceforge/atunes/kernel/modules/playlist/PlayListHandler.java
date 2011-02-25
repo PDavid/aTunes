@@ -1318,4 +1318,24 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
         // Update playlist to remove favorite icon
         refreshPlayList();
 	}
+	
+	@Override
+	public void deviceDisconnected(String location) {
+        List<Integer> songsToRemove = new ArrayList<Integer>();
+        for (AudioObject ao : getCurrentPlayList(true).getObjectsOfType(AudioFile.class)) {
+            AudioFile audioFile = (AudioFile) ao;
+            if (audioFile.getFile().getPath().startsWith(location)) {
+                songsToRemove.add(getCurrentPlayList(true).indexOf(audioFile));
+            }
+        }
+        int[] indexes = new int[songsToRemove.size()];
+        for (int i = 0; i < songsToRemove.size(); i++) {
+            indexes[i] = songsToRemove.get(i);
+        }
+
+        if (indexes.length > 0) {
+            GuiHandler.getInstance().getPlayListPanel().getPlayListTable().getSelectionModel().clearSelection();
+            removeAudioObjects(indexes);
+        }
+	}
 }

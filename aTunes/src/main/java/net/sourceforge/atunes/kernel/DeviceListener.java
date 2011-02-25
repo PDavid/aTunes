@@ -18,18 +18,22 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.device;
+package net.sourceforge.atunes.kernel;
 
 /**
- * The listener interface for receiving deviceDisconnection events.
+ * The listener interface for receiving device events.
  */
-public interface DeviceDisconnectionListener {
+public interface DeviceListener {
 
     /**
-     * Device disconnected.
-     * 
+     * Device connected.
      * @param location
-     *            the location
+     */
+    public void deviceConnected(String location);
+    
+    /**
+     * Device disconnected.
+     * @param location
      */
     public void deviceDisconnected(String location);
 }

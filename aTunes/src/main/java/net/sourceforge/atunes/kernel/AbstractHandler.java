@@ -59,7 +59,8 @@ import net.sourceforge.atunes.misc.log.Logger;
 public abstract class AbstractHandler implements ApplicationLifeCycleListener, 
                                                  ApplicationStateChangeListener,
                                                  PlayListEventListener,
-                                                 FavoritesListener {
+                                                 FavoritesListener,
+                                                 DeviceListener {
 
     /**
      * Logger for handlers
@@ -97,6 +98,7 @@ public abstract class AbstractHandler implements ApplicationLifeCycleListener,
         ApplicationLifeCycleListeners.addApplicationLifeCycleListener(handler);
         FavoritesListeners.addFavoritesListener(handler);
         ApplicationStateHandler.getInstance().addStateChangeListener(handler);
+        DeviceListeners.addDeviceListener(handler);
     }
 
     /**
@@ -176,4 +178,10 @@ public abstract class AbstractHandler implements ApplicationLifeCycleListener,
     
     @Override
     public void favoritesChanged() {}
+    
+    @Override
+    public void deviceConnected(String location) {}
+    
+    @Override
+    public void deviceDisconnected(String location) {}
 }
