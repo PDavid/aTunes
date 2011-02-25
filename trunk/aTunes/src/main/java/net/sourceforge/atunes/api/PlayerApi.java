@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.api;
 
-import net.sourceforge.atunes.kernel.modules.player.PlaybackState;
+import net.sourceforge.atunes.kernel.PlaybackState;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.model.AudioObject;
