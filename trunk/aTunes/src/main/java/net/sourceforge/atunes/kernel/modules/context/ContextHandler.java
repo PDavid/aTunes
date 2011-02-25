@@ -24,9 +24,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.context.album.AlbumContextPanel;
 import net.sourceforge.atunes.kernel.modules.context.artist.ArtistContextPanel;
@@ -53,6 +50,8 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
      */
     private static ContextHandler instance;
 
+    private ContextController controller;
+    
     /**
      * The current audio object used to retrieve information
      */
@@ -75,18 +74,13 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
 
     @Override
     public void applicationStarted(List<AudioObject> playList) {
+    	
+    	getController().addContextPanels(getContextPanels());
+    	
         // Set previous selected tab
         // IMPORTANT: this method must be called before adding change listener to avoid firing events when
         // UI is being created
-        GuiHandler.getInstance().getContextPanel().setSelectedIndex(ApplicationState.getInstance().getSelectedContextTab());
-
-        // Add listener for tab changes
-        GuiHandler.getInstance().getContextPanel().getTabbedPane().addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                contextPanelChanged();
-            }
-        });
+    	getController().setContextTab(ApplicationState.getInstance().getSelectedContextTab());
     }
 
     /**
@@ -94,9 +88,9 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
      * 
      * @return
      */
-    public List<AbstractContextPanel> getContextPanels() {
+    private List<AbstractContextPanel> getContextPanels() {
         if (contextPanels == null) {
-            contextPanels = new ArrayList<AbstractContextPanel>();
+            contextPanels = new ArrayList<AbstractContextPanel>(5);
             // TODO: Put here every new context panel
             contextPanels.add(new AudioObjectContextPanel());
             contextPanels.add(new AlbumContextPanel());
@@ -122,9 +116,9 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     /**
      * Called when user changes context tab
      */
-    private void contextPanelChanged() {
+    void contextPanelChanged() {
         // Update selected tab
-        ApplicationState.getInstance().setSelectedContextTab(GuiHandler.getInstance().getContextPanel().getSelectedIndex());
+        ApplicationState.getInstance().setSelectedContextTab(getController().getContextTab());
         // Call to fill information: Don't force update since audio object can be the same
         retrieveInfo(currentAudioObject, false);
     }
@@ -133,13 +127,13 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
      * Clears all context panels
      * 
      */
-    public void clearContextPanels() {
+    private void clearContextPanels() {
         clearTabsContent();
         currentAudioObject = null;
 
         // Select first tab
         ApplicationState.getInstance().setSelectedContextTab(0);
-        GuiHandler.getInstance().getContextPanel().setSelectedIndex(ApplicationState.getInstance().getSelectedContextTab());
+        getController().setContextTab(0);
     }
 
     /**
@@ -183,13 +177,13 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
 
         if (ApplicationState.getInstance().isUseContext()) {
             // Updates titles
-            GuiHandler.getInstance().getContextPanel().updateContextTabsText();
+            getController().updateContextTabsText(getContextPanels());
 
-            // Update icons
-            GuiHandler.getInstance().getContextPanel().updateContextTabsIcons();
+            // Update icons            
+            getController().updateContextTabsIcons(getContextPanels());
 
             // Enable or disable tabs
-            GuiHandler.getInstance().getContextPanel().enableContextTabs();
+            getController().enableContextTabs(getContextPanels());
 
             if (ao == null) {
                 // Clear all tabs
@@ -237,6 +231,8 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
 
     @Override
     public void applicationStateChanged(ApplicationState newState) {
+        // Set text for context tabs
+        getController().updateContextTabsText(getContextPanels());
     }
 
     /**
@@ -260,7 +256,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     public void pluginDeactivated(PluginInfo plugin, Collection<Plugin> createdInstances) {
         for (Plugin instance : createdInstances) {
             getContextPanels().remove(instance);
-            GuiHandler.getInstance().getContextPanel().removeContextPanel((AbstractContextPanel) instance);
+            getController().removeContextPanel((AbstractContextPanel) instance);
         }
     }
     
@@ -280,5 +276,12 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
             	ContextHandler.getInstance().clearContextPanels();
             }
         }
+    }
+    
+    private ContextController getController() {
+    	if (controller == null) {
+    		controller = new ContextController(GuiHandler.getInstance().getContextPanel());
+    	}
+    	return controller;
     }
 }

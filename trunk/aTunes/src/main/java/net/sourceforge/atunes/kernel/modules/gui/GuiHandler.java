@@ -1322,9 +1322,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
         // Set tabs and text for navigator
         getNavigationTreePanel().updateTabs();
 
-        // Set text for context tabs
-        getContextPanel().updateContextTabsText();
-
         // Set ticks for the player progress bar
         getPlayerControls().setShowTicksAndLabels(newState.isShowTicks());
 
