@@ -23,12 +23,12 @@ package net.sourceforge.atunes.kernel.modules.player;
 import java.awt.Cursor;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import net.sourceforge.atunes.kernel.PlaybackState;
+import net.sourceforge.atunes.kernel.PlaybackStateListeners;
 import net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenHandler;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
@@ -37,7 +37,6 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.misc.TempFolder;
 import net.sourceforge.atunes.misc.log.LogCategories;
@@ -49,7 +48,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * This class has common logic for all player engines.
  */
-public abstract class AbstractPlayerEngine implements PlaybackStateListener {
+public abstract class AbstractPlayerEngine {
 
 	/**
 	 * Runnable to play audio objects and (if needed) cache files
@@ -139,7 +138,7 @@ public abstract class AbstractPlayerEngine implements PlaybackStateListener {
         }
     }
 
-    private enum SubmissionState {
+    enum SubmissionState {
         NOT_SUBMITTED, PENDING, SUBMITTED;
     }
 
@@ -148,11 +147,6 @@ public abstract class AbstractPlayerEngine implements PlaybackStateListener {
      */
     private Logger logger;
 
-    /**
-     * Listeners of playback state
-     */
-    private List<PlaybackStateListener> playbackStateListeners;
-    
     /**
      * Setting this attribute to <code>true</code> avoid calling playback state listeners
      */
@@ -335,28 +329,6 @@ public abstract class AbstractPlayerEngine implements PlaybackStateListener {
     ///////////////////////////////////////// END OF METHODS TO IMPLEMENT BY ENGINES ////////////////////////////////////////
 
     /**
-     * Adds a new playback state listener
-     */
-    public final void addPlaybackStateListener(PlaybackStateListener listener) {
-        if (playbackStateListeners == null) {
-            playbackStateListeners = new ArrayList<PlaybackStateListener>();
-        }
-        playbackStateListeners.add(listener);
-    }
-
-    /**
-     * Removes a playback state listener
-     * 
-     * @param listener
-     */
-    public final void removePlaybackStateListener(PlaybackStateListener listener) {
-        if (playbackStateListeners == null || !playbackStateListeners.contains(listener)) {
-            return;
-        }
-        playbackStateListeners.remove(listener);
-    }
-
-    /**
      * Calls all playback listeners with new state and current audio object When
      * audio object changes this method must be called after change to call
      * listeners with new audio object
@@ -366,24 +338,8 @@ public abstract class AbstractPlayerEngine implements PlaybackStateListener {
      */
     final void callPlaybackStateListeners(PlaybackState newState) {
     	if (!isCallToPlaybackStateListenersDisabled()) {
-    		for (PlaybackStateListener listener : playbackStateListeners) {
-    			listener.playbackStateChanged(newState, audioObject);
-    		}
+    		PlaybackStateListeners.playbackStateChanged(newState, audioObject);
     	}
-    }
-
-    @Override
-    public void playbackStateChanged(PlaybackState newState, AudioObject currentAudioObject) {
-    	getLogger().debug(LogCategories.PLAYER, "Playback state changed to:", newState );
-        if (newState == PlaybackState.PLAY_FINISHED || newState == PlaybackState.PLAY_INTERRUPTED || newState == PlaybackState.STOPPED) {
-            submitToLastFmAndUpdateStats();
-        }
-        if (newState == PlaybackState.STOPPED) {
-            setCurrentAudioObjectPlayedTime(0);
-            if (playAudioObjectThread != null) {
-            	playAudioObjectThread.interrupt();
-            }
-        }
     }
 
     /**
@@ -679,17 +635,6 @@ public abstract class AbstractPlayerEngine implements PlaybackStateListener {
     }
 
     /**
-     * Submits the current audio object to Last.fm and updates stats
-     */
-    private void submitToLastFmAndUpdateStats() {
-        if ((submissionState == SubmissionState.PENDING) && audioObject instanceof AudioFile) {
-            LastFmService.getInstance().submitToLastFm((AudioFile) audioObject, currentAudioObjectPlayedTime / 1000);
-            StatisticsHandler.getInstance().setAudioFileStatistics((AudioFile) audioObject);
-            submissionState = SubmissionState.SUBMITTED;
-        }
-    }
-
-    /**
      * Checks if playback is paused.
      * 
      * @return true, if is paused
@@ -907,6 +852,29 @@ public abstract class AbstractPlayerEngine implements PlaybackStateListener {
 	private void setCallToPlaybackStateListenersDisabled(
 			boolean callToPlaybackStateListenersDisabled) {
 		this.callToPlaybackStateListenersDisabled = callToPlaybackStateListenersDisabled;
+	}
+
+	/**
+	 * Interrupts playing thread
+	 */
+	void interruptPlayAudioObjectThread() {
+        if (playAudioObjectThread != null) {
+        	playAudioObjectThread.interrupt();
+        }
+	}
+
+	/**
+	 * @return the submissionState
+	 */
+	protected SubmissionState getSubmissionState() {
+		return submissionState;
+	}
+
+	/**
+	 * @param submissionState the submissionState to set
+	 */
+	protected void setSubmissionState(SubmissionState submissionState) {
+		this.submissionState = submissionState;
 	}
 
 }

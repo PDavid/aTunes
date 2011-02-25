@@ -55,12 +55,14 @@ import net.sourceforge.atunes.kernel.modules.updates.UpdateHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.AudioObject;
 
 public abstract class AbstractHandler implements ApplicationLifeCycleListener, 
                                                  ApplicationStateChangeListener,
                                                  PlayListEventListener,
                                                  FavoritesListener,
-                                                 DeviceListener {
+                                                 DeviceListener,
+                                                 PlaybackStateListener {
 
     /**
      * Logger for handlers
@@ -99,6 +101,7 @@ public abstract class AbstractHandler implements ApplicationLifeCycleListener,
         FavoritesListeners.addFavoritesListener(handler);
         ApplicationStateHandler.getInstance().addStateChangeListener(handler);
         DeviceListeners.addDeviceListener(handler);
+        PlaybackStateListeners.addPlaybackStateListener(handler);
     }
 
     /**
@@ -187,4 +190,7 @@ public abstract class AbstractHandler implements ApplicationLifeCycleListener,
     
     @Override
     public void deviceDisconnected(String location) {}
+    
+    @Override
+    public void playbackStateChanged(PlaybackState newState, AudioObject currentAudioObject) {}
 }

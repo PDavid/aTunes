@@ -28,12 +28,18 @@ import java.util.List;
 
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.AbstractHandler;
+import net.sourceforge.atunes.kernel.PlaybackState;
+import net.sourceforge.atunes.kernel.PlaybackStateListener;
+import net.sourceforge.atunes.kernel.PlaybackStateListeners;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
-import net.sourceforge.atunes.kernel.modules.notify.NotifyHandler;
+import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine.SubmissionState;
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.xine.XineEngine;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
+import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -185,22 +191,6 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
      */
     float[] transformEqualizerValues(float[] values) {
         return playerEngine.transformEqualizerValues(values);
-    }
-
-    /**
-     * Adds a new playback state listener
-     */
-    public void addPlaybackStateListener(PlaybackStateListener listener) {
-        playerEngine.addPlaybackStateListener(listener);
-    }
-
-    /**
-     * Removes a playback state listener
-     * 
-     * @param listener
-     */
-    public void removePlaybackStateListener(PlaybackStateListener listener) {
-        playerEngine.removePlaybackStateListener(listener);
     }
 
     /**
@@ -361,14 +351,6 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 
                 // Init engine
                 instance.playerEngine.initializePlayerEngine();
-
-                // Add core playback listeners
-                instance.playerEngine.addPlaybackStateListener(instance.playerEngine);
-                instance.playerEngine.addPlaybackStateListener(GuiHandler.getInstance());
-                instance.playerEngine.addPlaybackStateListener(NotifyHandler.getInstance());
-
-                // Add instance as listener too
-                instance.playerEngine.addPlaybackStateListener(instance);
             }
 
             // Add a shutdown hook to perform some actions before killing the JVM
@@ -414,7 +396,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     public void pluginActivated(PluginInfo plugin) {
         try {
             PlaybackStateListener listener = (PlaybackStateListener) PluginsHandler.getInstance().getNewInstance(plugin);
-            addPlaybackStateListener(listener);
+            PlaybackStateListeners.addPlaybackStateListener(listener);
         } catch (PluginSystemException e) {
             getLogger().error(LogCategories.PLUGINS, e);
         }
@@ -424,13 +406,27 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     public void pluginDeactivated(PluginInfo plugin, Collection<Plugin> createdInstances) {
         getLogger().info(LogCategories.PLUGINS, StringUtils.getString("Plugin deactivated: ", plugin.getName(), " (", plugin.getClassName(), ")"));
         for (Plugin createdInstance : createdInstances) {
-            removePlaybackStateListener((PlaybackStateListener) createdInstance);
+        	PlaybackStateListeners.removePlaybackStateListener((PlaybackStateListener) createdInstance);
         }
     }
 
     @Override
     public void playbackStateChanged(PlaybackState newState, AudioObject currentAudioObject) {
         this.playbackState = newState;
+    	getLogger().debug(LogCategories.PLAYER, "Playback state changed to:", newState);
+        
+        if (newState == PlaybackState.PLAY_FINISHED || newState == PlaybackState.PLAY_INTERRUPTED || newState == PlaybackState.STOPPED) {
+        	if (playerEngine.getSubmissionState() == SubmissionState.PENDING && currentAudioObject instanceof AudioFile) {
+                LastFmService.getInstance().submitToLastFm((AudioFile) currentAudioObject, getCurrentAudioObjectPlayedTime() / 1000);
+                StatisticsHandler.getInstance().setAudioFileStatistics((AudioFile) currentAudioObject);
+                playerEngine.setSubmissionState(SubmissionState.SUBMITTED);
+            }
+        }
+        
+        if (newState == PlaybackState.STOPPED) {
+            playerEngine.setCurrentAudioObjectPlayedTime(0);
+            playerEngine.interruptPlayAudioObjectThread();
+        }
     }
 
     /**

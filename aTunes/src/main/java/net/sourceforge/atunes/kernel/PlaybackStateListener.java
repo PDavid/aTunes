@@ -18,19 +18,21 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.player;
+package net.sourceforge.atunes.kernel;
+
+import net.sourceforge.atunes.model.AudioObject;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
-/**
- * This enum defined all possible states of player
- * 
- * @author fleax
- * 
- */
 @PluginApi
-public enum PlaybackState {
+public interface PlaybackStateListener {
 
-    PLAYING, RESUMING, PAUSED, STOPPED, PLAY_FINISHED, PLAY_INTERRUPTED
+    /**
+     * This method is called when playback changes
+     * 
+     * @param newState
+     * @param currentAudioObject
+     */
+    public void playbackStateChanged(PlaybackState newState, AudioObject currentAudioObject);
 
 }

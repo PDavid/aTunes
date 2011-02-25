@@ -23,9 +23,9 @@ package net.sourceforge.atunes.kernel.modules.notify;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
+import net.sourceforge.atunes.kernel.PlaybackState;
+import net.sourceforge.atunes.kernel.PlaybackStateListener;
 import net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenHandler;
-import net.sourceforge.atunes.kernel.modules.player.PlaybackState;
-import net.sourceforge.atunes.kernel.modules.player.PlaybackStateListener;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
 
