@@ -23,12 +23,13 @@ package net.sourceforge.atunes.gui.views.panels;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
+import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
 
 public final class ContextPanel extends JPanel {
 
@@ -57,11 +58,6 @@ public final class ContextPanel extends JPanel {
     private void setContent() {
         tabbedPane = new JTabbedPane();
         add(tabbedPane, BorderLayout.CENTER);
-
-        // Add tabs
-        for (net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel panel : ContextHandler.getInstance().getContextPanels()) {
-            addContextPanel(panel);
-        }
     }
 
     /**
@@ -69,9 +65,9 @@ public final class ContextPanel extends JPanel {
      * 
      * @param set
      */
-    public void updateContextTabsText() {
+    public void updateContextTabsText(List<AbstractContextPanel> panels) {
         int i = 0;
-        for (net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel panel : ContextHandler.getInstance().getContextPanels()) {
+        for (net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel panel : panels) {
             tabbedPane.setTitleAt(i, panel.getTitle());
             i++;
         }
@@ -80,18 +76,18 @@ public final class ContextPanel extends JPanel {
     /**
      * Sets text of tabs
      * 
-     * @param set
+     * @param panels
      */
-    public void updateContextTabsIcons() {
+    public void updateContextTabsIcons(List<AbstractContextPanel> panels) {
         int i = 0;
-        for (net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel panel : ContextHandler.getInstance().getContextPanels()) {
+        for (net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel panel : panels) {
             tabbedPane.setIconAt(i, panel.getIcon());
             i++;
         }
     }
 
-    public void enableContextTabs() {
-        for (net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel panel : ContextHandler.getInstance().getContextPanels()) {
+    public void enableContextTabs(List<AbstractContextPanel> panels) {
+        for (net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel panel : panels) {
             enableContextTab(panel);
         }
     }
