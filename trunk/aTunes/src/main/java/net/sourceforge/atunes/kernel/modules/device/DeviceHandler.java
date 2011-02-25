@@ -62,8 +62,6 @@ import net.sourceforge.atunes.kernel.modules.repository.data.Folder;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Repository;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
-import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
-import net.sourceforge.atunes.kernel.modules.search.searchableobjects.DeviceSearchableObject;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.misc.SystemProperties;
@@ -103,8 +101,12 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
 
     @Override
     public void applicationStarted(List<AudioObject> playList) {
+    }
+    
+    @Override
+    public void allHandlersInitialized() {
         // Start device monitor
-        DeviceConnectionMonitor.startMonitor();
+        DeviceMonitor.startMonitor();
     }
 
     /**
@@ -285,15 +287,13 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
     	});
 
         getLogger().info(LogCategories.REPOSITORY, "Device disconnected");
-
-        // Start device connection monitor
-        DeviceConnectionMonitor.startMonitor();
     }
 
     /**
      * Called when closing application
      */
     public void applicationFinish() {
+    	DeviceMonitor.stopMonitor();
         if (isDeviceConnected()) {
             // Persist device metadata
             ApplicationStateHandler.getInstance().persistDeviceCache(deviceId, deviceRepository);
@@ -461,23 +461,6 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
     public void notifyFinishRead(RepositoryLoader loader) {
         getLogger().info(LogCategories.REPOSITORY, "Device read");
         notifyDeviceReload(loader);
-
-        actionsAfterConnectDevice();
-    }
-
-    /**
-     * Actions to execute after connect a device
-     */
-    private void actionsAfterConnectDevice() {
-        // Start device disconnection monitor
-        DeviceDisconnectionMonitor.startMonitor();
-
-        // Register device to search in
-        SearchHandler.getInstance().registerSearchableObject(DeviceSearchableObject.getInstance());
-
-        // Enable action to copy to device
-        Actions.getAction(CopyPlayListToDeviceAction.class).setEnabled(true);
-        Actions.getAction(SynchronizeDeviceWithPlayListAction.class).setEnabled(true);
     }
 
     @Override
@@ -723,7 +706,6 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
 
     @Override
     public void applicationStateChanged(ApplicationState newState) {
-        DeviceConnectionMonitor.startMonitor();
     }
     
     /**

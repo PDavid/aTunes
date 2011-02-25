@@ -394,6 +394,11 @@ public final class SearchHandler extends AbstractHandler {
 	public void selectedAudioObjectChanged(AudioObject audioObject) {}
 
 	@Override
+	public void deviceReady(String location) {
+		registerSearchableObject(DeviceSearchableObject.getInstance());
+	}
+	
+	@Override
 	public void deviceDisconnected(String location) {
 		unregisterSearchableObject(DeviceSearchableObject.getInstance());
 	}

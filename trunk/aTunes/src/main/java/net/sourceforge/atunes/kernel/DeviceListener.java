@@ -32,6 +32,12 @@ public interface DeviceListener {
     public void deviceConnected(String location);
     
     /**
+     * Device ready for use
+     * @param location
+     */
+    public void deviceReady(String location);
+    
+    /**
      * Device disconnected.
      * @param location
      */

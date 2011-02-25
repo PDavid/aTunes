@@ -181,6 +181,9 @@ public abstract class AbstractHandler implements ApplicationLifeCycleListener,
     
     @Override
     public void deviceConnected(String location) {}
+
+    @Override
+    public void deviceReady(String location) {}
     
     @Override
     public void deviceDisconnected(String location) {}
