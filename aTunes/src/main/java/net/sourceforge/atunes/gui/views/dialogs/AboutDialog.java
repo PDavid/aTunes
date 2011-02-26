@@ -29,10 +29,6 @@ import java.lang.management.ClassLoadingMXBean;
 import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryUsage;
-import java.lang.management.RuntimeMXBean;
-import java.lang.management.ThreadMXBean;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -61,11 +57,11 @@ import net.sourceforge.atunes.utils.StringUtils;
 public final class AboutDialog extends AbstractCustomModalDialog {
 
     /*
-     * Static attributes with inmutable data to be shown in properties table
+     * Static attributes with immutable data to be shown in properties table
      */
-    static final String[] VERSION = new String[] { "Version", Constants.VERSION.toString() };
-    static final String[] JAVA_VERSION = new String[] { "Java Runtime Enviroment", System.getProperty("java.version") };
-    static final String[] OS_NAME = new String[] { "OS", StringUtils.getString(System.getProperty("os.name"), " (", System.getProperty("os.arch"), ')') };
+    static final String VERSION = Constants.VERSION.toString();
+    static final String JAVA_VERSION = System.getProperty("java.version");
+    static final String OS_NAME = StringUtils.getString(System.getProperty("os.name"), " (", System.getProperty("os.arch"), ')');
 
     /**
      * The Class AboutDialogTableModel.
@@ -73,15 +69,40 @@ public final class AboutDialog extends AbstractCustomModalDialog {
     private static class AboutDialogTableModel extends AbstractTableModel {
 
         private static final long serialVersionUID = 1786557125033788184L;
+        
+        private String usedHeapUsage;
+		
+		private String garbageCollectionCount;
 
-        /** The values to show. */
-        private List<String[]> valuesToShow;
+		private String maxHeapUsage;
+
+		private String initHeapUsage;
+
+		private String committedHeapUsage;
+
+		private String usedNonHeapUsage;
+
+		private String maxNonHeapUsage;
+
+		private String initNonHeapUsage;
+
+		private String committedNonHeapUsage;
+
+		private String uptime;
+
+		private String totalLoadedClassCount;
+
+		private String loadedClassCount;
+
+		private String unloadedClassCount;
+
+		private String threadCount;
 
         /**
          * Instantiates a new about dialog table model.
          */
         AboutDialogTableModel() {
-            refreshData();
+        	refreshData();
         }
 
         @Override
@@ -94,60 +115,88 @@ public final class AboutDialog extends AbstractCustomModalDialog {
             return column == 0 ? "Property" : "Value";
         }
 
-        /**
-         * Gets the data.
-         * 
-         * @return the data
-         */
-        private List<String[]> getData() {
-            MemoryUsage heapUsage = ManagementFactory.getMemoryMXBean().getHeapMemoryUsage();
-            MemoryUsage nonHeapUsage = ManagementFactory.getMemoryMXBean().getNonHeapMemoryUsage();
-            RuntimeMXBean runtimeMXBean = ManagementFactory.getRuntimeMXBean();
-            ClassLoadingMXBean classLoadingMXBean = ManagementFactory.getClassLoadingMXBean();
-            ThreadMXBean threadMXBean = ManagementFactory.getThreadMXBean();
-            List<GarbageCollectorMXBean> garbageCollectionMXBeans = ManagementFactory.getGarbageCollectorMXBeans();
-
-            List<String[]> data = new ArrayList<String[]>();
-            data.add(VERSION);
-            data.add(JAVA_VERSION);
-            data.add(OS_NAME);
-            data.add(new String[] { "Used Heap Space", StringUtils.fromByteToMegaOrGiga(heapUsage.getUsed()) });
-            data.add(new String[] { "Max Heap Space", StringUtils.fromByteToMegaOrGiga(heapUsage.getMax()) });
-            data.add(new String[] { "Initial Heap Space", StringUtils.fromByteToMegaOrGiga(heapUsage.getInit()) });
-            data.add(new String[] { "Committed Heap Space", StringUtils.fromByteToMegaOrGiga(heapUsage.getCommitted()) });
-            data.add(new String[] { "Used Non Heap Space", StringUtils.fromByteToMegaOrGiga(nonHeapUsage.getUsed()) });
-            data.add(new String[] { "Max Non Heap Space", StringUtils.fromByteToMegaOrGiga(nonHeapUsage.getMax()) });
-            data.add(new String[] { "Initial Non Heap Space", StringUtils.fromByteToMegaOrGiga(nonHeapUsage.getInit()) });
-            data.add(new String[] { "Committed Non Heap Space", StringUtils.fromByteToMegaOrGiga(nonHeapUsage.getCommitted()) });
-            data.add(new String[] { "Uptime", StringUtils.fromSecondsToHoursAndDays(runtimeMXBean.getUptime() / 1000) });
-            data.add(new String[] { "Total Loaded Classes Count", String.valueOf(classLoadingMXBean.getTotalLoadedClassCount()) });
-            data.add(new String[] { "Loaded Classes Count", String.valueOf(classLoadingMXBean.getLoadedClassCount()) });
-            data.add(new String[] { "Unloaded Classes Count", String.valueOf(classLoadingMXBean.getUnloadedClassCount()) });
-            data.add(new String[] { "Thread Count", String.valueOf(threadMXBean.getThreadCount()) });
-            long collectionCount = 0;
-            for (GarbageCollectorMXBean garbageCollectorMXBean : garbageCollectionMXBeans) {
-                collectionCount += Math.max(0, garbageCollectorMXBean.getCollectionCount());
-            }
-            data.add(new String[] { "Garbage Collection Count", String.valueOf(collectionCount) });
-
-            return data;
-        }
-
         @Override
         public int getRowCount() {
-            return valuesToShow.size();
+            return 17;
         }
 
         @Override
         public String getValueAt(int rowIndex, int columnIndex) {
-            return valuesToShow.get(rowIndex)[columnIndex];
+        	if (columnIndex == 0) {
+        		switch (rowIndex) {
+				case 0: return "Version";
+				case 1: return "Java Runtime Enviroment";
+				case 2: return "OS";
+				case 3: return "Used Heap Space";
+				case 4: return "Max Heap Space";
+				case 5: return "Initial Heap Space";
+				case 6: return "Committed Heap Space";
+				case 7: return "Used Non Heap Space";
+				case 8: return "Max Non Heap Space";
+				case 9: return "Initial Non Heap Space";
+				case 10: return "Committed Non Heap Space";
+				case 11: return "Uptime";
+				case 12: return "Total Loaded Classes Count";
+				case 13: return "Loaded Classes Count";
+				case 14: return "Unloaded Classes Count";
+				case 15: return "Thread Count";
+				case 16: return "Garbage Collection Count";
+				default:
+					break;
+				}
+        	} else {
+        		switch (rowIndex) {
+				case 0: return VERSION;
+				case 1: return JAVA_VERSION;
+				case 2: return OS_NAME;
+				case 3: return usedHeapUsage;
+				case 4: return maxHeapUsage;
+				case 5: return initHeapUsage;
+				case 6: return committedHeapUsage;
+				case 7: return usedNonHeapUsage;
+				case 8: return maxNonHeapUsage;
+				case 9: return initNonHeapUsage;
+				case 10: return committedNonHeapUsage;
+				case 11: return uptime;
+				case 12: return totalLoadedClassCount;
+				case 13: return loadedClassCount;
+				case 14: return unloadedClassCount;
+				case 15: return threadCount;
+				case 16: return garbageCollectionCount;
+				default:
+					break;
+				}        		
+        	}
+        	return null;
         }
-
-        /**
-         * Refresh data.
-         */
+        
         public void refreshData() {
-            valuesToShow = getData();
+            MemoryUsage heapUsage = ManagementFactory.getMemoryMXBean().getHeapMemoryUsage();
+            usedHeapUsage = StringUtils.fromByteToMegaOrGiga(heapUsage.getUsed());
+            maxHeapUsage = StringUtils.fromByteToMegaOrGiga(heapUsage.getMax());
+            initHeapUsage = StringUtils.fromByteToMegaOrGiga(heapUsage.getInit());
+            committedHeapUsage = StringUtils.fromByteToMegaOrGiga(heapUsage.getCommitted());
+            
+            MemoryUsage nonHeapUsage = ManagementFactory.getMemoryMXBean().getNonHeapMemoryUsage();
+            usedNonHeapUsage = StringUtils.fromByteToMegaOrGiga(nonHeapUsage.getUsed());
+            maxNonHeapUsage = StringUtils.fromByteToMegaOrGiga(nonHeapUsage.getMax());
+            initNonHeapUsage = StringUtils.fromByteToMegaOrGiga(nonHeapUsage.getInit());
+            committedNonHeapUsage = StringUtils.fromByteToMegaOrGiga(nonHeapUsage.getCommitted());
+            
+            uptime = StringUtils.fromSecondsToHoursAndDays(ManagementFactory.getRuntimeMXBean().getUptime() / 1000);
+            
+            ClassLoadingMXBean classLoadingMXBean = ManagementFactory.getClassLoadingMXBean();
+            totalLoadedClassCount = String.valueOf(classLoadingMXBean.getTotalLoadedClassCount());
+            loadedClassCount = String.valueOf(classLoadingMXBean.getLoadedClassCount());
+            unloadedClassCount = String.valueOf(classLoadingMXBean.getUnloadedClassCount());
+            
+            threadCount = String.valueOf(ManagementFactory.getThreadMXBean().getThreadCount());
+            
+            long collectionCount = 0;
+            for (GarbageCollectorMXBean garbageCollectorMXBean : ManagementFactory.getGarbageCollectorMXBeans()) {
+                collectionCount += Math.max(0, garbageCollectorMXBean.getCollectionCount());
+            }
+            garbageCollectionCount = String.valueOf(collectionCount);
         }
     }
 
@@ -159,11 +208,11 @@ public final class AboutDialog extends AbstractCustomModalDialog {
     /** The license text. */
     private String licenseText = getLicenseText();
 
-    private Timer timer = new Timer(1000, new ActionListener() {
+    private Timer timer = new Timer(2000, new ActionListener() {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            tableModel.refreshData();
+        	tableModel.refreshData();
             tableModel.fireTableDataChanged();
         }
 
