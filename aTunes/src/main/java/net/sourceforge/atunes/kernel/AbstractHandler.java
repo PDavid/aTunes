@@ -102,6 +102,7 @@ public abstract class AbstractHandler implements ApplicationLifeCycleListener,
         ApplicationStateHandler.getInstance().addStateChangeListener(handler);
         DeviceListeners.addDeviceListener(handler);
         PlaybackStateListeners.addPlaybackStateListener(handler);
+        PlayListEventListeners.addPlayListEventListener(handler);
     }
 
     /**
