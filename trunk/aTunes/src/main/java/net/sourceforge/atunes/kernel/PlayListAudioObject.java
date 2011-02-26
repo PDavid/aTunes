@@ -18,14 +18,14 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.playlist;
+package net.sourceforge.atunes.kernel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.atunes.model.AudioObject;
 
-class PlayListAudioObject {
+public class PlayListAudioObject {
 
     private AudioObject audioObject;
     private int position;
@@ -33,7 +33,7 @@ class PlayListAudioObject {
     /**
      * @return the audioObject
      */
-    protected AudioObject getAudioObject() {
+    public AudioObject getAudioObject() {
         return audioObject;
     }
 
@@ -41,14 +41,14 @@ class PlayListAudioObject {
      * @param audioObject
      *            the audioObject to set
      */
-    protected void setAudioObject(AudioObject audioObject) {
+    public void setAudioObject(AudioObject audioObject) {
         this.audioObject = audioObject;
     }
 
     /**
      * @return the position
      */
-    protected int getPosition() {
+    public int getPosition() {
         return position;
     }
 
@@ -56,7 +56,7 @@ class PlayListAudioObject {
      * @param position
      *            the position to set
      */
-    protected void setPosition(int position) {
+    public void setPosition(int position) {
         this.position = position;
     }
 
@@ -68,7 +68,7 @@ class PlayListAudioObject {
      * @param audioObjects
      * @return
      */
-    protected static List<PlayListAudioObject> getList(int startPosition, List<? extends AudioObject> audioObjects) {
+    public static List<PlayListAudioObject> getList(int startPosition, List<? extends AudioObject> audioObjects) {
         List<PlayListAudioObject> result = new ArrayList<PlayListAudioObject>();
         int positionFromStart = 0;
         for (AudioObject ao : audioObjects) {

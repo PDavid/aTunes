@@ -27,6 +27,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
+import net.sourceforge.atunes.kernel.PlayListAudioObject;
+import net.sourceforge.atunes.kernel.PlayListChangedListeners;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.PointedList;
 import net.sourceforge.atunes.model.AudioObject;
@@ -40,11 +42,6 @@ import net.sourceforge.atunes.utils.StringUtils;
 public class PlayList implements Serializable, Cloneable {
 
     private static final long serialVersionUID = 2756513776762920794L;
-
-    /**
-     * Listeners notified when this play list changes
-     */
-    private transient List<PlayListChangedListener> listeners;
 
     /**
      * Play list mode to select audio objects
@@ -109,7 +106,6 @@ public class PlayList implements Serializable, Cloneable {
      */
     protected PlayList(List<AudioObject> audioObjectsList) {
         this.mode = PlayListMode.getPlayListMode(this);
-        addPlayListChangedListener(PlayListHandler.getInstance());
         if (audioObjectsList != null) {
             add(audioObjectsList);
         }
@@ -124,7 +120,6 @@ public class PlayList implements Serializable, Cloneable {
         this.name = playList.name == null ? null : playList.name;
         this.audioObjects = new PlayListPointedList(playList.audioObjects);
         this.mode = PlayListMode.getPlayListMode(this);
-        addPlayListChangedListener(PlayListHandler.getInstance());
     }
 
     //////////////////////////////////////////////////////////////// ADD OPERATIONS /////////////////////////////////////////////////////////
@@ -477,24 +472,6 @@ public class PlayList implements Serializable, Cloneable {
     }
 
     /**
-     * Adds a play list changed listener
-     * 
-     * @param listener
-     */
-    protected void addPlayListChangedListener(PlayListChangedListener listener) {
-        getListeners().add(listener);
-    }
-
-    /**
-     * Removes a play list changed listener
-     * 
-     * @param listener
-     */
-    protected void removePlayListChangedListener(PlayListChangedListener listener) {
-        getListeners().remove(listener);
-    }
-
-    /**
      * Private method to call listeners
      * 
      * @param position
@@ -502,9 +479,8 @@ public class PlayList implements Serializable, Cloneable {
      */
     private void notifyAudioObjectsAdded(int position, List<? extends AudioObject> audioObjectList) {
         List<PlayListAudioObject> playListAudioObjects = PlayListAudioObject.getList(position, audioObjectList);
-        for (PlayListChangedListener listener : getListeners()) {
-            listener.audioObjectsAdded(playListAudioObjects);
-        }
+        PlayListChangedListeners.audioObjectsAdded(playListAudioObjects);
+
         // Notify mode too
         getMode().audioObjectsAdded(playListAudioObjects);
 
@@ -518,9 +494,8 @@ public class PlayList implements Serializable, Cloneable {
      * @param audioObjectList
      */
     private void notifyAudioObjectsRemoved(List<PlayListAudioObject> audioObjectList) {
-        for (PlayListChangedListener listener : getListeners()) {
-            listener.audioObjectsRemoved(audioObjectList);
-        }
+    	PlayListChangedListeners.audioObjectsRemoved(audioObjectList);
+    	
         // Notify mode too
         getMode().audioObjectsRemoved(audioObjectList);
 
@@ -532,9 +507,8 @@ public class PlayList implements Serializable, Cloneable {
      * Private method to call listeners
      */
     private void notifyAudioObjectsRemovedAll() {
-        for (PlayListChangedListener listener : getListeners()) {
-            listener.audioObjectsRemovedAll();
-        }
+    	PlayListChangedListeners.audioObjectsRemovedAll();
+    	
         // Notify mode too
         getMode().audioObjectsRemovedAll();
 
@@ -546,16 +520,7 @@ public class PlayList implements Serializable, Cloneable {
      * Private method to call listeners
      */
     private void notifyCurrentAudioObjectChanged() {
-        for (PlayListChangedListener listener : getListeners()) {
-            listener.currentAudioObjectChanged();
-        }
-    }
-
-    private List<PlayListChangedListener> getListeners() {
-        if (listeners == null) {
-            listeners = new ArrayList<PlayListChangedListener>();
-        }
-        return listeners;
+    	PlayListChangedListeners.currentAudioObjectChanged();
     }
 
     /**

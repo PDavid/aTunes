@@ -24,10 +24,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import net.sourceforge.atunes.kernel.PlayListAudioObject;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
 
-final class PlayListMode implements PlayListChangedListener {
+final class PlayListMode {
 
     /**
      * List with play list positions in random order. This list is updated when
@@ -165,8 +166,7 @@ final class PlayListMode implements PlayListChangedListener {
         return playList.getPointedList().getNextObject(index);
     }
 
-    @Override
-    public void audioObjectsAdded(List<PlayListAudioObject> audioObjectsAdded) {
+    void audioObjectsAdded(List<PlayListAudioObject> audioObjectsAdded) {
         if (audioObjectsAdded == null || audioObjectsAdded.isEmpty()) {
             return;
         }
@@ -175,8 +175,7 @@ final class PlayListMode implements PlayListChangedListener {
         this.shufflePlayList.add(audioObjectsAdded);
     }
 
-    @Override
-    public void audioObjectsRemoved(List<PlayListAudioObject> audioObjectsRemoved) {
+    void audioObjectsRemoved(List<PlayListAudioObject> audioObjectsRemoved) {
         if (audioObjectsRemoved == null || audioObjectsRemoved.isEmpty()) {
             return;
         }
@@ -200,8 +199,7 @@ final class PlayListMode implements PlayListChangedListener {
         playbackHistory.remove(audioObjectsToRemoveFromHistory);
     }
 
-    @Override
-    public void audioObjectsRemovedAll() {
+    void audioObjectsRemovedAll() {
         shufflePlayList.clear();
         playbackHistory.clear();
     }
@@ -212,9 +210,5 @@ final class PlayListMode implements PlayListChangedListener {
 
     void addToPlaybackHistory(AudioObject object) {
         this.playbackHistory.addToHistory(object);
-    }
-    
-    @Override
-    public void currentAudioObjectChanged() {
-    }
+    }    
 }
