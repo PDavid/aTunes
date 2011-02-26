@@ -62,7 +62,8 @@ public abstract class AbstractHandler implements ApplicationLifeCycleListener,
                                                  PlayListEventListener,
                                                  FavoritesListener,
                                                  DeviceListener,
-                                                 PlaybackStateListener {
+                                                 PlaybackStateListener,
+                                                 PlayListChangedListener {
 
     /**
      * Logger for handlers
@@ -103,6 +104,7 @@ public abstract class AbstractHandler implements ApplicationLifeCycleListener,
         DeviceListeners.addDeviceListener(handler);
         PlaybackStateListeners.addPlaybackStateListener(handler);
         PlayListEventListeners.addPlayListEventListener(handler);
+        PlayListChangedListeners.addPlayListChangedListener(handler);
     }
 
     /**
@@ -194,4 +196,16 @@ public abstract class AbstractHandler implements ApplicationLifeCycleListener,
     
     @Override
     public void playbackStateChanged(PlaybackState newState, AudioObject currentAudioObject) {}
+    
+    @Override
+    public void audioObjectsAdded(List<PlayListAudioObject> audioObjectsAdded) {}
+    
+    @Override
+    public void audioObjectsRemoved(List<PlayListAudioObject> audioObjectsRemoved) {}
+    
+    @Override
+    public void audioObjectsRemovedAll() {}
+
+    @Override
+    public void currentAudioObjectChanged() {}
 }

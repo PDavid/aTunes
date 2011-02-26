@@ -18,9 +18,10 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.playlist;
+package net.sourceforge.atunes.kernel;
 
 import java.util.List;
+
 
 interface PlayListChangedListener {
 

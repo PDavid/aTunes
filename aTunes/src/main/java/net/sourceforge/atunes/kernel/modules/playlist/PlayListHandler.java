@@ -33,6 +33,7 @@ import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListTabPanel;
 import net.sourceforge.atunes.kernel.AbstractHandler;
+import net.sourceforge.atunes.kernel.PlayListAudioObject;
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.SavePlayListAction;
@@ -58,7 +59,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The Class PlayListHandler.
  */
-public final class PlayListHandler extends AbstractHandler implements AudioFilesRemovedListener, PlayListChangedListener {
+public final class PlayListHandler extends AbstractHandler implements AudioFilesRemovedListener {
 
     private static final class RowListComparator implements Comparator<Integer> {
         private final boolean up;
@@ -1286,6 +1287,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
 	public void audioObjectsAdded(List<PlayListAudioObject> audioObjectsAdded) {
 	}
 	
+	@Override
 	public void audioObjectsRemoved(List<PlayListAudioObject> audioObjectsRemoved) {		
 	}
 	
