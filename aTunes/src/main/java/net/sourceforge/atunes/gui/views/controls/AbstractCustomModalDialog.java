@@ -22,7 +22,6 @@ package net.sourceforge.atunes.gui.views.controls;
 
 import java.awt.Window;
 
-import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
@@ -77,7 +76,6 @@ public abstract class AbstractCustomModalDialog extends JDialog {
      */
     public void setContent(JPanel content) {
         content.setOpaque(false);
-        content.setBorder(BorderFactory.createLineBorder(GuiUtils.getBorderColor()));
         add(content);
     }
 
