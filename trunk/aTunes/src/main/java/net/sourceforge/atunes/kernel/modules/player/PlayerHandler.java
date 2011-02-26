@@ -294,85 +294,88 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
      * 
      * @return single instance of PlayerHandler
      */
-    public static final synchronized PlayerHandler getInstance() {
+    public static final PlayerHandler getInstance() {
         if (instance == null) {
             instance = new PlayerHandler();
-            // Get engines list
-            List<AbstractPlayerEngine> engines = getEngines();
+        }
+        return instance;
+    }
+    /**
+     * Initializes handler
+     */
+    @Override
+    public void initHandler() {
+        // Get engines list
+        List<AbstractPlayerEngine> engines = getEngines();
 
-            // Remove unsupported engines
-            Iterator<AbstractPlayerEngine> it = engines.iterator();
-            while (it.hasNext()) {
-                if (!it.next().isEngineAvailable()) {
-                    it.remove();
-                }
+        // Remove unsupported engines
+        Iterator<AbstractPlayerEngine> it = engines.iterator();
+        while (it.hasNext()) {
+            if (!it.next().isEngineAvailable()) {
+                it.remove();
             }
+        }
 
+        if (engines.isEmpty()) {
+            handlePlayerError(new IllegalStateException(I18nUtils.getString("NO_PLAYER_ENGINE")));
+        } else {
             // Update engine names
             engineNames = new String[engines.size()];
             for (int i = 0; i < engines.size(); i++) {
                 engineNames[i] = engines.get(i).getEngineName();
             }
 
-            Arrays.sort(engineNames);
+            getLogger().info(LogCategories.PLAYER, "List of availables engines : ", ArrayUtils.toString(engineNames));
 
-            getLogger().info(LogCategories.PLAYER, "List of availables engines : " + ArrayUtils.toString(engineNames));
+        	// Get engine of application state (default or selected by user)
+            String selectedEngine = ApplicationState.getInstance().getPlayerEngine();
 
-            if (engines.isEmpty()) {
-                handlePlayerError(new IllegalStateException(I18nUtils.getString("NO_PLAYER_ENGINE")));
-            } else {
-                // Get engine of application state (default or selected by user)
-                String selectedEngine = ApplicationState.getInstance().getPlayerEngine();
+            // If selected engine is not available then try default engine or another one
+            if (!ArrayUtils.contains(engineNames, selectedEngine)) {
 
-                // If selected engine is not available then try default engine or another one
-                if (!ArrayUtils.contains(engineNames, selectedEngine)) {
-
-                    getLogger().info(LogCategories.PLAYER, selectedEngine + " is not availaible");
-                    if (ArrayUtils.contains(engineNames, DEFAULT_ENGINE)) {
-                        selectedEngine = DEFAULT_ENGINE;
-                    } else {
-                        // If default engine is not available, then get the first engine of map returned
-                        selectedEngine = engines.iterator().next().getEngineName();
-                    }
-                    // Update application state with this engine
-                    ApplicationState.getInstance().setPlayerEngine(selectedEngine);
+                getLogger().info(LogCategories.PLAYER, selectedEngine, " is not availaible");
+                if (ArrayUtils.contains(engineNames, DEFAULT_ENGINE)) {
+                    selectedEngine = DEFAULT_ENGINE;
+                } else {
+                    // If default engine is not available, then get the first engine of map returned
+                    selectedEngine = engines.iterator().next().getEngineName();
                 }
-
-                for (AbstractPlayerEngine engine : engines) {
-                    if (engine.getEngineName().equals(selectedEngine)) {
-                        instance.playerEngine = engine;
-                        getLogger().info(LogCategories.PLAYER, "Engine initialized : " + selectedEngine);
-                    }
-                }
-
-                if (instance.playerEngine == null) {
-                    handlePlayerError(new IllegalStateException(I18nUtils.getString("NO_PLAYER_ENGINE")));
-                }
-
-                // Init engine
-                instance.playerEngine.initializePlayerEngine();
+                // Update application state with this engine
+                ApplicationState.getInstance().setPlayerEngine(selectedEngine);
             }
 
-            // Add a shutdown hook to perform some actions before killing the JVM
-            Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-
-                @Override
-                public void run() {
-                    getLogger().debug(LogCategories.SHUTDOWN_HOOK, "Final check for Zombie player engines");
-                    instance.playerEngine.killPlayer();
-                    getLogger().debug(LogCategories.SHUTDOWN_HOOK, "Closing player ...");
+            for (AbstractPlayerEngine engine : engines) {
+                if (engine.getEngineName().equals(selectedEngine)) {
+                    instance.playerEngine = engine;
+                    getLogger().info(LogCategories.PLAYER, "Engine initialized : " + selectedEngine);
                 }
+                break;
+            }
 
-            }));
+            if (instance.playerEngine == null) {
+                handlePlayerError(new IllegalStateException(I18nUtils.getString("NO_PLAYER_ENGINE")));
+            }
         }
-        return instance;
     }
-
-    /**
-     * Initializes handler
-     */
+    
     @Override
-    public void initHandler() {
+    public void allHandlersInitialized() {
+    	if (instance.playerEngine != null) {
+            // Init engine
+            instance.playerEngine.initializePlayerEngine();
+    	}
+    	
+        // Add a shutdown hook to perform some actions before killing the JVM
+        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                getLogger().debug(LogCategories.SHUTDOWN_HOOK, "Final check for Zombie player engines");
+                instance.playerEngine.killPlayer();
+                getLogger().debug(LogCategories.SHUTDOWN_HOOK, "Closing player ...");
+            }
+
+        }));
     }
 
     private static void handlePlayerError(Throwable t) {

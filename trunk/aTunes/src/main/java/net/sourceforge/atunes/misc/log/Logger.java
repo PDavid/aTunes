@@ -176,14 +176,18 @@ public class Logger {
      * 
      * @param cat
      *            the cat
-     * @param arg0
-     *            the arg0
+     * @param objs
+     *            the objects
      */
-    public void info(String cat, Object arg0) {
+    public void info(String cat, Object... objs) {
         if (filteredCategories.contains(cat.trim())) {
             return;
         }
-        logger.info(StringUtils.getString("[", cat, "] ", arg0));
+        StringBuilder sb = new StringBuilder();
+        for (Object o : objs) {
+        	sb.append(o.toString());
+        }
+        logger.info(StringUtils.getString("[", cat, "] ", sb.toString()));
     }
 
     /**
