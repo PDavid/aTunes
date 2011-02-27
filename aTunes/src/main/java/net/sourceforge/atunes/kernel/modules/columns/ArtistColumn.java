@@ -36,6 +36,7 @@ public class ArtistColumn extends AbstractColumn {
         super("ARTIST", JLabel.class);
         setVisible(true);
         setUsedForFilter(true);
+        setColumnSort(ColumnSort.ASCENDING); // Column sets are ordered by default by this column
     }
 
     @Override
