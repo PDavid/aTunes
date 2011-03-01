@@ -50,7 +50,7 @@ public class Folder implements Serializable, TreeObject {
     private String name;
 
     /** List of files in this folder. */
-    private List<AudioFile> audioFiles;
+    private List<AudioFile> files;
 
     /** List of folders in this folder, indexed by name. */
     private Map<String, Folder> folders;
@@ -66,8 +66,6 @@ public class Folder implements Serializable, TreeObject {
      */
     public Folder(String name) {
         this.name = name;
-        this.audioFiles = new ArrayList<AudioFile>();
-        folders = new HashMap<String, Folder>();
     }
 
     /**
@@ -77,7 +75,7 @@ public class Folder implements Serializable, TreeObject {
      *            the file
      */
     public void addAudioFile(AudioFile file) {
-        audioFiles.add(file);
+        getFiles().add(file);
     }
 
     /**
@@ -87,11 +85,11 @@ public class Folder implements Serializable, TreeObject {
      *            the f
      */
     public void addFolder(Folder f) {
-        if (folders.containsKey(f.getName())) {
-            Folder folder = folders.get(f.getName());
+        if (getFolders().containsKey(f.getName())) {
+            Folder folder = getFolders().get(f.getName());
             folder.addFoldersOf(f);
         } else {
-            folders.put(f.getName(), f);
+        	getFolders().put(f.getName(), f);
             f.setParentFolder(this);
         }
     }
@@ -103,7 +101,7 @@ public class Folder implements Serializable, TreeObject {
      *            the f
      */
     private void addFoldersOf(Folder f) {
-        folders.putAll(f.getFolders());
+    	getFolders().putAll(f.getFolders());
     }
 
     /**
@@ -115,7 +113,7 @@ public class Folder implements Serializable, TreeObject {
      * @return true, if contains folder
      */
     public boolean containsFolder(String folderName) {
-        return folders.containsKey(folderName);
+        return getFolders().containsKey(folderName);
     }
 
     /**
@@ -124,12 +122,19 @@ public class Folder implements Serializable, TreeObject {
      * @return the audio files
      */
     public List<AudioFile> getAudioFiles() {
-        List<AudioFile> result = new ArrayList<AudioFile>();
-        result.addAll(audioFiles);
-        for (String string : folders.keySet()) {
-            Folder f = folders.get(string);
-            result.addAll(f.getAudioFiles());
-        }
+        List<AudioFile> result = null;
+    	if (getFolders().isEmpty()) {
+    		result = new ArrayList<AudioFile>();
+            result.addAll(getFiles());
+    	} else {
+    		for (Folder f : getFolders().values()) {
+    			if (result == null) {
+    				result = f.getAudioFiles(); 
+    			} else {
+    				result.addAll(f.getAudioFiles());
+    			}
+    		}
+    	}
         return result;
     }
 
@@ -140,11 +145,18 @@ public class Folder implements Serializable, TreeObject {
      */
     @Override
     public List<AudioObject> getAudioObjects() {
-        List<AudioObject> result = new ArrayList<AudioObject>();
-        result.addAll(audioFiles);
-        for (String string : folders.keySet()) {
-            Folder f = folders.get(string);
-            result.addAll(f.getAudioObjects());
+        List<AudioObject> result = null;
+        if (getFolders().isEmpty()) {
+        	 result = new ArrayList<AudioObject>();
+        	 result.addAll(getFiles());
+        } else {
+        	for (Folder f : getFolders().values()) {
+        		if (result == null) {
+        			result = f.getAudioObjects();
+        		} else {
+            		result.addAll(f.getAudioObjects());
+        		}
+        	}
         }
         return result;
     }
@@ -155,7 +167,10 @@ public class Folder implements Serializable, TreeObject {
      * @return the files
      */
     public List<AudioFile> getFiles() {
-        return audioFiles;
+    	if (files == null) {
+    		files = new ArrayList<AudioFile>();
+    	}
+        return files;
     }
 
     /**
@@ -167,7 +182,7 @@ public class Folder implements Serializable, TreeObject {
      * @return the folder
      */
     public Folder getFolder(String folderName) {
-        return folders.get(folderName);
+        return getFolders().get(folderName);
     }
 
     /**
@@ -176,6 +191,9 @@ public class Folder implements Serializable, TreeObject {
      * @return the folders
      */
     public Map<String, Folder> getFolders() {
+    	if (folders == null) {
+    		folders = new HashMap<String, Folder>();
+    	}
         return folders;
     }
 
@@ -203,7 +221,7 @@ public class Folder implements Serializable, TreeObject {
      * @return true, if checks if is empty
      */
     public boolean isEmpty() {
-        return audioFiles.isEmpty() && folders.isEmpty();
+        return getFiles().isEmpty() && getFolders().isEmpty();
     }
 
     /**
@@ -213,7 +231,7 @@ public class Folder implements Serializable, TreeObject {
      *            the file
      */
     public void removeAudioFile(AudioFile file) {
-        audioFiles.remove(file);
+        getFiles().remove(file);
     }
 
     /**
@@ -223,7 +241,7 @@ public class Folder implements Serializable, TreeObject {
      *            the f
      */
     public void removeFolder(Folder f) {
-        folders.remove(f.getName());
+    	getFolders().remove(f.getName());
     }
 
     /**
@@ -312,7 +330,7 @@ public class Folder implements Serializable, TreeObject {
     @Override
     public void setExtendedToolTip(ExtendedToolTip toolTip) {
         toolTip.setLine1(name);
-        int folderNumber = folders.size();
+        int folderNumber = getFolders().size();
         if (folderNumber > 0) {
             toolTip.setLine2(StringUtils.getString(folderNumber, " ", (folderNumber > 1 ? I18nUtils.getString("FOLDERS") : I18nUtils.getString("FOLDER"))));
         } else {
