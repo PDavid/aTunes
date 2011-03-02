@@ -24,6 +24,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.Folder;
 
 public class RepositoryStructure implements Serializable {

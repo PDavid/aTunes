@@ -831,7 +831,7 @@ public final class LastFmService {
      * @return
      */
     private boolean checkArtist(AudioObject ao) {
-        if (net.sourceforge.atunes.kernel.modules.repository.data.Artist.isUnknownArtist(ao.getArtist())) {
+        if (net.sourceforge.atunes.model.Artist.isUnknownArtist(ao.getArtist())) {
             getLogger().debug(LogCategories.SERVICE, "Don't submit to Last.fm: Unknown artist");
             return false;
         }
@@ -883,7 +883,7 @@ public final class LastFmService {
      */
     public String getTitleForFile(AudioFile f) {
         // If has valid artist name, album name, and track number...
-        if (!net.sourceforge.atunes.kernel.modules.repository.data.Artist.isUnknownArtist(f.getArtist())
+        if (!net.sourceforge.atunes.model.Artist.isUnknownArtist(f.getArtist())
                 && !net.sourceforge.atunes.model.Album.isUnknownAlbum(f.getAlbum()) && f.getTrackNumber() > 0) {
             // Find album
             AlbumInfo albumRetrieved = getAlbum(f.getArtist(), f.getAlbum());
@@ -903,7 +903,7 @@ public final class LastFmService {
      */
     public int getTrackNumberForFile(AudioFile f) {
         // If has valid artist name, album name and title
-        if (!net.sourceforge.atunes.kernel.modules.repository.data.Artist.isUnknownArtist(f.getArtist())
+        if (!net.sourceforge.atunes.model.Artist.isUnknownArtist(f.getArtist())
                 && !net.sourceforge.atunes.model.Album.isUnknownAlbum(f.getAlbum()) && !StringUtils.isEmpty(f.getTitle())) {
             // Find album
             AlbumInfo albumRetrieved = getAlbum(f.getArtist(), f.getAlbum());

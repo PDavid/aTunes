@@ -26,10 +26,10 @@ import javax.swing.JLabel;
 
 import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
-import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.model.Album;
+import net.sourceforge.atunes.model.Artist;
 
 public class UnknownElementTreeCellDecorator extends AbstractTreeCellDecorator {
 
