@@ -27,8 +27,8 @@ import java.util.Map;
 
 import net.sourceforge.atunes.gui.views.dialogs.EditTitlesDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
-import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
+import net.sourceforge.atunes.model.Album;
 
 final class EditTitlesDialogController extends AbstractSimpleController<EditTitlesDialog> {
 
@@ -78,7 +78,7 @@ final class EditTitlesDialogController extends AbstractSimpleController<EditTitl
      */
     public void editFiles(Album alb) {
         this.album = alb;
-        filesToEdit = alb.getAudioFiles();
+        filesToEdit = AudioFile.getAudioFiles(alb.getAudioObjects());
         Collections.sort(filesToEdit);
         model = new EditTitlesTableModel(filesToEdit);
         getComponentControlled().getTable().setModel(model);

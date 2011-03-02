@@ -28,8 +28,8 @@ import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
-import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.kernel.modules.tags.TagHandler;
+import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class EditTitlesAction extends AbstractAction {

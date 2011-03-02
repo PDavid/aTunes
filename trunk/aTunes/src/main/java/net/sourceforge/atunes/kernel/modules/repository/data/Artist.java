@@ -32,6 +32,7 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
+import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -126,7 +127,7 @@ public class Artist implements Serializable, TreeObject, Comparable<Artist> {
     public List<AudioFile> getAudioFiles() {
         List<AudioFile> songs = new ArrayList<AudioFile>();
         for (Album album : albums.values()) {
-            songs.addAll(album.getAudioFiles());
+            songs.addAll(AudioFile.getAudioFiles(album.getAudioObjects()));
         }
         return songs;
     }
