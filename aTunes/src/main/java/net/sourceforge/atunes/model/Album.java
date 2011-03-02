@@ -18,9 +18,8 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.repository.data;
+package net.sourceforge.atunes.model;
 
-import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +27,8 @@ import java.util.List;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
-import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.model.ImageSize;
-import net.sourceforge.atunes.model.TreeObject;
-import net.sourceforge.atunes.utils.AudioFilePictureUtils;
+import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -56,12 +53,23 @@ public class Album implements Serializable, TreeObject, Comparable<Album> {
     /**
      * Constructor.
      * 
+     * @param artist
      * @param name
-     *            the name
      */
-    public Album(String name) {
+    public Album(Artist artist, String name) {
+        this.artist = artist;
         this.name = name;
-        audioFiles = new ArrayList<AudioFile>();
+    }
+    
+    /**
+     * Returns audio files
+     * @return
+     */
+    private List<AudioFile> getAudioFiles() {
+    	if (audioFiles == null) {
+    		audioFiles = new ArrayList<AudioFile>();
+    	}
+    	return audioFiles;
     }
 
     /**
@@ -71,7 +79,7 @@ public class Album implements Serializable, TreeObject, Comparable<Album> {
      *            the file
      */
     public void addAudioFile(AudioFile file) {
-        audioFiles.add(file);
+    	getAudioFiles().add(file);
     }
 
     /**
@@ -84,15 +92,16 @@ public class Album implements Serializable, TreeObject, Comparable<Album> {
      */
     @Override
     public int compareTo(Album o) {
-        return getNameAndArtist().compareTo(o.getNameAndArtist());
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof Album)) {
-            return false;
-        }
-        return ((Album) o).name.equals(name) && ((Album) o).artist.equals(artist);
+    	if (o == null || name == null || artist == null) {
+    		return 1;
+    	} else {
+    		int artistCompare = artist.compareTo(o.artist); 
+    		if (artistCompare == 0) {
+    			return name.compareTo(o.name);
+    		} else {
+    			return artistCompare;
+    		}
+    	}
     }
 
     /**
@@ -105,22 +114,13 @@ public class Album implements Serializable, TreeObject, Comparable<Album> {
     }
 
     /**
-     * Gets the audio files.
-     * 
-     * @return the audio files
-     */
-    public List<AudioFile> getAudioFiles() {
-        return new ArrayList<AudioFile>(audioFiles);
-    }
-
-    /**
      * Returns a list of songs of this album.
      * 
      * @return the audio objects
      */
     @Override
     public List<AudioObject> getAudioObjects() {
-        return new ArrayList<AudioObject>(audioFiles);
+        return new ArrayList<AudioObject>(getAudioFiles());
     }
 
     /**
@@ -152,23 +152,10 @@ public class Album implements Serializable, TreeObject, Comparable<Album> {
      * @return the picture
      */
     public ImageIcon getPicture(ImageSize imageSize) {
-        return audioFiles.get(0).getImage(imageSize);
+        return getAudioFiles().get(0).getImage(imageSize);
     }
 
-    /**
-     * Returns true if aTunes has saved cover image.
-     * 
-     * @return true, if checks for cover downloaded
-     */
-    public boolean hasCoverDownloaded() {
-        return new File(AudioFilePictureUtils.getFileNameForCover(audioFiles.get(0))).exists();
-    }
-
-    @Override
-    public int hashCode() {
-        return StringUtils.getString(name, artist).hashCode();
-    }
-
+    
     /**
      * Removes a song from this album.
      * 
@@ -176,17 +163,7 @@ public class Album implements Serializable, TreeObject, Comparable<Album> {
      *            the file
      */
     public void removeAudioFile(AudioFile file) {
-        audioFiles.remove(file);
-    }
-
-    /**
-     * Sets the name of the artist of this album.
-     * 
-     * @param artist
-     *            the artist
-     */
-    public void setArtist(Artist artist) {
-        this.artist = artist;
+    	getAudioFiles().remove(file);
     }
 
     /**
@@ -214,7 +191,7 @@ public class Album implements Serializable, TreeObject, Comparable<Album> {
     public void setExtendedToolTip(ExtendedToolTip toolTip) {
         toolTip.setLine1(name);
         toolTip.setLine2(artist.getName());
-        int songNumber = audioFiles.size();
+        int songNumber = getAudioFiles().size();
         toolTip.setLine3(StringUtils.getString(songNumber, " ", (songNumber > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG"))));
     }
 
@@ -242,17 +219,39 @@ public class Album implements Serializable, TreeObject, Comparable<Album> {
      * 
      * @return
      */
-    public boolean isUnknownAlbum() {
-        return getName().equalsIgnoreCase(getUnknownAlbum());
-    }
-
-    /**
-     * Return <code>true</code> if this album is unknown
-     * 
-     * @return
-     */
     public static boolean isUnknownAlbum(String album) {
         return getUnknownAlbum().equalsIgnoreCase(album);
     }
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((artist == null) ? 0 : artist.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Album other = (Album) obj;
+		if (artist == null) {
+			if (other.artist != null)
+				return false;
+		} else if (!artist.equals(other.artist))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
+	}
 
 }

@@ -33,7 +33,6 @@ import java.util.StringTokenizer;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
-import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
@@ -45,6 +44,7 @@ import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.Timer;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -750,7 +750,7 @@ public class RepositoryLoader extends Thread {
 			// This operation changes repository, so mark it as dirty
 			repository.setDirty(true);
 
-			List<AudioFile> audioFiles = album.getAudioFiles();
+			List<AudioFile> audioFiles = AudioFile.getAudioFiles(album.getAudioObjects());
 			for (AudioFile af : audioFiles) {
 				af.addExternalPicture(picture);
 			}

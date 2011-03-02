@@ -31,6 +31,7 @@ import java.util.Set;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
+import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -201,8 +202,7 @@ public class Year implements Serializable, TreeObject {
                 structure.put(artist, new Artist(artist));
             }
             if (!structure.get(artist).getAlbums().containsKey(song.getAlbum())) {
-                Album album = new Album(song.getAlbum());
-                album.setArtist(structure.get(artist));
+                Album album = new Album(structure.get(artist), song.getAlbum());
                 structure.get(artist).addAlbum(album);
             }
             structure.get(artist).getAlbum(song.getAlbum()).addAudioFile(song);

@@ -31,10 +31,10 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 
 import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
-import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
+import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.utils.ImageUtils;
 
 /**

@@ -37,6 +37,7 @@ import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
 import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
 import net.sourceforge.atunes.kernel.modules.tags.EditTagInfo;
 import net.sourceforge.atunes.kernel.modules.tags.TagDetector;
+import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.ImageSize;

@@ -56,7 +56,6 @@ import net.sourceforge.atunes.kernel.actions.SelectRepositoryAction;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
-import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
@@ -72,6 +71,7 @@ import net.sourceforge.atunes.kernel.modules.tags.TagAttributesReviewed;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.utils.DateUtils;
@@ -606,7 +606,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     public List<AudioFile> getAudioFilesForAlbums(Map<String, Album> albums) {
         List<AudioFile> result = new ArrayList<AudioFile>();
         for (Map.Entry<String, Album> entry : albums.entrySet()) {
-            result.addAll(entry.getValue().getAudioFiles());
+            result.addAll(AudioFile.getAudioFiles(entry.getValue().getAudioObjects()));
         }
         return result;
     }

@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.io.File;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
@@ -30,6 +29,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.Repository;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Folder;
 
 final class RepositoryFiller {
@@ -71,8 +71,7 @@ final class RepositoryFiller {
 
             Album albumObject = artistObject.getAlbum(album);
             if (albumObject == null) {
-                albumObject = new Album(album);
-                albumObject.setArtist(artistObject);
+                albumObject = new Album(artistObject, album);
                 artistObject.addAlbum(albumObject);
             }
 

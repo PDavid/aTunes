@@ -22,8 +22,8 @@ package net.sourceforge.atunes.kernel.modules.tags;
 
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
+import net.sourceforge.atunes.model.Album;
 
 /**
  * The Class SetAlbumNamesProcess.
