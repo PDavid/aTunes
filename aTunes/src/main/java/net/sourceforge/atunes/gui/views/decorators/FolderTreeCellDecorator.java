@@ -26,7 +26,7 @@ import javax.swing.JLabel;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
-import net.sourceforge.atunes.kernel.modules.repository.data.Folder;
+import net.sourceforge.atunes.model.Folder;
 
 public class FolderTreeCellDecorator extends AbstractTreeCellDecorator {
 

@@ -24,6 +24,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.sourceforge.atunes.model.Folder;
+
 public class RepositoryStructure implements Serializable {
 
     private static final long serialVersionUID = -2230698137764691254L;

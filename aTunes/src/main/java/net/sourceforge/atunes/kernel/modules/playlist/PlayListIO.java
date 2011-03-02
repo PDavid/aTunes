@@ -113,7 +113,7 @@ public final class PlayListIO {
         ao = RepositoryHandler.getInstance().getFileIfLoaded(resourceName);
         if (ao == null) {
             // If AudioFile is not previously loaded in application then create a new AudioFile
-            ao = new AudioFile(resourceName);
+            ao = new AudioFile(new File(resourceName));
         }
         return ao;
     }

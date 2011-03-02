@@ -46,7 +46,6 @@ import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.repository.data.Folder;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Repository;
 import net.sourceforge.atunes.kernel.modules.repository.data.RepositoryStructure;
@@ -57,6 +56,7 @@ import net.sourceforge.atunes.kernel.modules.statistics.StatisticsAlbum;
 import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
 import net.sourceforge.atunes.misc.PointedList;
 import net.sourceforge.atunes.misc.RankList;
+import net.sourceforge.atunes.model.Folder;
 
 import org.commonjukebox.plugins.model.PluginApi;
 import org.w3c.dom.Document;
