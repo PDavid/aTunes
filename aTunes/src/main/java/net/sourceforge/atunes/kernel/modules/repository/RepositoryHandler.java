@@ -931,7 +931,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         for (Folder folder : foldersToRemove) {
 
             // Remove content
-            remove(folder.getAudioFiles());
+            remove(AudioFile.getAudioFiles(folder.getAudioObjects()));
 
             // Remove from model
             if (folder.getParentFolder() != null) {

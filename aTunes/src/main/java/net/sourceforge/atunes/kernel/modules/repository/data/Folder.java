@@ -44,9 +44,12 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class Folder implements Serializable, TreeObject {
 
-    private static final long serialVersionUID = 2608221109707838025L;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 7175829016580923961L;
 
-    /** Name of the folder. */
+	/** Name of the folder. */
     private String name;
 
     /** List of files in this folder. */
@@ -86,8 +89,7 @@ public class Folder implements Serializable, TreeObject {
      */
     public void addFolder(Folder f) {
         if (getFolders().containsKey(f.getName())) {
-            Folder folder = getFolders().get(f.getName());
-            folder.addFoldersOf(f);
+            getFolders().get(f.getName()).addFoldersOf(f);
         } else {
         	getFolders().put(f.getName(), f);
             f.setParentFolder(this);
@@ -102,40 +104,6 @@ public class Folder implements Serializable, TreeObject {
      */
     private void addFoldersOf(Folder f) {
     	getFolders().putAll(f.getFolders());
-    }
-
-    /**
-     * Returns true if folder contains a folder with given name.
-     * 
-     * @param folderName
-     *            the folder name
-     * 
-     * @return true, if contains folder
-     */
-    public boolean containsFolder(String folderName) {
-        return getFolders().containsKey(folderName);
-    }
-
-    /**
-     * Gets the audio files.
-     * 
-     * @return the audio files
-     */
-    public List<AudioFile> getAudioFiles() {
-        List<AudioFile> result = null;
-    	if (getFolders().isEmpty()) {
-    		result = new ArrayList<AudioFile>();
-            result.addAll(getFiles());
-    	} else {
-    		for (Folder f : getFolders().values()) {
-    			if (result == null) {
-    				result = f.getAudioFiles(); 
-    			} else {
-    				result.addAll(f.getAudioFiles());
-    			}
-    		}
-    	}
-        return result;
     }
 
     /**
@@ -166,7 +134,7 @@ public class Folder implements Serializable, TreeObject {
      * 
      * @return the files
      */
-    public List<AudioFile> getFiles() {
+    private List<AudioFile> getFiles() {
     	if (files == null) {
     		files = new ArrayList<AudioFile>();
     	}
@@ -245,16 +213,6 @@ public class Folder implements Serializable, TreeObject {
     }
 
     /**
-     * Sets the name of this folder.
-     * 
-     * @param name
-     *            the name
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
      * Sets the parent folder.
      * 
      * @param parentFolder
@@ -318,7 +276,7 @@ public class Folder implements Serializable, TreeObject {
 
     @Override
     public String getToolTip() {
-        int songs = getAudioFiles().size();
+        int songs = getAudioObjects().size();
         return StringUtils.getString(getName(), " (", songs, " ", (songs > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG")), ")");
     }
 
