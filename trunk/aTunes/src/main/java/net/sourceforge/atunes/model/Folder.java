@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.repository.data;
+package net.sourceforge.atunes.model;
 
 import java.io.File;
 import java.io.Serializable;
@@ -30,9 +30,8 @@ import java.util.Map;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.SystemProperties;
-import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -114,18 +113,17 @@ public class Folder implements Serializable, TreeObject {
     @Override
     public List<AudioObject> getAudioObjects() {
         List<AudioObject> result = null;
-        if (getFolders().isEmpty()) {
-        	 result = new ArrayList<AudioObject>();
-        	 result.addAll(getFiles());
-        } else {
-        	for (Folder f : getFolders().values()) {
-        		if (result == null) {
-        			result = f.getAudioObjects();
-        		} else {
-            		result.addAll(f.getAudioObjects());
-        		}
+        for (Folder f : getFolders().values()) {
+        	if (result == null) {
+        		result = f.getAudioObjects();
+        	} else {
+        		result.addAll(f.getAudioObjects());
         	}
         }
+        if (result == null) {
+        	result = new ArrayList<AudioObject>();
+        }
+       	result.addAll(getFiles());
         return result;
     }
 

@@ -69,7 +69,7 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
     private File file;
 
     /**
-     * Instantiates a new audio file.
+     * Instantiates a new audio file. File is read
      * 
      * @param file
      *            the file
@@ -79,13 +79,13 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
     }
 
     /**
-     * Instantiates a new audio file.
+     * Instantiates a new audio file. File is NOT read
      * 
      * @param fileName
      *            the file name
      */
     public AudioFile(String fileName) {
-        readFile(new File(fileName));
+    	this.file = new File(fileName); 
     }
 
     /**

@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
+import java.io.File;
 import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -49,7 +50,7 @@ public class CopyToDeviceAction extends AbstractActionOverSelectedObjects<AudioO
             return audioObject;
         } else if (audioObject instanceof PodcastFeedEntry && ((PodcastFeedEntry) audioObject).isDownloaded()) {
             String downloadPath = PodcastFeedHandler.getInstance().getDownloadPath((PodcastFeedEntry) audioObject);
-            return new AudioFile(downloadPath);
+            return new AudioFile(new File(downloadPath));
         }
 
         return null;
