@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.repository.data;
+package net.sourceforge.atunes.model;
 
 import java.awt.Image;
 import java.io.Serializable;
@@ -32,9 +32,6 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
-import net.sourceforge.atunes.model.Album;
-import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -48,9 +45,12 @@ import org.commonjukebox.plugins.model.PluginApi;
 @PluginApi
 public class Artist implements Serializable, TreeObject, Comparable<Artist> {
 
-    private static final long serialVersionUID = -7981636660798555640L;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2528917861599275619L;
 
-    /** Name of the artist. */
+	/** Name of the artist. */
     private String name;
 
     /** List of Album objects, indexed by name. */
@@ -64,7 +64,6 @@ public class Artist implements Serializable, TreeObject, Comparable<Artist> {
      */
     public Artist(String name) {
         this.name = name;
-        albums = new HashMap<String, Album>();
     }
 
     /**
@@ -74,7 +73,7 @@ public class Artist implements Serializable, TreeObject, Comparable<Artist> {
      *            the album
      */
     public void addAlbum(Album album) {
-        albums.put(album.getName(), album);
+    	getAlbums().put(album.getName(), album);
     }
 
     /**
@@ -107,7 +106,7 @@ public class Artist implements Serializable, TreeObject, Comparable<Artist> {
      * @return the album
      */
     public Album getAlbum(String albumName) {
-        return albums.get(albumName);
+        return getAlbums().get(albumName);
     }
 
     /**
@@ -116,20 +115,10 @@ public class Artist implements Serializable, TreeObject, Comparable<Artist> {
      * @return the albums
      */
     public Map<String, Album> getAlbums() {
+    	if (albums == null) {
+    		albums = new HashMap<String, Album>();
+    	}
         return albums;
-    }
-
-    /**
-     * Gets the audio files.
-     * 
-     * @return the audio files
-     */
-    public List<AudioFile> getAudioFiles() {
-        List<AudioFile> songs = new ArrayList<AudioFile>();
-        for (Album album : albums.values()) {
-            songs.addAll(AudioFile.getAudioFiles(album.getAudioObjects()));
-        }
-        return songs;
     }
 
     /**
@@ -140,7 +129,7 @@ public class Artist implements Serializable, TreeObject, Comparable<Artist> {
     @Override
     public List<AudioObject> getAudioObjects() {
         List<AudioObject> songs = new ArrayList<AudioObject>();
-        for (Album album : albums.values()) {
+        for (Album album : getAlbums().values()) {
             songs.addAll(album.getAudioObjects());
         }
         return songs;
@@ -167,7 +156,7 @@ public class Artist implements Serializable, TreeObject, Comparable<Artist> {
      *            the alb
      */
     public void removeAlbum(Album alb) {
-        albums.remove(alb.getName());
+    	getAlbums().remove(alb.getName());
     }
 
     /**
@@ -194,7 +183,7 @@ public class Artist implements Serializable, TreeObject, Comparable<Artist> {
     @Override
     public void setExtendedToolTip(ExtendedToolTip toolTip) {
         toolTip.setLine1(name);
-        int albumNumber = albums.size();
+        int albumNumber = getAlbums().size();
         toolTip.setLine2(StringUtils.getString(albumNumber, " ", (albumNumber > 1 ? I18nUtils.getString("ALBUMS") : I18nUtils.getString("ALBUM"))));
         Integer timesPlayed = StatisticsHandler.getInstance().getArtistTimesPlayed(this);
         toolTip.setLine3(StringUtils.getString(I18nUtils.getString("TIMES_PLAYED"), ": ", timesPlayed));

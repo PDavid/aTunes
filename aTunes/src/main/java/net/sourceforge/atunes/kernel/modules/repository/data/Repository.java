@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.repository.exception.InconsistentRepositoryException;
+import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.Folder;
 
 public class Repository implements Serializable {

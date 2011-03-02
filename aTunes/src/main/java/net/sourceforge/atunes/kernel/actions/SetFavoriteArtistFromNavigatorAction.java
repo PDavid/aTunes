@@ -27,10 +27,10 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler.ViewMode;
-import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class SetFavoriteArtistFromNavigatorAction extends AbstractActionOverSelectedObjects<AudioFile> {

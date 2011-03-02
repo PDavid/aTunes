@@ -28,11 +28,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.process.AbstractProcess;
-import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
+import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;

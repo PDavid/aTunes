@@ -25,11 +25,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.Album;
+import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 

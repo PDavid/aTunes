@@ -32,6 +32,7 @@ import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.model.Album;
+import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;

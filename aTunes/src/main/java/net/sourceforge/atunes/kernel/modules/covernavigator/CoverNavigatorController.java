@@ -44,9 +44,9 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.dialogs.CoverNavigatorFrame;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
-import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.GetCoversProcess;
 import net.sourceforge.atunes.model.Album;
+import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 import org.jdesktop.swingx.border.DropShadowBorder;

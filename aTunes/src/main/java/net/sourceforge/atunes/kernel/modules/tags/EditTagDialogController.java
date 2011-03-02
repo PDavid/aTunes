@@ -40,12 +40,12 @@ import net.sourceforge.atunes.gui.autocomplete.AutoCompleteDecorator;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.Album;
+import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;

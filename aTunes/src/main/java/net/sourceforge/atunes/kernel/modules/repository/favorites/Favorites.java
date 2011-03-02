@@ -26,9 +26,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.Album;
+import net.sourceforge.atunes.model.Artist;
 
 /**
  * The Class Favorites.
@@ -68,7 +68,7 @@ public class Favorites implements Serializable {
     public List<AudioFile> getAllFavoriteSongs() {
         List<AudioFile> result = new ArrayList<AudioFile>();
         for (Artist artist : favoriteArtists.values()) {
-            result.addAll(artist.getAudioFiles());
+            result.addAll(AudioFile.getAudioFiles(artist.getAudioObjects()));
         }
         for (Album album : favoriteAlbums.values()) {
             result.addAll(AudioFile.getAudioFiles(album.getAudioObjects()));

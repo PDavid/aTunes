@@ -55,7 +55,6 @@ import net.sourceforge.atunes.kernel.modules.repository.AudioFilesRemovedListene
 import net.sourceforge.atunes.kernel.modules.repository.LoaderListener;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryLoader;
-import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Repository;
@@ -65,6 +64,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.Album;
+import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -644,9 +644,9 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
                         }
                     } else {
                         // Compare title of every file of artist and add if title is not in list
-                        List<AudioFile> deviceFiles = a.getAudioFiles();
+                        List<AudioObject> deviceFiles = a.getAudioObjects();
                         HashSet<String> titles = new HashSet<String>();
-                        for (AudioFile deviceFile : deviceFiles) {
+                        for (AudioObject deviceFile : deviceFiles) {
                             titles.add(deviceFile.getTitle());
                         }
                         if (!titles.contains(title)) {
@@ -690,9 +690,9 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
                         }
                     }
                 } else {
-                    List<AudioFile> deviceFiles = a.getAudioFiles();
-                    HashMap<String, AudioFile> titles = new HashMap<String, AudioFile>();
-                    for (AudioFile deviceFile : deviceFiles) {
+                    List<AudioObject> deviceFiles = a.getAudioObjects();
+                    HashMap<String, AudioObject> titles = new HashMap<String, AudioObject>();
+                    for (AudioObject deviceFile : deviceFiles) {
                         titles.put(deviceFile.getTitle(), deviceFile);
                     }
                     if (titles.containsKey(title)) {

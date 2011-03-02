@@ -28,10 +28,10 @@ import java.util.Random;
 
 import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
 import net.sourceforge.atunes.model.Album;
+import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
 
 public final class SmartPlayListHandler {
@@ -96,19 +96,18 @@ public final class SmartPlayListHandler {
         List<Artist> artists = StatisticsHandler.getInstance().getMostPlayedArtists(n);
 
         // Songs selected
-        List<AudioFile> songsSelected = new ArrayList<AudioFile>();
+        List<AudioObject> songsSelected = new ArrayList<AudioObject>();
 
         // Add album songs
         for (Artist a : artists) {
-            songsSelected.addAll(a.getAudioFiles());
+            songsSelected.addAll(a.getAudioObjects());
         }
 
         // Sort
-        List<AudioObject> songsSorted = AudioFile.getAudioObjects(songsSelected);
-        AudioObjectComparator.sort(songsSorted);
+        AudioObjectComparator.sort(songsSelected);
 
         // Add to playlist
-        PlayListHandler.getInstance().addToPlayList(songsSorted);
+        PlayListHandler.getInstance().addToPlayList(songsSelected);
     }
 
     /**
