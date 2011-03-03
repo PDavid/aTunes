@@ -26,6 +26,7 @@ import java.util.List;
 
 import junit.framework.Assert;
 
+import org.junit.Before;
 import org.junit.Test;
 
 
@@ -36,15 +37,21 @@ public class RepositoryTest {
 	
 	private static Repository rep;
 	
-	@Test
-	public void createRepository() {
-		File f1 = new File(REP_FOLDER_1);
-		File f2 = new File(REP_FOLDER_2);
+	private static File f1;
+	private static File f2;
+
+	@Before
+	public void init() {
+		f1 = new File(REP_FOLDER_1);
+		f2 = new File(REP_FOLDER_2);
 		List<File> folders = new ArrayList<File>();
 		folders.add(f1);
 		folders.add(f2);
 		rep = new Repository(folders);
-
+	}
+	
+	@Test
+	public void createRepository() {
 		Assert.assertTrue(rep.getAudioFiles().isEmpty());
 		Assert.assertTrue(rep.getAudioFilesList().isEmpty());
 		Assert.assertTrue(rep.getArtistStructure().isEmpty());
@@ -58,4 +65,23 @@ public class RepositoryTest {
 		Assert.assertEquals(0, rep.getTotalSizeInBytes());
 		Assert.assertEquals(0, rep.countFiles());
 	}
+	
+	@Test
+	public void testDuration() {
+		rep.addDurationInSeconds(2);
+		rep.addDurationInSeconds(3);
+		Assert.assertEquals(5, rep.getTotalDurationInSeconds());
+		rep.removeDurationInSeconds(1);
+		Assert.assertEquals(4, rep.getTotalDurationInSeconds());
+	}
+	
+	@Test
+	public void testSize() {
+		rep.addSizeInBytes(2);
+		rep.addSizeInBytes(3);
+		Assert.assertEquals(5, rep.getTotalSizeInBytes());
+		rep.removeSizeInBytes(1);
+		Assert.assertEquals(4, rep.getTotalSizeInBytes());
+	}
+
 }
