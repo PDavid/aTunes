@@ -360,7 +360,7 @@ public final class StatisticsHandler extends AbstractHandler {
      * @return the unplayed audio files
      */
     public List<AudioFile> getUnplayedAudioFiles() {
-        List<AudioFile> unplayedAudioFiles = RepositoryHandler.getInstance().getAudioFilesList();
+        List<AudioFile> unplayedAudioFiles = new ArrayList<AudioFile>(RepositoryHandler.getInstance().getAudioFilesList());
         unplayedAudioFiles.removeAll(statistics.getAudioFilesRanking().getNFirstElements(-1));
         return unplayedAudioFiles;
     }

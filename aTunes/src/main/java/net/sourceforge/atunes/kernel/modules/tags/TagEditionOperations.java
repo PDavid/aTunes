@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.tags;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -152,7 +153,7 @@ public final class TagEditionOperations {
         if (GuiHandler.getInstance().showConfirmationDialog(I18nUtils.getString("REPAIR_ALBUM_NAMES_MESSAGE"), I18nUtils.getString("REPAIR_ALBUM_NAMES")) == JOptionPane.OK_OPTION) {
 
             // Get all repository audio files
-            List<AudioFile> repositoryAudioFiles = RepositoryHandler.getInstance().getAudioFilesList();
+            Collection<AudioFile> repositoryAudioFiles = RepositoryHandler.getInstance().getAudioFilesList();
 
             // Get audio files with empty track number
             List<AudioFile> audioFilesToBeRepaired = new ArrayList<AudioFile>();
@@ -175,7 +176,7 @@ public final class TagEditionOperations {
         if (GuiHandler.getInstance().showConfirmationDialog(I18nUtils.getString("REPAIR_GENRES_MESSAGE"), I18nUtils.getString("REPAIR_GENRES")) == JOptionPane.OK_OPTION) {
 
             // Get all repository audio files
-            List<AudioFile> repositoryAudioFiles = RepositoryHandler.getInstance().getAudioFilesList();
+        	Collection<AudioFile> repositoryAudioFiles = RepositoryHandler.getInstance().getAudioFilesList();
 
             // Get audio files with empty track number
             List<AudioFile> audioFilesToBeRepaired = new ArrayList<AudioFile>();
@@ -199,7 +200,7 @@ public final class TagEditionOperations {
         if (GuiHandler.getInstance().showConfirmationDialog(I18nUtils.getString("REPAIR_TRACK_NUMBERS_MESSAGE"), I18nUtils.getString("REPAIR_TRACK_NUMBERS")) == JOptionPane.OK_OPTION) {
 
             // Get all repository audio files
-            List<AudioFile> repositoryAudioFiles = RepositoryHandler.getInstance().getAudioFilesList();
+        	Collection<AudioFile> repositoryAudioFiles = RepositoryHandler.getInstance().getAudioFilesList();
 
             // Get audio files with empty track number
             List<AudioFile> audioFilesToBeRepaired = new ArrayList<AudioFile>();

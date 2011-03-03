@@ -57,7 +57,6 @@ import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryLoader;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
-import net.sourceforge.atunes.kernel.modules.repository.data.Repository;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
@@ -67,6 +66,7 @@ import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.Folder;
+import net.sourceforge.atunes.model.Repository;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -128,7 +128,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
         long leaveFree = leaveFreeLong;
 
         // Get reference to Repository songs
-        List<AudioFile> songs = RepositoryHandler.getInstance().getAudioFilesList();
+        List<AudioFile> songs = new ArrayList<AudioFile>(RepositoryHandler.getInstance().getAudioFilesList());
 
         // Songs selected
         Map<Integer, AudioFile> songsSelected = new HashMap<Integer, AudioFile>();
@@ -384,7 +384,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
      * 
      * @return the device songs
      */
-    public List<AudioFile> getAudioFilesList() {
+    public Collection<AudioFile> getAudioFilesList() {
         if (deviceRepository != null) {
             return deviceRepository.getAudioFilesList();
         }
