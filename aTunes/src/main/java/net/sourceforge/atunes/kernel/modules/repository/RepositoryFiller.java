@@ -25,115 +25,152 @@ import java.io.File;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
-import net.sourceforge.atunes.misc.log.LogCategories;
-import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.Repository;
 
+/**
+ * A class responsible of load repository structure
+ * @author fleax
+ *
+ */
 final class RepositoryFiller {
 
-    private RepositoryFiller() {
-
+	private Repository repository;
+	
+    /**
+     * Creates a new filler for given repository
+     * @param repository
+     */
+    RepositoryFiller(Repository repository) {
+    	if (repository == null) {
+    		throw new IllegalArgumentException("Repository is null");
+    	}
+    	this.repository = repository;
     }
 
     /**
-     * Adds basic information of given audio file to repository
-     * 
-     * @param repository
+     * Adds a new audio file with a relative path
+     * @param audioFile
+     * @param repositoryFolderRoot
+     * @param relativePathToRepositoryFolderRoot
+     */
+    void addAudioFile(AudioFile audioFile, File repositoryFolderRoot, String relativePathToRepositoryFolderRoot) {
+    	if (audioFile == null) {
+    		throw new IllegalArgumentException("AudioFile is null");
+    	}
+    	
+    	if (repositoryFolderRoot == null) {
+    		throw new IllegalArgumentException("RelativeTo file is null");
+    	}
+
+    	if (relativePathToRepositoryFolderRoot == null) {
+    		throw new IllegalArgumentException("Relative path is null");
+    	}
+
+		addToRepository(audioFile);
+		addToArtistStructure(audioFile);
+		addToFolderStructure(repositoryFolderRoot, relativePathToRepositoryFolderRoot, audioFile);
+		addToGenreStructure(audioFile);
+		addToYearStructure(audioFile);
+    }
+    
+    /**
+     * Refreshes audio file already added to repository
      * @param audioFile
      */
-    static void addToRepository(Repository repository, AudioFile audioFile) {
+    void refreshAudioFile(AudioFile audioFile, AbstractTag oldTag) {
+    	if (audioFile == null) {
+    		throw new IllegalArgumentException("AudioFile is null");
+    	}
+
+    	updateArtistStructure(oldTag, audioFile);
+    	updateGenreStructure(oldTag, audioFile);
+    	updateYearStructure(oldTag, audioFile);
+    	
+		addToArtistStructure(audioFile);
+		addToGenreStructure(audioFile);
+		addToYearStructure(audioFile);
+    }
+    
+    /**
+     * Adds basic information of given audio file to repository
+     * 
+     * @param audioFile
+     */
+    private void addToRepository(AudioFile audioFile) {
         repository.getAudioFiles().put(audioFile.getUrl(), audioFile);
-        repository.setTotalSizeInBytes(repository.getTotalSizeInBytes() + audioFile.getFile().length());
+        repository.addSizeInBytes(audioFile.getFile().length());
         repository.addDurationInSeconds(audioFile.getDuration());
     }
 
     /**
      * Adds given audio file to artist structure of given repository
      * 
-     * @param repository
-     *            Repository to use
      * @param audioFile
      *            AudioFile to display
      */
-    static void addToArtistStructure(Repository repository, AudioFile audioFile) {
-        try {
-            String artist = audioFile.getAlbumArtistOrArtist();
-            String album = audioFile.getAlbum();
+    private void addToArtistStructure(AudioFile audioFile) {
+    	String artist = audioFile.getAlbumArtistOrArtist();
+    	String album = audioFile.getAlbum();
 
-            Artist artistObject = repository.getArtistStructure().get(artist);
-            if (artistObject == null) {
-                artistObject = new Artist(artist);
-                repository.getArtistStructure().put(artist, artistObject);
-            }
+    	// Create artist object if needed
+    	Artist artistObject = repository.getArtistStructure().get(artist);
+    	if (artistObject == null) {
+    		artistObject = new Artist(artist);
+    		repository.getArtistStructure().put(artist, artistObject);
+    	}
 
-            Album albumObject = artistObject.getAlbum(album);
-            if (albumObject == null) {
-                albumObject = new Album(artistObject, album);
-                artistObject.addAlbum(albumObject);
-            }
+    	// Create album object if needed
+    	Album albumObject = artistObject.getAlbum(album);
+    	if (albumObject == null) {
+    		albumObject = new Album(artistObject, album);
+    		artistObject.addAlbum(albumObject);
+    	}
 
-            albumObject.addAudioFile(audioFile);
-        } catch (Exception e) {
-            new Logger().error(LogCategories.FILE_READ, e.getMessage());
-        }
+    	// Add file to album
+    	albumObject.addAudioFile(audioFile);
     }
 
     /**
      * Adds given audio file to genre structure of given repository
      * 
-     * @param repository
-     *            the repository
      * @param audioFile
      *            the audio file
      */
-    static void addToGenreStructure(Repository repository, AudioFile audioFile) {
-        try {
-            String genre = audioFile.getGenre();
-
-            Genre genreObject = repository.getGenreStructure().get(genre);
-            if (genreObject == null) {
-                genreObject = new Genre(genre);
-                repository.getGenreStructure().put(genre, genreObject);
-            }
-
-            genreObject.addAudioFile(audioFile);
-        } catch (Exception e) {
-            new Logger().error(LogCategories.FILE_READ, e.getMessage());
-        }
+    private void addToGenreStructure(AudioFile audioFile) {
+    	String genre = audioFile.getGenre();
+    	Genre genreObject = repository.getGenreStructure().get(genre);
+    	if (genreObject == null) {
+    		genreObject = new Genre(genre);
+    		repository.getGenreStructure().put(genre, genreObject);
+    	}
+    	genreObject.addAudioFile(audioFile);
     }
 
     /**
      * Adds given audio file to year structure of given repository
      * 
-     * @param repository
-     *            the repository
      * @param audioFile
      *            the audio file
      */
-    static void addToYearStructure(Repository repository, AudioFile audioFile) {
-        try {
-            String year = audioFile.getYear();
+    private void addToYearStructure(AudioFile audioFile) {
+    	String year = audioFile.getYear();
 
-            Year yearObject = repository.getYearStructure().get(year);
-            if (yearObject == null) {
-                yearObject = new Year(year);
-                repository.getYearStructure().put(year, yearObject);
-            }
+    	Year yearObject = repository.getYearStructure().get(year);
+    	if (yearObject == null) {
+    		yearObject = new Year(year);
+    		repository.getYearStructure().put(year, yearObject);
+    	}
 
-            yearObject.addAudioFile(audioFile);
-        } catch (Exception e) {
-            new Logger().error(LogCategories.FILE_READ, e.getMessage());
-        }
+    	yearObject.addAudioFile(audioFile);
     }
 
     /**
      * Adds given audio file to folder structure of given repository.
      * 
-     * @param repository
-     *            the repository
      * @param relativeTo
      *            the relative to
      * @param relativePath
@@ -141,7 +178,7 @@ final class RepositoryFiller {
      * @param file
      *            the file
      */
-    static void addToFolderStructure(Repository repository, File relativeTo, String relativePath, AudioFile file) {
+    private void addToFolderStructure(File relativeTo, String relativePath, AudioFile file) {
         Folder relativeFolder = repository.getFolderStructure().get(relativeTo.getAbsolutePath());
         if (relativeFolder == null) {
             relativeFolder = new Folder(relativeTo.getAbsolutePath());
@@ -167,9 +204,117 @@ final class RepositoryFiller {
             }
             parentFolder = f;
         }
-        if (parentFolder == null) {
-            parentFolder = new Folder(".");
-        }
         parentFolder.addAudioFile(file);
+    }
+    
+    /**
+     * Removes from artist structure if necessary
+     * @param file
+     */
+    private void updateArtistStructure(AbstractTag oldTag, AudioFile file) {
+		String albumArtist = null;
+		String artist = null;
+		String album = null;
+		if (oldTag != null) {
+			albumArtist = oldTag.getAlbumArtist();
+			artist = oldTag.getArtist();
+			album = oldTag.getAlbum();
+		}
+		if (artist == null || artist.equals("")) {
+			artist = Artist.getUnknownArtist();
+		}
+		if (album == null || album.equals("")) {
+			album = Album.getUnknownAlbum();
+		}
+		
+		boolean albumArtistPresent = true;
+		Artist a = repository.getArtistStructure().get(albumArtist);
+		if (a == null) {
+			a = repository.getArtistStructure().get(artist);
+			albumArtistPresent = false;
+		}
+		if (a != null) {
+			Album alb = a.getAlbum(album);
+			if (alb != null) {
+				if (alb.getAudioObjects().size() == 1) {
+					a.removeAlbum(alb);
+				} else {
+					alb.removeAudioFile(file);
+				}
+
+				if (a.getAudioObjects().size() <= 0) {
+					repository.getArtistStructure().remove(a.getName());
+				}
+			}
+			// If album artist field is present, audio file might still be
+			// present under artist name so check
+			if (albumArtistPresent) {
+				a = repository.getArtistStructure().get(artist);
+				if (a != null) {
+					alb = a.getAlbum(album);
+					if (alb != null) {
+						if (alb.getAudioObjects().size() == 1) {
+							a.removeAlbum(alb);
+						} else {
+							alb.removeAudioFile(file);
+						}
+						// Maybe needs to be set to 0 in case node gets
+						// deleted
+						if (a.getAudioObjects().size() <= 1) {
+							repository.getArtistStructure().remove(a.getName());
+						}
+					}
+				}
+			}
+		}
+    }
+    
+    /**
+     * Removes from genre structure if necessary
+     * @param oldTag
+     * @param file
+     */
+    private void updateGenreStructure(AbstractTag oldTag, AudioFile file) {
+		String genre = null;
+		if (oldTag != null) {
+			genre = oldTag.getGenre();
+		}
+		if (genre == null || genre.equals("")) {
+			genre = Genre.getUnknownGenre();
+		}
+
+		Genre g = repository.getGenreStructure().get(genre);
+		if (g != null) {
+			g.removeAudioFile(file);
+
+			if (g.getAudioObjects().size() <= 1) {
+				repository.getGenreStructure().remove(genre);
+			}
+		}
+    }
+    
+    /**
+     * Removes from year structure if necessary
+     * @param oldTag
+     * @param file
+     */
+    private void updateYearStructure(AbstractTag oldTag, AudioFile file) {
+		String year = null;
+		if (oldTag != null) {
+			year = oldTag.getYear() > 0 ? Integer.toString(oldTag.getYear()) : "";
+		}
+		if (year == null || year.equals("")) {
+			year = Year.getUnknownYear();
+		}
+
+		// Remove from year structure if necessary
+		Year y = repository.getYearStructure().get(year);
+		if (y != null) {
+			y.removeAudioFile(file);
+
+			if (y.getAudioObjects().size() <= 1) {
+				repository.getYearStructure().remove(year);
+			}
+		}
     }
 }

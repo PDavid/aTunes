@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -123,34 +122,23 @@ public class RepositoryLoader extends Thread {
 				}
 			}
 
-			Map<String, AudioFile> repositoryFiles = rep.getAudioFiles();
+			RepositoryFiller filler = new RepositoryFiller(rep);
 			for (File f : files) {
 				if (f.getParentFile().equals(folder)) {
 					AudioFile audioFile = null;
 					audioFile = new AudioFile(f);
 					audioFile.setExternalPictures(pictures);
-					repositoryFiles.put(audioFile.getUrl(), audioFile);
 
 					String pathToFile = audioFile.getUrl().replace('\\', '/');
 					int lastChar = pathToFile.lastIndexOf('/') + 1;
 					String relativePath;
 					if (firstChar < lastChar) {
-						relativePath = pathToFile
-								.substring(firstChar, lastChar);
+						relativePath = pathToFile.substring(firstChar, lastChar);
 					} else {
 						relativePath = ".";
 					}
 
-					RepositoryFiller.addToArtistStructure(rep, audioFile);
-					RepositoryFiller.addToFolderStructure(rep,
-							getRepositoryFolderContaining(rep, folder),
-							relativePath, audioFile);
-					RepositoryFiller.addToGenreStructure(rep, audioFile);
-					RepositoryFiller.addToYearStructure(rep, audioFile);
-
-					rep.setTotalSizeInBytes(rep.getTotalSizeInBytes()
-							+ audioFile.getFile().length());
-					rep.addDurationInSeconds(audioFile.getDuration());
+					filler.addAudioFile(audioFile, getRepositoryFolderContaining(rep, folder), relativePath);
 				}
 			}
 		}
@@ -298,129 +286,35 @@ public class RepositoryLoader extends Thread {
 		repository.setDirty(true);
 
 		try {
+			// Get old tag
 			AbstractTag oldTag = file.getTag();
-			String albumArtist = null;
-			String artist = null;
-			String album = null;
-			String genre = null;
-			String year = null;
-			if (oldTag != null) {
-				albumArtist = oldTag.getAlbumArtist();
-				artist = oldTag.getArtist();
-				album = oldTag.getAlbum();
-				genre = oldTag.getGenre();
-				year = oldTag.getYear() > 0 ? Integer
-						.toString(oldTag.getYear()) : "";
-			}
-			if (artist == null || artist.equals("")) {
-				artist = Artist.getUnknownArtist();
-			}
-			if (album == null || album.equals("")) {
-				album = Album.getUnknownAlbum();
-			}
-			if (genre == null || genre.equals("")) {
-				genre = Genre.getUnknownGenre();
-			}
-			if (year == null || year.equals("")) {
-				year = Year.getUnknownYear();
-			}
-
-			// Remove from tree structure if necessary
-			boolean albumArtistPresent = true;
-			Artist a = repository.getArtistStructure().get(albumArtist);
-			if (a == null) {
-				a = repository.getArtistStructure().get(artist);
-				albumArtistPresent = false;
-			}
-			if (a != null) {
-				Album alb = a.getAlbum(album);
-				if (alb != null) {
-					if (alb.getAudioObjects().size() == 1) {
-						a.removeAlbum(alb);
-					} else {
-						alb.removeAudioFile(file);
-					}
-
-					if (a.getAudioObjects().size() <= 0) {
-						repository.getArtistStructure().remove(a.getName());
-					}
-				}
-				// If album artist field is present, audiofile might still be
-				// present under artist name so check
-				if (albumArtistPresent) {
-					a = repository.getArtistStructure().get(artist);
-					if (a != null) {
-						alb = a.getAlbum(album);
-						if (alb != null) {
-							if (alb.getAudioObjects().size() == 1) {
-								a.removeAlbum(alb);
-							} else {
-								alb.removeAudioFile(file);
-							}
-							// Maybe needs to be set to 0 in case node gets
-							// deleted
-							if (a.getAudioObjects().size() <= 1) {
-								repository.getArtistStructure().remove(
-										a.getName());
-							}
-						}
-					}
-				}
-			}
-
-			// Remove from genre structure if necessary
-			Genre g = repository.getGenreStructure().get(genre);
-			if (g != null) {
-				g.removeAudioFile(file);
-
-				if (g.getAudioObjects().size() <= 1) {
-					repository.getGenreStructure().remove(genre);
-				}
-			}
-
-			// Remove from year structure if necessary
-			Year y = repository.getYearStructure().get(year);
-			if (y != null) {
-				y.removeAudioFile(file);
-
-				if (y.getAudioObjects().size() <= 1) {
-					repository.getYearStructure().remove(year);
-				}
-			}
-
+			
 			// Update tag
-			file.refreshTag();
-			RepositoryFiller.addToArtistStructure(repository, file);
-			RepositoryFiller.addToGenreStructure(repository, file);
-			RepositoryFiller.addToYearStructure(repository, file);
-			// There is no need to update folder as audio file is in the same
-			// folder
+			file.refreshTag();		
+			
+			// Update repository
+			new RepositoryFiller(repository).refreshAudioFile(file, oldTag);
 
 			// Compare old tag with new tag
 			AbstractTag newTag = file.getTag();
 			if (newTag != null) {
-				boolean artistChanged = !oldTag.getArtist().equals(
-						newTag.getArtist());
-				boolean albumChanged = !oldTag.getAlbum().equals(
-						newTag.getAlbum());
+				boolean artistChanged = !oldTag.getArtist().equals(newTag.getArtist());
+				boolean albumChanged = !oldTag.getAlbum().equals(newTag.getAlbum());
 				boolean oldArtistRemoved = false;
+				
 				if (artistChanged) {
-					Artist oldArtist = repository.getArtistStructure().get(
-							oldTag.getArtist());
+					Artist oldArtist = repository.getArtistStructure().get(oldTag.getArtist());
 					if (oldArtist == null) {
 						// Artist has been renamed -> Update statistics
-						StatisticsHandler.getInstance().updateArtist(
-								oldTag.getArtist(), newTag.getArtist());
+						StatisticsHandler.getInstance().updateArtist(oldTag.getArtist(), newTag.getArtist());
 						oldArtistRemoved = true;
 					}
 				}
 				if (albumChanged) {
-					Artist artistWithOldAlbum = oldArtistRemoved ? repository
-							.getArtistStructure().get(newTag.getArtist())
-							: repository.getArtistStructure().get(
-									oldTag.getArtist());
-					Album oldAlbum = artistWithOldAlbum.getAlbum(oldTag
-							.getAlbum());
+					Artist artistWithOldAlbum = oldArtistRemoved ? 
+							repository.getArtistStructure().get(newTag.getArtist())
+							: repository.getArtistStructure().get(oldTag.getArtist());
+					Album oldAlbum = artistWithOldAlbum.getAlbum(oldTag.getAlbum());
 					if (oldAlbum == null) {
 						// Album has been renamed -> Update statistics
 						StatisticsHandler.getInstance().updateAlbum(
@@ -621,6 +515,7 @@ public class RepositoryLoader extends Thread {
 
         // Process audio files
         if (audiofiles != null) {
+        	RepositoryFiller filler = new RepositoryFiller(repository);
         	for (File audiofile : audiofiles) {
         		if (!interrupt) {
         			AudioFile audio = null;
@@ -645,11 +540,7 @@ public class RepositoryLoader extends Thread {
         				listener.notifyFileLoaded();
         			}
         			filesLoaded++;
-        			RepositoryFiller.addToRepository(repository, audio);
-        			RepositoryFiller.addToArtistStructure(repository, audio);            
-        			RepositoryFiller.addToFolderStructure(repository, relativeTo, relativePath, audio);
-        			RepositoryFiller.addToGenreStructure(repository, audio);
-        			RepositoryFiller.addToYearStructure(repository, audio);
+        			filler.addAudioFile(audio, relativeTo, relativePath);
 
         			// Update remaining time every 50 files
         			if (!refresh && listener != null && filesLoaded % 50 == 0) {
@@ -836,10 +727,7 @@ public class RepositoryLoader extends Thread {
 
 			// Update repository size
 			RepositoryHandler.getInstance().getRepository()
-					.setTotalSizeInBytes(
-							RepositoryHandler.getInstance().getRepository()
-									.getTotalSizeInBytes()
-									- file.getFile().length());
+					.removeSizeInBytes(file.getFile().length());
 
 			// Update repository duration
 			RepositoryHandler.getInstance().getRepository()

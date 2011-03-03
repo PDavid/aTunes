@@ -73,16 +73,6 @@ public class Repository implements Serializable {
     }
 
     /**
-     * Adds the duration in seconds.
-     * 
-     * @param seconds
-     *            the seconds
-     */
-    public void addDurationInSeconds(long seconds) {
-        this.totalDurationInSeconds += seconds;
-    }
-
-    /**
      * Count files.
      * 
      * @return the int
@@ -147,23 +137,15 @@ public class Repository implements Serializable {
     }
 
     /**
-     * Gets the total duration in seconds.
+     * Adds the duration in seconds.
      * 
-     * @return the total duration in seconds
+     * @param seconds
+     *            the seconds
      */
-    public long getTotalDurationInSeconds() {
-        return totalDurationInSeconds;
+    public void addDurationInSeconds(long seconds) {
+        this.totalDurationInSeconds += seconds;
     }
-
-    /**
-     * Gets the total size in bytes.
-     * 
-     * @return the total size in bytes
-     */
-    public long getTotalSizeInBytes() {
-        return totalSizeInBytes;
-    }
-
+    
     /**
      * Removes the duration in seconds.
      * 
@@ -175,13 +157,37 @@ public class Repository implements Serializable {
     }
 
     /**
-     * Sets the total size in bytes.
+     * Gets the total duration in seconds.
      * 
-     * @param totalSizeInBytes
-     *            the new total size in bytes
+     * @return the total duration in seconds
      */
-    public void setTotalSizeInBytes(long totalSizeInBytes) {
-        this.totalSizeInBytes = totalSizeInBytes;
+    public long getTotalDurationInSeconds() {
+        return totalDurationInSeconds;
+    }
+
+    /**
+     * Adds the size in bytes
+     * @param bytes
+     */
+    public void addSizeInBytes(long bytes) {
+    	totalSizeInBytes += bytes;
+    }
+    
+    /**
+     * Removes the size in bytes
+     * @param bytes
+     */
+    public void removeSizeInBytes(long bytes) {
+    	totalSizeInBytes -= bytes;
+    }
+    
+    /**
+     * Gets the total size in bytes.
+     * 
+     * @return the total size in bytes
+     */
+    public long getTotalSizeInBytes() {
+        return totalSizeInBytes;
     }
 
     /**
