@@ -58,7 +58,6 @@ import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
-import net.sourceforge.atunes.kernel.modules.repository.data.Repository;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.kernel.modules.repository.processes.ImportFilesProcess;
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
@@ -74,6 +73,7 @@ import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.Folder;
+import net.sourceforge.atunes.model.Repository;
 import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -576,7 +576,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
      * 
      * @return the audio files
      */
-    public List<AudioFile> getAudioFilesList() {
+    public Collection<AudioFile> getAudioFilesList() {
         if (repository != null) {
             return repository.getAudioFilesList();
         }

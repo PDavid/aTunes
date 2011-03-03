@@ -118,7 +118,7 @@ public final class SmartPlayListHandler {
      */
     public void addRandomSongs(int n) {
         // Get reference to Repository songs
-        List<AudioFile> songs = RepositoryHandler.getInstance().getAudioFilesList();
+        List<AudioFile> songs = new ArrayList<AudioFile>(RepositoryHandler.getInstance().getAudioFilesList());
 
         // Songs selected
         List<AudioObject> songsSelected = new ArrayList<AudioObject>();

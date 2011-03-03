@@ -18,35 +18,35 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.repository.data;
+package net.sourceforge.atunes.model;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sourceforge.atunes.model.Artist;
-import net.sourceforge.atunes.model.Folder;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
+import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 
 public class RepositoryStructure implements Serializable {
 
     private static final long serialVersionUID = -2230698137764691254L;
 
+    private Map<String, AudioFile> filesStructure;
     private Map<String, Artist> artistStructure;
     private Map<String, Folder> folderStructure;
     private Map<String, Genre> genreStructure;
     private Map<String, Year> yearStructure;
 
-    //private Map<String, Album> albumStructure;
-
     /**
      * Instantiates a new repository structure.
      */
     protected RepositoryStructure() {
-        artistStructure = new HashMap<String, Artist>();
-        folderStructure = new HashMap<String, Folder>();
-        genreStructure = new HashMap<String, Genre>();
-        yearStructure = new HashMap<String, Year>();
-        //albumStructure = new HashMap<String, Album>();
+    	this.filesStructure = new HashMap<String, AudioFile>();
+    	this.artistStructure = new HashMap<String, Artist>();
+    	this.folderStructure = new HashMap<String, Folder>();
+    	this.genreStructure = new HashMap<String, Genre>();
+    	this.yearStructure = new HashMap<String, Year>();
     }
 
     /**
@@ -85,12 +85,11 @@ public class RepositoryStructure implements Serializable {
         return yearStructure;
     }
 
-    //    /**
-    //     * Gets the album structure.
-    //     * 
-    //     * @return the album structure
-    //     */
-    //    public Map<String, Album> getAlbumStructure() {
-    //        return albumStructure;
-    //    }
+	/**
+	 * Gets the files structure
+	 * @return
+	 */
+	public Map<String, AudioFile> getFilesStructure() {
+		return filesStructure;
+	}
 }

@@ -18,31 +18,47 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.repository.data;
+package net.sourceforge.atunes.model;
 
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
+import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.kernel.modules.repository.exception.InconsistentRepositoryException;
-import net.sourceforge.atunes.model.Artist;
-import net.sourceforge.atunes.model.Folder;
 
 public class Repository implements Serializable {
 
     private static final long serialVersionUID = -8278937514875788175L;
 
+    /**
+     * Root folders of repository
+     */
     private List<File> folders;
-    private Map<String, AudioFile> files;
-    /** The total size in bytes. */
+    
+    /**
+     *  The total size in bytes of all files 
+     */
     private long totalSizeInBytes;
-    /** The total duration in seconds. */
+    
+    /** 
+     * The total duration in seconds of all files 
+     */
     private long totalDurationInSeconds;
+    
+    /**
+     *  Structure of information
+     */
     private RepositoryStructure structure;
-    /** Attribute to indicate if repository needs to be written to disk */
+    
+    /** 
+     * Attribute to indicate if repository needs to be written to disk 
+     */
     private transient boolean dirty;
 
     /**
@@ -53,8 +69,7 @@ public class Repository implements Serializable {
      */
     public Repository(List<File> folders) {
         this.folders = folders;
-        files = new HashMap<String, AudioFile>();
-        structure = new RepositoryStructure();
+        this.structure = new RepositoryStructure();
     }
 
     /**
@@ -64,7 +79,7 @@ public class Repository implements Serializable {
      *            the seconds
      */
     public void addDurationInSeconds(long seconds) {
-        totalDurationInSeconds += seconds;
+        this.totalDurationInSeconds += seconds;
     }
 
     /**
@@ -73,7 +88,7 @@ public class Repository implements Serializable {
      * @return the int
      */
     public int countFiles() {
-        return files.size();
+        return structure.getFilesStructure().size();
     }
 
     /**
@@ -85,7 +100,7 @@ public class Repository implements Serializable {
      * @return the file
      */
     public AudioFile getFile(String fileName) {
-        return files.get(fileName);
+        return structure.getFilesStructure().get(fileName);
     }
 
     /**
@@ -94,7 +109,7 @@ public class Repository implements Serializable {
      * @return the files
      */
     public Map<String, AudioFile> getAudioFiles() {
-        return files;
+        return structure.getFilesStructure();
     }
 
     /**
@@ -102,8 +117,8 @@ public class Repository implements Serializable {
      * 
      * @return the files list
      */
-    public List<AudioFile> getAudioFilesList() {
-        return new ArrayList<AudioFile>(files.values());
+    public Collection<AudioFile> getAudioFilesList() {
+        return structure.getFilesStructure().values();
     }
 
     /**
@@ -175,7 +190,13 @@ public class Repository implements Serializable {
      * @return if repository exists on disk
      */
     public boolean exists() {
-        return getFolders().get(0).exists();
+    	// All folders must exist
+    	for (File folder : getFolders()) {
+    		if (!folder.exists()) {
+    			return false;
+    		}
+    	}
+        return true;
     }
 
     /**
@@ -207,7 +228,5 @@ public class Repository implements Serializable {
             getYearStructure() == null) {
                 throw new InconsistentRepositoryException();
         }
-
     }
-
 }
