@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.modules.repository.processes;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.process.AbstractAudioFileTransferProcess;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
+import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -43,7 +43,7 @@ public class ExportFilesProcess extends AbstractAudioFileTransferProcess {
      * @param path
      *            Path to where the files should be exported
      */
-    public ExportFilesProcess(List<AudioFile> songs, String path) {
+    public ExportFilesProcess(List<LocalAudioObject> songs, String path) {
         super(songs);
         this.path = path;
     }

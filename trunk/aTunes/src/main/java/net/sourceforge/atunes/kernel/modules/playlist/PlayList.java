@@ -363,7 +363,7 @@ public class PlayList implements Serializable, Cloneable {
     }
 
     /**
-     * Returns only AudioFile objects contained in this play list
+     * Returns only LocalAudioObject objects contained in this play list
      * 
      * @return
      */

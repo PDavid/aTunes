@@ -27,10 +27,10 @@ import javax.swing.KeyStroke;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.tags.TagHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -39,7 +39,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class EditTagAction extends AbstractActionOverSelectedObjects<AudioFile> {
+public class EditTagAction extends AbstractActionOverSelectedObjects<LocalAudioObject> {
 
     private static final long serialVersionUID = -4310895355731333072L;
 
@@ -50,7 +50,7 @@ public class EditTagAction extends AbstractActionOverSelectedObjects<AudioFile> 
     };
 
     EditTagAction() {
-        super(I18nUtils.getString("EDIT_TAG"), Images.getImage(Images.TAG), AudioFile.class);
+        super(I18nUtils.getString("EDIT_TAG"), Images.getImage(Images.TAG), LocalAudioObject.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("EDIT_TAG"));
     }
 
@@ -62,7 +62,7 @@ public class EditTagAction extends AbstractActionOverSelectedObjects<AudioFile> 
     }
 
     @Override
-    protected void performAction(List<AudioFile> objects) {
+    protected void performAction(List<LocalAudioObject> objects) {
         // Start edit by opening edit dialog
         try {
             EditTagSources editTagSource = EditTagSources.valueOf(getActionId());

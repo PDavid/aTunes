@@ -35,6 +35,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.ImageUtils;
 
 /**
@@ -42,7 +43,7 @@ import net.sourceforge.atunes.utils.ImageUtils;
  */
 public class SetCoversProcess extends AbstractChangeTagProcess {
 
-    private Map<AudioFile, Image> filesAndCovers;
+    private Map<LocalAudioObject, Image> filesAndCovers;
 
     /**
      * Instantiates a new sets the covers process.
@@ -50,7 +51,7 @@ public class SetCoversProcess extends AbstractChangeTagProcess {
      * @param files
      *            the files
      */
-    SetCoversProcess(List<AudioFile> files) {
+    SetCoversProcess(List<LocalAudioObject> files) {
         super(files);
     }
 
@@ -61,7 +62,7 @@ public class SetCoversProcess extends AbstractChangeTagProcess {
     }
 
     @Override
-    protected void changeTag(AudioFile file) throws IOException {
+    protected void changeTag(LocalAudioObject file) throws IOException {
         BufferedImage bufferedCover = ImageUtils.toBufferedImage(this.filesAndCovers.get(file));
         AbstractTag newTag = AudioFile.getNewTag(file, new EditTagInfo());
         newTag.setInternalImage(true);
@@ -78,12 +79,12 @@ public class SetCoversProcess extends AbstractChangeTagProcess {
      * 
      * @return the covers for files
      */
-    private Map<AudioFile, Image> getCoversForFiles(List<AudioFile> files) {
-        Map<AudioFile, Image> result = new HashMap<AudioFile, Image>();
+    private Map<LocalAudioObject, Image> getCoversForFiles(List<LocalAudioObject> files) {
+        Map<LocalAudioObject, Image> result = new HashMap<LocalAudioObject, Image>();
 
         Map<Integer, Image> coverCache = new HashMap<Integer, Image>();
 
-        for (AudioFile f : files) {
+        for (LocalAudioObject f : files) {
             if (!Artist.isUnknownArtist(f.getArtist()) && !Album.isUnknownAlbum(f.getAlbum())) {
                 Image cover = null;
                 int cacheKey = f.getArtist().hashCode() + f.getAlbum().hashCode();

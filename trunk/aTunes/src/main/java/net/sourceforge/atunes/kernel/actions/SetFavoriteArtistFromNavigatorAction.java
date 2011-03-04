@@ -27,23 +27,23 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler.ViewMode;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class SetFavoriteArtistFromNavigatorAction extends AbstractActionOverSelectedObjects<AudioFile> {
+public class SetFavoriteArtistFromNavigatorAction extends AbstractActionOverSelectedObjects<LocalAudioObject> {
 
     private static final long serialVersionUID = -3551889307264609825L;
 
     SetFavoriteArtistFromNavigatorAction() {
-        super(I18nUtils.getString("SET_FAVORITE_ARTIST"), Images.getImage(Images.FAVORITE), AudioFile.class);
+        super(I18nUtils.getString("SET_FAVORITE_ARTIST"), Images.getImage(Images.FAVORITE), LocalAudioObject.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SET_FAVORITE_ARTIST"));
     }
 
     @Override
-    protected void performAction(List<AudioFile> objects) {
+    protected void performAction(List<LocalAudioObject> objects) {
         FavoritesHandler.getInstance().addFavoriteArtists(objects);
         NavigationHandler.getInstance().refreshNavigationTable();
     }

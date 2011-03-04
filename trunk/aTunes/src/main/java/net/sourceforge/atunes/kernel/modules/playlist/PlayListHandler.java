@@ -53,6 +53,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -657,7 +658,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
         	//TODO also for radios and podcast feed entries
         	for (int i = 0; i < audioObjects.size(); i++) {
         		AudioObject ao = audioObjects.get(i);
-        		AudioFile repositoryFile = RepositoryHandler.getInstance().getFileIfLoaded(ao.getUrl());
+        		LocalAudioObject repositoryFile = RepositoryHandler.getInstance().getFileIfLoaded(ao.getUrl());
         		if (repositoryFile != null) {
         			lastPlayList.replace(i, repositoryFile);
         		}
@@ -1117,7 +1118,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
     }
 
     @Override
-    public void audioFilesRemoved(List<AudioFile> audioFiles) {
+    public void audioFilesRemoved(List<LocalAudioObject> audioFiles) {
         List<AudioObject> audioObjects = AudioFile.getAudioObjects(audioFiles);
         // Remove these objects from all play lists
         for (PlayList pl : playLists) {
@@ -1325,7 +1326,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
 	public void deviceDisconnected(String location) {
         List<Integer> songsToRemove = new ArrayList<Integer>();
         for (AudioObject ao : getCurrentPlayList(true).getObjectsOfType(AudioFile.class)) {
-            AudioFile audioFile = (AudioFile) ao;
+        	LocalAudioObject audioFile = (LocalAudioObject) ao;
             if (audioFile.getFile().getPath().startsWith(location)) {
                 songsToRemove.add(getCurrentPlayList(true).indexOf(audioFile));
             }

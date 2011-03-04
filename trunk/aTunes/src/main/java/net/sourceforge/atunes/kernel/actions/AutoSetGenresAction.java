@@ -24,9 +24,9 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -35,18 +35,18 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class AutoSetGenresAction extends AbstractActionOverSelectedObjects<AudioFile> {
+public class AutoSetGenresAction extends AbstractActionOverSelectedObjects<LocalAudioObject> {
 
     private static final long serialVersionUID = 2868302038954563763L;
 
     AutoSetGenresAction() {
-        super(I18nUtils.getString("AUTO_SET_GENRE"), AudioFile.class);
+        super(I18nUtils.getString("AUTO_SET_GENRE"), LocalAudioObject.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("AUTO_SET_GENRE"));
 
     }
 
     @Override
-    protected void performAction(List<AudioFile> objects) {
+    protected void performAction(List<LocalAudioObject> objects) {
         TagEditionOperations.editGenre(objects);
     }
 

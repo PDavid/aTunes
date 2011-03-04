@@ -43,11 +43,11 @@ import net.sourceforge.atunes.kernel.modules.navigator.RepositoryNavigationView;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.Folder;
+import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -56,15 +56,15 @@ import org.apache.commons.io.FileUtils;
 public class RemoveFromDiskAction extends AbstractAction {
 
     private static final class DeleteFilesWorker extends SwingWorker<Void, Void> {
-        private final List<AudioFile> files;
+        private final List<LocalAudioObject> files;
 
-        private DeleteFilesWorker(List<AudioFile> files) {
+        private DeleteFilesWorker(List<LocalAudioObject> files) {
             this.files = files;
         }
 
         @Override
         protected Void doInBackground() {
-            for (AudioFile audioFile : files) {
+            for (LocalAudioObject audioFile : files) {
                 File file = audioFile.getFile();
                 if (file != null) {
                     file.delete();
@@ -109,7 +109,7 @@ public class RemoveFromDiskAction extends AbstractAction {
     }
 
     private void fromOtherViews() {
-        final List<AudioFile> files = NavigationHandler.getInstance().getFilesSelectedInNavigator();
+        final List<LocalAudioObject> files = NavigationHandler.getInstance().getFilesSelectedInNavigator();
         RepositoryHandler.getInstance().remove(files);
         GuiHandler.getInstance().showIndeterminateProgressDialog(I18nUtils.getString("PLEASE_WAIT"));
         new DeleteFilesWorker(files).execute();

@@ -41,6 +41,7 @@ import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.FileNameUtils;
 
@@ -305,7 +306,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
         ProcessBuilder pb = new ProcessBuilder();
         List<String> command = new ArrayList<String>();
 
-        boolean isRemoteAudio = !(audioObject instanceof AudioFile || (audioObject instanceof PodcastFeedEntry
+        boolean isRemoteAudio = !(audioObject instanceof LocalAudioObject || (audioObject instanceof PodcastFeedEntry
                 && ApplicationState.getInstance().isUseDownloadedPodcastFeedEntries() && ((PodcastFeedEntry) audioObject).isDownloaded()));
 
         command.add(getProcessNameForOS());
@@ -383,7 +384,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 
         boolean isKaraokeEnabled = ApplicationState.getInstance().isKaraoke();
         //float[] eualizer = getEqualizer();
-        if ((audioObject instanceof AudioFile && getEqualizer().getEqualizerValues() != null) || isSoundNormalizationEnabled() || isKaraokeEnabled) {
+        if ((audioObject instanceof LocalAudioObject && getEqualizer().getEqualizerValues() != null) || isSoundNormalizationEnabled() || isKaraokeEnabled) {
             command.add(AUDIO_FILTER);
         }
 
@@ -393,7 +394,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
         }
 
         // Build equalizer command. Mplayer uses 10 bands
-        if (audioObject instanceof AudioFile && getEqualizer().getEqualizerValues() != null && !isKaraokeEnabled) {
+        if (audioObject instanceof LocalAudioObject && getEqualizer().getEqualizerValues() != null && !isKaraokeEnabled) {
             float[] equalizer = getEqualizer().getEqualizerValues();
             command.add(EQUALIZER + equalizer[0] + ":" + equalizer[1] + ":" + equalizer[2] + ":" + equalizer[3] + ":" + equalizer[4] + ":" + equalizer[5] + ":" + equalizer[6]
                     + ":" + equalizer[7] + ":" + equalizer[8] + ":" + equalizer[9]);

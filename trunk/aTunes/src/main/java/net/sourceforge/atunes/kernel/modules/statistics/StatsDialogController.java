@@ -38,9 +38,9 @@ import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.dialogs.StatsDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -385,12 +385,12 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
      */
     private List<Object[]> getMostPlayedAudioFilesInRanking(int n) {
         List<Object[]> result = new ArrayList<Object[]>();
-        List<AudioFile> audioFiles = StatisticsHandler.getInstance().getMostPlayedAudioFiles(n);
+        List<LocalAudioObject> audioFiles = StatisticsHandler.getInstance().getMostPlayedAudioFiles(n);
         List<Integer> count = StatisticsHandler.getInstance().getMostPlayedAudioFilesCount(n);
         if (audioFiles != null) {
             for (int i = 0; i < audioFiles.size(); i++) {
                 Object[] obj = new Object[2];
-                AudioFile audioFile = audioFiles.get(i);
+                LocalAudioObject audioFile = audioFiles.get(i);
                 if (audioFile != null) {
                 	obj[0] = StringUtils.getString(audioFile.getTitleOrFileName(), " (", audioFile.getArtist(), ")");
                 	obj[1] = count.get(i);

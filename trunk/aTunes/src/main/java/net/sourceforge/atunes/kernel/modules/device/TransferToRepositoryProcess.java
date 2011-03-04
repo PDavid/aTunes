@@ -24,12 +24,12 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.process.AbstractAudioFileTransferProcess;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
+import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class TransferToRepositoryProcess extends AbstractAudioFileTransferProcess {
 
-    public TransferToRepositoryProcess(List<AudioFile> files) {
+    public TransferToRepositoryProcess(List<LocalAudioObject> files) {
         super(files);
     }
 

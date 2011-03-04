@@ -34,6 +34,7 @@ import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -50,7 +51,7 @@ public class Genre implements Serializable, TreeObject {
     private String name;
 
     /** List of songs of this genre. */
-    private List<AudioFile> audioFiles;
+    private List<LocalAudioObject> audioFiles;
 
     /**
      * Constructor.
@@ -60,7 +61,7 @@ public class Genre implements Serializable, TreeObject {
      */
     public Genre(String name) {
         this.name = name;
-        audioFiles = new ArrayList<AudioFile>();
+        audioFiles = new ArrayList<LocalAudioObject>();
     }
 
     /**
@@ -69,7 +70,7 @@ public class Genre implements Serializable, TreeObject {
      * @param a
      *            the a
      */
-    public void addAudioFile(AudioFile a) {
+    public void addAudioFile(LocalAudioObject a) {
         audioFiles.add(a);
     }
 
@@ -90,7 +91,7 @@ public class Genre implements Serializable, TreeObject {
     @Override
     public List<AudioObject> getAudioObjects() {
         List<AudioObject> result = new ArrayList<AudioObject>();
-        for (AudioFile song : audioFiles) {
+        for (LocalAudioObject song : audioFiles) {
             result.add(song);
         }
         return result;
@@ -116,7 +117,7 @@ public class Genre implements Serializable, TreeObject {
      * @param a
      *            the a
      */
-    public void removeAudioFile(AudioFile a) {
+    public void removeAudioFile(LocalAudioObject a) {
         audioFiles.remove(a);
     }
 
@@ -195,7 +196,7 @@ public class Genre implements Serializable, TreeObject {
      */
     public Map<String, Artist> getArtistObjects() {
         Map<String, Artist> structure = new HashMap<String, Artist>();
-        for (AudioFile song : audioFiles) {
+        for (LocalAudioObject song : audioFiles) {
             String artist = !song.getAlbumArtist().equals("") ? song.getAlbumArtist() : song.getArtist();
             if (!structure.containsKey(artist)) {
                 structure.put(artist, new Artist(artist));
@@ -214,7 +215,7 @@ public class Genre implements Serializable, TreeObject {
      */
     public Set<String> getArtistSet() {
         Set<String> artists = new HashSet<String>();
-        for (AudioFile song : audioFiles) {
+        for (LocalAudioObject song : audioFiles) {
             if (!song.getAlbumArtist().equals("")) {
                 artists.add(song.getAlbumArtist());
             } else {

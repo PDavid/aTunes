@@ -35,8 +35,8 @@ import net.sourceforge.atunes.gui.model.TransferableList;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.LocalAudioObject;
 
 /**
  * The listener interface for receiving dragAndDrop events.
@@ -110,11 +110,11 @@ public class PlayListToDeviceDragAndDropListener implements DropTargetListener {
                 // If device is connected, then copy files to device
                 if (DeviceHandler.getInstance().isDeviceConnected()) {
                     // Don't copy files already in device
-                    List<AudioFile> filesToCopy = new ArrayList<AudioFile>();
+                    List<LocalAudioObject> filesToCopy = new ArrayList<LocalAudioObject>();
                     for (PlayListDragableRow f : listOfObjectsDragged) {
-                        // Only accept AudioFile objects
-                        if (f.getRowContent() instanceof AudioFile && !DeviceHandler.getInstance().isDevicePath(f.getRowContent().getUrl())) {
-                            filesToCopy.add((AudioFile) f.getRowContent());
+                        // Only accept LocalAudioObject objects
+                        if (f.getRowContent() instanceof LocalAudioObject && !DeviceHandler.getInstance().isDevicePath(f.getRowContent().getUrl())) {
+                            filesToCopy.add((LocalAudioObject) f.getRowContent());
                         }
                     }
                     // Copy files

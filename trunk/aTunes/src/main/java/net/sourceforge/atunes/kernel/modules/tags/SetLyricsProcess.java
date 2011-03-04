@@ -23,9 +23,9 @@ package net.sourceforge.atunes.kernel.modules.tags;
 import java.io.IOException;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService;
+import net.sourceforge.atunes.model.LocalAudioObject;
 
 /**
  * The Class SetLyricsProcess.
@@ -39,12 +39,12 @@ public class SetLyricsProcess extends AbstractChangeTagProcess {
      * @param files
      *            to which the lyrics should be written
      */
-    SetLyricsProcess(List<AudioFile> files) {
+    SetLyricsProcess(List<LocalAudioObject> files) {
         super(files);
     }
 
     @Override
-    protected void changeTag(AudioFile file) throws IOException {
+    protected void changeTag(LocalAudioObject file) throws IOException {
         // Check if no lyrics is present and we have enough info for a query
         if (file.getLyrics().isEmpty() && !file.getArtist().isEmpty() && !file.getTitle().isEmpty()) {
             Lyrics lyrics = LyricsService.getInstance().getLyrics(file.getArtist(), file.getTitle());

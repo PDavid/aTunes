@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
+import net.sourceforge.atunes.model.LocalAudioObject;
 
 public interface AudioFilesRemovedListener {
 
@@ -31,5 +31,5 @@ public interface AudioFilesRemovedListener {
      * 
      * @param audioFiles
      */
-    public void audioFilesRemoved(List<AudioFile> audioFiles);
+    public void audioFilesRemoved(List<LocalAudioObject> audioFiles);
 }

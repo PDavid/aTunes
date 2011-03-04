@@ -22,13 +22,13 @@ package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.io.File;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.Folder;
+import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.model.Repository;
 
 /**
@@ -57,7 +57,7 @@ final class RepositoryFiller {
      * @param repositoryFolderRoot
      * @param relativePathToRepositoryFolderRoot
      */
-    void addAudioFile(AudioFile audioFile, File repositoryFolderRoot, String relativePathToRepositoryFolderRoot) {
+    void addAudioFile(LocalAudioObject audioFile, File repositoryFolderRoot, String relativePathToRepositoryFolderRoot) {
     	if (audioFile == null) {
     		throw new IllegalArgumentException("AudioFile is null");
     	}
@@ -81,7 +81,7 @@ final class RepositoryFiller {
      * Refreshes audio file already added to repository
      * @param audioFile
      */
-    void refreshAudioFile(AudioFile audioFile, AbstractTag oldTag) {
+    void refreshAudioFile(LocalAudioObject audioFile, AbstractTag oldTag) {
     	if (audioFile == null) {
     		throw new IllegalArgumentException("AudioFile is null");
     	}
@@ -100,7 +100,7 @@ final class RepositoryFiller {
      * 
      * @param audioFile
      */
-    private void addToRepository(AudioFile audioFile) {
+    private void addToRepository(LocalAudioObject audioFile) {
         repository.getAudioFiles().put(audioFile.getUrl(), audioFile);
         repository.addSizeInBytes(audioFile.getFile().length());
         repository.addDurationInSeconds(audioFile.getDuration());
@@ -110,9 +110,8 @@ final class RepositoryFiller {
      * Adds given audio file to artist structure of given repository
      * 
      * @param audioFile
-     *            AudioFile to display
      */
-    private void addToArtistStructure(AudioFile audioFile) {
+    private void addToArtistStructure(LocalAudioObject audioFile) {
     	String artist = audioFile.getAlbumArtistOrArtist();
     	String album = audioFile.getAlbum();
 
@@ -140,7 +139,7 @@ final class RepositoryFiller {
      * @param audioFile
      *            the audio file
      */
-    private void addToGenreStructure(AudioFile audioFile) {
+    private void addToGenreStructure(LocalAudioObject audioFile) {
     	String genre = audioFile.getGenre();
     	Genre genreObject = repository.getGenreStructure().get(genre);
     	if (genreObject == null) {
@@ -156,7 +155,7 @@ final class RepositoryFiller {
      * @param audioFile
      *            the audio file
      */
-    private void addToYearStructure(AudioFile audioFile) {
+    private void addToYearStructure(LocalAudioObject audioFile) {
     	String year = audioFile.getYear();
 
     	Year yearObject = repository.getYearStructure().get(year);
@@ -178,7 +177,7 @@ final class RepositoryFiller {
      * @param file
      *            the file
      */
-    private void addToFolderStructure(File relativeTo, String relativePath, AudioFile file) {
+    private void addToFolderStructure(File relativeTo, String relativePath, LocalAudioObject file) {
         Folder relativeFolder = repository.getFolderStructure().get(relativeTo.getAbsolutePath());
         if (relativeFolder == null) {
             relativeFolder = new Folder(relativeTo.getAbsolutePath());
@@ -211,7 +210,7 @@ final class RepositoryFiller {
      * Removes from artist structure if necessary
      * @param file
      */
-    private void updateArtistStructure(AbstractTag oldTag, AudioFile file) {
+    private void updateArtistStructure(AbstractTag oldTag, LocalAudioObject file) {
 		String albumArtist = null;
 		String artist = null;
 		String album = null;
@@ -274,7 +273,7 @@ final class RepositoryFiller {
      * @param oldTag
      * @param file
      */
-    private void updateGenreStructure(AbstractTag oldTag, AudioFile file) {
+    private void updateGenreStructure(AbstractTag oldTag, LocalAudioObject file) {
 		String genre = null;
 		if (oldTag != null) {
 			genre = oldTag.getGenre();
@@ -298,7 +297,7 @@ final class RepositoryFiller {
      * @param oldTag
      * @param file
      */
-    private void updateYearStructure(AbstractTag oldTag, AudioFile file) {
+    private void updateYearStructure(AbstractTag oldTag, LocalAudioObject file) {
 		String year = null;
 		if (oldTag != null) {
 			year = oldTag.getYear() > 0 ? Integer.toString(oldTag.getYear()) : "";

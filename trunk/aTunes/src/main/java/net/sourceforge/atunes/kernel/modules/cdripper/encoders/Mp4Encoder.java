@@ -38,6 +38,7 @@ import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -179,7 +180,7 @@ public class Mp4Encoder implements Encoder {
 
             // Gather the info and write the tag
             try {
-                AudioFile audiofile = new AudioFile(mp4File);
+            	LocalAudioObject audiofile = new AudioFile(mp4File);
                 AbstractTag tag = new DefaultTag();
 
                 tag.setAlbum(album);

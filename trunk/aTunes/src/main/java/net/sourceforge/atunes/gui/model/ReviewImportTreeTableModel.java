@@ -28,8 +28,8 @@ import java.util.List;
 
 import javax.swing.table.TableCellEditor;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.tags.TagAttributesReviewed;
+import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jdesktop.swingx.JXTreeTable;
@@ -47,7 +47,7 @@ public final class ReviewImportTreeTableModel extends AbstractTreeTableModel {
     private List<File> folders;
 
     /** AudioFiles to import */
-    private List<AudioFile> audioFilesToImport;
+    private List<LocalAudioObject> audioFilesToImport;
 
     /** A hash map to store folders and its children folders */
     private HashMap<File, List<File>> foldersMap = new HashMap<File, List<File>>();
@@ -71,7 +71,7 @@ public final class ReviewImportTreeTableModel extends AbstractTreeTableModel {
      * @param filesToImport
      * @param treeTable
      */
-    public ReviewImportTreeTableModel(List<File> folders, List<AudioFile> filesToImport, JXTreeTable treeTable) {
+    public ReviewImportTreeTableModel(List<File> folders, List<LocalAudioObject> filesToImport, JXTreeTable treeTable) {
         super(new DefaultMutableTreeTableNode(ROOT));
         this.folders = folders;
         this.audioFilesToImport = filesToImport;
@@ -176,14 +176,14 @@ public final class ReviewImportTreeTableModel extends AbstractTreeTableModel {
     }
 
     /**
-     * Returns value of a tag attribute for a given AudioFile at the given
+     * Returns value of a tag attribute for a given LocalAudioObject at the given
      * column
      * 
      * @param column
      * @param audioFile
      * @return
      */
-    private String getValueForColumn(int column, AudioFile audioFile) {
+    private String getValueForColumn(int column, LocalAudioObject audioFile) {
         return this.tagAttributesReviewed.getValueForTagAttribute(column - 1, audioFile);
     }
 
@@ -207,7 +207,7 @@ public final class ReviewImportTreeTableModel extends AbstractTreeTableModel {
         }
 
         String value = "";
-        for (AudioFile audioFile : audioFilesToImport) {
+        for (LocalAudioObject audioFile : audioFilesToImport) {
             if (audioFile.getFile().getParentFile().equals(folder)) {
                 if (value.equals("")) {
                     value = getValueForColumn(column, audioFile);

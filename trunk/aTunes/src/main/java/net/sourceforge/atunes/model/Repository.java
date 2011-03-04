@@ -27,7 +27,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.kernel.modules.repository.exception.InconsistentRepositoryException;
@@ -89,7 +88,7 @@ public class Repository implements Serializable {
      * 
      * @return the file
      */
-    public AudioFile getFile(String fileName) {
+    public LocalAudioObject getFile(String fileName) {
         return structure.getFilesStructure().get(fileName);
     }
 
@@ -98,7 +97,7 @@ public class Repository implements Serializable {
      * 
      * @return the files
      */
-    public Map<String, AudioFile> getAudioFiles() {
+    public Map<String, LocalAudioObject> getAudioFiles() {
         return structure.getFilesStructure();
     }
 
@@ -107,7 +106,7 @@ public class Repository implements Serializable {
      * 
      * @return the files list
      */
-    public Collection<AudioFile> getAudioFilesList() {
+    public Collection<LocalAudioObject> getAudioFilesList() {
         return structure.getFilesStructure().values();
     }
 

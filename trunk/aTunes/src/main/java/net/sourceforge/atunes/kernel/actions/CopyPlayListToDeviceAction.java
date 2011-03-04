@@ -46,7 +46,7 @@ public class CopyPlayListToDeviceAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // Copy only AudioFile objects
+        // Copy only LocalAudioObject objects
         DeviceHandler.getInstance().copyFilesToDevice(AudioFile.getAudioFiles(PlayListHandler.getInstance().getCurrentPlayList(true).getObjectsOfType(AudioFile.class)));
     }
 

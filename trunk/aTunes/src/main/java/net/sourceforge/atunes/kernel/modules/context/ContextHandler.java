@@ -33,10 +33,10 @@ import net.sourceforge.atunes.kernel.modules.context.youtube.YoutubeContextPanel
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.LocalAudioObject;
 
 import org.commonjukebox.plugins.exceptions.PluginSystemException;
 import org.commonjukebox.plugins.model.Plugin;
@@ -154,10 +154,10 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
      */
     public void retrieveInfoAndShowInPanel(AudioObject ao) {
         boolean audioObjectModified = false;
-        // Avoid retrieve information about the same audio object twice except if is an AudioFile and has been recently changed
+        // Avoid retrieve information about the same audio object twice except if is an LocalAudioObject and has been recently changed
         if (currentAudioObject != null && currentAudioObject.equals(ao)) {
-            if (ao instanceof AudioFile) {
-                if (((AudioFile) ao).getFile().lastModified() == lastAudioObjectModificationTime) {
+            if (ao instanceof LocalAudioObject) {
+                if (((LocalAudioObject) ao).getFile().lastModified() == lastAudioObjectModificationTime) {
                     return;
                 } else {
                     audioObjectModified = true;
@@ -169,8 +169,8 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
         currentAudioObject = ao;
 
         // Update modification time if necessary
-        if (ao instanceof AudioFile) {
-            lastAudioObjectModificationTime = ((AudioFile) ao).getFile().lastModified();
+        if (ao instanceof LocalAudioObject) {
+            lastAudioObjectModificationTime = ((LocalAudioObject) ao).getFile().lastModified();
         } else {
             lastAudioObjectModificationTime = 0;
         }

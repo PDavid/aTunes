@@ -40,12 +40,12 @@ import net.sourceforge.atunes.gui.autocomplete.AutoCompleteDecorator;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
@@ -53,9 +53,9 @@ import org.jdesktop.swingx.combobox.ListComboBoxModel;
 public final class EditTagDialogController extends AbstractSimpleController<EditTagDialog> {
 
     private final class GetInsidePictureSwingWorker extends SwingWorker<ImageIcon, Void> {
-        private final List<AudioFile> audioFiles;
+        private final List<LocalAudioObject> audioFiles;
 
-        private GetInsidePictureSwingWorker(List<AudioFile> audioFiles) {
+        private GetInsidePictureSwingWorker(List<LocalAudioObject> audioFiles) {
             this.audioFiles = audioFiles;
         }
 
@@ -116,7 +116,7 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
     }
 
     /** The audio files editing. */
-    private List<AudioFile> audioFilesEditing;
+    private List<LocalAudioObject> audioFilesEditing;
     private byte[] newCover;
     private boolean coverEdited;
 
@@ -163,7 +163,7 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
      * @param audioFiles
      *            the files
      */
-    public void editFiles(final List<AudioFile> audioFiles) {
+    public void editFiles(final List<LocalAudioObject> audioFiles) {
         if (audioFiles == null || audioFiles.isEmpty()) {
             return;
         }
@@ -214,7 +214,7 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
 
         // Check if at least one audio file supports internal pictures
         boolean supportsInternalPicture = false;
-        for (AudioFile af : audioFilesEditing) {
+        for (LocalAudioObject af : audioFilesEditing) {
             if (af.supportsInternalPicture()) {
                 supportsInternalPicture = true;
                 break;
@@ -270,7 +270,7 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
         Set<String> composers = new HashSet<String>();
         Set<String> lyrics = new HashSet<String>();
         Set<String> albumArtists = new HashSet<String>();
-        for (AudioFile audioFile : audioFiles) {
+        for (LocalAudioObject audioFile : audioFiles) {
             AbstractTag tag = audioFile.getTag();
             if (tag != null) {
                 titles.add(tag.getTitle());
@@ -464,7 +464,7 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
             editTagInfo.put("COVER", newCover);
         }
 
-        EditTagsProcess process = new EditTagsProcess(new ArrayList<AudioFile>(audioFilesEditing), editTagInfo);
+        EditTagsProcess process = new EditTagsProcess(new ArrayList<LocalAudioObject>(audioFilesEditing), editTagInfo);
         process.execute();
     }
 
@@ -476,8 +476,8 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
         this.coverEdited = coverEdited;
     }
 
-    public List<AudioFile> getAudioFilesEditing() {
-        return new ArrayList<AudioFile>(audioFilesEditing);
+    public List<LocalAudioObject> getAudioFilesEditing() {
+        return new ArrayList<LocalAudioObject>(audioFilesEditing);
     }
 
     public void clear() {

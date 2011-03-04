@@ -60,11 +60,11 @@ import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler.ViewMode;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -230,7 +230,7 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
                 } else if (node.getUserObject().toString().equals(I18nUtils.getString("ALBUMS"))) {
                     songs.addAll(RepositoryHandler.getInstance().getAudioFilesForAlbums(FavoritesHandler.getInstance().getFavoriteAlbumsInfo()));
                 } else {
-                    songs.addAll(new ArrayList<AudioFile>(FavoritesHandler.getInstance().getFavoriteSongsInfo().values()));
+                    songs.addAll(new ArrayList<LocalAudioObject>(FavoritesHandler.getInstance().getFavoriteSongsInfo().values()));
                 }
             }
         }

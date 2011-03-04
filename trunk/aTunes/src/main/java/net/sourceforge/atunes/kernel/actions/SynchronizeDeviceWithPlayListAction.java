@@ -38,6 +38,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -49,7 +50,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 public class SynchronizeDeviceWithPlayListAction extends AbstractAction {
 
     private final class SynchronizeDeviceWithPlayListSwingWorker extends
-			SwingWorker<Map<String, List<AudioFile>>, Void> {
+			SwingWorker<Map<String, List<LocalAudioObject>>, Void> {
 		private int filesRemoved = 0;
 		private ProcessListener listener = new ProcessListener() {
 		    @Override
@@ -76,9 +77,9 @@ public class SynchronizeDeviceWithPlayListAction extends AbstractAction {
 		}
 
 		@Override
-		protected Map<String, List<AudioFile>> doInBackground() {
+		protected Map<String, List<LocalAudioObject>> doInBackground() {
 		    // Get play list elements
-		    List<AudioFile> playListObjects;
+		    List<LocalAudioObject> playListObjects;
 		    if (ApplicationState.getInstance().isAllowRepeatedSongsInDevice()) {
 		        // Repeated songs allowed, filter only if have same artist and album
 		        playListObjects = AudioFile.filterRepeatedSongsAndAlbums(AudioFile.getAudioFiles(PlayListHandler.getInstance().getCurrentPlayList(true).getObjectsOfType(
@@ -90,12 +91,12 @@ public class SynchronizeDeviceWithPlayListAction extends AbstractAction {
 		    }
 
 		    // Get elements present in play list and not in device -> objects to be copied to device
-		    List<AudioFile> objectsToCopyToDevice = DeviceHandler.getInstance().getElementsNotPresentInDevice(playListObjects);
+		    List<LocalAudioObject> objectsToCopyToDevice = DeviceHandler.getInstance().getElementsNotPresentInDevice(playListObjects);
 
 		    // Get elements present in device and not in play list -> objects to be removed from device
-		    List<AudioFile> objectsToRemoveFromDevice = DeviceHandler.getInstance().getElementsNotPresentInList(playListObjects);
+		    List<LocalAudioObject> objectsToRemoveFromDevice = DeviceHandler.getInstance().getElementsNotPresentInList(playListObjects);
 
-		    Map<String, List<AudioFile>> result = new HashMap<String, List<AudioFile>>();
+		    Map<String, List<LocalAudioObject>> result = new HashMap<String, List<LocalAudioObject>>();
 		    result.put("ADD", objectsToCopyToDevice);
 		    result.put("REMOVE", objectsToRemoveFromDevice);
 		    filesRemoved = objectsToRemoveFromDevice.size();
@@ -105,18 +106,18 @@ public class SynchronizeDeviceWithPlayListAction extends AbstractAction {
 		@Override
 		protected void done() {
 		    try {
-		        Map<String, List<AudioFile>> files = get();
+		        Map<String, List<LocalAudioObject>> files = get();
 
 		        GuiHandler.getInstance().hideIndeterminateProgressDialog();
 
 		        // Remove elements from device
-		        final List<AudioFile> filesToRemove = files.get("REMOVE");
+		        final List<LocalAudioObject> filesToRemove = files.get("REMOVE");
 		        RepositoryHandler.getInstance().remove(filesToRemove);
 		        SynchronizeDeviceWithPlayListAction.this.setEnabled(false);
 		        new SwingWorker<Void, Void>() {
 		            @Override
 		            protected Void doInBackground() {
-		                for (AudioFile audioFile : filesToRemove) {
+		                for (LocalAudioObject audioFile : filesToRemove) {
 		                    File file = audioFile.getFile();
 		                    if (file != null) {
 		                        file.delete();
@@ -157,7 +158,7 @@ public class SynchronizeDeviceWithPlayListAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        SwingWorker<Map<String, List<AudioFile>>, Void> worker = new SynchronizeDeviceWithPlayListSwingWorker();
+        SwingWorker<Map<String, List<LocalAudioObject>>, Void> worker = new SynchronizeDeviceWithPlayListSwingWorker();
         worker.execute();
         GuiHandler.getInstance().showIndeterminateProgressDialog(I18nUtils.getString("PLEASE_WAIT"));
     }

@@ -24,8 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
+import net.sourceforge.atunes.model.LocalAudioObject;
 
 /**
  * The Class ChangeTitlesProcess.
@@ -33,7 +33,7 @@ import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 public class EditTitlesProcess extends AbstractChangeTagProcess {
 
     /** The files and titles. */
-    private Map<AudioFile, String> filesAndTitles;
+    private Map<LocalAudioObject, String> filesAndTitles;
 
     /**
      * Instantiates a new change titles process.
@@ -41,7 +41,7 @@ public class EditTitlesProcess extends AbstractChangeTagProcess {
      * @param files
      *            the files
      */
-    public EditTitlesProcess(List<AudioFile> files) {
+    public EditTitlesProcess(List<LocalAudioObject> files) {
         super(files);
     }
 
@@ -54,7 +54,7 @@ public class EditTitlesProcess extends AbstractChangeTagProcess {
     }
 
     @Override
-    protected void changeTag(AudioFile file) {
+    protected void changeTag(LocalAudioObject file) {
         String newTitle = filesAndTitles.get(file);
         TagModifier.setTitles(file, newTitle);
     }
@@ -63,7 +63,7 @@ public class EditTitlesProcess extends AbstractChangeTagProcess {
      * @param filesAndTitles
      *            the filesAndTitles to set
      */
-    public void setFilesAndTitles(Map<AudioFile, String> filesAndTitles) {
+    public void setFilesAndTitles(Map<LocalAudioObject, String> filesAndTitles) {
         this.filesAndTitles = filesAndTitles;
     }
 
@@ -76,11 +76,11 @@ public class EditTitlesProcess extends AbstractChangeTagProcess {
      * @return the titles for files
      */
 
-    public Map<AudioFile, String> getTitlesForFiles(List<AudioFile> files) {
-        Map<AudioFile, String> result = new HashMap<AudioFile, String>();
+    public Map<LocalAudioObject, String> getTitlesForFiles(List<LocalAudioObject> files) {
+        Map<LocalAudioObject, String> result = new HashMap<LocalAudioObject, String>();
 
         // For each file
-        for (AudioFile f : files) {
+        for (LocalAudioObject f : files) {
             String title = LastFmService.getInstance().getTitleForFile(f);
             if (title != null) {
                 result.put(f, title);

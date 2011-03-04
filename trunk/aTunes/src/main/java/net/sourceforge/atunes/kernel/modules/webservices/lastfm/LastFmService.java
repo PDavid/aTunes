@@ -59,7 +59,6 @@ import net.sourceforge.atunes.kernel.modules.context.SimilarArtistsInfo;
 import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmAlbum;
@@ -69,6 +68,7 @@ import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmSimil
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.CryptoUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.NetworkUtils;
@@ -83,9 +83,9 @@ import org.commonjukebox.plugins.model.PluginApi;
 public final class LastFmService {
 
     private final class SubmitNowPlayingInfoRunnable implements Runnable {
-		private final AudioFile audioFile;
+		private final LocalAudioObject audioFile;
 
-		private SubmitNowPlayingInfoRunnable(AudioFile audioFile) {
+		private SubmitNowPlayingInfoRunnable(LocalAudioObject audioFile) {
 			this.audioFile = audioFile;
 		}
 
@@ -113,9 +113,9 @@ public final class LastFmService {
 
 	private final class SubmitToLastFmRunnable implements Runnable {
 		private final long secondsPlayed;
-		private final AudioFile audioFile;
+		private final LocalAudioObject audioFile;
 
-		private SubmitToLastFmRunnable(long secondsPlayed, AudioFile audioFile) {
+		private SubmitToLastFmRunnable(long secondsPlayed, LocalAudioObject audioFile) {
 			this.secondsPlayed = secondsPlayed;
 			this.audioFile = audioFile;
 		}
@@ -599,7 +599,7 @@ public final class LastFmService {
      *            seconds the audio file has already played
      * @throws ScrobblerException
      */
-    private void submit(AudioFile file, long secondsPlayed) throws ScrobblerException {
+    private void submit(LocalAudioObject file, long secondsPlayed) throws ScrobblerException {
         // Do all necessary checks
         if (!checkUser() || !checkPassword() || !checkArtist(file) || !checkTitle(file) || !checkDuration(file)) {
             return;
@@ -730,7 +730,7 @@ public final class LastFmService {
      *            audio file
      * @throws ScrobblerException
      */
-    private void submitNowPlayingInfo(AudioFile file) throws ScrobblerException {
+    private void submitNowPlayingInfo(LocalAudioObject file) throws ScrobblerException {
         // Do all necessary checks
         if (!checkUser() || !checkPassword() || !checkArtist(file) || !checkTitle(file)) {
             return;
@@ -799,13 +799,13 @@ public final class LastFmService {
     }
 
     /**
-     * Check if parameter is a valid AudioFile
+     * Check if parameter is a valid LocalAudioObject
      * 
      * @param ao
      * @return
      */
     private boolean checkAudioFile(AudioObject ao) {
-        if (!(ao instanceof AudioFile)) {
+        if (!(ao instanceof LocalAudioObject)) {
             return false;
         }
         return true;
@@ -876,12 +876,12 @@ public final class LastFmService {
     }
 
     /**
-     * Return title of an AudioFile known its artist and album
+     * Return title of an LocalAudioObject known its artist and album
      * 
      * @param f
      * @return
      */
-    public String getTitleForFile(AudioFile f) {
+    public String getTitleForFile(LocalAudioObject f) {
         // If has valid artist name, album name, and track number...
         if (!net.sourceforge.atunes.model.Artist.isUnknownArtist(f.getArtist())
                 && !net.sourceforge.atunes.model.Album.isUnknownAlbum(f.getAlbum()) && f.getTrackNumber() > 0) {
@@ -896,12 +896,12 @@ public final class LastFmService {
     }
 
     /**
-     * Return track number of an AudioFile known its artist and album
+     * Return track number of an LocalAudioObject known its artist and album
      * 
      * @param f
      * @return
      */
-    public int getTrackNumberForFile(AudioFile f) {
+    public int getTrackNumberForFile(LocalAudioObject f) {
         // If has valid artist name, album name and title
         if (!net.sourceforge.atunes.model.Artist.isUnknownArtist(f.getArtist())
                 && !net.sourceforge.atunes.model.Album.isUnknownAlbum(f.getAlbum()) && !StringUtils.isEmpty(f.getTitle())) {
@@ -929,7 +929,7 @@ public final class LastFmService {
      * @param secondsPlayed
      *            the seconds played
      */
-    public void submitToLastFm(final AudioFile audioFile, final long secondsPlayed) {
+    public void submitToLastFm(final LocalAudioObject audioFile, final long secondsPlayed) {
         if (ApplicationState.getInstance().isLastFmEnabled()) {
             Runnable r = new SubmitToLastFmRunnable(secondsPlayed, audioFile);
             try {
@@ -973,7 +973,7 @@ public final class LastFmService {
      * @param audioFile
      *            the file
      */
-    public void submitNowPlayingInfoToLastFm(final AudioFile audioFile) {
+    public void submitNowPlayingInfoToLastFm(final LocalAudioObject audioFile) {
         if (ApplicationState.getInstance().isLastFmEnabled()) {
             Runnable r = new SubmitNowPlayingInfoRunnable(audioFile);
             try {

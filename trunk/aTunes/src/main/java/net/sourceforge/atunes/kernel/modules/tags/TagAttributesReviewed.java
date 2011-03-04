@@ -31,8 +31,8 @@ import javax.swing.JComboBox;
 import javax.swing.table.TableCellEditor;
 
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.LocalAudioObject;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
 
@@ -99,7 +99,7 @@ public class TagAttributesReviewed {
      * @param audioFile
      * @return
      */
-    public String getValueForTagAttribute(int index, AudioFile audioFile) {
+    public String getValueForTagAttribute(int index, LocalAudioObject audioFile) {
         if (getTagAttributes().size() <= index) {
             return null;
         }
@@ -139,13 +139,13 @@ public class TagAttributesReviewed {
     }
 
     /**
-     * Returns a tag for given AudioFile with tag attributes changed according
+     * Returns a tag for given LocalAudioObject with tag attributes changed according
      * to information stored in this object
      * 
      * @param file
      * @return
      */
-    public AbstractTag getTagForAudioFile(AudioFile file) {
+    public AbstractTag getTagForAudioFile(LocalAudioObject file) {
         File parentFolder = file.getFile().getParentFile();
         AbstractTag tag = null;
         for (AbstractTagAttributeReviewed tagAttribute : getTagAttributes()) {
@@ -187,7 +187,7 @@ public class TagAttributesReviewed {
         }
 
         @Override
-        String getValue(AudioFile audioFile) {
+        String getValue(LocalAudioObject audioFile) {
             return audioFile.getDiscNumber() > 0 ? String.valueOf(audioFile.getDiscNumber()) : "";
         }
 
@@ -208,7 +208,7 @@ public class TagAttributesReviewed {
         }
 
         @Override
-        String getValue(AudioFile audioFile) {
+        String getValue(LocalAudioObject audioFile) {
             return audioFile.getYear();
         }
 
@@ -229,7 +229,7 @@ public class TagAttributesReviewed {
         }
 
         @Override
-        String getValue(AudioFile audioFile) {
+        String getValue(LocalAudioObject audioFile) {
             // we use getTag().getGenre() to avoid returning unknown genre
             return audioFile.getTag() != null ? audioFile.getTag().getGenre() : null;
         }
@@ -260,7 +260,7 @@ public class TagAttributesReviewed {
         }
 
         @Override
-        String getValue(AudioFile audioFile) {
+        String getValue(LocalAudioObject audioFile) {
             // we use getTag().getAlbum() to avoid returning unknown album
             return audioFile.getTag() != null ? audioFile.getTag().getAlbum() : null;
         }
@@ -278,7 +278,7 @@ public class TagAttributesReviewed {
         }
 
         @Override
-        String getValue(AudioFile audioFile) {
+        String getValue(LocalAudioObject audioFile) {
             return audioFile.getComposer();
         }
 
@@ -295,7 +295,7 @@ public class TagAttributesReviewed {
         }
 
         @Override
-        String getValue(AudioFile audioFile) {
+        String getValue(LocalAudioObject audioFile) {
             return audioFile.getAlbumArtist();
         }
 
@@ -312,7 +312,7 @@ public class TagAttributesReviewed {
         }
 
         @Override
-        String getValue(AudioFile audioFile) {
+        String getValue(LocalAudioObject audioFile) {
             // we use getTag().getArtist() to avoid returning unknown artist
             return audioFile.getTag() != null ? audioFile.getTag().getArtist() : null;
         }

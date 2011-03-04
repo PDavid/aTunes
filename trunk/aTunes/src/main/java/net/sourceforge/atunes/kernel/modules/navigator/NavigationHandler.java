@@ -40,10 +40,10 @@ import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.commonjukebox.plugins.exceptions.PluginSystemException;
@@ -290,11 +290,11 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 		getNavigationController().refreshTable();
 	}
 
-	public List<AudioFile> getFilesSelectedInNavigator() {
+	public List<LocalAudioObject> getFilesSelectedInNavigator() {
 		return getNavigationController().getFilesSelectedInNavigator();
 	}
 
-	public boolean sameParentFile(List<AudioFile> audioFiles) {
+	public boolean sameParentFile(List<LocalAudioObject> audioFiles) {
 		return getNavigationController().sameParentFile(audioFiles);		
 	}
 

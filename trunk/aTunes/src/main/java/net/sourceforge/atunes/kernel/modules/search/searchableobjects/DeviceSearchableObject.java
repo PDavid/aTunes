@@ -28,10 +28,10 @@ import java.util.List;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.search.RawSearchResult;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -83,7 +83,7 @@ public final class DeviceSearchableObject extends AbstractCommonAudioFileSearcha
     public List<AudioObject> getSearchResult(List<RawSearchResult> rawSearchResults) {
         List<AudioObject> result = new ArrayList<AudioObject>();
         for (RawSearchResult rawSearchResult : rawSearchResults) {
-            AudioFile audioFile = DeviceHandler.getInstance().getFileIfLoaded(rawSearchResult.getDocument().get("url"));
+        	LocalAudioObject audioFile = DeviceHandler.getInstance().getFileIfLoaded(rawSearchResult.getDocument().get("url"));
             if (audioFile != null) {
                 result.add(audioFile);
             }

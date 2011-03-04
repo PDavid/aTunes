@@ -24,9 +24,9 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -35,17 +35,17 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class AutoSetCoversAction extends AbstractActionOverSelectedObjects<AudioFile> {
+public class AutoSetCoversAction extends AbstractActionOverSelectedObjects<LocalAudioObject> {
 
     private static final long serialVersionUID = -5997105583422805310L;
 
     AutoSetCoversAction() {
-        super(I18nUtils.getString("AUTO_SET_COVER"), AudioFile.class);
+        super(I18nUtils.getString("AUTO_SET_COVER"), LocalAudioObject.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("AUTO_SET_COVER"));
     }
 
     @Override
-    protected void performAction(List<AudioFile> objects) {
+    protected void performAction(List<LocalAudioObject> objects) {
         TagEditionOperations.editCover(objects);
     }
 

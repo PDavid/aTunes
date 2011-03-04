@@ -24,9 +24,9 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.tags.EditTitlesProcess;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -35,17 +35,17 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class AutoSetTitlesAction extends AbstractActionOverSelectedObjects<AudioFile> {
+public class AutoSetTitlesAction extends AbstractActionOverSelectedObjects<LocalAudioObject> {
 
     private static final long serialVersionUID = 7230329972815239426L;
 
     AutoSetTitlesAction() {
-        super(I18nUtils.getString("AUTO_SET_TITLE"), AudioFile.class);
+        super(I18nUtils.getString("AUTO_SET_TITLE"), LocalAudioObject.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("AUTO_SET_TITLE"));
     }
 
     @Override
-    protected void performAction(List<AudioFile> objects) {
+    protected void performAction(List<LocalAudioObject> objects) {
         new EditTitlesProcess(objects).execute();
     }
 
