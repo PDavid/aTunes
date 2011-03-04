@@ -25,12 +25,12 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.process.AbstractProcess;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
+import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * This class represents a process which performs changes in tag of a set of
- * AudioFile objects
+ * LocalAudioObject objects
  * 
  * @author fleax
  * 
@@ -38,16 +38,16 @@ import net.sourceforge.atunes.utils.I18nUtils;
 public abstract class AbstractChangeTagProcess extends AbstractProcess {
 
     /**
-     * List of AudioFile objects to change
+     * List of LocalAudioObject objects to change
      */
-    private List<AudioFile> filesToChange;
+    private List<LocalAudioObject> filesToChange;
 
     /**
      * Constructor, initialized with AudioFiles to be changed
      * 
      * @param filesToChange
      */
-    protected AbstractChangeTagProcess(List<AudioFile> filesToChange) {
+    protected AbstractChangeTagProcess(List<LocalAudioObject> filesToChange) {
         this.filesToChange = filesToChange;
     }
 
@@ -95,7 +95,7 @@ public abstract class AbstractChangeTagProcess extends AbstractProcess {
      * @param file
      * @throws IOException
      */
-    protected abstract void changeTag(AudioFile file) throws IOException;
+    protected abstract void changeTag(LocalAudioObject file) throws IOException;
 
     /**
      * Some processes need an initial task to get some information needed to
@@ -108,7 +108,7 @@ public abstract class AbstractChangeTagProcess extends AbstractProcess {
     /**
      * @return the filesToChange
      */
-    protected List<AudioFile> getFilesToChange() {
+    protected List<LocalAudioObject> getFilesToChange() {
         return filesToChange;
     }
 
@@ -116,7 +116,7 @@ public abstract class AbstractChangeTagProcess extends AbstractProcess {
      * @param filesToChange
      *            the filesToChange to set
      */
-    protected void setFilesToChange(List<AudioFile> filesToChange) {
+    protected void setFilesToChange(List<LocalAudioObject> filesToChange) {
         this.filesToChange = filesToChange;
     }
 }

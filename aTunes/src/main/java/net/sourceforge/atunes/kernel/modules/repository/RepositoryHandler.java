@@ -73,6 +73,7 @@ import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.Folder;
+import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.model.Repository;
 import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.FileNameUtils;
@@ -123,7 +124,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 
 
     private final class ImportFoldersSwingWorker extends
-			SwingWorker<List<AudioFile>, Void> {
+			SwingWorker<List<LocalAudioObject>, Void> {
     	
 		private final class ImportFoldersLoaderListener implements
 				LoaderListener {
@@ -187,7 +188,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 		}
 
 		@Override
-		protected List<AudioFile> doInBackground() throws Exception {
+		protected List<LocalAudioObject> doInBackground() throws Exception {
 		    return RepositoryLoader.getSongsForFolders(folders, new ImportFoldersLoaderListener());
 		}
 
@@ -197,7 +198,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 		    GuiHandler.getInstance().hideIndeterminateProgressDialog();
 
 		    try {
-		        final List<AudioFile> filesToLoad = get();
+		        final List<LocalAudioObject> filesToLoad = get();
 
 		        TagAttributesReviewed tagAttributesReviewed = null;
 		        // Review tags if selected in settings
@@ -432,7 +433,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
      * 
      * @return the file if loaded
      */
-    public AudioFile getFileIfLoaded(String fileName) {
+    public LocalAudioObject getFileIfLoaded(String fileName) {
         return repository == null ? null : repository.getFile(fileName);
     }
 
@@ -531,7 +532,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
      * 
      * @return the repository folder containing file
      */
-    public File getRepositoryFolderContainingFile(AudioFile file) {
+    public File getRepositoryFolderContainingFile(LocalAudioObject file) {
         if (repository == null) {
             return null;
         }
@@ -576,11 +577,11 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
      * 
      * @return the audio files
      */
-    public Collection<AudioFile> getAudioFilesList() {
+    public Collection<LocalAudioObject> getAudioFilesList() {
         if (repository != null) {
             return repository.getAudioFilesList();
         }
-        return new ArrayList<AudioFile>();
+        return Collections.emptyList();
     }
 
     /**
@@ -588,11 +589,11 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
      * 
      * @return
      */
-    public Map<String, AudioFile> getAudioFilesMap() {
+    public Map<String, LocalAudioObject> getAudioFilesMap() {
         if (repository != null) {
             return repository.getAudioFiles();
         }
-        return new HashMap<String, AudioFile>();
+        return Collections.emptyMap();
     }
 
     /**
@@ -603,8 +604,8 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
      * 
      * @return the audio files for albums
      */
-    public List<AudioFile> getAudioFilesForAlbums(Map<String, Album> albums) {
-        List<AudioFile> result = new ArrayList<AudioFile>();
+    public List<LocalAudioObject> getAudioFilesForAlbums(Map<String, Album> albums) {
+        List<LocalAudioObject> result = new ArrayList<LocalAudioObject>();
         for (Map.Entry<String, Album> entry : albums.entrySet()) {
             result.addAll(AudioFile.getAudioFiles(entry.getValue().getAudioObjects()));
         }
@@ -619,8 +620,8 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
      * 
      * @return the audio files for artists
      */
-    public List<AudioFile> getAudioFilesForArtists(Map<String, Artist> artists) {
-        List<AudioFile> result = new ArrayList<AudioFile>();
+    public List<LocalAudioObject> getAudioFilesForArtists(Map<String, Artist> artists) {
+        List<LocalAudioObject> result = new ArrayList<LocalAudioObject>();
         for (Map.Entry<String, Artist> entry : artists.entrySet()) {
             result.addAll(AudioFile.getAudioFiles(entry.getValue().getAudioObjects()));
         }
@@ -906,7 +907,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
      * @param file
      *            the file
      */
-    public void refreshFile(AudioFile file) {
+    public void refreshFile(LocalAudioObject file) {
         RepositoryLoader.refreshFile(repository, file);
     }
 
@@ -949,12 +950,12 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
      * @param filesToRemove
      *            Files that should be removed
      */
-    public void remove(List<AudioFile> filesToRemove) {
+    public void remove(List<LocalAudioObject> filesToRemove) {
         if (filesToRemove == null || filesToRemove.isEmpty()) {
             return;
         }
 
-        for (AudioFile fileToRemove : filesToRemove) {
+        for (LocalAudioObject fileToRemove : filesToRemove) {
             RepositoryLoader.deleteFile(fileToRemove);
         }
 
@@ -972,7 +973,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
      * @param name
      *            the new name of the audio file
      */
-    public void rename(AudioFile audioFile, String name) {
+    public void rename(LocalAudioObject audioFile, String name) {
         File file = audioFile.getFile();
         String extension = FilenameUtils.getExtension(file.getAbsolutePath());
         File newFile = new File(StringUtils.getString(file.getParentFile().getAbsolutePath() + "/" + FileNameUtils.getValidFileName(name) + "." + extension));
@@ -1072,7 +1073,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
                 GuiHandler.getInstance().getFrame().getFrame());
         progressDialog.disableCancelButton();
         progressDialog.setVisible(true);
-        SwingWorker<List<AudioFile>, Void> worker = new ImportFoldersSwingWorker(folders, path, progressDialog);
+        SwingWorker<List<LocalAudioObject>, Void> worker = new ImportFoldersSwingWorker(folders, path, progressDialog);
         worker.execute();
     }
 
@@ -1086,7 +1087,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     }
 
     @Override
-    public void audioFilesRemoved(List<AudioFile> audioFiles) {
+    public void audioFilesRemoved(List<LocalAudioObject> audioFiles) {
         // Update status bar
         GuiHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
     }

@@ -47,7 +47,7 @@ public final class TagDetector {
     }
 
     /**
-     * Calls appropriate tag reader and sends tag to AudioFile class.
+     * Calls appropriate tag reader and sends tag to LocalAudioObject class.
      * 
      * @param file
      *            File to be read

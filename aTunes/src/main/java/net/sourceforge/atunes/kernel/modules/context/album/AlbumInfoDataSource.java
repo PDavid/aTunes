@@ -33,12 +33,12 @@ import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
 import net.sourceforge.atunes.kernel.modules.context.AlbumListInfo;
 import net.sourceforge.atunes.kernel.modules.context.ContextInformationDataSource;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.ImageSize;
+import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
@@ -182,9 +182,9 @@ public class AlbumInfoDataSource implements ContextInformationDataSource {
         Image image = null;
         if (albumInfo != null) {
             image = LastFmService.getInstance().getImage(albumInfo);
-            // This data source should only be used with audio files but anyway check if audioObject is an AudioFile before save picture
-            if (audioObject instanceof AudioFile) {
-                savePicture(image, (AudioFile) audioObject);
+            // This data source should only be used with audio files but anyway check if audioObject is an LocalAudioObject before save picture
+            if (audioObject instanceof LocalAudioObject) {
+                savePicture(image, (LocalAudioObject) audioObject);
             }
         } else {
             image = audioObject.getImage(ImageSize.SIZE_MAX).getImage();
@@ -199,7 +199,7 @@ public class AlbumInfoDataSource implements ContextInformationDataSource {
      * @param img
      * @param file
      */
-    private void savePicture(Image img, AudioFile file) {
+    private void savePicture(Image img, LocalAudioObject file) {
         if (img != null && ApplicationState.getInstance().isSaveContextPicture()) { // save image in folder of file
             String imageFileName = AudioFilePictureUtils.getFileNameForCover(file);
 

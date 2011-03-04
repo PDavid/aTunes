@@ -29,10 +29,10 @@ import net.sourceforge.atunes.gui.views.dialogs.EditTitlesDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.actions.EditTagAction.EditTagSources;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.LocalAudioObject;
 
 public class TagHandler extends AbstractHandler {
 
@@ -85,7 +85,7 @@ public class TagHandler extends AbstractHandler {
         return editTagDialogControllerMap.get(sourceOfEditTagDialog);
     }
 
-	public void editFiles(EditTagSources navigator, List<AudioFile> asList) {
+	public void editFiles(EditTagSources navigator, List<LocalAudioObject> asList) {
 		getEditTagDialogController(navigator).editFiles(asList);
 	}
 	

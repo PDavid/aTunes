@@ -26,6 +26,7 @@ import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
+import net.sourceforge.atunes.model.LocalAudioObject;
 
 /**
  * The Class EditTagFromFileNamePatternProcess.
@@ -38,7 +39,7 @@ public class EditTagFromFileNamePatternProcess extends AbstractChangeTagProcess 
     private String pattern;
 
     /** The files and tags. */
-    private Map<AudioFile, EditTagInfo> filesAndTags;
+    private Map<LocalAudioObject, EditTagInfo> filesAndTags;
 
     /**
      * Instantiates a new change titles process.
@@ -46,7 +47,7 @@ public class EditTagFromFileNamePatternProcess extends AbstractChangeTagProcess 
      * @param files
      *            the files
      */
-    public EditTagFromFileNamePatternProcess(List<AudioFile> files, String pattern) {
+    public EditTagFromFileNamePatternProcess(List<LocalAudioObject> files, String pattern) {
         super(files);
         this.pattern = pattern;
     }
@@ -55,8 +56,8 @@ public class EditTagFromFileNamePatternProcess extends AbstractChangeTagProcess 
     protected void retrieveInformationBeforeChangeTags() {
         super.retrieveInformationBeforeChangeTags();
         if (filesAndTags == null) {
-            filesAndTags = new HashMap<AudioFile, EditTagInfo>();
-            for (AudioFile file : getFilesToChange()) {
+            filesAndTags = new HashMap<LocalAudioObject, EditTagInfo>();
+            for (LocalAudioObject file : getFilesToChange()) {
                 Map<String, String> matches = AbstractPattern.getPatternMatches(pattern, file.getNameWithoutExtension(), false);
                 EditTagInfo editTagInfo = AbstractPattern.getEditTagInfoFromMatches(matches);
                 filesAndTags.put(file, editTagInfo);
@@ -65,7 +66,7 @@ public class EditTagFromFileNamePatternProcess extends AbstractChangeTagProcess 
     }
 
     @Override
-    protected void changeTag(AudioFile file) {
+    protected void changeTag(LocalAudioObject file) {
         TagModifier.setInfo(file, AudioFile.getNewTag(file, filesAndTags.get(file)));
     }
 }

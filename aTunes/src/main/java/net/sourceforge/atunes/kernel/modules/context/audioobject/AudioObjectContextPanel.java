@@ -30,9 +30,9 @@ import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.GenericImageSize;
+import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -63,7 +63,7 @@ public class AudioObjectContextPanel extends AbstractContextPanel {
 
     @Override
     protected String getContextPanelTitle(AudioObject audioObject) {
-        if (audioObject instanceof AudioFile || (audioObject instanceof Radio && ((Radio) audioObject).isSongInfoAvailable())) {
+        if (audioObject instanceof LocalAudioObject || (audioObject instanceof Radio && ((Radio) audioObject).isSongInfoAvailable())) {
             return I18nUtils.getString("SONG");
         } else if (audioObject instanceof Radio) {
             return I18nUtils.getString("RADIO");

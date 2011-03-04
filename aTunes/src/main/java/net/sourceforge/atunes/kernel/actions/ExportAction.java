@@ -34,6 +34,7 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.processes.ExportFilesProcess;
+import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -100,13 +101,13 @@ public class ExportAction extends AbstractAction {
 
                 // If path exists then start export
                 if (pathExists) {
-                    List<AudioFile> songs;
+                    List<LocalAudioObject> songs;
 
                     // If user wants to export navigator ask current navigation view to return selected objects
                     if (exportNavigator) {
                         songs = AudioFile.getAudioFiles(NavigationHandler.getInstance().getCurrentView().getSelectedAudioObjects());
                     } else {
-                        // Get only AudioFile objects of current play list
+                        // Get only LocalAudioObject objects of current play list
                         songs = AudioFile.getAudioFiles(PlayListHandler.getInstance().getSelectedAudioObjects());
                     }
 

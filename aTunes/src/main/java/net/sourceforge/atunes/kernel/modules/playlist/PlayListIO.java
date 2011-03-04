@@ -112,7 +112,7 @@ public final class PlayListIO {
         // It's not an online radio, then it must be an AudioFile
         ao = RepositoryHandler.getInstance().getFileIfLoaded(resourceName);
         if (ao == null) {
-            // If AudioFile is not previously loaded in application then create a new AudioFile
+            // If LocalAudioObject is not previously loaded in application then create a new AudioFile
             ao = new AudioFile(new File(resourceName));
         }
         return ao;

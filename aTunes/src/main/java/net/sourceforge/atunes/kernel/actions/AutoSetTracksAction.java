@@ -24,9 +24,9 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -35,17 +35,17 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class AutoSetTracksAction extends AbstractActionOverSelectedObjects<AudioFile> {
+public class AutoSetTracksAction extends AbstractActionOverSelectedObjects<LocalAudioObject> {
 
     private static final long serialVersionUID = 1378739676496602001L;
 
     AutoSetTracksAction() {
-        super(I18nUtils.getString("AUTO_SET_TRACK_NUMBER"), AudioFile.class);
+        super(I18nUtils.getString("AUTO_SET_TRACK_NUMBER"), LocalAudioObject.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("AUTO_SET_TRACK_NUMBER"));
     }
 
     @Override
-    protected void performAction(List<AudioFile> objects) {
+    protected void performAction(List<LocalAudioObject> objects) {
         TagEditionOperations.editTrackNumber(objects);
     }
 

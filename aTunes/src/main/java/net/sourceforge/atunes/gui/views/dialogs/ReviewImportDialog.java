@@ -49,8 +49,8 @@ import net.sourceforge.atunes.gui.model.ReviewImportTreeTableModel;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.tags.TagAttributesReviewed;
+import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -58,9 +58,6 @@ import net.sourceforge.atunes.utils.StringUtils;
 import org.jdesktop.swingx.JXTreeTable;
 import org.jdesktop.swingx.treetable.DefaultMutableTreeTableNode;
 
-/**
- * The Class ReviewImportDialog.
- */
 public final class ReviewImportDialog extends AbstractCustomModalDialog {
 
     private static final long serialVersionUID = 8523236886848649698L;
@@ -209,7 +206,7 @@ public final class ReviewImportDialog extends AbstractCustomModalDialog {
      * @param folders
      * @param files
      */
-    public void show(List<File> folders, List<AudioFile> filesToLoad) {
+    public void show(List<File> folders, List<LocalAudioObject> filesToLoad) {
         treeTable.setTreeTableModel(new ReviewImportTreeTableModel(folders, filesToLoad, treeTable));
         treeTable.getColumnExt(0).setPreferredWidth(300);
         ((ReviewImportTreeTableModel) treeTable.getTreeTableModel()).setCellEditors();

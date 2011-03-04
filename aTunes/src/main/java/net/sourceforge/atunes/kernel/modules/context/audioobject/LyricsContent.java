@@ -44,6 +44,7 @@ import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService;
 import net.sourceforge.atunes.misc.ClipboardFacade;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -176,7 +177,7 @@ public class LyricsContent extends AbstractContextPanelContent {
                     DesktopUtils.openURL(lyricsSourceUrl);
                 } else {
                     if (audioObject instanceof AudioFile) {
-                    	TagHandler.getInstance().editFiles(EditTagSources.NAVIGATOR, Arrays.asList((AudioFile) audioObject));                        
+                    	TagHandler.getInstance().editFiles(EditTagSources.NAVIGATOR, Arrays.asList((LocalAudioObject) audioObject));                        
                     }
                 }
             }

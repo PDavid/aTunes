@@ -74,6 +74,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 
 final class NavigationController extends AbstractController implements AudioFilesRemovedListener {
@@ -240,7 +241,7 @@ final class NavigationController extends AbstractController implements AudioFile
      * 
      * @return the files selected in navigator
      */
-    public List<AudioFile> getFilesSelectedInNavigator() {
+    public List<LocalAudioObject> getFilesSelectedInNavigator() {
         List<AudioObject> files = new ArrayList<AudioObject>();
         if (getPopupMenuCaller() instanceof JTable) {
             int[] rows = navigationTablePanel.getNavigationTable().getSelectedRows();
@@ -265,9 +266,9 @@ final class NavigationController extends AbstractController implements AudioFile
      *            collection of files
      * @return if a collection of files have the same parent file
      */
-    public boolean sameParentFile(Collection<? extends AudioFile> c) {
+    public boolean sameParentFile(Collection<? extends LocalAudioObject> c) {
         Set<File> set = new HashSet<File>();
-        for (AudioFile af : c) {
+        for (LocalAudioObject af : c) {
             set.add(af.getFile().getParentFile());
         }
         return set.size() == 1;
@@ -502,7 +503,7 @@ final class NavigationController extends AbstractController implements AudioFile
     }
 
     @Override
-    public void audioFilesRemoved(List<AudioFile> audioFiles) {
+    public void audioFilesRemoved(List<LocalAudioObject> audioFiles) {
         notifyReload();
     }
 }

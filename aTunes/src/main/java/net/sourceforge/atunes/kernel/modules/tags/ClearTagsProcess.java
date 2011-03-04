@@ -22,19 +22,19 @@ package net.sourceforge.atunes.kernel.modules.tags;
 
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
+import net.sourceforge.atunes.model.LocalAudioObject;
 
 /**
  * The Class ClearTagsProcess.
  */
 public class ClearTagsProcess extends AbstractChangeTagProcess {
 
-    public ClearTagsProcess(List<AudioFile> filesToClear) {
+    public ClearTagsProcess(List<LocalAudioObject> filesToClear) {
         super(filesToClear);
     }
 
     @Override
-    protected void changeTag(AudioFile file) {
+    protected void changeTag(LocalAudioObject file) {
         TagModifier.deleteTags(file);
     }
 

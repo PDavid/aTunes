@@ -24,7 +24,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 
@@ -32,7 +31,7 @@ public class RepositoryStructure implements Serializable {
 
     private static final long serialVersionUID = -2230698137764691254L;
 
-    private Map<String, AudioFile> filesStructure;
+    private Map<String, LocalAudioObject> filesStructure;
     private Map<String, Artist> artistStructure;
     private Map<String, Folder> folderStructure;
     private Map<String, Genre> genreStructure;
@@ -42,7 +41,7 @@ public class RepositoryStructure implements Serializable {
      * Instantiates a new repository structure.
      */
     protected RepositoryStructure() {
-    	this.filesStructure = new HashMap<String, AudioFile>();
+    	this.filesStructure = new HashMap<String, LocalAudioObject>();
     	this.artistStructure = new HashMap<String, Artist>();
     	this.folderStructure = new HashMap<String, Folder>();
     	this.genreStructure = new HashMap<String, Genre>();
@@ -89,7 +88,7 @@ public class RepositoryStructure implements Serializable {
 	 * Gets the files structure
 	 * @return
 	 */
-	public Map<String, AudioFile> getFilesStructure() {
+	public Map<String, LocalAudioObject> getFilesStructure() {
 		return filesStructure;
 	}
 }

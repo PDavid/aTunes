@@ -42,6 +42,7 @@ import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.ImageSize;
+import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 
 import org.commonjukebox.plugins.model.PluginApi;
@@ -54,7 +55,7 @@ import org.commonjukebox.plugins.model.PluginApi;
  * @author fleax
  */
 @PluginApi
-public final class AudioFile implements AudioObject, Serializable, Comparable<AudioFile> {
+public final class AudioFile implements LocalAudioObject, Serializable {
 
     private static final long serialVersionUID = -1139001443603556703L;
 
@@ -113,14 +114,14 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
      * 
      * @return the audio files
      */
-    public static List<AudioFile> getAudioFiles(List<AudioObject> audioObjects) {
+    public static List<LocalAudioObject> getAudioFiles(List<AudioObject> audioObjects) {
         if (audioObjects == null) {
             return Collections.emptyList();
         }
-        List<AudioFile> result = new ArrayList<AudioFile>();
+        List<LocalAudioObject> result = new ArrayList<LocalAudioObject>();
         for (AudioObject audioObject : audioObjects) {
-            if (audioObject instanceof AudioFile) {
-                result.add((AudioFile) audioObject);
+            if (audioObject instanceof LocalAudioObject) {
+                result.add((LocalAudioObject) audioObject);
             }
         }
         return result;
@@ -132,7 +133,7 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
      * @param audioFiles
      * @return
      */
-    public static List<AudioObject> getAudioObjects(List<AudioFile> audioFiles) {
+    public static List<AudioObject> getAudioObjects(List<LocalAudioObject> audioFiles) {
         if (audioFiles == null) {
             return Collections.emptyList();
         }
@@ -149,7 +150,7 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
      * 
      * @return the new tag
      */
-    public static AbstractTag getNewTag(AudioFile file, EditTagInfo editTagInfo) {
+    public static AbstractTag getNewTag(LocalAudioObject file, EditTagInfo editTagInfo) {
         return new DefaultTag().getTagFromProperties(editTagInfo, file.getTag());
     }
 
@@ -311,6 +312,7 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
      * 
      * @return the file on disk
      */
+    @Override
     public File getFile() {
         return file;
     }
@@ -357,6 +359,7 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
      * 
      * @return the name without extension
      */
+    @Override
     public String getNameWithoutExtension() {
         if (file == null) {
             return null;
@@ -454,6 +457,7 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
      * 
      * @return true, if successful
      */
+    @Override
     public final boolean hasInternalPicture() {
         return tag != null && tag.hasInternalImage();
     }
@@ -463,6 +467,7 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
      * 
      * @return if the tag of this audio file does support internal images
      */
+    @Override
     public final boolean supportsInternalPicture() {
         return isValidAudioFile(getFile(), Format.FLAC, Format.MP3, Format.MP4_1, Format.MP4_2, Format.OGG, Format.WMA);
     }
@@ -501,6 +506,7 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
      * @param externalPictures
      *            the new external pictures
      */
+    @Override
     public void setExternalPictures(List<File> externalPictures) {
         this.externalPictures = externalPictures;
     }
@@ -539,20 +545,6 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
         this.tag = tag;
     }
 
-    /**
-     * Sets write permissions if is not writable.
-     */
-    public void setWritable() {
-        // Set write permission on file
-        if (!file.canWrite()) {
-            file.setWritable(true);
-        }
-        // Set write permission on parent
-        if (!file.getParentFile().canWrite()) {
-            file.getParentFile().setWritable(true);
-        }
-    }
-
     @Override
     public String toString() {
         return file.getName();
@@ -564,7 +556,7 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
     }
 
     @Override
-    public int compareTo(AudioFile o) {
+    public int compareTo(LocalAudioObject o) {
         if (file == null || o.getFile() == null) {
             return 0;
         }
@@ -585,10 +577,10 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
      * @param list
      * @return
      */
-    public static List<AudioFile> filterRepeatedSongs(List<AudioFile> list) {
-        List<AudioFile> result = new ArrayList<AudioFile>(list);
+    public static List<LocalAudioObject> filterRepeatedSongs(List<LocalAudioObject> list) {
+        List<LocalAudioObject> result = new ArrayList<LocalAudioObject>(list);
         HashSet<Integer> artistAndTitles = new HashSet<Integer>();
-        for (AudioFile af : list) {
+        for (LocalAudioObject af : list) {
             // Build a set of strings of type artist_hash * title_hash
             Integer hash = (!af.getAlbumArtist().trim().equals("") ? af.getAlbumArtist() : af.getArtist()).hashCode() * af.getTitle().hashCode();
             if (artistAndTitles.contains(hash)) {
@@ -608,10 +600,10 @@ public final class AudioFile implements AudioObject, Serializable, Comparable<Au
      * @param list
      * @return
      */
-    public static List<AudioFile> filterRepeatedSongsAndAlbums(List<AudioFile> list) {
-        List<AudioFile> result = new ArrayList<AudioFile>(list);
+    public static List<LocalAudioObject> filterRepeatedSongsAndAlbums(List<LocalAudioObject> list) {
+        List<LocalAudioObject> result = new ArrayList<LocalAudioObject>(list);
         Set<Integer> artistAndTitles = new HashSet<Integer>();
-        for (AudioFile af : list) {
+        for (LocalAudioObject af : list) {
             // Build a set of strings of type artist_hash * album_hash * title_hash
             Integer hash = (!af.getAlbumArtist().trim().equals("") ? af.getAlbumArtist() : af.getArtist()).hashCode() * af.getAlbum().hashCode() * af.getTitle().hashCode();
             if (artistAndTitles.contains(hash)) {

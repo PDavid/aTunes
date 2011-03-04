@@ -27,7 +27,6 @@ import java.util.List;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -47,7 +46,7 @@ public class Album implements Serializable, TreeObject, Comparable<Album> {
     private Artist artist;
 
     /** List of songs of this album. */
-    private List<AudioFile> audioFiles;
+    private List<LocalAudioObject> audioFiles;
 
     /**
      * Constructor.
@@ -64,9 +63,9 @@ public class Album implements Serializable, TreeObject, Comparable<Album> {
      * Returns audio files
      * @return
      */
-    private List<AudioFile> getAudioFiles() {
+    private List<LocalAudioObject> getAudioFiles() {
     	if (audioFiles == null) {
-    		audioFiles = new ArrayList<AudioFile>();
+    		audioFiles = new ArrayList<LocalAudioObject>();
     	}
     	return audioFiles;
     }
@@ -77,7 +76,7 @@ public class Album implements Serializable, TreeObject, Comparable<Album> {
      * @param file
      *            the file
      */
-    public void addAudioFile(AudioFile file) {
+    public void addAudioFile(LocalAudioObject file) {
     	getAudioFiles().add(file);
     }
 
@@ -161,7 +160,7 @@ public class Album implements Serializable, TreeObject, Comparable<Album> {
      * @param file
      *            the file
      */
-    public void removeAudioFile(AudioFile file) {
+    public void removeAudioFile(LocalAudioObject file) {
     	getAudioFiles().remove(file);
     }
 

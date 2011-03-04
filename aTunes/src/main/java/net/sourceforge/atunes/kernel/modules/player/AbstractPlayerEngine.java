@@ -42,6 +42,7 @@ import net.sourceforge.atunes.misc.TempFolder;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -699,7 +700,7 @@ public abstract class AbstractPlayerEngine {
     	
         // If cacheFilesBeforePlaying is true and audio object is an audio file, copy it to temp folder
         // and start player process from this copied file
-	    if (audioObject instanceof AudioFile && ApplicationState.getInstance().isCacheFilesBeforePlaying()) {
+	    if (audioObject instanceof LocalAudioObject && ApplicationState.getInstance().isCacheFilesBeforePlaying()) {
 	    	
 	    	getLogger().debug(LogCategories.PLAYER, "Start caching file: ", audioObject.getUrl());
 	    	

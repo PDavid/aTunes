@@ -30,7 +30,6 @@ import java.util.Map;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -52,7 +51,7 @@ public class Folder implements Serializable, TreeObject {
     private String name;
 
     /** List of files in this folder. */
-    private List<AudioFile> files;
+    private List<LocalAudioObject> files;
 
     /** List of folders in this folder, indexed by name. */
     private Map<String, Folder> folders;
@@ -76,7 +75,7 @@ public class Folder implements Serializable, TreeObject {
      * @param file
      *            the file
      */
-    public void addAudioFile(AudioFile file) {
+    public void addAudioFile(LocalAudioObject file) {
         getFiles().add(file);
     }
 
@@ -132,9 +131,9 @@ public class Folder implements Serializable, TreeObject {
      * 
      * @return the files
      */
-    private List<AudioFile> getFiles() {
+    private List<LocalAudioObject> getFiles() {
     	if (files == null) {
-    		files = new ArrayList<AudioFile>();
+    		files = new ArrayList<LocalAudioObject>();
     	}
         return files;
     }
@@ -196,7 +195,7 @@ public class Folder implements Serializable, TreeObject {
      * @param file
      *            the file
      */
-    public void removeAudioFile(AudioFile file) {
+    public void removeAudioFile(LocalAudioObject file) {
         getFiles().remove(file);
     }
 
