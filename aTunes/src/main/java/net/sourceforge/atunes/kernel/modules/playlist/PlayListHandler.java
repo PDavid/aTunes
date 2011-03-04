@@ -972,38 +972,6 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
         getPlayListController().refreshPlayList();
 
         getPlayListController().scrollPlayList(false);
-
-        //        PlayList currentPlayList = getCurrentPlayList(true);
-        //
-        //        if (playList.size() > currentPlayList.size()) { // Removing filter
-        //            AudioObject selectedAudioObject = currentPlayList.getCurrentAudioObject();
-        //            int index = playList.indexOf(selectedAudioObject);
-        //            for (int i = 0; i < playList.size(); i++) {
-        //                currentPlayList.add(playList.get(i));
-        //            }
-        //            playLists.remove(visiblePlayListIndex);
-        //            playLists.add(visiblePlayListIndex, playList);
-        //            getCurrentPlayList(true).setCurrentAudioObjectIndex(index != -1 ? index : 0);
-        //            if (index == -1 && isActivePlayListVisible()) {
-        //                selectedAudioObjectChanged(currentPlayList.get(0));
-        //            }
-        //        } else {
-        //            // Remove from table 
-        //            List<Integer> rowsToRemove = new ArrayList<Integer>();
-        //            for (int i = 0; i < currentPlayList.size(); i++) {
-        //                AudioObject ao = currentPlayList.get(i);
-        //                if (!playList.contains(ao)) {
-        //                    rowsToRemove.add(i);
-        //                }
-        //            }
-        //            int[] rowsToRemoveArray = new int[rowsToRemove.size()];
-        //            for (int i = 0; i < rowsToRemove.size(); i++) {
-        //                rowsToRemoveArray[i] = rowsToRemove.get(i);
-        //            }
-        //
-        //            removeAudioObjects(rowsToRemoveArray);
-        //        }
-        //        GuiHandler.getInstance().showPlayListInformation(currentPlayList);
     }
 
     /**

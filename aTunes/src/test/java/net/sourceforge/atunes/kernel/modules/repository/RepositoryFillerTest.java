@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.modules.repository;
 import java.io.File;
 import java.util.Collections;
 
+import net.sourceforge.atunes.model.LocalAudioObjectFake;
 import net.sourceforge.atunes.model.Repository;
 
 import org.junit.Before;
@@ -45,7 +46,7 @@ public class RepositoryFillerTest {
 	
 	@Test
 	public void addAudioFile() {
-//		filler.addAudioFile(audioFile, repositoryFolderRoot, relativePathToRepositoryFolderRoot)
+		filler.addAudioFile(new LocalAudioObjectFake(), new File(""), "");
 		
 	}
 }

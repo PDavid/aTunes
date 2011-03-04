@@ -112,34 +112,6 @@ public final class SearchDialog extends AbstractCustomModalDialog {
         final JList list = new JList(SearchFactory.getSearches().toArray());
         list.setSelectedIndex(0);
         list.setOpaque(false);
-        //		list.setCellRenderer(new ListCellRenderer() {
-        //			public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        //				Search s = (Search) value;
-        //				
-        //				JPanel auxPanel = new JPanel(new GridBagLayout());
-        //				auxPanel.setBorder(BorderFactory.createEmptyBorder());
-        //				
-        //				JLabel label = new JLabel(s.getName());
-        //				label.setHorizontalAlignment(JLabel.LEFT);
-        //
-        //				Font font = label.getFont();
-        //				label.setFont(font.deriveFont(Font.PLAIN));
-        //				
-        //				if (isSelected) {
-        //					label.setForeground(ColorDefinitions.TREE_AND_TABLE_SELECTED_FOREGROUND_COLOR);
-        //				}
-        //				else {
-        //					auxPanel.setOpaque(false);
-        //				}
-        //				
-        //				if (!isSelected) label.setOpaque(false);
-        //				
-        //				GridBagConstraints c = new GridBagConstraints();
-        //				c.gridx = 0; c.gridy = 0; c.insets = new Insets(0,5,0,5); c.fill = GridBagConstraints.HORIZONTAL; c.weightx = 1;
-        //				auxPanel.add(label, c);
-        //				return auxPanel;
-        //			}
-        //		});
 
         setAsDefaultCheckBox = new JCheckBox(I18nUtils.getString("SET_AS_DEFAULT"));
         setAsDefaultCheckBox.setOpaque(false);
