@@ -44,9 +44,8 @@ public class RepositoryFillerTest {
 		RepositoryFiller f = new RepositoryFiller(null);		
 	}
 	
-	@Test
-	public void addAudioFile() {
-		filler.addAudioFile(new LocalAudioObjectFake(), new File(""), "");
-		
-	}
+//	@Test
+//	public void addAudioFile() {
+//		filler.addAudioFile(new LocalAudioObjectFake(), new File(""), "");		
+//	}
 }
