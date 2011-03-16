@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.sourceforge.atunes.kernel.PlayListAudioObject;
-import net.sourceforge.atunes.kernel.PlayListChangedListeners;
+import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.PointedList;
 import net.sourceforge.atunes.model.AudioObject;
@@ -285,7 +285,7 @@ public class PlayList implements Serializable, Cloneable {
      */
     protected void shuffle() {
         this.audioObjects.shuffle();
-        notifyCurrentAudioObjectChanged();
+        notifyCurrentAudioObjectChanged(this.audioObjects.getCurrentObject());
         // Mark as dirty
         setDirty(true);
     }
@@ -349,7 +349,7 @@ public class PlayList implements Serializable, Cloneable {
      */
     protected void setCurrentAudioObjectIndex(int index) {
         this.audioObjects.setPointer(index);
-        notifyCurrentAudioObjectChanged();
+        notifyCurrentAudioObjectChanged(this.audioObjects.getCurrentObject());
     }
 
     /**
@@ -426,7 +426,7 @@ public class PlayList implements Serializable, Cloneable {
      */
     protected AudioObject moveToNextAudioObject() {
         AudioObject nextObject = getMode().moveToNextAudioObject();
-        notifyCurrentAudioObjectChanged();
+        notifyCurrentAudioObjectChanged(nextObject);
         return nextObject;
     }
 
@@ -437,7 +437,7 @@ public class PlayList implements Serializable, Cloneable {
      */
     protected AudioObject moveToPreviousAudioObject() {
         AudioObject previousObject = getMode().moveToPreviousAudioObject();
-        notifyCurrentAudioObjectChanged();
+        notifyCurrentAudioObjectChanged(previousObject);
         return previousObject;
     }
 
@@ -479,7 +479,7 @@ public class PlayList implements Serializable, Cloneable {
      */
     private void notifyAudioObjectsAdded(int position, List<? extends AudioObject> audioObjectList) {
         List<PlayListAudioObject> playListAudioObjects = PlayListAudioObject.getList(position, audioObjectList);
-        PlayListChangedListeners.audioObjectsAdded(playListAudioObjects);
+        PlayListEventListeners.audioObjectsAdded(playListAudioObjects);
 
         // Notify mode too
         getMode().audioObjectsAdded(playListAudioObjects);
@@ -494,7 +494,7 @@ public class PlayList implements Serializable, Cloneable {
      * @param audioObjectList
      */
     private void notifyAudioObjectsRemoved(List<PlayListAudioObject> audioObjectList) {
-    	PlayListChangedListeners.audioObjectsRemoved(audioObjectList);
+    	PlayListEventListeners.audioObjectsRemoved(audioObjectList);
     	
         // Notify mode too
         getMode().audioObjectsRemoved(audioObjectList);
@@ -507,7 +507,7 @@ public class PlayList implements Serializable, Cloneable {
      * Private method to call listeners
      */
     private void notifyAudioObjectsRemovedAll() {
-    	PlayListChangedListeners.audioObjectsRemovedAll();
+    	PlayListEventListeners.playListCleared();
     	
         // Notify mode too
         getMode().audioObjectsRemovedAll();
@@ -518,9 +518,10 @@ public class PlayList implements Serializable, Cloneable {
 
     /**
      * Private method to call listeners
+     * @param audioObject
      */
-    private void notifyCurrentAudioObjectChanged() {
-    	PlayListChangedListeners.currentAudioObjectChanged();
+    private void notifyCurrentAudioObjectChanged(AudioObject audioObject) {
+    	PlayListEventListeners.selectedAudioObjectHasChanged(audioObject);
     }
 
     /**

@@ -20,10 +20,16 @@
 
 package net.sourceforge.atunes.kernel;
 
+import java.util.List;
+
 import net.sourceforge.atunes.model.AudioObject;
 
 /**
  * The listener interface for receiving playListEvent events.
+ */
+/**
+ * @author alex
+ *
  */
 public interface PlayListEventListener {
 
@@ -39,4 +45,16 @@ public interface PlayListEventListener {
      *            the audio object
      */
     public void selectedAudioObjectChanged(AudioObject audioObject);
+
+	/**
+	 * Called when audio objects are added to play list
+	 * @param playListAudioObjects
+	 */
+	public void audioObjectsAdded(List<PlayListAudioObject> playListAudioObjects);
+
+	/**
+	 * Called when audio objects are removed from play list
+	 * @param audioObjectList
+	 */
+	public void audioObjectsRemoved(List<PlayListAudioObject> audioObjectList);
 }
