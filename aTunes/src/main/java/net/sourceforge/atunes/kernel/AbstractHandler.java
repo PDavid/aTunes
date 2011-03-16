@@ -32,6 +32,7 @@ import net.sourceforge.atunes.kernel.modules.command.CommandHandler;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
+import net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenHandler;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeyHandler;
 import net.sourceforge.atunes.kernel.modules.instances.MultipleInstancesHandler;
@@ -62,8 +63,7 @@ public abstract class AbstractHandler implements ApplicationLifeCycleListener,
                                                  PlayListEventListener,
                                                  FavoritesListener,
                                                  DeviceListener,
-                                                 PlaybackStateListener,
-                                                 PlayListChangedListener {
+                                                 PlaybackStateListener {
 
     /**
      * Logger for handlers
@@ -104,7 +104,6 @@ public abstract class AbstractHandler implements ApplicationLifeCycleListener,
         DeviceListeners.addDeviceListener(handler);
         PlaybackStateListeners.addPlaybackStateListener(handler);
         PlayListEventListeners.addPlayListEventListener(handler);
-        PlayListChangedListeners.addPlayListChangedListener(handler);
     }
 
     /**
@@ -152,6 +151,7 @@ public abstract class AbstractHandler implements ApplicationLifeCycleListener,
         handlers.add(WebServicesHandler.getInstance());
         handlers.add(AudioObjectPropertiesHandler.getInstance());
         handlers.add(TagHandler.getInstance());
+        handlers.add(FullScreenHandler.getInstance());
 
         ExecutorService executorService = Executors.newFixedThreadPool(3);
         // Register handlers
@@ -203,9 +203,4 @@ public abstract class AbstractHandler implements ApplicationLifeCycleListener,
     @Override
     public void audioObjectsRemoved(List<PlayListAudioObject> audioObjectsRemoved) {}
     
-    @Override
-    public void audioObjectsRemovedAll() {}
-
-    @Override
-    public void currentAudioObjectChanged() {}
 }

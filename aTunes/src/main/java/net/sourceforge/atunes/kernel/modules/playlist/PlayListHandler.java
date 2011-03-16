@@ -1260,16 +1260,6 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
 	public void audioObjectsRemoved(List<PlayListAudioObject> audioObjectsRemoved) {		
 	}
 	
-	@Override
-	public void audioObjectsRemovedAll() {
-	}
-	
-	@Override
-	public void currentAudioObjectChanged() {
-        getPlayListController().refreshPlayList();
-        getPlayListController().scrollPlayList(false);
-	}
-
 	public void reapplyFilter() {
 		getPlayListController().reapplyFilter();
 	}
@@ -1282,7 +1272,10 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
 	public void playListCleared() {}
 	
 	@Override
-	public void selectedAudioObjectChanged(AudioObject audioObject) {};
+	public void selectedAudioObjectChanged(AudioObject audioObject) {
+        getPlayListController().refreshPlayList();
+        getPlayListController().scrollPlayList(false);
+	};
 
 	@Override
 	public void favoritesChanged() {

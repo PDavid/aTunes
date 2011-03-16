@@ -45,6 +45,26 @@ public class PlayListEventListeners {
     }
 
 	/**
+	 * Called when added objects to play list
+	 * @param playListAudioObjects
+	 */
+	public static void audioObjectsAdded(List<PlayListAudioObject> playListAudioObjects) {
+		for (PlayListEventListener listener : listeners) {
+			listener.audioObjectsAdded(playListAudioObjects);
+		}
+	}
+
+	/**
+	 * Called when audio objects are removed from play list
+	 * @param audioObjectList
+	 */
+	public static void audioObjectsRemoved(List<PlayListAudioObject> audioObjectList) {
+		for (PlayListEventListener listener : listeners) {
+			listener.audioObjectsRemoved(audioObjectList);
+		}
+	}
+
+	/**
 	 * Play list has been cleared
 	 */
 	public static void playListCleared() {
