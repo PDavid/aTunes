@@ -868,8 +868,14 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
             GuiHandler.getInstance().showMessage(I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"));
             retrieve(foldersToRead);
         } else {
-            GuiHandler.getInstance().showRepositorySelectionInfoDialog();
-            selectRepository();
+        	// Need to wait to show dialog with correct location (correct screen)
+        	SwingUtilities.invokeLater(new Runnable() {
+        		@Override
+        		public void run() {
+                    GuiHandler.getInstance().showRepositorySelectionInfoDialog();
+                    selectRepository();
+        		}
+        	});
         }
     }
 
