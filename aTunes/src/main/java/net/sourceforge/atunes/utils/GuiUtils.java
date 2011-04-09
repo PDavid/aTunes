@@ -124,21 +124,6 @@ public final class GuiUtils {
     }
 
     /**
-     * Sets location of a window centered in given screen device. Window must
-     * have size different of (0,0)
-     * 
-     * @param window
-     */
-    public static void setLocationInScreen(Window window, GraphicsDevice screen) {
-    	if (screen == null) {
-    		window.setLocationRelativeTo(null);
-    	} else {
-    		Rectangle screenBounds = screen.getDefaultConfiguration().getBounds();
-    		window.setLocation(screenBounds.width / 2 - window.getWidth() / 2 + screenBounds.x, screenBounds.height / 2 - window.getHeight() / 2 + screenBounds.y);
-    	}
-    }
-
-    /**
      * Adds the close action with escape key.
      * 
      * @param window

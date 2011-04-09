@@ -27,6 +27,7 @@ import java.awt.EventQueue;
 import java.awt.GraphicsDevice;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -1067,7 +1068,12 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
             	FrameState state = ApplicationState.getInstance().getFrameState(getFrame().getClass());
                 // Get screen where application is shown
                 GraphicsDevice screen = state != null ? GuiUtils.getGraphicsDeviceForLocation(state.getXPosition(), state.getYPosition()) : null;
-                GuiUtils.setLocationInScreen(splashScreenDialog, screen);
+                if (screen != null) {
+                	Rectangle screenBounds = screen.getDefaultConfiguration().getBounds();
+                	splashScreenDialog.setLocation(screenBounds.width / 2 - splashScreenDialog.getWidth() / 2 + screenBounds.x, screenBounds.height / 2 - splashScreenDialog.getHeight() / 2 + screenBounds.y);
+                } else {
+                	splashScreenDialog.setLocation(GuiUtils.getDeviceWidth() / 2 - splashScreenDialog.getWidth() / 2, GuiUtils.getDeviceHeight() / 2 - splashScreenDialog.getHeight() / 2);
+                }
             }
             splashScreenDialog.setVisible(true);
             splashScreenDialog.toFront();
