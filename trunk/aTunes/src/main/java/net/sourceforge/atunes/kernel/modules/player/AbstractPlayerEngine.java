@@ -126,19 +126,6 @@ public abstract class AbstractPlayerEngine {
         }
     }
 
-    private static final class ShowErrorDialog implements Runnable {
-        private final Exception e;
-
-        private ShowErrorDialog(Exception e) {
-            this.e = e;
-        }
-
-        @Override
-        public void run() {
-            GuiHandler.getInstance().showErrorDialog(e.getMessage());
-        }
-    }
-
     enum SubmissionState {
         NOT_SUBMITTED, PENDING, SUBMITTED;
     }
@@ -554,7 +541,7 @@ public abstract class AbstractPlayerEngine {
     public final void handlePlayerEngineError(final Exception e) {
         getLogger().error(LogCategories.PLAYER, StringUtils.getString("Player Error: ", e));
         getLogger().error(LogCategories.PLAYER, e);
-        SwingUtilities.invokeLater(new ShowErrorDialog(e));
+        GuiHandler.getInstance().showExceptionDialog(I18nUtils.getString("ERROR"), e);
     }
 
     /**
