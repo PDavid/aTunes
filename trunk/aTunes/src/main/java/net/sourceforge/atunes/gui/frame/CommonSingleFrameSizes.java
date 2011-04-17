@@ -35,13 +35,13 @@ public class CommonSingleFrameSizes {
     /*
      * Navigation panel sizes
      */
-	public static final int NAVIGATION_MINIMUM_WIDTH = GuiUtils.getComponentWidthForResolution(0.12f);
+	public static final int NAVIGATION_MINIMUM_WIDTH = GuiUtils.getComponentWidthForResolution(0.2f);
     public static final int NAVIGATION_MINIMUM_HEIGHT = GuiUtils.getComponentHeightForResolution(0.15f);
     
-	public static final int NAVIGATION_PREFERRED_WIDTH = GuiUtils.getComponentWidthForResolution(0.15f);
+	public static final int NAVIGATION_PREFERRED_WIDTH = GuiUtils.getComponentWidthForResolution(0.2f);
     public static final int NAVIGATION_PREFERRED_HEIGHT = GuiUtils.getComponentHeightForResolution(0.3f);
     
-	public static final int NAVIGATION_MAXIMUM_WIDTH = GuiUtils.getComponentWidthForResolution(0.2f);
+	public static final int NAVIGATION_MAXIMUM_WIDTH = GuiUtils.getComponentWidthForResolution(0.4f);
     public static final int NAVIGATION_MAXIMUM_HEIGHT = GuiUtils.getComponentHeightForResolution(0.6f);
 
     /*
