@@ -21,18 +21,45 @@
 package net.sourceforge.atunes.gui.views.controls.playerControls;
 
 import java.awt.Dimension;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 public final class VolumeLevel extends JLabel {
 
     private static final long serialVersionUID = 7166046387576859994L;
 
+    private Timer timer;
+    
     public VolumeLevel() {
         super();
         setHorizontalAlignment(SwingConstants.CENTER);
         setPreferredSize(new Dimension(50, 20));
         setFocusable(false);
     }
+    
+    @Override
+    public void setText(String text) {
+    	super.setText(text);
+    	
+    	// Keep text (volume level) visible for two seconds
+        if (timer != null) {
+        	timer.cancel();
+        }
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+			
+			@Override
+			public void run() {
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						setText("");
+					}
+				});
+			}
+		}, 2000);
+    }    
 }

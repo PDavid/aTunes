@@ -95,8 +95,6 @@ public final class EnhancedSingleFrame extends CommonSingleFrame implements net.
         c.weighty = 0;
         c.fill = GridBagConstraints.BOTH;
         centerPanel.add(getPropertiesPanel(), c);
-        c.gridy = 2;
-        centerPanel.add(getPlayerControls(), c);
 
         playListSplitPane = new CustomSplitPane(JSplitPane.VERTICAL_SPLIT);
         playListSplitPane.setLeftComponent(getNavigationTablePanel());

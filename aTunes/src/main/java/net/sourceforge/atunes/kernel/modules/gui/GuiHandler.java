@@ -50,7 +50,6 @@ import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.frame.DefaultSingleFrame;
 import net.sourceforge.atunes.gui.frame.Frame;
 import net.sourceforge.atunes.gui.frame.FrameState;
-import net.sourceforge.atunes.gui.frame.MultipleFrame;
 import net.sourceforge.atunes.gui.popup.FadingPopupFactory;
 import net.sourceforge.atunes.gui.views.bars.ToolBar;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
@@ -493,15 +492,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      */
     public boolean isMaximized() {
         return frame.getExtendedState() == java.awt.Frame.MAXIMIZED_BOTH;
-    }
-
-    /**
-     * Checks if is multiple window.
-     * 
-     * @return true, if is multiple window
-     */
-    public boolean isMultipleWindow() {
-        return frame instanceof MultipleFrame;
     }
 
     /**

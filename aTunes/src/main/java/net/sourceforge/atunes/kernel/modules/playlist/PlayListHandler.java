@@ -568,7 +568,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
 
             // hide the ticks and labels
             if (!ApplicationState.getInstance().isStopPlayerOnPlayListClear()) {
-                GuiHandler.getInstance().getPlayerControls().getProgressBar().setEnabled(false);
+                GuiHandler.getInstance().getPlayerControls().getProgressSlider().setEnabled(false);
             } else {
                 GuiHandler.getInstance().getPlayerControls().setShowTicksAndLabels(false);
             }

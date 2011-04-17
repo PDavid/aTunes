@@ -25,7 +25,6 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -57,7 +56,6 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.JSlider;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.filechooser.FileFilter;
@@ -69,6 +67,7 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.NextButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.PlayPauseButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.PreviousButton;
+import net.sourceforge.atunes.gui.views.controls.playerControls.ProgressSlider;
 import net.sourceforge.atunes.gui.views.controls.playerControls.StopButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeLevel;
 import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
@@ -127,15 +126,8 @@ public final class FullScreenWindow extends AbstractCustomWindow {
     /** The text label 2 */
     private JLabel textLabel2;
 
-    /** The progress bar. */
-    private JSlider progressBar;
-
-    /** The time. */
-    private JLabel time;
-
-    /** The remaining time. */
-    private JLabel remainingTime;
-
+    private ProgressSlider progressSlider;
+    
     /** The options. */
     private JPopupMenu options;
 
@@ -279,24 +271,6 @@ public final class FullScreenWindow extends AbstractCustomWindow {
     }
 
     /**
-     * Gets the remaining time.
-     * 
-     * @return the remainingTime
-     */
-    public JLabel getRemainingTime() {
-        return remainingTime;
-    }
-
-    /**
-     * Gets the time.
-     * 
-     * @return the time
-     */
-    public JLabel getTime() {
-        return time;
-    }
-
-    /**
      * Checks if is playing.
      * 
      * @return true, if is playing
@@ -331,11 +305,11 @@ public final class FullScreenWindow extends AbstractCustomWindow {
             textLabel.setText("");
             textLabel2.setText("");
         } else if (audioObject instanceof Radio) {
-            progressBar.setEnabled(false);
+            progressSlider.setEnabled(false);
             textLabel.setText(((Radio) audioObject).getName());
             textLabel2.setText(((Radio) audioObject).getUrl());
         } else if (audioObject instanceof PodcastFeedEntry) {
-            progressBar.setEnabled(false);
+        	progressSlider.setEnabled(false);
             textLabel.setText(((PodcastFeedEntry) audioObject).getTitle());
             textLabel2.setText(((PodcastFeedEntry) audioObject).getPodcastFeed().getName());
         } else {
@@ -450,21 +424,11 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         textLabel2.setFont(Fonts.getContextInformationBigFont());
         textLabel2.setForeground(Color.WHITE);
 
-        time = new JLabel("0:00");
-        time.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 15));
-
-        remainingTime = new JLabel("0:00");
-        remainingTime.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 15));
-
-        progressBar = new JSlider();
-        progressBar.setOpaque(false);
-        ProgressBarSeekListener seekListener = new ProgressBarSeekListener(progressBar);
-        progressBar.addMouseListener(seekListener);
-        progressBar.addKeyListener(keyAdapter);
-        progressBar.setToolTipText(I18nUtils.getString("CLICK_TO_SEEK"));
-        progressBar.setMinimum(0);
-        progressBar.setValue(0);
-        progressBar.setFocusable(false);
+        progressSlider = new ProgressSlider();
+        ProgressBarSeekListener seekListener = new ProgressBarSeekListener(progressSlider);
+        progressSlider.addMouseListener(seekListener);        
+        progressSlider.addKeyListener(keyAdapter);
+        progressSlider.setOpaque(false);
 
         JPanel textAndControlsPanel = new JPanel(new GridLayout(2, 1));
         textAndControlsPanel.setOpaque(false);
@@ -488,21 +452,8 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         controlsPanel.setOpaque(false);
 
         c = new GridBagConstraints();
-        int inset = getInsetForProgressBar();
-
-        c.gridy = 0;
-        c.insets = new Insets(0, inset, 0, 10);
-        c.gridwidth = 1;
-        controlsPanel.add(time, c);
-        c.gridx = 1;
-        c.insets = new Insets(0, 0, 0, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 1;
-        controlsPanel.add(progressBar, c);
-        c.gridx = 2;
-        c.insets = new Insets(0, 10, 0, inset);
-        c.weightx = 0;
-        controlsPanel.add(remainingTime, c);
+        controlsPanel.add(progressSlider, c);
 
         JPanel buttonsPanel = PlayerControlsPanel.getPanelWithPlayerControls(stopButton, previousButton, playButton, nextButton, muteButton, volumeSlider, volumeLevel);
 
@@ -544,7 +495,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
      *            the new max duration
      */
     public void setAudioObjectLength(long maxDuration) {
-        progressBar.setMaximum((int) maxDuration);
+        progressSlider.setMaximum((int) maxDuration);
     }
 
     /**
@@ -582,13 +533,13 @@ public final class FullScreenWindow extends AbstractCustomWindow {
     private void setCurrentAudioObjectPlayedTimeEDT(long time, long totalTime) {
         long remainingTime1 = totalTime - time;
         if (time == 0) {
-            this.remainingTime.setText(StringUtils.milliseconds2String(time));
+            progressSlider.setRemainingTime(time);
         } else {
-            this.remainingTime.setText(remainingTime1 > 0 ? StringUtils.getString("- ", StringUtils.milliseconds2String(remainingTime1)) : "-");
+            progressSlider.setRemainingTime(remainingTime1);
         }
 
-        this.time.setText(StringUtils.milliseconds2String(time));
-        progressBar.setValue((int) time);
+        progressSlider.setTime(time);
+        progressSlider.setValue((int) time);
     }
 
     @Override

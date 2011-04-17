@@ -23,14 +23,14 @@ package net.sourceforge.atunes.kernel.modules.player;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.JSlider;
+import net.sourceforge.atunes.gui.views.controls.playerControls.ProgressSlider;
 
 
 public class ProgressBarSeekListener extends MouseAdapter {
 
-	private JSlider progressBar;
+	private ProgressSlider progressBar;
 	
-	public ProgressBarSeekListener(JSlider progressBar) {
+	public ProgressBarSeekListener(ProgressSlider progressBar) {
 		super();
 		this.progressBar = progressBar;
 	}
@@ -41,7 +41,7 @@ public class ProgressBarSeekListener extends MouseAdapter {
 
         	// Progress bar width is greater than real slider width so calculate value assuming 5 pixels in both left and right of track
         	long temp = (long) progressBar.getMaximum() * (e.getX() - 5);
-        	int value = (int) (temp / (progressBar.getWidth() - 10));
+        	int value = (int) (temp / (progressBar.getProgressBarWidth() - 10));
         	
         	// Force new value to avoid jump to next major tick
         	progressBar.setValue(value);
