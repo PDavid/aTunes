@@ -25,6 +25,7 @@ aTunes 2.1.0
 - FIX: Cancel repository load immediately while loading a folder
 - FIX: Show only file system elements with path in repository selection dialog
 - FIX: Avoid read files in a file system element in repository selection dialog until node is expanded
+- FIX: Song length sometimes not read when using MPlayer engine
 
 aTunes 2.0.1
 -------------
