@@ -25,7 +25,6 @@ import java.awt.Font;
 import java.util.Hashtable;
 
 import javax.swing.JLabel;
-import javax.swing.JSlider;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
@@ -63,8 +62,8 @@ final class PlayerControlsController extends AbstractSimpleController<PlayerCont
     protected void addBindings() {
         PlayerControlsListener listener = new PlayerControlsListener(getComponentControlled(), this);
 
-        ProgressBarSeekListener seekListener = new ProgressBarSeekListener(getComponentControlled().getProgressBar());        
-        getComponentControlled().getProgressBar().addMouseListener(seekListener);
+        ProgressBarSeekListener seekListener = new ProgressBarSeekListener(getComponentControlled().getProgressSlider());        
+        getComponentControlled().getProgressSlider().addMouseListener(seekListener);
         
         //bind a mouse wheel listener
         getComponentControlled().getVolumeSlider().addMouseWheelListener(listener);
@@ -89,7 +88,7 @@ final class PlayerControlsController extends AbstractSimpleController<PlayerCont
     void setAudioObjectLength(long length) {
         getLogger().debug(LogCategories.CONTROLLER, Long.toString(length));
 
-        getComponentControlled().getProgressBar().setMaximum((int) length);
+        getComponentControlled().getProgressSlider().setMaximum((int) length);
         setupProgressTicks(length);
     }
 
@@ -110,7 +109,7 @@ final class PlayerControlsController extends AbstractSimpleController<PlayerCont
      *            the new slidable
      */
     void setSlidable(boolean slidable) {
-        getComponentControlled().getProgressBar().setEnabled(slidable);
+        getComponentControlled().getProgressSlider().setEnabled(slidable);
     }
 
     /**
@@ -137,13 +136,13 @@ final class PlayerControlsController extends AbstractSimpleController<PlayerCont
     private void setCurrentAudioObjectTimePlayedEDT(long timePlayed, long totalTime) {
         long remainingTime = totalTime - timePlayed;
         if (timePlayed == 0) {
-            getComponentControlled().getRemainingTime().setText(StringUtils.milliseconds2String(timePlayed));
+            getComponentControlled().setRemainingTime(timePlayed);
         } else {
-            getComponentControlled().getRemainingTime().setText(remainingTime > 0 ? StringUtils.getString("- ", StringUtils.milliseconds2String(remainingTime)) : "-");
+            getComponentControlled().setRemainingTime(remainingTime);
         }
 
-        getComponentControlled().getTime().setText(StringUtils.milliseconds2String(timePlayed));
-        getComponentControlled().getProgressBar().setValue((int) timePlayed);
+        getComponentControlled().setTime(timePlayed);
+        getComponentControlled().getProgressSlider().setValue((int) timePlayed);
     }
 
     /**
@@ -161,9 +160,8 @@ final class PlayerControlsController extends AbstractSimpleController<PlayerCont
      * Gets the position in percent.
      */
     float getPostionInPercent() {
-        JSlider progressBar = getComponentControlled().getProgressBar();
-        int max = progressBar.getMaximum();
-        int pos = progressBar.getValue();
+        int max = getComponentControlled().getProgressSlider().getMaximum();
+        int pos = getComponentControlled().getProgressSlider().getValue();
 
         float floatPercent = 0;
 
@@ -193,14 +191,12 @@ final class PlayerControlsController extends AbstractSimpleController<PlayerCont
             majorTickSpacing = MINUTES_5;
         }
 
-        JSlider progressBar = getComponentControlled().getProgressBar();
-
         //avoid NullPointerException 
-        progressBar.setLabelTable(null);
+        getComponentControlled().getProgressSlider().setLabelTable(null);
 
-        progressBar.setPaintTicks(ApplicationState.getInstance().isShowTicks());
-        progressBar.setMajorTickSpacing(majorTickSpacing);
-        progressBar.setMinorTickSpacing(minorTickSpacing);
+        getComponentControlled().getProgressSlider().setPaintTicks(ApplicationState.getInstance().isShowTicks());
+        getComponentControlled().getProgressSlider().setMajorTickSpacing(majorTickSpacing);
+        getComponentControlled().getProgressSlider().setMinorTickSpacing(minorTickSpacing);
 
         setupTicksLabels(length);
 
@@ -237,10 +233,9 @@ final class PlayerControlsController extends AbstractSimpleController<PlayerCont
                 }
             }
         }
-        JSlider progressBar = getComponentControlled().getProgressBar();
-        progressBar.setPaintLabels(ApplicationState.getInstance().isShowTicks() && ticksLabels.size() > 0);
+        getComponentControlled().getProgressSlider().setPaintLabels(ApplicationState.getInstance().isShowTicks() && ticksLabels.size() > 0);
         if (ticksLabels.size() > 0) {
-            progressBar.setLabelTable(ticksLabels);
+        	getComponentControlled().getProgressSlider().setLabelTable(ticksLabels);
         }
 
     }

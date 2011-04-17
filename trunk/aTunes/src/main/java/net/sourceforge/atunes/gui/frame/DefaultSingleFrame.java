@@ -109,8 +109,6 @@ public final class DefaultSingleFrame extends CommonSingleFrame implements net.s
         c.weighty = 0;
         c.fill = GridBagConstraints.BOTH;
         centerPanel.add(getPropertiesPanel(), c);
-        c.gridy = 2;
-        centerPanel.add(getPlayerControls(), c);
         return centerPanel;
     }
     

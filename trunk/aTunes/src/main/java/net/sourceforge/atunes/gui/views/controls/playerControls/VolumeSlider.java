@@ -61,7 +61,7 @@ public final class VolumeSlider extends JSlider {
         addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                Volume.setVolume(getValue());
+				Volume.setVolume(getValue());
             }
         });
     }

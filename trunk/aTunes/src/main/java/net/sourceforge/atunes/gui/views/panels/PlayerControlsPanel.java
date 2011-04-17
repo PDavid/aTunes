@@ -35,7 +35,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JToggleButton;
-import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.playerControls.KaraokeButton;
@@ -44,6 +43,7 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.NextButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.NormalizationButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.PlayPauseButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.PreviousButton;
+import net.sourceforge.atunes.gui.views.controls.playerControls.ProgressSlider;
 import net.sourceforge.atunes.gui.views.controls.playerControls.RepeatButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.SecondaryControl;
 import net.sourceforge.atunes.gui.views.controls.playerControls.ShuffleButton;
@@ -51,7 +51,6 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.StopButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeLevel;
 import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The player controls panel.
@@ -86,16 +85,16 @@ public final class PlayerControlsPanel extends JPanel {
     // TODO: If we add new secondary controls this should change
     private static final int PROGRESS_BAR_BOTTOM_MINIMUM_SIZE = 310;
 
-    /** Width of progress bar when it's placed at bottom of panel */
-    private static final int PROGRESS_BAR_WIDTH_AT_BOTTOM = 190;
-
     /** Height of progress bar when has no ticks */
     private static final int PROGRESS_BAR_NO_TICKS_HEIGHT = 26;
 
     /** Height of progress bar when has ticks */
     private static final int PROGRESS_BAR_TICKS_HEIGHT = 40;
 
-    /** Total margin (top and bottom) of player controls */
+    /** Horizontal margin of player controls */
+    private static final int PLAYER_CONTROLS_HORIZONTAL_MARGIN = 25;
+
+    /** Vertical margin of player controls */
     private static final int PLAYER_CONTROLS_VERTICAL_MARGIN = 10;
 
     /************************************************ PANEL CONSTANTS ******************************************************/
@@ -128,43 +127,45 @@ public final class PlayerControlsPanel extends JPanel {
     /**
      * Adds the content.
      */
-    protected void addContent() {
-        final JPanel topProgressSliderPanel = new JPanel(new BorderLayout());
-        final JPanel bottomProgressSliderPanel = new JPanel(new BorderLayout());
-        bottomProgressSliderPanel.addComponentListener(new BottomProgressSliderPanelComponentAdapter(
-				bottomProgressSliderPanel, topProgressSliderPanel));
-
+    private void addContent() {
         progressSlider = new ProgressSlider();
 
+        JPanel sliderContainer = new JPanel(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.weightx = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(0, 0, 3, PLAYER_CONTROLS_HORIZONTAL_MARGIN);
+        sliderContainer.add(progressSlider, c);
+        
         JPanel bottomPanel = new JPanel(new BorderLayout());
-        bottomPanel.setPreferredSize(new Dimension(10, PLAY_BUTTON_SIZE.height + PLAYER_CONTROLS_VERTICAL_MARGIN));
+        bottomPanel.setMinimumSize(new Dimension(10, PLAY_BUTTON_SIZE.height + PLAYER_CONTROLS_VERTICAL_MARGIN * 2));
         JPanel mainControlsPanel = getMainControlsPanel();
         bottomPanel.add(mainControlsPanel, BorderLayout.WEST);
-        bottomPanel.add(bottomProgressSliderPanel, BorderLayout.CENTER);
+        bottomPanel.add(sliderContainer, BorderLayout.CENTER);
         bottomPanel.add(getSecondaryControls(), BorderLayout.EAST);
 
-        GridBagConstraints c = new GridBagConstraints();
+        c = new GridBagConstraints();
         c.gridx = 0;
+        c.gridy = 0;
         c.weightx = 1;
         c.weighty = 0;
-        c.insets = new Insets(5, 5, 0, 5);
         c.fill = GridBagConstraints.BOTH;
-        add(topProgressSliderPanel, c);
-        c.gridy = 1;
-        c.insets = new Insets(0, 5, 0, 5);
+        c.insets = new Insets(PLAYER_CONTROLS_VERTICAL_MARGIN, PLAYER_CONTROLS_HORIZONTAL_MARGIN, PLAYER_CONTROLS_VERTICAL_MARGIN, PLAYER_CONTROLS_HORIZONTAL_MARGIN);
         add(bottomPanel, c);
+        
+        setMinimumSize(new Dimension(10, PLAY_BUTTON_SIZE.height + PLAYER_CONTROLS_VERTICAL_MARGIN * 2));
     }
 
-    public JSlider getProgressBar() {
-        return progressSlider.getProgressBar();
+    public ProgressSlider getProgressSlider() {
+        return progressSlider;
     }
 
-    public JLabel getRemainingTime() {
-        return progressSlider.getRemainingTime();
+    public void setRemainingTime(long time) {
+        progressSlider.setRemainingTime(time);
     }
 
-    public JLabel getTime() {
-        return progressSlider.getTime();
+    public void setTime(long time) {
+        progressSlider.setTime(time);
     }
 
     public JToggleButton getVolumeButton() {
@@ -197,9 +198,9 @@ public final class PlayerControlsPanel extends JPanel {
     }
 
     public void setShowTicksAndLabels(boolean showTicks) {
-        getProgressBar().setPaintLabels(showTicks);
-        getProgressBar().setPaintTicks(showTicks);
-        getProgressBar().setPreferredSize(new Dimension(getProgressBar().getPreferredSize().width, showTicks ? PROGRESS_BAR_TICKS_HEIGHT : PROGRESS_BAR_NO_TICKS_HEIGHT));
+        getProgressSlider().setPaintLabels(showTicks);
+        getProgressSlider().setPaintTicks(showTicks);
+        getProgressSlider().setPreferredSize(new Dimension(getProgressSlider().getPreferredSize().width, showTicks ? PROGRESS_BAR_TICKS_HEIGHT : PROGRESS_BAR_NO_TICKS_HEIGHT));
     }
 
     private JPanel getMainControlsPanel() {
@@ -248,6 +249,7 @@ public final class PlayerControlsPanel extends JPanel {
     private static JPanel getCustomPlayerControls(StopButton stopButton, PreviousButton previousButton, PlayPauseButton playButton, NextButton nextButton, MuteButton volumeButton, JSlider volumeSlider, JLabel volumeLevel) {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setOpaque(false);
+
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
@@ -273,11 +275,7 @@ public final class PlayerControlsPanel extends JPanel {
             c.fill = GridBagConstraints.NONE;
             c.insets = new Insets(0, 0, 3, 0);
             panel.add(volumeSlider, c);
-            c.gridy = 1;
-            c.gridx = 5;
-            c.fill = GridBagConstraints.NONE;
-            c.insets = new Insets(-20, 16, 0, 0);
-            c.anchor = GridBagConstraints.WEST;
+            c.gridx = 6;
             panel.add(volumeLevel, c);
         }
         return panel;
@@ -388,77 +386,16 @@ public final class PlayerControlsPanel extends JPanel {
 		            topProgressSliderPanel.add(progressSlider, BorderLayout.CENTER);
 		        } else {
 		            topProgressSliderPanel.remove(progressSlider);
-		            bottomProgressSliderPanel.add(progressSlider, BorderLayout.WEST);
+		            GridBagConstraints c = new GridBagConstraints();
+		            c.weightx = 0;
+		            c.fill = GridBagConstraints.HORIZONTAL;
+		            c.anchor = GridBagConstraints.WEST;
+		            bottomProgressSliderPanel.add(progressSlider, c);
 		        }
 		        progressSlider.setExpandable(showOnTop);
 		        showProgressOnTop = showOnTop;
 		    }
 		}
 	}
-
-	static class ProgressSlider extends JPanel {
-
-        private static final long serialVersionUID = 8921834666233975274L;
-
-        private JLabel time;
-        private JLabel remainingTime;
-        private JSlider progressBar;
-
-        ProgressSlider() {
-            super(new GridBagLayout());
-            time = new JLabel("0:00");
-            time.setHorizontalAlignment(SwingConstants.CENTER);
-            // Set enough width to allow more than three digits
-            time.setPreferredSize(new Dimension(50, 10));
-
-            progressBar = new JSlider();
-            progressBar.setToolTipText(I18nUtils.getString("CLICK_TO_SEEK"));
-            progressBar.setMinimum(0);
-            progressBar.setValue(0);
-            progressBar.setFocusable(false);
-            progressBar.setPreferredSize(new Dimension(PROGRESS_BAR_WIDTH_AT_BOTTOM, PROGRESS_BAR_NO_TICKS_HEIGHT));
-
-            remainingTime = new JLabel("0:00");
-            remainingTime.setHorizontalAlignment(SwingConstants.CENTER);
-            // Set enough width to allow more than three digits
-            remainingTime.setPreferredSize(new Dimension(50, 10));
-            setOpaque(false);
-
-            setExpandable(true);
-        }
-
-        public JLabel getTime() {
-            return time;
-        }
-
-        public JLabel getRemainingTime() {
-            return remainingTime;
-        }
-
-        public JSlider getProgressBar() {
-            return progressBar;
-        }
-
-        public void setExpandable(boolean expandable) {
-            removeAll();
-
-            GridBagConstraints c = new GridBagConstraints();
-            c.gridx = 0;
-            c.insets = new Insets(1, 10, 0, 0);
-            add(time, c);
-            c.gridx = 1;
-            c.weightx = expandable ? 1 : 0;
-            c.weighty = 1;
-            c.insets = new Insets(1, 5, 0, 5);
-            c.fill = GridBagConstraints.HORIZONTAL;
-            add(progressBar, c);
-            c.gridx = 2;
-            c.weightx = 0;
-            c.insets = new Insets(1, 0, 0, 5);
-            c.fill = GridBagConstraints.NONE;
-            add(remainingTime, c);
-
-        }
-    }
 
 }
