@@ -158,12 +158,8 @@ public final class PlayerControlsPanel extends JPanel {
         return progressSlider;
     }
 
-    public void setRemainingTime(long time) {
-        progressSlider.setRemainingTime(time);
-    }
-
-    public void setTime(long time) {
-        progressSlider.setTime(time);
+    public void setProgress(long time, long remainingTime) {
+        progressSlider.setProgress(time, remainingTime);
     }
 
     public JToggleButton getVolumeButton() {

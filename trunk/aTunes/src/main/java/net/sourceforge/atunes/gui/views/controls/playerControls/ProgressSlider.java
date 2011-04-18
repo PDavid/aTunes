@@ -71,16 +71,10 @@ public class ProgressSlider extends JPanel {
      * Sets played time
      * @param time in milliseconds
      */
-    public void setTime(long time) {
+    public void setProgress(long time, long remainingTime) {
         this.time.setText(time > 0 ? StringUtils.milliseconds2String(time) : "");
-    }
-
-    /**
-     * Sets remaining time
-     * @param time in milliseconds
-     */
-    public void setRemainingTime(long time) {
-        this.remainingTime.setText(time > 0 ? StringUtils.getString("- ", StringUtils.milliseconds2String(time)) : "");
+        this.remainingTime.setText(remainingTime > 0 ? StringUtils.getString("- ", StringUtils.milliseconds2String(remainingTime)) : "");
+       	this.progressBar.setVisible(time != 0 || remainingTime != 0);
     }
 
     /**
