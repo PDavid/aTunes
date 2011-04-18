@@ -41,6 +41,15 @@ public class ArtistColumn extends AbstractColumn {
 
     @Override
     protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
+    	if (ao1.getArtist().equals(ao2.getArtist())) {
+        	if (ao1.getAlbum().equals(ao2.getAlbum())) {
+        		if (ao1.getDiscNumber() == ao2.getDiscNumber()) {
+        			return Integer.valueOf(ao1.getTrackNumber()).compareTo(ao2.getTrackNumber());
+        		}
+        		return Integer.valueOf(ao1.getDiscNumber()).compareTo(ao2.getDiscNumber());
+        	}
+        	return ao1.getAlbum().compareTo(ao2.getAlbum());
+    	}
         return ao1.getArtist().compareTo(ao2.getArtist());
     }
 
