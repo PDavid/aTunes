@@ -532,13 +532,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 
     private void setCurrentAudioObjectPlayedTimeEDT(long time, long totalTime) {
         long remainingTime1 = totalTime - time;
-        if (time == 0) {
-            progressSlider.setRemainingTime(time);
-        } else {
-            progressSlider.setRemainingTime(remainingTime1);
-        }
-
-        progressSlider.setTime(time);
+        progressSlider.setProgress(time, time == 0 ? time : remainingTime1);
         progressSlider.setValue((int) time);
     }
 
