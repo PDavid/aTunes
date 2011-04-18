@@ -28,6 +28,8 @@ aTunes 2.1.0
 - FIX: Show only file system elements with path in repository selection dialog
 - FIX: Avoid read files in a file system element in repository selection dialog until node is expanded
 - FIX: Song length sometimes not read when using MPlayer engine
+- FIX: Use enter to change playing song in play list (patch by Michal Pantucek) [3159234]
+- FIX: Avoid enter key in filter text field to change current playing song (patch by Michal Pantucek) [3210857]
 
 aTunes 2.0.1
 -------------

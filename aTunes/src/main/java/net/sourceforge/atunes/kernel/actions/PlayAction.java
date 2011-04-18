@@ -27,7 +27,10 @@ import java.util.List;
 import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.views.controls.playerControls.PlayPauseButton;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
+import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -43,7 +46,28 @@ public class PlayAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        PlayerHandler.getInstance().playCurrentAudioObject(true);
+        // disable enter key when focus is on filter text field (so event is not fired from PLAY/PAUSE button)
+        if (GuiHandler.getInstance().getToolBar().getFilterPanel().getFilterTextField().isFocusOwner()
+                && !(e.getSource().getClass().equals(PlayPauseButton.class))) {
+            return;
+        }
+        
+        int selAudioObject = GuiHandler.getInstance().getPlayListTable().getSelectedRow();
+        int currPlayingAudioObject = PlayListHandler.getInstance().getIndexOfAudioObject(PlayerHandler.getInstance().getAudioObject());
+
+        if (selAudioObject != currPlayingAudioObject) {
+            // another song selected to play
+            if (e.getSource().getClass().equals(PlayPauseButton.class)) {
+                // action is from PlayPauseButton -> pause
+                PlayerHandler.getInstance().playCurrentAudioObject(true);
+            } else {
+                // play another song
+                PlayListHandler.getInstance().setPositionToPlayInVisiblePlayList(selAudioObject);
+                PlayerHandler.getInstance().playCurrentAudioObject(false);
+            }
+        } else
+            // selected song equals to song being currently played -> pause
+            PlayerHandler.getInstance().playCurrentAudioObject(true);
     }
 
     @Override
