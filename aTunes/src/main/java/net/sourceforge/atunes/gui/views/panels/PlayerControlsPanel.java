@@ -25,8 +25,6 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -363,39 +361,5 @@ public final class PlayerControlsPanel extends JPanel {
         JToggleButton button = new SecondaryControl(action);
         getSecondaryControls().add(button, c);
     }
-
-    private final class BottomProgressSliderPanelComponentAdapter extends
-			ComponentAdapter {
-		private final JPanel bottomProgressSliderPanel;
-		private final JPanel topProgressSliderPanel;
-		private Boolean showProgressOnTop = null;
-
-		private BottomProgressSliderPanelComponentAdapter(
-				JPanel bottomProgressSliderPanel, JPanel topProgressSliderPanel) {
-			this.bottomProgressSliderPanel = bottomProgressSliderPanel;
-			this.topProgressSliderPanel = topProgressSliderPanel;
-		}
-
-		@Override
-		public void componentResized(ComponentEvent e) {
-		    boolean showOnTop = bottomProgressSliderPanel.getWidth() < PROGRESS_BAR_BOTTOM_MINIMUM_SIZE;
-
-		    if (showProgressOnTop == null || showProgressOnTop != showOnTop) {
-		        if (showOnTop) {
-		            bottomProgressSliderPanel.remove(progressSlider);
-		            topProgressSliderPanel.add(progressSlider, BorderLayout.CENTER);
-		        } else {
-		            topProgressSliderPanel.remove(progressSlider);
-		            GridBagConstraints c = new GridBagConstraints();
-		            c.weightx = 0;
-		            c.fill = GridBagConstraints.HORIZONTAL;
-		            c.anchor = GridBagConstraints.WEST;
-		            bottomProgressSliderPanel.add(progressSlider, c);
-		        }
-		        progressSlider.setExpandable(showOnTop);
-		        showProgressOnTop = showOnTop;
-		    }
-		}
-	}
 
 }
