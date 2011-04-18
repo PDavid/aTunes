@@ -490,7 +490,7 @@ public class ApplicationState {
     
 
     public boolean isUsePersonNamesArtistTagViewSorting() {
-    	return (Boolean) this.cache.retrievePreference(Preferences.USE_PERSON_NAMES_ARTIST_TAG_SORTING, true);
+    	return (Boolean) this.cache.retrievePreference(Preferences.USE_PERSON_NAMES_ARTIST_TAG_SORTING, false);
     }
 
     public void setUsePersonNamesArtistTagViewSorting(boolean usePersonNamesArtistTagViewSorting) {
