@@ -244,7 +244,7 @@ final class PlayerControlsController extends AbstractSimpleController<PlayerCont
         String duration = StringUtils.milliseconds2String(unit);
         JLabel label = new JLabel(duration, SwingConstants.CENTER);
         Font currentFont = label.getFont();
-        label.setFont(new Font(currentFont.getFontName(), Font.ITALIC, Math.max(currentFont.getSize() - 2, 8)));
+        label.setFont(new Font(currentFont.getFontName(), currentFont.getStyle(), Math.max(currentFont.getSize() - 3, 7)));
         return label;
     }    
     
