@@ -79,10 +79,6 @@ public final class PlayerControlsPanel extends JPanel {
     /** Size of shuffle, repeat, ... buttons */
     public static final Dimension OTHER_BUTTONS_SIZE = new Dimension(25, 23);
 
-    /** Minimum size of this panel to show progress bar at bottom */
-    // TODO: If we add new secondary controls this should change
-    private static final int PROGRESS_BAR_BOTTOM_MINIMUM_SIZE = 310;
-
     /** Height of progress bar when has no ticks */
     private static final int PROGRESS_BAR_NO_TICKS_HEIGHT = 26;
 
@@ -311,10 +307,7 @@ public final class PlayerControlsPanel extends JPanel {
             c.insets = new Insets(0, 10, 0, 0);
             volumeSlider.setMinimumSize(new Dimension(50, 20));
             panel.add(volumeSlider, c);
-            c.gridy = 1;
-            c.gridx = 5;
-            c.fill = GridBagConstraints.NONE;
-            c.anchor = GridBagConstraints.WEST;
+            c.gridx = 6;
             panel.add(volumeLevel, c);
         }
         return panel;
