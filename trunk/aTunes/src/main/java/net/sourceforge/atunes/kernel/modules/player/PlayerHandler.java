@@ -94,6 +94,11 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 
     @Override
     public void applicationStateChanged(ApplicationState newState) {
+        // Set ticks for the player progress bar
+    	getPlayerControlsController().getComponentControlled().setShowTicksAndLabels(newState.isShowTicks());
+    	
+    	// Show advanced controls
+    	getPlayerControlsController().getComponentControlled().showAdvancedPlayerControls(newState.isShowAdvancedPlayerControls());
     }
 
     @Override
@@ -113,6 +118,9 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
         
         // Progress bar ticks
         getPlayerControlsController().getComponentControlled().setShowTicksAndLabels(ApplicationState.getInstance().isShowTicks());
+        
+        // Show advanced controls
+        getPlayerControlsController().getComponentControlled().showAdvancedPlayerControls(ApplicationState.getInstance().isShowAdvancedPlayerControls());
     }
 
     /**
