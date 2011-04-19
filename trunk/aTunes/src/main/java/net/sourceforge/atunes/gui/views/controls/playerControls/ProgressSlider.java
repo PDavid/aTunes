@@ -116,6 +116,10 @@ public class ProgressSlider extends JPanel {
 	 */
 	public void setPaintTicks(boolean showTicks) {
 		progressBar.setPaintTicks(showTicks);
+		
+		// Some look and feels (system look and feel) need to invalidate and repaint component to show/hide ticks
+		progressBar.invalidate();
+		progressBar.repaint();
 	}
 
 	/**

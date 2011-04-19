@@ -30,6 +30,7 @@ aTunes 2.1.0
 - FIX: Song length sometimes not read when using MPlayer engine
 - FIX: Use enter to change playing song in play list (patch by Michal Pantucek) [3159234]
 - FIX: Avoid enter key in filter text field to change current playing song (patch by Michal Pantucek) [3210857]
+- FIX: Some look and feels need to repaing progress bar when showing / hiding ticks
 
 aTunes 2.0.1
 -------------
