@@ -350,5 +350,14 @@ public final class PlayerControlsPanel extends JPanel {
         JToggleButton button = new SecondaryControl(action);
         getSecondaryControls().add(button, c);
     }
+    
+    /**
+     * Hides or shows advanced controls
+     * @param show
+     */
+    public void showAdvancedPlayerControls(boolean show) {
+    	karaokeButton.setVisible(show);
+    	normalizeButton.setVisible(show);
+    }
 
 }

@@ -62,7 +62,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class PlayerPanel extends AbstractPreferencesPanel {
 
-    private final class HotkeyTableTableCellRendererCode extends
+	private final class HotkeyTableTableCellRendererCode extends
 			AbstractTableCellRendererCode {
 		@Override
 		public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -140,6 +140,9 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
 
     /** The show ticks. */
     private JCheckBox showTicks;
+    
+    /** Show advanced player controls */
+    private JCheckBox showAdvancedPlayerControls;
 
     /** The use fade away. */
     private JCheckBox useFadeAway;
@@ -181,6 +184,7 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
         playAtStartup = new JCheckBox(I18nUtils.getString("PLAY_AT_STARTUP"));
         useFadeAway = new JCheckBox(I18nUtils.getString("USE_FADE_AWAY"));
         showTicks = new JCheckBox(I18nUtils.getString("SHOW_TICKS"));
+        showAdvancedPlayerControls = new JCheckBox(I18nUtils.getString("SHOW_ADVANCED_PLAYER_CONTROLS"));
         useShortPathNames = new JCheckBox(I18nUtils.getString("USE_SHORT_PATH_NAMES_FOR_MPLAYER"));
         enableGlobalHotkeys = new JCheckBox(I18nUtils.getString("ENABLE_GLOBAL_HOTKEYS"));
 
@@ -248,16 +252,18 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
         c.gridy = 3;
         add(showTicks, c);
         c.gridy = 4;
-        add(useShortPathNames, c);
+        add(showAdvancedPlayerControls, c);
         c.gridy = 5;
-        add(cacheFilesBeforePlaying, c);
+        add(useShortPathNames, c);
         c.gridy = 6;
-        add(enableGlobalHotkeys, c);
+        add(cacheFilesBeforePlaying, c);
         c.gridy = 7;
+        add(enableGlobalHotkeys, c);
+        c.gridy = 8;
         c.weightx = 0;
         c.insets = new Insets(10, 20, 5, 10);
         add(scrollPane, c);
-        c.gridy = 10;
+        c.gridy = 9;
         c.weighty = 1;
         c.fill = GridBagConstraints.NONE;
         c.insets = new Insets(0, 20, 0, 0);
@@ -279,6 +285,7 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
         state.setPlayAtStartup(playAtStartup.isSelected());
         state.setUseFadeAway(useFadeAway.isSelected());
         state.setShowTicks(showTicks.isSelected());
+        state.setShowAdvancedPlayerControls(showAdvancedPlayerControls.isSelected());
         state.setUseShortPathNames(useShortPathNames.isSelected());
         state.setEnableHotkeys(enableGlobalHotkeys.isSelected());
         state.setHotkeysConfig(tableModel.getHotkeysConfig());
@@ -351,6 +358,15 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
     }
 
     /**
+     * Sets the show advanced player controls
+     * 
+	 * @param showAdvancedPlayerControls
+	 */
+	private void setShowAdvancedPlayerControls(boolean showAdvancedPlayerControls) {
+		this.showAdvancedPlayerControls.setSelected(showAdvancedPlayerControls);
+	}
+    
+    /**
      * Sets the cache files before playing.
      * 
      * @param cacheFiles
@@ -374,6 +390,7 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
         setPlayAtStartup(state.isPlayAtStartup());
         setUseFadeAway(state.isUseFadeAway());
         setShowTicks(state.isShowTicks());
+        setShowAdvancedPlayerControls(state.isShowAdvancedPlayerControls());
         setCacheFilesBeforePlaying(state.isCacheFilesBeforePlaying());
         setEnableHotkeys(state.isEnableHotkeys());
         HotkeysConfig hotkeysConfig = state.getHotkeysConfig();

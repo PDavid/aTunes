@@ -368,6 +368,16 @@ public class ApplicationState {
     }
     
     
+    
+    public boolean isShowAdvancedPlayerControls() {
+    	return (Boolean) this.cache.retrievePreference(Preferences.SHOW_ADVANCED_PLAYER_CONTROLS, false);
+    }
+    
+    public void setShowAdvancedPlayerControls(boolean show) {
+    	this.cache.storePreference(Preferences.SHOW_ADVANCED_PLAYER_CONTROLS, show);
+    }
+    
+    
 
     public boolean isReadInfoFromRadioStream() {
     	return (Boolean) this.cache.retrievePreference(Preferences.READ_INFO_FROM_RADIO_STREAM, true);
