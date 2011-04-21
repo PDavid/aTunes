@@ -759,26 +759,6 @@ public class ApplicationState {
     
     
 
-    public boolean isShowNavigatorTabsAtLeft() {
-    	return (Boolean) this.cache.retrievePreference(Preferences.SHOW_NAVIGATOR_TABS_AT_LEFT, false);
-    }
-
-    public void setShowNavigatorTabsAtLeft(boolean showNavigatorTabsAtLeft) {
-    	this.cache.storePreference(Preferences.SHOW_NAVIGATOR_TABS_AT_LEFT, showNavigatorTabsAtLeft);
-    }
-    
-    
-
-    public boolean isShowNavigatorTabsText() {
-    	return (Boolean) this.cache.retrievePreference(Preferences.SHOW_NAVIGATOR_TABS_TEXT, false);
-    }
-
-    public void setShowNavigatorTabsText(boolean showNavigatorTabsText) {
-    	this.cache.storePreference(Preferences.SHOW_NAVIGATOR_TABS_TEXT, showNavigatorTabsText);
-    }
-    
-    
-
     public boolean isShowContextTabsText() {
     	return (Boolean) this.cache.retrievePreference(Preferences.SHOW_CONTEXT_TABS_TEXT, false);
     }

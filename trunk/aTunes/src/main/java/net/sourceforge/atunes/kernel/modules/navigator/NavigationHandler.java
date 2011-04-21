@@ -236,8 +236,8 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
     public void pluginActivated(PluginInfo plugin) {
         try {
             getNavigationViews().add((AbstractNavigationView) PluginsHandler.getInstance().getNewInstance(plugin));
-            // Set tabs and text for navigator
-            getNavigationController().getNavigationTreePanel().updateTabs();
+            // Set tress
+            getNavigationController().getNavigationTreePanel().updateTrees();
         } catch (PluginSystemException e) {
             getLogger().error(LogCategories.PLUGINS, e);
         }

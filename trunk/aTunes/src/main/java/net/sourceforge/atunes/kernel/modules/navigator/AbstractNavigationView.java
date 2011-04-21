@@ -42,6 +42,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
@@ -154,6 +155,7 @@ public abstract class AbstractNavigationView implements AudioObjectsSource {
     public final JScrollPane getTreeScrollPane() {
         if (scrollPane == null) {
             scrollPane = new JScrollPane(getTree());
+            scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         }
         return scrollPane;
     }
@@ -561,6 +563,8 @@ public abstract class AbstractNavigationView implements AudioObjectsSource {
                 NavigationHandler.getInstance().setNavigationView(AbstractNavigationView.this.getClass().getName());
             }
         };
+        
+        viewAction.putValue(Action.SHORT_DESCRIPTION, getTitle());
 
         // The first 9 views will have an accelerator key ALT + index
         if (index > 0 && index < 10) {

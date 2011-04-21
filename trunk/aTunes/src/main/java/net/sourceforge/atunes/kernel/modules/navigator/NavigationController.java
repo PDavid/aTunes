@@ -38,8 +38,6 @@ import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.SwingWorker;
 import javax.swing.Timer;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -198,17 +196,6 @@ final class NavigationController extends AbstractController implements AudioFile
         }
 
         navigationTablePanel.getNavigationTable().addMouseListener(new NavigationTableMouseListener(this, navigationTablePanel));
-        navigationTreePanel.getTabbedPane().addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                int view = navigationTreePanel.getTabbedPane().getSelectedIndex();
-                // Maybe tabbed pane is empty so set navigation only if it contains tabs
-                if (view != -1 &&
-                	view != NavigationHandler.getInstance().indexOf(NavigationHandler.getInstance().getViewByName(ApplicationState.getInstance().getNavigationView()))) {
-                    setNavigationView(NavigationHandler.getInstance().getNavigationViews().get(view).getClass().getName());
-                }
-            }
-        });
     }
 
     @Override
@@ -367,15 +354,8 @@ final class NavigationController extends AbstractController implements AudioFile
         if (saveNavigationView) {
         	ApplicationState.getInstance().setNavigationView(navigationView.getName());
         }
-
-        int currentView = navigationTreePanel.getTabbedPane().getSelectedIndex();
-        int newView = NavigationHandler.getInstance().indexOf(navigationView);
-        // If current view is equals to the new view then don't change tabbed pane selected index
-        // This can happen when this method is called from a stateChanged method of tabbed pane listener when user
-        // changes selected tab
-        if (currentView != newView && newView < navigationTreePanel.getTabbedPane().getTabCount()) {
-            navigationTreePanel.getTabbedPane().setSelectedIndex(newView);
-        }
+        
+        getNavigationTreePanel().showNavigationView(navigationView.getName());
 
         boolean viewModeSupported = NavigationHandler.getInstance().getView(navigationView).isViewModeSupported();
         Actions.getAction(ShowAlbumsInNavigatorAction.class).setEnabled(viewModeSupported);

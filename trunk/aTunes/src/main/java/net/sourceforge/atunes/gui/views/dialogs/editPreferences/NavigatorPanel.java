@@ -60,16 +60,6 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
     private JCheckBox useArtistNamesSorting;
 
     /**
-     * Check box to set navigator tabs at left (selected) or top (unselected)
-     */
-    private JCheckBox showNavigatorTabsAtLeft;
-
-    /**
-     * Check box to set navigator tabs text (selected) or not (unselected)
-     */
-    private JCheckBox showNavigatorTabsText;
-
-    /**
      * Check box to highlight elements with incomplete tags (selected) or not
      * (unselected)
      */
@@ -206,8 +196,6 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
         });
         useSmartTagViewSorting = new JCheckBox(I18nUtils.getString("USE_SMART_TAG_VIEW_SORTING"));
         useArtistNamesSorting = new JCheckBox(I18nUtils.getString("USE_PERSON_NAMES_ARTIST_TAG_VIEW_SORTING"));
-        showNavigatorTabsAtLeft = new JCheckBox(I18nUtils.getString("SHOW_NAVIGATION_TABS_AT_LEFT"));
-        showNavigatorTabsText = new JCheckBox(I18nUtils.getString("SHOW_NAVIGATION_TABS_TEXT"));
         highlightElementsWithIncompleteBasicTags = new JCheckBox(I18nUtils.getString("HIGHLIGHT_INCOMPLETE_TAG_ELEMENTS"));
         highlightElementsWithIncompleteBasicTags.addActionListener(new ActionListener() {
             @Override
@@ -260,12 +248,8 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
         c.gridy = 4;
         add(useArtistNamesSorting, c);
         c.gridy = 5;
-        add(showNavigatorTabsAtLeft, c);
-        c.gridy = 6;
-        add(showNavigatorTabsText, c);
-        c.gridy = 7;
         add(highlightElementsWithIncompleteBasicTags, c);
-        c.gridy = 8;
+        c.gridy = 6;
         c.weighty = 1;
         c.weightx = 0;
         c.anchor = GuiUtils.getComponentOrientation().isLeftToRight() ? GridBagConstraints.NORTHWEST : GridBagConstraints.NORTHEAST;
@@ -279,8 +263,6 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
         state.setShowExtendedTooltip(showExtendedToolTip.isSelected());
         state.setExtendedTooltipDelay((Integer) extendedToolTipDelay.getSelectedItem());
         state.setUseSmartTagViewSorting(useSmartTagViewSorting.isSelected());
-        state.setShowNavigatorTabsAtLeft(showNavigatorTabsAtLeft.isSelected());
-        state.setShowNavigatorTabsText(showNavigatorTabsText.isSelected());
         state.setHighlightIncompleteTagElements(highlightElementsWithIncompleteBasicTags.isSelected());
         state.setHighlightIncompleteTagFoldersAttributes(tagAttributesTableModel.getSelectedTagAttributes());
         state.setUsePersonNamesArtistTagViewSorting(useArtistNamesSorting.isSelected());
@@ -340,24 +322,6 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
     }
 
     /**
-     * Sets property to show navigator tabs at left
-     * 
-     * @param show
-     */
-    private void setShowNavigatorTabsAtLeft(boolean show) {
-        showNavigatorTabsAtLeft.setSelected(show);
-    }
-
-    /**
-     * Sets property to show navigator tabs text
-     * 
-     * @param show
-     */
-    private void setShowNavigatorTabsText(boolean show) {
-        showNavigatorTabsText.setSelected(show);
-    }
-
-    /**
      * Sets property to highlight folder with incomplete tags
      * 
      * @param highlightFoldersWithIncompleteBasicTags
@@ -375,8 +339,6 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
         setShowAlbumToolTip(state.isShowExtendedTooltip());
         setAlbumToolTipDelay(state.getExtendedTooltipDelay());
         setUseSmartTagViewSorting(state.isUseSmartTagViewSorting());
-        setShowNavigatorTabsAtLeft(state.isShowNavigatorTabsAtLeft());
-        setShowNavigatorTabsText(state.isShowNavigatorTabsText());
         setHighlightFoldersWithIncompleteBasicTags(state.isHighlightIncompleteTagElements());
         setUsePersonNamesArtistTagViewSorting(state.isUsePersonNamesArtistTagViewSorting());
     }

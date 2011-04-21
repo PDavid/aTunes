@@ -39,7 +39,6 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileFilter;
@@ -1312,12 +1311,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     public void applicationStateChanged(ApplicationState newState) {
         // Show or hide context panel
         showContextPanel(newState.isUseContext());
-
-        // Set location for navigator tabs (left or top)
-        getNavigationTreePanel().getTabbedPane().setTabPlacement(newState.isShowNavigatorTabsAtLeft() ? SwingConstants.LEFT : SwingConstants.TOP);
-
-        // Set tabs and text for navigator
-        getNavigationTreePanel().updateTabs();
 
         // Once done graphic changes, repaint the window
         repaint();

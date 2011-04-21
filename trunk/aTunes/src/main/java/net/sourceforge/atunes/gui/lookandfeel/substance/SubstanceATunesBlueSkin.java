@@ -29,8 +29,8 @@ import org.pushingpixels.substance.api.SubstanceColorSchemeBundle;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.colorscheme.BaseLightColorScheme;
 import org.pushingpixels.substance.api.painter.border.ClassicBorderPainter;
-import org.pushingpixels.substance.api.painter.decoration.ArcDecorationPainter;
-import org.pushingpixels.substance.api.painter.fill.GlassFillPainter;
+import org.pushingpixels.substance.api.painter.decoration.MatteDecorationPainter;
+import org.pushingpixels.substance.api.painter.fill.ClassicFillPainter;
 import org.pushingpixels.substance.api.painter.highlight.ClassicHighlightPainter;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 
@@ -217,16 +217,16 @@ public final class SubstanceATunesBlueSkin extends SubstanceSkin {
 		this.registerDecorationAreaSchemeBundle(specialSchemeBundle,
 				DecorationAreaType.PRIMARY_TITLE_PANE,
 				DecorationAreaType.SECONDARY_TITLE_PANE,
-				DecorationAreaType.TOOLBAR, DecorationAreaType.FOOTER,
+				DecorationAreaType.FOOTER,
 				DecorationAreaType.HEADER);
 
 		this.setSelectedTabFadeStart(1);
 		this.setSelectedTabFadeEnd(1);
 
 		this.buttonShaper = new ClassicButtonShaper();
-		this.fillPainter = new GlassFillPainter();
+		this.fillPainter = new ClassicFillPainter();
 		this.borderPainter = new ClassicBorderPainter();
-		this.decorationPainter = new ArcDecorationPainter();
+		this.decorationPainter = new MatteDecorationPainter();
 		this.highlightPainter = new ClassicHighlightPainter();
 
 	}

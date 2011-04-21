@@ -25,10 +25,11 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.Fonts;
@@ -63,7 +64,6 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
 
         setFocusableWindowState(false);
         JPanel container = new JPanel(new GridBagLayout());
-        container.setBorder(BorderFactory.createLineBorder(GuiUtils.getBorderColor()));
         image = new JLabel();
         image.setBorder(new DropShadowBorder());
         line1 = new JLabel();
@@ -94,7 +94,11 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
         c.anchor = GridBagConstraints.NORTHWEST;
         c.insets = new Insets(0, 10, 0, 10);
         container.add(line3, c);
-        add(container);
+        // Use scroll pane to draw a border consistent with look and feel
+        JScrollPane scrollPane = new JScrollPane(container);
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        add(scrollPane);
         GuiUtils.applyComponentOrientation(this);
     }
 

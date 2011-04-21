@@ -28,8 +28,8 @@ import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.colorscheme.DarkGrayColorScheme;
 import org.pushingpixels.substance.api.colorscheme.EbonyColorScheme;
 import org.pushingpixels.substance.api.painter.border.ClassicBorderPainter;
-import org.pushingpixels.substance.api.painter.decoration.ArcDecorationPainter;
-import org.pushingpixels.substance.api.painter.fill.GlassFillPainter;
+import org.pushingpixels.substance.api.painter.decoration.MatteDecorationPainter;
+import org.pushingpixels.substance.api.painter.fill.ClassicFillPainter;
 import org.pushingpixels.substance.api.painter.highlight.ClassicHighlightPainter;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 import org.pushingpixels.substance.internal.colorscheme.TintColorScheme;
@@ -61,13 +61,13 @@ public final class SubstanceATunesDarkSkin extends SubstanceSkin {
 		this.registerDecorationAreaSchemeBundle(specialSchemeBundle,
 				DecorationAreaType.PRIMARY_TITLE_PANE,
 				DecorationAreaType.SECONDARY_TITLE_PANE,
-				DecorationAreaType.TOOLBAR, DecorationAreaType.FOOTER,
+				DecorationAreaType.FOOTER,
 				DecorationAreaType.HEADER, DecorationAreaType.GENERAL);
 
 		this.buttonShaper = new ClassicButtonShaper();
-		this.fillPainter = new GlassFillPainter();
+		this.fillPainter = new ClassicFillPainter();
 		this.borderPainter = new ClassicBorderPainter();
-		this.decorationPainter = new ArcDecorationPainter();
+		this.decorationPainter = new MatteDecorationPainter();
 		this.highlightPainter = new ClassicHighlightPainter();
 
 	}
