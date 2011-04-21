@@ -85,6 +85,35 @@ public class LyricsContent extends AbstractContextPanelContent {
 
     public LyricsContent() {
         super(new LyricsDataSource());
+        copyLyrics = new JMenuItem(new AbstractAction(I18nUtils.getString("COPY_TO_CLIPBOARD")) {
+
+            private static final long serialVersionUID = -851267486478098295L;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String sLyric = lyricsContainer.getText();
+                if (sLyric == null) {
+                    sLyric = "";
+                }
+                ClipboardFacade.copyToClipboard(sLyric);
+            }
+        });
+        addLyrics = new JMenu(I18nUtils.getString("ADD_LYRICS"));
+        openLyrics = new JMenuItem(new AbstractAction(I18nUtils.getString("OPEN_LYRICS_SOURCE")) {
+
+            private static final long serialVersionUID = 9043861642969889713L;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (lyricsSourceUrl != null && !lyricsSourceUrl.trim().isEmpty()) {
+                    DesktopUtils.openURL(lyricsSourceUrl);
+                } else {
+                    if (audioObject instanceof AudioFile) {
+                    	TagHandler.getInstance().editFiles(EditTagSources.NAVIGATOR, Arrays.asList((LocalAudioObject) audioObject));                        
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -149,42 +178,9 @@ public class LyricsContent extends AbstractContextPanelContent {
     @Override
     protected List<Component> getOptions() {
         List<Component> options = new ArrayList<Component>();
-        copyLyrics = new JMenuItem(new AbstractAction(I18nUtils.getString("COPY_TO_CLIPBOARD")) {
-
-            private static final long serialVersionUID = -851267486478098295L;
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String sLyric = lyricsContainer.getText();
-                if (sLyric == null) {
-                    sLyric = "";
-                }
-                ClipboardFacade.copyToClipboard(sLyric);
-            }
-        });
         options.add(copyLyrics);
-
-        addLyrics = new JMenu(I18nUtils.getString("ADD_LYRICS"));
         options.add(addLyrics);
-
-        openLyrics = new JMenuItem(new AbstractAction(I18nUtils.getString("OPEN_LYRICS_SOURCE")) {
-
-            private static final long serialVersionUID = 9043861642969889713L;
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (lyricsSourceUrl != null && !lyricsSourceUrl.trim().isEmpty()) {
-                    DesktopUtils.openURL(lyricsSourceUrl);
-                } else {
-                    if (audioObject instanceof AudioFile) {
-                    	TagHandler.getInstance().editFiles(EditTagSources.NAVIGATOR, Arrays.asList((LocalAudioObject) audioObject));                        
-                    }
-                }
-            }
-        });
-
         options.add(openLyrics);
-
         return options;
     }
 

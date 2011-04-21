@@ -102,6 +102,10 @@ public class AudioObjectBasicInfoContent extends AbstractContextPanelContent {
      */
     public AudioObjectBasicInfoContent() {
         super(new AudioObjectBasicInfoDataSource());
+        lovedSong = new JMenuItem(I18nUtils.getString("ADD_LOVED_SONG_IN_LASTFM"));
+        lovedSong.addActionListener(new AddLovedSongActionListener());
+        bannedSong = new JMenuItem(I18nUtils.getString("ADD_BANNED_SONG_IN_LASTFM"));
+        bannedSong.addActionListener(new AddBannedSongActionListener());
     }
 
     @Override
@@ -195,10 +199,6 @@ public class AudioObjectBasicInfoContent extends AbstractContextPanelContent {
     @Override
     protected List<Component> getOptions() {
         List<Component> options = new ArrayList<Component>();
-        lovedSong = new JMenuItem(I18nUtils.getString("ADD_LOVED_SONG_IN_LASTFM"));
-        lovedSong.addActionListener(new AddLovedSongActionListener());
-        bannedSong = new JMenuItem(I18nUtils.getString("ADD_BANNED_SONG_IN_LASTFM"));
-        bannedSong.addActionListener(new AddBannedSongActionListener());
         options.add(lovedSong);
         options.add(bannedSong);
         return options;

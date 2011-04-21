@@ -22,23 +22,17 @@ package net.sourceforge.atunes.kernel.modules.context;
 
 import java.awt.Component;
 import java.awt.EventQueue;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.gui.views.controls.PopUpButton;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.commonjukebox.plugins.model.PluginApi;
 import org.jdesktop.swingx.JXTaskPane;
@@ -186,31 +180,6 @@ public abstract class AbstractContextPanel {
     				scroll.getVerticalScrollBar().setUnitIncrement(50);
     				componentToAdd = scroll;
     			}
-
-    			List<Component> options = content.getOptions();
-    			if (options != null && !options.isEmpty()) {
-    				PopUpButton button = new PopUpButton(I18nUtils.getString("OPTIONS"), PopUpButton.TOP_RIGHT);
-    				for (Component option : options) {
-    					button.add(option);
-    				}
-    				JPanel panel = new JPanel(new GridBagLayout());
-    				panel.setOpaque(false);
-    				GridBagConstraints c = new GridBagConstraints();
-    				c.weightx = 1;
-    				c.weighty = 1;
-    				c.fill = GridBagConstraints.BOTH;
-    				panel.add(componentToAdd, c);
-    				c.gridy = 1;
-    				c.weightx = 0;
-    				c.weighty = 0;
-    				c.fill = GridBagConstraints.NONE;
-    				c.insets = new Insets(5, 0, 0, 0);
-    				c.anchor = GridBagConstraints.WEST;
-    				panel.add(button, c);
-    				GuiUtils.applyComponentOrientation(panel);
-    				componentToAdd = panel;
-    			}
-
     			taskPane.add(componentToAdd);
     			taskPane.setCollapsed(true);
     			container.add(taskPane);
@@ -277,4 +246,19 @@ public abstract class AbstractContextPanel {
         }
 
     }
+
+	/**
+	 * Return components to show in options
+	 * @return
+	 */
+	public List<Component> getOptions() {
+		List<Component> components = new ArrayList<Component>();
+		for (AbstractContextPanelContent content : getContents()) {
+			List<Component> options = content.getOptions();
+			if (options != null && !options.isEmpty()) {
+				components.addAll(options);
+			}
+		}
+		return components;
+	}
 }
