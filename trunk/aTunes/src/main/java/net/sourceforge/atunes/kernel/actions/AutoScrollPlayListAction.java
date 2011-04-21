@@ -21,9 +21,11 @@
 package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
+import java.util.List;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
+import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -37,13 +39,17 @@ public class AutoScrollPlayListAction extends AbstractAction {
     private static final long serialVersionUID = -9039622325405324974L;
 
     AutoScrollPlayListAction() {
-        super(null, Images.getImage(Images.SCROLL_PLAYLIST));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("SCROLL_PLAYLIST_TO_CURRENT_SONG"));
+        super(I18nUtils.getString("SCROLL_PLAYLIST_TO_CURRENT_SONG"), Images.getImage(Images.SCROLL_PLAYLIST));
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         PlayListHandler.getInstance().scrollPlayList(true);
+    }
+    
+    @Override
+    public boolean isEnabledForPlayListSelection(List<AudioObject> selection) {
+        return !selection.isEmpty();
     }
 
 }

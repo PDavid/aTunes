@@ -29,7 +29,6 @@ import javax.swing.Timer;
 import javax.swing.event.TableModelEvent;
 
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
-import net.sourceforge.atunes.gui.views.panels.PlayListControlsPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
@@ -251,10 +250,6 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
         });
         t.setRepeats(false);
         t.start();
-    }
-
-    PlayListControlsPanel getPlayListControlsPanel() {
-        return getComponentControlled().getPlayListControls();
     }
 
     void refreshPlayList() {

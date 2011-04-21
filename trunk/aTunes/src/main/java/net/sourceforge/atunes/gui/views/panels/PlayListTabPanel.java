@@ -92,13 +92,13 @@ public final class PlayListTabPanel extends JPanel {
         add(playListTabbedPane, BorderLayout.CENTER);
 
         popupMenu = new JPopupMenu();
-        popupMenu.add(new JMenuItem(Actions.getAction(RenamePlaylistAction.class)));
-        popupMenu.add(new JSeparator());
-        popupMenu.add(new JMenuItem(Actions.getAction(CopyPlayListToDeviceAction.class)));
-        popupMenu.add(new JMenuItem(Actions.getAction(SynchronizeDeviceWithPlayListAction.class)));
-        popupMenu.add(new JSeparator());
-        popupMenu.add(new JMenuItem(Actions.getAction(ClosePlaylistAction.class)));
-        popupMenu.add(new JMenuItem(Actions.getAction(CloseOtherPlaylistsAction.class)));
+        popupMenu.add(Actions.getAction(RenamePlaylistAction.class));
+        popupMenu.addSeparator();
+        popupMenu.add(Actions.getAction(CopyPlayListToDeviceAction.class));
+        popupMenu.add(Actions.getAction(SynchronizeDeviceWithPlayListAction.class));
+        popupMenu.addSeparator();
+        popupMenu.add(Actions.getAction(ClosePlaylistAction.class));
+        popupMenu.add(Actions.getAction(CloseOtherPlaylistsAction.class));
         GuiUtils.applyComponentOrientation(this, popupMenu);
     }
 

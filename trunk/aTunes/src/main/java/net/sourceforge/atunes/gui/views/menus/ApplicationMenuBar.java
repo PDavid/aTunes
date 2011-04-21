@@ -75,7 +75,6 @@ import net.sourceforge.atunes.kernel.actions.ShowGenresInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowLogAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigationTableAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigationTreeAction;
-import net.sourceforge.atunes.kernel.actions.ShowPlayListControlsAction;
 import net.sourceforge.atunes.kernel.actions.ShowRadioBrowserAction;
 import net.sourceforge.atunes.kernel.actions.ShowStatsAction;
 import net.sourceforge.atunes.kernel.actions.ShowStatusBarAction;
@@ -186,7 +185,6 @@ public final class ApplicationMenuBar extends JMenuBar {
             view.add(new JSeparator());
             view.add(new JCheckBoxMenuItem(Actions.getAction(ShowToolbarAction.class)));
             view.add(new JCheckBoxMenuItem(Actions.getAction(ShowStatusBarAction.class)));
-            view.add(new JCheckBoxMenuItem(Actions.getAction(ShowPlayListControlsAction.class)));
             view.add(new JCheckBoxMenuItem(Actions.getAction(ShowNavigationTreeAction.class)));
             view.add(new JCheckBoxMenuItem(Actions.getAction(ShowNavigationTableAction.class)));
             view.add(new JCheckBoxMenuItem(Actions.getAction(ShowAudioObjectPropertiesAction.class)));

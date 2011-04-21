@@ -249,16 +249,6 @@ public class ApplicationState {
     
     
 
-    public boolean isShowPlaylistControls() {
-        return (Boolean) this.cache.retrievePreference(Preferences.SHOW_PLAYLIST_CONTROLS, true);
-    }
-
-    public void setShowPlaylistControls(boolean showPlaylistControls) {
-    	this.cache.storePreference(Preferences.SHOW_PLAYLIST_CONTROLS, showPlaylistControls);
-    }
-    
-    
-
     public ProxyBean getProxy() {
         return (ProxyBean) this.cache.retrievePreference(Preferences.PROXY, null);
     }
