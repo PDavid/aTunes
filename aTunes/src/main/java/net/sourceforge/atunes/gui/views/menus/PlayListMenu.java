@@ -37,6 +37,7 @@ import net.sourceforge.atunes.kernel.actions.AddArtistsMostPlayedAction;
 import net.sourceforge.atunes.kernel.actions.AddRandomSongsAction;
 import net.sourceforge.atunes.kernel.actions.AddSongsMostPlayedAction;
 import net.sourceforge.atunes.kernel.actions.AddUnplayedSongsAction;
+import net.sourceforge.atunes.kernel.actions.AutoScrollPlayListAction;
 import net.sourceforge.atunes.kernel.actions.ClearPlayListAction;
 import net.sourceforge.atunes.kernel.actions.CreatePlayListWithSelectedAlbumsAction;
 import net.sourceforge.atunes.kernel.actions.CreatePlayListWithSelectedArtistsAction;
@@ -109,6 +110,8 @@ public final class PlayListMenu {
         objects.add(Actions.getAction(ShowPlayListItemInfoAction.class));
         objects.add(new JSeparator());
         objects.add(Actions.getMenuItemForAction(OpenFolderAction.class, table));
+        objects.add(new JSeparator());
+        objects.add(Actions.getAction(AutoScrollPlayListAction.class));
         objects.add(new JSeparator());
         objects.add(new EditTagMenu(true, table));
         objects.add(new JSeparator());

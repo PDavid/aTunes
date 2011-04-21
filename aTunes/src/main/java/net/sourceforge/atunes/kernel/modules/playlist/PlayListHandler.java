@@ -1248,10 +1248,6 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
 		getPlayListController().deleteSelection();
 	}
 
-	public void showPlayListControls(boolean value) {
-		getPlayListController().getPlayListControlsPanel().setVisible(value);
-	}
-	
 	@Override
 	public void audioObjectsAdded(List<PlayListAudioObject> audioObjectsAdded) {
 	}
