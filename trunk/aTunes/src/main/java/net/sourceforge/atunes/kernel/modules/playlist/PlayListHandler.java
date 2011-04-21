@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.kernel.modules.playlist;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,11 +29,11 @@ import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.JFileChooser;
+import javax.swing.JMenuItem;
 import javax.swing.filechooser.FileFilter;
 
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
-import net.sourceforge.atunes.gui.views.panels.PlayListTabPanel;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.PlayListAudioObject;
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
@@ -1168,8 +1170,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      */
     private PlayListTabController getPlayListTabController() {
         if (playListTabController == null) {
-            PlayListTabPanel panel = GuiHandler.getInstance().getPlayListPanel().getPlayListTabPanel();
-            playListTabController = new PlayListTabController(panel, getPlayListController().getMainPlayListTable());
+            playListTabController = new PlayListTabController(GuiHandler.getInstance().getPlayListPanel().getPlayListTabPanel());
         }
         return playListTabController;
     }
@@ -1298,4 +1299,42 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
             removeAudioObjects(indexes);
         }
 	}
+	
+	/**
+	 * Returns menu items to switch play lists
+	 */
+	public List<JMenuItem> getMenuItemsToSwitchPlayLists() {
+		List<JMenuItem> menuItems = new ArrayList<JMenuItem>(); 
+        List<String> playlists = getPlayListTabController().getNamesOfPlayLists();
+        for (int i = 0; i < playlists.size(); i++) {
+            final int index = i;
+            JMenuItem plMenuItem;
+            if (PlayListHandler.getInstance().isVisiblePlayList(index)) {
+                plMenuItem = new JMenuItem(StringUtils.getString("<html><b>", playlists.get(i), "</b></html>"));
+            } else {
+                plMenuItem = new JMenuItem(playlists.get(i));
+            }
+            plMenuItem.addActionListener(new SwitchPlayListListener(getPlayListTabController(), index));
+            menuItems.add(plMenuItem);
+        }
+        return menuItems;
+	}
+	
+    private static class SwitchPlayListListener implements ActionListener {
+
+    	private PlayListTabController controller;
+    	
+        private int index;
+
+        public SwitchPlayListListener(PlayListTabController controller, int index) {
+        	this.controller = controller;
+            this.index = index;
+        }
+
+        public void actionPerformed(ActionEvent e1) {
+            controller.forceSwitchTo(index);
+        }
+    }
+
+
 }

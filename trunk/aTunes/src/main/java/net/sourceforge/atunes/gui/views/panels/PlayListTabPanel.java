@@ -21,39 +21,22 @@
 package net.sourceforge.atunes.gui.views.panels;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 
-import net.sourceforge.atunes.gui.views.controls.PopUpButton;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.CloseOtherPlaylistsAction;
 import net.sourceforge.atunes.kernel.actions.ClosePlaylistAction;
 import net.sourceforge.atunes.kernel.actions.CopyPlayListToDeviceAction;
-import net.sourceforge.atunes.kernel.actions.NewPlayListAction;
 import net.sourceforge.atunes.kernel.actions.RenamePlaylistAction;
 import net.sourceforge.atunes.kernel.actions.SynchronizeDeviceWithPlayListAction;
 import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class PlayListTabPanel extends JPanel {
 
     private static final long serialVersionUID = 7382098268271937439L;
-
-    private PopUpButton playListsPopUpButton;
-
-    /** Button to create a new play list. */
-    private JMenuItem newPlayListMenuItem;
-
-    /** Button to arrange columns */
-    private JMenuItem arrangeColumnsMenuItem;
 
     /** TabbedPane of play lists. */
     private JTabbedPane playListTabbedPane;
@@ -72,23 +55,9 @@ public final class PlayListTabPanel extends JPanel {
      * Adds the content.
      */
     private void addContent() {
-        playListsPopUpButton = new PopUpButton(I18nUtils.getString("PLAYLIST"), PopUpButton.BOTTOM_RIGHT);
-        newPlayListMenuItem = new JMenuItem(Actions.getAction(NewPlayListAction.class));
-        arrangeColumnsMenuItem = new JMenuItem(I18nUtils.getString("ARRANGE_COLUMNS"));
         playListTabbedPane = new JTabbedPane();
-        
-        setPreferredSize(new Dimension(0, playListsPopUpButton.getPreferredSize().height + 5));
-        
         playListTabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
-        JPanel auxPanel = new JPanel(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.insets = new Insets(2, 0, 0, 0);
-        auxPanel.add(playListsPopUpButton, c);
-
-        add(auxPanel, GuiUtils.getComponentOrientation().isLeftToRight() ? BorderLayout.WEST : BorderLayout.EAST);
         add(playListTabbedPane, BorderLayout.CENTER);
 
         popupMenu = new JPopupMenu();
@@ -100,15 +69,6 @@ public final class PlayListTabPanel extends JPanel {
         popupMenu.add(Actions.getAction(ClosePlaylistAction.class));
         popupMenu.add(Actions.getAction(CloseOtherPlaylistsAction.class));
         GuiUtils.applyComponentOrientation(this, popupMenu);
-    }
-
-    /**
-     * Adds the new play list menu item.
-     */
-    public void addFixedMenuItems() {
-        playListsPopUpButton.add(newPlayListMenuItem);
-        playListsPopUpButton.add(arrangeColumnsMenuItem);
-        playListsPopUpButton.add(new JSeparator());
     }
 
     /**
@@ -127,21 +87,5 @@ public final class PlayListTabPanel extends JPanel {
      */
     public JPopupMenu getPopupMenu() {
         return popupMenu;
-    }
-
-    /**
-     * Gets the play lists pop up button.
-     * 
-     * @return the playListsPopUpButton
-     */
-    public PopUpButton getPlayListsPopUpButton() {
-        return playListsPopUpButton;
-    }
-
-    /**
-     * @return the arrangeColumnsMenuItem
-     */
-    public JMenuItem getArrangeColumnsMenuItem() {
-        return arrangeColumnsMenuItem;
     }
 }

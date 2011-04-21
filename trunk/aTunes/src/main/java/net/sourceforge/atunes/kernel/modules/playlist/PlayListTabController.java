@@ -30,7 +30,6 @@ import javax.swing.JTabbedPane;
 
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.lookandfeel.TabCloseListener;
-import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.panels.ButtonTabComponent;
 import net.sourceforge.atunes.gui.views.panels.PlayListTabPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
@@ -38,17 +37,14 @@ import net.sourceforge.atunes.misc.log.LogCategories;
 
 final class PlayListTabController extends AbstractSimpleController<PlayListTabPanel> {
 
-	private PlayListTable table;
-	
     /**
      * Instantiates a new play list tab controller.
      * 
      * @param panel
      *            the panel
      */
-    PlayListTabController(PlayListTabPanel panel, PlayListTable table) {
+    PlayListTabController(PlayListTabPanel panel) {
         super(panel);
-        this.table = table;
         addBindings();
         addStateBindings();
     }
@@ -56,11 +52,9 @@ final class PlayListTabController extends AbstractSimpleController<PlayListTabPa
     @Override
     protected void addBindings() {
     	new TabReorderer(this, getComponentControlled().getPlayListTabbedPane()).enableReordering();
-        PlayListTabListener listener = new PlayListTabListener(this, getComponentControlled(), table);
-        getComponentControlled().getArrangeColumnsMenuItem().addActionListener(listener);
+        PlayListTabListener listener = new PlayListTabListener(getComponentControlled());
         getComponentControlled().getPlayListTabbedPane().addChangeListener(listener);
         getComponentControlled().getPlayListTabbedPane().addMouseListener(listener);
-        getComponentControlled().getPlayListsPopUpButton().addActionListener(listener);
         
         if (LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isTabCloseButtonsSupported()) {
         	LookAndFeelSelector.getInstance().getCurrentLookAndFeel().addTabCloseButtons(getComponentControlled().getPlayListTabbedPane(), new TabCloseListener() {

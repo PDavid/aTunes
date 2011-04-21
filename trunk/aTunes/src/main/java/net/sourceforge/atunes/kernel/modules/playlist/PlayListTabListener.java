@@ -24,31 +24,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.List;
 
-import javax.swing.JMenuItem;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import net.sourceforge.atunes.gui.model.AbstractCommonColumnModel;
-import net.sourceforge.atunes.gui.views.controls.ColumnSetPopupMenu;
-import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.panels.PlayListTabPanel;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.CloseOtherPlaylistsAction;
 import net.sourceforge.atunes.kernel.actions.ClosePlaylistAction;
-import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * The listener interface for receiving playListTab events.
  */
 final class PlayListTabListener extends MouseAdapter implements ActionListener, ChangeListener {
 
-	private PlayListTabController controller;
-	
     private PlayListTabPanel panel;
-    
-    private PlayListTable table;
 
     /**
      * Instantiates a new play list tab listener.
@@ -56,34 +46,12 @@ final class PlayListTabListener extends MouseAdapter implements ActionListener, 
      * @param panel
      *            the panel
      */
-    public PlayListTabListener(PlayListTabController controller, PlayListTabPanel panel, PlayListTable table) {
-    	this.controller = controller;
+    public PlayListTabListener(PlayListTabPanel panel) {
         this.panel = panel;
-        this.table = table;
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == panel.getPlayListsPopUpButton()) {
-            panel.getPlayListsPopUpButton().removeAllItems();
-            panel.addFixedMenuItems();
-            // Get list of play lists and add a new menu item for each one
-            List<String> playlists = controller.getNamesOfPlayLists();
-            for (int i = 0; i < playlists.size(); i++) {
-                final int index = i;
-                JMenuItem plMenuItem;
-                if (PlayListHandler.getInstance().isVisiblePlayList(index)) {
-                    plMenuItem = new JMenuItem(StringUtils.getString("<html><b>", playlists.get(i), "</b></html>"));
-                } else {
-                    plMenuItem = new JMenuItem(playlists.get(i));
-                }
-                plMenuItem.addActionListener(new SwitchPlayListListener(controller, index));
-                panel.getPlayListsPopUpButton().add(plMenuItem);
-            }
-        } else if (e.getSource() == panel.getArrangeColumnsMenuItem()) {
-            ColumnSetPopupMenu.selectColumns((AbstractCommonColumnModel) table.getColumnModel());
-        }
-    }
+    public void actionPerformed(ActionEvent e) {}
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -99,22 +67,6 @@ final class PlayListTabListener extends MouseAdapter implements ActionListener, 
     @Override
     public void stateChanged(ChangeEvent e) {
         PlayListHandler.getInstance().switchToPlaylist(panel.getPlayListTabbedPane().getSelectedIndex());
-    }
-
-    private static class SwitchPlayListListener implements ActionListener {
-
-    	private PlayListTabController controller;
-    	
-        private int index;
-
-        public SwitchPlayListListener(PlayListTabController controller, int index) {
-        	this.controller = controller;
-            this.index = index;
-        }
-
-        public void actionPerformed(ActionEvent e1) {
-            controller.forceSwitchTo(index);
-        }
     }
 
 }
