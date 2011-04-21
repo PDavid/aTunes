@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.modules.repository;
 import java.io.File;
 import java.util.Collections;
 
-import net.sourceforge.atunes.model.LocalAudioObjectFake;
 import net.sourceforge.atunes.model.Repository;
 
 import org.junit.Before;

@@ -85,7 +85,7 @@ public class AudioObjectContextPanel extends AbstractContextPanel {
     }
 
     @Override
-    protected boolean isPanelEnabledForAudioObject(AudioObject audioObject) {
+    protected boolean isPanelVisibleForAudioObject(AudioObject audioObject) {
         return audioObject != null;
     }
 

@@ -69,7 +69,7 @@ public class SimilarArtistsContextPanel extends AbstractContextPanel {
     }
 
     @Override
-    protected boolean isPanelEnabledForAudioObject(AudioObject audioObject) {
+    protected boolean isPanelVisibleForAudioObject(AudioObject audioObject) {
         // Avoid unknown artist or album
         if (Artist.isUnknownArtist(audioObject.getArtist())) {
             return false;

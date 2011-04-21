@@ -27,7 +27,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.Action;
-import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -113,7 +112,6 @@ public final class PlayerControlsPanel extends JPanel {
      */
     public PlayerControlsPanel() {
         super(new GridBagLayout());
-        setBorder(BorderFactory.createEmptyBorder());
         addContent();
         GuiUtils.applyComponentOrientation(this);
     }

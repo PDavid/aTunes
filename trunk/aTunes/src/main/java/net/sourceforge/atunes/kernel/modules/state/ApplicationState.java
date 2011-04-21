@@ -749,16 +749,6 @@ public class ApplicationState {
     
     
 
-    public boolean isShowContextTabsText() {
-    	return (Boolean) this.cache.retrievePreference(Preferences.SHOW_CONTEXT_TABS_TEXT, false);
-    }
-
-    public void setShowContextTabsText(boolean showContextTabsText) {
-    	this.cache.storePreference(Preferences.SHOW_CONTEXT_TABS_TEXT, showContextTabsText);
-    }
-    
-    
-
     public boolean isHideVariousArtistsAlbums() {
     	return (Boolean) this.cache.retrievePreference(Preferences.HIDE_VARIOUS_ARTISTS_ALBUMS, true);
     }
