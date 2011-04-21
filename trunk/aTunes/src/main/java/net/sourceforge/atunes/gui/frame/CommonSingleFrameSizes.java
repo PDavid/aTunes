@@ -59,9 +59,9 @@ public class CommonSingleFrameSizes {
     /*
      * Play list panel widths 
      */
-    public static final int PLAY_LIST_PANEL_MINIMUM_WIDTH = GuiUtils.getComponentWidthForResolution(0.38f);
+    public static final int PLAY_LIST_PANEL_MINIMUM_WIDTH = GuiUtils.getComponentWidthForResolution(0.2f);
     public static final int PLAY_LIST_PANEL_MINIMUM_HEIGHT = GuiUtils.getComponentHeightForResolution(0.2f);
-    public static final int PLAY_LIST_PANEL_PREFERRED_WIDTH = GuiUtils.getComponentWidthForResolution(0.48f);
+    public static final int PLAY_LIST_PANEL_PREFERRED_WIDTH = GuiUtils.getComponentWidthForResolution(0.4f);
     public static final int PLAY_LIST_PANEL_PREFERRED_HEIGHT = GuiUtils.getComponentHeightForResolution(0.3f);
     public static final int PLAY_LIST_PANEL_MAXIMUM_WIDTH = GuiUtils.getComponentWidthForResolution(0.55f);
     public static final int PLAY_LIST_PANEL_MAXIMUM_HEIGHT = GuiUtils.getComponentHeightForResolution(0.5f);
