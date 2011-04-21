@@ -20,14 +20,17 @@
 
 package net.sourceforge.atunes.gui.views.panels;
 
-import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
+import net.sourceforge.atunes.gui.views.controls.PopUpButton;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
@@ -38,6 +41,8 @@ public final class ContextPanel extends JPanel {
 
     private JComboBox contextSelector;
     
+    private PopUpButton options;
+    
     private JPanel container;
 
     private List<AbstractContextPanel> panels = new ArrayList<AbstractContextPanel>();
@@ -46,7 +51,7 @@ public final class ContextPanel extends JPanel {
      * Instantiates a new context panel
      */
     public ContextPanel() {
-        super(new BorderLayout());
+        super(new GridBagLayout());
         setContent();
     }
 
@@ -54,12 +59,25 @@ public final class ContextPanel extends JPanel {
      * Sets the content.
      */
     private void setContent() {
-    	JPanel panel = new JPanel(new BorderLayout());
     	contextSelector = new JComboBox(); 
+    	options = new PopUpButton("", PopUpButton.BOTTOM_RIGHT);
     	container = new JPanel(new CardLayout());
-        panel.add(contextSelector, BorderLayout.NORTH);
-        panel.add(container, BorderLayout.CENTER);
-        add(panel);
+    	GridBagConstraints c = new GridBagConstraints();
+    	c.gridx = 0;
+    	c.gridy = 0;
+    	c.weightx = 0;
+    	c.fill = GridBagConstraints.BOTH;
+    	add(options, c);
+    	c.gridx = 1;
+    	c.weightx = 1;
+        add(contextSelector, c);
+        c.gridx = 0;
+        c.gridy = 1;
+        c.weightx = 1;
+        c.weighty = 1;
+        c.gridwidth = 2;
+        c.fill = GridBagConstraints.BOTH;
+        add(container, c);
     }
 
     public void updateContextTabs() {
@@ -101,6 +119,12 @@ public final class ContextPanel extends JPanel {
 	 */
 	public void showContextPanel(AbstractContextPanel source) {
 		((CardLayout)container.getLayout()).show(container, source.getContextPanelName());		
+		options.removeAllItems();
+		List<Component> components = source.getOptions();
+		options.setEnabled(!components.isEmpty());
+		for (Component c : components) {
+			options.add(c);
+		}
 	}
 	
     /**
