@@ -20,6 +20,10 @@
 
 package net.sourceforge.atunes.gui.views.menus;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+
+import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
@@ -27,9 +31,11 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSeparator;
+import javax.swing.KeyStroke;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
+import net.sourceforge.atunes.kernel.actions.AbstractAction;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddPodcastFeedAction;
 import net.sourceforge.atunes.kernel.actions.AddRadioAction;
@@ -168,7 +174,13 @@ public final class ApplicationMenuBar extends JMenuBar {
             // Add dinamically actions to show each navigation view loaded
             int acceleratorIndex = 1;
             for (AbstractNavigationView navigationView : NavigationHandler.getInstance().getNavigationViews()) {
-                view.add(navigationView.getActionToShowView(acceleratorIndex++));
+            	AbstractAction action = navigationView.getActionToShowView(); 
+        		// The first 9 views will have an accelerator key ALT + index
+        		if (acceleratorIndex < 10) {
+        			action.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_0 + acceleratorIndex, ActionEvent.ALT_MASK));
+        		}
+    			acceleratorIndex++;
+                view.add(action);
             }
 
             view.add(new JSeparator());
