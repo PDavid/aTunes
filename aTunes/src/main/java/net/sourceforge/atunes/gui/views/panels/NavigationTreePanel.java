@@ -21,24 +21,20 @@
 package net.sourceforge.atunes.gui.views.panels;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 
-import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 public final class NavigationTreePanel extends JPanel {
 
     private static final long serialVersionUID = -2900418193013495812L;
 
-    /** The tabbed pane. */
-    private JTabbedPane tabbedPane;
-
+    private JPanel treePanel;
+    
     /**
      * Instantiates a new navigation panel.
      */
@@ -51,20 +47,8 @@ public final class NavigationTreePanel extends JPanel {
      * Adds the content.
      */
     private void addContent() {
-        JPanel treePanel = new JPanel(new BorderLayout());
-
-        // Create tabbed pane. Set tab position from configuration
-        tabbedPane = new JTabbedPane(ApplicationState.getInstance().isShowNavigatorTabsAtLeft() ? SwingConstants.LEFT : SwingConstants.TOP);
-        tabbedPane.setBorder(BorderFactory.createEmptyBorder());
-
-        // Add tabs
-        addTabs();
-
-        // Set navigator tabs text based on configuration 
-        setNavigatorTabsText(ApplicationState.getInstance().isShowNavigatorTabsText());
-
-        treePanel.add(tabbedPane, BorderLayout.CENTER);
-
+        treePanel = new JPanel(new CardLayout());
+        addTrees(treePanel);
         add(treePanel);
 
         // Apply component orientation to all popup menus
@@ -74,48 +58,29 @@ public final class NavigationTreePanel extends JPanel {
     }
 
     /**
-     * Gets the tabbed pane.
-     * 
-     * @return the tabbed pane
+     * Updates panel to show all trees
      */
-    public JTabbedPane getTabbedPane() {
-        return tabbedPane;
-    }
-
-    /**
-     * Updates tabbed pane to show all tabs
-     */
-    private void addTabs() {
-        tabbedPane.removeAll();
+    private void addTrees(JPanel treesContainer) {
+        treesContainer.removeAll();
 
         for (AbstractNavigationView view : NavigationHandler.getInstance().getNavigationViews()) {
-            tabbedPane.addTab(view.getTitle(), view.getIcon(), view.getTreeScrollPane(), view.getTooltip());
+        	treesContainer.add(view.getClass().getName(), view.getTreeScrollPane());
         }
     }
 
     /**
-     * Shows or hides tabbed pane text
-     * 
-     * @param set
+     * Updates trees
      */
-    public void setNavigatorTabsText(boolean set) {
-        int i = 0;
-        for (AbstractNavigationView view : NavigationHandler.getInstance().getNavigationViews()) {
-            tabbedPane.setTitleAt(i++, set ? view.getTitle() : null);
-        }
+    public void updateTrees() {
+        addTrees(treePanel);
     }
 
-    /**
-     * Updates tabs keeping selected tab view
-     */
-    public void updateTabs() {
-        int selectedTab = tabbedPane.getSelectedIndex();
-        addTabs();
-        setNavigatorTabsText(ApplicationState.getInstance().isShowNavigatorTabsText());
-        if (tabbedPane.getTabCount() > selectedTab) {
-            tabbedPane.setSelectedIndex(selectedTab);
-        } else {
-            tabbedPane.setSelectedIndex(0);
-        }
-    }
+	/**
+	 * Shows tree view
+	 * @param name
+	 */
+	public void showNavigationView(String name) {
+		((CardLayout)treePanel.getLayout()).show(treePanel, name);
+		
+	}
 }
