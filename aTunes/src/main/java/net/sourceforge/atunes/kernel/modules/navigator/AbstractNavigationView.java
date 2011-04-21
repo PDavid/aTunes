@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.navigator;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.text.Collator;
 import java.util.ArrayList;
@@ -41,7 +40,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTree;
-import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
@@ -52,6 +50,7 @@ import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.model.AudioObjectsSource;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
+import net.sourceforge.atunes.kernel.actions.AbstractAction;
 import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedObjects;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
@@ -104,6 +103,11 @@ public abstract class AbstractNavigationView implements AudioObjectsSource {
      * Scroll pane used for tree
      */
     private JScrollPane scrollPane;
+    
+    /**
+     * Action associated to show this navigation view
+     */
+    private AbstractAction action;
 
     /**
      * @return the title of this view
@@ -548,30 +552,23 @@ public abstract class AbstractNavigationView implements AudioObjectsSource {
     /**
      * Returns an action to show this view
      * 
-     * @param index
-     *            (index of this view in view's list, valid values are 1 to 9,
-     *            others will not be added an accelerator)
      * @return
      */
-    public final net.sourceforge.atunes.kernel.actions.AbstractAction getActionToShowView(int index) {
-        net.sourceforge.atunes.kernel.actions.AbstractAction viewAction = new net.sourceforge.atunes.kernel.actions.AbstractAction(getTitle(), getIcon()) {
+    public final net.sourceforge.atunes.kernel.actions.AbstractAction getActionToShowView() {
+    	if (action == null) {
+    		action = new net.sourceforge.atunes.kernel.actions.AbstractAction(getTitle(), getIcon()) {
 
-            private static final long serialVersionUID = 2895222205333520899L;
+    			private static final long serialVersionUID = 2895222205333520899L;
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                NavigationHandler.getInstance().setNavigationView(AbstractNavigationView.this.getClass().getName());
-            }
-        };
-        
-        viewAction.putValue(Action.SHORT_DESCRIPTION, getTitle());
+    			@Override
+    			public void actionPerformed(ActionEvent e) {
+    				NavigationHandler.getInstance().setNavigationView(AbstractNavigationView.this.getClass().getName());
+    			}
+    		};
 
-        // The first 9 views will have an accelerator key ALT + index
-        if (index > 0 && index < 10) {
-            viewAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_0 + index, ActionEvent.ALT_MASK));
-        }
-
-        return viewAction;
+    		action.putValue(Action.SHORT_DESCRIPTION, getTitle());
+    	}
+    	return action;
     }
 
     /**

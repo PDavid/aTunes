@@ -91,6 +91,7 @@ import net.sourceforge.atunes.kernel.modules.cdripper.RipperHandler;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayList;
@@ -882,6 +883,14 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      *            the show
      */
     public void showNavigationTree(boolean show) {
+    	// Hide or show icons from toolbar
+    	getToolBar().showNavigationButtons(show);
+    	
+    	// Disable or enable actions
+        for (AbstractNavigationView navigationView : NavigationHandler.getInstance().getNavigationViews()) {
+        	navigationView.getActionToShowView().setEnabled(show);
+        }
+    	
         ApplicationState.getInstance().setShowNavigationTree(show);
         frame.showNavigationTree(show);
         // Depending if is visible or not filtering is allowed or not
