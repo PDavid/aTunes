@@ -39,6 +39,7 @@ import net.sourceforge.atunes.kernel.actions.AbstractAction;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddPodcastFeedAction;
 import net.sourceforge.atunes.kernel.actions.AddRadioAction;
+import net.sourceforge.atunes.kernel.actions.ArrangePlayListColumnsAction;
 import net.sourceforge.atunes.kernel.actions.CheckUpdatesAction;
 import net.sourceforge.atunes.kernel.actions.CollapseTreesAction;
 import net.sourceforge.atunes.kernel.actions.ConnectDeviceAction;
@@ -54,6 +55,7 @@ import net.sourceforge.atunes.kernel.actions.GoToWikiAction;
 import net.sourceforge.atunes.kernel.actions.ImportLovedTracksFromLastFMAction;
 import net.sourceforge.atunes.kernel.actions.ImportToRepositoryAction;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
+import net.sourceforge.atunes.kernel.actions.NewPlayListAction;
 import net.sourceforge.atunes.kernel.actions.OSDSettingAction;
 import net.sourceforge.atunes.kernel.actions.RefreshDeviceAction;
 import net.sourceforge.atunes.kernel.actions.RefreshRepositoryAction;
@@ -235,9 +237,27 @@ public final class ApplicationMenuBar extends JMenuBar {
     private JMenu getPlayListMenu() {
         if (playList == null) {
             playList = new JMenu(I18nUtils.getString("PLAYLIST"));
-            PlayListMenu.fillMenu(playList, PlayListHandler.getInstance().getPlayListTable());
-            // Every time menu is opened all menu items are updated according to play list selection
-            playList.addMenuListener(new PlayListMenuListener());
+            playList.addMenuListener(new MenuListener() {
+				
+				@Override
+				public void menuSelected(MenuEvent e) {
+					playList.removeAll();
+					// Every time is opened add actions and play lists
+		            playList.add(Actions.getAction(NewPlayListAction.class));
+		            playList.add(Actions.getAction(ArrangePlayListColumnsAction.class));
+		            playList.addSeparator();
+		            
+		            for (JMenuItem menuItem : PlayListHandler.getInstance().getMenuItemsToSwitchPlayLists()) {
+		            	playList.add(menuItem);
+		            }
+				}
+				
+				@Override
+				public void menuDeselected(MenuEvent e) {}
+				
+				@Override
+				public void menuCanceled(MenuEvent e) {}
+			});
         }
         return playList;
     }
