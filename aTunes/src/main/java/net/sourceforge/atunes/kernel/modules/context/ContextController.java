@@ -20,11 +20,16 @@
 
 package net.sourceforge.atunes.kernel.modules.context;
 
+import java.awt.Component;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.List;
 
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import javax.swing.JLabel;
+import javax.swing.JList;
 
+import net.sourceforge.atunes.gui.lookandfeel.AbstractListCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.panels.ContextPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 
@@ -37,12 +42,24 @@ class ContextController extends AbstractSimpleController<ContextPanel> {
 
 	@Override
 	protected void addBindings() {
-		getComponentControlled().getTabbedPane().addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
+		getComponentControlled().getContextSelector().addItemListener(new ItemListener() {
+			
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				getComponentControlled().showContextPanel((AbstractContextPanel)e.getItem());
                 ContextHandler.getInstance().contextPanelChanged();
             }
         });
+		
+		getComponentControlled().getContextSelector().setRenderer(LookAndFeelSelector.getDefaultLookAndFeel().getListCellRenderer(new AbstractListCellRendererCode() {
+			
+			@Override
+			public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+				((JLabel)superComponent).setIcon(((AbstractContextPanel)value).getIcon());
+				((JLabel)superComponent).setText(((AbstractContextPanel)value).getTitle());
+				return superComponent;
+			}
+		}));
 	}
 
 	@Override
@@ -69,16 +86,8 @@ class ContextController extends AbstractSimpleController<ContextPanel> {
 		return getComponentControlled().getSelectedIndex();
 	}
 
-	void updateContextTabsText(List<AbstractContextPanel> contextPanels) {
-		getComponentControlled().updateContextTabsIcons(contextPanels);
-	}
-
-	void updateContextTabsIcons(List<AbstractContextPanel> contextPanels) {
-		getComponentControlled().updateContextTabsIcons(contextPanels);
-	}
-
-	void enableContextTabs(List<AbstractContextPanel> contextPanels) {
-		getComponentControlled().enableContextTabs(contextPanels);
+	void updateContextTabs() {
+		getComponentControlled().updateContextTabs();
 	}
 
 	void removeContextPanel(AbstractContextPanel instance) {

@@ -34,7 +34,6 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
@@ -62,12 +61,8 @@ public abstract class AbstractContextPanel {
      */
     private AudioObject audioObject;
 
-    //    /**
-    //     * Time stamp when audio object was modified. Used to decide if context info
-    //     * must be updated
-    //     */
-    //    private long lastAudioObjectModificationTime;
-
+    private Component component;
+    
     // BEGIN OF METHODS TO BE IMPLEMENTED BY CONCRETE CONTEXT PANELS
 
     /**
@@ -107,14 +102,14 @@ public abstract class AbstractContextPanel {
     protected abstract List<AbstractContextPanelContent> getContents();
 
     /**
-     * Indicates if panel must be enabled or disabled for the given audio object
+     * Indicates if panel must be visible for the given audio object
      * 
      * @param audioObject
      *            The current audio object in context panels or
      *            <code>null</code> if no current audio object is selected
      * @return
      */
-    protected abstract boolean isPanelEnabledForAudioObject(AudioObject audioObject);
+    protected abstract boolean isPanelVisibleForAudioObject(AudioObject audioObject);
 
     // END OF METHODS TO BE IMPLEMENTED BY CONCRETE CONTEXT PANELS
 
@@ -173,56 +168,58 @@ public abstract class AbstractContextPanel {
      * @return
      */
     public final Component getUIComponent() {
-        JXTaskPaneContainer container = new JXTaskPaneContainer();
-        container.setOpaque(false);
-        for (AbstractContextPanelContent content : getContents()) {
-            JXTaskPane taskPane = new CustomJXTaskPane();
-            content.setParentTaskPane(taskPane);
-            taskPane.setTitle(content.getContentName());
+    	if (component == null) {
+    		JXTaskPaneContainer container = new JXTaskPaneContainer();
+    		container.setOpaque(false);
+    		for (AbstractContextPanelContent content : getContents()) {
+    			JXTaskPane taskPane = new CustomJXTaskPane();
+    			content.setParentTaskPane(taskPane);
+    			taskPane.setTitle(content.getContentName());
 
-            Component componentToAdd = content.getComponent();
-            if (componentToAdd instanceof JComponent) {
-                ((JComponent) componentToAdd).setOpaque(false);
-            }
-            if (content.isScrollNeeded()) {
-                JScrollPane scroll = new JScrollPane(componentToAdd);
-                scroll.setBorder(null);
-                scroll.getVerticalScrollBar().setUnitIncrement(50);
-                componentToAdd = scroll;
-            }
+    			Component componentToAdd = content.getComponent();
+    			if (componentToAdd instanceof JComponent) {
+    				((JComponent) componentToAdd).setOpaque(false);
+    			}
+    			if (content.isScrollNeeded()) {
+    				JScrollPane scroll = new JScrollPane(componentToAdd);
+    				scroll.setBorder(null);
+    				scroll.getVerticalScrollBar().setUnitIncrement(50);
+    				componentToAdd = scroll;
+    			}
 
-            List<Component> options = content.getOptions();
-            if (options != null && !options.isEmpty()) {
-                PopUpButton button = new PopUpButton(I18nUtils.getString("OPTIONS"), PopUpButton.TOP_RIGHT);
-                for (Component option : options) {
-                    button.add(option);
-                }
-                JPanel panel = new JPanel(new GridBagLayout());
-                panel.setOpaque(false);
-                GridBagConstraints c = new GridBagConstraints();
-                c.weightx = 1;
-                c.weighty = 1;
-                c.fill = GridBagConstraints.BOTH;
-                panel.add(componentToAdd, c);
-                c.gridy = 1;
-                c.weightx = 0;
-                c.weighty = 0;
-                c.fill = GridBagConstraints.NONE;
-                c.insets = new Insets(5, 0, 0, 0);
-                c.anchor = GridBagConstraints.WEST;
-                panel.add(button, c);
-                GuiUtils.applyComponentOrientation(panel);
-                componentToAdd = panel;
-            }
+    			List<Component> options = content.getOptions();
+    			if (options != null && !options.isEmpty()) {
+    				PopUpButton button = new PopUpButton(I18nUtils.getString("OPTIONS"), PopUpButton.TOP_RIGHT);
+    				for (Component option : options) {
+    					button.add(option);
+    				}
+    				JPanel panel = new JPanel(new GridBagLayout());
+    				panel.setOpaque(false);
+    				GridBagConstraints c = new GridBagConstraints();
+    				c.weightx = 1;
+    				c.weighty = 1;
+    				c.fill = GridBagConstraints.BOTH;
+    				panel.add(componentToAdd, c);
+    				c.gridy = 1;
+    				c.weightx = 0;
+    				c.weighty = 0;
+    				c.fill = GridBagConstraints.NONE;
+    				c.insets = new Insets(5, 0, 0, 0);
+    				c.anchor = GridBagConstraints.WEST;
+    				panel.add(button, c);
+    				GuiUtils.applyComponentOrientation(panel);
+    				componentToAdd = panel;
+    			}
 
-            taskPane.add(componentToAdd);
-            taskPane.setCollapsed(true);
-            container.add(taskPane);
-        }
-        JScrollPane scrollPane = new JScrollPane(container);
-        scrollPane.setBorder(null);
-        scrollPane.getVerticalScrollBar().setUnitIncrement(50);
-        return scrollPane;
+    			taskPane.add(componentToAdd);
+    			taskPane.setCollapsed(true);
+    			container.add(taskPane);
+    		}
+    		JScrollPane scrollPane = new JScrollPane(container);
+    		scrollPane.getVerticalScrollBar().setUnitIncrement(50);
+    		component = scrollPane;
+    	}
+    	return component;
     }
 
     /**
@@ -231,11 +228,7 @@ public abstract class AbstractContextPanel {
      * @return
      */
     public final String getTitle() {
-        if (ApplicationState.getInstance().isShowContextTabsText()) {
-            return getContextPanelTitle(ContextHandler.getInstance().getCurrentAudioObject());
-        } else {
-            return null;
-        }
+        return getContextPanelTitle(ContextHandler.getInstance().getCurrentAudioObject());
     }
 
     /**
@@ -254,11 +247,21 @@ public abstract class AbstractContextPanel {
      * @return
      */
     public final boolean isEnabled() {
-        // If current audio object is null don't even ask panel
         if (ContextHandler.getInstance().getCurrentAudioObject() == null) {
             return false;
         }
-        return isPanelEnabledForAudioObject(ContextHandler.getInstance().getCurrentAudioObject());
+        return true;
+    }
+    
+    /**
+     * Returns <code>true</code> if tab is visible for the current audio object
+     * @return
+     */
+    public final boolean isVisible() {
+        if (ContextHandler.getInstance().getCurrentAudioObject() == null) {
+            return true;
+        }
+        return isPanelVisibleForAudioObject(ContextHandler.getInstance().getCurrentAudioObject());
     }
 
     private static class CustomJXTaskPane extends JXTaskPane {

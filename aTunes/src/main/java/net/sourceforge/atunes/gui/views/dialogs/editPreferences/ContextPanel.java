@@ -184,11 +184,6 @@ public final class ContextPanel extends AbstractPreferencesPanel {
     private JCheckBox savePictures;
 
     /**
-     * Checkbox to show text in tabs
-     */
-    private JCheckBox showTextInTabs;
-
-    /**
      * Checkbox to let user select if want to hide albums of "Various Artists"
      */
     private JCheckBox hideVariousArtistsAlbums;
@@ -221,7 +216,6 @@ public final class ContextPanel extends AbstractPreferencesPanel {
         super(I18nUtils.getString("CONTEXT_INFORMATION"));
         activateContext = new JCheckBox(I18nUtils.getString("ACTIVATE_CONTEXT_INFORMATION"));
         savePictures = new JCheckBox(I18nUtils.getString("SAVE_PICTURES_TO_AUDIO_FOLDERS"));
-        showTextInTabs = new JCheckBox(I18nUtils.getString("SHOW_CONTEXT_TABS_TEXT"));
         hideVariousArtistsAlbums = new JCheckBox(I18nUtils.getString("HIDE_VARIOUS_ARTISTS_ALBUMS"));
         minimumSongNumberPerAlbum = new JCheckBox(I18nUtils.getString("MINIMUM_SONG_NUMBER_PER_ALBUM"));
         minimumSongNumber = new CustomTextField(4);
@@ -252,7 +246,6 @@ public final class ContextPanel extends AbstractPreferencesPanel {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 savePictures.setEnabled(activateContext.isSelected());
-                showTextInTabs.setEnabled(activateContext.isSelected());
                 hideVariousArtistsAlbums.setEnabled(activateContext.isSelected());
             }
         });
@@ -302,33 +295,31 @@ public final class ContextPanel extends AbstractPreferencesPanel {
         c.gridy = 1;
         add(savePictures, c);
         c.gridy = 2;
-        add(showTextInTabs, c);
-        c.gridy = 3;
         add(hideVariousArtistsAlbums, c);
-        c.gridy = 4;
+        c.gridy = 3;
         // c.fill = GridBagConstraints.HORIZONTAL;
         add(minimumSongNumberBox, c);
-        c.gridy = 5;
+        c.gridy = 4;
         add(showAlbumsInGrid, c);
         c.fill = GridBagConstraints.NONE;
-        c.gridy = 6;
+        c.gridy = 5;
         c.insets = new Insets(10, 0, 10, 0);
         add(clearCache, c);
-        c.gridy = 7;
+        c.gridy = 6;
         c.insets = new Insets(0, 0, 5, 0);
         c.anchor = GridBagConstraints.FIRST_LINE_START;
         add(enginesTableLabel, c);
-        c.gridy = 8;
+        c.gridy = 7;
         c.insets = new Insets(0, 10, 0, 0);
         add(enginesScrollPane, c);
-        c.gridy = 9;
+        c.gridy = 8;
         c.gridheight = 1;
         c.insets = new Insets(0, 0, 0, 0);
         JPanel p = new JPanel(new FlowLayout());
         p.add(upButton);
         p.add(downButton);
         add(p, c);
-        c.gridy = 10;
+        c.gridy = 9;
         c.insets = new Insets(20, 0, 0, 0);
         c.weighty = 1;
         add(info, c);
@@ -338,7 +329,6 @@ public final class ContextPanel extends AbstractPreferencesPanel {
     public boolean applyPreferences(ApplicationState state) {
         state.setUseContext(activateContext.isSelected());
         state.setSaveContextPicture(savePictures.isSelected());
-        state.setShowContextTabsText(showTextInTabs.isSelected());
         state.setHideVariousArtistsAlbums(hideVariousArtistsAlbums.isSelected());
         state.setMinimumSongNumberPerAlbum(minimumSongNumberPerAlbum.isSelected() ? Integer.parseInt(minimumSongNumber.getText()) : 0);
         state.setLyricsEnginesInfo(((LyricsEnginesTableModel) enginesTable.getModel()).getLyricsEnginesInfo());
@@ -356,7 +346,6 @@ public final class ContextPanel extends AbstractPreferencesPanel {
     private void setActivateContext(boolean activate) {
         activateContext.setSelected(activate);
         savePictures.setEnabled(activate);
-        showTextInTabs.setEnabled(activate);
         hideVariousArtistsAlbums.setEnabled(activate);
     }
 
@@ -368,15 +357,6 @@ public final class ContextPanel extends AbstractPreferencesPanel {
      */
     private void setSavePictures(boolean save) {
         savePictures.setSelected(save);
-    }
-
-    /**
-     * Sets the show text in tabs checkbox value
-     * 
-     * @param show
-     */
-    private void setShowTextInTabs(boolean show) {
-        showTextInTabs.setSelected(show);
     }
 
     /**
@@ -421,7 +401,6 @@ public final class ContextPanel extends AbstractPreferencesPanel {
     public void updatePanel(ApplicationState state) {
         setActivateContext(state.isUseContext());
         setSavePictures(state.isSaveContextPicture());
-        setShowTextInTabs(state.isShowContextTabsText());
         setHideVariousArtistsAlbums(state.isHideVariousArtistsAlbums());
         setMinimumSongNumberPerAlbum(state.getMinimumSongNumberPerAlbum());
         setLyricsEnginesInfo(state.getLyricsEnginesInfo());

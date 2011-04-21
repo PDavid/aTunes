@@ -176,14 +176,8 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
         }
 
         if (ApplicationState.getInstance().isUseContext()) {
-            // Updates titles
-            getController().updateContextTabsText(getContextPanels());
-
-            // Update icons            
-            getController().updateContextTabsIcons(getContextPanels());
-
             // Enable or disable tabs
-            getController().enableContextTabs(getContextPanels());
+            getController().updateContextTabs();
 
             if (ao == null) {
                 // Clear all tabs
@@ -231,8 +225,6 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
 
     @Override
     public void applicationStateChanged(ApplicationState newState) {
-        // Set text for context tabs
-        getController().updateContextTabsText(getContextPanels());
     }
 
     /**

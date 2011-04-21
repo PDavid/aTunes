@@ -67,7 +67,7 @@ public class YoutubeContextPanel extends AbstractContextPanel {
     }
 
     @Override
-    protected boolean isPanelEnabledForAudioObject(AudioObject audioObject) {
+    protected boolean isPanelVisibleForAudioObject(AudioObject audioObject) {
         return (audioObject instanceof AudioFile) || (audioObject instanceof Radio && ((Radio) audioObject).isSongInfoAvailable());
     }
 
