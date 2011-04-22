@@ -1054,7 +1054,7 @@ public class ApplicationState {
     
 
     public boolean isShowContextAlbumsInGrid() {
-    	return (Boolean) this.cache.retrievePreference(Preferences.SHOW_CONTEXT_ALBUMS_IN_GRID, false);
+    	return (Boolean) this.cache.retrievePreference(Preferences.SHOW_CONTEXT_ALBUMS_IN_GRID, true);
     }
 
     public void setShowContextAlbumsInGrid(boolean showContextAlbumsInGrid) {
