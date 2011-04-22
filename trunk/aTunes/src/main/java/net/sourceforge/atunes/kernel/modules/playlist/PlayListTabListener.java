@@ -22,11 +22,8 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import net.sourceforge.atunes.gui.views.panels.PlayListTabPanel;
 import net.sourceforge.atunes.kernel.actions.Actions;
@@ -36,7 +33,7 @@ import net.sourceforge.atunes.kernel.actions.ClosePlaylistAction;
 /**
  * The listener interface for receiving playListTab events.
  */
-final class PlayListTabListener extends MouseAdapter implements ActionListener, ChangeListener {
+final class PlayListTabListener implements ActionListener, ItemListener {
 
     private PlayListTabPanel panel;
 
@@ -50,23 +47,16 @@ final class PlayListTabListener extends MouseAdapter implements ActionListener, 
         this.panel = panel;
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {}
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+        PlayListHandler.getInstance().switchToPlaylist(panel.getPlayListCombo().getSelectedIndex());
+	}
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        // Selected play list changes when clicking mouse so all popup actions work with current play list
-        if (e.getButton() == MouseEvent.BUTTON3) {
-            boolean moreThanOnePlayList = PlayListHandler.getInstance().getPlayListCount() > 1;
-            Actions.getAction(ClosePlaylistAction.class).setEnabled(moreThanOnePlayList);
-            Actions.getAction(CloseOtherPlaylistsAction.class).setEnabled(moreThanOnePlayList);
-            panel.getPopupMenu().show(panel, e.getX(), e.getY());
-        }
-    }
-
-    @Override
-    public void stateChanged(ChangeEvent e) {
-        PlayListHandler.getInstance().switchToPlaylist(panel.getPlayListTabbedPane().getSelectedIndex());
-    }
+	@Override
+	public void actionPerformed(ActionEvent e) {
+        boolean moreThanOnePlayList = PlayListHandler.getInstance().getPlayListCount() > 1;
+        Actions.getAction(ClosePlaylistAction.class).setEnabled(moreThanOnePlayList);
+        Actions.getAction(CloseOtherPlaylistsAction.class).setEnabled(moreThanOnePlayList);
+	}
 
 }

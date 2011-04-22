@@ -192,10 +192,8 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      * 
      * @param index
      *            the index
-     * @param removeTab
-     * 			  true if call must remove tab (when look and feel does not remove tab when closing it or when method is not called from the action of pressing close button)
      */
-    public void removePlayList(int index, boolean removeTab) {
+    public void removePlayList(int index) {
         // If index is not valid, do nothing
         if (index < 0 || playLists.size() <= index) {
             return;
@@ -230,9 +228,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
             }
 
             // Delete tab
-            if (removeTab) {
-            	getPlayListTabController().deletePlayList(index);
-            }
+           	getPlayListTabController().deletePlayList(index);
 
             // Refresh table
             getPlayListController().refreshPlayList();
@@ -244,7 +240,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
             } else {
                 switchToPlaylist(visiblePlayListIndex - 1);
             }
-            removePlayList(index, removeTab);
+            removePlayList(index);
         }
     }
 
@@ -336,7 +332,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      * Renames current play list.
      */
     public void renamePlayList() {
-        int selectedPlaylist = getPlayListTabController().getSelectedTabIndex();
+        int selectedPlaylist = getPlayListTabController().getSelectedPlayListIndex();
         String currentName = getPlayListTabController().getPlayListName(selectedPlaylist);
         String newName = GuiHandler.getInstance().showInputDialog(I18nUtils.getString("RENAME_PLAYLIST"), currentName);
         if (newName != null) {
@@ -1180,10 +1176,10 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      */
     public void closeCurrentPlaylist() {
         // The current selected play list when this action is fired
-        int i = getPlayListTabController().getSelectedTabIndex();
+        int i = getPlayListTabController().getSelectedPlayListIndex();
         if (i != -1) {
         	// As this action is not called when pressing close button in tab set removeTab argument to true
-            removePlayList(i, true);
+            removePlayList(i);
         }
     }
     
@@ -1192,17 +1188,17 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      */
     public void closeOtherPlaylists() {
         // The current selected play list when this action is fired
-        int i = getPlayListTabController().getSelectedTabIndex();
+        int i = getPlayListTabController().getSelectedPlayListIndex();
         if (i != -1) {
             // Remove play lists from 0 to i. Remove first play list until current play list is at index 0  
             for (int j = 0; j < i; j++) {
             	// As this action is not called when pressing close button in tab set removeTab argument to true
-                removePlayList(0, true);
+                removePlayList(0);
             }
             // Now current play list is at index 0, so delete from play list size down to 1
             while (PlayListHandler.getInstance().getPlayListCount() > 1) {
             	// As this action is not called when pressing close button in tab set removeTab argument to true
-                removePlayList(PlayListHandler.getInstance().getPlayListCount() - 1, true);
+                removePlayList(PlayListHandler.getInstance().getPlayListCount() - 1);
             }
         }
     }
