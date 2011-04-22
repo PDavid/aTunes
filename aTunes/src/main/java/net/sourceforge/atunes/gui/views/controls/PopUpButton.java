@@ -29,6 +29,7 @@ import java.util.List;
 
 import javax.swing.Action;
 import javax.swing.JButton;
+import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 
@@ -104,6 +105,19 @@ public final class PopUpButton extends JButton {
     }
 
     /**
+     * Adds a new MenuItem with an action
+     * @param action
+     * @return
+     */
+    public Component add(Action action) {
+    	JMenuItem item = menu.add(action);
+    	items.add(item);
+    	GuiUtils.applyComponentOrientation(menu);
+    	return item;
+    	
+    }
+    
+    /**
      * Gets the location property.
      * 
      * @return the location property
@@ -164,5 +178,9 @@ public final class PopUpButton extends JButton {
             }
         }
     }
+
+	public void addSeparator() {
+		menu.addSeparator();
+	}
 
 }

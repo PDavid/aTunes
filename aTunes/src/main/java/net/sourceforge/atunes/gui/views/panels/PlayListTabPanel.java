@@ -22,27 +22,27 @@ package net.sourceforge.atunes.gui.views.panels;
 
 import java.awt.BorderLayout;
 
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JTabbedPane;
 
+import net.sourceforge.atunes.gui.views.controls.PopUpButton;
 import net.sourceforge.atunes.kernel.actions.Actions;
+import net.sourceforge.atunes.kernel.actions.ArrangePlayListColumnsAction;
 import net.sourceforge.atunes.kernel.actions.CloseOtherPlaylistsAction;
 import net.sourceforge.atunes.kernel.actions.ClosePlaylistAction;
 import net.sourceforge.atunes.kernel.actions.CopyPlayListToDeviceAction;
+import net.sourceforge.atunes.kernel.actions.NewPlayListAction;
 import net.sourceforge.atunes.kernel.actions.RenamePlaylistAction;
 import net.sourceforge.atunes.kernel.actions.SynchronizeDeviceWithPlayListAction;
-import net.sourceforge.atunes.utils.GuiUtils;
 
 public final class PlayListTabPanel extends JPanel {
 
-    private static final long serialVersionUID = 7382098268271937439L;
+	private static final long serialVersionUID = 7382098268271937439L;
 
-    /** TabbedPane of play lists. */
-    private JTabbedPane playListTabbedPane;
-
-    private JPopupMenu popupMenu;
-
+	private PopUpButton options;
+	
+    private JComboBox playListCombo;
+    
     /**
      * Instantiates a new play list tab panel.
      */
@@ -55,37 +55,34 @@ public final class PlayListTabPanel extends JPanel {
      * Adds the content.
      */
     private void addContent() {
-        playListTabbedPane = new JTabbedPane();
-        playListTabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+    	options = new PopUpButton("", PopUpButton.BOTTOM_RIGHT);
+    	playListCombo = new JComboBox();
 
-        add(playListTabbedPane, BorderLayout.CENTER);
+    	add(options, BorderLayout.WEST);
+        add(playListCombo, BorderLayout.CENTER);
 
-        popupMenu = new JPopupMenu();
-        popupMenu.add(Actions.getAction(RenamePlaylistAction.class));
-        popupMenu.addSeparator();
-        popupMenu.add(Actions.getAction(CopyPlayListToDeviceAction.class));
-        popupMenu.add(Actions.getAction(SynchronizeDeviceWithPlayListAction.class));
-        popupMenu.addSeparator();
-        popupMenu.add(Actions.getAction(ClosePlaylistAction.class));
-        popupMenu.add(Actions.getAction(CloseOtherPlaylistsAction.class));
-        GuiUtils.applyComponentOrientation(this, popupMenu);
+        options.add(Actions.getAction(NewPlayListAction.class));
+        options.add(Actions.getAction(RenamePlaylistAction.class));
+        options.add(Actions.getAction(ClosePlaylistAction.class));
+        options.add(Actions.getAction(CloseOtherPlaylistsAction.class));
+        options.addSeparator();
+        options.add(Actions.getAction(ArrangePlayListColumnsAction.class));
+        options.addSeparator();
+        options.add(Actions.getAction(CopyPlayListToDeviceAction.class));
+        options.add(Actions.getAction(SynchronizeDeviceWithPlayListAction.class));
     }
 
     /**
-     * Gets the play list tabbed pane.
-     * 
-     * @return the playListTabbedPane
-     */
-    public JTabbedPane getPlayListTabbedPane() {
-        return playListTabbedPane;
-    }
-
-    /**
-     * Gets the popup menu.
-     * 
-     * @return the popupMenu
-     */
-    public JPopupMenu getPopupMenu() {
-        return popupMenu;
-    }
+	 * @return the playListCombo
+	 */
+	public JComboBox getPlayListCombo() {
+		return playListCombo;
+	}
+	
+	/**
+	 * @return the options
+	 */
+	public PopUpButton getOptions() {
+		return options;
+	}
 }

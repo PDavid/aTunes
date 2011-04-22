@@ -20,20 +20,10 @@
 
 package net.sourceforge.atunes.kernel.modules.playlist;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.lookandfeel.TabCloseListener;
-import net.sourceforge.atunes.gui.views.panels.ButtonTabComponent;
 import net.sourceforge.atunes.gui.views.panels.PlayListTabPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
-import net.sourceforge.atunes.misc.log.LogCategories;
 
 final class PlayListTabController extends AbstractSimpleController<PlayListTabPanel> {
 
@@ -51,46 +41,14 @@ final class PlayListTabController extends AbstractSimpleController<PlayListTabPa
 
     @Override
     protected void addBindings() {
-    	new TabReorderer(this, getComponentControlled().getPlayListTabbedPane()).enableReordering();
-        PlayListTabListener listener = new PlayListTabListener(getComponentControlled());
-        getComponentControlled().getPlayListTabbedPane().addChangeListener(listener);
-        getComponentControlled().getPlayListTabbedPane().addMouseListener(listener);
-        
-        if (LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isTabCloseButtonsSupported()) {
-        	LookAndFeelSelector.getInstance().getCurrentLookAndFeel().addTabCloseButtons(getComponentControlled().getPlayListTabbedPane(), new TabCloseListener() {
-
-        		private int tabIndex = -1;
-        		
-				@Override
-				public void tabClosed(JTabbedPane tabbedPane, Component c) {
-				}
-
-				@Override
-				public void tabClosing(JTabbedPane tabbedPane, Component c) {
-					// Get tab index
-		            tabIndex = tabbedPane.indexOfComponent(c);
-		            if (tabIndex != -1) {
-		            	getLogger().debug(LogCategories.CONTROLLER, "Closing playlist with index", tabIndex);
-		            	// Remove play list (look and feel will remove tab so we explicitly set removeTab argument to false
-		                PlayListHandler.getInstance().removePlayList(tabIndex, false);
-		            }
-				}
-
-				@Override
-				public boolean vetoTabClosing(JTabbedPane tabbedPane, Component c) {
-					// Veto if there is only one tab
-					return tabbedPane.getTabCount() == 1;
-				}
-        		
-        	});
-        }
-
+    	PlayListTabListener l = new PlayListTabListener(getComponentControlled());
+    	getComponentControlled().getOptions().addActionListener(l);
+        getComponentControlled().getPlayListCombo().addItemListener(l);
+    	getComponentControlled().getPlayListCombo().setModel(PlayListComboModel.getNewComboModel());
     }
 
     @Override
-    protected void addStateBindings() {
-        // Nothing to do
-    }
+    protected void addStateBindings() {}
 
     /**
      * Delete play list.
@@ -99,7 +57,11 @@ final class PlayListTabController extends AbstractSimpleController<PlayListTabPa
      *            the index
      */
     void deletePlayList(int index) {
-   		getComponentControlled().getPlayListTabbedPane().removeTabAt(index);
+    	int selectedPlaylist = getSelectedPlayListIndex();
+   		((PlayListComboModel)getComponentControlled().getPlayListCombo().getModel()).removeItemAt(index);
+   		if (index == selectedPlaylist) {
+   			forceSwitchTo(0);
+   		}
     }
 
     /**
@@ -109,7 +71,7 @@ final class PlayListTabController extends AbstractSimpleController<PlayListTabPa
      *            the index
      */
     void forceSwitchTo(int index) {
-        getComponentControlled().getPlayListTabbedPane().setSelectedIndex(index);
+        getComponentControlled().getPlayListCombo().setSelectedIndex(index);
     }
 
     /**
@@ -119,16 +81,8 @@ final class PlayListTabController extends AbstractSimpleController<PlayListTabPa
      *            the name
      */
     void newPlayList(String name) {
-        JPanel emptyPanel = new JPanel();
-        emptyPanel.setPreferredSize(new Dimension(0, 0));
-        emptyPanel.setSize(0, 0);
-        getComponentControlled().getPlayListTabbedPane().addTab(name, emptyPanel);
-        
-        // Use custom tab component if close buttons are not supported by look and feel
-        if (!LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isTabCloseButtonsSupported()) {        
-        	getComponentControlled().getPlayListTabbedPane().setTabComponentAt(getComponentControlled().getPlayListTabbedPane().indexOfComponent(emptyPanel),
-        			new ButtonTabComponent(name, getComponentControlled().getPlayListTabbedPane()));
-        }
+    	((PlayListComboModel)getComponentControlled().getPlayListCombo().getModel()).addItem(name);
+    	
     }
 
     @Override
@@ -145,8 +99,9 @@ final class PlayListTabController extends AbstractSimpleController<PlayListTabPa
      *            the new name
      */
     void renamePlayList(int index, String newName) {
-        getComponentControlled().getPlayListTabbedPane().setTitleAt(index, newName);
-        ((ButtonTabComponent) getComponentControlled().getPlayListTabbedPane().getTabComponentAt(index)).getLabel().setText(newName);
+    	((PlayListComboModel)getComponentControlled().getPlayListCombo().getModel()).rename(index, newName);
+    	// Forces update of combo box by selecting again current play list
+    	getComponentControlled().getPlayListCombo().setSelectedIndex(index);
     }
 
     /**
@@ -155,11 +110,7 @@ final class PlayListTabController extends AbstractSimpleController<PlayListTabPa
      * @return the names of play lists
      */
     List<String> getNamesOfPlayLists() {
-        List<String> result = new ArrayList<String>();
-        for (int i = 0; i < getComponentControlled().getPlayListTabbedPane().getTabCount(); i++) {
-            result.add(getComponentControlled().getPlayListTabbedPane().getTitleAt(i));
-        }
-        return result;
+    	return ((PlayListComboModel)getComponentControlled().getPlayListCombo().getModel()).getItems();
     }
 
     /**
@@ -167,8 +118,8 @@ final class PlayListTabController extends AbstractSimpleController<PlayListTabPa
      * 
      * @return
      */
-    int getSelectedTabIndex() {
-        return getComponentControlled().getPlayListTabbedPane().getSelectedIndex();
+    int getSelectedPlayListIndex() {
+        return getComponentControlled().getPlayListCombo().getSelectedIndex();
     }
 
     /**
@@ -178,15 +129,6 @@ final class PlayListTabController extends AbstractSimpleController<PlayListTabPa
      * @return
      */
     String getPlayListName(int index) {
-        return getComponentControlled().getPlayListTabbedPane().getTitleAt(index);
-    }
-
-    void switchPlayListTabs(int draggedTabIndex, int targetTabIndex) {
-        JTabbedPane tabPane = getComponentControlled().getPlayListTabbedPane();
-        boolean isForwardDrag = targetTabIndex > draggedTabIndex;
-        int index = isForwardDrag ? targetTabIndex + 1 : targetTabIndex;
-        String titleAt = tabPane.getTitleAt(draggedTabIndex);
-        tabPane.insertTab(titleAt, tabPane.getIconAt(draggedTabIndex), tabPane.getComponentAt(draggedTabIndex), tabPane.getToolTipTextAt(draggedTabIndex), index);
-        tabPane.setTabComponentAt(targetTabIndex, new ButtonTabComponent(titleAt, tabPane));
+        return ((PlayListComboModel)getComponentControlled().getPlayListCombo().getModel()).getElementAt(index);
     }
 }
