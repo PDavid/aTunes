@@ -250,6 +250,9 @@ public final class ApplicationMenuBar extends JMenuBar {
 		            for (JMenuItem menuItem : PlayListHandler.getInstance().getMenuItemsToSwitchPlayLists()) {
 		            	playList.add(menuItem);
 		            }
+		            
+		            playList.addSeparator();
+		            PlayListMenu.fillMenu(playList, PlayListHandler.getInstance().getPlayListTable());
 				}
 				
 				@Override
