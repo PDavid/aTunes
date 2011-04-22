@@ -106,9 +106,29 @@ public class YoutubeContent extends AbstractContextPanelContent {
     private static final long serialVersionUID = 5041098100868186051L;
 
     private ContextImageJTable youtubeResultTable;
+    
+    private JMenuItem moreResults;
+    
+    private JMenuItem openYoutube;
 
     public YoutubeContent() {
         super(new YoutubeDataSource());
+        moreResults = new JMenuItem(I18nUtils.getString("SEE_MORE_RESULTS"));
+        moreResults.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                searchMoreResultsInYoutube();
+            }
+        });
+        openYoutube = new JMenuItem(I18nUtils.getString("GO_TO_YOUTUBE"));
+        openYoutube.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                openYoutube();
+            }
+        });
     }
 
     @Override
@@ -128,13 +148,17 @@ public class YoutubeContent extends AbstractContextPanelContent {
     protected void updateContentWithDataSourceResult(Map<String, ?> result) {
         if (result.containsKey(YoutubeDataSource.OUTPUT_VIDEOS)) {
             youtubeResultTable.setModel(new YoutubeResultTableModel((List<YoutubeResultEntry>) result.get(YoutubeDataSource.OUTPUT_VIDEOS)));
-        }
+            moreResults.setEnabled(true);
+            openYoutube.setEnabled(true);
+        }        
     }
 
     @Override
     protected void clearContextPanelContent() {
         super.clearContextPanelContent();
         youtubeResultTable.setModel(new YoutubeResultTableModel(null));
+        moreResults.setEnabled(false);
+        openYoutube.setEnabled(false);
     }
 
     @Override
@@ -176,22 +200,6 @@ public class YoutubeContent extends AbstractContextPanelContent {
     @Override
     protected List<Component> getOptions() {
         List<Component> options = new ArrayList<Component>();
-        JMenuItem moreResults = new JMenuItem(I18nUtils.getString("SEE_MORE_RESULTS"));
-        moreResults.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                searchMoreResultsInYoutube();
-            }
-        });
-        JMenuItem openYoutube = new JMenuItem(I18nUtils.getString("GO_TO_YOUTUBE"));
-        openYoutube.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                openYoutube();
-            }
-        });
         options.add(moreResults);
         options.add(openYoutube);
         return options;

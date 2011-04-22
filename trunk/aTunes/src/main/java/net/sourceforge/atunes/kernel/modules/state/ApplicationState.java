@@ -228,11 +228,11 @@ public class ApplicationState {
     
     
 
-    public int getSelectedContextTab() {
-        return (Integer) this.cache.retrievePreference(Preferences.SELECTED_CONTEXT_TAB, 0);
+    public String getSelectedContextTab() {
+        return (String) this.cache.retrievePreference(Preferences.SELECTED_CONTEXT_TAB, null);
     }
 
-    public void setSelectedContextTab(int selectedContextTab) {
+    public void setSelectedContextTab(String selectedContextTab) {
     	this.cache.storePreference(Preferences.SELECTED_CONTEXT_TAB, selectedContextTab);
     }
     
