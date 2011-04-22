@@ -78,8 +78,6 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     	getController().addContextPanels(getContextPanels());
     	
         // Set previous selected tab
-        // IMPORTANT: this method must be called before adding change listener to avoid firing events when
-        // UI is being created
     	getController().setContextTab(ApplicationState.getInstance().getSelectedContextTab());
     }
 
@@ -118,7 +116,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
      */
     void contextPanelChanged() {
         // Update selected tab
-        ApplicationState.getInstance().setSelectedContextTab(getController().getContextTab());
+        ApplicationState.getInstance().setSelectedContextTab(getController().getContextTab().getContextPanelName());
         // Call to fill information: Don't force update since audio object can be the same
         retrieveInfo(currentAudioObject, false);
     }
@@ -132,8 +130,8 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
         currentAudioObject = null;
 
         // Select first tab
-        ApplicationState.getInstance().setSelectedContextTab(0);
-        getController().setContextTab(0);
+        ApplicationState.getInstance().setSelectedContextTab(null);
+        getController().setContextTab(null);
     }
 
     /**
@@ -209,12 +207,14 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
         }
 
         // Context panel can be removed so check index
-        int selectedTab = ApplicationState.getInstance().getSelectedContextTab();
-        if (selectedTab >= getContextPanels().size()) {
-            selectedTab = 0;
-        }
+        String selectedTab = ApplicationState.getInstance().getSelectedContextTab();
         // Update current context panel
-        getContextPanels().get(selectedTab).updateContextPanel(audioObject, forceUpdate);
+        for (AbstractContextPanel panel : getContextPanels()) {
+        	if (panel.getContextPanelName().equals(selectedTab)) {
+        		panel.updateContextPanel(audioObject, forceUpdate);
+        		break;
+        	}
+        }
     }
 
     /**

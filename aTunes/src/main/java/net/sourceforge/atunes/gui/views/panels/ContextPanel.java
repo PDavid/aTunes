@@ -29,9 +29,12 @@ import java.util.List;
 
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
+import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.misc.log.Logger;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
 
@@ -46,6 +49,8 @@ public final class ContextPanel extends JPanel {
     private JPanel container;
 
     private List<AbstractContextPanel> panels = new ArrayList<AbstractContextPanel>();
+    
+    private List<AbstractContextPanel> visiblePanels = new ArrayList<AbstractContextPanel>();
 
     /**
      * Instantiates a new context panel
@@ -59,7 +64,7 @@ public final class ContextPanel extends JPanel {
      * Sets the content.
      */
     private void setContent() {
-    	contextSelector = new JComboBox(); 
+    	contextSelector = new JComboBox(new ListComboBoxModel<AbstractContextPanel>(visiblePanels)); 
     	options = new PopUpButton("", PopUpButton.BOTTOM_RIGHT);
     	container = new JPanel(new CardLayout());
     	GridBagConstraints c = new GridBagConstraints();
@@ -81,8 +86,9 @@ public final class ContextPanel extends JPanel {
     }
 
     public void updateContextTabs() {
+    	AbstractContextPanel selectedPanel = contextSelector.getSelectedItem() != null ? (AbstractContextPanel) contextSelector.getSelectedItem() : null;
     	container.removeAll();
-    	List<AbstractContextPanel> visiblePanels = new ArrayList<AbstractContextPanel>();
+    	visiblePanels.clear();
         for (AbstractContextPanel panel : panels) {
         	if (panel.isVisible()) {
         		visiblePanels.add(panel);
@@ -90,7 +96,7 @@ public final class ContextPanel extends JPanel {
         		panel.getUIComponent().setEnabled(panel.isEnabled());
         	}
         }
-        contextSelector.setModel(new ListComboBoxModel<AbstractContextPanel>(visiblePanels));
+        ((CardLayout)container.getLayout()).show(container, selectedPanel != null ? selectedPanel.getContextPanelName() : visiblePanels.get(0).getContextPanelName());
     }
 
     /**
@@ -117,32 +123,28 @@ public final class ContextPanel extends JPanel {
 	 * Shows context panel
 	 * @param source
 	 */
-	public void showContextPanel(AbstractContextPanel source) {
-		((CardLayout)container.getLayout()).show(container, source.getContextPanelName());		
+	public void showContextPanel(final AbstractContextPanel source) {
 		options.removeAllItems();
 		List<Component> components = source.getOptions();
 		options.setEnabled(!components.isEmpty());
 		for (Component c : components) {
 			options.add(c);
 		}
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				((CardLayout)container.getLayout()).show(container, source.getContextPanelName());		
+			}
+		});
 	}
 	
-    /**
-     * Selects given tab index
-     * 
-     * @param index
-     */
-    public void setSelectedIndex(int index) {
-    	contextSelector.setSelectedIndex(index);
-    }
-
     /**
      * Returns selected tab index
      * 
      * @return
      */
-    public int getSelectedIndex() {
-    	return contextSelector.getSelectedIndex();
+    public AbstractContextPanel getSelectedContextTab() {
+    	return (AbstractContextPanel) contextSelector.getSelectedItem();
     }
     
     /**
@@ -150,5 +152,22 @@ public final class ContextPanel extends JPanel {
 	 */
 	public JComboBox getContextSelector() {
 		return contextSelector;
+	}
+
+	/**
+	 * @param selectedContextTab
+	 */
+	public void setSelectedContextTab(String selectedContextTab) {
+		new Logger().debug(LogCategories.CONTEXT, "Setting context view: ", selectedContextTab);
+		AbstractContextPanel panel = null;
+		if (selectedContextTab != null) {
+			for (AbstractContextPanel p : panels) {
+				if (p.getContextPanelName().equals(selectedContextTab)) {
+					panel = p;
+					break;
+				}
+			}
+		}
+		contextSelector.setSelectedIndex(panel != null ? visiblePanels.indexOf(panel) : 0); // Show panel or first one
 	}
 }

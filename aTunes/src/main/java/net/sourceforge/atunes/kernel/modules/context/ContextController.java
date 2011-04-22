@@ -74,16 +74,17 @@ class ContextController extends AbstractSimpleController<ContextPanel> {
 	 * Selects context tab
 	 * @param selectedContextTab
 	 */
-	void setContextTab(int selectedContextTab) {
-		getComponentControlled().setSelectedIndex(selectedContextTab);
+	void setContextTab(String selectedContextTab) {
+		getComponentControlled().setSelectedContextTab(selectedContextTab);
+		ContextHandler.getInstance().contextPanelChanged();
 	}
 	
 	/**
 	 * Returns context tab
 	 * @return
 	 */
-	int getContextTab() {
-		return getComponentControlled().getSelectedIndex();
+	AbstractContextPanel getContextTab() {
+		return getComponentControlled().getSelectedContextTab();
 	}
 
 	void updateContextTabs() {
