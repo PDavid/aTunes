@@ -64,7 +64,7 @@ public final class ContextPanel extends JPanel {
      * Sets the content.
      */
     private void setContent() {
-    	contextSelector = new JComboBox(new ListComboBoxModel<AbstractContextPanel>(visiblePanels)); 
+    	contextSelector = new JComboBox(); 
     	options = new PopUpButton("", PopUpButton.BOTTOM_RIGHT);
     	container = new JPanel(new CardLayout());
     	GridBagConstraints c = new GridBagConstraints();
@@ -96,6 +96,8 @@ public final class ContextPanel extends JPanel {
         		panel.getUIComponent().setEnabled(panel.isEnabled());
         	}
         }
+        contextSelector.setModel(new ListComboBoxModel<AbstractContextPanel>(visiblePanels));
+        contextSelector.setSelectedIndex(selectedPanel != null ? visiblePanels.indexOf(selectedPanel) : 0);
         ((CardLayout)container.getLayout()).show(container, selectedPanel != null ? selectedPanel.getContextPanelName() : visiblePanels.get(0).getContextPanelName());
     }
 
