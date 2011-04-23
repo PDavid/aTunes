@@ -33,6 +33,8 @@ class PreferencesCache extends AbstractCache {
 
     private Logger logger;
     
+    private Cache cache;
+    
     protected PreferencesCache() {
         super(PreferencesCache.class.getResource("/settings/ehcache-preferences.xml"));
     }
@@ -60,7 +62,7 @@ class PreferencesCache extends AbstractCache {
      * @param defaultValue
      * @return Value
      */
-    public synchronized Object retrievePreference(Preferences preferenceId, Object defaultValue) {
+    public Object retrievePreference(Preferences preferenceId, Object defaultValue) {
         Element element = getCache().get(preferenceId.toString());
         if (element == null) {
             return defaultValue;
@@ -75,15 +77,19 @@ class PreferencesCache extends AbstractCache {
      * @param preferenceId
      * @param value
      */
-    public void storePreference(final Preferences preferenceId, final Object value) {
+    public synchronized void storePreference(final Preferences preferenceId, final Object value) {
         if (preferenceId == null) {
             return;
         }
-
-        Element element = new Element(preferenceId.toString(), value != null ? new Preference(value) : value);
-        getCache().put(element);
-        getCache().flush();
-        getLogger().debug(LogCategories.PREFERENCES, "Stored Preference: ", preferenceId, " Value: ", value != null ? value.toString() : null);
+        
+        Object previousValue = retrievePreference(preferenceId, null);
+        if (previousValue != null && !previousValue.equals(value)) {
+        	// Only store different values
+        	Element element = new Element(preferenceId.toString(), value != null ? new Preference(value) : value);
+        	getCache().put(element);
+        	getCache().flush();
+        	getLogger().debug(LogCategories.PREFERENCES, "Stored Preference: ", preferenceId, " Value: ", value != null ? value.toString() : null);
+        }
     }
     
     /**
@@ -93,7 +99,7 @@ class PreferencesCache extends AbstractCache {
      * @throws GeneralSecurityException
      * @throws IOException
      */
-    public synchronized String retrievePasswordPreference(Preferences preferenceId) {
+    public String retrievePasswordPreference(Preferences preferenceId) {
     	Element element = getCache().get(preferenceId.toString());
     	if (element == null) {
     		return null;
@@ -113,14 +119,21 @@ class PreferencesCache extends AbstractCache {
             return;
         }
 
-        Element element = new Element(preferenceId.toString(), value != null ? new PasswordPreference(value) : null);
-        getCache().put(element);
-        getCache().flush();
-        getLogger().debug(LogCategories.PREFERENCES, "Stored Password Preference: ", preferenceId, " Value: ", value.toString());
+        String previousValue = retrievePasswordPreference(preferenceId);
+        if (previousValue != null && !previousValue.equals(value)) {
+        	// Only store different values
+        	Element element = new Element(preferenceId.toString(), value != null ? new PasswordPreference(value) : null);
+        	getCache().put(element);
+        	getCache().flush();
+        	getLogger().debug(LogCategories.PREFERENCES, "Stored Password Preference: ", preferenceId, " Value: ", value.toString());
+        }
     }
 
     private Cache getCache() {
-        return getCache("preferences");
+    	if (cache == null) {
+    		cache = getCache("preferences"); 
+    	}
+        return cache;
     }
 
     public void shutdown() {

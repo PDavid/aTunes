@@ -60,28 +60,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 
     private List<AbstractNavigationView> navigationViews;
 
-	public enum ViewMode {
-
-        ARTIST, ALBUM, GENRE, FOLDER, YEAR;
-        
-        public TreeGenerator getTreeGenerator() {
-            TreeGenerator treeGenerator = null;
-            if (this == ViewMode.YEAR) {
-            	treeGenerator = new YearTreeGenerator(); 
-            } else if (this == ViewMode.ARTIST) {
-            	treeGenerator = new ArtistTreeGenerator();
-            } else if (this == ViewMode.ALBUM) {
-            	treeGenerator = new AlbumTreeGenerator();
-            } else if (this == ViewMode.GENRE) {
-                treeGenerator = new GenreTreeGenerator();
-            } else { // Folder view
-            	treeGenerator = new FolderTreeGenerator();
-            }
-            return treeGenerator;
-        }
-    }
-
-    /**
+	/**
      * Filter for navigation table
      */
     private AbstractFilter tableFilter = new AbstractFilter() {
@@ -150,8 +129,11 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 
     @Override
     public void applicationStarted(List<AudioObject> playList) {
+        showNavigationTree(ApplicationState.getInstance().isShowNavigationTree());
+        applyNavigationTableVisibility(ApplicationState.getInstance().isShowNavigationTree() && ApplicationState.getInstance().isShowNavigationTable());
+
         // Navigation Panel View
-        getNavigationController().setNavigationView(ApplicationState.getInstance().getNavigationView(), false);
+        getNavigationController().setNavigationView(ApplicationState.getInstance().getNavigationView(), false);        
     }
 
     public List<AbstractNavigationView> getNavigationViews() {
@@ -345,4 +327,52 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
         // Update all views
         refreshCurrentView();
 	}
+	
+    /**
+     * Show navigation tree.
+     * 
+     * @param show
+     *            the show
+     */
+    public void showNavigationTree(boolean show) {    	
+        ApplicationState.getInstance().setShowNavigationTree(show);
+
+    	// Disable or enable actions
+        for (AbstractNavigationView navigationView : NavigationHandler.getInstance().getNavigationViews()) {
+        	navigationView.getActionToShowView().setEnabled(show);
+        }
+    	
+        GuiHandler.getInstance().getFrame().showNavigationTree(show);
+        // Depending if is visible or not filtering is allowed or not
+        FilterHandler.getInstance().setFilterEnabled(NavigationHandler.getInstance().getTreeFilter(), show);
+        
+        applyNavigationTableVisibility(show && ApplicationState.getInstance().isShowNavigationTable());
+    }
+    
+    /**
+     * Show navigation table.
+     * 
+     * @param show
+     *            the show
+     */
+    public void showNavigationTable(boolean show) {
+        ApplicationState.getInstance().setShowNavigationTable(show);
+        applyNavigationTableVisibility(show);
+    }
+    
+    /**
+     * Used to show or hide navigation table when changing tree visibility
+     * @param show
+     */
+    private void applyNavigationTableVisibility(boolean show) {
+    	GuiHandler.getInstance().getFrame().showNavigationTable(show);
+        // Depending if is visible or not filtering is allowed or not
+        FilterHandler.getInstance().setFilterEnabled(NavigationHandler.getInstance().getTableFilter(), show);
+        
+        updateTableContent(NavigationHandler.getInstance().getCurrentView().getTree());
+    }
+
+
+
+
 }
