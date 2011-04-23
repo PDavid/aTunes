@@ -34,6 +34,7 @@ public class CustomSplitPane extends JSplitPane {
 
     public CustomSplitPane(int newOrientation) {
         super(newOrientation);
+        setDividerSize(7);
     }
 
     @Override
