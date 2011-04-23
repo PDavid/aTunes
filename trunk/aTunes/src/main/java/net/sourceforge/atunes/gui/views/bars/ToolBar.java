@@ -20,11 +20,6 @@
 
 package net.sourceforge.atunes.gui.views.bars;
 
-import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
@@ -39,18 +34,11 @@ import net.sourceforge.atunes.kernel.actions.ShowContextAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigationTableAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigationTreeAction;
 import net.sourceforge.atunes.kernel.actions.ShowStatsAction;
-import net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 
 public final class ToolBar extends JToolBar {
 
     private static final long serialVersionUID = 3146746580753998589L;
 
-    private static final Dimension SEPARATOR = new Dimension(10, 0);
-    
-    private List<JToggleButton> navigationButtons;
-    
     private JButton preferences;
     private JToggleButton showNavigationTree;
     private JToggleButton showNavigationTable;
@@ -78,20 +66,6 @@ public final class ToolBar extends JToolBar {
         showNavigationTree.setText(null);
         add(showNavigationTree);
         
-        addSeparator();
-
-        // Add dinamically actions to show each navigation view loaded, then select the last navigation view
-    	navigationButtons = new ArrayList<JToggleButton>();
-    	ButtonGroup group = new ButtonGroup();
-        for (AbstractNavigationView navigationView : NavigationHandler.getInstance().getNavigationViews()) {
-        	JToggleButton button = new JToggleButton(navigationView.getActionToShowView());
-        	button.setText(null);
-        	button.setSelected(navigationView.getClass().getName().equals(ApplicationState.getInstance().getNavigationView()));
-        	group.add(button);
-            add(button);            
-            navigationButtons.add(button);
-        }
-
         addSeparator();
 
         preferences = new JButton(Actions.getAction(EditPreferencesAction.class));
@@ -134,11 +108,6 @@ public final class ToolBar extends JToolBar {
         add(filterPanel);
     }
     
-    @Override
-    public void addSeparator() {
-    	super.addSeparator(SEPARATOR);
-    }
-
     public JToggleButton getShowNavigationTree() {
         return showNavigationTree;
     }
@@ -160,15 +129,5 @@ public final class ToolBar extends JToolBar {
      */
     public ToolBarFilterPanel getFilterPanel() {
         return filterPanel;
-    }
-    
-    /**
-     * Shows or hides navigation buttons
-     * @param show
-     */
-    public void showNavigationButtons(boolean show) {
-    	for (JToggleButton button : navigationButtons) {
-    		button.setVisible(show);
-    	}
-    }
+    }    
 }

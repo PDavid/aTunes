@@ -882,10 +882,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      * @param show
      *            the show
      */
-    public void showNavigationTree(boolean show) {
-    	// Hide or show icons from toolbar
-    	getToolBar().showNavigationButtons(show);
-    	
+    public void showNavigationTree(boolean show) {    	
     	// Disable or enable actions
         for (AbstractNavigationView navigationView : NavigationHandler.getInstance().getNavigationViews()) {
         	navigationView.getActionToShowView().setEnabled(show);

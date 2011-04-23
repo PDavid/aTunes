@@ -20,11 +20,25 @@
 
 package net.sourceforge.atunes.gui.views.panels;
 
-import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 
+import javax.swing.ButtonGroup;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JSeparator;
 
+import net.sourceforge.atunes.gui.views.controls.PopUpButton;
+import net.sourceforge.atunes.kernel.actions.Actions;
+import net.sourceforge.atunes.kernel.actions.CollapseTreesAction;
+import net.sourceforge.atunes.kernel.actions.ExpandTreesAction;
+import net.sourceforge.atunes.kernel.actions.ShowAlbumsInNavigatorAction;
+import net.sourceforge.atunes.kernel.actions.ShowArtistsInNavigatorAction;
+import net.sourceforge.atunes.kernel.actions.ShowFoldersInNavigatorAction;
+import net.sourceforge.atunes.kernel.actions.ShowGenresInNavigatorAction;
+import net.sourceforge.atunes.kernel.actions.ShowYearsInNavigatorAction;
 import net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -33,13 +47,17 @@ public final class NavigationTreePanel extends JPanel {
 
     private static final long serialVersionUID = -2900418193013495812L;
 
+    private PopUpButton options;
+    
+    private JComboBox treeComboBox;
+    
     private JPanel treePanel;
     
     /**
      * Instantiates a new navigation panel.
      */
-    public NavigationTreePanel() {
-        super(new BorderLayout(), true);
+    public NavigationTreePanel()  {
+        super(new GridBagLayout(), true);
         addContent();
     }
 
@@ -47,9 +65,43 @@ public final class NavigationTreePanel extends JPanel {
      * Adds the content.
      */
     private void addContent() {
+    	options = new PopUpButton("", PopUpButton.BOTTOM_RIGHT);
+        JRadioButtonMenuItem showArtist = new JRadioButtonMenuItem(Actions.getAction(ShowArtistsInNavigatorAction.class));
+        JRadioButtonMenuItem showAlbum = new JRadioButtonMenuItem(Actions.getAction(ShowAlbumsInNavigatorAction.class));
+        JRadioButtonMenuItem showGenre = new JRadioButtonMenuItem(Actions.getAction(ShowGenresInNavigatorAction.class));
+        JRadioButtonMenuItem showYear = new JRadioButtonMenuItem(Actions.getAction(ShowYearsInNavigatorAction.class));
+        JRadioButtonMenuItem showFolder = new JRadioButtonMenuItem(Actions.getAction(ShowFoldersInNavigatorAction.class));
+        ButtonGroup group = new ButtonGroup();
+        group.add(showArtist);
+        group.add(showAlbum);
+        group.add(showGenre);
+        group.add(showYear);
+        group.add(showFolder);
+        options.add(showArtist);
+        options.add(showAlbum);
+        options.add(showGenre);
+        options.add(showYear);
+        options.add(showFolder);
+        options.add(new JSeparator());
+        options.add(Actions.getAction(ExpandTreesAction.class));
+        options.add(Actions.getAction(CollapseTreesAction.class));
+
+    	treeComboBox = new JComboBox();
         treePanel = new JPanel(new CardLayout());
-        addTrees(treePanel);
-        add(treePanel);
+        addTrees();
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 0;
+        c.fill = GridBagConstraints.BOTH;
+        add(options, c);
+        c.gridx = 1;
+        c.weightx = 1;
+        add(treeComboBox, c);
+        c.gridx = 0;
+        c.gridy = 1;
+        c.gridwidth = 2;
+        c.weighty = 1;
+        add(treePanel, c);
 
         // Apply component orientation to all popup menus
         for (AbstractNavigationView view : NavigationHandler.getInstance().getNavigationViews()) {
@@ -60,11 +112,13 @@ public final class NavigationTreePanel extends JPanel {
     /**
      * Updates panel to show all trees
      */
-    private void addTrees(JPanel treesContainer) {
-        treesContainer.removeAll();
+    private void addTrees() {
+    	treeComboBox.removeAllItems();
+    	treePanel.removeAll();
 
         for (AbstractNavigationView view : NavigationHandler.getInstance().getNavigationViews()) {
-        	treesContainer.add(view.getClass().getName(), view.getTreeScrollPane());
+        	treeComboBox.addItem(view);
+        	treePanel.add(view.getClass().getName(), view.getTreeScrollPane());
         }
     }
 
@@ -72,15 +126,22 @@ public final class NavigationTreePanel extends JPanel {
      * Updates trees
      */
     public void updateTrees() {
-        addTrees(treePanel);
+        addTrees();
     }
 
 	/**
 	 * Shows tree view
-	 * @param name
+	 * @param view
 	 */
-	public void showNavigationView(String name) {
-		((CardLayout)treePanel.getLayout()).show(treePanel, name);
-		
+	public void showNavigationView(AbstractNavigationView view) {		
+		((CardLayout)treePanel.getLayout()).show(treePanel, view.getClass().getName());
+		treeComboBox.setSelectedItem(view);
+	}
+
+	/**
+	 * @return the treeComboBox
+	 */
+	public JComboBox getTreeComboBox() {
+		return treeComboBox;
 	}
 }
