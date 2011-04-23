@@ -61,7 +61,10 @@ public final class FrameState implements Serializable {
     }
 
     public void putSplitPaneDividerPos(String s, int pos) {
-        splitPaneDividerPositions.put(s, pos);
+    	// Don't save pos == 0, as it's due to a component being not visible
+    	if (pos > 0) {
+    		splitPaneDividerPositions.put(s, pos);
+    	}
     }
 
     public int getSplitPaneDividerPos(String s) {

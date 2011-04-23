@@ -82,7 +82,6 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
     private static final int MARGIN = 100;
     
     private FrameState frameState;
-    private FrameState oldFrameState;
 
     private NavigationTreePanel navigationTreePanel;
     private NavigationTablePanel navigationTablePanel;
@@ -147,7 +146,6 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
     @Override
     public void create(FrameState frameState) {
         this.frameState = frameState;
-        this.oldFrameState = new FrameState(frameState);
 
         // Set window location
         Point windowLocation = null;
@@ -648,13 +646,10 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
     }
 
     protected final void applyVisibility(boolean show, String s, Component c, JSplitPane sp) {
-        if (!show) {
-            oldFrameState.putSplitPaneDividerPos(s, getFrameState().getSplitPaneDividerPos(s));
-        }
         boolean b = c.isVisible();
         c.setVisible(show);
         if (show && !b) {
-            applySplitPaneDividerPosition(sp, oldFrameState.getSplitPaneDividerPos(s), 0);
+            applySplitPaneDividerPosition(sp, frameState.getSplitPaneDividerPos(s), 0);
         }
         
         // Depending on visibility, set divider size, so if panel is not shown, its divider is hidden too 
