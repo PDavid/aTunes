@@ -22,8 +22,8 @@ package net.sourceforge.atunes.gui.views.controls;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +32,8 @@ import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -55,6 +57,8 @@ public final class PopUpButton extends JButton {
     private int xLocation;
     private int yLocation;
     private List<Component> items = new ArrayList<Component>();
+    
+    private boolean menuShown = false;
 
     /**
      * Instantiates a new pop up button.
@@ -143,13 +147,34 @@ public final class PopUpButton extends JButton {
     private void setButton(int location) {
         this.location = location;
         menu = new JPopupMenu();
-        addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                setMenuLocation(getLocationProperty());
-                menu.show(PopUpButton.this, xLocation, yLocation);
-            }
-        });
+        addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+            	if (!menuShown) {
+            		setMenuLocation(getLocationProperty());
+            		menu.show(PopUpButton.this, xLocation, yLocation);
+            	} else {
+            		menu.setVisible(false);
+            	}
+        	}
+		});
+        menu.addPopupMenuListener(new PopupMenuListener() {
+			
+			@Override
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+				menuShown = true;
+			}
+			
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+				menuShown = false;
+			}
+			
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent e) {
+				menuShown = false;
+			}
+		});
     }
 
     /**
