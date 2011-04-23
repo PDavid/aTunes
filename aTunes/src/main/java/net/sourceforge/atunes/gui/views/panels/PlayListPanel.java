@@ -21,9 +21,6 @@
 package net.sourceforge.atunes.gui.views.panels;
 
 import java.awt.BorderLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -52,7 +49,7 @@ public final class PlayListPanel extends JPanel {
      * Instantiates a new play list panel.
      */
     public PlayListPanel() {
-        super(new GridBagLayout());
+        super(new BorderLayout());
         addContent();
     }
 
@@ -64,18 +61,8 @@ public final class PlayListPanel extends JPanel {
         playListTable = new PlayListTable();
         playListTableScroll = new JScrollPane(playListTable);
 
-        JPanel auxPanel = new JPanel(new BorderLayout());
-        auxPanel.add(playListTabPanel, BorderLayout.NORTH);
-        auxPanel.add(playListTableScroll, BorderLayout.CENTER);
-
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 1;
-        c.weighty = 1;
-        c.insets = new Insets(1, 1, 0, 1);
-        c.fill = GridBagConstraints.BOTH;
-        add(auxPanel, c);
+        add(playListTabPanel, BorderLayout.NORTH);
+        add(playListTableScroll, BorderLayout.CENTER);
     }
 
     /**
