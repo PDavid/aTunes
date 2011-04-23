@@ -30,7 +30,6 @@ import javax.swing.JProgressBar;
 import net.sourceforge.atunes.gui.views.bars.ToolBar;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.menus.ApplicationMenuBar;
-import net.sourceforge.atunes.gui.views.panels.AudioObjectPropertiesPanel;
 import net.sourceforge.atunes.gui.views.panels.ContextPanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
@@ -126,13 +125,6 @@ public interface Frame {
      * @return the play list table
      */
     public PlayListTable getPlayListTable();
-
-    /**
-     * Gets the properties panel.
-     * 
-     * @return the properties panel
-     */
-    public AudioObjectPropertiesPanel getPropertiesPanel();
 
     /**
      * Gets the size.
@@ -273,14 +265,6 @@ public interface Frame {
      *            the show
      */
     public void showNavigationTable(boolean show);
-
-    /**
-     * Show song properties.
-     * 
-     * @param show
-     *            the show
-     */
-    public void showSongProperties(boolean show);
 
     /**
      * Show status bar.

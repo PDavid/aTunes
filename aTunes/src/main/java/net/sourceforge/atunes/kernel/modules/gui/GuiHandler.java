@@ -75,7 +75,6 @@ import net.sourceforge.atunes.gui.views.dialogs.TransferProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.UpdateDialog;
 import net.sourceforge.atunes.gui.views.dialogs.properties.PropertiesDialog;
 import net.sourceforge.atunes.gui.views.menus.ApplicationMenuBar;
-import net.sourceforge.atunes.gui.views.panels.AudioObjectPropertiesPanel;
 import net.sourceforge.atunes.gui.views.panels.ContextPanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
@@ -370,15 +369,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      */
     public RepositoryProgressDialog getProgressDialog() {
         return new RepositoryProgressDialog(frame.getFrame());
-    }
-
-    /**
-     * Gets the properties panel.
-     * 
-     * @return the properties panel
-     */
-    public AudioObjectPropertiesPanel getPropertiesPanel() {
-        return frame.getPropertiesPanel();
     }
 
     /**

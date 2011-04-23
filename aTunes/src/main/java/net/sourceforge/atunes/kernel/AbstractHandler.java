@@ -26,7 +26,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import net.sourceforge.atunes.kernel.modules.audioobjetproperties.AudioObjectPropertiesHandler;
 import net.sourceforge.atunes.kernel.modules.cdripper.RipperHandler;
 import net.sourceforge.atunes.kernel.modules.command.CommandHandler;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
@@ -149,7 +148,6 @@ public abstract class AbstractHandler implements ApplicationLifeCycleListener,
         handlers.add(SystemTrayHandler.getInstance());
         handlers.add(GeneralPurposePluginsHandler.getInstance());
         handlers.add(WebServicesHandler.getInstance());
-        handlers.add(AudioObjectPropertiesHandler.getInstance());
         handlers.add(TagHandler.getInstance());
         handlers.add(FullScreenHandler.getInstance());
 

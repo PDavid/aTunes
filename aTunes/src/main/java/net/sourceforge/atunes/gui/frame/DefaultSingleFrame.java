@@ -21,13 +21,10 @@
 package net.sourceforge.atunes.gui.frame;
 
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.JComponent;
-import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
 import net.sourceforge.atunes.gui.views.controls.CustomSplitPane;
@@ -96,20 +93,7 @@ public final class DefaultSingleFrame extends CommonSingleFrame implements net.s
     
     @Override
     protected JComponent getComponentB() {
-        JPanel centerPanel = new JPanel(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 1;
-        c.weighty = 1;
-        c.fill = GridBagConstraints.BOTH;
-        centerPanel.add(getPlayListPanel(), c);
-        c.gridy = 1;
-        c.weightx = 1;
-        c.weighty = 0;
-        c.fill = GridBagConstraints.BOTH;
-        centerPanel.add(getPropertiesPanel(), c);
-        return centerPanel;
+    	return getPlayListPanel();
     }
     
     @Override
