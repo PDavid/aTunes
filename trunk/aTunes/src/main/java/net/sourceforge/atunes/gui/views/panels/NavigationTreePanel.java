@@ -25,6 +25,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
 import javax.swing.ButtonGroup;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
@@ -38,6 +39,7 @@ import net.sourceforge.atunes.kernel.actions.ShowAlbumsInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowArtistsInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowFoldersInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowGenresInNavigatorAction;
+import net.sourceforge.atunes.kernel.actions.ShowNavigationTableAction;
 import net.sourceforge.atunes.kernel.actions.ShowYearsInNavigatorAction;
 import net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
@@ -85,6 +87,9 @@ public final class NavigationTreePanel extends JPanel {
         options.add(new JSeparator());
         options.add(Actions.getAction(ExpandTreesAction.class));
         options.add(Actions.getAction(CollapseTreesAction.class));
+        options.addSeparator();
+        options.add(new JCheckBoxMenuItem(Actions.getAction(ShowNavigationTableAction.class)));
+
 
     	treeComboBox = new JComboBox();
         treePanel = new JPanel(new CardLayout());
