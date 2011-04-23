@@ -24,12 +24,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
-import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
 
@@ -38,13 +36,11 @@ import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddPodcastFeedAction;
 import net.sourceforge.atunes.kernel.actions.AddRadioAction;
 import net.sourceforge.atunes.kernel.actions.CheckUpdatesAction;
-import net.sourceforge.atunes.kernel.actions.CollapseTreesAction;
 import net.sourceforge.atunes.kernel.actions.ConnectDeviceAction;
 import net.sourceforge.atunes.kernel.actions.CustomSearchAction;
 import net.sourceforge.atunes.kernel.actions.DisconnectDeviceAction;
 import net.sourceforge.atunes.kernel.actions.EditPreferencesAction;
 import net.sourceforge.atunes.kernel.actions.ExitAction;
-import net.sourceforge.atunes.kernel.actions.ExpandTreesAction;
 import net.sourceforge.atunes.kernel.actions.ExportAction;
 import net.sourceforge.atunes.kernel.actions.FullScreenAction;
 import net.sourceforge.atunes.kernel.actions.GoToWebSiteAction;
@@ -62,14 +58,10 @@ import net.sourceforge.atunes.kernel.actions.ReportBugOrFeatureRequestAction;
 import net.sourceforge.atunes.kernel.actions.RipCDAction;
 import net.sourceforge.atunes.kernel.actions.SelectRepositoryAction;
 import net.sourceforge.atunes.kernel.actions.ShowAboutAction;
-import net.sourceforge.atunes.kernel.actions.ShowAlbumsInNavigatorAction;
-import net.sourceforge.atunes.kernel.actions.ShowArtistsInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowAudioObjectPropertiesAction;
 import net.sourceforge.atunes.kernel.actions.ShowContextAction;
 import net.sourceforge.atunes.kernel.actions.ShowCoverNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowEqualizerAction;
-import net.sourceforge.atunes.kernel.actions.ShowFoldersInNavigatorAction;
-import net.sourceforge.atunes.kernel.actions.ShowGenresInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowLogAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigationTableAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigationTreeAction;
@@ -77,7 +69,6 @@ import net.sourceforge.atunes.kernel.actions.ShowRadioBrowserAction;
 import net.sourceforge.atunes.kernel.actions.ShowStatsAction;
 import net.sourceforge.atunes.kernel.actions.ShowStatusBarAction;
 import net.sourceforge.atunes.kernel.actions.ShowToolbarAction;
-import net.sourceforge.atunes.kernel.actions.ShowYearsInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.VolumeDownAction;
 import net.sourceforge.atunes.kernel.actions.VolumeUpAction;
 import net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView;
@@ -97,7 +88,6 @@ public final class ApplicationMenuBar extends JMenuBar {
     private JMenu file;
     private JMenu edit;
     private JMenu view;
-    private JMenu navigator;
     private JMenu playList;
     private JMenu tools;
     private JMenu device;
@@ -195,37 +185,6 @@ public final class ApplicationMenuBar extends JMenuBar {
     }
 
     /**
-     * Creates "Navigator" menu
-     * 
-     * @return
-     */
-    private JMenu getNavigatorMenu() {
-        if (navigator == null) {
-            navigator = new JMenu(I18nUtils.getString("NAVIGATOR"));
-            JRadioButtonMenuItem showArtist = new JRadioButtonMenuItem(Actions.getAction(ShowArtistsInNavigatorAction.class));
-            JRadioButtonMenuItem showAlbum = new JRadioButtonMenuItem(Actions.getAction(ShowAlbumsInNavigatorAction.class));
-            JRadioButtonMenuItem showGenre = new JRadioButtonMenuItem(Actions.getAction(ShowGenresInNavigatorAction.class));
-            JRadioButtonMenuItem showYear = new JRadioButtonMenuItem(Actions.getAction(ShowYearsInNavigatorAction.class));
-            JRadioButtonMenuItem showFolder = new JRadioButtonMenuItem(Actions.getAction(ShowFoldersInNavigatorAction.class));
-            ButtonGroup group = new ButtonGroup();
-            group.add(showArtist);
-            group.add(showAlbum);
-            group.add(showGenre);
-            group.add(showYear);
-            group.add(showFolder);
-            navigator.add(showArtist);
-            navigator.add(showAlbum);
-            navigator.add(showGenre);
-            navigator.add(showYear);
-            navigator.add(showFolder);
-            navigator.add(new JSeparator());
-            navigator.add(Actions.getAction(ExpandTreesAction.class));
-            navigator.add(Actions.getAction(CollapseTreesAction.class));
-        }
-        return navigator;
-    }
-
-    /**
      * Creates "Playlist" menu
      * 
      * @return
@@ -304,7 +263,6 @@ public final class ApplicationMenuBar extends JMenuBar {
         add(getFileMenu());
         add(getEditMenu());
         add(getViewMenu());
-        add(getNavigatorMenu());
         add(getPlayListMenu());
         add(getDeviceMenu());
         add(getToolsMenu());

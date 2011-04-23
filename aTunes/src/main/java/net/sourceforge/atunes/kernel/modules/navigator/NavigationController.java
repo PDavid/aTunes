@@ -20,8 +20,11 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,6 +37,8 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.SwingWorker;
@@ -44,6 +49,8 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
+import net.sourceforge.atunes.gui.lookandfeel.AbstractListCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.model.AbstractCommonColumnModel;
 import net.sourceforge.atunes.gui.model.NavigationTableColumnModel;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
@@ -196,6 +203,25 @@ final class NavigationController extends AbstractController implements AudioFile
         }
 
         navigationTablePanel.getNavigationTable().addMouseListener(new NavigationTableMouseListener(this, navigationTablePanel));
+        
+        // Add combo listener
+        navigationTreePanel.getTreeComboBox().addItemListener(new ItemListener() {
+			
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				NavigationHandler.getInstance().setNavigationView(e.getItem().getClass().getName());
+			}
+		});
+        
+        navigationTreePanel.getTreeComboBox().setRenderer(LookAndFeelSelector.getDefaultLookAndFeel().getListCellRenderer(new AbstractListCellRendererCode() {
+			
+			@Override
+			public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+				((JLabel)superComponent).setIcon(((AbstractNavigationView)value).getIcon());
+				((JLabel)superComponent).setText(((AbstractNavigationView)value).getTitle());
+				return superComponent;
+			}
+		}));
     }
 
     @Override
@@ -355,7 +381,7 @@ final class NavigationController extends AbstractController implements AudioFile
         	ApplicationState.getInstance().setNavigationView(navigationView.getName());
         }
         
-        getNavigationTreePanel().showNavigationView(navigationView.getName());
+        getNavigationTreePanel().showNavigationView(NavigationHandler.getInstance().getView(navigationView));
 
         boolean viewModeSupported = NavigationHandler.getInstance().getView(navigationView).isViewModeSupported();
         Actions.getAction(ShowAlbumsInNavigatorAction.class).setEnabled(viewModeSupported);
