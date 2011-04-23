@@ -89,10 +89,7 @@ import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ShowToolbarAction;
 import net.sourceforge.atunes.kernel.modules.cdripper.RipperHandler;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
-import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenHandler;
-import net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayList;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
@@ -170,8 +167,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     	showToolBar(state.isShowToolBar(), false);
         showStatusBar(state.isShowStatusBar(), false);
         showContextPanel(state.isUseContext());
-        showNavigationTree(state.isShowNavigationTree());
-        showNavigationTable(state.isShowNavigationTable());
         
         if (!ApplicationState.getInstance().isShowSystemTray()) {
             GuiHandler.getInstance().setFrameDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -874,36 +869,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
         dialog.setLocationRelativeTo(frame.getFrame());
         dialog.setVisible(true);
         return pane.getValue();
-    }
-
-    /**
-     * Show navigation tree.
-     * 
-     * @param show
-     *            the show
-     */
-    public void showNavigationTree(boolean show) {    	
-    	// Disable or enable actions
-        for (AbstractNavigationView navigationView : NavigationHandler.getInstance().getNavigationViews()) {
-        	navigationView.getActionToShowView().setEnabled(show);
-        }
-    	
-        ApplicationState.getInstance().setShowNavigationTree(show);
-        frame.showNavigationTree(show);
-        // Depending if is visible or not filtering is allowed or not
-        FilterHandler.getInstance().setFilterEnabled(NavigationHandler.getInstance().getTreeFilter(), show);
-    }
-
-    /**
-     * Show navigation table.
-     * 
-     * @param show
-     *            the show
-     */
-    public void showNavigationTable(boolean show) {
-        frame.showNavigationTable(show);
-        // Depending if is visible or not filtering is allowed or not
-        FilterHandler.getInstance().setFilterEnabled(NavigationHandler.getInstance().getTableFilter(), show);
     }
 
     /**

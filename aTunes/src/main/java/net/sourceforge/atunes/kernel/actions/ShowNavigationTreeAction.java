@@ -27,7 +27,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -49,7 +49,7 @@ public class ShowNavigationTreeAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        GuiHandler.getInstance().showNavigationTree((Boolean) getValue(SELECTED_KEY));
+        NavigationHandler.getInstance().showNavigationTree((Boolean) getValue(SELECTED_KEY));
     }
 
 }
