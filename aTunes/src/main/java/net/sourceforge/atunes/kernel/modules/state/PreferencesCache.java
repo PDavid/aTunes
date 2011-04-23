@@ -81,15 +81,12 @@ class PreferencesCache extends AbstractCache {
         if (preferenceId == null) {
             return;
         }
-        
-        Object previousValue = retrievePreference(preferenceId, null);
-        if (previousValue != null && !previousValue.equals(value)) {
-        	// Only store different values
-        	Element element = new Element(preferenceId.toString(), value != null ? new Preference(value) : value);
-        	getCache().put(element);
-        	getCache().flush();
-        	getLogger().debug(LogCategories.PREFERENCES, "Stored Preference: ", preferenceId, " Value: ", value != null ? value.toString() : null);
-        }
+
+        // Store same preferences even if value is equal, otherwise could cause problems with collections (where equals is always true)
+        Element element = new Element(preferenceId.toString(), value != null ? new Preference(value) : value);
+        getCache().put(element);
+        getCache().flush();
+        getLogger().debug(LogCategories.PREFERENCES, "Stored Preference: ", preferenceId, " Value: ", value != null ? value.toString() : null);
     }
     
     /**
