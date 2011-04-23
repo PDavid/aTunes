@@ -51,7 +51,6 @@ import net.sourceforge.atunes.gui.views.controls.CustomFrame;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.dialogs.UpdateDialog;
 import net.sourceforge.atunes.gui.views.menus.ApplicationMenuBar;
-import net.sourceforge.atunes.gui.views.panels.AudioObjectPropertiesPanel;
 import net.sourceforge.atunes.gui.views.panels.ContextPanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
@@ -95,7 +94,6 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
     private JProgressBar progressBar;
     private ApplicationMenuBar appMenuBar;
     private PlayListPanel playListPanel;
-    private AudioObjectPropertiesPanel propertiesPanel;
     private ContextPanel contextPanel;
     private PlayerControlsPanel playerControls;
     private JXStatusBar statusBar;
@@ -389,20 +387,6 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
         return progressBar;
     }
 
-    @Override
-    public AudioObjectPropertiesPanel getPropertiesPanel() {
-        if (propertiesPanel == null) {
-            propertiesPanel = new AudioObjectPropertiesPanel();
-            propertiesPanel.setMinimumSize(getPropertiesPanelMinimumSize());
-            propertiesPanel.setPreferredSize(getPropertiesPanelPreferredSize());
-            propertiesPanel.setMaximumSize(getPropertiesPanelMaximumSize());
-            if (!ApplicationState.getInstance().isShowAudioObjectProperties()) {
-                propertiesPanel.setVisible(false);
-            }
-        }
-        return propertiesPanel;
-    }
-
     /**
      * Gets the right status bar.
      * 
@@ -567,11 +551,6 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
         Dimension screen = getToolkit().getScreenSize();
         setSize(screen.width - MARGIN, screen.height - MARGIN);
         setExtendedState(Frame.MAXIMIZED_BOTH);
-    }
-
-    @Override
-    public void showSongProperties(boolean show) {
-        getPropertiesPanel().setVisible(show);
     }
 
     @Override

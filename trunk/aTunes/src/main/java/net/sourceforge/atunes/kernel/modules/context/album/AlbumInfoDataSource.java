@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import net.sourceforge.atunes.kernel.modules.audioobjetproperties.AudioObjectPropertiesHandler;
 import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
 import net.sourceforge.atunes.kernel.modules.context.AlbumListInfo;
 import net.sourceforge.atunes.kernel.modules.context.ContextInformationDataSource;
@@ -210,9 +209,6 @@ public class AlbumInfoDataSource implements ContextInformationDataSource {
                     ImageUtils.writeImageToFile(img, imageFileName);
                     // Add picture to songs of album
                     RepositoryHandler.getInstance().addExternalPictureForAlbum(file.getArtist(), file.getAlbum(), imageFile);
-
-                    // Update file properties panel
-                    AudioObjectPropertiesHandler.getInstance().refreshPicture();
                 } catch (IOException e) {
                     new Logger().internalError(e);
                 }

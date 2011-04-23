@@ -14,6 +14,7 @@ aTunes 2.1.0
 - Moved navigation views buttons to tool bar instead of tabbed pane
 - Removed play list controls panel
 - Removed play list tabs, used combo box
+- Removed AudioObjectPropertiesPanel
 - FIX: Exception during renaming of file name
 - FIX: Repository refresh never ends in certain situations [3024433]
 - FIX: Selected playlist element not saved when closing application

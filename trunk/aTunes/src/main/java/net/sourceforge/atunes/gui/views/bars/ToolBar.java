@@ -29,7 +29,6 @@ import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.CustomSearchAction;
 import net.sourceforge.atunes.kernel.actions.EditPreferencesAction;
 import net.sourceforge.atunes.kernel.actions.RipCDAction;
-import net.sourceforge.atunes.kernel.actions.ShowAudioObjectPropertiesAction;
 import net.sourceforge.atunes.kernel.actions.ShowContextAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigationTreeAction;
 import net.sourceforge.atunes.kernel.actions.ShowStatsAction;
@@ -41,7 +40,6 @@ public final class ToolBar extends JToolBar {
     private JButton preferences;
     private JToggleButton showNavigationTree;
     private JToggleButton showNavigationTable;
-    private JToggleButton showAudioObjectProperties;
     private JToggleButton showContext;
     private JButton stats;
     private JButton ripCD;
@@ -72,10 +70,6 @@ public final class ToolBar extends JToolBar {
         add(preferences);
 
         addSeparator();
-
-        showAudioObjectProperties = new JToggleButton(Actions.getAction(ShowAudioObjectPropertiesAction.class));
-        showAudioObjectProperties.setText(null);
-        add(showAudioObjectProperties);
 
         showContext = new JToggleButton(Actions.getAction(ShowContextAction.class));
         showContext.setText(null);
@@ -109,10 +103,6 @@ public final class ToolBar extends JToolBar {
 
     public JToggleButton getShowNavigationTable() {
         return showNavigationTable;
-    }
-
-    public JToggleButton getShowAudioObjectProperties() {
-        return showAudioObjectProperties;
     }
 
     public JToggleButton getShowContext() {
