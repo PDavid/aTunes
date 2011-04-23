@@ -35,6 +35,7 @@ aTunes 2.1.0
 - FIX: Use enter to change playing song in play list (patch by Michal Pantucek) [3159234]
 - FIX: Avoid enter key in filter text field to change current playing song (patch by Michal Pantucek) [3210857]
 - FIX: Some look and feels need to repaint progress bar when showing / hiding ticks
+- FIX: Navigator width is not restored after restarting app and execute action to show navigator
 
 aTunes 2.0.1
 -------------
