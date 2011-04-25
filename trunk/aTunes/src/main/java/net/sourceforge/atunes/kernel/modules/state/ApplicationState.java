@@ -788,17 +788,7 @@ public class ApplicationState {
     	this.cache.storePreference(Preferences.HIGHLIGHT_INCOMPLETE_TAG_FOLDERS_ATTRIBUTES, highlightIncompleteTagFoldersAttributes);
     }
     
-    
-
-    public boolean isShowToolBar() {
-    	return (Boolean) this.cache.retrievePreference(Preferences.SHOW_TOOL_BAR, true);
-    }
-
-    public void setShowToolBar(boolean showToolBar) {
-    	this.cache.storePreference(Preferences.SHOW_TOOL_BAR, showToolBar);
-    }
-    
-    
+       
 
     public String getPlayerEngine() {
     	return (String) this.cache.retrievePreference(Preferences.PLAYER_ENGINE, PlayerHandler.DEFAULT_ENGINE);        

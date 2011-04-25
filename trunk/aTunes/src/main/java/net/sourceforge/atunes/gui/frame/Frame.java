@@ -27,7 +27,6 @@ import java.awt.Point;
 import javax.swing.JFrame;
 import javax.swing.JProgressBar;
 
-import net.sourceforge.atunes.gui.views.bars.ToolBar;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.menus.ApplicationMenuBar;
 import net.sourceforge.atunes.gui.views.panels.ContextPanel;
@@ -132,13 +131,6 @@ public interface Frame {
      * @return the size
      */
     public Dimension getSize();
-
-    /**
-     * Gets the tool bar.
-     * 
-     * @return the tool bar
-     */
-    public ToolBar getToolBar();
 
     /**
      * Gets the progress bar
@@ -273,13 +265,6 @@ public interface Frame {
      *            the show
      */
     public void showStatusBar(boolean show);
-
-    /**
-     * Show tool bar.
-     * 
-     * @param show
-     */
-    public void showToolBar(boolean show);
 
     /**
      * Show device info.

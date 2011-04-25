@@ -18,31 +18,26 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.actions;
+package net.sourceforge.atunes.gui.views.controls.playerControls;
 
-import java.awt.event.ActionEvent;
+import java.awt.Dimension;
 
-import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
-import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.gui.views.controls.PopUpButton;
 
-/**
- * This action shows or hides tool bar
- * 
- * @author fleax
- * 
- */
-public class ShowToolbarAction extends AbstractAction {
+public class OptionsButton extends PopUpButton {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 945492564458852643L;
 
-    private static final long serialVersionUID = -6045235796588795737L;
-
-    ShowToolbarAction() {
-        super(I18nUtils.getString("SHOW_TOOL_BAR"), Images.getImage(Images.TOOL_BAR));
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        GuiHandler.getInstance().showToolBar((Boolean) getValue(SELECTED_KEY), true);
-    }
+	public OptionsButton(Dimension size) {
+		super("", PopUpButton.TOP_RIGHT);
+        setPreferredSize(size);
+        setMinimumSize(size);
+        setMaximumSize(size);
+		LookAndFeelSelector.getInstance().getCurrentLookAndFeel().putClientProperties(this);
+	}
 
 }

@@ -47,7 +47,7 @@ public class PlayAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         // disable enter key when focus is on filter text field (so event is not fired from PLAY/PAUSE button)
-        if (GuiHandler.getInstance().getToolBar().getFilterPanel().getFilterTextField().isFocusOwner()
+        if (GuiHandler.getInstance().getPlayerControls().getFilterPanel().getFilterTextField().isFocusOwner()
                 && !(e.getSource().getClass().equals(PlayPauseButton.class))) {
             return;
         }

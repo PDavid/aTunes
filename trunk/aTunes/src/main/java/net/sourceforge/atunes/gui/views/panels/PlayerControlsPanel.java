@@ -20,13 +20,13 @@
 
 package net.sourceforge.atunes.gui.views.panels;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.Action;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -38,6 +38,7 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.KaraokeButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.NextButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.NormalizationButton;
+import net.sourceforge.atunes.gui.views.controls.playerControls.OptionsButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.PlayPauseButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.PreviousButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.ProgressSlider;
@@ -47,6 +48,10 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.ShuffleButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.StopButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeLevel;
 import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
+import net.sourceforge.atunes.kernel.actions.Actions;
+import net.sourceforge.atunes.kernel.actions.EditPreferencesAction;
+import net.sourceforge.atunes.kernel.actions.ShowContextAction;
+import net.sourceforge.atunes.kernel.actions.ShowNavigationTreeAction;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
@@ -84,12 +89,6 @@ public final class PlayerControlsPanel extends JPanel {
     /** Height of progress bar when has ticks */
     private static final int PROGRESS_BAR_TICKS_HEIGHT = 40;
 
-    /** Horizontal margin of player controls */
-    private static final int PLAYER_CONTROLS_HORIZONTAL_MARGIN = 25;
-
-    /** Vertical margin of player controls */
-    private static final int PLAYER_CONTROLS_VERTICAL_MARGIN = 10;
-
     /************************************************ PANEL CONSTANTS ******************************************************/
 
     private ShuffleButton shuffleButton;
@@ -106,6 +105,7 @@ public final class PlayerControlsPanel extends JPanel {
     private boolean playing;
     private ProgressSlider progressSlider;
     private JPanel secondaryControls;
+    private FilterPanel filterPanel;
 
     /**
      * Instantiates a new player controls panel.
@@ -120,32 +120,54 @@ public final class PlayerControlsPanel extends JPanel {
      * Adds the content.
      */
     private void addContent() {
+    	OptionsButton options = new OptionsButton(OTHER_BUTTONS_SIZE);
+    	options.add(new JCheckBoxMenuItem(Actions.getAction(ShowNavigationTreeAction.class)));
+    	options.add(new JCheckBoxMenuItem(Actions.getAction(ShowContextAction.class)));
+    	options.add(Actions.getAction(EditPreferencesAction.class));
+    	
         progressSlider = new ProgressSlider();
-
-        JPanel sliderContainer = new JPanel(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        c.weightx = 1;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.insets = new Insets(0, 0, 3, PLAYER_CONTROLS_HORIZONTAL_MARGIN);
-        sliderContainer.add(progressSlider, c);
+        JPanel mainControls = getMainControlsPanel();
+        JPanel secondaryControls = getSecondaryControls();
+        filterPanel = new FilterPanel();
         
-        JPanel bottomPanel = new JPanel(new BorderLayout());
-        bottomPanel.setMinimumSize(new Dimension(10, PLAY_BUTTON_SIZE.height + PLAYER_CONTROLS_VERTICAL_MARGIN * 2));
-        JPanel mainControlsPanel = getMainControlsPanel();
-        bottomPanel.add(mainControlsPanel, BorderLayout.WEST);
-        bottomPanel.add(sliderContainer, BorderLayout.CENTER);
-        bottomPanel.add(getSecondaryControls(), BorderLayout.EAST);
-
-        c = new GridBagConstraints();
+        GridBagConstraints c = new GridBagConstraints();
+        
         c.gridx = 0;
         c.gridy = 0;
         c.weightx = 1;
-        c.weighty = 0;
+        c.weighty = 0.5;
+        c.gridwidth = 4;
         c.fill = GridBagConstraints.BOTH;
-        c.insets = new Insets(PLAYER_CONTROLS_VERTICAL_MARGIN, PLAYER_CONTROLS_HORIZONTAL_MARGIN, PLAYER_CONTROLS_VERTICAL_MARGIN, PLAYER_CONTROLS_HORIZONTAL_MARGIN);
-        add(bottomPanel, c);
+        c.insets = new Insets(3, 40, 0, 40);
+        add(progressSlider, c);
+                
+        c.gridy = 1;
+        c.gridwidth = 1;
+        c.weightx = 0;
+        c.weighty = 0;
+        c.insets = new Insets(1, 10, 5, 10);
+        c.fill = GridBagConstraints.NONE;
+        add(options, c);
         
-        setMinimumSize(new Dimension(10, PLAY_BUTTON_SIZE.height + PLAYER_CONTROLS_VERTICAL_MARGIN * 2));
+        c.gridx = 1;
+        c.weightx = 0;
+        c.weighty = 0.5;
+        c.insets = new Insets(0, 0, 5, 0);
+        c.fill = GridBagConstraints.BOTH;
+        add(mainControls, c);
+        
+        c.gridx = 2;
+        c.weightx = 1;
+        c.anchor = GridBagConstraints.WEST;
+        c.fill = GridBagConstraints.NONE;
+        add(secondaryControls, c);
+        
+        c.gridx = 3;
+        c.weightx = 0;
+        c.weighty = 0;
+        c.insets = new Insets(0, 0, 0, 10);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        add(filterPanel, c);
     }
 
     public ProgressSlider getProgressSlider() {
@@ -261,7 +283,7 @@ public final class PlayerControlsPanel extends JPanel {
             c.gridx = 5;
             c.weightx = 0;
             c.fill = GridBagConstraints.NONE;
-            c.insets = new Insets(0, 0, 3, 0);
+            c.insets = new Insets(0, -7, 3, 0);
             panel.add(volumeSlider, c);
             c.gridx = 6;
             panel.add(volumeLevel, c);
@@ -357,5 +379,12 @@ public final class PlayerControlsPanel extends JPanel {
     	karaokeButton.setVisible(show);
     	normalizeButton.setVisible(show);
     }
+
+	/**
+	 * @return the filterPanel
+	 */
+	public FilterPanel getFilterPanel() {
+		return filterPanel;
+	}
 
 }
