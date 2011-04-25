@@ -46,7 +46,6 @@ import javax.swing.Timer;
 
 import net.sourceforge.atunes.gui.OSXAdapter;
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.views.bars.ToolBar;
 import net.sourceforge.atunes.gui.views.controls.CustomFrame;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.dialogs.UpdateDialog;
@@ -97,7 +96,6 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
     private ContextPanel contextPanel;
     private PlayerControlsPanel playerControls;
     private JXStatusBar statusBar;
-    private ToolBar toolBar;
 
     /**
      * Used to retrieve JSplitPane divider size of current look and feel
@@ -463,14 +461,6 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
     }
 
     @Override
-    public ToolBar getToolBar() {
-        if (toolBar == null) {
-            toolBar = new ToolBar();
-        }
-        return toolBar;
-    }
-
-    @Override
     public void setCenterStatusBarText(String text, String toolTip) {
         getCenterStatusBar().setText(text);
         getCenterStatusBar().setToolTipText(toolTip);
@@ -556,11 +546,6 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
     @Override
     public void showStatusBar(boolean show) {
         getStatusBar().setVisible(show);
-    }
-
-    @Override
-    public void showToolBar(boolean show) {
-        getToolBar().setVisible(show);
     }
 
     @Override

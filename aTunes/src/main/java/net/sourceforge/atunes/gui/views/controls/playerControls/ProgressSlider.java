@@ -65,6 +65,8 @@ public class ProgressSlider extends JPanel {
         setOpaque(false);
 
         setExpandable(true);
+        
+        setMinimumSize(new Dimension(progressBar.getPreferredSize().width + time.getPreferredSize().width * 2, progressBar.getPreferredSize().height + time.getPreferredSize().height));
     }
 
     /**
@@ -92,7 +94,7 @@ public class ProgressSlider extends JPanel {
         c.weightx = expandable ? 1 : 0;
         c.weighty = 1;
         c.insets = new Insets(3, 5, 0, 5);
-        c.fill = GridBagConstraints.HORIZONTAL;
+        c.fill = GridBagConstraints.BOTH;
         add(progressBar, c);
         c.gridx = 2;
         c.weightx = 0;
@@ -120,6 +122,9 @@ public class ProgressSlider extends JPanel {
 		// Some look and feels (system look and feel) need to invalidate and repaint component to show/hide ticks
 		progressBar.invalidate();
 		progressBar.repaint();
+		
+		// Update minimum size
+        setMinimumSize(new Dimension(progressBar.getPreferredSize().width + time.getPreferredSize().width * 2, progressBar.getPreferredSize().height + time.getPreferredSize().height));
 	}
 
 	/**

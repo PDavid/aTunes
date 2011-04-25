@@ -22,47 +22,50 @@ package net.sourceforge.atunes.gui.views.panels;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.StringUtils;
 
-public class ToolBarFilterPanel extends JPanel {
+public class FilterPanel extends JPanel {
 
     private static final long serialVersionUID = 1801321624657098000L;
 
     private PopUpButton filterButton;
     private JTextField filterTextField;
-    private JButton clearFilterButton;
 
-    public ToolBarFilterPanel() {
+    public FilterPanel() {
         super(new GridBagLayout());
         addContent();
     }
 
     private void addContent() {
-        filterButton = new PopUpButton(I18nUtils.getString("FILTER"), PopUpButton.BOTTOM_RIGHT);
+        filterButton = new PopUpButton("", PopUpButton.TOP_RIGHT);
+        filterTextField = new CustomTextField(13);
+        filterTextField.setText(StringUtils.getString(I18nUtils.getString("FILTER"), "..."));
+        filterTextField.setToolTipText(I18nUtils.getString("FILTER_TEXTFIELD_TOOLTIP"));
+        setMinimumSize(filterTextField.getPreferredSize());
+        setPreferredSize(filterTextField.getPreferredSize());
+
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
-        c.weightx = 1;
-        c.anchor = GridBagConstraints.EAST;
+        c.weightx = 0;
+        c.weighty = 1;
+        c.fill = GridBagConstraints.BOTH;
+        c.insets = new Insets(1, 0, 1, 0);
         add(filterButton, c);
-        filterTextField = new CustomTextField(20);
-        filterTextField.setToolTipText(I18nUtils.getString("FILTER_TEXTFIELD_TOOLTIP"));
         c.gridx = 1;
         c.gridy = 0;
-        c.weightx = 0;
+        c.weightx = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(0, 0, 0, 0);
         add(filterTextField, c);
-        clearFilterButton = new JButton(Images.getImage(Images.UNDO));
-        clearFilterButton.setToolTipText(I18nUtils.getString("CLEAR_FILTER_BUTTON_TOOLTIP"));
-        c.gridx = 2;
-        add(clearFilterButton, c);
     }
 
     /**
@@ -77,13 +80,6 @@ public class ToolBarFilterPanel extends JPanel {
      */
     public JTextField getFilterTextField() {
         return filterTextField;
-    }
-
-    /**
-     * @return the clearFilterButton
-     */
-    public JButton getClearFilterButton() {
-        return clearFilterButton;
     }
 
 }

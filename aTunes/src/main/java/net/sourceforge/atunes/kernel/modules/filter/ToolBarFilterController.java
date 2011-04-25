@@ -22,6 +22,10 @@ package net.sourceforge.atunes.kernel.modules.filter;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,11 +35,17 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import net.sourceforge.atunes.gui.views.panels.ToolBarFilterPanel;
+import net.sourceforge.atunes.gui.views.panels.FilterPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
+import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.StringUtils;
 
-class ToolBarFilterController extends AbstractSimpleController<ToolBarFilterPanel> {
+class ToolBarFilterController extends AbstractSimpleController<FilterPanel> {
 
+	private FilterTextFieldDocumentListener listener;
+	
+	private boolean filterApplied = false;
+	
     private final class FilterTextFieldDocumentListener implements
 			DocumentListener {
 		@Override
@@ -74,31 +84,44 @@ class ToolBarFilterController extends AbstractSimpleController<ToolBarFilterPane
      */
     private Map<String, JRadioButtonMenuItem> filters;
 
-    ToolBarFilterController(ToolBarFilterPanel panel) {
+    ToolBarFilterController(FilterPanel panel) {
         super(panel);
         addBindings();
         group = new ButtonGroup();
         filters = new HashMap<String, JRadioButtonMenuItem>();
+        listener = new FilterTextFieldDocumentListener();
     }
 
     @Override
     protected void addBindings() {
-        // Add listeners
-        getComponentControlled().getFilterTextField().getDocument().addDocumentListener(new FilterTextFieldDocumentListener());
-
-        getComponentControlled().getClearFilterButton().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Disable filter
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        getComponentControlled().getFilterTextField().setText(null);
-                        applyFilter(getFilter());
-                    }
-                });
-            }
-        });
+    	getComponentControlled().getFilterTextField().addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (!filterApplied) {
+					getComponentControlled().getFilterTextField().getDocument().removeDocumentListener(listener);
+					getComponentControlled().getFilterTextField().setText(StringUtils.getString(I18nUtils.getString("FILTER"), "..."));
+				}
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				if (!filterApplied) {
+					getComponentControlled().getFilterTextField().setText("");
+					getComponentControlled().getFilterTextField().getDocument().addDocumentListener(listener);
+				}
+			}
+		});
+    	
+        getComponentControlled().getFilterTextField().addKeyListener(new KeyAdapter() {
+        	@Override
+        	public void keyTyped(KeyEvent e) {
+        		super.keyTyped(e);
+        		if (e.getKeyChar() == KeyEvent.VK_ESCAPE) {
+        			getComponentControlled().getFilterTextField().setText("");
+        		}
+        	}
+		});
     }
 
     @Override
@@ -162,8 +185,8 @@ class ToolBarFilterController extends AbstractSimpleController<ToolBarFilterPane
      * @param filter
      */
     private void applyFilter(String filter) {
+    	filterApplied = filter != null && !filter.equals("");
         FilterHandler.getInstance().applyFilter(filter);
-
     }
 
     /**

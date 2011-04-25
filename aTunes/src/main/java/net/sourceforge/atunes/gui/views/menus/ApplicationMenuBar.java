@@ -66,7 +66,6 @@ import net.sourceforge.atunes.kernel.actions.ShowNavigationTreeAction;
 import net.sourceforge.atunes.kernel.actions.ShowRadioBrowserAction;
 import net.sourceforge.atunes.kernel.actions.ShowStatsAction;
 import net.sourceforge.atunes.kernel.actions.ShowStatusBarAction;
-import net.sourceforge.atunes.kernel.actions.ShowToolbarAction;
 import net.sourceforge.atunes.kernel.actions.VolumeDownAction;
 import net.sourceforge.atunes.kernel.actions.VolumeUpAction;
 import net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView;
@@ -169,7 +168,6 @@ public final class ApplicationMenuBar extends JMenuBar {
             }
 
             view.add(new JSeparator());
-            view.add(new JCheckBoxMenuItem(Actions.getAction(ShowToolbarAction.class)));
             view.add(new JCheckBoxMenuItem(Actions.getAction(ShowStatusBarAction.class)));
             view.add(new JCheckBoxMenuItem(Actions.getAction(ShowNavigationTreeAction.class)));
             view.add(new JCheckBoxMenuItem(Actions.getAction(ShowContextAction.class)));

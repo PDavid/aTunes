@@ -106,21 +106,17 @@ public abstract class CommonSingleFrame extends AbstractSingleFrame {
         c.gridy = 0;
         c.weightx = 1;
         c.fill = GridBagConstraints.BOTH;
-        panel.add(getToolBar(), c);
-
-        c.gridx = 0;
-        c.gridy = 1;
         c.weighty = 1;
         panel.add(leftVerticalSplitPane, c);
 
         c.gridx = 0;
-        c.gridy = 2;
+        c.gridy = 1;
         c.weightx = 1;
         c.weighty = 0;
         c.fill = GridBagConstraints.BOTH;
         panel.add(getPlayerControls(), c);
         
-        c.gridy = 3;
+        c.gridy = 2;
         c.weighty = 0;
         panel.add(getStatusBar(), c);
 

@@ -34,7 +34,6 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.logging.Level;
 
-import javax.swing.Action;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -50,7 +49,6 @@ import net.sourceforge.atunes.gui.frame.DefaultSingleFrame;
 import net.sourceforge.atunes.gui.frame.Frame;
 import net.sourceforge.atunes.gui.frame.FrameState;
 import net.sourceforge.atunes.gui.popup.FadingPopupFactory;
-import net.sourceforge.atunes.gui.views.bars.ToolBar;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable.PlayState;
 import net.sourceforge.atunes.gui.views.dialogs.AboutDialog;
@@ -84,8 +82,6 @@ import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.PlaybackState;
 import net.sourceforge.atunes.kernel.PlaybackStateListener;
-import net.sourceforge.atunes.kernel.actions.Actions;
-import net.sourceforge.atunes.kernel.actions.ShowToolbarAction;
 import net.sourceforge.atunes.kernel.modules.cdripper.RipperHandler;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenHandler;
@@ -163,7 +159,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     	FrameState frameState = state.getFrameState(getFrame().getClass());
     	getFrame().applicationStarted(frameState);
     	
-    	showToolBar(state.isShowToolBar(), false);
         showStatusBar(state.isShowStatusBar(), false);
         showContextPanel(state.isUseContext());
         
@@ -406,15 +401,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
             searchDialog = new SearchDialog(frame.getFrame());
         }
         return searchDialog;
-    }
-
-    /**
-     * Gets the tool bar.
-     * 
-     * @return the tool bar
-     */
-    public ToolBar getToolBar() {
-        return frame.getToolBar();
     }
 
     /**
@@ -1041,15 +1027,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     		ApplicationState.getInstance().setShowStatusBar(show);
     	}
         frame.showStatusBar(show);
-        repaint();
-    }
-
-    public void showToolBar(boolean show, boolean save) {
-        Actions.getAction(ShowToolbarAction.class).putValue(Action.SELECTED_KEY, show);
-        if (save) {
-        	ApplicationState.getInstance().setShowToolBar(show);
-        }
-        frame.showToolBar(show);
         repaint();
     }
 
