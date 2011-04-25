@@ -50,23 +50,21 @@ public class ProgressSlider extends JPanel {
         time = new JLabel();
         time.setHorizontalAlignment(SwingConstants.CENTER);
         // Set enough width to allow more than three digits
-        time.setPreferredSize(new Dimension(50, 10));
+        time.setPreferredSize(new Dimension(40, 10));
 
         progressBar = new JSlider();
         progressBar.setToolTipText(I18nUtils.getString("CLICK_TO_SEEK"));
         progressBar.setMinimum(0);
         progressBar.setValue(0);
         progressBar.setFocusable(false);
-
+        
         remainingTime = new JLabel();
         remainingTime.setHorizontalAlignment(SwingConstants.CENTER);
         // Set enough width to allow more than three digits
-        remainingTime.setPreferredSize(new Dimension(50, 10));
+        remainingTime.setPreferredSize(new Dimension(40, 10));
         setOpaque(false);
 
-        setExpandable(true);
-        
-        setMinimumSize(new Dimension(progressBar.getPreferredSize().width + time.getPreferredSize().width * 2, progressBar.getPreferredSize().height + time.getPreferredSize().height));
+        setLayout();
     }
 
     /**
@@ -80,26 +78,26 @@ public class ProgressSlider extends JPanel {
     }
 
     /**
-     * Sets if progress slider should expand to fit all available space
-     * @param expandable
+     * Sets layout
      */
-    public void setExpandable(boolean expandable) {
+    public void setLayout() {
         removeAll();
 
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.insets = new Insets(2, 10, 0, 0);
+        c.weighty = 1;
+        c.fill = GridBagConstraints.VERTICAL;
         add(time, c);
         c.gridx = 1;
-        c.weightx = expandable ? 1 : 0;
-        c.weighty = 1;
-        c.insets = new Insets(3, 5, 0, 5);
-        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.insets = new Insets(0, 5, 0, 5);
+        c.fill = GridBagConstraints.HORIZONTAL;
         add(progressBar, c);
         c.gridx = 2;
         c.weightx = 0;
         c.insets = new Insets(2, 0, 0, 5);
-        c.fill = GridBagConstraints.NONE;
+        c.fill = GridBagConstraints.VERTICAL;
         add(remainingTime, c);
 
     }
