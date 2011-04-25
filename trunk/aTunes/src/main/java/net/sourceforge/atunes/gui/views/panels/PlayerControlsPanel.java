@@ -20,10 +20,13 @@
 
 package net.sourceforge.atunes.gui.views.panels;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 import javax.swing.Action;
 import javax.swing.JCheckBoxMenuItem;
@@ -57,6 +60,10 @@ import net.sourceforge.atunes.utils.GuiUtils;
 /**
  * The player controls panel.
  */
+/**
+ * @author alex
+ *
+ */
 public final class PlayerControlsPanel extends JPanel {
 
     private static final long serialVersionUID = -8647737014195638177L;
@@ -88,6 +95,11 @@ public final class PlayerControlsPanel extends JPanel {
 
     /** Height of progress bar when has ticks */
     private static final int PROGRESS_BAR_TICKS_HEIGHT = 40;
+    
+	/**
+	 * Minimum width of progress bar to be shown at bottom
+	 */
+	private static final int PROGRESS_BAR_BOTTOM_MINIMUM_SIZE = 300;
 
     /************************************************ PANEL CONSTANTS ******************************************************/
 
@@ -125,6 +137,10 @@ public final class PlayerControlsPanel extends JPanel {
     	options.add(new JCheckBoxMenuItem(Actions.getAction(ShowContextAction.class)));
     	options.add(Actions.getAction(EditPreferencesAction.class));
     	
+    	JPanel topProgressSliderContainer = new JPanel(new BorderLayout());
+    	JPanel bottomProgressSliderContainer = new JPanel(new BorderLayout());
+    	bottomProgressSliderContainer.addComponentListener(new BottomProgressSliderPanelComponentAdapter(bottomProgressSliderContainer, topProgressSliderContainer));
+    	
         progressSlider = new ProgressSlider();
         JPanel mainControls = getMainControlsPanel();
         JPanel secondaryControls = getSecondaryControls();
@@ -135,11 +151,11 @@ public final class PlayerControlsPanel extends JPanel {
         c.gridx = 0;
         c.gridy = 0;
         c.weightx = 1;
-        c.weighty = 0.5;
-        c.gridwidth = 4;
+        c.weighty = 0;
+        c.gridwidth = 5;
         c.fill = GridBagConstraints.BOTH;
         c.insets = new Insets(3, 40, 0, 40);
-        add(progressSlider, c);
+        add(topProgressSliderContainer, c);
                 
         c.gridy = 1;
         c.gridwidth = 1;
@@ -157,12 +173,18 @@ public final class PlayerControlsPanel extends JPanel {
         add(mainControls, c);
         
         c.gridx = 2;
-        c.weightx = 1;
+        c.weightx = 0;
         c.anchor = GridBagConstraints.WEST;
         c.fill = GridBagConstraints.NONE;
         add(secondaryControls, c);
         
         c.gridx = 3;
+        c.weightx = 1;
+        c.insets = new Insets(0, 20, 0, 20);
+        c.fill = GridBagConstraints.BOTH;
+        add(bottomProgressSliderContainer, c);
+        
+        c.gridx = 4;
         c.weightx = 0;
         c.weighty = 0;
         c.insets = new Insets(0, 0, 0, 10);
@@ -385,6 +407,36 @@ public final class PlayerControlsPanel extends JPanel {
 	 */
 	public FilterPanel getFilterPanel() {
 		return filterPanel;
+	}
+	
+	private final class BottomProgressSliderPanelComponentAdapter extends ComponentAdapter {
+		
+		private final JPanel bottomProgressSliderPanel;
+		private final JPanel topProgressSliderPanel;
+		private Boolean showProgressOnTop = null;
+
+		private BottomProgressSliderPanelComponentAdapter(JPanel bottomProgressSliderPanel, JPanel topProgressSliderPanel) {
+			this.bottomProgressSliderPanel = bottomProgressSliderPanel;
+			this.topProgressSliderPanel = topProgressSliderPanel;
+		}
+
+		@Override
+		public void componentResized(ComponentEvent e) {
+			boolean showOnTop = bottomProgressSliderPanel.getWidth() < PROGRESS_BAR_BOTTOM_MINIMUM_SIZE;
+
+			if (showProgressOnTop == null || showProgressOnTop != showOnTop) {
+				if (showOnTop) {
+					bottomProgressSliderPanel.remove(progressSlider);
+					progressSlider.setLayout();
+					topProgressSliderPanel.add(progressSlider, BorderLayout.CENTER);
+				} else {
+					topProgressSliderPanel.remove(progressSlider);
+					progressSlider.setLayout();
+					bottomProgressSliderPanel.add(progressSlider, BorderLayout.CENTER);
+				}
+				showProgressOnTop = showOnTop;
+			}
+		}
 	}
 
 }
