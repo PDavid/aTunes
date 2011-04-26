@@ -111,7 +111,7 @@
 	<!-- Creates a Ubuntu/Debian package -->
 	<target name="create_deb" depends="prepare">
 
-		<desktopEntry toFile="${deploy_folder}/atunes.desktop" name="aTunes" icon="atunes125" exec="atunes" categories="Audio;AudioVideo;" type="Application">
+		<desktopEntry toFile="${deploy_folder}/atunes.desktop" name="aTunes" icon="atunes" exec="atunes" categories="Audio;AudioVideo;" type="Application">
 			<name lang="de" value="aTunes" />
 			<genericName value="Audio Player" />
 			<genericName lang="de" value="Audioplayer" />
@@ -142,7 +142,7 @@
 				<exclude name="**/*.command" />
 				<exclude name="**/*.ico" />
 				<exclude name="**/*.icns" />
-				<exclude name="**/atunes125.png" />
+				<exclude name="**/atunes.png" />
 				<exclude name="**/shortcutSpec.xml" />
 				<exclude name="**/settings/**" />
 				<exclude name="**/translations/**" />
@@ -150,7 +150,7 @@
 				<exclude name="**/atunes" />
 			</tarfileset>
 			<tarfileset dir="${build_resources}" prefix="usr/share/pixmaps" username="root" group="root">
-				<include name="**/atunes125.png" />
+				<include name="**/atunes.png" />
 			</tarfileset>
 			<tarfileset dir="${build_resources}" prefix="usr/bin" username="root" group="root" filemode="755">
 				<include name="atunes" />
