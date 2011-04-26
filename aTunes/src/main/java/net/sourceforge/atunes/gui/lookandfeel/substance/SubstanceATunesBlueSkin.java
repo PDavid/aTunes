@@ -194,31 +194,19 @@ public final class SubstanceATunesBlueSkin extends SubstanceSkin {
 
 		SubstanceColorScheme activeScheme = new BlueColorScheme("aTunes Blue");
 		SubstanceColorScheme defaultScheme = new MetallicColorScheme("Metallic");
-		SubstanceColorScheme disabledScheme = new DisabledMetallicColorScheme(
-				"Disabled Metallic");
+		SubstanceColorScheme disabledScheme = new DisabledMetallicColorScheme("Disabled Metallic");
 
 		// the default theme bundle
-		SubstanceColorSchemeBundle defaultSchemeBundle = new SubstanceColorSchemeBundle(
-				activeScheme, defaultScheme, disabledScheme);
-		defaultSchemeBundle.registerHighlightColorScheme(activeScheme, 0.6f,
-				ComponentState.ROLLOVER_UNSELECTED);
-		defaultSchemeBundle.registerHighlightColorScheme(activeScheme, 0.8f,
-				ComponentState.SELECTED);
-		defaultSchemeBundle.registerHighlightColorScheme(activeScheme, 0.95f,
-				ComponentState.ROLLOVER_SELECTED);
-		defaultSchemeBundle.registerHighlightColorScheme(activeScheme, 0.8f,
-				ComponentState.ARMED, ComponentState.ROLLOVER_ARMED);
-		this.registerDecorationAreaSchemeBundle(defaultSchemeBundle,
-				DecorationAreaType.NONE);
+		SubstanceColorSchemeBundle defaultSchemeBundle = new SubstanceColorSchemeBundle(defaultScheme, defaultScheme, disabledScheme);
+		defaultSchemeBundle.registerHighlightColorScheme(activeScheme, 0.8f, ComponentState.ROLLOVER_UNSELECTED);
+		defaultSchemeBundle.registerHighlightColorScheme(activeScheme, 0.8f, ComponentState.SELECTED);
+		defaultSchemeBundle.registerHighlightColorScheme(activeScheme, 0.8f,ComponentState.ROLLOVER_SELECTED);
+		defaultSchemeBundle.registerHighlightColorScheme(activeScheme, 0.8f, ComponentState.ARMED, ComponentState.ROLLOVER_ARMED);
+		this.registerDecorationAreaSchemeBundle(defaultSchemeBundle, DecorationAreaType.NONE);
 
 		// the special theme bundle
-		SubstanceColorSchemeBundle specialSchemeBundle = new SubstanceColorSchemeBundle(
-				activeScheme, activeScheme, disabledScheme);
-		this.registerDecorationAreaSchemeBundle(specialSchemeBundle,
-				DecorationAreaType.PRIMARY_TITLE_PANE,
-				DecorationAreaType.SECONDARY_TITLE_PANE,
-				DecorationAreaType.FOOTER,
-				DecorationAreaType.HEADER);
+		SubstanceColorSchemeBundle specialSchemeBundle = new SubstanceColorSchemeBundle(activeScheme, activeScheme, disabledScheme);
+		this.registerDecorationAreaSchemeBundle(specialSchemeBundle, DecorationAreaType.PRIMARY_TITLE_PANE, DecorationAreaType.SECONDARY_TITLE_PANE, DecorationAreaType.FOOTER, DecorationAreaType.HEADER);
 
 		this.setSelectedTabFadeStart(1);
 		this.setSelectedTabFadeEnd(1);

@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.gui.lookandfeel.substance;
 
+import java.awt.Color;
+
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
@@ -41,28 +43,29 @@ public final class SubstanceATunesDarkSkin extends SubstanceSkin {
 	 */
 	public SubstanceATunesDarkSkin() {
 
-		SubstanceColorScheme activeScheme = new TintColorScheme(
-				new EbonyColorScheme(), 0.1f);
-		SubstanceColorScheme defaultScheme = new EbonyColorScheme();
-		SubstanceColorScheme disabledScheme = new TintColorScheme(
-				new DarkGrayColorScheme(), 0.2);
+		SubstanceColorScheme activeScheme = new TintColorScheme(new EbonyColorScheme(), 0.1f);
+		SubstanceColorScheme defaultScheme = new TintColorScheme(new DarkGrayColorScheme() {
+			@Override
+			public Color getForegroundColor() {
+				return new Color(200, 200, 200);
+			}
+		}, 0.1f);
+		SubstanceColorScheme disabledScheme = new TintColorScheme(new DarkGrayColorScheme(), 0.5f);
 
 		// the default theme bundle
-		SubstanceColorSchemeBundle defaultSchemeBundle = new SubstanceColorSchemeBundle(
-				activeScheme, defaultScheme, disabledScheme);
-		defaultSchemeBundle.registerHighlightColorScheme(activeScheme, 0.7f,
-				ComponentState.SELECTED);
-		this.registerDecorationAreaSchemeBundle(defaultSchemeBundle,
-				DecorationAreaType.NONE);
+		SubstanceColorSchemeBundle defaultSchemeBundle = new SubstanceColorSchemeBundle(activeScheme, defaultScheme, disabledScheme);
+		defaultSchemeBundle.registerHighlightColorScheme(activeScheme, 0.7f, ComponentState.ROLLOVER_UNSELECTED);
+		defaultSchemeBundle.registerHighlightColorScheme(activeScheme, 0.7f, ComponentState.SELECTED);
+		defaultSchemeBundle.registerHighlightColorScheme(activeScheme, 0.7f,ComponentState.ROLLOVER_SELECTED);
+		defaultSchemeBundle.registerHighlightColorScheme(activeScheme, 0.7f, ComponentState.ARMED, ComponentState.ROLLOVER_ARMED);
+		this.registerDecorationAreaSchemeBundle(defaultSchemeBundle, DecorationAreaType.NONE);
 
 		// the special theme bundle
-		SubstanceColorSchemeBundle specialSchemeBundle = new SubstanceColorSchemeBundle(
-				activeScheme, activeScheme, disabledScheme);
-		this.registerDecorationAreaSchemeBundle(specialSchemeBundle,
-				DecorationAreaType.PRIMARY_TITLE_PANE,
-				DecorationAreaType.SECONDARY_TITLE_PANE,
-				DecorationAreaType.FOOTER,
-				DecorationAreaType.HEADER, DecorationAreaType.GENERAL);
+		SubstanceColorSchemeBundle specialSchemeBundle = new SubstanceColorSchemeBundle(activeScheme, activeScheme, disabledScheme);
+		this.registerDecorationAreaSchemeBundle(specialSchemeBundle, DecorationAreaType.PRIMARY_TITLE_PANE, DecorationAreaType.SECONDARY_TITLE_PANE, DecorationAreaType.FOOTER, DecorationAreaType.HEADER);
+
+		this.setSelectedTabFadeStart(1);
+		this.setSelectedTabFadeEnd(1);
 
 		this.buttonShaper = new ClassicButtonShaper();
 		this.fillPainter = new ClassicFillPainter();
