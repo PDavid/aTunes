@@ -17,6 +17,7 @@ aTunes 2.1.0
 - Removed AudioObjectPropertiesPanel
 - Removed toolbar
 - Player controls panel redesigned
+- Plugins disabled by default (use "enable-plugins" argument to enable)
 - FIX: Exception during renaming of file name
 - FIX: Repository refresh never ends in certain situations [3024433]
 - FIX: Selected playlist element not saved when closing application

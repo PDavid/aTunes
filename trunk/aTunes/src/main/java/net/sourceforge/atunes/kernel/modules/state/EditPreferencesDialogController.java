@@ -22,6 +22,8 @@ package net.sourceforge.atunes.kernel.modules.state;
 
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.DefaultListModel;
 
@@ -42,33 +44,36 @@ import net.sourceforge.atunes.gui.views.dialogs.editPreferences.PodcastFeedPanel
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.RadioPanel;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.RepositoryPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
+import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.misc.log.LogCategories;
 
 final class EditPreferencesDialogController extends AbstractSimpleController<EditPreferencesDialog> {
 
     /** The panels of the edit preferences dialog */
-    private AbstractPreferencesPanel[] panels;
+    private List<AbstractPreferencesPanel> panels;
 
     /**
      * Instantiates a new edits the preferences dialog controller.
      */
     EditPreferencesDialogController(EditPreferencesDialog dialog) {
         super(dialog);
-        panels = new AbstractPreferencesPanel[] { 
-        		      new GeneralPanel(), 
-        		      new RepositoryPanel(), 
-        		      new PlayerPanel(), 
-        		      new NavigatorPanel(), 
-        		      new PlayListPrefPanel(),
-                      new OSDPanel(), 
-                      new ContextPanel(), 
-                      new InternetPanel(), 
-                      new LastFmPanel(), 
-                      new DevicePanel(), 
-                      new RadioPanel(), 
-                      new PodcastFeedPanel(), 
-                      new ImportExportPanel(),
-                      new PluginsPanel(dialog) };
+        panels = new ArrayList<AbstractPreferencesPanel>();
+        panels.add(new GeneralPanel());
+        panels.add(new RepositoryPanel()); 
+        panels.add(new PlayerPanel()); 
+        panels.add(new NavigatorPanel()); 
+        panels.add(new PlayListPrefPanel());
+        panels.add(new OSDPanel()); 
+        panels.add(new ContextPanel()); 
+        panels.add(new InternetPanel()); 
+        panels.add(new LastFmPanel()); 
+        panels.add(new DevicePanel()); 
+        panels.add(new RadioPanel()); 
+        panels.add(new PodcastFeedPanel()); 
+        panels.add(new ImportExportPanel());
+        if (Kernel.isEnablePlugins()) {
+        	panels.add(new PluginsPanel(dialog));
+        }
         getComponentControlled().setPanels(panels);
         buildList();
         addBindings();
@@ -185,7 +190,7 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
         getComponentControlled().resetPanels();
 
         // Set first panel (selected) dirty
-        panels[0].setDirty(true);
+        panels.get(0).setDirty(true);
         getComponentControlled().getList().setSelectedIndex(0);
         
         getComponentControlled().setVisible(true);
