@@ -67,6 +67,11 @@ public class Kernel {
     /** Timer used to measure start time */
     private static Timer timer;
 
+	/**
+	 * True to enable plugins
+	 */
+	private static boolean enablePlugins;
+
     /**
      * Constructor of Kernel.
      */
@@ -248,6 +253,13 @@ public class Kernel {
     public static void setNoUpdate(boolean noUpdate) {
         Kernel.noUpdate = noUpdate;
     }
+    
+    /**
+     * @param enable
+     */
+    public static void setEnablePlugins(boolean enable) {
+    	Kernel.enablePlugins = enable;
+    }
 
     private static Logger getLogger() {
         if (logger == null) {
@@ -255,4 +267,11 @@ public class Kernel {
         }
         return logger;
     }
+
+	/**
+	 * @return the enablePlugins
+	 */
+	public static boolean isEnablePlugins() {
+		return enablePlugins;
+	}
 }

@@ -132,11 +132,20 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
 
     @Override
     protected void initHandler() {
-        initPlugins();
+    	if (Kernel.isEnablePlugins()) {
+    		initPlugins();
+    	} else {
+    		getLogger().info(LogCategories.PLUGINS, "Plugins are disabled");
+    	}
+    	
     }
 
     @Override
     public void applicationStarted(List<AudioObject> playList) {
+    	if (!Kernel.isEnablePlugins()) {
+    		return;
+    	}
+    	
         addPluginListeners();
 
         Timer t = new Timer();

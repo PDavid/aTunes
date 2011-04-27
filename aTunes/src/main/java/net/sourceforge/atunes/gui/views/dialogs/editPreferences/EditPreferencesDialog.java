@@ -26,6 +26,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -53,7 +54,7 @@ public final class EditPreferencesDialog extends AbstractCustomModalFrame {
     private JButton cancel;
     private JPanel options;
     private JList list;
-    private AbstractPreferencesPanel[] panels;
+    private List<AbstractPreferencesPanel> panels;
 
     /**
      * Instantiates a new edits the preferences dialog.
@@ -79,15 +80,6 @@ public final class EditPreferencesDialog extends AbstractCustomModalFrame {
      */
     public static void main(String[] args) {
         new EditPreferencesDialog(null).setVisible(true);
-    }
-
-    /**
-     * Gets the audio scrobbler panel.
-     * 
-     * @return the audio scrobbler panel
-     */
-    public ContextPanel getContextPanel() {
-        return (ContextPanel) panels[6];
     }
 
     /**
@@ -180,11 +172,11 @@ public final class EditPreferencesDialog extends AbstractCustomModalFrame {
      * @param panels
      *            the new panels
      */
-    public void setPanels(AbstractPreferencesPanel[] panels) {
+    public void setPanels(List<AbstractPreferencesPanel> panels) {
         this.panels = panels;
         options.setLayout(new CardLayout());
-        for (int i = 0; i < panels.length; i++) {
-            options.add(Integer.toString(i), panels[i]);
+        for (int i = 0; i < panels.size(); i++) {
+            options.add(Integer.toString(i), panels.get(i));
         }
         GuiUtils.applyComponentOrientation(this);
     }
@@ -198,7 +190,7 @@ public final class EditPreferencesDialog extends AbstractCustomModalFrame {
     public void showPanel(int index) {
         ((CardLayout) options.getLayout()).show(options, Integer.toString(index));
         // Mark panel as dirty
-        this.panels[index].setDirty(true);
+        this.panels.get(index).setDirty(true);
     }
     
     /**
