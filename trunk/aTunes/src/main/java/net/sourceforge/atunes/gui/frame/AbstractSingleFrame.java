@@ -42,6 +42,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.JSplitPane;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import net.sourceforge.atunes.gui.OSXAdapter;
@@ -609,11 +610,38 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
     	ApplicationState.getInstance().setFrameState(GuiHandler.getInstance().getFrame().getClass(), frameState);
     }
 
-    protected final void applyVisibility(boolean show, String s, Component c, JSplitPane sp) {
+    protected final void applyVisibility(boolean show, String s, Component c, final JSplitPane sp) {
         boolean b = c.isVisible();
         c.setVisible(show);
         if (show && !b) {
             applySplitPaneDividerPosition(sp, frameState.getSplitPaneDividerPos(s), 0);
+            
+            
+            if (getExtendedState() != Frame.MAXIMIZED_BOTH) {
+                // if not maximized, if panel size is less than its minimum size, then change window size
+                SwingUtilities.invokeLater(new Runnable() {
+                	
+                	private void testComponentSize(Component c) {
+                		Dimension minimumSize = c.getMinimumSize();
+                		Dimension actualSize = c.getSize();
+                		int minimumSizeComponent = sp.getOrientation() == JSplitPane.HORIZONTAL_SPLIT ? minimumSize.width : minimumSize.height;
+                		int actualSizeComponent = sp.getOrientation() == JSplitPane.HORIZONTAL_SPLIT ? actualSize.width : actualSize.height;
+                		if (actualSizeComponent < minimumSizeComponent) {
+                			int newWidth = sp.getOrientation() == JSplitPane.HORIZONTAL_SPLIT ? getSize().width + (minimumSizeComponent - actualSizeComponent) : getSize().width;
+                			int newHeight = sp.getOrientation() == JSplitPane.HORIZONTAL_SPLIT ? getSize().height : getSize().height + (minimumSizeComponent - actualSizeComponent);
+                			getLogger().info(LogCategories.DESKTOP, "Changing window size to : ", newWidth , "x", newHeight);
+                			setSize(newWidth, newHeight);
+                		}
+                	}
+                	
+                	@Override
+                	public void run() {
+                		testComponentSize(sp.getLeftComponent());
+                		testComponentSize(sp.getRightComponent());
+                	}
+                });
+            }
+            
         }
         
         // Depending on visibility, set divider size, so if panel is not shown, its divider is hidden too 
