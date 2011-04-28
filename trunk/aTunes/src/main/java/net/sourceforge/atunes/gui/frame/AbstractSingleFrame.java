@@ -611,9 +611,8 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
     }
 
     protected final void applyVisibility(boolean show, String s, Component c, final JSplitPane sp) {
-        boolean b = c.isVisible();
         c.setVisible(show);
-        if (show && !b) {
+        if (show) {
             applySplitPaneDividerPosition(sp, frameState.getSplitPaneDividerPos(s), 0);
             
             
