@@ -156,7 +156,7 @@ public class LyricWikiEngine extends AbstractLyricsEngine {
      * @return
      */
     private String reviewLyrics(String lyrics) {
-    	if (lyrics.contains(UNFORTUNATELY_WE_ARE_NOT_LICENSED_TO_DISPLAY_THE_FULL_LYRICS)) {
+    	if (lyrics != null && lyrics.contains(UNFORTUNATELY_WE_ARE_NOT_LICENSED_TO_DISPLAY_THE_FULL_LYRICS)) {
     		return null;
     	}
     	return lyrics;
