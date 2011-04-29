@@ -614,6 +614,8 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
     	// Get divider split location before its changed when showing component
     	final int location = frameState.getSplitPaneDividerPos(s);
         c.setVisible(show);
+        // Depending on visibility, set divider size, so if panel is not shown, its divider is hidden too 
+       	sp.setDividerSize(show ? defaultDividerSize : 0);
         if (show) {
             SwingUtilities.invokeLater(new Runnable() {
 
@@ -638,8 +640,6 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
             			testComponentSize(sp.getLeftComponent());
             			testComponentSize(sp.getRightComponent());
             		}
-                    // Depending on visibility, set divider size, so if panel is not shown, its divider is hidden too 
-                   	sp.setDividerSize(show ? defaultDividerSize : 0);
             	}
             });
         }
