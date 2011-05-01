@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -37,7 +36,7 @@ public class RefreshDeviceAction extends AbstractAction {
     private static final long serialVersionUID = -5047885921099142L;
 
     public RefreshDeviceAction() {
-        super(I18nUtils.getString("REFRESH"), Images.getImage(Images.DEVICE_REFRESH));
+        super(I18nUtils.getString("REFRESH"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("REFRESH"));
         setEnabled(false);
     }

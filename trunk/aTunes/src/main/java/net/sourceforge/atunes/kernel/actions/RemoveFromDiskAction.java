@@ -32,7 +32,6 @@ import javax.swing.SwingWorker;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView;
@@ -84,7 +83,7 @@ public class RemoveFromDiskAction extends AbstractAction {
     private Logger logger;
 
     public RemoveFromDiskAction() {
-        super(I18nUtils.getString("REMOVE_FROM_DISK"), Images.getImage(Images.DELETE_FILE));
+        super(I18nUtils.getString("REMOVE_FROM_DISK"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("REMOVE_FROM_DISK"));
     }
 

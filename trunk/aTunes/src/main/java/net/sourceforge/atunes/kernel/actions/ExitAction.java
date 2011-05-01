@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -37,7 +36,7 @@ public class ExitAction extends AbstractAction {
     private static final long serialVersionUID = 1900672708942690561L;
 
     ExitAction() {
-        super(I18nUtils.getString("EXIT"), Images.getImage(Images.EXIT));
+        super(I18nUtils.getString("EXIT"));
     }
 
     @Override

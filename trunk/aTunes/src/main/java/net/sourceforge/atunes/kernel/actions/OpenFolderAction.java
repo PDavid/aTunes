@@ -24,7 +24,6 @@ import java.io.File;
 import java.util.HashSet;
 import java.util.List;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -40,7 +39,7 @@ public class OpenFolderAction extends AbstractActionOverSelectedObjects<AudioFil
     private static final long serialVersionUID = 1682289345922375850L;
 
     OpenFolderAction() {
-        super(I18nUtils.getString("OPEN_FOLDER"), Images.getImage(Images.FOLDER_ORANGE), AudioFile.class);
+        super(I18nUtils.getString("OPEN_FOLDER"), AudioFile.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("OPEN_FOLDER"));
     }
 

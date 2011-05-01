@@ -26,7 +26,6 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.tags.TagHandler;
 import net.sourceforge.atunes.model.Album;
@@ -37,7 +36,7 @@ public class EditTitlesAction extends AbstractAction {
     private static final long serialVersionUID = -2883223880879440970L;
 
     EditTitlesAction() {
-        super(I18nUtils.getString("EDIT_TITLES"), Images.getImage(Images.EDIT_ALBUM));
+        super(I18nUtils.getString("EDIT_TITLES"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("EDIT_TITLES"));
     }
 

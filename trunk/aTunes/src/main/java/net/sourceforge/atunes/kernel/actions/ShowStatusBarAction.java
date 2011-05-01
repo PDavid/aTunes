@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -38,7 +37,7 @@ public class ShowStatusBarAction extends AbstractAction {
     private static final long serialVersionUID = 2303076465024539635L;
 
     ShowStatusBarAction() {
-        super(I18nUtils.getString("SHOW_STATUS_BAR"), Images.getImage(Images.STATUS_BAR));
+        super(I18nUtils.getString("SHOW_STATUS_BAR"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_STATUS_BAR"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().isShowStatusBar());
     }

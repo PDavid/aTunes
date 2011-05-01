@@ -25,7 +25,6 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -40,7 +39,7 @@ public class CustomSearchAction extends AbstractAction {
     private static final long serialVersionUID = 7036619806075628842L;
 
     CustomSearchAction() {
-        super(I18nUtils.getString("SEARCH"), Images.getImage(Images.SEARCH));
+        super(I18nUtils.getString("SEARCH"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SEARCH"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.CTRL_MASK));
     }

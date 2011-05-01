@@ -25,7 +25,6 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -40,7 +39,7 @@ public class AddPodcastFeedAction extends AbstractAction {
     private static final long serialVersionUID = 2866782020999148427L;
 
     AddPodcastFeedAction() {
-        super(I18nUtils.getString("ADD_PODCAST_FEED"), Images.getImage(Images.RSS_ADD));
+        super(I18nUtils.getString("ADD_PODCAST_FEED"));
     }
 
     @Override

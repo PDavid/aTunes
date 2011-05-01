@@ -26,7 +26,6 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.dialogs.SearchDialog;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
@@ -42,7 +41,7 @@ public class SearchArtistAtAction extends AbstractAction {
     private static final long serialVersionUID = -8934175706272236046L;
 
     SearchArtistAtAction() {
-        super(StringUtils.getString(I18nUtils.getString("SEARCH_ARTIST_AT"), "..."), Images.getImage(Images.SEARCH_AT));
+        super(StringUtils.getString(I18nUtils.getString("SEARCH_ARTIST_AT"), "..."));
         putValue(SHORT_DESCRIPTION, StringUtils.getString(I18nUtils.getString("SEARCH_ARTIST_AT"), "..."));
     }
 

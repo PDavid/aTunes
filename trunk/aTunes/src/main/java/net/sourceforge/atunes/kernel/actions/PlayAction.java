@@ -26,7 +26,6 @@ import java.util.List;
 
 import javax.swing.KeyStroke;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.playerControls.PlayPauseButton;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
@@ -39,7 +38,7 @@ public class PlayAction extends AbstractAction {
     private static final long serialVersionUID = -1122746023245126869L;
 
     PlayAction() {
-        super(I18nUtils.getString("PLAY"), Images.getImage(Images.PLAY_TINY));
+        super(I18nUtils.getString("PLAY"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("PLAY"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0));
     }

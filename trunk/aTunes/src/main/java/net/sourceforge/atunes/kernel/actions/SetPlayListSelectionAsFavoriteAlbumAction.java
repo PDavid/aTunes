@@ -26,7 +26,6 @@ import java.util.List;
 
 import javax.swing.KeyStroke;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
@@ -46,7 +45,7 @@ public class SetPlayListSelectionAsFavoriteAlbumAction extends AbstractAction {
     private static final long serialVersionUID = 4274931214366676521L;
 
     SetPlayListSelectionAsFavoriteAlbumAction() {
-        super(I18nUtils.getString("SET_FAVORITE_ALBUM"), Images.getImage(Images.ALBUM_FAVORITE));
+        super(I18nUtils.getString("SET_FAVORITE_ALBUM"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0));
         setEnabled(false);
     }

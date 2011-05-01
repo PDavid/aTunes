@@ -26,7 +26,6 @@ import java.util.List;
 
 import javax.swing.KeyStroke;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -42,7 +41,7 @@ public class ShufflePlayListAction extends AbstractAction {
     private static final long serialVersionUID = -6608120075596882123L;
 
     ShufflePlayListAction() {
-        super(I18nUtils.getString("SHUFFLE_PLAYLIST"), Images.getImage(Images.SHUFFLE_PLAYLIST));
+        super(I18nUtils.getString("SHUFFLE_PLAYLIST"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHUFFLE_PLAYLIST"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK));
         setEnabled(false);

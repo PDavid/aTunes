@@ -26,7 +26,6 @@ import java.util.List;
 import javax.swing.KeyStroke;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.tags.TagHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
@@ -50,7 +49,7 @@ public class EditTagAction extends AbstractActionOverSelectedObjects<LocalAudioO
     };
 
     EditTagAction() {
-        super(I18nUtils.getString("EDIT_TAG"), Images.getImage(Images.TAG), LocalAudioObject.class);
+        super(I18nUtils.getString("EDIT_TAG"), LocalAudioObject.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("EDIT_TAG"));
     }
 

@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.model.AudioObject;
@@ -34,7 +33,7 @@ public class SetFavoriteSongFromNavigatorAction extends AbstractActionOverSelect
     private static final long serialVersionUID = 4023700964403110853L;
 
     public SetFavoriteSongFromNavigatorAction() {
-        super(I18nUtils.getString("SET_FAVORITE_SONG"), Images.getImage(Images.FAVORITE), LocalAudioObject.class);
+        super(I18nUtils.getString("SET_FAVORITE_SONG"), LocalAudioObject.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SET_FAVORITE_SONG"));
     }
 

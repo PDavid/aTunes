@@ -22,9 +22,9 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * This action show a window to select folders to set as repository
@@ -37,7 +37,7 @@ public class SelectRepositoryAction extends AbstractAction {
     private static final long serialVersionUID = 6921256152199287639L;
 
     SelectRepositoryAction() {
-        super(I18nUtils.getString("SELECT_REPOSITORY"), Images.getImage(Images.FOLDER));
+        super(StringUtils.getString(I18nUtils.getString("SELECT_REPOSITORY"), "..."));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SELECT_REPOSITORY"));
     }
 

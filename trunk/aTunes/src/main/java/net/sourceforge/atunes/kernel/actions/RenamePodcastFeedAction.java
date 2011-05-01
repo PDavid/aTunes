@@ -38,7 +38,7 @@ public class RenamePodcastFeedAction extends AbstractAction {
     private static final long serialVersionUID = 8334487960720117561L;
 
     RenamePodcastFeedAction() {
-        super(I18nUtils.getString("RENAME_PODCAST_FEED"), Images.getImage(Images.EDIT_ALBUM));
+        super(I18nUtils.getString("RENAME_PODCAST_FEED"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("RENAME_PODCAST_FEED"));
     }
 

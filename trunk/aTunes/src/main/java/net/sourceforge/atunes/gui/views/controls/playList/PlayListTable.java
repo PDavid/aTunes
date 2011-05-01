@@ -87,9 +87,9 @@ public final class PlayListTable extends JTable implements DragSourceListener, D
             case PAUSED:
                 return Images.getImage(Images.PAUSE_TINY);
             case NONE:
-                return Images.getImage(Images.EMPTY);
+                return null;
             default:
-                return Images.getImage(Images.EMPTY);
+                return null;
             }
         }
     }

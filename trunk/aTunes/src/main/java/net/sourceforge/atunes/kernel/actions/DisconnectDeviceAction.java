@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.DeviceListeners;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -38,7 +37,7 @@ public class DisconnectDeviceAction extends AbstractAction {
     private static final long serialVersionUID = 1782027529649014492L;
 
     public DisconnectDeviceAction() {
-        super(I18nUtils.getString("DISCONNECT"), Images.getImage(Images.DEVICE_DECONNECT));
+        super(I18nUtils.getString("DISCONNECT"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("DISCONNECT"));
         setEnabled(false);
     }

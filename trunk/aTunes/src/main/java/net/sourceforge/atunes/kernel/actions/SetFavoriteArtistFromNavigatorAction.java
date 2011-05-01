@@ -24,7 +24,6 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.ViewMode;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
@@ -38,7 +37,7 @@ public class SetFavoriteArtistFromNavigatorAction extends AbstractActionOverSele
     private static final long serialVersionUID = -3551889307264609825L;
 
     SetFavoriteArtistFromNavigatorAction() {
-        super(I18nUtils.getString("SET_FAVORITE_ARTIST"), Images.getImage(Images.FAVORITE), LocalAudioObject.class);
+        super(I18nUtils.getString("SET_FAVORITE_ARTIST"), LocalAudioObject.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SET_FAVORITE_ARTIST"));
     }
 

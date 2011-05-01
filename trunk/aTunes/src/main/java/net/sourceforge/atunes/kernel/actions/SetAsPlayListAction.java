@@ -24,7 +24,6 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -34,7 +33,7 @@ public class SetAsPlayListAction extends AbstractActionOverSelectedObjects<Audio
     private static final long serialVersionUID = -8993769615827375740L;
 
     SetAsPlayListAction() {
-        super(I18nUtils.getString("SET_AS_PLAYLIST"), Images.getImage(Images.PLAYLIST), AudioObject.class);
+        super(I18nUtils.getString("SET_AS_PLAYLIST"), AudioObject.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SET_AS_PLAYLIST"));
     }
 

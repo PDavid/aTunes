@@ -25,7 +25,6 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -40,7 +39,7 @@ public class AddRadioAction extends AbstractAction {
     private static final long serialVersionUID = -5764149587317233484L;
 
     public AddRadioAction() {
-        super(I18nUtils.getString("ADD_RADIO"), Images.getImage(Images.RADIO_ADD));
+        super(I18nUtils.getString("ADD_RADIO"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("ADD_RADIO"));
     }
 

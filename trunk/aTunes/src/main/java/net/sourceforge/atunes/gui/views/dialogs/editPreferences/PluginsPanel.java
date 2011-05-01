@@ -364,7 +364,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
             if (((PluginInfo) value).getIcon() != null) {
                 ((JLabel) c).setIcon(ImageUtils.scaleImageBicubic(((PluginInfo) value).getIcon(), CELL_HEIGHT - 5, CELL_HEIGHT - 5));
             } else {
-                ((JLabel) c).setIcon(ImageUtils.scaleImageBicubic(Images.getImage(Images.EMPTY).getImage(), CELL_HEIGHT - 5, CELL_HEIGHT - 5));
+                ((JLabel) c).setIcon(null);
             }
             return c;
         }

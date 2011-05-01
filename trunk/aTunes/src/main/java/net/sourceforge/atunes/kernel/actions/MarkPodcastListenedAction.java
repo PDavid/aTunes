@@ -26,7 +26,6 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
@@ -38,7 +37,7 @@ public class MarkPodcastListenedAction extends AbstractAction {
     private static final long serialVersionUID = 2594418895817769179L;
 
     MarkPodcastListenedAction() {
-        super(I18nUtils.getString("MARK_PODCAST_AS_LISTENED"), Images.getImage(Images.MARK_RSS_AS_READ));
+        super(I18nUtils.getString("MARK_PODCAST_AS_LISTENED"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("MARK_PODCAST_AS_LISTENED"));
     }
 

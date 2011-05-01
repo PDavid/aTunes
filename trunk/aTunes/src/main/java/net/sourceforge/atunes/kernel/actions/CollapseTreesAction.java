@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -33,7 +32,7 @@ public class CollapseTreesAction extends AbstractAction {
     private static final long serialVersionUID = 4230335834253793622L;
 
     CollapseTreesAction() {
-        super(I18nUtils.getString("COLLAPSE"), Images.getImage(Images.COLLAPSE));
+        super(I18nUtils.getString("COLLAPSE"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("COLLAPSE"));
     }
 

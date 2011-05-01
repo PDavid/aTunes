@@ -26,7 +26,6 @@ import java.util.List;
 
 import javax.swing.KeyStroke;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -42,7 +41,7 @@ public class RemoveFromPlayListAction extends AbstractAction {
     private static final long serialVersionUID = 7249538257655420803L;
 
     RemoveFromPlayListAction() {
-        super(I18nUtils.getString("REMOVE"), Images.getImage(Images.REMOVE));
+        super(I18nUtils.getString("REMOVE"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("REMOVE_TOOLTIP"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
         setEnabled(false);
