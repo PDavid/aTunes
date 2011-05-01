@@ -30,7 +30,6 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
@@ -50,7 +49,7 @@ public class SavePlayListAction extends AbstractAction {
     private static final long serialVersionUID = -303252911138284095L;
 
     SavePlayListAction() {
-        super(StringUtils.getString(I18nUtils.getString("SAVE"), "..."), Images.getImage(Images.SAVE));
+        super(StringUtils.getString(I18nUtils.getString("SAVE"), "..."));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SAVE_PLAYLIST_TOOLTIP"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
     }

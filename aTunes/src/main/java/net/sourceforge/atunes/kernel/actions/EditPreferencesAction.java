@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -38,7 +37,7 @@ public class EditPreferencesAction extends AbstractAction {
     private static final long serialVersionUID = -6303396973997577995L;
 
     EditPreferencesAction() {
-        super(StringUtils.getString(I18nUtils.getString("PREFERENCES"), "..."), Images.getImage(Images.PREFS));
+        super(StringUtils.getString(I18nUtils.getString("PREFERENCES"), "..."));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("PREFERENCES"));
     }
 

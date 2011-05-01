@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.LocalAudioObject;
@@ -34,7 +33,7 @@ public class ExtractPictureAction extends AbstractActionOverSelectedObjects<Loca
     private static final long serialVersionUID = -8618297820141610193L;
 
     ExtractPictureAction() {
-        super(I18nUtils.getString("EXTRACT_PICTURE"), Images.getImage(Images.EXPORT_PICTURE), LocalAudioObject.class);
+        super(I18nUtils.getString("EXTRACT_PICTURE"), LocalAudioObject.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("EXTRACT_PICTURE"));
     }
 

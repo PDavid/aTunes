@@ -24,7 +24,6 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.tags.ClearTagsProcess;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.LocalAudioObject;
@@ -38,7 +37,7 @@ public class ClearTagAction extends AbstractActionOverSelectedObjects<LocalAudio
     public static final String NAVIGATOR = "NAVIGATOR";
 
     ClearTagAction() {
-        super(I18nUtils.getString("CLEAR_TAG"), Images.getImage(Images.DELETE_TAG), LocalAudioObject.class);
+        super(I18nUtils.getString("CLEAR_TAG"), LocalAudioObject.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("CLEAR_TAG"));
     }
 

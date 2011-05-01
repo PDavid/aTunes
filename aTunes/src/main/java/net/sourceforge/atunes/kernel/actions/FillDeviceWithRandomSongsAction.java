@@ -35,7 +35,7 @@ public class FillDeviceWithRandomSongsAction extends AbstractAction {
     private static final long serialVersionUID = -201250351035880261L;
 
     FillDeviceWithRandomSongsAction() {
-        super(I18nUtils.getString("FILL_DEVICE_WITH_RANDOM_SONGS"), Images.getImage(Images.SHUFFLE_PLAYLIST));
+        super(I18nUtils.getString("FILL_DEVICE_WITH_RANDOM_SONGS"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("FILL_DEVICE_WITH_RANDOM_SONGS"));
     }
 

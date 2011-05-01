@@ -26,7 +26,6 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -36,7 +35,7 @@ public class ShowContextAction extends AbstractAction {
     private static final long serialVersionUID = 5939730387818346294L;
 
     ShowContextAction() {
-        super(I18nUtils.getString("SHOW_CONTEXT_INFORMATION"), Images.getImage(Images.CONTEXT));
+        super(I18nUtils.getString("SHOW_CONTEXT_INFORMATION"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_CONTEXT_INFORMATION"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().isUseContext());
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.CTRL_MASK));

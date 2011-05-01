@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -33,7 +32,7 @@ public class ExpandTreesAction extends AbstractAction {
     private static final long serialVersionUID = -2632581565309673327L;
 
     ExpandTreesAction() {
-        super(I18nUtils.getString("EXPAND"), Images.getImage(Images.EXPAND));
+        super(I18nUtils.getString("EXPAND"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("EXPAND"));
     }
 

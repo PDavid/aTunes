@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.model.AudioObject;
@@ -33,7 +32,7 @@ public class MarkPodcastEntryListenedAction extends AbstractActionOverSelectedOb
     private static final long serialVersionUID = 1563803489549692850L;
 
     MarkPodcastEntryListenedAction() {
-        super(I18nUtils.getString("MARK_PODCAST_ENTRY_AS_LISTENED"), Images.getImage(Images.MARK_RSS_AS_READ), PodcastFeedEntry.class);
+        super(I18nUtils.getString("MARK_PODCAST_ENTRY_AS_LISTENED"), PodcastFeedEntry.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("MARK_PODCAST_ENTRY_AS_LISTENED"));
     }
 

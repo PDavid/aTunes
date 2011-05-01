@@ -26,7 +26,6 @@ import java.util.List;
 
 import javax.swing.KeyStroke;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -42,7 +41,7 @@ public class MoveDownAction extends AbstractAction {
     private static final long serialVersionUID = 8200322913128575526L;
 
     MoveDownAction() {
-        super(I18nUtils.getString("MOVE_DOWN"), Images.getImage(Images.GO_DOWN));
+        super(I18nUtils.getString("MOVE_DOWN"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("MOVE_DOWN_TOOLTIP"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, ActionEvent.ALT_MASK));
         setEnabled(false);

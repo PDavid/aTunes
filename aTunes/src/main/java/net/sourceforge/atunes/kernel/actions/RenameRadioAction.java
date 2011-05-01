@@ -39,7 +39,7 @@ public class RenameRadioAction extends AbstractAction {
     private static final long serialVersionUID = -922076985505834816L;
 
     RenameRadioAction() {
-        super(I18nUtils.getString("RENAME_RADIO"), Images.getImage(Images.EDIT_ALBUM));
+        super(I18nUtils.getString("RENAME_RADIO"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("RENAME_RADIO"));
     }
 

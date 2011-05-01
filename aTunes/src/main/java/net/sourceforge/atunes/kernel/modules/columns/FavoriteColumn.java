@@ -56,12 +56,12 @@ public class FavoriteColumn extends AbstractColumn {
     public Object getValueFor(AudioObject audioObject) {
         // Return image
         if (audioObject instanceof Radio) {
-            return Images.getImage(Images.EMPTY);
+            return null;
         }
         if (audioObject instanceof PodcastFeedEntry) {
-            return Images.getImage(Images.EMPTY);
+            return null;
         }
-        return FavoritesHandler.getInstance().getFavoriteSongsInfo().containsValue(audioObject) ? Images.getImage(Images.FAVORITE) : Images.getImage(Images.EMPTY);
+        return FavoritesHandler.getInstance().getFavoriteSongsInfo().containsValue(audioObject) ? Images.getImage(Images.FAVORITE) : null;
     }
 
     @Override

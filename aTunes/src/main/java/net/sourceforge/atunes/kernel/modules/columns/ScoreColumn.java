@@ -101,7 +101,7 @@ public class ScoreColumn extends AbstractColumn {
         label.setText(null);
         switch (score) {
         case 0:
-            label.setIcon(Images.getImage(Images.EMPTY));
+            label.setIcon(null);
             break;
         case 1:
             label.setIcon(Images.getImage(Images.ONE_STAR));
@@ -119,7 +119,7 @@ public class ScoreColumn extends AbstractColumn {
             label.setIcon(Images.getImage(Images.FIVE_STAR));
             break;
         default:
-        	label.setIcon(Images.getImage(Images.EMPTY));
+        	label.setIcon(null);
         	break;
         }
     }

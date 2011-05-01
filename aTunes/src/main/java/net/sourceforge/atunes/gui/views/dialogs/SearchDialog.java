@@ -35,7 +35,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
@@ -106,7 +105,6 @@ public final class SearchDialog extends AbstractCustomModalDialog {
      */
     private void setContent() {
         JPanel panel = new JPanel(new GridBagLayout());
-        JLabel icon = new JLabel(Images.getImage(Images.NETWORK));
         JLabel text = new JLabel(StringUtils.getString(I18nUtils.getString("SEARCH_AT"), "..."));
         text.setFont(text.getFont().deriveFont(Font.PLAIN));
         final JList list = new JList(SearchFactory.getSearches().toArray());
@@ -146,10 +144,6 @@ public final class SearchDialog extends AbstractCustomModalDialog {
         c.gridx = 0;
         c.gridy = 0;
         c.insets = new Insets(15, 15, 0, 0);
-        panel.add(icon, c);
-        c.gridx = 1;
-        c.gridy = 0;
-        c.anchor = GridBagConstraints.WEST;
         panel.add(text, c);
         c.gridx = 0;
         c.gridy = 1;

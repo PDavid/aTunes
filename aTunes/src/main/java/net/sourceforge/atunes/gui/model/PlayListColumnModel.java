@@ -27,7 +27,6 @@ import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.gui.Fonts;
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.JLabelTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.StringTableCellRendererCode;
@@ -106,7 +105,7 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
                     if (PlayListHandler.getInstance().isCurrentVisibleRowPlaying(row)) {
                         ((JLabel) c).setIcon(PlayState.getPlayStateIcon(((PlayListTable) getTable()).getPlayState()));
                     } else {
-                        ((JLabel) c).setIcon(Images.getImage(Images.EMPTY));
+                        ((JLabel) c).setIcon(null); // was using Images.getImage(Images.EMPTY) previously
                     }
 
                     // Get alignment from model

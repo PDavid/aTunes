@@ -26,7 +26,6 @@ import java.util.List;
 
 import javax.swing.KeyStroke;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -42,7 +41,7 @@ public class MoveUpAction extends AbstractAction {
     private static final long serialVersionUID = 8200322913128575526L;
 
     MoveUpAction() {
-        super(I18nUtils.getString("MOVE_UP"), Images.getImage(Images.GO_UP));
+        super(I18nUtils.getString("MOVE_UP"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("MOVE_UP_TOOLTIP"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_UP, ActionEvent.ALT_MASK));
         setEnabled(false);

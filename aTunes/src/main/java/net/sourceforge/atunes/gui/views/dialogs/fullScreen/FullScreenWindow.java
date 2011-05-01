@@ -44,6 +44,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -61,7 +62,6 @@ import javax.swing.Timer;
 import javax.swing.filechooser.FileFilter;
 
 import net.sourceforge.atunes.gui.Fonts;
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomWindow;
 import net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.NextButton;
@@ -252,7 +252,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     controlsPanel.setVisible(false);
-                    setCursor(Toolkit.getDefaultToolkit().createCustomCursor(Images.getImage(Images.EMPTY).getImage(), new Point(0, 0), "invisibleCursor"));
+                    setCursor(Toolkit.getDefaultToolkit().createCustomCursor(new BufferedImage(1, 1, BufferedImage.TYPE_3BYTE_BGR), new Point(0, 0), "invisibleCursor"));
                     if (options.isVisible()) {
                         options.setVisible(false);
                     }

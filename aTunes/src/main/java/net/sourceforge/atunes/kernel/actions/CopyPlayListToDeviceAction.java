@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
@@ -39,7 +38,7 @@ public class CopyPlayListToDeviceAction extends AbstractAction {
     private static final long serialVersionUID = 5899793232403738425L;
 
     CopyPlayListToDeviceAction() {
-        super(I18nUtils.getString("COPY_PLAYLIST_TO_DEVICE"), Images.getImage(Images.DEVICE));
+        super(I18nUtils.getString("COPY_PLAYLIST_TO_DEVICE"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("COPY_PLAYLIST_TO_DEVICE"));
         setEnabled(false);
     }

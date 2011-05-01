@@ -38,7 +38,7 @@ public class PropertyTableCellRendererCode extends AbstractTableCellRendererCode
     @Override
     public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         Component comp = superComponent;
-        ImageIcon icon = Images.getImage(Images.EMPTY);
+        ImageIcon icon = null;
         Property val = (Property) value;
         if (val == Property.FAVORITE) {
             icon = Images.getImage(Images.FAVORITE);
@@ -46,8 +46,6 @@ public class PropertyTableCellRendererCode extends AbstractTableCellRendererCode
             icon = Images.getImage(Images.NEW_PODCAST_ENTRY);
         } else if (val == Property.DOWNLOADED_ENTRY) {
             icon = Images.getImage(Images.DOWNLOAD_PODCAST);
-        } else if (val == Property.OLD_ENTRY) {
-            icon = Images.getImage(Images.REMOVE);
         }
         ((JLabel) comp).setIcon(icon);
         ((JLabel) comp).setText(null);

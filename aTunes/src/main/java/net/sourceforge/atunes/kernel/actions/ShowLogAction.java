@@ -24,7 +24,6 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.utils.DesktopUtils;
@@ -41,7 +40,7 @@ public class ShowLogAction extends AbstractAction {
     private static final long serialVersionUID = 3596625443325726180L;
 
     ShowLogAction() {
-        super(I18nUtils.getString("SHOW_LOG"), Images.getImage(Images.SHOW_LOG_FILE));
+        super(I18nUtils.getString("SHOW_LOG"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_LOG"));
     }
 

@@ -262,7 +262,7 @@ public final class ContextPanel extends AbstractPreferencesPanel {
         enginesTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         enginesTable.setDefaultRenderer(String.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(
                 GuiUtils.getComponentOrientationTableCellRendererCode()));
-        JButton upButton = new JButton(Images.getImage(Images.GO_UP));
+        JButton upButton = new JButton(I18nUtils.getString("MOVE_UP"));
         upButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -272,7 +272,7 @@ public final class ContextPanel extends AbstractPreferencesPanel {
                 }
             }
         });
-        JButton downButton = new JButton(Images.getImage(Images.GO_DOWN));
+        JButton downButton = new JButton(I18nUtils.getString("MOVE_DOWN"));
         downButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
