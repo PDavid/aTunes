@@ -25,9 +25,9 @@ import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import net.sourceforge.atunes.utils.ImageUtils;
@@ -71,6 +71,7 @@ public final class Cover3D extends JPanel {
         g2d.translate(0, 2 * image.getHeight() + GAP);
         g2d.scale(1, -1);
         g2d.drawRenderedImage(reflectedImage, null);
+        g2d.dispose();
     }
 
     /**
@@ -79,26 +80,22 @@ public final class Cover3D extends JPanel {
      * @param image
      *            the image to set
      */
-    public void setImage(ImageIcon image) {
+    public void setImage(Image image, int width, int height) {
         if (image != null) {
             // IMAGE
-            this.image = ImageUtils.toBufferedImage(image.getImage());
-            int width = image.getIconWidth();
-            int height = image.getIconHeight();
+            this.image = ImageUtils.scaleBufferedImageBicubic(image, width, height);
             if (angle != 0) {
                 PerspectiveFilter filter1 = new PerspectiveFilter(0, angle, width - angle / 2, (int) (angle * (5.0 / 3.0)), width - angle / 2, height, 0, height + angle);
                 this.image = filter1.filter(this.image, null);
             }
 
             // REFLECTED IMAGE
-            int imageWidth = this.image.getWidth();
-            int imageHeight = this.image.getHeight();
-            BufferedImage reflection = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
+            BufferedImage reflection = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
             Graphics2D rg = reflection.createGraphics();
             rg.drawRenderedImage(this.image, null);
             rg.setComposite(AlphaComposite.getInstance(AlphaComposite.DST_IN));
-            rg.setPaint(new GradientPaint(0, imageHeight * FADE_HEIGHT, new Color(0.0f, 0.0f, 0.0f, 0.0f), 0, imageHeight, new Color(0.0f, 0.0f, 0.0f, OPACITY)));
-            rg.fillRect(0, 0, imageWidth, imageHeight);
+            rg.setPaint(new GradientPaint(0, height * FADE_HEIGHT, new Color(0.0f, 0.0f, 0.0f, 0.0f), 0, height, new Color(0.0f, 0.0f, 0.0f, OPACITY)));
+            rg.fillRect(0, 0, width, height);
             rg.dispose();
 
             if (angle != 0) {
@@ -111,7 +108,5 @@ public final class Cover3D extends JPanel {
             this.image = null;
             this.reflectedImage = null;
         }
-        this.invalidate();
-        this.repaint();
     }
 }

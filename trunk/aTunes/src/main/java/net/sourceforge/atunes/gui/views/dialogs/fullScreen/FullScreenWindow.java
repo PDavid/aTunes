@@ -32,6 +32,7 @@ import java.awt.GraphicsDevice;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -50,7 +51,6 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -169,7 +169,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
     private boolean playing;
 
     /** The background. */
-    private ImageIcon background;
+    private Image background;
 
     /** The key adapter. */
     private KeyAdapter keyAdapter = new KeyAdapter() {
@@ -262,15 +262,6 @@ public final class FullScreenWindow extends AbstractCustomWindow {
     }
 
     /**
-     * Gets the inset for progress bar.
-     * 
-     * @return the inset for progress bar
-     */
-    private int getInsetForProgressBar() {
-        return GuiUtils.getDeviceWidth() / 4;
-    }
-
-    /**
      * Checks if is playing.
      * 
      * @return true, if is playing
@@ -325,9 +316,8 @@ public final class FullScreenWindow extends AbstractCustomWindow {
      *            the new background
      */
     void setBackground(File file) {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         try {
-            background = ImageUtils.scaleImageBicubic(ImageIO.read(file), screenSize.width, screenSize.height);
+            background = ImageIO.read(file);
             ApplicationState.getInstance().setFullScreenBackground(file.getAbsolutePath());
         } catch (IOException e) {
             e.printStackTrace();
@@ -350,7 +340,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
                     g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
                 } else {
                     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-                    g.drawImage(ImageUtils.resize(background, screenSize.width, screenSize.height).getImage(), 0, 0, this);
+                    g.drawImage(ImageUtils.scaleBufferedImageBicubic(background, screenSize.width, screenSize.height), 0, 0, this);
                 }
             }
         };

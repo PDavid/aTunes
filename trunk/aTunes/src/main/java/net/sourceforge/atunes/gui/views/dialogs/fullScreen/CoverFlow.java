@@ -42,11 +42,10 @@ import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
-import net.sourceforge.atunes.utils.ImageUtils;
 
 public final class CoverFlow extends JPanel {
 
-    private final class PaintCoversSwingWorker extends SwingWorker<ImageIcon, Void> {
+    private final class PaintCoversSwingWorker extends SwingWorker<Void, Void> {
 		private final Cover3D cover;
 		private final AudioObject audioObject;
 		private final int index;
@@ -58,7 +57,7 @@ public final class CoverFlow extends JPanel {
 		}
 
 		@Override
-		protected ImageIcon doInBackground() throws Exception {
+		protected Void doInBackground() throws Exception {
 			Image image = null;
 		    if (audioObject instanceof Radio) {
 		        image = Images.getImage(Images.RADIO_BIG).getImage();
@@ -67,17 +66,26 @@ public final class CoverFlow extends JPanel {
 		    } else {
 	    		image = getPicture((AudioFile) audioObject);
 		    }
-            int size = getImageSize(index);            
-		    return ImageUtils.scaleImageBilinear(image, size, size);
+		    
+	        if (cover != null) {
+	            if (image == null) {
+	                cover.setImage(null, 0, 0);
+	            } else if (audioObject == null) {
+	                cover.setImage(Images.getImage(Images.NO_COVER).getImage(), getImageSize(covers.indexOf(cover)), getImageSize(covers.indexOf(cover)));
+	            } else {
+	                cover.setImage(image, getImageSize(index), getImageSize(index));
+	            }
+	        }
+	        
+	        return null;
 		}
 
 		@Override
 		protected void done() {
-			ImageIcon image;
 		    try {
-		        image = get();
+		        get();
 		        if (cover != null) {
-		        	setPicture(audioObject, image, cover);
+		        	cover.repaint();
 		        }
 		    } catch (InterruptedException e) {
 		        getLogger().error(LogCategories.IMAGE, e);
@@ -167,19 +175,6 @@ public final class CoverFlow extends JPanel {
             result = Images.getImage(Images.NO_COVER).getImage();
         }
         return result;
-    }
-
-    protected void setPicture(AudioObject object, ImageIcon image, Cover3D cover) {
-        if (image == null) {
-            cover.setImage(null);
-            return;
-        }
-
-        if (object == null) {
-            cover.setImage(ImageUtils.scaleImageBicubic(Images.getImage(Images.NO_COVER).getImage(), getImageSize(covers.indexOf(cover)), getImageSize(covers.indexOf(cover))));
-        } else {
-            cover.setImage(image);
-        }
     }
 
     private int getImageSize(int index) {
