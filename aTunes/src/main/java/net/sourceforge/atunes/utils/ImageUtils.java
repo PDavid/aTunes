@@ -167,7 +167,7 @@ public final class ImageUtils {
     public static BufferedImage toBufferedImage(Image img) {
         BufferedImage bufferedImage;
         try {
-            Image image = new ImageIcon(img).getImage();
+            Image image = img;
             bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
             Graphics2D g = bufferedImage.createGraphics();
             g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
