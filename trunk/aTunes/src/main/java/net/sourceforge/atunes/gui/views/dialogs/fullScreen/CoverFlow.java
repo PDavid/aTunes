@@ -24,9 +24,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.ImageIcon;
@@ -48,36 +46,39 @@ import net.sourceforge.atunes.utils.ImageUtils;
 
 public final class CoverFlow extends JPanel {
 
-    private final class PaintCoversSwingWorker extends SwingWorker<Image, Void> {
+    private final class PaintCoversSwingWorker extends SwingWorker<ImageIcon, Void> {
 		private final Cover3D cover;
 		private final AudioObject audioObject;
+		private final int index;
 
-		private PaintCoversSwingWorker(Cover3D cover, AudioObject audioObject) {
+		private PaintCoversSwingWorker(Cover3D cover, AudioObject audioObject, int index) {
 			this.cover = cover;
 			this.audioObject = audioObject;
+			this.index = index;
 		}
 
 		@Override
-		protected Image doInBackground() throws Exception {
+		protected ImageIcon doInBackground() throws Exception {
+			Image image = null;
 		    if (audioObject instanceof Radio) {
-		        return Images.getImage(Images.RADIO_BIG).getImage();
+		        image = Images.getImage(Images.RADIO_BIG).getImage();
 		    } else if (audioObject instanceof PodcastFeedEntry) {
-		        return Images.getImage(Images.RSS_BIG).getImage();
+		        image = Images.getImage(Images.RSS_BIG).getImage();
+		    } else {
+	    		image = getPicture((AudioFile) audioObject);
 		    }
-		    if (cachedImages.containsKey(audioObject)) {
-		        return cachedImages.get(audioObject);
-		    }
-		    Image image = getPicture((AudioFile) audioObject);
-		    cachedImages.put(audioObject, image);
-		    return image;
+            int size = getImageSize(index);            
+		    return ImageUtils.scaleImageBilinear(image, size, size);
 		}
 
 		@Override
 		protected void done() {
-		    Image image;
+			ImageIcon image;
 		    try {
 		        image = get();
-		        setPicture(audioObject, image, cover);
+		        if (cover != null) {
+		        	setPicture(audioObject, image, cover);
+		        }
 		    } catch (InterruptedException e) {
 		        getLogger().error(LogCategories.IMAGE, e);
 		    } catch (ExecutionException e) {
@@ -91,9 +92,6 @@ public final class CoverFlow extends JPanel {
     private Logger logger;
 
     private List<Cover3D> covers;
-
-    /** The current audio object. */
-    private Map<AudioObject, Image> cachedImages = new HashMap<AudioObject, Image>();
 
     CoverFlow() {
         super(new GridBagLayout());
@@ -136,19 +134,19 @@ public final class CoverFlow extends JPanel {
     void paint(final List<AudioObject> objects) {
         int i = 0;
         for (AudioObject ao : objects) {
-            paint(ao, covers.get(i), i == 2);
+            paint(ao, i < covers.size() ? covers.get(i) : null, i == 2, i);
             i++;
         }
     }
 
-    private void paint(final AudioObject audioObject, final Cover3D cover, boolean current) {
+    private void paint(final AudioObject audioObject, final Cover3D cover, boolean current, int index) {
         // No object
         if (audioObject == null) {
             return;
         }
 
         // Fetch cover
-        new PaintCoversSwingWorker(cover, audioObject).execute();
+        new PaintCoversSwingWorker(cover, audioObject, index).execute();
     }
 
     /**
@@ -158,7 +156,7 @@ public final class CoverFlow extends JPanel {
      * @return
      */
     protected Image getPicture(AudioFile audioFile) {
-        Image result = LastFmService.getInstance().getAlbumImage(audioFile.getArtist(), audioFile.getAlbum());
+    	Image result = LastFmService.getInstance().getAlbumImage(audioFile.getArtist(), audioFile.getAlbum());
         if (result == null) {
             ImageIcon[] pictures = AudioFilePictureUtils.getPicturesForFile(audioFile, -1, -1);
             if (pictures != null && pictures.length > 0) {
@@ -171,7 +169,7 @@ public final class CoverFlow extends JPanel {
         return result;
     }
 
-    protected void setPicture(AudioObject object, Image image, Cover3D cover) {
+    protected void setPicture(AudioObject object, ImageIcon image, Cover3D cover) {
         if (image == null) {
             cover.setImage(null);
             return;
@@ -180,9 +178,7 @@ public final class CoverFlow extends JPanel {
         if (object == null) {
             cover.setImage(ImageUtils.scaleImageBicubic(Images.getImage(Images.NO_COVER).getImage(), getImageSize(covers.indexOf(cover)), getImageSize(covers.indexOf(cover))));
         } else {
-            int size = getImageSize(covers.indexOf(cover));
-            ImageIcon imageScaled = ImageUtils.scaleImageBicubic(image, size, size);
-            cover.setImage(imageScaled);
+            cover.setImage(image);
         }
     }
 

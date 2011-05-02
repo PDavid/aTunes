@@ -73,13 +73,16 @@ public class FullScreenHandler extends AbstractHandler {
     
     @Override
     public void selectedAudioObjectChanged(AudioObject audioObject) {
-        List<AudioObject> objects = new ArrayList<AudioObject>(5);
+        List<AudioObject> objects = new ArrayList<AudioObject>(6);
         objects.add(PlayListHandler.getInstance().getCurrentPlayList(false).getPreviousAudioObject(2));
         objects.add(PlayListHandler.getInstance().getCurrentPlayList(false).getPreviousAudioObject(1));
         objects.add(audioObject);
         objects.add(PlayListHandler.getInstance().getCurrentPlayList(false).getNextAudioObject(1));
         objects.add(PlayListHandler.getInstance().getCurrentPlayList(false).getNextAudioObject(2));
-
+        
+        // This is not visible in full screen, but used to prepare next cover
+        objects.add(PlayListHandler.getInstance().getCurrentPlayList(false).getNextAudioObject(3)); 
+        
         getFullScreenController().setAudioObjects(objects);
     }
 

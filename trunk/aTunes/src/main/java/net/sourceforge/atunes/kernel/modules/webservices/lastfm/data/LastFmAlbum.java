@@ -72,7 +72,7 @@ public class LastFmAlbum implements AlbumInfo {
         album.title = a.getName();
         album.url = a.getUrl();
         album.releaseDateString = a.getReleaseDate() != null ? a.getReleaseDate().toString() : "";
-        album.bigCoverURL = a.getImageURL(ImageSize.LARGE);
+        album.bigCoverURL = getBiggestPosible(a);
         album.coverURL = a.getImageURL(ImageSize.ORIGINAL);
         album.smallCoverURL = a.getImageURL(ImageSize.SMALL);
 
@@ -120,7 +120,29 @@ public class LastFmAlbum implements AlbumInfo {
         return album;
     }
 
-    /**
+    private static String getBiggestPosible(Album a) {
+//    	SMALL: 0
+//    	MEDIUM: 1
+//    	LARGE: 2
+//    	LARGESQUARE: 3
+//    	HUGE: 4
+//    	EXTRALARGE: 5
+//    	MEGA: 6
+//    	ORIGINAL: 7
+    	
+    	ImageSize[] sizes = ImageSize.values();
+    	// Start from huge
+    	for (int i = 4; i >= 0; i--) {
+    		String url = a.getImageURL(sizes[i]);
+    		if (url != null) {
+    			return url;
+    		}
+    	}
+    	
+    	return null;
+	}
+
+	/**
      * Gets the artist.
      * 
      * @return the artist

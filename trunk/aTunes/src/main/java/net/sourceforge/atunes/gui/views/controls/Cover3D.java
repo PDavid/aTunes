@@ -53,7 +53,7 @@ public final class Cover3D extends JPanel {
      * Instantiates a new three dimensional cover.
      */
     public Cover3D(int angle) {
-        super();
+        super(false);
         this.angle = angle;
         setOpaque(false);
     }
@@ -66,15 +66,9 @@ public final class Cover3D extends JPanel {
         }
 
         Graphics2D g2d = (Graphics2D) g;
-        int width = getWidth();
-        int height = getHeight();
-        int imageWidth = image.getWidth();
-        int imageHeight = image.getHeight();
-
-        g2d.translate((width - imageWidth) / 2, height / 2 - imageHeight / 2);
+        g2d.translate((getWidth() - image.getWidth()) / 2, getHeight() / 2 - image.getHeight() / 2);
         g2d.drawRenderedImage(image, null);
-
-        g2d.translate(0, 2 * imageHeight + GAP);
+        g2d.translate(0, 2 * image.getHeight() + GAP);
         g2d.scale(1, -1);
         g2d.drawRenderedImage(reflectedImage, null);
     }
