@@ -144,8 +144,7 @@ public final class EditTagDialogActionListener implements ActionListener {
                 File file = fc.getSelectedFile();
                 try {
                     BufferedImage bi = ImageIO.read(file);
-                    BufferedImage bi2 = ImageUtils.toBufferedImage(ImageUtils.scaleImageBicubic(bi, Constants.DIALOG_LARGE_IMAGE_WIDTH, Constants.DIALOG_LARGE_IMAGE_HEIGHT)
-                            .getImage());
+                    BufferedImage bi2 = ImageUtils.scaleBufferedImageBicubic(bi, Constants.DIALOG_LARGE_IMAGE_WIDTH, Constants.DIALOG_LARGE_IMAGE_HEIGHT);
                     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                     ByteArrayOutputStream byteArrayOutputStream2 = new ByteArrayOutputStream();
                     ImageInfo imageInfo = new ImageInfo();

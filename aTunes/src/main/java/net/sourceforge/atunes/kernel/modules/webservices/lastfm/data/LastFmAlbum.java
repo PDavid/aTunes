@@ -131,8 +131,8 @@ public class LastFmAlbum implements AlbumInfo {
 //    	ORIGINAL: 7
     	
     	ImageSize[] sizes = ImageSize.values();
-    	// Start from huge
-    	for (int i = 4; i >= 0; i--) {
+    	// Start from extralarge
+    	for (int i = 5; i >= 0; i--) {
     		String url = a.getImageURL(sizes[i]);
     		if (url != null) {
     			return url;
