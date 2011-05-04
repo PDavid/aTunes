@@ -543,6 +543,11 @@ public class RepositoryLoader extends Thread {
         			filesLoaded++;
         			filler.addAudioFile(audio, relativeTo, relativePath);
 
+        			// Update current artist and album
+        			if (!refresh && listener != null) {
+        				listener.notifyCurrentAlbum(audio.getArtist(), audio.getAlbum());
+        			}
+        			
         			// Update remaining time every 50 files
         			if (!refresh && listener != null && filesLoaded % 50 == 0) {
         				long t1 = System.currentTimeMillis();

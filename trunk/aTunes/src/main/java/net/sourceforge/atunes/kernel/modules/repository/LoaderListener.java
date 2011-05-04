@@ -32,6 +32,13 @@ public interface LoaderListener {
      *            the path
      */
     public void notifyCurrentPath(String path);
+    
+    /**
+     * Notifies a new artist / album found
+     * @param artist
+     * @param album
+     */
+    public void notifyCurrentAlbum(String artist, String album);
 
     /**
      * Notify file loaded.
