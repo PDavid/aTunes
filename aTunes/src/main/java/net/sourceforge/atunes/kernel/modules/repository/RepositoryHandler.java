@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.repository;
 
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -66,6 +67,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
 import net.sourceforge.atunes.kernel.modules.tags.TagAttributesReviewed;
+import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -87,6 +89,13 @@ import org.apache.commons.io.FilenameUtils;
  */
 public final class RepositoryHandler extends AbstractHandler implements LoaderListener, AudioFilesRemovedListener {
 
+	// Used to retrieve covers and show in progress dialog
+	private String lastArtistRead;
+	
+	private String lastAlbumRead;
+	
+	private SwingWorker<Image, Void> coverWorker;
+	
 	private final class ImportFilesProcessListener implements ProcessListener {
 		private final ImportFilesProcess process;
 
@@ -141,6 +150,10 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 
 			@Override
 			public void notifyFinishRefresh(RepositoryLoader loader) {
+			}
+			
+			@Override
+			public void notifyCurrentAlbum(String artist, String album) {
 			}
 
 			@Override
@@ -1160,5 +1173,39 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 
 	@Override
 	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+	
+	@Override
+	public void notifyCurrentAlbum(final String artist, final String album) {
+		if (progressDialog != null && progressDialog.isVisible()) {
+			if (lastArtistRead == null || lastAlbumRead == null || !lastArtistRead.equals(artist) || !lastAlbumRead.equals(album)) {
+				lastArtistRead = artist;
+				lastAlbumRead = album;
+				if (coverWorker == null || coverWorker.isDone()) {
+					// Try to find cover and set in progress dialog
+					coverWorker = new SwingWorker<Image, Void>() {
+						@Override
+						protected Image doInBackground() throws Exception {
+							return LastFmService.getInstance().getAlbumImage(artist, album);
+						}
+
+						@Override
+						protected void done() {
+							super.done();
+							if (progressDialog != null) {
+								try {
+									progressDialog.setImage(get());
+								} catch (InterruptedException e) {
+									progressDialog.setImage(null);
+								} catch (ExecutionException e) {
+									progressDialog.setImage(null);
+								}
+							}
+						}
+					};
+					coverWorker.execute();
+				}
+			}
+		}
+	}
 
 }

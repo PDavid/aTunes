@@ -22,11 +22,13 @@ package net.sourceforge.atunes.gui.views.dialogs;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -42,6 +44,7 @@ import net.sourceforge.atunes.kernel.actions.RepositoryLoadCancelAction;
 import net.sourceforge.atunes.kernel.actions.RepositoryLoadInBackgroundAction;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -80,6 +83,9 @@ public final class RepositoryProgressDialog extends AbstractCustomModalDialog {
 
     private static final long serialVersionUID = -3071934230042256578L;
 
+	private static final ImageIcon LOGO = Images.getImage(Images.APP_LOGO_150);
+	private static final int LOGO_SIZE = 150;
+
     private JLabel pictureLabel;
     private JLabel label;
     private JLabel progressLabel;
@@ -99,7 +105,7 @@ public final class RepositoryProgressDialog extends AbstractCustomModalDialog {
      *            the parent
      */
     public RepositoryProgressDialog(JFrame parent) {
-        super(parent, 400, 150, false);
+        super(parent, 500, 250, false);
         setContent(getContent());
         GuiUtils.applyComponentOrientation(this);
         backgroundButton.setVisible(false);
@@ -139,7 +145,7 @@ public final class RepositoryProgressDialog extends AbstractCustomModalDialog {
      */
     private JPanel getContent() {
         JPanel panel = new JPanel(new GridBagLayout());
-        pictureLabel = new JLabel(Images.getImage(Images.APP_LOGO_90));
+        pictureLabel = new JLabel(LOGO);
         label = new JLabel(StringUtils.getString(I18nUtils.getString("LOADING"), "..."));
         progressLabel = new JLabel();
         separatorLabel = new JLabel(" / ");
@@ -299,5 +305,9 @@ public final class RepositoryProgressDialog extends AbstractCustomModalDialog {
         deactivateGlassPane();
         //setButtonsVisible(false);
         //setButtonsEnabled(true);
+    }
+    
+    public void setImage(Image image) {
+    	pictureLabel.setIcon(image != null ? ImageUtils.scaleImageBicubic(image, LOGO_SIZE, LOGO_SIZE) : LOGO);
     }
 }

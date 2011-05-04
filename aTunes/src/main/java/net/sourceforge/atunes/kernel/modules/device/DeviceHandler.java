@@ -734,4 +734,10 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
 	public String getDeviceLocation() {
 		return getDeviceRepository() != null ? getDeviceRepository().getFolders().get(0).getAbsolutePath() : null;
 	}
+
+	@Override
+	public void notifyCurrentAlbum(String artist, String album) {
+		// TODO Auto-generated method stub
+		
+	}
 }
