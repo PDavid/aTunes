@@ -607,7 +607,7 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
     }
     
     protected void storeFrameState() {
-    	ApplicationState.getInstance().setFrameState(GuiHandler.getInstance().getFrame().getClass(), frameState);
+   		ApplicationState.getInstance().setFrameState(GuiHandler.getInstance().getFrame().getClass(), frameState);
     }
 
     protected final void applyVisibility(final boolean show, String s, Component c, final JSplitPane sp) {
@@ -634,7 +634,9 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
             	
             	@Override
             	public void run() {
-                    applySplitPaneDividerPosition(sp, location, 0);
+            		if (location > 0) {
+            			applySplitPaneDividerPosition(sp, location, 0);
+            		}
             		if (getExtendedState() != Frame.MAXIMIZED_BOTH) {
             			// if not maximized, if panel size is less than its minimum size, then change window size
             			testComponentSize(sp.getLeftComponent());
@@ -660,7 +662,7 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
     	// Setting window size after frame is visible avoids using workarounds to set extended state in Linux
     	// and work both in Windows and Linux
         setWindowSize();
-    	setupSplitPaneDividerPosition(frameState);    	
+    	setupSplitPaneDividerPosition(frameState);
     }
     
     /**
