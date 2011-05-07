@@ -69,12 +69,8 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
             ImageIcon cover;
             try {
                 cover = get();
-                if (cover != null) {
-                    pictureLabel.setIcon(cover);
-                } else {
-                    pictureLabel.setIcon(Images.getImage(Images.NO_COVER_AUDIOFILE_PROPERTIES));
-                }
-                pictureLabel.setVisible(true);
+                pictureLabel.setIcon(cover);
+                pictureLabel.setVisible(cover != null);
             } catch (InterruptedException e) {
                 getLogger().error(LogCategories.IMAGE, e);
             } catch (ExecutionException e) {

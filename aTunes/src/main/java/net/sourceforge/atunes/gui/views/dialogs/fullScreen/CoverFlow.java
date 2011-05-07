@@ -71,7 +71,7 @@ public final class CoverFlow extends JPanel {
 	            if (image == null) {
 	                cover.setImage(null, 0, 0);
 	            } else if (audioObject == null) {
-	                cover.setImage(Images.getImage(Images.NO_COVER).getImage(), getImageSize(covers.indexOf(cover)), getImageSize(covers.indexOf(cover)));
+	                cover.setImage(Images.getImage(Images.APP_LOGO_300).getImage(), getImageSize(covers.indexOf(cover)), getImageSize(covers.indexOf(cover)));
 	            } else {
 	                cover.setImage(image, getImageSize(index), getImageSize(index));
 	            }
@@ -172,7 +172,7 @@ public final class CoverFlow extends JPanel {
             }
         }
         if (result == null) {
-            result = Images.getImage(Images.NO_COVER).getImage();
+            result = Images.getImage(Images.APP_LOGO_300).getImage();
         }
         return result;
     }
