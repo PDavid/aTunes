@@ -150,12 +150,14 @@ public class PopUpButton extends JButton {
         addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
-            	if (!menuShown) {
-            		setMenuLocation(getLocationProperty());
-            		menu.show(PopUpButton.this, xLocation, yLocation);
-            	} else {
-            		menu.setVisible(false);
-            	}
+        		if (isEnabled()) {
+        			if (!menuShown) {
+        				setMenuLocation(getLocationProperty());
+        				menu.show(PopUpButton.this, xLocation, yLocation);
+        			} else {
+        				menu.setVisible(false);
+        			}
+        		}
         	}
 		});
         menu.addPopupMenuListener(new PopupMenuListener() {
@@ -206,6 +208,5 @@ public class PopUpButton extends JButton {
 
 	public void addSeparator() {
 		menu.addSeparator();
-	}
-
+	}	
 }
