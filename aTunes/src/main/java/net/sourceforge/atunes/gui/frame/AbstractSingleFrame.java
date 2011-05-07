@@ -360,7 +360,7 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
     public PlayListPanel getPlayListPanel() {
         if (playListPanel == null) {
             playListPanel = new PlayListPanel();
-            playListPanel.setMinimumSize(getPlayListPanelPreferredSize());
+            playListPanel.setMinimumSize(getPlayListPanelMinimumSize());
             playListPanel.setPreferredSize(getPlayListPanelPreferredSize());
             playListPanel.setMaximumSize(getPlayListPanelMaximumSize());
         }
@@ -617,37 +617,52 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
         // Depending on visibility, set divider size, so if panel is not shown, its divider is hidden too 
        	sp.setDividerSize(show ? defaultDividerSize : 0);
         if (show) {
-            SwingUtilities.invokeLater(new Runnable() {
-
-            	private void testComponentSize(Component c) {
-            		Dimension minimumSize = c.getMinimumSize();
-            		Dimension actualSize = c.getSize();
-            		int minimumSizeComponent = sp.getOrientation() == JSplitPane.HORIZONTAL_SPLIT ? minimumSize.width : minimumSize.height;
-            		int actualSizeComponent = sp.getOrientation() == JSplitPane.HORIZONTAL_SPLIT ? actualSize.width : actualSize.height;
-            		if (actualSizeComponent < minimumSizeComponent) {
-            			int newWidth = sp.getOrientation() == JSplitPane.HORIZONTAL_SPLIT ? getSize().width + (minimumSizeComponent - actualSizeComponent) : getSize().width;
-            			int newHeight = sp.getOrientation() == JSplitPane.HORIZONTAL_SPLIT ? getSize().height : getSize().height + (minimumSizeComponent - actualSizeComponent);
-            			getLogger().info(LogCategories.DESKTOP, "Changing window size to : ", newWidth , "x", newHeight);
-            			setSize(newWidth, newHeight);
-            		}
-            	}
-            	
-            	@Override
-            	public void run() {
+        	SwingUtilities.invokeLater(new Runnable() {
+        		@Override
+        		public void run() {
             		if (location > 0) {
             			applySplitPaneDividerPosition(sp, location, 0);
             		}
+        		}
+        	});
+
+        	SwingUtilities.invokeLater(new Runnable() {
+
+            	@Override
+            	public void run() {
             		if (getExtendedState() != Frame.MAXIMIZED_BOTH) {
             			// if not maximized, if panel size is less than its minimum size, then change window size
-            			testComponentSize(sp.getLeftComponent());
-            			testComponentSize(sp.getRightComponent());
+     					testComponentSize(sp, sp.getLeftComponent());
+            		}
+            	}
+            });
+
+        	SwingUtilities.invokeLater(new Runnable() {
+
+            	@Override
+            	public void run() {
+            		if (getExtendedState() != Frame.MAXIMIZED_BOTH) {
+            			// if not maximized, if panel size is less than its minimum size, then change window size
+            			testComponentSize(sp, sp.getRightComponent());
             		}
             	}
             });
         }
-
-
     }
+
+	protected void testComponentSize(JSplitPane sp, Component c) {
+		Dimension minimumSize = c.getMinimumSize();
+		Dimension actualSize = c.getSize();
+		int minimumSizeComponent = sp.getOrientation() == JSplitPane.HORIZONTAL_SPLIT ? minimumSize.width : minimumSize.height;
+		int actualSizeComponent = sp.getOrientation() == JSplitPane.HORIZONTAL_SPLIT ? actualSize.width : actualSize.height;
+		if (actualSizeComponent < minimumSizeComponent) {
+			int newWidth = sp.getOrientation() == JSplitPane.HORIZONTAL_SPLIT ? getSize().width + (minimumSizeComponent - actualSizeComponent) : getSize().width;
+			int newHeight = sp.getOrientation() == JSplitPane.HORIZONTAL_SPLIT ? getSize().height : getSize().height + (minimumSizeComponent - actualSizeComponent);
+			getLogger().info(LogCategories.DESKTOP, "Changing window size to : ", newWidth , "x", newHeight);
+			setSize(newWidth, newHeight);
+		}
+	}
+	
 
     protected void applySplitPaneDividerPosition(JSplitPane splitPane, int location, double relPos) {
         if (location != 0) {
