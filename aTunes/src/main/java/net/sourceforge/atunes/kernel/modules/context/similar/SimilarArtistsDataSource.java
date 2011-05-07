@@ -58,7 +58,10 @@ public class SimilarArtistsDataSource implements ContextInformationDataSource {
     public Map<String, ?> getData(Map<String, ?> parameters) {
         Map<String, Object> result = new HashMap<String, Object>();
         if (parameters.containsKey(INPUT_AUDIO_OBJECT)) {
-            result.put(OUTPUT_ARTISTS, getSimilarArtists((AudioObject) parameters.get(INPUT_AUDIO_OBJECT)));
+        	SimilarArtistsInfo info = getSimilarArtists((AudioObject) parameters.get(INPUT_AUDIO_OBJECT));
+        	if (info != null) {
+        		result.put(OUTPUT_ARTISTS, info);
+        	}
         }
         return result;
     }
