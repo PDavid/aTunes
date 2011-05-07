@@ -44,6 +44,7 @@ public final class Images {
     public static final String APP_LOGO_32 = "logo32x32.png";
     public static final String APP_LOGO_90 = "logo90x90.png";
     public static final String APP_LOGO_150 = "logo150x150.png";
+    public static final String APP_LOGO_300 = "logo300x300.png";
     public static final String ARROW_UP = "arrowUp.png";
     public static final String ARROW_DOWN = "arrowDown.png";
     public static final String ARTIST = "artist.png";
@@ -74,8 +75,6 @@ public final class Images {
     public static final String NEXT = "next.png";
     public static final String NEXT_TRAY = SystemProperties.OS.isWindowsVista() ? "nextTrayVista.png" : "nextTray.png";
     public static final String NEXT_TRAY_MENU = "nextTrayMenu.png";
-    public static final String NO_COVER = "noCover.png";
-    public static final String NO_COVER_AUDIOFILE_PROPERTIES = "noCover_AudioFileProperties.png";
     public static final String NORMALIZATION = "normalization.png";
     public static final String OSD = "osd.png";
     public static final String PAUSE = "pause.png";
