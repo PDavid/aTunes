@@ -123,21 +123,26 @@ public final class ContextPanel extends JPanel {
 
 	/**
 	 * Shows context panel
-	 * @param source
+	 * @param panel
 	 */
-	public void showContextPanel(final AbstractContextPanel source) {
+	public void showContextPanel(AbstractContextPanel panel) {
+		final AbstractContextPanel source = panel != null ? panel : visiblePanels.get(0);
 		options.removeAllItems();
-		List<Component> components = source.getOptions();
-		options.setEnabled(!components.isEmpty());
-		for (Component c : components) {
-			options.add(c);
-		}
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				((CardLayout)container.getLayout()).show(container, source.getContextPanelName());		
+		options.setEnabled(source != null && !source.getOptions().isEmpty());
+		if (source != null) {
+			List<Component> components = source.getOptions();
+			if (components != null) {
+				for (Component c : components) {
+					options.add(c);
+				}
 			}
-		});
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					((CardLayout)container.getLayout()).show(container, source.getContextPanelName());		
+				}
+			});
+		}
 	}
 	
     /**
@@ -171,5 +176,6 @@ public final class ContextPanel extends JPanel {
 			}
 		}
 		contextSelector.setSelectedIndex(panel != null ? visiblePanels.indexOf(panel) : 0); // Show panel or first one
+		showContextPanel(panel);
 	}
 }

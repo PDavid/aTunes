@@ -116,7 +116,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
      */
     void contextPanelChanged() {
         // Update selected tab
-        ApplicationState.getInstance().setSelectedContextTab(getController().getContextTab().getContextPanelName());
+        ApplicationState.getInstance().setSelectedContextTab(getController().getContextTab() != null ? getController().getContextTab().getContextPanelName() : null);
         // Call to fill information: Don't force update since audio object can be the same
         retrieveInfo(currentAudioObject, false);
     }
