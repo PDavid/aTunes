@@ -29,6 +29,8 @@ import javax.swing.UIManager;
 import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.tags.IncompleteTagsChecker;
@@ -79,12 +81,16 @@ public final class NavigationTableColumnModel extends AbstractCommonColumnModel 
                 if (IncompleteTagsChecker.hasIncompleteTags(audioObject)) {
                     ((JLabel) c).setForeground(Color.red);
                 } else {
-                    if( isSelected ) {
-                        ((JLabel) c).setForeground(UIManager.getColor("List.selectionForeground"));
-                    }
-                    else {
-                        ((JLabel) c).setForeground(UIManager.getColor("List.foreground"));
-                    }
+                	// Only Substance doesn't need this workaround
+                	if (!LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getClass().equals(SubstanceLookAndFeel.class)) {
+                		((JLabel) c).setForeground(c.getForeground());
+                		if( isSelected ) {
+                			((JLabel) c).setForeground(UIManager.getColor("List.selectionForeground"));
+                		}
+                		else {
+                			((JLabel) c).setForeground(UIManager.getColor("List.foreground"));
+                		}
+                	}
                 }    
             }
             return c;
