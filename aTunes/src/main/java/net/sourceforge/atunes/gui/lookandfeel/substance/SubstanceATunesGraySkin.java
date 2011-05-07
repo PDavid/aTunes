@@ -170,7 +170,6 @@ public final class SubstanceATunesGraySkin extends SubstanceSkin {
 		this.registerDecorationAreaSchemeBundle(specialSchemeBundle,
 				DecorationAreaType.PRIMARY_TITLE_PANE,
 				DecorationAreaType.SECONDARY_TITLE_PANE,
-				DecorationAreaType.FOOTER,
 				DecorationAreaType.HEADER, DecorationAreaType.GENERAL);
 
 		
