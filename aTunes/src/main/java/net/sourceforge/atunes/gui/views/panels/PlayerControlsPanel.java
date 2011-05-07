@@ -154,7 +154,7 @@ public final class PlayerControlsPanel extends JPanel {
         c.weighty = 0;
         c.gridwidth = 5;
         c.fill = GridBagConstraints.BOTH;
-        c.insets = new Insets(3, 40, 0, 40);
+        c.insets = new Insets(5, 40, 0, 40);
         add(topProgressSliderContainer, c);
                 
         c.gridy = 1;

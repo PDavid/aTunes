@@ -25,6 +25,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -107,6 +108,7 @@ public abstract class CommonSingleFrame extends AbstractSingleFrame {
         c.weightx = 1;
         c.fill = GridBagConstraints.BOTH;
         c.weighty = 1;
+        c.insets = new Insets(1, 1, 0, 1);
         panel.add(leftVerticalSplitPane, c);
 
         c.gridx = 0;
