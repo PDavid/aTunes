@@ -95,7 +95,6 @@ public final class Images {
     public static final String RSS_LITTLE = "rss_little.png";
     public static final String RSS = "rss.png";
     public static final String RSS_BIG = "rss_big.png";
-    public static final String SHUFFLE = "shuffle.png";
     public static final String STOP = "stop.png";
     public static final String STOP_TINY = "stopTiny.png";
     public static final String STOP_TRAY = SystemProperties.OS.isWindowsVista() ? "stopTrayVista.png" : "stopTray.png";
