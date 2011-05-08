@@ -305,7 +305,7 @@ public final class PlayerControlsPanel extends JPanel {
             c.gridx = 5;
             c.weightx = 0;
             c.fill = GridBagConstraints.NONE;
-            c.insets = new Insets(0, -7, 3, 0);
+            c.insets = new Insets(0, -1, 3, 0);
             panel.add(volumeSlider, c);
             c.gridx = 6;
             panel.add(volumeLevel, c);
