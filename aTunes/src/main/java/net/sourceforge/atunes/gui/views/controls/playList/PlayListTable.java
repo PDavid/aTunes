@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.gui.views.controls.playList;
 
+import java.awt.Paint;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragGestureEvent;
 import java.awt.dnd.DragGestureListener;
@@ -78,14 +79,14 @@ public final class PlayListTable extends JTable implements DragSourceListener, D
          */
         NONE;
 
-        public static ImageIcon getPlayStateIcon(PlayState state) {
+        public static ImageIcon getPlayStateIcon(Paint color, PlayState state) {
             switch (state) {
             case PLAYING:
-                return PlayListStateImageIcon.getPlayIcon();
+                return PlayListStateImageIcon.getPlayIcon(color);
             case STOPPED:
-                return PlayListStateImageIcon.getStopIcon();
+                return PlayListStateImageIcon.getStopIcon(color);
             case PAUSED:
-                return PlayListStateImageIcon.getPauseIcon();
+                return PlayListStateImageIcon.getPauseIcon(color);
             case NONE:
                 return null;
             default:

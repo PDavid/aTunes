@@ -52,7 +52,7 @@ public class AudioObjectContextPanel extends AbstractContextPanel {
         if (audioObject != null) {
             return audioObject.getGenericImage(GenericImageSize.SMALL);
         } else {
-            return AudioFileImageIcon.getImageIcon();
+            return AudioFileImageIcon.getSmallImageIcon();
         }
     }
 

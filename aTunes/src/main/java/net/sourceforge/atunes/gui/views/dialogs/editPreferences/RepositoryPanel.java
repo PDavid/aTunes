@@ -171,7 +171,7 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
 
     @Override
     public ImageIcon getIcon() {
-        return AudioFileImageIcon.getImageIcon();
+        return AudioFileImageIcon.getSmallImageIcon();
     }
 
     @Override

@@ -380,6 +380,12 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
     @Override
     public Paint getPaintFor(Component component) {
     	Color c = org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin().getActiveColorScheme(DecorationAreaType.GENERAL).getForegroundColor();
-    	return new Color(c.getRed(), c.getGreen(), c.getBlue(), 200);
+    	return new Color(c.getRed(), c.getGreen(), c.getBlue(), 180);
+    }
+    
+    @Override
+    public Paint getPaintForColorMutableIcon(Component comp) {
+    	Color c = comp.getForeground();
+    	return new Color(c.getRed(), c.getGreen(), c.getBlue(), 180);
     }
 }
