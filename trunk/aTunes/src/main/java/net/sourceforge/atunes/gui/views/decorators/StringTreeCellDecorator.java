@@ -37,7 +37,7 @@ public class StringTreeCellDecorator extends AbstractTreeCellDecorator {
             String text = ((String) userObject);
             JLabel label = (JLabel) component;
             if (text.equals(I18nUtils.getString("REPOSITORY"))) {
-                label.setIcon(AudioFileImageIcon.getImageIcon());
+                label.setIcon(AudioFileImageIcon.getSmallImageIcon());
             } else if (text.equals(I18nUtils.getString("DEVICE"))) {
                 label.setIcon(Images.getImage(Images.DEVICE));
             } else if (text.equals(I18nUtils.getString("ARTISTS"))) {
@@ -45,7 +45,7 @@ public class StringTreeCellDecorator extends AbstractTreeCellDecorator {
             } else if (text.equals(I18nUtils.getString("ALBUMS"))) {
                 label.setIcon(Images.getImage(Images.ALBUM));
             } else if (text.equals(I18nUtils.getString("SONGS"))) {
-                label.setIcon(AudioFileImageIcon.getImageIcon());
+                label.setIcon(AudioFileImageIcon.getSmallImageIcon());
             } else if (text.equals(I18nUtils.getString("FAVORITES"))) {
                 label.setIcon(Images.getImage(Images.FAVORITE));
             } else if (text.equals(I18nUtils.getString("PODCAST_FEEDS"))) {

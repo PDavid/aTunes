@@ -20,10 +20,13 @@
 
 package net.sourceforge.atunes.kernel.modules.columns;
 
+import java.awt.Paint;
+
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
+import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
@@ -38,7 +41,7 @@ public class TypeColumn extends AbstractColumn {
     private static final long serialVersionUID = -3060341777429113749L;
 
     public TypeColumn() {
-        super("TYPE", ImageIcon.class);
+        super("TYPE", ColorMutableImageIcon.class);
         setResizable(false);
         setWidth(20);
         setVisible(true);
@@ -58,11 +61,27 @@ public class TypeColumn extends AbstractColumn {
     @Override
     public Object getValueFor(AudioObject audioObject) {
         if (audioObject instanceof AudioFile) {
-            return AudioFileImageIcon.getImageIcon();
+            return new ColorMutableImageIcon() {
+            	@Override
+            	public ImageIcon getIcon(Paint paint) {
+            		return paint != null ? AudioFileImageIcon.getSmallImageIcon(paint) : AudioFileImageIcon.getSmallImageIcon(); // Use cached version if paint null
+            	}
+            };
         } else if (audioObject instanceof Radio) {
-            return Images.getImage(Images.RADIO_LITTLE);
+            return new ColorMutableImageIcon() {
+            	@Override
+            	public ImageIcon getIcon(Paint paint) {
+            		return Images.getImage(Images.RADIO_LITTLE);
+            	}
+            };
         } else if (audioObject instanceof PodcastFeedEntry) {
-            return Images.getImage(Images.RSS_LITTLE);
+            return new ColorMutableImageIcon() {
+				
+				@Override
+				public ImageIcon getIcon(Paint paint) {
+					return Images.getImage(Images.RSS_LITTLE);
+				}
+			};
         } else {
             return null;
         }

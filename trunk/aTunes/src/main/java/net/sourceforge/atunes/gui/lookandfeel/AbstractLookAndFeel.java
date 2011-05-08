@@ -262,4 +262,21 @@ public abstract class AbstractLookAndFeel {
 		return UIManager.getColor("Label.foreground"); 
 	}
 
+	/**
+	 * Returns paint to be used with certain icons which must be opaque (with no alpha)
+	 * @return
+	 */
+	public Paint getPaintForOpaqueIcon() {
+		return UIManager.getColor("Label.foreground");	
+	}
+
+	/**
+	 * Returns paint to be used to draw a color mutable icon in given component
+	 * @param c
+	 * @return
+	 */
+	public Paint getPaintForColorMutableIcon(Component c) {
+		return UIManager.getColor("Label.foreground");	
+	}
+
 }

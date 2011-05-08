@@ -32,7 +32,6 @@ import java.util.Set;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.repository.ImageCache;
 import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
 import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
@@ -655,13 +654,13 @@ public final class AudioFile implements LocalAudioObject, Serializable {
     public ImageIcon getGenericImage(GenericImageSize imageSize) {
         switch (imageSize) {
         case SMALL: {
-            return AudioFileImageIcon.getImageIcon();
+            return AudioFileImageIcon.getSmallImageIcon();
         }
         case MEDIUM: {
-            return Images.getImage(Images.AUDIO_FILE);
+            return AudioFileImageIcon.getMediumImage();
         }
         case BIG: {
-            return Images.getImage(Images.AUDIO_FILE_BIG);
+            return AudioFileImageIcon.getMediumImage(); // Not used yet
         }
         default: {
             throw new IllegalArgumentException("unknown image size");

@@ -41,9 +41,11 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.gui.images.ArrowImageIcon;
+import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
+import net.sourceforge.atunes.gui.renderers.ColorMutableTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.ImageIconTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.IntegerTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.JLabelTableCellRendererCode;
@@ -420,6 +422,8 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
             return new JLabelTableCellRendererCode(this);
         } else if (clazz.equals(Property.class)) {
             return new PropertyTableCellRendererCode();
+        } else if (clazz.equals(ColorMutableImageIcon.class)) {
+        	return new ColorMutableTableCellRendererCode(this);
         }
         return null;
     }

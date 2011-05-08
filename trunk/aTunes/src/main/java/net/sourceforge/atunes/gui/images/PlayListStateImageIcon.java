@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.gui.images;
 
+import java.awt.Paint;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 
@@ -30,19 +31,19 @@ public class PlayListStateImageIcon {
 	private static final int WIDTH = 14;
 	private static final int HEIGHT = 14;
 	
-	public static ImageIcon getStopIcon() {
-		return IconGenerator.generateIcon(WIDTH, HEIGHT, new Rectangle(4, 4, 8, 8));
+	public static ImageIcon getStopIcon(Paint color) {
+		return IconGenerator.generateIcon(color, WIDTH, HEIGHT, new Rectangle(4, 4, 8, 8));
 	}
 
-	public static ImageIcon getPlayIcon() {
+	public static ImageIcon getPlayIcon(Paint color) {
 		Polygon shape = new Polygon();
 		shape.addPoint(3, 3);
 		shape.addPoint(3, 11);
 		shape.addPoint(11, 7);
-		return IconGenerator.generateIcon(WIDTH, HEIGHT, shape);
+		return IconGenerator.generateIcon(color, WIDTH, HEIGHT, shape);
 	}
 
-	public static ImageIcon getPauseIcon() {
-		return IconGenerator.generateIcon(WIDTH, HEIGHT, new Rectangle(3, 3, 3, 8), new Rectangle(8, 3, 3, 8));
+	public static ImageIcon getPauseIcon(Paint color) {
+		return IconGenerator.generateIcon(color, WIDTH, HEIGHT, new Rectangle(3, 3, 3, 8), new Rectangle(8, 3, 3, 8));
 	}
 }

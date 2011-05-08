@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.gui.images;
 
+import java.awt.Paint;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.geom.Ellipse2D;
@@ -31,42 +32,63 @@ import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 
 public class AudioFileImageIcon implements LookAndFeelChangeListener {
 
-	private static final int WIDTH = 16;
-	private static final int HEIGHT = 16;
+	private static final int SMALL_WIDTH = 16;
+	private static final int SMALL_HEIGHT = 16;
+
+	private static final int MEDIUM_WIDTH = 70;
+	private static final int MEDIUM_HEIGHT = 70;
 	
-	private static AudioFileImageIcon icon;
-	
-	private static ImageIcon imageIcon;
+	private static ImageIcon smallImageIcon; // Cached as it's heavily used
 	
 	private AudioFileImageIcon() {
 		LookAndFeelSelector.getInstance().addLookAndFeelChangeListener(this);
 	}
 	
-	public static ImageIcon getImageIcon() {
-		if (imageIcon == null) {
-			icon = new AudioFileImageIcon();
-			imageIcon = icon.getImage();
+	public static ImageIcon getSmallImageIcon() {
+		if (smallImageIcon == null) {
+			smallImageIcon = getSmallImage(null);
 		}
-		return imageIcon;
+		return smallImageIcon;
 	}
 	
-	private ImageIcon getImage() {
-		Ellipse2D.Float e1 = new Ellipse2D.Float(1, 12, 6, 3);
-		Ellipse2D.Float e2 = new Ellipse2D.Float(8, 11, 6, 3);
+	private static ImageIcon getSmallImage(Paint color) {
+		Ellipse2D.Float e1 = new Ellipse2D.Float(1, 11, 6, 3);
+		Ellipse2D.Float e2 = new Ellipse2D.Float(8, 10, 6, 3);
 		
-		Rectangle r1 = new Rectangle(5, 6, 2, 7);
-		Rectangle r2 = new Rectangle(12, 4, 2, 8);
+		Rectangle r1 = new Rectangle(5, 5, 2, 7);
+		Rectangle r2 = new Rectangle(12, 3, 2, 8);
 		Polygon r3 = new Polygon();
-		r3.addPoint(5, 6);
-		r3.addPoint(5, 8);
-		r3.addPoint(14, 5);
-		r3.addPoint(14, 3);		
+		r3.addPoint(5, 5);
+		r3.addPoint(5, 7);
+		r3.addPoint(14, 4);
+		r3.addPoint(14, 2);		
 		
-		return IconGenerator.generateIcon(WIDTH, HEIGHT, e1, e2, r1, r2, r3);
+		return IconGenerator.generateIcon(color, SMALL_WIDTH, SMALL_HEIGHT, e1, e2, r1, r2, r3);
+	}
+
+	public static ImageIcon getMediumImage() {
+		Ellipse2D.Float e1 = new Ellipse2D.Float(4, 44, 24, 12);
+		Ellipse2D.Float e2 = new Ellipse2D.Float(32, 40, 24, 12);
+		
+		Rectangle r1 = new Rectangle(20, 20, 8, 28);
+		Rectangle r2 = new Rectangle(48, 12, 8, 32);
+		Polygon r3 = new Polygon();
+		r3.addPoint(20, 20);
+		r3.addPoint(20, 28);
+		r3.addPoint(56, 16);
+		r3.addPoint(56, 8);		
+		
+		// This icon must be opaque since with this size shapes overlap is visible using alpha
+		return IconGenerator.generateOpaqueIcon(MEDIUM_WIDTH, MEDIUM_HEIGHT, e1, e2, r1, r2, r3);
 	}
 
 	@Override
 	public void lookAndFeelChanged() {
-		imageIcon = icon.getImage();
+		smallImageIcon = getSmallImage(null);
+	}
+
+	public static ImageIcon getSmallImageIcon(Paint color) {
+		return getSmallImage(color);
+
 	}
 }
