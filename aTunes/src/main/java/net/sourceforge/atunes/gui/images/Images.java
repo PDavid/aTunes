@@ -45,8 +45,6 @@ public final class Images {
     public static final String APP_LOGO_90 = "logo90x90.png";
     public static final String APP_LOGO_150 = "logo150x150.png";
     public static final String APP_LOGO_300 = "logo300x300.png";
-    public static final String ARROW_UP = "arrowUp.png";
-    public static final String ARROW_DOWN = "arrowDown.png";
     public static final String ARTIST = "artist.png";
     public static final String ARTIST_FAVORITE = "artistFavorite.png";
     public static final String ARTIST_SIMILAR = "artistSimilar.png";

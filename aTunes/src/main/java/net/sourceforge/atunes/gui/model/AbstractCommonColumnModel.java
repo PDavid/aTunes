@@ -40,7 +40,7 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
-import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.images.ArrowImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
@@ -227,9 +227,9 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
             if (columnSort != null) {
                 ((JLabel) c).setHorizontalTextPosition(SwingConstants.LEFT);
                 if (columnSort.equals(ColumnSort.ASCENDING)) {
-                    ((JLabel) c).setIcon(Images.getImage(Images.ARROW_UP));
+                    ((JLabel) c).setIcon(ArrowImageIcon.getUpIcon());
                 } else if (columnSort.equals(ColumnSort.DESCENDING)) {
-                    ((JLabel) c).setIcon(Images.getImage(Images.ARROW_DOWN));
+                    ((JLabel) c).setIcon(ArrowImageIcon.getDownIcon());
                 }
             }
 
