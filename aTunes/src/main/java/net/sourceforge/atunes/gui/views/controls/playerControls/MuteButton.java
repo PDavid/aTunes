@@ -22,16 +22,21 @@ package net.sourceforge.atunes.gui.views.controls.playerControls;
 
 import java.awt.Dimension;
 
+import javax.swing.ImageIcon;
 import javax.swing.JToggleButton;
 
+import net.sourceforge.atunes.gui.images.VolumeMaxImageIcon;
+import net.sourceforge.atunes.gui.images.VolumeMedImageIcon;
+import net.sourceforge.atunes.gui.images.VolumeMinImageIcon;
+import net.sourceforge.atunes.gui.images.VolumeMuteImageIcon;
+import net.sourceforge.atunes.gui.images.VolumeZeroImageIcon;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelChangeListener;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
+import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 
-/*
- * based on code from Xtreme Media Player
- */
-public final class MuteButton extends JToggleButton {
+public final class MuteButton extends JToggleButton implements LookAndFeelChangeListener {
 
     private static final long serialVersionUID = 6007885049773560874L;
 
@@ -50,5 +55,40 @@ public final class MuteButton extends JToggleButton {
         setFocusable(false);
 
         LookAndFeelSelector.getInstance().getCurrentLookAndFeel().putClientProperties(this);
+        LookAndFeelSelector.getInstance().addLookAndFeelChangeListener(this);
     }
+    
+    @Override
+    public void lookAndFeelChanged() {
+    	updateIcon();
+    }
+    
+    /**
+     * Updates icon of mute
+     */
+    public void updateIcon() {
+    	setIcon(getVolumeIcon());
+    }
+    
+    /**
+     * Returns icon to use depending on volume and mute state
+     * @return
+     */
+    public static ImageIcon getVolumeIcon() {
+        if (ApplicationState.getInstance().isMuteEnabled()) {
+            return VolumeMuteImageIcon.getIcon();
+        } else {
+            int volume = ApplicationState.getInstance().getVolume();
+            if (volume > 80) {
+                return VolumeMaxImageIcon.getIcon();
+            } else if (volume > 40) {
+            	return VolumeMedImageIcon.getIcon();
+            } else if (volume > 5) {
+            	return VolumeMinImageIcon.getIcon();
+            } else {
+            	return VolumeZeroImageIcon.getIcon();
+            }
+        }
+    }
+
 }

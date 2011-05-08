@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -58,20 +58,7 @@ public class MuteAction extends AbstractAction {
     /**
      * Updates icon of mute
      */
-    public void updateIcon() {
-        if (ApplicationState.getInstance().isMuteEnabled()) {
-            putValue(SMALL_ICON, Images.getImage(Images.VOLUME_MUTE));
-        } else {
-            int volume = ApplicationState.getInstance().getVolume();
-            if (volume > 80) {
-                putValue(SMALL_ICON, Images.getImage(Images.VOlUME_MAX));
-            } else if (volume > 40) {
-                putValue(SMALL_ICON, Images.getImage(Images.VOLUME_MED));
-            } else if (volume > 5) {
-                putValue(SMALL_ICON, Images.getImage(Images.VOLUME_MIN));
-            } else {
-                putValue(SMALL_ICON, Images.getImage(Images.VOLUME_ZERO));
-            }
-        }
+    private void updateIcon() {
+        putValue(SMALL_ICON, MuteButton.getVolumeIcon());
     }
 }

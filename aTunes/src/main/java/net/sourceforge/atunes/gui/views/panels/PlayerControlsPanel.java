@@ -200,7 +200,7 @@ public final class PlayerControlsPanel extends JPanel {
         progressSlider.setProgress(time, remainingTime);
     }
 
-    public JToggleButton getVolumeButton() {
+    public MuteButton getVolumeButton() {
         return volumeButton;
     }
 

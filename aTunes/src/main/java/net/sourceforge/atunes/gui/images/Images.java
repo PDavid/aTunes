@@ -100,12 +100,7 @@ public final class Images {
     public static final String STOP_TINY = "stopTiny.png";
     public static final String STOP_TRAY = SystemProperties.OS.isWindowsVista() ? "stopTrayVista.png" : "stopTray.png";
     public static final String STOP_TRAY_MENU = "stopTrayMenu.png";
-    public static final String VOlUME_MAX = "volume-max.png";
-    public static final String VOLUME_MED = "volume-med.png";
-    public static final String VOLUME_MIN = "volume-min.png";
-    public static final String VOLUME_MUTE = "volume-mute.png";
     public static final String VOLUME_MUTE_TRAY_MENU = "volume-mute-tray-menu.png";
-    public static final String VOLUME_ZERO = "volume-zero.png";
     public static final String ONE_STAR = "1_star.png";
     public static final String TWO_STAR = "2_star.png";
     public static final String THREE_STAR = "3_star.png";
