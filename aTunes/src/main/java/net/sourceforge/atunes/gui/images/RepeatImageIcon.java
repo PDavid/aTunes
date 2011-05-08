@@ -18,32 +18,38 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.actions;
+package net.sourceforge.atunes.gui.images;
 
-import java.awt.event.ActionEvent;
+import java.awt.Polygon;
 
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.utils.I18nUtils;
+import javax.swing.ImageIcon;
 
-/**
- * This action enables or disables repeat mode
- * 
- * @author fleax
- * 
- */
-public class RepeatModeAction extends AbstractAction {
+public class RepeatImageIcon {
 
-    private static final long serialVersionUID = 2032609750151412458L;
+	public static ImageIcon getIcon() {
+		Polygon p = new Polygon();
+		p.addPoint(1, 5);
+		p.addPoint(1, 3);
+		p.addPoint(17, 3);
+		p.addPoint(17, 15);
+		p.addPoint(1, 15);
+		p.addPoint(1, 5);
+		p.addPoint(3, 5);
+		p.addPoint(3, 13);
+		p.addPoint(15, 13);
+		p.addPoint(15, 5);
+		
+		Polygon p3 = new Polygon();
+		p3.addPoint(11, 1);
+		p3.addPoint(15, 4);
+		p3.addPoint(11, 7);
 
-    RepeatModeAction() {
-        super(I18nUtils.getString("REPEAT"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("REPEAT"));
-        putValue(SELECTED_KEY, ApplicationState.getInstance().isRepeat());
-    }
+		Polygon p4 = new Polygon();
+		p4.addPoint(3, 14);
+		p4.addPoint(7, 11);
+		p4.addPoint(7, 17);
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        ApplicationState.getInstance().setRepeat((Boolean) getValue(SELECTED_KEY));
-    }
-
+		
+		return IconGenerator.generateIcon(18, 18, p, p3, p4);
+	}
 }

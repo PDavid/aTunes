@@ -20,13 +20,16 @@
 
 package net.sourceforge.atunes.gui.views.controls.playerControls;
 
+import net.sourceforge.atunes.gui.images.RepeatImageIcon;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelChangeListener;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.RepeatModeAction;
 
 /*
  * based on code from Xtreme Media Player
  */
-public final class RepeatButton extends SecondaryControl {
+public final class RepeatButton extends SecondaryControl implements LookAndFeelChangeListener {
 
     private static final long serialVersionUID = 6007885049773560874L;
 
@@ -35,5 +38,17 @@ public final class RepeatButton extends SecondaryControl {
      */
     public RepeatButton() {
         super(Actions.getAction(RepeatModeAction.class));
+        setIcon();
+        LookAndFeelSelector.getInstance().addLookAndFeelChangeListener(this);
+    }    
+
+    private void setIcon() {
+    	setIcon(RepeatImageIcon.getIcon());
     }
+
+    @Override
+    public void lookAndFeelChanged() {
+    	setIcon();
+    }
+
 }
