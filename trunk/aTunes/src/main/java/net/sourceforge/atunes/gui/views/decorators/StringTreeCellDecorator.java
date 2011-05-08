@@ -24,6 +24,7 @@ import java.awt.Component;
 
 import javax.swing.JLabel;
 
+import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -36,7 +37,7 @@ public class StringTreeCellDecorator extends AbstractTreeCellDecorator {
             String text = ((String) userObject);
             JLabel label = (JLabel) component;
             if (text.equals(I18nUtils.getString("REPOSITORY"))) {
-                label.setIcon(Images.getImage(Images.AUDIO_FILE_LITTLE));
+                label.setIcon(AudioFileImageIcon.getImageIcon());
             } else if (text.equals(I18nUtils.getString("DEVICE"))) {
                 label.setIcon(Images.getImage(Images.DEVICE));
             } else if (text.equals(I18nUtils.getString("ARTISTS"))) {
@@ -44,7 +45,7 @@ public class StringTreeCellDecorator extends AbstractTreeCellDecorator {
             } else if (text.equals(I18nUtils.getString("ALBUMS"))) {
                 label.setIcon(Images.getImage(Images.ALBUM));
             } else if (text.equals(I18nUtils.getString("SONGS"))) {
-                label.setIcon(Images.getImage(Images.AUDIO_FILE_LITTLE));
+                label.setIcon(AudioFileImageIcon.getImageIcon());
             } else if (text.equals(I18nUtils.getString("FAVORITES"))) {
                 label.setIcon(Images.getImage(Images.FAVORITE));
             } else if (text.equals(I18nUtils.getString("PODCAST_FEEDS"))) {

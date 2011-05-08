@@ -34,6 +34,7 @@ import javax.swing.table.DefaultTableModel;
 
 import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelChangeListener;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.dialogs.StatsDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
@@ -55,7 +56,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.ui.RectangleInsets;
 
-final class StatsDialogController extends AbstractSimpleController<StatsDialog> {
+final class StatsDialogController extends AbstractSimpleController<StatsDialog>  implements LookAndFeelChangeListener {
 
     private static class RightAlignmentTableCellRendererCode extends AbstractTableCellRendererCode {
         @Override
@@ -102,6 +103,7 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
      */
     StatsDialogController(StatsDialog frame) {
         super(frame);
+        LookAndFeelSelector.getInstance().addLookAndFeelChangeListener(this);
     }
 
     @Override
@@ -449,5 +451,10 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
         setSongsChart();
         setGeneralChart();
     }
+
+	@Override
+	public void lookAndFeelChanged() {
+		updateStats(); // Update color of charts
+	}
 
 }

@@ -32,7 +32,7 @@ import javax.swing.ToolTipManager;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
-import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.gui.views.decorators.AlbumTreeCellDecorator;
@@ -82,7 +82,7 @@ public class RepositoryNavigationView extends AbstractNavigationView {
 
     @Override
     public ImageIcon getIcon() {
-        return Images.getImage(Images.AUDIO_FILE_LITTLE);
+        return AudioFileImageIcon.getImageIcon();
     }
 
     @Override
