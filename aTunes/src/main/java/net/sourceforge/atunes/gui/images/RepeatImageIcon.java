@@ -28,16 +28,16 @@ public class RepeatImageIcon {
 
 	public static ImageIcon getIcon() {
 		Polygon p = new Polygon();
-		p.addPoint(1, 5);
-		p.addPoint(1, 3);
-		p.addPoint(17, 3);
-		p.addPoint(17, 15);
-		p.addPoint(1, 15);
-		p.addPoint(1, 5);
-		p.addPoint(3, 5);
-		p.addPoint(3, 13);
-		p.addPoint(15, 13);
-		p.addPoint(15, 5);
+		p.addPoint(2, 5);
+		p.addPoint(2, 3);
+		p.addPoint(16, 3);
+		p.addPoint(16, 15);
+		p.addPoint(2, 15);
+		p.addPoint(2, 5);
+		p.addPoint(4, 5);
+		p.addPoint(4, 13);
+		p.addPoint(14, 13);
+		p.addPoint(14, 5);
 		
 		Polygon p3 = new Polygon();
 		p3.addPoint(11, 1);
