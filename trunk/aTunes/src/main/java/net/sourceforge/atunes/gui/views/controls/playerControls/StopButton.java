@@ -21,10 +21,13 @@
 package net.sourceforge.atunes.gui.views.controls.playerControls;
 
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 
 import javax.swing.JButton;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.StopCurrentAudioObjectAction;
@@ -39,6 +42,10 @@ public final class StopButton extends JButton {
 
     private static final long serialVersionUID = 6007885049773560874L;
 
+    private Dimension size;
+    
+    private Rectangle stopShape;
+    
     /**
      * Instantiates a new stop button.
      * 
@@ -47,13 +54,28 @@ public final class StopButton extends JButton {
     public StopButton(Dimension size) {
         super(Actions.getAction(StopCurrentAudioObjectAction.class));
         // Force size
+        this.size = size;
         setPreferredSize(size);
         setMinimumSize(size);
         setMaximumSize(size);
         setFocusable(false);
-        setIcon(Images.getImage(Images.STOP));
         setText(null);
 
         LookAndFeelSelector.getInstance().getCurrentLookAndFeel().putClientProperties(this);
+        
+        stopShape = new Rectangle(- this.size.width / 6, - this.size.height / 6, 2 * this.size.width / 6, 2 * this.size.width / 6);
     }
+    
+    @Override
+    protected void paintComponent(Graphics g) {
+    	super.paintComponent(g);
+    	
+    	Graphics2D g2 = (Graphics2D) g;
+    	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    	g2.setPaint(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintFor(this));
+		g2.translate(this.size.getWidth() / 2, this.size.getHeight() * (4f/9f));
+   		g2.fill(stopShape);
+    	g2.dispose();
+    }
+
 }

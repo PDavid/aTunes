@@ -72,16 +72,13 @@ public final class Images {
     public static final String NAVIGATE = "navigate.png";
     public static final String NETWORK_LITTLE = "network_little.png";
     public static final String NEW_PODCAST_ENTRY = "new_podcast_entry.png";
-    public static final String NEXT = "next.png";
     public static final String NEXT_TRAY = SystemProperties.OS.isWindowsVista() ? "nextTrayVista.png" : "nextTray.png";
     public static final String NEXT_TRAY_MENU = "nextTrayMenu.png";
     public static final String NORMALIZATION = "normalization.png";
     public static final String OSD = "osd.png";
-    public static final String PAUSE = "pause.png";
     public static final String PAUSE_TINY = "pauseTiny.png";
     public static final String PAUSE_TRAY = SystemProperties.OS.isWindowsVista() ? "pauseTrayVista.png" : "pauseTray.png";
     public static final String PAUSE_TRAY_MENU = "pauseTrayMenu.png";
-    public static final String PLAY = "play.png";
     public static final String PLAY_TINY = "playTiny.png";
     public static final String PLAY_TRAY = SystemProperties.OS.isWindowsVista() ? "playTrayVista.png" : "playTray.png";
     public static final String PLAY_TRAY_MENU = "playTrayMenu.png";
@@ -89,7 +86,6 @@ public final class Images {
     public static final String PLUGIN = "plugin.png";
     public static final String POWERED_BY_LAST_FM = "poweredByLastFm.png";
     public static final String PREFS = "prefs.png";
-    public static final String PREVIOUS = "previous.png";
     public static final String PREVIOUS_TRAY = SystemProperties.OS.isWindowsVista() ? "previousTrayVista.png" : "previousTray.png";
     public static final String PREVIOUS_TRAY_MENU = "previousTrayMenu.png";
     public static final String RADIO = "radio.png";

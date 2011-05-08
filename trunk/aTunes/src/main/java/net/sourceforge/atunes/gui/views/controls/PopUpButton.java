@@ -22,6 +22,10 @@ package net.sourceforge.atunes.gui.views.controls;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
+import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -35,7 +39,7 @@ import javax.swing.JSeparator;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
-import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
@@ -59,22 +63,9 @@ public class PopUpButton extends JButton {
     private List<Component> items = new ArrayList<Component>();
     
     private boolean menuShown = false;
-
-    /**
-     * Instantiates a new pop up button.
-     * 
-     * @param action
-     *            the action
-     * @param location
-     *            the location
-     */
-    public PopUpButton(Action action, int location) {
-        super();
-        setAction(action);
-        setPreferredSize(new Dimension(20, 20));
-        setButton(location);
-    }
-
+    
+    private Polygon topShape;
+    
     /**
      * Instantiates a new pop up button.
      * 
@@ -83,19 +74,18 @@ public class PopUpButton extends JButton {
      * @param location
      *            the location
      */
-    public PopUpButton(String text, int location) {
-        super(text, null);
-        setButton(location);
-        setIcon(location);
+    public PopUpButton(int location) {
+        super();
+        this.location = location;
+        setButton();
         GuiUtils.applyComponentOrientation(menu);
-    }
-
-    private void setIcon(int location) {
-        if (location == TOP_LEFT || location == TOP_RIGHT) {
-            setIcon(Images.getImage(Images.ARROW_UP));
-        } else if (location == BOTTOM_LEFT || location == BOTTOM_RIGHT) {
-            setIcon(Images.getImage(Images.ARROW_DOWN));
-        }
+        
+        setMinimumSize(new Dimension(20, 20));
+        setPreferredSize(new Dimension(20, 20));
+        topShape = new Polygon();
+        topShape.addPoint(- 4, 4);
+        topShape.addPoint(4, 4);
+        topShape.addPoint(0, -2);        
     }
 
     @Override
@@ -108,6 +98,21 @@ public class PopUpButton extends JButton {
         return c;
     }
 
+    @Override
+    protected void paintComponent(Graphics g) {
+    	super.paintComponent(g);
+    	
+    	Graphics2D g2 = (Graphics2D) g;
+    	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    	g2.setPaint(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintFor(this));
+		g2.translate(getWidth() / 2, getHeight() / 2);
+		if (this.location == BOTTOM_LEFT || this.location == BOTTOM_RIGHT) {
+			g2.rotate(Math.PI);
+		}
+   		g2.fill(topShape);
+    	g2.dispose();
+    }
+
     /**
      * Adds a new MenuItem with an action
      * @param action
@@ -117,19 +122,9 @@ public class PopUpButton extends JButton {
     	JMenuItem item = menu.add(action);
     	items.add(item);
     	GuiUtils.applyComponentOrientation(menu);
-    	return item;
-    	
+    	return item;    	
     }
     
-    /**
-     * Gets the location property.
-     * 
-     * @return the location property
-     */
-    int getLocationProperty() {
-        return location;
-    }
-
     /**
      * Removes the all items.
      */
@@ -140,19 +135,15 @@ public class PopUpButton extends JButton {
 
     /**
      * Sets the button.
-     * 
-     * @param location
-     *            the new button
      */
-    private void setButton(int location) {
-        this.location = location;
+    private void setButton() {
         menu = new JPopupMenu();
         addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
         		if (isEnabled()) {
         			if (!menuShown) {
-        				setMenuLocation(getLocationProperty());
+        				setMenuLocation(location);
         				menu.show(PopUpButton.this, xLocation, yLocation);
         			} else {
         				menu.setVisible(false);

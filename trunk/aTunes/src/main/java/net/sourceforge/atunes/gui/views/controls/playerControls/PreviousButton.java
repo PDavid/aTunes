@@ -21,20 +21,24 @@
 package net.sourceforge.atunes.gui.views.controls.playerControls;
 
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
+import java.awt.RenderingHints;
 
 import javax.swing.JButton;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.PlayPreviousAudioObjectAction;
 
-/*
- * based on code from Xtreme Media Player
- */
 public final class PreviousButton extends JButton {
 
     private static final long serialVersionUID = -5415683019365261871L;
+
+    private Dimension size;
+    
+    private Polygon previousShape;
 
     /**
      * Instantiates a new previous button.
@@ -44,14 +48,35 @@ public final class PreviousButton extends JButton {
     public PreviousButton(Dimension size) {
         super(Actions.getAction(PlayPreviousAudioObjectAction.class));
         // Force size
+        this.size = size;
         setPreferredSize(size);
         setMinimumSize(size);
         setMaximumSize(size);
         setFocusable(false);
-        setIcon(Images.getImage(Images.PREVIOUS));
         setText(null);
 
         LookAndFeelSelector.getInstance().getCurrentLookAndFeel().putClientProperties(this);
+        
+        previousShape = new Polygon();
+        previousShape.addPoint(this.size.width / 5, this.size.height / 6);
+        previousShape.addPoint(this.size.width / 5, - this.size.height / 6);
+        previousShape.addPoint(0,  0);        
     }
+    
+    @Override
+    protected void paintComponent(Graphics g) {
+    	super.paintComponent(g);
+    	
+    	Graphics2D g2 = (Graphics2D) g;
+    	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    	g2.setPaint(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintFor(this));
+		g2.translate(this.size.getWidth() / 2 - this.size.width / 16, this.size.getHeight() / 2);
+    	
+   		g2.fill(previousShape);
+   		g2.translate(-this.size.width / 5, 0);
+   		g2.fill(previousShape);
+    	g2.dispose();
+    }
+
 
 }

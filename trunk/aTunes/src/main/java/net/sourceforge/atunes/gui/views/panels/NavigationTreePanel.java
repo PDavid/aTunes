@@ -67,7 +67,7 @@ public final class NavigationTreePanel extends JPanel {
      * Adds the content.
      */
     private void addContent() {
-    	options = new PopUpButton("", PopUpButton.BOTTOM_RIGHT);
+    	options = new PopUpButton(PopUpButton.BOTTOM_RIGHT);
         JRadioButtonMenuItem showArtist = new JRadioButtonMenuItem(Actions.getAction(ShowArtistsInNavigatorAction.class));
         JRadioButtonMenuItem showAlbum = new JRadioButtonMenuItem(Actions.getAction(ShowAlbumsInNavigatorAction.class));
         JRadioButtonMenuItem showGenre = new JRadioButtonMenuItem(Actions.getAction(ShowGenresInNavigatorAction.class));

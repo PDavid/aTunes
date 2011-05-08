@@ -45,7 +45,7 @@ public class FilterPanel extends JPanel {
     }
 
     private void addContent() {
-        filterButton = new PopUpButton("", PopUpButton.TOP_RIGHT);
+        filterButton = new PopUpButton(PopUpButton.TOP_RIGHT);
         filterTextField = new CustomTextField(13);
         filterTextField.setText(StringUtils.getString(I18nUtils.getString("FILTER"), "..."));
         filterTextField.setToolTipText(I18nUtils.getString("FILTER_TEXTFIELD_TOOLTIP"));

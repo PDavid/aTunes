@@ -65,7 +65,7 @@ public final class ContextPanel extends JPanel {
      */
     private void setContent() {
     	contextSelector = new JComboBox(); 
-    	options = new PopUpButton("", PopUpButton.BOTTOM_RIGHT);
+    	options = new PopUpButton(PopUpButton.BOTTOM_RIGHT);
     	container = new JPanel(new CardLayout());
     	GridBagConstraints c = new GridBagConstraints();
     	c.gridx = 0;
