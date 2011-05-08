@@ -49,7 +49,6 @@ public final class Images {
     public static final String ARTIST_FAVORITE = "artistFavorite.png";
     public static final String ARTIST_SIMILAR = "artistSimilar.png";
     public static final String AUDIO_FILE = "audioFile.png";
-    public static final String AUDIO_FILE_LITTLE = "audioFile_little.png";
     public static final String AUDIO_FILE_BIG = "audioFile_big.png";
     public static final String CD_AUDIO = "cdAudio.png";
     public static final String CHECK_FOR_UPDATES = "checkForUpdates.png";

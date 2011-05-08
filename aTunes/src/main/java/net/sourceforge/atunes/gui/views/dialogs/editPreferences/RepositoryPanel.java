@@ -29,7 +29,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -171,7 +171,7 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
 
     @Override
     public ImageIcon getIcon() {
-        return Images.getImage(Images.AUDIO_FILE_LITTLE);
+        return AudioFileImageIcon.getImageIcon();
     }
 
     @Override

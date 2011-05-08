@@ -25,7 +25,7 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
@@ -52,7 +52,7 @@ public class AudioObjectContextPanel extends AbstractContextPanel {
         if (audioObject != null) {
             return audioObject.getGenericImage(GenericImageSize.SMALL);
         } else {
-            return Images.getImage(Images.AUDIO_FILE_LITTLE);
+            return AudioFileImageIcon.getImageIcon();
         }
     }
 
