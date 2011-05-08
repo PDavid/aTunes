@@ -24,8 +24,6 @@ import java.awt.EventQueue;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.actions.Actions;
-import net.sourceforge.atunes.kernel.actions.MuteAction;
 import net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 
@@ -52,12 +50,10 @@ public final class Volume {
                 @Override
                 public void run() {
                     FullScreenHandler.getInstance().setVolume(finalVolume);
-                    ((MuteAction) Actions.getAction(MuteAction.class)).updateIcon();
                 }
             });
         } else {
         	FullScreenHandler.getInstance().setVolume(finalVolume);
-            ((MuteAction) Actions.getAction(MuteAction.class)).updateIcon();
         }
     }
     
