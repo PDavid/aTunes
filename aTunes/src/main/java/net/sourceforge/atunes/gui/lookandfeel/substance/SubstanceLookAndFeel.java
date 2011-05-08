@@ -20,8 +20,10 @@
 
 package net.sourceforge.atunes.gui.lookandfeel.substance;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.Paint;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -373,5 +375,11 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
     @Override
     public Font getDefaultFont() {
         return org.pushingpixels.substance.api.SubstanceLookAndFeel.getFontPolicy().getFontSet("Substance", null).getControlFont();
-    }    
+    }        
+    
+    @Override
+    public Paint getPaintFor(Component component) {
+    	Color c = org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin().getActiveColorScheme(DecorationAreaType.GENERAL).getForegroundColor();
+    	return new Color(c.getRed(), c.getGreen(), c.getBlue(), 200);
+    }
 }

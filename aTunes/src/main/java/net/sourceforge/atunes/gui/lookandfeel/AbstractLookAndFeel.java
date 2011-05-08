@@ -22,6 +22,7 @@ package net.sourceforge.atunes.gui.lookandfeel;
 
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.Paint;
 import java.util.List;
 
 import javax.swing.DefaultListCellRenderer;
@@ -251,5 +252,14 @@ public abstract class AbstractLookAndFeel {
     public boolean allowsSkins() {
     	return getSkins() != null && !getSkins().isEmpty();
     }
+
+	/**
+	 * Returns paint to be used with certain controls (player controls)
+	 * @param component
+	 * @return
+	 */
+	public Paint getPaintFor(Component component) {
+		return UIManager.getColor("Label.foreground"); 
+	}
 
 }

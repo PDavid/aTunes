@@ -33,7 +33,7 @@ public class OptionsButton extends PopUpButton {
 	private static final long serialVersionUID = 945492564458852643L;
 
 	public OptionsButton(Dimension size) {
-		super("", PopUpButton.TOP_RIGHT);
+		super(PopUpButton.TOP_RIGHT);
         setPreferredSize(size);
         setMinimumSize(size);
         setMaximumSize(size);

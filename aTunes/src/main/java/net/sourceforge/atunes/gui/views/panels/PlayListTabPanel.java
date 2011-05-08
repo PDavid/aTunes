@@ -55,7 +55,7 @@ public final class PlayListTabPanel extends JPanel {
      * Adds the content.
      */
     private void addContent() {
-    	options = new PopUpButton("", PopUpButton.BOTTOM_RIGHT);
+    	options = new PopUpButton(PopUpButton.BOTTOM_RIGHT);
     	playListCombo = new JComboBox();
 
     	add(options, BorderLayout.WEST);
