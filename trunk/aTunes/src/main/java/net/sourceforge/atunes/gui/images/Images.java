@@ -76,7 +76,6 @@ public final class Images {
     public static final String NEXT_TRAY_MENU = "nextTrayMenu.png";
     public static final String NORMALIZATION = "normalization.png";
     public static final String OSD = "osd.png";
-    public static final String PAUSE_TINY = "pauseTiny.png";
     public static final String PAUSE_TRAY = SystemProperties.OS.isWindowsVista() ? "pauseTrayVista.png" : "pauseTray.png";
     public static final String PAUSE_TRAY_MENU = "pauseTrayMenu.png";
     public static final String PLAY_TINY = "playTiny.png";
@@ -94,8 +93,6 @@ public final class Images {
     public static final String RSS_LITTLE = "rss_little.png";
     public static final String RSS = "rss.png";
     public static final String RSS_BIG = "rss_big.png";
-    public static final String STOP = "stop.png";
-    public static final String STOP_TINY = "stopTiny.png";
     public static final String STOP_TRAY = SystemProperties.OS.isWindowsVista() ? "stopTrayVista.png" : "stopTray.png";
     public static final String STOP_TRAY_MENU = "stopTrayMenu.png";
     public static final String VOLUME_MUTE_TRAY_MENU = "volume-mute-tray-menu.png";
