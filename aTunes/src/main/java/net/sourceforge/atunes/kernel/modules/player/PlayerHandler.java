@@ -352,9 +352,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
             }
         }
 
-        if (engines.isEmpty()) {
-//            handlePlayerError(new IllegalStateException(I18nUtils.getString("NO_PLAYER_ENGINE")));
-        } else {
+        if (!engines.isEmpty()) {
             // Update engine names
             engineNames = new String[engines.size()];
             for (int i = 0; i < engines.size(); i++) {
