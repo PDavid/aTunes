@@ -45,6 +45,7 @@ aTunes 2.1.0
 - FIX: Navigator width is not restored after restarting app and execute action to show navigator
 - FIX: Icon not displayed when installed from .deb package [3138941]
 - FIX: Make window bigger if when showing a component there is not enough space
+- FIX: Avoid crashing app when no player engine available
 
 aTunes 2.0.1
 -------------
