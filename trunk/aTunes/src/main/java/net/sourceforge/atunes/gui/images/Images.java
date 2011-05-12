@@ -46,7 +46,6 @@ public final class Images {
     public static final String APP_LOGO_150 = "logo150x150.png";
     public static final String APP_LOGO_300 = "logo300x300.png";
     public static final String ARTIST_FAVORITE = "artistFavorite.png";
-    public static final String ARTIST_SIMILAR = "artistSimilar.png";
     public static final String CD_AUDIO = "cdAudio.png";
     public static final String CHECK_FOR_UPDATES = "checkForUpdates.png";
     public static final String CHECK_FOR_UPDATES_BW = "checkForUpdatesBW.png";
