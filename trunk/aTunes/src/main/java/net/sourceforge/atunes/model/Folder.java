@@ -30,7 +30,7 @@ import java.util.Map;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
-import net.sourceforge.atunes.misc.SystemProperties;
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -265,7 +265,7 @@ public class Folder implements Serializable, TreeObject {
         String path = name;
         Folder parent = this.parentFolder;
         while (parent != null) {
-            path = StringUtils.getString(parent.getName(), SystemProperties.FILE_SEPARATOR, path);
+            path = StringUtils.getString(parent.getName(), OsManager.getFileSeparator(), path);
             parent = parent.parentFolder;
         }
         return new File(path);

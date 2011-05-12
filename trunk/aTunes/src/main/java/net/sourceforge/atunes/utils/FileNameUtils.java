@@ -20,9 +20,8 @@
 
 package net.sourceforge.atunes.utils;
 
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
-import net.sourceforge.atunes.misc.SystemProperties;
-import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.LocalAudioObject;
@@ -148,7 +147,7 @@ public final class FileNameUtils {
         fileName = fileName.replaceAll(":", "");
 
         // This list is probably incomplete. Windows is quite picky.
-        if (SystemProperties.OS == OperatingSystem.WINDOWS || isMp3Device) {
+        if (OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.WINDOWS || isMp3Device) {
             fileName = fileName.replace("\\", "-");
         }
         return fileName;
@@ -187,13 +186,13 @@ public final class FileNameUtils {
         String folderName = getValidName(folderNameStr, isMp3Device);
 
         // This list is probably incomplete. Windows is quite picky.
-        if (SystemProperties.OS == OperatingSystem.WINDOWS || isMp3Device) {
+        if (OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.WINDOWS || isMp3Device) {
             folderName = folderName.replace("\\.", "\\_");
-            if (SystemProperties.OS == OperatingSystem.WINDOWS) {
+            if (OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.WINDOWS) {
                 folderName = folderName + "\\";
             }
             folderName = folderName.replace(".\\", "_\\");
-            if (SystemProperties.OS == OperatingSystem.WINDOWS) {
+            if (OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.WINDOWS) {
                 folderName = folderName.replace("/", "-");
             }
         }
@@ -222,7 +221,7 @@ public final class FileNameUtils {
          * check for maximum length.
          */
         String fileName = fileNameStr;
-        if (SystemProperties.OS == OperatingSystem.WINDOWS || isMp3Device) {
+        if (OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.WINDOWS || isMp3Device) {
             fileName = fileName.replace("\"", "'");
             fileName = fileName.replace("?", "_");
             // Replace all ":" except at the drive letter
@@ -236,7 +235,7 @@ public final class FileNameUtils {
         }
 
         // Unconfirmed, as no Mac available for testing.
-        if (SystemProperties.OS == OperatingSystem.MACOSX) {
+        if (OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.MACOSX) {
             fileName = fileName.replace("|", "-");
         }
         return fileName;
@@ -296,7 +295,7 @@ public final class FileNameUtils {
      * @return File/Path in 8.3 format
      */
     public static String getShortPathNameW(String longPathName) {
-        if (SystemProperties.OS != OperatingSystem.WINDOWS) {
+        if (OsManager.osType != net.sourceforge.atunes.kernel.OperatingSystem.WINDOWS) {
             return longPathName;
         }
         WString pathname = new WString(longPathName);

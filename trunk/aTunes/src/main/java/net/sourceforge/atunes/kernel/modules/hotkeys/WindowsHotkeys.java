@@ -20,13 +20,13 @@
 
 package net.sourceforge.atunes.kernel.modules.hotkeys;
 
-import net.sourceforge.atunes.misc.SystemProperties;
+import net.sourceforge.atunes.kernel.OsManager;
 
 import com.melloware.jintellitype.IntellitypeListener;
 import com.melloware.jintellitype.JIntellitype;
 import com.melloware.jintellitype.JIntellitypeConstants;
 
-class WindowsHotkeys extends AbstractHotkeys implements com.melloware.jintellitype.HotkeyListener, IntellitypeListener {
+public class WindowsHotkeys extends AbstractHotkeys implements com.melloware.jintellitype.HotkeyListener, IntellitypeListener {
 
     public WindowsHotkeys(HotkeyListener hotkeyListener) {
         super(hotkeyListener);
@@ -103,7 +103,7 @@ class WindowsHotkeys extends AbstractHotkeys implements com.melloware.jintellity
     }
 
     public static boolean isSupported() {
-    	if(SystemProperties.OS.is64Bit()) {
+    	if(OsManager.osType.is64Bit()) {
     		JIntellitype.setLibraryLocation("JIntellitype64.dll");
     	}
         return JIntellitype.isJIntellitypeSupported();

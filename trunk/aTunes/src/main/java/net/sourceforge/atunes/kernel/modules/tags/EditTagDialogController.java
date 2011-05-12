@@ -39,9 +39,8 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.autocomplete.AutoCompleteDecorator;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.misc.SystemProperties;
-import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
@@ -443,7 +442,7 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
         if (!getComponentControlled().getLyricsCheckBox().isEnabled() || getComponentControlled().getLyricsCheckBox().isSelected()) {
             // Text area line breaks are \n so in some OS (Windows) is not a correct line break -> Replace with OS line terminator
             String lyrics = getComponentControlled().getLyricsTextArea().getText();
-            if (SystemProperties.OS.equals(OperatingSystem.WINDOWS)) {
+            if (OsManager.osType.equals(net.sourceforge.atunes.kernel.OperatingSystem.WINDOWS)) {
                 lyrics = lyrics.replaceAll("^[\r]\n", "\r\n");
             }
             editTagInfo.put("LYRICS", lyrics);

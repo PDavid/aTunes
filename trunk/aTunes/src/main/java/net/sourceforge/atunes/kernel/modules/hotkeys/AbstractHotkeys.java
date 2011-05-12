@@ -22,8 +22,7 @@ package net.sourceforge.atunes.kernel.modules.hotkeys;
 
 import java.lang.reflect.Constructor;
 
-import net.sourceforge.atunes.misc.SystemProperties;
-import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
@@ -54,12 +53,8 @@ public abstract class AbstractHotkeys {
 
     public static AbstractHotkeys createInstance(HotkeyListener hotkeyListener) {
         try {
-            if (SystemProperties.OS == OperatingSystem.WINDOWS && WindowsHotkeys.isSupported()) {
-                Class<?> clazz = Class.forName(WindowsHotkeys.class.getName());
-                Constructor<?> constructor = clazz.getConstructor(HotkeyListener.class);
-                return (AbstractHotkeys) constructor.newInstance(hotkeyListener);
-            } else if (SystemProperties.OS == OperatingSystem.LINUX) {
-                Class<?> clazz = Class.forName(X11Hotkeys.class.getName());
+        	Class<?> clazz = OsManager.getHotkeysListener();
+        	if (clazz != null) {
                 Constructor<?> constructor = clazz.getConstructor(HotkeyListener.class);
                 return (AbstractHotkeys) constructor.newInstance(hotkeyListener);
             } else {

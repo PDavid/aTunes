@@ -31,13 +31,13 @@ import java.util.StringTokenizer;
 
 import javax.swing.SwingUtilities;
 
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
 import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
-import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.Timer;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -774,8 +774,7 @@ public class RepositoryLoader extends Thread {
 		path = path.replace(repositoryFolder.getAbsolutePath(), "");
 
 		Folder f = rootFolder;
-		StringTokenizer st = new StringTokenizer(path,
-				SystemProperties.FILE_SEPARATOR);
+		StringTokenizer st = new StringTokenizer(path, OsManager.getFileSeparator());
 		while (st.hasMoreTokens()) {
 			String folderName = st.nextToken();
 			f = f.getFolder(folderName);

@@ -46,6 +46,7 @@ import net.sourceforge.atunes.gui.views.dialogs.RepositoryProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ReviewImportDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ConnectDeviceAction;
 import net.sourceforge.atunes.kernel.actions.ExitAction;
@@ -68,7 +69,6 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
 import net.sourceforge.atunes.kernel.modules.tags.TagAttributesReviewed;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
-import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
@@ -524,7 +524,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
      * @return the path for new audio files ripped
      */
     public String getPathForNewAudioFilesRipped() {
-        return StringUtils.getString(RepositoryHandler.getInstance().getRepositoryPath(), SystemProperties.FILE_SEPARATOR, Album.getUnknownAlbum(), " - ", DateUtils
+        return StringUtils.getString(RepositoryHandler.getInstance().getRepositoryPath(), OsManager.getFileSeparator(), Album.getUnknownAlbum(), " - ", DateUtils
                 .toPathString(new Date()));
     }
 
@@ -1164,8 +1164,8 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
      * @return
      */
     public String getRepositoryConfigurationFolder() {
-        String customRepositoryConfigFolder = SystemProperties.getCustomRepositoryConfigFolder();
-        return customRepositoryConfigFolder != null ? customRepositoryConfigFolder : SystemProperties.getUserConfigFolder(Kernel.isDebug());
+        String customRepositoryConfigFolder = OsManager.getCustomRepositoryConfigFolder();
+        return customRepositoryConfigFolder != null ? customRepositoryConfigFolder : OsManager.getUserConfigFolder(Kernel.isDebug());
     }
     
 	@Override

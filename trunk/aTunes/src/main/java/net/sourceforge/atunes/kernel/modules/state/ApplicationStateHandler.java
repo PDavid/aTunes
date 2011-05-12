@@ -37,6 +37,7 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.EditPreferencesDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.ListOfPlayLists;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
@@ -45,7 +46,6 @@ import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.exception.InconsistentRepositoryException;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.Favorites;
 import net.sourceforge.atunes.kernel.modules.statistics.Statistics;
-import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.Timer;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.AudioObject;
@@ -315,7 +315,7 @@ public final class ApplicationStateHandler extends AbstractHandler {
         ObjectOutputStream oos = null;
         try {
             FileOutputStream fout = new FileOutputStream(StringUtils
-                    .getString(getUserConfigFolder(), SystemProperties.FILE_SEPARATOR, Constants.DEVICE_CACHE_FILE_PREFIX, deviceId));
+                    .getString(getUserConfigFolder(), OsManager.getFileSeparator(), Constants.DEVICE_CACHE_FILE_PREFIX, deviceId));
             oos = new ObjectOutputStream(fout);
             getLogger().info(LogCategories.HANDLER, "Serialize device information...");
             long t0 = System.currentTimeMillis();
@@ -581,7 +581,7 @@ public final class ApplicationStateHandler extends AbstractHandler {
     public Repository retrieveDeviceCache(String deviceId) {
         ObjectInputStream ois = null;
         try {
-            FileInputStream fis = new FileInputStream(StringUtils.getString(getUserConfigFolder(), SystemProperties.FILE_SEPARATOR, Constants.DEVICE_CACHE_FILE_PREFIX, deviceId));
+            FileInputStream fis = new FileInputStream(StringUtils.getString(getUserConfigFolder(), OsManager.getFileSeparator(), Constants.DEVICE_CACHE_FILE_PREFIX, deviceId));
             ois = new ObjectInputStream(fis);
             getLogger().info(LogCategories.HANDLER, "Reading serialized device cache");
             long t0 = System.currentTimeMillis();
@@ -601,7 +601,7 @@ public final class ApplicationStateHandler extends AbstractHandler {
     }
 
     private String getUserConfigFolder() {
-        return SystemProperties.getUserConfigFolder(Kernel.isDebug());
+        return OsManager.getUserConfigFolder(Kernel.isDebug());
     }
     
     /**

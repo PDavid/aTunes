@@ -29,13 +29,13 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.kernel.OperatingSystem;
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.cdripper.ProgressListener;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
 import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
 import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
-import net.sourceforge.atunes.misc.SystemProperties;
-import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.LocalAudioObject;
@@ -81,8 +81,8 @@ public class Mp4Encoder implements Encoder {
         try {
             Process p;
             // Test for Windows system checks in ...\aTunes\win_tools only!
-            if (SystemProperties.OS == OperatingSystem.WINDOWS) {
-                p = new ProcessBuilder(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, SystemProperties.FILE_SEPARATOR, OGGENC)).start();
+            if (OsManager.osType == OperatingSystem.WINDOWS) {
+                p = new ProcessBuilder(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, OsManager.getFileSeparator(), OGGENC)).start();
             } else {
                 p = new ProcessBuilder(OGGENC, VERSION).start();
             }
@@ -128,8 +128,8 @@ public class Mp4Encoder implements Encoder {
         BufferedReader stdInput = null;
         try {
             List<String> command = new ArrayList<String>();
-            if (SystemProperties.OS == OperatingSystem.WINDOWS) {
-                command.add(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, SystemProperties.FILE_SEPARATOR, OGGENC));
+            if (OsManager.osType == OperatingSystem.WINDOWS) {
+                command.add(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, OsManager.getFileSeparator(), OGGENC));
             } else {
                 command.add(OGGENC);
             }

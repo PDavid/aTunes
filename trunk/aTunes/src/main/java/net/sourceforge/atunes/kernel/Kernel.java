@@ -39,7 +39,6 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.TempFolder;
 import net.sourceforge.atunes.misc.Timer;
 import net.sourceforge.atunes.misc.log.LogCategories;
@@ -194,7 +193,7 @@ public class Kernel {
         	ApplicationLifeCycleListeners.applicationFinish();
 
             // Build a process builder with OS-specific command and saved arguments
-            ProcessBuilder pb = new ProcessBuilder(SystemProperties.OS.getLaunchCommand(), ApplicationArguments.getSavedArguments());
+            ProcessBuilder pb = new ProcessBuilder(OsManager.getLaunchCommand(), ApplicationArguments.getSavedArguments());
 
             System.out.println(pb.command().toString());
 

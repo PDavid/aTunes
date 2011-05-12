@@ -26,8 +26,8 @@ import javax.swing.RepaintManager;
 
 import net.sourceforge.atunes.gui.debug.CheckThreadViolationRepaintManager;
 import net.sourceforge.atunes.kernel.Kernel;
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.instances.MultipleInstancesHandler;
-import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.Log4jPropertiesLoader;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -64,7 +64,7 @@ public final class Main {
         getLogger().info(LogCategories.START, StringUtils.getString("Debug mode = ", Kernel.isDebug()));
 
         // Fifth line: Execution path
-        getLogger().info(LogCategories.START, StringUtils.getString("Execution path = ", SystemProperties.getWorkingDirectory()));
+        getLogger().info(LogCategories.START, StringUtils.getString("Execution path = ", OsManager.getWorkingDirectory()));
     }
 
     /**
@@ -100,10 +100,10 @@ public final class Main {
             Kernel.setEnablePlugins(arguments.contains(ApplicationArguments.ENABLE_PLUGINS));
 
             // Set custom config folder if passed as argument
-            SystemProperties.setCustomConfigFolder(ApplicationArguments.getUserConfigFolder(arguments));
+            OsManager.setCustomConfigFolder(ApplicationArguments.getUserConfigFolder(arguments));
 
             // Set custom repository config folder if passed as argument
-            SystemProperties.setCustomRepositoryConfigFolder(ApplicationArguments.getRepositoryConfigFolder(arguments));
+            OsManager.setCustomRepositoryConfigFolder(ApplicationArguments.getRepositoryConfigFolder(arguments));
 
             // Set log4j properties
             Log4jPropertiesLoader.loadProperties(Kernel.isDebug());

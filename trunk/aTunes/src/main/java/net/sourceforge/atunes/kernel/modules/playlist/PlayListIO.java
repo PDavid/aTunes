@@ -31,12 +31,11 @@ import java.util.List;
 
 import javax.swing.filechooser.FileFilter;
 
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.misc.SystemProperties;
-import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -217,8 +216,8 @@ public final class PlayListIO {
             	line.startsWith(M3U_UNIX_ABSOLUTE_PATH) ||
             	line.startsWith(M3U_UNC_ABSOLUTE_PATH)) {
                 // Let's check if we are at least using the right OS. Maybe a message should be returned, but for now it doesn't. UNC paths are allowed for all OS
-                if (((SystemProperties.OS == OperatingSystem.WINDOWS) && line.startsWith(M3U_UNIX_ABSOLUTE_PATH))
-                        || (!(SystemProperties.OS == OperatingSystem.WINDOWS) && line.startsWith(M3U_WINDOWS_ABSOLUTE_PATH, 1))) {
+                if (((OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.WINDOWS) && line.startsWith(M3U_UNIX_ABSOLUTE_PATH))
+                        || (!(OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.WINDOWS) && line.startsWith(M3U_WINDOWS_ABSOLUTE_PATH, 1))) {
                     return Collections.emptyList();
                 }
                 result.add(line);
@@ -231,7 +230,7 @@ public final class PlayListIO {
             // The path is relative! We must add it to the filename
             // But if entries are HTTP URLS then don't add any path
             else {
-                String path = file.getParent() + SystemProperties.FILE_SEPARATOR;
+                String path = file.getParent() + OsManager.getFileSeparator();
                 result.add(line.startsWith(M3U_HTTP_PREFIX) ? line : StringUtils.getString(path, line));
                 while ((line = br.readLine()) != null) {
                     if (!line.startsWith(M3U_START_COMMENT) && !line.isEmpty()) {
@@ -265,9 +264,9 @@ public final class PlayListIO {
                 file.delete();
             }
             writer = new FileWriter(file);
-            writer.append(StringUtils.getString(M3U_HEADER, SystemProperties.LINE_TERMINATOR));
+            writer.append(StringUtils.getString(M3U_HEADER, OsManager.getLineTerminator()));
             for (AudioObject f : playlist.getAudioObjects()) {
-                writer.append(StringUtils.getString(f.getUrl(), SystemProperties.LINE_TERMINATOR));
+                writer.append(StringUtils.getString(f.getUrl(), OsManager.getLineTerminator()));
             }
             writer.flush();
             return true;

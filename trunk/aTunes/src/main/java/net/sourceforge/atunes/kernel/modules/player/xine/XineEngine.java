@@ -28,14 +28,13 @@ import java.util.EnumSet;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.misc.SystemProperties;
-import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -58,7 +57,7 @@ public class XineEngine extends AbstractPlayerEngine {
 
     @Override
     protected boolean isEngineAvailable() {
-        if (SystemProperties.OS == OperatingSystem.WINDOWS) {
+        if (OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.WINDOWS) {
             return false;
         } else {
             try {
