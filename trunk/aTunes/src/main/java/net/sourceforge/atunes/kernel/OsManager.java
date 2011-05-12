@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel;
 import java.awt.Window;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.frame.Frame;
@@ -255,11 +256,11 @@ public class OsManager {
 	}
 	
 	/**
-	 * Returns if OS supports short path names
+	 * Returns if OS uses short path names
 	 * @return
 	 */
-	public static boolean allowsShortPathNames() {
-		return adapter.allowsShortPathNames();
+	public static boolean usesShortPathNames() {
+		return adapter.usesShortPathNames();
 	}
 
 	/**
@@ -325,6 +326,15 @@ public class OsManager {
 	 */
 	public static String getPlayerEngineCommand(AbstractPlayerEngine engine) {
 		return adapter.getPlayerEngineCommand(engine);
+	}
+
+	/**
+	 * Returns specific player engine parameters
+	 * @param engine
+	 * @return
+	 */
+	public static Collection<String> getPlayerEngineParameters(AbstractPlayerEngine engine) {
+		return adapter.getPlayerEngineParameters(engine);
 	}
 
 }

@@ -22,6 +22,8 @@ package net.sourceforge.atunes.kernel.modules.os;
 
 import java.awt.GraphicsDevice;
 import java.awt.Window;
+import java.util.Collection;
+import java.util.Collections;
 
 import net.sourceforge.atunes.gui.frame.Frame;
 import net.sourceforge.atunes.kernel.OperatingSystem;
@@ -103,10 +105,10 @@ public abstract class OperatingSystemAdapter {
 	}
 
 	/**
-	 * Returns if OS supports short path names
+	 * Returns if OS uses short path names
 	 * @return
 	 */
-	public boolean allowsShortPathNames() {
+	public boolean usesShortPathNames() {
 		return false; // false by default
 	}
 
@@ -159,4 +161,13 @@ public abstract class OperatingSystemAdapter {
 	 * @return
 	 */
 	public abstract String getPlayerEngineCommand(AbstractPlayerEngine engine);
+
+	/**
+	 * Returns specific player engine parameters
+	 * @param engine
+	 * @return
+	 */
+	public Collection<String> getPlayerEngineParameters(AbstractPlayerEngine engine) {
+		return Collections.emptyList();
+	}
 }

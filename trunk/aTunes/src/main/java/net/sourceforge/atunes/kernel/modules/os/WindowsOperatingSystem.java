@@ -22,6 +22,9 @@ package net.sourceforge.atunes.kernel.modules.os;
 
 import java.awt.Window;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import net.sourceforge.atunes.kernel.OperatingSystem;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavConverter;
@@ -47,6 +50,10 @@ public class WindowsOperatingSystem extends OperatingSystemAdapter {
      */
     private static final String MPLAYER_WIN_COMMAND = "win_tools/mplayer.exe";
 
+    private static final String WINOPTPRIORITY = "-priority";
+    
+    private static final String WINOPTPRIORITY_DEFAULT = "abovenormal";
+
     public WindowsOperatingSystem(OperatingSystem systemType) {
 		super(systemType);
 	}
@@ -67,7 +74,7 @@ public class WindowsOperatingSystem extends OperatingSystemAdapter {
 	}
 	
 	@Override
-	public boolean allowsShortPathNames() {
+	public boolean usesShortPathNames() {
 		return true;
 	}
 	
@@ -103,5 +110,17 @@ public class WindowsOperatingSystem extends OperatingSystemAdapter {
 	@Override
 	public String getPlayerEngineCommand(AbstractPlayerEngine engine) {		
 		return engine instanceof MPlayerEngine ? MPLAYER_WIN_COMMAND : null;
+	}
+	
+	@Override
+	public Collection<String> getPlayerEngineParameters(AbstractPlayerEngine engine) {
+		if (engine instanceof MPlayerEngine) {
+			List<String> parameters = new ArrayList<String>(2);
+			parameters.add(WINOPTPRIORITY);
+			parameters.add(WINOPTPRIORITY_DEFAULT);
+			return parameters;
+		} else {
+			return super.getPlayerEngineParameters(engine);
+		}
 	}
 }

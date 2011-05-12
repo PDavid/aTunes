@@ -51,10 +51,6 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 
 
 
-    private static final String SOLARISOPTAO = "-ao";
-    private static final String SOLARISOPTTYPE = "sun"; // Arguments for mplayer
-    private static final String WINOPTPRIORITY = "-priority";
-    private static final String WINOPTPRIORITY_DEFAULT = "abovenormal";
     /** Argument to not display more information than needed. */
     private static final String QUIET = "-quiet";
     /** Argument to control mplayer through commands. */
@@ -282,13 +278,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
                 && ApplicationState.getInstance().isUseDownloadedPodcastFeedEntries() && ((PodcastFeedEntry) audioObject).isDownloaded()));
 
         command.add(OsManager.getPlayerEngineCommand(this));
-        if (OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.SOLARIS) {
-            command.add(SOLARISOPTAO);
-            command.add(SOLARISOPTTYPE);
-        } else if (OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.WINDOWS) {
-            command.add(WINOPTPRIORITY);
-            command.add(WINOPTPRIORITY_DEFAULT);
-        }
+        command.addAll(OsManager.getPlayerEngineParameters(this));
         command.add(QUIET);
         command.add(SLAVE);
 
@@ -303,11 +293,11 @@ public class MPlayerEngine extends AbstractPlayerEngine {
         }
 
         // url
-        boolean shortPathName = ApplicationState.getInstance().isUseShortPathNames() && OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.WINDOWS && audioObject instanceof AudioFile;
+        boolean shortPathName = ApplicationState.getInstance().isUseShortPathNames() && OsManager.usesShortPathNames() && audioObject instanceof AudioFile;
         String url;
         if (audioObject instanceof PodcastFeedEntry && !isRemoteAudio) {
             url = PodcastFeedHandler.getInstance().getDownloadPath((PodcastFeedEntry) audioObject);
-            if (ApplicationState.getInstance().isUseShortPathNames() && OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.WINDOWS) {
+            if (ApplicationState.getInstance().isUseShortPathNames() && OsManager.usesShortPathNames()) {
                 shortPathName = true;
             }
         } else {
