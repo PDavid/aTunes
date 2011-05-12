@@ -25,6 +25,8 @@ import java.io.File;
 import net.sourceforge.atunes.kernel.OperatingSystem;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
 import net.sourceforge.atunes.kernel.modules.hotkeys.X11Hotkeys;
+import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
+import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class LinuxOperatingSystem extends OperatingSystemAdapter {
@@ -33,6 +35,12 @@ public class LinuxOperatingSystem extends OperatingSystemAdapter {
      * Name of the Linux command
      */
     private static final String COMMAND_LINUX = "aTunes.sh";
+    
+    /**
+     * Command to be executed on Linux systems to launch mplayer. Mplayer should
+     * be in $PATH
+     */
+    private static String MPLAYER_LINUX_COMMAND = "mplayer";
 
     public LinuxOperatingSystem(OperatingSystem systemType) {
 		super(systemType);
@@ -53,4 +61,13 @@ public class LinuxOperatingSystem extends OperatingSystemAdapter {
 		return X11Hotkeys.class;
 	}
 
+	@Override
+	public boolean isPlayerEngineSupported(AbstractPlayerEngine engine) {
+		return true; // all supported
+	}
+	
+	@Override
+	public String getPlayerEngineCommand(AbstractPlayerEngine engine) {
+		return engine instanceof MPlayerEngine ? MPLAYER_LINUX_COMMAND : null;
+	}
 }

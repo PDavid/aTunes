@@ -28,7 +28,6 @@ import java.util.EnumSet;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
@@ -57,21 +56,17 @@ public class XineEngine extends AbstractPlayerEngine {
 
     @Override
     protected boolean isEngineAvailable() {
-        if (OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.WINDOWS) {
-            return false;
-        } else {
-            try {
-                String v = Xine.getLibXineVersion();
-                info("Engine version: " + v);
-                if (v != null && v.trim().length() > 0) {
-                    return true;
-                }
-            } catch (Throwable th) {
-                // catching of Throwable is bad practice, but there are too many possible exceptions
-                // with only result - Xine is not available
-            }
-            return false;
-        }
+    	try {
+    		String v = Xine.getLibXineVersion();
+    		info("Engine version: " + v);
+    		if (v != null && v.trim().length() > 0) {
+    			return true;
+    		}
+    	} catch (Throwable th) {
+    		// catching of Throwable is bad practice, but there are too many possible exceptions
+    		// with only result - Xine is not available
+    	}
+    	return false;
     }
 
     @Override

@@ -28,6 +28,9 @@ import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavCo
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.Cdda2wav;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
 import net.sourceforge.atunes.kernel.modules.hotkeys.WindowsHotkeys;
+import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
+import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
+import net.sourceforge.atunes.kernel.modules.player.xine.XineEngine;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -37,6 +40,12 @@ public class WindowsOperatingSystem extends OperatingSystemAdapter {
      * Name of the Windows command
      */
     private static final String COMMAND_WINDOWS = "aTunes.exe";
+    
+    /**
+     * Command to be executed on Windows systems to launch mplayer. Mplayer is
+     * in "win_tools" dir, inside aTunes package
+     */
+    private static final String MPLAYER_WIN_COMMAND = "win_tools/mplayer.exe";
 
     public WindowsOperatingSystem(OperatingSystem systemType) {
 		super(systemType);
@@ -84,5 +93,15 @@ public class WindowsOperatingSystem extends OperatingSystemAdapter {
 	@Override
 	public Class<? extends AbstractHotkeys> getHotkeysListener() {
 		return WindowsHotkeys.isSupported() ? WindowsHotkeys.class : null;
+	}
+	
+	@Override
+	public boolean isPlayerEngineSupported(AbstractPlayerEngine engine) {
+		return engine instanceof XineEngine ? false : true; // Xine is not supported
+	}
+	
+	@Override
+	public String getPlayerEngineCommand(AbstractPlayerEngine engine) {		
+		return engine instanceof MPlayerEngine ? MPLAYER_WIN_COMMAND : null;
 	}
 }

@@ -28,6 +28,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.AbstractHandler;
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.PlaybackState;
 import net.sourceforge.atunes.kernel.PlaybackStateListener;
 import net.sourceforge.atunes.kernel.PlaybackStateListeners;
@@ -347,7 +348,9 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
         // Remove unsupported engines
         Iterator<AbstractPlayerEngine> it = engines.iterator();
         while (it.hasNext()) {
-            if (!it.next().isEngineAvailable()) {
+        	AbstractPlayerEngine engine = it.next();
+        	// Engines must be supported for given OS and available
+            if (!OsManager.isPlayerEngineSupported(engine) || !engine.isEngineAvailable()) {
                 it.remove();
             }
         }
