@@ -27,6 +27,8 @@ import net.sourceforge.atunes.gui.frame.Frame;
 import net.sourceforge.atunes.kernel.OperatingSystem;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavConverter;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.Cdparanoia;
+import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
+import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -37,6 +39,9 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
      * Name of the MacOsX command
      */
     private static final String COMMAND_MACOSX = "aTunes.command";
+    
+    /** Command to be executed on Mac systems to launch mplayer. */
+    private static final String MPLAYER_MACOS_COMMAND = "mac_tools/mplayer";
 
     public MacOSXOperatingSystem(OperatingSystem systemType) {
 		super(systemType);
@@ -71,6 +76,16 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 	@Override
 	public Boolean testCdToWavConverter() {
 		return Cdparanoia.pTestTool();
+	}
+
+	@Override
+	public boolean isPlayerEngineSupported(AbstractPlayerEngine engine) {
+		return engine instanceof MPlayerEngine ? true : false; // Only MPLAYER
+	}
+	
+	@Override
+	public String getPlayerEngineCommand(AbstractPlayerEngine engine) {
+		return engine instanceof MPlayerEngine ? MPLAYER_MACOS_COMMAND : null;
 	}
 
 }

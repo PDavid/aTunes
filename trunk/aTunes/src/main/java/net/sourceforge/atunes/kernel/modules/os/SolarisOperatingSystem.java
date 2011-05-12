@@ -23,6 +23,8 @@ package net.sourceforge.atunes.kernel.modules.os;
 import java.io.File;
 
 import net.sourceforge.atunes.kernel.OperatingSystem;
+import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
+import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class SolarisOperatingSystem extends OperatingSystemAdapter {
@@ -31,6 +33,13 @@ public class SolarisOperatingSystem extends OperatingSystemAdapter {
      * Name of the Solaris command
      */
     private static final String COMMAND_SOLARIS = "aTunes.sh";
+    
+    /**
+     * Command to be executed on Solaris systems to launch mplayer. Note the
+     * workaround with the options - Java6 on Solaris Express appears to require
+     * these options added separately.
+     */
+    private static final String MPLAYER_SOLARIS_COMMAND = "mplayer";
 
     public SolarisOperatingSystem(OperatingSystem systemType) {
 		super(systemType);
@@ -45,6 +54,16 @@ public class SolarisOperatingSystem extends OperatingSystemAdapter {
 	@Override
 	public String getLaunchCommand() {
 		return new File(StringUtils.getString("./", COMMAND_SOLARIS)).getAbsolutePath();
+	}
+	
+	@Override
+	public boolean isPlayerEngineSupported(AbstractPlayerEngine engine) {
+		return true; // all supported
+	}
+	
+	@Override
+	public String getPlayerEngineCommand(AbstractPlayerEngine engine) {
+		return engine instanceof MPlayerEngine ? MPLAYER_SOLARIS_COMMAND : null;
 	}
 
 }

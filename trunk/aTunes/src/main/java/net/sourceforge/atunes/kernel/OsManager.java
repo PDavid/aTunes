@@ -33,6 +33,7 @@ import net.sourceforge.atunes.kernel.modules.os.MacOSXOperatingSystem;
 import net.sourceforge.atunes.kernel.modules.os.OperatingSystemAdapter;
 import net.sourceforge.atunes.kernel.modules.os.SolarisOperatingSystem;
 import net.sourceforge.atunes.kernel.modules.os.WindowsOperatingSystem;
+import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.commons.io.FileUtils;
@@ -306,6 +307,24 @@ public class OsManager {
      */
 	public static boolean is64Bit() {
 		return adapter.is64Bit();
+	}
+	
+	/**
+	 * Returns if player engine is supported for current OS
+	 * @param engine
+	 * @return
+	 */
+	public static boolean isPlayerEngineSupported(AbstractPlayerEngine engine) {
+		return adapter.isPlayerEngineSupported(engine); 
+	}
+
+	/**
+	 * Returns command used (if any) to execute player engine
+	 * @param engine
+	 * @return
+	 */
+	public static String getPlayerEngineCommand(AbstractPlayerEngine engine) {
+		return adapter.getPlayerEngineCommand(engine);
 	}
 
 }

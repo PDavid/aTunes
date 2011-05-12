@@ -28,6 +28,7 @@ import net.sourceforge.atunes.kernel.OperatingSystem;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavConverter;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
+import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 
@@ -137,8 +138,25 @@ public abstract class OperatingSystemAdapter {
 		return null; // None supported by default
 	}
 
+	/**
+	 * Returns hotkeys listener
+	 * @return
+	 */
 	public Class<? extends AbstractHotkeys> getHotkeysListener() {
 		return null; // None by default
 	}
-	
+
+	/**
+	 * Returns if player is available
+	 * @param engine
+	 * @return
+	 */
+	public abstract boolean isPlayerEngineSupported(AbstractPlayerEngine engine);
+
+	/**
+	 * Returns command used (if any) to execute player engine
+	 * @param engine
+	 * @return
+	 */
+	public abstract String getPlayerEngineCommand(AbstractPlayerEngine engine);
 }

@@ -49,27 +49,7 @@ import net.sourceforge.atunes.utils.FileNameUtils;
  */
 public class MPlayerEngine extends AbstractPlayerEngine {
 
-    /**
-     * Command to be executed on Linux systems to launch mplayer. Mplayer should
-     * be in $PATH
-     */
-    private static String LINUX_COMMAND = "mplayer";
 
-    /**
-     * Command to be executed on Windows systems to launch mplayer. Mplayer is
-     * in "win_tools" dir, inside aTunes package
-     */
-    private static final String WIN_COMMAND = "win_tools/mplayer.exe";
-
-    /** Command to be executed on Mac systems to launch mplayer. */
-    private static final String MACOS_COMMAND = "mac_tools/mplayer";
-
-    /**
-     * Command to be executed on Solaris systems to launch mplayer. Note the
-     * workaround with the options - Java6 on Solaris Express appears to require
-     * these options added separately.
-     */
-    private static final String SOLARIS_COMMAND = "mplayer";
 
     private static final String SOLARISOPTAO = "-ao";
     private static final String SOLARISOPTTYPE = "sun"; // Arguments for mplayer
@@ -106,33 +86,26 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 
     @Override
     public boolean isEngineAvailable() {
-        if (OsManager.osType != net.sourceforge.atunes.kernel.OperatingSystem.WINDOWS) {
-            InputStream in = null;
-            try {
-                Process p = new ProcessBuilder(LINUX_COMMAND).start();
-                in = p.getInputStream();
-                byte[] buffer = new byte[4096];
-                while (in.read(buffer) >= 0) {
-                    ;
-                }
+    	InputStream in = null;
+    	try {
+    		Process p = new ProcessBuilder(OsManager.getPlayerEngineCommand(this)).start();
+    		in = p.getInputStream();
+    		byte[] buffer = new byte[4096];
+    		while (in.read(buffer) >= 0) {
+    			;
+    		}
 
-                int code = p.waitFor();
-                if (code != 0) {
-                    return false;
-                }
-            } catch (Exception e) {
-                if (OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.MACOSX && !LINUX_COMMAND.equals(MACOS_COMMAND)) {
-                    getLogger().info(LogCategories.PLAYER, "Mac OS X: mplayer not found, trying in mac_tools");
-                    LINUX_COMMAND = MACOS_COMMAND;
-                    return isEngineAvailable();
-                }
-                return false;
-
-            } finally {
-                ClosingUtils.close(in);
-            }
-        }
-        return true;
+    		int code = p.waitFor();
+    		if (code != 0) {
+    			return false;
+    		}
+    		return true;
+    	} catch (Exception e) {
+    		getLogger().error(LogCategories.PLAYER, e);
+    		return false;
+    	} finally {
+    		ClosingUtils.close(in);
+    	}
     }
 
     @Override
@@ -308,7 +281,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
         boolean isRemoteAudio = !(audioObject instanceof LocalAudioObject || (audioObject instanceof PodcastFeedEntry
                 && ApplicationState.getInstance().isUseDownloadedPodcastFeedEntries() && ((PodcastFeedEntry) audioObject).isDownloaded()));
 
-        command.add(getProcessNameForOS());
+        command.add(OsManager.getPlayerEngineCommand(this));
         if (OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.SOLARIS) {
             command.add(SOLARISOPTAO);
             command.add(SOLARISOPTTYPE);
@@ -406,23 +379,6 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 
         getLogger().debug(LogCategories.PLAYER, (Object[]) command.toArray(new String[command.size()]));
         return pb.command(command).start();
-    }
-
-    /**
-     * Returns string command to call mplayer.
-     * 
-     * @return the process name for os
-     */
-    private String getProcessNameForOS() {
-        if (OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.WINDOWS) {
-            return WIN_COMMAND;
-        } else if (OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.LINUX) {
-            return LINUX_COMMAND;
-        } else if (OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.SOLARIS) {
-            return SOLARIS_COMMAND;
-        } else {
-            return MACOS_COMMAND;
-        }
     }
 
     /**
