@@ -103,7 +103,7 @@ public class WindowsHotkeys extends AbstractHotkeys implements com.melloware.jin
     }
 
     public static boolean isSupported() {
-    	if(OsManager.osType.is64Bit()) {
+    	if(OsManager.is64Bit()) {
     		JIntellitype.setLibraryLocation("JIntellitype64.dll");
     	}
         return JIntellitype.isJIntellitypeSupported();
