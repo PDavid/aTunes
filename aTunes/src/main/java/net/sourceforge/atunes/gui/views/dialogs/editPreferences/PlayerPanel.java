@@ -395,7 +395,7 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
         HotkeysConfig hotkeysConfig = state.getHotkeysConfig();
         setHotkeysConfig(hotkeysConfig != null ? hotkeysConfig : HotkeyHandler.getInstance().getHotkeysConfig());
         setUseShortPathNames(state.isUseShortPathNames());
-        getUseShortPathNames().setEnabled(OsManager.allowsShortPathNames());
+        getUseShortPathNames().setEnabled(OsManager.usesShortPathNames());
         getEnableGlobalHotkeys().setEnabled(HotkeyHandler.getInstance().areHotkeysSupported());
     }
 

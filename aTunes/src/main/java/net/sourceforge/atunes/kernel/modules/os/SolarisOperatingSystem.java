@@ -21,6 +21,9 @@
 package net.sourceforge.atunes.kernel.modules.os;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import net.sourceforge.atunes.kernel.OperatingSystem;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
@@ -40,6 +43,10 @@ public class SolarisOperatingSystem extends OperatingSystemAdapter {
      * these options added separately.
      */
     private static final String MPLAYER_SOLARIS_COMMAND = "mplayer";
+    
+    private static final String MPLAYER_SOLARISOPTAO = "-ao";
+    
+    private static final String MPLAYER_SOLARISOPTTYPE = "sun"; 
 
     public SolarisOperatingSystem(OperatingSystem systemType) {
 		super(systemType);
@@ -64,6 +71,18 @@ public class SolarisOperatingSystem extends OperatingSystemAdapter {
 	@Override
 	public String getPlayerEngineCommand(AbstractPlayerEngine engine) {
 		return engine instanceof MPlayerEngine ? MPLAYER_SOLARIS_COMMAND : null;
+	}
+	
+	@Override
+	public Collection<String> getPlayerEngineParameters(AbstractPlayerEngine engine) {
+		if (engine instanceof MPlayerEngine) {
+			List<String> parameters = new ArrayList<String>(2);
+			parameters.add(MPLAYER_SOLARISOPTAO);
+			parameters.add(MPLAYER_SOLARISOPTTYPE);
+			return parameters;
+		} else {
+			return super.getPlayerEngineParameters(engine);
+		}
 	}
 
 }
