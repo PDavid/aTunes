@@ -79,7 +79,7 @@ public class AudioFileImageIcon implements LookAndFeelChangeListener {
 		r3.addPoint(56, 8);		
 		
 		// This icon must be opaque since with this size shapes overlap is visible using alpha
-		return IconGenerator.generateOpaqueIcon(MEDIUM_WIDTH, MEDIUM_HEIGHT, e1, e2, r1, r2, r3);
+		return IconGenerator.generateIcon(MEDIUM_WIDTH, MEDIUM_HEIGHT, e1, e2, r1, r2, r3);
 	}
 
 	@Override
