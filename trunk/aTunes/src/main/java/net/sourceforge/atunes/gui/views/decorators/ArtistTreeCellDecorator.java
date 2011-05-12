@@ -24,8 +24,10 @@ import java.awt.Component;
 
 import javax.swing.JLabel;
 
+import net.sourceforge.atunes.gui.images.ArtistImageIcon;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.Artist;
@@ -36,7 +38,7 @@ public class ArtistTreeCellDecorator extends AbstractTreeCellDecorator {
     public Component decorateTreeCellComponent(Component component, Object userObject) {
         if (userObject instanceof Artist) {
             if (!ApplicationState.getInstance().isShowFavoritesInNavigator() || !FavoritesHandler.getInstance().getFavoriteArtistsInfo().containsValue(userObject)) {
-                ((JLabel) component).setIcon(Images.getImage(Images.ARTIST));
+                ((JLabel) component).setIcon(ArtistImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(component)));
             } else {
                 ((JLabel) component).setIcon(Images.getImage(Images.ARTIST_FAVORITE));
             }

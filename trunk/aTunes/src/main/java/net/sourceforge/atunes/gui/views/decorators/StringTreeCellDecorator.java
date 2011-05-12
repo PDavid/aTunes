@@ -24,9 +24,11 @@ import java.awt.Component;
 
 import javax.swing.JLabel;
 
+import net.sourceforge.atunes.gui.images.ArtistImageIcon;
 import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class StringTreeCellDecorator extends AbstractTreeCellDecorator {
@@ -37,15 +39,15 @@ public class StringTreeCellDecorator extends AbstractTreeCellDecorator {
             String text = ((String) userObject);
             JLabel label = (JLabel) component;
             if (text.equals(I18nUtils.getString("REPOSITORY"))) {
-                label.setIcon(AudioFileImageIcon.getSmallImageIcon());
+                label.setIcon(AudioFileImageIcon.getSmallImageIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(label)));
             } else if (text.equals(I18nUtils.getString("DEVICE"))) {
                 label.setIcon(Images.getImage(Images.DEVICE));
             } else if (text.equals(I18nUtils.getString("ARTISTS"))) {
-                label.setIcon(Images.getImage(Images.ARTIST));
+                label.setIcon(ArtistImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(label)));
             } else if (text.equals(I18nUtils.getString("ALBUMS"))) {
                 label.setIcon(Images.getImage(Images.ALBUM));
             } else if (text.equals(I18nUtils.getString("SONGS"))) {
-                label.setIcon(AudioFileImageIcon.getSmallImageIcon());
+                label.setIcon(AudioFileImageIcon.getSmallImageIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(label)));
             } else if (text.equals(I18nUtils.getString("FAVORITES"))) {
                 label.setIcon(Images.getImage(Images.FAVORITE));
             } else if (text.equals(I18nUtils.getString("PODCAST_FEEDS"))) {
