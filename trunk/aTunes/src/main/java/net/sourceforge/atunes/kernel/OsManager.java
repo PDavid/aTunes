@@ -298,4 +298,14 @@ public class OsManager {
 		return adapter.getSystemLineTerminator();
 	}
 
+    /**
+     * Returns <code>true</code> if the current operating system (actually
+     * the VM) is 64 bit.
+     * 
+     * @return If the current operating system is 64 bit
+     */
+	public static boolean is64Bit() {
+		return adapter.is64Bit();
+	}
+
 }

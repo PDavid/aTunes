@@ -399,7 +399,7 @@ public final class SystemTrayHandler extends AbstractHandler {
      */
     private JTrayIcon getTrayIcon() {
         if (trayIcon == null) {
-            trayIcon = new JTrayIcon(Images.getImage(Images.APP_LOGO_24).getImage(), OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.LINUX, Actions
+            trayIcon = new JTrayIcon(Images.getImage(Images.APP_LOGO_24).getImage(), OsManager.osType.isLinux(), Actions
                     .getAction(ToggleWindowVisibilityAction.class));
             trayIcon.setToolTip(StringUtils.getString(Constants.APP_NAME, " ", Constants.VERSION.toShortString()));
             trayIcon.setJTrayIconJPopupMenu(fillMenu(trayIcon.new JTrayIconPopupMenu()));

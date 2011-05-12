@@ -63,6 +63,16 @@ public abstract class OperatingSystemAdapter {
 		return System.getProperty("file.separator");
 	}
 	
+    /**
+     * Returns <code>true</code> if the current operating system (actually
+     * the VM) is 64 bit.
+     * 
+     * @return If the current operating system is 64 bit
+     */
+    public final boolean is64Bit() {
+        return System.getProperty("os.arch").contains("64");
+    }
+
 	/**
 	 * Returns path to folder where app stores its data
 	 * @return

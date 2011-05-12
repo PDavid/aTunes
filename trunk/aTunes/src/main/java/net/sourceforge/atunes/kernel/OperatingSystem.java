@@ -83,14 +83,4 @@ public enum OperatingSystem {
         return this.equals(OperatingSystem.SOLARIS);
     }
 
-    /**
-     * Returns <code>true</code> if the current operating system (actually
-     * the VM) is 64 bit.
-     * 
-     * @return If the current operating system is 64 bit
-     */
-    public boolean is64Bit() {
-        return System.getProperty("os.arch").contains("64");
-    }
-
 }
