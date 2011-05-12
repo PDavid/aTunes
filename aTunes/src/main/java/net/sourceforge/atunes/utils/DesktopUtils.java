@@ -151,7 +151,7 @@ public final class DesktopUtils {
              * Needed for UNC filenames with spaces ->
              * http://bugs.sun.com/view_bug.do?bug_id=6550588
              */
-            if (OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.WINDOWS) {
+            if (OsManager.usesShortPathNames()) {
                 fileToOpen = new File(FileNameUtils.getShortPathNameW(file.getAbsolutePath()));
             } else {
                 fileToOpen = file;

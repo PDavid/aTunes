@@ -295,7 +295,7 @@ public final class FileNameUtils {
      * @return File/Path in 8.3 format
      */
     public static String getShortPathNameW(String longPathName) {
-        if (OsManager.osType != net.sourceforge.atunes.kernel.OperatingSystem.WINDOWS) {
+        if (!OsManager.usesShortPathNames()) {
             return longPathName;
         }
         WString pathname = new WString(longPathName);
