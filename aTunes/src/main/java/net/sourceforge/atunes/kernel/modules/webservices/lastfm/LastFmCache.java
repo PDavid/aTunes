@@ -34,12 +34,12 @@ import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.Kernel;
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
 import net.sourceforge.atunes.kernel.modules.context.AlbumListInfo;
 import net.sourceforge.atunes.kernel.modules.context.ArtistInfo;
 import net.sourceforge.atunes.kernel.modules.context.SimilarArtistsInfo;
 import net.sourceforge.atunes.misc.AbstractCache;
-import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -59,8 +59,8 @@ public class LastFmCache extends AbstractCache {
 
     private Logger logger;
 
-    private static File submissionCacheDir = new File(StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.isDebug()), SystemProperties.FILE_SEPARATOR,
-            Constants.CACHE_DIR, SystemProperties.FILE_SEPARATOR, Constants.LAST_FM_CACHE_DIR, SystemProperties.FILE_SEPARATOR, Constants.LAST_FM_SUBMISSION_CACHE_DIR));
+    private static File submissionCacheDir = new File(StringUtils.getString(OsManager.getUserConfigFolder(Kernel.isDebug()), OsManager.getFileSeparator(),
+            Constants.CACHE_DIR, OsManager.getFileSeparator(), Constants.LAST_FM_CACHE_DIR, OsManager.getFileSeparator(), Constants.LAST_FM_SUBMISSION_CACHE_DIR));
 
     public LastFmCache() {
         super(LastFmCache.class.getResource("/settings/ehcache-lastfm.xml"));
@@ -133,7 +133,7 @@ public class LastFmCache extends AbstractCache {
             return null;
         }
 
-        return StringUtils.getString(submissionDataDirFile.getAbsolutePath(), SystemProperties.FILE_SEPARATOR, "submissionDataCache.xml");
+        return StringUtils.getString(submissionDataDirFile.getAbsolutePath(), OsManager.getFileSeparator(), "submissionDataCache.xml");
     }
 
     /**

@@ -22,10 +22,9 @@ package net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav;
 
 import java.io.File;
 
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.cdripper.ProgressListener;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
-import net.sourceforge.atunes.misc.SystemProperties;
-import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
 
 /**
  * Abstract class for Cdda2wav and Cdparanoia
@@ -47,11 +46,10 @@ public abstract class AbstractCdToWavConverter {
      * users OS.
      */
     public static AbstractCdToWavConverter createNewConverterForOS() {
-        if (SystemProperties.OS == OperatingSystem.MACOSX) {
-            return new Cdparanoia();
-        } else if (SystemProperties.OS == OperatingSystem.WINDOWS) {
-            return new Cdda2wav();
-        } else if (Cdda2wav.pTestTool()) {
+    	AbstractCdToWavConverter osConverter = OsManager.getCdToWavConverter();
+    	if (osConverter != null) {
+    		return osConverter;
+    	} else if (Cdda2wav.pTestTool()) {
             return new Cdda2wav();
         } else {
             return new Cdparanoia();
@@ -81,13 +79,10 @@ public abstract class AbstractCdToWavConverter {
      * @return true if either cdda2wav or icedax was found, false else.
      */
     public static boolean testTool() {
-        if (SystemProperties.OS == OperatingSystem.WINDOWS) {
-            // Cdda2wav should be present by default, but allow user to switch it to icedax if he wants
-            return Cdda2wav.pTestTool();
-        }
-        if (SystemProperties.OS == OperatingSystem.MACOSX) {
-            return Cdparanoia.pTestTool();
-        } else if (Cdda2wav.pTestTool()) {
+    	Boolean test = OsManager.testCdToWavConverter();
+    	if (test != null) {
+    		return test;
+    	} else if (Cdda2wav.pTestTool()) {
             return true;
         }
         return Cdparanoia.pTestTool();

@@ -59,7 +59,7 @@ import javax.swing.tree.TreeSelectionModel;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellRendererCode;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
-import net.sourceforge.atunes.misc.SystemProperties;
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -631,7 +631,7 @@ public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog 
      * @return true, if is in path of selected folders
      */
     boolean isInPathOfSelectedFolders(File dir) {
-        String dirPath = dir.getAbsolutePath().concat(SystemProperties.FILE_SEPARATOR);
+        String dirPath = dir.getAbsolutePath().concat(OsManager.getFileSeparator());
         for (File folder : selectedFolders) {
             if (folder.getAbsolutePath().startsWith(dirPath)) {
                 return true;

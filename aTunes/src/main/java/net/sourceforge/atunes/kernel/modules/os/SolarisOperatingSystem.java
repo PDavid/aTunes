@@ -18,31 +18,33 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.misc;
+package net.sourceforge.atunes.kernel.modules.os;
 
-import java.net.URL;
+import java.io.File;
 
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheManager;
-import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.kernel.Kernel;
-import net.sourceforge.atunes.kernel.OsManager;
+import net.sourceforge.atunes.kernel.OperatingSystem;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public abstract class AbstractCache {
+public class SolarisOperatingSystem extends OperatingSystemAdapter {
 
-    private CacheManager cacheManager;
+	/**
+     * Name of the Solaris command
+     */
+    private static final String COMMAND_SOLARIS = "aTunes.sh";
 
-    public AbstractCache(URL settings) {
-        init(settings);
-    }
+    public SolarisOperatingSystem(OperatingSystem systemType) {
+		super(systemType);
+		// TODO Auto-generated constructor stub
+	}
 
-    private void init(URL settings) {
-        System.setProperty("ehcache.disk.store.dir", StringUtils.getString(OsManager.getUserConfigFolder(Kernel.isDebug()), OsManager.getFileSeparator(), Constants.CACHE_DIR));
-        this.cacheManager = new CacheManager(settings);
-    }
+	@Override
+	public String getAppDataFolder() {
+		return StringUtils.getString(getUserHome(), "/.atunes");
+	}
 
-    protected Cache getCache(String name) {
-        return cacheManager.getCache(name);
-    }
+	@Override
+	public String getLaunchCommand() {
+		return new File(StringUtils.getString("./", COMMAND_SOLARIS)).getAbsolutePath();
+	}
+
 }

@@ -30,13 +30,13 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.kernel.OperatingSystem;
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.cdripper.ProgressListener;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
 import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
 import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
-import net.sourceforge.atunes.misc.SystemProperties;
-import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.LocalAudioObject;
@@ -84,8 +84,8 @@ public class FlacEncoder implements Encoder {
         try {
             //Test for Windows system checks in ...\aTunes\win_tools only!
             Process p;
-            if (SystemProperties.OS == OperatingSystem.WINDOWS) {
-                p = new ProcessBuilder(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, SystemProperties.FILE_SEPARATOR, FLAC), VERSION).start();
+            if (OsManager.osType == OperatingSystem.WINDOWS) {
+                p = new ProcessBuilder(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, OsManager.getFileSeparator(), FLAC), VERSION).start();
             } else {
                 p = new ProcessBuilder(FLAC, VERSION).start();
             }
@@ -135,8 +135,8 @@ public class FlacEncoder implements Encoder {
             // Encode the file using FLAC. We could pass the infos for the tag, but 
             // FLAC is very difficult with special characters so we don't use it.
             List<String> command = new ArrayList<String>();
-            if (SystemProperties.OS == OperatingSystem.WINDOWS) {
-                command.add(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, SystemProperties.FILE_SEPARATOR, FLAC));
+            if (OsManager.osType == OperatingSystem.WINDOWS) {
+                command.add(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, OsManager.getFileSeparator(), FLAC));
             } else {
                 command.add(FLAC);
             }

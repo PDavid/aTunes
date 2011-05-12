@@ -30,11 +30,11 @@ import javax.swing.DefaultComboBoxModel;
 import net.sourceforge.atunes.gui.autocomplete.AutoCompleteDecorator;
 import net.sourceforge.atunes.gui.views.dialogs.RipCdDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
 import net.sourceforge.atunes.kernel.modules.cdripper.encoders.Encoder;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
-import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -285,8 +285,8 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
         // Creates folders when information is coming from cdda2wav
         if (cdInfo.getArtist() != null && cdInfo.getAlbum() != null) {
             getComponentControlled().getFolderName().setText(
-                    StringUtils.getString(RepositoryHandler.getInstance().getRepositoryPath(), SystemProperties.FILE_SEPARATOR, cdInfo.getArtist(),
-                            SystemProperties.FILE_SEPARATOR, cdInfo.getAlbum()));
+                    StringUtils.getString(RepositoryHandler.getInstance().getRepositoryPath(), OsManager.getFileSeparator(), cdInfo.getArtist(),
+                    		OsManager.getFileSeparator(), cdInfo.getAlbum()));
         } else {
             getComponentControlled().getFolderName().setText(path);
         }

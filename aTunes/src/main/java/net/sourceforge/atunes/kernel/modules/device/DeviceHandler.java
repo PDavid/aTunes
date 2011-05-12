@@ -42,6 +42,7 @@ import javax.swing.SwingUtilities;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.dialogs.FileSelectionDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ConnectDeviceAction;
 import net.sourceforge.atunes.kernel.actions.CopyPlayListToDeviceAction;
@@ -60,7 +61,6 @@ import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
-import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
@@ -560,7 +560,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
         BufferedReader br = null;
         BufferedWriter bw = null;
         try {
-            File f = new File(StringUtils.getString(devicePath, SystemProperties.FILE_SEPARATOR, Constants.DEVICE_ID_FILE));
+            File f = new File(StringUtils.getString(devicePath, OsManager.getFileSeparator(), Constants.DEVICE_ID_FILE));
             if (f.exists()) {
                 br = new BufferedReader(new FileReader(f));
                 id = br.readLine();

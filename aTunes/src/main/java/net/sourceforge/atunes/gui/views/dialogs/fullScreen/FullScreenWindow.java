@@ -28,7 +28,6 @@ import java.awt.EventQueue;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GraphicsDevice;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -72,12 +71,11 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.StopButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeLevel;
 import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.player.ProgressBarSeekListener;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -467,15 +465,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
      *            if fullscreen mode should be set
      */
     private void setFullScreen(boolean fullscreen) {
-        if (SystemProperties.OS.isOldWindows() && !SystemProperties.OS.isWindowsVista()) {
-            if (fullscreen) {
-                setSize(GuiUtils.getDeviceWidth(), GuiUtils.getDeviceHeight());
-            }
-        } else {
-            // Get in which screen is application and set full screen in that screen
-            GraphicsDevice graphicsDevice = GuiUtils.getGraphicsDeviceForLocation(GuiHandler.getInstance().getFrame().getLocation());
-            graphicsDevice.setFullScreenWindow(fullscreen ? this : null);
-        }
+    	OsManager.setFullScreen(this, fullscreen);
     }
 
     /**

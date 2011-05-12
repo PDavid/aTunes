@@ -33,8 +33,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.LocalAudioObject;
@@ -157,7 +157,7 @@ public final class AudioFilePictureUtils {
         if (file == null) {
             return null;
         }
-        return StringUtils.getString(file.getFile().getParentFile().getAbsolutePath(), SystemProperties.FILE_SEPARATOR, file.getArtist(), '_', file.getAlbum(), "_Cover.",
+        return StringUtils.getString(file.getFile().getParentFile().getAbsolutePath(), OsManager.getFileSeparator(), file.getArtist(), '_', file.getAlbum(), "_Cover.",
                 ImageUtils.FILES_EXTENSION);
     }
 

@@ -36,6 +36,7 @@ import net.sourceforge.atunes.gui.views.controls.ActionTrayIcon;
 import net.sourceforge.atunes.gui.views.controls.JTrayIcon;
 import net.sourceforge.atunes.gui.views.controls.JTrayIcon.JTrayIconPopupMenu;
 import net.sourceforge.atunes.kernel.AbstractHandler;
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ExitAction;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
@@ -50,8 +51,6 @@ import net.sourceforge.atunes.kernel.actions.StopCurrentAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.ToggleWindowVisibilityAction;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.misc.SystemProperties;
-import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -278,7 +277,7 @@ public final class SystemTrayHandler extends AbstractHandler {
      */
     private void trayIconAdvice() {
         // For some reason, in Linux systems display message causes Swing freeze
-        if (SystemProperties.OS != OperatingSystem.LINUX && isTrayInitialized()) {
+        if (OsManager.osType != net.sourceforge.atunes.kernel.OperatingSystem.LINUX && isTrayInitialized()) {
             getTrayIcon().displayMessage(Constants.APP_NAME, I18nUtils.getString("TRAY_ICON_MESSAGE"), TrayIcon.MessageType.INFO);
         }
     }
@@ -400,7 +399,7 @@ public final class SystemTrayHandler extends AbstractHandler {
      */
     private JTrayIcon getTrayIcon() {
         if (trayIcon == null) {
-            trayIcon = new JTrayIcon(Images.getImage(Images.APP_LOGO_24).getImage(), SystemProperties.OS == OperatingSystem.LINUX, Actions
+            trayIcon = new JTrayIcon(Images.getImage(Images.APP_LOGO_24).getImage(), OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.LINUX, Actions
                     .getAction(ToggleWindowVisibilityAction.class));
             trayIcon.setToolTip(StringUtils.getString(Constants.APP_NAME, " ", Constants.VERSION.toShortString()));
             trayIcon.setJTrayIconJPopupMenu(fillMenu(trayIcon.new JTrayIconPopupMenu()));

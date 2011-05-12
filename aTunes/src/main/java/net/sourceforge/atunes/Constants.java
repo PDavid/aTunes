@@ -196,20 +196,6 @@ public final class Constants {
     /** Temp dir. */
     public static final String TEMP_DIR = "temp";
 
-    /**
-     * Name of the Linux / Solaris command
-     */
-    public static final String COMMAND_LINUX_SOLARIS = "aTunes.sh";
-
-    /**
-     * Name of the MacOsX command
-     */
-    public static final String COMMAND_MACOSX = "aTunes.command";
-
-    /**
-     * Name of the Windows command
-     */
-    public static final String COMMAND_WINDOWS = "aTunes.exe";
 
     /**
      * Name of the file used to store device identifier

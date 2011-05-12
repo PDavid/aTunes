@@ -46,12 +46,12 @@ import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.dialogs.TransferProgressDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
-import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.FileNameUtils;
@@ -404,7 +404,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
     public String getDownloadPath(PodcastFeedEntry podcastFeedEntry) {
         String path = ApplicationState.getInstance().getPodcastFeedEntryDownloadPath();
         if (path == null || path.isEmpty()) {
-            path = StringUtils.getString(SystemProperties.getUserConfigFolder(Kernel.isDebug()), "/", Constants.DEFAULT_PODCAST_FEED_ENTRY_DOWNLOAD_DIR);
+            path = StringUtils.getString(OsManager.getUserConfigFolder(Kernel.isDebug()), "/", Constants.DEFAULT_PODCAST_FEED_ENTRY_DOWNLOAD_DIR);
         }
         File podcastFeedsDownloadFolder = new File(path);
 

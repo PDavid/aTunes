@@ -28,6 +28,7 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
@@ -37,8 +38,6 @@ import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
-import net.sourceforge.atunes.misc.SystemProperties;
-import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.LocalAudioObject;
@@ -107,7 +106,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 
     @Override
     public boolean isEngineAvailable() {
-        if (SystemProperties.OS != OperatingSystem.WINDOWS) {
+        if (OsManager.osType != net.sourceforge.atunes.kernel.OperatingSystem.WINDOWS) {
             InputStream in = null;
             try {
                 Process p = new ProcessBuilder(LINUX_COMMAND).start();
@@ -122,7 +121,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
                     return false;
                 }
             } catch (Exception e) {
-                if (SystemProperties.OS == OperatingSystem.MACOSX && !LINUX_COMMAND.equals(MACOS_COMMAND)) {
+                if (OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.MACOSX && !LINUX_COMMAND.equals(MACOS_COMMAND)) {
                     getLogger().info(LogCategories.PLAYER, "Mac OS X: mplayer not found, trying in mac_tools");
                     LINUX_COMMAND = MACOS_COMMAND;
                     return isEngineAvailable();
@@ -310,10 +309,10 @@ public class MPlayerEngine extends AbstractPlayerEngine {
                 && ApplicationState.getInstance().isUseDownloadedPodcastFeedEntries() && ((PodcastFeedEntry) audioObject).isDownloaded()));
 
         command.add(getProcessNameForOS());
-        if (SystemProperties.OS == OperatingSystem.SOLARIS) {
+        if (OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.SOLARIS) {
             command.add(SOLARISOPTAO);
             command.add(SOLARISOPTTYPE);
-        } else if (SystemProperties.OS == OperatingSystem.WINDOWS) {
+        } else if (OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.WINDOWS) {
             command.add(WINOPTPRIORITY);
             command.add(WINOPTPRIORITY_DEFAULT);
         }
@@ -331,11 +330,11 @@ public class MPlayerEngine extends AbstractPlayerEngine {
         }
 
         // url
-        boolean shortPathName = ApplicationState.getInstance().isUseShortPathNames() && SystemProperties.OS == OperatingSystem.WINDOWS && audioObject instanceof AudioFile;
+        boolean shortPathName = ApplicationState.getInstance().isUseShortPathNames() && OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.WINDOWS && audioObject instanceof AudioFile;
         String url;
         if (audioObject instanceof PodcastFeedEntry && !isRemoteAudio) {
             url = PodcastFeedHandler.getInstance().getDownloadPath((PodcastFeedEntry) audioObject);
-            if (ApplicationState.getInstance().isUseShortPathNames() && SystemProperties.OS == OperatingSystem.WINDOWS) {
+            if (ApplicationState.getInstance().isUseShortPathNames() && OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.WINDOWS) {
                 shortPathName = true;
             }
         } else {
@@ -415,11 +414,11 @@ public class MPlayerEngine extends AbstractPlayerEngine {
      * @return the process name for os
      */
     private String getProcessNameForOS() {
-        if (SystemProperties.OS == OperatingSystem.WINDOWS) {
+        if (OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.WINDOWS) {
             return WIN_COMMAND;
-        } else if (SystemProperties.OS == OperatingSystem.LINUX) {
+        } else if (OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.LINUX) {
             return LINUX_COMMAND;
-        } else if (SystemProperties.OS == OperatingSystem.SOLARIS) {
+        } else if (OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.SOLARIS) {
             return SOLARIS_COMMAND;
         } else {
             return MACOS_COMMAND;

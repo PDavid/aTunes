@@ -33,7 +33,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import net.sourceforge.atunes.misc.SystemProperties;
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -59,7 +59,7 @@ public final class CustomJFileChooser extends JPanel {
     public CustomJFileChooser(final Component parent, int length, final int type) {
         super(new GridBagLayout());
         // Use user home by default
-        final File defaultFolder = new File(SystemProperties.USER_HOME);
+        final File defaultFolder = new File(OsManager.getUserHome());
         textField = new CustomTextField(defaultFolder.getAbsolutePath(), length);
         JButton button = new JButton("...");
         button.setSize(textField.getPreferredSize().height, textField.getPreferredSize().height);

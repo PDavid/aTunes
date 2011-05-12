@@ -32,9 +32,9 @@ import java.util.StringTokenizer;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.kernel.OperatingSystem;
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
-import net.sourceforge.atunes.misc.SystemProperties;
-import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -269,7 +269,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
      * assigns the first CD device in the list to the variable device.
      * </p>
      */
-    Cdda2wav() {
+    public Cdda2wav() {
         device = doScanBus().get(0);
     }
 
@@ -279,7 +279,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
      * 
      * @return true if either cdda2wav or icedax was found, false else.
      */
-    static boolean pTestTool() {
+    public static boolean pTestTool() {
 
         BufferedReader stdInput = null;
         BufferedReader stdInput2 = null;
@@ -287,8 +287,8 @@ public class Cdda2wav extends AbstractCdToWavConverter {
             // If user adds cdda2wav while aTunes is running it will be detected even if icedax was used. 
             converterCommand = CDDA2WAV_COMMAND_STRING;
             Process p;
-            if (SystemProperties.OS == OperatingSystem.WINDOWS) {
-                p = new ProcessBuilder(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, SystemProperties.FILE_SEPARATOR, converterCommand), VERSION).start();
+            if (OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.WINDOWS) {
+                p = new ProcessBuilder(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, OsManager.getFileSeparator(), converterCommand), VERSION).start();
             } else {
                 p = new ProcessBuilder(converterCommand, VERSION).start();
             }
@@ -310,8 +310,8 @@ public class Cdda2wav extends AbstractCdToWavConverter {
             try {
                 converterCommand = ICEDAX_COMMAND_STRING;
                 Process icedaxCheck;
-                if (SystemProperties.OS == OperatingSystem.WINDOWS) {
-                    icedaxCheck = new ProcessBuilder(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, SystemProperties.FILE_SEPARATOR, converterCommand), VERSION).start();
+                if (OsManager.osType == OperatingSystem.WINDOWS) {
+                    icedaxCheck = new ProcessBuilder(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, OsManager.getFileSeparator(), converterCommand), VERSION).start();
                 } else {
                     icedaxCheck = new ProcessBuilder(converterCommand, VERSION).start();
                 }
@@ -359,8 +359,8 @@ public class Cdda2wav extends AbstractCdToWavConverter {
         BufferedReader stdInput = null;
         try {
             List<String> command = new ArrayList<String>();
-            if (SystemProperties.OS == OperatingSystem.WINDOWS) {
-                command.add(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, SystemProperties.FILE_SEPARATOR, converterCommand));
+            if (OsManager.osType == OperatingSystem.WINDOWS) {
+                command.add(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, OsManager.getFileSeparator(), converterCommand));
             } else {
                 command.add(converterCommand);
             }
@@ -453,8 +453,8 @@ public class Cdda2wav extends AbstractCdToWavConverter {
             BufferedReader stdInput = null;
             try {
                 List<String> command = new ArrayList<String>();
-                if (SystemProperties.OS == OperatingSystem.WINDOWS) {
-                    command.add(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, SystemProperties.FILE_SEPARATOR, converterCommand));
+                if (OsManager.osType == OperatingSystem.WINDOWS) {
+                    command.add(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, OsManager.getFileSeparator(), converterCommand));
                 } else {
                     command.add(converterCommand);
                 }
@@ -506,8 +506,8 @@ public class Cdda2wav extends AbstractCdToWavConverter {
             BufferedReader stdInput = null;
             try {
                 List<String> command = new ArrayList<String>();
-                if (SystemProperties.OS == OperatingSystem.WINDOWS) {
-                    command.add(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, SystemProperties.FILE_SEPARATOR, converterCommand));
+                if (OsManager.osType == OperatingSystem.WINDOWS) {
+                    command.add(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, OsManager.getFileSeparator(), converterCommand));
                 } else {
                     command.add(converterCommand);
                 }
@@ -518,7 +518,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
 
                 setProcess(new ProcessBuilder(command).start());
                 // Icedax and cdda2wav seem to behave differently
-                if ((SystemProperties.OS == OperatingSystem.LINUX && !converterCommand.equals(ICEDAX_COMMAND_STRING)) || SystemProperties.OS == OperatingSystem.WINDOWS) {
+                if ((OsManager.osType == OperatingSystem.LINUX && !converterCommand.equals(ICEDAX_COMMAND_STRING)) || OsManager.osType == OperatingSystem.WINDOWS) {
                     stdInput = new BufferedReader(new InputStreamReader(getProcess().getErrorStream()));
                 } else {
                     stdInput = new BufferedReader(new InputStreamReader(getProcess().getInputStream()));
@@ -532,7 +532,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
                         String line = s.trim();
                         String id = null;
                         // Icedax and cdda2wav seem to behave differently
-                        if ((SystemProperties.OS == OperatingSystem.LINUX && !converterCommand.equals(ICEDAX_COMMAND_STRING)) || SystemProperties.OS == OperatingSystem.WINDOWS) {
+                        if ((OsManager.osType == OperatingSystem.LINUX && !converterCommand.equals(ICEDAX_COMMAND_STRING)) || OsManager.osType == OperatingSystem.WINDOWS) {
                             // Workaround: Neither of this solutions work on all machines, but first one usually throws an exception
                             // so we know we should try the second one.
                             try {
@@ -548,9 +548,9 @@ public class Cdda2wav extends AbstractCdToWavConverter {
                         }
                         devNumber = devNumber + 1;
 
-                        if (SystemProperties.OS == OperatingSystem.SOLARIS) {
+                        if (OsManager.osType == OperatingSystem.SOLARIS) {
                             /* we need to munge the BTL notation into cXtYdZ */
-                            getLogger().info(LogCategories.CDDA2WAV, "Operating System is " + SystemProperties.OS.toString() + ", adjusting device path");
+                            getLogger().info(LogCategories.CDDA2WAV, "Operating System is " + OsManager.osType.toString() + ", adjusting device path");
                             String devPath = null;
                             Scanner munge = new Scanner(id).useDelimiter(",");
                             devPath = "/dev/rdsk/c" + munge.nextInt();
@@ -585,8 +585,8 @@ public class Cdda2wav extends AbstractCdToWavConverter {
             BufferedReader stdInput = null;
             try {
                 List<String> command = new ArrayList<String>();
-                if (SystemProperties.OS == OperatingSystem.WINDOWS) {
-                    command.add(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, SystemProperties.FILE_SEPARATOR, converterCommand));
+                if (OsManager.osType == OperatingSystem.WINDOWS) {
+                    command.add(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, OsManager.getFileSeparator(), converterCommand));
                 } else {
                     command.add(converterCommand);
                 }
@@ -598,7 +598,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
 
                 setProcess(new ProcessBuilder(command).start());
                 // Icedax and cdda2wav seem to behave differently
-                if ((SystemProperties.OS == OperatingSystem.LINUX && !converterCommand.equals(ICEDAX_COMMAND_STRING)) || SystemProperties.OS == OperatingSystem.WINDOWS) {
+                if ((OsManager.osType == OperatingSystem.LINUX && !converterCommand.equals(ICEDAX_COMMAND_STRING)) || OsManager.osType == OperatingSystem.WINDOWS) {
                     stdInput = new BufferedReader(new InputStreamReader(getProcess().getErrorStream()));
                 } else {
                     stdInput = new BufferedReader(new InputStreamReader(getProcess().getInputStream()));
@@ -612,7 +612,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
                         String line = s.trim();
                         String id = null;
                         // Icedax and cdda2wav seem to behave differently
-                        if (SystemProperties.OS == OperatingSystem.LINUX && !converterCommand.equals(ICEDAX_COMMAND_STRING)) {
+                        if (OsManager.osType == OperatingSystem.LINUX && !converterCommand.equals(ICEDAX_COMMAND_STRING)) {
                             // Workaround: Neither of this solutions work on all machines, but first one usually throws an exception
                             // so we know we should try the second one.
                             try {
@@ -689,8 +689,8 @@ public class Cdda2wav extends AbstractCdToWavConverter {
         try {
             // Prepare cdda2wav commands and execute
             List<String> command = new ArrayList<String>();
-            if (SystemProperties.OS == OperatingSystem.WINDOWS) {
-                command.add(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, SystemProperties.FILE_SEPARATOR, converterCommand));
+            if (OsManager.osType == OperatingSystem.WINDOWS) {
+                command.add(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, OsManager.getFileSeparator(), converterCommand));
             } else {
                 command.add(converterCommand);
             }

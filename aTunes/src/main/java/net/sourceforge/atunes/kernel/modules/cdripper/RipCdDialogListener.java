@@ -31,8 +31,8 @@ import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.views.dialogs.RipCdDialog;
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -116,11 +116,11 @@ final class RipCdDialogListener extends KeyAdapter implements ActionListener {
                     if (!ripCdDialogController.isFolderNameEdited()) {
                         if (enabled) {
                             ripCdDialog.getFolderName().setText(
-                                    StringUtils.getString(repositoryPath, SystemProperties.FILE_SEPARATOR, artist, SystemProperties.FILE_SEPARATOR, album));
+                                    StringUtils.getString(repositoryPath, OsManager.getFileSeparator(), artist, OsManager.getFileSeparator(), album));
                         } else if (artist.equals("")) {
-                            ripCdDialog.getFolderName().setText(StringUtils.getString(repositoryPath, SystemProperties.FILE_SEPARATOR, album));
+                            ripCdDialog.getFolderName().setText(StringUtils.getString(repositoryPath, OsManager.getFileSeparator(), album));
                         } else {
-                            ripCdDialog.getFolderName().setText(StringUtils.getString(repositoryPath, SystemProperties.FILE_SEPARATOR, artist));
+                            ripCdDialog.getFolderName().setText(StringUtils.getString(repositoryPath, OsManager.getFileSeparator(), artist));
                         }
                     }
                 }

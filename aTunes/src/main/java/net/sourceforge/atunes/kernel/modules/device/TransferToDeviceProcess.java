@@ -25,9 +25,9 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.process.AbstractAudioFileTransferProcess;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -64,7 +64,7 @@ public class TransferToDeviceProcess extends AbstractAudioFileTransferProcess {
     protected File transferAudioFile(File destination, LocalAudioObject file, List<Exception> thrownExceptions) {
         String destDir = getDirectory(file, destination, true);
         String newName = getName(file, true);
-        File destFile = new File(StringUtils.getString(destDir, SystemProperties.FILE_SEPARATOR, newName));
+        File destFile = new File(StringUtils.getString(destDir, OsManager.getFileSeparator(), newName));
 
         try {
             // Now that we (supposedly) have a valid filename write file

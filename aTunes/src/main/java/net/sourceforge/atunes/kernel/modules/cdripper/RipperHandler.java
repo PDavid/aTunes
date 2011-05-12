@@ -40,6 +40,7 @@ import javax.swing.SwingWorker;
 import net.sourceforge.atunes.gui.views.dialogs.RipCdDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RipperProgressDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.RipCDAction;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavConverter;
@@ -52,7 +53,6 @@ import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
-import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -629,7 +629,7 @@ public final class RipperHandler extends AbstractHandler {
      *            the album
      */
     private void savePicture(Image image, File path, String artist, String album) {
-        String imageFileName = StringUtils.getString(path.getAbsolutePath(), SystemProperties.FILE_SEPARATOR, artist, "_", album, "_Cover.png");
+        String imageFileName = StringUtils.getString(path.getAbsolutePath(), OsManager.getFileSeparator(), artist, "_", album, "_Cover.png");
         try {
             ImageUtils.writeImageToFile(image, imageFileName);
         } catch (IOException e) {

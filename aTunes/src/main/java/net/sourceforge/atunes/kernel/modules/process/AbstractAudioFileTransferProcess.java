@@ -34,9 +34,9 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.views.dialogs.ProgressDialog;
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -184,7 +184,7 @@ public abstract class AbstractAudioFileTransferProcess extends AbstractProcess {
     protected File transferAudioFile(File destination, LocalAudioObject file, List<Exception> thrownExceptions) {
         String destDir = getDirectory(file, destination, false);
         String newName = getName(file, false);
-        File destFile = new File(StringUtils.getString(destDir, SystemProperties.FILE_SEPARATOR, newName));
+        File destFile = new File(StringUtils.getString(destDir, OsManager.getFileSeparator(), newName));
 
         try {
             // Now that we (supposedly) have a valid filename write file
@@ -233,7 +233,7 @@ public abstract class AbstractAudioFileTransferProcess extends AbstractProcess {
         if (pattern != null) {
             songRelativePath = FileNameUtils.getValidFolderName(FileNameUtils.getNewFolderPath(pattern, song), isMp3Device);
         }
-        return StringUtils.getString(destination.getAbsolutePath(), SystemProperties.FILE_SEPARATOR, songRelativePath);
+        return StringUtils.getString(destination.getAbsolutePath(), OsManager.getFileSeparator(), songRelativePath);
     }
 
     /**

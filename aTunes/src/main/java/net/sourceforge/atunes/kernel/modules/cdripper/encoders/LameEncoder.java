@@ -29,13 +29,13 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.kernel.OperatingSystem;
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.cdripper.ProgressListener;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
 import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
 import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
-import net.sourceforge.atunes.misc.SystemProperties;
-import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.LocalAudioObject;
@@ -76,15 +76,15 @@ public class LameEncoder implements Encoder {
      * @return Returns true if lame was found, false otherwise.
      */
     public static boolean testTool() {
-        if (SystemProperties.OS == OperatingSystem.WINDOWS) {
+        if (OsManager.osType == OperatingSystem.WINDOWS) {
             return true;
         }
 
         BufferedReader stdInput = null;
         try {
             Process p;
-            if (SystemProperties.OS == OperatingSystem.WINDOWS) {
-                p = new ProcessBuilder(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, SystemProperties.FILE_SEPARATOR, LAME), VERSION).start();
+            if (OsManager.osType == OperatingSystem.WINDOWS) {
+                p = new ProcessBuilder(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, OsManager.getFileSeparator(), LAME), VERSION).start();
             } else {
                 p = new ProcessBuilder(LAME, VERSION).start();
             }
@@ -131,8 +131,8 @@ public class LameEncoder implements Encoder {
         try {
             // Prepare and execute the lame command
             List<String> command = new ArrayList<String>();
-            if (SystemProperties.OS == OperatingSystem.WINDOWS) {
-                command.add(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, SystemProperties.FILE_SEPARATOR, LAME));
+            if (OsManager.osType == OperatingSystem.WINDOWS) {
+                command.add(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, OsManager.getFileSeparator(), LAME));
             } else {
                 command.add(LAME);
             }

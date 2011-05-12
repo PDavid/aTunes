@@ -50,13 +50,12 @@ import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.hotkeys.Hotkey;
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeyHandler;
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeysConfig;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.misc.SystemProperties;
-import net.sourceforge.atunes.misc.SystemProperties.OperatingSystem;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -396,7 +395,7 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
         HotkeysConfig hotkeysConfig = state.getHotkeysConfig();
         setHotkeysConfig(hotkeysConfig != null ? hotkeysConfig : HotkeyHandler.getInstance().getHotkeysConfig());
         setUseShortPathNames(state.isUseShortPathNames());
-        getUseShortPathNames().setEnabled(SystemProperties.OS == OperatingSystem.WINDOWS);
+        getUseShortPathNames().setEnabled(OsManager.allowsShortPathNames());
         getEnableGlobalHotkeys().setEnabled(HotkeyHandler.getInstance().areHotkeysSupported());
     }
 

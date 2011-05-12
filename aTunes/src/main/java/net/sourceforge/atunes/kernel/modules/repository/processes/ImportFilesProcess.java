@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.process.AbstractAudioFileTransferProcess;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -34,7 +35,6 @@ import net.sourceforge.atunes.kernel.modules.tags.TagAttributesReviewed;
 import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
 import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
-import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -115,7 +115,7 @@ public class ImportFilesProcess extends AbstractAudioFileTransferProcess {
         if (ApplicationState.getInstance().getImportExportFolderPathPattern() != null) {
             songRelativePath = FileNameUtils.getValidFolderName(FileNameUtils.getNewFolderPath(ApplicationState.getInstance().getImportExportFolderPathPattern(), song));
         }
-        return new File(StringUtils.getString(destinationBaseFolder.getAbsolutePath(), SystemProperties.FILE_SEPARATOR, songRelativePath));
+        return new File(StringUtils.getString(destinationBaseFolder.getAbsolutePath(), OsManager.getFileSeparator(), songRelativePath));
     }
 
     @Override
@@ -164,7 +164,7 @@ public class ImportFilesProcess extends AbstractAudioFileTransferProcess {
             newName = FileNameUtils.getValidFileName(file.getFile().getName().replace("\\", "\\\\").replace("$", "\\$"), false);
         }
 
-        File destFile = new File(StringUtils.getString(destDir.getAbsolutePath(), SystemProperties.FILE_SEPARATOR, newName));
+        File destFile = new File(StringUtils.getString(destDir.getAbsolutePath(), OsManager.getFileSeparator(), newName));
 
         try {
             // Now that we (supposedly) have a valid filename write file

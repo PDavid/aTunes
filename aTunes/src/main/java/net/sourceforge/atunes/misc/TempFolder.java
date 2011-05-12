@@ -26,6 +26,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.commons.io.FileUtils;
@@ -60,7 +61,7 @@ public class TempFolder {
      * @return File object to copied file in temp folder
      */
     public File copyToTempFolder(File srcFile) {
-        File destFile = new File(StringUtils.getString(SystemProperties.getTempFolder(), SystemProperties.FILE_SEPARATOR, srcFile.getName()));
+        File destFile = new File(StringUtils.getString(OsManager.getTempFolder(), OsManager.getFileSeparator(), srcFile.getName()));
         try {
             FileUtils.copyFile(srcFile, destFile);
         } catch (IOException e) {
@@ -71,7 +72,7 @@ public class TempFolder {
 
     public File writeImageToTempFolder(RenderedImage image, String fileName) {
         try {
-            File file = new File(SystemProperties.getTempFolder(), fileName);
+            File file = new File(OsManager.getTempFolder(), fileName);
             ImageIO.write(image, "png", file);
             return file;
         } catch (IOException e) {
@@ -96,7 +97,7 @@ public class TempFolder {
      * Removes all files from temp folder.
      */
     public void removeAllFiles() {
-        File tempFolder = new File(SystemProperties.getTempFolder());
+        File tempFolder = new File(OsManager.getTempFolder());
         File[] files = tempFolder.listFiles();
         for (File f : files) {
             f.delete();
