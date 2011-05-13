@@ -30,7 +30,7 @@ import javax.swing.JTable;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
-import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.images.StarImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractListCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
@@ -99,28 +99,10 @@ public class ScoreColumn extends AbstractColumn {
      */
     private void setLabel(JLabel label, int score) {
         label.setText(null);
-        switch (score) {
-        case 0:
+        if (score == 0) {
             label.setIcon(null);
-            break;
-        case 1:
-            label.setIcon(Images.getImage(Images.ONE_STAR));
-            break;
-        case 2:
-            label.setIcon(Images.getImage(Images.TWO_STAR));
-            break;
-        case 3:
-            label.setIcon(Images.getImage(Images.THREE_STAR));
-            break;
-        case 4:
-            label.setIcon(Images.getImage(Images.FOUR_STAR));
-            break;
-        case 5:
-            label.setIcon(Images.getImage(Images.FIVE_STAR));
-            break;
-        default:
-        	label.setIcon(null);
-        	break;
+        } else {
+            label.setIcon(StarImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(label), score));
         }
     }
 
