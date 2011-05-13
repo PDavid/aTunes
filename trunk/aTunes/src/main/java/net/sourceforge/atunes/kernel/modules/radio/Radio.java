@@ -469,7 +469,7 @@ public final class Radio implements AudioObject, Serializable, TreeObject, Compa
             return RadioImageIcon.getIcon();
         }
         case BIG: {
-            return Images.getImage(Images.RADIO_BIG);
+            return RadioImageIcon.getBigIcon();
         }
         default: {
             throw new IllegalArgumentException("unknown image size");

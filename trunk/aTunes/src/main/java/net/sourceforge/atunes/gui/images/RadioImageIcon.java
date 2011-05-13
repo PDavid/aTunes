@@ -75,6 +75,18 @@ public class RadioImageIcon {
 	public static ImageIcon getIcon() {
 		return getIcon(null, 70, 70);
 	}
+	
+	public static ImageIcon getIcon(Paint color) {
+		return getIcon(color, 70, 70);
+	}
+
+	public static ImageIcon getBigIcon() {
+		return getIcon(null, 150, 150);
+	}
+	
+	public static ImageIcon getBigIcon(Paint color) {
+		return getIcon(color, 150, 150);
+	}
 
 	private static ImageIcon getIcon(Paint color, int w, int h) {
 		int marginX = w / 10;
