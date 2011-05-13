@@ -28,6 +28,7 @@ import javax.swing.JLabel;
 import net.sourceforge.atunes.gui.images.AlbumImageIcon;
 import net.sourceforge.atunes.gui.images.ArtistImageIcon;
 import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
+import net.sourceforge.atunes.gui.images.DeviceImageIcon;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
@@ -44,7 +45,7 @@ public class StringTreeCellDecorator extends AbstractTreeCellDecorator {
             if (text.equals(I18nUtils.getString("REPOSITORY"))) {
                 label.setIcon(AudioFileImageIcon.getSmallImageIcon(color));
             } else if (text.equals(I18nUtils.getString("DEVICE"))) {
-                label.setIcon(Images.getImage(Images.DEVICE));
+                label.setIcon(DeviceImageIcon.getIcon(color));
             } else if (text.equals(I18nUtils.getString("ARTISTS"))) {
                 label.setIcon(ArtistImageIcon.getIcon(color));
             } else if (text.equals(I18nUtils.getString("ALBUMS"))) {

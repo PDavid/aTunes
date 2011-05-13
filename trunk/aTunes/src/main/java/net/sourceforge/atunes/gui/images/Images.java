@@ -51,7 +51,6 @@ public final class Images {
     public static final String CONTEXT = "context.png";
     public static final String COPY = "copy.png";
     public static final String DATE = "date.png";
-    public static final String DEVICE = "device.png";
     public static final String DOWNLOAD_PODCAST = "rss_download.png";
     public static final String EXPORT = "export.png";
     public static final String FAVORITE = "favorite.png";

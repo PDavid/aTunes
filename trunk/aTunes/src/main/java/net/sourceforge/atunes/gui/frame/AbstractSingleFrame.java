@@ -45,6 +45,7 @@ import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
+import net.sourceforge.atunes.gui.images.DeviceImageIcon;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.CustomFrame;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
@@ -414,7 +415,7 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
      */
     private JLabel getStatusBarDeviceLabel() {
         if (statusBarDeviceLabel == null) {
-            statusBarDeviceLabel = new JLabel(Images.getImage(Images.DEVICE));
+            statusBarDeviceLabel = new JLabel(DeviceImageIcon.getIcon());
         }
         return statusBarDeviceLabel;
     }
