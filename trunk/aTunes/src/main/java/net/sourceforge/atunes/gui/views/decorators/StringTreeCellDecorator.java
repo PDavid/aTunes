@@ -21,9 +21,11 @@
 package net.sourceforge.atunes.gui.views.decorators;
 
 import java.awt.Component;
+import java.awt.Paint;
 
 import javax.swing.JLabel;
 
+import net.sourceforge.atunes.gui.images.AlbumImageIcon;
 import net.sourceforge.atunes.gui.images.ArtistImageIcon;
 import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
 import net.sourceforge.atunes.gui.images.Images;
@@ -38,16 +40,17 @@ public class StringTreeCellDecorator extends AbstractTreeCellDecorator {
         if (userObject instanceof String && component instanceof JLabel) {
             String text = ((String) userObject);
             JLabel label = (JLabel) component;
+            Paint color = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(label);
             if (text.equals(I18nUtils.getString("REPOSITORY"))) {
-                label.setIcon(AudioFileImageIcon.getSmallImageIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(label)));
+                label.setIcon(AudioFileImageIcon.getSmallImageIcon(color));
             } else if (text.equals(I18nUtils.getString("DEVICE"))) {
                 label.setIcon(Images.getImage(Images.DEVICE));
             } else if (text.equals(I18nUtils.getString("ARTISTS"))) {
-                label.setIcon(ArtistImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(label)));
+                label.setIcon(ArtistImageIcon.getIcon(color));
             } else if (text.equals(I18nUtils.getString("ALBUMS"))) {
-                label.setIcon(Images.getImage(Images.ALBUM));
+                label.setIcon(AlbumImageIcon.getIcon(color));
             } else if (text.equals(I18nUtils.getString("SONGS"))) {
-                label.setIcon(AudioFileImageIcon.getSmallImageIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(label)));
+                label.setIcon(AudioFileImageIcon.getSmallImageIcon(color));
             } else if (text.equals(I18nUtils.getString("FAVORITES"))) {
                 label.setIcon(Images.getImage(Images.FAVORITE));
             } else if (text.equals(I18nUtils.getString("PODCAST_FEEDS"))) {
