@@ -58,7 +58,6 @@ import net.sourceforge.atunes.gui.views.dialogs.ColumnSetSelectorDialog;
 import net.sourceforge.atunes.gui.views.dialogs.EqualizerDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ExportOptionsDialog;
 import net.sourceforge.atunes.gui.views.dialogs.FileSelectionDialog;
-import net.sourceforge.atunes.gui.views.dialogs.ImageDialog;
 import net.sourceforge.atunes.gui.views.dialogs.IndeterminateProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.InputDialog;
 import net.sourceforge.atunes.gui.views.dialogs.MultiFolderSelectionDialog;
@@ -752,16 +751,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
         } else {
             frame.showNewVersionInfo(true, version);
         }
-    }
-
-    /**
-     * Show image dialog.
-     * 
-     * @param audioObject
-     *            the audio object
-     */
-    public void showImageDialog(AudioObject audioObject) {
-        new ImageDialog(frame.getFrame(), audioObject);
     }
 
     /**

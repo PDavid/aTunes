@@ -29,6 +29,7 @@ import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.images.RadioImageIcon;
 import net.sourceforge.atunes.kernel.modules.context.ContextInformationDataSource;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
@@ -118,7 +119,7 @@ public class AudioObjectBasicInfoDataSource implements ContextInformationDataSou
             }
             return localImage;
         } else if (audioObject instanceof Radio) {
-            return Images.getImage(Images.RADIO);
+            return RadioImageIcon.getIcon();
         } else if (audioObject instanceof PodcastFeedEntry) {
             return Images.getImage(Images.RSS);
         }
