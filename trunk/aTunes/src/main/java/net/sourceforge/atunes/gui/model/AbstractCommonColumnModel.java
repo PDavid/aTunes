@@ -48,12 +48,14 @@ import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.gui.renderers.ColorMutableTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.ImageIconTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.IntegerTableCellRendererCode;
-import net.sourceforge.atunes.gui.renderers.JLabelTableCellRendererCode;
+import net.sourceforge.atunes.gui.renderers.TextAndIconTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.PropertyTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.StringTableCellRendererCode;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
+import net.sourceforge.atunes.kernel.modules.columns.TextAndIcon;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn.ColumnSort;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
+import net.sourceforge.atunes.utils.StringUtils;
 
 public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel {
 
@@ -418,14 +420,14 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
             return new ImageIconTableCellRendererCode(this);
         } else if (clazz.equals(String.class)) {
             return new StringTableCellRendererCode(this);
-        } else if (clazz.equals(JLabel.class)) {
-            return new JLabelTableCellRendererCode(this);
+        } else if (clazz.equals(TextAndIcon.class)) {
+            return new TextAndIconTableCellRendererCode(this);
         } else if (clazz.equals(Property.class)) {
             return new PropertyTableCellRendererCode();
         } else if (clazz.equals(ColorMutableImageIcon.class)) {
         	return new ColorMutableTableCellRendererCode(this);
         }
-        return null;
+        throw new IllegalArgumentException(StringUtils.getString("No renderer found for class: ", clazz.getName()));
     }
 
     /**

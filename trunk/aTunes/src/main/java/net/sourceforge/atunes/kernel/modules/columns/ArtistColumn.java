@@ -20,10 +20,13 @@
 
 package net.sourceforge.atunes.kernel.modules.columns;
 
-import javax.swing.JLabel;
+import java.awt.Paint;
+
+import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
-import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.images.ArtistFavoriteImageIcon;
+import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.model.AudioObject;
 
@@ -33,7 +36,7 @@ public class ArtistColumn extends AbstractColumn {
     private static final long serialVersionUID = 8144686293055648148L;
 
     public ArtistColumn() {
-        super("ARTIST", JLabel.class);
+        super("ARTIST", TextAndIcon.class);
         setVisible(true);
         setUsedForFilter(true);
         setColumnSort(ColumnSort.ASCENDING); // Column sets are ordered by default by this column
@@ -56,8 +59,14 @@ public class ArtistColumn extends AbstractColumn {
     @Override
     public Object getValueFor(AudioObject audioObject) {
         // Return artist
-        return new JLabel(audioObject.getArtist(), !FavoritesHandler.getInstance().getFavoriteArtistsInfo().containsKey(audioObject.getArtist()) ? null : Images
-                .getImage(Images.ARTIST_FAVORITE), SwingConstants.LEFT);
+        return new TextAndIcon(audioObject.getArtist(), 
+        		!FavoritesHandler.getInstance().getFavoriteArtistsInfo().containsKey(audioObject.getArtist()) ? null : new ColorMutableImageIcon() {
+					
+					@Override
+					public ImageIcon getIcon(Paint paint) {
+						return ArtistFavoriteImageIcon.getIcon(paint);
+					}
+				}, SwingConstants.LEFT);
     }
 
     @Override

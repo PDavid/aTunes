@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.gui.images;
 
 import java.awt.Paint;
+import java.awt.geom.Area;
 import java.awt.geom.CubicCurve2D;
 
 import javax.swing.ImageIcon;
@@ -40,25 +41,32 @@ public class FavoriteImageIcon {
 	}
 	
 	public static ImageIcon getIcon(Paint color) {
-		int centerPointTopX = WIDTH / 2;
-		int centerPointTopY = HEIGHT / 3;
+        return IconGenerator.generateIcon(color, WIDTH, HEIGHT, getIconArea(WIDTH, HEIGHT, 0, 0));
+	}
+	
+	protected static Area getIconArea(int width, int height, int xAxis, int yAxis) {
+		int centerPointTopX = width / 2 + xAxis;
+		int centerPointTopY = height / 3 + yAxis;
 		
-		int lCtlP1X = WIDTH / 4;
-		int lCtlP1Y = 0;
-		int rCtlP1X = WIDTH - WIDTH / 4;
+		int lCtlP1X = width / 4 + xAxis;
+		int lCtlP1Y = yAxis;
+		int rCtlP1X = width - width / 4 + xAxis;
 		int rCtlP1Y = lCtlP1Y;
 
-		int lCtlP2X = - WIDTH / 3;
-		int lCtlP2Y = HEIGHT * 3/7;
-		int rCtlP2X = WIDTH + WIDTH / 3;
+		int lCtlP2X = - width / 3 + xAxis;
+		int lCtlP2Y = height * 3/7 + yAxis;
+		int rCtlP2X = width + width / 3 + xAxis;
 		int rCtlP2Y = lCtlP2Y;
 
-		int centerPointBottomX = WIDTH / 2;
-		int centerPointBottomY = HEIGHT - HEIGHT / 5;
+		int centerPointBottomX = width / 2 + xAxis;
+		int centerPointBottomY = height - height / 5 + yAxis;
 		
 		CubicCurve2D q = new CubicCurve2D.Float(centerPointTopX, centerPointTopY, lCtlP1X, lCtlP1Y, lCtlP2X, lCtlP2Y, centerPointBottomX, centerPointBottomY);
 		CubicCurve2D q2 = new CubicCurve2D.Float(centerPointTopX, centerPointTopY, rCtlP1X, rCtlP1Y, rCtlP2X, rCtlP2Y, centerPointBottomX, centerPointBottomY);
+		Area a = new Area();
+		a.add(new Area(q));
+		a.add(new Area(q2));
 		
-        return IconGenerator.generateIcon(color, WIDTH, HEIGHT, q, q2);
+		return a;
 	}
 }

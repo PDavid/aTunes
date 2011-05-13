@@ -20,9 +20,12 @@
 
 package net.sourceforge.atunes.kernel.modules.columns;
 
-import javax.swing.JLabel;
+import java.awt.Paint;
+
+import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
+import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.model.AudioObject;
@@ -32,7 +35,7 @@ public class AlbumColumn extends AbstractColumn {
     private static final long serialVersionUID = -6162621108007788707L;
 
     public AlbumColumn() {
-        super("ALBUM", JLabel.class);
+        super("ALBUM", TextAndIcon.class);
         setVisible(true);
         setUsedForFilter(true);
     }
@@ -51,8 +54,14 @@ public class AlbumColumn extends AbstractColumn {
     @Override
     public Object getValueFor(AudioObject audioObject) {
         // Return album
-        return new JLabel(audioObject.getAlbum(), !FavoritesHandler.getInstance().getFavoriteAlbumsInfo().containsKey(audioObject.getAlbum()) ? null : Images
-                .getImage(Images.ALBUM_FAVORITE), SwingConstants.LEFT);
+        return new TextAndIcon(audioObject.getAlbum(), 
+        		!FavoritesHandler.getInstance().getFavoriteAlbumsInfo().containsKey(audioObject.getAlbum()) ? null : new ColorMutableImageIcon() {
+					
+					@Override
+					public ImageIcon getIcon(Paint paint) {
+						return Images.getImage(Images.ALBUM_FAVORITE);
+					}
+				}, SwingConstants.LEFT);
     }
 
     @Override
