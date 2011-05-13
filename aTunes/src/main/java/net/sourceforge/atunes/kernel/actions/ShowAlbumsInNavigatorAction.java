@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.images.AlbumImageIcon;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.ViewMode;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -33,7 +33,7 @@ public class ShowAlbumsInNavigatorAction extends AbstractAction {
     private static final long serialVersionUID = -3691606154694473768L;
 
     public ShowAlbumsInNavigatorAction() {
-        super(I18nUtils.getString("SHOW_ALBUMS"), Images.getImage(Images.ALBUM));
+        super(I18nUtils.getString("SHOW_ALBUMS"), AlbumImageIcon.getIcon());
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_ALBUMS"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().getViewMode() == ViewMode.ALBUM);
     }
