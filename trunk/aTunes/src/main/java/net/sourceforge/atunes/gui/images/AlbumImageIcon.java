@@ -20,16 +20,11 @@
 
 package net.sourceforge.atunes.gui.images;
 
-import java.awt.AlphaComposite;
-import java.awt.Graphics2D;
 import java.awt.Paint;
-import java.awt.RenderingHints;
+import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
-import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
-
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 
 public class AlbumImageIcon {
 
@@ -46,21 +41,19 @@ public class AlbumImageIcon {
 	}
 	
 	public static ImageIcon getIcon(Paint color) {
-		int margin = 2;
-		int internalMargin = WIDTH / 2 - 2;
-		Ellipse2D.Float p = new Ellipse2D.Float(margin, margin, WIDTH - 2 * margin, HEIGHT - 2 * margin);
-		Ellipse2D.Float p2 = new Ellipse2D.Float(internalMargin, internalMargin, WIDTH - 2 * internalMargin, HEIGHT - 2 * internalMargin);
+        return IconGenerator.generateIcon(color, WIDTH, HEIGHT, getIconArea(WIDTH, HEIGHT, 0, 0));
+	}
+	
+	protected static Area getIconArea(int width, int height, int xAxis, int yAxis) {
+		int margin = 2 + xAxis;
+		int radius = width / 4;
+		int internalMargin = width / 2 - radius / 2 + xAxis;
+		Ellipse2D.Float p = new Ellipse2D.Float(margin + xAxis, margin + yAxis, width - 2 * margin, height - 2 * margin);
+		Ellipse2D.Float p2 = new Ellipse2D.Float(internalMargin + xAxis, internalMargin + yAxis, radius, radius);
+
+		Area a = new Area(p);
+		a.subtract(new Area(p2));
 		
-		AlphaComposite a = AlphaComposite.getInstance(AlphaComposite.CLEAR);
-		
-		BufferedImage bi = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_4BYTE_ABGR);
-        Graphics2D g = bi.createGraphics();
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setPaint(color != null ? color : LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintFor(null));
-       	g.fill(p);
-       	g.setComposite(a);
-       	g.fill(p2);
-        g.dispose();
-        return new ImageIcon(bi);
+        return a;
 	}
 }

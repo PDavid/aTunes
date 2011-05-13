@@ -36,7 +36,6 @@ import net.sourceforge.atunes.kernel.OsManager;
 public final class Images {
 
     // Every time a image is added, an attribute must be added
-    public static final String ALBUM_FAVORITE = "albumFavorite.png";
     public static final String APP_TITLE = "title.png";
     public static final String APP_LOGO_16 = "logo16x16.png";
     public static final String APP_LOGO_24 = "logo24x24.png";
