@@ -43,6 +43,6 @@ public class ArtistSimilarImageIcon {
 		Rectangle s = new Rectangle(WIDTH - 6, 5, 6, 2);
 		Rectangle s2 = new Rectangle (WIDTH - 4, 3, 2, 6);
 		Rectangle clip = new Rectangle(0, 2, WIDTH, HEIGHT - 4);
-		return IconGenerator.generateIcon(color, clip, WIDTH, HEIGHT, ArtistImageIcon.getArtistIconArea(-2), s, s2);
+		return IconGenerator.generateIcon(color, clip, WIDTH, HEIGHT, ArtistImageIcon.getArtistIconArea(-1), s, s2);
 	}
 }

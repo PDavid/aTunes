@@ -24,8 +24,8 @@ import java.awt.Component;
 
 import javax.swing.JLabel;
 
+import net.sourceforge.atunes.gui.images.AlbumFavoriteImageIcon;
 import net.sourceforge.atunes.gui.images.AlbumImageIcon;
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
@@ -40,7 +40,7 @@ public class AlbumTreeCellDecorator extends AbstractTreeCellDecorator {
             if (!ApplicationState.getInstance().isShowFavoritesInNavigator() || !FavoritesHandler.getInstance().getFavoriteAlbumsInfo().containsValue(userObject)) {
                 ((JLabel) component).setIcon(AlbumImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(component)));
             } else {
-                ((JLabel) component).setIcon(Images.getImage(Images.ALBUM_FAVORITE));
+                ((JLabel) component).setIcon(AlbumFavoriteImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(component)));
             }
         }
         return component;

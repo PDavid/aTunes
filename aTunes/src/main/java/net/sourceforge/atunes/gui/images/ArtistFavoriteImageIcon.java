@@ -28,7 +28,7 @@ import javax.swing.ImageIcon;
 
 public class ArtistFavoriteImageIcon {
 
-	private static final int WIDTH = 18;
+	private static final int WIDTH = 26;
 	private static final int HEIGHT = 18;
 	
 	private static ImageIcon icon;
@@ -41,9 +41,9 @@ public class ArtistFavoriteImageIcon {
 	}
 	
 	public static ImageIcon getIcon(Paint color) {
-		Rectangle clip = new Rectangle(0, 2, WIDTH, HEIGHT - 4);
+		Rectangle clip = new Rectangle(0, 1, WIDTH, HEIGHT - 4);
 		
-		Area heart = FavoriteImageIcon.getIconArea(9, 9, WIDTH - 9, 2);
-		return IconGenerator.generateIcon(color, clip, WIDTH, HEIGHT, ArtistImageIcon.getArtistIconArea(-4), heart);
+		Area heart = FavoriteImageIcon.getIconArea(10, 10, WIDTH - 10, 1);
+		return IconGenerator.generateIcon(color, clip, WIDTH, HEIGHT, ArtistImageIcon.getArtistIconArea(0), heart);
 	}
 }

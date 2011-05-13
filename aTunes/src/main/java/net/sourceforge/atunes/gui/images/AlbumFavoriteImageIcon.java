@@ -22,13 +22,12 @@ package net.sourceforge.atunes.gui.images;
 
 import java.awt.Paint;
 import java.awt.geom.Area;
-import java.awt.geom.Ellipse2D;
 
 import javax.swing.ImageIcon;
 
-public class AlbumImageIcon {
+public class AlbumFavoriteImageIcon {
 
-	private static final int WIDTH = 18;
+	private static final int WIDTH = 26;
 	private static final int HEIGHT = 18;
 	
 	private static ImageIcon icon;
@@ -41,19 +40,7 @@ public class AlbumImageIcon {
 	}
 	
 	public static ImageIcon getIcon(Paint color) {
-        return IconGenerator.generateIcon(color, WIDTH, HEIGHT, getIconArea(WIDTH, HEIGHT, 0, 0));
-	}
-	
-	protected static Area getIconArea(int width, int height, int xAxis, int yAxis) {
-		int margin = 2 + xAxis;
-		int radius = width / 4;
-		int internalMargin = width / 2 - radius / 2 + xAxis;
-		Ellipse2D.Float p = new Ellipse2D.Float(margin + xAxis, margin + yAxis, width - 2 * margin, height - 2 * margin);
-		Ellipse2D.Float p2 = new Ellipse2D.Float(internalMargin + xAxis, internalMargin + yAxis, radius, radius);
-
-		Area a = new Area(p);
-		a.subtract(new Area(p2));
-		
-        return a;
+		Area heart = FavoriteImageIcon.getIconArea(10, 10, WIDTH - 10, 1);
+		return IconGenerator.generateIcon(color, WIDTH, HEIGHT, AlbumImageIcon.getIconArea(HEIGHT, HEIGHT, 0, 0), heart);
 	}
 }
