@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.gui.views.dialogs.fullScreen;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -33,6 +34,7 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.images.RadioImageIcon;
 import net.sourceforge.atunes.gui.views.controls.Cover3D;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
@@ -60,7 +62,7 @@ public final class CoverFlow extends JPanel {
 		protected Void doInBackground() throws Exception {
 			Image image = null;
 		    if (audioObject instanceof Radio) {
-		        image = Images.getImage(Images.RADIO_BIG).getImage();
+		        image = RadioImageIcon.getBigIcon(Color.WHITE).getImage();
 		    } else if (audioObject instanceof PodcastFeedEntry) {
 		        image = Images.getImage(Images.RSS_BIG).getImage();
 		    } else {
