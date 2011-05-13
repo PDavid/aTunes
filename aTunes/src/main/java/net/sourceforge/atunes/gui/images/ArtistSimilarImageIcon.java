@@ -22,7 +22,6 @@ package net.sourceforge.atunes.gui.images;
 
 import java.awt.Paint;
 import java.awt.Rectangle;
-import java.awt.geom.Ellipse2D;
 
 import javax.swing.ImageIcon;
 
@@ -41,17 +40,9 @@ public class ArtistSimilarImageIcon {
 	}
 	
 	public static ImageIcon getIcon(Paint color) {
-		Ellipse2D.Float p = new Ellipse2D.Float(WIDTH * 1/6 - 2, HEIGHT / 2, WIDTH * 2/3, HEIGHT);
-		float headWidth = WIDTH / 2.5f;
-		float headHeight = HEIGHT / 2.5f;
-		Ellipse2D.Float p2 = new Ellipse2D.Float(WIDTH / 2 - headWidth / 2 - 2, HEIGHT / 2 - headHeight * 0.8f, headWidth, headHeight);
-		
 		Rectangle s = new Rectangle(WIDTH - 6, 5, 6, 2);
 		Rectangle s2 = new Rectangle (WIDTH - 4, 3, 2, 6);
-		
-		
 		Rectangle clip = new Rectangle(0, 2, WIDTH, HEIGHT - 4);
-		
-		return IconGenerator.generateIcon(color, clip, WIDTH, HEIGHT, p, p2, s, s2);
+		return IconGenerator.generateIcon(color, clip, WIDTH, HEIGHT, ArtistImageIcon.getArtistIconArea(-2), s, s2);
 	}
 }

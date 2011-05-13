@@ -22,6 +22,7 @@ package net.sourceforge.atunes.gui.images;
 
 import java.awt.Paint;
 import java.awt.Rectangle;
+import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 
 import javax.swing.ImageIcon;
@@ -41,13 +42,16 @@ public class ArtistImageIcon {
 	}
 	
 	public static ImageIcon getIcon(Paint color) {
-		Ellipse2D.Float p = new Ellipse2D.Float(WIDTH * 1/6, HEIGHT / 2, WIDTH * 2/3, HEIGHT);
+		Rectangle clip = new Rectangle(2, 2, WIDTH - 4, HEIGHT - 4);
+		return IconGenerator.generateIcon(color, clip, WIDTH, HEIGHT, getArtistIconArea(0));
+	}
+	
+	protected static Area getArtistIconArea(int distanceFromCenter) {
+		Area a = new Area();
+		a.add(new Area(new Ellipse2D.Float(WIDTH * 1/6 + distanceFromCenter, HEIGHT / 2, WIDTH * 2/3, HEIGHT)));
 		float headWidth = WIDTH / 2.5f;
 		float headHeight = HEIGHT / 2.5f;
-		Ellipse2D.Float p2 = new Ellipse2D.Float(WIDTH / 2 - headWidth / 2, HEIGHT / 2 - headHeight * 0.8f, headWidth, headHeight);
-		
-		Rectangle clip = new Rectangle(2, 2, WIDTH - 4, HEIGHT - 4);
-		
-		return IconGenerator.generateIcon(color, clip, WIDTH, HEIGHT, p, p2);
+		a.add(new Area(new Ellipse2D.Float(WIDTH / 2 - headWidth / 2 + distanceFromCenter, HEIGHT / 2 - headHeight * 0.8f, headWidth, headHeight)));
+		return a;
 	}
 }

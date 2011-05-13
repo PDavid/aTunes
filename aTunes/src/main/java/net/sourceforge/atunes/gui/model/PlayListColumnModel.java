@@ -29,11 +29,12 @@ import javax.swing.table.TableColumn;
 import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.renderers.JLabelTableCellRendererCode;
+import net.sourceforge.atunes.gui.renderers.TextAndIconTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.StringTableCellRendererCode;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable.PlayState;
 import net.sourceforge.atunes.kernel.modules.columns.PlayListColumnSet;
+import net.sourceforge.atunes.kernel.modules.columns.TextAndIcon;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 
 /**
@@ -41,8 +42,8 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
  */
 public final class PlayListColumnModel extends AbstractCommonColumnModel {
 
-    private static final class PlayListJLabelTableCellRendererCode extends JLabelTableCellRendererCode {
-        private PlayListJLabelTableCellRendererCode(AbstractCommonColumnModel model) {
+    private static final class PlayListTextAndIconTableCellRendererCode extends TextAndIconTableCellRendererCode {
+        private PlayListTextAndIconTableCellRendererCode(AbstractCommonColumnModel model) {
             super(model);
         }
 
@@ -117,8 +118,8 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
             };
         } else if (clazz.equals(String.class)) {
             return new PlayListStringTableCellRendererCode(this);
-        } else if (clazz.equals(JLabel.class)) {
-            return new PlayListJLabelTableCellRendererCode(this);
+        } else if (clazz.equals(TextAndIcon.class)) {
+            return new PlayListTextAndIconTableCellRendererCode(this);
         } else {
             return super.getRendererCodeFor(clazz);
         }
