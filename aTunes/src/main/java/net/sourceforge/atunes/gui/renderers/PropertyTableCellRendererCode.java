@@ -26,8 +26,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 
+import net.sourceforge.atunes.gui.images.FavoriteImageIcon;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 
 public class PropertyTableCellRendererCode extends AbstractTableCellRendererCode {
@@ -41,7 +43,7 @@ public class PropertyTableCellRendererCode extends AbstractTableCellRendererCode
         ImageIcon icon = null;
         Property val = (Property) value;
         if (val == Property.FAVORITE) {
-            icon = Images.getImage(Images.FAVORITE);
+            icon = FavoriteImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(comp));
         } else if (val == Property.NOT_LISTENED_ENTRY) {
             icon = Images.getImage(Images.NEW_PODCAST_ENTRY);
         } else if (val == Property.DOWNLOADED_ENTRY) {

@@ -29,6 +29,7 @@ import net.sourceforge.atunes.gui.images.AlbumImageIcon;
 import net.sourceforge.atunes.gui.images.ArtistImageIcon;
 import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
 import net.sourceforge.atunes.gui.images.DeviceImageIcon;
+import net.sourceforge.atunes.gui.images.FavoriteImageIcon;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
@@ -53,7 +54,7 @@ public class StringTreeCellDecorator extends AbstractTreeCellDecorator {
             } else if (text.equals(I18nUtils.getString("SONGS"))) {
                 label.setIcon(AudioFileImageIcon.getSmallImageIcon(color));
             } else if (text.equals(I18nUtils.getString("FAVORITES"))) {
-                label.setIcon(Images.getImage(Images.FAVORITE));
+                label.setIcon(FavoriteImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(label)));
             } else if (text.equals(I18nUtils.getString("PODCAST_FEEDS"))) {
                 label.setIcon(Images.getImage(Images.RSS_LITTLE));
             } else if (text.equals(I18nUtils.getString("RADIO"))) {

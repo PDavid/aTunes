@@ -20,9 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.columns;
 
-import javax.swing.ImageIcon;
-
-import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
@@ -36,7 +34,7 @@ public class FavoriteColumn extends AbstractColumn {
     private static final long serialVersionUID = -4652512586792166062L;
 
     public FavoriteColumn() {
-        super("FAVORITES", ImageIcon.class);
+        super("FAVORITES", Property.class);
         setResizable(false);
         setWidth(20);
         setVisible(true);
@@ -61,7 +59,7 @@ public class FavoriteColumn extends AbstractColumn {
         if (audioObject instanceof PodcastFeedEntry) {
             return null;
         }
-        return FavoritesHandler.getInstance().getFavoriteSongsInfo().containsValue(audioObject) ? Images.getImage(Images.FAVORITE) : null;
+        return FavoritesHandler.getInstance().getFavoriteSongsInfo().containsValue(audioObject) ? Property.FAVORITE : null;
     }
 
     @Override
