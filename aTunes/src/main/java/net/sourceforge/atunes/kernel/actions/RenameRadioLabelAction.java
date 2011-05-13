@@ -26,7 +26,6 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.RadioNavigationView;
@@ -49,7 +48,7 @@ public class RenameRadioLabelAction extends AbstractAction {
         Object o = ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
         if (o instanceof String) {
             String label = (String) o;
-            String result = GuiHandler.getInstance().showInputDialog(I18nUtils.getString("RENAME_LABEL"), label, Images.getImage(Images.RADIO_LITTLE).getImage());
+            String result = GuiHandler.getInstance().showInputDialog(I18nUtils.getString("RENAME_LABEL"), label);
             if (result != null) {
                 List<Radio> radios = RadioHandler.getInstance().getRadios(label);
                 RadioHandler.getInstance().setLabel(radios, result);
@@ -57,7 +56,7 @@ public class RenameRadioLabelAction extends AbstractAction {
             }
         } else if (o instanceof Radio) {
             Radio radio = (Radio) o;
-            String result = GuiHandler.getInstance().showInputDialog(I18nUtils.getString("RENAME_LABEL"), radio.getLabel(), Images.getImage(Images.RADIO_LITTLE).getImage());
+            String result = GuiHandler.getInstance().showInputDialog(I18nUtils.getString("RENAME_LABEL"), radio.getLabel());
             if (result != null) {
                 radio.setLabel(result);
                 NavigationHandler.getInstance().refreshView(RadioNavigationView.class);
