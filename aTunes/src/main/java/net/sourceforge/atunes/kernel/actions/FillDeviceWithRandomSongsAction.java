@@ -25,7 +25,6 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -43,7 +42,7 @@ public class FillDeviceWithRandomSongsAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         String freeMemory = "20";
         // Ask how much memory should be left free
-        freeMemory = GuiHandler.getInstance().showInputDialog(I18nUtils.getString("MEMORY_TO_LEAVE_FREE"), freeMemory, Images.getImage(Images.DEVICE).getImage());
+        freeMemory = GuiHandler.getInstance().showInputDialog(I18nUtils.getString("MEMORY_TO_LEAVE_FREE"), freeMemory);
         long result;
         try {
             result = Long.parseLong(freeMemory.trim());
@@ -56,6 +55,6 @@ public class FillDeviceWithRandomSongsAction extends AbstractAction {
 
     @Override
     public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
-        return !rootSelected && !selection.isEmpty();
+        return DeviceHandler.getInstance().isDeviceConnected();
     }
 }

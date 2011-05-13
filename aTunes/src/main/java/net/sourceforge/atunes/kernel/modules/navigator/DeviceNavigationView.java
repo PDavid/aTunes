@@ -32,7 +32,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
-import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.images.DeviceImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.gui.views.decorators.AlbumTreeCellDecorator;
@@ -79,7 +79,7 @@ public final class DeviceNavigationView extends AbstractNavigationView {
 
     @Override
     public ImageIcon getIcon() {
-        return Images.getImage(Images.DEVICE);
+        return DeviceImageIcon.getIcon();
     }
 
     @Override
@@ -121,7 +121,6 @@ public final class DeviceNavigationView extends AbstractNavigationView {
             deviceTreeMenu.add(new JSeparator());
             deviceTreeMenu.add(Actions.getAction(SearchArtistAction.class));
             deviceTreeMenu.add(Actions.getAction(SearchArtistAtAction.class));
-
         }
         return deviceTreeMenu;
     }

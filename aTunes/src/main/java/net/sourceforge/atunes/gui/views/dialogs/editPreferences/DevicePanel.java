@@ -41,7 +41,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.images.DeviceImageIcon;
 import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
@@ -309,7 +309,7 @@ public final class DevicePanel extends AbstractPreferencesPanel {
 
     @Override
     public ImageIcon getIcon() {
-        return Images.getImage(Images.DEVICE);
+        return DeviceImageIcon.getIcon();
     }
 
 }
