@@ -33,7 +33,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
-import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.images.RadioImageIcon;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
@@ -73,16 +73,6 @@ public final class AddRadioDialog extends AbstractCustomModalDialog {
         GuiUtils.applyComponentOrientation(this);
         enableDisposeActionWithEscapeKey();
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-    }
-
-    /**
-     * The main method.
-     * 
-     * @param args
-     *            the arguments
-     */
-    public static void main(String args[]) {
-        new AddRadioDialog(null).setVisible(true);
     }
 
     /**
@@ -145,7 +135,7 @@ public final class AddRadioDialog extends AbstractCustomModalDialog {
         c.gridheight = 2;
         c.fill = GridBagConstraints.NONE;
         c.weightx = -1;
-        panel.add(new JLabel(Images.getImage(Images.RADIO)), c);
+        panel.add(new JLabel(RadioImageIcon.getIcon()), c);
 
         JPanel auxPanel = new JPanel();
         auxPanel.add(okButton);

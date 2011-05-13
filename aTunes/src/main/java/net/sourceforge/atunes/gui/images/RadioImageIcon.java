@@ -34,7 +34,7 @@ public class RadioImageIcon {
 
 	public static ImageIcon getSmallIcon() {
 		if (smallImageIcon == null) {
-			smallImageIcon = getIcon(null, 18, 18); 
+			smallImageIcon = getSmallIcon(null, 18, 18); 
 		}
 		return smallImageIcon;
 	}
@@ -43,11 +43,11 @@ public class RadioImageIcon {
 		if (paint == null) {
 			return getSmallIcon();
 		} else {
-			return getIcon(paint, 18, 18);
+			return getSmallIcon(paint, 18, 18);
 		}
 	}
 
-	private static ImageIcon getIcon(Paint color, int w, int h) {
+	private static ImageIcon getSmallIcon(Paint color, int w, int h) {
 		int marginX = w / 10;
 		int marginTopY = h / 2;
 		int marginBottomY = h / 10;
@@ -64,6 +64,35 @@ public class RadioImageIcon {
 		a.add(new Area(p));
 		
 		int insideMargin = w / 8;
+		marginX = marginX + insideMargin;
+		marginBottomY = marginBottomY + 2 * insideMargin;
+		marginTopY = marginTopY + insideMargin;
+		a.subtract(new Area(new Rectangle(marginX, marginTopY, w - 2 * marginX, h - marginTopY - marginBottomY)));
+		
+        return IconGenerator.generateIcon(color, w, h, a);
+	}
+
+	public static ImageIcon getIcon() {
+		return getIcon(null, 70, 70);
+	}
+
+	private static ImageIcon getIcon(Paint color, int w, int h) {
+		int marginX = w / 10;
+		int marginTopY = h / 2;
+		int marginBottomY = h / 10;
+		int arc = 4;
+		Area a = new Area(new RoundRectangle2D.Float(marginX, marginTopY, w - 2 * marginX, h - marginTopY - marginBottomY, arc, arc));
+
+		int antennaWidth = w / 12;
+		Polygon p = new Polygon();
+		p.addPoint(marginX + antennaWidth, marginBottomY);
+		p.addPoint(marginX + 2 * antennaWidth, marginBottomY);
+		p.addPoint(w - marginX - antennaWidth, h - marginTopY);
+		p.addPoint(w - marginX - 2 * antennaWidth, h - marginTopY);
+		
+		a.add(new Area(p));
+		
+		int insideMargin = w / 16;
 		marginX = marginX + insideMargin;
 		marginBottomY = marginBottomY + 2 * insideMargin;
 		marginTopY = marginTopY + insideMargin;

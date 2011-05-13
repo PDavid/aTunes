@@ -75,7 +75,6 @@ public final class Images {
     public static final String PREFS = "prefs.png";
     public static final String PREVIOUS_TRAY = OsManager.osType.isWindowsVista() ? "previousTrayVista.png" : "previousTray.png";
     public static final String PREVIOUS_TRAY_MENU = "previousTrayMenu.png";
-    public static final String RADIO = "radio.png";
     public static final String RADIO_BIG = "radio_big.png";
     public static final String RSS_LITTLE = "rss_little.png";
     public static final String RSS = "rss.png";
