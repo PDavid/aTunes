@@ -88,6 +88,9 @@ public class AudioFileImageIcon implements LookAndFeelChangeListener {
 	}
 
 	public static ImageIcon getSmallImageIcon(Paint color) {
+		if (color == null) {
+			return getSmallImageIcon();
+		}
 		return getSmallImage(color);
 
 	}
