@@ -93,7 +93,6 @@ public final class Images {
     public static final String FOUR_STAR = "4_star.png";
     public static final String FIVE_STAR = "5_star.png";
     public static final String WARNING = "warning.png";
-    public static final String YOUTUBE = "Youtube_16x16.png";
 
     /**
      * cache of images
