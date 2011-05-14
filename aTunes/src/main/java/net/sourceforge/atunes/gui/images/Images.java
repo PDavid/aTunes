@@ -1,6 +1,6 @@
 /*
  * aTunes 2.1.0-SNAPSHOT
- * Copyright (C) 2006-2010 Alex Aranda, Sylvain Gaudard and contributors
+ * Copyright (C) 2006-2011 Alex Aranda, Sylvain Gaudard and contributors
  *
  * See http://www.atunes.org/wiki/index.php?title=Contributing for information about contributors
  *
@@ -43,6 +43,7 @@ public final class Images {
     public static final String APP_LOGO_90 = "logo90x90.png";
     public static final String APP_LOGO_150 = "logo150x150.png";
     public static final String APP_LOGO_300 = "logo300x300.png";
+    public static final String POWERED_BY_LAST_FM = "poweredByLastFm.png";
     
     public static final String COPY = "copy.png";
     public static final String DATE = "date.png";
@@ -57,7 +58,6 @@ public final class Images {
     public static final String PLAY_TINY = "playTiny.png";
     public static final String PLAY_TRAY = OsManager.osType.isWindowsVista() ? "playTrayVista.png" : "playTray.png";
     public static final String PLAY_TRAY_MENU = "playTrayMenu.png";
-    public static final String POWERED_BY_LAST_FM = "poweredByLastFm.png";
     public static final String PREVIOUS_TRAY = OsManager.osType.isWindowsVista() ? "previousTrayVista.png" : "previousTray.png";
     public static final String PREVIOUS_TRAY_MENU = "previousTrayMenu.png";
     public static final String STOP_TRAY = OsManager.osType.isWindowsVista() ? "stopTrayVista.png" : "stopTray.png";
