@@ -24,8 +24,9 @@ import java.awt.Component;
 
 import javax.swing.JLabel;
 
-import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.images.FolderImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.model.Folder;
 
 public class FolderTreeCellDecorator extends AbstractTreeCellDecorator {
@@ -33,7 +34,7 @@ public class FolderTreeCellDecorator extends AbstractTreeCellDecorator {
     @Override
     public Component decorateTreeCellComponent(Component component, Object userObject) {
         if (userObject instanceof Folder && component instanceof JLabel) {
-            ((JLabel) component).setIcon(Images.getImage(Images.FOLDER));
+            ((JLabel) component).setIcon(FolderImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(component)));
         }
         return component;
     }
