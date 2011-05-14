@@ -28,8 +28,8 @@ import javax.swing.ImageIcon;
 
 public class AlbumImageIcon {
 
-	private static final int WIDTH = 18;
-	private static final int HEIGHT = 18;
+	private static final int SIZE = 18;
+	private static final int BIG_SIZE = 90;
 	
 	private static ImageIcon icon;
 	
@@ -41,9 +41,13 @@ public class AlbumImageIcon {
 	}
 	
 	public static ImageIcon getIcon(Paint color) {
-        return IconGenerator.generateIcon(color, WIDTH, HEIGHT, getIconArea(WIDTH, HEIGHT, 0, 0));
+        return IconGenerator.generateIcon(color, SIZE, SIZE, getIconArea(SIZE, SIZE, 0, 0));
 	}
-	
+
+	public static ImageIcon getBigIcon(Paint color) {
+        return IconGenerator.generateIcon(color, BIG_SIZE, BIG_SIZE, getIconArea(BIG_SIZE, BIG_SIZE, 0, 0));
+	}
+
 	protected static Area getIconArea(int width, int height, int xAxis, int yAxis) {
 		int margin = 2 + xAxis;
 		int radius = width / 4;
