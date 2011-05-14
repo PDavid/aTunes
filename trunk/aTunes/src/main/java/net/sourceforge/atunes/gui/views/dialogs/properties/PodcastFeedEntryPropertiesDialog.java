@@ -36,7 +36,7 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.Fonts;
-import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -179,7 +179,7 @@ final class PodcastFeedEntryPropertiesDialog extends PropertiesDialog {
      * Fill picture.
      */
     private void fillPicture() {
-        ImageIcon picture = Images.getImage(Images.RSS);
+        ImageIcon picture = RssImageIcon.getIcon();
         pictureLabel.setPreferredSize(new Dimension(picture.getIconWidth(), picture.getIconHeight()));
         pictureLabel.setIcon(picture);
         pictureLabel.setVisible(true);

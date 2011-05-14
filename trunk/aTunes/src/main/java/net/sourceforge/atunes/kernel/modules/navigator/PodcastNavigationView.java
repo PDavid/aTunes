@@ -33,7 +33,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
 
-import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
@@ -80,7 +80,7 @@ public final class PodcastNavigationView extends AbstractNavigationView {
 
     @Override
     public ImageIcon getIcon() {
-        return Images.getImage(Images.RSS_LITTLE);
+        return RssImageIcon.getSmallIcon();
     }
 
     @Override

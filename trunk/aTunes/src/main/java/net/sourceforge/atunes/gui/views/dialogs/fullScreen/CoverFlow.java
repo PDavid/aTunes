@@ -35,6 +35,7 @@ import javax.swing.SwingWorker;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.images.RadioImageIcon;
+import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.gui.views.controls.Cover3D;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
@@ -64,7 +65,7 @@ public final class CoverFlow extends JPanel {
 		    if (audioObject instanceof Radio) {
 		        image = RadioImageIcon.getBigIcon(Color.WHITE).getImage();
 		    } else if (audioObject instanceof PodcastFeedEntry) {
-		        image = Images.getImage(Images.RSS_BIG).getImage();
+		        image = RssImageIcon.getBigIcon(Color.WHITE).getImage();
 		    } else {
 	    		image = getPicture((AudioFile) audioObject);
 		    }

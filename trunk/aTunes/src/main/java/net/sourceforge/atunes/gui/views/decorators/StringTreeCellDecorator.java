@@ -32,6 +32,7 @@ import net.sourceforge.atunes.gui.images.DeviceImageIcon;
 import net.sourceforge.atunes.gui.images.FavoriteImageIcon;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.images.RadioImageIcon;
+import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -57,7 +58,7 @@ public class StringTreeCellDecorator extends AbstractTreeCellDecorator {
             } else if (text.equals(I18nUtils.getString("FAVORITES"))) {
                 label.setIcon(FavoriteImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(label)));
             } else if (text.equals(I18nUtils.getString("PODCAST_FEEDS"))) {
-                label.setIcon(Images.getImage(Images.RSS_LITTLE));
+                label.setIcon(RssImageIcon.getSmallIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(label)));
             } else if (text.equals(I18nUtils.getString("RADIO"))) {
                 label.setIcon(RadioImageIcon.getSmallIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(label)));
             } else {
