@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.images.FolderImageIcon;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.ViewMode;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -33,7 +33,7 @@ public class ShowFoldersInNavigatorAction extends AbstractAction {
     private static final long serialVersionUID = -3422236983060989235L;
 
     ShowFoldersInNavigatorAction() {
-        super(I18nUtils.getString("SHOW_FOLDERS"), Images.getImage(Images.FOLDER));
+        super(I18nUtils.getString("SHOW_FOLDERS"), FolderImageIcon.getIcon());
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_FOLDERS"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().getViewMode() == ViewMode.FOLDER);
     }

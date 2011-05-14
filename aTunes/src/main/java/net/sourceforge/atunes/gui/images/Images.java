@@ -47,7 +47,6 @@ public final class Images {
     public static final String COPY = "copy.png";
     public static final String DATE = "date.png";
     public static final String DOWNLOAD_PODCAST = "rss_download.png";
-    public static final String FOLDER = "repository.png";
     public static final String GENRE = "genre.png";
     public static final String KARAOKE = "karaoke.png";
     public static final String LANGUAGE = "language.png";
