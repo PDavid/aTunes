@@ -29,7 +29,7 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.ImageSize;
@@ -378,13 +378,13 @@ public final class PodcastFeedEntry implements AudioObject, Serializable, Compar
     public ImageIcon getGenericImage(GenericImageSize imageSize) {
         switch (imageSize) {
         case SMALL: {
-            return Images.getImage(Images.RSS_LITTLE);
+            return RssImageIcon.getSmallIcon();
         }
         case MEDIUM: {
-            return Images.getImage(Images.RSS);
+            return RssImageIcon.getIcon();
         }
         case BIG: {
-            return Images.getImage(Images.RSS_BIG);
+            return RssImageIcon.getBigIcon();
         }
         default: {
             throw new IllegalArgumentException("unknown image size");

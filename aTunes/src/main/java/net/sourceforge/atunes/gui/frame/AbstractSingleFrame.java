@@ -47,6 +47,7 @@ import javax.swing.Timer;
 
 import net.sourceforge.atunes.gui.images.DeviceImageIcon;
 import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.gui.views.controls.CustomFrame;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.dialogs.UpdateDialog;
@@ -422,7 +423,7 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
 
     private JLabel getStatusBarNewPodcastEntriesLabel() {
         if (statusBarNewPodcastEntriesLabel == null) {
-            statusBarNewPodcastEntriesLabel = new JLabel(Images.getImage(Images.RSS_LITTLE));
+            statusBarNewPodcastEntriesLabel = new JLabel(RssImageIcon.getSmallIcon());
             statusBarNewPodcastEntriesLabel.setToolTipText(I18nUtils.getString("NEW_PODCAST_ENTRIES"));
             statusBarNewPodcastEntriesLabel.addMouseListener(new MouseAdapter() {
                 @Override

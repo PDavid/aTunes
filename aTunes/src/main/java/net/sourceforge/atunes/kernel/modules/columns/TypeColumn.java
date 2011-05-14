@@ -27,8 +27,8 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
 import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.images.RadioImageIcon;
+import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
@@ -80,7 +80,7 @@ public class TypeColumn extends AbstractColumn {
 				
 				@Override
 				public ImageIcon getIcon(Paint paint) {
-					return Images.getImage(Images.RSS_LITTLE);
+					return RssImageIcon.getSmallIcon(paint);
 				}
 			};
         } else {
