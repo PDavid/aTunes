@@ -44,8 +44,6 @@ public final class Images {
     public static final String APP_LOGO_150 = "logo150x150.png";
     public static final String APP_LOGO_300 = "logo300x300.png";
     
-    public static final String CHECK_FOR_UPDATES = "checkForUpdates.png";
-    public static final String CHECK_FOR_UPDATES_BW = "checkForUpdatesBW.png";
     public static final String CONTEXT = "context.png";
     public static final String COPY = "copy.png";
     public static final String DATE = "date.png";

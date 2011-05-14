@@ -46,7 +46,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import net.sourceforge.atunes.gui.images.DeviceImageIcon;
-import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.images.NewImageIcon;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.gui.views.controls.CustomFrame;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
@@ -104,20 +104,6 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
     protected static int defaultDividerSize;
     
     private WindowAdapter fullFrameStateListener;
-
-    private Timer statusBarNewVersionInfoTimer = new Timer(1000, new ActionListener() {
-        private boolean b;
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if (b) {
-                getStatusBarNewVersionLabel().setIcon(Images.getImage(Images.CHECK_FOR_UPDATES));
-            } else {
-                getStatusBarNewVersionLabel().setIcon(Images.getImage(Images.CHECK_FOR_UPDATES_BW));
-            }
-            b = !b;
-        }
-    });
 
     private Logger logger;
 
@@ -438,7 +424,7 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
 
     JLabel getStatusBarNewVersionLabel() {
         if (statusBarNewVersionLabel == null) {
-            statusBarNewVersionLabel = new JLabel(Images.getImage(Images.CHECK_FOR_UPDATES));
+            statusBarNewVersionLabel = new JLabel(NewImageIcon.getIcon());
             statusBarNewVersionLabel.setToolTipText(I18nUtils.getString("NEW_VERSION_AVAILABLE"));
             statusBarNewVersionLabel.addMouseListener(new MouseAdapter() {
                 @Override
@@ -580,10 +566,8 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
             }
             JXStatusBar.Constraint c = new JXStatusBar.Constraint(JXStatusBar.Constraint.ResizeBehavior.FIXED);
             statusBar.add(getStatusBarNewVersionLabel(), c);
-            statusBarNewVersionInfoTimer.start();
             updateDialog = new UpdateDialog(version, this.getFrame());
         } else {
-            statusBarNewVersionInfoTimer.stop();
             statusBar.remove(getStatusBarNewVersionLabel());
             updateDialog = null;
         }
