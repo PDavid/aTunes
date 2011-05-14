@@ -59,7 +59,6 @@ public final class Images {
     public static final String LASTFM = "lastFm.png";
     public static final String NAVIGATE = "navigate.png";
     public static final String NETWORK_LITTLE = "network_little.png";
-    public static final String NEW_PODCAST_ENTRY = "new_podcast_entry.png";
     public static final String NEXT_TRAY = OsManager.osType.isWindowsVista() ? "nextTrayVista.png" : "nextTray.png";
     public static final String NEXT_TRAY_MENU = "nextTrayMenu.png";
     public static final String NORMALIZATION = "normalization.png";
