@@ -42,7 +42,6 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.gui.views.dialogs.TransferProgressDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;

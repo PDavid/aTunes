@@ -26,7 +26,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.ExecutionException;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -34,7 +33,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddBannedSongInLastFMAction;
@@ -250,11 +248,6 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
     @Override
     public void dialogVisibilityChanged(boolean visible) {
         // Do nothing
-    }
-
-    @Override
-    public ImageIcon getIcon() {
-        return Images.getImage(Images.LASTFM);
     }
 
     /**

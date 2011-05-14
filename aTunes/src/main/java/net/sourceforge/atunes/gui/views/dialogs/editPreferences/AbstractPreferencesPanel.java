@@ -56,7 +56,13 @@ public abstract class AbstractPreferencesPanel extends JPanel {
         return title;
     }
 
-    public abstract ImageIcon getIcon();
+    /**
+     * Icon of panel
+     * @return
+     */
+    public ImageIcon getIcon() {
+    	return null;
+    }
 
     /**
      * Called to update preferences values

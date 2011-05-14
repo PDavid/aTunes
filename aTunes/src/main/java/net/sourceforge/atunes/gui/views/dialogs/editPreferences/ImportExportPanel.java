@@ -31,7 +31,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -40,7 +39,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -311,11 +309,6 @@ public final class ImportExportPanel extends AbstractPreferencesPanel {
     @Override
     public void dialogVisibilityChanged(boolean visible) {
         // Do nothing
-    }
-
-    @Override
-    public ImageIcon getIcon() {
-        return Images.getImage(Images.EXPORT);
     }
 
 }

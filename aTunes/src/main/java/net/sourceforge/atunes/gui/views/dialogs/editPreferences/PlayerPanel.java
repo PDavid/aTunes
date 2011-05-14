@@ -33,7 +33,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.Box;
-import javax.swing.ImageIcon;
 import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -47,7 +46,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
 
 import net.sourceforge.atunes.gui.ColorDefinitions;
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.OsManager;
@@ -422,11 +420,6 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
                 HotkeyHandler.getInstance().enableHotkeys(ApplicationState.getInstance().getHotkeysConfig());
             }
         }
-    }
-
-    @Override
-    public ImageIcon getIcon() {
-        return Images.getImage(Images.PLAY_TINY);
     }
 
 }

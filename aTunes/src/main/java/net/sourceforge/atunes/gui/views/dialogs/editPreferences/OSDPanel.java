@@ -25,13 +25,11 @@ import java.awt.Insets;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
-import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -232,11 +230,6 @@ public final class OSDPanel extends AbstractPreferencesPanel {
     @Override
     public void dialogVisibilityChanged(boolean visible) {
         // Do nothing
-    }
-
-    @Override
-    public ImageIcon getIcon() {
-        return Images.getImage(Images.OSD);
     }
 
 }

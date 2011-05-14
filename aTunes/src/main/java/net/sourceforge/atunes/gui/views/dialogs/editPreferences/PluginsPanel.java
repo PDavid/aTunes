@@ -34,7 +34,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -51,7 +50,6 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 import net.sourceforge.atunes.gui.Fonts;
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
@@ -491,11 +489,6 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
             return this.plugins.get(row);
         }
 
-    }
-
-    @Override
-    public ImageIcon getIcon() {
-        return Images.getImage(Images.PLUGIN);
     }
 
     /**

@@ -23,13 +23,11 @@ package net.sourceforge.atunes.gui.views.dialogs.editPreferences;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
-import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -167,11 +165,6 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
     @Override
     public void dialogVisibilityChanged(boolean visible) {
         // Do nothing
-    }
-
-    @Override
-    public ImageIcon getIcon() {
-        return AudioFileImageIcon.getSmallImageIcon();
     }
 
     @Override

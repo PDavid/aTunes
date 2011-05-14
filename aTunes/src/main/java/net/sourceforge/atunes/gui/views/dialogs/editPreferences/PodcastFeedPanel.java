@@ -23,13 +23,11 @@ package net.sourceforge.atunes.gui.views.dialogs.editPreferences;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
-import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 
-import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -169,11 +167,6 @@ public final class PodcastFeedPanel extends AbstractPreferencesPanel {
     @Override
     public void dialogVisibilityChanged(boolean visible) {
         // Do nothing
-    }
-
-    @Override
-    public ImageIcon getIcon() {
-        return RssImageIcon.getSmallIcon();
     }
 
 }
