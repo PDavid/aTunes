@@ -22,10 +22,8 @@ package net.sourceforge.atunes.gui.views.dialogs.editPreferences;
 
 import java.awt.GridBagConstraints;
 
-import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -118,11 +116,6 @@ public final class PlayListPrefPanel extends AbstractPreferencesPanel {
     @Override
     public void dialogVisibilityChanged(boolean visible) {
         // Do nothing
-    }
-
-    @Override
-    public ImageIcon getIcon() {
-        return Images.getImage(Images.PLAYLIST);
     }
 
 }

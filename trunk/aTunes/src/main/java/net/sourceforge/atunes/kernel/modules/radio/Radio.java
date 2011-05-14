@@ -30,7 +30,6 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.images.RadioImageIcon;
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;

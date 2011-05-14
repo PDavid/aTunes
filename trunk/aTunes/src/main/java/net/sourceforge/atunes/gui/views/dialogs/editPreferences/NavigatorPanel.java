@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.DefaultCellEditor;
-import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -41,7 +40,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.tags.IncompleteTagsChecker;
@@ -356,11 +354,6 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
     @Override
     public void resetImmediateChanges(ApplicationState state) {
         // Do nothing
-    }
-
-    @Override
-    public ImageIcon getIcon() {
-        return Images.getImage(Images.NAVIGATE);
     }
 
 }

@@ -31,7 +31,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -42,7 +41,6 @@ import javax.swing.ScrollPaneConstants;
 import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.frame.Frame;
 import net.sourceforge.atunes.gui.frame.Frames;
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelBean;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.ByImageChoosingPanel;
@@ -363,11 +361,6 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
     @Override
     public void dialogVisibilityChanged(boolean visible) {
         // Do nothing
-    }
-
-    @Override
-    public ImageIcon getIcon() {
-        return Images.getImage(Images.PREFS);
     }
 
     /**

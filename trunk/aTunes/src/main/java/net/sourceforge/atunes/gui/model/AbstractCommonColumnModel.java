@@ -48,13 +48,13 @@ import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.gui.renderers.ColorMutableTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.ImageIconTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.IntegerTableCellRendererCode;
-import net.sourceforge.atunes.gui.renderers.TextAndIconTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.PropertyTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.StringTableCellRendererCode;
+import net.sourceforge.atunes.gui.renderers.TextAndIconTableCellRendererCode;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
-import net.sourceforge.atunes.kernel.modules.columns.TextAndIcon;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn.ColumnSort;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
+import net.sourceforge.atunes.kernel.modules.columns.TextAndIcon;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel {
