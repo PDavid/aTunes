@@ -49,7 +49,6 @@ public final class Images {
     public static final String DOWNLOAD_PODCAST = "rss_download.png";
     public static final String GENRE = "genre.png";
     public static final String KARAOKE = "karaoke.png";
-    public static final String LANGUAGE = "language.png";
     public static final String NEXT_TRAY = OsManager.osType.isWindowsVista() ? "nextTrayVista.png" : "nextTray.png";
     public static final String NEXT_TRAY_MENU = "nextTrayMenu.png";
     public static final String NORMALIZATION = "normalization.png";
