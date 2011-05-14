@@ -55,10 +55,10 @@ public class AudioFileImageIcon implements LookAndFeelChangeListener {
 		Ellipse2D.Float e1 = new Ellipse2D.Float(1, 11, 6, 3);
 		Ellipse2D.Float e2 = new Ellipse2D.Float(8, 10, 6, 3);
 		
-		Rectangle r1 = new Rectangle(5, 5, 2, 7);
+		Rectangle r1 = new Rectangle(5, 4, 2, 8);
 		Rectangle r2 = new Rectangle(12, 3, 2, 8);
 		Polygon r3 = new Polygon();
-		r3.addPoint(5, 5);
+		r3.addPoint(5, 4);
 		r3.addPoint(5, 7);
 		r3.addPoint(14, 4);
 		r3.addPoint(14, 2);		
@@ -70,11 +70,11 @@ public class AudioFileImageIcon implements LookAndFeelChangeListener {
 		Ellipse2D.Float e1 = new Ellipse2D.Float(4, 44, 24, 12);
 		Ellipse2D.Float e2 = new Ellipse2D.Float(32, 40, 24, 12);
 		
-		Rectangle r1 = new Rectangle(20, 20, 8, 28);
-		Rectangle r2 = new Rectangle(48, 12, 8, 32);
+		Rectangle r1 = new Rectangle(20, 16, 8, 34);
+		Rectangle r2 = new Rectangle(48, 12, 8, 34);
 		Polygon r3 = new Polygon();
-		r3.addPoint(20, 20);
-		r3.addPoint(20, 28);
+		r3.addPoint(20, 16);
+		r3.addPoint(20, 24);
 		r3.addPoint(56, 16);
 		r3.addPoint(56, 8);		
 		
