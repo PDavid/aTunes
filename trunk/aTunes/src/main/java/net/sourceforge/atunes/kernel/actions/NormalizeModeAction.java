@@ -26,6 +26,7 @@ import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
 import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.images.NormalizationImageIcon;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -37,7 +38,7 @@ public class NormalizeModeAction extends AbstractAction {
     private Timer timer;
 
     public NormalizeModeAction() {
-        super(I18nUtils.getString("NORMALIZE"), Images.getImage(Images.NORMALIZATION));
+        super(I18nUtils.getString("NORMALIZE"), NormalizationImageIcon.getIcon());
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("NORMALIZE"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().isUseNormalisation());
 
@@ -47,7 +48,7 @@ public class NormalizeModeAction extends AbstractAction {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if (showWarning) {
-                    putValue(SMALL_ICON, Images.getImage(Images.NORMALIZATION));
+                    putValue(SMALL_ICON, NormalizationImageIcon.getIcon());
                 } else {
                     putValue(SMALL_ICON, Images.getImage(Images.WARNING));
                 }
@@ -63,11 +64,10 @@ public class NormalizeModeAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         boolean isNormalized = !ApplicationState.getInstance().isUseNormalisation();
         ApplicationState.getInstance().setUseNormalisation(isNormalized);
-        // SystemTrayHandler.getInstance().setNormalize(isNormalized);
         PlayerHandler.getInstance().applyNormalization();
         if (timer.isRunning()) {
             timer.stop();
-            putValue(SMALL_ICON, Images.getImage(Images.NORMALIZATION));
+            putValue(SMALL_ICON, NormalizationImageIcon.getIcon());
         } else {
             timer.start();
         }
