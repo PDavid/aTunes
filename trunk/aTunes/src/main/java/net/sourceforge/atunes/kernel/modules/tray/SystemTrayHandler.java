@@ -209,11 +209,9 @@ public final class SystemTrayHandler extends AbstractHandler {
     	if (isTrayInitialized()) {
             if (playing) {
                 getPlayMenuItem().setText(I18nUtils.getString("PAUSE"));
-                getPlayMenuItem().setIcon(Images.getImage(Images.PAUSE_TRAY_MENU));
                 getPlayTrayIcon().setImage(Images.getImage(Images.PAUSE_TRAY).getImage());
             } else {
                 getPlayMenuItem().setText(I18nUtils.getString("PLAY"));
-                getPlayMenuItem().setIcon(Images.getImage(Images.PLAY_TRAY_MENU));
                 getPlayTrayIcon().setImage(Images.getImage(Images.PLAY_TRAY).getImage());
             }
     	}
@@ -296,7 +294,6 @@ public final class SystemTrayHandler extends AbstractHandler {
     private JMenuItem getPlayMenuItem() {
         if (playMenuItem == null) {
             playMenuItem = new JMenuItem(Actions.getAction(PlayAction.class));
-            playMenuItem.setIcon(Images.getImage(Images.PLAY_TRAY_MENU));
         }
         return playMenuItem;
     }
@@ -309,7 +306,6 @@ public final class SystemTrayHandler extends AbstractHandler {
     private JMenuItem getStopMenuItem() {
         JMenuItem stop = new JMenuItem(Actions.getAction(StopCurrentAudioObjectAction.class));
         stop.setText(I18nUtils.getString("STOP"));
-        stop.setIcon(Images.getImage(Images.STOP_TRAY_MENU));
         return stop;
     }
 
@@ -321,7 +317,6 @@ public final class SystemTrayHandler extends AbstractHandler {
     private JMenuItem getPreviousMenuItem() {
         JMenuItem previous = new JMenuItem(Actions.getAction(PlayPreviousAudioObjectAction.class));
         previous.setText(I18nUtils.getString("PREVIOUS"));
-        previous.setIcon(Images.getImage(Images.PREVIOUS_TRAY_MENU));
         return previous;
     }
 
@@ -333,7 +328,6 @@ public final class SystemTrayHandler extends AbstractHandler {
     private JMenuItem getNextMenuItem() {
         JMenuItem next = new JMenuItem(Actions.getAction(PlayNextAudioObjectAction.class));
         next.setText(I18nUtils.getString("NEXT"));
-        next.setIcon(Images.getImage(Images.NEXT_TRAY_MENU));
         return next;
     }
 
@@ -345,7 +339,7 @@ public final class SystemTrayHandler extends AbstractHandler {
     private JCheckBoxMenuItem getMuteCheckBoxMenuItem() {
         JCheckBoxMenuItem mute = new JCheckBoxMenuItem(Actions.getAction(MuteAction.class));
         mute.setText(I18nUtils.getString("MUTE"));
-        mute.setIcon(Images.getImage(Images.VOLUME_MUTE_TRAY_MENU));
+        mute.setIcon(null);
         return mute;
     }
 
