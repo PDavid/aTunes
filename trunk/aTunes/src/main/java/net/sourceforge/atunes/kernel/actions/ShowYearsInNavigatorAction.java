@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.images.DateImageIcon;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.ViewMode;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -33,7 +33,7 @@ public class ShowYearsInNavigatorAction extends AbstractAction {
     private static final long serialVersionUID = -1192790723328398881L;
 
     ShowYearsInNavigatorAction() {
-        super(I18nUtils.getString("SHOW_YEARS"), Images.getImage(Images.DATE));
+        super(I18nUtils.getString("SHOW_YEARS"), DateImageIcon.getIcon());
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_YEARS"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().getViewMode() == ViewMode.YEAR);
     }
