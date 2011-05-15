@@ -26,6 +26,7 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
+import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
 
 public class LocalAudioObjectFake implements LocalAudioObject {
@@ -135,7 +136,7 @@ public class LocalAudioObjectFake implements LocalAudioObject {
 	}
 
 	@Override
-	public ImageIcon getGenericImage(GenericImageSize imageSize) {
+	public ColorMutableImageIcon getGenericImage(GenericImageSize imageSize) {
 		return null;
 	}
 

@@ -20,11 +20,14 @@
 
 package net.sourceforge.atunes.kernel.modules.context.youtube;
 
+import java.awt.Paint;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
 
+import net.sourceforge.atunes.gui.images.ArtistImageIcon;
+import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.VideoImageIcon;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
@@ -43,8 +46,13 @@ public class YoutubeContextPanel extends AbstractContextPanel {
     private List<AbstractContextPanelContent> contents;
 
     @Override
-    protected ImageIcon getContextPanelIcon(AudioObject audioObject) {
-        return VideoImageIcon.getIcon();
+    protected ColorMutableImageIcon getContextPanelIcon(AudioObject audioObject) {
+        return new ColorMutableImageIcon() {
+        	@Override
+        	public ImageIcon getIcon(Paint paint) {
+                return VideoImageIcon.getIcon(paint);
+        	}
+        };
     }
 
     @Override

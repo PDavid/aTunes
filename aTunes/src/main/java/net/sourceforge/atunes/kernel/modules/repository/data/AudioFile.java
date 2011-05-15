@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.repository.data;
 
+import java.awt.Paint;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ import java.util.Set;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
+import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.kernel.modules.repository.ImageCache;
 import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
 import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
@@ -651,16 +653,31 @@ public final class AudioFile implements LocalAudioObject, Serializable {
     }
 
     @Override
-    public ImageIcon getGenericImage(GenericImageSize imageSize) {
+    public ColorMutableImageIcon getGenericImage(GenericImageSize imageSize) {
         switch (imageSize) {
         case SMALL: {
-            return AudioFileImageIcon.getSmallImageIcon();
+        	return new ColorMutableImageIcon() {
+        		@Override
+        		public ImageIcon getIcon(Paint paint) {
+        			return AudioFileImageIcon.getSmallImageIcon(paint);
+        		}
+        	};         
         }
         case MEDIUM: {
-            return AudioFileImageIcon.getMediumImage();
+        	return new ColorMutableImageIcon() {
+        		@Override
+        		public ImageIcon getIcon(Paint paint) {
+        			return AudioFileImageIcon.getMediumImage(paint);
+        		}
+        	};         
         }
         case BIG: {
-            return AudioFileImageIcon.getMediumImage(); // Not used yet
+        	return new ColorMutableImageIcon() {
+        		@Override
+        		public ImageIcon getIcon(Paint paint) {
+        			return AudioFileImageIcon.getMediumImage(paint);
+        		}
+        	};         
         }
         default: {
             throw new IllegalArgumentException("unknown image size");

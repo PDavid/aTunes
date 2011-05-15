@@ -20,12 +20,14 @@
 
 package net.sourceforge.atunes.kernel.modules.context.audioobject;
 
+import java.awt.Paint;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
+import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
@@ -48,11 +50,16 @@ public class AudioObjectContextPanel extends AbstractContextPanel {
     private List<AbstractContextPanelContent> contents;
 
     @Override
-    protected ImageIcon getContextPanelIcon(AudioObject audioObject) {
+    protected ColorMutableImageIcon getContextPanelIcon(final AudioObject audioObject) {
         if (audioObject != null) {
             return audioObject.getGenericImage(GenericImageSize.SMALL);
         } else {
-            return AudioFileImageIcon.getSmallImageIcon();
+        	return new ColorMutableImageIcon() {
+        		@Override
+        		public ImageIcon getIcon(Paint paint) {
+        			return AudioFileImageIcon.getSmallImageIcon(paint);
+        		}
+        	};
         }
     }
 

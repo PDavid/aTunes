@@ -20,12 +20,14 @@
 
 package net.sourceforge.atunes.kernel.modules.context.artist;
 
+import java.awt.Paint;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.images.ArtistImageIcon;
+import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
@@ -48,8 +50,13 @@ public class ArtistContextPanel extends AbstractContextPanel {
     private List<AbstractContextPanelContent> contents;
 
     @Override
-    protected ImageIcon getContextPanelIcon(AudioObject audioObject) {
-        return ArtistImageIcon.getIcon(null);
+    protected ColorMutableImageIcon getContextPanelIcon(AudioObject audioObject) {
+        return new ColorMutableImageIcon() {
+        	@Override
+        	public ImageIcon getIcon(Paint paint) {
+                return ArtistImageIcon.getIcon(paint);
+        	}
+        };
     }
 
     @Override
