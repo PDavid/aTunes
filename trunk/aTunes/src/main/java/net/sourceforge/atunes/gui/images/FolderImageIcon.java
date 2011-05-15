@@ -22,6 +22,7 @@ package net.sourceforge.atunes.gui.images;
 
 import java.awt.Paint;
 import java.awt.Polygon;
+import java.awt.geom.RoundRectangle2D;
 
 import javax.swing.ImageIcon;
 
@@ -34,15 +35,16 @@ public class FolderImageIcon {
 	}
 	
 	public static ImageIcon getIcon(Paint color) {
+		RoundRectangle2D r = new RoundRectangle2D.Float(2, 5, 14, 10, 4, 4);
 		Polygon p = new Polygon();
-		p.addPoint(2, 3);
+		p.addPoint(2, 8);
+		p.addPoint(2, 5);
+		p.addPoint(4, 3);
 		p.addPoint(8, 3);
 		p.addPoint(10, 5);
-		p.addPoint(16, 5);
-		p.addPoint(16, 15);
-		p.addPoint(2, 15);
+		p.addPoint(10, 8);
 		
-		return IconGenerator.generateIcon(color, SIZE, SIZE, p);
+		return IconGenerator.generateIcon(color, SIZE, SIZE, r, p);
 	}
 
 }
