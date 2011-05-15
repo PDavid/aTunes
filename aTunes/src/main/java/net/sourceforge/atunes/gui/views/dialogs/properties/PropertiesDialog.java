@@ -71,6 +71,15 @@ public class PropertiesDialog extends CustomDialog {
         return StringUtils.getString("<html><b>", desc, ": </b>", text, "</html>");
     }
 
+    /**
+     * Gets the html formatted (only a description)
+     * @param desc
+     * @return
+     */
+    static String getHtmlFormatted(String desc) {
+        return StringUtils.getString("<html><b>", desc, ": </b></html>");
+    }
+
     @Override
     public void dispose() {
         getDialogsOpened().remove(getAudioObject());
