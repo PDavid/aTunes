@@ -37,7 +37,7 @@ import javax.swing.JSlider;
 import javax.swing.JToggleButton;
 
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.views.controls.playerControls.KaraokeButton;
+import net.sourceforge.atunes.gui.views.controls.playerControls.EqualizerButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.NextButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.NormalizationButton;
@@ -105,7 +105,7 @@ public final class PlayerControlsPanel extends JPanel {
 
     private ShuffleButton shuffleButton;
     private RepeatButton repeatButton;
-    private KaraokeButton karaokeButton;
+    private EqualizerButton karaokeButton;
     private NormalizationButton normalizeButton;
     private PreviousButton previousButton;
     private PlayPauseButton playButton;
@@ -359,7 +359,7 @@ public final class PlayerControlsPanel extends JPanel {
         if (secondaryControls == null) {
             shuffleButton = new ShuffleButton();
             repeatButton = new RepeatButton();
-            karaokeButton = new KaraokeButton();
+            karaokeButton = new EqualizerButton();
             normalizeButton = new NormalizationButton();
 
             secondaryControls = new JPanel(new GridBagLayout());

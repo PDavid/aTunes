@@ -60,7 +60,6 @@ public class MPlayerEngine extends AbstractPlayerEngine {
     /** Arguments to filter audio output. */
     private static final String AUDIO_FILTER = "-af";
     private static final String VOLUME_NORM = "volnorm";
-    private static final String KARAOKE = "karaoke";
     private static final String EQUALIZER = "equalizer=";
     private static final String CACHE = "-cache";
     private static final String CACHE_SIZE = "500";
@@ -344,9 +343,8 @@ public class MPlayerEngine extends AbstractPlayerEngine {
             command.add(CACHE_FILL_SIZE_IN_PERCENT);
         }
 
-        boolean isKaraokeEnabled = ApplicationState.getInstance().isKaraoke();
         //float[] eualizer = getEqualizer();
-        if ((audioObject instanceof LocalAudioObject && getEqualizer().getEqualizerValues() != null) || isSoundNormalizationEnabled() || isKaraokeEnabled) {
+        if ((audioObject instanceof LocalAudioObject && getEqualizer().getEqualizerValues() != null) || isSoundNormalizationEnabled()) {
             command.add(AUDIO_FILTER);
         }
 
@@ -356,15 +354,10 @@ public class MPlayerEngine extends AbstractPlayerEngine {
         }
 
         // Build equalizer command. Mplayer uses 10 bands
-        if (audioObject instanceof LocalAudioObject && getEqualizer().getEqualizerValues() != null && !isKaraokeEnabled) {
+        if (audioObject instanceof LocalAudioObject && getEqualizer().getEqualizerValues() != null) {
             float[] equalizer = getEqualizer().getEqualizerValues();
             command.add(EQUALIZER + equalizer[0] + ":" + equalizer[1] + ":" + equalizer[2] + ":" + equalizer[3] + ":" + equalizer[4] + ":" + equalizer[5] + ":" + equalizer[6]
                     + ":" + equalizer[7] + ":" + equalizer[8] + ":" + equalizer[9]);
-        }
-
-        // karaoke
-        if (isKaraokeEnabled) {
-            command.add(KARAOKE);
         }
 
         getLogger().debug(LogCategories.PLAYER, (Object[]) command.toArray(new String[command.size()]));
@@ -382,8 +375,11 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 
     @Override
     public boolean supportsCapability(PlayerEngineCapability capability) {
-        return EnumSet.of(PlayerEngineCapability.EQUALIZER, PlayerEngineCapability.EQUALIZER_CHANGE, PlayerEngineCapability.STREAMING, PlayerEngineCapability.PROXY,
-                PlayerEngineCapability.KARAOKE, PlayerEngineCapability.NORMALIZATION).contains(capability);
+        return EnumSet.of(PlayerEngineCapability.EQUALIZER, 
+        			      PlayerEngineCapability.EQUALIZER_CHANGE, 
+        			      PlayerEngineCapability.STREAMING, 
+        			      PlayerEngineCapability.PROXY, 
+        			      PlayerEngineCapability.NORMALIZATION).contains(capability);
     }
 
     @Override

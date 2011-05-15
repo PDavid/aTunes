@@ -25,6 +25,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
 
+import net.sourceforge.atunes.gui.images.EqualizerImageIcon;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -39,7 +40,7 @@ public class ShowEqualizerAction extends AbstractAction {
     private static final long serialVersionUID = 2511199136727155747L;
 
     ShowEqualizerAction() {
-        super(I18nUtils.getString("EQUALIZER"));
+        super(I18nUtils.getString("EQUALIZER"), EqualizerImageIcon.getIcon());
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
     }
 

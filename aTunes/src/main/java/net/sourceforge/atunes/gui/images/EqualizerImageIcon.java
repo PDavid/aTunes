@@ -18,34 +18,30 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.player;
+package net.sourceforge.atunes.gui.images;
 
-/**
- * Capabilities of player engines
- */
-public enum PlayerEngineCapability {
-    /**
-     * Equalizer
-     */
-    EQUALIZER,
+import java.awt.Paint;
+import java.awt.Rectangle;
 
-    /**
-     * Normalization
-     */
-    NORMALIZATION,
+import javax.swing.ImageIcon;
 
-    /**
-     * Equalizer change during playing
-     */
-    EQUALIZER_CHANGE,
+public class EqualizerImageIcon {
 
-    /**
-     * Streamed audio
-     */
-    STREAMING,
+	private static final int SIZE = 18;
+	
+	public static ImageIcon getIcon(Paint color) {
+		Rectangle r1 = new Rectangle(3, 3, 2, 12);
+		Rectangle r2 = new Rectangle(8, 3, 2, 12);
+		Rectangle r3 = new Rectangle(13, 3, 2, 12);
+		Rectangle r4 = new Rectangle(2, 5, 4, 2);
+		Rectangle r5 = new Rectangle(7, 8, 4, 2);
+		Rectangle r6 = new Rectangle(12, 11, 4, 2);
+		
+		
+		return IconGenerator.generateIcon(color, SIZE, SIZE, r1, r2, r3, r4, r5, r6);
+	}
 
-    /**
-     * Proxy
-     */
-    PROXY;
+	public static ImageIcon getIcon() {
+		return getIcon(null);
+	}
 }

@@ -20,6 +20,7 @@ aTunes 2.1.0
 - Plugins disabled by default (use "enable-plugins" argument to enable)
 - Removed icons
 - Improved Full Screen Mode
+- Removed karaoke mode
 - Fetch covers while reading repository and show in progress dialog
 - FIX: Exception during renaming of file name
 - FIX: Repository refresh never ends in certain situations [3024433]
