@@ -47,7 +47,6 @@ public final class Images {
     
     public static final String NEXT_TRAY = OsManager.osType.isWindowsVista() ? "nextTrayVista.png" : "nextTray.png";
     public static final String NEXT_TRAY_MENU = "nextTrayMenu.png";
-    public static final String NORMALIZATION = "normalization.png";
     public static final String PAUSE_TRAY = OsManager.osType.isWindowsVista() ? "pauseTrayVista.png" : "pauseTray.png";
     public static final String PAUSE_TRAY_MENU = "pauseTrayMenu.png";
     public static final String PLAY_TINY = "playTiny.png";
