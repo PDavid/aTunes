@@ -20,13 +20,10 @@
 
 package net.sourceforge.atunes.gui.views.dialogs.properties;
 
-import java.awt.Dimension;
+import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.ExecutionException;
@@ -36,11 +33,12 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.Fonts;
-import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.tags.EditTagDialogController;
@@ -156,22 +154,11 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
         c.fill = GridBagConstraints.HORIZONTAL;
         panel.add(songLabel, c);
 
-        // copy button
-        c.gridx = 2;
-        c.gridy = 0;
-        c.weightx = 0;
-        panel.add(new CopyButton(songLabel), c);
-
         artistLabel = new ProviderLabel(artistProvider);
         artistLabel.setFont(Fonts.getPropertiesDialogBigFont());
         c.gridx = 1;
         c.gridy = 1;
         panel.add(artistLabel, c);
-
-        // copy button
-        c.gridx = 2;
-        c.gridy = 1;
-        panel.add(new CopyButton(artistLabel), c);
 
         albumArtistLabel = new ProviderLabel(albumArtistProvider);
         albumArtistLabel.setFont(Fonts.getPropertiesDialogBigFont());
@@ -179,37 +166,21 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
         c.gridy = 2;
         panel.add(albumArtistLabel, c);
 
-        c.gridx = 2;
-        c.gridy = 2;
-        panel.add(new CopyButton(albumArtistLabel), c);
-
         albumLabel = new ProviderLabel(albumProvider);
         albumLabel.setFont(Fonts.getPropertiesDialogBigFont());
         c.gridx = 1;
         c.gridy = 3;
         panel.add(albumLabel, c);
 
-        c.gridx = 2;
-        c.gridy = 3;
-        panel.add(new CopyButton(albumLabel), c);
-
         fileNameLabel = new ProviderLabel(fileNameProvider);
         c.gridx = 1;
         c.gridy = 4;
         panel.add(fileNameLabel, c);
 
-        c.gridx = 2;
-        c.gridy = 4;
-        panel.add(new CopyButton(fileNameLabel), c);
-
         pathLabel = new ProviderLabel(filePathProvider);
         c.gridx = 1;
         c.gridy = 5;
         panel.add(pathLabel, c);
-
-        c.gridx = 2;
-        c.gridy = 5;
-        panel.add(new CopyButton(pathLabel), c);
 
         durationLabel = new JLabel();
         c.gridx = 1;
@@ -311,9 +282,8 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
     }
 
     private interface ValueProvider {
-
-        String getDisplayValue();
-
+    	String getLabel();
+    	String getValue();
         String getClearValue();
     }
 
@@ -321,35 +291,43 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
 
         public abstract String getI18Name();
 
-        private String getValue() {
+        public final String getValue() {
             String v = getClearValue();
             return StringUtils.isEmpty(v) ? "-" : v;
         }
 
-        @Override
-        public String getDisplayValue() {
-            return getHtmlFormatted(I18nUtils.getString(getI18Name()), getValue());
+        public final String getLabel() {
+            return getHtmlFormatted(I18nUtils.getString(getI18Name()));
         }
 
     }
 
-    private class ProviderLabel extends JLabel {
+    private class ProviderLabel extends JPanel {
 
         private static final long serialVersionUID = -2928151775717411054L;
 
+        private final JLabel label;
+        
+        private final JTextField value;
+        
         private final ValueProvider provider;
 
+        
         public ProviderLabel(ValueProvider provider) {
-            if ((this.provider = provider) == null)
+        	super(new BorderLayout(10, 0)); 
+            if ((this.provider = provider) == null) {
                 throw new IllegalArgumentException("provider pointer should not be null");
-        }
-
-        public ValueProvider getProvider() {
-            return this.provider;
+            }
+        	label = new JLabel();
+        	value = new CustomTextField();
+        	value.setEditable(false);
+        	add(label, BorderLayout.WEST);
+        	add(value, BorderLayout.CENTER);
         }
 
         public void fillText() {
-            super.setText(provider.getDisplayValue());
+            label.setText(provider.getLabel());
+            value.setText(provider.getValue());
         }
     }
 
@@ -362,6 +340,7 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
         public String getClearValue() {
             return file.getTitle();
         }
+
     }
 
     private SongProvider songProvider = new SongProvider();
@@ -430,36 +409,4 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
     }
 
     private FilePathProvider filePathProvider = new FilePathProvider();
-
-    private class CopyButton extends JButton implements ActionListener {
-
-        private static final long serialVersionUID = -7406795882274463315L;
-
-        private final JLabel refLabel;
-
-        public CopyButton(JLabel refLabel) {
-            if ((this.refLabel = refLabel) == null)
-                throw new IllegalArgumentException("Reference label name should not be null or empty");
-            setIcon(Images.getImage(Images.COPY));
-            setPreferredSize(new Dimension(20, 20));
-            setText(null);
-            addActionListener(this);
-        }
-
-        private String getFieldValue() {
-            if (refLabel instanceof ProviderLabel)
-                return ((ProviderLabel) refLabel).getProvider().getClearValue();
-            else
-                return refLabel.getText();
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            String value = getFieldValue();
-            if (!StringUtils.isEmpty(value)) {
-                StringSelection data = new StringSelection(getFieldValue());
-                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                clipboard.setContents(data, data);
-            }
-        }
-    }
 }
