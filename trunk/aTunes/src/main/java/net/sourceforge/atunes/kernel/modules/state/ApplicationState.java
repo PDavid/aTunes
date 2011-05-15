@@ -309,16 +309,6 @@ public class ApplicationState {
     
     
 
-    public boolean isKaraoke() {
-    	return (Boolean) this.cache.retrievePreference(Preferences.KARAOKE, false);
-    }
-
-    public void setKaraoke(boolean karaoke) {
-    	this.cache.storePreference(Preferences.KARAOKE, karaoke);
-    }
-    
-    
-
     public boolean isUseShortPathNames() {
     	return (Boolean) this.cache.retrievePreference(Preferences.USE_SHORT_PATH_NAMES, true);
     }

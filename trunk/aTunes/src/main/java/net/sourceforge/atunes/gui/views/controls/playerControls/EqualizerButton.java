@@ -21,23 +21,20 @@
 package net.sourceforge.atunes.gui.views.controls.playerControls;
 
 import net.sourceforge.atunes.kernel.actions.Actions;
-import net.sourceforge.atunes.kernel.actions.KaraokeModeAction;
+import net.sourceforge.atunes.kernel.actions.ShowEqualizerAction;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 
-/*
- * based on code from Xtreme Media Player
- */
-public final class KaraokeButton extends SecondaryControl {
+public final class EqualizerButton extends SecondaryControl {
 
     private static final long serialVersionUID = 6007885049773560874L;
 
     /**
-     * Instantiates a new karaoke button.
+     * Instantiates a new equalizer button.
      */
-    public KaraokeButton() {
-        super(Actions.getAction(KaraokeModeAction.class));
-        if (!PlayerHandler.getInstance().supportsCapability(PlayerEngineCapability.KARAOKE)) {
+    public EqualizerButton() {
+        super(Actions.getAction(ShowEqualizerAction.class));
+        if (!PlayerHandler.getInstance().supportsCapability(PlayerEngineCapability.EQUALIZER)) {
             setVisible(false);
         }
     }

@@ -47,10 +47,5 @@ public enum PlayerEngineCapability {
     /**
      * Proxy
      */
-    PROXY,
-
-    /**
-     * Karaoke
-     */
-    KARAOKE;
+    PROXY;
 }
