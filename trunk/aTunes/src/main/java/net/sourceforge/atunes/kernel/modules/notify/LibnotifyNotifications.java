@@ -50,7 +50,7 @@ public class LibnotifyNotifications implements Notifications {
 			if (available) {
 				ImageIcon imageForAudioObject = audioObject.getImage(ImageSize.SIZE_200);
 				if (imageForAudioObject == null) {
-					imageForAudioObject = audioObject.getGenericImage(GenericImageSize.MEDIUM);
+					imageForAudioObject = audioObject.getGenericImage(GenericImageSize.MEDIUM).getIcon(null);
 				}
 				String image = TempFolder.getInstance().writeImageToTempFolder(ImageUtils.toBufferedImage(imageForAudioObject.getImage()), UUID.randomUUID().toString()).getAbsolutePath();
 				NotifyNotification n = Notify.newNotification(audioObject.getTitle(), audioObject.getArtist(), image);

@@ -126,7 +126,7 @@ final class OSDDialogController extends AbstractSimpleController<OSDDialog> {
 
         ImageIcon i = audioObject.getImage(ImageSize.SIZE_MAX);
         if (i == null) {
-            i = audioObject.getGenericImage(GenericImageSize.MEDIUM);
+            i = audioObject.getGenericImage(GenericImageSize.MEDIUM).getIcon(null);
             getComponentControlled().setShadowBorder(false);
         }
         getComponentControlled().setImage(i);

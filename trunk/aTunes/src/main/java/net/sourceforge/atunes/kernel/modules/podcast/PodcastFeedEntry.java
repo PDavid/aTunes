@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.podcast;
 
+import java.awt.Paint;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,6 +30,7 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
+import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.GenericImageSize;
@@ -375,16 +377,31 @@ public final class PodcastFeedEntry implements AudioObject, Serializable, Compar
     }
 
     @Override
-    public ImageIcon getGenericImage(GenericImageSize imageSize) {
+    public ColorMutableImageIcon getGenericImage(GenericImageSize imageSize) {
         switch (imageSize) {
         case SMALL: {
-            return RssImageIcon.getSmallIcon();
+        	return new ColorMutableImageIcon() {				
+				@Override
+				public ImageIcon getIcon(Paint paint) {
+		            return RssImageIcon.getSmallIcon(paint);
+				}
+			};
         }
         case MEDIUM: {
-            return RssImageIcon.getIcon();
+            return new ColorMutableImageIcon() {
+            	@Override
+            	public ImageIcon getIcon(Paint paint) {
+            		return RssImageIcon.getIcon(paint);
+            	}
+            };
         }
         case BIG: {
-            return RssImageIcon.getBigIcon();
+            return new ColorMutableImageIcon() {
+            	@Override
+            	public ImageIcon getIcon(Paint paint) {
+            		return RssImageIcon.getBigIcon(paint);
+            	}
+            };
         }
         default: {
             throw new IllegalArgumentException("unknown image size");

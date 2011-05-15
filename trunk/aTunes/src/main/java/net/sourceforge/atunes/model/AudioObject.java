@@ -24,6 +24,8 @@ import java.util.Date;
 
 import javax.swing.ImageIcon;
 
+import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
+
 import org.commonjukebox.plugins.model.PluginApi;
 
 /**
@@ -188,7 +190,7 @@ public interface AudioObject {
      * @return the generic image or <code>null</code> if no such image is
      *         available
      */
-    public ImageIcon getGenericImage(GenericImageSize imageSize);
+    public ColorMutableImageIcon getGenericImage(GenericImageSize imageSize);
 
     /**
      * Returns a image for this audio object.

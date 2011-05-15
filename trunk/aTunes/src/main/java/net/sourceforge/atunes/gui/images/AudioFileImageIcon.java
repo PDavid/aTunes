@@ -66,7 +66,7 @@ public class AudioFileImageIcon implements LookAndFeelChangeListener {
 		return IconGenerator.generateIcon(color, SMALL_WIDTH, SMALL_HEIGHT, e1, e2, r1, r2, r3);
 	}
 
-	public static ImageIcon getMediumImage() {
+	public static ImageIcon getMediumImage(Paint color) {
 		Ellipse2D.Float e1 = new Ellipse2D.Float(4, 44, 24, 12);
 		Ellipse2D.Float e2 = new Ellipse2D.Float(32, 40, 24, 12);
 		
@@ -79,7 +79,7 @@ public class AudioFileImageIcon implements LookAndFeelChangeListener {
 		r3.addPoint(56, 8);		
 		
 		// This icon must be opaque since with this size shapes overlap is visible using alpha
-		return IconGenerator.generateIcon(MEDIUM_WIDTH, MEDIUM_HEIGHT, e1, e2, r1, r2, r3);
+		return IconGenerator.generateIcon(color, MEDIUM_WIDTH, MEDIUM_HEIGHT, e1, e2, r1, r2, r3);
 	}
 
 	@Override

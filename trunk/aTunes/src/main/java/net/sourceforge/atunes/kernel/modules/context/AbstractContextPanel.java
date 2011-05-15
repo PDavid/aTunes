@@ -30,6 +30,7 @@ import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
+import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
@@ -85,7 +86,7 @@ public abstract class AbstractContextPanel {
      *            <code>null</code> if no current audio object is selected
      * @return The icon of the context panel
      */
-    protected abstract ImageIcon getContextPanelIcon(AudioObject audioObject);
+    protected abstract ColorMutableImageIcon getContextPanelIcon(AudioObject audioObject);
 
     /**
      * List of contents shown in the context panel. Contents are shown in order
@@ -205,7 +206,7 @@ public abstract class AbstractContextPanel {
      * 
      * @return
      */
-    public final ImageIcon getIcon() {
+    public final ColorMutableImageIcon getIcon() {
         return getContextPanelIcon(ContextHandler.getInstance().getCurrentAudioObject());
     }
 

@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.radio;
 
+import java.awt.Paint;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.UnknownHostException;
@@ -30,6 +31,7 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
+import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.RadioImageIcon;
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
@@ -459,16 +461,31 @@ public final class Radio implements AudioObject, Serializable, TreeObject, Compa
     }
 
     @Override
-    public ImageIcon getGenericImage(GenericImageSize imageSize) {
+    public ColorMutableImageIcon getGenericImage(GenericImageSize imageSize) {
         switch (imageSize) {
         case SMALL: {
-            return RadioImageIcon.getSmallIcon();
+        	return new ColorMutableImageIcon() {
+				@Override
+				public ImageIcon getIcon(Paint paint) {
+		            return RadioImageIcon.getSmallIcon(paint);
+				}
+			};
         }
         case MEDIUM: {
-            return RadioImageIcon.getIcon();
+        	return new ColorMutableImageIcon() {
+				@Override
+				public ImageIcon getIcon(Paint paint) {
+		            return RadioImageIcon.getIcon(paint);
+				}
+			};
         }
         case BIG: {
-            return RadioImageIcon.getBigIcon();
+        	return new ColorMutableImageIcon() {
+				@Override
+				public ImageIcon getIcon(Paint paint) {
+		            return RadioImageIcon.getBigIcon(paint);
+				}
+			};
         }
         default: {
             throw new IllegalArgumentException("unknown image size");
