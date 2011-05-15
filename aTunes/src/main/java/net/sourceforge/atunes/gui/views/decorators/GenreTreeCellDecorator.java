@@ -24,8 +24,10 @@ import java.awt.Component;
 
 import javax.swing.JLabel;
 
+import net.sourceforge.atunes.gui.images.GenreImageIcon;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 
 public class GenreTreeCellDecorator extends AbstractTreeCellDecorator {
@@ -33,7 +35,7 @@ public class GenreTreeCellDecorator extends AbstractTreeCellDecorator {
     @Override
     public Component decorateTreeCellComponent(Component component, Object userObject) {
         if (userObject instanceof Genre) {
-            ((JLabel) component).setIcon(Images.getImage(Images.GENRE));
+            ((JLabel) component).setIcon(GenreImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(component)));
         }
         return component;
     }
