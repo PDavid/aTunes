@@ -285,12 +285,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
         try {
             // If user adds cdda2wav while aTunes is running it will be detected even if icedax was used. 
             converterCommand = CDDA2WAV_COMMAND_STRING;
-            Process p;
-            if (OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.WINDOWS) {
-                p = new ProcessBuilder(StringUtils.getString(OsManager.getExternalToolsPath(), converterCommand), VERSION).start();
-            } else {
-                p = new ProcessBuilder(converterCommand, VERSION).start();
-            }
+            Process p = new ProcessBuilder(StringUtils.getString(OsManager.getExternalToolsPath(), converterCommand), VERSION).start();
             stdInput = new BufferedReader(new InputStreamReader(p.getErrorStream()));
             String line = null;
             while ((line = stdInput.readLine()) != null) {
@@ -308,12 +303,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
             // cdda2wav is not present. Maybe we have more luck with icedax.
             try {
                 converterCommand = ICEDAX_COMMAND_STRING;
-                Process icedaxCheck;
-                if (OsManager.osType == OperatingSystem.WINDOWS) {
-                    icedaxCheck = new ProcessBuilder(StringUtils.getString(OsManager.getExternalToolsPath(), converterCommand), VERSION).start();
-                } else {
-                    icedaxCheck = new ProcessBuilder(converterCommand, VERSION).start();
-                }
+                Process icedaxCheck = new ProcessBuilder(StringUtils.getString(OsManager.getExternalToolsPath(), converterCommand), VERSION).start();
                 stdInput2 = new BufferedReader(new InputStreamReader(icedaxCheck.getInputStream()));
 
                 while (stdInput2.readLine() != null) {
@@ -358,11 +348,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
         BufferedReader stdInput = null;
         try {
             List<String> command = new ArrayList<String>();
-            if (OsManager.osType == OperatingSystem.WINDOWS) {
-                command.add(StringUtils.getString(OsManager.getExternalToolsPath(), converterCommand));
-            } else {
-                command.add(converterCommand);
-            }
+            command.add(StringUtils.getString(OsManager.getExternalToolsPath(), converterCommand));
             if (device != null) {
                 // When -scanbus dev=ATA is used we use another syntax
                 if (ata) {
@@ -452,11 +438,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
             BufferedReader stdInput = null;
             try {
                 List<String> command = new ArrayList<String>();
-                if (OsManager.osType == OperatingSystem.WINDOWS) {
-                    command.add(StringUtils.getString(OsManager.getExternalToolsPath(), converterCommand));
-                } else {
-                    command.add(converterCommand);
-                }
+                command.add(StringUtils.getString(OsManager.getExternalToolsPath(), converterCommand));
                 command.add(SCANDEVICES);
                 command.add(NO_INFO_FILE);
 
@@ -505,11 +487,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
             BufferedReader stdInput = null;
             try {
                 List<String> command = new ArrayList<String>();
-                if (OsManager.osType == OperatingSystem.WINDOWS) {
-                    command.add(StringUtils.getString(OsManager.getExternalToolsPath(), converterCommand));
-                } else {
-                    command.add(converterCommand);
-                }
+                command.add(StringUtils.getString(OsManager.getExternalToolsPath(), converterCommand));
                 command.add(SCAN_BUS);
                 command.add(NO_INFO_FILE);
 
@@ -584,11 +562,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
             BufferedReader stdInput = null;
             try {
                 List<String> command = new ArrayList<String>();
-                if (OsManager.osType == OperatingSystem.WINDOWS) {
-                    command.add(StringUtils.getString(OsManager.getExternalToolsPath(), converterCommand));
-                } else {
-                    command.add(converterCommand);
-                }
+                command.add(StringUtils.getString(OsManager.getExternalToolsPath(), converterCommand));
                 command.add(SCAN_BUS);
                 command.add(ATA);
                 command.add(NO_INFO_FILE);
