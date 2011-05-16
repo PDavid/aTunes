@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.tray;
 
 import java.awt.AWTException;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.SystemTray;
@@ -34,6 +35,7 @@ import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.images.NextImageIcon;
 import net.sourceforge.atunes.gui.views.controls.ActionTrayIcon;
 import net.sourceforge.atunes.gui.views.controls.JTrayIcon;
 import net.sourceforge.atunes.gui.views.controls.JTrayIcon.JTrayIconPopupMenu;
@@ -413,7 +415,9 @@ public final class SystemTrayHandler extends AbstractHandler {
      */
     private TrayIcon getNextTrayIcon() {
         if (nextIcon == null) {
-            nextIcon = new ActionTrayIcon(Images.getImage(Images.NEXT_TRAY).getImage(), Actions.getAction(PlayNextAudioObjectAction.class));
+        	Color color = ApplicationState.getInstance().getTrayPlayerIconsColor().getColor();
+        	Image icon = NextImageIcon.getTrayIcon(color, tray.getTrayIconSize()).getImage();
+            nextIcon = new ActionTrayIcon(icon, Actions.getAction(PlayNextAudioObjectAction.class));
             nextIcon.setImageAutoSize(true);
         }
         return nextIcon;

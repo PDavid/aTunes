@@ -37,6 +37,7 @@ import net.sourceforge.atunes.kernel.modules.navigator.RepositoryNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.ViewMode;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
+import net.sourceforge.atunes.kernel.modules.state.beans.ColorBean;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.kernel.modules.tags.IncompleteTagsChecker;
@@ -1071,5 +1072,15 @@ public class ApplicationState {
 
     public void setCustomNavigatorColumns(Map<String, Map<String, ColumnBean>> customNavigatorColumns) {
     	this.cache.storePreference(Preferences.CUSTOM_NAVIGATOR_COLUMNS, customNavigatorColumns);
+    }
+
+    
+    
+    public ColorBean getTrayPlayerIconsColor() {
+    	return (ColorBean) this.cache.retrievePreference(Preferences.TRAY_PLAYER_ICONS_COLOR, new ColorBean());
+    }
+    
+    public void setTrayPlayerIconsColor(ColorBean color) {
+    	this.cache.storePreference(Preferences.TRAY_PLAYER_ICONS_COLOR, color);
     }
 }
