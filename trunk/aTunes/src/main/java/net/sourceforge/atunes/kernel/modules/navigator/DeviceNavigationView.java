@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
+import java.awt.Paint;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
+import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.DeviceImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
@@ -78,8 +80,14 @@ public final class DeviceNavigationView extends AbstractNavigationView {
     private JPopupMenu deviceTableMenu;
 
     @Override
-    public ImageIcon getIcon() {
-        return DeviceImageIcon.getIcon();
+    public ColorMutableImageIcon getIcon() {
+        return new ColorMutableImageIcon() {
+			
+			@Override
+			public ImageIcon getIcon(Paint paint) {
+				return DeviceImageIcon.getIcon(paint);
+			}
+		};
     }
 
     @Override

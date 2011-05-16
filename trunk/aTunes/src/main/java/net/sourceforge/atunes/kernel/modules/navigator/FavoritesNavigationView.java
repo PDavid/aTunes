@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
+import java.awt.Paint;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -33,6 +34,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
+import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.FavoriteImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
@@ -80,8 +82,14 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
     private JPopupMenu favoriteTableMenu;
 
     @Override
-    public ImageIcon getIcon() {
-        return FavoriteImageIcon.getIcon();
+    public ColorMutableImageIcon getIcon() {
+        return new ColorMutableImageIcon() {
+			
+			@Override
+			public ImageIcon getIcon(Paint paint) {
+				return FavoriteImageIcon.getIcon(paint);
+			}
+		};
     }
 
     @Override

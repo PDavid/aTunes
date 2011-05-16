@@ -33,7 +33,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.Action;
-import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -45,6 +44,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 
+import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
@@ -116,7 +116,7 @@ public abstract class AbstractNavigationView implements AudioObjectsSource {
     /**
      * @return the icon of this view
      */
-    public abstract ImageIcon getIcon();
+    public abstract ColorMutableImageIcon getIcon();
 
     /**
      * @return the tooltip of this view in tabbed pane
@@ -555,7 +555,7 @@ public abstract class AbstractNavigationView implements AudioObjectsSource {
      */
     public final net.sourceforge.atunes.kernel.actions.AbstractAction getActionToShowView() {
     	if (action == null) {
-    		action = new net.sourceforge.atunes.kernel.actions.AbstractAction(getTitle(), getIcon()) {
+    		action = new net.sourceforge.atunes.kernel.actions.AbstractAction(getTitle(), getIcon().getIcon(null)) {
 
     			private static final long serialVersionUID = 2895222205333520899L;
 

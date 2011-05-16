@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
+import java.awt.Paint;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +34,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
+import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.RadioImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
@@ -77,8 +79,14 @@ public final class RadioNavigationView extends AbstractNavigationView {
     private AbstractColumnSet columnSet;
 
     @Override
-    public ImageIcon getIcon() {
-        return RadioImageIcon.getSmallIcon();
+    public ColorMutableImageIcon getIcon() {
+        return new ColorMutableImageIcon() {
+			
+			@Override
+			public ImageIcon getIcon(Paint paint) {
+				return RadioImageIcon.getSmallIcon(paint);
+			}
+		};
     }
 
     @Override
