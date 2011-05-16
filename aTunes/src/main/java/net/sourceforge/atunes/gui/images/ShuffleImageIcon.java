@@ -20,13 +20,14 @@
 
 package net.sourceforge.atunes.gui.images;
 
+import java.awt.Paint;
 import java.awt.Polygon;
 
 import javax.swing.ImageIcon;
 
 public class ShuffleImageIcon {
 
-	public static ImageIcon getIcon() {
+	public static ImageIcon getIcon(Paint color) {
 		Polygon p = new Polygon();
 		p.addPoint(2, 3);
 		p.addPoint(12, 3);
@@ -52,6 +53,6 @@ public class ShuffleImageIcon {
 		p4.addPoint(6, 17);
 
 		
-		return IconGenerator.generateIcon(18, 18, p, p3, p4);
+		return IconGenerator.generateIcon(color, 18, 18, p, p3, p4);
 	}
 }

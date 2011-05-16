@@ -20,11 +20,14 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
+import java.awt.Paint;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
+import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 
+import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.EqualizerImageIcon;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -35,18 +38,29 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class ShowEqualizerAction extends AbstractAction {
+public class ShowEqualizerAction extends ActionWithColorMutableIcon {
 
     private static final long serialVersionUID = 2511199136727155747L;
 
     ShowEqualizerAction() {
-        super(I18nUtils.getString("EQUALIZER"), EqualizerImageIcon.getIcon());
+        super(I18nUtils.getString("EQUALIZER"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         GuiHandler.getInstance().getEqualizerDialog().setVisible(true);
+    }
+    
+    @Override
+    public ColorMutableImageIcon getIcon() {
+    	return new ColorMutableImageIcon() {
+			
+			@Override
+			public ImageIcon getIcon(Paint paint) {
+				return EqualizerImageIcon.getIcon(paint);
+			}
+		};
     }
 
 }
