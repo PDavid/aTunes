@@ -26,7 +26,6 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.gui.images.ArtistImageIcon;
 import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.VideoImageIcon;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;

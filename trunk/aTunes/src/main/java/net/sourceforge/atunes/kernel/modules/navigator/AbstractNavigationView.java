@@ -61,7 +61,6 @@ import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
-import net.sourceforge.atunes.utils.GuiUtils;
 
 public abstract class AbstractNavigationView implements AudioObjectsSource {
 
@@ -582,7 +581,7 @@ public abstract class AbstractNavigationView implements AudioObjectsSource {
             @Override
             public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
                 for (AbstractTreeCellDecorator decorator : getTreeCellDecorators()) {
-                    decorator.decorateTreeCellComponent(superComponent, ((DefaultMutableTreeNode) value).getUserObject(), isSelected || isHasFocus || GuiUtils.getRowOver(tree) == row);
+                    decorator.decorateTreeCellComponent(superComponent, ((DefaultMutableTreeNode) value).getUserObject(), isSelected);
                 }
                 return superComponent;
             }

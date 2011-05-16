@@ -32,7 +32,6 @@ import net.sourceforge.atunes.gui.images.NewImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
-import net.sourceforge.atunes.utils.GuiUtils;
 
 public class PropertyTableCellRendererCode extends AbstractTableCellRendererCode {
 
@@ -40,18 +39,15 @@ public class PropertyTableCellRendererCode extends AbstractTableCellRendererCode
     }
 
     @Override
-    public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        boolean selected = isSelected || hasFocus || GuiUtils.getRowOver(table) == row;
-        
-        Component comp = superComponent;
+    public Component getComponent(Component comp, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         ImageIcon icon = null;
         Property val = (Property) value;
         if (val == Property.FAVORITE) {
-            icon = FavoriteImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(comp, selected));
+            icon = FavoriteImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(comp, isSelected));
         } else if (val == Property.NOT_LISTENED_ENTRY) {
-            icon = NewImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(comp, selected));
+            icon = NewImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(comp, isSelected));
         } else if (val == Property.DOWNLOADED_ENTRY) {
-            icon = DownloadImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(comp, selected));
+            icon = DownloadImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(comp, isSelected));
         }
         ((JLabel) comp).setIcon(icon);
         ((JLabel) comp).setText(null);

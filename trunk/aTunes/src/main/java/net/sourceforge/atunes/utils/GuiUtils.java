@@ -495,35 +495,6 @@ public final class GuiUtils {
         }
     }
 
-    /**
-     * Returns row from table where mouse is or -1
-     * @param table
-     * @return row from table where mouse is or -1
-     */
-    public static int getRowOver(JTable table) {
-    	int rowOver = -1;
-        Point p = table.getMousePosition(true);
-        if (p != null) {
-        	rowOver = table.rowAtPoint(p);
-        }
-        return rowOver;
-    }
-    
-	/**
-	 * Returns row from tree where mouse is or -1
-	 * @param tree
-	 * @return row from tree where mouse is or -1
-	 */
-	public static int getRowOver(JTree tree) {
-    	int rowOver = -1;
-        Point p = tree.getMousePosition(true);
-        if (p != null) {
-        	rowOver = tree.getRowForLocation(p.x, p.y);
-        }
-        return rowOver;
-	}
-
-
     
     /**
      * Getter for logger

@@ -29,7 +29,6 @@ import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.model.AbstractCommonColumnModel;
 import net.sourceforge.atunes.kernel.modules.columns.TextAndIcon;
-import net.sourceforge.atunes.utils.GuiUtils;
 
 public class TextAndIconTableCellRendererCode extends AbstractTableCellRendererCode {
 
@@ -40,11 +39,10 @@ public class TextAndIconTableCellRendererCode extends AbstractTableCellRendererC
     }
 
     @Override
-    public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        Component c = superComponent;
+    public Component getComponent(Component c, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         ((JLabel) c).setText(((TextAndIcon) value).getText());
         if (((TextAndIcon) value).getIcon() != null) {
-        	((JLabel) c).setIcon(((TextAndIcon) value).getIcon().getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(c, isSelected || hasFocus || GuiUtils.getRowOver(table) == row)));
+        	((JLabel) c).setIcon(((TextAndIcon) value).getIcon().getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(c, isSelected)));
         } else {
         	((JLabel) c).setIcon(null);
         }        
