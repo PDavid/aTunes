@@ -188,10 +188,11 @@ public final class SystemTrayHandler extends AbstractHandler {
         initSystemTray();
         if (isTrayInitialized()) {
             trayPlayerVisible = true;
-            addTrayIcon(getPreviousTrayIcon());
-            addTrayIcon(getStopTrayIcon());
-            addTrayIcon(getPlayTrayIcon());
+            // Icons must be added in reverse order
             addTrayIcon(getNextTrayIcon());
+            addTrayIcon(getPlayTrayIcon());
+            addTrayIcon(getStopTrayIcon());
+            addTrayIcon(getPreviousTrayIcon());
         } else {
             getLogger().error(LogCategories.TRAY, "No system tray supported");
         }
