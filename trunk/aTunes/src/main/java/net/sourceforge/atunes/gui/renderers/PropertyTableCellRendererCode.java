@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.gui.renderers;
 
 import java.awt.Component;
-import java.awt.Point;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -33,6 +32,7 @@ import net.sourceforge.atunes.gui.images.NewImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
+import net.sourceforge.atunes.utils.GuiUtils;
 
 public class PropertyTableCellRendererCode extends AbstractTableCellRendererCode {
 
@@ -41,12 +41,7 @@ public class PropertyTableCellRendererCode extends AbstractTableCellRendererCode
 
     @Override
     public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    	int rowOver = 0;
-        Point p = table.getMousePosition(true);
-        if (p != null) {
-        	rowOver = table.rowAtPoint(p);
-        }
-        boolean selected = isSelected || hasFocus || rowOver == row;
+        boolean selected = isSelected || hasFocus || GuiUtils.getRowOver(table) == row;
         
         Component comp = superComponent;
         ImageIcon icon = null;

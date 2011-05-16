@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.gui.model;
 
 import java.awt.Component;
-import java.awt.Point;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -37,6 +36,7 @@ import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable.PlayStat
 import net.sourceforge.atunes.kernel.modules.columns.PlayListColumnSet;
 import net.sourceforge.atunes.kernel.modules.columns.TextAndIcon;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
+import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
  * The Class PlayListColumnModel.
@@ -103,16 +103,10 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
 
                 @Override
                 public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                	int rowOver = 0;
-                    Point p = t.getMousePosition(true);
-                    if (p != null) {
-                    	rowOver = t.rowAtPoint(p);
-                    }
-
                     Component c = superComponent;
                     ((JLabel) c).setText(null);
                     if (PlayListHandler.getInstance().isCurrentVisibleRowPlaying(row)) {
-                        ((JLabel) c).setIcon(PlayState.getPlayStateIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(c, isSelected || hasFocus || rowOver == row), 
+                        ((JLabel) c).setIcon(PlayState.getPlayStateIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(c, isSelected || hasFocus || GuiUtils.getRowOver(t) == row), 
                         		((PlayListTable) getTable()).getPlayState()));
                     } else {
                         ((JLabel) c).setIcon(null); // was using Images.getImage(Images.EMPTY) previously

@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.gui.renderers;
 
 import java.awt.Component;
-import java.awt.Point;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -30,6 +29,7 @@ import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.model.AbstractCommonColumnModel;
 import net.sourceforge.atunes.kernel.modules.columns.TextAndIcon;
+import net.sourceforge.atunes.utils.GuiUtils;
 
 public class TextAndIconTableCellRendererCode extends AbstractTableCellRendererCode {
 
@@ -41,17 +41,10 @@ public class TextAndIconTableCellRendererCode extends AbstractTableCellRendererC
 
     @Override
     public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    	int rowOver = 0;
-        Point p = table.getMousePosition(true);
-        if (p != null) {
-        	rowOver = table.rowAtPoint(p);
-        }
-        boolean selected = isSelected || hasFocus || rowOver == row;
-
         Component c = superComponent;
         ((JLabel) c).setText(((TextAndIcon) value).getText());
         if (((TextAndIcon) value).getIcon() != null) {
-        	((JLabel) c).setIcon(((TextAndIcon) value).getIcon().getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(c, selected)));
+        	((JLabel) c).setIcon(((TextAndIcon) value).getIcon().getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(c, isSelected || hasFocus || GuiUtils.getRowOver(table) == row)));
         } else {
         	((JLabel) c).setIcon(null);
         }        
