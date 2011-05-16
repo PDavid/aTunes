@@ -47,7 +47,7 @@ public class StopImageIcon {
 		BufferedImage bi = new BufferedImage(size.width, size.height, BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D g2 = bi.createGraphics();
     	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    	g2.setPaint(color != null ? color : LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintFor(null));
+    	g2.setPaint(color != null ? color : LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForSpecialControls());
     	g2.translate(size.getWidth() / 2, size.getHeight() * (4f/9f));    	
 		
    		g2.fill(stopShape);

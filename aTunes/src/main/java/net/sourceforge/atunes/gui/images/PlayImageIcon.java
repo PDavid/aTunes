@@ -50,7 +50,7 @@ public class PlayImageIcon {
 		BufferedImage bi = new BufferedImage(size.width, size.height, BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D g2 = bi.createGraphics();
     	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    	g2.setPaint(color != null ? color : LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintFor(null));
+    	g2.setPaint(color != null ? color : LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForSpecialControls());
     	g2.translate(size.getWidth() * 4/7, size.getHeight() / 2);    	
 		
    		g2.fill(playShape);

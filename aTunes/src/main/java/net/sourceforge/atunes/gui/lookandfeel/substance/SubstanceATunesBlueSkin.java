@@ -234,5 +234,11 @@ public final class SubstanceATunesBlueSkin extends CustomSubstanceSkin {
     		return new Color(c.getRed(), c.getGreen(), c.getBlue(), 200);
     	}
 	}
+	
+	@Override
+	protected Paint getPaintForSpecialControls() {
+		Color c = org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin().getActiveColorScheme(DecorationAreaType.HEADER).getUltraDarkColor();    		
+		return new Color(c.getRed(), c.getGreen(), c.getBlue(), 200);
+	}
 
 }

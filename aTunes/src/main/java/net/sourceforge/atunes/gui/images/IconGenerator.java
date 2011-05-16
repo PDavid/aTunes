@@ -81,7 +81,7 @@ class IconGenerator {
 		BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D g = bi.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setPaint(paint != null ? paint : LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintFor(null));
+        g.setPaint(paint != null ? paint : LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForSpecialControls());
         Area a = new Area();
         for (Shape s : shapes) {
         	a.add(new Area(s));

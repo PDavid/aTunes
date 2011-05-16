@@ -255,10 +255,9 @@ public abstract class AbstractLookAndFeel {
 
 	/**
 	 * Returns paint to be used with certain controls (player controls)
-	 * @param component
 	 * @return
 	 */
-	public Paint getPaintFor(Component component) {
+	public Paint getPaintForSpecialControls() {
 		return UIManager.getColor("Label.foreground"); 
 	}
 
