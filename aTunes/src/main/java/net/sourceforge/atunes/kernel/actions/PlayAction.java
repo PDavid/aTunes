@@ -47,7 +47,7 @@ public class PlayAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         // disable enter key when focus is on filter text field (so event is not fired from PLAY/PAUSE button)
         if (GuiHandler.getInstance().getPlayerControls().getFilterPanel().getFilterTextField().isFocusOwner()
-                && !(e.getSource().getClass().equals(PlayPauseButton.class))) {
+                && e != null && !(e.getSource().getClass().equals(PlayPauseButton.class))) {
             return;
         }
         
@@ -56,8 +56,8 @@ public class PlayAction extends AbstractAction {
 
         if (selAudioObject != currPlayingAudioObject) {
             // another song selected to play
-            if (e.getSource().getClass().equals(PlayPauseButton.class)) {
-                // action is from PlayPauseButton -> pause
+            if (e == null || e.getSource().getClass().equals(PlayPauseButton.class)) {
+                // action is from PlayPauseButton (or system tray) -> pause
                 PlayerHandler.getInstance().playCurrentAudioObject(true);
             } else {
                 // play another song

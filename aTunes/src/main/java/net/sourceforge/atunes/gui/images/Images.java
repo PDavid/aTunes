@@ -21,12 +21,10 @@
 package net.sourceforge.atunes.gui.images;
 
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.kernel.OsManager;
+import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * This class contains the images that are used by aTunes.
@@ -45,16 +43,7 @@ public final class Images {
     public static final String APP_LOGO_300 = "logo300x300.png";
     public static final String POWERED_BY_LAST_FM = "poweredByLastFm.png";
     
-    public static final String PAUSE_TRAY = OsManager.osType.isWindowsVista() ? "pauseTrayVista.png" : "pauseTray.png";
-    public static final String PLAY_TRAY = OsManager.osType.isWindowsVista() ? "playTrayVista.png" : "playTray.png";
-
-    /**
-     * cache of images
-     */
-    private static Map<String, ImageIcon> images = new HashMap<String, ImageIcon>();
-
     private Images() {
-
     }
 
     /**
@@ -66,12 +55,11 @@ public final class Images {
      * @return An ImageIcon
      */
     public static ImageIcon getImage(String imgName) {
-        if (!images.containsKey(imgName)) {
-            URL imgURL = Images.class.getResource("/images/" + imgName);
-            if (imgURL != null) {
-                images.put(imgName, new ImageIcon(imgURL));
-            }
-        }
-        return images.get(imgName);
+    	URL imgURL = Images.class.getResource(StringUtils.getString("/images/", imgName));
+    	if (imgURL != null) {
+    		return new ImageIcon(imgURL);
+    	} else {
+    		throw new IllegalArgumentException(StringUtils.getString("Image not found: ", imgName));
+    	}
     }
 }

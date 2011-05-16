@@ -22,31 +22,24 @@ package net.sourceforge.atunes.gui.views.controls.playerControls;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Polygon;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
 
 import javax.swing.JButton;
 import javax.swing.SwingUtilities;
 
+import net.sourceforge.atunes.gui.images.PauseImageIcon;
+import net.sourceforge.atunes.gui.images.PlayImageIcon;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelChangeListener;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.PlayAction;
 
-public final class PlayPauseButton extends JButton {
+public final class PlayPauseButton extends JButton implements LookAndFeelChangeListener {
 
     private static final long serialVersionUID = 4348041346542204394L;
 
     private boolean playing;
     
     private Dimension size;
-    
-    private Polygon playShape;
-    
-    private Rectangle pauseShape1;
-    private Rectangle pauseShape2;
     
     /**
      * Instantiates a new play pause button.
@@ -64,36 +57,12 @@ public final class PlayPauseButton extends JButton {
         setFocusable(false);
         setText(null);
 
-        playShape = new Polygon();
-        playShape.addPoint(- this.size.width / 5, - this.size.height / 4);
-        playShape.addPoint(- this.size.width / 5, this.size.height / 4);
-        playShape.addPoint(this.size.width / 6,  0);        
-        
-        pauseShape1 = new Rectangle(- this.size.width / 10 - this.size.width / 6, - this.size.height / 5, this.size.width / 7, (int) (this.size.height / (5f/2f)));
-        pauseShape2 = new Rectangle(- this.size.width / 20, - this.size.height / 5, this.size.width / 7, (int) (this.size.height / (5f/2f)));
+        setIcon();
         
         LookAndFeelSelector.getInstance().getCurrentLookAndFeel().putClientProperties(this);
+        LookAndFeelSelector.getInstance().addLookAndFeelChangeListener(this);
     }
     
-    @Override
-    protected void paintComponent(Graphics g) {
-    	super.paintComponent(g);
-    	
-    	Graphics2D g2 = (Graphics2D) g;
-    	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    	g2.setPaint(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintFor(this));
-		g2.translate(this.size.getWidth() * 4/7, this.size.getHeight() / 2);
-    	
-    	if (!playing) {
-    		g2.fill(playShape);
-    	} else {
-    		g2.fill(pauseShape1);
-    		g2.fill(pauseShape2);
-    	}    	
-    	
-    	g2.dispose();
-    }
-
     /**
      * Sets the playing.
      * 
@@ -115,7 +84,7 @@ public final class PlayPauseButton extends JButton {
 
     private void setPlayingState(boolean playing) {
         this.playing = playing;
-    	repaint();
+    	setIcon();
     }
 
     /**
@@ -125,6 +94,19 @@ public final class PlayPauseButton extends JButton {
      */
     public boolean isPlaying() {
         return playing;
+    }
+    
+    @Override
+    public void lookAndFeelChanged() {
+    	setIcon();
+    }
+    
+    private void setIcon() {
+    	if (playing) {
+    		setIcon(PauseImageIcon.getIcon(size));
+    	} else {
+    		setIcon(PlayImageIcon.getIcon(size));
+    	}
     }
 
 }
