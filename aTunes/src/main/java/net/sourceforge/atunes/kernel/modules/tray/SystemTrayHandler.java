@@ -21,6 +21,8 @@
 package net.sourceforge.atunes.kernel.modules.tray;
 
 import java.awt.AWTException;
+import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.util.List;
@@ -55,6 +57,7 @@ import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -393,8 +396,9 @@ public final class SystemTrayHandler extends AbstractHandler {
      */
     private JTrayIcon getTrayIcon() {
         if (trayIcon == null) {
-            trayIcon = new JTrayIcon(Images.getImage(Images.APP_LOGO_24).getImage(), OsManager.osType.isLinux(), Actions
-                    .getAction(ToggleWindowVisibilityAction.class));
+        	Dimension iconSize = tray.getTrayIconSize();
+        	Image icon = ImageUtils.scaleImageBicubic(Images.getImage(Images.APP_LOGO_32).getImage(), iconSize.width, iconSize.height).getImage();
+            trayIcon = new JTrayIcon(icon, OsManager.osType.isLinux(), Actions.getAction(ToggleWindowVisibilityAction.class));
             trayIcon.setToolTip(StringUtils.getString(Constants.APP_NAME, " ", Constants.VERSION.toShortString()));
             trayIcon.setJTrayIconJPopupMenu(fillMenu(trayIcon.new JTrayIconPopupMenu()));
             trayIcon.setImageAutoSize(true);
