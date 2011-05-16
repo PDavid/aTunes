@@ -31,7 +31,6 @@ import java.util.StringTokenizer;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.OperatingSystem;
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
@@ -288,7 +287,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
             converterCommand = CDDA2WAV_COMMAND_STRING;
             Process p;
             if (OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.WINDOWS) {
-                p = new ProcessBuilder(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, OsManager.getFileSeparator(), converterCommand), VERSION).start();
+                p = new ProcessBuilder(StringUtils.getString(OsManager.getExternalToolsPath(), converterCommand), VERSION).start();
             } else {
                 p = new ProcessBuilder(converterCommand, VERSION).start();
             }
@@ -311,7 +310,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
                 converterCommand = ICEDAX_COMMAND_STRING;
                 Process icedaxCheck;
                 if (OsManager.osType == OperatingSystem.WINDOWS) {
-                    icedaxCheck = new ProcessBuilder(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, OsManager.getFileSeparator(), converterCommand), VERSION).start();
+                    icedaxCheck = new ProcessBuilder(StringUtils.getString(OsManager.getExternalToolsPath(), converterCommand), VERSION).start();
                 } else {
                     icedaxCheck = new ProcessBuilder(converterCommand, VERSION).start();
                 }
@@ -360,7 +359,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
         try {
             List<String> command = new ArrayList<String>();
             if (OsManager.osType == OperatingSystem.WINDOWS) {
-                command.add(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, OsManager.getFileSeparator(), converterCommand));
+                command.add(StringUtils.getString(OsManager.getExternalToolsPath(), converterCommand));
             } else {
                 command.add(converterCommand);
             }
@@ -454,7 +453,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
             try {
                 List<String> command = new ArrayList<String>();
                 if (OsManager.osType == OperatingSystem.WINDOWS) {
-                    command.add(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, OsManager.getFileSeparator(), converterCommand));
+                    command.add(StringUtils.getString(OsManager.getExternalToolsPath(), converterCommand));
                 } else {
                     command.add(converterCommand);
                 }
@@ -507,7 +506,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
             try {
                 List<String> command = new ArrayList<String>();
                 if (OsManager.osType == OperatingSystem.WINDOWS) {
-                    command.add(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, OsManager.getFileSeparator(), converterCommand));
+                    command.add(StringUtils.getString(OsManager.getExternalToolsPath(), converterCommand));
                 } else {
                     command.add(converterCommand);
                 }
@@ -586,7 +585,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
             try {
                 List<String> command = new ArrayList<String>();
                 if (OsManager.osType == OperatingSystem.WINDOWS) {
-                    command.add(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, OsManager.getFileSeparator(), converterCommand));
+                    command.add(StringUtils.getString(OsManager.getExternalToolsPath(), converterCommand));
                 } else {
                     command.add(converterCommand);
                 }
@@ -689,11 +688,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
         try {
             // Prepare cdda2wav commands and execute
             List<String> command = new ArrayList<String>();
-            if (OsManager.osType == OperatingSystem.WINDOWS) {
-                command.add(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, OsManager.getFileSeparator(), converterCommand));
-            } else {
-                command.add(converterCommand);
-            }
+            command.add(StringUtils.getString(OsManager.getExternalToolsPath(), converterCommand));
 
             if (device != null) {
                 // If -scanbus dev=ATA method finds something, we need to use a different syntax

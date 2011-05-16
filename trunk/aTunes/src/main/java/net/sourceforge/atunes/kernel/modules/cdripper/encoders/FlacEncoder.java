@@ -29,8 +29,6 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.kernel.OperatingSystem;
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.cdripper.ProgressListener;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
@@ -82,13 +80,7 @@ public class FlacEncoder implements Encoder {
         // Test for flac
         BufferedReader stdInput = null;
         try {
-            //Test for Windows system checks in ...\aTunes\win_tools only!
-            Process p;
-            if (OsManager.osType == OperatingSystem.WINDOWS) {
-                p = new ProcessBuilder(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, OsManager.getFileSeparator(), FLAC), VERSION).start();
-            } else {
-                p = new ProcessBuilder(FLAC, VERSION).start();
-            }
+            Process p = new ProcessBuilder(StringUtils.getString(OsManager.getExternalToolsPath(), FLAC), VERSION).start(); 
             stdInput = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 
             while (stdInput.readLine() != null) {
@@ -135,11 +127,7 @@ public class FlacEncoder implements Encoder {
             // Encode the file using FLAC. We could pass the infos for the tag, but 
             // FLAC is very difficult with special characters so we don't use it.
             List<String> command = new ArrayList<String>();
-            if (OsManager.osType == OperatingSystem.WINDOWS) {
-                command.add(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, OsManager.getFileSeparator(), FLAC));
-            } else {
-                command.add(FLAC);
-            }
+            command.add(StringUtils.getString(OsManager.getExternalToolsPath(), FLAC));
             command.add(quality);
             command.add(FORCE);
             command.add(wavFile.getAbsolutePath());

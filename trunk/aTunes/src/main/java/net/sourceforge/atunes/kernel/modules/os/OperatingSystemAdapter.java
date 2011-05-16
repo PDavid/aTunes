@@ -170,4 +170,13 @@ public abstract class OperatingSystemAdapter {
 	public Collection<String> getPlayerEngineParameters(AbstractPlayerEngine engine) {
 		return Collections.emptyList();
 	}
+	
+	/**
+	 * Returns path where external tools are (cdda2wav, mencoder, etc.)
+	 * Leave "" when tools are in path
+	 * @return
+	 */
+	public String getExternalToolsPath() {
+		return "";
+	}
 }

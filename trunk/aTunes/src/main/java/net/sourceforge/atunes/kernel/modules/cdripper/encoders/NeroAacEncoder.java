@@ -28,8 +28,6 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.kernel.OperatingSystem;
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.cdripper.ProgressListener;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
@@ -77,13 +75,7 @@ public class NeroAacEncoder implements Encoder {
         // Test for Nero Aac encoder
         BufferedReader stdInput = null;
         try {
-            Process p;
-            // Test for Windows system checks in ...\aTunes\win_tools only!
-            if (OsManager.osType == OperatingSystem.WINDOWS) {
-                p = new ProcessBuilder(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, OsManager.getFileSeparator(), NERO_AAC), VERSION).start();
-            } else {
-                p = new ProcessBuilder(NERO_AAC, VERSION).start();
-            }
+            Process p = new ProcessBuilder(StringUtils.getString(OsManager.getExternalToolsPath(), NERO_AAC), VERSION).start();
             stdInput = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 
             while (stdInput.readLine() != null) {
@@ -126,11 +118,7 @@ public class NeroAacEncoder implements Encoder {
         BufferedReader stdInput = null;
         try {
             List<String> command = new ArrayList<String>();
-            if (OsManager.osType == OperatingSystem.WINDOWS) {
-                command.add(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, OsManager.getFileSeparator(), NERO_AAC));
-            } else {
-                command.add(NERO_AAC);
-            }
+            command.add(StringUtils.getString(OsManager.getExternalToolsPath(), NERO_AAC));
             command.add(QUALITY);
             command.add(quality);
             //command.add(IGNORE_LENGTH);

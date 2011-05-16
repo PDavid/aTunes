@@ -337,4 +337,13 @@ public class OsManager {
 		return adapter.getPlayerEngineParameters(engine);
 	}
 
+	/**
+	 * Returns path where external tools are (cdda2wav, mencoder, etc.)
+	 * Leave "" when tools are in path
+	 * @return
+	 */
+	public static Object getExternalToolsPath() {
+		return adapter.getExternalToolsPath();
+	}
+
 }

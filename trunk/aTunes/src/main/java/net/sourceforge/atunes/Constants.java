@@ -133,9 +133,6 @@ public final class Constants {
     /** File where playlists contents are stored. */
     public static final String PLAYLISTS_CONTENTS_FILE = "playListsContents.dat";
 
-    /** Directory where Windows binaries are found (i.e. mplayer, lame, etc) */
-    public static final String WINDOWS_TOOLS_DIR = "win_tools";
-
     /** Directory where Mac OS X binaries are found (i.e. mplayer, lame, etc) */
     public static final String MAC_TOOLS_DIR = "mac_tools";
 
