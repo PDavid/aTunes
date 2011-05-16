@@ -34,7 +34,7 @@ import net.sourceforge.atunes.model.Artist;
 public class UnknownElementTreeCellDecorator extends AbstractTreeCellDecorator {
 
     @Override
-    public Component decorateTreeCellComponent(Component component, Object userObject) {
+    public Component decorateTreeCellComponent(Component component, Object userObject, boolean isSelected) {
         if (userObject.toString() != null &&
             (Artist.isUnknownArtist(userObject.toString()) || 
              Album.isUnknownAlbum(userObject.toString()) || 

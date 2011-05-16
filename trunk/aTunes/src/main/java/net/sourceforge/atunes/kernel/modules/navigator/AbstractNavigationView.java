@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.navigator;
 
 import java.awt.Component;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.text.Collator;
@@ -580,9 +581,14 @@ public abstract class AbstractNavigationView implements AudioObjectsSource {
 
             @Override
             public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
+            	int rowOver = 0;
+                Point p = tree.getMousePosition(true);
+                if (p != null) {
+                	rowOver = tree.getRowForLocation(p.x, p.y);
+                }
                 final Object content = ((DefaultMutableTreeNode) value).getUserObject();
                 for (AbstractTreeCellDecorator decorator : getTreeCellDecorators()) {
-                    decorator.decorateTreeCellComponent(superComponent, content);
+                    decorator.decorateTreeCellComponent(superComponent, content, isSelected || isHasFocus || rowOver == row);
                 }
                 return superComponent;
             }

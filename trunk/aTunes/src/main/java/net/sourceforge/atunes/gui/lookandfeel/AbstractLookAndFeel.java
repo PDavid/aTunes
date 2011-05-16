@@ -265,9 +265,10 @@ public abstract class AbstractLookAndFeel {
 	/**
 	 * Returns paint to be used to draw a color mutable icon in given component
 	 * @param c
+	 * @param isSelected
 	 * @return
 	 */
-	public Paint getPaintForColorMutableIcon(Component c) {
+	public Paint getPaintForColorMutableIcon(Component c, boolean isSelected) {
 		return UIManager.getColor("Label.foreground");	
 	}
 

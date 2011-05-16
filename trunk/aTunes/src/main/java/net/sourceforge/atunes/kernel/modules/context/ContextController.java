@@ -55,7 +55,7 @@ class ContextController extends AbstractSimpleController<ContextPanel> {
 			
 			@Override
 			public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-				((JLabel)superComponent).setIcon(((AbstractContextPanel)value).getIcon().getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(superComponent)));
+				((JLabel)superComponent).setIcon(((AbstractContextPanel)value).getIcon().getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(superComponent, isSelected || cellHasFocus)));
 				((JLabel)superComponent).setText(((AbstractContextPanel)value).getTitle());
 				return superComponent;
 			}
