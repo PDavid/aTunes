@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
+import java.awt.Paint;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +34,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
 
+import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
@@ -79,8 +81,14 @@ public final class PodcastNavigationView extends AbstractNavigationView {
     private AbstractColumnSet columnSet;
 
     @Override
-    public ImageIcon getIcon() {
-        return RssImageIcon.getSmallIcon();
+    public ColorMutableImageIcon getIcon() {
+        return new ColorMutableImageIcon() {
+			
+			@Override
+			public ImageIcon getIcon(Paint paint) {
+				return RssImageIcon.getSmallIcon(paint);
+			}
+		};
     }
 
     @Override

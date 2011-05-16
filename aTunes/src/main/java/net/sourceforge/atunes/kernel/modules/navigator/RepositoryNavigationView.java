@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
+import java.awt.Paint;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
+import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.gui.views.decorators.AlbumTreeCellDecorator;
@@ -81,8 +83,14 @@ public class RepositoryNavigationView extends AbstractNavigationView {
     private List<AbstractTreeCellDecorator> decorators;
 
     @Override
-    public ImageIcon getIcon() {
-        return AudioFileImageIcon.getSmallImageIcon();
+    public ColorMutableImageIcon getIcon() {    	
+        return new ColorMutableImageIcon() {
+			
+			@Override
+			public ImageIcon getIcon(Paint paint) {
+				return AudioFileImageIcon.getSmallImageIcon(paint);
+			}
+		};
     }
 
     @Override

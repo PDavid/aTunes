@@ -217,7 +217,7 @@ final class NavigationController extends AbstractController implements AudioFile
 			
 			@Override
 			public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-				((JLabel)superComponent).setIcon(((AbstractNavigationView)value).getIcon());
+				((JLabel)superComponent).setIcon(((AbstractNavigationView)value).getIcon().getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(superComponent, isSelected)));
 				((JLabel)superComponent).setText(((AbstractNavigationView)value).getTitle());
 				return superComponent;
 			}
