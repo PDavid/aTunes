@@ -34,5 +34,11 @@ public abstract class CustomSubstanceSkin extends SubstanceSkin {
 	 * @return
 	 */
 	protected abstract Paint getPaintForColorMutableIcon(Component component, boolean isSelected);
+	
+	/**
+	 * Returns paint to be used with certain controls (player controls)
+	 * @return
+	 */
+	protected abstract Paint getPaintForSpecialControls();
 
 }

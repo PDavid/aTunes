@@ -104,7 +104,7 @@ public class PopUpButton extends JButton {
     	
     	Graphics2D g2 = (Graphics2D) g;
     	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    	g2.setPaint(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintFor(this));
+    	g2.setPaint(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForSpecialControls());
 		g2.translate(getWidth() / 2, getHeight() / 2);
 		if (this.location == BOTTOM_LEFT || this.location == BOTTOM_RIGHT) {
 			g2.rotate(Math.PI);

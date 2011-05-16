@@ -52,7 +52,7 @@ public class VideoImageIcon {
 		BufferedImage bi = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D g = bi.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setPaint(color != null ? color : LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintFor(null));
+        g.setPaint(color != null ? color : LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForSpecialControls());
        	g.fill(r);
        	g.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
        	g.fill(r2);
