@@ -21,7 +21,7 @@
 package net.sourceforge.atunes.gui.renderers;
 
 import java.awt.Component;
-import java.awt.Point;
+import java.awt.Paint;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -30,6 +30,7 @@ import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.model.AbstractCommonColumnModel;
+import net.sourceforge.atunes.utils.GuiUtils;
 
 public class ColorMutableTableCellRendererCode extends AbstractTableCellRendererCode {
 
@@ -41,15 +42,10 @@ public class ColorMutableTableCellRendererCode extends AbstractTableCellRenderer
 
     @Override
     public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    	int rowOver = 0;
-        Point p = table.getMousePosition(true);
-        if (p != null) {
-        	rowOver = table.rowAtPoint(p);
-        }
-
         Component c = superComponent;
         ((JLabel) c).setText(null);
-        ((JLabel) c).setIcon(((ColorMutableImageIcon)value).getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(c, isSelected || hasFocus || rowOver == row)));
+        Paint color = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(c, isSelected || hasFocus || GuiUtils.getRowOver(table) == row);
+        ((JLabel) c).setIcon(((ColorMutableImageIcon)value).getIcon(color));
 
         // Get alignment from model
         ((JLabel) c).setHorizontalAlignment(model.getColumnAlignment(column));
