@@ -35,12 +35,12 @@ import net.sourceforge.atunes.model.Album;
 public class AlbumTreeCellDecorator extends AbstractTreeCellDecorator {
 
     @Override
-    public Component decorateTreeCellComponent(Component component, Object userObject) {
+    public Component decorateTreeCellComponent(Component component, Object userObject, boolean isSelected) {
         if (userObject instanceof Album) {
             if (!ApplicationState.getInstance().isShowFavoritesInNavigator() || !FavoritesHandler.getInstance().getFavoriteAlbumsInfo().containsValue(userObject)) {
-                ((JLabel) component).setIcon(AlbumImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(component)));
+                ((JLabel) component).setIcon(AlbumImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
             } else {
-                ((JLabel) component).setIcon(AlbumFavoriteImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(component)));
+                ((JLabel) component).setIcon(AlbumFavoriteImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
             }
         }
         return component;

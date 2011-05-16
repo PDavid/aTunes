@@ -40,11 +40,11 @@ import net.sourceforge.atunes.utils.I18nUtils;
 public class StringTreeCellDecorator extends AbstractTreeCellDecorator {
 
     @Override
-    public Component decorateTreeCellComponent(Component component, Object userObject) {
+    public Component decorateTreeCellComponent(Component component, Object userObject, boolean isSelected) {
         if (userObject instanceof String && component instanceof JLabel) {
             String text = ((String) userObject);
             JLabel label = (JLabel) component;
-            Paint color = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(label);
+            Paint color = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(label, isSelected);
             if (text.equals(I18nUtils.getString("REPOSITORY"))) {
                 label.setIcon(AudioFileImageIcon.getSmallImageIcon(color));
             } else if (text.equals(I18nUtils.getString("DEVICE"))) {
@@ -56,14 +56,14 @@ public class StringTreeCellDecorator extends AbstractTreeCellDecorator {
             } else if (text.equals(I18nUtils.getString("SONGS"))) {
                 label.setIcon(AudioFileImageIcon.getSmallImageIcon(color));
             } else if (text.equals(I18nUtils.getString("FAVORITES"))) {
-                label.setIcon(FavoriteImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(label)));
+                label.setIcon(FavoriteImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(label, isSelected)));
             } else if (text.equals(I18nUtils.getString("PODCAST_FEEDS"))) {
-                label.setIcon(RssImageIcon.getSmallIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(label)));
+                label.setIcon(RssImageIcon.getSmallIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(label, isSelected)));
             } else if (text.equals(I18nUtils.getString("RADIO"))) {
-                label.setIcon(RadioImageIcon.getSmallIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(label)));
+                label.setIcon(RadioImageIcon.getSmallIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(label, isSelected)));
             } else {
                 // For radio view
-                label.setIcon(FolderImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(label)));
+                label.setIcon(FolderImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(label, isSelected)));
             }
 
             label.setToolTipText(null);

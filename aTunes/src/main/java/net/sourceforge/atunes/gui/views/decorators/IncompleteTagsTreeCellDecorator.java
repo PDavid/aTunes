@@ -33,7 +33,7 @@ import net.sourceforge.atunes.model.TreeObject;
 public class IncompleteTagsTreeCellDecorator extends AbstractTreeCellDecorator {
 
     @Override
-    public Component decorateTreeCellComponent(Component component, Object userObject) {
+    public Component decorateTreeCellComponent(Component component, Object userObject, boolean isSelected) {
         if (ApplicationState.getInstance().isHighlightIncompleteTagElements() && 
         		userObject instanceof TreeObject && 
         		IncompleteTagsChecker.hasIncompleteTags((TreeObject) userObject)) {

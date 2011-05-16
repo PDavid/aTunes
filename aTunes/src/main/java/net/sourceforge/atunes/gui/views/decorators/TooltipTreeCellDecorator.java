@@ -32,7 +32,7 @@ import net.sourceforge.atunes.model.TreeObject;
 public class TooltipTreeCellDecorator extends AbstractTreeCellDecorator {
 
     @Override
-    public Component decorateTreeCellComponent(Component component, Object userObject) {
+    public Component decorateTreeCellComponent(Component component, Object userObject, boolean isSelected) {
         if (!ApplicationState.getInstance().isShowExtendedTooltip() || !ExtendedToolTip.canObjectBeShownInExtendedToolTip(userObject)) {
             if (userObject instanceof TreeObject) {
                 ((JLabel) component).setToolTipText(((TreeObject) userObject).getToolTip());

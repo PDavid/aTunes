@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.gui.renderers;
 
 import java.awt.Component;
+import java.awt.Point;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -40,9 +41,15 @@ public class ColorMutableTableCellRendererCode extends AbstractTableCellRenderer
 
     @Override
     public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    	int rowOver = 0;
+        Point p = table.getMousePosition(true);
+        if (p != null) {
+        	rowOver = table.rowAtPoint(p);
+        }
+
         Component c = superComponent;
         ((JLabel) c).setText(null);
-        ((JLabel) c).setIcon(((ColorMutableImageIcon)value).getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(c)));
+        ((JLabel) c).setIcon(((ColorMutableImageIcon)value).getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(c, isSelected || hasFocus || rowOver == row)));
 
         // Get alignment from model
         ((JLabel) c).setHorizontalAlignment(model.getColumnAlignment(column));

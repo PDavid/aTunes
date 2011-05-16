@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.gui.renderers;
 
 import java.awt.Component;
+import java.awt.Point;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -40,15 +41,22 @@ public class PropertyTableCellRendererCode extends AbstractTableCellRendererCode
 
     @Override
     public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    	int rowOver = 0;
+        Point p = table.getMousePosition(true);
+        if (p != null) {
+        	rowOver = table.rowAtPoint(p);
+        }
+        boolean selected = isSelected || hasFocus || rowOver == row;
+        
         Component comp = superComponent;
         ImageIcon icon = null;
         Property val = (Property) value;
         if (val == Property.FAVORITE) {
-            icon = FavoriteImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(comp));
+            icon = FavoriteImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(comp, selected));
         } else if (val == Property.NOT_LISTENED_ENTRY) {
-            icon = NewImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(comp));
+            icon = NewImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(comp, selected));
         } else if (val == Property.DOWNLOADED_ENTRY) {
-            icon = DownloadImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(comp));
+            icon = DownloadImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(comp, selected));
         }
         ((JLabel) comp).setIcon(icon);
         ((JLabel) comp).setText(null);

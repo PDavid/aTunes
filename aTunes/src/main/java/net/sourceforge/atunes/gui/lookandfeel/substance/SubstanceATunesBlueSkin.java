@@ -21,12 +21,13 @@
 package net.sourceforge.atunes.gui.lookandfeel.substance;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Paint;
 
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceColorSchemeBundle;
-import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.colorscheme.BaseLightColorScheme;
 import org.pushingpixels.substance.api.painter.border.ClassicBorderPainter;
 import org.pushingpixels.substance.api.painter.decoration.MatteDecorationPainter;
@@ -34,7 +35,7 @@ import org.pushingpixels.substance.api.painter.fill.ClassicFillPainter;
 import org.pushingpixels.substance.api.painter.highlight.ClassicHighlightPainter;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 
-public final class SubstanceATunesBlueSkin extends SubstanceSkin {
+public final class SubstanceATunesBlueSkin extends CustomSubstanceSkin {
 
 	static class BlueColorScheme extends BaseLightColorScheme {
 
@@ -222,6 +223,16 @@ public final class SubstanceATunesBlueSkin extends SubstanceSkin {
 	@Override
 	public String getDisplayName() {
 		return "aTunes Blue skin";
+	}
+
+	@Override
+	protected Paint getPaintForColorMutableIcon(Component component, boolean isSelected) {
+    	if (isSelected) {
+    		return component.getForeground();    		
+    	} else {
+    		Color c = org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin().getActiveColorScheme(DecorationAreaType.HEADER).getUltraDarkColor();    		
+    		return new Color(c.getRed(), c.getGreen(), c.getBlue(), 200);
+    	}
 	}
 
 }

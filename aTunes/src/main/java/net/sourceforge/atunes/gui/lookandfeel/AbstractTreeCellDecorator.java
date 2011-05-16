@@ -29,8 +29,9 @@ public abstract class AbstractTreeCellDecorator {
      * 
      * @param component
      * @param userObject
+     * @param isSelected
      * @return
      */
-    public abstract Component decorateTreeCellComponent(Component component, Object userObject);
+    public abstract Component decorateTreeCellComponent(Component component, Object userObject, boolean isSelected);
 
 }

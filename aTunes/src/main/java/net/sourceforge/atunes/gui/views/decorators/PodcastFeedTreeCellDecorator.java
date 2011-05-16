@@ -32,9 +32,9 @@ import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 public class PodcastFeedTreeCellDecorator extends AbstractTreeCellDecorator {
 
     @Override
-    public Component decorateTreeCellComponent(Component component, Object userObject) {
+    public Component decorateTreeCellComponent(Component component, Object userObject, boolean isSelected) {
         if (userObject instanceof PodcastFeed) {
-            ((JLabel) component).setIcon(RssImageIcon.getSmallIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(component)));
+            ((JLabel) component).setIcon(RssImageIcon.getSmallIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
         }
         return component;
     }

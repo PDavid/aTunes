@@ -33,9 +33,9 @@ import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 public class GenreTreeCellDecorator extends AbstractTreeCellDecorator {
 
     @Override
-    public Component decorateTreeCellComponent(Component component, Object userObject) {
+    public Component decorateTreeCellComponent(Component component, Object userObject, boolean isSelected) {
         if (userObject instanceof Genre) {
-            ((JLabel) component).setIcon(GenreImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(component)));
+            ((JLabel) component).setIcon(GenreImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
         }
         return component;
     }

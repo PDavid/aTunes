@@ -32,9 +32,9 @@ import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 public class YearTreeCellDecorator extends AbstractTreeCellDecorator {
 
     @Override
-    public Component decorateTreeCellComponent(Component component, Object userObject) {
+    public Component decorateTreeCellComponent(Component component, Object userObject, boolean isSelected) {
         if (userObject instanceof Year) {
-            ((JLabel) component).setIcon(DateImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(component)));
+            ((JLabel) component).setIcon(DateImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
         }
         return component;
     }

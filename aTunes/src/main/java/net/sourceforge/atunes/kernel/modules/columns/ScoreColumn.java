@@ -102,7 +102,8 @@ public class ScoreColumn extends AbstractColumn {
         if (score == 0) {
             label.setIcon(null);
         } else {
-            label.setIcon(StarImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(label), score));
+        	// TODO: ICONOS Sacar a un renderer
+            label.setIcon(StarImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(label, false), score));
         }
     }
 
