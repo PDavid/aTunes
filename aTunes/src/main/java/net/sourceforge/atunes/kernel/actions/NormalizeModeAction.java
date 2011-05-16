@@ -25,8 +25,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
 
-import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.images.NormalizationImageIcon;
+import net.sourceforge.atunes.gui.images.WarningImageIcon;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -50,7 +50,7 @@ public class NormalizeModeAction extends AbstractAction {
                 if (showWarning) {
                     putValue(SMALL_ICON, NormalizationImageIcon.getIcon());
                 } else {
-                    putValue(SMALL_ICON, Images.getImage(Images.WARNING));
+                    putValue(SMALL_ICON, WarningImageIcon.getIcon());
                 }
                 showWarning = !showWarning;
             }
