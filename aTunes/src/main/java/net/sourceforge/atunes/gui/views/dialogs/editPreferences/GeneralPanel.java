@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.gui.views.dialogs.editPreferences;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -33,10 +34,13 @@ import java.util.Locale;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.frame.Frame;
@@ -49,6 +53,7 @@ import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.kernel.modules.state.beans.ColorBean;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -81,12 +86,15 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
     private JButton fontSettings;
     private JComboBox lookAndFeel;
     private JLabel skinLabel;
-    private JComboBox skin;
+    private JComboBox skin;    
     private ByImageChoosingPanel<Class<? extends Frame>> windowTypeChoosingPanel;
+    private JButton trayPlayerColorSelector;
     
     private ActionListener applySkinActionListener;
 
     private FontSettings currentFontSettings;
+    
+    private Color currentTrayIconColor;
 
     /**
      * Instantiates a new general panel.
@@ -109,6 +117,26 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 
         showIconTray = new JCheckBox(I18nUtils.getString("SHOW_TRAY_ICON"));
         showTrayPlayer = new JCheckBox(I18nUtils.getString("SHOW_TRAY_PLAYER"));
+        showTrayPlayer.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				trayPlayerColorSelector.setEnabled(showTrayPlayer.isSelected());
+			}
+		});
+        trayPlayerColorSelector = new JButton(I18nUtils.getString("SELECT_TRAY_PLAYER_COLOR"));
+        trayPlayerColorSelector.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Color selectedColor = JColorChooser.showDialog(GuiHandler.getInstance().getFrame().getFrame(), 
+										 I18nUtils.getString("SELECT_TRAY_PLAYER_COLOR"),
+										 null);
+				if (selectedColor != null) {
+					currentTrayIconColor = selectedColor;
+				}
+			}
+		});
         JLabel lookAndFeelLabel = new JLabel(I18nUtils.getString("LOOK_AND_FEEL"));
         lookAndFeelLabel.setFont(Fonts.getGeneralBoldFont());
         skinLabel = new JLabel(I18nUtils.getString("THEME"));
@@ -194,7 +222,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
         c.gridx = 0;
         c.gridy = 5;
         c.insets = new Insets(5, 0, 0, 0);
-        c.gridwidth = 2;
+        c.gridwidth = 3;
         c.weightx = 1;
         c.weighty = 1;
         c.fill = GridBagConstraints.BOTH;
@@ -221,6 +249,11 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
         c.insets = new Insets(5, 0, 0, 0);
         add(showTrayPlayer, c);
         c.gridx = 1;
+        c.gridy = 8;
+        c.weighty = 0.2;
+        c.insets = new Insets(5, 0, 0, 0);
+        add(trayPlayerColorSelector, c);
+        c.gridx = 2;
         c.gridy = 8;
         c.insets = new Insets(5, 0, 0, 0);
         add(showIconTray, c);
@@ -255,6 +288,10 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 
         state.setShowSystemTray(showIconTray.isSelected());
         state.setShowTrayPlayer(showTrayPlayer.isSelected());
+        
+        if (currentTrayIconColor != null) {
+        	state.setTrayPlayerIconsColor(new ColorBean(currentTrayIconColor));
+        }
 
         LookAndFeelBean oldLookAndFeel = state.getLookAndFeel();
         LookAndFeelBean newLookAndFeel = new LookAndFeelBean();
@@ -306,6 +343,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
      */
     private void setShowTrayPlayer(boolean show) {
         this.showTrayPlayer.setSelected(show);
+        this.trayPlayerColorSelector.setEnabled(show);
     }
 
     /**

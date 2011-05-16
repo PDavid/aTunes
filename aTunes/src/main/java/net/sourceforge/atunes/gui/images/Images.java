@@ -45,7 +45,6 @@ public final class Images {
     public static final String APP_LOGO_300 = "logo300x300.png";
     public static final String POWERED_BY_LAST_FM = "poweredByLastFm.png";
     
-    public static final String NEXT_TRAY = OsManager.osType.isWindowsVista() ? "nextTrayVista.png" : "nextTray.png";
     public static final String PAUSE_TRAY = OsManager.osType.isWindowsVista() ? "pauseTrayVista.png" : "pauseTray.png";
     public static final String PLAY_TRAY = OsManager.osType.isWindowsVista() ? "playTrayVista.png" : "playTray.png";
     public static final String PREVIOUS_TRAY = OsManager.osType.isWindowsVista() ? "previousTrayVista.png" : "previousTray.png";
