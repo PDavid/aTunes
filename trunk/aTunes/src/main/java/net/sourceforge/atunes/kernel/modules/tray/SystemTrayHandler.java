@@ -37,6 +37,7 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.images.NextImageIcon;
 import net.sourceforge.atunes.gui.images.PreviousImageIcon;
+import net.sourceforge.atunes.gui.images.StopImageIcon;
 import net.sourceforge.atunes.gui.views.controls.ActionTrayIcon;
 import net.sourceforge.atunes.gui.views.controls.JTrayIcon;
 import net.sourceforge.atunes.gui.views.controls.JTrayIcon.JTrayIconPopupMenu;
@@ -431,7 +432,9 @@ public final class SystemTrayHandler extends AbstractHandler {
      */
     private TrayIcon getStopTrayIcon() {
         if (stopIcon == null) {
-            stopIcon = new ActionTrayIcon(Images.getImage(Images.STOP_TRAY).getImage(), Actions.getAction(StopCurrentAudioObjectAction.class));
+        	Color color = ApplicationState.getInstance().getTrayPlayerIconsColor().getColor();
+        	Image icon = StopImageIcon.getTrayIcon(color, tray.getTrayIconSize()).getImage();
+            stopIcon = new ActionTrayIcon(icon, Actions.getAction(StopCurrentAudioObjectAction.class));
             stopIcon.setImageAutoSize(true);
         }
         return stopIcon;

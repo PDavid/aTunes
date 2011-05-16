@@ -47,7 +47,6 @@ public final class Images {
     
     public static final String PAUSE_TRAY = OsManager.osType.isWindowsVista() ? "pauseTrayVista.png" : "pauseTray.png";
     public static final String PLAY_TRAY = OsManager.osType.isWindowsVista() ? "playTrayVista.png" : "playTray.png";
-    public static final String STOP_TRAY = OsManager.osType.isWindowsVista() ? "stopTrayVista.png" : "stopTray.png";
 
     /**
      * cache of images
