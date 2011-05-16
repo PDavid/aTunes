@@ -36,6 +36,8 @@ import javax.swing.WindowConstants;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.images.NextImageIcon;
+import net.sourceforge.atunes.gui.images.PauseImageIcon;
+import net.sourceforge.atunes.gui.images.PlayImageIcon;
 import net.sourceforge.atunes.gui.images.PreviousImageIcon;
 import net.sourceforge.atunes.gui.images.StopImageIcon;
 import net.sourceforge.atunes.gui.views.controls.ActionTrayIcon;
@@ -81,6 +83,8 @@ public final class SystemTrayHandler extends AbstractHandler {
     private TrayIcon stopIcon;
     private TrayIcon nextIcon;
     private JMenuItem playMenuItem;
+    
+    private boolean playing;
 
     /**
      * Instantiates a new system tray handler.
@@ -213,14 +217,18 @@ public final class SystemTrayHandler extends AbstractHandler {
      *            the new playing
      */
     public void setPlaying(boolean playing) {
+    	this.playing = playing;
     	if (isTrayInitialized()) {
+        	Color color = ApplicationState.getInstance().getTrayPlayerIconsColor().getColor();
+        	Image icon = null;
             if (playing) {
                 getPlayMenuItem().setText(I18nUtils.getString("PAUSE"));
-                getPlayTrayIcon().setImage(Images.getImage(Images.PAUSE_TRAY).getImage());
+            	icon = PauseImageIcon.getTrayIcon(color, tray.getTrayIconSize()).getImage();
             } else {
                 getPlayMenuItem().setText(I18nUtils.getString("PLAY"));
-                getPlayTrayIcon().setImage(Images.getImage(Images.PLAY_TRAY).getImage());
+            	icon = PlayImageIcon.getTrayIcon(color, tray.getTrayIconSize()).getImage();
             }
+            getPlayTrayIcon().setImage(icon);
     	}
     }
 
@@ -291,9 +299,27 @@ public final class SystemTrayHandler extends AbstractHandler {
     public void applicationStateChanged(ApplicationState newState) {
         setTrayIconVisible(newState.isShowSystemTray());
         setTrayPlayerVisible(newState.isShowTrayPlayer());
+        setTrayPlayerIconsColor(newState.getTrayPlayerIconsColor().getColor());
     }
 
     /**
+     * Changes color of tray player icons
+     * @param color
+     */
+    private void setTrayPlayerIconsColor(Color color) {
+    	if (trayPlayerVisible) {
+    		getStopTrayIcon().setImage(StopImageIcon.getTrayIcon(color, tray.getTrayIconSize()).getImage());
+    		if (playing) {
+    			getPlayTrayIcon().setImage(PauseImageIcon.getTrayIcon(color, tray.getTrayIconSize()).getImage());
+    		} else {
+    			getPlayTrayIcon().setImage(PlayImageIcon.getTrayIcon(color, tray.getTrayIconSize()).getImage());
+    		}
+    		getNextTrayIcon().setImage(NextImageIcon.getTrayIcon(color, tray.getTrayIconSize()).getImage());
+    		getPreviousTrayIcon().setImage(PreviousImageIcon.getTrayIcon(color, tray.getTrayIconSize()).getImage());
+    	}
+	}
+
+	/**
      * Getter of play menu item
      * 
      * @return
@@ -405,7 +431,6 @@ public final class SystemTrayHandler extends AbstractHandler {
             trayIcon = new JTrayIcon(icon, OsManager.osType.isLinux(), Actions.getAction(ToggleWindowVisibilityAction.class));
             trayIcon.setToolTip(StringUtils.getString(Constants.APP_NAME, " ", Constants.VERSION.toShortString()));
             trayIcon.setJTrayIconJPopupMenu(fillMenu(trayIcon.new JTrayIconPopupMenu()));
-            trayIcon.setImageAutoSize(true);
         }
         return trayIcon;
     }
@@ -420,7 +445,6 @@ public final class SystemTrayHandler extends AbstractHandler {
         	Color color = ApplicationState.getInstance().getTrayPlayerIconsColor().getColor();
         	Image icon = NextImageIcon.getTrayIcon(color, tray.getTrayIconSize()).getImage();
             nextIcon = new ActionTrayIcon(icon, Actions.getAction(PlayNextAudioObjectAction.class));
-            nextIcon.setImageAutoSize(true);
         }
         return nextIcon;
     }
@@ -435,7 +459,6 @@ public final class SystemTrayHandler extends AbstractHandler {
         	Color color = ApplicationState.getInstance().getTrayPlayerIconsColor().getColor();
         	Image icon = StopImageIcon.getTrayIcon(color, tray.getTrayIconSize()).getImage();
             stopIcon = new ActionTrayIcon(icon, Actions.getAction(StopCurrentAudioObjectAction.class));
-            stopIcon.setImageAutoSize(true);
         }
         return stopIcon;
     }
@@ -447,22 +470,24 @@ public final class SystemTrayHandler extends AbstractHandler {
      */
     private TrayIcon getPlayTrayIcon() {
         if (playIcon == null) {
-            playIcon = new ActionTrayIcon(Images.getImage(Images.PLAY_TRAY).getImage(), Actions.getAction(PlayAction.class));
-            playIcon.setImageAutoSize(true);
+        	Color color = ApplicationState.getInstance().getTrayPlayerIconsColor().getColor();
+        	Image icon = PlayImageIcon.getTrayIcon(color, tray.getTrayIconSize()).getImage();
+            playIcon = new ActionTrayIcon(icon, Actions.getAction(PlayAction.class));
         }
         return playIcon;
     }
-
+    
     /**
      * Getter for previousIcon
      * 
      * @return
      */
     private TrayIcon getPreviousTrayIcon() {
-    	Color color = ApplicationState.getInstance().getTrayPlayerIconsColor().getColor();
-    	Image icon = PreviousImageIcon.getTrayIcon(color, tray.getTrayIconSize()).getImage();
-        previousIcon = new ActionTrayIcon(icon, Actions.getAction(PlayPreviousAudioObjectAction.class));
-        previousIcon.setImageAutoSize(true);
+    	if (previousIcon == null) {
+    		Color color = ApplicationState.getInstance().getTrayPlayerIconsColor().getColor();
+    		Image icon = PreviousImageIcon.getTrayIcon(color, tray.getTrayIconSize()).getImage();
+    		previousIcon = new ActionTrayIcon(icon, Actions.getAction(PlayPreviousAudioObjectAction.class));
+    	}
         return previousIcon;
     }
 
