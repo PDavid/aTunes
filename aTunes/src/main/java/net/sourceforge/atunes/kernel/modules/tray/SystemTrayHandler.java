@@ -36,6 +36,7 @@ import javax.swing.WindowConstants;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.images.NextImageIcon;
+import net.sourceforge.atunes.gui.images.PreviousImageIcon;
 import net.sourceforge.atunes.gui.views.controls.ActionTrayIcon;
 import net.sourceforge.atunes.gui.views.controls.JTrayIcon;
 import net.sourceforge.atunes.gui.views.controls.JTrayIcon.JTrayIconPopupMenu;
@@ -455,7 +456,9 @@ public final class SystemTrayHandler extends AbstractHandler {
      * @return
      */
     private TrayIcon getPreviousTrayIcon() {
-        previousIcon = new ActionTrayIcon(Images.getImage(Images.PREVIOUS_TRAY).getImage(), Actions.getAction(PlayPreviousAudioObjectAction.class));
+    	Color color = ApplicationState.getInstance().getTrayPlayerIconsColor().getColor();
+    	Image icon = PreviousImageIcon.getTrayIcon(color, tray.getTrayIconSize()).getImage();
+        previousIcon = new ActionTrayIcon(icon, Actions.getAction(PlayPreviousAudioObjectAction.class));
         previousIcon.setImageAutoSize(true);
         return previousIcon;
     }
