@@ -28,7 +28,6 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.OperatingSystem;
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.cdripper.ProgressListener;
@@ -82,12 +81,7 @@ public class LameEncoder implements Encoder {
 
         BufferedReader stdInput = null;
         try {
-            Process p;
-            if (OsManager.osType == OperatingSystem.WINDOWS) {
-                p = new ProcessBuilder(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, OsManager.getFileSeparator(), LAME), VERSION).start();
-            } else {
-                p = new ProcessBuilder(LAME, VERSION).start();
-            }
+            Process p = new ProcessBuilder(StringUtils.getString(OsManager.getExternalToolsPath(), LAME), VERSION).start();
             stdInput = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 
             while (stdInput.readLine() != null) {
@@ -131,11 +125,7 @@ public class LameEncoder implements Encoder {
         try {
             // Prepare and execute the lame command
             List<String> command = new ArrayList<String>();
-            if (OsManager.osType == OperatingSystem.WINDOWS) {
-                command.add(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, OsManager.getFileSeparator(), LAME));
-            } else {
-                command.add(LAME);
-            }
+            command.add(StringUtils.getString(OsManager.getExternalToolsPath(), LAME));
             // Presets don't need the -b option, but --preset, so check if preset is used
             if (quality.contains("insane") || quality.contains("extreme") || quality.contains("medium") || quality.contains("standard")) {
                 command.add(PRESET);

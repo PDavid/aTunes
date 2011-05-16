@@ -44,11 +44,14 @@ public class WindowsOperatingSystem extends OperatingSystemAdapter {
      */
     private static final String COMMAND_WINDOWS = "aTunes.exe";
     
+    /** Directory where Windows binaries are found (i.e. mplayer, lame, etc) */
+    public static final String WINDOWS_TOOLS_DIR = "win_tools";
+
     /**
      * Command to be executed on Windows systems to launch mplayer. Mplayer is
      * in "win_tools" dir, inside aTunes package
      */
-    private static final String MPLAYER_WIN_COMMAND = "win_tools/mplayer.exe";
+    private static final String MPLAYER_WIN_COMMAND = WINDOWS_TOOLS_DIR + "/mplayer.exe";
 
     private static final String WINOPTPRIORITY = "-priority";
     
@@ -122,5 +125,10 @@ public class WindowsOperatingSystem extends OperatingSystemAdapter {
 		} else {
 			return super.getPlayerEngineParameters(engine);
 		}
+	}
+	
+	@Override
+	public String getExternalToolsPath() {
+		return StringUtils.getString(WINDOWS_TOOLS_DIR, getFileSeparator());
 	}
 }

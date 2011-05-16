@@ -29,7 +29,6 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.OperatingSystem;
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.cdripper.ProgressListener;
@@ -85,13 +84,7 @@ public class OggEncoder implements Encoder {
         BufferedReader stdInput = null;
         // Test for oggenc
         try {
-            Process p;
-            // Test for Windows system checks in ...\aTunes\win_tools only!
-            if (OsManager.osType == OperatingSystem.WINDOWS) {
-                p = new ProcessBuilder(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, OsManager.getFileSeparator(), OGGENC), VERSION).start();
-            } else {
-                p = new ProcessBuilder(OGGENC, VERSION).start();
-            }
+            Process p = new ProcessBuilder(StringUtils.getString(OsManager.getExternalToolsPath(), OGGENC), VERSION).start();
             stdInput = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 
             while (stdInput.readLine() != null) {
@@ -139,11 +132,7 @@ public class OggEncoder implements Encoder {
             // Encode the file using oggenc. We could pass the infos for the tag, but 
             // oggenc is very difficult with special characters so we don't use it.
             List<String> command = new ArrayList<String>();
-            if (OsManager.osType == OperatingSystem.WINDOWS) {
-                command.add(StringUtils.getString(Constants.WINDOWS_TOOLS_DIR, OsManager.getFileSeparator(), OGGENC));
-            } else {
-                command.add(OGGENC);
-            }
+            command.add(StringUtils.getString(OsManager.getExternalToolsPath(), OGGENC));
             command.add(wavFile.getAbsolutePath());
             command.add(OUTPUT);
             command.add(oggFile.getAbsolutePath());
