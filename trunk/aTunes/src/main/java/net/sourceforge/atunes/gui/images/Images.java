@@ -50,7 +50,6 @@ public final class Images {
     public static final String PLAY_TRAY = OsManager.osType.isWindowsVista() ? "playTrayVista.png" : "playTray.png";
     public static final String PREVIOUS_TRAY = OsManager.osType.isWindowsVista() ? "previousTrayVista.png" : "previousTray.png";
     public static final String STOP_TRAY = OsManager.osType.isWindowsVista() ? "stopTrayVista.png" : "stopTray.png";
-    public static final String WARNING = "warning.png";
 
     /**
      * cache of images
