@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.navigator;
 
 import java.awt.Component;
+import java.awt.Paint;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.text.Collator;
@@ -33,6 +34,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.Action;
+import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -50,8 +52,8 @@ import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.model.AudioObjectsSource;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
-import net.sourceforge.atunes.kernel.actions.AbstractAction;
 import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedObjects;
+import net.sourceforge.atunes.kernel.actions.ActionWithColorMutableIcon;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
@@ -106,7 +108,7 @@ public abstract class AbstractNavigationView implements AudioObjectsSource {
     /**
      * Action associated to show this navigation view
      */
-    private AbstractAction action;
+    private ActionWithColorMutableIcon action;
 
     /**
      * @return the title of this view
@@ -553,15 +555,26 @@ public abstract class AbstractNavigationView implements AudioObjectsSource {
      * 
      * @return
      */
-    public final net.sourceforge.atunes.kernel.actions.AbstractAction getActionToShowView() {
+    public final ActionWithColorMutableIcon getActionToShowView() {
     	if (action == null) {
-    		action = new net.sourceforge.atunes.kernel.actions.AbstractAction(getTitle(), getIcon().getIcon(null)) {
+    		action = new ActionWithColorMutableIcon(getTitle()) {
 
     			private static final long serialVersionUID = 2895222205333520899L;
 
     			@Override
     			public void actionPerformed(ActionEvent e) {
     				NavigationHandler.getInstance().setNavigationView(AbstractNavigationView.this.getClass().getName());
+    			}
+    			
+    			@Override
+    			public ColorMutableImageIcon getIcon() {
+    				return new ColorMutableImageIcon() {
+						
+						@Override
+						public ImageIcon getIcon(Paint paint) {
+							return AbstractNavigationView.this.getIcon().getIcon(paint);
+						}
+					};
     			}
     		};
 
