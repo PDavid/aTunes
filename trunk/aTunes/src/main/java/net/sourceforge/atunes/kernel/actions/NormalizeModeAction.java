@@ -20,25 +20,29 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
+import java.awt.Paint;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.Timer;
 
+import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.NormalizationImageIcon;
 import net.sourceforge.atunes.gui.images.WarningImageIcon;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class NormalizeModeAction extends AbstractAction {
+public class NormalizeModeAction extends ActionWithColorMutableIcon {
 
     private static final long serialVersionUID = 6993968558006979367L;
 
     private Timer timer;
 
     public NormalizeModeAction() {
-        super(I18nUtils.getString("NORMALIZE"), NormalizationImageIcon.getIcon());
+        super(I18nUtils.getString("NORMALIZE"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("NORMALIZE"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().isUseNormalisation());
 
@@ -48,9 +52,9 @@ public class NormalizeModeAction extends AbstractAction {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if (showWarning) {
-                    putValue(SMALL_ICON, NormalizationImageIcon.getIcon());
+                    putValue(SMALL_ICON, NormalizationImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForSpecialControls()));
                 } else {
-                    putValue(SMALL_ICON, WarningImageIcon.getIcon());
+                    putValue(SMALL_ICON, WarningImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForSpecialControls()));
                 }
                 showWarning = !showWarning;
             }
@@ -67,10 +71,21 @@ public class NormalizeModeAction extends AbstractAction {
         PlayerHandler.getInstance().applyNormalization();
         if (timer.isRunning()) {
             timer.stop();
-            putValue(SMALL_ICON, NormalizationImageIcon.getIcon());
+            putValue(SMALL_ICON, NormalizationImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForSpecialControls()));
         } else {
             timer.start();
         }
+    }
+    
+    @Override
+    public ColorMutableImageIcon getIcon() {
+    	return new ColorMutableImageIcon() {
+			
+			@Override
+			public ImageIcon getIcon(Paint paint) {
+				return  NormalizationImageIcon.getIcon(paint);
+			}
+		};
     }
 
 }
