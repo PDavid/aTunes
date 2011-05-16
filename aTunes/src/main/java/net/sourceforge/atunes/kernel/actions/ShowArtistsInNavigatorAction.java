@@ -20,20 +20,24 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
+import java.awt.Paint;
 import java.awt.event.ActionEvent;
 
+import javax.swing.ImageIcon;
+
 import net.sourceforge.atunes.gui.images.ArtistImageIcon;
+import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.ViewMode;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class ShowArtistsInNavigatorAction extends AbstractAction {
+public class ShowArtistsInNavigatorAction extends ActionWithColorMutableIcon {
 
     private static final long serialVersionUID = -6172848158352600345L;
 
     public ShowArtistsInNavigatorAction() {
-        super(I18nUtils.getString("SHOW_ARTISTS"), ArtistImageIcon.getIcon(null));
+        super(I18nUtils.getString("SHOW_ARTISTS"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_ARTISTS"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().getViewMode() == ViewMode.ARTIST);
     }
@@ -46,6 +50,17 @@ public class ShowArtistsInNavigatorAction extends AbstractAction {
             Actions.getAction(CollapseTreesAction.class).setEnabled(true);
             Actions.getAction(ExpandTreesAction.class).setEnabled(true);
         }
+    }
+    
+    @Override
+    public ColorMutableImageIcon getIcon() {
+    	return new ColorMutableImageIcon() {
+			
+			@Override
+			public ImageIcon getIcon(Paint paint) {
+				return ArtistImageIcon.getIcon(paint);
+			}
+		};
     }
 
 }

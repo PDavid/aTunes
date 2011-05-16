@@ -20,20 +20,24 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
+import java.awt.Paint;
 import java.awt.event.ActionEvent;
 
+import javax.swing.ImageIcon;
+
+import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.DateImageIcon;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.ViewMode;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class ShowYearsInNavigatorAction extends AbstractAction {
+public class ShowYearsInNavigatorAction extends ActionWithColorMutableIcon {
 
     private static final long serialVersionUID = -1192790723328398881L;
 
     ShowYearsInNavigatorAction() {
-        super(I18nUtils.getString("SHOW_YEARS"), DateImageIcon.getIcon());
+        super(I18nUtils.getString("SHOW_YEARS"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_YEARS"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().getViewMode() == ViewMode.YEAR);
     }
@@ -48,4 +52,14 @@ public class ShowYearsInNavigatorAction extends AbstractAction {
         }
     }
 
+    @Override
+    public ColorMutableImageIcon getIcon() {
+    	return new ColorMutableImageIcon() {
+			
+			@Override
+			public ImageIcon getIcon(Paint paint) {
+				return DateImageIcon.getIcon(paint);
+			}
+		};
+    }
 }

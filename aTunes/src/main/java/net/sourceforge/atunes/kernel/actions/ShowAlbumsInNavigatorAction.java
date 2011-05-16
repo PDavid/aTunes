@@ -20,20 +20,24 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
+import java.awt.Paint;
 import java.awt.event.ActionEvent;
 
+import javax.swing.ImageIcon;
+
 import net.sourceforge.atunes.gui.images.AlbumImageIcon;
+import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.ViewMode;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class ShowAlbumsInNavigatorAction extends AbstractAction {
+public class ShowAlbumsInNavigatorAction extends ActionWithColorMutableIcon {
 
     private static final long serialVersionUID = -3691606154694473768L;
 
     public ShowAlbumsInNavigatorAction() {
-        super(I18nUtils.getString("SHOW_ALBUMS"), AlbumImageIcon.getIcon());
+        super(I18nUtils.getString("SHOW_ALBUMS"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_ALBUMS"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().getViewMode() == ViewMode.ALBUM);
     }
@@ -48,4 +52,14 @@ public class ShowAlbumsInNavigatorAction extends AbstractAction {
         }
     }
 
+    @Override
+    public ColorMutableImageIcon getIcon() {
+    	return new ColorMutableImageIcon() {
+			
+			@Override
+			public ImageIcon getIcon(Paint paint) {
+				return AlbumImageIcon.getIcon(paint);
+			}
+		};
+    }
 }

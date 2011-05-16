@@ -20,20 +20,24 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
+import java.awt.Paint;
 import java.awt.event.ActionEvent;
 
+import javax.swing.ImageIcon;
+
+import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.GenreImageIcon;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.ViewMode;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class ShowGenresInNavigatorAction extends AbstractAction {
+public class ShowGenresInNavigatorAction extends ActionWithColorMutableIcon {
 
     private static final long serialVersionUID = 8717980405436543347L;
 
     ShowGenresInNavigatorAction() {
-        super(I18nUtils.getString("SHOW_GENRE"), GenreImageIcon.getIcon());
+        super(I18nUtils.getString("SHOW_GENRE"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_GENRE"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().getViewMode() == ViewMode.GENRE);
     }
@@ -46,6 +50,17 @@ public class ShowGenresInNavigatorAction extends AbstractAction {
             Actions.getAction(CollapseTreesAction.class).setEnabled(true);
             Actions.getAction(ExpandTreesAction.class).setEnabled(true);
         }
+    }
+    
+    @Override
+    public ColorMutableImageIcon getIcon() {
+    	return new ColorMutableImageIcon() {
+			
+			@Override
+			public ImageIcon getIcon(Paint paint) {
+				return GenreImageIcon.getIcon(paint);
+			}
+		};
     }
 
 }

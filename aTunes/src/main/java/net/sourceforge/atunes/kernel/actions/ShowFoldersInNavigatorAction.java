@@ -20,20 +20,24 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
+import java.awt.Paint;
 import java.awt.event.ActionEvent;
 
+import javax.swing.ImageIcon;
+
+import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.FolderImageIcon;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.ViewMode;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class ShowFoldersInNavigatorAction extends AbstractAction {
+public class ShowFoldersInNavigatorAction extends ActionWithColorMutableIcon {
 
     private static final long serialVersionUID = -3422236983060989235L;
 
     ShowFoldersInNavigatorAction() {
-        super(I18nUtils.getString("SHOW_FOLDERS"), FolderImageIcon.getIcon());
+        super(I18nUtils.getString("SHOW_FOLDERS"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_FOLDERS"));
         putValue(SELECTED_KEY, ApplicationState.getInstance().getViewMode() == ViewMode.FOLDER);
     }
@@ -46,6 +50,17 @@ public class ShowFoldersInNavigatorAction extends AbstractAction {
             Actions.getAction(CollapseTreesAction.class).setEnabled(true);
             Actions.getAction(ExpandTreesAction.class).setEnabled(true);
         }
+    }
+    
+    @Override
+    public ColorMutableImageIcon getIcon() {
+    	return new ColorMutableImageIcon() {
+			
+			@Override
+			public ImageIcon getIcon(Paint paint) {
+				return FolderImageIcon.getIcon(paint);
+			}
+		};
     }
 
 }
