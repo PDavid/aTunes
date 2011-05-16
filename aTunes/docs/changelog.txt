@@ -22,6 +22,7 @@ aTunes 2.1.0
 - Improved Full Screen Mode
 - Removed karaoke mode
 - Fetch covers while reading repository and show in progress dialog
+- User can change color of tray player icons
 - FIX: Exception during renaming of file name
 - FIX: Repository refresh never ends in certain situations [3024433]
 - FIX: Selected playlist element not saved when closing application
