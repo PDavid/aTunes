@@ -229,7 +229,8 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
         result.put("Raven", "org.pushingpixels.substance.api.skin.SubstanceRavenLookAndFeel");
         result.put("ChallengerDeep", "org.pushingpixels.substance.api.skin.SubstanceChallengerDeepLookAndFeel");
         result.put("EmeraldDusk", "org.pushingpixels.substance.api.skin.SubstanceEmeraldDuskLookAndFeel");
-        result.put("Twilight", "org.pushingpixels.substance.api.skin.SubstanceTwilightLookAndFeel");
+        // Custom Twilight look and feel
+        result.put("Twilight", "net.sourceforge.atunes.gui.lookandfeel.substance.CustomTwilightLookAndFeel");
         result.put("OfficeBlue2007", "org.pushingpixels.substance.api.skin.SubstanceOfficeBlue2007LookAndFeel");
         result.put("Gemini", "org.pushingpixels.substance.api.skin.SubstanceGeminiLookAndFeel");
         result.put("Magellan", "org.pushingpixels.substance.api.skin.SubstanceMagellanLookAndFeel");
@@ -269,6 +270,7 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
     @Override
     public void setLookAndFeel(String skin) {
         try {
+        	System.out.println("Setting " + skin);
             if (skins.containsKey(skin)) {
                 UIManager.setLookAndFeel(skins.get(skin));
             } else {
@@ -382,7 +384,7 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
     	if (org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin() instanceof CustomSubstanceSkin) {
     		return ((CustomSubstanceSkin)org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin()).getPaintForSpecialControls();
     	} else {
-    		Color c = org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin().getActiveColorScheme(DecorationAreaType.GENERAL).getForegroundColor();
+    		Color c = org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin().getActiveColorScheme(DecorationAreaType.NONE).getForegroundColor();
     		return new Color(c.getRed(), c.getGreen(), c.getBlue(), 180);
     	}
     }

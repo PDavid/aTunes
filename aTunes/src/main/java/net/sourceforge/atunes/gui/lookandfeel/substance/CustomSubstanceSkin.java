@@ -23,9 +23,7 @@ package net.sourceforge.atunes.gui.lookandfeel.substance;
 import java.awt.Component;
 import java.awt.Paint;
 
-import org.pushingpixels.substance.api.SubstanceSkin;
-
-public abstract class CustomSubstanceSkin extends SubstanceSkin {
+public interface CustomSubstanceSkin {
 	
 	/**
 	 * Defines custom colors for mutable icons
@@ -33,12 +31,12 @@ public abstract class CustomSubstanceSkin extends SubstanceSkin {
 	 * @param isSelected
 	 * @return
 	 */
-	protected abstract Paint getPaintForColorMutableIcon(Component component, boolean isSelected);
+	public Paint getPaintForColorMutableIcon(Component component, boolean isSelected);
 	
 	/**
 	 * Returns paint to be used with certain controls (player controls)
 	 * @return
 	 */
-	protected abstract Paint getPaintForSpecialControls();
+	public Paint getPaintForSpecialControls();
 
 }
