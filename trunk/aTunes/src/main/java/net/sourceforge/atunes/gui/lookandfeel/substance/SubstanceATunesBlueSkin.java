@@ -28,6 +28,7 @@ import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceColorSchemeBundle;
+import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.colorscheme.BaseLightColorScheme;
 import org.pushingpixels.substance.api.painter.border.ClassicBorderPainter;
 import org.pushingpixels.substance.api.painter.decoration.MatteDecorationPainter;
@@ -35,7 +36,7 @@ import org.pushingpixels.substance.api.painter.fill.ClassicFillPainter;
 import org.pushingpixels.substance.api.painter.highlight.ClassicHighlightPainter;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 
-public final class SubstanceATunesBlueSkin extends CustomSubstanceSkin {
+public final class SubstanceATunesBlueSkin extends SubstanceSkin implements CustomSubstanceSkin {
 
 	static class BlueColorScheme extends BaseLightColorScheme {
 
@@ -225,8 +226,8 @@ public final class SubstanceATunesBlueSkin extends CustomSubstanceSkin {
 		return "aTunes Blue skin";
 	}
 
-	@Override
-	protected Paint getPaintForColorMutableIcon(Component component, boolean isSelected) {
+    @Override
+	public Paint getPaintForColorMutableIcon(Component component, boolean isSelected) {
     	if (isSelected) {
     		return component.getForeground();    		
     	} else {
@@ -235,8 +236,8 @@ public final class SubstanceATunesBlueSkin extends CustomSubstanceSkin {
     	}
 	}
 	
-	@Override
-	protected Paint getPaintForSpecialControls() {
+    @Override
+	public Paint getPaintForSpecialControls() {
 		Color c = org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin().getActiveColorScheme(DecorationAreaType.HEADER).getUltraDarkColor();    		
 		return new Color(c.getRed(), c.getGreen(), c.getBlue(), 200);
 	}
