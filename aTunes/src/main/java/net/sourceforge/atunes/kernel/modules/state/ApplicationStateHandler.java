@@ -290,6 +290,8 @@ public final class ApplicationStateHandler extends AbstractHandler {
             timer.start();
             oos.writeObject(repository);
             getLogger().info(LogCategories.HANDLER, StringUtils.getString("DONE (", timer.stop(), " seconds)"));
+            // Set repository as not dirty
+            repository.setDirty(false);
         } catch (IOException e) {
             getLogger().error(LogCategories.HANDLER, "Could not write serialized repository");
             getLogger().debug(LogCategories.HANDLER, e);
@@ -308,7 +310,7 @@ public final class ApplicationStateHandler extends AbstractHandler {
                 getLogger().error(LogCategories.HANDLER, "Could not write repository as xml");
                 getLogger().debug(LogCategories.HANDLER, e);
             }
-        }
+        }        
     }
 
     public void persistDeviceCache(String deviceId, Repository deviceRepository) {
