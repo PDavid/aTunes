@@ -490,7 +490,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
         GuiHandler.getInstance().showProgressBar(true, null);
         getLogger().info(LogCategories.REPOSITORY, "Refreshing device");
         Repository oldDeviceRepository = deviceRepository;
-        deviceRepository = new Repository(oldDeviceRepository.getFolders());
+        deviceRepository = new Repository(oldDeviceRepository.getFolders(), null);
         currentLoader = new RepositoryLoader(oldDeviceRepository.getFolders(), oldDeviceRepository, deviceRepository, true);
         currentLoader.addRepositoryLoaderListener(this);
         currentLoader.start();
@@ -521,7 +521,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
 
         List<File> folders = new ArrayList<File>();
         folders.add(path);
-        deviceRepository = new Repository(folders);
+        deviceRepository = new Repository(folders, null);
         currentLoader = new RepositoryLoader(folders, null, deviceRepository, false);
         currentLoader.addRepositoryLoaderListener(this);
         currentLoader.start();

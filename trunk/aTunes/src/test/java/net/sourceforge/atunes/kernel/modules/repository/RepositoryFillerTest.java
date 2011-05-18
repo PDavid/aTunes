@@ -35,7 +35,7 @@ public class RepositoryFillerTest {
 	
 	@Before
 	public void init() {
-		filler = new RepositoryFiller(new Repository(Collections.singletonList(new File(""))));
+		filler = new RepositoryFiller(new Repository(Collections.singletonList(new File("")), null));
 	}
 	
 	@Test(expected=IllegalArgumentException.class)

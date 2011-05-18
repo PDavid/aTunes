@@ -59,6 +59,11 @@ public class Repository implements Serializable {
      * Attribute to indicate if repository needs to be written to disk 
      */
     private transient boolean dirty;
+    
+    /**
+     * Object to be notified when this repository becomes dirty
+     */
+    private transient RepositoryListener listener;
 
     /**
      * Instantiates a new repository.
@@ -66,11 +71,18 @@ public class Repository implements Serializable {
      * @param folders
      *            the folders
      */
-    public Repository(List<File> folders) {
+    public Repository(List<File> folders, RepositoryListener listener) {
         this.folders = folders;
         this.structure = new RepositoryStructure();
+        this.listener = listener;
     }
 
+    /**
+     * This constructor can't be used
+	 */
+    @SuppressWarnings("unused")
+    private Repository() {}
+    
     /**
      * Count files.
      * 
@@ -217,6 +229,9 @@ public class Repository implements Serializable {
      */
     public void setDirty(boolean dirty) {
         this.dirty = dirty;
+        if (dirty && listener != null) {
+        	listener.repositoryChanged(this);
+        }
     }
     
     /**
@@ -234,4 +249,8 @@ public class Repository implements Serializable {
                 throw new InconsistentRepositoryException();
         }
     }
+
+	public void setListener(RepositoryListener listener) {
+		this.listener = listener;
+	}
 }

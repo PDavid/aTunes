@@ -77,6 +77,7 @@ import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.model.Repository;
+import net.sourceforge.atunes.model.RepositoryListener;
 import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -87,7 +88,7 @@ import org.apache.commons.io.FilenameUtils;
 /**
  * The repository handler.
  */
-public final class RepositoryHandler extends AbstractHandler implements LoaderListener, AudioFilesRemovedListener {
+public final class RepositoryHandler extends AbstractHandler implements LoaderListener, AudioFilesRemovedListener, RepositoryListener {
 
 	// Used to retrieve covers and show in progress dialog
 	private String lastArtistRead;
@@ -865,6 +866,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 
     private void applyExistingRepository(Repository rep) {
         repository = rep;
+        repository.setListener(this);
         notifyFinishRepositoryRead();
     }
 
@@ -901,7 +903,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     private void readRepository(List<File> folders) {
         backgroundLoad = false;
         Repository oldRepository = repository;
-        repository = new Repository(folders);
+        repository = new Repository(folders, this);
         currentLoader = new RepositoryLoader(folders, oldRepository, repository, false);
         currentLoader.addRepositoryLoaderListener(this);
         currentLoader.start();
@@ -914,7 +916,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         getLogger().info(LogCategories.REPOSITORY, "Refreshing repository");
         filesLoaded = 0;
         Repository oldRepository = repository;
-        repository = new Repository(oldRepository.getFolders());
+        repository = new Repository(oldRepository.getFolders(), this);
         currentLoader = new RepositoryLoader(oldRepository.getFolders(), oldRepository, repository, true);
         currentLoader.addRepositoryLoaderListener(this);
         currentLoader.start();
@@ -1208,4 +1210,13 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 		}
 	}
 
+	@Override
+	public void repositoryChanged(final Repository repository) {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				ApplicationStateHandler.getInstance().persistRepositoryCache(repository, true);
+			}
+		}).start();
+	}
 }
