@@ -22,6 +22,7 @@ package net.sourceforge.atunes.gui.views.controls;
 
 import java.awt.Component;
 
+import javax.swing.BorderFactory;
 import javax.swing.JSplitPane;
 
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -35,6 +36,7 @@ public class CustomSplitPane extends JSplitPane {
     public CustomSplitPane(int newOrientation) {
         super(newOrientation);
         setDividerSize(7);
+        setBorder(BorderFactory.createEmptyBorder());
     }
 
     @Override
