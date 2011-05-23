@@ -24,10 +24,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import net.roarsoftware.lastfm.Artist;
-import net.roarsoftware.lastfm.ImageSize;
 import net.sourceforge.atunes.kernel.modules.context.ArtistInfo;
 import net.sourceforge.atunes.kernel.modules.context.SimilarArtistsInfo;
+import de.umass.lastfm.Artist;
+import de.umass.lastfm.ImageSize;
 
 public class LastFmSimilarArtists implements SimilarArtistsInfo {
 
