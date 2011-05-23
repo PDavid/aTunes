@@ -38,6 +38,8 @@ import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 
 public final class SubstanceATunesBlueSkin extends SubstanceSkin implements CustomSubstanceSkin {
 
+	private Color highlightColor;
+	
 	static class BlueColorScheme extends BaseLightColorScheme {
 
 		public BlueColorScheme(String displayName) {
@@ -85,6 +87,52 @@ public final class SubstanceATunesBlueSkin extends SubstanceSkin implements Cust
 		@Override
 		public Color getForegroundColor() {
 			return foregroundColor;
+		}
+
+	}
+
+	static class HighlightBlueColorScheme extends BaseLightColorScheme {
+
+		public HighlightBlueColorScheme(String displayName) {
+			super(displayName);
+		}
+
+		private Color color = new Color(54, 123, 183);
+		private Color foreground = Color.WHITE;
+
+		@Override
+		public Color getUltraDarkColor() {
+			return color;
+		}
+
+		@Override
+		public Color getDarkColor() {
+			return color;
+		}
+
+		@Override
+		public Color getMidColor() {
+			return color;
+		}
+
+		@Override
+		public Color getLightColor() {
+			return color;
+		}
+
+		@Override
+		public Color getExtraLightColor() {
+			return color;
+		}
+
+		@Override
+		public Color getUltraLightColor() {
+			return color;
+		}
+
+		@Override
+		public Color getForegroundColor() {
+			return foreground;
 		}
 
 	}
@@ -197,13 +245,14 @@ public final class SubstanceATunesBlueSkin extends SubstanceSkin implements Cust
 		SubstanceColorScheme activeScheme = new BlueColorScheme("aTunes Blue");
 		SubstanceColorScheme defaultScheme = new MetallicColorScheme("Metallic");
 		SubstanceColorScheme disabledScheme = new DisabledMetallicColorScheme("Disabled Metallic");
+		SubstanceColorScheme highlightScheme = new HighlightBlueColorScheme("Highlight");
 
 		// the default theme bundle
 		SubstanceColorSchemeBundle defaultSchemeBundle = new SubstanceColorSchemeBundle(defaultScheme, defaultScheme, disabledScheme);
-		defaultSchemeBundle.registerHighlightColorScheme(activeScheme, 0.8f, ComponentState.ROLLOVER_UNSELECTED);
-		defaultSchemeBundle.registerHighlightColorScheme(activeScheme, 0.8f, ComponentState.SELECTED);
-		defaultSchemeBundle.registerHighlightColorScheme(activeScheme, 0.8f,ComponentState.ROLLOVER_SELECTED);
-		defaultSchemeBundle.registerHighlightColorScheme(activeScheme, 0.8f, ComponentState.ARMED, ComponentState.ROLLOVER_ARMED);
+		defaultSchemeBundle.registerHighlightColorScheme(highlightScheme, 1f, ComponentState.ROLLOVER_UNSELECTED);
+		defaultSchemeBundle.registerHighlightColorScheme(highlightScheme, 1f, ComponentState.SELECTED);
+		defaultSchemeBundle.registerHighlightColorScheme(highlightScheme, 1f, ComponentState.ROLLOVER_SELECTED);
+		defaultSchemeBundle.registerHighlightColorScheme(highlightScheme, 1f, ComponentState.ARMED, ComponentState.ROLLOVER_ARMED);
 		this.registerDecorationAreaSchemeBundle(defaultSchemeBundle, DecorationAreaType.NONE);
 
 		// the special theme bundle
@@ -218,6 +267,8 @@ public final class SubstanceATunesBlueSkin extends SubstanceSkin implements Cust
 		this.borderPainter = new ClassicBorderPainter();
 		this.decorationPainter = new MatteDecorationPainter();
 		this.highlightPainter = new ClassicHighlightPainter();
+		
+		this.highlightColor = highlightScheme.getLightColor();
 
 	}
 
@@ -231,15 +282,14 @@ public final class SubstanceATunesBlueSkin extends SubstanceSkin implements Cust
     	if (isSelected) {
     		return component.getForeground();    		
     	} else {
-    		Color c = org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin().getActiveColorScheme(DecorationAreaType.HEADER).getUltraDarkColor();    		
+    		Color c = highlightColor.darker();    		
     		return new Color(c.getRed(), c.getGreen(), c.getBlue(), 200);
     	}
 	}
 	
     @Override
 	public Paint getPaintForSpecialControls() {
-		Color c = org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin().getActiveColorScheme(DecorationAreaType.HEADER).getUltraDarkColor();    		
-		return new Color(c.getRed(), c.getGreen(), c.getBlue(), 200);
+		return highlightColor.darker();    		
 	}
 
 }
