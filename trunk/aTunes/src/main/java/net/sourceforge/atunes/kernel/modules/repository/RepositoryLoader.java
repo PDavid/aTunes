@@ -95,9 +95,6 @@ public class RepositoryLoader extends Thread {
 	 *            Files to add
 	 */
 	static void addToRepository(Repository rep, List<File> files) {
-		// This operation changes repository, so mark it as dirty
-		rep.setDirty(true);
-
 		// Get folders where files are
 		Set<File> folders = new HashSet<File>();
 		for (File file : files) {
@@ -143,6 +140,9 @@ public class RepositoryLoader extends Thread {
 				}
 			}
 		}
+		
+		// This operation changes repository, so mark it as dirty
+		rep.setDirty(true, true);
 	}
 
 	/**
@@ -284,7 +284,7 @@ public class RepositoryLoader extends Thread {
 	 */
 	static void refreshFile(Repository repository, LocalAudioObject file) {
 		// This operation changes repository, so mark it as dirty
-		repository.setDirty(true);
+		repository.setDirty(true, false);
 
 		try {
 			// Get old tag
@@ -565,7 +565,7 @@ public class RepositoryLoader extends Thread {
 	 */
 	private void notifyFinish() {
 		// After every read or refresh mark repository as dirty
-		repository.setDirty(true);
+		repository.setDirty(true, true);
 
 		AudioFile.getImageCache().clearCache();
 
@@ -645,7 +645,7 @@ public class RepositoryLoader extends Thread {
 			}
 
 			// This operation changes repository, so mark it as dirty
-			repository.setDirty(true);
+			repository.setDirty(true, true);
 
 			List<LocalAudioObject> audioFiles = AudioFile.getAudioFiles(album.getAudioObjects());
 			for (LocalAudioObject af : audioFiles) {
@@ -656,6 +656,9 @@ public class RepositoryLoader extends Thread {
 
 	/**
 	 * Permanently deletes an audio file from the repository metainformation
+	 * 
+	 * This method marks repository as dirty but new state is not notified
+	 * To notify repository change call Repository.setDirty(true, true) when finish
 	 * 
 	 * @param file
 	 *            File to be removed permanently
@@ -670,7 +673,7 @@ public class RepositoryLoader extends Thread {
 		// Only do this if file is in repository
 		if (getFolderForFile(file) != null) {
 			// This operation changes repository, so mark it as dirty
-			RepositoryHandler.getInstance().getRepository().setDirty(true);
+			RepositoryHandler.getInstance().getRepository().setDirty(true, false);
 
 			// Remove from file structure
 			Folder f = getFolderForFile(file);
@@ -791,7 +794,7 @@ public class RepositoryLoader extends Thread {
 	 */
 	static void renameFile(LocalAudioObject audioFile, File oldFile, File newFile) {
 		// This operation changes repository, so mark it as dirty
-		RepositoryHandler.getInstance().getRepository().setDirty(true);
+		RepositoryHandler.getInstance().getRepository().setDirty(true, true);
 
 		audioFile.setFile(newFile);
 		RepositoryHandler.getInstance().getRepository().getAudioFiles().remove(

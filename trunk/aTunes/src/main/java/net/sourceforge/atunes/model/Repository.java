@@ -225,11 +225,11 @@ public class Repository implements Serializable {
 
     /**
      * @param dirty
-     *            the dirty to set
+     * @param notifyImmediately            
      */
-    public void setDirty(boolean dirty) {
+    public void setDirty(boolean dirty, boolean notifyImmediately) {
         this.dirty = dirty;
-        if (dirty && listener != null) {
+        if (dirty && listener != null && notifyImmediately) {
         	listener.repositoryChanged(this);
         }
     }

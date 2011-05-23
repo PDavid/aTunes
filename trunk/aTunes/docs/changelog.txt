@@ -7,7 +7,7 @@ aTunes 2.1.0
 - Use absolute folder name when setting tags from patterns
 - Restore selection after track deletion in playlist [3007538] (patch by cy6ergnOm)
 - Song properties dialog improved [3002167] (patch by cy6ergnOm)
-- Preferences reworked and saved immediately
+- Preferences reworked and saved immediately [ feature request 2977778 ]
 - Visual improvements
 - Removed multiple view
 - Option to show/hide advanced player controls (karaoke, normalization)
@@ -23,6 +23,7 @@ aTunes 2.1.0
 - Removed karaoke mode
 - Fetch covers while reading repository and show in progress dialog
 - User can change color of tray player icons
+- Repository saved immediately after a change
 - FIX: Exception during renaming of file name
 - FIX: Repository refresh never ends in certain situations [3024433]
 - FIX: Selected playlist element not saved when closing application

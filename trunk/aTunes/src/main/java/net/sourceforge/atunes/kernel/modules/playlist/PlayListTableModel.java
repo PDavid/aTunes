@@ -118,7 +118,7 @@ public class PlayListTableModel extends AbstractColumnSetTableModel {
         PlayListHandler.getInstance().refreshPlayList();
 
         // Mark repository as dirty
-        RepositoryHandler.getInstance().getRepository().setDirty(true);
+        RepositoryHandler.getInstance().getRepository().setDirty(true, true);
     }
 
     /**
