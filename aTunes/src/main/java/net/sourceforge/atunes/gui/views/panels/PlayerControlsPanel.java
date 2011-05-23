@@ -29,7 +29,6 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 import javax.swing.Action;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -41,7 +40,6 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.EqualizerButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.NextButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.NormalizationButton;
-import net.sourceforge.atunes.gui.views.controls.playerControls.OptionsButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.PlayPauseButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.PreviousButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.ProgressSlider;
@@ -51,10 +49,6 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.ShuffleButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.StopButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeLevel;
 import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
-import net.sourceforge.atunes.kernel.actions.Actions;
-import net.sourceforge.atunes.kernel.actions.EditPreferencesAction;
-import net.sourceforge.atunes.kernel.actions.ShowContextAction;
-import net.sourceforge.atunes.kernel.actions.ShowNavigationTreeAction;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
@@ -88,7 +82,7 @@ public final class PlayerControlsPanel extends JPanel {
             : DEFAULT_BUTTONS_SIZE;
 
     /** Size of shuffle, repeat, ... buttons */
-    public static final Dimension OTHER_BUTTONS_SIZE = new Dimension(25, 23);
+    public static final Dimension OTHER_BUTTONS_SIZE = new Dimension(28, 26);
 
     /** Height of progress bar when has no ticks */
     private static final int PROGRESS_BAR_NO_TICKS_HEIGHT = 26;
@@ -132,11 +126,6 @@ public final class PlayerControlsPanel extends JPanel {
      * Adds the content.
      */
     private void addContent() {
-    	OptionsButton options = new OptionsButton(OTHER_BUTTONS_SIZE);
-    	options.add(new JCheckBoxMenuItem(Actions.getAction(ShowNavigationTreeAction.class)));
-    	options.add(new JCheckBoxMenuItem(Actions.getAction(ShowContextAction.class)));
-    	options.add(Actions.getAction(EditPreferencesAction.class));
-    	
     	JPanel topProgressSliderContainer = new JPanel(new BorderLayout());
     	JPanel bottomProgressSliderContainer = new JPanel(new BorderLayout());
     	bottomProgressSliderContainer.addComponentListener(new BottomProgressSliderPanelComponentAdapter(bottomProgressSliderContainer, topProgressSliderContainer));
@@ -157,18 +146,12 @@ public final class PlayerControlsPanel extends JPanel {
         c.insets = new Insets(5, 40, 0, 40);
         add(topProgressSliderContainer, c);
                 
+        c.gridx = 1;
         c.gridy = 1;
         c.gridwidth = 1;
         c.weightx = 0;
-        c.weighty = 0;
-        c.insets = new Insets(1, 10, 5, 10);
-        c.fill = GridBagConstraints.NONE;
-        add(options, c);
-        
-        c.gridx = 1;
-        c.weightx = 0;
         c.weighty = 0.5;
-        c.insets = new Insets(0, 0, 5, 0);
+        c.insets = new Insets(0, 10, 5, 0);
         c.fill = GridBagConstraints.BOTH;
         add(mainControls, c);
         

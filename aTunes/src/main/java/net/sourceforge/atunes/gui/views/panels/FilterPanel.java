@@ -20,9 +20,8 @@
 
 package net.sourceforge.atunes.gui.views.panels;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -40,7 +39,7 @@ public class FilterPanel extends JPanel {
     private JTextField filterTextField;
 
     public FilterPanel() {
-        super(new GridBagLayout());
+        super(new BorderLayout());
         addContent();
     }
 
@@ -51,21 +50,9 @@ public class FilterPanel extends JPanel {
         filterTextField.setToolTipText(I18nUtils.getString("FILTER_TEXTFIELD_TOOLTIP"));
         setMinimumSize(filterTextField.getPreferredSize());
         setPreferredSize(filterTextField.getPreferredSize());
-
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 0;
-        c.weighty = 1;
-        c.fill = GridBagConstraints.BOTH;
-        c.insets = new Insets(1, 0, 1, 0);
-        add(filterButton, c);
-        c.gridx = 1;
-        c.gridy = 0;
-        c.weightx = 1;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.insets = new Insets(0, 0, 0, 0);
-        add(filterTextField, c);
+        filterButton.setPreferredSize(new Dimension(filterTextField.getPreferredSize().height, filterTextField.getPreferredSize().height));        
+        add(filterButton, BorderLayout.WEST);
+        add(filterTextField, BorderLayout.CENTER);
     }
 
     /**
