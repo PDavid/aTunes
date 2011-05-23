@@ -81,6 +81,9 @@ public abstract class AbstractChangeTagProcess extends AbstractProcess {
         // Refresh swing components
         TagModifier.refreshAfterTagModify(filesToChange);
 
+        // Set repository to notify changes immediately
+        RepositoryHandler.getInstance().getRepository().setDirty(true, true);
+        
         return !errors;
     }
 

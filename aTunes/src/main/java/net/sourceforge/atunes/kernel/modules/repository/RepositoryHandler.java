@@ -980,6 +980,8 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
             RepositoryLoader.deleteFile(fileToRemove);
         }
 
+        getRepository().setDirty(true, true);
+        
         // Notify listeners
         for (AudioFilesRemovedListener listener : audioFilesRemovedListeners) {
             listener.audioFilesRemoved(filesToRemove);
