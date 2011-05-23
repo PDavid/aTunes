@@ -116,14 +116,10 @@ class PreferencesCache extends AbstractCache {
             return;
         }
 
-        String previousValue = retrievePasswordPreference(preferenceId);
-        if (previousValue != null && !previousValue.equals(value)) {
-        	// Only store different values
-        	Element element = new Element(preferenceId.toString(), value != null ? new PasswordPreference(value) : null);
-        	getCache().put(element);
-        	getCache().flush();
-        	getLogger().debug(LogCategories.PREFERENCES, "Stored Password Preference: ", preferenceId, " Value: ", value.toString());
-        }
+        Element element = new Element(preferenceId.toString(), value != null ? new PasswordPreference(value) : null);
+        getCache().put(element);
+        getCache().flush();
+        getLogger().debug(LogCategories.PREFERENCES, "Stored Password Preference: ", preferenceId, " Value: ", value.toString());
     }
 
     private Cache getCache() {

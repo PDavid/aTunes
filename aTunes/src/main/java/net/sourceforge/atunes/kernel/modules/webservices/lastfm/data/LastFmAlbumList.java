@@ -24,9 +24,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import net.roarsoftware.lastfm.Album;
 import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
 import net.sourceforge.atunes.kernel.modules.context.AlbumListInfo;
+import de.umass.lastfm.Album;
 
 public class LastFmAlbumList implements AlbumListInfo {
 

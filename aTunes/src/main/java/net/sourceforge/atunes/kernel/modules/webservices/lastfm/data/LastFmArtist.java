@@ -22,9 +22,9 @@ package net.sourceforge.atunes.kernel.modules.webservices.lastfm.data;
 
 import javax.swing.ImageIcon;
 
-import net.roarsoftware.lastfm.Artist;
-import net.roarsoftware.lastfm.ImageSize;
 import net.sourceforge.atunes.kernel.modules.context.ArtistInfo;
+import de.umass.lastfm.Artist;
+import de.umass.lastfm.ImageSize;
 
 public class LastFmArtist implements ArtistInfo {
 

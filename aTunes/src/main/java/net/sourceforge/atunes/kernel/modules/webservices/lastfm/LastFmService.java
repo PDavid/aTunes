@@ -35,23 +35,6 @@ import java.util.concurrent.RejectedExecutionException;
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 
-import net.roarsoftware.lastfm.Album;
-import net.roarsoftware.lastfm.Artist;
-import net.roarsoftware.lastfm.Authenticator;
-import net.roarsoftware.lastfm.Caller;
-import net.roarsoftware.lastfm.Event;
-import net.roarsoftware.lastfm.ImageSize;
-import net.roarsoftware.lastfm.PaginatedResult;
-import net.roarsoftware.lastfm.Playlist;
-import net.roarsoftware.lastfm.Result;
-import net.roarsoftware.lastfm.Result.Status;
-import net.roarsoftware.lastfm.Session;
-import net.roarsoftware.lastfm.Track;
-import net.roarsoftware.lastfm.scrobble.ResponseStatus;
-import net.roarsoftware.lastfm.scrobble.Scrobbler;
-import net.roarsoftware.lastfm.scrobble.Source;
-import net.roarsoftware.lastfm.scrobble.SubmissionData;
-import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
 import net.sourceforge.atunes.kernel.modules.context.AlbumListInfo;
 import net.sourceforge.atunes.kernel.modules.context.ArtistInfo;
@@ -75,6 +58,21 @@ import net.sourceforge.atunes.utils.NetworkUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.commonjukebox.plugins.model.PluginApi;
+
+import de.umass.lastfm.Album;
+import de.umass.lastfm.Artist;
+import de.umass.lastfm.Authenticator;
+import de.umass.lastfm.Caller;
+import de.umass.lastfm.Event;
+import de.umass.lastfm.ImageSize;
+import de.umass.lastfm.PaginatedResult;
+import de.umass.lastfm.Playlist;
+import de.umass.lastfm.Result;
+import de.umass.lastfm.Result.Status;
+import de.umass.lastfm.Session;
+import de.umass.lastfm.Tag;
+import de.umass.lastfm.Track;
+import de.umass.lastfm.scrobble.ScrobbleResult;
 
 /**
  * This class is responsible of retrieve information from Last.fm web services.
@@ -150,7 +148,6 @@ public final class LastFmService {
     private static final byte[] API_SECRET = { 38, -8, 33, 63, 10, 86, 29, -2, 87, -63, 67, 111, -5, -101, -87, 38, 2, 35, 86, -86, 19, 110, -81, -115, 102, 54, -24, 27, 40, -124,
             -57, -62, -70, 123, -88, -70, -108, 75, -77, 98 };
     private static final String CLIENT_ID = "atu";
-    private static final String CLIENT_VERSION = Constants.VERSION.toShortString();
 
     private static final String ARTIST_WILDCARD = "(%ARTIST%)";
     private static final String LANGUAGE_PARAM = "?setlang=";
@@ -166,10 +163,8 @@ public final class LastFmService {
 
     private Proxy proxy;
 
-    private Scrobbler scrobbler;
     private String user;
     private String password;
-    private boolean handshakePerformed;
 
     private static LastFmCache lastFmCache = new LastFmCache();
 
@@ -217,12 +212,11 @@ public final class LastFmService {
         this.proxy = proxy;
         this.user = user;
         this.password = password;
+        getLogger().debug(LogCategories.PLAYER, "User: ", user);
+        getLogger().debug(LogCategories.PLAYER, "Password: ", password);
         Caller.getInstance().setCache(null);
         Caller.getInstance().setProxy(proxy);
         Caller.getInstance().setUserAgent(CLIENT_ID);
-        // Use encoded version name to avoid errors from server
-        scrobbler = Scrobbler.newScrobbler(CLIENT_ID, NetworkUtils.encodeString(CLIENT_VERSION), user);
-        this.handshakePerformed = false;
     }
 
     /**
@@ -370,8 +364,11 @@ public final class LastFmService {
      */
     public String getArtistTopTag(String artist) {
         try {
-            Collection<String> topTags = Artist.getTopTags(artist, getApiKey());
-            List<String> tags = new ArrayList<String>(topTags);
+            Collection<Tag> topTags = Artist.getTopTags(artist, getApiKey());
+            List<String> tags = new ArrayList<String>();
+            for (Tag t : topTags) {
+            	tags.add(t.getName());
+            }
             return tags.isEmpty() ? "" : tags.get(0);
         } catch (Exception e) {
             getLogger().error(LogCategories.SERVICE, e);
@@ -485,8 +482,8 @@ public final class LastFmService {
     private Image getArtistImageFromLastFM(String artistName, ImageSize size) {
         try {
             // Try to get from Artist.getImages() method 
-            PaginatedResult<net.roarsoftware.lastfm.Image> images = Artist.getImages(artistName, 1, 1, getApiKey());
-            List<net.roarsoftware.lastfm.Image> imageList = new ArrayList<net.roarsoftware.lastfm.Image>(images.getPageResults());
+            PaginatedResult<de.umass.lastfm.Image> images = Artist.getImages(artistName, 1, 1, getApiKey());
+            List<de.umass.lastfm.Image> imageList = new ArrayList<de.umass.lastfm.Image>(images.getPageResults());
             if (!imageList.isEmpty()) {
                 Set<ImageSize> sizes = imageList.get(0).availableSizes();
                 // Try to get the given size
@@ -563,7 +560,7 @@ public final class LastFmService {
             String wikiText = lastFmCache.retrieveArtistWiki(artist);
             if (wikiText == null) {
 
-                Artist a = Artist.getInfo(artist, ApplicationState.getInstance().getLocale().getLocale(), getApiKey());
+                Artist a = Artist.getInfo(artist, ApplicationState.getInstance().getLocale().getLocale(), null, getApiKey());
                 wikiText = a != null ? a.getWikiSummary() : "";
                 wikiText = wikiText.replaceAll("<.*?>", "");
                 wikiText = StringUtils.unescapeHTML(wikiText, 0);
@@ -609,26 +606,13 @@ public final class LastFmService {
         long startedToPlay = System.currentTimeMillis() / 1000 - secondsPlayed;
 
         getLogger().info(LogCategories.SERVICE, "Trying to submit song to Last.fm");
-        try {
-            performHandshakeIfNeeded();
-            SubmissionData submissionData = new SubmissionData(file.getArtist(), file.getTitle(), file.getAlbum(), file.getDuration(), file.getTrackNumber(), Source.USER, null,
-                    startedToPlay);
-            ResponseStatus status = scrobbler.submit(submissionData);
-            if (status.ok()) {
-                getLogger().info(LogCategories.SERVICE, "Song submitted to Last.fm");
-            } else {
-                handshakePerformed = false;
-                lastFmCache.addSubmissionData(new net.sourceforge.atunes.kernel.modules.webservices.lastfm.SubmissionData(file.getArtist(), file.getTitle(), file.getAlbum(), file
-                        .getDuration(), file.getTrackNumber(), Source.USER.toString(), (int) startedToPlay));
-                throw new ScrobblerException(status.getStatus());
-            }
+        ScrobbleResult result = Track.scrobble(file.getArtist(), file.getTitle(), (int) startedToPlay, getSession());
 
-        } catch (IOException e) {
-            getLogger().error(LogCategories.SERVICE, e);
-            handshakePerformed = false;
-            lastFmCache.addSubmissionData(new net.sourceforge.atunes.kernel.modules.webservices.lastfm.SubmissionData(file.getArtist(), file.getTitle(), file.getAlbum(), file
-                    .getDuration(), file.getTrackNumber(), Source.USER.toString(), (int) startedToPlay));
-            throw new ScrobblerException(e.getMessage());
+        if (result.isSuccessful() && !result.isIgnored()) {
+        	getLogger().info(LogCategories.SERVICE, "Song submitted to Last.fm");
+        } else {
+        	lastFmCache.addSubmissionData(new net.sourceforge.atunes.kernel.modules.webservices.lastfm.SubmissionData(file.getArtist(), file.getTitle(), (int) startedToPlay));
+        	throw new ScrobblerException(result.getStatus().toString());
         }
     }
 
@@ -695,30 +679,20 @@ public final class LastFmService {
             }
 
             getLogger().info(LogCategories.SERVICE, "Trying to submit cache to Last.fm");
-            try {
-                performHandshakeIfNeeded();
-
-                List<SubmissionData> submissionDataList = new ArrayList<SubmissionData>();
-                for (net.sourceforge.atunes.kernel.modules.webservices.lastfm.SubmissionData submissionData : collectionWithSubmissionData) {
-                    SubmissionData sd = new SubmissionData(submissionData.getArtist(), submissionData.getTitle(), submissionData.getAlbum(), submissionData.getDuration(),
-                            submissionData.getTrackNumber(), Source.valueOf(submissionData.getSource()), null, submissionData.getStartTime());
-                    submissionDataList.add(sd);
-                }
-
-                ResponseStatus status = scrobbler.submit(submissionDataList);
-                if (status.ok()) {
-                    lastFmCache.removeSubmissionData();
-                    getLogger().info(LogCategories.SERVICE, "Cache submitted to Last.fm");
-                } else {
-                    handshakePerformed = false;
-                    throw new ScrobblerException(status.getStatus());
-                }
-
-            } catch (IOException e) {
-                getLogger().error(LogCategories.SERVICE, e);
-                handshakePerformed = false;
-                throw new ScrobblerException(e.getMessage());
+            ScrobbleResult result = null;
+            boolean ok = true;
+            for (net.sourceforge.atunes.kernel.modules.webservices.lastfm.SubmissionData submissionData : collectionWithSubmissionData) {                	
+            	result = Track.scrobble(submissionData.getArtist(), submissionData.getTitle(), submissionData.getStartTime(), getSession());
+            	ok = ok || result.isSuccessful();
             }
+
+            if (ok) {
+            	lastFmCache.removeSubmissionData();
+            	getLogger().info(LogCategories.SERVICE, "Cache submitted to Last.fm");
+            } else {
+            	throw new ScrobblerException(result.getStatus().toString());
+            }
+
         }
 
     }
@@ -737,35 +711,11 @@ public final class LastFmService {
         }
 
         getLogger().info(LogCategories.SERVICE, "Trying to submit now playing info to Last.fm");
-        try {
-            performHandshakeIfNeeded();
-            ResponseStatus status = scrobbler.nowPlaying(file.getArtist(), file.getTitle(), file.getAlbum(), file.getDuration(), file.getTrackNumber());
-            if (status.ok()) {
-                getLogger().info(LogCategories.SERVICE, "Now playing info submitted to Last.fm");
-            } else {
-                handshakePerformed = false;
-                throw new ScrobblerException(status.getStatus());
-            }
-        } catch (IOException e) {
-            getLogger().error(LogCategories.SERVICE, e);
-            handshakePerformed = false;
-            throw new ScrobblerException(e.getMessage());
-        }
-    }
-
-    /**
-     * Performs handshake for submissions if needed
-     * 
-     * @throws IOException
-     * @throws ScrobblerException
-     */
-    private void performHandshakeIfNeeded() throws IOException, ScrobblerException {
-        if (!handshakePerformed) {
-            ResponseStatus status = scrobbler.handshake(password);
-            if (!status.ok()) {
-                throw new ScrobblerException(status.getStatus());
-            }
-            handshakePerformed = true;
+        ScrobbleResult status = Track.updateNowPlaying(file.getArtist(), file.getTitle(), getSession());
+        if (status.isSuccessful() && !status.isIgnored()) {
+        	getLogger().info(LogCategories.SERVICE, "Now playing info submitted to Last.fm");
+        } else {
+        	throw new ScrobblerException(status.getStatus().toString());
         }
     }
 

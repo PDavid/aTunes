@@ -20,8 +20,8 @@
 
 package net.sourceforge.atunes.kernel.modules.webservices.lastfm.data;
 
-import net.roarsoftware.lastfm.Track;
 import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
+import de.umass.lastfm.Track;
 
 public class LastFmTrack implements TrackInfo {
 

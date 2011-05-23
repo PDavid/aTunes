@@ -30,13 +30,13 @@ import java.util.Locale;
 
 import javax.swing.ImageIcon;
 
-import net.roarsoftware.lastfm.Album;
-import net.roarsoftware.lastfm.ImageSize;
-import net.roarsoftware.lastfm.Playlist;
-import net.roarsoftware.lastfm.Track;
 import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
 import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
 import net.sourceforge.atunes.utils.StringUtils;
+import de.umass.lastfm.Album;
+import de.umass.lastfm.ImageSize;
+import de.umass.lastfm.Playlist;
+import de.umass.lastfm.Track;
 
 public class LastFmAlbum implements AlbumInfo {
 
