@@ -116,7 +116,7 @@ public abstract class AbstractActionOverSelectedObjects<T extends AudioObject> e
         }
 
         for (AudioObject ao : selection) {
-            if (!(ao.getClass().equals(this.objectsClass))) {
+            if (!(this.objectsClass.isAssignableFrom(ao.getClass()))) {
                 return false;
             }
         }

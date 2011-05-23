@@ -89,6 +89,11 @@ public class EditTagAction extends AbstractActionOverSelectedObjects<LocalAudioO
         return super.isEnabledForNavigationTableSelection(selection);
     }
 
+    @Override
+    public boolean isEnabledForPlayListSelection(List<AudioObject> selection) {
+    	return super.isEnabledForPlayListSelection(selection);
+    }
+    
     /**
      * Getter for logger
      * 
