@@ -149,7 +149,7 @@ public final class SubstanceATunesBlueSkin extends SubstanceSkin implements Cust
 		private Color lightColor = new Color(213, 221, 228);
 		private Color extraLightColor = new Color(243, 247, 251);
 		private Color ultraLightColor = new Color(251, 252, 255);
-		private Color foregroundColor = new Color(25, 29, 33);
+		private Color foregroundColor = new Color(80, 80, 80);
 
 		@Override
 		public Color getUltraDarkColor() {
