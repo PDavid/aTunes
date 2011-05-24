@@ -24,12 +24,15 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.kernel.modules.repository.exception.InconsistentRepositoryException;
+import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.misc.log.Logger;
 
 public class Repository implements Serializable {
 
@@ -55,15 +58,15 @@ public class Repository implements Serializable {
      */
     private RepositoryStructure structure;
     
-    /** 
-     * Attribute to indicate if repository needs to be written to disk 
-     */
-    private transient boolean dirty;
-    
     /**
      * Object to be notified when this repository becomes dirty
      */
     private transient RepositoryListener listener;
+    
+    /**
+     * Current transaction
+     */
+    private transient RepositoryTransaction transaction;
 
     /**
      * Instantiates a new repository.
@@ -217,24 +220,6 @@ public class Repository implements Serializable {
     }
 
     /**
-     * @return the dirty
-     */
-    public boolean isDirty() {
-        return dirty;
-    }
-
-    /**
-     * @param dirty
-     * @param notifyImmediately            
-     */
-    public void setDirty(boolean dirty, boolean notifyImmediately) {
-        this.dirty = dirty;
-        if (dirty && listener != null && notifyImmediately) {
-        	listener.repositoryChanged(this);
-        }
-    }
-    
-    /**
      * Validates this repository throwing exception if object is not consistent. 
      * For example when a new attribute is added a repository object without that attribute can be considered invalid
      * @throws InconsistentRepositoryException
@@ -252,5 +237,55 @@ public class Repository implements Serializable {
 
 	public void setListener(RepositoryListener listener) {
 		this.listener = listener;
+	}
+	
+	/**
+	 * Starts a transaction to change repository
+	 */
+	public void startTransaction() {
+		this.transaction = new RepositoryTransaction(this, listener);
+	}
+	
+	/**
+	 * Ends a transaction to change repository
+	 */
+	public void endTransaction() {
+		if (this.transaction != null) {
+			this.transaction.finishTransaction();
+		}
+	}
+	
+	/**
+	 * Returns true if there is a repository transaction not finished
+	 * @return
+	 */
+	public boolean transactionPending() {
+		return this.transaction != null && this.transaction.isPending();
+	}
+	
+	public static final class RepositoryTransaction {
+		
+		private Repository repository;
+		private RepositoryListener listener;
+		private volatile boolean pending;
+		
+		private RepositoryTransaction(Repository repository, RepositoryListener listener) {
+			this.repository = repository;
+			this.listener = listener;
+			this.pending = true;
+			new Logger().debug(LogCategories.REPOSITORY, "Creating new repository transaction: ", new Date().toString());
+		}
+		
+		public void finishTransaction() {
+			if (listener != null) {
+				listener.repositoryChanged(this.repository);
+			}
+			this.pending = false;
+			new Logger().debug(LogCategories.REPOSITORY, "Finished repository transaction: ", new Date().toString());
+		}
+		
+		public boolean isPending() {
+			return this.pending;
+		}
 	}
 }

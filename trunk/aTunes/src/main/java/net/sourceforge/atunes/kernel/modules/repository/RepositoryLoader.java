@@ -141,10 +141,7 @@ public class RepositoryLoader extends Thread {
 					filler.addAudioFile(audioFile, getRepositoryFolderContaining(rep, folder), relativePath);
 				}
 			}
-		}
-		
-		// This operation changes repository, so mark it as dirty
-		rep.setDirty(true, true);
+		}		
 	}
 
 	/**
@@ -284,9 +281,6 @@ public class RepositoryLoader extends Thread {
 	 *            the file
 	 */
 	static void refreshFile(Repository repository, LocalAudioObject file) {
-		// This operation changes repository, so mark it as dirty
-		repository.setDirty(true, false);
-
 		try {
 			// Get old tag
 			AbstractTag oldTag = file.getTag();
@@ -565,9 +559,8 @@ public class RepositoryLoader extends Thread {
 	 * Notify finish.
 	 */
 	private void notifyFinish() {
-		// After every read or refresh mark repository as dirty
-		repository.setDirty(true, true);
-
+		RepositoryHandler.getInstance().endTransaction();
+		
 		AudioFile.getImageCache().clearCache();
 
 		if (listener == null) {
@@ -593,6 +586,9 @@ public class RepositoryLoader extends Thread {
 	@Override
 	public void run() {
 		getLogger().info(LogCategories.REPOSITORY, "Starting repository read");
+		
+		RepositoryHandler.getInstance().startTransaction();
+		
 		Timer timer = new Timer();
 		timer.start();
 		if (!folders.isEmpty()) {
@@ -645,9 +641,6 @@ public class RepositoryLoader extends Thread {
 				return;
 			}
 
-			// This operation changes repository, so mark it as dirty
-			repository.setDirty(true, true);
-
 			List<LocalAudioObject> audioFiles = AudioFile.getAudioFiles(album.getAudioObjects());
 			for (LocalAudioObject af : audioFiles) {
 				af.addExternalPicture(picture);
@@ -673,9 +666,6 @@ public class RepositoryLoader extends Thread {
 
 		// Only do this if file is in repository
 		if (getFolderForFile(file) != null) {
-			// This operation changes repository, so mark it as dirty
-			RepositoryHandler.getInstance().getRepository().setDirty(true, false);
-
 			// Remove from file structure
 			Folder f = getFolderForFile(file);
 			if (f != null) {
@@ -794,9 +784,6 @@ public class RepositoryLoader extends Thread {
 	 * @param newFile
 	 */
 	static void renameFile(LocalAudioObject audioFile, File oldFile, File newFile) {
-		// This operation changes repository, so mark it as dirty
-		RepositoryHandler.getInstance().getRepository().setDirty(true, true);
-
 		audioFile.setFile(newFile);
 		RepositoryHandler.getInstance().getRepository().getAudioFiles().remove(
 				oldFile.getAbsolutePath());
@@ -822,8 +809,7 @@ public class RepositoryLoader extends Thread {
 	 * @param folder
 	 */
 	public static void refreshFolders(Repository repository, List<Folder> folders) {
-		// This operation changes repository, so mark it as dirty
-		RepositoryHandler.getInstance().getRepository().setDirty(true, false);
+		RepositoryHandler.getInstance().startTransaction();
 		
 		for (Folder folder : folders) {
 			// Remove o refresh previous files		
@@ -847,6 +833,8 @@ public class RepositoryLoader extends Thread {
 				}
 			}
 		}
+		
+		RepositoryHandler.getInstance().endTransaction();
 	}
 
 }
