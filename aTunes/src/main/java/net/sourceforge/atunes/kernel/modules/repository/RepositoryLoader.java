@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -43,6 +44,7 @@ import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.model.Repository;
@@ -54,7 +56,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class RepositoryLoader extends Thread {
 
-	private Logger logger;
+	private static Logger logger;
 
 	// Some attributes to speed up populate info process
 	private LoaderListener listener;
@@ -216,9 +218,8 @@ public class RepositoryLoader extends Thread {
 	 * 
 	 * @return the songs for dir
 	 */
-	public static List<AudioFile> getSongsForFolder(File folder,
-			LoaderListener listener) {
-		List<AudioFile> result = new ArrayList<AudioFile>();
+	public static List<LocalAudioObject> getSongsForFolder(File folder, LoaderListener listener) {
+		List<LocalAudioObject> result = new ArrayList<LocalAudioObject>();
 
 		File[] list = folder.listFiles();
 		List<File> pictures = new ArrayList<File>();
@@ -808,11 +809,44 @@ public class RepositoryLoader extends Thread {
 	 * 
 	 * @return
 	 */
-	private Logger getLogger() {
+	private static Logger getLogger() {
 		if (logger == null) {
 			logger = new Logger();
 		}
 		return logger;
+	}
+
+	/**
+	 * Refreshes folder
+	 * @param repository
+	 * @param folder
+	 */
+	public static void refreshFolders(Repository repository, List<Folder> folders) {
+		// This operation changes repository, so mark it as dirty
+		RepositoryHandler.getInstance().getRepository().setDirty(true, false);
+		
+		for (Folder folder : folders) {
+			// Remove o refresh previous files		
+			List<AudioObject> aos = folder.getAudioObjects();
+			for (AudioObject ao : aos) {
+				if (((LocalAudioObject)ao).getFile().exists()) {
+					getLogger().debug(LogCategories.REPOSITORY, "Refreshing file: ", ((LocalAudioObject)ao).getFile().getAbsolutePath());
+					refreshFile(repository, (LocalAudioObject) ao);
+				} else {
+					getLogger().debug(LogCategories.REPOSITORY, "Removing file: ", ((LocalAudioObject)ao).getFile().getAbsolutePath());
+					RepositoryHandler.getInstance().remove(Collections.singletonList((LocalAudioObject)ao));
+				}
+			}
+
+			// Add new files
+			List<LocalAudioObject> allObjects = getSongsForFolder(folder.getFolderPath(), null);
+			for (LocalAudioObject ao : allObjects) {
+				if (repository.getFile(ao.getFile().getAbsolutePath()) == null) {
+					getLogger().debug(LogCategories.REPOSITORY, "Adding file: ", ao.getFile().getAbsolutePath());
+					addToRepository(repository, Collections.singletonList(ao.getFile()));
+				}
+			}
+		}
 	}
 
 }
