@@ -52,7 +52,9 @@ import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.model.AudioObjectsSource;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
+import net.sourceforge.atunes.gui.model.TreeObjectsSource;
 import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedObjects;
+import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedTreeObjects;
 import net.sourceforge.atunes.kernel.actions.ActionWithColorMutableIcon;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
@@ -64,7 +66,7 @@ import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 
-public abstract class AbstractNavigationView implements AudioObjectsSource {
+public abstract class AbstractNavigationView implements AudioObjectsSource, TreeObjectsSource {
 
     private final class ArtistNamesComparator implements Comparator<String> {
 		private final Pattern PATTERN = Pattern.compile("(.*)\\s+(.*?)");
@@ -448,6 +450,18 @@ public abstract class AbstractNavigationView implements AudioObjectsSource {
         }
         return selectedInTable;
     }
+    
+    @Override
+    public List<TreeObject> getSelectedTreeObjects() {
+        TreePath[] paths = getTree().getSelectionPaths();
+        List<TreeObject> treeObjectsSelected = new ArrayList<TreeObject>();
+        if (paths != null) {
+            for (TreePath path : paths) {
+            	treeObjectsSelected.add((TreeObject)((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject());
+            }
+        }
+        return treeObjectsSelected;
+    }
 
     /**
      * Returns a menu item with an action bound to view
@@ -457,6 +471,16 @@ public abstract class AbstractNavigationView implements AudioObjectsSource {
      */
     protected JMenuItem getMenuItemForAction(Class<? extends AbstractActionOverSelectedObjects<? extends AudioObject>> clazz) {
         return Actions.getMenuItemForAction(clazz, this);
+    }
+
+    /**
+     * Returns a menu item with an action bound to view
+     * 
+     * @param clazz
+     * @return
+     */
+    protected JMenuItem getMenuItemForTreeAction(Class<? extends AbstractActionOverSelectedTreeObjects<? extends TreeObject>> clazz) {
+        return Actions.getMenuItemForTreeAction(clazz, this);
     }
 
     /**

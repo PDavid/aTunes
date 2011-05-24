@@ -52,6 +52,7 @@ import net.sourceforge.atunes.kernel.actions.ConnectDeviceAction;
 import net.sourceforge.atunes.kernel.actions.ExitAction;
 import net.sourceforge.atunes.kernel.actions.ExportAction;
 import net.sourceforge.atunes.kernel.actions.ImportToRepositoryAction;
+import net.sourceforge.atunes.kernel.actions.RefreshFolderFromNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.RefreshRepositoryAction;
 import net.sourceforge.atunes.kernel.actions.RipCDAction;
 import net.sourceforge.atunes.kernel.actions.SelectRepositoryAction;
@@ -236,6 +237,32 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 		    }
 		}
 	}
+    
+    private static final class RefreshFoldersSwingWorker extends SwingWorker<Void, Void> {
+    	
+    	private Repository repository;
+    	
+    	private List<Folder> folders;
+    	
+    	public RefreshFoldersSwingWorker(Repository repository, List<Folder> folders) {
+    		this.repository = repository;
+    		this.folders = folders;
+		}
+    	
+    	@Override
+    	protected Void doInBackground() throws Exception {
+            RepositoryLoader.refreshFolders(repository, folders);
+    		// This operation changes repository, so mark it as dirty
+    		getInstance().getRepository().setDirty(true, true);
+    		return null;
+    	}
+    	
+    	@Override
+    	protected void done() {
+    		super.done();
+    		getInstance().notifyFinishRefresh(null);
+    	}
+    }
 
 	private static class ShowProgressBarRunnable implements Runnable {
         @Override
@@ -933,6 +960,18 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     }
 
     /**
+     * Refreshes a folder
+     * 
+     * @param file
+     *            the file
+     */
+    public void refreshFolders(List<Folder> folders) {
+        GuiHandler.getInstance().showProgressBar(true, StringUtils.getString(I18nUtils.getString("REFRESHING"), "..."));
+        enableRepositoryActions(false);
+    	new RefreshFoldersSwingWorker(repository, folders).execute();
+    }
+
+    /**
      * Refresh repository.
      */
     public void refreshRepository() {
@@ -1141,6 +1180,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         Actions.getAction(ExportAction.class).setEnabled(enable);
         Actions.getAction(ConnectDeviceAction.class).setEnabled(enable);
         Actions.getAction(RipCDAction.class).setEnabled(enable);
+        Actions.getAction(RefreshFolderFromNavigatorAction.class).setEnabled(enable);
     }
 
     /**

@@ -190,7 +190,7 @@ public class Folder implements Serializable, TreeObject {
     }
 
     /**
-     * Removes a file from this folder.
+     * Removes a file from this folder
      * 
      * @param file
      *            the file

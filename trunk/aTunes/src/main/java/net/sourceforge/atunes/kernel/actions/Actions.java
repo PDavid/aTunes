@@ -27,8 +27,10 @@ import java.util.Map;
 import javax.swing.JMenuItem;
 
 import net.sourceforge.atunes.gui.model.AudioObjectsSource;
+import net.sourceforge.atunes.gui.model.TreeObjectsSource;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.TreeObject;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
@@ -91,6 +93,21 @@ public final class Actions {
         AbstractActionOverSelectedObjects.addRegisteredComponent(actionSource, selectedObjectsSource);
         return getAction(clazz, null);
     }
+    
+    /**
+     * Returns an action object of type ActionOverSelectedTreeObjects and binds to a
+     * component and a objects source
+     * 
+     * @param clazz
+     * @param actionSource
+     * @param selectedObjectsSource
+     * @return
+     */
+    public static <T extends AbstractActionOverSelectedTreeObjects<? extends TreeObject>> AbstractAction getTreeActionAndBind(Class<T> clazz, Component actionSource, TreeObjectsSource selectedObjectsSource) {
+        AbstractActionOverSelectedTreeObjects.addRegisteredComponent(actionSource, selectedObjectsSource);
+        return getAction(clazz, null);
+    }
+    
 
     /**
      * Returns an action object of type ActionOverSelectedObjects and binds to a
@@ -118,6 +135,20 @@ public final class Actions {
     public static JMenuItem getMenuItemForAction(Class<? extends AbstractActionOverSelectedObjects<? extends AudioObject>> clazz, AudioObjectsSource audioObjectsSource) {
         JMenuItem menuItem = new JMenuItem();
         menuItem.setAction(Actions.getActionAndBind(clazz, menuItem, audioObjectsSource));
+        return menuItem;
+    }
+
+    /**
+     * Returns a menu item bound to an Action
+     * 
+     * @param clazz
+     * @param actionId
+     * @param audioObjectsSource
+     * @return
+     */
+    public static JMenuItem getMenuItemForTreeAction(Class<? extends AbstractActionOverSelectedTreeObjects<? extends TreeObject>> clazz, TreeObjectsSource audioObjectsSource) {
+        JMenuItem menuItem = new JMenuItem();
+        menuItem.setAction(Actions.getTreeActionAndBind(clazz, menuItem, audioObjectsSource));
         return menuItem;
     }
 

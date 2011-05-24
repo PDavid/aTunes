@@ -55,6 +55,7 @@ import net.sourceforge.atunes.kernel.actions.EditTitlesAction;
 import net.sourceforge.atunes.kernel.actions.ExtractPictureAction;
 import net.sourceforge.atunes.kernel.actions.OpenFolderFromNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.PlayNowAction;
+import net.sourceforge.atunes.kernel.actions.RefreshFolderFromNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.RemoveFromDiskAction;
 import net.sourceforge.atunes.kernel.actions.RenameAudioFileInNavigationTableAction;
 import net.sourceforge.atunes.kernel.actions.SearchArtistAction;
@@ -122,6 +123,7 @@ public class RepositoryNavigationView extends AbstractNavigationView {
             treePopupMenu.add(getMenuItemForAction(SetAsPlayListAction.class));
             treePopupMenu.add(new JSeparator());
             treePopupMenu.add(getMenuItemForAction(OpenFolderFromNavigatorAction.class));
+            treePopupMenu.add(getMenuItemForTreeAction(RefreshFolderFromNavigatorAction.class));
             treePopupMenu.add(new JSeparator());
             treePopupMenu.add(new EditTagMenu(false, this));
             treePopupMenu.add(Actions.getAction(EditTitlesAction.class));
