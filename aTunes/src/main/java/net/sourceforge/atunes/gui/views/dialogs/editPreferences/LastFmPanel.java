@@ -241,8 +241,7 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public boolean validatePanel() {
-        return true;
+    public void validatePanel() throws PreferencesValidationException {
     }
 
     @Override

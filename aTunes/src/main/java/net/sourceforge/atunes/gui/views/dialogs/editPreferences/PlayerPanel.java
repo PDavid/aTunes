@@ -403,8 +403,7 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public boolean validatePanel() {
-        return true;
+    public void validatePanel() throws PreferencesValidationException {
     }
 
     @Override

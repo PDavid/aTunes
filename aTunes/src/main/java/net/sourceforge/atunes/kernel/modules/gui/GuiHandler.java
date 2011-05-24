@@ -36,6 +36,7 @@ import java.util.logging.Level;
 
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
@@ -251,14 +252,21 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     }
 
     /**
-     * Gets the indeterminate progress dialog.
+     * Creates a new indeterminate dialog
      * 
      * @return the indeterminate progress dialog
      */
-    IndeterminateProgressDialog getIndeterminateProgressDialog() {
-        if (indeterminateProgressDialog == null) {
-            indeterminateProgressDialog = new IndeterminateProgressDialog(frame.getFrame());
-        }
+    private IndeterminateProgressDialog getNewIndeterminateProgressDialog(JFrame parent) {
+        indeterminateProgressDialog = new IndeterminateProgressDialog(parent != null ? parent : frame.getFrame());
+        return indeterminateProgressDialog;
+    }
+
+    /**
+     * Gets indeterminate dialog
+     * 
+     * @return the indeterminate progress dialog
+     */
+    private IndeterminateProgressDialog getIndeterminateProgressDialog() {
         return indeterminateProgressDialog;
     }
 
@@ -424,16 +432,9 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      * Hide indeterminate progress dialog.
      */
     public void hideIndeterminateProgressDialog() {
-        try {
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    getIndeterminateProgressDialog().setVisible(false);
-                }
-            });
-        } catch (Exception e) {
-            getLogger().internalError(e);
-        }
+    	if (getIndeterminateProgressDialog() != null) {
+    		getIndeterminateProgressDialog().setVisible(false);
+    	}
     }
 
     /**
@@ -764,6 +765,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
+                	getNewIndeterminateProgressDialog(null);
                     getIndeterminateProgressDialog().setTitle(text);
                     getIndeterminateProgressDialog().setVisible(true);
                 }
@@ -771,6 +773,18 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
         } catch (Exception e) {
             getLogger().internalError(e);
         }
+    }
+
+    /**
+     * Show indeterminate progress dialog.
+     * 
+     * @param text
+     *            the text
+     */
+    public void showIndeterminateProgressDialog(final JFrame parent, final String text) {
+    	getNewIndeterminateProgressDialog(parent);
+    	getIndeterminateProgressDialog().setTitle(text);
+    	getIndeterminateProgressDialog().setVisible(true);
     }
 
     /**

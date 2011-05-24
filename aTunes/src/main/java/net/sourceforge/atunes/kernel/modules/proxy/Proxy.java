@@ -67,7 +67,7 @@ public class Proxy extends java.net.Proxy implements Serializable {
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    public Proxy(Type type, String url, int port, String user, String password) throws UnknownHostException, IOException {
+    private Proxy(Type type, String url, int port, String user, String password) throws UnknownHostException, IOException {
         super(type, new Socket(url, port).getRemoteSocketAddress());
         this.url = url;
         this.port = port;

@@ -25,11 +25,11 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.net.Socket;
 import java.net.UnknownHostException;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -40,6 +40,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -63,12 +64,16 @@ public final class InternetPanel extends AbstractPreferencesPanel {
     private JLabel proxyPasswordLabel;
     private JPasswordField proxyPassword;
 
+    private EditPreferencesDialog dialog;
+    
     /**
      * Instantiates a new internet panel.
      */
-    public InternetPanel() {
+    public InternetPanel(EditPreferencesDialog dialog) {
         super(I18nUtils.getString("INTERNET"));
 
+        this.dialog = dialog;
+        
         GridBagConstraints c = new GridBagConstraints();
         c.weightx = 1;
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -226,8 +231,26 @@ public final class InternetPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public boolean validatePanel() {
-        return validateOptions();
+    public void validatePanel() throws PreferencesValidationException {
+        try {
+            if (!noProxyRadioButton.isSelected()) {
+           		Integer.parseInt(proxyPort.getText());
+            }
+        } catch (NumberFormatException e) {
+        	throw new PreferencesValidationException(I18nUtils.getString("INCORRECT_PORT"), e);
+        }
+        
+        Socket s = null;
+        try {
+            // Test proxy
+			s = new Socket(proxyURL.getText(), Integer.parseInt(proxyPort.getText()));
+		} catch (UnknownHostException e) {
+			throw new PreferencesValidationException(I18nUtils.getString("INCORRECT_PROXY"), e);
+		} catch (IOException e) {
+			throw new PreferencesValidationException(I18nUtils.getString("INCORRECT_PROXY"), e);
+		} finally {
+			ClosingUtils.close(s);
+		}
     }
 
     /**
@@ -249,24 +272,6 @@ public final class InternetPanel extends AbstractPreferencesPanel {
         proxyPort.setText(proxy != null ? Integer.toString(proxy.getPort()) : "");
         proxyUser.setText(proxy != null ? proxy.getUser() : "");
         proxyPassword.setText(proxy != null ? proxy.getPassword() : "");
-    }
-
-    /**
-     * Validate options.
-     * 
-     * @return true, if successful
-     */
-    private boolean validateOptions() {
-        try {
-            if (!noProxyRadioButton.isSelected()) {
-                Integer.parseInt(proxyPort.getText());
-                return true;
-            }
-            return true;
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, I18nUtils.getString("INCORRECT_PORT"));
-            return false;
-        }
     }
 
     @Override

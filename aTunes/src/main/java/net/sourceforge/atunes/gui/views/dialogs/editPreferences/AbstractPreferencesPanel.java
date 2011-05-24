@@ -74,10 +74,9 @@ public abstract class AbstractPreferencesPanel extends JPanel {
 
     /**
      * Validates data of this panel
-     * 
-     * @return <code>true</code> if data is valid
+     * @throws PreferencesValidationException
      */
-    public abstract boolean validatePanel();
+    public abstract void validatePanel() throws PreferencesValidationException;
 
     /**
      * Called to apply preferences selected by user to an ApplicationState

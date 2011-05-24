@@ -212,8 +212,8 @@ public final class LastFmService {
         this.proxy = proxy;
         this.user = user;
         this.password = password;
-        getLogger().debug(LogCategories.PLAYER, "User: ", user);
-        getLogger().debug(LogCategories.PLAYER, "Password: ", password);
+        getLogger().debug(LogCategories.CONTEXT, "User: ", user);
+        getLogger().debug(LogCategories.CONTEXT, "Password: ", password);
         Caller.getInstance().setCache(null);
         Caller.getInstance().setProxy(proxy);
         Caller.getInstance().setUserAgent(CLIENT_ID);

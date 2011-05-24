@@ -158,8 +158,7 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public boolean validatePanel() {
-        return true;
+    public void validatePanel() throws PreferencesValidationException {
     }
 
     @Override
