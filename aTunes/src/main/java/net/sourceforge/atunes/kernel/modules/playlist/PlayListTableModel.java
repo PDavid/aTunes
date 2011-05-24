@@ -108,6 +108,9 @@ public class PlayListTableModel extends AbstractColumnSetTableModel {
      */
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+    	// Open repository transaction
+    	RepositoryHandler.getInstance().startTransaction();
+    	
         // AudioFile
         AudioObject audioObject = visiblePlayList.get(rowIndex);
 
@@ -117,8 +120,8 @@ public class PlayListTableModel extends AbstractColumnSetTableModel {
         // After changing audio object refresh playlist, as the same object can be duplicated
         PlayListHandler.getInstance().refreshPlayList();
 
-        // Mark repository as dirty
-        RepositoryHandler.getInstance().getRepository().setDirty(true, true);
+        // End repository transaction
+        RepositoryHandler.getInstance().endTransaction();
     }
 
     /**

@@ -109,7 +109,9 @@ public class RemoveFromDiskAction extends AbstractAction {
 
     private void fromOtherViews() {
         final List<LocalAudioObject> files = NavigationHandler.getInstance().getFilesSelectedInNavigator();
+        RepositoryHandler.getInstance().startTransaction();
         RepositoryHandler.getInstance().remove(files);
+        RepositoryHandler.getInstance().endTransaction();
         GuiHandler.getInstance().showIndeterminateProgressDialog(I18nUtils.getString("PLEASE_WAIT"));
         new DeleteFilesWorker(files).execute();
     }
@@ -125,7 +127,9 @@ public class RemoveFromDiskAction extends AbstractAction {
                 }
             }
         }
+        RepositoryHandler.getInstance().startTransaction();
         RepositoryHandler.getInstance().removeFolders(foldersToRemove);
+        RepositoryHandler.getInstance().endTransaction();
         GuiHandler.getInstance().showIndeterminateProgressDialog(I18nUtils.getString("PLEASE_WAIT"));
         new SwingWorker<Void, Void>() {
             @Override

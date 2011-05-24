@@ -251,9 +251,9 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     	
     	@Override
     	protected Void doInBackground() throws Exception {
+    		getInstance().startTransaction();
             RepositoryLoader.refreshFolders(repository, folders);
-    		// This operation changes repository, so mark it as dirty
-    		getInstance().getRepository().setDirty(true, true);
+            getInstance().endTransaction();
     		return null;
     	}
     	
@@ -355,7 +355,9 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() {
+            	RepositoryHandler.getInstance().startTransaction();
                 RepositoryLoader.addToRepository(repository, files);
+                RepositoryHandler.getInstance().endTransaction();
                 return null;
             }
 
@@ -381,7 +383,9 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
      *            the picture
      */
     public void addExternalPictureForAlbum(String artistName, String albumName, File picture) {
+    	RepositoryHandler.getInstance().startTransaction();
         RepositoryLoader.addExternalPictureForAlbum(repository, artistName, albumName, picture);
+        RepositoryHandler.getInstance().endTransaction();
     }
 
     /**
@@ -393,7 +397,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         }
         if (repository != null) {
             // Only store repository if it's dirty
-            if (repository.isDirty()) {
+            if (repository.transactionPending()) {
                 ApplicationStateHandler.getInstance().persistRepositoryCache(repository, true);
             } else {
                 getLogger().info(LogCategories.REPOSITORY, "Repository is clean");
@@ -1019,8 +1023,6 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
             RepositoryLoader.deleteFile(fileToRemove);
         }
 
-        getRepository().setDirty(true, true);
-        
         // Notify listeners
         for (AudioFilesRemovedListener listener : audioFilesRemovedListeners) {
             listener.audioFilesRemoved(filesToRemove);
@@ -1041,7 +1043,9 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         File newFile = new File(StringUtils.getString(file.getParentFile().getAbsolutePath() + "/" + FileNameUtils.getValidFileName(name) + "." + extension));
         boolean succeeded = file.renameTo(newFile);
         if (succeeded) {
+        	startTransaction();        	
             RepositoryLoader.renameFile(audioFile, file, newFile);
+        	endTransaction();
             NavigationHandler.getInstance().notifyReload();
             StatisticsHandler.getInstance().updateFileName(file.getAbsolutePath(), newFile.getAbsolutePath());
         }
@@ -1260,5 +1264,23 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 				ApplicationStateHandler.getInstance().persistRepositoryCache(repository, true);
 			}
 		}).start();
+	}
+
+	/**
+	 * Starts a transaction
+	 */
+	public void startTransaction() {
+		if (repository != null) {
+			repository.startTransaction();
+		}
+	}
+	
+	/**
+	 * Ends a transaction
+	 */
+	public void endTransaction() {
+		if (repository != null) {
+			repository.endTransaction();
+		}
 	}
 }

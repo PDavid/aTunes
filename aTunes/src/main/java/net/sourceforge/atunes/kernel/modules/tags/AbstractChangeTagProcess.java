@@ -65,6 +65,7 @@ public abstract class AbstractChangeTagProcess extends AbstractProcess {
     protected boolean runProcess() {
         // Retrieve information needed to change tags
         retrieveInformationBeforeChangeTags();
+        RepositoryHandler.getInstance().startTransaction();
         boolean errors = false;
         try {
             for (int i = 0; i < this.filesToChange.size() && !isCanceled(); i++) {
@@ -81,8 +82,7 @@ public abstract class AbstractChangeTagProcess extends AbstractProcess {
         // Refresh swing components
         TagModifier.refreshAfterTagModify(filesToChange);
 
-        // Set repository to notify changes immediately
-        RepositoryHandler.getInstance().getRepository().setDirty(true, true);
+        RepositoryHandler.getInstance().endTransaction();
         
         return !errors;
     }

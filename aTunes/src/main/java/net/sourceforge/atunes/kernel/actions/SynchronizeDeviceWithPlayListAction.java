@@ -112,7 +112,9 @@ public class SynchronizeDeviceWithPlayListAction extends AbstractAction {
 
 		        // Remove elements from device
 		        final List<LocalAudioObject> filesToRemove = files.get("REMOVE");
+		        RepositoryHandler.getInstance().startTransaction();
 		        RepositoryHandler.getInstance().remove(filesToRemove);
+		        RepositoryHandler.getInstance().endTransaction();
 		        SynchronizeDeviceWithPlayListAction.this.setEnabled(false);
 		        new SwingWorker<Void, Void>() {
 		            @Override

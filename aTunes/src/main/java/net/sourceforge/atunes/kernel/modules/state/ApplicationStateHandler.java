@@ -290,8 +290,6 @@ public final class ApplicationStateHandler extends AbstractHandler {
             timer.start();
             oos.writeObject(repository);
             getLogger().info(LogCategories.HANDLER, StringUtils.getString("DONE (", timer.stop(), " seconds)"));
-            // Set repository as not dirty
-            repository.setDirty(false, false);
         } catch (IOException e) {
             getLogger().error(LogCategories.HANDLER, "Could not write serialized repository");
             getLogger().debug(LogCategories.HANDLER, e);
@@ -558,9 +556,6 @@ public final class ApplicationStateHandler extends AbstractHandler {
 
                 long t1 = System.currentTimeMillis();
                 getLogger().info(LogCategories.HANDLER, StringUtils.getString("Reading repository cache done (", (t1 - t0) / 1000.0, " seconds)"));
-                
-                // Save repository again to avoid reading XML in next start
-                repository.setDirty(true, true);
                 
                 return repository;
             } catch (IOException e1) {
