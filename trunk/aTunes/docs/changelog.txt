@@ -50,6 +50,7 @@ aTunes 2.1.0
 - FIX: Icon not displayed when installed from .deb package [3138941]
 - FIX: Make window bigger if when showing a component there is not enough space
 - FIX: Avoid crashing app when no player engine available
+- FIX: Detect incorrect proxy configuration and display an error
 
 aTunes 2.0.1
 -------------

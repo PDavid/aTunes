@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.kernel.modules.updates;
 
 import java.io.IOException;
-import java.net.Proxy.Type;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
 import java.util.List;
@@ -145,7 +144,7 @@ public final class UpdateHandler extends AbstractHandler {
         try {
             Proxy proxy;
             if (p != null) {
-                proxy = new Proxy(p.getType().equals(ProxyBean.HTTP_PROXY) ? Type.HTTP : Type.SOCKS, p.getUrl(), p.getPort(), p.getUser(), p.getPassword());
+                proxy = Proxy.getProxy(p);
             } else {
                 proxy = null;
             }

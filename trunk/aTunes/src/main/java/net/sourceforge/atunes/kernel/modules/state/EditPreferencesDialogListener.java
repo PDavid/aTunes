@@ -28,6 +28,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.EditPreferencesDialog;
+import net.sourceforge.atunes.gui.views.dialogs.editPreferences.PreferencesValidationException;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -56,18 +57,21 @@ public final class EditPreferencesDialogListener implements ListSelectionListene
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == editPreferencesDialog.getOk()) {
-            if (editPreferencesDialogController.arePreferencesValid()) {
-            	boolean needRestart = editPreferencesDialogController.processPreferences();
-                editPreferencesDialog.setVisible(false);
-                ApplicationStateHandler.getInstance().notifyApplicationStateChanged();
-                if (needRestart) {
-                    // Let user decide if want to restart
-                    int result = GuiHandler.getInstance().showConfirmationDialog(I18nUtils.getString("APPLICATION_NEEDS_RESTART"), I18nUtils.getString("CONFIRMATION"));
-                    if (result == JOptionPane.OK_OPTION) {
-                        Kernel.restart();
-                    }
-                }
-            }
+        	try {
+            	editPreferencesDialogController.validatePreferences();
+	        	boolean needRestart = editPreferencesDialogController.processPreferences();
+	        	editPreferencesDialog.setVisible(false);
+	        	ApplicationStateHandler.getInstance().notifyApplicationStateChanged();
+	        	if (needRestart) {
+	        		// Let user decide if want to restart
+	        		int result = GuiHandler.getInstance().showConfirmationDialog(I18nUtils.getString("APPLICATION_NEEDS_RESTART"), I18nUtils.getString("CONFIRMATION"));
+	        		if (result == JOptionPane.OK_OPTION) {
+	        			Kernel.restart();
+	        		}
+	        	}
+			} catch (PreferencesValidationException e1) {
+				GuiHandler.getInstance().showExceptionDialog(e1.getMessage(), e1);
+			}
         } else if (e.getSource() == editPreferencesDialog.getCancel()) {
             editPreferencesDialogController.resetImmediateChanges();
             editPreferencesDialog.setVisible(false);

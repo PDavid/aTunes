@@ -179,7 +179,7 @@ public final class ProxyBean implements Serializable {
         if (bean == null) {
             return null;
         }
-        return new Proxy(bean.getType().equals(ProxyBean.HTTP_PROXY) ? Proxy.Type.HTTP : Proxy.Type.SOCKS, bean.getUrl(), bean.getPort(), bean.getUser(), bean.getPassword());
+        return Proxy.getProxy(bean);
     }
 
 }

@@ -34,6 +34,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.swing.Action;
 import javax.swing.JOptionPane;
@@ -97,6 +99,8 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 	private String lastAlbumRead;
 	
 	private SwingWorker<Image, Void> coverWorker;
+	
+	private ExecutorService repositoryChangesService = Executors.newSingleThreadExecutor();
 	
 	private final class ImportFilesProcessListener implements ProcessListener {
 		private final ImportFilesProcess process;
@@ -417,6 +421,8 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
                 }
             }
         }
+        
+        repositoryChangesService.shutdown();
         AudioFile.getImageCache().shutdown();
     }
 
@@ -1258,12 +1264,12 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 
 	@Override
 	public void repositoryChanged(final Repository repository) {
-		new Thread(new Runnable() {
+		repositoryChangesService.submit(new Runnable() {
 			@Override
 			public void run() {
 				ApplicationStateHandler.getInstance().persistRepositoryCache(repository, true);
 			}
-		}).start();
+		});
 	}
 
 	/**

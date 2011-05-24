@@ -24,8 +24,10 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.DefaultListModel;
+import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.AbstractPreferencesPanel;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.ContextPanel;
@@ -41,11 +43,14 @@ import net.sourceforge.atunes.gui.views.dialogs.editPreferences.PlayListPrefPane
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.PlayerPanel;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.PluginsPanel;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.PodcastFeedPanel;
+import net.sourceforge.atunes.gui.views.dialogs.editPreferences.PreferencesValidationException;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.RadioPanel;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.RepositoryPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.Kernel;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 final class EditPreferencesDialogController extends AbstractSimpleController<EditPreferencesDialog> {
 
@@ -65,7 +70,7 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
         panels.add(new PlayListPrefPanel());
         panels.add(new OSDPanel()); 
         panels.add(new ContextPanel()); 
-        panels.add(new InternetPanel()); 
+        panels.add(new InternetPanel(dialog)); 
         panels.add(new LastFmPanel()); 
         panels.add(new DevicePanel()); 
         panels.add(new RadioPanel()); 
@@ -132,13 +137,37 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
      * 
      * @return
      */
-    boolean arePreferencesValid() {
-        for (AbstractPreferencesPanel p : panels) {
-            if (!p.validatePanel()) {
-                return false;
-            }
-        }
-        return true;
+    void validatePreferences() throws PreferencesValidationException {
+    	final SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+    		
+    		@Override
+    		protected Void doInBackground() throws Exception {
+    	        for (AbstractPreferencesPanel p : panels) {
+    	            p.validatePanel();
+    	        }
+    	        return null;
+    		}
+
+    		@Override
+    		protected void done() {
+    			super.done();
+    			GuiHandler.getInstance().hideIndeterminateProgressDialog();
+    		}
+    	};
+
+    	try {
+    		worker.execute();
+	    	GuiHandler.getInstance().showIndeterminateProgressDialog(getComponentControlled(), I18nUtils.getString("VALIDATING_PREFERENCES"));
+			worker.get();
+		} catch (InterruptedException e) {
+			getLogger().error(LogCategories.PREFERENCES, e);
+		} catch (ExecutionException e) {
+			if (e.getCause() instanceof PreferencesValidationException) {
+				throw (PreferencesValidationException) e.getCause();
+			}
+		} finally {
+			GuiHandler.getInstance().hideIndeterminateProgressDialog();
+		}
     }
 
     /**
