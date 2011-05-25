@@ -26,6 +26,7 @@ aTunes 2.1.0
 - Repository saved immediately after a change
 - Option to refresh only one folder from folders view
 - Edit radio name, url and label
+- Include file name and path in filter [3146992]
 - FIX: Exception during renaming of file name
 - FIX: Repository refresh never ends in certain situations [3024433]
 - FIX: Selected playlist element not saved when closing application

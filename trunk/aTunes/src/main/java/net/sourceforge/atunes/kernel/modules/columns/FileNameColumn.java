@@ -34,6 +34,7 @@ public class FileNameColumn extends AbstractColumn {
         super("FILE", String.class);
         setWidth(250);
         setVisible(false);
+        setUsedForFilter(true);
     }
 
     @Override

@@ -33,6 +33,7 @@ public class PathColumn extends AbstractColumn {
         super("LOCATION", String.class);
         setWidth(350);
         setVisible(false);
+        setUsedForFilter(true);
     }
 
     @Override
