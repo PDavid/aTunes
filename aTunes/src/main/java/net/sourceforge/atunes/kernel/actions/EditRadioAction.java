@@ -20,51 +20,43 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
 import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
-import net.sourceforge.atunes.kernel.modules.navigator.RadioNavigationView;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
+import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class RenameRadioAction extends AbstractAction {
+public class EditRadioAction extends AbstractActionOverSelectedObjects<Radio> {
 
     private static final long serialVersionUID = -922076985505834816L;
 
-    RenameRadioAction() {
-        super(I18nUtils.getString("RENAME_RADIO"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("RENAME_RADIO"));
+    EditRadioAction() {
+        super(I18nUtils.getString("EDIT_RADIO"), Radio.class);
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("EDIT_RADIO"));
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        TreePath path = NavigationHandler.getInstance().getView(RadioNavigationView.class).getTree().getSelectionPath();
-        Radio radio = (Radio) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
-        String result = GuiHandler.getInstance().showInputDialog(I18nUtils.getString("RENAME_RADIO"), radio.getName());
-        if (result != null) {
-            RadioHandler.getInstance().setName(radio, result);
+    protected void performAction(List<Radio> objects) {
+        Radio radio = objects.get(0); // Guaranteed only one radio
+        Radio radioEdited = RadioHandler.getInstance().editRadio(radio);
+        if (radioEdited != null) {
+            RadioHandler.getInstance().replace(radio, radioEdited);
         }
     }
 
     @Override
     public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
-        if (rootSelected) {
+        if (rootSelected || selection.size() != 1 || !(selection.get(0).getUserObject() instanceof Radio)) {
             return false;
         }
-
-        for (DefaultMutableTreeNode node : selection) {
-            if (!(node.getUserObject() instanceof Radio)) {
-                return false;
-            }
-        }
-
         return true;
     }
-
+    
+    @Override
+    public boolean isEnabledForNavigationTableSelection(List<AudioObject> selection) {
+        return selection.size() == 1;
+    }
 }

@@ -54,7 +54,7 @@ import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable.PlayState;
 import net.sourceforge.atunes.gui.views.dialogs.AboutDialog;
 import net.sourceforge.atunes.gui.views.dialogs.AddPodcastFeedDialog;
-import net.sourceforge.atunes.gui.views.dialogs.AddRadioDialog;
+import net.sourceforge.atunes.gui.views.dialogs.RadioDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ColumnSetSelectorDialog;
 import net.sourceforge.atunes.gui.views.dialogs.EqualizerDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ExportOptionsDialog;
@@ -621,7 +621,20 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      * @return the radio
      */
     public Radio showAddRadioDialog() {
-        AddRadioDialog dialog = new AddRadioDialog(frame.getFrame());
+        RadioDialog dialog = new RadioDialog(frame.getFrame());
+        dialog.setVisible(true);
+        return dialog.getRadio();
+    }
+
+    /**
+     * Show  radio dialog for edition
+     * 
+     * @param radio to edit
+     * 
+     * @return the radio
+     */
+    public Radio showEditRadioDialog(Radio radio) {
+        RadioDialog dialog = new RadioDialog(frame.getFrame(), radio);
         dialog.setVisible(true);
         return dialog.getRadio();
     }

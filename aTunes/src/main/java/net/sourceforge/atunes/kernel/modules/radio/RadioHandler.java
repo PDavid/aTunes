@@ -290,9 +290,7 @@ public final class RadioHandler extends AbstractHandler {
      * @param radio
      */
     public void removeRadio(Radio radio) {
-        List<Radio> list = new ArrayList<Radio>();
-        list.add(radio);
-        removeRadios(list);
+        removeRadios(Collections.singletonList(radio));
     }
 
     /**
@@ -344,18 +342,14 @@ public final class RadioHandler extends AbstractHandler {
     }
 
     /**
-     * Change radio name. Also permits changing name of preset stations.
+     * Change radio attributes
      * 
      * @param radio
-     *            Radio station
-     * @param name
-     *            New name
+     * @param newRadio
      */
-    public void setName(Radio radio, String name) {
-        if (presetRadios.contains(radio)) {
-            addRadio(radio);
-        }
-        radio.setName(name);
+    public void replace(Radio radio, Radio newRadio) {
+        removeRadio(radio);
+        addRadio(newRadio);
         radioListDirty = true;
     }
 
@@ -394,5 +388,9 @@ public final class RadioHandler extends AbstractHandler {
 
 	@Override
 	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+
+	public Radio editRadio(Radio radio) {
+		return GuiHandler.getInstance().showEditRadioDialog(radio);
+	}
 
 }
