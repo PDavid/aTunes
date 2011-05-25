@@ -41,35 +41,38 @@ import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
- * The Class AddRadioDialog.
+ * Dialog to add or edit a radio
+ * @author fleax
+ *
  */
-public final class AddRadioDialog extends AbstractCustomModalDialog {
+public final class RadioDialog extends AbstractCustomModalDialog {
 
     private static final long serialVersionUID = 7295438534550341824L;
 
     /** The radio. */
-    private Radio radio;
-
-    /** The name text field. */
-    private JTextField nameTextField;
-
-    /** The url text field. */
-    private JTextField urlTextField;
-
-    /** The label text field. */
-    private JTextField labelTextField;
+    private Radio result;
 
     /**
-     * Instantiates a new adds the radio dialog.
+     * Instantiates a new radio dialog for adding a new radio
      * 
      * @param owner
      *            the owner
      */
-    public AddRadioDialog(JFrame owner) {
+    public RadioDialog(JFrame owner) {
+    	this(owner, null);
+    }
+    
+    /**
+     * Instantiates a new radio dialog for edition
+     * 
+     * @param owner
+     * @param radio
+     */
+    public RadioDialog(JFrame owner, Radio radio) {
         super(owner, 500, 200, true);
-        setTitle(I18nUtils.getString("ADD_RADIO"));
+        setTitle(radio != null ? I18nUtils.getString("EDIT_RADIO") : I18nUtils.getString("ADD_RADIO"));
         setResizable(false);
-        setContent(getContent());
+        setContent(getContent(radio));
         GuiUtils.applyComponentOrientation(this);
         enableDisposeActionWithEscapeKey();
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -80,29 +83,29 @@ public final class AddRadioDialog extends AbstractCustomModalDialog {
      * 
      * @return the content
      */
-    private JPanel getContent() {
+    private JPanel getContent(Radio radio) {
         JPanel panel = new JPanel(new GridBagLayout());
 
         JLabel nameLabel = new JLabel(I18nUtils.getString("NAME"));
-        nameTextField = new CustomTextField();
+        final JTextField nameTextField = new CustomTextField(radio != null ? radio.getName() : null);
         JLabel urlLabel = new JLabel(I18nUtils.getString("URL"));
-        urlTextField = new CustomTextField();
+        final JTextField urlTextField = new CustomTextField(radio != null ? radio.getUrl() : null);
         JLabel labelLabel = new JLabel(I18nUtils.getString("LABEL"));
-        labelTextField = new CustomTextField();
+        final JTextField labelTextField = new CustomTextField(radio != null ? radio.getLabel() : null);
 
         JButton okButton = new JButton(I18nUtils.getString("OK"));
         okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                radio = new Radio(nameTextField.getText(), urlTextField.getText(), labelTextField.getText());
-                AddRadioDialog.this.dispose();
+            	result = new Radio(nameTextField.getText(), urlTextField.getText(), labelTextField.getText());
+                RadioDialog.this.dispose();
             }
         });
         JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                AddRadioDialog.this.dispose();
+                RadioDialog.this.dispose();
             }
         });
 
@@ -156,7 +159,7 @@ public final class AddRadioDialog extends AbstractCustomModalDialog {
      * @return the radio
      */
     public Radio getRadio() {
-        return radio;
+        return result;
     }
 
 }

@@ -124,14 +124,7 @@ public final class Radio implements AudioObject, Serializable, TreeObject, Compa
         songInfoAvailable = false;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof Radio)) {
-            return false;
-        }
-        return (name + url).equals(((Radio) o).getName() + ((Radio) o).getUrl());
-
-    }
+    
 
     @Override
     public String getAlbum() {
@@ -235,11 +228,6 @@ public final class Radio implements AudioObject, Serializable, TreeObject, Compa
     @Override
     public Date getDate() {
         return null;
-    }
-
-    @Override
-    public int hashCode() {
-        return (name + url).hashCode();
     }
 
     /**
@@ -492,4 +480,60 @@ public final class Radio implements AudioObject, Serializable, TreeObject, Compa
         }
         }
     }
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (isRemoved ? 1231 : 1237);
+		result = prime * result + ((label == null) ? 0 : label.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((url == null) ? 0 : url.hashCode());
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof Radio)) {
+			return false;
+		}
+		Radio other = (Radio) obj;
+		if (isRemoved != other.isRemoved) {
+			return false;
+		}
+		if (label == null) {
+			if (other.label != null) {
+				return false;
+			}
+		} else if (!label.equals(other.label)) {
+			return false;
+		}
+		if (name == null) {
+			if (other.name != null) {
+				return false;
+			}
+		} else if (!name.equals(other.name)) {
+			return false;
+		}
+		if (url == null) {
+			if (other.url != null) {
+				return false;
+			}
+		} else if (!url.equals(other.url)) {
+			return false;
+		}
+		return true;
+	}
 }

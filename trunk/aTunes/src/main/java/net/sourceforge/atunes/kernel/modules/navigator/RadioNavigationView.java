@@ -49,7 +49,7 @@ import net.sourceforge.atunes.kernel.actions.AddToPlayListAfterCurrentAudioObjec
 import net.sourceforge.atunes.kernel.actions.PlayNowAction;
 import net.sourceforge.atunes.kernel.actions.RefreshRadioAction;
 import net.sourceforge.atunes.kernel.actions.RemoveRadioAction;
-import net.sourceforge.atunes.kernel.actions.RenameRadioAction;
+import net.sourceforge.atunes.kernel.actions.EditRadioAction;
 import net.sourceforge.atunes.kernel.actions.RenameRadioLabelAction;
 import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
@@ -120,7 +120,7 @@ public final class RadioNavigationView extends AbstractNavigationView {
             radioTreeMenu.add(new JMenuItem(Actions.getAction(AddRadioAction.class)));
             radioTreeMenu.add(new JMenuItem(Actions.getAction(RefreshRadioAction.class)));
             radioTreeMenu.add(getMenuItemForAction(AddFavoriteRadioAction.class));
-            radioTreeMenu.add(new JMenuItem(Actions.getAction(RenameRadioAction.class)));
+            radioTreeMenu.add(getMenuItemForAction(EditRadioAction.class));
             radioTreeMenu.add(new JMenuItem(Actions.getAction(RenameRadioLabelAction.class)));
             radioTreeMenu.add(getMenuItemForAction(RemoveRadioAction.class));
         }
@@ -139,6 +139,7 @@ public final class RadioNavigationView extends AbstractNavigationView {
             radioTableMenu.add(new JMenuItem(Actions.getAction(ShowNavigatorTableItemInfoAction.class)));
             radioTableMenu.add(new JSeparator());
             radioTableMenu.add(getMenuItemForAction(AddFavoriteRadioAction.class));
+            radioTableMenu.add(getMenuItemForAction(EditRadioAction.class));
             radioTableMenu.add(getMenuItemForAction(RemoveRadioAction.class));
         }
         return radioTableMenu;
