@@ -66,7 +66,7 @@ public class RenameRadioLabelAction extends AbstractAction {
 
     @Override
     public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
-        return !rootSelected;
+        return !rootSelected && selection.size() == 1;
     }
 
 }
