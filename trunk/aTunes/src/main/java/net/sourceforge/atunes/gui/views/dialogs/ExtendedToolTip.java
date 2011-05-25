@@ -38,8 +38,6 @@ import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 
-import org.jdesktop.swingx.border.DropShadowBorder;
-
 /**
  * The Class ExtendedToolTip. This is a special window shown as tooltip for
  * navigator tree objects
@@ -65,7 +63,6 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
         setFocusableWindowState(false);
         JPanel container = new JPanel(new GridBagLayout());
         image = new JLabel();
-        image.setBorder(new DropShadowBorder());
         line1 = new JLabel();
         line1.setFont(Fonts.getGeneralBoldFont());
         line2 = new JLabel();
@@ -75,7 +72,7 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
         c.gridx = 0;
         c.gridy = 0;
         c.gridheight = 3;
-        c.insets = new Insets(5, 5, 0, 0);
+        c.insets = new Insets(0, 5, 0, 0);
         container.add(image, c);
         c.gridx = 1;
         c.gridheight = 1;
