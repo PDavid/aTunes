@@ -51,6 +51,7 @@ aTunes 2.1.0
 - FIX: Make window bigger if when showing a component there is not enough space
 - FIX: Avoid crashing app when no player engine available
 - FIX: Detect incorrect proxy configuration and display an error
+- FIX: Rename radio label only applies to one label at a time
 
 aTunes 2.0.1
 -------------
