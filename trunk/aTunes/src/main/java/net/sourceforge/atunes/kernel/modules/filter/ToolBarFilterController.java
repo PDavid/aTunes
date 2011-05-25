@@ -121,7 +121,7 @@ class ToolBarFilterController extends AbstractSimpleController<FilterPanel> {
         			getComponentControlled().getFilterTextField().setText("");
         		}
         	}
-		});
+		});        
     }
 
     @Override
@@ -145,12 +145,15 @@ class ToolBarFilterController extends AbstractSimpleController<FilterPanel> {
         radioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Remove previous filter
-                applyFilter(null);
+            	// Filter should be executed only if user has typed something...
+				if (filterApplied) {
+					// Remove previous filter
+					applyFilter(null);
 
-                // Set selected filter and apply
-                FilterHandler.getInstance().setSelectedFilter(filter.getName());
-                applyFilter(getFilter());
+					// Set selected filter and apply
+					FilterHandler.getInstance().setSelectedFilter(filter.getName());
+					applyFilter(getFilter());
+				}
             }
         });
         filters.put(filter.getName(), radioButton);
