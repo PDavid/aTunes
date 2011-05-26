@@ -33,6 +33,7 @@ import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -86,7 +87,7 @@ final class PlayerControlsController extends AbstractSimpleController<PlayerCont
      *            the new length
      */
     void setAudioObjectLength(long length) {
-        getLogger().debug(LogCategories.CONTROLLER, Long.toString(length));
+        Logger.debug(LogCategories.CONTROLLER, Long.toString(length));
 
         getComponentControlled().getProgressSlider().setMaximum((int) length);
         setupProgressTicks(length);

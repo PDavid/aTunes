@@ -61,7 +61,7 @@ public class X11Hotkeys extends AbstractHotkeys implements jxgrabkey.HotkeyListe
         try {
             JXGrabKey.getInstance().registerAwtHotkey(hotkey.getId(), hotkey.getMod(), hotkey.getKey());
         } catch (HotkeyConflictException e) {
-            new Logger().error(LogCategories.HOTKEYS, StringUtils.getString("Hotkey '", hotkey.getKeyDescription(), "' is in use by another application"));
+            Logger.error(LogCategories.HOTKEYS, StringUtils.getString("Hotkey '", hotkey.getKeyDescription(), "' is in use by another application"));
             return false;
         }
         return true;

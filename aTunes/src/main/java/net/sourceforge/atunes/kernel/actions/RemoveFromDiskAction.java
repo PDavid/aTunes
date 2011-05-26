@@ -80,8 +80,6 @@ public class RemoveFromDiskAction extends AbstractAction {
 
     private static final long serialVersionUID = -6958409532399604195L;
 
-    private Logger logger;
-
     public RemoveFromDiskAction() {
         super(I18nUtils.getString("REMOVE_FROM_DISK"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("REMOVE_FROM_DISK"));
@@ -137,9 +135,9 @@ public class RemoveFromDiskAction extends AbstractAction {
                 for (Folder folder : foldersToRemove) {
                     try {
                         FileUtils.deleteDirectory(folder.getFolderPath());
-                        getLogger().info(LogCategories.REPOSITORY, StringUtils.getString("Removed folder ", folder));
+                        Logger.info(LogCategories.REPOSITORY, StringUtils.getString("Removed folder ", folder));
                     } catch (IOException e) {
-                        getLogger().info(LogCategories.REPOSITORY, StringUtils.getString("Could not remove folder ", folder, e.getMessage()));
+                        Logger.info(LogCategories.REPOSITORY, StringUtils.getString("Could not remove folder ", folder, e.getMessage()));
                     }
                 }
                 return null;
@@ -184,17 +182,4 @@ public class RemoveFromDiskAction extends AbstractAction {
         }
         return !selection.isEmpty();
     }
-
-    /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
-    }
-
 }

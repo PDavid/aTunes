@@ -60,6 +60,7 @@ import net.sourceforge.atunes.kernel.actions.ToggleWindowVisibilityAction;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -177,7 +178,7 @@ public final class SystemTrayHandler extends AbstractHandler {
             addTrayIcon(getTrayIcon());
             GuiHandler.getInstance().setFrameDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         } else {
-            getLogger().error(LogCategories.TRAY, "No system tray supported");
+            Logger.error(LogCategories.TRAY, "No system tray supported");
         }
     }
 
@@ -194,7 +195,7 @@ public final class SystemTrayHandler extends AbstractHandler {
             addTrayIcon(getStopTrayIcon());
             addTrayIcon(getPreviousTrayIcon());
         } else {
-            getLogger().error(LogCategories.TRAY, "No system tray supported");
+            Logger.error(LogCategories.TRAY, "No system tray supported");
         }
     }
 
@@ -207,7 +208,7 @@ public final class SystemTrayHandler extends AbstractHandler {
         try {
        		tray.add(icon);
         } catch (AWTException e) {
-            getLogger().error(LogCategories.TRAY, e);
+            Logger.error(LogCategories.TRAY, e);
         }
     }
 

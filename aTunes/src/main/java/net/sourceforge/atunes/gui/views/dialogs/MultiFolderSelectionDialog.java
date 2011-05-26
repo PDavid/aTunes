@@ -118,9 +118,9 @@ public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog 
 				        }
 				        ((DefaultTreeModel) fileSystemTree.getModel()).reload(selectedNode);
 				    } catch (InterruptedException e) {
-				        getLogger().internalError(e);
+				        Logger.internalError(e);
 				    } catch (ExecutionException e) {
-				        getLogger().internalError(e);
+				        Logger.internalError(e);
 				    }
 				}
 			}
@@ -229,7 +229,7 @@ public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog 
 		        fileSystemTree.revalidate();
 		        fileSystemTree.repaint();
 		    } catch (Exception e) {
-		        getLogger().internalError(e);
+		        Logger.internalError(e);
 		    } finally {
 		        okButton.setEnabled(true);
 		        // Show default cursor
@@ -494,9 +494,6 @@ public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog 
 
     private static final long serialVersionUID = -1612490779910952274L;
 
-    /** The Constant logger. */
-    private Logger logger;
-
     /** The fs view. */
     private static FileSystemView fsView = FileSystemView.getFileSystemView();
 
@@ -701,17 +698,4 @@ public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog 
         setTree();
         setVisible(true);
     }
-
-    /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
-    }
-
 }

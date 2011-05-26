@@ -210,7 +210,7 @@ public class AlbumInfoDataSource implements ContextInformationDataSource {
                     // Add picture to songs of album
                     RepositoryHandler.getInstance().addExternalPictureForAlbum(file.getArtist(), file.getAlbum(), imageFile);
                 } catch (IOException e) {
-                    new Logger().internalError(e);
+                    Logger.internalError(e);
                 }
             }
         }

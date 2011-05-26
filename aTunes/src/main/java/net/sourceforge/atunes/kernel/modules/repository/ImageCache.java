@@ -37,8 +37,6 @@ public class ImageCache extends AbstractCache {
 
     private static final String COVERS = "covers";
 
-    private Logger logger;
-
     public ImageCache() {
         super(LyricsCache.class.getResource("/settings/ehcache-covers.xml"));
     }
@@ -53,10 +51,10 @@ public class ImageCache extends AbstractCache {
             getCache().removeAll();
             getCache().flush();
         } catch (IllegalStateException e) {
-            getLogger().info(LogCategories.FILE_DELETE, "Could not delete all files from cover cache");
+            Logger.info(LogCategories.FILE_DELETE, "Could not delete all files from cover cache");
             return true;
         } catch (CacheException e) {
-            getLogger().info(LogCategories.FILE_DELETE, "Could not delete all files from cover cache");
+            Logger.info(LogCategories.FILE_DELETE, "Could not delete all files from cover cache");
             return true;
         }
         return false;
@@ -69,10 +67,10 @@ public class ImageCache extends AbstractCache {
             }
             getCache().flush();
         } catch (IllegalStateException e) {
-            getLogger().info(LogCategories.FILE_DELETE, "Could not delete all files from cover cache");
+            Logger.info(LogCategories.FILE_DELETE, "Could not delete all files from cover cache");
             return true;
         } catch (CacheException e) {
-            getLogger().info(LogCategories.FILE_DELETE, "Could not delete all files from cover cache");
+            Logger.info(LogCategories.FILE_DELETE, "Could not delete all files from cover cache");
             return true;
         }
         return false;
@@ -97,7 +95,7 @@ public class ImageCache extends AbstractCache {
         }
         Element element = new Element(id(audioFile, imageSize), cover);
         getCache().put(element);
-        getLogger().debug(LogCategories.CACHE, "Stored image for ", audioFile);
+        Logger.debug(LogCategories.CACHE, "Stored image for ", audioFile);
     }
 
     private Cache getCache() {
@@ -107,17 +105,4 @@ public class ImageCache extends AbstractCache {
     public void shutdown() {
         getCache().dispose();
     }
-
-    /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
-    }
-
 }

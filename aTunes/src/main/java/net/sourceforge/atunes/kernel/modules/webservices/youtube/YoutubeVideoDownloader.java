@@ -50,11 +50,6 @@ import net.sourceforge.atunes.utils.StringUtils;
 public class YoutubeVideoDownloader extends SwingWorker<Void, String> {
 
     /**
-     * Logger
-     */
-    private Logger logger;
-
-    /**
      * String for total byte amount chunk
      */
     private static final String TOTAL = "total=";
@@ -140,7 +135,7 @@ public class YoutubeVideoDownloader extends SwingWorker<Void, String> {
                 }
             }
         } catch (Exception e) {
-            getLogger().error(LogCategories.SERVICE, e);
+            Logger.error(LogCategories.SERVICE, e);
         } finally {
             ClosingUtils.close(input);
             ClosingUtils.close(fout);
@@ -170,18 +165,6 @@ public class YoutubeVideoDownloader extends SwingWorker<Void, String> {
     protected void done() {
         super.done();
         progressDialog.setVisible(false);
-    }
-
-    /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
     }
 
 }

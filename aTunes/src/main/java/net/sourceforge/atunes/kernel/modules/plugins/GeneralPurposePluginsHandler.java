@@ -27,6 +27,7 @@ import java.util.List;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 
 import org.commonjukebox.plugins.exceptions.PluginSystemException;
@@ -89,7 +90,7 @@ public class GeneralPurposePluginsHandler extends AbstractHandler implements Plu
             // Activate plugin
             instance.activate();
         } catch (PluginSystemException e) {
-            getLogger().error(LogCategories.PLUGINS, e);
+            Logger.error(LogCategories.PLUGINS, e);
         }
     }
 

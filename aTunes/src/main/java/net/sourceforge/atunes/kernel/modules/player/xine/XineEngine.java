@@ -35,6 +35,7 @@ import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -246,11 +247,11 @@ public class XineEngine extends AbstractPlayerEngine {
     }
 
     protected void info(String info) {
-        getLogger().info(LogCategories.PLAYER, "Xine: " + info);
+        Logger.info(LogCategories.PLAYER, "Xine: " + info);
     }
 
     protected void error(Exception o) {
-        getLogger().error(LogCategories.PLAYER, o);
+        Logger.error(LogCategories.PLAYER, o);
     }
 
     private final class FadeAwayThread extends Thread {

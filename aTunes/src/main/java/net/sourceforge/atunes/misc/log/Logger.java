@@ -38,6 +38,9 @@ public class Logger {
     /** Categories to filter, i.e. will not be logged */
     private static Set<String> filteredCategories;
 
+    /** Internal logger. */
+    private static org.apache.log4j.Logger logger;
+
     /**
      * Initialize logger
      */
@@ -56,19 +59,11 @@ public class Logger {
         } catch (Exception e) {
             System.out.println(StringUtils.getString(Constants.EXTENDED_LOG_FILE, " not found or incorrect. No filters will be applied to log"));
         }
+        
+        logger = org.apache.log4j.Logger.getLogger(Logger.class);
     }
 
-    /** Internal logger. */
-    private org.apache.log4j.Logger logger;
-
-    /**
-     * Instantiates a new logger.
-     */
-    public Logger() {
-        // Get invoker class and call Log4j getLogger
-        Throwable t = new Throwable();
-        logger = org.apache.log4j.Logger.getLogger(t.getStackTrace()[1].getClassName());
-    }
+    private Logger() {}
 
     /**
      * Logs a debug event.
@@ -78,7 +73,7 @@ public class Logger {
      * @param objects
      *            the objects to show in log
      */
-    public void debug(String cat, Object... objects) {
+    public static void debug(String cat, Object... objects) {
         if (!Kernel.isDebug()) {
             return;
         }
@@ -103,7 +98,7 @@ public class Logger {
      * @param o
      *            the o
      */
-    public void error(String cat, Object o) {
+    public static void error(String cat, Object o) {
         // Find calling method name and class
         Throwable t = new Throwable();
         StackTraceElement[] s = t.getStackTrace();
@@ -164,7 +159,7 @@ public class Logger {
      * @param o
      *            the o
      */
-    private void error(String cat, String className, String methodName, long timer, StackTraceElement o) {
+    private static void error(String cat, String className, String methodName, long timer, StackTraceElement o) {
         StringBuilder sb = new StringBuilder();
         sb.append("[").append(cat).append("] ").append("--> ").append(className).append('.').append(methodName).append(" [").append(timer).append("]\t ").append(o);
 
@@ -179,7 +174,7 @@ public class Logger {
      * @param objs
      *            the objects
      */
-    public void info(String cat, Object... objs) {
+    public static void info(String cat, Object... objs) {
         if (filteredCategories.contains(cat.trim())) {
             return;
         }
@@ -196,7 +191,7 @@ public class Logger {
      * @param o
      *            the o
      */
-    public void internalError(Object o) {
+    public static void internalError(Object o) {
         error(LogCategories.INTERNAL_ERROR, o);
         if (o instanceof Throwable && ((Throwable)o).getCause() != null) {
         	error(LogCategories.INTERNAL_ERROR,  StringUtils.getString(((Throwable)o).getCause().getClass().getName(), ": ", ((Throwable)o).getCause().getMessage()));

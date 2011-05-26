@@ -30,7 +30,6 @@ import javax.swing.SwingUtilities;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.ClosingUtils;
 
@@ -38,8 +37,6 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 
     /** Pattern of end of play back */
     private static final Pattern END_PATTERN = Pattern.compile(".*\\x2e\\x2e\\x2e\\x20\\(.*\\x20.*\\).*");
-
-    private Logger logger;
 
     private MPlayerEngine engine;
     private BufferedReader in;
@@ -179,17 +176,4 @@ abstract class AbstractMPlayerOutputReader extends Thread {
     protected final MPlayerEngine getEngine() {
         return engine;
     }
-
-    /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    protected Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
-    }
-
 }

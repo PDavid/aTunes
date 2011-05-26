@@ -67,7 +67,7 @@ final class DeviceMonitor {
 
         File deviceLocationFile = new File(DeviceHandler.getInstance().getDeviceLocation());
         if (!deviceLocationFile.exists()) {
-            new Logger().info(LogCategories.PROCESS, "Device disconnected");
+            Logger.info(LogCategories.PROCESS, "Device disconnected");
             DeviceListeners.deviceDisconnected(deviceLocationFile.getAbsolutePath());
             return true;
         }
@@ -83,7 +83,7 @@ final class DeviceMonitor {
         if (deviceLocation != null && !deviceLocation.equals("")) {
             File deviceLocationFile = new File(deviceLocation);
             if (!DeviceHandler.getInstance().isDeviceConnected() && deviceLocationFile.exists()) {
-            	new Logger().info(LogCategories.PROCESS, "Device connected");
+            	Logger.info(LogCategories.PROCESS, "Device connected");
             	DeviceListeners.deviceConnected(deviceLocationFile.getAbsolutePath());
             	return true;
             }

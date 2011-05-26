@@ -37,8 +37,6 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class LyrcEngine extends AbstractLyricsEngine {
 
-    private Logger logger;
-
     private static final String ARTIST_WILDCARD = "(%ARTIST%)";
     private static final String SONG_WILDCARD = "(%SONG%)";
 
@@ -155,7 +153,7 @@ public class LyrcEngine extends AbstractLyricsEngine {
 
             return html;
         } catch (Exception e) {
-            getLogger().error(LogCategories.SERVICE, StringUtils.getString(e.getClass().getCanonicalName(), " (", e.getMessage(), ")"));
+            Logger.error(LogCategories.SERVICE, StringUtils.getString(e.getClass().getCanonicalName(), " (", e.getMessage(), ")"));
 
             return null;
         }
@@ -180,17 +178,4 @@ public class LyrcEngine extends AbstractLyricsEngine {
     public String getUrlForAddingNewLyrics(String artist, String title) {
         return ADD_LYRICS_URL.replace(SONG_WILDCARD, encodeString(title)).replace(ARTIST_WILDCARD, encodeString(artist));
     }
-
-    /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
-    }
-
 }

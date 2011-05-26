@@ -52,11 +52,6 @@ public final class LookAndFeelSelector implements PluginListener {
     private static LookAndFeelSelector instance;
 
     /**
-     * Logger
-     */
-    private Logger logger;
-
-    /**
      * Current look and feel
      */
     private AbstractLookAndFeel currentLookAndFeel;
@@ -114,7 +109,7 @@ public final class LookAndFeelSelector implements PluginListener {
         	AbstractLookAndFeel laf = (AbstractLookAndFeel) PluginsHandler.getInstance().getNewInstance(plugin);
             lookAndFeels.put(laf.getName(), laf);
         } catch (PluginSystemException e) {
-            getLogger().error(LogCategories.PLUGINS, e);
+            Logger.error(LogCategories.PLUGINS, e);
         }
     }
 
@@ -223,18 +218,6 @@ public final class LookAndFeelSelector implements PluginListener {
             return lookAndFeel.getDefaultSkin();
         }
         return null;
-    }
-
-    /**
-     * Returns logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
     }
 
     /**

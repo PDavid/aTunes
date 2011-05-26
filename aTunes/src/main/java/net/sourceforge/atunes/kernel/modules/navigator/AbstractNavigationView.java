@@ -97,11 +97,6 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
 		}
 	}
 
-	/**
-     * Common logger for all navigation views
-     */
-    private Logger logger;
-
     /**
      * Scroll pane used for tree
      */
@@ -371,7 +366,7 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
      * @param objects
      */
     protected final void debug(Object... objects) {
-        getLogger().debug(LogCategories.VIEW, objects);
+        Logger.debug(LogCategories.VIEW, objects);
     }
 
     /**
@@ -659,17 +654,4 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
     protected Comparator<String> getArtistNamesComparator() {
         return new ArtistNamesComparator();
     }
-
-    /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
-    }
-
 }

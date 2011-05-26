@@ -93,8 +93,6 @@ public final class TagModifier {
 		}
 	}
 
-	private static Logger logger;
-
     private TagModifier() {
 
     }
@@ -266,7 +264,7 @@ public final class TagModifier {
                 try {
                     newTag.deleteArtworkField();
                 } catch (KeyNotFoundException e) {
-                	getLogger().error(LogCategories.IMAGE, StringUtils.getString("Could not delte artwork field. File: ", file.getUrl(), " Error: ", e));
+                	Logger.error(LogCategories.IMAGE, StringUtils.getString("Could not delte artwork field. File: ", file.getUrl(), " Error: ", e));
                 }
 
                 if (cover != null) {
@@ -461,25 +459,13 @@ public final class TagModifier {
     }
 
     /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    private static Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
-    }
-
-    /**
      * Logs error while writing
      * @param file
      * @param e
      */
     private static final void reportWriteError(LocalAudioObject file, Exception e) {
-        getLogger().error(LogCategories.FILE_WRITE, StringUtils.getString("Could not edit tag. File: ", file.getUrl(), " Error: ", e));
-        getLogger().error(LogCategories.FILE_WRITE, e);
+        Logger.error(LogCategories.FILE_WRITE, StringUtils.getString("Could not edit tag. File: ", file.getUrl(), " Error: ", e));
+        Logger.error(LogCategories.FILE_WRITE, e);
     }
     
     /**
@@ -489,7 +475,7 @@ public final class TagModifier {
      * @param fieldValue
      */
     private static final void reportWriteFieldError(LocalAudioObject file, FieldKey fieldKey, String fieldValue, Exception e) {
-    	getLogger().error(LogCategories.FILE_WRITE, StringUtils.getString("Could not edit tag field ", fieldKey.name(), " with value \"", fieldValue, "\" for file: ", file.getUrl(), " Error: ", e));
+    	Logger.error(LogCategories.FILE_WRITE, StringUtils.getString("Could not edit tag field ", fieldKey.name(), " with value \"", fieldValue, "\" for file: ", file.getUrl(), " Error: ", e));
     }
 
     /**

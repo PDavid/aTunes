@@ -34,6 +34,7 @@ import net.sourceforge.atunes.kernel.modules.search.searchableobjects.FavoritesS
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
@@ -144,7 +145,7 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
         if (getFavorites().isDirty()) {
             ApplicationStateHandler.getInstance().persistFavoritesCache(getFavorites());
         } else {
-            getLogger().info(LogCategories.FAVORITES, "Favorites are clean");
+            Logger.info(LogCategories.FAVORITES, "Favorites are clean");
         }
     }
 

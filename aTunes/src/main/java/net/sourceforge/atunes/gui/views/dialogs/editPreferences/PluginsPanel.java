@@ -81,8 +81,6 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 
     private static final int CELL_HEIGHT = 30;
 
-    private Logger logger;
-
     /**
      * Plugins modified with their modified configuration
      */
@@ -243,7 +241,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
                     updatePanel(null);
                 } catch (Exception e1) {
                     GuiHandler.getInstance().showErrorDialog(e1.getMessage());
-                    getLogger().error(LogCategories.PLUGINS, e1);
+                    Logger.error(LogCategories.PLUGINS, e1);
                 }
             }
         });
@@ -255,7 +253,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
         try {
             // if any plugin has been modified then write configuration
             for (PluginInfo plugin : pluginsModified.keySet()) {
-                getLogger().debug(LogCategories.PLUGINS, "Writting configuration of plugin: ", plugin.getName());
+                Logger.debug(LogCategories.PLUGINS, "Writting configuration of plugin: ", plugin.getName());
 
                 // Avoid plugins throw exceptions when setting configuration
                 try {
@@ -281,9 +279,9 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
                 restartNeeded = restartNeeded || PluginsHandler.getInstance().pluginNeedsRestart(plugin);
             }
         } catch (PluginSystemException e) {
-            getLogger().error(LogCategories.PLUGINS, e);
+            Logger.error(LogCategories.PLUGINS, e);
             if (e.getCause() != null) {
-                getLogger().error(LogCategories.PLUGINS, e.getCause());
+                Logger.error(LogCategories.PLUGINS, e.getCause());
             }
         }
         return restartNeeded;
@@ -479,7 +477,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
             try {
                 return PluginsHandler.getInstance().getConfiguration(this.plugins.get(row));
             } catch (PluginSystemException e) {
-                logger.error(LogCategories.PLUGINS, e);
+                Logger.error(LogCategories.PLUGINS, e);
                 return null;
             }
         }
@@ -489,17 +487,4 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
         }
 
     }
-
-    /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
-    }
-
 }

@@ -65,11 +65,6 @@ public abstract class AbstractHandler implements ApplicationLifeCycleListener,
                                                  PlaybackStateListener {
 
     /**
-     * Logger for handlers
-     */
-    private static Logger logger;
-
-    /**
      * Initializes handler
      */
     protected abstract void initHandler();
@@ -103,18 +98,6 @@ public abstract class AbstractHandler implements ApplicationLifeCycleListener,
         DeviceListeners.addDeviceListener(handler);
         PlaybackStateListeners.addPlaybackStateListener(handler);
         PlayListEventListeners.addPlayListEventListener(handler);
-    }
-
-    /**
-     * Getter for logger
-     * 
-     * @return Logger
-     */
-    protected final static Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
     }
 
     /**
@@ -176,7 +159,7 @@ public abstract class AbstractHandler implements ApplicationLifeCycleListener,
         try {
 			executorService.awaitTermination(100, TimeUnit.SECONDS);
 		} catch (InterruptedException e) {
-			getLogger().error(LogCategories.START, e);
+			Logger.error(LogCategories.START, e);
 		}
     }
     

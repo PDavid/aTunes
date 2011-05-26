@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 
 import org.commonjukebox.plugins.model.PluginApi;
@@ -48,23 +47,8 @@ public abstract class AbstractColumnSet {
     /** The current visible columns. */
     private List<Class<? extends AbstractColumn>> currentColumns;
 
-    /** Logger */
-    private Logger logger;
-
     public AbstractColumnSet() {
         ColumnSets.registerColumnSet(this);
-    }
-
-    /**
-     * Returns logger
-     * 
-     * @return
-     */
-    protected final Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
     }
 
     /**

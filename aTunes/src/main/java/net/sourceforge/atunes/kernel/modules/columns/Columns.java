@@ -89,7 +89,7 @@ public final class Columns {
                     result.add(column);
                 }
             } catch (Exception e) {
-                new Logger().error(LogCategories.COLUMNS, e);
+                Logger.error(LogCategories.COLUMNS, e);
             }
         }
 

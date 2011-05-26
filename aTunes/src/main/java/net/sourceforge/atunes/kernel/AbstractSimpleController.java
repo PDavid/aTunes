@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel;
 import java.awt.Component;
 
 import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.misc.log.Logger;
 
 public abstract class AbstractSimpleController<T extends Component> extends AbstractController {
 
@@ -33,7 +34,7 @@ public abstract class AbstractSimpleController<T extends Component> extends Abst
      */
     public AbstractSimpleController(T componentControlled) {
         this.componentControlled = componentControlled;
-        getLogger().debug(LogCategories.CONTROLLER, "Creating ", this.getClass().getSimpleName());
+        Logger.debug(LogCategories.CONTROLLER, "Creating ", this.getClass().getSimpleName());
     }
 
     public T getComponentControlled() {

@@ -105,20 +105,6 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
     
     private WindowAdapter fullFrameStateListener;
 
-    private Logger logger;
-
-    /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
-    }
-
     /**
      * Instantiates a new standard frame.
      */
@@ -221,9 +207,9 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
                         if (ApplicationState.getInstance().isShowSystemTray()) {
                             AbstractSingleFrame.this.setVisible(false);
                         }
-                        getLogger().debug(LogCategories.DESKTOP, "Window Iconified");
+                        Logger.debug(LogCategories.DESKTOP, "Window Iconified");
                     } else if (e.getNewState() != Frame.ICONIFIED) {
-                        getLogger().debug(LogCategories.DESKTOP, "Window Deiconified");
+                        Logger.debug(LogCategories.DESKTOP, "Window Deiconified");
                         PlayListHandler.getInstance().scrollPlayList(false);
                     }
                 }
@@ -633,7 +619,7 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
 		if (actualSizeComponent < minimumSizeComponent) {
 			int newWidth = sp.getOrientation() == JSplitPane.HORIZONTAL_SPLIT ? getSize().width + (minimumSizeComponent - actualSizeComponent) : getSize().width;
 			int newHeight = sp.getOrientation() == JSplitPane.HORIZONTAL_SPLIT ? getSize().height : getSize().height + (minimumSizeComponent - actualSizeComponent);
-			getLogger().info(LogCategories.DESKTOP, "Changing window size to : ", newWidth , "x", newHeight);
+			Logger.info(LogCategories.DESKTOP, "Changing window size to : ", newWidth , "x", newHeight);
 			setSize(newWidth, newHeight);
 		}
 	}

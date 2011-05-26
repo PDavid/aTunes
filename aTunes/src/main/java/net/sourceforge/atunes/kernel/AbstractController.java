@@ -20,11 +20,8 @@
 
 package net.sourceforge.atunes.kernel;
 
-import net.sourceforge.atunes.misc.log.Logger;
 
 public abstract class AbstractController {
-
-    private Logger logger;
 
     /**
      * Adds the bindings.
@@ -40,16 +37,4 @@ public abstract class AbstractController {
      * Notify reload.
      */
     protected abstract void notifyReload();
-
-    /**
-     * Return logger
-     * 
-     * @return
-     */
-    protected Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
-    }
 }

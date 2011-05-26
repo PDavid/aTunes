@@ -91,16 +91,14 @@ public final class CoverFlow extends JPanel {
 		        	cover.repaint();
 		        }
 		    } catch (InterruptedException e) {
-		        getLogger().error(LogCategories.IMAGE, e);
+		        Logger.error(LogCategories.IMAGE, e);
 		    } catch (ExecutionException e) {
-		        getLogger().error(LogCategories.IMAGE, e);
+		        Logger.error(LogCategories.IMAGE, e);
 		    }
 		}
 	}
 
 	private static final long serialVersionUID = -5982158797052430789L;
-
-    private Logger logger;
 
     private List<Cover3D> covers;
 
@@ -189,17 +187,4 @@ public final class CoverFlow extends JPanel {
             return Constants.FULL_SCREEN_COVER * 9 / 16;
         }
     }
-
-    /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
-    }
-
 }

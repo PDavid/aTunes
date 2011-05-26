@@ -28,8 +28,6 @@ import net.sourceforge.atunes.misc.log.Logger;
  */
 class FadeAwayRunnable implements Runnable {
 
-    private Logger logger;
-
     /** The process. */
     private Process process;
 
@@ -66,7 +64,7 @@ class FadeAwayRunnable implements Runnable {
 
     @Override
     public void run() {
-        getLogger().debug(LogCategories.PLAYER, "Fade away runnable started");
+        Logger.debug(LogCategories.PLAYER, "Fade away runnable started");
         try {
             int fadeVolume = initialVolume;
             int fadeStep = 0;
@@ -78,13 +76,13 @@ class FadeAwayRunnable implements Runnable {
                 try {
                     Thread.sleep(25);
                 } catch (InterruptedException e) {
-                    getLogger().error(LogCategories.PLAYER, e);
+                    Logger.error(LogCategories.PLAYER, e);
                 }
                 fadeStep++;
             }
         } finally {
             process.destroy();
-            getLogger().debug(LogCategories.PLAYER, "Fade away runnable finished");
+            Logger.debug(LogCategories.PLAYER, "Fade away runnable finished");
         }
         if (!interrupted) {
             // Notify finish to MPlayerHandler
@@ -99,17 +97,4 @@ class FadeAwayRunnable implements Runnable {
         interrupted = true;
         handler.finishedFadeAway();
     }
-
-    /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
-    }
-
 }

@@ -39,9 +39,6 @@ import org.jaudiotagger.tag.TagException;
  */
 public final class TagDetector {
 
-    /** The logger. */
-    private static Logger logger;
-
     private TagDetector() {
 
     }
@@ -54,22 +51,22 @@ public final class TagDetector {
      * @return reference to jaudiotagger file
      */
     public static void readInformation(AudioFile file, boolean readAudioProperties) {
-        getLogger().debug(LogCategories.FILE_READ, file);
+        Logger.debug(LogCategories.FILE_READ, file);
 
         // Read file
     	org.jaudiotagger.audio.AudioFile f = null;
 		try {
 			f = org.jaudiotagger.audio.AudioFileIO.read(file.getFile());
 		} catch (CannotReadException e) {
-            getLogger().error(LogCategories.FILE_READ, e);
+            Logger.error(LogCategories.FILE_READ, e);
 		} catch (IOException e) {
-			getLogger().error(LogCategories.FILE_READ, e);
+			Logger.error(LogCategories.FILE_READ, e);
 		} catch (TagException e) {
-			getLogger().error(LogCategories.FILE_READ, e);
+			Logger.error(LogCategories.FILE_READ, e);
 		} catch (ReadOnlyFileException e) {
-			getLogger().error(LogCategories.FILE_READ, e);
+			Logger.error(LogCategories.FILE_READ, e);
 		} catch (InvalidAudioFrameException e) {
-			getLogger().error(LogCategories.FILE_READ, e);
+			Logger.error(LogCategories.FILE_READ, e);
 		}
     	
 		if (f != null) {
@@ -84,7 +81,7 @@ public final class TagDetector {
 					}
 				}
 			} catch (Exception e) {
-				getLogger().error(LogCategories.FILE_READ, e.getMessage());
+				Logger.error(LogCategories.FILE_READ, e.getMessage());
 			}
 
 			// Set tag
@@ -94,21 +91,8 @@ public final class TagDetector {
 					file.setTag(new DefaultTag(tag));
 				}
 			} catch (Exception e) {
-				getLogger().error(LogCategories.FILE_READ, e.getMessage());
+				Logger.error(LogCategories.FILE_READ, e.getMessage());
 			}
 		}
     }
-
-    /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    private static Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
-    }
-
 }

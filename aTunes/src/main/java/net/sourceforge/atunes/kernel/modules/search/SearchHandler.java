@@ -39,6 +39,7 @@ import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.search.searchableobjects.DeviceSearchableObject;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -101,21 +102,21 @@ public final class SearchHandler extends AbstractHandler {
 		}
 
 		private void initSearchIndex() {
-		    getLogger().info(LogCategories.HANDLER, "Updating index for " + searchableObject.getClass());
+		    Logger.info(LogCategories.HANDLER, "Updating index for " + searchableObject.getClass());
 		    try {
 		        FileUtils.deleteDirectory(searchableObject.getIndexDirectory().getFile());
 		        indexWriter = new IndexWriter(searchableObject.getIndexDirectory(), new SimpleAnalyzer(), IndexWriter.MaxFieldLength.UNLIMITED);
 		    } catch (CorruptIndexException e) {
-		        getLogger().error(LogCategories.HANDLER, e);
+		        Logger.error(LogCategories.HANDLER, e);
 		    } catch (LockObtainFailedException e) {
-		        getLogger().error(LogCategories.HANDLER, e);
+		        Logger.error(LogCategories.HANDLER, e);
 		    } catch (IOException e) {
-		        getLogger().error(LogCategories.HANDLER, e);
+		        Logger.error(LogCategories.HANDLER, e);
 		    }
 		}
 
 		private void updateSearchIndex(List<AudioObject> audioObjects) {
-		    getLogger().info(LogCategories.HANDLER, "update search index");
+		    Logger.info(LogCategories.HANDLER, "update search index");
 		    if (indexWriter != null) {
 		        for (AudioObject audioObject : audioObjects) {
 		            Document d = searchableObject.getDocumentForElement(audioObject);
@@ -125,16 +126,16 @@ public final class SearchHandler extends AbstractHandler {
 		            try {
 		                indexWriter.addDocument(d);
 		            } catch (CorruptIndexException e) {
-		                getLogger().error(LogCategories.HANDLER, e);
+		                Logger.error(LogCategories.HANDLER, e);
 		            } catch (IOException e) {
-		                getLogger().error(LogCategories.HANDLER, e);
+		                Logger.error(LogCategories.HANDLER, e);
 		            }
 		        }
 		    }
 		}
 
 		private void finishSearchIndex() {
-		    getLogger().info(LogCategories.HANDLER, StringUtils.getString("Update index for ", searchableObject.getClass(), " finished"));
+		    Logger.info(LogCategories.HANDLER, StringUtils.getString("Update index for ", searchableObject.getClass(), " finished"));
 		    if (indexWriter != null) {
 		        try {
 		            indexWriter.optimize();
@@ -142,9 +143,9 @@ public final class SearchHandler extends AbstractHandler {
 
 		            indexWriter = null;
 		        } catch (CorruptIndexException e) {
-		            getLogger().error(LogCategories.HANDLER, e);
+		            Logger.error(LogCategories.HANDLER, e);
 		        } catch (IOException e) {
-		            getLogger().error(LogCategories.HANDLER, e);
+		            Logger.error(LogCategories.HANDLER, e);
 		        }
 		    }
 		}
@@ -311,7 +312,7 @@ public final class SearchHandler extends AbstractHandler {
                 rawSearchResults.add(new RawSearchResult(searcher.doc(scoreDoc.doc), scoreDoc.score));
             }
             List<AudioObject> result = searchableObject.getSearchResult(rawSearchResults);
-            getLogger().debug(LogCategories.REPOSITORY, "Query: ", queryString, " (", result.size(), " search results)");
+            Logger.debug(LogCategories.REPOSITORY, "Query: ", queryString, " (", result.size(), " search results)");
             return result;
         } catch (IOException e) {
             throw new SearchIndexNotAvailableException();

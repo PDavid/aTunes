@@ -28,7 +28,6 @@ import java.util.List;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -47,8 +46,6 @@ public class PodcastFeed implements TreeObject, Serializable {
             return o1.name.compareToIgnoreCase(o2.name);
         }
     };
-
-    private transient Logger logger;
 
     private String name;
     private String url;
@@ -300,17 +297,4 @@ public class PodcastFeed implements TreeObject, Serializable {
         // TODO Auto-generated method stub
         return false;
     }
-
-    /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
-    }
-
 }

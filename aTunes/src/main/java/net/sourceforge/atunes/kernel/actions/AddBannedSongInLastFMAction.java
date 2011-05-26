@@ -59,9 +59,9 @@ public class AddBannedSongInLastFMAction extends AbstractAction {
 		    try {
 		        get();
 		    } catch (InterruptedException e) {
-		    	new Logger().error(LogCategories.CONTEXT, e);
+		    	Logger.error(LogCategories.CONTEXT, e);
 		    } catch (ExecutionException e) {
-		    	new Logger().error(LogCategories.CONTEXT, e);
+		    	Logger.error(LogCategories.CONTEXT, e);
 		    } finally {
 		        setEnabled(true);
 		    }

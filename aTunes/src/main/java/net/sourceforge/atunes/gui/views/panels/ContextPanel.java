@@ -165,7 +165,7 @@ public final class ContextPanel extends JPanel {
 	 * @param selectedContextTab
 	 */
 	public void setSelectedContextTab(String selectedContextTab) {
-		new Logger().debug(LogCategories.CONTEXT, "Setting context view: ", selectedContextTab);
+		Logger.debug(LogCategories.CONTEXT, "Setting context view: ", selectedContextTab);
 		AbstractContextPanel panel = null;
 		if (selectedContextTab != null) {
 			for (AbstractContextPanel p : panels) {

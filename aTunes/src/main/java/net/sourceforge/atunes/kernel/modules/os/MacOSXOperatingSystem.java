@@ -64,7 +64,7 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 			OSXAdapter.setQuitHandler(frame, frame.getClass().getDeclaredMethod("dispose", (Class[]) null));
 			OSXAdapter.setAboutHandler(frame, frame.getClass().getDeclaredMethod("about", (Class[]) null));
 		} catch (Exception e) {
-			new Logger().error(LogCategories.STANDARD_FRAME, e);
+			Logger.error(LogCategories.STANDARD_FRAME, e);
 		}
 	}
 	

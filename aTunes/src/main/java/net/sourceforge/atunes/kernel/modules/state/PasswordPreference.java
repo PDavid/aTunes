@@ -56,24 +56,24 @@ public class PasswordPreference extends Preference {
 	public void setPassword(String password) {
 		try {
 			byte[] encrypted = CryptoUtils.encrypt(password.getBytes());
-			new Logger().debug(LogCategories.PREFERENCES, "Encrypted password: ", Arrays.toString(encrypted));
+			Logger.debug(LogCategories.PREFERENCES, "Encrypted password: ", Arrays.toString(encrypted));
 			super.setValue(encrypted);
 		} catch (GeneralSecurityException e) {
-			new Logger().error(LogCategories.PREFERENCES, e);
+			Logger.error(LogCategories.PREFERENCES, e);
 		} catch (IOException e) {
-			new Logger().error(LogCategories.PREFERENCES, e);
+			Logger.error(LogCategories.PREFERENCES, e);
 		}
 	}
 
 	public String getPassword() {
 		try {
 			String decrypted = new String(CryptoUtils.decrypt((byte[])super.getValue()));
-			new Logger().debug(LogCategories.PREFERENCES, "Decrypted password: ", decrypted);
+			Logger.debug(LogCategories.PREFERENCES, "Decrypted password: ", decrypted);
 			return decrypted;
 		} catch (GeneralSecurityException e) {
-			new Logger().error(LogCategories.PREFERENCES, e);
+			Logger.error(LogCategories.PREFERENCES, e);
 		} catch (IOException e) {
-			new Logger().error(LogCategories.PREFERENCES, e);
+			Logger.error(LogCategories.PREFERENCES, e);
 		}
 		return null;
 	}

@@ -44,7 +44,6 @@ import org.commonjukebox.plugins.model.PluginApi;
 @PluginApi
 public final class DesktopUtils {
 
-    private static Logger logger;
     private static boolean isDesktopSupported;
     private static Desktop desktop;
 
@@ -71,9 +70,9 @@ public final class DesktopUtils {
             try {
                 browse(search.getURL(query).toURI());
             } catch (MalformedURLException e) {
-                getLogger().error(LogCategories.DESKTOP, e);
+                Logger.error(LogCategories.DESKTOP, e);
             } catch (URISyntaxException e) {
-                getLogger().error(LogCategories.DESKTOP, e);
+                Logger.error(LogCategories.DESKTOP, e);
             }
         }
     }
@@ -98,7 +97,7 @@ public final class DesktopUtils {
                 try {
                     desktop.browse(uri);
                 } catch (IOException e) {
-                    getLogger().error(LogCategories.DESKTOP, e);
+                    Logger.error(LogCategories.DESKTOP, e);
                 }
             }
         });
@@ -115,9 +114,9 @@ public final class DesktopUtils {
             try {
                 openURI(new URL(url).toURI());
             } catch (MalformedURLException e) {
-                getLogger().error(LogCategories.DESKTOP, e);
+                Logger.error(LogCategories.DESKTOP, e);
             } catch (URISyntaxException e) {
-                getLogger().error(LogCategories.DESKTOP, e);
+                Logger.error(LogCategories.DESKTOP, e);
             }
         }
     }
@@ -133,7 +132,7 @@ public final class DesktopUtils {
             try {
                 openURI(url.toURI());
             } catch (URISyntaxException e) {
-                getLogger().error(LogCategories.DESKTOP, e);
+                Logger.error(LogCategories.DESKTOP, e);
             }
         }
     }
@@ -162,24 +161,11 @@ public final class DesktopUtils {
                     try {
                         desktop.open(fileToOpen);
                     } catch (IOException e) {
-                        getLogger().error(LogCategories.DESKTOP, e);
+                        Logger.error(LogCategories.DESKTOP, e);
                     }
                     return null;
                 }
             }.execute();
         }
     }
-
-    /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    private static Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
-    }
-
 }

@@ -49,7 +49,7 @@ class MPlayerPositionThread extends Thread {
                 if (!engine.isPlaybackPaused()) {
                     engine.getCommandWriter().sendGetPositionCommand();
                     if (this.engine.getCurrentAudioObjectLength() == 0 && engine.getAudioObject().isSeekable()) {
-                    	new Logger().debug(LogCategories.PLAYER, "Duration still unknown: sending get_duration_command");
+                    	Logger.debug(LogCategories.PLAYER, "Duration still unknown: sending get_duration_command");
                     	engine.getCommandWriter().sendGetDurationCommand();
                     }
                 }

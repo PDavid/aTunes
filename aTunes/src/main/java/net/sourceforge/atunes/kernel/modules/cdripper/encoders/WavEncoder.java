@@ -32,7 +32,6 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class WavEncoder implements Encoder {
 
-    private Logger logger;
     /** The format name of this encoder */
     public static final String FORMAT_NAME = "WAV";
 
@@ -56,14 +55,14 @@ public class WavEncoder implements Encoder {
      */
     @Override
     public boolean encode(File wavFile, File wavFile2, String title, int trackNumber, String artists, String composer) {
-        getLogger().info(LogCategories.WAV, StringUtils.getString("Wav encoding started... ", wavFile.getName(), " -> ", wavFile2.getName()));
+        Logger.info(LogCategories.WAV, StringUtils.getString("Wav encoding started... ", wavFile.getName(), " -> ", wavFile2.getName()));
         try {
             wavFile.renameTo(wavFile2);
-            getLogger().info(LogCategories.WAV, "Renamed ok!!");
+            Logger.info(LogCategories.WAV, "Renamed ok!!");
             return true;
 
         } catch (Exception e) {
-            getLogger().error(LogCategories.WAV, StringUtils.getString("Exception ", e));
+            Logger.error(LogCategories.WAV, StringUtils.getString("Exception ", e));
             return false;
         }
     }
@@ -132,17 +131,4 @@ public class WavEncoder implements Encoder {
         // This encoder is always available
         return true;
     }
-
-    /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
-    }
-
 }

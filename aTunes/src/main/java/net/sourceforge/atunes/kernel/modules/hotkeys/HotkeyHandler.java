@@ -32,6 +32,7 @@ import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -94,7 +95,7 @@ public final class HotkeyHandler extends AbstractHandler implements HotkeyListen
             supported = true;
         } else {
             supported = false;
-            getLogger().info(LogCategories.HANDLER, "Hotkeys are not supported");
+            Logger.info(LogCategories.HANDLER, "Hotkeys are not supported");
         }
     }
 
@@ -184,7 +185,7 @@ public final class HotkeyHandler extends AbstractHandler implements HotkeyListen
             if (allHotKeysRegistered) {
                 hotkeys.activate();
                 enabled = true;
-                getLogger().info(LogCategories.HOTKEYS, "Hotkeys activated successfully");
+                Logger.info(LogCategories.HOTKEYS, "Hotkeys activated successfully");
             } else {
                 // If not, then unregister hotkeys
                 for (Hotkey entry : hotkeysConfig) {
@@ -196,7 +197,7 @@ public final class HotkeyHandler extends AbstractHandler implements HotkeyListen
 
                 // Show an error message
                 GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("HOTKEYS_ACTIVATION_ERROR_MESSAGE"));
-                getLogger().error(LogCategories.HOTKEYS, "Hotkeys were not activated successfully");
+                Logger.error(LogCategories.HOTKEYS, "Hotkeys were not activated successfully");
             }
         }
     }
@@ -225,7 +226,7 @@ public final class HotkeyHandler extends AbstractHandler implements HotkeyListen
 
     @Override
     public void onHotKey(final int id) {
-        getLogger().debug(LogCategories.HANDLER, "Hotkey ", id);
+        Logger.debug(LogCategories.HANDLER, "Hotkey ", id);
         switch (id) {
         case HOTKEY_NEXT: {
             PlayerHandler.getInstance().playNextAudioObject();
@@ -264,7 +265,7 @@ public final class HotkeyHandler extends AbstractHandler implements HotkeyListen
             break;
         }
         default: {
-            getLogger().error(LogCategories.HOTKEYS, StringUtils.getString("Unknown hotkey id: ", id));
+            Logger.error(LogCategories.HOTKEYS, StringUtils.getString("Unknown hotkey id: ", id));
         }
         }
     }

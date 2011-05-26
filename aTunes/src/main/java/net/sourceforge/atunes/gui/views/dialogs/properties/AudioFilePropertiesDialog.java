@@ -70,16 +70,14 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
                 pictureLabel.setIcon(cover);
                 pictureLabel.setVisible(cover != null);
             } catch (InterruptedException e) {
-                getLogger().error(LogCategories.IMAGE, e);
+            	Logger.error(LogCategories.IMAGE, e);
             } catch (ExecutionException e) {
-                getLogger().error(LogCategories.IMAGE, e);
+            	Logger.error(LogCategories.IMAGE, e);
             }
         }
     }
 
     private static final long serialVersionUID = 7504320983331038543L;
-
-    private Logger logger;
 
     private JLabel pictureLabel;
     private ProviderLabel fileNameLabel;
@@ -267,18 +265,6 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
         composerLabel.setText(getHtmlFormatted(I18nUtils.getString("COMPOSER"), StringUtils.isEmpty(file.getComposer()) ? "-" : file.getComposer()));
         bitrateLabel.setText(getHtmlFormatted(I18nUtils.getString("BITRATE"), StringUtils.getString(Long.toString(file.getBitrate()), " Kbps")));
         frequencyLabel.setText(getHtmlFormatted(I18nUtils.getString("FREQUENCY"), StringUtils.getString(Integer.toString(file.getFrequency()), " Hz")));
-    }
-
-    /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
     }
 
     private interface ValueProvider {

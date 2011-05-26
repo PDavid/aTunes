@@ -42,6 +42,7 @@ import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -101,7 +102,7 @@ public final class MultipleInstancesHandler extends AbstractHandler {
                     String str;
                     while ((str = br.readLine()) != null) {
                     	File fileStr = new File(str);
-                        getLogger().info(LogCategories.HANDLER, StringUtils.getString("Received connection with content: \"", str, "\""));
+                        Logger.info(LogCategories.HANDLER, StringUtils.getString("Received connection with content: \"", str, "\""));
                         if (PlayListIO.isValidPlayList(fileStr)) {
                             List<String> songs = PlayListIO.read(fileStr);
                             List<AudioObject> files = PlayListIO.getAudioObjectsFromFileNamesList(songs);
@@ -121,11 +122,11 @@ public final class MultipleInstancesHandler extends AbstractHandler {
                     }
                     ClosingUtils.close(br);
                     ClosingUtils.close(s);
-                    getLogger().info(LogCategories.HANDLER, StringUtils.getString("Connection finished"));
+                    Logger.info(LogCategories.HANDLER, StringUtils.getString("Connection finished"));
                 }
             } catch (IOException e) {
                 if (!closing) {
-                    getLogger().error(LogCategories.HANDLER, e);
+                    Logger.error(LogCategories.HANDLER, e);
                 }
             } finally {
                 ClosingUtils.close(bos);

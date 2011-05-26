@@ -50,8 +50,6 @@ public final class InternetPanel extends AbstractPreferencesPanel {
 
     private static final long serialVersionUID = -1872565673079044088L;
 
-    private Logger logger;
-
     private JRadioButton noProxyRadioButton;
     private JRadioButton httpProxyRadioButton;
     private JRadioButton socksProxyRadioButton;
@@ -223,9 +221,9 @@ public final class InternetPanel extends AbstractPreferencesPanel {
         try {
             Proxy.initProxy(Proxy.getProxy(proxy));
         } catch (UnknownHostException e) {
-            getLogger().error(LogCategories.CONTROLLER, e);
+            Logger.error(LogCategories.CONTROLLER, e);
         } catch (IOException e) {
-            getLogger().error(LogCategories.CONTROLLER, e);
+            Logger.error(LogCategories.CONTROLLER, e);
         }
         return false;
     }
@@ -288,17 +286,4 @@ public final class InternetPanel extends AbstractPreferencesPanel {
     public void dialogVisibilityChanged(boolean visible) {
         // Do nothing
     }
-
-    /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
-    }
-
 }

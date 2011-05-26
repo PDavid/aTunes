@@ -61,7 +61,7 @@ public abstract class AbstractHotkeys {
                 return null;
             }
         } catch (Throwable e) {
-            new Logger().info(LogCategories.HOTKEYS, "No hotkeys supported");
+            Logger.info(LogCategories.HOTKEYS, "No hotkeys supported");
             return null;
         }
     }

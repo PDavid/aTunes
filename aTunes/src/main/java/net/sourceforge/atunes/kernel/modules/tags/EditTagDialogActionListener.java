@@ -51,8 +51,6 @@ import net.sourceforge.atunes.utils.ImageUtils;
  */
 public final class EditTagDialogActionListener implements ActionListener {
 
-    private Logger logger;
-
     private EditTagDialogController controller;
     private EditTagDialog dialog;
 
@@ -157,7 +155,7 @@ public final class EditTagDialogActionListener implements ActionListener {
                 } catch (IOException ex) {
                     controller.setNewCover(null);
                     controller.setCoverEdited(false);
-                    getLogger().error(LogCategories.FILE_READ, ex);
+                    Logger.error(LogCategories.FILE_READ, ex);
                 }
             }
         } else if (e.getSource() == dialog.getRemoveCoverButton()) {
@@ -180,18 +178,6 @@ public final class EditTagDialogActionListener implements ActionListener {
         } else {
             return null;
         }
-    }
-
-    /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
     }
 
     private static class ImagesFileFiler extends FileFilter {
