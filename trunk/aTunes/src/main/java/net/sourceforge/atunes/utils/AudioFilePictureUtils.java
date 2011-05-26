@@ -87,7 +87,7 @@ public final class AudioFilePictureUtils {
                 }
             }
         } catch (Exception e) {
-            new Logger().error(LogCategories.IMAGE, e);
+            Logger.error(LogCategories.IMAGE, e);
         }
     }
 
@@ -202,10 +202,10 @@ public final class AudioFilePictureUtils {
             }
             return null;
         } catch (FileNotFoundException e) {
-            new Logger().error(LogCategories.IMAGE, StringUtils.getString("File not found: ", file.getFile().getAbsolutePath()));
+        	Logger.error(LogCategories.IMAGE, StringUtils.getString("File not found: ", file.getFile().getAbsolutePath()));
             return null;
         } catch (Exception e) {
-            new Logger().error(LogCategories.IMAGE, e);
+        	Logger.error(LogCategories.IMAGE, e);
             return null;
         }
     }

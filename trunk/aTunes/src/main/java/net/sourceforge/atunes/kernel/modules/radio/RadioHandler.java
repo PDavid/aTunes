@@ -39,6 +39,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.NetworkUtils;
 import net.sourceforge.atunes.utils.XMLUtils;
@@ -68,9 +69,9 @@ public final class RadioHandler extends AbstractHandler {
                 getRadioPresets();
                 NavigationHandler.getInstance().refreshView(RadioNavigationView.class);
             } catch (InterruptedException e) {
-                getLogger().error(LogCategories.HANDLER, e);
+                Logger.error(LogCategories.HANDLER, e);
             } catch (ExecutionException e) {
-                getLogger().error(LogCategories.HANDLER, e);
+                Logger.error(LogCategories.HANDLER, e);
             }
 
         }
@@ -132,7 +133,7 @@ public final class RadioHandler extends AbstractHandler {
      *            Station
      */
     public void addRadio(Radio radio) {
-        getLogger().info(LogCategories.HANDLER, "Adding radio");
+        Logger.info(LogCategories.HANDLER, "Adding radio");
         if (radio != null && !getRadios().contains(radio)) {
             getRadios().add(radio);
             radioListDirty = true;
@@ -152,7 +153,7 @@ public final class RadioHandler extends AbstractHandler {
                 ApplicationStateHandler.getInstance().persistPresetRadioCache(presetRadios);
             }
         } else {
-            getLogger().info(LogCategories.HANDLER, "Radio list is clean");
+            Logger.info(LogCategories.HANDLER, "Radio list is clean");
         }
     }
 
@@ -267,7 +268,7 @@ public final class RadioHandler extends AbstractHandler {
      *            Radio to be removed
      */
     public void removeRadios(List<Radio> radios) {
-        getLogger().info(LogCategories.HANDLER, "Removing radios");
+        Logger.info(LogCategories.HANDLER, "Removing radios");
         for (Radio radio : radios) {
             if (!presetRadios.contains(radio)) {
                 getRadios().remove(radio);

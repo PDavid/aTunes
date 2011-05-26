@@ -76,7 +76,7 @@ public class GetCoversProcess extends AbstractProcess {
                     try {
                         ImageUtils.writeImageToFile(albumImage, AudioFilePictureUtils.getFileNameForCover((AudioFile)album.getAudioObjects().get(0)));
                     } catch (IOException e1) {
-                        new Logger().error(LogCategories.CONTEXT, StringUtils.getString("Error writing image for artist: ", artist.getName(), " album: ", album.getName(),
+                        Logger.error(LogCategories.CONTEXT, StringUtils.getString("Error writing image for artist: ", artist.getName(), " album: ", album.getName(),
                                 " Error: ", e1.getMessage()));
                     }
                 }

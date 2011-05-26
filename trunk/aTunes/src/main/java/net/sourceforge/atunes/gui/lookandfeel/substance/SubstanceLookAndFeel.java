@@ -281,13 +281,13 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
             GuiUtils.setBorderColor(org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin().getActiveColorScheme(DecorationAreaType.GENERAL).getMidColor());
 
         } catch (ClassNotFoundException e) {
-            new Logger().internalError(e);
+            Logger.internalError(e);
         } catch (InstantiationException e) {
-            new Logger().internalError(e);
+            Logger.internalError(e);
         } catch (IllegalAccessException e) {
-            new Logger().internalError(e);
+            Logger.internalError(e);
         } catch (UnsupportedLookAndFeelException e) {
-            new Logger().internalError(e);
+            Logger.internalError(e);
         }
     }
 

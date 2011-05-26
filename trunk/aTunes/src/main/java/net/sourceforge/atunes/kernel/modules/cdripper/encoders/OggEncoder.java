@@ -62,7 +62,6 @@ public class OggEncoder implements Encoder {
     static final String[] OGG_QUALITIES = { "-1", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" };
     static final String DEFAULT_OGG_QUALITY = "5";
 
-    private Logger logger;
     private Process p;
     private ProgressListener listener;
     private String albumArtist;
@@ -126,7 +125,7 @@ public class OggEncoder implements Encoder {
 
     @Override
     public boolean encode(File wavFile, File oggFile, String title, int trackNumber, String artist, String composer) {
-        getLogger().info(LogCategories.OGGENC, StringUtils.getString("Ogg encoding process started... ", wavFile.getName(), " -> ", oggFile.getName()));
+        Logger.info(LogCategories.OGGENC, StringUtils.getString("Ogg encoding process started... ", wavFile.getName(), " -> ", oggFile.getName()));
         BufferedReader stdInput = null;
         try {
             // Encode the file using oggenc. We could pass the infos for the tag, but 
@@ -176,7 +175,7 @@ public class OggEncoder implements Encoder {
 
             int code = p.waitFor();
             if (code != 0) {
-                getLogger().error(LogCategories.OGGENC, StringUtils.getString("Process returned code ", code));
+                Logger.error(LogCategories.OGGENC, StringUtils.getString("Process returned code ", code));
                 return false;
             }
 
@@ -197,17 +196,17 @@ public class OggEncoder implements Encoder {
                 TagModifier.setInfo(audiofile, tag);
 
             } catch (Exception e) {
-                getLogger().error(LogCategories.OGGENC, StringUtils.getString("Jaudiotagger: Process execution caused exception ", e));
+                Logger.error(LogCategories.OGGENC, StringUtils.getString("Jaudiotagger: Process execution caused exception ", e));
                 return false;
             }
-            getLogger().info(LogCategories.OGGENC, "Encoded ok!!");
+            Logger.info(LogCategories.OGGENC, "Encoded ok!!");
             return true;
 
         } catch (IOException e) {
-            getLogger().error(LogCategories.OGGENC, StringUtils.getString("Process execution caused exception ", e));
+            Logger.error(LogCategories.OGGENC, StringUtils.getString("Process execution caused exception ", e));
             return false;
         } catch (InterruptedException e) {
-            getLogger().error(LogCategories.OGGENC, StringUtils.getString("Process execution caused exception ", e));
+            Logger.error(LogCategories.OGGENC, StringUtils.getString("Process execution caused exception ", e));
             return false;
 		} finally {
             ClosingUtils.close(stdInput);
@@ -275,17 +274,4 @@ public class OggEncoder implements Encoder {
     public String getFormatName() {
         return FORMAT_NAME;
     }
-
-    /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
-    }
-
 }

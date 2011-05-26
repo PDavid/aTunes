@@ -67,7 +67,7 @@ public final class FileNameUtils {
             Native.setProtected(true);
             kernel32 = (Kernel32) Native.loadLibrary("Kernel32", Kernel32.class);
         } catch (UnsatisfiedLinkError e) {
-            new Logger().debug(LogCategories.NATIVE, "kernel32 not found");
+            Logger.debug(LogCategories.NATIVE, "kernel32 not found");
         }
     }
 

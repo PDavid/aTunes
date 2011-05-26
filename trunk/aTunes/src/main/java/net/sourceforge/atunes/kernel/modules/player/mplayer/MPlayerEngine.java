@@ -39,6 +39,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -96,7 +97,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
     		}
     		return true;
     	} catch (Exception e) {
-    		getLogger().error(LogCategories.PLAYER, e);
+    		Logger.error(LogCategories.PLAYER, e);
     		return false;
     	} finally {
     		ClosingUtils.close(in);
@@ -226,7 +227,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
     @Override
     public void finishPlayer() {
         stopCurrentAudioObject(false);
-        getLogger().info(LogCategories.PLAYER, "Stopping player");
+        Logger.info(LogCategories.PLAYER, "Stopping player");
     }
 
     @Override
@@ -244,7 +245,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
         // MPlayer bug: paused, demute, muted -> starts playing
         if (isPaused() && !mute) {
             commandWriter.sendPauseCommand();
-            getLogger().debug(LogCategories.PLAYER, "MPlayer bug (paused, demute, muted -> starts playing) workaround applied");
+            Logger.debug(LogCategories.PLAYER, "MPlayer bug (paused, demute, muted -> starts playing) workaround applied");
         }
     }
 
@@ -360,7 +361,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
                     + ":" + equalizer[7] + ":" + equalizer[8] + ":" + equalizer[9]);
         }
 
-        getLogger().debug(LogCategories.PLAYER, (Object[]) command.toArray(new String[command.size()]));
+        Logger.debug(LogCategories.PLAYER, (Object[]) command.toArray(new String[command.size()]));
         return pb.command(command).start();
     }
 

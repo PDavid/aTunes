@@ -55,15 +55,13 @@ public class LibnotifyNotifications implements Notifications {
 				String image = TempFolder.getInstance().writeImageToTempFolder(ImageUtils.toBufferedImage(imageForAudioObject.getImage()), UUID.randomUUID().toString()).getAbsolutePath();
 				NotifyNotification n = Notify.newNotification(audioObject.getTitle(), audioObject.getArtist(), image);
 				if (!Notify.show(n)) {
-					getLogger().error(LogCategories.NOTIFICATIONS, "could not show notification - libnotify");
+					Logger.error(LogCategories.NOTIFICATIONS, "could not show notification - libnotify");
 				}
 			} else {
-				getLogger().error(LogCategories.NOTIFICATIONS, "libnotify is not available or could not be initialized");
+				Logger.error(LogCategories.NOTIFICATIONS, "libnotify is not available or could not be initialized");
 			}
 		}
 	}
-
-	private Logger logger;
 
     private ExecutorService executorService;
     
@@ -71,11 +69,11 @@ public class LibnotifyNotifications implements Notifications {
 
     public LibnotifyNotifications() {
 	    if (!Notify.isNotifyPresent()) {
-	        getLogger().error(LogCategories.NOTIFICATIONS, "libnotify is not available");
+	        Logger.error(LogCategories.NOTIFICATIONS, "libnotify is not available");
 	        return;
 	    }
 	    if (!Notify.init("aTunes")) {
-	        getLogger().error(LogCategories.NOTIFICATIONS, "could not init libnotify");
+	        Logger.error(LogCategories.NOTIFICATIONS, "could not init libnotify");
 	        return;
 	    }
         executorService = Executors.newSingleThreadExecutor();
@@ -102,17 +100,4 @@ public class LibnotifyNotifications implements Notifications {
     @Override
     public void updateNotification(ApplicationState newState) {
     }
-
-    /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
-    }
-
 }

@@ -42,8 +42,6 @@ public class EditTagAction extends AbstractActionOverSelectedObjects<LocalAudioO
 
     private static final long serialVersionUID = -4310895355731333072L;
 
-    private Logger logger;
-
     public enum EditTagSources {
         PLAYLIST, NAVIGATOR
     };
@@ -67,9 +65,9 @@ public class EditTagAction extends AbstractActionOverSelectedObjects<LocalAudioO
             EditTagSources editTagSource = EditTagSources.valueOf(getActionId());
             TagHandler.getInstance().editFiles(editTagSource, objects);
         } catch (IllegalArgumentException iae) {
-            getLogger().error("The source that caused this action is not known. No further action initiated.", iae);
+            Logger.error("The source that caused this action is not known. No further action initiated.", iae);
         } catch (NullPointerException npe) {
-            getLogger().error("The source that caused this action is not set. No further action initiated.", npe);
+            Logger.error("The source that caused this action is not set. No further action initiated.", npe);
         }
     }
 
@@ -92,18 +90,5 @@ public class EditTagAction extends AbstractActionOverSelectedObjects<LocalAudioO
     @Override
     public boolean isEnabledForPlayListSelection(List<AudioObject> selection) {
     	return super.isEnabledForPlayListSelection(selection);
-    }
-    
-    /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
-    }
-
+    }    
 }

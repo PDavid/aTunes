@@ -36,6 +36,7 @@ import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.NetworkUtils;
@@ -78,9 +79,9 @@ public final class UpdateHandler extends AbstractHandler {
 		            GuiHandler.getInstance().showMessage(I18nUtils.getString("NOT_NEW_VERSION"));
 		        }
 		    } catch (InterruptedException e) {
-		        getLogger().internalError(e);
+		        Logger.internalError(e);
 		    } catch (ExecutionException e) {
-		        getLogger().internalError(e);
+		        Logger.internalError(e);
 		    }
 		}
 	}
@@ -168,11 +169,11 @@ public final class UpdateHandler extends AbstractHandler {
             result = new ApplicationVersion(date, major, minor, revision, VersionType.FINAL, "", url);
 
         } catch (UnknownHostException uhe) {
-            getLogger().error(LogCategories.NETWORK, "Could not connect to www.atunes.org");
+            Logger.error(LogCategories.NETWORK, "Could not connect to www.atunes.org");
         } catch (IOException e) {
-            getLogger().error(LogCategories.NETWORK, "Could not connect to www.atunes.org");
+            Logger.error(LogCategories.NETWORK, "Could not connect to www.atunes.org");
         } catch (Exception e) {
-            getLogger().internalError(e);
+            Logger.internalError(e);
         }
         return result;
     }

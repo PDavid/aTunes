@@ -55,11 +55,9 @@ public class PodcastFeedEntryRetriever implements Runnable {
         public void run() {
             // refresh view
             NavigationHandler.getInstance().refreshView(PodcastNavigationView.class);
-            new Logger().info(LogCategories.PODCAST, "Podcast feed entries retrieval done");
+            Logger.info(LogCategories.PODCAST, "Podcast feed entries retrieval done");
         }
     }
-
-    private Logger logger;
 
     private List<PodcastFeed> podcastFeeds;
 
@@ -85,7 +83,7 @@ public class PodcastFeedEntryRetriever implements Runnable {
                     if (feedType != null) {
                         podcastFeed.setFeedType(feedType);
                     } else {
-                        getLogger().info(LogCategories.PODCAST, podcastFeed + " is not a rss or atom feed");
+                        Logger.info(LogCategories.PODCAST, podcastFeed + " is not a rss or atom feed");
                         continue;
                     }
 
@@ -110,7 +108,7 @@ public class PodcastFeedEntryRetriever implements Runnable {
                         // Check if audio podcast feed entry
                         Node typeNode = XMLUtils.evaluateXPathExpressionAndReturnNode(feedType.getTypeXPath(), entries.item(i));
                         if (typeNode == null || !typeNode.getTextContent().matches(".*audio.*")) {
-                            getLogger().info(LogCategories.PODCAST,
+                            Logger.info(LogCategories.PODCAST,
                                     StringUtils.getString("podcast feed entry is not from type audio: ", (typeNode != null ? typeNode.getTextContent() : "no type node")));
                             continue;
                         }
@@ -170,7 +168,7 @@ public class PodcastFeedEntryRetriever implements Runnable {
                                     }
                                 } catch (NumberFormatException e) {
                                     duration = 0;
-                                    getLogger().info(LogCategories.PODCAST, "could not extract podcast feed entry duration");
+                                    Logger.info(LogCategories.PODCAST, "could not extract podcast feed entry duration");
                                 }
                             }
                         }
@@ -184,9 +182,9 @@ public class PodcastFeedEntryRetriever implements Runnable {
 
                 }
             } catch (DOMException e) {
-                getLogger().error(LogCategories.PODCAST, StringUtils.getString("Could not retrieve podcast feed entries from ", podcastFeed, ": ", e));
+                Logger.error(LogCategories.PODCAST, StringUtils.getString("Could not retrieve podcast feed entries from ", podcastFeed, ": ", e));
             } catch (IOException e) {
-                getLogger().error(LogCategories.PODCAST, StringUtils.getString("Could not retrieve podcast feed entries from ", podcastFeed, ": ", e));
+                Logger.error(LogCategories.PODCAST, StringUtils.getString("Could not retrieve podcast feed entries from ", podcastFeed, ": ", e));
             }
         }
 
@@ -249,20 +247,7 @@ public class PodcastFeedEntryRetriever implements Runnable {
             showMessage(podcastFeedsWithNewEntries);
             refreshView();
         } catch (IOException e) {
-            getLogger().error(LogCategories.PODCAST, StringUtils.getString("Could not retrieve podcast feed entries : ", e));
+            Logger.error(LogCategories.PODCAST, StringUtils.getString("Could not retrieve podcast feed entries : ", e));
         }
     }
-
-    /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
-    }
-
 }

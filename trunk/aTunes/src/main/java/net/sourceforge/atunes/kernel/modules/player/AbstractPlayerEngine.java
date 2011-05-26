@@ -131,11 +131,6 @@ public abstract class AbstractPlayerEngine {
     }
 
     /**
-     * The logger used in player engines
-     */
-    private Logger logger;
-
-    /**
      * Setting this attribute to <code>true</code> avoid calling playback state listeners
      */
     private boolean callToPlaybackStateListenersDisabled = false;
@@ -341,7 +336,7 @@ public abstract class AbstractPlayerEngine {
             try {
                 paused = true;
                 pausePlayback();
-                getLogger().info(LogCategories.PLAYER, "Pause");
+                Logger.info(LogCategories.PLAYER, "Pause");
                 callPlaybackStateListeners(PlaybackState.PAUSED);
             } catch (Exception e) {
                 handlePlayerEngineError(e);
@@ -355,7 +350,7 @@ public abstract class AbstractPlayerEngine {
                         paused = false;
                         resumePlayback();
                         callPlaybackStateListeners(PlaybackState.RESUMING);
-                        getLogger().info(LogCategories.PLAYER, "Resumed paused song");
+                        Logger.info(LogCategories.PLAYER, "Resumed paused song");
                     }
                 } else {
                     nextAudioObject = PlayListHandler.getInstance().getCurrentAudioObjectFromVisiblePlayList();
@@ -395,7 +390,7 @@ public abstract class AbstractPlayerEngine {
 
             stopPlayback(userStopped, activateFadeAway);
             callPlaybackStateListeners(PlaybackState.STOPPED);
-            getLogger().info(LogCategories.PLAYER, "Stop");
+            Logger.info(LogCategories.PLAYER, "Stop");
         } catch (Exception e) {
             handlePlayerEngineError(e);
         }
@@ -448,13 +443,13 @@ public abstract class AbstractPlayerEngine {
         	for (String errorMessage : errorMessages) {
         		sb.append(errorMessage).append(" ");
         	}
-            getLogger().info(LogCategories.PLAYER, StringUtils.getString("Playback finished with errors: ", sb.toString()));
+            Logger.info(LogCategories.PLAYER, StringUtils.getString("Playback finished with errors: ", sb.toString()));
 
             boolean ignore = showPlaybackError(errorMessages);
             applyUserSelection(ignore);
 
         } else {
-            getLogger().info(LogCategories.PLAYER, "Playback finished");
+            Logger.info(LogCategories.PLAYER, "Playback finished");
 
             // Move to the next audio object
             playNextAudioObject(true);
@@ -475,9 +470,9 @@ public abstract class AbstractPlayerEngine {
             try {
                 SwingUtilities.invokeAndWait(r);
             } catch (InterruptedException e) {
-                getLogger().error(LogCategories.PLAYER, e);
+                Logger.error(LogCategories.PLAYER, e);
             } catch (InvocationTargetException e) {
-                getLogger().error(LogCategories.PLAYER, e);
+                Logger.error(LogCategories.PLAYER, e);
             }
         }
         return r.isIgnore();
@@ -511,7 +506,7 @@ public abstract class AbstractPlayerEngine {
             paused = false;
             if (!PlayListHandler.getInstance().getCurrentPlayList(false).isEmpty()) {
                 callPlaybackStateListeners(PlaybackState.RESUMING);
-                getLogger().info(LogCategories.PLAYER, "Resumed paused song");
+                Logger.info(LogCategories.PLAYER, "Resumed paused song");
             }
         }
 
@@ -539,8 +534,8 @@ public abstract class AbstractPlayerEngine {
      *            The exception thrown
      */
     public final void handlePlayerEngineError(final Exception e) {
-        getLogger().error(LogCategories.PLAYER, StringUtils.getString("Player Error: ", e));
-        getLogger().error(LogCategories.PLAYER, e);
+        Logger.error(LogCategories.PLAYER, StringUtils.getString("Player Error: ", e));
+        Logger.error(LogCategories.PLAYER, e);
         GuiHandler.getInstance().showExceptionDialog(I18nUtils.getString("ERROR"), e);
     }
 
@@ -636,14 +631,14 @@ public abstract class AbstractPlayerEngine {
      * playing (MPlayer bug workaround).
      */
     protected final void notifyRadioOrPodcastFeedEntryStarted() {
-        getLogger().debug(LogCategories.PLAYER, "radio or podcast feed entry has started playing");
+        Logger.debug(LogCategories.PLAYER, "radio or podcast feed entry has started playing");
         // send volume command
         setVolume(ApplicationState.getInstance().getVolume());
         // if muted set mute again
         if (ApplicationState.getInstance().isMuteEnabled()) {
             applyMuteState(true);
         }
-        getLogger().debug(LogCategories.PLAYER, "MPlayer bug (ignoring muting and volume settings after streamed file starts playing) workaround applied");
+        Logger.debug(LogCategories.PLAYER, "MPlayer bug (ignoring muting and volume settings after streamed file starts playing) workaround applied");
     }
 
     /**
@@ -662,7 +657,7 @@ public abstract class AbstractPlayerEngine {
      * @param audioObject
      */
     private void playAudioObject(final AudioObject audioObject) {
-        getLogger().info(LogCategories.PLAYER, StringUtils.getString("Started play of file ", audioObject));
+        Logger.info(LogCategories.PLAYER, StringUtils.getString("Started play of file ", audioObject));
 
         if (ApplicationState.getInstance().isCacheFilesBeforePlaying()) {
 
@@ -689,7 +684,7 @@ public abstract class AbstractPlayerEngine {
         // and start player process from this copied file
 	    if (audioObject instanceof LocalAudioObject && ApplicationState.getInstance().isCacheFilesBeforePlaying()) {
 	    	
-	    	getLogger().debug(LogCategories.PLAYER, "Start caching file: ", audioObject.getUrl());
+	    	Logger.debug(LogCategories.PLAYER, "Start caching file: ", audioObject.getUrl());
 	    	
 	        // Remove previous cached file
 	        if (lastFileCached != null) {
@@ -704,7 +699,7 @@ public abstract class AbstractPlayerEngine {
 	            lastFileCached = null;
 	        }
 	        
-	        getLogger().debug(LogCategories.PLAYER, "End caching file: ", audioObject.getUrl());
+	        Logger.debug(LogCategories.PLAYER, "End caching file: ", audioObject.getUrl());
 	    } else {
 	        audioObjectToPlay = audioObject;
 	    }
@@ -815,16 +810,6 @@ public abstract class AbstractPlayerEngine {
 
     public long getCurrentAudioObjectLength() {
         return currentAudioObjectLength;
-    }
-
-    /**
-     * @return the logger
-     */
-    protected Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
     }
 
 	/**

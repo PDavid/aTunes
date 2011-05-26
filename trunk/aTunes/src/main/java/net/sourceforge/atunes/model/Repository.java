@@ -273,7 +273,7 @@ public class Repository implements Serializable {
 			this.repository = repository;
 			this.listener = listener;
 			this.pending = true;
-			new Logger().debug(LogCategories.REPOSITORY, "Creating new repository transaction: ", new Date().toString());
+			Logger.debug(LogCategories.REPOSITORY, "Creating new repository transaction: ", new Date().toString());
 		}
 		
 		public void finishTransaction() {
@@ -281,7 +281,7 @@ public class Repository implements Serializable {
 				listener.repositoryChanged(this.repository);
 			}
 			this.pending = false;
-			new Logger().debug(LogCategories.REPOSITORY, "Finished repository transaction: ", new Date().toString());
+			Logger.debug(LogCategories.REPOSITORY, "Finished repository transaction: ", new Date().toString());
 		}
 		
 		public boolean isPending() {

@@ -49,8 +49,6 @@ public class Cdparanoia extends AbstractCdToWavConverter {
     private static final String QUERY = "-Q";
     private static final String WAVFORMAT = "-w";
 
-    private Logger logger;
-
     /**
      * Tests if cdparanoia is present
      * 
@@ -89,7 +87,7 @@ public class Cdparanoia extends AbstractCdToWavConverter {
      */
     @Override
     public boolean cdda2wav(int track, File file) {
-        getLogger().info(LogCategories.CDPARANOIA, StringUtils.getString("Writing wav file for track ", track, " in file ", file.getName()));
+        Logger.info(LogCategories.CDPARANOIA, StringUtils.getString("Writing wav file for track ", track, " in file ", file.getName()));
         try {
             // fileName = new File(fileName.getName());
             file.getParentFile().mkdirs();
@@ -101,7 +99,7 @@ public class Cdparanoia extends AbstractCdToWavConverter {
             command.add(String.valueOf(track));
             command.add(file.getAbsolutePath());
 
-            getLogger().debug(LogCategories.CDPARANOIA, (Object[]) command.toArray(new String[command.size()]));
+            Logger.debug(LogCategories.CDPARANOIA, (Object[]) command.toArray(new String[command.size()]));
             setProcess(new ProcessBuilder(command).start());
 
             SwingUtilities.invokeLater(new Runnable() {
@@ -120,17 +118,17 @@ public class Cdparanoia extends AbstractCdToWavConverter {
             });
 
             if (code != 0) {
-                getLogger().error(LogCategories.CDPARANOIA, StringUtils.getString("Process returned code ", code));
+                Logger.error(LogCategories.CDPARANOIA, StringUtils.getString("Process returned code ", code));
                 return false;
             }
 
-            getLogger().info(LogCategories.CDPARANOIA, "Wav file ok!!");
+            Logger.info(LogCategories.CDPARANOIA, "Wav file ok!!");
             return true;
         } catch (InterruptedException e) {
-            getLogger().error(LogCategories.CDPARANOIA, StringUtils.getString("Process execution caused exception ", e));
+            Logger.error(LogCategories.CDPARANOIA, StringUtils.getString("Process execution caused exception ", e));
             return false;
         } catch (IOException e) {
-            getLogger().error(LogCategories.CDPARANOIA, StringUtils.getString("Process execution caused exception ", e));
+            Logger.error(LogCategories.CDPARANOIA, StringUtils.getString("Process execution caused exception ", e));
             return false;
         }
     }
@@ -145,7 +143,7 @@ public class Cdparanoia extends AbstractCdToWavConverter {
 
     @Override
     public CDInfo retrieveDiscInformation() {
-        getLogger().info(LogCategories.CDPARANOIA, "Getting cd information...");
+        Logger.info(LogCategories.CDPARANOIA, "Getting cd information...");
 
         try {
             // Prepare cdparanoia commands and execute
@@ -153,7 +151,7 @@ public class Cdparanoia extends AbstractCdToWavConverter {
             command.add(CDPARANOIA_COMMAND_STRING);
             command.add(QUERY);
 
-            getLogger().debug(LogCategories.CDPARANOIA, (Object[]) command.toArray(new String[command.size()]));
+            Logger.debug(LogCategories.CDPARANOIA, (Object[]) command.toArray(new String[command.size()]));
 
             setProcess(new ProcessBuilder(command).start());
 
@@ -161,7 +159,7 @@ public class Cdparanoia extends AbstractCdToWavConverter {
             boolean cdLoaded = false;
             try {
                 stdInput = new BufferedReader(new InputStreamReader(getProcess().getErrorStream(), "ISO8859_1"));
-                getLogger().info(LogCategories.CDPARANOIA, "Trying to read cdparanoia stream");
+                Logger.info(LogCategories.CDPARANOIA, "Trying to read cdparanoia stream");
 
                 String s = null;
                 int tracks = 0;
@@ -178,7 +176,7 @@ public class Cdparanoia extends AbstractCdToWavConverter {
                 // read the output from the command
                 int count = 0;
                 while ((s = stdInput.readLine()) != null) {
-                    getLogger().info(LogCategories.CDPARANOIA, StringUtils.getString("While loop: ", s));
+                    Logger.info(LogCategories.CDPARANOIA, StringUtils.getString("While loop: ", s));
                     if (s.startsWith("TOTAL")) {
 
                         break;
@@ -227,30 +225,18 @@ public class Cdparanoia extends AbstractCdToWavConverter {
                 getCdInfo().setComposers(composers);
 
             } catch (IOException e) {
-                getLogger().error(LogCategories.CDDA2WAV, e);
+                Logger.error(LogCategories.CDDA2WAV, e);
             } finally {
                 ClosingUtils.close(stdInput);
             }
 
-            getLogger().info(LogCategories.CDPARANOIA, StringUtils.getString("CD info: ", getCdInfo()));
+            Logger.info(LogCategories.CDPARANOIA, StringUtils.getString("CD info: ", getCdInfo()));
             return getCdInfo();
 
         } catch (Exception e) {
-            getLogger().error(LogCategories.CDPARANOIA, e);
+            Logger.error(LogCategories.CDPARANOIA, e);
             return null;
         }
-    }
-
-    /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
     }
 
 }

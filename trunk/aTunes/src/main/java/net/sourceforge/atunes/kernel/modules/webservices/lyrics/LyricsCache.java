@@ -30,8 +30,6 @@ public class LyricsCache extends AbstractCache {
 
     private static final String LYRICS = "lyrics";
 
-    private Logger logger;
-
     public LyricsCache() {
         super(LyricsCache.class.getResource("/settings/ehcache-lyrics.xml"));
     }
@@ -46,7 +44,7 @@ public class LyricsCache extends AbstractCache {
             getCache().removeAll();
             getCache().flush();
         } catch (Exception e) {
-            getLogger().info(LogCategories.FILE_DELETE, "Could not delete all files from lyrics cache");
+            Logger.info(LogCategories.FILE_DELETE, "Could not delete all files from lyrics cache");
             return true;
         }
         return false;
@@ -87,7 +85,7 @@ public class LyricsCache extends AbstractCache {
         }
         Element element = new Element(id(artist, title), lyric);
         getCache().put(element);
-        getLogger().debug(LogCategories.CACHE, "Stored lyric for ", title);
+        Logger.debug(LogCategories.CACHE, "Stored lyric for ", title);
     }
 
     private static String id(String artist, String title) {
@@ -101,17 +99,4 @@ public class LyricsCache extends AbstractCache {
     public void shutdown() {
         getCache().dispose();
     }
-
-    /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
-    }
-
 }

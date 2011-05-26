@@ -53,6 +53,7 @@ import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -119,9 +120,9 @@ public final class PodcastFeedHandler extends AbstractHandler {
                     GuiHandler.getInstance().getNavigationTablePanel().getNavigationTable().repaint();
                 }
             } catch (InterruptedException e) {
-                getLogger().error(LogCategories.PODCAST, e);
+                Logger.error(LogCategories.PODCAST, e);
             } catch (ExecutionException e) {
-                getLogger().error(LogCategories.PODCAST, e);
+                Logger.error(LogCategories.PODCAST, e);
             }
         }
     }
@@ -188,7 +189,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
      *            A Podcast Feed that should be added
      */
     private void addPodcastFeed(PodcastFeed podcastFeed) {
-        getLogger().info(LogCategories.HANDLER, "Adding podcast feed");
+        Logger.info(LogCategories.HANDLER, "Adding podcast feed");
         // Note: Do not use Collection.sort(...);
         boolean added = false;
         Comparator<PodcastFeed> comparator = PodcastFeed.getComparator();
@@ -221,7 +222,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
         if (podcastFeedsDirty) {
             ApplicationStateHandler.getInstance().persistPodcastFeedCache(getPodcastFeeds());
         } else {
-            getLogger().info(LogCategories.PODCAST, "Podcast list is clean");
+            Logger.info(LogCategories.PODCAST, "Podcast list is clean");
         }
 
     }
@@ -265,7 +266,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
      *            A Podcast Feed that should be removed
      */
     public void removePodcastFeed(PodcastFeed podcastFeed) {
-        getLogger().info(LogCategories.HANDLER, "Removing podcast feed");
+        Logger.info(LogCategories.HANDLER, "Removing podcast feed");
         getPodcastFeeds().remove(podcastFeed);
         podcastFeedsDirty = true;
         NavigationHandler.getInstance().refreshView(PodcastNavigationView.class);
@@ -387,7 +388,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
                 synchronized (runningDownloads) {
                     runningDownloads.remove(downloadPodcastFeedEntry);
                 }
-                getLogger().info(LogCategories.PODCAST, "podcast entry download cancelled: " + podcastFeedEntry.getTitle());
+                Logger.info(LogCategories.PODCAST, "podcast entry download cancelled: " + podcastFeedEntry.getTitle());
             }
         };
         new Thread(r).start();
@@ -412,7 +413,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
         if (!podcastFeedsDownloadFolder.exists()) {
             boolean check = podcastFeedsDownloadFolder.mkdir();
             if (!check) {
-                getLogger().error(LogCategories.PODCAST, "Problem Creating file!");
+                Logger.error(LogCategories.PODCAST, "Problem Creating file!");
                 return "";
             }
         }
@@ -427,7 +428,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
         if (!podcastFeedDownloadFolder.exists()) {
             boolean check = podcastFeedDownloadFolder.mkdir();
             if (!check) {
-                getLogger().error(LogCategories.PODCAST, "Problem Creating file!");
+                Logger.error(LogCategories.PODCAST, "Problem Creating file!");
                 return "";
             }
         }
@@ -446,7 +447,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
                 return podcastFeedDownloadFolder.toString() + "/" + FileNameUtils.getValidFileName(filename);
             }
         } catch (URISyntaxException e) {
-            getLogger().error(LogCategories.PODCAST, e);
+            Logger.error(LogCategories.PODCAST, e);
         }
         throw new IllegalArgumentException();
     }

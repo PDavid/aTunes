@@ -42,6 +42,7 @@ import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -221,7 +222,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
             // Set tress
             getNavigationController().getNavigationTreePanel().updateTrees();
         } catch (PluginSystemException e) {
-            getLogger().error(LogCategories.PLUGINS, e);
+            Logger.error(LogCategories.PLUGINS, e);
         }
     }
 

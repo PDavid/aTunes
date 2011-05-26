@@ -54,7 +54,6 @@ import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable.PlayState;
 import net.sourceforge.atunes.gui.views.dialogs.AboutDialog;
 import net.sourceforge.atunes.gui.views.dialogs.AddPodcastFeedDialog;
-import net.sourceforge.atunes.gui.views.dialogs.RadioDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ColumnSetSelectorDialog;
 import net.sourceforge.atunes.gui.views.dialogs.EqualizerDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ExportOptionsDialog;
@@ -63,6 +62,7 @@ import net.sourceforge.atunes.gui.views.dialogs.IndeterminateProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.InputDialog;
 import net.sourceforge.atunes.gui.views.dialogs.MultiFolderSelectionDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ProgressDialog;
+import net.sourceforge.atunes.gui.views.dialogs.RadioDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RepositoryProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RepositorySelectionInfoDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ReviewImportDialog;
@@ -98,6 +98,7 @@ import net.sourceforge.atunes.kernel.modules.tray.SystemTrayHandler;
 import net.sourceforge.atunes.kernel.modules.updates.ApplicationVersion;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.LocalAudioObject;
@@ -233,10 +234,10 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
                 try {
                     frame = clazz.newInstance();
                 } catch (InstantiationException e) {
-                    getLogger().error(LogCategories.HANDLER, e);
+                    Logger.error(LogCategories.HANDLER, e);
                     constructDefaultFrame();
                 } catch (IllegalAccessException e) {
-                    getLogger().error(LogCategories.HANDLER, e);
+                    Logger.error(LogCategories.HANDLER, e);
                     constructDefaultFrame();
                 }
             } else {
@@ -784,7 +785,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
                 }
             });
         } catch (Exception e) {
-            getLogger().internalError(e);
+            Logger.internalError(e);
         }
     }
 
@@ -1077,7 +1078,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      * Start visualization.
      */
     public void startVisualization() {
-        getLogger().debug(LogCategories.START, "Starting visualization");
+        Logger.debug(LogCategories.START, "Starting visualization");
 
         if (SystemProperties.IS_JAVA_6_UPDATE_10_OR_LATER) {
             FadingPopupFactory.install();
@@ -1101,7 +1102,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
 
         hideDeviceInfoOnStatusBar();
 
-        getLogger().debug(LogCategories.START, "Start visualization done");
+        Logger.debug(LogCategories.START, "Start visualization done");
     }
 
     /**

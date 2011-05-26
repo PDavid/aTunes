@@ -43,8 +43,6 @@ public class LyricWikiEngine extends AbstractLyricsEngine {
 	 */
     private static final String UNFORTUNATELY_WE_ARE_NOT_LICENSED_TO_DISPLAY_THE_FULL_LYRICS = "Unfortunately, we are not licensed to display the full lyrics";
 
-	private Logger logger;
-
     private static final String ARTIST_PATTERN = "%artist";
     private static final String TITLE_PATTERN = "%title";
     /**
@@ -113,10 +111,10 @@ public class LyricWikiEngine extends AbstractLyricsEngine {
             
             return lyrics != null && !lyrics.isEmpty() ? new Lyrics(lyrics, url) : null;
         } catch (UnknownHostException e) {
-        	getLogger().error(LogCategories.SERVICE, StringUtils.getString(e.getClass().getCanonicalName(), " (", e.getMessage(), ")"));
+        	Logger.error(LogCategories.SERVICE, StringUtils.getString(e.getClass().getCanonicalName(), " (", e.getMessage(), ")"));
             return null;
         } catch (IOException e) {
-        	getLogger().error(LogCategories.SERVICE, StringUtils.getString(e.getClass().getCanonicalName(), " (", e.getMessage(), ")"));
+        	Logger.error(LogCategories.SERVICE, StringUtils.getString(e.getClass().getCanonicalName(), " (", e.getMessage(), ")"));
             return null;
         }
 
@@ -171,17 +169,4 @@ public class LyricWikiEngine extends AbstractLyricsEngine {
     public String getUrlForAddingNewLyrics(String artist, String title) {
         return getURL(artist, title);
     }
-
-    /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
-    }
-
 }

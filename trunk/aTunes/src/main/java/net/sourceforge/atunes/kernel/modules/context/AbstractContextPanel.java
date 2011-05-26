@@ -134,7 +134,7 @@ public abstract class AbstractContextPanel {
             return;
         }
 
-        new Logger().debug(LogCategories.CONTEXT, "Updating panel: ", getContextPanelName());
+        Logger.debug(LogCategories.CONTEXT, "Updating panel: ", getContextPanelName());
         for (AbstractContextPanelContent content : getContents()) {
             content.clearContextPanelContent();
             content.updateContextPanelContent(audioObject);
@@ -149,7 +149,7 @@ public abstract class AbstractContextPanel {
      * tab showing this panel method updateContextPanel must be called again
      */
     public final void clearContextPanel() {
-        new Logger().debug(LogCategories.CONTEXT, "Clearing panel: ", getContextPanelName());
+        Logger.debug(LogCategories.CONTEXT, "Clearing panel: ", getContextPanelName());
         for (AbstractContextPanelContent content : getContents()) {
             content.clearContextPanelContent();
         }

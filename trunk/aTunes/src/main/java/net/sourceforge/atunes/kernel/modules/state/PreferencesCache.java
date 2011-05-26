@@ -31,8 +31,6 @@ import net.sourceforge.atunes.misc.log.Logger;
 
 class PreferencesCache extends AbstractCache {
 
-    private Logger logger;
-    
     private Cache cache;
     
     protected PreferencesCache() {
@@ -49,7 +47,7 @@ class PreferencesCache extends AbstractCache {
         try {
             getCache().removeAll();
         } catch (Exception e) {
-            getLogger().info(LogCategories.FILE_DELETE, "Could not delete all files from preferences cache");
+            Logger.info(LogCategories.FILE_DELETE, "Could not delete all files from preferences cache");
             exception = true;
         }
         return exception;
@@ -86,7 +84,7 @@ class PreferencesCache extends AbstractCache {
         Element element = new Element(preferenceId.toString(), value != null ? new Preference(value) : value);
         getCache().put(element);
         getCache().flush();
-        getLogger().debug(LogCategories.PREFERENCES, "Stored Preference: ", preferenceId, " Value: ", value != null ? value.toString() : null);
+        Logger.debug(LogCategories.PREFERENCES, "Stored Preference: ", preferenceId, " Value: ", value != null ? value.toString() : null);
     }
     
     /**
@@ -119,7 +117,7 @@ class PreferencesCache extends AbstractCache {
         Element element = new Element(preferenceId.toString(), value != null ? new PasswordPreference(value) : null);
         getCache().put(element);
         getCache().flush();
-        getLogger().debug(LogCategories.PREFERENCES, "Stored Password Preference: ", preferenceId, " Value: ", value.toString());
+        Logger.debug(LogCategories.PREFERENCES, "Stored Password Preference: ", preferenceId, " Value: ", value.toString());
     }
 
     private Cache getCache() {
@@ -131,17 +129,5 @@ class PreferencesCache extends AbstractCache {
 
     public void shutdown() {
         getCache().dispose();
-    }
-
-    /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
     }
 }

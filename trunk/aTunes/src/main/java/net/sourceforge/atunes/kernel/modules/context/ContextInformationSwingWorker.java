@@ -84,9 +84,9 @@ class ContextInformationSwingWorker extends SwingWorker<Map<String, ?>, Void> {
         } catch (CancellationException e) {
             // thrown when cancelled
         } catch (InterruptedException e) {
-            new Logger().error(LogCategories.CONTEXT, e);
+            Logger.error(LogCategories.CONTEXT, e);
         } catch (ExecutionException e) {
-            new Logger().error(LogCategories.CONTEXT, e);
+            Logger.error(LogCategories.CONTEXT, e);
         }
     }
 }

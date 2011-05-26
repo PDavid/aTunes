@@ -74,11 +74,6 @@ public final class YoutubeService {
             .toString(MAX_RESULTS), "&start-index=", START_INDEX_WILDCARD);
 
     /**
-     * Logger for this class
-     */
-    private Logger logger;
-
-    /**
      * The proxy
      */
     private Proxy proxy;
@@ -95,7 +90,7 @@ public final class YoutubeService {
                 proxy = Proxy.getProxy(proxyBean);
             }
         } catch (Exception e) {
-            getLogger().error(LogCategories.SERVICE, e);
+            Logger.error(LogCategories.SERVICE, e);
         }
         this.proxy = proxy;
     }
@@ -147,7 +142,7 @@ public final class YoutubeService {
                 return analyzeResultXml(startIndex, xml);
             }
         } catch (Exception e) {
-            getLogger().error(LogCategories.SERVICE, e);
+            Logger.error(LogCategories.SERVICE, e);
         }
 
         return Collections.emptyList();
@@ -246,7 +241,7 @@ public final class YoutubeService {
 
             return downloadurl;
         } catch (Exception e) {
-            getLogger().error(LogCategories.SERVICE, e);
+            Logger.error(LogCategories.SERVICE, e);
         }
         return null;
     }
@@ -289,17 +284,4 @@ public final class YoutubeService {
 
         return builder.toString();
     }
-
-    /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
-    }
-
 }

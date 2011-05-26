@@ -235,9 +235,9 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 		        process.execute();
 
 		    } catch (InterruptedException e) {
-		        getLogger().error(LogCategories.REPOSITORY, e);
+		        Logger.error(LogCategories.REPOSITORY, e);
 		    } catch (ExecutionException e) {
-		        getLogger().error(LogCategories.REPOSITORY, e);
+		        Logger.error(LogCategories.REPOSITORY, e);
 		    }
 		}
 	}
@@ -370,7 +370,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
                 GuiHandler.getInstance().hideProgressBar();
                 GuiHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
                 NavigationHandler.getInstance().notifyReload();
-                getLogger().info(LogCategories.REPOSITORY, "Repository refresh done");
+                Logger.info(LogCategories.REPOSITORY, "Repository refresh done");
             }
         };
         worker.execute();
@@ -404,7 +404,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
             if (repository.transactionPending()) {
                 ApplicationStateHandler.getInstance().persistRepositoryCache(repository, true);
             } else {
-                getLogger().info(LogCategories.REPOSITORY, "Repository is clean");
+                Logger.info(LogCategories.REPOSITORY, "Repository is clean");
             }
 
             // Execute command after last access to repository
@@ -415,9 +415,9 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
                     // Wait process to end
                     p.waitFor();
                     int rc = p.exitValue();
-                    getLogger().info(LogCategories.END, StringUtils.getString("Command '", command, "' return code: ", rc));
+                    Logger.info(LogCategories.END, StringUtils.getString("Command '", command, "' return code: ", rc));
                 } catch (Exception e) {
-                    getLogger().error(LogCategories.END, e);
+                    Logger.error(LogCategories.END, e);
                 }
             }
         }
@@ -782,7 +782,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         GuiHandler.getInstance().hideProgressBar();
         GuiHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
         NavigationHandler.getInstance().notifyReload();
-        getLogger().info(LogCategories.REPOSITORY, "Repository refresh done");
+        Logger.info(LogCategories.REPOSITORY, "Repository refresh done");
 
         currentLoader = null;
     }
@@ -839,9 +839,9 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
                         // Wait process to end
                         p.waitFor();
                         int rc = p.exitValue();
-                        getLogger().info(LogCategories.START, StringUtils.getString("Command '", command, "' return code: ", rc));
+                        Logger.info(LogCategories.START, StringUtils.getString("Command '", command, "' return code: ", rc));
                     } catch (Exception e) {
-                        getLogger().error(LogCategories.START, e);
+                        Logger.error(LogCategories.START, e);
                     }
                 }
                 repositoryRetrievedFromCache = ApplicationStateHandler.getInstance().retrieveRepositoryCache();
@@ -950,7 +950,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
      * Refresh.
      */
     private void refresh() {
-        getLogger().info(LogCategories.REPOSITORY, "Refreshing repository");
+        Logger.info(LogCategories.REPOSITORY, "Refreshing repository");
         filesLoaded = 0;
         Repository oldRepository = repository;
         repository = new Repository(oldRepository.getFolders(), this);
@@ -1091,7 +1091,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
             return true;
         } catch (Exception e) {
             repository = null;
-            getLogger().error(LogCategories.REPOSITORY, e);
+            Logger.error(LogCategories.REPOSITORY, e);
             return false;
         }
     }
@@ -1201,15 +1201,6 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
      */
     protected boolean isLoaderWorking() {
         return currentLoader != null;
-    }
-
-    /**
-     * Brings access to logger to all classes of this package
-     * 
-     * @return
-     */
-    protected static Logger getRepositoryHandlerLogger() {
-        return getLogger();
     }
 
     /**

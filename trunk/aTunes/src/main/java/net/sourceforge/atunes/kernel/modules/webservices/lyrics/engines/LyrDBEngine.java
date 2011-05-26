@@ -50,8 +50,6 @@ public class LyrDBEngine extends AbstractLyricsEngine {
     /** The url to retrieve a lyric */
     private static final String LYRIC_URL = StringUtils.getString("http://www.lyrdb.com/getlyr.php?q=", LYRICS_ID_WILDCARD);
     
-    private Logger logger;
-	
 	public LyrDBEngine(Proxy proxy) {
 		super(proxy);
 	}
@@ -73,7 +71,7 @@ public class LyrDBEngine extends AbstractLyricsEngine {
 			br.close();
 			
 		} catch (Exception e) {
-            getLogger().error(LogCategories.SERVICE, StringUtils.getString(e.getClass().getCanonicalName(), " (", e.getMessage(), ")"));
+            Logger.error(LogCategories.SERVICE, StringUtils.getString(e.getClass().getCanonicalName(), " (", e.getMessage(), ")"));
 		}
         return lyrics;
 	}
@@ -112,17 +110,4 @@ public class LyrDBEngine extends AbstractLyricsEngine {
 	public String getUrlForAddingNewLyrics(String artist, String title) {
 		return "http://www.lyrdb.com/submit.php";
 	}
-
-    /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
-    }
-
 }

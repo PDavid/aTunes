@@ -36,6 +36,7 @@ import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.misc.log.Logger;
 
 final class PlayListController extends AbstractSimpleController<PlayListPanel> {
 
@@ -219,7 +220,7 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
             return;
         }
 
-        getLogger().debug(LogCategories.CONTROLLER, "Scrolling PlayList");
+        Logger.debug(LogCategories.CONTROLLER, "Scrolling PlayList");
 
         // Get visible rectangle
         visibleRect = (Rectangle) getComponentControlled().getPlayListTable().getVisibleRect().clone();

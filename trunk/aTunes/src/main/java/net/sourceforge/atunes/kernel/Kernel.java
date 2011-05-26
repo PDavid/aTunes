@@ -52,8 +52,6 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class Kernel {
 
-    private static Logger logger;
-
     /** Defines if aTunes is running in debug mode. */
     private static boolean debug;
 
@@ -84,7 +82,7 @@ public class Kernel {
      *            the args
      */
     public static void startKernel(final List<String> args) {
-        getLogger().debug(LogCategories.START, "Starting Kernel");
+        Logger.debug(LogCategories.START, "Starting Kernel");
         
         timer = new Timer();
         timer.start();
@@ -96,9 +94,9 @@ public class Kernel {
         try {
             Proxy.initProxy(Proxy.getProxy(ApplicationState.getInstance().getProxy()));
         } catch (UnknownHostException e) {
-            getLogger().error(LogCategories.START, e);
+            Logger.error(LogCategories.START, e);
         } catch (IOException e) {
-            getLogger().error(LogCategories.START, e);
+            Logger.error(LogCategories.START, e);
         }
 
 
@@ -115,11 +113,11 @@ public class Kernel {
                 }
             });
         } catch (InvocationTargetException e) {
-            getLogger().error(LogCategories.START, e);
-            getLogger().error(LogCategories.START, e.getCause());
+            Logger.error(LogCategories.START, e);
+            Logger.error(LogCategories.START, e.getCause());
         } catch (InterruptedException e) {
-            getLogger().error(LogCategories.START, e);
-            getLogger().error(LogCategories.START, e.getCause());
+            Logger.error(LogCategories.START, e);
+            Logger.error(LogCategories.START, e.getCause());
 		}
 
         // Register and initialize handlers
@@ -142,7 +140,7 @@ public class Kernel {
         		startCreation();
 
             	callActionsAfterStart(PlayListIO.getAudioObjectsFromFileNamesList(songs));
-            	getLogger().info(LogCategories.START, StringUtils.getString("Application started (", StringUtils.toString(timer.stop(), 3), " seconds)"));
+            	Logger.info(LogCategories.START, StringUtils.getString("Application started (", StringUtils.toString(timer.stop(), 3), " seconds)"));
             	timer = null;
         	}
         });
@@ -155,13 +153,13 @@ public class Kernel {
         Timer timer = new Timer();
         try {
             timer.start();
-            getLogger().info(LogCategories.END, StringUtils.getString("Closing ", Constants.APP_NAME, " ", Constants.VERSION.toString()));
+            Logger.info(LogCategories.END, StringUtils.getString("Closing ", Constants.APP_NAME, " ", Constants.VERSION.toString()));
             TempFolder.getInstance().removeAllFiles();
             
             ApplicationLifeCycleListeners.applicationFinish();
         } finally {
-            getLogger().info(LogCategories.END, StringUtils.getString("Application finished (", StringUtils.toString(timer.stop(), 3), " seconds)"));
-            getLogger().info(LogCategories.END, "Goodbye!!");
+            Logger.info(LogCategories.END, StringUtils.getString("Application finished (", StringUtils.toString(timer.stop(), 3), " seconds)"));
+            Logger.info(LogCategories.END, "Goodbye!!");
             // Exit normally
             System.exit(0);
         }
@@ -179,7 +177,7 @@ public class Kernel {
      * Creates all objects of aTunes: visual objects, controllers, and handlers.
      */
     static void startCreation() {
-        getLogger().debug(LogCategories.START, "Starting components");
+        Logger.debug(LogCategories.START, "Starting components");
         GuiHandler.getInstance().startVisualization();
         GuiHandler.getInstance().setTitleBar("");
     }
@@ -201,7 +199,7 @@ public class Kernel {
             pb.start();
 
         } catch (IOException e) {
-            getLogger().error(LogCategories.KERNEL, e);
+            Logger.error(LogCategories.KERNEL, e);
         } finally {
             // Exit normally
             System.exit(0);
@@ -258,13 +256,6 @@ public class Kernel {
      */
     public static void setEnablePlugins(boolean enable) {
     	Kernel.enablePlugins = enable;
-    }
-
-    private static Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
     }
 
 	/**

@@ -46,12 +46,11 @@ final class LanguageSelector {
      */
     static void setLanguage() {
         LocaleBean localeBean = ApplicationState.getInstance().getLocale();
-        Logger logger = new Logger();
         if (localeBean != null) {
             I18nUtils.setLocale(localeBean.getLocale());
-            logger.info(LogCategories.START, StringUtils.getString("Setting language: ", localeBean.getLocale()));
+            Logger.info(LogCategories.START, StringUtils.getString("Setting language: ", localeBean.getLocale()));
         } else {
-            logger.info(LogCategories.START, "Language not configured; using default language");
+            Logger.info(LogCategories.START, "Language not configured; using default language");
             I18nUtils.setLocale(null);
             ApplicationState.getInstance().setLocale(new LocaleBean(I18nUtils.getSelectedLocale()));
         }

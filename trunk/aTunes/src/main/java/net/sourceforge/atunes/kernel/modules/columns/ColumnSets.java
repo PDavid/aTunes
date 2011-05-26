@@ -50,8 +50,6 @@ public class ColumnSets implements PluginListener {
      */
     private static ColumnSets instance;
 
-    private Logger logger;
-
     public static ColumnSets getInstance() {
         if (instance == null) {
             instance = new ColumnSets();
@@ -87,7 +85,7 @@ public class ColumnSets implements PluginListener {
                 columnSet.addNewColumn((AbstractColumn) PluginsHandler.getInstance().getNewInstance(plugin));
             }
         } catch (PluginSystemException e) {
-            getLogger().error(LogCategories.COLUMNS, e);
+            Logger.error(LogCategories.COLUMNS, e);
         }
     }
 
@@ -103,17 +101,5 @@ public class ColumnSets implements PluginListener {
         for (AbstractColumnSet columnSet : getColumnSets()) {
             columnSet.removeColumn(columnClass);
         }
-    }
-
-    /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
     }
 }

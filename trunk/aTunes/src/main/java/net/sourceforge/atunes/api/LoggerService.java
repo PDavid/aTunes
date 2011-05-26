@@ -28,8 +28,6 @@ import org.commonjukebox.plugins.model.PluginApi;
 @PluginApi
 public class LoggerService {
 
-    private Logger logger;
-
     /**
      * Creates a new logger service to be used by plugins
      */
@@ -42,7 +40,7 @@ public class LoggerService {
      * @param message
      */
     public void info(String message) {
-        getLogger().info(LogCategories.PLUGINS, message);
+        Logger.info(LogCategories.PLUGINS, message);
     }
 
     /**
@@ -51,7 +49,7 @@ public class LoggerService {
      * @param message
      */
     public void debug(String message) {
-        getLogger().debug(LogCategories.PLUGINS, message);
+        Logger.debug(LogCategories.PLUGINS, message);
     }
 
     /**
@@ -60,7 +58,7 @@ public class LoggerService {
      * @param message
      */
     public void error(String message) {
-        getLogger().error(LogCategories.PLUGINS, message);
+        Logger.error(LogCategories.PLUGINS, message);
     }
 
     /**
@@ -69,19 +67,6 @@ public class LoggerService {
      * @param exception
      */
     public void error(Exception exception) {
-        getLogger().error(LogCategories.PLUGINS, exception);
+        Logger.error(LogCategories.PLUGINS, exception);
     }
-
-    /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
-    }
-
 }

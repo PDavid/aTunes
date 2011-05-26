@@ -41,8 +41,6 @@ public class LyricsDirectoryEngine extends AbstractLyricsEngine {
 	private static final String BASE_URL = "http://www.lyricsdir.com/";
     private static final String CHARSET = "UTF-8";
 
-    private Logger logger;
-
     public LyricsDirectoryEngine(Proxy proxy) {
         super(proxy);
     }
@@ -71,10 +69,10 @@ public class LyricsDirectoryEngine extends AbstractLyricsEngine {
             
             return lyrics != null && !lyrics.isEmpty() ? new Lyrics(lyrics, sb.toString()) : null;
         } catch (UnknownHostException e) {
-        	getLogger().error(LogCategories.SERVICE, StringUtils.getString(e.getClass().getCanonicalName(), " (", e.getMessage(), ")"));
+        	Logger.error(LogCategories.SERVICE, StringUtils.getString(e.getClass().getCanonicalName(), " (", e.getMessage(), ")"));
             return null;
         } catch (IOException e) {
-        	getLogger().error(LogCategories.SERVICE, StringUtils.getString(e.getClass().getCanonicalName(), " (", e.getMessage(), ")"));
+        	Logger.error(LogCategories.SERVICE, StringUtils.getString(e.getClass().getCanonicalName(), " (", e.getMessage(), ")"));
             return null;
         }
     }
@@ -117,17 +115,4 @@ public class LyricsDirectoryEngine extends AbstractLyricsEngine {
     public String getUrlForAddingNewLyrics(String artist, String title) {
         return "";
     }
-
-    /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
-    }
-
 }

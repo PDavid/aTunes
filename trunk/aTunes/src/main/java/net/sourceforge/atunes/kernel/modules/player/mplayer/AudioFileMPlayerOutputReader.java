@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.modules.player.mplayer;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Format;
 import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.LocalAudioObject;
 
 class AudioFileMPlayerOutputReader extends AbstractMPlayerOutputReader {
@@ -61,7 +62,7 @@ class AudioFileMPlayerOutputReader extends AbstractMPlayerOutputReader {
 
         // MPlayer bug: Workaround (for audio files) for "mute bug" [1868482] 
         if (getEngine().isMute() && getLength() > 0 && getLength() - getTime() < 2000) {
-            getLogger().debug(LogCategories.PLAYER, "MPlayer 'mute bug' workaround applied");
+            Logger.debug(LogCategories.PLAYER, "MPlayer 'mute bug' workaround applied");
             getEngine().currentAudioObjectFinished(true);
             interrupt();
         }

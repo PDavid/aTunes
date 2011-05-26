@@ -69,9 +69,9 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
 			            GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("LOGIN_FAILED"));
 			        }
 			    } catch (InterruptedException e) {
-			        getLogger().error(LogCategories.SERVICE, e);
+			        Logger.error(LogCategories.SERVICE, e);
 			    } catch (ExecutionException e) {
-			        getLogger().error(LogCategories.SERVICE, e);
+			        Logger.error(LogCategories.SERVICE, e);
 			    } finally {
 			        testLogin.setEnabled(true);
 			    }
@@ -86,8 +86,6 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
 	}
 
 	private static final long serialVersionUID = -9216216930198145476L;
-
-    private Logger logger;
 
     private JCheckBox lastFmEnabled;
     private JTextField lastFmUser;
@@ -248,17 +246,4 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
     public void dialogVisibilityChanged(boolean visible) {
         // Do nothing
     }
-
-    /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
-    }
-
 }

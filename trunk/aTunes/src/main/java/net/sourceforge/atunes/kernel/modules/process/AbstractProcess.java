@@ -79,11 +79,6 @@ public abstract class AbstractProcess {
 		}
 	}
 
-	/**
-     * Logger shared by all processes
-     */
-    private Logger logger;
-
     /**
      * List of listeners notified when Process ends or is canceled
      */
@@ -182,7 +177,7 @@ public abstract class AbstractProcess {
      * @param o
      */
     protected final void addInfoLog(Object o) {
-        getLogger().info(LogCategories.PROCESS, o);
+        Logger.info(LogCategories.PROCESS, o);
     }
 
     /**
@@ -191,7 +186,7 @@ public abstract class AbstractProcess {
      * @param o
      */
     protected final void addDebugLog(Object... o) {
-        getLogger().debug(LogCategories.PROCESS, o);
+        Logger.debug(LogCategories.PROCESS, o);
     }
 
     /**
@@ -200,7 +195,7 @@ public abstract class AbstractProcess {
      * @param o
      */
     protected final void addErrorLog(Object o) {
-        getLogger().error(LogCategories.PROCESS, o);
+        Logger.error(LogCategories.PROCESS, o);
     }
 
     /**
@@ -242,7 +237,7 @@ public abstract class AbstractProcess {
                 }
             });
         } catch (Exception e) {
-            getLogger().error(LogCategories.PROCESS, e);
+            Logger.error(LogCategories.PROCESS, e);
         }
     }
 
@@ -257,7 +252,7 @@ public abstract class AbstractProcess {
                 }
             });
         } catch (Exception e) {
-            getLogger().error(LogCategories.PROCESS, e);
+            Logger.error(LogCategories.PROCESS, e);
         }
     }
 
@@ -277,7 +272,7 @@ public abstract class AbstractProcess {
                 }
             });
         } catch (Exception e) {
-            getLogger().error(LogCategories.PROCESS, e);
+            Logger.error(LogCategories.PROCESS, e);
         }
     }
 
@@ -331,17 +326,4 @@ public abstract class AbstractProcess {
     protected Component getOwner() {
         return owner;
     }
-
-    /**
-     * Getter for logger
-     * 
-     * @return
-     */
-    private Logger getLogger() {
-        if (logger == null) {
-            logger = new Logger();
-        }
-        return logger;
-    }
-
 }

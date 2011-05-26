@@ -54,6 +54,7 @@ import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
@@ -93,9 +94,9 @@ public final class RipperHandler extends AbstractHandler {
 		            getRipCdDialogController().getComponentControlled().updateTrackNames(trackNames);
 		        }
 		    } catch (InterruptedException e) {
-		        getLogger().internalError(e);
+		        Logger.internalError(e);
 		    } catch (ExecutionException e) {
-		        getLogger().error(LogCategories.RIPPER, e);
+		        Logger.error(LogCategories.RIPPER, e);
 		    } finally {
 		    	getRipCdDialogController().getComponentControlled().setCursor(Cursor.getDefaultCursor());
 		    	getRipCdDialogController().getComponentControlled().getTitlesButton().setEnabled(true);
@@ -120,7 +121,7 @@ public final class RipperHandler extends AbstractHandler {
 		    ripper.setNoCdListener(new NoCdListener() {
 		        @Override
 		        public void noCd() {
-		            getLogger().error(LogCategories.RIPPER, "No cd inserted");
+		            Logger.error(LogCategories.RIPPER, "No cd inserted");
 		            interrupted = true;
 		            SwingUtilities.invokeLater(new Runnable() {
 		                @Override
@@ -167,10 +168,10 @@ public final class RipperHandler extends AbstractHandler {
 		        }
 		    } catch (InterruptedException e) {
 		    	getRipCdDialogController().getComponentControlled().setVisible(false);
-		        getLogger().internalError(e);
+		        Logger.internalError(e);
 		    } catch (ExecutionException e) {
 		    	getRipCdDialogController().getComponentControlled().setVisible(false);
-		        getLogger().internalError(e);
+		        Logger.internalError(e);
 		    }
 		}
 	}
@@ -348,7 +349,7 @@ public final class RipperHandler extends AbstractHandler {
     public void cancelProcess() {
         interrupted = true;
         ripper.stop();
-        getLogger().info(LogCategories.RIPPER, "Process cancelled");
+        Logger.info(LogCategories.RIPPER, "Process cancelled");
     }
 
     /**
@@ -461,22 +462,22 @@ public final class RipperHandler extends AbstractHandler {
                             availableEncoders.put(instancedEncoder.getFormatName(), instancedEncoder);
                         }
                     } else {
-                        getLogger().error(LogCategories.RIPPER, encoderClass + " is not a subtype of " + Encoder.class);
+                        Logger.error(LogCategories.RIPPER, encoderClass + " is not a subtype of " + Encoder.class);
                     }
                 } catch (ClassNotFoundException e) {
-                    getLogger().error(LogCategories.RIPPER, e);
+                    Logger.error(LogCategories.RIPPER, e);
                 } catch (NoSuchMethodException e) {
-                    getLogger().error(LogCategories.RIPPER, e);
+                    Logger.error(LogCategories.RIPPER, e);
                 } catch (IllegalAccessException e) {
-                    getLogger().error(LogCategories.RIPPER, e);
+                    Logger.error(LogCategories.RIPPER, e);
                 } catch (InvocationTargetException e) {
-                    getLogger().error(LogCategories.RIPPER, e);
+                    Logger.error(LogCategories.RIPPER, e);
                 } catch (InstantiationException e) {
-                    getLogger().error(LogCategories.RIPPER, e);
+                    Logger.error(LogCategories.RIPPER, e);
                 }
             }
 
-            getLogger().info(LogCategories.RIPPER, StringUtils.getString("Available encoders: ", availableEncoders.keySet()));
+            Logger.info(LogCategories.RIPPER, StringUtils.getString("Available encoders: ", availableEncoders.keySet()));
         }
         return availableEncoders;
     }
@@ -525,7 +526,7 @@ public final class RipperHandler extends AbstractHandler {
             if (folderFile.mkdirs()) {
                 folderCreated = true;
             } else {
-                getLogger().error(LogCategories.RIPPER, "Folder could not be created");
+                Logger.error(LogCategories.RIPPER, "Folder could not be created");
                 return;
             }
         }
@@ -603,7 +604,7 @@ public final class RipperHandler extends AbstractHandler {
                     try {
                         Thread.sleep(2000);
                     } catch (InterruptedException e) {
-                        getLogger().internalError(e);
+                        Logger.internalError(e);
                     }
                     if (folderCreated) {
                         folder.delete();
@@ -633,7 +634,7 @@ public final class RipperHandler extends AbstractHandler {
         try {
             ImageUtils.writeImageToFile(image, imageFileName);
         } catch (IOException e) {
-            getLogger().internalError(e);
+            Logger.internalError(e);
         }
     }
 
@@ -697,7 +698,7 @@ public final class RipperHandler extends AbstractHandler {
      */
     boolean testTools() {
         if (!AbstractCdToWavConverter.testTool()) {
-            getLogger().error(LogCategories.RIPPER, "Error testing \"cdda2wav\" or \"cdparanoia\". Check program is installed");
+            Logger.error(LogCategories.RIPPER, "Error testing \"cdda2wav\" or \"cdparanoia\". Check program is installed");
             SwingUtilities.invokeLater(new ShowErrorDialogRunnable());
             return false;
         }
