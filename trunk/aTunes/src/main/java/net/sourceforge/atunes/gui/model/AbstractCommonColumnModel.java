@@ -17,7 +17,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package net.sourceforge.atunes.gui.model;
 
 import java.awt.Component;
@@ -60,26 +59,18 @@ import net.sourceforge.atunes.utils.StringUtils;
 public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel {
 
     private static final long serialVersionUID = -8202322203076350708L;
-
     /** The table. */
     private JTable table;
-
     /** Column set */
     private AbstractColumnSet columnSet;
-
     /** The model. */
     private AbstractCommonTableModel model;
-
     /** The column being moved. */
     private int columnBeingMoved = -1;
-
     /** The column moved to. */
     private int columnMovedTo = -1;
-
     private ColumnMoveListener columnMoveListener;
-
     private ColumnModelListener columnModelListener;
-    
     private Timer timer;
 
     /**
@@ -216,6 +207,7 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
     }
 
     private static final class HeaderTableCellRendererCode extends AbstractTableCellRendererCode {
+
         private final AbstractColumn column;
 
         private HeaderTableCellRendererCode(AbstractColumn column) {
@@ -242,30 +234,33 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
     }
 
     private class ColumnMoveListener extends MouseAdapter {
+
         @Override
         public void mouseReleased(MouseEvent e) {
             if (columnBeingMoved != -1) {
                 // Swap order in model
 
-                // Column moved to right
-                if (columnBeingMoved < columnMovedTo) {
-                    int columnDestinyOrder = getColumnObject(columnMovedTo).getOrder();
-                    for (int i = columnBeingMoved + 1; i <= columnMovedTo; i++) {
-                        int order = getColumnObject(i).getOrder();
-                        getColumnObject(i).setOrder(order - 1);
-                    }
-                    getColumnObject(columnBeingMoved).setOrder(columnDestinyOrder);
-                }
-                // Column moved to left
-                else if (columnBeingMoved > columnMovedTo) {
-                    int columnDestinyOrder = getColumnObject(columnMovedTo).getOrder();
-                    for (int i = columnBeingMoved - 1; i >= columnMovedTo; i--) {
-                        int order = getColumnObject(i).getOrder();
-                        getColumnObject(i).setOrder(order + 1);
-                    }
-                    getColumnObject(columnBeingMoved).setOrder(columnDestinyOrder);
-                }
-                arrangeColumns(false);
+            	if (columnBeingMoved != columnMovedTo) {
+            		// Column moved to right
+            		if (columnBeingMoved < columnMovedTo) {
+            			int columnDestinyOrder = getColumnObject(columnMovedTo).getOrder();
+            			for (int i = columnBeingMoved + 1; i <= columnMovedTo; i++) {
+            				int order = getColumnObject(i).getOrder();
+            				getColumnObject(i).setOrder(order - 1);
+            			}
+            			getColumnObject(columnBeingMoved).setOrder(columnDestinyOrder);
+            		} // Column moved to left
+            		else if (columnBeingMoved > columnMovedTo) {
+            			int columnDestinyOrder = getColumnObject(columnMovedTo).getOrder();
+            			for (int i = columnBeingMoved - 1; i >= columnMovedTo; i--) {
+            				int order = getColumnObject(i).getOrder();
+            				getColumnObject(i).setOrder(order + 1);
+            			}
+            			getColumnObject(columnBeingMoved).setOrder(columnDestinyOrder);
+            		}
+            		
+           			arrangeColumns(false);           			
+            	}
             }
             columnBeingMoved = -1;
             columnMovedTo = -1;
@@ -436,5 +431,4 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
     protected JTable getTable() {
         return table;
     }
-
 }

@@ -17,7 +17,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package net.sourceforge.atunes.kernel.modules.columns;
 
 import javax.swing.SwingConstants;
@@ -29,7 +28,7 @@ public class TrackColumn extends AbstractColumn {
     private static final long serialVersionUID = 6114834986452693757L;
 
     public TrackColumn() {
-        super("TRACK", String.class);
+        super("TRACK", Integer.class);
         setWidth(40);
         setVisible(true);
         setAlignment(SwingConstants.CENTER);
@@ -42,9 +41,8 @@ public class TrackColumn extends AbstractColumn {
 
     @Override
     public Object getValueFor(AudioObject audioObject) {
-        // Return track number or empty string
+        // Return track number or null, otherwise problems while comparing arise
         int track = audioObject.getTrackNumber();
-        return track > 0 ? track : "";
+        return track > 0 ? track : null;
     }
-
 }
