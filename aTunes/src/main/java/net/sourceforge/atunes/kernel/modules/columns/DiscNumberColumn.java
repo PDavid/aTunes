@@ -29,7 +29,7 @@ public class DiscNumberColumn extends AbstractColumn {
     private static final long serialVersionUID = -6226391762384061708L;
 
     public DiscNumberColumn() {
-        super("DISC_NUMBER", String.class);
+        super("DISC_NUMBER", Integer.class);
         setWidth(40);
         setVisible(false);
         setAlignment(SwingConstants.CENTER);
@@ -43,7 +43,7 @@ public class DiscNumberColumn extends AbstractColumn {
     @Override
     public Object getValueFor(AudioObject audioObject) {
         // Return disc number
-        return audioObject.getDiscNumber() > 0 ? audioObject.getDiscNumber() : "";
+        return audioObject.getDiscNumber() > 0 ? audioObject.getDiscNumber() : null;
     }
 
 }

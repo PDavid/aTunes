@@ -17,13 +17,13 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package net.sourceforge.atunes.gui.model;
 
 import java.awt.Component;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.gui.Fonts;
@@ -43,6 +43,7 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 public final class PlayListColumnModel extends AbstractCommonColumnModel {
 
     private static final class PlayListTextAndIconTableCellRendererCode extends TextAndIconTableCellRendererCode {
+
         private PlayListTextAndIconTableCellRendererCode(AbstractCommonColumnModel model) {
             super(model);
         }
@@ -56,6 +57,7 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
     }
 
     private static final class PlayListStringTableCellRendererCode extends StringTableCellRendererCode {
+
         private PlayListStringTableCellRendererCode(AbstractCommonColumnModel model) {
             super(model);
         }
@@ -67,7 +69,6 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
             return c;
         }
     }
-
     private static final long serialVersionUID = -2211160302611944001L;
 
     /**
@@ -102,6 +103,17 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
 
                 @Override
                 public Component getComponent(Component c, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                    String name = t.getColumnName(column);
+                    //Display Integer values if the column is nameless
+                    if (!"".equals(name)) {
+                        ((JLabel) c).setFont(PlayListHandler.getInstance().isCurrentVisibleRowPlaying(row) ? Fonts.getPlayListSelectedItemFont() : Fonts.getPlayListFont());
+                        ((JLabel) c).setIcon(null);
+                        ((JLabel) c).setText(value == null ? null : value.toString());
+                        ((JLabel) c).setHorizontalAlignment(SwingConstants.CENTER);
+                        return c;
+                    }
+
+                    //Display an icon if playing and cell is in a "special" column
                     ((JLabel) c).setText(null);
                     if (PlayListHandler.getInstance().isCurrentVisibleRowPlaying(row)) {
                         ((JLabel) c).setIcon(PlayState.getPlayStateIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(c, isSelected), 
@@ -123,5 +135,4 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
             return super.getRendererCodeFor(clazz);
         }
     }
-
 }

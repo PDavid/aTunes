@@ -46,7 +46,7 @@ public class PlayingColumn extends AbstractColumn {
 
     @Override
     public Object getValueFor(AudioObject audioObject) {
-        return 1;
+        return null;
     }
 
     @Override
