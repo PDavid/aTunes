@@ -110,11 +110,6 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
     private static ListOfPlayLists playListsRetrievedFromCache;
 
     /**
-     * Flag indicating if playlists have changed (removed or created)
-     */
-    private boolean playListsChanged;
-
-    /**
      * Filter for play list
      */
     private AbstractFilter playListFilter = new AbstractFilter() {
@@ -203,7 +198,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
         if (playLists.size() <= 1) {
             return;
         }
-        playListsChanged = true;
+        
         // remove tab and playlist
         // NOTE: removing visible tab play list calls automatically to switchToPlayList method
         if (index != visiblePlayListIndex) {
@@ -243,6 +238,8 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
             }
             removePlayList(index);
         }
+        
+        playListsChanged(true, true);
     }
 
     /**
@@ -326,7 +323,8 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
         newPlayList.setName(nameOfNewPlayList);
         playLists.add(newPlayList);
         getPlayListTabController().newPlayList(nameOfNewPlayList);
-        playListsChanged = true;
+        
+        playListsChanged(true, true);
     }
 
     /**
@@ -589,27 +587,22 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
     /**
      * Called by kernel when application is finishing.
      */
-    public void applicationFinish() {
-        // Store contents if play lists are dirty or list of play lists have changed
-        boolean playListsDirty = false;
-        boolean selectedItemDirty = false;
-        for (PlayList playList : playLists) {
-            playListsDirty = playListsDirty || playList.isDirty();
-            selectedItemDirty = selectedItemDirty || playList.isSelectedItemDirty();
-        }
-
-        if (selectedItemDirty || playListsChanged) {
-            // Store play list definition
-            ApplicationStateHandler.getInstance().persistPlayListsDefinition(getListOfPlayLists());
-        }
-        if (playListsDirty || playListsChanged) {
-        	// Store play list contents
-            ApplicationStateHandler.getInstance().persistPlayListsContents(getPlayListsContents());
-        }
-        
-        if (!playListsDirty && !selectedItemDirty && !playListsChanged) {
-            Logger.info(LogCategories.PLAYLIST, "Playlists are clean");
-        }
+    public void applicationFinish() {}
+    
+    /**
+     * Called when play lists needs to be persisted
+     * @param definition
+     * @param content
+     */
+    private void playListsChanged(boolean definition, boolean content) {
+    	if (definition) {
+    		// Store play list definition
+    		ApplicationStateHandler.getInstance().persistPlayListsDefinition(getListOfPlayLists());
+    	}
+    	if (content) {
+    		// Store play list contents
+    		ApplicationStateHandler.getInstance().persistPlayListsContents(getPlayListsContents());
+    	}
     }
 
     @Override
@@ -870,7 +863,6 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
         }
 
         addToPlaybackHistory(audioObject);
-        PlayListEventListeners.selectedAudioObjectHasChanged(audioObject);
     }
 
     /**
@@ -1248,10 +1240,12 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
 
 	@Override
 	public void audioObjectsAdded(List<PlayListAudioObject> audioObjectsAdded) {
+		playListsChanged(false, true);
 	}
 	
 	@Override
 	public void audioObjectsRemoved(List<PlayListAudioObject> audioObjectsRemoved) {		
+		playListsChanged(false, true);
 	}
 	
 	public void reapplyFilter() {
@@ -1263,12 +1257,15 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
 	}
 	
 	@Override
-	public void playListCleared() {}
+	public void playListCleared() {
+		playListsChanged(false, true);
+	}
 	
 	@Override
 	public void selectedAudioObjectChanged(AudioObject audioObject) {
         getPlayListController().refreshPlayList();
         getPlayListController().scrollPlayList(false);
+        playListsChanged(true, true);
 	};
 
 	@Override

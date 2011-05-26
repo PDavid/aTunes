@@ -54,16 +54,6 @@ public class PlayList implements Serializable, Cloneable {
     private String name;
 
     /**
-     * Flag indicating if this playlist contents need to be written to disk
-     */
-    private transient boolean dirty;
-    
-    /**
-     * Flag indicating if selected item need to be written to disk
-     */
-    private transient boolean selectedItemDirty;
-
-    /**
      * Pointed List of audio objects of this play list
      */
     private PointedList<AudioObject> audioObjects = new PlayListPointedList();
@@ -276,8 +266,7 @@ public class PlayList implements Serializable, Cloneable {
      */
     protected void sort(Comparator<AudioObject> c) {
         this.audioObjects.sort(c);
-        // Mark as dirty
-        setDirty(true);
+        notifyCurrentAudioObjectChanged(this.audioObjects.getCurrentObject());
     }
 
     /**
@@ -286,8 +275,6 @@ public class PlayList implements Serializable, Cloneable {
     protected void shuffle() {
         this.audioObjects.shuffle();
         notifyCurrentAudioObjectChanged(this.audioObjects.getCurrentObject());
-        // Mark as dirty
-        setDirty(true);
     }
 
     //////////////////////////////////////////////////////////////// OTHER OPERATIONS /////////////////////////////////////////////////////////////
@@ -479,13 +466,11 @@ public class PlayList implements Serializable, Cloneable {
      */
     private void notifyAudioObjectsAdded(int position, List<? extends AudioObject> audioObjectList) {
         List<PlayListAudioObject> playListAudioObjects = PlayListAudioObject.getList(position, audioObjectList);
-        PlayListEventListeners.audioObjectsAdded(playListAudioObjects);
 
         // Notify mode too
         getMode().audioObjectsAdded(playListAudioObjects);
 
-        // Mark as dirty
-        setDirty(true);
+        PlayListEventListeners.audioObjectsAdded(playListAudioObjects);
     }
 
     /**
@@ -493,27 +478,22 @@ public class PlayList implements Serializable, Cloneable {
      * 
      * @param audioObjectList
      */
-    private void notifyAudioObjectsRemoved(List<PlayListAudioObject> audioObjectList) {
-    	PlayListEventListeners.audioObjectsRemoved(audioObjectList);
-    	
+    private void notifyAudioObjectsRemoved(List<PlayListAudioObject> audioObjectList) {   	
         // Notify mode too
         getMode().audioObjectsRemoved(audioObjectList);
 
-        // Mark as dirty
-        setDirty(true);
+    	PlayListEventListeners.audioObjectsRemoved(audioObjectList);
     }
 
     /**
      * Private method to call listeners
      */
     private void notifyAudioObjectsRemovedAll() {
-    	PlayListEventListeners.playListCleared();
     	
         // Notify mode too
         getMode().audioObjectsRemovedAll();
 
-        // Mark as dirty
-        setDirty(true);
+    	PlayListEventListeners.playListCleared();
     }
 
     /**
@@ -550,23 +530,6 @@ public class PlayList implements Serializable, Cloneable {
 
     void addToPlaybackHistory(AudioObject object) {
         this.mode.addToPlaybackHistory(object);
-        // Mark selected item as dirty
-        setSelectedItemDirty(true);
-    }
-
-    /**
-     * @return the dirty
-     */
-    protected boolean isDirty() {
-        return dirty;
-    }
-
-    /**
-     * @param dirty
-     *            the dirty to set
-     */
-    protected void setDirty(boolean dirty) {
-        this.dirty = dirty;
     }
 
     /**
@@ -577,21 +540,5 @@ public class PlayList implements Serializable, Cloneable {
     protected void setContent(List<AudioObject> content) {
         this.audioObjects.setContent(content);
         notifyAudioObjectsAdded(0, content);
-        // As this method is used when reading from disk playlist can't be dirty
-        setDirty(false);
     }
-
-	/**
-	 * @return the selectedItemDirty
-	 */
-    protected boolean isSelectedItemDirty() {
-		return selectedItemDirty;
-	}
-
-	/**
-	 * @param selectedItemDirty the selectedItemDirty to set
-	 */
-    protected void setSelectedItemDirty(boolean selectedItemDirty) {
-		this.selectedItemDirty = selectedItemDirty;
-	}
 }
