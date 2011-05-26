@@ -80,8 +80,13 @@ public class PopUpButton extends JButton {
         setButton();
         GuiUtils.applyComponentOrientation(menu);
         
-        setMinimumSize(new Dimension(20, 20));
-        setPreferredSize(new Dimension(20, 20));
+        Dimension dimension = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPopUpButtonSize();
+        if (dimension != null) {
+        	setMinimumSize(dimension);
+        	setPreferredSize(dimension);
+        	setMaximumSize(dimension);
+        }
+        
         topShape = new Polygon();
         topShape.addPoint(- 4, 4);
         topShape.addPoint(4, 4);
@@ -101,15 +106,15 @@ public class PopUpButton extends JButton {
     @Override
     protected void paintComponent(Graphics g) {
     	super.paintComponent(g);
-    	
+
     	Graphics2D g2 = (Graphics2D) g;
     	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     	g2.setPaint(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForSpecialControls());
-		g2.translate(getWidth() / 2, getHeight() / 2);
-		if (this.location == BOTTOM_LEFT || this.location == BOTTOM_RIGHT) {
-			g2.rotate(Math.PI);
-		}
-   		g2.fill(topShape);
+    	g2.translate(getWidth() / 2, getHeight() / 2);
+    	if (this.location == BOTTOM_LEFT || this.location == BOTTOM_RIGHT) {
+    		g2.rotate(Math.PI);
+    	}
+    	g2.fill(topShape);
     	g2.dispose();
     }
 

@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.gui.lookandfeel;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Paint;
 import java.util.List;
@@ -269,6 +270,14 @@ public abstract class AbstractLookAndFeel {
 	 */
 	public Paint getPaintForColorMutableIcon(Component c, boolean isSelected) {
 		return UIManager.getColor("Label.foreground");	
+	}
+
+	/**
+	 * Returns size to be used with PopUpButton
+	 * @return
+	 */
+	public Dimension getPopUpButtonSize() {
+		return new Dimension(20, 20);
 	}
 
 }

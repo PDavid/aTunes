@@ -24,9 +24,11 @@ import java.awt.Window;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Map;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.frame.Frame;
+import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavConverter;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
 import net.sourceforge.atunes.kernel.modules.os.LinuxOperatingSystem;
@@ -346,4 +348,19 @@ public class OsManager {
 		return adapter.getExternalToolsPath();
 	}
 
+	/**
+	 * Returns supported look and feels
+	 * @return
+	 */
+	public static Map<String, Class<? extends AbstractLookAndFeel>> getLookAndFeels() {
+		return adapter.getSupportedLookAndFeels();
+	}
+
+	/**
+	 * Returns default look and feel class
+	 * @return
+	 */
+	public static Class<? extends AbstractLookAndFeel> getDefaultLookAndFeel() {
+		return adapter.getDefaultLookAndFeel();
+	}
 }

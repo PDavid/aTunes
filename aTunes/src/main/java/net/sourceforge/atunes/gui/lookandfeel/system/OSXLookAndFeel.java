@@ -18,26 +18,14 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.controls.playerControls;
+package net.sourceforge.atunes.gui.lookandfeel.system;
 
 import java.awt.Dimension;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.views.controls.PopUpButton;
+public class OSXLookAndFeel extends SystemLookAndFeel {
 
-public class OptionsButton extends PopUpButton {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 945492564458852643L;
-
-	public OptionsButton(Dimension size) {
-		super(PopUpButton.TOP_RIGHT);
-        setPreferredSize(size);
-        setMinimumSize(size);
-        setMaximumSize(size);
-		LookAndFeelSelector.getInstance().getCurrentLookAndFeel().putClientProperties(this);
+	@Override
+	public Dimension getPopUpButtonSize() {
+		return new Dimension(40, 10);
 	}
-
 }

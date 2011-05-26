@@ -375,7 +375,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
         setShowTrayPlayer(state.isShowTrayPlayer());
         // If look and feel is not available then set default
         String lookAndFeelName = LookAndFeelSelector.getInstance().getAvailableLookAndFeels().contains(state.getLookAndFeel().getName()) ? state.getLookAndFeel().getName()
-                : LookAndFeelSelector.getDefaultLookAndFeel().getName();
+                : LookAndFeelSelector.getInstance().getDefaultLookAndFeel().getName();
         setLookAndFeel(lookAndFeelName);
 
         String skinName = state.getLookAndFeel().getSkin() != null ? state.getLookAndFeel().getSkin() : LookAndFeelSelector.getInstance().getDefaultSkin(lookAndFeelName); 

@@ -29,6 +29,7 @@ aTunes 2.1.0
 - Edit radio name, url and label
 - Include file name and path in filter [3146992]
 - Improvements in columns sort [ patch by deathgorepain ]
+- Customizations in look and feel for each OS (Mac OS X)
 - FIX: Exception during renaming of file name
 - FIX: Repository refresh never ends in certain situations [3024433]
 - FIX: Selected playlist element not saved when closing application
