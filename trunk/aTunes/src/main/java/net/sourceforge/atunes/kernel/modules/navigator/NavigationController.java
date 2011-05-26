@@ -214,7 +214,7 @@ final class NavigationController extends AbstractController implements AudioFile
 			}
 		});
         
-        navigationTreePanel.getTreeComboBox().setRenderer(LookAndFeelSelector.getDefaultLookAndFeel().getListCellRenderer(new AbstractListCellRendererCode() {
+        navigationTreePanel.getTreeComboBox().setRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListCellRenderer(new AbstractListCellRendererCode() {
 			
 			@Override
 			public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {

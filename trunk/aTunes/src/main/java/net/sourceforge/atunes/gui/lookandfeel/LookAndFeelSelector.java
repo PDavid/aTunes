@@ -23,19 +23,15 @@ package net.sourceforge.atunes.gui.lookandfeel;
 import java.awt.Window;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.gui.lookandfeel.nimbus.NimbusLookAndFeel;
-import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
-import net.sourceforge.atunes.gui.lookandfeel.system.SystemLookAndFeel;
 import net.sourceforge.atunes.kernel.Kernel;
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
@@ -59,12 +55,12 @@ public final class LookAndFeelSelector implements PluginListener {
     /**
      * Map containing look and feels
      */
-    private Map<String, AbstractLookAndFeel> lookAndFeels;
+    private Map<String, Class<? extends AbstractLookAndFeel>> lookAndFeels;
 
     /**
      * Default look and feel
      */
-    private static AbstractLookAndFeel defaultLookAndFeel = new SubstanceLookAndFeel();
+    private static Class<? extends AbstractLookAndFeel> defaultLookAndFeelClass;
     
     /**
      * Look and Feel change listeners
@@ -75,20 +71,8 @@ public final class LookAndFeelSelector implements PluginListener {
      * Default constructor
      */
     private LookAndFeelSelector() {
-        lookAndFeels = new HashMap<String, AbstractLookAndFeel>();
-
-        // Default look and feel
-        lookAndFeels.put(defaultLookAndFeel.getName(), defaultLookAndFeel);
-
-        // System look and feel
-        SystemLookAndFeel system = new SystemLookAndFeel();
-        lookAndFeels.put(system.getName(), system);
-
-        // Nimbus look and feel (only 1.6.10 or later)
-        if (SystemProperties.IS_JAVA_6_UPDATE_10_OR_LATER) {
-            NimbusLookAndFeel nimbus = new NimbusLookAndFeel();
-            lookAndFeels.put(nimbus.getName(), nimbus);
-        }
+        lookAndFeels = OsManager.getLookAndFeels();
+        defaultLookAndFeelClass = OsManager.getDefaultLookAndFeel();
     }
 
     /**
@@ -107,7 +91,7 @@ public final class LookAndFeelSelector implements PluginListener {
     public void pluginActivated(PluginInfo plugin) {
         try {
         	AbstractLookAndFeel laf = (AbstractLookAndFeel) PluginsHandler.getInstance().getNewInstance(plugin);
-            lookAndFeels.put(laf.getName(), laf);
+            lookAndFeels.put(laf.getName(), laf.getClass());
         } catch (PluginSystemException e) {
             Logger.error(LogCategories.PLUGINS, e);
         }
@@ -133,6 +117,14 @@ public final class LookAndFeelSelector implements PluginListener {
 
         if (lookAndFeelBean == null || lookAndFeelBean.getName() == null) {
             lookAndFeelBean = new LookAndFeelBean();
+            AbstractLookAndFeel defaultLookAndFeel = null;
+			try {
+				defaultLookAndFeel = defaultLookAndFeelClass.newInstance();
+			} catch (InstantiationException e) {
+				Logger.error(LogCategories.DESKTOP, e);
+			} catch (IllegalAccessException e) {
+				Logger.error(LogCategories.DESKTOP, e);
+			}
             lookAndFeelBean.setName(defaultLookAndFeel.getName());
             lookAndFeelBean.setSkin(defaultLookAndFeel.getDefaultSkin());
             if (ApplicationState.getInstance().getLookAndFeel() == null) {
@@ -140,11 +132,18 @@ public final class LookAndFeelSelector implements PluginListener {
             }
         }
 
-        currentLookAndFeel = lookAndFeels.get(lookAndFeelBean.getName());
-        if (currentLookAndFeel == null) {
-            currentLookAndFeel = defaultLookAndFeel;
+        Class<? extends AbstractLookAndFeel> currentLookAndFeelClass = lookAndFeels.get(lookAndFeelBean.getName());
+        if (currentLookAndFeelClass == null) {
+            currentLookAndFeelClass = defaultLookAndFeelClass;
         }
 
+        try {
+			currentLookAndFeel = currentLookAndFeelClass.newInstance();
+		} catch (InstantiationException e) {
+			Logger.error(LogCategories.DESKTOP, e);
+		} catch (IllegalAccessException e) {
+			Logger.error(LogCategories.DESKTOP, e);
+		}
         currentLookAndFeel.initializeLookAndFeel();
         currentLookAndFeel.setLookAndFeel(lookAndFeelBean.getSkin());
     }
@@ -163,10 +162,20 @@ public final class LookAndFeelSelector implements PluginListener {
      * @return
      */
     public List<String> getAvailableSkins(String lookAndFeelName) {
-        AbstractLookAndFeel lookAndFeel = lookAndFeels.get(lookAndFeelName);
-        if (lookAndFeel != null) {
-            return lookAndFeel.getSkins() != null ? lookAndFeel.getSkins() : new ArrayList<String>();
-        }
+    	Class<? extends AbstractLookAndFeel> clazz = lookAndFeels.get(lookAndFeelName);
+    	if (clazz != null) {
+    		AbstractLookAndFeel lookAndFeel = null;
+			try {
+				lookAndFeel = clazz.newInstance();
+			} catch (InstantiationException e) {
+				Logger.error(LogCategories.DESKTOP, e);
+			} catch (IllegalAccessException e) {
+				Logger.error(LogCategories.DESKTOP, e);
+			}
+    		if (lookAndFeel != null) {
+    			return lookAndFeel.getSkins() != null ? lookAndFeel.getSkins() : new ArrayList<String>();
+    		}
+    	}
         return new ArrayList<String>();
     }
 
@@ -213,18 +222,35 @@ public final class LookAndFeelSelector implements PluginListener {
      * @return
      */
     public String getDefaultSkin(String lookAndFeelName) {
-        AbstractLookAndFeel lookAndFeel = lookAndFeels.get(lookAndFeelName);
-        if (lookAndFeel != null) {
-            return lookAndFeel.getDefaultSkin();
-        }
+    	Class<? extends AbstractLookAndFeel> clazz = lookAndFeels.get(lookAndFeelName);
+    	if (clazz != null) {
+    		AbstractLookAndFeel lookAndFeel = null;
+    		try {
+				lookAndFeel = clazz.newInstance();
+			} catch (InstantiationException e) {
+				Logger.error(LogCategories.DESKTOP, e);
+			} catch (IllegalAccessException e) {
+				Logger.error(LogCategories.DESKTOP, e);
+			}
+    		if (lookAndFeel != null) {
+    			return lookAndFeel.getDefaultSkin();
+    		}
+    	}
         return null;
     }
 
     /**
      * @return the defaultLookAndFeel
      */
-    public static AbstractLookAndFeel getDefaultLookAndFeel() {
-        return defaultLookAndFeel;
+    public AbstractLookAndFeel getDefaultLookAndFeel() {
+        try {
+			return defaultLookAndFeelClass.newInstance();
+		} catch (InstantiationException e) {
+			Logger.error(LogCategories.DESKTOP, e);
+		} catch (IllegalAccessException e) {
+			Logger.error(LogCategories.DESKTOP, e);
+		}
+		return null;
     }
 
 	/**

@@ -30,9 +30,11 @@ import net.sourceforge.atunes.misc.log.Logger;
 
 public class NimbusLookAndFeel extends AbstractLookAndFeel {
 
-    @Override
+    public static final String NIMBUS = "Nimbus";
+
+	@Override
     public String getName() {
-        return "Nimbus";
+        return NIMBUS;
     }
 
     @Override

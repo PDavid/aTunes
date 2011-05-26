@@ -32,9 +32,11 @@ import net.sourceforge.atunes.misc.log.Logger;
 
 public class SystemLookAndFeel extends AbstractLookAndFeel {
 
-    @Override
+    public static final String SYSTEM = "System";
+
+	@Override
     public String getName() {
-        return "System";
+        return SYSTEM;
     }
 
     @Override
@@ -74,5 +76,5 @@ public class SystemLookAndFeel extends AbstractLookAndFeel {
         } catch (UnsupportedLookAndFeelException e) {
             Logger.internalError(e);
         }
-    }
+    }    
 }

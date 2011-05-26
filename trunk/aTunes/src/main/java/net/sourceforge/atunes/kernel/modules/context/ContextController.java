@@ -51,7 +51,7 @@ class ContextController extends AbstractSimpleController<ContextPanel> {
             }
         });
 		
-		getComponentControlled().getContextSelector().setRenderer(LookAndFeelSelector.getDefaultLookAndFeel().getListCellRenderer(new AbstractListCellRendererCode() {
+		getComponentControlled().getContextSelector().setRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListCellRenderer(new AbstractListCellRendererCode() {
 			
 			@Override
 			public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {

@@ -244,9 +244,9 @@ public final class PlayerControlsPanel extends JPanel {
      * @return
      */
     public static JPanel getPanelWithPlayerControls(StopButton stopButton, PreviousButton previousButton, PlayPauseButton playButton, NextButton nextButton, MuteButton volumeButton, JSlider volumeSlider, JLabel volumeLevel) {
-        return LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isCustomPlayerControlsSupported() ? getCustomPlayerControls(stopButton, previousButton, playButton,
-                nextButton, volumeButton, volumeSlider, volumeLevel) : getStandardPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider,
-                volumeLevel);
+        return LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isCustomPlayerControlsSupported() ? 
+        		getCustomPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider, volumeLevel) : 
+        		getStandardPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider, volumeLevel);
     }
 
     /**

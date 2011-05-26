@@ -22,6 +22,7 @@ package net.sourceforge.atunes.gui.lookandfeel.substance;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Paint;
 import java.util.ArrayList;
@@ -52,7 +53,6 @@ import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellRendererCode;
 import net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.NextButton;
-import net.sourceforge.atunes.gui.views.controls.playerControls.OptionsButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.PlayPauseButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.PreviousButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.SecondaryControl;
@@ -74,7 +74,9 @@ import org.pushingpixels.substance.api.renderers.SubstanceDefaultTreeCellRendere
 
 public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
 
-    private static final class CustomFontPolicy implements FontPolicy {
+    public static final String SUBSTANCE = "Substance";
+
+	private static final class CustomFontPolicy implements FontPolicy {
         private final class CustomFontSet implements FontSet {
 			private FontUIResource windowTitleFont = new FontUIResource(baseFont.deriveFont(Font.BOLD, baseFont.getSize() + 1f));
 			private FontUIResource titleFont = new FontUIResource(baseFont.deriveFont((float) baseFont.getSize()));
@@ -198,7 +200,7 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
     }
 
     /** The map of skin names and class names */
-    private static Map<String, String> skins = setMapOfSkins();
+    private Map<String, String> skins = setMapOfSkins();
 
     /** The default skin */
     private static final String DEFAULT_SKIN = "aTunes Blue";
@@ -208,7 +210,7 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
      * 
      * @return the map< string, string>
      */
-    private static Map<String, String> setMapOfSkins() {
+    private Map<String, String> setMapOfSkins() {
         Map<String, String> result = new HashMap<String, String>();
 
         result.put("BusinessBlackSteel", "org.pushingpixels.substance.api.skin.SubstanceBusinessBlackSteelLookAndFeel");
@@ -250,7 +252,7 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
 
     @Override
     public String getName() {
-        return "Substance";
+        return SUBSTANCE;
     }
 
     @Override
@@ -270,7 +272,6 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
     @Override
     public void setLookAndFeel(String skin) {
         try {
-        	System.out.println("Setting " + skin);
             if (skins.containsKey(skin)) {
                 UIManager.setLookAndFeel(skins.get(skin));
             } else {
@@ -344,7 +345,7 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
 
     @Override
     public void putClientProperties(JComponent c) {
-        if (c instanceof SecondaryControl || c instanceof MuteButton || c instanceof StopButton || c instanceof OptionsButton) {
+        if (c instanceof SecondaryControl || c instanceof MuteButton || c instanceof StopButton) {
             c.putClientProperty(org.pushingpixels.substance.api.SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY, new RoundRectButtonShaper());
         } else if (c instanceof NextButton) {
             c.putClientProperty(org.pushingpixels.substance.api.SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY,
@@ -376,7 +377,7 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
 
     @Override
     public Font getDefaultFont() {
-        return org.pushingpixels.substance.api.SubstanceLookAndFeel.getFontPolicy().getFontSet("Substance", null).getControlFont();
+        return org.pushingpixels.substance.api.SubstanceLookAndFeel.getFontPolicy().getFontSet(SUBSTANCE, null).getControlFont();
     }        
     
     @Override
@@ -396,5 +397,10 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
     	} else {
     		return component.getForeground();    		
     	}
+    }
+    
+    @Override
+    public Dimension getPopUpButtonSize() {
+    	return new Dimension(20, 20);
     }
 }
