@@ -30,6 +30,7 @@ aTunes 2.1.0
 - Include file name and path in filter [3146992]
 - Improvements in columns sort [ patch by deathgorepain ]
 - Customizations in look and feel for each OS (Mac OS X)
+- Nimbus look and feel removed as it does not support all features needed (font size?)
 - FIX: Exception during renaming of file name
 - FIX: Repository refresh never ends in certain situations [3024433]
 - FIX: Selected playlist element not saved when closing application
