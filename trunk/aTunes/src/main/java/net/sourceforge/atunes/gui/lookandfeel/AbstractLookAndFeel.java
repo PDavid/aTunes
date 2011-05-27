@@ -24,6 +24,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Paint;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.swing.DefaultListCellRenderer;
@@ -34,16 +35,25 @@ import javax.swing.JTree;
 import javax.swing.ListCellRenderer;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
+import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
+
+import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.misc.log.Logger;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
 @PluginApi
 public abstract class AbstractLookAndFeel {
 
+	/**
+	 * Base font
+	 */
+	private Font baseFont;
+	
     private static final class LookAndFeelListCellRenderer extends DefaultListCellRenderer {
         private final AbstractListCellRendererCode code;
         /**
@@ -235,8 +245,25 @@ public abstract class AbstractLookAndFeel {
      * look and feel (none by default)
      */
     public void initializeFonts(Font baseFont) {
-        // Nothing to do
+    	this.baseFont = baseFont;
+    	setUIFont(new FontUIResource(baseFont));
     }
+
+    /**
+     * Changes all components' font to a given one
+     * @param f
+     */
+    protected void setUIFont (FontUIResource f){
+    	Enumeration<Object> keys = UIManager.getDefaults().keys();
+    	while (keys.hasMoreElements()) {
+    		Object key = keys.nextElement();
+    		Object value = UIManager.get (key);
+			Logger.debug(LogCategories.DESKTOP, key, value);
+    		if (value instanceof FontUIResource) {
+    			UIManager.put (key, f);
+    		}
+    	}
+    }    
 
     /**
      * Returns default font
@@ -244,7 +271,7 @@ public abstract class AbstractLookAndFeel {
      * @return
      */
     public Font getDefaultFont() {
-        return UIManager.getFont("Label.font");
+        return this.baseFont;
     }
     
     /**

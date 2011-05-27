@@ -29,7 +29,6 @@ import java.util.Map;
 
 import net.sourceforge.atunes.gui.frame.Frame;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
-import net.sourceforge.atunes.gui.lookandfeel.nimbus.NimbusLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.system.SystemLookAndFeel;
 import net.sourceforge.atunes.kernel.OperatingSystem;
@@ -37,7 +36,6 @@ import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavCo
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
-import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 
@@ -195,12 +193,6 @@ public abstract class OperatingSystemAdapter {
 	    Map<String, Class<? extends AbstractLookAndFeel>> lookAndFeels = new HashMap<String, Class<? extends AbstractLookAndFeel>>();
         lookAndFeels.put(SubstanceLookAndFeel.SUBSTANCE, SubstanceLookAndFeel.class);
         lookAndFeels.put(SystemLookAndFeel.SYSTEM, SystemLookAndFeel.class);
-
-        // Nimbus look and feel (only 1.6.10 or later)
-        if (SystemProperties.IS_JAVA_6_UPDATE_10_OR_LATER) {
-            lookAndFeels.put(NimbusLookAndFeel.NIMBUS, NimbusLookAndFeel.class);
-        }
-        
         return lookAndFeels;
 	}
 
