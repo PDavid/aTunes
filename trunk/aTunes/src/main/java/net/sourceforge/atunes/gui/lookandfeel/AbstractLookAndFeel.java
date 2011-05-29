@@ -213,6 +213,14 @@ public abstract class AbstractLookAndFeel {
     }
 
     /**
+     * Returns if custom combo box renderers are supported
+     * @return
+     */
+    public boolean customComboBoxRenderersSupported() {
+    	return true;
+    }
+    
+    /**
      * Puts client properties in components
      * 
      * @param c
