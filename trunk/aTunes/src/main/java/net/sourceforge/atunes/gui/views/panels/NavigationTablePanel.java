@@ -55,6 +55,7 @@ public final class NavigationTablePanel extends JPanel {
         // Disable autoresize, as we will control it
         navigationTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         JScrollPane scrollPane2 = new JScrollPane(navigationTable);
+        scrollPane2.setOpaque(false); // for some look and feels
         add(scrollPane2, BorderLayout.CENTER);
     }
 
