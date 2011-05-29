@@ -62,6 +62,11 @@ public class SystemLookAndFeel extends AbstractLookAndFeel {
     public String getDefaultSkin() {
         return null;
     }
+    
+    @Override
+    public boolean customComboBoxRenderersSupported() {
+    	return false;
+    }
 
     @Override
     public void setLookAndFeel(String skin) {

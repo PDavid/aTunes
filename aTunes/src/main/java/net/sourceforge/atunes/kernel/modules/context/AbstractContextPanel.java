@@ -297,4 +297,9 @@ public abstract class AbstractContextPanel {
 		}
 		return true;
 	}
+	
+	@Override
+	public String toString() {
+		return getTitle();
+	}
 }

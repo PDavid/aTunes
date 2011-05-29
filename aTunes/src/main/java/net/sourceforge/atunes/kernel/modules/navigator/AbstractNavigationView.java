@@ -654,4 +654,9 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
     protected Comparator<String> getArtistNamesComparator() {
         return new ArtistNamesComparator();
     }
+    
+    @Override
+    public String toString() {
+    	return getTitle();
+    }
 }
