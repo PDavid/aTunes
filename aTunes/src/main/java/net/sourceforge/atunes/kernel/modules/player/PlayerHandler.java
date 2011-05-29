@@ -386,8 +386,8 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
                 if (engine.getEngineName().equals(selectedEngine)) {
                 	playerEngine = engine;
                     Logger.info(LogCategories.PLAYER, "Engine initialized : " + selectedEngine);
+                    break;
                 }
-                break;
             }
 
             if (playerEngine == null) {

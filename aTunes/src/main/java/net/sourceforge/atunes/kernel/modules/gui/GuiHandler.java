@@ -685,8 +685,17 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      * @param message
      *            the message
      */
-    public void showErrorDialog(String message) {
-        JOptionPane.showMessageDialog(frame.getFrame(), message, I18nUtils.getString("ERROR"), JOptionPane.ERROR_MESSAGE);
+    public void showErrorDialog(final String message) {
+    	if (SwingUtilities.isEventDispatchThread()) {
+    		JOptionPane.showMessageDialog(frame.getFrame(), message, I18nUtils.getString("ERROR"), JOptionPane.ERROR_MESSAGE);
+    	} else {
+    		SwingUtilities.invokeLater(new Runnable() {
+    			@Override
+    			public void run() {
+    				JOptionPane.showMessageDialog(frame.getFrame(), message, I18nUtils.getString("ERROR"), JOptionPane.ERROR_MESSAGE);
+    			}
+    		});
+    	}
     }
 
     /**
