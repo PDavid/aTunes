@@ -206,33 +206,6 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
         columnSet.setCurrentColumns();
     }
 
-    private static final class HeaderTableCellRendererCode extends AbstractTableCellRendererCode {
-
-        private final AbstractColumn column;
-
-        private HeaderTableCellRendererCode(AbstractColumn column) {
-            this.column = column;
-        }
-
-        @Override
-        public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
-            Component c = superComponent;
-
-            ColumnSort columnSort = column.getColumnSort();
-
-            if (columnSort != null) {
-                ((JLabel) c).setHorizontalTextPosition(SwingConstants.LEFT);
-                if (columnSort.equals(ColumnSort.ASCENDING)) {
-                    ((JLabel) c).setIcon(ArrowImageIcon.getUpIcon());
-                } else if (columnSort.equals(ColumnSort.DESCENDING)) {
-                    ((JLabel) c).setIcon(ArrowImageIcon.getDownIcon());
-                }
-            }
-
-            return c;
-        }
-    }
-
     private class ColumnMoveListener extends MouseAdapter {
 
         @Override
@@ -369,21 +342,6 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
         TableCellRenderer cellRenderer = column.getCellRenderer();
         if (cellRenderer != null) {
             aColumn.setCellRenderer(cellRenderer);
-        }
-    }
-
-    /**
-     * Updates a column header according to settings from column set
-     * 
-     * @param aColumn
-     */
-    protected void updateColumnHeader(TableColumn aColumn) {
-        // Get column data
-        final AbstractColumn column = getColumnObject(aColumn.getModelIndex());
-
-        // Set header renderer to sortable columns
-        if (column.isSortable()) {
-            aColumn.setHeaderRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableHeaderCellRenderer(new HeaderTableCellRendererCode(column)));
         }
     }
 
