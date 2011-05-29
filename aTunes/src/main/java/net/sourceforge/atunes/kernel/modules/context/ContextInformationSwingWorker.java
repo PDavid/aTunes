@@ -81,6 +81,7 @@ class ContextInformationSwingWorker extends SwingWorker<Map<String, ?>, Void> {
             content.getParentTaskPane().setEnabled(true);
             // After update data expand content
             content.getParentTaskPane().setCollapsed(false);
+            content.getParentTaskPane().setVisible(true);
         } catch (CancellationException e) {
             // thrown when cancelled
         } catch (InterruptedException e) {
