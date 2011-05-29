@@ -28,6 +28,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -36,7 +37,6 @@ import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomFrame;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
@@ -70,7 +70,7 @@ public final class UpdateDialog extends CustomFrame {
         UrlLabel url = new UrlLabel(I18nUtils.getString("GO_TO_DOWNLOAD_PAGE"), version.getDownloadURL());
         url.setHorizontalAlignment(SwingConstants.CENTER);
 
-        CustomButton ok = new CustomButton(null, I18nUtils.getString("OK"));
+        JButton ok = new JButton(I18nUtils.getString("OK"));
         ok.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 dispose();

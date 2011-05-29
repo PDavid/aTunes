@@ -45,7 +45,6 @@ import javax.swing.JTextField;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalFrame;
-import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -367,10 +366,10 @@ public final class EditTagDialog extends AbstractCustomModalFrame {
         });
         albumArtistCheckBox.setSelected(true);
 
-        okButton = new CustomButton(null, I18nUtils.getString("OK"));
-        cancelButton = new CustomButton(null, I18nUtils.getString("CANCEL"));
-        nextButton = new CustomButton(null, I18nUtils.getString("NEXT"));
-        prevButton = new CustomButton(null, I18nUtils.getString("PREVIOUS"));
+        okButton = new JButton(I18nUtils.getString("OK"));
+        cancelButton = new JButton(I18nUtils.getString("CANCEL"));
+        nextButton = new JButton(I18nUtils.getString("NEXT"));
+        prevButton = new JButton(I18nUtils.getString("PREVIOUS"));
 
         GridBagConstraints c = new GridBagConstraints();
 

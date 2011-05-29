@@ -58,7 +58,6 @@ import javax.swing.tree.TreeSelectionModel;
 
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellRendererCode;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
-import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -566,7 +565,7 @@ public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog 
         fileSystemTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         scrollPane = new JScrollPane();
 
-        okButton = new CustomButton(null, I18nUtils.getString("OK"));
+        okButton = new JButton(I18nUtils.getString("OK"));
         okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -574,7 +573,7 @@ public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog 
                 dispose();
             }
         });
-        cancelButton = new CustomButton(null, I18nUtils.getString("CANCEL"));
+        cancelButton = new JButton(I18nUtils.getString("CANCEL"));
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

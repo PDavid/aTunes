@@ -60,7 +60,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.filechooser.FileFilter;
 
-import net.sourceforge.atunes.gui.Fonts;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomWindow;
 import net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.NextButton;
@@ -405,11 +405,11 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         covers.addMouseMotionListener(moveListener);
 
         textLabel = new JLabel();
-        textLabel.setFont(Fonts.getFullScreenLine1Font());
+        textLabel.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getFullScreenLine1Font());
         textLabel.setForeground(Color.WHITE);
 
         textLabel2 = new JLabel();
-        textLabel2.setFont(Fonts.getContextInformationBigFont());
+        textLabel2.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getContextInformationBigFont());
         textLabel2.setForeground(Color.WHITE);
 
         progressSlider = new ProgressSlider();

@@ -24,7 +24,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 
-import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.model.AbstractCommonColumnModel;
@@ -87,7 +86,7 @@ public final class ColumnRenderers {
      * @param row
      */
     static void setFontForRow(JLabel label, int row) {
-        label.setFont(PlayListHandler.getInstance().isCurrentVisibleRowPlaying(row) ? Fonts.getPlayListSelectedItemFont() : Fonts.getPlayListFont());
+        label.setFont(PlayListHandler.getInstance().isCurrentVisibleRowPlaying(row) ? LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListSelectedItemFont() : LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListFont());
     }
 
     /**

@@ -32,7 +32,6 @@ import javax.swing.SwingUtilities;
 import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.ColorDefinitions;
-import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
@@ -88,7 +87,6 @@ public class Kernel {
         timer.start();
 
         LanguageSelector.setLanguage();
-        Fonts.setFontSmoothing();
         ColorDefinitions.initColors();
         // Init proxy settings
         try {
@@ -106,8 +104,12 @@ public class Kernel {
                 @Override
                 public void run() {
                     LookAndFeelSelector.getInstance().setLookAndFeel(ApplicationState.getInstance().getLookAndFeel());
-                    Fonts.initializeFonts();
-
+                }
+            });
+            SwingUtilities.invokeAndWait(new Runnable() {
+                @Override
+                public void run() {
+            
                     // Show title dialog
                     GuiHandler.getInstance().showSplashScreen();
                 }

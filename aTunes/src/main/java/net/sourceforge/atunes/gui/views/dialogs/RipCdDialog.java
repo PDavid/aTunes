@@ -42,7 +42,6 @@ import javax.swing.table.AbstractTableModel;
 
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
-import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.modules.cdripper.RipperHandler;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
@@ -363,7 +362,7 @@ public final class RipCdDialog extends AbstractCustomModalDialog {
 
         genreComboBox = new JComboBox();
         genreComboBox.setEditable(true);
-        titlesButton = new CustomButton(null, I18nUtils.getString("GET_TITLES"));
+        titlesButton = new JButton(I18nUtils.getString("GET_TITLES"));
         JLabel formatLabel = new JLabel(I18nUtils.getString("ENCODE_TO"));
 
         format = new JComboBox();
@@ -384,8 +383,8 @@ public final class RipCdDialog extends AbstractCustomModalDialog {
                 .getString("TRACK"), "  -  %T=", I18nUtils.getString("TITLE")));
 
         useCdErrorCorrection = new JCheckBox(I18nUtils.getString("USE_CD_ERROR_CORRECTION"));
-        ok = new CustomButton(null, I18nUtils.getString("OK"));
-        cancel = new CustomButton(null, I18nUtils.getString("CANCEL"));
+        ok = new JButton(I18nUtils.getString("OK"));
+        cancel = new JButton(I18nUtils.getString("CANCEL"));
 
         JPanel auxPanel = new JPanel();
         auxPanel.setOpaque(false);

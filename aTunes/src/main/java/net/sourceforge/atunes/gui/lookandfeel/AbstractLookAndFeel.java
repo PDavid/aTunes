@@ -49,7 +49,7 @@ public abstract class AbstractLookAndFeel {
 	/**
 	 * Base font
 	 */
-	private Font baseFont;
+	protected Font baseFont;
 	
     private static final class LookAndFeelListCellRenderer extends DefaultListCellRenderer {
         private final AbstractListCellRendererCode code;
@@ -310,5 +310,93 @@ public abstract class AbstractLookAndFeel {
 	public Dimension getPopUpButtonSize() {
 		return new Dimension(20, 20);
 	}
+
+	
+	/********************************************************* FONTS *******************************************************/
+	
+    /**
+     * @return the aboutBigFont
+     */
+    public Font getAboutBigFont() {
+        return this.baseFont.deriveFont(this.baseFont.getSize() + 8f);
+    }
+
+    /**
+     * @return the appVersionLittleFont
+     */
+    public Font getAppVersionLittleFont() {
+        return this.baseFont.deriveFont(this.baseFont.getSize() + 1f);
+    }
+
+    /**
+     * @return the playListFont
+     */
+    public Font getPlayListFont() {
+        return this.baseFont;
+    }
+
+    /**
+     * @return the playListSelectedItemFont
+     */
+    public Font getPlayListSelectedItemFont() {
+        return getPlayListFont().deriveFont(Font.BOLD);
+    }
+
+    /**
+     * @return the contextInformationBigFont
+     */
+    public Font getContextInformationBigFont() {
+        return this.baseFont.deriveFont(this.baseFont.getSize() + 8f);
+    }
+
+    /**
+     * @return the propertiesDialogBigFont
+     */
+    public Font getPropertiesDialogBigFont() {
+        return this.baseFont.deriveFont(this.baseFont.getSize() + 4f);
+    }
+
+    /**
+     * @return the chartTitleFont
+     */
+    public  Font getChartTitleFont() {
+        return baseFont;
+    }
+
+    /**
+     * @return the chartTickLabelFont
+     */
+    public Font getChartTickLabelFont() {
+    	return baseFont;
+    }
+
+    /**
+     * @return the osdLine1Font
+     */
+    public Font getOsdLine1Font() {
+        return baseFont.deriveFont(Font.BOLD, baseFont.getSize() + 4f);
+    }
+
+    /**
+     * @return the osdLine2Font
+     */
+    public Font getOsdLine2Font() {
+        return baseFont.deriveFont(baseFont.getSize() + 2f);
+    }
+
+    /**
+     * @return the osdLine3Font
+     */
+    public Font getOsdLine3Font() {
+        return getOsdLine2Font();
+    }
+
+    /**
+     * @return the fullScreenLine1Font
+     */
+    public Font getFullScreenLine1Font() {
+        return  baseFont.deriveFont(baseFont.getSize() + 25f);
+    }
+
 
 }

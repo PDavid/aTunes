@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.gui.lookandfeel;
 
+import java.awt.Font;
 import java.awt.Window;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,10 +29,12 @@ import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
+import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.kernel.modules.state.beans.FontBean;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
@@ -41,6 +44,9 @@ import org.commonjukebox.plugins.model.PluginInfo;
 import org.commonjukebox.plugins.model.PluginListener;
 
 public final class LookAndFeelSelector implements PluginListener {
+
+    private static final boolean USE_FONT_SMOOTHING_SETTINGS_FROM_OS_DEFAULT_VALUE = false;
+    private static final boolean USE_FONT_SMOOTHING_DEFAULT_VALUE = true;
 
     /**
      * Singleton instance
@@ -144,8 +150,45 @@ public final class LookAndFeelSelector implements PluginListener {
 		} catch (IllegalAccessException e) {
 			Logger.error(LogCategories.DESKTOP, e);
 		}
+		
         currentLookAndFeel.initializeLookAndFeel();
-        currentLookAndFeel.setLookAndFeel(lookAndFeelBean.getSkin());
+        currentLookAndFeel.setLookAndFeel(lookAndFeelBean.getSkin());        
+        initializeFonts(currentLookAndFeel);
+    }
+    
+    /**
+     * Initializes fonts for look and feel
+     * @param lookAndFeel
+     */
+    private void initializeFonts(AbstractLookAndFeel lookAndFeel) {
+        FontSettings fontSettings = ApplicationState.getInstance().getFontSettings();
+        if (fontSettings != null && !fontSettings.isUseFontSmoothingSettingsFromOs()) {
+            if (fontSettings.isUseFontSmoothing()) {
+                System.setProperty("awt.useSystemAAFontSettings", "lcd");
+            } else {
+                System.setProperty("awt.useSystemAAFontSettings", "false");
+            }
+        } else {
+            System.setProperty("awt.useSystemAAFontSettings", "lcd");
+        }
+
+        Font font;
+        if (fontSettings != null) {
+            font = fontSettings.getFont().toFont();
+        } else {
+            /*
+             * Get appropriate font for the currently selected language. For
+             * Chinese or Japanese we should use default font.
+             */
+            if ("zh".equals(ApplicationState.getInstance().getLocale().getLanguage()) || "ja".equals(ApplicationState.getInstance().getLocale().getLanguage())) {
+                font = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
+            } else {
+                font = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getDefaultFont();
+            }
+            ApplicationState.getInstance().setFontSettings(new FontSettings(new FontBean(font), USE_FONT_SMOOTHING_DEFAULT_VALUE, USE_FONT_SMOOTHING_SETTINGS_FROM_OS_DEFAULT_VALUE));
+        }
+        lookAndFeel.baseFont = font;
+        lookAndFeel.initializeFonts(font);
     }
 
     /**

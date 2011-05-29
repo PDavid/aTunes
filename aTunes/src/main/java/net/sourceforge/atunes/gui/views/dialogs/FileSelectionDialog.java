@@ -54,7 +54,6 @@ import net.sourceforge.atunes.gui.lookandfeel.AbstractListCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
-import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -311,9 +310,9 @@ public final class FileSelectionDialog extends AbstractCustomModalDialog {
 
         selection = new JLabel();
 
-        okButton = new CustomButton(null, I18nUtils.getString("OK"));
+        okButton = new JButton(I18nUtils.getString("OK"));
         okButton.addActionListener(new OkButtonActionListener());
-        cancelButton = new CustomButton(null, I18nUtils.getString("CANCEL"));
+        cancelButton = new JButton(I18nUtils.getString("CANCEL"));
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

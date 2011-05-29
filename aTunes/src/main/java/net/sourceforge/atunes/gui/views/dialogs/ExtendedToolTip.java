@@ -32,7 +32,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.Fonts;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomWindow;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -64,7 +64,6 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
         JPanel container = new JPanel(new GridBagLayout());
         image = new JLabel();
         line1 = new JLabel();
-        line1.setFont(Fonts.getGeneralBoldFont());
         line2 = new JLabel();
         line3 = new JLabel();
 

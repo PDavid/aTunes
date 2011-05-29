@@ -19,16 +19,13 @@
  */
 package net.sourceforge.atunes.gui.model;
 
-import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JTable;
-import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.TableColumnModelEvent;
@@ -39,10 +36,8 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
-import net.sourceforge.atunes.gui.images.ArrowImageIcon;
 import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.gui.renderers.ColorMutableTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.ImageIconTableCellRendererCode;
@@ -51,7 +46,6 @@ import net.sourceforge.atunes.gui.renderers.PropertyTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.StringTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.TextAndIconTableCellRendererCode;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
-import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn.ColumnSort;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.columns.TextAndIcon;
 import net.sourceforge.atunes.utils.StringUtils;

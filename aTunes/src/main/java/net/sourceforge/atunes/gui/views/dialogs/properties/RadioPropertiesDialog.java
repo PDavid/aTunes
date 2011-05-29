@@ -30,8 +30,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.images.RadioImageIcon;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -97,7 +97,7 @@ final class RadioPropertiesDialog extends PropertiesDialog {
         panel.add(pictureLabel, c);
 
         titleLabel = new JLabel();
-        titleLabel.setFont(Fonts.getPropertiesDialogBigFont());
+        titleLabel.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPropertiesDialogBigFont());
         c.gridx = 1;
         c.gridy = 0;
         c.gridheight = 1;
@@ -106,7 +106,7 @@ final class RadioPropertiesDialog extends PropertiesDialog {
         panel.add(titleLabel, c);
 
         urlLabel = new JLabel();
-        urlLabel.setFont(Fonts.getPropertiesDialogBigFont());
+        urlLabel.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPropertiesDialogBigFont());
         c.gridx = 1;
         c.gridy = 1;
         c.insets = new Insets(5, 10, 5, 10);

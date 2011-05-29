@@ -38,7 +38,6 @@ import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
-import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.RepositoryLoadCancelAction;
 import net.sourceforge.atunes.kernel.actions.RepositoryLoadInBackgroundAction;
@@ -154,8 +153,8 @@ public final class RepositoryProgressDialog extends AbstractCustomModalDialog {
         progressBar.setBorder(BorderFactory.createEmptyBorder());
         folderLabel = new JLabel(" ");
         remainingTimeLabel = new JLabel(" ");
-        backgroundButton = new CustomButton(Actions.getAction(RepositoryLoadInBackgroundAction.class));
-        cancelButton = new CustomButton(Actions.getAction(RepositoryLoadCancelAction.class));
+        backgroundButton = new JButton(Actions.getAction(RepositoryLoadInBackgroundAction.class));
+        cancelButton = new JButton(Actions.getAction(RepositoryLoadCancelAction.class));
 
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.add(backgroundButton);
