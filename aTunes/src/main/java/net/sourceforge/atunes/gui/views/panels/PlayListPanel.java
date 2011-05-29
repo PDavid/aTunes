@@ -60,6 +60,7 @@ public final class PlayListPanel extends JPanel {
         playListTabPanel = new PlayListTabPanel();
         playListTable = new PlayListTable();
         playListTableScroll = new JScrollPane(playListTable);
+        playListTableScroll.setOpaque(false); // for some look and feels
 
         add(playListTabPanel, BorderLayout.NORTH);
         add(playListTableScroll, BorderLayout.CENTER);
