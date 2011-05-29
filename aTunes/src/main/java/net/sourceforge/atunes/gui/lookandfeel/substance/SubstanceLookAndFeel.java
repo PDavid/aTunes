@@ -403,4 +403,9 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
     public Dimension getPopUpButtonSize() {
     	return new Dimension(20, 20);
     }
+    
+    @Override
+    public boolean supportsCustomFontSettings() {
+    	return true;
+    }
 }
