@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.gui.lookandfeel.system;
 
-import java.awt.Font;
 import java.util.List;
 
 import javax.swing.JDialog;
@@ -87,20 +86,6 @@ public class SystemLookAndFeel extends AbstractLookAndFeel {
     @Override
     public boolean supportsCustomFontSettings() {
     	return false;
-    }
-    
-    /**
-     * @return the playListFont
-     */
-    public Font getPlayListFont() {
-        return UIManager.getFont("Table.font");
-    }
-
-    /**
-     * @return the playListSelectedItemFont
-     */
-    public Font getPlayListSelectedItemFont() {
-        return UIManager.getFont("Table.font").deriveFont(Font.BOLD);
     }
 
 }
