@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.gui.views.panels;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -50,7 +49,6 @@ public class FilterPanel extends JPanel {
         filterTextField.setToolTipText(I18nUtils.getString("FILTER_TEXTFIELD_TOOLTIP"));
         setMinimumSize(filterTextField.getPreferredSize());
         setPreferredSize(filterTextField.getPreferredSize());
-        filterButton.setPreferredSize(new Dimension(filterTextField.getPreferredSize().height, filterTextField.getPreferredSize().height));        
         add(filterButton, BorderLayout.WEST);
         add(filterTextField, BorderLayout.CENTER);
     }
