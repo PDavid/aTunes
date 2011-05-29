@@ -54,6 +54,4 @@ public class OSXLookAndFeel extends SystemLookAndFeel {
 	public Paint getPaintForColorMutableIcon(Component c, boolean isSelected) {
 		return new Color(20, 20, 20, 180);	
 	}
-
-	
 }
