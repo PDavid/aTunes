@@ -48,7 +48,6 @@ public final class NavigationTableColumnModel extends AbstractCommonColumnModel 
     @Override
     public void addColumn(TableColumn aColumn) {
         updateColumnSettings(aColumn);
-        updateColumnHeader(aColumn);
         super.addColumn(aColumn);
     }
 

@@ -49,7 +49,6 @@ public class SearchResultColumnModel extends AbstractCommonColumnModel {
     public void addColumn(TableColumn aColumn) {
         super.addColumn(aColumn);
         updateColumnSettings(aColumn);
-        updateColumnHeader(aColumn);
     }
 
 }
