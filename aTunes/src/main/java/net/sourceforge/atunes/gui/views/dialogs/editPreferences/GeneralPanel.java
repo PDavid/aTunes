@@ -274,10 +274,12 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
             state.setOldLocale(new LocaleBean(Locale.getDefault()));
         }
 
-        FontSettings oldFontSettings = state.getFontSettings();
-        state.setFontSettings(currentFontSettings);
-        if (!oldFontSettings.equals(currentFontSettings)) {
-            needRestart = true;
+        if (LookAndFeelSelector.getInstance().getCurrentLookAndFeel().supportsCustomFontSettings()) {
+        	FontSettings oldFontSettings = state.getFontSettings();
+        	state.setFontSettings(currentFontSettings);
+        	if (!oldFontSettings.equals(currentFontSettings)) {
+        		needRestart = true;
+        	}
         }
 
         state.setShowSystemTray(showIconTray.isSelected());
