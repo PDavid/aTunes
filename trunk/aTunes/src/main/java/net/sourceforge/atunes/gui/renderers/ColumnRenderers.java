@@ -86,7 +86,13 @@ public final class ColumnRenderers {
      * @param row
      */
     static void setFontForRow(JLabel label, int row) {
-        label.setFont(PlayListHandler.getInstance().isCurrentVisibleRowPlaying(row) ? LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListSelectedItemFont() : LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListFont());
+    	if (PlayListHandler.getInstance().isCurrentVisibleRowPlaying(row)) {
+    		if (LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListSelectedItemFont() != null) {
+    			label.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListSelectedItemFont());
+    		} else if (LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListFont() != null) {
+                label.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListFont());
+    		}
+    	}
     }
 
     /**

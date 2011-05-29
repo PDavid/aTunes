@@ -136,6 +136,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
         skinLabel = new JLabel(I18nUtils.getString("THEME"));
 
         fontSettings = new JButton(I18nUtils.getString("CHANGE_FONT_SETTINGS"));
+        fontSettings.setEnabled(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().supportsCustomFontSettings());
         fontSettings.addActionListener(new ActionListener() {
 
             @Override

@@ -23,7 +23,6 @@ package net.sourceforge.atunes.gui.lookandfeel.system;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Paint;
 
 public class OSXLookAndFeel extends SystemLookAndFeel {
@@ -43,7 +42,7 @@ public class OSXLookAndFeel extends SystemLookAndFeel {
 	 * @return
 	 */
 	public Paint getPaintForSpecialControls() {
-		return new Color(20, 20, 20, 190); 
+		return new Color(20, 20, 20, 180); 
 	}
 
 	/**
@@ -53,11 +52,8 @@ public class OSXLookAndFeel extends SystemLookAndFeel {
 	 * @return
 	 */
 	public Paint getPaintForColorMutableIcon(Component c, boolean isSelected) {
-		return new Color(20, 20, 20, 190);	
+		return new Color(20, 20, 20, 180);	
 	}
-	
-	@Override
-	public void initializeFonts(Font baseFont) {
-	}
+
 	
 }
