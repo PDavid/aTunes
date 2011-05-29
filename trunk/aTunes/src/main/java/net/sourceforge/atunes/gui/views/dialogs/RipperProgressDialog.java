@@ -38,7 +38,6 @@ import javax.swing.JProgressBar;
 import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.gui.images.AlbumImageIcon;
-import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomFrame;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -122,7 +121,7 @@ public final class RipperProgressDialog extends CustomFrame {
         encodeProgressBar.setPreferredSize(new Dimension(10, 12));
         encodeProgressLabel.setBorder(BorderFactory.createEmptyBorder());
         encodeProgressValueLabel = new JLabel();
-        cancelButton = new CustomButton(null, I18nUtils.getString("CANCEL"));
+        cancelButton = new JButton(I18nUtils.getString("CANCEL"));
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

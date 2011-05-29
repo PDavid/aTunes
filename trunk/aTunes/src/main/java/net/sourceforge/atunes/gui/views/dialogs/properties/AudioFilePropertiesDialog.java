@@ -37,7 +37,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.Fonts;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
@@ -144,7 +144,7 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
         panel.add(pictureLabel, c);
 
         songLabel = new ProviderLabel(songProvider);
-        songLabel.setFont(Fonts.getPropertiesDialogBigFont());
+        songLabel.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPropertiesDialogBigFont());
         c.gridx = 1;
         c.gridy = 0;
         c.gridheight = 1;
@@ -153,19 +153,19 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
         panel.add(songLabel, c);
 
         artistLabel = new ProviderLabel(artistProvider);
-        artistLabel.setFont(Fonts.getPropertiesDialogBigFont());
+        artistLabel.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPropertiesDialogBigFont());
         c.gridx = 1;
         c.gridy = 1;
         panel.add(artistLabel, c);
 
         albumArtistLabel = new ProviderLabel(albumArtistProvider);
-        albumArtistLabel.setFont(Fonts.getPropertiesDialogBigFont());
+        albumArtistLabel.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPropertiesDialogBigFont());
         c.gridx = 1;
         c.gridy = 2;
         panel.add(albumArtistLabel, c);
 
         albumLabel = new ProviderLabel(albumProvider);
-        albumLabel.setFont(Fonts.getPropertiesDialogBigFont());
+        albumLabel.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPropertiesDialogBigFont());
         c.gridx = 1;
         c.gridy = 3;
         panel.add(albumLabel, c);

@@ -31,7 +31,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
-import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -99,9 +98,9 @@ public final class EditTitlesDialog extends AbstractCustomModalDialog {
         table = new JTable();
         table.setOpaque(false);
         JScrollPane scrollPane = new JScrollPane(table);
-        retrieveTitles = new CustomButton(null, I18nUtils.getString("GET_TITLES"));
-        okButton = new CustomButton(null, I18nUtils.getString("OK"));
-        cancelButton = new CustomButton(null, I18nUtils.getString("CANCEL"));
+        retrieveTitles = new JButton(I18nUtils.getString("GET_TITLES"));
+        okButton = new JButton(I18nUtils.getString("OK"));
+        cancelButton = new JButton(I18nUtils.getString("CANCEL"));
 
         GridBagConstraints c = new GridBagConstraints();
 

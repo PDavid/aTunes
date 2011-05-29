@@ -43,11 +43,9 @@ import javax.swing.Timer;
 import javax.swing.table.AbstractTableModel;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
-import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -241,7 +239,7 @@ public final class AboutDialog extends AbstractCustomModalDialog {
         JPanel panel = new JPanel(new GridBagLayout());
 
         UrlLabel title = new UrlLabel(Constants.APP_NAME + ' ' + Constants.VERSION.toString(), Constants.APP_WEB);
-        title.setFont(Fonts.getAboutBigFont());
+        title.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getAboutBigFont());
         title.setFocusPainted(false);
         JLabel description = new JLabel(Constants.APP_DESCRIPTION);
 
@@ -255,7 +253,7 @@ public final class AboutDialog extends AbstractCustomModalDialog {
         license.setBorder(BorderFactory.createEmptyBorder());
 
         UrlLabel contributors = new UrlLabel(I18nUtils.getString("CONTRIBUTORS"), Constants.CONTRIBUTORS_WEB);
-        contributors.setFont(Fonts.getAppVersionLittleFont());
+        contributors.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getAppVersionLittleFont());
 
         JTable propertiesTable = new JTable(tableModel);
         propertiesTable.setShowGrid(false);
@@ -263,7 +261,7 @@ public final class AboutDialog extends AbstractCustomModalDialog {
                 GuiUtils.getComponentOrientationTableCellRendererCode()));
         JScrollPane propertiesScrollPane = new JScrollPane(propertiesTable);
 
-        JButton close = new CustomButton(null, I18nUtils.getString("CLOSE"));
+        JButton close = new JButton(I18nUtils.getString("CLOSE"));
         close.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

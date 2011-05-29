@@ -35,8 +35,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -110,7 +110,7 @@ final class PodcastFeedEntryPropertiesDialog extends PropertiesDialog {
         panel.add(pictureLabel, c);
 
         titleLabel = new JLabel();
-        titleLabel.setFont(Fonts.getPropertiesDialogBigFont());
+        titleLabel.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPropertiesDialogBigFont());
         c.gridx = 1;
         c.gridy = 0;
         c.gridheight = 1;
@@ -119,13 +119,13 @@ final class PodcastFeedEntryPropertiesDialog extends PropertiesDialog {
         panel.add(titleLabel, c);
 
         artistLabel = new JLabel();
-        artistLabel.setFont(Fonts.getPropertiesDialogBigFont());
+        artistLabel.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPropertiesDialogBigFont());
         c.gridx = 1;
         c.gridy = 1;
         panel.add(artistLabel, c);
 
         urlLabel = new JLabel();
-        urlLabel.setFont(Fonts.getPropertiesDialogBigFont());
+        urlLabel.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPropertiesDialogBigFont());
         c.gridx = 1;
         c.gridy = 2;
         panel.add(urlLabel, c);

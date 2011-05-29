@@ -39,7 +39,6 @@ import javax.swing.ListModel;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractListCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalFrame;
-import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -105,8 +104,8 @@ public final class EditPreferencesDialog extends AbstractCustomModalFrame {
         // Force minimum width of scroll pane to show items
         scrollPane.setMinimumSize(new Dimension(200, 0));
         options = new JPanel();
-        ok = new CustomButton(null, I18nUtils.getString("OK"));
-        cancel = new CustomButton(null, I18nUtils.getString("CANCEL"));
+        ok = new JButton(I18nUtils.getString("OK"));
+        cancel = new JButton(I18nUtils.getString("CANCEL"));
         JPanel auxPanel = new JPanel();
         auxPanel.add(ok);
         auxPanel.add(cancel);

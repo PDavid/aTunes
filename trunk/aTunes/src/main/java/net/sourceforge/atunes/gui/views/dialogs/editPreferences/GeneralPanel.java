@@ -42,7 +42,6 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.frame.Frame;
 import net.sourceforge.atunes.gui.frame.Frames;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelBean;
@@ -103,11 +102,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
         super(I18nUtils.getString("GENERAL"));
         showTitle = new JCheckBox(I18nUtils.getString("SHOW_TITLE"));
         JLabel windowTypeLabel = new JLabel(I18nUtils.getString("WINDOW_TYPE"));
-        windowTypeLabel.setFont(Fonts.getGeneralBoldFont());
-
         JLabel languageLabel = new JLabel(I18nUtils.getString("LANGUAGE"));
-        languageLabel.setFont(Fonts.getGeneralBoldFont());
-
         List<Locale> langs = I18nUtils.getLanguages();
         Locale[] array = langs.toArray(new Locale[langs.size()]);
         final Locale currentLocale = ApplicationState.getInstance().getLocale().getLocale();
@@ -138,9 +133,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 			}
 		});
         JLabel lookAndFeelLabel = new JLabel(I18nUtils.getString("LOOK_AND_FEEL"));
-        lookAndFeelLabel.setFont(Fonts.getGeneralBoldFont());
         skinLabel = new JLabel(I18nUtils.getString("THEME"));
-        skinLabel.setFont(Fonts.getGeneralBoldFont());
 
         fontSettings = new JButton(I18nUtils.getString("CHANGE_FONT_SETTINGS"));
         fontSettings.addActionListener(new ActionListener() {

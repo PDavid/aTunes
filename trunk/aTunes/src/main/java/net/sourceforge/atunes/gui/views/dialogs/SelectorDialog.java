@@ -38,7 +38,6 @@ import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
 
-import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
@@ -104,7 +103,7 @@ public final class SelectorDialog extends JDialog {
             list.setCellRenderer(cellRenderer);
         }
 
-        JButton okButton = new CustomButton(null, "OK");
+        JButton okButton = new JButton("OK");
         okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

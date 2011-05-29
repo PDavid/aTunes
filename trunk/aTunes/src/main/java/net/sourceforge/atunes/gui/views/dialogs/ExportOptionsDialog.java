@@ -41,7 +41,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
-import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -132,14 +131,14 @@ public final class ExportOptionsDialog extends AbstractCustomModalDialog {
         // Buttons
         JPanel buttons = new JPanel(new GridLayout(1, 2, 5, 0));
         buttons.setOpaque(false);
-        exportButton = new CustomButton(null, I18nUtils.getString("EXPORT"));
+        exportButton = new JButton(I18nUtils.getString("EXPORT"));
         exportButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
             }
         });
-        JButton cancelButton = new CustomButton(null, I18nUtils.getString("CANCEL"));
+        JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

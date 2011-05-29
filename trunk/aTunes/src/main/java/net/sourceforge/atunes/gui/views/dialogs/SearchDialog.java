@@ -27,6 +27,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -36,7 +37,6 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
-import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
 import net.sourceforge.atunes.kernel.modules.internetsearch.SearchFactory;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -117,7 +117,7 @@ public final class SearchDialog extends AbstractCustomModalDialog {
         setAsDefaultCheckBox.setHorizontalAlignment(SwingConstants.CENTER);
 
         JScrollPane scrollPane = new JScrollPane(list);
-        CustomButton okButton = new CustomButton(null, I18nUtils.getString("OK"));
+        JButton okButton = new JButton(I18nUtils.getString("OK"));
         okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -126,7 +126,7 @@ public final class SearchDialog extends AbstractCustomModalDialog {
                 setVisible(false);
             }
         });
-        CustomButton cancelButton = new CustomButton(null, I18nUtils.getString("CANCEL"));
+        JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

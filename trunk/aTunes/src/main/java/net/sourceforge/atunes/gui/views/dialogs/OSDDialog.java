@@ -29,7 +29,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import net.sourceforge.atunes.gui.Fonts;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomWindow;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
@@ -98,9 +98,9 @@ public final class OSDDialog extends AbstractCustomWindow {
         line2 = new JLabel();
         line3 = new JLabel();
 
-        line1.setFont(Fonts.getOsdLine1Font());
-        line2.setFont(Fonts.getOsdLine2Font());
-        line3.setFont(Fonts.getOsdLine3Font());
+        line1.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getOsdLine1Font());
+        line2.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getOsdLine2Font());
+        line3.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getOsdLine3Font());
 
         line1.setHorizontalAlignment(SwingConstants.CENTER);
         line2.setHorizontalAlignment(SwingConstants.CENTER);

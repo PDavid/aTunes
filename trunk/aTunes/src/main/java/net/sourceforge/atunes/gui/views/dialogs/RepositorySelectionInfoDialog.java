@@ -27,6 +27,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -34,7 +35,6 @@ import javax.swing.JTextArea;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
-import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -73,7 +73,7 @@ public final class RepositorySelectionInfoDialog extends AbstractCustomModalDial
         text.setWrapStyleWord(true);
         text.setLineWrap(true);
         text.setBorder(BorderFactory.createEmptyBorder());
-        CustomButton button = new CustomButton(null, I18nUtils.getString("OK"));
+        JButton button = new JButton(I18nUtils.getString("OK"));
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

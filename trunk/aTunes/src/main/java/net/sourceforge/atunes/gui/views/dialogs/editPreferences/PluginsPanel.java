@@ -49,7 +49,6 @@ import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
-import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
@@ -121,17 +120,11 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 
         JPanel pluginDetailPanel = new JPanel(new GridBagLayout());
         final JLabel pluginNameLabel = new JLabel();
-        pluginNameLabel.setFont(Fonts.getSmallFont());
         final JLabel pluginVersionLabel = new JLabel();
-        pluginVersionLabel.setFont(Fonts.getSmallFont());
         final JLabel pluginClassNameLabel = new JLabel();
-        pluginClassNameLabel.setFont(Fonts.getSmallFont());
         final JLabel pluginLocationLabel = new JLabel();
-        pluginLocationLabel.setFont(Fonts.getSmallFont());
         final JLabel pluginAuthorLabel = new JLabel();
-        pluginAuthorLabel.setFont(Fonts.getSmallFont());
         final UrlLabel pluginUrlLabel = new UrlLabel();
-        pluginUrlLabel.setFont(Fonts.getSmallFont());
         
         GridBagConstraints c2 = new GridBagConstraints();
 

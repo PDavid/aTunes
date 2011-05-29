@@ -45,10 +45,10 @@ import javax.swing.filechooser.FileFilter;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.ColorDefinitions;
-import net.sourceforge.atunes.gui.Fonts;
 import net.sourceforge.atunes.gui.frame.DefaultSingleFrame;
 import net.sourceforge.atunes.gui.frame.Frame;
 import net.sourceforge.atunes.gui.frame.FrameState;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.popup.FadingPopupFactory;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable.PlayState;
@@ -1022,7 +1022,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     public void showSplashScreen() {
         if (ApplicationState.getInstance().isShowTitle()) {
             JDialog.setDefaultLookAndFeelDecorated(false);
-            splashScreenDialog = new SplashScreenDialog(Fonts.getAppVersionLittleFont(), ColorDefinitions.TITLE_DIALOG_FONT_COLOR);
+            splashScreenDialog = new SplashScreenDialog(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getAppVersionLittleFont(), ColorDefinitions.TITLE_DIALOG_FONT_COLOR);
             JDialog.setDefaultLookAndFeelDecorated(true);
             // For multiple screens
             if (GuiUtils.getNumberOfScreenDevices() > 1) {
