@@ -20,7 +20,10 @@
 
 package net.sourceforge.atunes.gui.lookandfeel.system;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Paint;
 
 public class OSXLookAndFeel extends SystemLookAndFeel {
 
@@ -28,4 +31,28 @@ public class OSXLookAndFeel extends SystemLookAndFeel {
 	public Dimension getPopUpButtonSize() {
 		return new Dimension(40, 10);
 	}
+	
+	@Override
+	public void initializeLookAndFeel() {
+		super.initializeLookAndFeel();
+	}
+	
+	/**
+	 * Returns paint to be used with certain controls (player controls)
+	 * @return
+	 */
+	public Paint getPaintForSpecialControls() {
+		return new Color(20, 20, 20, 190); 
+	}
+
+	/**
+	 * Returns paint to be used to draw a color mutable icon in given component
+	 * @param c
+	 * @param isSelected
+	 * @return
+	 */
+	public Paint getPaintForColorMutableIcon(Component c, boolean isSelected) {
+		return new Color(20, 20, 20, 190);	
+	}
+	
 }
