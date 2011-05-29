@@ -41,9 +41,6 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
-import net.sourceforge.atunes.misc.log.LogCategories;
-import net.sourceforge.atunes.misc.log.Logger;
-
 import org.commonjukebox.plugins.model.PluginApi;
 
 @PluginApi
@@ -266,7 +263,7 @@ public abstract class AbstractLookAndFeel {
     	while (keys.hasMoreElements()) {
     		Object key = keys.nextElement();
     		Object value = UIManager.get (key);
-    		Logger.debug(LogCategories.DESKTOP, key, " = ", value);
+//    		Logger.debug(LogCategories.DESKTOP, key, " = ", value);
     		if (value instanceof FontUIResource) {
     			UIManager.put (key, f);
     		}
