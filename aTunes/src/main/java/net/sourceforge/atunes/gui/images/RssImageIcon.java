@@ -29,7 +29,7 @@ import javax.swing.ImageIcon;
 
 public class RssImageIcon {
 
-	private static final int SMALL_SIZE = 18;
+	private static final int SMALL_SIZE = 16;
 	private static final int SIZE = 70;
 	private static final int BIG_SIZE = 300;
 	
@@ -43,7 +43,7 @@ public class RssImageIcon {
 	}
 	
 	public static ImageIcon getSmallIcon(Paint color) {
-		return IconGenerator.generateIcon(color, SMALL_SIZE, SMALL_SIZE, getIconArea(SMALL_SIZE));
+		return IconGenerator.generateIcon(color, SMALL_SIZE, SMALL_SIZE, getSmallIconArea(SMALL_SIZE));
 	}
 
 	public static ImageIcon getIcon() {
@@ -60,6 +60,37 @@ public class RssImageIcon {
 
 	public static ImageIcon getBigIcon(Paint color) {
 		return IconGenerator.generateIcon(color, BIG_SIZE, BIG_SIZE, getIconArea(BIG_SIZE));
+	}
+	
+	private static Area getSmallIconArea(int size) {
+		int margin = 0;
+		int arc = size / 4;
+		arc = arc > 4 ? arc : 4;
+
+		Area a = new Area(new RoundRectangle2D.Float(margin, margin, size - 2 * margin, size - 2 * margin, arc, arc));
+
+		int pathWidth = 2;
+		
+		int internalMargin = 1;
+		
+		int startX = 2 * internalMargin;
+		int startY = 2 * internalMargin;
+		int endX = size - 2 * internalMargin;
+		int endY = size - 2 * internalMargin;
+		
+		int cpX = size - 2 * internalMargin;
+		int cpY = 2 * internalMargin;
+
+		int arcGap = 1;
+		
+		int deltaArc2 = pathWidth + arcGap;
+		int deltaArc3 = 2 * pathWidth + 2 * arcGap;
+
+		a.subtract(getArc(pathWidth, cpX, cpY, startX, startY, endX, endY));
+		a.subtract(getArc(pathWidth, cpX - deltaArc2, cpY + deltaArc2, startX, startY + deltaArc2, endX - deltaArc2, endY));
+		a.subtract(getArc(pathWidth, cpX - deltaArc3, cpY + deltaArc3, startX, startY + deltaArc3, endX - deltaArc3, endY));
+		
+        return a;
 	}
 
 	private static Area getIconArea(int size) {
