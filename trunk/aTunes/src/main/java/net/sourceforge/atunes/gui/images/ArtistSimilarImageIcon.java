@@ -27,8 +27,8 @@ import javax.swing.ImageIcon;
 
 public class ArtistSimilarImageIcon {
 
-	private static final int WIDTH = 18;
-	private static final int HEIGHT = 18;
+	private static final int WIDTH = 16;
+	private static final int HEIGHT = 16;
 	
 	private static ImageIcon icon;
 	
@@ -42,7 +42,7 @@ public class ArtistSimilarImageIcon {
 	public static ImageIcon getIcon(Paint color) {
 		Rectangle s = new Rectangle(WIDTH - 6, 5, 6, 2);
 		Rectangle s2 = new Rectangle (WIDTH - 4, 3, 2, 6);
-		Rectangle clip = new Rectangle(0, 2, WIDTH, HEIGHT - 4);
-		return IconGenerator.generateIcon(color, clip, WIDTH, HEIGHT, ArtistImageIcon.getArtistIconArea(-1), s, s2);
+		Rectangle clip = new Rectangle(0, 1, WIDTH, HEIGHT - 2);
+		return IconGenerator.generateIcon(color, clip, WIDTH, HEIGHT, ArtistImageIcon.getArtistIconArea(-2), s, s2);
 	}
 }

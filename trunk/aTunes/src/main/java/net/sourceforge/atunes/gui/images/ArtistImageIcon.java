@@ -29,8 +29,8 @@ import javax.swing.ImageIcon;
 
 public class ArtistImageIcon {
 
-	private static final int WIDTH = 18;
-	private static final int HEIGHT = 18;
+	private static final int WIDTH = 16;
+	private static final int HEIGHT = 16;
 	
 	private static ImageIcon icon;
 	
@@ -42,13 +42,13 @@ public class ArtistImageIcon {
 	}
 	
 	public static ImageIcon getIcon(Paint color) {
-		Rectangle clip = new Rectangle(2, 2, WIDTH - 4, HEIGHT - 4);
+		Rectangle clip = new Rectangle(2, 1, WIDTH - 4, HEIGHT - 2);
 		return IconGenerator.generateIcon(color, clip, WIDTH, HEIGHT, getArtistIconArea(0));
 	}
 	
 	protected static Area getArtistIconArea(int distanceFromCenter) {
 		Area a = new Area();
-		a.add(new Area(new Ellipse2D.Float(WIDTH * 1/6 + distanceFromCenter, HEIGHT / 2, WIDTH * 2/3, HEIGHT)));
+		a.add(new Area(new Ellipse2D.Float(WIDTH / 2 - WIDTH * 2/6 + distanceFromCenter, HEIGHT / 2, WIDTH * 2/3, HEIGHT)));
 		float headWidth = WIDTH / 2.5f;
 		float headHeight = HEIGHT / 2.5f;
 		a.add(new Area(new Ellipse2D.Float(WIDTH / 2 - headWidth / 2 + distanceFromCenter, HEIGHT / 2 - headHeight * 0.8f, headWidth, headHeight)));

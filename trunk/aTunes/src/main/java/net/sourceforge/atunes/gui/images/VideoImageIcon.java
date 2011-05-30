@@ -33,8 +33,8 @@ import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 
 public class VideoImageIcon {
 
-	private static final int WIDTH = 18;
-	private static final int HEIGHT = 18;
+	private static final int WIDTH = 16;
+	private static final int HEIGHT = 16;
 	
 	public static ImageIcon getIcon() {
 		return getIcon(null);	
@@ -57,7 +57,7 @@ public class VideoImageIcon {
        	g.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
        	g.fill(r2);
        	
-       	int gap = 4;
+       	int gap = 3;
        	for (int i = 0; i < 4; i++) {
        		r3.setLocation(margin + 1, margin + i * gap);
        		g.fill(r3);
