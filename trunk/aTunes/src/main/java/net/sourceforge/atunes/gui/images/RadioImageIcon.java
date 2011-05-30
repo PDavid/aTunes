@@ -30,11 +30,15 @@ import javax.swing.ImageIcon;
 
 public class RadioImageIcon {
 
+	private static final int SMALL_SIZE = 16;
+	private static final int MEDIUM_SIZE = 70;
+	private static final int LARGE_SIZE = 150;
+	
 	private static ImageIcon smallImageIcon; // Cached as it's heavily used
 
 	public static ImageIcon getSmallIcon() {
 		if (smallImageIcon == null) {
-			smallImageIcon = getSmallIcon(null, 18, 18); 
+			smallImageIcon = getSmallIcon(null, SMALL_SIZE, SMALL_SIZE); 
 		}
 		return smallImageIcon;
 	}
@@ -43,7 +47,7 @@ public class RadioImageIcon {
 		if (paint == null) {
 			return getSmallIcon();
 		} else {
-			return getSmallIcon(paint, 18, 18);
+			return getSmallIcon(paint, SMALL_SIZE, SMALL_SIZE);
 		}
 	}
 
@@ -73,19 +77,19 @@ public class RadioImageIcon {
 	}
 
 	public static ImageIcon getIcon() {
-		return getIcon(null, 70, 70);
+		return getIcon(null, MEDIUM_SIZE, MEDIUM_SIZE);
 	}
 	
 	public static ImageIcon getIcon(Paint color) {
-		return getIcon(color, 70, 70);
+		return getIcon(color, MEDIUM_SIZE, MEDIUM_SIZE);
 	}
 
 	public static ImageIcon getBigIcon() {
-		return getIcon(null, 150, 150);
+		return getIcon(null, LARGE_SIZE, LARGE_SIZE);
 	}
 	
 	public static ImageIcon getBigIcon(Paint color) {
-		return getIcon(color, 150, 150);
+		return getIcon(color, LARGE_SIZE, LARGE_SIZE);
 	}
 
 	private static ImageIcon getIcon(Paint color, int w, int h) {
