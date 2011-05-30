@@ -47,7 +47,7 @@ import org.jdesktop.swingx.border.DropShadowBorder;
 /**
  * Basic information about an artist
  * 
- * @author alex
+ * @author fleax
  * 
  */
 public class ArtistBasicInfoContent extends AbstractContextPanelContent {
@@ -135,7 +135,7 @@ public class ArtistBasicInfoContent extends AbstractContextPanelContent {
         panel.add(artistNameLabel, c);
         c.gridy = 2;
         c.weightx = 1;
-        c.weighty = 0.3;
+        c.weighty = 1;        
         c.fill = GridBagConstraints.BOTH;
         panel.add(artistWikiAbstract, c);
         c.gridy = 3;

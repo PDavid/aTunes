@@ -37,7 +37,6 @@ import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 import org.commonjukebox.plugins.model.PluginApi;
-import org.jdesktop.swingx.JXTaskPane;
 import org.jdesktop.swingx.border.DropShadowBorder;
 
 /**
@@ -64,9 +63,9 @@ public abstract class AbstractContextPanelContent {
     private ContextInformationSwingWorker worker;
 
     /**
-     * JXTaskPane that handles this content
+     * panel that handles this content
      */
-    private JXTaskPane parentTaskPane;
+    private JPanel parentPanel;
 
     /**
      * Creates a new content with its custom data source
@@ -110,10 +109,8 @@ public abstract class AbstractContextPanelContent {
      * previous information retrieved for previous audio object
      */
     protected void clearContextPanelContent() {
-        parentTaskPane.setCollapsed(true);
-        // Disable task pane so user can't expand it
-        parentTaskPane.setEnabled(false);
-        parentTaskPane.setVisible(false);
+        parentPanel.setEnabled(false);
+        parentPanel.setVisible(false);
         if (worker != null) {
             worker.cancel(true);
         }
@@ -215,18 +212,18 @@ public abstract class AbstractContextPanelContent {
     }
 
     /**
-     * @param parentTaskPane
+     * @param parentPanel
      *            the parentTaskPane to set
      */
-    protected void setParentTaskPane(JXTaskPane parentTaskPane) {
-        this.parentTaskPane = parentTaskPane;
+    protected void setParentPanel(JPanel parentPanel) {
+        this.parentPanel = parentPanel;
     }
 
     /**
      * @return the parentTaskPane
      */
-    protected JXTaskPane getParentTaskPane() {
-        return parentTaskPane;
+    protected JPanel getParentPanel() {
+        return parentPanel;
     }
 
 }
