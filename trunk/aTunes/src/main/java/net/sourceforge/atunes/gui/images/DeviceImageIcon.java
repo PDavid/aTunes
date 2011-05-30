@@ -35,8 +35,8 @@ import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 
 public class DeviceImageIcon {
 
-	private static final int WIDTH = 18;
-	private static final int HEIGHT = 18;
+	private static final int WIDTH = 16;
+	private static final int HEIGHT = 16;
 	
 	private static ImageIcon icon;
 	
@@ -48,12 +48,12 @@ public class DeviceImageIcon {
 	}
 	
 	public static ImageIcon getIcon(Paint color) {
-		int marginX = 4;
-		int marginY = 2;
+		int marginX = 3;
+		int marginY = 1;
 		int arc = 4;
 
-		int internalMarginX = 6;
-		int internalMarginY = 4;
+		int internalMarginX = 5;
+		int internalMarginY = 3;
 		
 		int circleDiameter = HEIGHT / 4;
 		
