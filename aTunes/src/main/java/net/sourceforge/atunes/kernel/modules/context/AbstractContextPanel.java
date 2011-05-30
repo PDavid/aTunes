@@ -21,11 +21,16 @@
 package net.sourceforge.atunes.kernel.modules.context;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
@@ -35,15 +40,13 @@ import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 
 import org.commonjukebox.plugins.model.PluginApi;
-import org.jdesktop.swingx.JXTaskPane;
-import org.jdesktop.swingx.JXTaskPaneContainer;
 
 /**
  * This class represents a context panel shown in a context tab. Context panel
  * shows information related to the current audio object active in the
  * application
  * 
- * @author alex
+ * @author fleax
  */
 @PluginApi
 public abstract class AbstractContextPanel {
@@ -163,13 +166,29 @@ public abstract class AbstractContextPanel {
      */
     public final Component getUIComponent() {
     	if (component == null) {
-    		JXTaskPaneContainer container = new JXTaskPaneContainer();
-    		container.setOpaque(false);
-    		for (AbstractContextPanelContent content : getContents()) {
-    			JXTaskPane taskPane = new CustomJXTaskPane();
-    			content.setParentTaskPane(taskPane);
-    			taskPane.setTitle(content.getContentName());
+    		JPanel panel = new JPanel(new GridBagLayout()) {
+    			/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
 
+				@Override
+    			public Dimension getPreferredSize() {
+    				Dimension d = super.getPreferredSize();
+    				// Override horizontal preferred width to avoid excessive width of some components
+    				d.width = 200;
+    				return d;
+    			}
+    		};
+    		panel.setOpaque(false);
+    		GridBagConstraints c = new GridBagConstraints();
+    		c.gridx = 0;
+    		c.gridy = 0;
+    		c.weightx = 1;
+    		c.fill = GridBagConstraints.HORIZONTAL;
+    		c.insets = new Insets(10, 10, 10, 10);
+    		int numberOfContents = getContents().size();
+    		for (AbstractContextPanelContent content : getContents()) {
     			Component componentToAdd = content.getComponent();
     			if (componentToAdd instanceof JComponent) {
     				((JComponent) componentToAdd).setOpaque(false);
@@ -180,11 +199,16 @@ public abstract class AbstractContextPanel {
     				scroll.getVerticalScrollBar().setUnitIncrement(50);
     				componentToAdd = scroll;
     			}
-    			taskPane.add(componentToAdd);
-    			taskPane.setCollapsed(true);
-    			container.add(taskPane);
+    			content.setParentPanel(panel);
+    			if (c.gridy == numberOfContents - 1) {
+    				// Last component will fill also vertically
+    				c.weighty = 1;
+    				c.fill = GridBagConstraints.BOTH;
+    			}
+    			panel.add(componentToAdd, c);
+    			c.gridy++;
     		}
-    		JScrollPane scrollPane = new JScrollPane(container);
+    		JScrollPane scrollPane = new JScrollPane(panel);
     		scrollPane.getVerticalScrollBar().setUnitIncrement(50);
     		component = scrollPane;
     	}
@@ -231,20 +255,6 @@ public abstract class AbstractContextPanel {
             return true;
         }
         return isPanelVisibleForAudioObject(ContextHandler.getInstance().getCurrentAudioObject());
-    }
-
-    private static class CustomJXTaskPane extends JXTaskPane {
-        private static final long serialVersionUID = 1569831509432974799L;
-
-        @Override
-        public void setCollapsed(boolean collapsed) {
-            // TODO: Currently JXTaskPane collapses or expands when user presses mouse button
-            // So we override setCollapsed method to avoid collapsing or expanding task pane if it's disabled
-            if (isEnabled()) {
-                super.setCollapsed(collapsed);
-            }
-        }
-
     }
 
 	/**
