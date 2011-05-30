@@ -28,7 +28,7 @@ import javax.swing.ImageIcon;
 public class AlbumFavoriteImageIcon {
 
 	private static final int WIDTH = 26;
-	private static final int HEIGHT = 18;
+	private static final int HEIGHT = 16;
 	
 	private static ImageIcon icon;
 	

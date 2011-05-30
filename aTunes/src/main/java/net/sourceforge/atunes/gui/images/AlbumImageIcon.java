@@ -28,7 +28,7 @@ import javax.swing.ImageIcon;
 
 public class AlbumImageIcon {
 
-	private static final int SIZE = 18;
+	private static final int SIZE = 16;
 	private static final int BIG_SIZE = 90;
 	
 	private static ImageIcon icon;
