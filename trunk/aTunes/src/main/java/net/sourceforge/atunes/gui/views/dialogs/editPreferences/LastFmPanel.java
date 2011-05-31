@@ -64,9 +64,9 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
 			        boolean loginSuccessful;
 			        loginSuccessful = get();
 			        if (loginSuccessful) {
-			            GuiHandler.getInstance().showMessage(I18nUtils.getString("LOGIN_SUCCESSFUL"));
+			            GuiHandler.getInstance().showMessage(I18nUtils.getString("LOGIN_SUCCESSFUL"),getPreferenceDialog());
 			        } else {
-			            GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("LOGIN_FAILED"));
+			            GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("LOGIN_FAILED"), getPreferenceDialog());
 			        }
 			    } catch (InterruptedException e) {
 			        Logger.error(LogCategories.SERVICE, e);

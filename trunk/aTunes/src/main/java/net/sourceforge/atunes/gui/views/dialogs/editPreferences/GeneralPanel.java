@@ -124,7 +124,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Color selectedColor = JColorChooser.showDialog(GuiHandler.getInstance().getFrame().getFrame(), 
+				Color selectedColor = JColorChooser.showDialog(getPreferenceDialog(), 
 										 I18nUtils.getString("SELECT_TRAY_PLAYER_COLOR"),
 										 null);
 				if (selectedColor != null) {
@@ -143,10 +143,10 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
             public void actionPerformed(ActionEvent e) {
                 FontChooserDialog fontChooserDialog;
                 if (currentFontSettings != null) {
-                    fontChooserDialog = new FontChooserDialog(GuiHandler.getInstance().getFrame().getFrame(), 300, 300, currentFontSettings.getFont().toFont(), currentFontSettings
+                    fontChooserDialog = new FontChooserDialog(getPreferenceDialog(), 300, 300, currentFontSettings.getFont().toFont(), currentFontSettings
                             .isUseFontSmoothing(), currentFontSettings.isUseFontSmoothingSettingsFromOs(), ApplicationState.getInstance().getLocale().getLocale());
                 } else {
-                    fontChooserDialog = new FontChooserDialog(GuiHandler.getInstance().getFrame().getFrame(), 300, 300, LookAndFeelSelector.getInstance().getCurrentLookAndFeel()
+                    fontChooserDialog = new FontChooserDialog(getPreferenceDialog(), 300, 300, LookAndFeelSelector.getInstance().getCurrentLookAndFeel()
                             .getDefaultFont(), true, false, ApplicationState.getInstance().getLocale().getLocale());
                 }
                 fontChooserDialog.setVisible(true);
@@ -180,7 +180,6 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
             	updateSkins((String)lookAndFeel.getSelectedItem(), skinName);
             }
         });
-
         skin = new JComboBox();
         List<ImageEntry<Class<? extends Frame>>> data = new ArrayList<ImageEntry<Class<? extends Frame>>>();
         for (Class<? extends Frame> clazz : Frames.getClasses()) {
@@ -192,22 +191,28 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
         c.gridy = 0;
         c.anchor = GridBagConstraints.FIRST_LINE_START;
         c.insets = new Insets(5, 0, 0, 0);
+        c.fill=GridBagConstraints.HORIZONTAL;
         add(languageLabel, c);
         c.gridx = 1;
+        c.fill=GridBagConstraints.NONE;
         add(language, c);
         c.gridx = 0;
         c.gridy = 2;
         c.insets = new Insets(25, 0, 5, 0);
+        c.fill=GridBagConstraints.HORIZONTAL;
         add(lookAndFeelLabel, c);
         c.gridx = 1;
         c.insets = new Insets(25, 0, 0, 0);
+        c.fill=GridBagConstraints.NONE;
         add(lookAndFeel, c);
         c.gridx = 0;
         c.gridy = 3;
         c.insets = new Insets(10, 0, 5, 0);
+        c.fill=GridBagConstraints.HORIZONTAL;
         add(skinLabel, c);
         c.gridx = 1;
         c.insets = new Insets(10, 0, 0, 0);
+        c.fill=GridBagConstraints.NONE;
         add(skin, c);
         c.gridx = 0;
         c.gridy = 4;
