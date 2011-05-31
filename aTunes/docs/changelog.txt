@@ -33,6 +33,7 @@ aTunes 2.1.0
 - Customizations in look and feel for each OS (Mac OS X)
 - Nimbus look and feel removed as it does not support all features needed (font size?)
 - Return to simple context panel components layout, removing JXTaskPane (not fully look-and-feel compliance)
+- FIX: Dialogs opened from preferences dialog use wrong parent [ patch by Laurent Cathala ]
 - FIX: Exception during renaming of file name
 - FIX: Repository refresh never ends in certain situations [3024433]
 - FIX: Selected playlist element not saved when closing application

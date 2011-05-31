@@ -843,15 +843,25 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     }
 
     /**
-     * Show message.
+     * Show message for principal frame
      * 
      * @param message
      *            the message
      */
     public void showMessage(String message) {
-        JOptionPane.showMessageDialog(frame.getFrame(), message);
+        showMessage(message,frame.getFrame());
     }
-
+    
+    /**
+     * Show message
+     * 
+     * @param message
+     *            the message
+     */
+    public void showMessage(String message, Component owner) {
+        JOptionPane.showMessageDialog(owner, message);
+    }
+    
     /**
      * Shows a custom message dialog.
      * 

@@ -20,10 +20,13 @@
 
 package net.sourceforge.atunes.gui.views.dialogs.editPreferences;
 
+import java.awt.Frame;
 import java.awt.GridBagLayout;
+import java.awt.Window;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 
@@ -47,6 +50,10 @@ public abstract class AbstractPreferencesPanel extends JPanel {
     public AbstractPreferencesPanel(String title) {
         super(new GridBagLayout());
         this.title = title;
+    }
+    
+    public Window getPreferenceDialog(){
+    	return (Window) SwingUtilities.getWindowAncestor(this);
     }
 
     /**

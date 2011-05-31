@@ -325,7 +325,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 		        }
 		    };
 		    fileChooser.setFileFilter(filter);
-		    if (fileChooser.showOpenDialog(GuiHandler.getInstance().getFrame().getFrame()) == JFileChooser.APPROVE_OPTION) {
+		    if (fileChooser.showOpenDialog(getPreferenceDialog()) == JFileChooser.APPROVE_OPTION) {
 		        File zipFile = fileChooser.getSelectedFile();
 		        try {
 		            Map<PluginFolder, PluginSystemException> problemsFound = PluginsHandler.getInstance().installPlugin(zipFile);
