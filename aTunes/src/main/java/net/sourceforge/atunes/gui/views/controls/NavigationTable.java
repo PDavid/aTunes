@@ -17,7 +17,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package net.sourceforge.atunes.gui.views.controls;
 
 import java.awt.dnd.DnDConstants;
@@ -30,8 +29,10 @@ import java.awt.dnd.DragSourceEvent;
 import java.awt.dnd.DragSourceListener;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JComponent;
 
 import javax.swing.JTable;
+import javax.swing.TransferHandler;
 import javax.swing.table.TableModel;
 
 import net.sourceforge.atunes.gui.model.TransferableList;
@@ -39,7 +40,6 @@ import net.sourceforge.atunes.gui.model.TransferableList;
 public final class NavigationTable extends JTable implements DragSourceListener, DragGestureListener {
 
     private static final long serialVersionUID = -607346309523708685L;
-
     private DragSource dragSource;
 
     /**
@@ -49,6 +49,15 @@ public final class NavigationTable extends JTable implements DragSourceListener,
         super();
         setShowGrid(false);
         setDragSource();
+        setDragEnabled(true);
+
+        setTransferHandler(new TransferHandler() {
+
+            @Override
+            public int getSourceActions(JComponent c) {
+                return TransferHandler.COPY;
+    }
+        });
     }
 
     /**
@@ -105,5 +114,4 @@ public final class NavigationTable extends JTable implements DragSourceListener,
         dragSource = new DragSource();
         dragSource.createDefaultDragGestureRecognizer(this, DnDConstants.ACTION_COPY, this);
     }
-
 }

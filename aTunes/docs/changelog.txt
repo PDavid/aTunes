@@ -29,6 +29,7 @@ aTunes 2.1.0
 - Edit radio name, url and label
 - Include file name and path in filter [3146992]
 - Improvements in columns sort [ patch by deathgorepain ]
+- Drag-N-Drop Improvement [ patch by deathgorepain ]
 - Customizations in look and feel for each OS (Mac OS X)
 - Nimbus look and feel removed as it does not support all features needed (font size?)
 - Return to simple context panel components layout, removing JXTaskPane (not fully look-and-feel compliance)
