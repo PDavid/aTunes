@@ -108,28 +108,32 @@ public final class PlayListMenu {
         List<Object> objects = new ArrayList<Object>();
         objects.add(Actions.getAction(PlayAction.class));
         objects.add(Actions.getAction(ShowPlayListItemInfoAction.class));
-        objects.add(new JSeparator());
         objects.add(Actions.getMenuItemForAction(OpenFolderAction.class, table));
-        objects.add(new JSeparator());
-        objects.add(Actions.getAction(AutoScrollPlayListAction.class));
         objects.add(new JSeparator());
         objects.add(new EditTagMenu(true, table));
         objects.add(new JSeparator());
         objects.add(Actions.getAction(SavePlayListAction.class));
         objects.add(Actions.getAction(LoadPlayListAction.class));
         objects.add(new JSeparator());
+        objects.add(Actions.getAction(AutoScrollPlayListAction.class));
+        objects.add(getMoveMenu());
         objects.add(Actions.getAction(RemoveFromPlayListAction.class));
         objects.add(Actions.getAction(ClearPlayListAction.class));
         objects.add(new JSeparator());
-        JMenu move = new JMenu(I18nUtils.getString("MOVE"));
-        move.add(Actions.getAction(MoveToTopAction.class));
-        move.add(Actions.getAction(MoveUpAction.class));
-        move.add(Actions.getAction(MoveDownAction.class));
-        move.add(Actions.getAction(MoveToBottomAction.class));
-        move.add(new JSeparator());
-        move.add(Actions.getAction(ShufflePlayListAction.class));
-        objects.add(move);
+        objects.add(getFavoritesMenu());
         objects.add(new JSeparator());
+        objects.add(getSmartPlayListMenu());
+        objects.add(new JSeparator());
+        objects.add(Actions.getMenuItemForAction(CreatePlayListWithSelectedArtistsAction.class, table));
+        objects.add(Actions.getMenuItemForAction(CreatePlayListWithSelectedAlbumsAction.class, table));
+        return objects;
+    }
+    
+    /**
+     * Returns menu for smart play list
+     * @return
+     */
+    private static JMenu getSmartPlayListMenu() {
         JMenu smartPlayList = new JMenu(I18nUtils.getString("SMART_PLAYLIST"));
         smartPlayList.add(Actions.getAction(AddRandomSongsAction.class, AddRandomSongsAction.INSTANCE_10));
         smartPlayList.add(Actions.getAction(AddRandomSongsAction.class, AddRandomSongsAction.INSTANCE_50));
@@ -150,17 +154,34 @@ public final class PlayListMenu {
         smartPlayList.add(Actions.getAction(AddUnplayedSongsAction.class, AddUnplayedSongsAction.INSTANCE_10));
         smartPlayList.add(Actions.getAction(AddUnplayedSongsAction.class, AddUnplayedSongsAction.INSTANCE_50));
         smartPlayList.add(Actions.getAction(AddUnplayedSongsAction.class, AddUnplayedSongsAction.INSTANCE_100));
-        objects.add(smartPlayList);
-        objects.add(new JSeparator());
+        return smartPlayList;
+    }
+    
+    /**
+     * Returns menu for favorites
+     * @return
+     */
+    private static JMenu getFavoritesMenu() {
         JMenu favorites = new JMenu(I18nUtils.getString("FAVORITES"));
         favorites.add(Actions.getAction(SetPlayListSelectionAsFavoriteSongAction.class));
         favorites.add(Actions.getAction(SetPlayListSelectionAsFavoriteAlbumAction.class));
         favorites.add(Actions.getAction(SetPlayListSelectionAsFavoriteArtistAction.class));
-        objects.add(favorites);
-        objects.add(new JSeparator());
-        objects.add(Actions.getMenuItemForAction(CreatePlayListWithSelectedArtistsAction.class, table));
-        objects.add(Actions.getMenuItemForAction(CreatePlayListWithSelectedAlbumsAction.class, table));
-        return objects;
+        return favorites;
+    }
+    
+    /**
+     * Returns move menu
+     * @return
+     */
+    private static JMenu getMoveMenu() {
+        JMenu move = new JMenu(I18nUtils.getString("MOVE"));
+        move.add(Actions.getAction(MoveToTopAction.class));
+        move.add(Actions.getAction(MoveUpAction.class));
+        move.add(Actions.getAction(MoveDownAction.class));
+        move.add(Actions.getAction(MoveToBottomAction.class));
+        move.add(new JSeparator());
+        move.add(Actions.getAction(ShufflePlayListAction.class));
+        return move;
     }
 
     /**
