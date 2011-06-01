@@ -152,9 +152,11 @@ public final class PlayListMenu {
         smartPlayList.add(Actions.getAction(AddUnplayedSongsAction.class, AddUnplayedSongsAction.INSTANCE_100));
         objects.add(smartPlayList);
         objects.add(new JSeparator());
-        objects.add(Actions.getAction(SetPlayListSelectionAsFavoriteSongAction.class));
-        objects.add(Actions.getAction(SetPlayListSelectionAsFavoriteAlbumAction.class));
-        objects.add(Actions.getAction(SetPlayListSelectionAsFavoriteArtistAction.class));
+        JMenu favorites = new JMenu(I18nUtils.getString("FAVORITES"));
+        favorites.add(Actions.getAction(SetPlayListSelectionAsFavoriteSongAction.class));
+        favorites.add(Actions.getAction(SetPlayListSelectionAsFavoriteAlbumAction.class));
+        favorites.add(Actions.getAction(SetPlayListSelectionAsFavoriteArtistAction.class));
+        objects.add(favorites);
         objects.add(new JSeparator());
         objects.add(Actions.getMenuItemForAction(CreatePlayListWithSelectedArtistsAction.class, table));
         objects.add(Actions.getMenuItemForAction(CreatePlayListWithSelectedAlbumsAction.class, table));
