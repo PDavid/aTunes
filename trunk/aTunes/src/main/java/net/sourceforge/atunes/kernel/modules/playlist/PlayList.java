@@ -539,6 +539,7 @@ public class PlayList implements Serializable, Cloneable {
      */
     protected void setContent(List<AudioObject> content) {
         this.audioObjects.setContent(content);
-        notifyAudioObjectsAdded(0, content);
+        // This is an internal operation used when reading play lists from disk
+        // There is no need to call listeners here. Even it will cause wrong behaviour
     }
 }
