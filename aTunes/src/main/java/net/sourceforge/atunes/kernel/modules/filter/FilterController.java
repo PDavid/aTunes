@@ -40,14 +40,18 @@ import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-class ToolBarFilterController extends AbstractSimpleController<FilterPanel> {
+class FilterController extends AbstractSimpleController<FilterPanel> {
 
 	private FilterTextFieldDocumentListener listener;
 	
 	private boolean filterApplied = false;
 	
-    private final class FilterTextFieldDocumentListener implements
-			DocumentListener {
+    private final class FilterTextFieldDocumentListener implements DocumentListener {
+    	
+    	public FilterTextFieldDocumentListener() {
+            updateFilterPanel();
+		}
+    	
 		@Override
 		public void removeUpdate(DocumentEvent e) {
 		    update();
@@ -69,9 +73,15 @@ class ToolBarFilterController extends AbstractSimpleController<FilterPanel> {
 		        @Override
 		        public void run() {
 		            applyFilter(getFilter());
+		            updateFilterPanel();
 		        }
 		    });
 		}
+		
+		private void updateFilterPanel() {
+            getComponentControlled().setFilterApplied(filterApplied);
+		}
+		
 	}
 
 	/**
@@ -84,7 +94,7 @@ class ToolBarFilterController extends AbstractSimpleController<FilterPanel> {
      */
     private Map<String, JRadioButtonMenuItem> filters;
 
-    ToolBarFilterController(FilterPanel panel) {
+    FilterController(FilterPanel panel) {
         super(panel);
         addBindings();
         group = new ButtonGroup();
@@ -119,11 +129,30 @@ class ToolBarFilterController extends AbstractSimpleController<FilterPanel> {
         		super.keyTyped(e);
         		if (e.getKeyChar() == KeyEvent.VK_ESCAPE) {
         			getComponentControlled().getFilterTextField().setText("");
+        			// Next is a trick to remove focus from filter text field
+        			getComponentControlled().getClearButton().requestFocus();
         		}
         	}
 		});        
+        
+        getComponentControlled().getClearButton().addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				getComponentControlled().getFilterTextField().setText("");
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						if (!filterApplied) {
+							getComponentControlled().getFilterTextField().getDocument().removeDocumentListener(listener);
+							getComponentControlled().getFilterTextField().setText(StringUtils.getString(I18nUtils.getString("FILTER"), "..."));
+						}
+					}
+				});
+			}
+		});
     }
-
+    
     @Override
     protected void addStateBindings() {
         // TODO Auto-generated method stub

@@ -21,11 +21,20 @@
 package net.sourceforge.atunes.gui.views.panels;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
+import java.awt.RenderingHints;
+import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
+import net.sourceforge.atunes.gui.views.controls.LookAndFeelAwareButton;
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -36,6 +45,9 @@ public class FilterPanel extends JPanel {
 
     private PopUpButton filterButton;
     private JTextField filterTextField;
+    private JButton clearButton;
+    
+    private boolean filterApplied;
 
     public FilterPanel() {
         super(new BorderLayout());
@@ -44,13 +56,61 @@ public class FilterPanel extends JPanel {
 
     private void addContent() {
         filterButton = new PopUpButton(PopUpButton.TOP_RIGHT);
-        filterTextField = new CustomTextField(13);
+        filterTextField = new CustomTextField(20);
         filterTextField.setText(StringUtils.getString(I18nUtils.getString("FILTER"), "..."));
         filterTextField.setToolTipText(I18nUtils.getString("FILTER_TEXTFIELD_TOOLTIP"));
-        setMinimumSize(filterTextField.getPreferredSize());
-        setPreferredSize(filterTextField.getPreferredSize());
+        clearButton = new LookAndFeelAwareButton() {
+        	/**
+			 * 
+			 */
+			private static final long serialVersionUID = -8082456165867297443L;
+			
+			private final Dimension size = new Dimension(16, 16);
+			
+			public Dimension getPreferredSize() {
+				return size;
+			};
+			
+			public Dimension getMinimumSize() {
+				return size;
+			};
+			
+			public Dimension getMaximumSize() {
+				return size;
+			}
+			
+			protected void paintComponent(java.awt.Graphics g) {
+				if (!filterApplied) {
+					return;
+				}
+				Ellipse2D.Float e = new Ellipse2D.Float(-7, -7, 14, 14);
+				Polygon p = new Polygon();
+				p.addPoint(-4, -2);
+				p.addPoint(-2, -4);
+				p.addPoint(0, -2);
+				p.addPoint(2, -4);
+				p.addPoint(4, -2);
+				p.addPoint(2, 0);
+				p.addPoint(4, 2);
+				p.addPoint(2, 4);
+				p.addPoint(0, 2);
+				p.addPoint(-2, 4);
+				p.addPoint(-4, 2);
+				p.addPoint(-2, 0);
+
+		        Graphics2D g2 = (Graphics2D) g;
+		        g2.translate(getBounds().width / 2, getBounds().height / 2);
+		        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		        g2.setPaint(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForSpecialControls());
+		        Area a = new Area(e);
+		        a.subtract(new Area(p));
+		        g2.fill(a);
+		        g2.dispose();
+        	};
+        };
         add(filterButton, BorderLayout.WEST);
         add(filterTextField, BorderLayout.CENTER);
+        add(clearButton, BorderLayout.EAST);
     }
 
     /**
@@ -66,5 +126,17 @@ public class FilterPanel extends JPanel {
     public JTextField getFilterTextField() {
         return filterTextField;
     }
+
+	/**
+	 * @return the clearButton
+	 */
+	public JButton getClearButton() {
+		return clearButton;
+	}
+
+	public void setFilterApplied(boolean filterApplied) {
+		this.filterApplied = filterApplied;
+		this.clearButton.repaint();
+	}
 
 }

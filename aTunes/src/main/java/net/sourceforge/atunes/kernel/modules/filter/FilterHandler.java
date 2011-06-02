@@ -66,7 +66,7 @@ public final class FilterHandler extends AbstractHandler {
     /**
      * Controller
      */
-    private ToolBarFilterController toolBarFilterController;
+    private FilterController toolBarFilterController;
     
     /**
      * Available filters
@@ -216,9 +216,9 @@ public final class FilterHandler extends AbstractHandler {
      * 
      * @return
      */
-    private ToolBarFilterController getToolBarFilterController() {
+    private FilterController getToolBarFilterController() {
         if (toolBarFilterController == null) {
-            toolBarFilterController = new ToolBarFilterController(GuiHandler.getInstance().getPlayerControls().getFilterPanel());
+            toolBarFilterController = new FilterController(GuiHandler.getInstance().getPlayerControls().getFilterPanel());
         }
         return toolBarFilterController;
     }
