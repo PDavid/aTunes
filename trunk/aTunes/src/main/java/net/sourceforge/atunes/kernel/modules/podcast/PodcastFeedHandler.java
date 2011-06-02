@@ -64,6 +64,11 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class PodcastFeedHandler extends AbstractHandler {
 
+	/**
+	 * Initial delay until start podcast retriever 
+	 */
+	private static final int INITIAL_RETRIEVER_DELAY = 5000; // 5 seconds
+	
     private final class DownloadPodcastFeedEntryPropertyChangeListener
 			implements PropertyChangeListener {
 		private final PodcastFeedEntry podcastFeedEntry;
@@ -141,14 +146,18 @@ public final class PodcastFeedHandler extends AbstractHandler {
     /**
      * Podcast Feed Entry downloading
      */
-    private ExecutorService podcastFeedEntryDownloaderExecutorService = Executors.newCachedThreadPool();
+    private ExecutorService podcastFeedEntryDownloaderExecutorService;
+    
     /** The running downloads. */
     private volatile List<PodcastFeedEntryDownloader> runningDownloads = Collections.synchronizedList(new ArrayList<PodcastFeedEntryDownloader>());
+    
     /**
      * Podcast Feed Entry download checker
      */
-    private ScheduledExecutorService podcastFeedEntryDownloadCheckerExecutorService = Executors.newScheduledThreadPool(1);
+    private ScheduledExecutorService podcastFeedEntryDownloadCheckerExecutorService;
+    
     private ScheduledExecutorService podcastFeedEntryRetrieverExecutorService = Executors.newScheduledThreadPool(1);
+    
     private ScheduledFuture<?> scheduledPodcastFeedEntryRetrieverFuture;
 
     @Override
@@ -210,7 +219,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
      * Finish.
      */
     public void applicationFinish() {
-        podcastFeedEntryRetrieverExecutorService.shutdownNow();
+    	getPodcastFeedEntryRetrieverExecutorService().shutdownNow();
         synchronized (runningDownloads) {
             for (int i = 0; i < runningDownloads.size(); i++) {
                 PodcastFeedEntryDownloader podcastFeedEntryDownloader = runningDownloads.get(i);
@@ -218,7 +227,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
                 new File(getDownloadPath(podcastFeedEntryDownloader.getPodcastFeedEntry())).deleteOnExit();
             }
         }
-        podcastFeedEntryDownloadCheckerExecutorService.shutdownNow();
+        getPodcastFeedEntryDownloadCheckerExecutorService().shutdownNow();
         if (podcastFeedsDirty) {
             ApplicationStateHandler.getInstance().persistPodcastFeedCache(getPodcastFeeds());
         } else {
@@ -287,7 +296,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
      * Start podcast feed entry download checker.
      */
     public void startPodcastFeedEntryDownloadChecker() {
-        podcastFeedEntryDownloadCheckerExecutorService.scheduleWithFixedDelay(new PodcastFeedEntryDownloadChecker(), 0, 10000, TimeUnit.MILLISECONDS);
+        getPodcastFeedEntryDownloadCheckerExecutorService().scheduleWithFixedDelay(new PodcastFeedEntryDownloadChecker(), 0, 10000, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -313,7 +322,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
         if (scheduledPodcastFeedEntryRetrieverFuture != null) {
             scheduledPodcastFeedEntryRetrieverFuture.cancel(true);
         }
-        scheduledPodcastFeedEntryRetrieverFuture = podcastFeedEntryRetrieverExecutorService.scheduleWithFixedDelay(new PodcastFeedEntryRetriever(getPodcastFeeds()), 0,
+        scheduledPodcastFeedEntryRetrieverFuture = getPodcastFeedEntryRetrieverExecutorService().scheduleWithFixedDelay(new PodcastFeedEntryRetriever(getPodcastFeeds()), INITIAL_RETRIEVER_DELAY,
                 newRetrievalInterval, TimeUnit.MILLISECONDS);
     }
 
@@ -323,7 +332,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
      * @see net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntryRetriever#retrievePodcastFeedEntries()
      */
     public void retrievePodcastFeedEntries() {
-        podcastFeedEntryRetrieverExecutorService.execute(new PodcastFeedEntryRetriever(getPodcastFeeds()));
+    	getPodcastFeedEntryRetrieverExecutorService().execute(new PodcastFeedEntryRetriever(getPodcastFeeds()));
     }
 
     /**
@@ -351,7 +360,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
             }
         });
         d.setInfoText(podcastFeedEntry.getTitle());
-        podcastFeedEntryDownloaderExecutorService.execute(downloadPodcastFeedEntry);
+        getPodcastFeedEntryDownloaderExecutorService().execute(downloadPodcastFeedEntry);
         d.setVisible(true);
     }
 
@@ -505,5 +514,35 @@ public final class PodcastFeedHandler extends AbstractHandler {
 
 	@Override
 	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+
+	/**
+	 * @return the podcastFeedEntryDownloaderExecutorService
+	 */
+	private ExecutorService getPodcastFeedEntryDownloaderExecutorService() {
+		if (podcastFeedEntryDownloaderExecutorService == null) {
+			podcastFeedEntryDownloaderExecutorService = Executors.newCachedThreadPool();
+		}
+		return podcastFeedEntryDownloaderExecutorService;
+	}
+
+	/**
+	 * @return the podcastFeedEntryDownloadCheckerExecutorService
+	 */
+	private ScheduledExecutorService getPodcastFeedEntryDownloadCheckerExecutorService() {
+		if (podcastFeedEntryDownloadCheckerExecutorService == null) {
+			podcastFeedEntryDownloadCheckerExecutorService = Executors.newScheduledThreadPool(1);
+		}
+		return podcastFeedEntryDownloadCheckerExecutorService;
+	}
+
+	/**
+	 * @return the podcastFeedEntryRetrieverExecutorService
+	 */
+	private ScheduledExecutorService getPodcastFeedEntryRetrieverExecutorService() {
+		if (podcastFeedEntryRetrieverExecutorService == null) {
+			podcastFeedEntryRetrieverExecutorService = Executors.newScheduledThreadPool(1);
+		}
+		return podcastFeedEntryRetrieverExecutorService;
+	}
 
 }
