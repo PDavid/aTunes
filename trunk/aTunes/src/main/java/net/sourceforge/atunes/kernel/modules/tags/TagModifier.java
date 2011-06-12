@@ -299,8 +299,8 @@ public final class TagModifier {
                 String discno = newTag.getFirst(FieldKey.DISC_NO);
                 if (!StringUtils.isEmpty(discno)) {
                 	newTag.deleteField(FieldKey.DISC_NO);
-                    newTag.setField(FieldKey.DISC_NO, Integer.toString(discNumber));
                 }
+                newTag.setField(FieldKey.DISC_NO, Integer.toString(discNumber));
             }
             setStringTagField(file, newTag, FieldKey.LYRICS, lyrics);
             setStringTagField(file, newTag, FieldKey.ALBUM_ARTIST, albumArtist);
