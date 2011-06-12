@@ -61,6 +61,7 @@ aTunes 2.1.0
 - FIX: Avoid crashing app when no player engine available
 - FIX: Detect incorrect proxy configuration and display an error
 - FIX: Rename radio label only applies to one label at a time
+- FIX: Value of "Disc" in tag editor is not saved [3005921]
 
 aTunes 2.0.1
 -------------
