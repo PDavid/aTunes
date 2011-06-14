@@ -175,7 +175,10 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
         engineBox.setAlignmentX(Component.LEFT_ALIGNMENT);
         engineBox.add(new JLabel(I18nUtils.getString("PLAYER_ENGINE")));
         engineBox.add(Box.createHorizontalStrut(6));
-        engineCombo = new JComboBox(PlayerHandler.getInstance().getEngineNames());
+        String[] engineNames = PlayerHandler.getInstance().getEngineNames();
+        engineCombo = new JComboBox(engineNames);
+        // Disable combo if no player engine available
+        engineCombo.setEnabled(engineNames.length > 0);
         engineBox.add(engineCombo);
         engineBox.add(Box.createHorizontalGlue());
         playAtStartup = new JCheckBox(I18nUtils.getString("PLAY_AT_STARTUP"));
@@ -287,8 +290,8 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
         state.setEnableHotkeys(enableGlobalHotkeys.isSelected());
         state.setHotkeysConfig(tableModel.getHotkeysConfig());
         state.setCacheFilesBeforePlaying(cacheFilesBeforePlaying.isSelected());
-        String engine = engineCombo.getSelectedItem().toString();
-        if (!state.getPlayerEngine().equals(engine)) {
+        String engine = engineCombo.getSelectedItem() != null ? engineCombo.getSelectedItem().toString() : null;
+        if (engine != null && !state.getPlayerEngine().equals(engine)) {
             state.setPlayerEngine(engine);
             needRestart = true;
         }
