@@ -106,26 +106,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 
     @Override
     public void applicationStarted(List<AudioObject> playList) {
-        // Set volume on visual components
-        Volume.setVolume(ApplicationState.getInstance().getVolume(), false);
-
-        // Mute
-        applyMuteState(ApplicationState.getInstance().isMuteEnabled());
-    	
-        // Initial playback state is stopped
-        if (playerEngine != null) {
-        	playerEngine.callPlaybackStateListeners(PlaybackState.STOPPED);
-        }
-
-        if (ApplicationState.getInstance().isPlayAtStartup()) {
-            playCurrentAudioObject(true);
-        }
-        
-        // Progress bar ticks
-        getPlayerControlsController().getComponentControlled().setShowTicksAndLabels(ApplicationState.getInstance().isShowTicks());
-        
-        // Show advanced controls
-        getPlayerControlsController().getComponentControlled().showAdvancedPlayerControls(ApplicationState.getInstance().isShowAdvancedPlayerControls());
+    	// All initialization in this handler must be done after all handlers are initialized and ready
     }
 
     /**
@@ -339,10 +320,9 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     }
     
     /**
-     * Initializes handler
+     * Initializes player engine
      */
-    @Override
-    public void initHandler() {
+    private void initPlayerEngine() {
         // Get engines list
         List<AbstractPlayerEngine> engines = getEngines();
 
@@ -389,15 +369,39 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
                     break;
                 }
             }
-
-            if (playerEngine == null) {
-                handlePlayerError(new IllegalStateException(I18nUtils.getString("NO_PLAYER_ENGINE")));
-            }
         }
+
+        if (playerEngine == null) {
+            handlePlayerError(new IllegalStateException(I18nUtils.getString("NO_PLAYER_ENGINE")));
+        }
+
     }
     
     @Override
     public void allHandlersInitialized() {
+    	initPlayerEngine();
+    	
+        // Set volume on visual components
+        Volume.setVolume(ApplicationState.getInstance().getVolume(), false);
+
+        // Mute
+        applyMuteState(ApplicationState.getInstance().isMuteEnabled());
+    	
+        // Initial playback state is stopped
+        if (playerEngine != null) {
+        	playerEngine.callPlaybackStateListeners(PlaybackState.STOPPED);
+        }
+
+        if (ApplicationState.getInstance().isPlayAtStartup()) {
+            playCurrentAudioObject(true);
+        }
+        
+        // Progress bar ticks
+        getPlayerControlsController().getComponentControlled().setShowTicksAndLabels(ApplicationState.getInstance().isShowTicks());
+        
+        // Show advanced controls
+        getPlayerControlsController().getComponentControlled().showAdvancedPlayerControls(ApplicationState.getInstance().isShowAdvancedPlayerControls());
+
     	if (playerEngine != null) {
             // Init engine
             playerEngine.initializePlayerEngine();
@@ -529,5 +533,11 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 	@Override
 	public void selectedAudioObjectChanged(AudioObject audioObject) {
 		getPlayerControlsController().updatePlayerControls(audioObject);
+	}
+
+	@Override
+	protected void initHandler() {
+		// TODO Auto-generated method stub
+		
 	}
 }
