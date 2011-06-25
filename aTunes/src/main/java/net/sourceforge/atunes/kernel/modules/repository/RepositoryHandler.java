@@ -45,6 +45,7 @@ import javax.swing.SwingWorker;
 import net.sourceforge.atunes.gui.views.dialogs.MultiFolderSelectionDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RepositoryProgressDialog;
+import net.sourceforge.atunes.gui.views.dialogs.RepositorySelectionInfoDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ReviewImportDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
@@ -327,7 +328,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 
     @Override
     public void applicationStarted(List<AudioObject> playList) {
-        applyRepository(false);
+        applyRepositoryFromCache();
         SearchHandler.getInstance().registerSearchableObject(RepositorySearchableObject.getInstance());
         repositoryRefresher = new RepositoryAutoRefresher(RepositoryHandler.this);
     }
@@ -335,7 +336,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     @Override
     public void allHandlersInitialized() {
     	if (repository == null) {
-    		applyRepository(true);
+    		applyRepository();
     	}
     }
 
@@ -850,35 +851,40 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     }
 
     /**
+     * Sets the repository from the one read from cache
+     * @param askUser
+     */
+    private void applyRepositoryFromCache() {
+        Repository rep = repositoryRetrievedFromCache;
+        if (rep != null && rep.exists()) {
+        	applyExistingRepository(rep);
+        }
+    }
+
+    /**
      * Sets the repository.
      * @param askUser
      */
-    private void applyRepository(boolean askUser) {
+    private void applyRepository() {
         Repository rep = repositoryRetrievedFromCache;
-        if (!askUser) {
-       		if (rep != null && rep.exists()) {
-       			applyExistingRepository(rep);
-       		}
-   		} else {
-   			// Try to read repository cache. If fails or not exists, should be selected again
-   			if (rep != null) {
-   				if (!rep.exists()) {
-   					askUserForRepository(rep);
-   					if (!rep.exists() && !selectRepository(true)) {
-   						// select "old" repository if repository was not found and no new repository was selected
-   						repository = rep;
-   					} else if (rep.exists()) {
-   						// repository exists
-   						applyExistingRepository(rep);
-   					}
-   				} else {
-   					// repository exists
-   					applyExistingRepository(rep);
-   				}
-   			} else {
-   				reloadExistingRepository();
-   			}
-   		}
+        // Try to read repository cache. If fails or not exists, should be selected again
+        if (rep != null) {
+        	if (!rep.exists()) {
+        		askUserForRepository(rep);
+        		if (!rep.exists() && !selectRepository(true)) {
+        			// select "old" repository if repository was not found and no new repository was selected
+        			repository = rep;
+        		} else if (rep.exists()) {
+        			// repository exists
+        			applyExistingRepository(rep);
+        		}
+        	} else {
+        		// repository exists
+        		applyExistingRepository(rep);
+        	}
+        } else {
+        	reloadExistingRepository();
+        }
     }
 
     /**
@@ -924,7 +930,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         	SwingUtilities.invokeLater(new Runnable() {
         		@Override
         		public void run() {
-                    GuiHandler.getInstance().showRepositorySelectionInfoDialog();
+        			new RepositorySelectionInfoDialog(GuiHandler.getInstance().getFrame().getFrame()).setVisible(true);
                     selectRepository();
         		}
         	});
