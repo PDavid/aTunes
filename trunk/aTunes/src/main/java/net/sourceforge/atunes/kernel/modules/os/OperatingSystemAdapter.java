@@ -22,10 +22,15 @@ package net.sourceforge.atunes.kernel.modules.os;
 
 import java.awt.GraphicsDevice;
 import java.awt.Window;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import net.sourceforge.atunes.gui.frame.Frame;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
@@ -36,27 +41,33 @@ import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavCo
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
+import net.sourceforge.atunes.kernel.modules.player.PlayerEngineManager;
+import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.GuiUtils;
-
+import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.StringUtils;
 
 public abstract class OperatingSystemAdapter {
 
 	protected OperatingSystem systemType;
-	
+
 	public OperatingSystemAdapter(OperatingSystem systemType) {
 		this.systemType = systemType;
 	}
-	
+
 	/**
 	 * OS-dependent line terminator
+	 * 
 	 * @return
 	 */
 	public final String getSystemLineTerminator() {
 		return System.getProperty("line.separator");
 	}
-	
+
 	/**
 	 * Path of user home
+	 * 
 	 * @return
 	 */
 	public final String getUserHome() {
@@ -65,36 +76,40 @@ public abstract class OperatingSystemAdapter {
 
 	/**
 	 * File separator
+	 * 
 	 * @return
 	 */
 	public final String getFileSeparator() {
 		return System.getProperty("file.separator");
 	}
-	
-    /**
-     * Returns <code>true</code> if the current operating system (actually
-     * the VM) is 64 bit.
-     * 
-     * @return If the current operating system is 64 bit
-     */
-    public final boolean is64Bit() {
-        return System.getProperty("os.arch").contains("64");
-    }
+
+	/**
+	 * Returns <code>true</code> if the current operating system (actually the
+	 * VM) is 64 bit.
+	 * 
+	 * @return If the current operating system is 64 bit
+	 */
+	public final boolean is64Bit() {
+		return System.getProperty("os.arch").contains("64");
+	}
 
 	/**
 	 * Returns path to folder where app stores its data
+	 * 
 	 * @return
 	 */
 	public abstract String getAppDataFolder();
-	
+
 	/**
 	 * Returns command used to launch app
+	 * 
 	 * @return
 	 */
 	public abstract String getLaunchCommand();
-	
+
 	/**
 	 * Setups specific configuration for a frame
+	 * 
 	 * @param frame
 	 */
 	public void setUpFrame(Frame frame) {
@@ -103,6 +118,7 @@ public abstract class OperatingSystemAdapter {
 
 	/**
 	 * Returns if shadow borders are supported
+	 * 
 	 * @return
 	 */
 	public boolean areShadowBordersForToolTipsSupported() {
@@ -111,6 +127,7 @@ public abstract class OperatingSystemAdapter {
 
 	/**
 	 * Returns if OS uses short path names
+	 * 
 	 * @return
 	 */
 	public boolean usesShortPathNames() {
@@ -119,18 +136,22 @@ public abstract class OperatingSystemAdapter {
 
 	/**
 	 * Sets full screen
+	 * 
 	 * @param window
 	 * @param fullscreen
 	 */
 	public void setFullScreen(Window window, boolean fullscreen) {
 		// Default behaviour
-        // Get in which screen is application and set full screen in that screen
-        GraphicsDevice graphicsDevice = GuiUtils.getGraphicsDeviceForLocation(GuiHandler.getInstance().getFrame().getLocation());
-        graphicsDevice.setFullScreenWindow(fullscreen ? window : null);
+		// Get in which screen is application and set full screen in that screen
+		GraphicsDevice graphicsDevice = GuiUtils
+				.getGraphicsDeviceForLocation(GuiHandler.getInstance()
+						.getFrame().getLocation());
+		graphicsDevice.setFullScreenWindow(fullscreen ? window : null);
 	}
 
 	/**
 	 * Returns OS-dependent converter
+	 * 
 	 * @return
 	 */
 	public AbstractCdToWavConverter getCdToWavConverter() {
@@ -139,6 +160,7 @@ public abstract class OperatingSystemAdapter {
 
 	/**
 	 * Test OS-dependent converter
+	 * 
 	 * @return
 	 */
 	public Boolean testCdToWavConverter() {
@@ -147,6 +169,7 @@ public abstract class OperatingSystemAdapter {
 
 	/**
 	 * Returns hotkeys listener
+	 * 
 	 * @return
 	 */
 	public Class<? extends AbstractHotkeys> getHotkeysListener() {
@@ -155,6 +178,7 @@ public abstract class OperatingSystemAdapter {
 
 	/**
 	 * Returns if player is available
+	 * 
 	 * @param engine
 	 * @return
 	 */
@@ -162,6 +186,7 @@ public abstract class OperatingSystemAdapter {
 
 	/**
 	 * Returns command used (if any) to execute player engine
+	 * 
 	 * @param engine
 	 * @return
 	 */
@@ -169,38 +194,98 @@ public abstract class OperatingSystemAdapter {
 
 	/**
 	 * Returns specific player engine parameters
+	 * 
 	 * @param engine
 	 * @return
 	 */
-	public Collection<String> getPlayerEngineParameters(AbstractPlayerEngine engine) {
+	public Collection<String> getPlayerEngineParameters(
+			AbstractPlayerEngine engine) {
 		return Collections.emptyList();
 	}
-	
+
 	/**
-	 * Returns path where external tools are (cdda2wav, mencoder, etc.)
-	 * Leave "" when tools are in path
+	 * Returns path where external tools are (cdda2wav, mencoder, etc.) Leave ""
+	 * when tools are in path
+	 * 
 	 * @return
 	 */
 	public String getExternalToolsPath() {
 		return "";
 	}
-	
+
 	/**
 	 * Returns list of supported look and feels
+	 * 
 	 * @return
 	 */
 	public Map<String, Class<? extends AbstractLookAndFeel>> getSupportedLookAndFeels() {
-	    Map<String, Class<? extends AbstractLookAndFeel>> lookAndFeels = new HashMap<String, Class<? extends AbstractLookAndFeel>>();
-        lookAndFeels.put(SubstanceLookAndFeel.SUBSTANCE, SubstanceLookAndFeel.class);
-        lookAndFeels.put(SystemLookAndFeel.SYSTEM, SystemLookAndFeel.class);
-        return lookAndFeels;
+		Map<String, Class<? extends AbstractLookAndFeel>> lookAndFeels = new HashMap<String, Class<? extends AbstractLookAndFeel>>();
+		lookAndFeels.put(SubstanceLookAndFeel.SUBSTANCE,
+				SubstanceLookAndFeel.class);
+		lookAndFeels.put(SystemLookAndFeel.SYSTEM, SystemLookAndFeel.class);
+		return lookAndFeels;
 	}
 
 	/**
 	 * Returns default look and feel class
+	 * 
 	 * @return
 	 */
 	public Class<? extends AbstractLookAndFeel> getDefaultLookAndFeel() {
 		return SubstanceLookAndFeel.class;
 	}
+
+	/**
+	 * Manages when no player engine is available
+	 */
+	public void manageNoPlayerEngine() {
+		// By default no management is done, only an error message
+        GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("NO_PLAYER_ENGINE"));
+	}
+
+	/**
+	 * Returns os properties
+	 * @return
+	 */
+	public final Properties getOsProperties() {
+		Properties p = new Properties();
+		try {
+			p.load(new FileInputStream(getOsPropertiesFileName()));
+		} catch (FileNotFoundException e) {
+			Logger.error(LogCategories.OS, e.getMessage());
+		} catch (IOException e) {
+			Logger.error(LogCategories.OS, e);
+		}
+		return p;
+	}
+	
+	/**
+	 * Stores os properties
+	 * @param p
+	 */
+	public final void setOsProperties(Properties p) {
+		try {
+			p.store(new FileOutputStream(getOsPropertiesFileName()), null);
+		} catch (FileNotFoundException e) {
+			Logger.error(LogCategories.OS, e);
+		} catch (IOException e) {
+			Logger.error(LogCategories.OS, e);
+		}
+	}
+	
+	/**
+	 * Returns name of file where os-dependent properties are stored
+	 * @return
+	 */
+	private final String getOsPropertiesFileName() {
+		return StringUtils.getString(getAppDataFolder(), getFileSeparator(), "os.properties");
+	}
+
+	/**
+	 * Called when player engine is found (after searching or entering manually)
+	 */
+	public void playerEngineFound() {
+		PlayerEngineManager.playerEngineFound();
+	}
+	
 }

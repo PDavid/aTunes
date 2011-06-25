@@ -219,13 +219,13 @@
 			<plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>osxappbundle-maven-plugin</artifactId>
-                <version>1.0-alpha-1</version>
+                <version>1.0-alpha-2</version>
                 <configuration>
                     <mainClass>net.sourceforge.atunes.Main</mainClass>
                     <iconFile>${basedir}/build_resources/aTunes.icns</iconFile>
                     <jvmVersion>1.6+</jvmVersion>
                     <javaApplicationStub>${basedir}/build_resources/macos/JavaApplicationStub</javaApplicationStub>
-                    <dictionaryFile>${basedir}/build_resources/macos/Info.plist</dictionaryFile>
+                
                 </configuration>
                 <executions>
                     <execution>

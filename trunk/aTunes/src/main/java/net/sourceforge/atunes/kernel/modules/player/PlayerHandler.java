@@ -44,7 +44,6 @@ import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -372,13 +371,20 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
         }
 
         if (playerEngine == null) {
-            handlePlayerError(new IllegalStateException(I18nUtils.getString("NO_PLAYER_ENGINE")));
+            PlayerEngineManager.manageNoPlayerEngine();
         }
 
     }
     
     @Override
     public void allHandlersInitialized() {
+    	initialize();
+    }
+    
+    /**
+     * Initializes all related to player engine
+     */
+    protected void initialize() {
     	initPlayerEngine();
     	
         // Set volume on visual components
@@ -420,12 +426,6 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
             }
 
         }));
-    }
-
-    private static void handlePlayerError(Throwable t) {
-        Logger.error(LogCategories.PLAYER, StringUtils.getString("Player Error: ", t));
-        Logger.error(LogCategories.PLAYER, t);
-        GuiHandler.getInstance().showErrorDialog(t.getMessage());
     }
 
     /**

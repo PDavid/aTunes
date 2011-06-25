@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Properties;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.frame.Frame;
@@ -32,10 +33,10 @@ import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavConverter;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
 import net.sourceforge.atunes.kernel.modules.os.LinuxOperatingSystem;
-import net.sourceforge.atunes.kernel.modules.os.MacOSXOperatingSystem;
 import net.sourceforge.atunes.kernel.modules.os.OperatingSystemAdapter;
 import net.sourceforge.atunes.kernel.modules.os.SolarisOperatingSystem;
 import net.sourceforge.atunes.kernel.modules.os.WindowsOperatingSystem;
+import net.sourceforge.atunes.kernel.modules.os.macosx.MacOSXOperatingSystem;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -362,5 +363,39 @@ public class OsManager {
 	 */
 	public static Class<? extends AbstractLookAndFeel> getDefaultLookAndFeel() {
 		return adapter.getDefaultLookAndFeel();
+	}
+
+	/**
+	 * Manages when no player engine is available
+	 */
+	public static void manageNoPlayerEngine() {
+		adapter.manageNoPlayerEngine();
+	}
+	
+	/**
+	 * Called when player engine is found (after searching or entering manually)
+	 */
+	public static void playerEngineFound() {
+		adapter.playerEngineFound();
+	}
+	
+	/**
+	 * Returns os property
+	 * @param key
+	 * @return
+	 */
+	public static String getOSProperty(String key) {
+		return adapter.getOsProperties().getProperty(key);
+	}
+	
+	/**
+	 * @param key
+	 * @param value
+	 * @return
+	 */
+	public static void setOSProperty(String key, String value) {
+		Properties p = adapter.getOsProperties();
+		p.setProperty(key, value);
+		adapter.setOsProperties(p);
 	}
 }

@@ -165,6 +165,8 @@ public final class LogCategories {
 
     public static final String PREFERENCES = "PREFERENCES ";
     
+    public static final String OS = "OS          ";
+    
     private LogCategories() {
 
     }

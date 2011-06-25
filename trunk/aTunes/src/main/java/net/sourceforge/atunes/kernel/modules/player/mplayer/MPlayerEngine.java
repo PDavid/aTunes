@@ -84,18 +84,23 @@ public class MPlayerEngine extends AbstractPlayerEngine {
     public boolean isEngineAvailable() {
     	InputStream in = null;
     	try {
-    		Process p = new ProcessBuilder(OsManager.getPlayerEngineCommand(this)).start();
-    		in = p.getInputStream();
-    		byte[] buffer = new byte[4096];
-    		while (in.read(buffer) >= 0) {
-    			;
-    		}
+        	String command = OsManager.getPlayerEngineCommand(this);
+        	if (command != null) {
+        		Process p = new ProcessBuilder(command).start();
+        		in = p.getInputStream();
+        		byte[] buffer = new byte[4096];
+        		while (in.read(buffer) >= 0) {
+        			;
+        		}
 
-    		int code = p.waitFor();
-    		if (code != 0) {
-    			return false;
-    		}
-    		return true;
+        		int code = p.waitFor();
+        		if (code != 0) {
+        			return false;
+        		}
+        		return true;
+        	} else {
+        		return false;
+        	}
     	} catch (Exception e) {
     		Logger.error(LogCategories.PLAYER, e);
     		return false;

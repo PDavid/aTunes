@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.os;
+package net.sourceforge.atunes.kernel.modules.os.macosx;
 
 import java.io.File;
 import java.util.HashMap;
@@ -30,8 +30,11 @@ import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.system.OSXLookAndFeel;
 import net.sourceforge.atunes.kernel.OperatingSystem;
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavConverter;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.Cdparanoia;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.kernel.modules.os.OperatingSystemAdapter;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
 import net.sourceforge.atunes.misc.log.LogCategories;
@@ -45,9 +48,8 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
      */
     private static final String COMMAND_MACOSX = "aTunes.command";
     
-    /** Command to be executed on Mac systems to launch mplayer. */
-    private static final String MPLAYER_MACOS_COMMAND = "mac_tools/mplayer";
-
+    protected static final String MPLAYER_COMMAND = "mplayer.command";
+    
     public MacOSXOperatingSystem(OperatingSystem systemType) {
 		super(systemType);
 	}
@@ -90,7 +92,7 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 	
 	@Override
 	public String getPlayerEngineCommand(AbstractPlayerEngine engine) {
-		return engine instanceof MPlayerEngine ? MPLAYER_MACOS_COMMAND : null;
+		return engine instanceof MPlayerEngine ? OsManager.getOSProperty(MPLAYER_COMMAND) : null;
 	}
 
 	/**
@@ -110,5 +112,11 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 	 */
 	public Class<? extends AbstractLookAndFeel> getDefaultLookAndFeel() {
 		return OSXLookAndFeel.class;
+	}
+	
+	@Override
+	public void manageNoPlayerEngine() {
+		MacOSXPlayerEngineDialog dialog = new MacOSXPlayerEngineDialog(GuiHandler.getInstance().getFrame().getFrame());
+		dialog.setVisible(true);
 	}
 }
