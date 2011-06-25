@@ -372,6 +372,7 @@ public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog 
 			    String stringValue = value.toString();
 			    setEnabled(tree.isEnabled());
 			    if (value instanceof CheckNode) {
+			    	check.setIcon(null);
 			        check.setSelected(((CheckNode) value).isSelected());
 			        check.setEnabled(((CheckNode) value).isEnabled());
 			        label.setFont(tree.getFont());
@@ -448,6 +449,8 @@ public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog 
         @Override
         public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
             Component superComponent = super.getTreeCellRendererComponent(tree, "", isSelected, expanded, leaf, row, hasFocus);
+            // Remove icon from default renderer
+            ((DefaultTreeCellRenderer)superComponent).setIcon(null);
             return rendererCode.getComponent(superComponent, tree, value, isSelected, expanded, leaf, row, hasFocus);
         }
 
@@ -530,25 +533,6 @@ public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog 
         GuiUtils.applyComponentOrientation(this);
         enableCloseActionWithEscapeKey();
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-    }
-
-    /**
-     * The main method.
-     * 
-     * @param args
-     *            the arguments
-     */
-    public static void main(String[] args) {
-        MultiFolderSelectionDialog dialog = new MultiFolderSelectionDialog(null);
-
-        dialog.startDialog(null);
-
-        if (!dialog.isCancelled()) {
-            List<File> folders = dialog.getSelectedFolders();
-            for (File f : folders) {
-                System.out.println(f);
-            }
-        }
     }
 
     /**
