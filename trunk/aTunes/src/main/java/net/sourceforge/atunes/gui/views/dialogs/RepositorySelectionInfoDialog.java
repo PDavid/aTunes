@@ -59,6 +59,7 @@ public final class RepositorySelectionInfoDialog extends AbstractCustomModalDial
         setContent();
         GuiUtils.applyComponentOrientation(this);
         enableCloseActionWithEscapeKey();
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     /**

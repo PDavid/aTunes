@@ -64,7 +64,6 @@ import net.sourceforge.atunes.gui.views.dialogs.MultiFolderSelectionDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RadioDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RepositoryProgressDialog;
-import net.sourceforge.atunes.gui.views.dialogs.RepositorySelectionInfoDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ReviewImportDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RipperProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.SearchDialog;
@@ -975,13 +974,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
         } else {
             dialog.setVisible(true);
         }
-    }
-
-    /**
-     * Show repository selection info dialog.
-     */
-    public void showRepositorySelectionInfoDialog() {
-        new RepositorySelectionInfoDialog(frame.getFrame()).setVisible(true);
     }
 
     //TODO RTL component orientation
