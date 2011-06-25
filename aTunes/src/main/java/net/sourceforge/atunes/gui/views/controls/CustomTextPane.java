@@ -28,6 +28,7 @@ import javax.swing.text.StyleConstants;
 
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelChangeListener;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
  * A CustomTextPane is a JTextPane using the fonts and colors configured for all
@@ -36,13 +37,17 @@ import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
  * @author fleax
  * 
  */
-public final class CustomTextPane extends JTextPane implements LookAndFeelChangeListener {
+public class CustomTextPane extends JTextPane implements LookAndFeelChangeListener {
 
     private static final long serialVersionUID = -3601855261867415475L;
 
-    private int alignment;
+    private Integer alignment;
+
+    public CustomTextPane() {
+    	this(null);
+    }
     
-    public CustomTextPane(int alignment) {
+    public CustomTextPane(Integer alignment) {
         super();
         this.alignment = alignment;
         updateStyle(false);
@@ -63,7 +68,7 @@ public final class CustomTextPane extends JTextPane implements LookAndFeelChange
      */
     private void updateStyle(boolean forceUpdate) {
         MutableAttributeSet mainStyle = new SimpleAttributeSet();
-        StyleConstants.setAlignment(mainStyle, alignment);
+       	StyleConstants.setAlignment(mainStyle, alignment != null ? alignment : GuiUtils.getComponentOrientationAsTextStyleConstant());
         StyleConstants.setFontFamily(mainStyle, UIManager.getFont("Label.font").getFamily());
         StyleConstants.setFontSize(mainStyle, UIManager.getFont("Label.font").getSize());
         StyleConstants.setForeground(mainStyle, UIManager.getColor("Label.foreground"));

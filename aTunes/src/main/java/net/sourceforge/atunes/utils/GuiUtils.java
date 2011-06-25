@@ -46,6 +46,7 @@ import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.text.StyleConstants;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
@@ -265,6 +266,18 @@ public final class GuiUtils {
             setComponentOrientation();
         }
         return componentOrientation.isLeftToRight() ? SwingConstants.LEFT : SwingConstants.RIGHT;
+    }
+
+    /**
+     * Returns the component orientation as a text style constant.
+     * 
+     * @return The component orientation as a SwingConstant
+     */
+    public static int getComponentOrientationAsTextStyleConstant() {
+        if (componentOrientation == null) {
+            setComponentOrientation();
+        }
+        return componentOrientation.isLeftToRight() ? StyleConstants.ALIGN_LEFT : StyleConstants.ALIGN_RIGHT;
     }
 
     /**

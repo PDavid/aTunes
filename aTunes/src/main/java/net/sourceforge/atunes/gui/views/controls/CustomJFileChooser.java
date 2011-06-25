@@ -32,6 +32,7 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentListener;
 
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -62,8 +63,6 @@ public final class CustomJFileChooser extends JPanel {
         final File defaultFolder = new File(OsManager.getUserHome());
         textField = new CustomTextField(defaultFolder.getAbsolutePath(), length);
         JButton button = new JButton("...");
-        button.setSize(textField.getPreferredSize().height, textField.getPreferredSize().height);
-        button.setPreferredSize(button.getSize());
 
         button.addActionListener(new ActionListener() {
             @Override
@@ -88,7 +87,6 @@ public final class CustomJFileChooser extends JPanel {
         c.gridy = 0;
         c.weightx = 1;
         c.fill = GridBagConstraints.HORIZONTAL;
-        // c.insets = new Insets(0, 10, 0, 0);
         add(textField, c);
         c.gridx = 1;
         c.weightx = 0;
@@ -116,6 +114,14 @@ public final class CustomJFileChooser extends JPanel {
     public void setText(String text) {
         textField.setText(text);
         result = text;
+    }
+    
+    /**
+     * Adds a document listener to text field
+     * @param listener
+     */
+    public void addDocumentListener(DocumentListener listener) {
+    	this.textField.getDocument().addDocumentListener(listener);
     }
 
 }
