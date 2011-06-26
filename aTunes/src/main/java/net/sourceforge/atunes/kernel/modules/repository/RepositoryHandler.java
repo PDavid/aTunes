@@ -937,8 +937,11 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
             GuiHandler.getInstance().showMessage(I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"));
             retrieve(foldersToRead);
         } else {
-        	new RepositorySelectionInfoDialog(GuiHandler.getInstance().getFrame().getFrame()).setVisible(true);
-        	selectRepository();
+        	RepositorySelectionInfoDialog dialog = new RepositorySelectionInfoDialog(GuiHandler.getInstance().getFrame().getFrame());
+        	dialog.setVisible(true);
+        	if (dialog.userAccepted()) {
+        		selectRepository();
+        	}
         }
     }
 

@@ -46,6 +46,8 @@ public final class RepositorySelectionInfoDialog extends AbstractCustomModalDial
 
     private static final long serialVersionUID = 4369595555397951445L;
 
+    private boolean accepted;
+    
     /**
      * Instantiates a new repository selection info dialog.
      * 
@@ -78,6 +80,7 @@ public final class RepositorySelectionInfoDialog extends AbstractCustomModalDial
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	accepted = true;
                 setVisible(false);
             }
         });
@@ -101,4 +104,12 @@ public final class RepositorySelectionInfoDialog extends AbstractCustomModalDial
         panel.add(button, c);
         setContent(panel);
     }
+
+	/**
+	 * Returns true if user presses accept button
+	 * @return
+	 */
+	public boolean userAccepted() {
+		return accepted;
+	}
 }
