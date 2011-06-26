@@ -20,9 +20,17 @@
 
 package net.sourceforge.atunes.kernel;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.swing.SwingUtilities;
+
+import net.sourceforge.atunes.misc.log.LogCategories;
+import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 
 /**
@@ -75,7 +83,46 @@ public class ApplicationLifeCycleListeners {
        		listener.applicationFinish();
         }
     }
-
-
-
+    
+    /**
+     * Calculates components that need user interaction
+     * @return
+     */
+    static Map<Integer, ApplicationLifeCycleListener> getUserInteractionRequests() {
+    	Map<Integer, ApplicationLifeCycleListener> requests = new HashMap<Integer, ApplicationLifeCycleListener>();
+    	for (ApplicationLifeCycleListener listener : listeners) {
+    		int request = listener.requestUserInteraction();
+    		if (request != -1) {
+    			if (requests.containsKey(request)) {
+    				throw new IllegalStateException("Duplicate user interaction request order");
+    			} else {
+    				requests.put(request, listener);
+    			}
+    		}
+    	}
+    	return requests;
+    }
+    
+    /**
+     * Calls user interaction in requested order
+     * @param requests
+     */
+    static void doUserInteraction(final Map<Integer, ApplicationLifeCycleListener> requests) {
+    	List<Integer> order = new ArrayList<Integer>(requests.keySet());
+    	Collections.sort(order);
+    	for (final Integer req: order) {
+    		try {
+				SwingUtilities.invokeAndWait(new Runnable() {
+					@Override
+					public void run() {
+						requests.get(req).doUserInteraction();
+					}
+				});
+			} catch (InterruptedException e) {
+				Logger.error(LogCategories.KERNEL, e);
+			} catch (InvocationTargetException e) {
+				Logger.error(LogCategories.KERNEL, e);
+			}
+    	}
+    }
 }

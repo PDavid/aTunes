@@ -146,6 +146,9 @@ public class Kernel {
             	timer = null;
         	}
         });
+
+        // Call user interaction
+        ApplicationLifeCycleListeners.doUserInteraction(ApplicationLifeCycleListeners.getUserInteractionRequests());
     }
 
     /**

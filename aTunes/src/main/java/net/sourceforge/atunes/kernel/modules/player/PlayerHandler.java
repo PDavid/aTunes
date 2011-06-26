@@ -369,16 +369,23 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
                 }
             }
         }
-
-        if (playerEngine == null) {
-            PlayerEngineManager.manageNoPlayerEngine();
-        }
-
     }
     
     @Override
     public void allHandlersInitialized() {
     	initialize();
+    }
+    
+    @Override
+    public int requestUserInteraction() {
+    	return 2;
+    }
+    
+    @Override
+    public void doUserInteraction() {
+        if (playerEngine == null) {
+            PlayerEngineManager.manageNoPlayerEngine();
+        }
     }
     
     /**

@@ -184,4 +184,13 @@ public abstract class AbstractHandler implements ApplicationLifeCycleListener,
     @Override
     public void audioObjectsRemoved(List<PlayListAudioObject> audioObjectsRemoved) {}
     
+    @Override
+    public int requestUserInteraction() {
+    	// By default no user interaction is requested
+    	return -1;
+    }
+    
+    @Override
+    public void doUserInteraction() {}
+    
 }
