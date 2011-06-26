@@ -19,7 +19,7 @@
     <key>CFBundleInfoDictionaryVersion</key>
     <string>6.0</string>
     <key>CFBundleIconFile</key>
-    <string>${iconFile}</string>
+    <string>build_resources/atunes.png</string>
     <key>Java</key>
     <dict>
       <key>MainClass</key>
@@ -35,6 +35,16 @@
                 <key>apple.laf.useScreenMenuBar</key>
                 <string>true</string>
                 <key>apple.awt.showGrowBox</key>
+                <string>true</string>
+                <key>com.apple.mrj.application.apple.menu.about.name</key>
+                <string>aTunes</string>
+                <key>com.apple.mrj.application.growbox.intrudes</key>
+                <string>false</string>
+                <key>com.apple.mrj.application.live-resize</key>
+                <string>true</string>
+                <key>com.apple.macos.smallTabs</key>
+                <string>true</string>
+                <key>apple.awt.brushMetalLook</key>
                 <string>true</string>
             </dict>
     </dict>
