@@ -45,6 +45,18 @@ public interface ApplicationLifeCycleListener {
     public void allHandlersInitialized();
     
     /**
+     * Code to ask each component to interact with user after app starts
+     * @return order to interact with user or -1 if no user interaction needed
+     */
+    public int requestUserInteraction();
+    
+    /**
+     * Allow component to interact with user. Calls to this method will be performed in
+     * the order returned by each call to requestUserInteraction
+     */
+    public void doUserInteraction();
+    
+    /**
      * Code to be executed when application finishes
      */
     public void applicationFinish();

@@ -339,6 +339,19 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     		applyRepository();
     	}
     }
+    
+    @Override
+    public int requestUserInteraction() {
+    	return 1;
+    }
+    
+    @Override
+    public void doUserInteraction() {
+    	Repository rep = repositoryRetrievedFromCache;
+    	if (rep == null) {
+    		reloadExistingRepository();
+    	}
+    }
 
     /**
      * Gets the single instance of RepositoryHandler.
@@ -882,8 +895,6 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         		// repository exists
         		applyExistingRepository(rep);
         	}
-        } else {
-        	reloadExistingRepository();
         }
     }
 
@@ -926,14 +937,8 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
             GuiHandler.getInstance().showMessage(I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"));
             retrieve(foldersToRead);
         } else {
-        	// Need to wait to show dialog with correct location (correct screen)
-        	SwingUtilities.invokeLater(new Runnable() {
-        		@Override
-        		public void run() {
-        			new RepositorySelectionInfoDialog(GuiHandler.getInstance().getFrame().getFrame()).setVisible(true);
-                    selectRepository();
-        		}
-        	});
+        	new RepositorySelectionInfoDialog(GuiHandler.getInstance().getFrame().getFrame()).setVisible(true);
+        	selectRepository();
         }
     }
 
