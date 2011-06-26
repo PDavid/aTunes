@@ -225,7 +225,7 @@
                     <iconFile>${basedir}/build_resources/aTunes.icns</iconFile>
                     <jvmVersion>1.6+</jvmVersion>
                     <javaApplicationStub>${basedir}/build_resources/macos/JavaApplicationStub</javaApplicationStub>
-                
+                    <dictionaryFile>${basedir}/build_resources/macos/Info.plist</dictionaryFile>
                 </configuration>
                 <executions>
                     <execution>
