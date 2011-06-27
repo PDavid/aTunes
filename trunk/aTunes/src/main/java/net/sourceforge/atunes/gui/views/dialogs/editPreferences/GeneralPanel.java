@@ -50,7 +50,7 @@ import net.sourceforge.atunes.gui.views.controls.ByImageChoosingPanel;
 import net.sourceforge.atunes.gui.views.controls.ByImageChoosingPanel.ImageEntry;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.ColorBean;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
@@ -132,6 +132,15 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 				}
 			}
 		});
+        
+        // Hide tray icons controls if not supported by opertating system
+        if (!OsManager.areTrayIconsSupported()) {
+        	showIconTray.setVisible(false);
+        	showTrayPlayer.setVisible(false);
+        	trayPlayerColorSelector.setVisible(false);
+        }
+        
+        
         JLabel lookAndFeelLabel = new JLabel(I18nUtils.getString("LOOK_AND_FEEL"));
         skinLabel = new JLabel(I18nUtils.getString("THEME"));
 

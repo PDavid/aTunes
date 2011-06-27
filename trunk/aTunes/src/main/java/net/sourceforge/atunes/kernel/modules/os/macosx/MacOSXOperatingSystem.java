@@ -119,4 +119,9 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 		MacOSXPlayerEngineDialog dialog = new MacOSXPlayerEngineDialog(GuiHandler.getInstance().getFrame().getFrame());
 		dialog.setVisible(true);
 	}
+	
+	@Override
+	public boolean areTrayIconsSupported() {
+		return false;
+	}
 }
