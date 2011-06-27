@@ -131,4 +131,10 @@ public class WindowsOperatingSystem extends OperatingSystemAdapter {
 	public String getExternalToolsPath() {
 		return StringUtils.getString(WINDOWS_TOOLS_DIR, getFileSeparator());
 	}
+	
+	@Override
+	public boolean areTrayIconsSupported() {
+		return true;
+	}
+
 }

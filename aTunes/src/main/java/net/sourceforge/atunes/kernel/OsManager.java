@@ -398,4 +398,12 @@ public class OsManager {
 		p.setProperty(key, value);
 		adapter.setOsProperties(p);
 	}
+
+	/**
+	 * Returns if OS supports tray icons
+	 * @return
+	 */
+	public static boolean areTrayIconsSupported() {
+		return adapter.areTrayIconsSupported();
+	}
 }

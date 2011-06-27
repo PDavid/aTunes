@@ -84,5 +84,11 @@ public class SolarisOperatingSystem extends OperatingSystemAdapter {
 			return super.getPlayerEngineParameters(engine);
 		}
 	}
+	
+	@Override
+	public boolean areTrayIconsSupported() {
+		return true;
+	}
+
 
 }

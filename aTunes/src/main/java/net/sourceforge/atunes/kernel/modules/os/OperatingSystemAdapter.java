@@ -289,5 +289,10 @@ public abstract class OperatingSystemAdapter {
 	public void playerEngineFound() {
 		PlayerEngineManager.playerEngineFound();
 	}
-	
+
+	/**
+	 * Returns if OS supports tray icons
+	 * @return
+	 */
+	public abstract boolean areTrayIconsSupported();	
 }

@@ -70,4 +70,9 @@ public class LinuxOperatingSystem extends OperatingSystemAdapter {
 	public String getPlayerEngineCommand(AbstractPlayerEngine engine) {
 		return engine instanceof MPlayerEngine ? MPLAYER_LINUX_COMMAND : null;
 	}
+	
+	@Override
+	public boolean areTrayIconsSupported() {
+		return true;
+	}
 }
