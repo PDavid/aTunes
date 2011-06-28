@@ -675,17 +675,22 @@ public class ApplicationState {
     		state = new HashMap<Class<? extends Frame>, FrameState>();
     		this.cache.storePreference(Preferences.FRAME_STATES, state);
     	}
-    	return state.get(frame);
+    	// Clone object to be sure changes made by application to frame state are not made over object in cache
+    	return state.containsKey(frame) ? new FrameState(state.get(frame)) : null;
     }
 
-    public void setFrameState(Class<? extends Frame> frame, FrameState frameState) {
-    	@SuppressWarnings("unchecked")
-		Map<Class<? extends Frame>, FrameState> state = (Map<Class<? extends Frame>, FrameState>) this.cache.retrievePreference(Preferences.FRAME_STATES, null);
-    	if (state == null) {
-    		state = new HashMap<Class<? extends Frame>, FrameState>();
+    public void setFrameState(Class<? extends Frame> frame, FrameState fs) {
+    	// Clone object to be sure changes made by application to frame state are not made over object in cache
+    	FrameState frameState = new FrameState(fs);
+    	if (getFrameState(frame) == null || !getFrameState(frame).equals(frameState)) {
+        	@SuppressWarnings("unchecked")
+    		Map<Class<? extends Frame>, FrameState> state = (Map<Class<? extends Frame>, FrameState>) this.cache.retrievePreference(Preferences.FRAME_STATES, null);
+    		if (state == null) {
+    			state = new HashMap<Class<? extends Frame>, FrameState>();
+    		}
+    		state.put(frame, frameState);
+    		this.cache.storePreference(Preferences.FRAME_STATES, state);
     	}
-    	state.put(frame, frameState);
-        this.cache.storePreference(Preferences.FRAME_STATES, state);
     }
     
     

@@ -48,16 +48,21 @@ public final class FrameState implements Serializable {
 	private int windowHeight;
 
 	public FrameState() {
-        this.splitPaneDividerPositions = new HashMap<String, Integer>();
+        this(new HashMap<String, Integer>());
     }
 
     public FrameState(FrameState frameState) {
-        this.splitPaneDividerPositions = new HashMap<String, Integer>(frameState.splitPaneDividerPositions);
+        this(frameState.splitPaneDividerPositions);
+        this.xPosition = frameState.xPosition;
+        this.yPosition = frameState.yPosition;
+        this.maximized = frameState.maximized;
+        this.windowWidth = frameState.windowWidth;
+        this.windowHeight = frameState.windowHeight;
     }
 
     @ConstructorProperties("splitPaneDividerPositions")
-    public FrameState(Map<String, Integer> splitPaneDividerPositions) {
-        this.splitPaneDividerPositions = splitPaneDividerPositions;
+    private FrameState(Map<String, Integer> splitPaneDividerPositions) {
+        this.splitPaneDividerPositions = new HashMap<String, Integer>(splitPaneDividerPositions);
     }
 
     public void putSplitPaneDividerPos(String s, int pos) {
@@ -118,4 +123,60 @@ public final class FrameState implements Serializable {
 	public void setWindowHeight(int windowHeight) {
 		this.windowHeight = windowHeight;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (maximized ? 1231 : 1237);
+		result = prime
+				* result
+				+ ((splitPaneDividerPositions == null) ? 0
+						: splitPaneDividerPositions.hashCode());
+		result = prime * result + windowHeight;
+		result = prime * result + windowWidth;
+		result = prime * result + xPosition;
+		result = prime * result + yPosition;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		FrameState other = (FrameState) obj;
+		if (maximized != other.maximized) {
+			return false;
+		}
+		if (splitPaneDividerPositions == null) {
+			if (other.splitPaneDividerPositions != null) {
+				return false;
+			}
+		} else if (!splitPaneDividerPositions
+				.equals(other.splitPaneDividerPositions)) {
+			return false;
+		}
+		if (windowHeight != other.windowHeight) {
+			return false;
+		}
+		if (windowWidth != other.windowWidth) {
+			return false;
+		}
+		if (xPosition != other.xPosition) {
+			return false;
+		}
+		if (yPosition != other.yPosition) {
+			return false;
+		}
+		return true;
+	}
+	
+	
 }
