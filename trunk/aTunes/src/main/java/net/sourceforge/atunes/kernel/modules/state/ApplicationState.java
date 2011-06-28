@@ -224,7 +224,9 @@ public class ApplicationState {
     }
 
     public void setUseContext(boolean useContext) {
-        this.cache.storePreference(Preferences.USE_CONTEXT, useContext);
+    	if (isUseContext() != useContext) {
+    		this.cache.storePreference(Preferences.USE_CONTEXT, useContext);
+    	}
     }
     
     
