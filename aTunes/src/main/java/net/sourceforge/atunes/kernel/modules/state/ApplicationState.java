@@ -1056,7 +1056,9 @@ public class ApplicationState {
     }
 
     public void setShowNavigationTree(boolean showNavigationTree) {
-        this.cache.storePreference(Preferences.SHOW_NAVIGATION_TREE, showNavigationTree);
+    	if (isShowNavigationTree() != showNavigationTree) {
+    		this.cache.storePreference(Preferences.SHOW_NAVIGATION_TREE, showNavigationTree);
+    	}
     }
     
     
