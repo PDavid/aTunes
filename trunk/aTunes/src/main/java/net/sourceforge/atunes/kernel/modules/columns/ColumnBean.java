@@ -120,4 +120,42 @@ public final class ColumnBean implements Serializable {
     public void setSort(ColumnSort sort) {
         this.sort = sort;
     }
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + order;
+		result = prime * result + ((sort == null) ? 0 : sort.hashCode());
+		result = prime * result + (visible ? 1231 : 1237);
+		result = prime * result + width;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		ColumnBean other = (ColumnBean) obj;
+		if (order != other.order) {
+			return false;
+		}
+		if (sort != other.sort) {
+			return false;
+		}
+		if (visible != other.visible) {
+			return false;
+		}
+		if (width != other.width) {
+			return false;
+		}
+		return true;
+	}
 }

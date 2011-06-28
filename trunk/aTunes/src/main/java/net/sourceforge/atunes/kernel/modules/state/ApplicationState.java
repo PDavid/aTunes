@@ -642,7 +642,9 @@ public class ApplicationState {
     }
 
     public void setColumns(Map<String, ColumnBean> columns) {
-    	this.cache.storePreference(Preferences.COLUMNS, columns);
+    	if (getColumns() == null || !getColumns().equals(columns)) {
+    		this.cache.storePreference(Preferences.COLUMNS, new HashMap<String, ColumnBean>(columns));
+    	}
     }
     
     
@@ -654,7 +656,9 @@ public class ApplicationState {
     }
 
     public void setNavigatorColumns(Map<String, ColumnBean> navigatorColumns) {
-    	this.cache.storePreference(Preferences.NAVIGATOR_COLUMNS, navigatorColumns);
+    	if (getNavigatorColumns() == null || !getNavigatorColumns().equals(navigatorColumns)) {
+    		this.cache.storePreference(Preferences.NAVIGATOR_COLUMNS, navigatorColumns);
+    	}
     }
 
     
@@ -666,7 +670,9 @@ public class ApplicationState {
     }
 
     public void setSearchResultsColumns(Map<String, ColumnBean> searchResultsColumns) {
-    	this.cache.storePreference(Preferences.SEARCH_RESULTS_COLUMNS, searchResultsColumns);
+    	if (getSearchResultsColumns() == null || !getSearchResultsColumns().equals(searchResultsColumns)) {
+    		this.cache.storePreference(Preferences.SEARCH_RESULTS_COLUMNS, searchResultsColumns);
+    	}
     }
     
     
