@@ -234,7 +234,9 @@ public class ApplicationState {
     }
 
     public void setSelectedContextTab(String selectedContextTab) {
-    	this.cache.storePreference(Preferences.SELECTED_CONTEXT_TAB, selectedContextTab);
+    	if (getSelectedContextTab() == null || !getSelectedContextTab().equals(selectedContextTab)) {
+    		this.cache.storePreference(Preferences.SELECTED_CONTEXT_TAB, selectedContextTab);
+    	}
     }
     
     
