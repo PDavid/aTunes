@@ -41,7 +41,6 @@ import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
@@ -76,9 +75,9 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
                     getEditTagDialog().getOkButton().setEnabled(true);
                 }
             } catch (InterruptedException e) {
-                Logger.error(LogCategories.IMAGE, e);
+                Logger.error(e);
             } catch (ExecutionException e) {
-                Logger.error(LogCategories.IMAGE, e);
+                Logger.error(e);
             }
         }
     }

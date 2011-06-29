@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
 
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.CryptoUtils;
 
@@ -56,24 +55,24 @@ public class PasswordPreference extends Preference {
 	public void setPassword(String password) {
 		try {
 			byte[] encrypted = CryptoUtils.encrypt(password.getBytes());
-			Logger.debug(LogCategories.PREFERENCES, "Encrypted password: ", Arrays.toString(encrypted));
+			Logger.debug("Encrypted password: ", Arrays.toString(encrypted));
 			super.setValue(encrypted);
 		} catch (GeneralSecurityException e) {
-			Logger.error(LogCategories.PREFERENCES, e);
+			Logger.error(e);
 		} catch (IOException e) {
-			Logger.error(LogCategories.PREFERENCES, e);
+			Logger.error(e);
 		}
 	}
 
 	public String getPassword() {
 		try {
 			String decrypted = new String(CryptoUtils.decrypt((byte[])super.getValue()));
-			Logger.debug(LogCategories.PREFERENCES, "Decrypted password: ", decrypted);
+			Logger.debug("Decrypted password: ", decrypted);
 			return decrypted;
 		} catch (GeneralSecurityException e) {
-			Logger.error(LogCategories.PREFERENCES, e);
+			Logger.error(e);
 		} catch (IOException e) {
-			Logger.error(LogCategories.PREFERENCES, e);
+			Logger.error(e);
 		}
 		return null;
 	}

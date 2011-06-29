@@ -42,7 +42,6 @@ import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.tags.EditTagDialogController;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -70,9 +69,9 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
                 pictureLabel.setIcon(cover);
                 pictureLabel.setVisible(cover != null);
             } catch (InterruptedException e) {
-            	Logger.error(LogCategories.IMAGE, e);
+            	Logger.error(e);
             } catch (ExecutionException e) {
-            	Logger.error(LogCategories.IMAGE, e);
+            	Logger.error(e);
             }
         }
     }

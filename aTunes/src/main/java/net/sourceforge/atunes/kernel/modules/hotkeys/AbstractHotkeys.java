@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.modules.hotkeys;
 import java.lang.reflect.Constructor;
 
 import net.sourceforge.atunes.kernel.OsManager;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
 public abstract class AbstractHotkeys {
@@ -61,7 +60,7 @@ public abstract class AbstractHotkeys {
                 return null;
             }
         } catch (Throwable e) {
-            Logger.info(LogCategories.HOTKEYS, "No hotkeys supported");
+            Logger.info("No hotkeys supported");
             return null;
         }
     }

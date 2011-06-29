@@ -77,7 +77,6 @@ import net.sourceforge.atunes.kernel.modules.repository.AudioFilesRemovedListene
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.LocalAudioObject;
@@ -108,9 +107,9 @@ final class NavigationController extends AbstractController implements AudioFile
 			            getExtendedToolTip().setImage(get());
 			        }
 			    } catch (InterruptedException e) {
-			        Logger.error(LogCategories.IMAGE, e);
+			        Logger.error(e);
 			    } catch (ExecutionException e) {
-			        Logger.error(LogCategories.IMAGE, e);
+			        Logger.error(e);
 			    }
 			}
 		}

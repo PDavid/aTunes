@@ -44,7 +44,6 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
 import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryLoader;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.LocalAudioObject;
@@ -80,7 +79,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
             internalDataFlavor = new DataFlavor(TransferableList.mimeType);
             uriListFlavor = new DataFlavor(URI_LIST_MIME_TYPE);
         } catch (ClassNotFoundException e) {
-            Logger.error(LogCategories.DESKTOP, e);
+            Logger.error(e);
         }
     }
 
@@ -106,7 +105,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
 
                 return true;
             } catch (Exception e) {
-                Logger.error(LogCategories.DESKTOP, e);
+                Logger.error(e);
             }
 
             support.setShowDropLocation(true);
@@ -210,7 +209,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
                 GuiHandler.getInstance().getPlayListTable().getSelectionModel().addSelectionInterval(dropRow, dropRow + audioObjectsToAdd.size() - 1);
             }
         } catch (Exception e) {
-            Logger.internalError(e);
+            Logger.error(e);
         }
 
         return false;
@@ -280,9 +279,9 @@ public class PlayListTableTransferHandler extends TransferHandler {
                 File file = new File(uri);
                 list.add(file);
             } catch (URISyntaxException e) {
-                Logger.error(LogCategories.DESKTOP, e);
+                Logger.error(e);
             } catch (IllegalArgumentException e) {
-                Logger.error(LogCategories.DESKTOP, e);
+                Logger.error(e);
             }
         }
         return list;
@@ -300,12 +299,12 @@ public class PlayListTableTransferHandler extends TransferHandler {
                 files = textURIListToFileList((String) support.getTransferable().getTransferData(uriListFlavor));
             } else if (hasStringFlavor(support.getDataFlavors())) {
                 String str = ((String) support.getTransferable().getTransferData(DataFlavor.stringFlavor));
-                Logger.info(LogCategories.DESKTOP, str);
+                Logger.info(str);
             }
         } catch (UnsupportedFlavorException e) {
-            Logger.error(LogCategories.DESKTOP, e);
+            Logger.error(e);
         } catch (IOException e) {
-            Logger.error(LogCategories.DESKTOP, e);
+            Logger.error(e);
         }
 
         if (files != null && !files.isEmpty()) {

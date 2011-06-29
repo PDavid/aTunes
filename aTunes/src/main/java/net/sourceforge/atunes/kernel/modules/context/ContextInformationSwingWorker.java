@@ -26,7 +26,6 @@ import java.util.concurrent.ExecutionException;
 
 import javax.swing.SwingWorker;
 
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
 /**
@@ -84,9 +83,9 @@ class ContextInformationSwingWorker extends SwingWorker<Map<String, ?>, Void> {
         } catch (CancellationException e) {
             // thrown when cancelled
         } catch (InterruptedException e) {
-            Logger.error(LogCategories.CONTEXT, e);
+            Logger.error(e);
         } catch (ExecutionException e) {
-            Logger.error(LogCategories.CONTEXT, e);
+            Logger.error(e);
         }
     }
 }

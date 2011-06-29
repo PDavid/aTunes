@@ -35,7 +35,6 @@ import javax.swing.filechooser.FileFilter;
 
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.LocalAudioObject;
 
@@ -87,7 +86,7 @@ public final class AudioFilePictureUtils {
                 }
             }
         } catch (Exception e) {
-            Logger.error(LogCategories.IMAGE, e);
+            Logger.error(e);
         }
     }
 
@@ -202,10 +201,10 @@ public final class AudioFilePictureUtils {
             }
             return null;
         } catch (FileNotFoundException e) {
-        	Logger.error(LogCategories.IMAGE, StringUtils.getString("File not found: ", file.getFile().getAbsolutePath()));
+        	Logger.error(StringUtils.getString("File not found: ", file.getFile().getAbsolutePath()));
             return null;
         } catch (Exception e) {
-        	Logger.error(LogCategories.IMAGE, e);
+        	Logger.error(e);
             return null;
         }
     }

@@ -53,7 +53,6 @@ import net.sourceforge.atunes.kernel.modules.tags.TagHandler;
 import net.sourceforge.atunes.kernel.modules.tray.SystemTrayHandler;
 import net.sourceforge.atunes.kernel.modules.updates.UpdateHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 
@@ -159,7 +158,7 @@ public abstract class AbstractHandler implements ApplicationLifeCycleListener,
         try {
 			executorService.awaitTermination(100, TimeUnit.SECONDS);
 		} catch (InterruptedException e) {
-			Logger.error(LogCategories.START, e);
+			Logger.error(e);
 		}
     }
     

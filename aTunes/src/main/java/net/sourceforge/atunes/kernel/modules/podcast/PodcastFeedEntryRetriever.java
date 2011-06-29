@@ -32,7 +32,6 @@ import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.NetworkUtils;
@@ -55,7 +54,7 @@ public class PodcastFeedEntryRetriever implements Runnable {
         public void run() {
             // refresh view
             NavigationHandler.getInstance().refreshView(PodcastNavigationView.class);
-            Logger.info(LogCategories.PODCAST, "Podcast feed entries retrieval done");
+            Logger.info("Podcast feed entries retrieval done");
         }
     }
 
@@ -83,7 +82,7 @@ public class PodcastFeedEntryRetriever implements Runnable {
                     if (feedType != null) {
                         podcastFeed.setFeedType(feedType);
                     } else {
-                        Logger.info(LogCategories.PODCAST, podcastFeed + " is not a rss or atom feed");
+                        Logger.info(podcastFeed + " is not a rss or atom feed");
                         continue;
                     }
 
@@ -108,8 +107,7 @@ public class PodcastFeedEntryRetriever implements Runnable {
                         // Check if audio podcast feed entry
                         Node typeNode = XMLUtils.evaluateXPathExpressionAndReturnNode(feedType.getTypeXPath(), entries.item(i));
                         if (typeNode == null || !typeNode.getTextContent().matches(".*audio.*")) {
-                            Logger.info(LogCategories.PODCAST,
-                                    StringUtils.getString("podcast feed entry is not from type audio: ", (typeNode != null ? typeNode.getTextContent() : "no type node")));
+                            Logger.info(                                    StringUtils.getString("podcast feed entry is not from type audio: ", (typeNode != null ? typeNode.getTextContent() : "no type node")));
                             continue;
                         }
 
@@ -168,7 +166,7 @@ public class PodcastFeedEntryRetriever implements Runnable {
                                     }
                                 } catch (NumberFormatException e) {
                                     duration = 0;
-                                    Logger.info(LogCategories.PODCAST, "could not extract podcast feed entry duration");
+                                    Logger.info("could not extract podcast feed entry duration");
                                 }
                             }
                         }
@@ -182,9 +180,9 @@ public class PodcastFeedEntryRetriever implements Runnable {
 
                 }
             } catch (DOMException e) {
-                Logger.error(LogCategories.PODCAST, StringUtils.getString("Could not retrieve podcast feed entries from ", podcastFeed, ": ", e));
+                Logger.error(StringUtils.getString("Could not retrieve podcast feed entries from ", podcastFeed, ": ", e));
             } catch (IOException e) {
-                Logger.error(LogCategories.PODCAST, StringUtils.getString("Could not retrieve podcast feed entries from ", podcastFeed, ": ", e));
+                Logger.error(StringUtils.getString("Could not retrieve podcast feed entries from ", podcastFeed, ": ", e));
             }
         }
 
@@ -247,7 +245,7 @@ public class PodcastFeedEntryRetriever implements Runnable {
             showMessage(podcastFeedsWithNewEntries);
             refreshView();
         } catch (IOException e) {
-            Logger.error(LogCategories.PODCAST, StringUtils.getString("Could not retrieve podcast feed entries : ", e));
+            Logger.error(StringUtils.getString("Could not retrieve podcast feed entries : ", e));
         }
     }
 }

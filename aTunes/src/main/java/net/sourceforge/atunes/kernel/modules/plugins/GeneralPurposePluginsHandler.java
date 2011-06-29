@@ -26,7 +26,6 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 
@@ -90,7 +89,7 @@ public class GeneralPurposePluginsHandler extends AbstractHandler implements Plu
             // Activate plugin
             instance.activate();
         } catch (PluginSystemException e) {
-            Logger.error(LogCategories.PLUGINS, e);
+            Logger.error(e);
         }
     }
 

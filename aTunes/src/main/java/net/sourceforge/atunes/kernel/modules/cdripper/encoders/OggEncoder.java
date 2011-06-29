@@ -36,7 +36,6 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
 import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
 import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -125,7 +124,7 @@ public class OggEncoder implements Encoder {
 
     @Override
     public boolean encode(File wavFile, File oggFile, String title, int trackNumber, String artist, String composer) {
-        Logger.info(LogCategories.OGGENC, StringUtils.getString("Ogg encoding process started... ", wavFile.getName(), " -> ", oggFile.getName()));
+        Logger.info(StringUtils.getString("Ogg encoding process started... ", wavFile.getName(), " -> ", oggFile.getName()));
         BufferedReader stdInput = null;
         try {
             // Encode the file using oggenc. We could pass the infos for the tag, but 
@@ -175,7 +174,7 @@ public class OggEncoder implements Encoder {
 
             int code = p.waitFor();
             if (code != 0) {
-                Logger.error(LogCategories.OGGENC, StringUtils.getString("Process returned code ", code));
+                Logger.error(StringUtils.getString("Process returned code ", code));
                 return false;
             }
 
@@ -196,17 +195,17 @@ public class OggEncoder implements Encoder {
                 TagModifier.setInfo(audiofile, tag);
 
             } catch (Exception e) {
-                Logger.error(LogCategories.OGGENC, StringUtils.getString("Jaudiotagger: Process execution caused exception ", e));
+                Logger.error(StringUtils.getString("Jaudiotagger: Process execution caused exception ", e));
                 return false;
             }
-            Logger.info(LogCategories.OGGENC, "Encoded ok!!");
+            Logger.info("Encoded ok!!");
             return true;
 
         } catch (IOException e) {
-            Logger.error(LogCategories.OGGENC, StringUtils.getString("Process execution caused exception ", e));
+            Logger.error(StringUtils.getString("Process execution caused exception ", e));
             return false;
         } catch (InterruptedException e) {
-            Logger.error(LogCategories.OGGENC, StringUtils.getString("Process execution caused exception ", e));
+            Logger.error(StringUtils.getString("Process execution caused exception ", e));
             return false;
 		} finally {
             ClosingUtils.close(stdInput);

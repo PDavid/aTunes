@@ -36,7 +36,6 @@ import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.FontBean;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
 import org.commonjukebox.plugins.exceptions.PluginSystemException;
@@ -100,7 +99,7 @@ public final class LookAndFeelSelector implements PluginListener {
         	AbstractLookAndFeel laf = (AbstractLookAndFeel) PluginsHandler.getInstance().getNewInstance(plugin);
             lookAndFeels.put(laf.getName(), laf.getClass());
         } catch (PluginSystemException e) {
-            Logger.error(LogCategories.PLUGINS, e);
+            Logger.error(e);
         }
     }
 
@@ -128,9 +127,9 @@ public final class LookAndFeelSelector implements PluginListener {
 			try {
 				defaultLookAndFeel = defaultLookAndFeelClass.newInstance();
 			} catch (InstantiationException e) {
-				Logger.error(LogCategories.DESKTOP, e);
+				Logger.error(e);
 			} catch (IllegalAccessException e) {
-				Logger.error(LogCategories.DESKTOP, e);
+				Logger.error(e);
 			}
             lookAndFeelBean.setName(defaultLookAndFeel.getName());
             lookAndFeelBean.setSkin(defaultLookAndFeel.getDefaultSkin());
@@ -147,9 +146,9 @@ public final class LookAndFeelSelector implements PluginListener {
         try {
 			currentLookAndFeel = currentLookAndFeelClass.newInstance();
 		} catch (InstantiationException e) {
-			Logger.error(LogCategories.DESKTOP, e);
+			Logger.error(e);
 		} catch (IllegalAccessException e) {
-			Logger.error(LogCategories.DESKTOP, e);
+			Logger.error(e);
 		}
 		
         currentLookAndFeel.initializeLookAndFeel();
@@ -215,9 +214,9 @@ public final class LookAndFeelSelector implements PluginListener {
 			try {
 				lookAndFeel = clazz.newInstance();
 			} catch (InstantiationException e) {
-				Logger.error(LogCategories.DESKTOP, e);
+				Logger.error(e);
 			} catch (IllegalAccessException e) {
-				Logger.error(LogCategories.DESKTOP, e);
+				Logger.error(e);
 			}
     		if (lookAndFeel != null) {
     			return lookAndFeel.getSkins() != null ? lookAndFeel.getSkins() : new ArrayList<String>();
@@ -275,9 +274,9 @@ public final class LookAndFeelSelector implements PluginListener {
     		try {
 				lookAndFeel = clazz.newInstance();
 			} catch (InstantiationException e) {
-				Logger.error(LogCategories.DESKTOP, e);
+				Logger.error(e);
 			} catch (IllegalAccessException e) {
-				Logger.error(LogCategories.DESKTOP, e);
+				Logger.error(e);
 			}
     		if (lookAndFeel != null) {
     			return lookAndFeel.getDefaultSkin();
@@ -293,9 +292,9 @@ public final class LookAndFeelSelector implements PluginListener {
         try {
 			return defaultLookAndFeelClass.newInstance();
 		} catch (InstantiationException e) {
-			Logger.error(LogCategories.DESKTOP, e);
+			Logger.error(e);
 		} catch (IllegalAccessException e) {
-			Logger.error(LogCategories.DESKTOP, e);
+			Logger.error(e);
 		}
 		return null;
     }

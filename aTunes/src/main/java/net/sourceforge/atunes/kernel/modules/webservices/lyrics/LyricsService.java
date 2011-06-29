@@ -34,7 +34,6 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationStateChangeListene
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.AbstractLyricsEngine;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsEngineInfo;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -108,8 +107,8 @@ public final class LyricsService implements ApplicationStateChangeListener {
         
         // Discard stored lyrics containing HTML
         if (lyric != null && lyric.getLyrics().contains("<") && lyric.getLyrics().contains(">")) {
-        	Logger.debug(LogCategories.SERVICE, "Discarding lyrics. Seems to contain some HTML code: ");
-        	Logger.debug(LogCategories.SERVICE, lyric.getLyrics());
+        	Logger.debug("Discarding lyrics. Seems to contain some HTML code: ");
+        	Logger.debug(lyric.getLyrics());
         	lyric = null;
         }
         
@@ -121,9 +120,9 @@ public final class LyricsService implements ApplicationStateChangeListener {
                 while (i < lyricsEngines.size() && (lyric == null || lyric.getLyrics().trim().isEmpty())) {
                     lyric = lyricsEngines.get(i).getLyricsFor(artist, song);
                     if (lyric == null) {
-                    	Logger.info(LogCategories.SERVICE, StringUtils.getString("Lyrics for: ", artist, "/", song, " not found with engine: ", lyricsEngines.get(i).getLyricsProviderName()));
+                    	Logger.info(StringUtils.getString("Lyrics for: ", artist, "/", song, " not found with engine: ", lyricsEngines.get(i).getLyricsProviderName()));
                     } else {
-                    	Logger.debug(LogCategories.SERVICE, "Engine: ", lyricsEngines.get(i).getLyricsProviderName(), " returned lyrics for: ", artist, "/", song, ": ", lyric.getLyrics());
+                    	Logger.debug("Engine: ", lyricsEngines.get(i).getLyricsProviderName(), " returned lyrics for: ", artist, "/", song, ": ", lyric.getLyrics());
                     }
                     
                     i++;
@@ -197,7 +196,7 @@ public final class LyricsService implements ApplicationStateChangeListener {
                 p = Proxy.getProxy(proxy);
             }
         } catch (Exception e) {
-            Logger.error(LogCategories.HANDLER, e);
+            Logger.error(e);
         }
 
         boolean loadDefault = false;
@@ -277,8 +276,8 @@ public final class LyricsService implements ApplicationStateChangeListener {
      * @param e
      */
     private void logLyricEngineLoadError(String lyricEngineClass, Exception e) {
-    	Logger.error(LogCategories.HANDLER, StringUtils.getString("Error loading lyrics engine: ", lyricEngineClass));
-    	Logger.error(LogCategories.HANDLER, StringUtils.getString("Error was: ", e.getClass().getCanonicalName(), " (", e.getMessage(), ")"));
+    	Logger.error(StringUtils.getString("Error loading lyrics engine: ", lyricEngineClass));
+    	Logger.error(StringUtils.getString("Error was: ", e.getClass().getCanonicalName(), " (", e.getMessage(), ")"));
     }
  
     /**
@@ -298,19 +297,19 @@ public final class LyricsService implements ApplicationStateChangeListener {
                     Constructor<?> constructor = clazz.getConstructor(Proxy.class);
                     result.add((AbstractLyricsEngine) constructor.newInstance(p));
                 } catch (ClassNotFoundException e) {
-                    Logger.error(LogCategories.HANDLER, e);
+                    Logger.error(e);
                 } catch (InstantiationException e) {
-                    Logger.error(LogCategories.HANDLER, e);
+                    Logger.error(e);
                 } catch (IllegalAccessException e) {
-                    Logger.error(LogCategories.HANDLER, e);
+                    Logger.error(e);
                 } catch (SecurityException e) {
-                    Logger.error(LogCategories.HANDLER, e);
+                    Logger.error(e);
                 } catch (NoSuchMethodException e) {
-                    Logger.error(LogCategories.HANDLER, e);
+                    Logger.error(e);
                 } catch (IllegalArgumentException e) {
-                    Logger.error(LogCategories.HANDLER, e);
+                    Logger.error(e);
                 } catch (InvocationTargetException e) {
-                    Logger.error(LogCategories.HANDLER, e);
+                    Logger.error(e);
                 }
             }
         }

@@ -26,7 +26,6 @@ import java.security.GeneralSecurityException;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
 import net.sourceforge.atunes.misc.AbstractCache;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
 class PreferencesCache extends AbstractCache {
@@ -47,7 +46,7 @@ class PreferencesCache extends AbstractCache {
         try {
             getCache().removeAll();
         } catch (Exception e) {
-            Logger.info(LogCategories.FILE_DELETE, "Could not delete all files from preferences cache");
+            Logger.info("Could not delete all files from preferences cache");
             exception = true;
         }
         return exception;
@@ -84,7 +83,7 @@ class PreferencesCache extends AbstractCache {
         Element element = new Element(preferenceId.toString(), value != null ? new Preference(value) : value);
         getCache().put(element);
         getCache().flush();
-        Logger.debug(LogCategories.PREFERENCES, "Stored Preference: ", preferenceId, " Value: ", value != null ? value.toString() : null);
+        Logger.debug("Stored Preference: ", preferenceId, " Value: ", value != null ? value.toString() : null);
     }
     
     /**
@@ -117,7 +116,7 @@ class PreferencesCache extends AbstractCache {
         Element element = new Element(preferenceId.toString(), value != null ? new PasswordPreference(value) : null);
         getCache().put(element);
         getCache().flush();
-        Logger.debug(LogCategories.PREFERENCES, "Stored Password Preference: ", preferenceId, " Value: ", value.toString());
+        Logger.debug("Stored Password Preference: ", preferenceId, " Value: ", value.toString());
     }
 
     private Cache getCache() {

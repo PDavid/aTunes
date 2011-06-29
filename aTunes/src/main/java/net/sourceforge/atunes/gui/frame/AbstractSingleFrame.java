@@ -64,7 +64,6 @@ import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.updates.ApplicationVersion;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -208,9 +207,9 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
                         if (ApplicationState.getInstance().isShowSystemTray()) {
                             AbstractSingleFrame.this.setVisible(false);
                         }
-                        Logger.debug(LogCategories.DESKTOP, "Window Iconified");
+                        Logger.debug("Window Iconified");
                     } else if (e.getNewState() != Frame.ICONIFIED) {
-                        Logger.debug(LogCategories.DESKTOP, "Window Deiconified");
+                        Logger.debug("Window Deiconified");
                         PlayListHandler.getInstance().scrollPlayList(false);
                     }
                 }
@@ -620,7 +619,7 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
 		if (actualSizeComponent < minimumSizeComponent) {
 			int newWidth = sp.getOrientation() == JSplitPane.HORIZONTAL_SPLIT ? getSize().width + (minimumSizeComponent - actualSizeComponent) : getSize().width;
 			int newHeight = sp.getOrientation() == JSplitPane.HORIZONTAL_SPLIT ? getSize().height : getSize().height + (minimumSizeComponent - actualSizeComponent);
-			Logger.info(LogCategories.DESKTOP, "Changing window size to : ", newWidth , "x", newHeight);
+			Logger.info("Changing window size to : ", newWidth , "x", newHeight);
 			setSize(newWidth, newHeight);
 		}
 	}

@@ -41,7 +41,6 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -342,7 +341,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
                 engineNames[i] = engines.get(i).getEngineName();
             }
 
-            Logger.info(LogCategories.PLAYER, "List of availables engines : ", ArrayUtils.toString(engineNames));
+            Logger.info("List of availables engines : ", ArrayUtils.toString(engineNames));
 
         	// Get engine of application state (default or selected by user)
             String selectedEngine = ApplicationState.getInstance().getPlayerEngine();
@@ -350,7 +349,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
             // If selected engine is not available then try default engine or another one
             if (!ArrayUtils.contains(engineNames, selectedEngine)) {
 
-                Logger.info(LogCategories.PLAYER, selectedEngine, " is not availaible");
+                Logger.info(selectedEngine, " is not availaible");
                 if (ArrayUtils.contains(engineNames, DEFAULT_ENGINE)) {
                     selectedEngine = DEFAULT_ENGINE;
                 } else {
@@ -364,7 +363,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
             for (AbstractPlayerEngine engine : engines) {
                 if (engine.getEngineName().equals(selectedEngine)) {
                 	playerEngine = engine;
-                    Logger.info(LogCategories.PLAYER, "Engine initialized : " + selectedEngine);
+                    Logger.info("Engine initialized : " + selectedEngine);
                     break;
                 }
             }
@@ -425,11 +424,11 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 
             @Override
             public void run() {
-                Logger.debug(LogCategories.SHUTDOWN_HOOK, "Final check for Zombie player engines");
+                Logger.debug("Final check for Zombie player engines");
                 if (playerEngine != null) {
                 	playerEngine.killPlayer();
                 }
-                Logger.debug(LogCategories.SHUTDOWN_HOOK, "Closing player ...");
+                Logger.debug("Closing player ...");
             }
 
         }));
@@ -452,13 +451,13 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
             PlaybackStateListener listener = (PlaybackStateListener) PluginsHandler.getInstance().getNewInstance(plugin);
             PlaybackStateListeners.addPlaybackStateListener(listener);
         } catch (PluginSystemException e) {
-            Logger.error(LogCategories.PLUGINS, e);
+            Logger.error(e);
         }
     }
 
     @Override
     public void pluginDeactivated(PluginInfo plugin, Collection<Plugin> createdInstances) {
-        Logger.info(LogCategories.PLUGINS, StringUtils.getString("Plugin deactivated: ", plugin.getName(), " (", plugin.getClassName(), ")"));
+        Logger.info(StringUtils.getString("Plugin deactivated: ", plugin.getName(), " (", plugin.getClassName(), ")"));
         for (Plugin createdInstance : createdInstances) {
         	PlaybackStateListeners.removePlaybackStateListener((PlaybackStateListener) createdInstance);
         }
@@ -467,7 +466,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     @Override
     public void playbackStateChanged(PlaybackState newState, AudioObject currentAudioObject) {
         this.playbackState = newState;
-    	Logger.debug(LogCategories.PLAYER, "Playback state changed to:", newState);
+    	Logger.debug("Playback state changed to:", newState);
         
         if (newState == PlaybackState.PLAY_FINISHED || newState == PlaybackState.PLAY_INTERRUPTED || newState == PlaybackState.STOPPED) {
         	if (playerEngine != null && playerEngine.getSubmissionState() == SubmissionState.PENDING && currentAudioObject instanceof AudioFile) {

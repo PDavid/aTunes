@@ -36,7 +36,6 @@ import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -142,7 +141,7 @@ public class SynchronizeDeviceWithPlayListAction extends AbstractAction {
 		            showMessage(false);
 		        }
 		    } catch (Exception e) {
-		        Logger.error(LogCategories.ACTION, e);
+		        Logger.error(e);
 		    }
 		}
 	}

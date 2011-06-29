@@ -53,7 +53,6 @@ import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.LocalAudioObject;
@@ -525,7 +524,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
         // Update play list table
         getPlayListController().refreshPlayList();
 
-        Logger.info(LogCategories.HANDLER, StringUtils.getString(audioObjects.size(), " audio objects added to play list"));
+        Logger.info(StringUtils.getString(audioObjects.size(), " audio objects added to play list"));
     }
 
     public void addToActivePlayList(List<? extends AudioObject> audioObjects) {
@@ -574,7 +573,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
             // Refresh play list
             getPlayListController().refreshPlayList();
 
-            Logger.info(LogCategories.HANDLER, "Play list clear");
+            Logger.info("Play list clear");
         }
 
         // Fire clear event
@@ -841,7 +840,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
             GuiHandler.getInstance().getPlayerControls().setShowTicksAndLabels(false);
         }
         GuiHandler.getInstance().showPlayListInformation(currentPlayList);
-        Logger.info(LogCategories.HANDLER, StringUtils.getString(rows.length, " objects removed from play list"));
+        Logger.info(StringUtils.getString(rows.length, " objects removed from play list"));
     }
 
     /**
@@ -1073,7 +1072,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
 
     public void addToPlaybackHistory(AudioObject object) {
         getCurrentPlayList(false).addToPlaybackHistory(object);
-        Logger.debug(LogCategories.PLAYLIST, "Added to history: ", object.getTitle());
+        Logger.debug("Added to history: ", object.getTitle());
     }
 
     @Override

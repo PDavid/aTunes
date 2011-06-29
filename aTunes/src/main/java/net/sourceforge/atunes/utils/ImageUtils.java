@@ -31,7 +31,6 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
 import org.commonjukebox.plugins.model.PluginApi;
@@ -217,8 +216,8 @@ public final class ImageUtils {
             g.drawImage(image, 0, 0, null);
             g.dispose();
         } catch (IllegalArgumentException e) {
-            Logger.info(LogCategories.IMAGE, "Maybe picture file with wrong ending?");
-            Logger.error(LogCategories.IMAGE, e);
+            Logger.info("Maybe picture file with wrong ending?");
+            Logger.error(e);
             return null;
         }
 

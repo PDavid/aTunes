@@ -43,9 +43,6 @@ public final class Constants {
     /** File containing aTunes log (must be the same as in LOG4J_FILE). */
     public static final String LOG_FILE = "aTunes.log";
 
-    /** File containing extended log properties. */
-    public static final String EXTENDED_LOG_FILE = "/settings/extendedLog.properties";
-
     /** Application Home Page. */
     public static final String APP_WEB = "http://www.atunes.org";
 

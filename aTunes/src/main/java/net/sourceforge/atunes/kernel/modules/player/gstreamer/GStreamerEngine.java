@@ -34,7 +34,6 @@ import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 
@@ -57,7 +56,7 @@ public class GStreamerEngine extends AbstractPlayerEngine {
             playBin = new PlayBin("AudioPlayer");
             playBin.setVideoSink(ElementFactory.make("fakesink", "videosink"));
         } catch (Throwable e) {
-            Logger.error(LogCategories.PLAYER, "GStreamer is not supported");
+            Logger.error("GStreamer is not supported");
         }
 
         remainingTimeRunnable = new Runnable() {
@@ -159,7 +158,7 @@ public class GStreamerEngine extends AbstractPlayerEngine {
             try {
                 playBin.setURI(new URI(audioObjectToPlay.getUrl()));
             } catch (URISyntaxException e) {
-                Logger.error(LogCategories.PLAYER, e);
+                Logger.error(e);
             }
         }
         playBin.getBus().connect(new Bus.EOS() {

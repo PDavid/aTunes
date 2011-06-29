@@ -25,7 +25,6 @@ import java.util.Collection;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
 import org.commonjukebox.plugins.exceptions.PluginSystemException;
@@ -85,7 +84,7 @@ public class ColumnSets implements PluginListener {
                 columnSet.addNewColumn((AbstractColumn) PluginsHandler.getInstance().getNewInstance(plugin));
             }
         } catch (PluginSystemException e) {
-            Logger.error(LogCategories.COLUMNS, e);
+            Logger.error(e);
         }
     }
 

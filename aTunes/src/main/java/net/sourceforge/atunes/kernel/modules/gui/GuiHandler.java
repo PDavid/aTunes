@@ -96,7 +96,6 @@ import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
 import net.sourceforge.atunes.kernel.modules.tray.SystemTrayHandler;
 import net.sourceforge.atunes.kernel.modules.updates.ApplicationVersion;
 import net.sourceforge.atunes.misc.SystemProperties;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
@@ -233,10 +232,10 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
                 try {
                     frame = clazz.newInstance();
                 } catch (InstantiationException e) {
-                    Logger.error(LogCategories.HANDLER, e);
+                    Logger.error(e);
                     constructDefaultFrame();
                 } catch (IllegalAccessException e) {
-                    Logger.error(LogCategories.HANDLER, e);
+                    Logger.error(e);
                     constructDefaultFrame();
                 }
             } else {
@@ -793,7 +792,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
                 }
             });
         } catch (Exception e) {
-            Logger.internalError(e);
+            Logger.error(e);
         }
     }
 
@@ -1089,7 +1088,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      * Start visualization.
      */
     public void startVisualization() {
-        Logger.debug(LogCategories.START, "Starting visualization");
+        Logger.debug("Starting visualization");
 
         if (SystemProperties.IS_JAVA_6_UPDATE_10_OR_LATER) {
             FadingPopupFactory.install();
@@ -1113,7 +1112,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
 
         hideDeviceInfoOnStatusBar();
 
-        Logger.debug(LogCategories.START, "Start visualization done");
+        Logger.debug("Start visualization done");
     }
 
     /**

@@ -56,7 +56,6 @@ import net.sourceforge.atunes.gui.views.dialogs.PluginEditorDialog;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
@@ -234,7 +233,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
                     updatePanel(null);
                 } catch (Exception e1) {
                     GuiHandler.getInstance().showErrorDialog(e1.getMessage());
-                    Logger.error(LogCategories.PLUGINS, e1);
+                    Logger.error(e1);
                 }
             }
         });
@@ -246,7 +245,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
         try {
             // if any plugin has been modified then write configuration
             for (PluginInfo plugin : pluginsModified.keySet()) {
-                Logger.debug(LogCategories.PLUGINS, "Writting configuration of plugin: ", plugin.getName());
+                Logger.debug("Writting configuration of plugin: ", plugin.getName());
 
                 // Avoid plugins throw exceptions when setting configuration
                 try {
@@ -272,9 +271,9 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
                 restartNeeded = restartNeeded || PluginsHandler.getInstance().pluginNeedsRestart(plugin);
             }
         } catch (PluginSystemException e) {
-            Logger.error(LogCategories.PLUGINS, e);
+            Logger.error(e);
             if (e.getCause() != null) {
-                Logger.error(LogCategories.PLUGINS, e.getCause());
+                Logger.error(e.getCause());
             }
         }
         return restartNeeded;
@@ -470,7 +469,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
             try {
                 return PluginsHandler.getInstance().getConfiguration(this.plugins.get(row));
             } catch (PluginSystemException e) {
-                Logger.error(LogCategories.PLUGINS, e);
+                Logger.error(e);
                 return null;
             }
         }

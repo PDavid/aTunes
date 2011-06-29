@@ -29,7 +29,6 @@ import java.util.Map.Entry;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
 /**
@@ -77,7 +76,7 @@ public class PodcastFeedEntryDownloadChecker implements Runnable {
         } catch (InterruptedException e) {
             return;
         } catch (InvocationTargetException e) {
-            Logger.error(LogCategories.PODCAST, e);
+            Logger.error(e);
         }
         final Map<PodcastFeedEntry, Boolean> downloaded = new HashMap<PodcastFeedEntry, Boolean>();
         for (Entry<PodcastFeedEntry, File> entry : files.entrySet()) {

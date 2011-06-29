@@ -44,7 +44,6 @@ import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineManager;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -254,9 +253,9 @@ public abstract class OperatingSystemAdapter {
 		try {
 			p.load(new FileInputStream(getOsPropertiesFileName()));
 		} catch (FileNotFoundException e) {
-			Logger.error(LogCategories.OS, e.getMessage());
+			Logger.error(e.getMessage());
 		} catch (IOException e) {
-			Logger.error(LogCategories.OS, e);
+			Logger.error(e);
 		}
 		return p;
 	}
@@ -269,9 +268,9 @@ public abstract class OperatingSystemAdapter {
 		try {
 			p.store(new FileOutputStream(getOsPropertiesFileName()), null);
 		} catch (FileNotFoundException e) {
-			Logger.error(LogCategories.OS, e);
+			Logger.error(e);
 		} catch (IOException e) {
-			Logger.error(LogCategories.OS, e);
+			Logger.error(e);
 		}
 	}
 	

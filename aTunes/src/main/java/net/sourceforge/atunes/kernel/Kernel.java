@@ -40,7 +40,6 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.TempFolder;
 import net.sourceforge.atunes.misc.Timer;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -81,7 +80,7 @@ public class Kernel {
      *            the args
      */
     public static void startKernel(final List<String> args) {
-        Logger.debug(LogCategories.START, "Starting Kernel");
+        Logger.debug("Starting Kernel");
         
         timer = new Timer();
         timer.start();
@@ -92,9 +91,9 @@ public class Kernel {
         try {
             Proxy.initProxy(Proxy.getProxy(ApplicationState.getInstance().getProxy()));
         } catch (UnknownHostException e) {
-            Logger.error(LogCategories.START, e);
+            Logger.error(e);
         } catch (IOException e) {
-            Logger.error(LogCategories.START, e);
+            Logger.error(e);
         }
 
 
@@ -115,11 +114,11 @@ public class Kernel {
                 }
             });
         } catch (InvocationTargetException e) {
-            Logger.error(LogCategories.START, e);
-            Logger.error(LogCategories.START, e.getCause());
+            Logger.error(e);
+            Logger.error(e.getCause());
         } catch (InterruptedException e) {
-            Logger.error(LogCategories.START, e);
-            Logger.error(LogCategories.START, e.getCause());
+            Logger.error(e);
+            Logger.error(e.getCause());
 		}
 
         // Register and initialize handlers
@@ -142,7 +141,7 @@ public class Kernel {
         		startCreation();
 
             	callActionsAfterStart(PlayListIO.getAudioObjectsFromFileNamesList(songs));
-            	Logger.info(LogCategories.START, StringUtils.getString("Application started (", StringUtils.toString(timer.stop(), 3), " seconds)"));
+            	Logger.info(StringUtils.getString("Application started (", StringUtils.toString(timer.stop(), 3), " seconds)"));
             	timer = null;
         	}
         });
@@ -158,13 +157,13 @@ public class Kernel {
         Timer timer = new Timer();
         try {
             timer.start();
-            Logger.info(LogCategories.END, StringUtils.getString("Closing ", Constants.APP_NAME, " ", Constants.VERSION.toString()));
+            Logger.info(StringUtils.getString("Closing ", Constants.APP_NAME, " ", Constants.VERSION.toString()));
             TempFolder.getInstance().removeAllFiles();
             
             ApplicationLifeCycleListeners.applicationFinish();
         } finally {
-            Logger.info(LogCategories.END, StringUtils.getString("Application finished (", StringUtils.toString(timer.stop(), 3), " seconds)"));
-            Logger.info(LogCategories.END, "Goodbye!!");
+            Logger.info(StringUtils.getString("Application finished (", StringUtils.toString(timer.stop(), 3), " seconds)"));
+            Logger.info("Goodbye!!");
             // Exit normally
             System.exit(0);
         }
@@ -182,7 +181,7 @@ public class Kernel {
      * Creates all objects of aTunes: visual objects, controllers, and handlers.
      */
     static void startCreation() {
-        Logger.debug(LogCategories.START, "Starting components");
+        Logger.debug("Starting components");
         GuiHandler.getInstance().startVisualization();
         GuiHandler.getInstance().setTitleBar("");
     }
@@ -204,7 +203,7 @@ public class Kernel {
             pb.start();
 
         } catch (IOException e) {
-            Logger.error(LogCategories.KERNEL, e);
+            Logger.error(e);
         } finally {
             // Exit normally
             System.exit(0);

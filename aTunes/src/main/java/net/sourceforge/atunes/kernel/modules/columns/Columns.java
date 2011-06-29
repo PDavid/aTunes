@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.modules.columns;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
 /**
@@ -89,7 +88,7 @@ public final class Columns {
                     result.add(column);
                 }
             } catch (Exception e) {
-                Logger.error(LogCategories.COLUMNS, e);
+                Logger.error(e);
             }
         }
 

@@ -24,7 +24,6 @@ import java.util.Locale;
 
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -48,9 +47,9 @@ final class LanguageSelector {
         LocaleBean localeBean = ApplicationState.getInstance().getLocale();
         if (localeBean != null) {
             I18nUtils.setLocale(localeBean.getLocale());
-            Logger.info(LogCategories.START, StringUtils.getString("Setting language: ", localeBean.getLocale()));
+            Logger.info(StringUtils.getString("Setting language: ", localeBean.getLocale()));
         } else {
-            Logger.info(LogCategories.START, "Language not configured; using default language");
+            Logger.info("Language not configured; using default language");
             I18nUtils.setLocale(null);
             ApplicationState.getInstance().setLocale(new LocaleBean(I18nUtils.getSelectedLocale()));
         }

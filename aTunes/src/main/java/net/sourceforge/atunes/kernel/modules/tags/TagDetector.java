@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.modules.tags;
 import java.io.IOException;
 
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
 import org.jaudiotagger.audio.AudioHeader;
@@ -51,22 +50,22 @@ public final class TagDetector {
      * @return reference to jaudiotagger file
      */
     public static void readInformation(AudioFile file, boolean readAudioProperties) {
-        Logger.debug(LogCategories.FILE_READ, file);
+        Logger.debug(file);
 
         // Read file
     	org.jaudiotagger.audio.AudioFile f = null;
 		try {
 			f = org.jaudiotagger.audio.AudioFileIO.read(file.getFile());
 		} catch (CannotReadException e) {
-            Logger.error(LogCategories.FILE_READ, e);
+            Logger.error(e);
 		} catch (IOException e) {
-			Logger.error(LogCategories.FILE_READ, e);
+			Logger.error(e);
 		} catch (TagException e) {
-			Logger.error(LogCategories.FILE_READ, e);
+			Logger.error(e);
 		} catch (ReadOnlyFileException e) {
-			Logger.error(LogCategories.FILE_READ, e);
+			Logger.error(e);
 		} catch (InvalidAudioFrameException e) {
-			Logger.error(LogCategories.FILE_READ, e);
+			Logger.error(e);
 		}
     	
 		if (f != null) {
@@ -81,7 +80,7 @@ public final class TagDetector {
 					}
 				}
 			} catch (Exception e) {
-				Logger.error(LogCategories.FILE_READ, e.getMessage());
+				Logger.error(e.getMessage());
 			}
 
 			// Set tag
@@ -91,7 +90,7 @@ public final class TagDetector {
 					file.setTag(new DefaultTag(tag));
 				}
 			} catch (Exception e) {
-				Logger.error(LogCategories.FILE_READ, e.getMessage());
+				Logger.error(e.getMessage());
 			}
 		}
     }

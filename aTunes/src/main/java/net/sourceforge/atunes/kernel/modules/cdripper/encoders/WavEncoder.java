@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.modules.cdripper.encoders;
 import java.io.File;
 
 import net.sourceforge.atunes.kernel.modules.cdripper.ProgressListener;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -55,14 +54,14 @@ public class WavEncoder implements Encoder {
      */
     @Override
     public boolean encode(File wavFile, File wavFile2, String title, int trackNumber, String artists, String composer) {
-        Logger.info(LogCategories.WAV, StringUtils.getString("Wav encoding started... ", wavFile.getName(), " -> ", wavFile2.getName()));
+        Logger.info(StringUtils.getString("Wav encoding started... ", wavFile.getName(), " -> ", wavFile2.getName()));
         try {
             wavFile.renameTo(wavFile2);
-            Logger.info(LogCategories.WAV, "Renamed ok!!");
+            Logger.info("Renamed ok!!");
             return true;
 
         } catch (Exception e) {
-            Logger.error(LogCategories.WAV, StringUtils.getString("Exception ", e));
+            Logger.error(StringUtils.getString("Exception ", e));
             return false;
         }
     }

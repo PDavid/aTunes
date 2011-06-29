@@ -120,7 +120,7 @@ public class PlayListToDeviceDragAndDropListener implements DropTargetListener {
                     }
                 }
             } catch (Exception e) {
-                Logger.internalError(e);
+                Logger.error(e);
             }
             dtde.getDropTargetContext().dropComplete(true);
         }

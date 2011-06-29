@@ -27,7 +27,6 @@ import java.util.concurrent.TimeUnit;
 
 import net.sourceforge.atunes.kernel.DeviceListeners;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
 final class DeviceMonitor {
@@ -67,7 +66,7 @@ final class DeviceMonitor {
 
         File deviceLocationFile = new File(DeviceHandler.getInstance().getDeviceLocation());
         if (!deviceLocationFile.exists()) {
-            Logger.info(LogCategories.PROCESS, "Device disconnected");
+            Logger.info("Device disconnected");
             DeviceListeners.deviceDisconnected(deviceLocationFile.getAbsolutePath());
             return true;
         }
@@ -83,7 +82,7 @@ final class DeviceMonitor {
         if (deviceLocation != null && !deviceLocation.equals("")) {
             File deviceLocationFile = new File(deviceLocation);
             if (!DeviceHandler.getInstance().isDeviceConnected() && deviceLocationFile.exists()) {
-            	Logger.info(LogCategories.PROCESS, "Device connected");
+            	Logger.info("Device connected");
             	DeviceListeners.deviceConnected(deviceLocationFile.getAbsolutePath());
             	return true;
             }

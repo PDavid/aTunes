@@ -31,7 +31,6 @@ import java.util.Map;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.kernel.modules.repository.exception.InconsistentRepositoryException;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
 public class Repository implements Serializable {
@@ -273,7 +272,7 @@ public class Repository implements Serializable {
 			this.repository = repository;
 			this.listener = listener;
 			this.pending = true;
-			Logger.debug(LogCategories.REPOSITORY, "Creating new repository transaction: ", new Date().toString());
+			Logger.debug("Creating new repository transaction: ", new Date().toString());
 		}
 		
 		public void finishTransaction() {
@@ -281,7 +280,7 @@ public class Repository implements Serializable {
 				listener.repositoryChanged(this.repository);
 			}
 			this.pending = false;
-			Logger.debug(LogCategories.REPOSITORY, "Finished repository transaction: ", new Date().toString());
+			Logger.debug("Finished repository transaction: ", new Date().toString());
 		}
 		
 		public boolean isPending() {

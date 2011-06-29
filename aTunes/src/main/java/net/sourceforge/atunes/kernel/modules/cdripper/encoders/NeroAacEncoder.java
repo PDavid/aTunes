@@ -34,7 +34,6 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
 import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
 import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -113,7 +112,7 @@ public class NeroAacEncoder implements Encoder {
      */
     @Override
     public boolean encode(File wavFile, File mp4File, String title, int trackNumber, String artist, String composer) {
-        Logger.info(LogCategories.NERO_AAC, StringUtils.getString("Mp4 encoding process started... ", wavFile.getName(), " -> ", mp4File.getName()));
+        Logger.info(StringUtils.getString("Mp4 encoding process started... ", wavFile.getName(), " -> ", mp4File.getName()));
         BufferedReader stdInput = null;
         try {
             List<String> command = new ArrayList<String>();
@@ -142,7 +141,7 @@ public class NeroAacEncoder implements Encoder {
             }
             int code = p.waitFor();
             if (code != 0) {
-                Logger.error(LogCategories.FAAC, StringUtils.getString("Process returned code ", code));
+                Logger.error(StringUtils.getString("Process returned code ", code));
                 return false;
             }
 
@@ -163,15 +162,15 @@ public class NeroAacEncoder implements Encoder {
                 TagModifier.setInfo(audiofile, tag);
 
             } catch (Exception e) {
-                Logger.error(LogCategories.NERO_AAC, StringUtils.getString("Jaudiotagger: Process execution caused exception ", e));
+                Logger.error(StringUtils.getString("Jaudiotagger: Process execution caused exception ", e));
                 return false;
             }
 
-            Logger.info(LogCategories.NERO_AAC, "Encoded ok!!");
+            Logger.info("Encoded ok!!");
             return true;
 
         } catch (Exception e) {
-            Logger.error(LogCategories.NERO_AAC, StringUtils.getString("Process execution caused exception ", e));
+            Logger.error(StringUtils.getString("Process execution caused exception ", e));
             return false;
         } finally {
             ClosingUtils.close(stdInput);

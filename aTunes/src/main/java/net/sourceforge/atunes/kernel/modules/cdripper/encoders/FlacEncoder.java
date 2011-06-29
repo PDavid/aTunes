@@ -35,7 +35,6 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
 import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
 import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -120,7 +119,7 @@ public class FlacEncoder implements Encoder {
      */
     @Override
     public boolean encode(File wavFile, File oggFile, String title, int trackNumber, String artist, String composer) {
-        Logger.info(LogCategories.FLAC, StringUtils.getString("Flac encoding process started... ", wavFile.getName(), " -> ", oggFile.getName()));
+        Logger.info(StringUtils.getString("Flac encoding process started... ", wavFile.getName(), " -> ", oggFile.getName()));
         BufferedReader stdInput = null;
         try {
             // Encode the file using FLAC. We could pass the infos for the tag, but 
@@ -165,7 +164,7 @@ public class FlacEncoder implements Encoder {
 
             int code = process.waitFor();
             if (code != 0) {
-                Logger.error(LogCategories.FLAC, StringUtils.getString("Process returned code ", code));
+                Logger.error(StringUtils.getString("Process returned code ", code));
                 return false;
             }
 
@@ -186,14 +185,14 @@ public class FlacEncoder implements Encoder {
                 TagModifier.setInfo(audiofile, tag);
 
             } catch (Exception e) {
-                Logger.error(LogCategories.FLAC, StringUtils.getString("Jaudiotagger: Process execution caused exception ", e));
+                Logger.error(StringUtils.getString("Jaudiotagger: Process execution caused exception ", e));
                 return false;
             }
-            Logger.info(LogCategories.FLAC, "Encoded ok!!");
+            Logger.info("Encoded ok!!");
             return true;
 
         } catch (IOException e) {
-            Logger.error(LogCategories.FLAC, StringUtils.getString("Process execution caused exception ", e));
+            Logger.error(StringUtils.getString("Process execution caused exception ", e));
             return false;
         } catch (InterruptedException e) {
         	return false;

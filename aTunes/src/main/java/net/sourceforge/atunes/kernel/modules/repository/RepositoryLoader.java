@@ -40,7 +40,6 @@ import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
 import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
 import net.sourceforge.atunes.misc.Timer;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
@@ -319,7 +318,7 @@ public class RepositoryLoader extends Thread {
 			}
 
 		} catch (Exception e) {
-			Logger.error(LogCategories.FILE_READ, e.getMessage());
+			Logger.error(e.getMessage());
 		}
 	}
 
@@ -379,7 +378,7 @@ public class RepositoryLoader extends Thread {
 	 * Interrupt load.
 	 */
 	void interruptLoad() {
-		Logger.info(LogCategories.REPOSITORY, "Load interrupted");
+		Logger.info("Load interrupted");
 		interrupt = true;
 	}
 
@@ -583,7 +582,7 @@ public class RepositoryLoader extends Thread {
 
 	@Override
 	public void run() {
-		Logger.info(LogCategories.REPOSITORY, "Starting repository read");
+		Logger.info("Starting repository read");
 		
 		RepositoryHandler.getInstance().startTransaction();
 		
@@ -592,16 +591,14 @@ public class RepositoryLoader extends Thread {
 		if (!folders.isEmpty()) {
 			loadRepository();
 		} else {
-			Logger.error(LogCategories.REPOSITORY,
-					"No folders selected for repository");
+			Logger.error(					"No folders selected for repository");
 		}
 		if (!interrupt) {
 			double time = timer.stop();
 			long files = repository.countFiles();
 			double averageFileTime = time / files;
 			Logger.info(
-					LogCategories.REPOSITORY,
-					StringUtils.getString("Read repository process DONE (",
+										StringUtils.getString("Read repository process DONE (",
 							files, " files, ", time, " seconds, ", StringUtils
 									.toString(averageFileTime, 4),
 							" seconds / file)"));
@@ -733,7 +730,7 @@ public class RepositoryLoader extends Thread {
 		}
 		// File is on a device
 		else if (DeviceHandler.getInstance().isDevicePath(file.getUrl())) {
-			Logger.info(LogCategories.REPOSITORY, "Deleted file ", file, " from device");
+			Logger.info("Deleted file ", file, " from device");
 		}
 	}
 
@@ -799,10 +796,10 @@ public class RepositoryLoader extends Thread {
 			List<AudioObject> aos = folder.getAudioObjects();
 			for (AudioObject ao : aos) {
 				if (((LocalAudioObject)ao).getFile().exists()) {
-					Logger.debug(LogCategories.REPOSITORY, "Refreshing file: ", ((LocalAudioObject)ao).getFile().getAbsolutePath());
+					Logger.debug("Refreshing file: ", ((LocalAudioObject)ao).getFile().getAbsolutePath());
 					refreshFile(repository, (LocalAudioObject) ao);
 				} else {
-					Logger.debug(LogCategories.REPOSITORY, "Removing file: ", ((LocalAudioObject)ao).getFile().getAbsolutePath());
+					Logger.debug("Removing file: ", ((LocalAudioObject)ao).getFile().getAbsolutePath());
 					RepositoryHandler.getInstance().remove(Collections.singletonList((LocalAudioObject)ao));
 				}
 			}
@@ -811,7 +808,7 @@ public class RepositoryLoader extends Thread {
 			List<LocalAudioObject> allObjects = getSongsForFolder(folder.getFolderPath(), null);
 			for (LocalAudioObject ao : allObjects) {
 				if (repository.getFile(ao.getFile().getAbsolutePath()) == null) {
-					Logger.debug(LogCategories.REPOSITORY, "Adding file: ", ao.getFile().getAbsolutePath());
+					Logger.debug("Adding file: ", ao.getFile().getAbsolutePath());
 					addToRepository(repository, Collections.singletonList(ao.getFile()));
 				}
 			}

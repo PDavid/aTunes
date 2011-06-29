@@ -35,7 +35,6 @@ import javax.swing.JSlider;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
 /**
@@ -85,9 +84,9 @@ public class Equalizer {
             }
 
         } catch (IOException ioe) {
-            Logger.error(LogCategories.PLAYER, ioe);
+            Logger.error(ioe);
         } catch (NumberFormatException nfe) {
-            Logger.error(LogCategories.PLAYER, nfe);
+            Logger.error(nfe);
         }
 
         return result;

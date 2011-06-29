@@ -38,7 +38,6 @@ import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.LocalAudioObject;
@@ -102,7 +101,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
         		return false;
         	}
     	} catch (Exception e) {
-    		Logger.error(LogCategories.PLAYER, e);
+    		Logger.error(e);
     		return false;
     	} finally {
     		ClosingUtils.close(in);
@@ -232,7 +231,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
     @Override
     public void finishPlayer() {
         stopCurrentAudioObject(false);
-        Logger.info(LogCategories.PLAYER, "Stopping player");
+        Logger.info("Stopping player");
     }
 
     @Override
@@ -250,7 +249,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
         // MPlayer bug: paused, demute, muted -> starts playing
         if (isPaused() && !mute) {
             commandWriter.sendPauseCommand();
-            Logger.debug(LogCategories.PLAYER, "MPlayer bug (paused, demute, muted -> starts playing) workaround applied");
+            Logger.debug("MPlayer bug (paused, demute, muted -> starts playing) workaround applied");
         }
     }
 
@@ -366,7 +365,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
                     + ":" + equalizer[7] + ":" + equalizer[8] + ":" + equalizer[9]);
         }
 
-        Logger.debug(LogCategories.PLAYER, (Object[]) command.toArray(new String[command.size()]));
+        Logger.debug((Object[]) command.toArray(new String[command.size()]));
         return pb.command(command).start();
     }
 

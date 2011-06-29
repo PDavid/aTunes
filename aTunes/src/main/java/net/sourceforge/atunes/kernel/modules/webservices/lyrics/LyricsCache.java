@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.modules.webservices.lyrics;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
 import net.sourceforge.atunes.misc.AbstractCache;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
 public class LyricsCache extends AbstractCache {
@@ -44,7 +43,7 @@ public class LyricsCache extends AbstractCache {
             getCache().removeAll();
             getCache().flush();
         } catch (Exception e) {
-            Logger.info(LogCategories.FILE_DELETE, "Could not delete all files from lyrics cache");
+            Logger.info("Could not delete all files from lyrics cache");
             return true;
         }
         return false;
@@ -85,7 +84,7 @@ public class LyricsCache extends AbstractCache {
         }
         Element element = new Element(id(artist, title), lyric);
         getCache().put(element);
-        Logger.debug(LogCategories.CACHE, "Stored lyric for ", title);
+        Logger.debug("Stored lyric for ", title);
     }
 
     private static String id(String artist, String title) {
