@@ -64,7 +64,7 @@ public final class SearchResultsDialog extends CustomDialog {
      *            the owner
      */
     public SearchResultsDialog(JFrame owner) {
-        super(owner, GuiUtils.getComponentWidthForResolution(1280, 900), 600);
+        super(owner, GuiUtils.getComponentWidthForResolution(0.75f), GuiUtils.getComponentHeightForResolution(0.75f));
         setResizable(true);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(I18nUtils.getString("SEARCH_RESULTS"));

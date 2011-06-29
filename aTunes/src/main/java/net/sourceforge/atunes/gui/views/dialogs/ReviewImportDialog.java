@@ -77,7 +77,7 @@ public final class ReviewImportDialog extends AbstractCustomModalDialog {
      * Instantiates a new ReviewImportDialog
      */
     public ReviewImportDialog(JFrame owner) {
-        super(owner, GuiUtils.getComponentWidthForResolution(1280, 1200), GuiUtils.getComponentHeightForResolution(1024, 700), true);
+        super(owner, GuiUtils.getComponentWidthForResolution(0.80f), GuiUtils.getComponentHeightForResolution(0.75f), true);
         setTitle(I18nUtils.getString("REVIEW_TAGS"));
         setContent();
         GuiUtils.applyComponentOrientation(this);
