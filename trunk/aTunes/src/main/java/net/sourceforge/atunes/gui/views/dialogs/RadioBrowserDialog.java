@@ -68,7 +68,7 @@ public final class RadioBrowserDialog extends CustomFrame {
      * Instantiates a new radio browser dialog.
      */
     public RadioBrowserDialog(Component owner) {
-        super(I18nUtils.getString("RADIO_BROWSER"), GuiUtils.getComponentWidthForResolution(1280, 800), GuiUtils.getComponentHeightForResolution(1024, 700), owner);
+        super(I18nUtils.getString("RADIO_BROWSER"), GuiUtils.getComponentWidthForResolution(0.75f), GuiUtils.getComponentHeightForResolution(0.75f), owner);
         setContent();
         GuiUtils.applyComponentOrientation(this);
         enableCloseActionWithEscapeKey();

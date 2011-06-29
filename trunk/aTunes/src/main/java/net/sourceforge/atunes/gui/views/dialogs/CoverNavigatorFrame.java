@@ -58,7 +58,7 @@ public final class CoverNavigatorFrame extends CustomFrame {
      *            the artists
      */
     public CoverNavigatorFrame(List<Artist> artists, Component owner) {
-        super(I18nUtils.getString("COVER_NAVIGATOR"), GuiUtils.getComponentWidthForResolution(1280, 850), GuiUtils.getComponentHeightForResolution(1024, 650), owner);
+        super(I18nUtils.getString("COVER_NAVIGATOR"), GuiUtils.getComponentWidthForResolution(0.75f), GuiUtils.getComponentHeightForResolution(0.75f), owner);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setContent(artists);
         GuiUtils.applyComponentOrientation(this);
