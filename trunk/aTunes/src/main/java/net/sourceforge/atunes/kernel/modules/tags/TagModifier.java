@@ -32,7 +32,6 @@ import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Format;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -264,7 +263,7 @@ public final class TagModifier {
                 try {
                     newTag.deleteArtworkField();
                 } catch (KeyNotFoundException e) {
-                	Logger.error(LogCategories.IMAGE, StringUtils.getString("Could not delte artwork field. File: ", file.getUrl(), " Error: ", e));
+                	Logger.error(StringUtils.getString("Could not delte artwork field. File: ", file.getUrl(), " Error: ", e));
                 }
 
                 if (cover != null) {
@@ -464,8 +463,8 @@ public final class TagModifier {
      * @param e
      */
     private static final void reportWriteError(LocalAudioObject file, Exception e) {
-        Logger.error(LogCategories.FILE_WRITE, StringUtils.getString("Could not edit tag. File: ", file.getUrl(), " Error: ", e));
-        Logger.error(LogCategories.FILE_WRITE, e);
+        Logger.error(StringUtils.getString("Could not edit tag. File: ", file.getUrl(), " Error: ", e));
+        Logger.error(e);
     }
     
     /**
@@ -475,7 +474,7 @@ public final class TagModifier {
      * @param fieldValue
      */
     private static final void reportWriteFieldError(LocalAudioObject file, FieldKey fieldKey, String fieldValue, Exception e) {
-    	Logger.error(LogCategories.FILE_WRITE, StringUtils.getString("Could not edit tag field ", fieldKey.name(), " with value \"", fieldValue, "\" for file: ", file.getUrl(), " Error: ", e));
+    	Logger.error(StringUtils.getString("Could not edit tag field ", fieldKey.name(), " with value \"", fieldValue, "\" for file: ", file.getUrl(), " Error: ", e));
     }
 
     /**

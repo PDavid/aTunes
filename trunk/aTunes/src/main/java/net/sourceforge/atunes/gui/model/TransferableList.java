@@ -69,7 +69,7 @@ public final class TransferableList<T> implements Transferable {
         try {
             flavors[0] = new DataFlavor(mimeType);
         } catch (ClassNotFoundException e) {
-            Logger.internalError(e);
+            Logger.error(e);
         }
         return flavors;
     }

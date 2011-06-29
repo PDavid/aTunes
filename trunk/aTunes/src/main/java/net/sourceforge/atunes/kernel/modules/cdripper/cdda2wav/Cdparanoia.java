@@ -33,7 +33,6 @@ import javax.swing.SwingUtilities;
 import net.sourceforge.atunes.kernel.OperatingSystem;
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -87,7 +86,7 @@ public class Cdparanoia extends AbstractCdToWavConverter {
      */
     @Override
     public boolean cdda2wav(int track, File file) {
-        Logger.info(LogCategories.CDPARANOIA, StringUtils.getString("Writing wav file for track ", track, " in file ", file.getName()));
+        Logger.info(StringUtils.getString("Writing wav file for track ", track, " in file ", file.getName()));
         try {
             // fileName = new File(fileName.getName());
             file.getParentFile().mkdirs();
@@ -99,7 +98,7 @@ public class Cdparanoia extends AbstractCdToWavConverter {
             command.add(String.valueOf(track));
             command.add(file.getAbsolutePath());
 
-            Logger.debug(LogCategories.CDPARANOIA, (Object[]) command.toArray(new String[command.size()]));
+            Logger.debug((Object[]) command.toArray(new String[command.size()]));
             setProcess(new ProcessBuilder(command).start());
 
             SwingUtilities.invokeLater(new Runnable() {
@@ -118,17 +117,17 @@ public class Cdparanoia extends AbstractCdToWavConverter {
             });
 
             if (code != 0) {
-                Logger.error(LogCategories.CDPARANOIA, StringUtils.getString("Process returned code ", code));
+                Logger.error(StringUtils.getString("Process returned code ", code));
                 return false;
             }
 
-            Logger.info(LogCategories.CDPARANOIA, "Wav file ok!!");
+            Logger.info("Wav file ok!!");
             return true;
         } catch (InterruptedException e) {
-            Logger.error(LogCategories.CDPARANOIA, StringUtils.getString("Process execution caused exception ", e));
+            Logger.error(StringUtils.getString("Process execution caused exception ", e));
             return false;
         } catch (IOException e) {
-            Logger.error(LogCategories.CDPARANOIA, StringUtils.getString("Process execution caused exception ", e));
+            Logger.error(StringUtils.getString("Process execution caused exception ", e));
             return false;
         }
     }
@@ -143,7 +142,7 @@ public class Cdparanoia extends AbstractCdToWavConverter {
 
     @Override
     public CDInfo retrieveDiscInformation() {
-        Logger.info(LogCategories.CDPARANOIA, "Getting cd information...");
+        Logger.info("Getting cd information...");
 
         try {
             // Prepare cdparanoia commands and execute
@@ -151,7 +150,7 @@ public class Cdparanoia extends AbstractCdToWavConverter {
             command.add(CDPARANOIA_COMMAND_STRING);
             command.add(QUERY);
 
-            Logger.debug(LogCategories.CDPARANOIA, (Object[]) command.toArray(new String[command.size()]));
+            Logger.debug((Object[]) command.toArray(new String[command.size()]));
 
             setProcess(new ProcessBuilder(command).start());
 
@@ -159,7 +158,7 @@ public class Cdparanoia extends AbstractCdToWavConverter {
             boolean cdLoaded = false;
             try {
                 stdInput = new BufferedReader(new InputStreamReader(getProcess().getErrorStream(), "ISO8859_1"));
-                Logger.info(LogCategories.CDPARANOIA, "Trying to read cdparanoia stream");
+                Logger.info("Trying to read cdparanoia stream");
 
                 String s = null;
                 int tracks = 0;
@@ -176,7 +175,7 @@ public class Cdparanoia extends AbstractCdToWavConverter {
                 // read the output from the command
                 int count = 0;
                 while ((s = stdInput.readLine()) != null) {
-                    Logger.info(LogCategories.CDPARANOIA, StringUtils.getString("While loop: ", s));
+                    Logger.info(StringUtils.getString("While loop: ", s));
                     if (s.startsWith("TOTAL")) {
 
                         break;
@@ -225,16 +224,16 @@ public class Cdparanoia extends AbstractCdToWavConverter {
                 getCdInfo().setComposers(composers);
 
             } catch (IOException e) {
-                Logger.error(LogCategories.CDDA2WAV, e);
+                Logger.error(e);
             } finally {
                 ClosingUtils.close(stdInput);
             }
 
-            Logger.info(LogCategories.CDPARANOIA, StringUtils.getString("CD info: ", getCdInfo()));
+            Logger.info(StringUtils.getString("CD info: ", getCdInfo()));
             return getCdInfo();
 
         } catch (Exception e) {
-            Logger.error(LogCategories.CDPARANOIA, e);
+            Logger.error(e);
             return null;
         }
     }

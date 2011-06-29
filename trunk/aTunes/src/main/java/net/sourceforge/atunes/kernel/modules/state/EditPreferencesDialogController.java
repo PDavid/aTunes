@@ -49,7 +49,6 @@ import net.sourceforge.atunes.gui.views.dialogs.editPreferences.RepositoryPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -161,7 +160,7 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
 	    	GuiHandler.getInstance().showIndeterminateProgressDialog(getComponentControlled(), I18nUtils.getString("VALIDATING_PREFERENCES"));
 			worker.get();
 		} catch (InterruptedException e) {
-			Logger.error(LogCategories.PREFERENCES, e);
+			Logger.error(e);
 		} catch (ExecutionException e) {
 			if (e.getCause() instanceof PreferencesValidationException) {
 				throw (PreferencesValidationException) e.getCause();
@@ -181,14 +180,14 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
         // Apply preferences from panels
         for (AbstractPreferencesPanel p : panels) {
         	if (p.isDirty()) {
-        		Logger.debug(LogCategories.PREFERENCES, "Panel ", p.getTitle(), " is dirty");
+        		Logger.debug("Panel ", p.getTitle(), " is dirty");
         		// WARNING: There was a bug when call to applyPreferences was made as second operand of OR due to shortcut
         		// So call method and after do OR (method call as first operand is also valid)
         		// See bug https://sourceforge.net/tracker/?func=detail&aid=2999531&group_id=161929&atid=821812 for more information
         		boolean panelNeedRestart = p.applyPreferences(ApplicationState.getInstance());
         		needRestart = needRestart || panelNeedRestart;
         	} else {
-        		Logger.debug(LogCategories.PREFERENCES, "Panel ", p.getTitle(), " is clean");
+        		Logger.debug("Panel ", p.getTitle(), " is clean");
         	}
         }
         return needRestart;

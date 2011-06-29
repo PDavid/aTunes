@@ -42,7 +42,6 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.gui.views.controls.SimpleTextPane;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -144,7 +143,7 @@ class MacOSXPlayerEngineDialog extends JDialog {
 				String match = null;
 				try {
 					while ((match = br.readLine()) != null) {
-						Logger.debug(LogCategories.OS, match);
+						Logger.debug(match);
 						matches.add(match);
 					}
 				} finally {
@@ -159,9 +158,9 @@ class MacOSXPlayerEngineDialog extends JDialog {
 				try {
 					new MacOSXPlayerEngineMatchSelectionDialog(MacOSXPlayerEngineDialog.this, get()).setVisible(true);
 				} catch (InterruptedException e) {
-					Logger.error(LogCategories.NATIVE, e);
+					Logger.error(e);
 				} catch (ExecutionException e) {
-					Logger.error(LogCategories.NATIVE, e);
+					Logger.error(e);
 				}
 			};
 			

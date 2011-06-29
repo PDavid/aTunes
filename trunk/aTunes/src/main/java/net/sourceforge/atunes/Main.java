@@ -29,7 +29,6 @@ import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.instances.MultipleInstancesHandler;
 import net.sourceforge.atunes.misc.log.Log4jPropertiesLoader;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -50,19 +49,19 @@ public final class Main {
     private static void logProgramProperties(List<String> arguments) {
         // First line: version number
         String firstLine = StringUtils.getString("Starting ", Constants.APP_NAME, " ", Constants.VERSION);
-        Logger.info(LogCategories.START, firstLine);
+        Logger.info(firstLine);
 
         // Second line: Java Virtual Machine Version
-        Logger.info(LogCategories.START, StringUtils.getString("Running in Java Virtual Machine ", System.getProperty("java.version")));
+        Logger.info(StringUtils.getString("Running in Java Virtual Machine ", System.getProperty("java.version")));
 
         // Third line: Application Arguments
-        Logger.info(LogCategories.START, StringUtils.getString("Arguments = ", arguments));
+        Logger.info(StringUtils.getString("Arguments = ", arguments));
 
         // Fourth line: DEBUG mode
-        Logger.info(LogCategories.START, StringUtils.getString("Debug mode = ", Kernel.isDebug()));
+        Logger.info(StringUtils.getString("Debug mode = ", Kernel.isDebug()));
 
         // Fifth line: Execution path
-        Logger.info(LogCategories.START, StringUtils.getString("Execution path = ", OsManager.getWorkingDirectory()));
+        Logger.info(StringUtils.getString("Execution path = ", OsManager.getWorkingDirectory()));
     }
 
     /**
@@ -111,12 +110,12 @@ public final class Main {
                 Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
                     @Override
                     public void uncaughtException(Thread t, Throwable e) {
-                        Logger.error(LogCategories.UNEXPEXTED_ERROR, StringUtils.getString("Thread: ", t.getName()));
-                        Logger.error(LogCategories.UNEXPEXTED_ERROR, e);
+                        Logger.error(StringUtils.getString("Thread: ", t.getName()));
+                        Logger.error(e);
                     }
                 });
             } catch (Throwable t) {
-                Logger.error(LogCategories.UNEXPEXTED_ERROR, t);
+                Logger.error(t);
             }
 
             // WE ARE CLOSING ERROR STREAM!!!

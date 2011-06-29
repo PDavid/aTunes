@@ -263,7 +263,7 @@ public abstract class AbstractLookAndFeel {
     	while (keys.hasMoreElements()) {
     		Object key = keys.nextElement();
     		Object value = UIManager.get (key);
-//    		Logger.debug(LogCategories.DESKTOP, key, " = ", value);
+//    		Logger.debug(key, " = ", value);
     		if (value instanceof FontUIResource) {
     			UIManager.put (key, f);
     		}

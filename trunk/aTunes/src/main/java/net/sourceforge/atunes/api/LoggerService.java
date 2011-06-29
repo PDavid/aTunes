@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.api;
 
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
 import org.commonjukebox.plugins.model.PluginApi;
@@ -40,7 +39,7 @@ public class LoggerService {
      * @param message
      */
     public void info(String message) {
-        Logger.info(LogCategories.PLUGINS, message);
+        Logger.info(message);
     }
 
     /**
@@ -49,7 +48,7 @@ public class LoggerService {
      * @param message
      */
     public void debug(String message) {
-        Logger.debug(LogCategories.PLUGINS, message);
+        Logger.debug(message);
     }
 
     /**
@@ -58,7 +57,7 @@ public class LoggerService {
      * @param message
      */
     public void error(String message) {
-        Logger.error(LogCategories.PLUGINS, message);
+        Logger.error(message);
     }
 
     /**
@@ -67,6 +66,6 @@ public class LoggerService {
      * @param exception
      */
     public void error(Exception exception) {
-        Logger.error(LogCategories.PLUGINS, exception);
+        Logger.error(exception);
     }
 }

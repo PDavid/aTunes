@@ -29,7 +29,6 @@ import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -139,7 +138,7 @@ public final class FilterHandler extends AbstractHandler {
      */
     public void applyFilter(String filter) {
         this.currentFilterText = filter;
-        Logger.debug(LogCategories.HANDLER, "Applying filter: ", filter);
+        Logger.debug("Applying filter: ", filter);
         getFilters().get(selectedFilter).applyFilter(filter);
     }
 

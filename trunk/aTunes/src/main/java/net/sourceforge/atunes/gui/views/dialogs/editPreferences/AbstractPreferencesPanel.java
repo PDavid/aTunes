@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.gui.views.dialogs.editPreferences;
 
-import java.awt.Frame;
 import java.awt.GridBagLayout;
 import java.awt.Window;
 

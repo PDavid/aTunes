@@ -50,7 +50,6 @@ import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.Timer;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -113,9 +112,9 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
             factory.setTemporalPluginRepository(getTemporalPluginsFolder());
 
         } catch (PluginSystemException e) {
-            Logger.error(LogCategories.PLUGINS, e);
+            Logger.error(e);
         } catch (IOException e) {
-            Logger.error(LogCategories.PLUGINS, e);
+            Logger.error(e);
 		}
     }
 
@@ -136,7 +135,7 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
     	if (Kernel.isEnablePlugins()) {
     		initPlugins();
     	} else {
-    		Logger.info(LogCategories.PLUGINS, "Plugins are disabled");
+    		Logger.info("Plugins are disabled");
     	}
     	
     }
@@ -156,11 +155,11 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
         	// PLUGINS MUST BE STARTED WHEN APPLICATION IS STARTED, OTHERWISE THEY CAN TRY TO ACCESS TO COMPONENTS NOT CREATED OR INITIALIZED YET
 			problemsLoadingPlugins = factory.start(getPluginClassNames(), true, "net.sourceforge.atunes");
 		} catch (PluginSystemException e) {
-			Logger.error(LogCategories.PLUGINS, e);
+			Logger.error(e);
 		}
 
-        Logger.info(LogCategories.PLUGINS, StringUtils.getString("Found ", factory.getPlugins().size(), " plugins (", t.stop(), " seconds)"));
-        Logger.info(LogCategories.PLUGINS, StringUtils.getString("Problems loading ", problemsLoadingPlugins != null ? problemsLoadingPlugins.size() : 0, " plugins"));
+        Logger.info(StringUtils.getString("Found ", factory.getPlugins().size(), " plugins (", t.stop(), " seconds)"));
+        Logger.info(StringUtils.getString("Problems loading ", problemsLoadingPlugins != null ? problemsLoadingPlugins.size() : 0, " plugins"));
 
     	if (problemsLoadingPlugins != null) {
     		for (PluginFolder pluginFolder : problemsLoadingPlugins.keySet()) {
@@ -270,7 +269,7 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
         try {
         	return factory.installPlugin(zipFile);
         } catch (PluginSystemException e) {
-            Logger.error(LogCategories.PLUGINS, e);
+            Logger.error(e);
             throw e;
         }
     }
@@ -289,7 +288,7 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
             try {
                 return factory.uninstallPlugin(plugin);
             } catch (PluginSystemException e) {
-                Logger.error(LogCategories.PLUGINS, e);
+                Logger.error(e);
                 throw e;
             }
         }
@@ -310,18 +309,18 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
             	PluginsHandler.getInstance().deactivatePlugin(plugin);
             }
         } catch (PluginSystemException e) {
-            Logger.error(LogCategories.PLUGINS, e);
+            Logger.error(e);
         }
     }
 
     @Override
     public void pluginActivated(PluginInfo plugin) {
-        Logger.info(LogCategories.PLUGINS, StringUtils.getString("Plugin activated: ", plugin.getName(), " (", plugin.getClassName(), ")"));
+        Logger.info(StringUtils.getString("Plugin activated: ", plugin.getName(), " (", plugin.getClassName(), ")"));
     }
 
     @Override
     public void pluginDeactivated(PluginInfo plugin, Collection<Plugin> createdInstances) {
-        Logger.info(LogCategories.PLUGINS, StringUtils.getString("Plugin deactivated: ", plugin.getName(), " (", plugin.getClassName(), ")"));
+        Logger.info(StringUtils.getString("Plugin deactivated: ", plugin.getName(), " (", plugin.getClassName(), ")"));
     }
 
     /**
@@ -403,9 +402,9 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
         @Override
         public void publish(LogRecord record) {
             if (record.getLevel().equals(Level.SEVERE)) {
-                Logger.error(LogCategories.PLUGINS, record.getMessage());
+                Logger.error(record.getMessage());
             } else {
-                Logger.info(LogCategories.PLUGINS, record.getMessage());
+                Logger.info(record.getMessage());
             }
         }
 

@@ -27,7 +27,6 @@ import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
 class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
@@ -82,14 +81,14 @@ class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
                 try {
                     radio.setFrequency(Integer.parseInt(s[1]));
                 } catch (NumberFormatException e) {
-                    Logger.info(LogCategories.PLAYER, "Could not read radio frequency");
+                    Logger.info("Could not read radio frequency");
                 }
             }
             if (s.length >= 7) {
                 try {
                     radio.setBitrate((long) Double.parseDouble(s[6]));
                 } catch (NumberFormatException e) {
-                    Logger.info(LogCategories.PLAYER, "Could not read radio bitrate");
+                    Logger.info("Could not read radio bitrate");
                 }
             }
             PlayListHandler.getInstance().refreshPlayList();
@@ -114,7 +113,7 @@ class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
                 lastArtist = artist;
                 lastTitle = title;
             } catch (IndexOutOfBoundsException e) {
-                Logger.info(LogCategories.PLAYER, "Could not read song info from radio");
+                Logger.info("Could not read song info from radio");
             }
         }
 

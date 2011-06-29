@@ -42,7 +42,6 @@ import net.sourceforge.atunes.kernel.modules.navigator.ViewMode;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.Folder;
@@ -135,9 +134,9 @@ public class RemoveFromDiskAction extends AbstractAction {
                 for (Folder folder : foldersToRemove) {
                     try {
                         FileUtils.deleteDirectory(folder.getFolderPath());
-                        Logger.info(LogCategories.REPOSITORY, StringUtils.getString("Removed folder ", folder));
+                        Logger.info(StringUtils.getString("Removed folder ", folder));
                     } catch (IOException e) {
-                        Logger.info(LogCategories.REPOSITORY, StringUtils.getString("Could not remove folder ", folder, e.getMessage()));
+                        Logger.info(StringUtils.getString("Could not remove folder ", folder, e.getMessage()));
                     }
                 }
                 return null;

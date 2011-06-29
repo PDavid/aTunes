@@ -29,7 +29,6 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.process.AbstractProcess;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
@@ -76,7 +75,7 @@ public class GetCoversProcess extends AbstractProcess {
                     try {
                         ImageUtils.writeImageToFile(albumImage, AudioFilePictureUtils.getFileNameForCover((AudioFile)album.getAudioObjects().get(0)));
                     } catch (IOException e1) {
-                        Logger.error(LogCategories.CONTEXT, StringUtils.getString("Error writing image for artist: ", artist.getName(), " album: ", album.getName(),
+                        Logger.error(StringUtils.getString("Error writing image for artist: ", artist.getName(), " album: ", album.getName(),
                                 " Error: ", e1.getMessage()));
                     }
                 }

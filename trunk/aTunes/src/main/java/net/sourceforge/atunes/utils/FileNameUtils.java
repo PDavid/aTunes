@@ -22,7 +22,6 @@ package net.sourceforge.atunes.utils;
 
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.LocalAudioObject;
 
@@ -67,7 +66,7 @@ public final class FileNameUtils {
             Native.setProtected(true);
             kernel32 = (Kernel32) Native.loadLibrary("Kernel32", Kernel32.class);
         } catch (UnsatisfiedLinkError e) {
-            Logger.debug(LogCategories.NATIVE, "kernel32 not found");
+            Logger.debug("kernel32 not found");
         }
     }
 

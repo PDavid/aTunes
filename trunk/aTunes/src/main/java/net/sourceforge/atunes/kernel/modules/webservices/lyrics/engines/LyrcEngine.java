@@ -28,7 +28,6 @@ import java.util.StringTokenizer;
 
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -153,7 +152,7 @@ public class LyrcEngine extends AbstractLyricsEngine {
 
             return html;
         } catch (Exception e) {
-            Logger.error(LogCategories.SERVICE, StringUtils.getString(e.getClass().getCanonicalName(), " (", e.getMessage(), ")"));
+            Logger.error(StringUtils.getString(e.getClass().getCanonicalName(), " (", e.getMessage(), ")"));
 
             return null;
         }

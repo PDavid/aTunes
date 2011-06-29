@@ -33,7 +33,6 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
 import org.commonjukebox.plugins.model.PluginApi;
@@ -70,9 +69,9 @@ public final class DesktopUtils {
             try {
                 browse(search.getURL(query).toURI());
             } catch (MalformedURLException e) {
-                Logger.error(LogCategories.DESKTOP, e);
+                Logger.error(e);
             } catch (URISyntaxException e) {
-                Logger.error(LogCategories.DESKTOP, e);
+                Logger.error(e);
             }
         }
     }
@@ -97,7 +96,7 @@ public final class DesktopUtils {
                 try {
                     desktop.browse(uri);
                 } catch (IOException e) {
-                    Logger.error(LogCategories.DESKTOP, e);
+                    Logger.error(e);
                 }
             }
         });
@@ -114,9 +113,9 @@ public final class DesktopUtils {
             try {
                 openURI(new URL(url).toURI());
             } catch (MalformedURLException e) {
-                Logger.error(LogCategories.DESKTOP, e);
+                Logger.error(e);
             } catch (URISyntaxException e) {
-                Logger.error(LogCategories.DESKTOP, e);
+                Logger.error(e);
             }
         }
     }
@@ -132,7 +131,7 @@ public final class DesktopUtils {
             try {
                 openURI(url.toURI());
             } catch (URISyntaxException e) {
-                Logger.error(LogCategories.DESKTOP, e);
+                Logger.error(e);
             }
         }
     }
@@ -161,7 +160,7 @@ public final class DesktopUtils {
                     try {
                         desktop.open(fileToOpen);
                     } catch (IOException e) {
-                        Logger.error(LogCategories.DESKTOP, e);
+                        Logger.error(e);
                     }
                     return null;
                 }

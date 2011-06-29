@@ -28,7 +28,6 @@ import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Source;
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -69,10 +68,10 @@ public class LyricsDirectoryEngine extends AbstractLyricsEngine {
             
             return lyrics != null && !lyrics.isEmpty() ? new Lyrics(lyrics, sb.toString()) : null;
         } catch (UnknownHostException e) {
-        	Logger.error(LogCategories.SERVICE, StringUtils.getString(e.getClass().getCanonicalName(), " (", e.getMessage(), ")"));
+        	Logger.error(StringUtils.getString(e.getClass().getCanonicalName(), " (", e.getMessage(), ")"));
             return null;
         } catch (IOException e) {
-        	Logger.error(LogCategories.SERVICE, StringUtils.getString(e.getClass().getCanonicalName(), " (", e.getMessage(), ")"));
+        	Logger.error(StringUtils.getString(e.getClass().getCanonicalName(), " (", e.getMessage(), ")"));
             return null;
         }
     }

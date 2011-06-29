@@ -33,7 +33,6 @@ import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
@@ -165,7 +164,7 @@ public final class ContextPanel extends JPanel {
 	 * @param selectedContextTab
 	 */
 	public void setSelectedContextTab(String selectedContextTab) {
-		Logger.debug(LogCategories.CONTEXT, "Setting context view: ", selectedContextTab);
+		Logger.debug("Setting context view: ", selectedContextTab);
 		AbstractContextPanel panel = null;
 		if (selectedContextTab != null) {
 			for (AbstractContextPanel p : panels) {

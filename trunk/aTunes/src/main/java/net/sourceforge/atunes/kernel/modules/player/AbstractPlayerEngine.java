@@ -39,7 +39,6 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.misc.TempFolder;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.LocalAudioObject;
@@ -336,7 +335,7 @@ public abstract class AbstractPlayerEngine {
             try {
                 paused = true;
                 pausePlayback();
-                Logger.info(LogCategories.PLAYER, "Pause");
+                Logger.info("Pause");
                 callPlaybackStateListeners(PlaybackState.PAUSED);
             } catch (Exception e) {
                 handlePlayerEngineError(e);
@@ -350,7 +349,7 @@ public abstract class AbstractPlayerEngine {
                         paused = false;
                         resumePlayback();
                         callPlaybackStateListeners(PlaybackState.RESUMING);
-                        Logger.info(LogCategories.PLAYER, "Resumed paused song");
+                        Logger.info("Resumed paused song");
                     }
                 } else {
                     nextAudioObject = PlayListHandler.getInstance().getCurrentAudioObjectFromVisiblePlayList();
@@ -390,7 +389,7 @@ public abstract class AbstractPlayerEngine {
 
             stopPlayback(userStopped, activateFadeAway);
             callPlaybackStateListeners(PlaybackState.STOPPED);
-            Logger.info(LogCategories.PLAYER, "Stop");
+            Logger.info("Stop");
         } catch (Exception e) {
             handlePlayerEngineError(e);
         }
@@ -443,13 +442,13 @@ public abstract class AbstractPlayerEngine {
         	for (String errorMessage : errorMessages) {
         		sb.append(errorMessage).append(" ");
         	}
-            Logger.info(LogCategories.PLAYER, StringUtils.getString("Playback finished with errors: ", sb.toString()));
+            Logger.info(StringUtils.getString("Playback finished with errors: ", sb.toString()));
 
             boolean ignore = showPlaybackError(errorMessages);
             applyUserSelection(ignore);
 
         } else {
-            Logger.info(LogCategories.PLAYER, "Playback finished");
+            Logger.info("Playback finished");
 
             // Move to the next audio object
             playNextAudioObject(true);
@@ -470,9 +469,9 @@ public abstract class AbstractPlayerEngine {
             try {
                 SwingUtilities.invokeAndWait(r);
             } catch (InterruptedException e) {
-                Logger.error(LogCategories.PLAYER, e);
+                Logger.error(e);
             } catch (InvocationTargetException e) {
-                Logger.error(LogCategories.PLAYER, e);
+                Logger.error(e);
             }
         }
         return r.isIgnore();
@@ -506,7 +505,7 @@ public abstract class AbstractPlayerEngine {
             paused = false;
             if (!PlayListHandler.getInstance().getCurrentPlayList(false).isEmpty()) {
                 callPlaybackStateListeners(PlaybackState.RESUMING);
-                Logger.info(LogCategories.PLAYER, "Resumed paused song");
+                Logger.info("Resumed paused song");
             }
         }
 
@@ -534,8 +533,8 @@ public abstract class AbstractPlayerEngine {
      *            The exception thrown
      */
     public final void handlePlayerEngineError(final Exception e) {
-        Logger.error(LogCategories.PLAYER, StringUtils.getString("Player Error: ", e));
-        Logger.error(LogCategories.PLAYER, e);
+        Logger.error(StringUtils.getString("Player Error: ", e));
+        Logger.error(e);
         GuiHandler.getInstance().showExceptionDialog(I18nUtils.getString("ERROR"), e);
     }
 
@@ -631,14 +630,14 @@ public abstract class AbstractPlayerEngine {
      * playing (MPlayer bug workaround).
      */
     protected final void notifyRadioOrPodcastFeedEntryStarted() {
-        Logger.debug(LogCategories.PLAYER, "radio or podcast feed entry has started playing");
+        Logger.debug("radio or podcast feed entry has started playing");
         // send volume command
         setVolume(ApplicationState.getInstance().getVolume());
         // if muted set mute again
         if (ApplicationState.getInstance().isMuteEnabled()) {
             applyMuteState(true);
         }
-        Logger.debug(LogCategories.PLAYER, "MPlayer bug (ignoring muting and volume settings after streamed file starts playing) workaround applied");
+        Logger.debug("MPlayer bug (ignoring muting and volume settings after streamed file starts playing) workaround applied");
     }
 
     /**
@@ -657,7 +656,7 @@ public abstract class AbstractPlayerEngine {
      * @param audioObject
      */
     private void playAudioObject(final AudioObject audioObject) {
-        Logger.info(LogCategories.PLAYER, StringUtils.getString("Started play of file ", audioObject));
+        Logger.info(StringUtils.getString("Started play of file ", audioObject));
 
         if (ApplicationState.getInstance().isCacheFilesBeforePlaying()) {
 
@@ -684,7 +683,7 @@ public abstract class AbstractPlayerEngine {
         // and start player process from this copied file
 	    if (audioObject instanceof LocalAudioObject && ApplicationState.getInstance().isCacheFilesBeforePlaying()) {
 	    	
-	    	Logger.debug(LogCategories.PLAYER, "Start caching file: ", audioObject.getUrl());
+	    	Logger.debug("Start caching file: ", audioObject.getUrl());
 	    	
 	        // Remove previous cached file
 	        if (lastFileCached != null) {
@@ -699,7 +698,7 @@ public abstract class AbstractPlayerEngine {
 	            lastFileCached = null;
 	        }
 	        
-	        Logger.debug(LogCategories.PLAYER, "End caching file: ", audioObject.getUrl());
+	        Logger.debug("End caching file: ", audioObject.getUrl());
 	    } else {
 	        audioObjectToPlay = audioObject;
 	    }

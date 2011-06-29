@@ -32,7 +32,6 @@ import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.views.dialogs.ProgressDialog;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -177,7 +176,7 @@ public abstract class AbstractProcess {
      * @param o
      */
     protected final void addInfoLog(Object o) {
-        Logger.info(LogCategories.PROCESS, o);
+        Logger.info(o);
     }
 
     /**
@@ -186,7 +185,7 @@ public abstract class AbstractProcess {
      * @param o
      */
     protected final void addDebugLog(Object... o) {
-        Logger.debug(LogCategories.PROCESS, o);
+        Logger.debug(o);
     }
 
     /**
@@ -195,7 +194,7 @@ public abstract class AbstractProcess {
      * @param o
      */
     protected final void addErrorLog(Object o) {
-        Logger.error(LogCategories.PROCESS, o);
+        Logger.error(o);
     }
 
     /**
@@ -237,7 +236,7 @@ public abstract class AbstractProcess {
                 }
             });
         } catch (Exception e) {
-            Logger.error(LogCategories.PROCESS, e);
+            Logger.error(e);
         }
     }
 
@@ -252,7 +251,7 @@ public abstract class AbstractProcess {
                 }
             });
         } catch (Exception e) {
-            Logger.error(LogCategories.PROCESS, e);
+            Logger.error(e);
         }
     }
 
@@ -272,7 +271,7 @@ public abstract class AbstractProcess {
                 }
             });
         } catch (Exception e) {
-            Logger.error(LogCategories.PROCESS, e);
+            Logger.error(e);
         }
     }
 

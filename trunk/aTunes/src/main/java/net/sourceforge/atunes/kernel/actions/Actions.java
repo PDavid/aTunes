@@ -72,9 +72,9 @@ public final class Actions {
                 action.initialize();
                 actions.put(actionInstance, action);
             } catch (InstantiationException e) {
-                Logger.internalError(e);
+                Logger.error(e);
             } catch (IllegalAccessException e) {
-                Logger.internalError(e);
+                Logger.error(e);
             }
         }
         return action;

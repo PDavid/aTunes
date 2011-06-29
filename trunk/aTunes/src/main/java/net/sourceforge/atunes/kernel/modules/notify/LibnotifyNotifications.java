@@ -29,7 +29,6 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.kernel.modules.notify.Notify.NotifyNotification;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.TempFolder;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.GenericImageSize;
@@ -55,10 +54,10 @@ public class LibnotifyNotifications implements Notifications {
 				String image = TempFolder.getInstance().writeImageToTempFolder(ImageUtils.toBufferedImage(imageForAudioObject.getImage()), UUID.randomUUID().toString()).getAbsolutePath();
 				NotifyNotification n = Notify.newNotification(audioObject.getTitle(), audioObject.getArtist(), image);
 				if (!Notify.show(n)) {
-					Logger.error(LogCategories.NOTIFICATIONS, "could not show notification - libnotify");
+					Logger.error("could not show notification - libnotify");
 				}
 			} else {
-				Logger.error(LogCategories.NOTIFICATIONS, "libnotify is not available or could not be initialized");
+				Logger.error("libnotify is not available or could not be initialized");
 			}
 		}
 	}
@@ -69,11 +68,11 @@ public class LibnotifyNotifications implements Notifications {
 
     public LibnotifyNotifications() {
 	    if (!Notify.isNotifyPresent()) {
-	        Logger.error(LogCategories.NOTIFICATIONS, "libnotify is not available");
+	        Logger.error("libnotify is not available");
 	        return;
 	    }
 	    if (!Notify.init("aTunes")) {
-	        Logger.error(LogCategories.NOTIFICATIONS, "could not init libnotify");
+	        Logger.error("could not init libnotify");
 	        return;
 	    }
         executorService = Executors.newSingleThreadExecutor();

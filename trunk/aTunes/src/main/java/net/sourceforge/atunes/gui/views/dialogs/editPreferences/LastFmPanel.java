@@ -41,7 +41,6 @@ import net.sourceforge.atunes.kernel.actions.ImportLovedTracksFromLastFMAction;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -69,9 +68,9 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
 			            GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("LOGIN_FAILED"), getPreferenceDialog());
 			        }
 			    } catch (InterruptedException e) {
-			        Logger.error(LogCategories.SERVICE, e);
+			        Logger.error(e);
 			    } catch (ExecutionException e) {
-			        Logger.error(LogCategories.SERVICE, e);
+			        Logger.error(e);
 			    } finally {
 			        testLogin.setEnabled(true);
 			    }

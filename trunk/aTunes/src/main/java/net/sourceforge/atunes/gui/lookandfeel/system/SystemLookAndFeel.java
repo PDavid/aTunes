@@ -73,13 +73,13 @@ public class SystemLookAndFeel extends AbstractLookAndFeel {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException e) {
-            Logger.internalError(e);
+            Logger.error(e);
         } catch (InstantiationException e) {
-            Logger.internalError(e);
+            Logger.error(e);
         } catch (IllegalAccessException e) {
-            Logger.internalError(e);
+            Logger.error(e);
         } catch (UnsupportedLookAndFeelException e) {
-            Logger.internalError(e);
+            Logger.error(e);
         }
     }    
     

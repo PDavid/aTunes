@@ -38,7 +38,6 @@ import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.NetworkUtils;
@@ -69,9 +68,9 @@ public final class RadioHandler extends AbstractHandler {
                 getRadioPresets();
                 NavigationHandler.getInstance().refreshView(RadioNavigationView.class);
             } catch (InterruptedException e) {
-                Logger.error(LogCategories.HANDLER, e);
+                Logger.error(e);
             } catch (ExecutionException e) {
-                Logger.error(LogCategories.HANDLER, e);
+                Logger.error(e);
             }
 
         }
@@ -133,7 +132,7 @@ public final class RadioHandler extends AbstractHandler {
      *            Station
      */
     public void addRadio(Radio radio) {
-        Logger.info(LogCategories.HANDLER, "Adding radio");
+        Logger.info("Adding radio");
         if (radio != null && !getRadios().contains(radio)) {
             getRadios().add(radio);
             radioListDirty = true;
@@ -153,7 +152,7 @@ public final class RadioHandler extends AbstractHandler {
                 ApplicationStateHandler.getInstance().persistPresetRadioCache(presetRadios);
             }
         } else {
-            Logger.info(LogCategories.HANDLER, "Radio list is clean");
+            Logger.info("Radio list is clean");
         }
     }
 
@@ -268,7 +267,7 @@ public final class RadioHandler extends AbstractHandler {
      *            Radio to be removed
      */
     public void removeRadios(List<Radio> radios) {
-        Logger.info(LogCategories.HANDLER, "Removing radios");
+        Logger.info("Removing radios");
         for (Radio radio : radios) {
             if (!presetRadios.contains(radio)) {
                 getRadios().remove(radio);

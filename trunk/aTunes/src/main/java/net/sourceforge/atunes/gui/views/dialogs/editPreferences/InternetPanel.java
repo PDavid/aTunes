@@ -38,7 +38,6 @@ import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -221,9 +220,9 @@ public final class InternetPanel extends AbstractPreferencesPanel {
         try {
             Proxy.initProxy(Proxy.getProxy(proxy));
         } catch (UnknownHostException e) {
-            Logger.error(LogCategories.CONTROLLER, e);
+            Logger.error(e);
         } catch (IOException e) {
-            Logger.error(LogCategories.CONTROLLER, e);
+            Logger.error(e);
         }
         return false;
     }

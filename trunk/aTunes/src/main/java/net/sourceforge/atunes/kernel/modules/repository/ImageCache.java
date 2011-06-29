@@ -28,7 +28,6 @@ import net.sf.ehcache.Element;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsCache;
 import net.sourceforge.atunes.misc.AbstractCache;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.model.LocalAudioObject;
@@ -51,10 +50,10 @@ public class ImageCache extends AbstractCache {
             getCache().removeAll();
             getCache().flush();
         } catch (IllegalStateException e) {
-            Logger.info(LogCategories.FILE_DELETE, "Could not delete all files from cover cache");
+            Logger.info("Could not delete all files from cover cache");
             return true;
         } catch (CacheException e) {
-            Logger.info(LogCategories.FILE_DELETE, "Could not delete all files from cover cache");
+            Logger.info("Could not delete all files from cover cache");
             return true;
         }
         return false;
@@ -67,10 +66,10 @@ public class ImageCache extends AbstractCache {
             }
             getCache().flush();
         } catch (IllegalStateException e) {
-            Logger.info(LogCategories.FILE_DELETE, "Could not delete all files from cover cache");
+            Logger.info("Could not delete all files from cover cache");
             return true;
         } catch (CacheException e) {
-            Logger.info(LogCategories.FILE_DELETE, "Could not delete all files from cover cache");
+            Logger.info("Could not delete all files from cover cache");
             return true;
         }
         return false;
@@ -95,7 +94,7 @@ public class ImageCache extends AbstractCache {
         }
         Element element = new Element(id(audioFile, imageSize), cover);
         getCache().put(element);
-        Logger.debug(LogCategories.CACHE, "Stored image for ", audioFile);
+        Logger.debug("Stored image for ", audioFile);
     }
 
     private Cache getCache() {

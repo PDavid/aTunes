@@ -65,9 +65,9 @@ public class EditTagAction extends AbstractActionOverSelectedObjects<LocalAudioO
             EditTagSources editTagSource = EditTagSources.valueOf(getActionId());
             TagHandler.getInstance().editFiles(editTagSource, objects);
         } catch (IllegalArgumentException iae) {
-            Logger.error("The source that caused this action is not known. No further action initiated.", iae);
+            Logger.error(iae);
         } catch (NullPointerException npe) {
-            Logger.error("The source that caused this action is not set. No further action initiated.", npe);
+            Logger.error(npe);
         }
     }
 

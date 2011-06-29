@@ -28,7 +28,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.zip.ZipFile;
 
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
 import org.commonjukebox.plugins.model.PluginApi;
@@ -57,7 +56,7 @@ public final class ClosingUtils {
             try {
                 closable.close();
             } catch (IOException e) {
-                Logger.error(LogCategories.INTERNAL_ERROR, e);
+                Logger.error(e);
             }
         }
     }
@@ -77,7 +76,7 @@ public final class ClosingUtils {
             try {
                 zipFile.close();
             } catch (IOException e) {
-                Logger.error(LogCategories.INTERNAL_ERROR, e);
+                Logger.error(e);
             }
         }
     }
@@ -97,7 +96,7 @@ public final class ClosingUtils {
             try {
                 socket.close();
             } catch (IOException e) {
-                Logger.error(LogCategories.INTERNAL_ERROR, e);
+                Logger.error(e);
             }
         }
     }
@@ -117,7 +116,7 @@ public final class ClosingUtils {
             try {
                 socket.close();
             } catch (IOException e) {
-                Logger.error(LogCategories.INTERNAL_ERROR, e);
+                Logger.error(e);
             }
         }
     }

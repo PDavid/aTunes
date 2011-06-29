@@ -37,7 +37,6 @@ import javax.xml.parsers.SAXParserFactory;
 
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -90,7 +89,7 @@ public class WinampcnEngine extends AbstractLyricsEngine {
             lyrics = lyrics.replaceAll("\\[.+\\]", "");
             return lyrics == null || lyrics.isEmpty() ? null : new Lyrics(lyrics, lyrcUrl);
         } catch (IOException e) {
-        	Logger.error(LogCategories.SERVICE, StringUtils.getString(e.getClass().getCanonicalName(), " (", e.getMessage(), ")"));
+        	Logger.error(StringUtils.getString(e.getClass().getCanonicalName(), " (", e.getMessage(), ")"));
             return null;
         }
     }
@@ -183,7 +182,7 @@ public class WinampcnEngine extends AbstractLyricsEngine {
                 SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
                 parser.parse(new ByteArrayInputStream(xml.getBytes("gbk")), this);
             } catch (Exception e) {
-                Logger.error(LogCategories.SERVICE, "Cannot parse lyrics list from winampcn: " + e.getMessage());
+                Logger.error("Cannot parse lyrics list from winampcn: " + e.getMessage());
             }
             return this.lyrcs;
         }

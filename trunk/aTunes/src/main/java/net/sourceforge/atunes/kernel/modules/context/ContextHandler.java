@@ -34,7 +34,6 @@ import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.LocalAudioObject;
@@ -241,7 +240,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
             AbstractContextPanel newPanel = (AbstractContextPanel) PluginsHandler.getInstance().getNewInstance(plugin);
             getContextPanels().add(newPanel);
         } catch (PluginSystemException e) {
-            Logger.error(LogCategories.PLUGINS, e);
+            Logger.error(e);
         }
     }
 

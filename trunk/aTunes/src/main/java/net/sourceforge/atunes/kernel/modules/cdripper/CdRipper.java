@@ -33,7 +33,6 @@ import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavCo
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.NoCdListener;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
 import net.sourceforge.atunes.kernel.modules.cdripper.encoders.Encoder;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
@@ -82,7 +81,7 @@ class CdRipper {
 		            });
 		        }
 
-		        Logger.info(LogCategories.RIPPER, "Deleting wav file...");
+		        Logger.info("Deleting wav file...");
 		        wavFileTemp.delete();
 		        infFileTemp.delete();
 
@@ -93,7 +92,7 @@ class CdRipper {
 		        wavFileTemp.delete();
 		        infFileTemp.delete();
 		    } else if (!ripResultFinal) {
-		    	Logger.error(LogCategories.RIPPER, StringUtils.getString("Rip failed. Skipping track ", trackNumber, "..."));
+		    	Logger.error(StringUtils.getString("Rip failed. Skipping track ", trackNumber, "..."));
 		    }
 		}
 	}
@@ -197,10 +196,10 @@ class CdRipper {
 
     boolean ripTracks(List<Integer> tracks, final List<String> titles, File folder, final List<String> artistNames, final List<String> composerNames, boolean useParanoia) {
         String extension = encoder != null ? encoder.getExtensionOfEncodedFiles() : "wav";
-        Logger.info(LogCategories.RIPPER, StringUtils.getString("Running cd ripping of ", tracks.size(), " to ", extension, "..."));
+        Logger.info(StringUtils.getString("Running cd ripping of ", tracks.size(), " to ", extension, "..."));
         long t0 = System.currentTimeMillis();
         if (!checkFolder(folder)) {
-        	Logger.error(LogCategories.RIPPER, StringUtils.getString("Folder ", folder, " not found or not a directory"));
+        	Logger.error(StringUtils.getString("Folder ", folder, " not found or not a directory"));
             return false;
         }
 
@@ -259,7 +258,7 @@ class CdRipper {
                     try {
                         executorService.awaitTermination(100, TimeUnit.MINUTES);
                     } catch (InterruptedException e) {
-                    	Logger.error(LogCategories.RIPPER, e);
+                    	Logger.error(e);
                     }
                 }
 
@@ -275,7 +274,7 @@ class CdRipper {
             }
         }
         long t1 = System.currentTimeMillis();
-        Logger.info(LogCategories.RIPPER, StringUtils.getString("Process finished in ", (t1 - t0) / 1000.0, " seconds"));
+        Logger.info(StringUtils.getString("Process finished in ", (t1 - t0) / 1000.0, " seconds"));
         return true;
     }
 

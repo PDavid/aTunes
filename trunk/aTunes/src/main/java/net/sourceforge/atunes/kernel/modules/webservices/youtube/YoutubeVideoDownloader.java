@@ -34,7 +34,6 @@ import net.sourceforge.atunes.gui.views.dialogs.TransferProgressDialog;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -135,7 +134,7 @@ public class YoutubeVideoDownloader extends SwingWorker<Void, String> {
                 }
             }
         } catch (Exception e) {
-            Logger.error(LogCategories.SERVICE, e);
+            Logger.error(e);
         } finally {
             ClosingUtils.close(input);
             ClosingUtils.close(fout);

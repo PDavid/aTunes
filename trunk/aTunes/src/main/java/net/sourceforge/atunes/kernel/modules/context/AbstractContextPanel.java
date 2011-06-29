@@ -35,7 +35,6 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 
@@ -137,7 +136,7 @@ public abstract class AbstractContextPanel {
             return;
         }
 
-        Logger.debug(LogCategories.CONTEXT, "Updating panel: ", getContextPanelName());
+        Logger.debug("Updating panel: ", getContextPanelName());
         for (AbstractContextPanelContent content : getContents()) {
             content.clearContextPanelContent();
             content.updateContextPanelContent(audioObject);
@@ -152,7 +151,7 @@ public abstract class AbstractContextPanel {
      * tab showing this panel method updateContextPanel must be called again
      */
     public final void clearContextPanel() {
-        Logger.debug(LogCategories.CONTEXT, "Clearing panel: ", getContextPanelName());
+        Logger.debug("Clearing panel: ", getContextPanelName());
         for (AbstractContextPanelContent content : getContents()) {
             content.clearContextPanelContent();
         }

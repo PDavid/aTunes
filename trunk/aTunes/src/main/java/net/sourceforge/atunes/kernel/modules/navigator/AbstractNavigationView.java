@@ -61,7 +61,6 @@ import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
@@ -366,7 +365,7 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
      * @param objects
      */
     protected final void debug(Object... objects) {
-        Logger.debug(LogCategories.VIEW, objects);
+        Logger.debug(objects);
     }
 
     /**

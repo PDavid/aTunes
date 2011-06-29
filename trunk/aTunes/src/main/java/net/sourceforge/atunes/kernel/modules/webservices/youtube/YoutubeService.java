@@ -30,7 +30,6 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
@@ -90,7 +89,7 @@ public final class YoutubeService {
                 proxy = Proxy.getProxy(proxyBean);
             }
         } catch (Exception e) {
-            Logger.error(LogCategories.SERVICE, e);
+            Logger.error(e);
         }
         this.proxy = proxy;
     }
@@ -142,7 +141,7 @@ public final class YoutubeService {
                 return analyzeResultXml(startIndex, xml);
             }
         } catch (Exception e) {
-            Logger.error(LogCategories.SERVICE, e);
+            Logger.error(e);
         }
 
         return Collections.emptyList();
@@ -241,7 +240,7 @@ public final class YoutubeService {
 
             return downloadurl;
         } catch (Exception e) {
-            Logger.error(LogCategories.SERVICE, e);
+            Logger.error(e);
         }
         return null;
     }

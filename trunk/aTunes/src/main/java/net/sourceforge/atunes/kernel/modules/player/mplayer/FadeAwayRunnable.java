@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.player.mplayer;
 
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
 /**
@@ -64,7 +63,7 @@ class FadeAwayRunnable implements Runnable {
 
     @Override
     public void run() {
-        Logger.debug(LogCategories.PLAYER, "Fade away runnable started");
+        Logger.debug("Fade away runnable started");
         try {
             int fadeVolume = initialVolume;
             int fadeStep = 0;
@@ -76,13 +75,13 @@ class FadeAwayRunnable implements Runnable {
                 try {
                     Thread.sleep(25);
                 } catch (InterruptedException e) {
-                    Logger.error(LogCategories.PLAYER, e);
+                    Logger.error(e);
                 }
                 fadeStep++;
             }
         } finally {
             process.destroy();
-            Logger.debug(LogCategories.PLAYER, "Fade away runnable finished");
+            Logger.debug("Fade away runnable finished");
         }
         if (!interrupted) {
             // Notify finish to MPlayerHandler

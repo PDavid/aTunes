@@ -61,7 +61,6 @@ import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
@@ -148,7 +147,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
 
         // Not enough space avaible
         if (leaveFree > deviceFreeSpace) {
-            Logger.debug(LogCategories.HANDLER, I18nUtils.getString("NOT_ENOUGH_SPACE_ON_DEVICE"));
+            Logger.debug(I18nUtils.getString("NOT_ENOUGH_SPACE_ON_DEVICE"));
             GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("NOT_ENOUGH_SPACE_ON_DEVICE"));
             return;
         }
@@ -288,7 +287,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
     		}
     	});
 
-        Logger.info(LogCategories.REPOSITORY, "Device disconnected");
+        Logger.info("Device disconnected");
     }
 
     /**
@@ -461,7 +460,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
 
     @Override
     public void notifyFinishRead(RepositoryLoader loader) {
-        Logger.info(LogCategories.REPOSITORY, "Device read");
+        Logger.info("Device read");
         notifyDeviceReload(loader);
     }
 
@@ -489,7 +488,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
      */
     public void refreshDevice() {
         GuiHandler.getInstance().showProgressBar(true, null);
-        Logger.info(LogCategories.REPOSITORY, "Refreshing device");
+        Logger.info("Refreshing device");
         Repository oldDeviceRepository = deviceRepository;
         deviceRepository = new Repository(oldDeviceRepository.getFolders(), null);
         currentLoader = new RepositoryLoader(oldDeviceRepository.getFolders(), oldDeviceRepository, deviceRepository, true);
@@ -504,7 +503,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
      *            the path
      */
     private void retrieveDevice(File path) {
-        Logger.info(LogCategories.REPOSITORY, StringUtils.getString("Reading device mounted on ", path));
+        Logger.info(StringUtils.getString("Reading device mounted on ", path));
 
         setDevicePath(path);
 
@@ -576,7 +575,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
                 bw.close();
             }
         } catch (IOException e) {
-            Logger.error(LogCategories.HANDLER, e);
+            Logger.error(e);
         } finally {
         	ClosingUtils.close(br);
         	ClosingUtils.close(bw);

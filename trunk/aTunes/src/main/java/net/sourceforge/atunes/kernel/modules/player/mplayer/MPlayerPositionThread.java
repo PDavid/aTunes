@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.player.mplayer;
 
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
 /**
@@ -49,7 +48,7 @@ class MPlayerPositionThread extends Thread {
                 if (!engine.isPlaybackPaused()) {
                     engine.getCommandWriter().sendGetPositionCommand();
                     if (this.engine.getCurrentAudioObjectLength() == 0 && engine.getAudioObject().isSeekable()) {
-                    	Logger.debug(LogCategories.PLAYER, "Duration still unknown: sending get_duration_command");
+                    	Logger.debug("Duration still unknown: sending get_duration_command");
                     	engine.getCommandWriter().sendGetDurationCommand();
                     }
                 }

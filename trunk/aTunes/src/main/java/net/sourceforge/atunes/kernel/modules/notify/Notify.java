@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.notify;
 
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 
 import com.sun.jna.Native;
@@ -57,13 +56,13 @@ public final class Notify {
      * true if everything occurs successfully.
      */
     static {
-        Logger.info(LogCategories.NOTIFICATIONS, "Starting libnotify...");
+        Logger.info("Starting libnotify...");
         try {
             Native.register("notify");
             notifyPresent = true;
-            Logger.info(LogCategories.NOTIFICATIONS, "libnotify started");
+            Logger.info("libnotify started");
         } catch (UnsatisfiedLinkError e) {
-            Logger.info(LogCategories.NOTIFICATIONS, "libnotify is not present");
+            Logger.info("libnotify is not present");
         }
     }
 

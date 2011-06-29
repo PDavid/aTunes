@@ -21,12 +21,7 @@
 package net.sourceforge.atunes.misc.log;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashSet;
-import java.util.PropertyResourceBundle;
-import java.util.Set;
-import java.util.StringTokenizer;
 
-import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -35,9 +30,6 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class Logger {
 
-    /** Categories to filter, i.e. will not be logged */
-    private static Set<String> filteredCategories;
-
     /** Internal logger. */
     private static org.apache.log4j.Logger logger;
 
@@ -45,21 +37,6 @@ public class Logger {
      * Initialize logger
      */
     static {
-        // Read filtered categories
-        filteredCategories = new HashSet<String>();
-        try {
-            PropertyResourceBundle bundle = new PropertyResourceBundle(Logger.class.getResourceAsStream(Constants.EXTENDED_LOG_FILE));
-            String value = bundle.getString("log.filter");
-            StringTokenizer st = new StringTokenizer(value, ",");
-            while (st.hasMoreTokens()) {
-                String v = st.nextToken().trim();
-                filteredCategories.add(v);
-            }
-
-        } catch (Exception e) {
-            System.out.println(StringUtils.getString(Constants.EXTENDED_LOG_FILE, " not found or incorrect. No filters will be applied to log"));
-        }
-        
         logger = org.apache.log4j.Logger.getLogger(Logger.class);
     }
 
@@ -68,22 +45,15 @@ public class Logger {
     /**
      * Logs a debug event.
      * 
-     * @param cat
-     *            the cat
      * @param objects
      *            the objects to show in log
      */
-    public static void debug(String cat, Object... objects) {
+    public static void debug(Object... objects) {
         if (!Kernel.isDebug()) {
             return;
         }
 
-        if (filteredCategories.contains(cat.trim())) {
-            return;
-        }
-
         StringBuilder sb = new StringBuilder();
-        sb.append('[').append(cat).append("] ");
         for (Object object : objects) {
             sb.append(object);
         }
@@ -93,12 +63,10 @@ public class Logger {
     /**
      * Logs an error event.
      * 
-     * @param cat
-     *            the cat
      * @param o
      *            the o
      */
-    public static void error(String cat, Object o) {
+    public static void error(Object o) {
         // Find calling method name and class
         Throwable t = new Throwable();
         StackTraceElement[] s = t.getStackTrace();
@@ -110,7 +78,7 @@ public class Logger {
 
         // Build string
         StringBuilder sb = new StringBuilder();
-        sb.append("[").append(cat).append("] ").append("--> ").append(className).append('.').append(methodName).append(" [").append(timer).append("] ").append(o);
+        sb.append("--> ").append(className).append('.').append(methodName).append(" [").append(timer).append("] ").append(o);
 
         logger.error(sb.toString());
 
@@ -119,27 +87,27 @@ public class Logger {
             StackTraceElement[] trace = throwable.getStackTrace();
 
             for (StackTraceElement element : trace) {
-                error(cat, className, methodName, timer, element);
+                error(className, methodName, timer, element);
             }
             
             if (throwable.getCause() != null) {
-            	error(cat,  StringUtils.getString(throwable.getCause().getClass().getName(), ": ", throwable.getCause().getMessage()));
+            	error(StringUtils.getString(throwable.getCause().getClass().getName(), ": ", throwable.getCause().getMessage()));
 
                 StackTraceElement[] causeTrace = throwable.getCause().getStackTrace();
 
                 for (StackTraceElement element : causeTrace) {
-                    error(cat, className, methodName, timer, element);
+                    error( className, methodName, timer, element);
                 }
             }
             
             if (o instanceof InvocationTargetException && ((InvocationTargetException)o).getTargetException() != null) {
             	Throwable target = ((InvocationTargetException) o).getTargetException();
-            	error(cat,  StringUtils.getString(target.getClass().getName(), ": ", target.getMessage()));
+            	error(StringUtils.getString(target.getClass().getName(), ": ", target.getMessage()));
 
                 StackTraceElement[] causeTrace = target.getStackTrace();
 
                 for (StackTraceElement element : causeTrace) {
-                    error(cat, className, methodName, timer, element);
+                    error(className, methodName, timer, element);
                 }
             }
         }
@@ -148,8 +116,6 @@ public class Logger {
     /**
      * Logs an error event.
      * 
-     * @param cat
-     *            the cat
      * @param className
      *            the class name
      * @param methodName
@@ -159,9 +125,9 @@ public class Logger {
      * @param o
      *            the o
      */
-    private static void error(String cat, String className, String methodName, long timer, StackTraceElement o) {
+    private static void error(String className, String methodName, long timer, StackTraceElement o) {
         StringBuilder sb = new StringBuilder();
-        sb.append("[").append(cat).append("] ").append("--> ").append(className).append('.').append(methodName).append(" [").append(timer).append("]\t ").append(o);
+        sb.append("--> ").append(className).append('.').append(methodName).append(" [").append(timer).append("]\t ").append(o);
 
         logger.error(sb.toString());
     }
@@ -169,41 +135,14 @@ public class Logger {
     /**
      * Logs an info event.
      * 
-     * @param cat
-     *            the cat
      * @param objs
      *            the objects
      */
-    public static void info(String cat, Object... objs) {
-        if (filteredCategories.contains(cat.trim())) {
-            return;
-        }
+    public static void info(Object... objs) {
         StringBuilder sb = new StringBuilder();
         for (Object o : objs) {
         	sb.append(o.toString());
         }
-        logger.info(StringUtils.getString("[", cat, "] ", sb.toString()));
-    }
-
-    /**
-     * Logs an internal error.
-     * 
-     * @param o
-     *            the o
-     */
-    public static void internalError(Object o) {
-        error(LogCategories.INTERNAL_ERROR, o);
-        if (o instanceof Throwable && ((Throwable)o).getCause() != null) {
-        	error(LogCategories.INTERNAL_ERROR,  StringUtils.getString(((Throwable)o).getCause().getClass().getName(), ": ", ((Throwable)o).getCause().getMessage()));
-            StackTraceElement[] causeTrace = ((Throwable) o).getCause().getStackTrace();
-
-            for (StackTraceElement element : causeTrace) {
-                error(LogCategories.INTERNAL_ERROR,  element);
-            }
-        }
-        if (o instanceof InvocationTargetException) {
-            error(LogCategories.INTERNAL_ERROR, ((InvocationTargetException) o).getTargetException());
-            error(LogCategories.INTERNAL_ERROR, ((InvocationTargetException) o).getTargetException().getCause());
-        }
+        logger.info(sb.toString());
     }
 }

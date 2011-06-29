@@ -24,7 +24,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -53,7 +52,7 @@ class RepositoryAutoRefresher extends Thread {
             while (true) {
                 Thread.sleep(ApplicationState.getInstance().getAutoRepositoryRefreshTime() * 60000L);
                 if (!handler.repositoryIsNull() && !handler.isLoaderWorking()) {
-                    Logger.info(LogCategories.PROCESS, StringUtils.getString("Checking for repository changes... (", new SimpleDateFormat("HH:mm:ss").format(new Date()), ')'));
+                    Logger.info(StringUtils.getString("Checking for repository changes... (", new SimpleDateFormat("HH:mm:ss").format(new Date()), ')'));
                     int filesLoaded = handler.getAudioFilesList().size();
                     int newFilesCount = RepositoryLoader.countFilesInRepository(handler.getRepository());
                     if (filesLoaded != newFilesCount) {

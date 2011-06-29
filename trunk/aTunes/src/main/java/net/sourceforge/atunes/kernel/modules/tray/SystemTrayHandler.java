@@ -59,7 +59,6 @@ import net.sourceforge.atunes.kernel.actions.StopCurrentAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.ToggleWindowVisibilityAction;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -180,7 +179,7 @@ public final class SystemTrayHandler extends AbstractHandler {
             addTrayIcon(getTrayIcon());
             GuiHandler.getInstance().setFrameDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         } else {
-            Logger.error(LogCategories.TRAY, "No system tray supported");
+            Logger.error("No system tray supported");
         }
     }
 
@@ -197,7 +196,7 @@ public final class SystemTrayHandler extends AbstractHandler {
             addTrayIcon(getStopTrayIcon());
             addTrayIcon(getPreviousTrayIcon());
         } else {
-            Logger.error(LogCategories.TRAY, "No system tray supported");
+            Logger.error("No system tray supported");
         }
     }
 
@@ -210,7 +209,7 @@ public final class SystemTrayHandler extends AbstractHandler {
         try {
        		tray.add(icon);
         } catch (AWTException e) {
-            Logger.error(LogCategories.TRAY, e);
+            Logger.error(e);
         }
     }
 

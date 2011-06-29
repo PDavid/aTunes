@@ -29,7 +29,6 @@ import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.misc.log.LogCategories;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 
@@ -119,9 +118,9 @@ public class ApplicationLifeCycleListeners {
 					}
 				});
 			} catch (InterruptedException e) {
-				Logger.error(LogCategories.KERNEL, e);
+				Logger.error(e);
 			} catch (InvocationTargetException e) {
-				Logger.error(LogCategories.KERNEL, e);
+				Logger.error(e);
 			}
     	}
     }

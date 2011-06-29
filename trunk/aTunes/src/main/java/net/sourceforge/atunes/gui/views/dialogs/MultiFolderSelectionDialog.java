@@ -117,9 +117,9 @@ public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog 
 				        }
 				        ((DefaultTreeModel) fileSystemTree.getModel()).reload(selectedNode);
 				    } catch (InterruptedException e) {
-				        Logger.internalError(e);
+				        Logger.error(e);
 				    } catch (ExecutionException e) {
-				        Logger.internalError(e);
+				        Logger.error(e);
 				    }
 				}
 			}
@@ -228,7 +228,7 @@ public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog 
 		        fileSystemTree.revalidate();
 		        fileSystemTree.repaint();
 		    } catch (Exception e) {
-		        Logger.internalError(e);
+		        Logger.error(e);
 		    } finally {
 		        okButton.setEnabled(true);
 		        // Show default cursor
