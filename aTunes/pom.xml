@@ -226,6 +226,14 @@
                     <jvmVersion>1.6+</jvmVersion>
                     <javaApplicationStub>${basedir}/build_resources/macos/JavaApplicationStub</javaApplicationStub>
                     <dictionaryFile>${basedir}/build_resources/macos/Info.plist</dictionaryFile>
+                    <additionalResources>
+                        <fileSet>
+                            <directory>${basedir}/build_resources</directory>
+                            <includes>
+                        	    <include>license.txt</include>
+                            </includes>
+                        </fileSet>
+                   </additionalResources>
                 </configuration>
                 <executions>
                     <execution>

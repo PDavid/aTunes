@@ -23,7 +23,13 @@
 	<!-- Creates an deb package-->
 	<taskdef name="deb" classpath="${lib_build}/ant-deb.jar" classname="com.googlecode.ant_deb_task.Deb" />
 
+	<condition property="isMac">
+	      <os family="mac" />
+	</condition>
 
+	<condition property="isLinux">
+	      <os family="unix" />
+	</condition>
 
 	<!-- Removes configuration, temporary and cache files -->
 	<target name="clean">
@@ -32,8 +38,7 @@
 
 	
 	<!-- Creates the exe file for Windows -->
-	<target name="create_aTunes.exe">
-		<mkdir dir="${deploy_folder}" />
+	<target name="create_aTunes.exe" depends="prepare" unless="isMac">
 		<launch4j configFile="${build_tools}/launch4j.xml" outfile="${deploy_folder}/aTunes.exe" />
 	</target>
 
@@ -41,6 +46,8 @@
 	<!-- Prepares the directory structure -->
 	<target name="prepare">
 
+		<mkdir dir="${deploy_folder}" />
+		
 		<copy todir="${deploy_folder}">
 			<fileset dir="${build_resources}" includes="*" />
 		</copy>
@@ -98,7 +105,7 @@
 
 
 	<!-- Creates a standard .jar installer -->
-	<target name="create_installer" depends="prepare">
+	<target name="create_installer" depends="prepare" unless="isMac">
 		<!-- We call IzPack -->
 		<echo message="Makes the installer using IzPack" />
 		<izpack input="${build_tools}/izPack_build.xml" output="${target}/aTunes_${version}_installer.jar" installerType="standard" basedir="${deploy_folder}" />
@@ -109,7 +116,7 @@
 
 	
 	<!-- Creates a Ubuntu/Debian package -->
-	<target name="create_deb" depends="prepare">
+	<target name="create_deb" depends="prepare" unless="isMac">
 
 		<desktopEntry toFile="${deploy_folder}/atunes.desktop" name="aTunes" icon="atunes" exec="atunes" categories="Audio;AudioVideo;" type="Application">
 			<name lang="de" value="aTunes" />
