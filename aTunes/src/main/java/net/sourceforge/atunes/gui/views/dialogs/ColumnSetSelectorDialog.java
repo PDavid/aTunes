@@ -209,6 +209,9 @@ public final class ColumnSetSelectorDialog extends AbstractCustomModalDialog {
         setTitle(I18nUtils.getString("ARRANGE_COLUMNS"));
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         GuiUtils.applyComponentOrientation(this);
+        // TODO: Add pack to all dialogs
+        pack();
+        setLocationRelativeTo(owner);
     }
 
     /**
@@ -321,6 +324,7 @@ public final class ColumnSetSelectorDialog extends AbstractCustomModalDialog {
      */
     public void setColumnSet(AbstractColumnSet columnSet) {
         model.setColumns(columnSet.getColumnsForSelection());
+        
     }
 
 }
