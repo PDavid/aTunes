@@ -153,7 +153,7 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
 
         try {
         	// PLUGINS MUST BE STARTED WHEN APPLICATION IS STARTED, OTHERWISE THEY CAN TRY TO ACCESS TO COMPONENTS NOT CREATED OR INITIALIZED YET
-			problemsLoadingPlugins = factory.start(getPluginClassNames(), true, "net.sourceforge.atunes");
+			problemsLoadingPlugins = factory.start(getPluginClassNames(), false, "net.sourceforge.atunes");
 		} catch (PluginSystemException e) {
 			Logger.error(e);
 		}
