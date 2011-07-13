@@ -60,7 +60,11 @@ class PreferencesCache extends AbstractCache {
      * @return Value
      */
     public Object retrievePreference(Preferences preferenceId, Object defaultValue) {
-        Element element = getCache().get(preferenceId.toString());
+        
+    	if (getCache()== null) {
+        	return defaultValue;
+        }
+    	Element element = getCache().get(preferenceId.toString());
         if (element == null) {
             return defaultValue;
         } else {
