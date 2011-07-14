@@ -98,8 +98,12 @@ public class YoutubeContent extends AbstractContextPanelContent {
 	private static class YoutubeResultsTableCellRendererCode extends AbstractTableCellRendererCode {
         @Override
         public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            return getPanelForTableRenderer(((YoutubeResultEntry) value).getImage(), StringUtils.getString("<html>", ((YoutubeResultEntry) value).getName(), "<br>(",
-                    ((YoutubeResultEntry) value).getDuration(), ")</html>"), superComponent.getBackground(), Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT);
+            return getPanelForTableRenderer(((YoutubeResultEntry) value).getImage(), 
+            								StringUtils.getString("<html>", ((YoutubeResultEntry) value).getName(), "<br>(", ((YoutubeResultEntry) value).getDuration(), ")</html>"), 
+            								superComponent.getBackground(), 
+            								superComponent.getForeground(), 
+            								Constants.CONTEXT_IMAGE_WIDTH, 
+            								Constants.CONTEXT_IMAGE_HEIGHT);
         }
     }
 

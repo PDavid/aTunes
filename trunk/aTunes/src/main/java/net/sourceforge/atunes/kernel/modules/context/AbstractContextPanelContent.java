@@ -170,11 +170,12 @@ public abstract class AbstractContextPanelContent {
      * @param image
      * @param text
      * @param backgroundColor
+     * @param foregroundColor
      * @param imageMaxWidth
      * @param imageMaxHeight
      * @return
      */
-    protected static JPanel getPanelForTableRenderer(ImageIcon image, String text, Color backgroundColor, int imageMaxWidth, int imageMaxHeight) {
+    protected static JPanel getPanelForTableRenderer(ImageIcon image, String text, Color backgroundColor, Color foregroundColor, int imageMaxWidth, int imageMaxHeight) {
         // This renderer is a little tricky because images have no the same size so we must add two labels with custom insets to
         // get desired alignment of images and text. Other ways to achieve this like setPreferredSize doesn't work because when width of panel is low
         // preferred size is ignored, but insets don't
@@ -193,6 +194,9 @@ public abstract class AbstractContextPanelContent {
             textLabel.setBackground(backgroundColor);
             panel.setBackground(backgroundColor);
             imageLabel.setBackground(backgroundColor);
+        }
+        if (foregroundColor != null) {
+        	textLabel.setForeground(foregroundColor);
         }
 
         c.gridx = 0;

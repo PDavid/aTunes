@@ -52,8 +52,12 @@ public class ArtistAlbumsContent extends AbstractContextPanelContent {
     private static class AlbumsTableCellRendererCode extends AbstractTableCellRendererCode {
         @Override
         public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            return getPanelForTableRenderer(((AlbumInfo) value).getCover(), StringUtils.getString("<html>", ((AlbumInfo) value).getTitle(), "</html>"), superComponent
-                    .getBackground(), Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT);
+            return getPanelForTableRenderer(((AlbumInfo) value).getCover(), 
+            								StringUtils.getString("<html>", ((AlbumInfo) value).getTitle(), "</html>"), 
+            								superComponent.getBackground(),
+            								superComponent.getForeground(), 
+            								Constants.CONTEXT_IMAGE_WIDTH, 
+            								Constants.CONTEXT_IMAGE_HEIGHT);
         }
     }
 

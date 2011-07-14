@@ -113,9 +113,12 @@ public class SimilarArtistsContent extends AbstractContextPanelContent {
 
         @Override
         public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            return getPanelForTableRenderer(((ArtistInfo) value).getImage(), StringUtils.getString("<html><br>", ((ArtistInfo) value).getName(), "<br>", ((ArtistInfo) value)
-                    .getMatch(), "%<br>", ((ArtistInfo) value).isAvailable() ? I18nUtils.getString("AVAILABLE_IN_REPOSITORY") : "", "</html>"), superComponent.getBackground(),
-                    Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT);
+            return getPanelForTableRenderer(((ArtistInfo) value).getImage(), 
+            							    StringUtils.getString("<html><br>", ((ArtistInfo) value).getName(), "<br>", ((ArtistInfo) value).getMatch(), "%<br>", ((ArtistInfo) value).isAvailable() ? I18nUtils.getString("AVAILABLE_IN_REPOSITORY") : "", "</html>"), 
+            							    superComponent.getBackground(),
+            							    superComponent.getForeground(),
+            							    Constants.CONTEXT_IMAGE_WIDTH, 
+            							    Constants.CONTEXT_IMAGE_HEIGHT);
         }
 
     }
