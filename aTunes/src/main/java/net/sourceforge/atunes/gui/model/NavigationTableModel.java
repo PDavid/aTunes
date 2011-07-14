@@ -63,7 +63,7 @@ public final class NavigationTableModel extends AbstractColumnSetTableModel {
     }
 
     /** The songs. */
-    private List<AudioObject> audioObjects;
+    private List<? extends AudioObject> audioObjects;
 
     /**
      * Instantiates a new navigation table model.
@@ -102,7 +102,7 @@ public final class NavigationTableModel extends AbstractColumnSetTableModel {
      * 
      * @return the audio objects
      */
-    public List<AudioObject> getAudioObjects() {
+    public List<? extends AudioObject> getAudioObjects() {
         return audioObjects;
     }
 
@@ -153,7 +153,7 @@ public final class NavigationTableModel extends AbstractColumnSetTableModel {
      * @param songs
      *            the new songs
      */
-    public void setSongs(List<AudioObject> songs) {
+    public void setSongs(List<? extends AudioObject> songs) {
         this.audioObjects = songs;
         refresh(TableModelEvent.INSERT);
     }

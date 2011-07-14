@@ -185,7 +185,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
                 Object objectDragged = listOfObjectsDragged.get(i);
                 // DRAG AND DROP FROM TREE
                 if (objectDragged instanceof DefaultMutableTreeNode) {
-                    List<AudioObject> objectsToImport = NavigationHandler.getInstance().getAudioObjectsForTreeNode(
+                    List<? extends AudioObject> objectsToImport = NavigationHandler.getInstance().getAudioObjectsForTreeNode(
                             NavigationHandler.getInstance().getCurrentView().getClass(), (DefaultMutableTreeNode) objectDragged);
                     if (objectsToImport != null) {
                         audioObjectsToAdd.addAll(objectsToImport);

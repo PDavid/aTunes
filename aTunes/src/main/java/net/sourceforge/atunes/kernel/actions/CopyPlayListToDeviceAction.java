@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
+import net.sourceforge.atunes.kernel.modules.playlist.PlayListLocalAudioObjectFilter;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -46,7 +46,7 @@ public class CopyPlayListToDeviceAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         // Copy only LocalAudioObject objects
-        DeviceHandler.getInstance().copyFilesToDevice(AudioFile.getAudioFiles(PlayListHandler.getInstance().getCurrentPlayList(true).getObjectsOfType(AudioFile.class)));
+        DeviceHandler.getInstance().copyFilesToDevice(new PlayListLocalAudioObjectFilter().getObjects(PlayListHandler.getInstance().getCurrentPlayList(true)));
     }
 
 }

@@ -87,6 +87,9 @@ import net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayList;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
+import net.sourceforge.atunes.kernel.modules.playlist.PlayListLocalAudioObjectFilter;
+import net.sourceforge.atunes.kernel.modules.playlist.PlayListPodcastFeedEntryFilter;
+import net.sourceforge.atunes.kernel.modules.playlist.PlayListRadioFilter;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
@@ -903,9 +906,9 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      *            the play list
      */
     public void showPlayListInformation(PlayList playList) {
-        int audioFiles = playList.getObjectsOfType(AudioFile.class).size();
-        int radios = playList.getObjectsOfType(Radio.class).size();
-        int podcastFeedEntries = playList.getObjectsOfType(PodcastFeedEntry.class).size();
+        int audioFiles = new PlayListLocalAudioObjectFilter().getObjects(playList).size();
+        int radios = new PlayListRadioFilter().getObjects(playList).size();
+        int podcastFeedEntries = new PlayListPodcastFeedEntryFilter().getObjects(playList).size();
         int audioObjects = playList.size();
 
         Object[] strs = new Object[20];

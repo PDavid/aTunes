@@ -272,7 +272,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 		getNavigationController().refreshTable();
 	}
 
-	public List<LocalAudioObject> getFilesSelectedInNavigator() {
+	public List<AudioObject> getFilesSelectedInNavigator() {
 		return getNavigationController().getFilesSelectedInNavigator();
 	}
 
@@ -304,7 +304,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 		getNavigationController().notifyDeviceReload();		
 	}
 
-	public List<AudioObject> getAudioObjectsForTreeNode(Class<? extends AbstractNavigationView> class1,DefaultMutableTreeNode objectDragged) {
+	public List<? extends AudioObject> getAudioObjectsForTreeNode(Class<? extends AbstractNavigationView> class1,DefaultMutableTreeNode objectDragged) {
 		return getNavigationController().getAudioObjectsForTreeNode(class1, objectDragged);
 	}
 

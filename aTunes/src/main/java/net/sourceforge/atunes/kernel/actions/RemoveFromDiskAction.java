@@ -42,6 +42,7 @@ import net.sourceforge.atunes.kernel.modules.navigator.ViewMode;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.Folder;
@@ -105,12 +106,12 @@ public class RemoveFromDiskAction extends AbstractAction {
     }
 
     private void fromOtherViews() {
-        final List<LocalAudioObject> files = NavigationHandler.getInstance().getFilesSelectedInNavigator();
+        final List<AudioObject> files = NavigationHandler.getInstance().getFilesSelectedInNavigator();
         RepositoryHandler.getInstance().startTransaction();
-        RepositoryHandler.getInstance().remove(files);
+        RepositoryHandler.getInstance().remove(AudioFile.getAudioFiles(files));
         RepositoryHandler.getInstance().endTransaction();
         GuiHandler.getInstance().showIndeterminateProgressDialog(I18nUtils.getString("PLEASE_WAIT"));
-        new DeleteFilesWorker(files).execute();
+        new DeleteFilesWorker(AudioFile.getAudioFiles(files)).execute();
     }
 
     private void fromRepositoryOrDeviceView() {

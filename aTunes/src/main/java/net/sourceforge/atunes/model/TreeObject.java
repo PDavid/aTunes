@@ -33,14 +33,14 @@ import org.commonjukebox.plugins.model.PluginApi;
  * interface.
  */
 @PluginApi
-public interface TreeObject {
+public interface TreeObject<T extends AudioObject> {
 
     /**
      * Returns the audio objects of this tree object
      * 
      * @return The audio objects of this object
      */
-    public List<AudioObject> getAudioObjects();
+    public List<T> getAudioObjects();
 
     /**
      * Returns a string to be shown as tool tip when object is used

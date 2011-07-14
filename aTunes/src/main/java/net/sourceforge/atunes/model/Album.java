@@ -35,7 +35,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * 
  * @author fleax
  */
-public class Album implements Serializable, TreeObject, Comparable<Album> {
+public class Album implements Serializable, TreeObject<LocalAudioObject>, Comparable<Album> {
 
     private static final long serialVersionUID = -1481314950918557022L;
 
@@ -117,8 +117,8 @@ public class Album implements Serializable, TreeObject, Comparable<Album> {
      * @return the audio objects
      */
     @Override
-    public List<AudioObject> getAudioObjects() {
-        return new ArrayList<AudioObject>(getAudioFiles());
+    public List<LocalAudioObject> getAudioObjects() {
+        return new ArrayList<LocalAudioObject>(getAudioFiles());
     }
 
     /**

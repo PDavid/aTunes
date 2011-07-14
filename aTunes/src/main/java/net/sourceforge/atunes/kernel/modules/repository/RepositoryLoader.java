@@ -43,7 +43,6 @@ import net.sourceforge.atunes.misc.Timer;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
-import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.model.Repository;
@@ -636,7 +635,7 @@ public class RepositoryLoader extends Thread {
 				return;
 			}
 
-			List<LocalAudioObject> audioFiles = AudioFile.getAudioFiles(album.getAudioObjects());
+			List<LocalAudioObject> audioFiles = album.getAudioObjects();
 			for (LocalAudioObject af : audioFiles) {
 				af.addExternalPicture(picture);
 			}
@@ -687,7 +686,7 @@ public class RepositoryLoader extends Thread {
 						alb.removeAudioFile(file);
 					}
 
-					if (a.getAudioObjects().size() <= 1) {
+					if (a.size() <= 1) {
 						RepositoryHandler.getInstance().getArtistStructure()
 								.remove(a.getName());
 					}
@@ -793,14 +792,14 @@ public class RepositoryLoader extends Thread {
 		
 		for (Folder folder : folders) {
 			// Remove o refresh previous files		
-			List<AudioObject> aos = folder.getAudioObjects();
-			for (AudioObject ao : aos) {
-				if (((LocalAudioObject)ao).getFile().exists()) {
-					Logger.debug("Refreshing file: ", ((LocalAudioObject)ao).getFile().getAbsolutePath());
-					refreshFile(repository, (LocalAudioObject) ao);
+			List<LocalAudioObject> aos = folder.getAudioObjects();
+			for (LocalAudioObject ao : aos) {
+				if (ao.getFile().exists()) {
+					Logger.debug("Refreshing file: ", ao.getFile().getAbsolutePath());
+					refreshFile(repository, ao);
 				} else {
-					Logger.debug("Removing file: ", ((LocalAudioObject)ao).getFile().getAbsolutePath());
-					RepositoryHandler.getInstance().remove(Collections.singletonList((LocalAudioObject)ao));
+					Logger.debug("Removing file: ", ao.getFile().getAbsolutePath());
+					RepositoryHandler.getInstance().remove(Collections.singletonList(ao));
 				}
 			}
 

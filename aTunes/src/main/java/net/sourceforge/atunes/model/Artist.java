@@ -43,7 +43,7 @@ import org.commonjukebox.plugins.model.PluginApi;
  * @author fleax
  */
 @PluginApi
-public class Artist implements Serializable, TreeObject, Comparable<Artist> {
+public class Artist implements Serializable, TreeObject<LocalAudioObject>, Comparable<Artist> {
 
     /**
 	 * 
@@ -127,8 +127,8 @@ public class Artist implements Serializable, TreeObject, Comparable<Artist> {
      * @return the audio objects
      */
     @Override
-    public List<AudioObject> getAudioObjects() {
-        List<AudioObject> songs = new ArrayList<AudioObject>();
+    public List<LocalAudioObject> getAudioObjects() {
+        List<LocalAudioObject> songs = new ArrayList<LocalAudioObject>();
         for (Album album : getAlbums().values()) {
             songs.addAll(album.getAudioObjects());
         }
@@ -229,4 +229,34 @@ public class Artist implements Serializable, TreeObject, Comparable<Artist> {
     public static boolean isUnknownArtist(String artist) {
         return getUnknownArtist().equalsIgnoreCase(artist);
     }
+    
+	/**
+	 * Returns true if artist has no audio files
+	 * @return
+	 */
+	public boolean isEmpty() {
+		if (!getAlbums().isEmpty()) {
+			for (Album a : getAlbums().values()) {
+				if (!a.isEmpty()) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * Returns number of audio files of artist
+	 * @return
+	 */
+	public int size() {
+		int size = 0;
+		if (!getAlbums().isEmpty()) {
+			for (Album a : getAlbums().values()) {
+				size = size + a.size();
+			}
+		}
+		return size;
+	}
+
 }

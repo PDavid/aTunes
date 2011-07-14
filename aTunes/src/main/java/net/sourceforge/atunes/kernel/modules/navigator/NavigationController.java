@@ -256,7 +256,7 @@ final class NavigationController extends AbstractController implements AudioFile
      * 
      * @return the files selected in navigator
      */
-    public List<LocalAudioObject> getFilesSelectedInNavigator() {
+    public List<AudioObject> getFilesSelectedInNavigator() {
         List<AudioObject> files = new ArrayList<AudioObject>();
         if (getPopupMenuCaller() instanceof JTable) {
             int[] rows = navigationTablePanel.getNavigationTable().getSelectedRows();
@@ -271,7 +271,7 @@ final class NavigationController extends AbstractController implements AudioFile
                 }
             }
         }
-        return AudioFile.getAudioFiles(files);
+        return files;
     }
 
     /**
@@ -318,8 +318,8 @@ final class NavigationController extends AbstractController implements AudioFile
      * @param node
      * @return
      */
-    public List<AudioObject> getAudioObjectsForTreeNode(Class<? extends AbstractNavigationView> navigationViewClass, DefaultMutableTreeNode node) {
-        List<AudioObject> audioObjects = NavigationHandler.getInstance().getView(navigationViewClass).getAudioObjectForTreeNode(node, ApplicationState.getInstance().getViewMode(),
+    public List<? extends AudioObject> getAudioObjectsForTreeNode(Class<? extends AbstractNavigationView> navigationViewClass, DefaultMutableTreeNode node) {
+        List<? extends AudioObject> audioObjects = NavigationHandler.getInstance().getView(navigationViewClass).getAudioObjectForTreeNode(node, ApplicationState.getInstance().getViewMode(),
                 FilterHandler.getInstance().isFilterSelected(NavigationHandler.getInstance().getTreeFilter()) ? FilterHandler.getInstance().getFilter() : null);
 
         AbstractColumnSet columnSet = NavigationHandler.getInstance().getCurrentView().getCustomColumnSet();
