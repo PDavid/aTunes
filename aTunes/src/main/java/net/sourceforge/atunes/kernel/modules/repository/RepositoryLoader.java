@@ -681,7 +681,7 @@ public class RepositoryLoader extends Thread {
 			if (a != null) {
 				Album alb = a.getAlbum(album);
 				if (alb != null) {
-					if (alb.getAudioObjects().size() == 1) {
+					if (alb.size() == 1) {
 						a.removeAlbum(alb);
 					} else {
 						alb.removeAudioFile(file);
