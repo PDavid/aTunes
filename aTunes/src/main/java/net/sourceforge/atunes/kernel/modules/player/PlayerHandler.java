@@ -465,21 +465,23 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 
     @Override
     public void playbackStateChanged(PlaybackState newState, AudioObject currentAudioObject) {
-        this.playbackState = newState;
-    	Logger.debug("Playback state changed to:", newState);
-        
-        if (newState == PlaybackState.PLAY_FINISHED || newState == PlaybackState.PLAY_INTERRUPTED || newState == PlaybackState.STOPPED) {
-        	if (playerEngine != null && playerEngine.getSubmissionState() == SubmissionState.PENDING && currentAudioObject instanceof AudioFile) {
-                LastFmService.getInstance().submitToLastFm((AudioFile) currentAudioObject, getCurrentAudioObjectPlayedTime() / 1000);
-                StatisticsHandler.getInstance().setAudioFileStatistics((AudioFile) currentAudioObject);
-                playerEngine.setSubmissionState(SubmissionState.SUBMITTED);
-            }
-        }
-        
-        if (playerEngine != null && newState == PlaybackState.STOPPED) {
-            playerEngine.setCurrentAudioObjectPlayedTime(0);
-            playerEngine.interruptPlayAudioObjectThread();
-        }
+    	if (playbackState != newState) {
+    		this.playbackState = newState;
+    		Logger.debug("Playback state changed to:", newState);
+
+    		if (newState == PlaybackState.PLAY_FINISHED || newState == PlaybackState.PLAY_INTERRUPTED || newState == PlaybackState.STOPPED) {
+    			if (playerEngine != null && playerEngine.getSubmissionState() == SubmissionState.PENDING && currentAudioObject instanceof AudioFile) {
+    				LastFmService.getInstance().submitToLastFm((AudioFile) currentAudioObject, getCurrentAudioObjectPlayedTime() / 1000);
+    				StatisticsHandler.getInstance().setAudioFileStatistics((AudioFile) currentAudioObject);
+    				playerEngine.setSubmissionState(SubmissionState.SUBMITTED);
+    			}
+    		}
+
+    		if (playerEngine != null && newState == PlaybackState.STOPPED) {
+    			playerEngine.setCurrentAudioObjectPlayedTime(0);
+    			playerEngine.interruptPlayAudioObjectThread();
+    		}
+    	}
     }
 
     /**
