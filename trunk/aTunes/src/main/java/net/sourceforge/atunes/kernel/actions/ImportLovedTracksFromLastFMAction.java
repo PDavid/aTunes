@@ -29,7 +29,6 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
@@ -51,7 +50,7 @@ public class ImportLovedTracksFromLastFMAction extends AbstractAction {
                 for (LastFmLovedTrack lovedTrack : lovedTracks) {
                     Artist artist = RepositoryHandler.getInstance().getArtistStructure().get(lovedTrack.getArtist());
                     if (artist != null) {
-                        for (LocalAudioObject audioObject : AudioFile.getAudioFiles(artist.getAudioObjects())) {
+                        for (LocalAudioObject audioObject : artist.getAudioObjects()) {
                             if (audioObject.getTitleOrFileName().equalsIgnoreCase(lovedTrack.getTitle())) {
                                 favoriteAudioFiles.add(audioObject);
                             }

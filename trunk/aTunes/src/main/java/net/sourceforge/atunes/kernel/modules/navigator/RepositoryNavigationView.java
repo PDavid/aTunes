@@ -69,6 +69,7 @@ import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -203,19 +204,19 @@ public class RepositoryNavigationView extends AbstractNavigationView {
     }
 
     @Override
-    public List<AudioObject> getAudioObjectForTreeNode(DefaultMutableTreeNode node, ViewMode viewMode, String treeFilter) {
-        List<AudioObject> songs = new ArrayList<AudioObject>();
+    public List<? extends AudioObject> getAudioObjectForTreeNode(DefaultMutableTreeNode node, ViewMode viewMode, String treeFilter) {
+        List<LocalAudioObject> songs = new ArrayList<LocalAudioObject>();
         if (node.isRoot()) {
             if (treeFilter == null) {
                 songs.addAll(RepositoryHandler.getInstance().getAudioFilesList());
             } else {
                 for (int i = 0; i < node.getChildCount(); i++) {
-                    TreeObject obj = (TreeObject) ((DefaultMutableTreeNode) node.getChildAt(i)).getUserObject();
+                    TreeObject<LocalAudioObject> obj = (TreeObject<LocalAudioObject>) ((DefaultMutableTreeNode) node.getChildAt(i)).getUserObject();
                     songs.addAll(obj.getAudioObjects());
                 }
             }
         } else {
-            TreeObject obj = (TreeObject) node.getUserObject();
+            TreeObject<LocalAudioObject> obj = (TreeObject<LocalAudioObject>) node.getUserObject();
             songs = obj.getAudioObjects();
         }
         return songs;

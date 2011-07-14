@@ -241,7 +241,7 @@ final class RepositoryFiller {
 					alb.removeAudioFile(file);
 				}
 
-				if (a.getAudioObjects().size() <= 0) {
+				if (a.size() <= 0) {
 					repository.getArtistStructure().remove(a.getName());
 				}
 			}
@@ -259,7 +259,7 @@ final class RepositoryFiller {
 						}
 						// Maybe needs to be set to 0 in case node gets
 						// deleted
-						if (a.getAudioObjects().size() <= 1) {
+						if (a.size() <= 1) {
 							repository.getArtistStructure().remove(a.getName());
 						}
 					}

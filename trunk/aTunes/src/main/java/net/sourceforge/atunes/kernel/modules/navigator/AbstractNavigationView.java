@@ -207,7 +207,7 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
      * @param treeFilter
      * @return
      */
-    public abstract List<AudioObject> getAudioObjectForTreeNode(DefaultMutableTreeNode node, ViewMode viewMode, String treeFilter);
+    public abstract List<? extends AudioObject> getAudioObjectForTreeNode(DefaultMutableTreeNode node, ViewMode viewMode, String treeFilter);
 
     /**
      * Returns <code>true</code> if the view supports organize information in

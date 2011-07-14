@@ -43,12 +43,12 @@ public class RenameAudioFileInNavigationTableAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        List<LocalAudioObject> audioFiles = NavigationHandler.getInstance().getFilesSelectedInNavigator();
-        if (audioFiles.size() == 1) {
+        List<AudioObject> audioFiles = NavigationHandler.getInstance().getFilesSelectedInNavigator();
+        if (audioFiles.size() == 1 && audioFiles.get(0) instanceof LocalAudioObject) {
             String name = GuiHandler.getInstance().showInputDialog(I18nUtils.getString("RENAME_AUDIO_FILE_NAME"),
-                    FilenameUtils.getBaseName(audioFiles.get(0).getFile().getAbsolutePath()));
+                    FilenameUtils.getBaseName(((LocalAudioObject)audioFiles.get(0)).getFile().getAbsolutePath()));
             if (name != null && !name.isEmpty()) {
-                RepositoryHandler.getInstance().rename(audioFiles.get(0), name);
+                RepositoryHandler.getInstance().rename(((LocalAudioObject)audioFiles.get(0)), name);
             }
         }
     }

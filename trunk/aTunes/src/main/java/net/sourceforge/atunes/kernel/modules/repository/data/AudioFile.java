@@ -130,19 +130,6 @@ public final class AudioFile implements LocalAudioObject, Serializable {
     }
 
     /**
-     * Returns a list of audio objects for the given list of audio files
-     * 
-     * @param audioFiles
-     * @return
-     */
-    public static List<AudioObject> getAudioObjects(List<LocalAudioObject> audioFiles) {
-        if (audioFiles == null) {
-            return Collections.emptyList();
-        }
-        return new ArrayList<AudioObject>(audioFiles);
-    }
-
-    /**
      * Gets the new tag.
      * 
      * @param file

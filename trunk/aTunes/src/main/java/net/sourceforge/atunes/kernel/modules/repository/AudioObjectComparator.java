@@ -76,7 +76,7 @@ public class AudioObjectComparator implements Comparator<AudioObject> {
      * 
      * @param audioObjects
      */
-    public static void sort(List<AudioObject> audioObjects) {
+    public static void sort(List<? extends AudioObject> audioObjects) {
         Collections.sort(audioObjects, new AudioObjectComparator());
     }
 

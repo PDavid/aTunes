@@ -40,7 +40,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * 
  * @author fleax
  */
-public class Folder implements Serializable, TreeObject {
+public class Folder implements Serializable, TreeObject<LocalAudioObject> {
 
     /**
 	 * 
@@ -110,8 +110,8 @@ public class Folder implements Serializable, TreeObject {
      * @return the audio objects
      */
     @Override
-    public List<AudioObject> getAudioObjects() {
-        List<AudioObject> result = null;
+    public List<LocalAudioObject> getAudioObjects() {
+        List<LocalAudioObject> result = null;
         for (Folder f : getFolders().values()) {
         	if (result == null) {
         		result = f.getAudioObjects();
@@ -120,7 +120,7 @@ public class Folder implements Serializable, TreeObject {
         	}
         }
         if (result == null) {
-        	result = new ArrayList<AudioObject>();
+        	result = new ArrayList<LocalAudioObject>();
         }
        	result.addAll(getFiles());
         return result;

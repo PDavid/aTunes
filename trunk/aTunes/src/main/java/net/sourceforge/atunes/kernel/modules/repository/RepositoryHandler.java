@@ -671,7 +671,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     public List<LocalAudioObject> getAudioFilesForAlbums(Map<String, Album> albums) {
         List<LocalAudioObject> result = new ArrayList<LocalAudioObject>();
         for (Map.Entry<String, Album> entry : albums.entrySet()) {
-            result.addAll(AudioFile.getAudioFiles(entry.getValue().getAudioObjects()));
+            result.addAll(entry.getValue().getAudioObjects());
         }
         return result;
     }
@@ -687,7 +687,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     public List<LocalAudioObject> getAudioFilesForArtists(Map<String, Artist> artists) {
         List<LocalAudioObject> result = new ArrayList<LocalAudioObject>();
         for (Map.Entry<String, Artist> entry : artists.entrySet()) {
-            result.addAll(AudioFile.getAudioFiles(entry.getValue().getAudioObjects()));
+            result.addAll(entry.getValue().getAudioObjects());
         }
         return result;
     }
@@ -1015,7 +1015,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         for (Folder folder : foldersToRemove) {
 
             // Remove content
-            remove(AudioFile.getAudioFiles(folder.getAudioObjects()));
+            remove(folder.getAudioObjects());
 
             // Remove from model
             if (folder.getParentFolder() != null) {

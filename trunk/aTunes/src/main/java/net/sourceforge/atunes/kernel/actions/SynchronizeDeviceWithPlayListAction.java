@@ -32,6 +32,7 @@ import javax.swing.SwingWorker;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
+import net.sourceforge.atunes.kernel.modules.playlist.PlayListLocalAudioObjectFilter;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
@@ -81,12 +82,10 @@ public class SynchronizeDeviceWithPlayListAction extends AbstractAction {
 		    List<LocalAudioObject> playListObjects;
 		    if (ApplicationState.getInstance().isAllowRepeatedSongsInDevice()) {
 		        // Repeated songs allowed, filter only if have same artist and album
-		        playListObjects = AudioFile.filterRepeatedSongsAndAlbums(AudioFile.getAudioFiles(PlayListHandler.getInstance().getCurrentPlayList(true).getObjectsOfType(
-		                AudioFile.class)));
+		        playListObjects = AudioFile.filterRepeatedSongsAndAlbums(new PlayListLocalAudioObjectFilter().getObjects(PlayListHandler.getInstance().getCurrentPlayList(true)));
 		    } else {
 		        // Repeated songs not allows, filter even if have different album
-		        playListObjects = AudioFile.filterRepeatedSongs(AudioFile.getAudioFiles(PlayListHandler.getInstance().getCurrentPlayList(true)
-		                .getObjectsOfType(AudioFile.class)));
+		        playListObjects = AudioFile.filterRepeatedSongs(new PlayListLocalAudioObjectFilter().getObjects(PlayListHandler.getInstance().getCurrentPlayList(true)));
 		    }
 
 		    // Get elements present in play list and not in device -> objects to be copied to device

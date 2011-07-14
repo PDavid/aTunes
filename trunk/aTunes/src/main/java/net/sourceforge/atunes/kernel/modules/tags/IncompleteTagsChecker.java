@@ -140,7 +140,7 @@ public final class IncompleteTagsChecker {
      * @param treeObject
      * @return
      */
-    public static boolean hasIncompleteTags(TreeObject treeObject) {
+    public static boolean hasIncompleteTags(TreeObject<? extends AudioObject> treeObject) {
         for (AudioObject f : treeObject.getAudioObjects()) {
             if (hasIncompleteTags(f)) {
                 return true;

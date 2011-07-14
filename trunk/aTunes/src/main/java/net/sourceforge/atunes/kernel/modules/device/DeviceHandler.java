@@ -634,7 +634,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
                         } else {
                             // Compare title of every file and add if title is not in list
                             Album alb = a.getAlbum(album);
-                            List<AudioObject> deviceFiles = alb.getAudioObjects();
+                            List<LocalAudioObject> deviceFiles = alb.getAudioObjects();
                             HashSet<String> titles = new HashSet<String>();
                             for (AudioObject deviceFile : deviceFiles) {
                                 titles.add(deviceFile.getTitle());
@@ -645,7 +645,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
                         }
                     } else {
                         // Compare title of every file of artist and add if title is not in list
-                        List<AudioObject> deviceFiles = a.getAudioObjects();
+                        List<LocalAudioObject> deviceFiles = a.getAudioObjects();
                         HashSet<String> titles = new HashSet<String>();
                         for (AudioObject deviceFile : deviceFiles) {
                             titles.add(deviceFile.getTitle());
@@ -681,7 +681,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
                 if (ApplicationState.getInstance().isAllowRepeatedSongsInDevice()) {
                     if (a.getAlbum(album) != null) {
                         Album alb = a.getAlbum(album);
-                        List<AudioObject> deviceFiles = alb.getAudioObjects();
+                        List<LocalAudioObject> deviceFiles = alb.getAudioObjects();
                         HashMap<String, AudioObject> titles = new HashMap<String, AudioObject>();
                         for (AudioObject deviceFile : deviceFiles) {
                             titles.put(deviceFile.getTitle(), deviceFile);
@@ -691,7 +691,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
                         }
                     }
                 } else {
-                    List<AudioObject> deviceFiles = a.getAudioObjects();
+                    List<LocalAudioObject> deviceFiles = a.getAudioObjects();
                     HashMap<String, AudioObject> titles = new HashMap<String, AudioObject>();
                     for (AudioObject deviceFile : deviceFiles) {
                         titles.put(deviceFile.getTitle(), deviceFile);

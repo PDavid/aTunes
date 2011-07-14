@@ -94,7 +94,7 @@ public class PlayList implements Serializable, Cloneable {
      * 
      * @param list
      */
-    protected PlayList(List<AudioObject> audioObjectsList) {
+    protected PlayList(List<? extends AudioObject> audioObjectsList) {
         this.mode = PlayListMode.getPlayListMode(this);
         if (audioObjectsList != null) {
             add(audioObjectsList);
@@ -184,7 +184,7 @@ public class PlayList implements Serializable, Cloneable {
      * 
      * @param list
      */
-    protected void remove(List<AudioObject> list) {
+    protected void remove(List<? extends AudioObject> list) {
         // First get all positions of objects to remove
         List<PlayListAudioObject> playListAudioObjects = new ArrayList<PlayListAudioObject>();
         for (AudioObject ao : list) {
@@ -347,21 +347,6 @@ public class PlayList implements Serializable, Cloneable {
     protected int getCurrentAudioObjectIndex() {
         // If pointer is not null return index, otherwise return 0
         return this.audioObjects.getPointer() != null ? this.audioObjects.getPointer() : 0;
-    }
-
-    /**
-     * Returns only LocalAudioObject objects contained in this play list
-     * 
-     * @return
-     */
-    public List<AudioObject> getObjectsOfType(Class<? extends AudioObject> clazz) {
-        List<AudioObject> result = new ArrayList<AudioObject>();
-        for (AudioObject ao : this.audioObjects.getList()) {
-            if (ao.getClass().equals(clazz)) {
-                result.add(ao);
-            }
-        }
-        return result;
     }
 
     /**

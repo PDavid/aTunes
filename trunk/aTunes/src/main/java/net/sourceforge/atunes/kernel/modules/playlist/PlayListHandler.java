@@ -312,7 +312,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      * @param audioObjects
      *            the audio objects to add to the new play list
      */
-    public void newPlayList(String nameOfNewPlayList, List<AudioObject> audioObjects) {
+    public void newPlayList(String nameOfNewPlayList, List<? extends AudioObject> audioObjects) {
         PlayList newPlayList;
         if (audioObjects == null) {
             newPlayList = new PlayList();
@@ -1077,10 +1077,9 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
 
     @Override
     public void audioFilesRemoved(List<LocalAudioObject> audioFiles) {
-        List<AudioObject> audioObjects = AudioFile.getAudioObjects(audioFiles);
         // Remove these objects from all play lists
         for (PlayList pl : playLists) {
-            pl.remove(audioObjects);
+            pl.remove(audioFiles);
         }
         // Update status bar
         GuiHandler.getInstance().showPlayListInformation(getCurrentPlayList(true));
@@ -1276,8 +1275,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
 	@Override
 	public void deviceDisconnected(String location) {
         List<Integer> songsToRemove = new ArrayList<Integer>();
-        for (AudioObject ao : getCurrentPlayList(true).getObjectsOfType(AudioFile.class)) {
-        	LocalAudioObject audioFile = (LocalAudioObject) ao;
+        for (LocalAudioObject audioFile : new PlayListLocalAudioObjectFilter().getObjects(getCurrentPlayList(true))) {
             if (audioFile.getFile().getPath().startsWith(location)) {
                 songsToRemove.add(getCurrentPlayList(true).indexOf(audioFile));
             }
