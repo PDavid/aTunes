@@ -176,7 +176,7 @@ public class Album implements Serializable, TreeObject, Comparable<Album> {
 
     @Override
     public String getToolTip() {
-        int songs = getAudioObjects().size();
+        int songs = size();
         return StringUtils.getString(getName(), " - ", getArtist(), " (", songs, " ", (songs > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG")), ")");
     }
 
@@ -250,6 +250,22 @@ public class Album implements Serializable, TreeObject, Comparable<Album> {
 		} else if (!name.equals(other.name))
 			return false;
 		return true;
+	}
+	
+	/**
+	 * Returns true if album has no audio files
+	 * @return
+	 */
+	public boolean isEmpty() {
+		return getAudioFiles().isEmpty();
+	}
+	
+	/**
+	 * Returns number of audio files of album
+	 * @return
+	 */
+	public int size() {
+		return getAudioFiles().size();
 	}
 
 }

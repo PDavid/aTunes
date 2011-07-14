@@ -47,7 +47,7 @@ public class AlbumTest {
 	@Test
 	public void createAlbum() {
 		Assert.assertEquals(artist, a1.getArtist());
-		Assert.assertTrue(a1.getAudioObjects().isEmpty());
+		Assert.assertTrue(a1.isEmpty());
 		Assert.assertTrue(a1.getName().equals(ALBUM_NAME));		
 	}
 	
