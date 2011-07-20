@@ -71,16 +71,6 @@ public final class IndeterminateProgressDialog extends AbstractCustomModalDialog
     }
 
     /**
-     * The main method.
-     * 
-     * @param args
-     *            the arguments
-     */
-    public static void main(String[] args) {
-        new IndeterminateProgressDialog(null).setVisible(true);
-    }
-
-    /**
      * Gets the content.
      * 
      * @return the content

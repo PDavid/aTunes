@@ -303,8 +303,9 @@ public class Cdda2wav extends AbstractCdToWavConverter {
                 Process icedaxCheck = new ProcessBuilder(StringUtils.getString(OsManager.getExternalToolsPath(), converterCommand), VERSION).start();
                 stdInput2 = new BufferedReader(new InputStreamReader(icedaxCheck.getInputStream()));
 
-                while (stdInput2.readLine() != null) {
-                    // Nothing to do
+                String line = null;
+                while ((line = stdInput2.readLine()) != null) {
+                	Logger.debug(line);
                 }
 
                 int code2 = icedaxCheck.waitFor();

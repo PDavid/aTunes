@@ -113,16 +113,6 @@ public final class RepositoryProgressDialog extends AbstractCustomModalDialog {
     }
 
     /**
-     * The main method.
-     * 
-     * @param args
-     *            the arguments
-     */
-    public static void main(String[] args) {
-        new RepositoryProgressDialog(null).setVisible(true);
-    }
-
-    /**
      * Activate glass pane.
      */
     public void activateGlassPane() {

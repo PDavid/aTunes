@@ -51,7 +51,7 @@ public class PreviousImageIcon {
         Graphics2D g2 = bi.createGraphics();
     	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     	g2.setPaint(color != null ? color : LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForSpecialControls());
-		g2.translate(size.getWidth() / 2 - size.width / 16, size.getHeight() / 2);
+		g2.translate(size.getWidth() / (double) 2 - size.width / (double) 16, size.getHeight() / (double) 2);
     	
    		g2.fill(previousShape);
    		g2.translate(-size.width / 5, 0);

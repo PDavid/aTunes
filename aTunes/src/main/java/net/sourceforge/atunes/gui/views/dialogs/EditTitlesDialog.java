@@ -68,16 +68,6 @@ public final class EditTitlesDialog extends AbstractCustomModalDialog {
     }
 
     /**
-     * The main method.
-     * 
-     * @param args
-     *            the arguments
-     */
-    public static void main(String[] args) {
-        new EditTitlesDialog(null).setVisible(true);
-    }
-
-    /**
      * Gets the cancel button.
      * 
      * @return the cancel button

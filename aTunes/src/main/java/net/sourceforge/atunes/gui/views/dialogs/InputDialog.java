@@ -113,18 +113,6 @@ public final class InputDialog extends AbstractCustomModalDialog {
     }
 
     /**
-     * The main method.
-     * 
-     * @param args
-     *            the arguments
-     */
-    public static void main(String[] args) {
-        InputDialog id = new InputDialog(null, "JJ", null);
-        id.show("sasas");
-        System.out.println(id.getResult());
-    }
-
-    /**
      * Gets the result.
      * 
      * @return the result

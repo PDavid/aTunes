@@ -128,7 +128,7 @@ public class LyricsContent extends AbstractContextPanelContent {
     protected void updateContentWithDataSourceResult(Map<String, ?> result) {
         if (result.containsKey(LyricsDataSource.OUTPUT_LYRIC)) {
             Lyrics lyrics = (Lyrics) result.get(LyricsDataSource.OUTPUT_LYRIC);
-            lyricsContainer.setText(lyrics.getLyrics());
+            lyricsContainer.setText(lyrics != null ? lyrics.getLyrics() : null);
             lyricsContainer.setCaretPosition(0);
 
             boolean lyricsNotEmpty = lyrics != null && !lyrics.getLyrics().trim().isEmpty();
