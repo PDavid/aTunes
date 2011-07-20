@@ -33,6 +33,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -224,8 +225,8 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
                 try {
 		            Map<PluginFolder, PluginSystemException> problemsFound = PluginsHandler.getInstance().uninstallPlugin(plugin);
 		            if (problemsFound != null) {
-		            	for (PluginFolder pluginFolder : problemsFound.keySet()) {
-		            		GuiHandler.getInstance().showExceptionDialog(pluginFolder.getName(), I18nUtils.getString("PLUGIN_UNINSTALLATION_ERROR"), problemsFound.get(pluginFolder));
+		            	for (Map.Entry<PluginFolder, PluginSystemException> pluginFolderEntry : problemsFound.entrySet()) {
+		            		GuiHandler.getInstance().showExceptionDialog(pluginFolderEntry.getKey().getName(), I18nUtils.getString("PLUGIN_UNINSTALLATION_ERROR"), pluginFolderEntry.getValue());
 		            	}
 		            }
                     
@@ -329,8 +330,8 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 		        try {
 		            Map<PluginFolder, PluginSystemException> problemsFound = PluginsHandler.getInstance().installPlugin(zipFile);
 		            if (problemsFound != null) {
-		            	for (PluginFolder pluginFolder : problemsFound.keySet()) {
-		            		GuiHandler.getInstance().showExceptionDialog(pluginFolder.getName(), I18nUtils.getString("PLUGIN_INSTALLATION_ERROR"), problemsFound.get(pluginFolder));
+		            	for (Entry<PluginFolder, PluginSystemException> pluginFolderEntry : problemsFound.entrySet()) {
+		            		GuiHandler.getInstance().showExceptionDialog(pluginFolderEntry.getKey().getName(), I18nUtils.getString("PLUGIN_INSTALLATION_ERROR"), pluginFolderEntry.getValue());
 		            	}
 		            }
 		            
