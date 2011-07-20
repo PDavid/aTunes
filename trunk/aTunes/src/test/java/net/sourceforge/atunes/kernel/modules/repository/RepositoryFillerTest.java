@@ -40,7 +40,7 @@ public class RepositoryFillerTest {
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void createRepositoryFillerNullRepository() {
-		RepositoryFiller f = new RepositoryFiller(null);		
+		new RepositoryFiller(null);		
 	}
 	
 //	@Test

@@ -232,7 +232,7 @@ public class Cdparanoia extends AbstractCdToWavConverter {
             Logger.info(StringUtils.getString("CD info: ", getCdInfo()));
             return getCdInfo();
 
-        } catch (Exception e) {
+        } catch (IOException e) {
             Logger.error(e);
             return null;
         }

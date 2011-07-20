@@ -214,7 +214,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
 		        getCdInfo().setArtists(artists);
 		        getCdInfo().setComposers(composers);
 
-		    } catch (Exception e) {
+		    } catch (IOException e) {
 		        Logger.error(e);
 		    } finally {
 		        ClosingUtils.close(stdInput);
@@ -547,10 +547,13 @@ public class Cdda2wav extends AbstractCdToWavConverter {
                 }
                 Logger.info(StringUtils.getString("Found ", devices.size(), " devices with scanbus method"));
 
-            } catch (Exception e) {
-                Logger.error("Process execution caused exception " + e);
-                //return null;
-            } finally {
+            } catch (IOException e) {
+                Logger.error(StringUtils.getString("Process execution caused exception: ", e.getMessage()));
+                Logger.error(e);
+            } catch (InterruptedException e) {
+                Logger.error(StringUtils.getString("Process execution caused exception: ", e.getMessage()));
+                Logger.error(e);
+			} finally {
                 ClosingUtils.close(stdInput);
             }
         }
@@ -615,7 +618,10 @@ public class Cdda2wav extends AbstractCdToWavConverter {
                     devices.add(null);
                 }
                 return devices;
-            } catch (Exception e) {
+            } catch (IOException e) {
+                Logger.error(StringUtils.getString("Process execution caused exception ", e));
+                return null;
+            } catch (InterruptedException e) {
                 Logger.error(StringUtils.getString("Process execution caused exception ", e));
                 return null;
             } finally {

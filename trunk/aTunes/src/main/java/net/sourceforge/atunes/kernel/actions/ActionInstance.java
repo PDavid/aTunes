@@ -61,20 +61,50 @@ public class ActionInstance {
         this.actionId = actionId;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        if (actionId != null) {
-            hash = hash + actionId.hashCode();
-        }
-        if (actionClass != null) {
-            hash = hash + actionClass.hashCode();
-        }
-        return hash;
-    }
+    /* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((actionClass == null) ? 0 : actionClass.hashCode());
+		result = prime * result
+				+ ((actionId == null) ? 0 : actionId.hashCode());
+		return result;
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        return this.hashCode() == ((ActionInstance) obj).hashCode();
-    }
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof ActionInstance)) {
+			return false;
+		}
+		ActionInstance other = (ActionInstance) obj;
+		if (actionClass == null) {
+			if (other.actionClass != null) {
+				return false;
+			}
+		} else if (!actionClass.equals(other.actionClass)) {
+			return false;
+		}
+		if (actionId == null) {
+			if (other.actionId != null) {
+				return false;
+			}
+		} else if (!actionId.equals(other.actionId)) {
+			return false;
+		}
+		return true;
+	}
+
 }

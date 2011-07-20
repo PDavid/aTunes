@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel.modules.cdripper.encoders;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -90,9 +91,11 @@ public class LameEncoder implements Encoder {
                 return false;
             }
             return true;
-        } catch (Exception e) {
+        } catch (IOException e) {
             return false;
-        } finally {
+        } catch (InterruptedException e) {
+            return false;
+		} finally {
             ClosingUtils.close(stdInput);
         }
     }
@@ -192,10 +195,15 @@ public class LameEncoder implements Encoder {
             }
             Logger.info("Encoded ok!!");
             return true;
-        } catch (Exception e) {
+        } catch (IOException e) {
             Logger.error(StringUtils.getString("Process execution caused exception ", e));
+            Logger.error(e);
             return false;
-        } finally {
+        } catch (InterruptedException e) {
+            Logger.error(StringUtils.getString("Process execution caused exception ", e));
+            Logger.error(e);
+            return false;
+		} finally {
             ClosingUtils.close(stdInput);
         }
     }
