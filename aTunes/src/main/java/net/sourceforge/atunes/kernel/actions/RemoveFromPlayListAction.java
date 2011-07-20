@@ -36,7 +36,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class RemoveFromPlayListAction extends AbstractAction {
+public class RemoveFromPlayListAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 7249538257655420803L;
 

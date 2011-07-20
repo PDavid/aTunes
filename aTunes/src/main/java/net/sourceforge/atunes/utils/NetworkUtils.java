@@ -33,7 +33,7 @@ import java.net.URLEncoder;
 
 import javax.imageio.ImageIO;
 
-import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
+import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.misc.log.Logger;
 
 import org.commonjukebox.plugins.model.PluginApi;
@@ -76,7 +76,7 @@ public final class NetworkUtils {
      * @throws IOException
      *             If an IO exception occurs
      */
-    public static URLConnection getConnection(String urlString, Proxy proxy) throws IOException {
+    public static URLConnection getConnection(String urlString, ExtendedProxy proxy) throws IOException {
         Logger.debug("Opening Connection With: ", urlString);
 
         URL url = new URL(urlString);

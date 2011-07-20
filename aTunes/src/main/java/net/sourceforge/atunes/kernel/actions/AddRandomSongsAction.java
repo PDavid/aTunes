@@ -28,7 +28,7 @@ import net.sourceforge.atunes.kernel.modules.playlist.SmartPlayListHandler;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class AddRandomSongsAction extends AbstractAction {
+public class AddRandomSongsAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 950514324011175113L;
 

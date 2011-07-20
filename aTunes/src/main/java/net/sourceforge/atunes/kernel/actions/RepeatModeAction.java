@@ -31,7 +31,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class RepeatModeAction extends AbstractAction {
+public class RepeatModeAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 2032609750151412458L;
 

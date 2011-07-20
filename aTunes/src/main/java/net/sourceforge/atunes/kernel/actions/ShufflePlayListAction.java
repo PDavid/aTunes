@@ -36,7 +36,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class ShufflePlayListAction extends AbstractAction {
+public class ShufflePlayListAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -6608120075596882123L;
 

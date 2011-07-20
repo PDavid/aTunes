@@ -149,6 +149,16 @@ public class LocalAudioObjectFake implements LocalAudioObject {
 	public int compareTo(LocalAudioObject arg0) {
 		return 0;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		return true;
+	}
+	
+	@Override
+	public int hashCode() {
+		return 0;
+	}
 
 	@Override
 	public File getFile() {

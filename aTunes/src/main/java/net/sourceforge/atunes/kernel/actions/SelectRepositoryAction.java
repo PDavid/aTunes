@@ -32,7 +32,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * @author fleax
  * 
  */
-public class SelectRepositoryAction extends AbstractAction {
+public class SelectRepositoryAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 6921256152199287639L;
 

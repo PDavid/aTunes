@@ -36,7 +36,7 @@ import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public class SearchArtistAtAction extends AbstractAction {
+public class SearchArtistAtAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -8934175706272236046L;
 

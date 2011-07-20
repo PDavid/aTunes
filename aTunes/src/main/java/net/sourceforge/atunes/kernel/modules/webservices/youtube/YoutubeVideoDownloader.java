@@ -32,7 +32,7 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.gui.views.dialogs.TransferProgressDialog;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
-import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
+import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -115,7 +115,7 @@ public class YoutubeVideoDownloader extends SwingWorker<Void, String> {
         InputStream input = null;
         FileOutputStream fout = null;
         try {
-            URLConnection connection = NetworkUtils.getConnection(url, Proxy.getProxy(ApplicationState.getInstance().getProxy()));
+            URLConnection connection = NetworkUtils.getConnection(url, ExtendedProxy.getProxy(ApplicationState.getInstance().getProxy()));
             publish(StringUtils.getString(TOTAL, Integer.toString(connection.getContentLength())));
             input = connection.getInputStream();
 

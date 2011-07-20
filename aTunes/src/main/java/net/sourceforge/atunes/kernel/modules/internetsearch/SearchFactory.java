@@ -107,6 +107,15 @@ public final class SearchFactory {
         }
     };
 
+    static {
+        searches = new HashMap<String, Search>();
+        searches.put(freeDBSearch.toString(), freeDBSearch);
+        searches.put(googleVideoSearch.toString(), googleVideoSearch);
+        searches.put(musicBrainzSearch.toString(), musicBrainzSearch);
+        searches.put(wikipediaENSearch.toString(), wikipediaENSearch);
+        searches.put(youTubeSearch.toString(), youTubeSearch);
+    }
+    
     private SearchFactory() {
 
     }
@@ -117,14 +126,6 @@ public final class SearchFactory {
      * @return the searches
      */
     public static List<Search> getSearches() {
-        if (searches == null) {
-            searches = new HashMap<String, Search>();
-            searches.put(freeDBSearch.toString(), freeDBSearch);
-            searches.put(googleVideoSearch.toString(), googleVideoSearch);
-            searches.put(musicBrainzSearch.toString(), musicBrainzSearch);
-            searches.put(wikipediaENSearch.toString(), wikipediaENSearch);
-            searches.put(youTubeSearch.toString(), youTubeSearch);
-        }
         return new ArrayList<Search>(searches.values());
     }
 
@@ -138,7 +139,7 @@ public final class SearchFactory {
      */
     public static Search getSearchForName(String searchName) {
         if (searches == null) {
-            getSearches();
+        	return null;
         }
         return searches.get(searchName);
     }

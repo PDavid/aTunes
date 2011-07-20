@@ -32,7 +32,7 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
-import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
+import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -142,9 +142,9 @@ public final class UpdateHandler extends AbstractHandler {
     ApplicationVersion getLastVersion(ProxyBean p) {
         ApplicationVersion result = null;
         try {
-            Proxy proxy;
+            ExtendedProxy proxy;
             if (p != null) {
-                proxy = Proxy.getProxy(p);
+                proxy = ExtendedProxy.getProxy(p);
             } else {
                 proxy = null;
             }

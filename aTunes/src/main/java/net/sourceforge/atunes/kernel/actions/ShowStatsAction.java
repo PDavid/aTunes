@@ -31,7 +31,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class ShowStatsAction extends AbstractAction {
+public class ShowStatsAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -7828653987968794083L;
 

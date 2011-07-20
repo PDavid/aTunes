@@ -22,10 +22,10 @@ package net.sourceforge.atunes.kernel.actions;
 
 public class ActionInstance {
 
-    private Class<? extends AbstractAction> actionClass;
+    private Class<? extends CustomAbstractAction> actionClass;
     private String actionId;
 
-    public ActionInstance(Class<? extends AbstractAction> actionClass, String actionId) {
+    public ActionInstance(Class<? extends CustomAbstractAction> actionClass, String actionId) {
         super();
         this.actionClass = actionClass;
         this.actionId = actionId;
@@ -34,7 +34,7 @@ public class ActionInstance {
     /**
      * @return the actionClass
      */
-    protected Class<? extends AbstractAction> getActionClass() {
+    protected Class<? extends CustomAbstractAction> getActionClass() {
         return actionClass;
     }
 
@@ -42,7 +42,7 @@ public class ActionInstance {
      * @param actionClass
      *            the actionClass to set
      */
-    protected void setActionClass(Class<? extends AbstractAction> actionClass) {
+    protected void setActionClass(Class<? extends CustomAbstractAction> actionClass) {
         this.actionClass = actionClass;
     }
 

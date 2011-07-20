@@ -34,7 +34,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class CustomSearchAction extends AbstractAction {
+public class CustomSearchAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 7036619806075628842L;
 

@@ -33,7 +33,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class CopyPlayListToDeviceAction extends AbstractAction {
+public class CopyPlayListToDeviceAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 5899793232403738425L;
 

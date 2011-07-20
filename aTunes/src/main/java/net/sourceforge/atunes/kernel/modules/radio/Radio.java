@@ -34,7 +34,7 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.RadioImageIcon;
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
-import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
+import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.ImageSize;
@@ -235,7 +235,7 @@ public final class Radio implements AudioObject, Serializable, TreeObject<Radio>
      * 
      * @return true, if successful
      */
-    public boolean hasPlaylistUrl(Proxy proxy) {
+    public boolean hasPlaylistUrl(ExtendedProxy proxy) {
         // First check based on URL end (extension)
         for (String pl : PLAYLISTS) {
             if (url.trim().toLowerCase().endsWith(pl)) {

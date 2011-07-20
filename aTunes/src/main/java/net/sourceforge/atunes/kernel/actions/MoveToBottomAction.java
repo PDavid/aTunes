@@ -36,7 +36,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class MoveToBottomAction extends AbstractAction {
+public class MoveToBottomAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 8200322913128575526L;
 

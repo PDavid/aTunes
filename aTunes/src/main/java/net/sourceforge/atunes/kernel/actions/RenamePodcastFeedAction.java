@@ -32,7 +32,7 @@ import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class RenamePodcastFeedAction extends AbstractAction {
+public class RenamePodcastFeedAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 8334487960720117561L;
 

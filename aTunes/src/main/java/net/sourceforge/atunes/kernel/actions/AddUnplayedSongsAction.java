@@ -34,7 +34,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class AddUnplayedSongsAction extends AbstractAction {
+public class AddUnplayedSongsAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 3530326433036563458L;
 

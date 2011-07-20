@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.modules.state.beans;
 import java.io.IOException;
 import java.io.Serializable;
 
-import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
+import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.state.PasswordPreference;
 
 /**
@@ -175,11 +175,11 @@ public final class ProxyBean implements Serializable {
      * @return
      * @throws IOException
      */
-    public static Proxy getProxy(ProxyBean bean) throws IOException {
+    public static ExtendedProxy getProxy(ProxyBean bean) throws IOException {
         if (bean == null) {
             return null;
         }
-        return Proxy.getProxy(bean);
+        return ExtendedProxy.getProxy(bean);
     }
 
 }

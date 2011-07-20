@@ -29,7 +29,7 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class PlayNowAction extends AbstractAction {
+public class PlayNowAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -2099290583376403144L;
 

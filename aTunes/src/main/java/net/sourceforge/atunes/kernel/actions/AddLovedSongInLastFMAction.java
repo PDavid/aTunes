@@ -37,7 +37,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class AddLovedSongInLastFMAction extends AbstractAction {
+public class AddLovedSongInLastFMAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -2687851398606488392L;
 
