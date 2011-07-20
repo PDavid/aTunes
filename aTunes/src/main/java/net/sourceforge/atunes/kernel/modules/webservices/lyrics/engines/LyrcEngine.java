@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -151,9 +152,8 @@ public class LyrcEngine extends AbstractLyricsEngine {
             }
 
             return html;
-        } catch (Exception e) {
+        } catch (IOException e) {
             Logger.error(StringUtils.getString(e.getClass().getCanonicalName(), " (", e.getMessage(), ")"));
-
             return null;
         }
 
