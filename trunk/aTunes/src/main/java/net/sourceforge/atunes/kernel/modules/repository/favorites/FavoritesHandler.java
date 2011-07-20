@@ -216,8 +216,8 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
      * @param objects
      *            list of objects of type TreeObject
      */
-    public void removeFromFavorites(List<TreeObject> objects) {
-        for (TreeObject obj : objects) {
+    public void removeFromFavorites(List<TreeObject<? extends AudioObject>> objects) {
+        for (TreeObject<? extends AudioObject> obj : objects) {
             if (obj instanceof Artist) {
                 getFavorites().getFavoriteArtists().remove(obj.toString());
             } else {

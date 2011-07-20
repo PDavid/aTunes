@@ -286,7 +286,7 @@ final class RepositoryFiller {
 		if (g != null) {
 			g.removeAudioFile(file);
 
-			if (g.getAudioObjects().size() <= 1) {
+			if (g.size() <= 1) {
 				repository.getGenreStructure().remove(genre);
 			}
 		}
@@ -311,7 +311,7 @@ final class RepositoryFiller {
 		if (y != null) {
 			y.removeAudioFile(file);
 
-			if (y.getAudioObjects().size() <= 1) {
+			if (y.size() <= 1) {
 				repository.getYearStructure().remove(year);
 			}
 		}

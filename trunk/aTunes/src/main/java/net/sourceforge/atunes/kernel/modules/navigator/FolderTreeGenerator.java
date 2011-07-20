@@ -27,6 +27,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 
+import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -48,7 +49,8 @@ public class FolderTreeGenerator implements TreeGenerator {
 	 * @param objectsSelected
 	 * @param objectsExpanded
 	 */
-    public void buildTree(String rootTextKey, AbstractNavigationView view, Map<String, ?> structure, String currentFilter, DefaultMutableTreeNode root, DefaultTreeModel treeModel, List<TreeObject> objectsSelected, List<TreeObject> objectsExpanded) {
+    @SuppressWarnings("unchecked")
+	public void buildTree(String rootTextKey, AbstractNavigationView view, Map<String, ?> structure, String currentFilter, DefaultMutableTreeNode root, DefaultTreeModel treeModel, List<TreeObject<? extends AudioObject>> objectsSelected, List<TreeObject<? extends AudioObject>> objectsExpanded) {
 
         // Refresh nodes
         root.setUserObject(I18nUtils.getString(rootTextKey));
@@ -62,7 +64,7 @@ public class FolderTreeGenerator implements TreeGenerator {
             // So when refreshing folder view for first time add these nodes to list of expanded objects
             for (int i = 0; i < root.getChildCount(); i++) {
                 TreeNode childNode = root.getChildAt(i);
-                objectsExpanded.add((TreeObject) ((DefaultMutableTreeNode) childNode).getUserObject());
+                objectsExpanded.add((TreeObject<? extends AudioObject>) ((DefaultMutableTreeNode) childNode).getUserObject());
             }
         }
 

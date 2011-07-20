@@ -103,7 +103,7 @@ public final class Actions {
      * @param selectedObjectsSource
      * @return
      */
-    public static <T extends AbstractActionOverSelectedTreeObjects<? extends TreeObject>> AbstractAction getTreeActionAndBind(Class<T> clazz, Component actionSource, TreeObjectsSource selectedObjectsSource) {
+    public static <T extends AbstractActionOverSelectedTreeObjects<? extends TreeObject<? extends AudioObject>>> AbstractAction getTreeActionAndBind(Class<T> clazz, Component actionSource, TreeObjectsSource selectedObjectsSource) {
         AbstractActionOverSelectedTreeObjects.addRegisteredComponent(actionSource, selectedObjectsSource);
         return getAction(clazz, null);
     }
@@ -146,7 +146,7 @@ public final class Actions {
      * @param audioObjectsSource
      * @return
      */
-    public static JMenuItem getMenuItemForTreeAction(Class<? extends AbstractActionOverSelectedTreeObjects<? extends TreeObject>> clazz, TreeObjectsSource audioObjectsSource) {
+    public static JMenuItem getMenuItemForTreeAction(Class<? extends AbstractActionOverSelectedTreeObjects<? extends TreeObject<? extends AudioObject>>> clazz, TreeObjectsSource audioObjectsSource) {
         JMenuItem menuItem = new JMenuItem();
         menuItem.setAction(Actions.getTreeActionAndBind(clazz, menuItem, audioObjectsSource));
         return menuItem;

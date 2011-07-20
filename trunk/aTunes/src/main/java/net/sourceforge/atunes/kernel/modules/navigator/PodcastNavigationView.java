@@ -190,8 +190,8 @@ public final class PodcastNavigationView extends AbstractNavigationView {
     }
 
     @Override
-    public List<AudioObject> getAudioObjectForTreeNode(DefaultMutableTreeNode node, ViewMode viewMode, String treeFilter) {
-        List<AudioObject> songs = new ArrayList<AudioObject>();
+    public List<PodcastFeedEntry> getAudioObjectForTreeNode(DefaultMutableTreeNode node, ViewMode viewMode, String treeFilter) {
+        List<PodcastFeedEntry> songs = new ArrayList<PodcastFeedEntry>();
         if (node.isRoot()) {
             if (treeFilter == null) {
                 List<PodcastFeed> podcastFeeds = PodcastFeedHandler.getInstance().getPodcastFeeds();

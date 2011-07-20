@@ -26,6 +26,7 @@ import java.util.Map;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
+import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 
 /**
@@ -52,6 +53,6 @@ public interface TreeGenerator {
 						  String currentFilter, 
 						  DefaultMutableTreeNode root, 
 						  DefaultTreeModel treeModel, 
-						  List<TreeObject> objectsSelected, 
-						  List<TreeObject> objectsExpanded);
+						  List<TreeObject<? extends AudioObject>> objectsSelected, 
+						  List<TreeObject<? extends AudioObject>> objectsExpanded);
 }

@@ -193,9 +193,9 @@ public class RepositoryNavigationView extends AbstractNavigationView {
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();
 
         // Get objects selected before refreshing tree
-        List<TreeObject> objectsSelected = getTreeObjectsSelected(tree);
+        List<TreeObject<? extends AudioObject>> objectsSelected = getTreeObjectsSelected(tree);
         // Get objects expanded before refreshing tree
-        List<TreeObject> objectsExpanded = getTreeObjectsExpanded(tree, root);
+        List<TreeObject<? extends AudioObject>> objectsExpanded = getTreeObjectsExpanded(tree, root);
         
         // Build tree
         viewMode.getTreeGenerator().buildTree("REPOSITORY", this, (Map<String, Year>) getViewData(viewMode), treeFilter, root, treeModel, objectsSelected, objectsExpanded);
@@ -211,12 +211,14 @@ public class RepositoryNavigationView extends AbstractNavigationView {
                 songs.addAll(RepositoryHandler.getInstance().getAudioFilesList());
             } else {
                 for (int i = 0; i < node.getChildCount(); i++) {
-                    TreeObject<LocalAudioObject> obj = (TreeObject<LocalAudioObject>) ((DefaultMutableTreeNode) node.getChildAt(i)).getUserObject();
+                    @SuppressWarnings("unchecked")
+					TreeObject<LocalAudioObject> obj = (TreeObject<LocalAudioObject>) ((DefaultMutableTreeNode) node.getChildAt(i)).getUserObject();
                     songs.addAll(obj.getAudioObjects());
                 }
             }
         } else {
-            TreeObject<LocalAudioObject> obj = (TreeObject<LocalAudioObject>) node.getUserObject();
+            @SuppressWarnings("unchecked")
+			TreeObject<LocalAudioObject> obj = (TreeObject<LocalAudioObject>) node.getUserObject();
             songs = obj.getAudioObjects();
         }
         return songs;
