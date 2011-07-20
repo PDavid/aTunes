@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.kernel.modules.proxy;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 import java.net.Socket;
@@ -30,11 +29,9 @@ import java.net.UnknownHostException;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 
 /**
- * The Class Proxy.
+ * The Class CustomProxy.
  */
-public class Proxy extends java.net.Proxy implements Serializable {
-
-    private static final long serialVersionUID = 7495084217081194366L;
+public class ExtendedProxy extends java.net.Proxy {
 
     /** The url. */
     private String url;
@@ -67,7 +64,7 @@ public class Proxy extends java.net.Proxy implements Serializable {
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    private Proxy(Type type, String url, int port, String user, String password) throws UnknownHostException, IOException {
+    private ExtendedProxy(Type type, String url, int port, String user, String password) throws UnknownHostException, IOException {
         super(type, new Socket(url, port).getRemoteSocketAddress());
         this.url = url;
         this.port = port;
@@ -75,7 +72,7 @@ public class Proxy extends java.net.Proxy implements Serializable {
         this.password = password;
     }
 
-    public static void initProxy(final Proxy proxy) {
+    public static void initProxy(final ExtendedProxy proxy) {
         if (proxy != null) {
             Authenticator.setDefault(new Authenticator() {
                 @Override
@@ -103,11 +100,11 @@ public class Proxy extends java.net.Proxy implements Serializable {
      * @throws IOException
      *             If an IO exception occurs
      */
-    public static Proxy getProxy(ProxyBean proxy) throws UnknownHostException, IOException {
+    public static ExtendedProxy getProxy(ProxyBean proxy) throws UnknownHostException, IOException {
         if (proxy == null) {
             return null;
         }
-        return new Proxy(proxy.getType().equals(ProxyBean.HTTP_PROXY) ? Type.HTTP : Type.SOCKS, proxy.getUrl(), proxy.getPort(), proxy.getUser(), proxy.getPassword());
+        return new ExtendedProxy(proxy.getType().equals(ProxyBean.HTTP_PROXY) ? Type.HTTP : Type.SOCKS, proxy.getUrl(), proxy.getPort(), proxy.getUser(), proxy.getPassword());
     }
 
     /**

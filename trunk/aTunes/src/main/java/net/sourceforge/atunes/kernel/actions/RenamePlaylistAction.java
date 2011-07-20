@@ -25,7 +25,7 @@ import java.awt.event.ActionEvent;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class RenamePlaylistAction extends AbstractAction {
+public class RenamePlaylistAction extends CustomAbstractAction {
 
     /**
 	 * 

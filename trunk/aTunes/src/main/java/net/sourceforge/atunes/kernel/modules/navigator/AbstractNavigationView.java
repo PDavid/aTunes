@@ -267,8 +267,8 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
                 updateTreeMenuItems((JMenu) c, rootSelected, selection);
             }
 
-            if (action instanceof net.sourceforge.atunes.kernel.actions.AbstractAction) {
-                boolean enabled = ((net.sourceforge.atunes.kernel.actions.AbstractAction) action).isEnabledForNavigationTreeSelection(rootSelected, selection);
+            if (action instanceof net.sourceforge.atunes.kernel.actions.CustomAbstractAction) {
+                boolean enabled = ((net.sourceforge.atunes.kernel.actions.CustomAbstractAction) action).isEnabledForNavigationTreeSelection(rootSelected, selection);
                 action.setEnabled(enabled);
             }
         }
@@ -292,8 +292,8 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
                     updateTreeMenuItems((JMenu) menuItem, rootSelected, selection);
                 }
 
-                if (action instanceof net.sourceforge.atunes.kernel.actions.AbstractAction) {
-                    boolean enabled = ((net.sourceforge.atunes.kernel.actions.AbstractAction) action).isEnabledForNavigationTreeSelection(rootSelected, selection);
+                if (action instanceof net.sourceforge.atunes.kernel.actions.CustomAbstractAction) {
+                    boolean enabled = ((net.sourceforge.atunes.kernel.actions.CustomAbstractAction) action).isEnabledForNavigationTreeSelection(rootSelected, selection);
                     action.setEnabled(enabled);
                 }
             }
@@ -327,8 +327,8 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
                 updateTableMenuItems((JMenu) c, selection);
             }
 
-            if (action instanceof net.sourceforge.atunes.kernel.actions.AbstractAction) {
-                boolean enabled = ((net.sourceforge.atunes.kernel.actions.AbstractAction) action).isEnabledForNavigationTableSelection(selection);
+            if (action instanceof net.sourceforge.atunes.kernel.actions.CustomAbstractAction) {
+                boolean enabled = ((net.sourceforge.atunes.kernel.actions.CustomAbstractAction) action).isEnabledForNavigationTableSelection(selection);
                 action.setEnabled(enabled);
             }
         }
@@ -351,8 +351,8 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
                     updateTableMenuItems((JMenu) menuItem, selection);
                 }
 
-                if (action instanceof net.sourceforge.atunes.kernel.actions.AbstractAction) {
-                    boolean enabled = ((net.sourceforge.atunes.kernel.actions.AbstractAction) action).isEnabledForNavigationTableSelection(selection);
+                if (action instanceof net.sourceforge.atunes.kernel.actions.CustomAbstractAction) {
+                    boolean enabled = ((net.sourceforge.atunes.kernel.actions.CustomAbstractAction) action).isEnabledForNavigationTableSelection(selection);
                     action.setEnabled(enabled);
                 }
             }

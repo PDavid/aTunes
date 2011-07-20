@@ -35,7 +35,7 @@ import java.util.List;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
+import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -71,7 +71,7 @@ public class WinampcnEngine extends AbstractLyricsEngine {
     private static final String QUERY_URL = "http://www.winampcn.com/lyrictransfer/get.aspx?song=%1&artist=%2&lsong=%3";
     private static final String LYRC_URL = "http://www.winampcn.com/lyrictransfer/lrc.aspx?id=%1&ti=%2";
 
-    public WinampcnEngine(Proxy proxy) {
+    public WinampcnEngine(ExtendedProxy proxy) {
         super(proxy);
     }
 

@@ -33,7 +33,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class ArrangePlayListColumnsAction extends AbstractAction {
+public class ArrangePlayListColumnsAction extends CustomAbstractAction {
 
     /**
      * 

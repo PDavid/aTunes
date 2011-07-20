@@ -33,7 +33,7 @@ import net.sourceforge.atunes.gui.model.TreeObjectsSource;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 
-public abstract class AbstractActionOverSelectedTreeObjects<T extends TreeObject<? extends AudioObject>> extends AbstractAction {
+public abstract class AbstractActionOverSelectedTreeObjects<T extends TreeObject<? extends AudioObject>> extends CustomAbstractAction {
 
     /**
 	 * 

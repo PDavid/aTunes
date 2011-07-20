@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
+import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmLovedTrack;
 import net.sourceforge.atunes.utils.NetworkUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -68,7 +68,7 @@ public final class LastFmLovedTracks {
      * @return
      * @throws IOException
      */
-    static List<LastFmLovedTrack> getLovedTracks(String user, String params, Proxy proxy) throws IOException {
+    static List<LastFmLovedTrack> getLovedTracks(String user, String params, ExtendedProxy proxy) throws IOException {
         List<LastFmLovedTrack> result = new ArrayList<LastFmLovedTrack>();
         String url = LOVED_TRACKS_BASE_URL.replace(USER_WILDCARD, user);
         // If params is not null then concatenate string

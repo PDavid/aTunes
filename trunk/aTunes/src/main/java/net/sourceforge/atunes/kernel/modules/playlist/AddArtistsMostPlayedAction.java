@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 import java.util.List;
 import java.util.Properties;
 
-import net.sourceforge.atunes.kernel.actions.AbstractAction;
+import net.sourceforge.atunes.kernel.actions.CustomAbstractAction;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -34,7 +34,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class AddArtistsMostPlayedAction extends AbstractAction {
+public class AddArtistsMostPlayedAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -5006402582163507581L;
 

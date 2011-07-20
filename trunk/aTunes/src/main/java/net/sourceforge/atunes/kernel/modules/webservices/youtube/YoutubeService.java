@@ -27,7 +27,7 @@ import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
+import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -75,7 +75,7 @@ public final class YoutubeService {
     /**
      * The proxy
      */
-    private Proxy proxy;
+    private ExtendedProxy proxy;
 
     /**
      * Singleton instance
@@ -83,10 +83,10 @@ public final class YoutubeService {
     private static YoutubeService instance;
 
     private YoutubeService(ProxyBean proxyBean) {
-        Proxy proxy = null;
+        ExtendedProxy proxy = null;
         try {
             if (proxyBean != null) {
-                proxy = Proxy.getProxy(proxyBean);
+                proxy = ExtendedProxy.getProxy(proxyBean);
             }
         } catch (Exception e) {
             Logger.error(e);

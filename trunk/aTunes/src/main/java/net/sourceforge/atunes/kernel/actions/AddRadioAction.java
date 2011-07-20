@@ -34,7 +34,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class AddRadioAction extends AbstractAction {
+public class AddRadioAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -5764149587317233484L;
 

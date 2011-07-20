@@ -35,7 +35,7 @@ import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
-import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
+import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.TempFolder;
@@ -89,7 +89,7 @@ public class Kernel {
         ColorDefinitions.initColors();
         // Init proxy settings
         try {
-            Proxy.initProxy(Proxy.getProxy(ApplicationState.getInstance().getProxy()));
+            ExtendedProxy.initProxy(ExtendedProxy.getProxy(ApplicationState.getInstance().getProxy()));
         } catch (UnknownHostException e) {
             Logger.error(e);
         } catch (IOException e) {

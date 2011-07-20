@@ -30,7 +30,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class OpenLyricsSourceAction extends AbstractAction {
+public class OpenLyricsSourceAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 3251794899765238146L;
 

@@ -27,7 +27,7 @@ import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class ExpandTreesAction extends AbstractAction {
+public class ExpandTreesAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -2632581565309673327L;
 

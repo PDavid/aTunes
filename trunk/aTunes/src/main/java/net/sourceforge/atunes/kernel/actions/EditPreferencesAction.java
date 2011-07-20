@@ -32,7 +32,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * @author fleax
  * 
  */
-public class EditPreferencesAction extends AbstractAction {
+public class EditPreferencesAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -6303396973997577995L;
 

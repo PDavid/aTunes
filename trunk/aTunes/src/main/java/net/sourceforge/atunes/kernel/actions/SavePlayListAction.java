@@ -44,7 +44,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * @author fleax
  * 
  */
-public class SavePlayListAction extends AbstractAction {
+public class SavePlayListAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -303252911138284095L;
 

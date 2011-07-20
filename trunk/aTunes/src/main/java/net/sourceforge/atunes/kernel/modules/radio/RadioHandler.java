@@ -34,7 +34,7 @@ import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.RadioNavigationView;
-import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
+import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
@@ -56,7 +56,7 @@ public final class RadioHandler extends AbstractHandler {
         @SuppressWarnings("unchecked")
         @Override
         protected List<Radio> doInBackground() throws Exception {
-            String xml = NetworkUtils.readURL(NetworkUtils.getConnection(Constants.RADIO_LIST_DOWNLOAD, Proxy.getProxy(proxy)));
+            String xml = NetworkUtils.readURL(NetworkUtils.getConnection(Constants.RADIO_LIST_DOWNLOAD, ExtendedProxy.getProxy(proxy)));
             return (List<Radio>) XMLUtils.readObjectFromString(xml);
         }
 
@@ -304,10 +304,10 @@ public final class RadioHandler extends AbstractHandler {
     @SuppressWarnings("unchecked")
     public List<Radio> retrieveRadiosForBrowser() throws IOException {
         try {
-            String xml = NetworkUtils.readURL(NetworkUtils.getConnection(Constants.RADIO_LIST_DOWNLOAD_COMMON_JUKEBOX, Proxy.getProxy(ApplicationState.getInstance().getProxy())));
+            String xml = NetworkUtils.readURL(NetworkUtils.getConnection(Constants.RADIO_LIST_DOWNLOAD_COMMON_JUKEBOX, ExtendedProxy.getProxy(ApplicationState.getInstance().getProxy())));
             return (List<Radio>) XMLUtils.readObjectFromString(xml);
         } catch (Exception e) {
-            String xml = NetworkUtils.readURL(NetworkUtils.getConnection(Constants.RADIO_LIST_DOWNLOAD, Proxy.getProxy(ApplicationState.getInstance().getProxy())));
+            String xml = NetworkUtils.readURL(NetworkUtils.getConnection(Constants.RADIO_LIST_DOWNLOAD, ExtendedProxy.getProxy(ApplicationState.getInstance().getProxy())));
             return (List<Radio>) XMLUtils.readObjectFromString(xml);
         }
     }

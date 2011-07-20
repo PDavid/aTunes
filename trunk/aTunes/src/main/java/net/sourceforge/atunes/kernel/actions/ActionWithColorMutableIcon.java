@@ -24,7 +24,7 @@ import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelChangeListener;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 
-public abstract class ActionWithColorMutableIcon extends AbstractAction  implements LookAndFeelChangeListener {
+public abstract class ActionWithColorMutableIcon extends CustomAbstractAction  implements LookAndFeelChangeListener {
 
 	/**
 	 * 

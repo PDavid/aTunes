@@ -41,7 +41,7 @@ import net.sourceforge.atunes.kernel.modules.context.ArtistInfo;
 import net.sourceforge.atunes.kernel.modules.context.SimilarArtistsInfo;
 import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
-import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
+import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmAlbum;
@@ -158,7 +158,7 @@ public final class LastFmService {
     private static final int MIN_DURATION_TO_SUBMIT = 30;
     private static final int MAX_SUBMISSIONS = 50;
 
-    private Proxy proxy;
+    private ExtendedProxy proxy;
 
     private String user;
     private String password;
@@ -197,10 +197,10 @@ public final class LastFmService {
      *            the Last.fm password
      */
     private LastFmService(ProxyBean proxyBean, String user, String password) {
-        Proxy proxy = null;
+        ExtendedProxy proxy = null;
         try {
             if (proxyBean != null) {
-                proxy = Proxy.getProxy(proxyBean);
+                proxy = ExtendedProxy.getProxy(proxyBean);
             }
         } catch (Exception e) {
             Logger.error(e);

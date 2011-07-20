@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
+import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateChangeListener;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
@@ -190,10 +190,10 @@ public final class LyricsService implements ApplicationStateChangeListener {
         List<LyricsEngineInfo> lyricsEnginesInfo = ApplicationState.getInstance().getLyricsEnginesInfo();
         boolean enginesModified = false;
 
-        Proxy p = null;
+        ExtendedProxy p = null;
         try {
             if (proxy != null) {
-                p = Proxy.getProxy(proxy);
+                p = ExtendedProxy.getProxy(proxy);
             }
         } catch (Exception e) {
             Logger.error(e);
@@ -231,7 +231,7 @@ public final class LyricsService implements ApplicationStateChangeListener {
             if (lyricsEngineInfo.isEnabled()) {
                 try {
                     Class<?> clazz = Class.forName(lyricsEngineInfo.getClazz());
-                    Constructor<?> constructor = clazz.getConstructor(Proxy.class);
+                    Constructor<?> constructor = clazz.getConstructor(ExtendedProxy.class);
                     result.add((AbstractLyricsEngine) constructor.newInstance(p));
                 } catch (ClassNotFoundException e) {
                 	enginesToUnload.add(lyricsEngineInfo);
@@ -294,7 +294,7 @@ public final class LyricsService implements ApplicationStateChangeListener {
             if (lyricsEngineInfo.isEnabled()) {
                 try {
                     Class<?> clazz = Class.forName(lyricsEngineInfo.getClazz());
-                    Constructor<?> constructor = clazz.getConstructor(Proxy.class);
+                    Constructor<?> constructor = clazz.getConstructor(ExtendedProxy.class);
                     result.add((AbstractLyricsEngine) constructor.newInstance(p));
                 } catch (ClassNotFoundException e) {
                     Logger.error(e);

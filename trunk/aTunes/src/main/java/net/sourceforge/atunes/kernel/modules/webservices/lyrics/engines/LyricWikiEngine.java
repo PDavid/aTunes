@@ -26,7 +26,7 @@ import java.util.List;
 
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Source;
-import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
+import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.NetworkUtils;
@@ -53,7 +53,7 @@ public class LyricWikiEngine extends AbstractLyricsEngine {
     private static final String LYRICS_ELEMENT_ATTRIBUTE_VALUE = "lyricbox";
     private static final String RESPONSE_ENCODING = "UTF-8";
 
-    public LyricWikiEngine(Proxy proxy) {
+    public LyricWikiEngine(ExtendedProxy proxy) {
         super(proxy);
     }
 

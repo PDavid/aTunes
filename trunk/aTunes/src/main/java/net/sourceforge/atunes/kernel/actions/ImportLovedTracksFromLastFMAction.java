@@ -38,7 +38,7 @@ import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public class ImportLovedTracksFromLastFMAction extends AbstractAction {
+public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
 
     private static class ImportLovedTracksWorker extends SwingWorker<List<LocalAudioObject>, Void> {
         @Override

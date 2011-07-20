@@ -33,7 +33,7 @@ import net.sourceforge.atunes.model.AudioObject;
 import org.commonjukebox.plugins.model.PluginApi;
 
 @PluginApi
-public abstract class AbstractAction extends javax.swing.AbstractAction implements Command {
+public abstract class CustomAbstractAction extends javax.swing.AbstractAction implements Command {
 
     private static final long serialVersionUID = 1648027023533465104L;
 
@@ -47,15 +47,15 @@ public abstract class AbstractAction extends javax.swing.AbstractAction implemen
      */
     private Properties properties;
 
-    public AbstractAction() {
+    public CustomAbstractAction() {
         super();
     }
 
-    public AbstractAction(String name) {
+    public CustomAbstractAction(String name) {
         super(name);
     }
 
-    public AbstractAction(String name, Icon icon) {
+    public CustomAbstractAction(String name, Icon icon) {
         super(name, icon);
     }
 

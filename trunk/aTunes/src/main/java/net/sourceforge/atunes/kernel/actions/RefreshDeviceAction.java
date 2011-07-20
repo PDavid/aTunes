@@ -31,7 +31,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class RefreshDeviceAction extends AbstractAction {
+public class RefreshDeviceAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -5047885921099142L;
 

@@ -32,7 +32,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * @author alex
  * 
  */
-public class RipCDAction extends AbstractAction {
+public class RipCDAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -362457188090138933L;
 

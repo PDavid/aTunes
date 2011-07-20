@@ -32,7 +32,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class DisconnectDeviceAction extends AbstractAction {
+public class DisconnectDeviceAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 1782027529649014492L;
 

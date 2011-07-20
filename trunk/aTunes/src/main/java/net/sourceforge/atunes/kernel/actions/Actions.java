@@ -40,7 +40,7 @@ public final class Actions {
     /**
      * Map of actions.
      */
-    private static Map<ActionInstance, AbstractAction> actions = new HashMap<ActionInstance, AbstractAction>();
+    private static Map<ActionInstance, CustomAbstractAction> actions = new HashMap<ActionInstance, CustomAbstractAction>();
 
     private Actions() {
     }
@@ -51,7 +51,7 @@ public final class Actions {
      * @param clazz
      * @return
      */
-    public static <T extends AbstractAction> AbstractAction getAction(Class<T> clazz) {
+    public static <T extends CustomAbstractAction> CustomAbstractAction getAction(Class<T> clazz) {
         return getAction(clazz, null);
     }
 
@@ -61,9 +61,9 @@ public final class Actions {
      * @param clazz
      * @return
      */
-    public static <T extends AbstractAction> AbstractAction getAction(Class<T> clazz, String actionId) {
+    public static <T extends CustomAbstractAction> CustomAbstractAction getAction(Class<T> clazz, String actionId) {
         ActionInstance actionInstance = new ActionInstance(clazz, actionId);
-        AbstractAction action = actions.get(actionInstance);
+        CustomAbstractAction action = actions.get(actionInstance);
         if (action == null) {
             try {
                 action = clazz.newInstance();
@@ -89,7 +89,7 @@ public final class Actions {
      * @param selectedObjectsSource
      * @return
      */
-    public static <T extends AbstractActionOverSelectedObjects<? extends AudioObject>> AbstractAction getActionAndBind(Class<T> clazz, Component actionSource, AudioObjectsSource selectedObjectsSource) {
+    public static <T extends AbstractActionOverSelectedObjects<? extends AudioObject>> CustomAbstractAction getActionAndBind(Class<T> clazz, Component actionSource, AudioObjectsSource selectedObjectsSource) {
         AbstractActionOverSelectedObjects.addRegisteredComponent(actionSource, selectedObjectsSource);
         return getAction(clazz, null);
     }
@@ -103,7 +103,7 @@ public final class Actions {
      * @param selectedObjectsSource
      * @return
      */
-    public static <T extends AbstractActionOverSelectedTreeObjects<? extends TreeObject<? extends AudioObject>>> AbstractAction getTreeActionAndBind(Class<T> clazz, Component actionSource, TreeObjectsSource selectedObjectsSource) {
+    public static <T extends AbstractActionOverSelectedTreeObjects<? extends TreeObject<? extends AudioObject>>> CustomAbstractAction getTreeActionAndBind(Class<T> clazz, Component actionSource, TreeObjectsSource selectedObjectsSource) {
         AbstractActionOverSelectedTreeObjects.addRegisteredComponent(actionSource, selectedObjectsSource);
         return getAction(clazz, null);
     }
@@ -119,7 +119,7 @@ public final class Actions {
      * @param selectedObjectsSource
      * @return
      */
-    public static <T extends AbstractActionOverSelectedObjects<? extends AudioObject>> AbstractAction getActionAndBind(Class<T> clazz, String actionId, Component actionSource, AudioObjectsSource selectedObjectsSource) {
+    public static <T extends AbstractActionOverSelectedObjects<? extends AudioObject>> CustomAbstractAction getActionAndBind(Class<T> clazz, String actionId, Component actionSource, AudioObjectsSource selectedObjectsSource) {
         AbstractActionOverSelectedObjects.addRegisteredComponent(actionSource, selectedObjectsSource);
         return getAction(clazz, actionId);
     }

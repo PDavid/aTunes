@@ -33,7 +33,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class MuteAction extends AbstractAction {
+public class MuteAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 306200192652324065L;
 

@@ -34,36 +34,33 @@ public final class Columns {
 
     private static List<Class<? extends AbstractColumn>> classes;
 
+    static {
+        classes = new ArrayList<Class<? extends AbstractColumn>>();
+        classes.add(PlayingColumn.class);
+        classes.add(FavoriteColumn.class);
+        classes.add(TypeColumn.class);
+        classes.add(TrackColumn.class);
+        classes.add(TitleColumn.class);
+        classes.add(ArtistColumn.class);
+        classes.add(AlbumColumn.class);
+        classes.add(AlbumArtistColumn.class);
+        classes.add(ComposerColumn.class);
+        classes.add(GenreColumn.class);
+        classes.add(YearColumn.class);
+        classes.add(DateColumn.class);
+        classes.add(LengthColumn.class);
+        classes.add(ScoreColumn.class);
+        classes.add(FileNameColumn.class);
+        classes.add(PathColumn.class);
+        classes.add(SizeColumn.class);
+        classes.add(BitrateColumn.class);
+        classes.add(FrequencyColumn.class);
+        classes.add(TimesPlayedColumn.class);
+        classes.add(DiscNumberColumn.class);
+    }
+    
     private Columns() {
 
-    }
-
-    private static List<Class<? extends AbstractColumn>> getClasses() {
-        if (classes == null) {
-            classes = new ArrayList<Class<? extends AbstractColumn>>();
-            classes.add(PlayingColumn.class);
-            classes.add(FavoriteColumn.class);
-            classes.add(TypeColumn.class);
-            classes.add(TrackColumn.class);
-            classes.add(TitleColumn.class);
-            classes.add(ArtistColumn.class);
-            classes.add(AlbumColumn.class);
-            classes.add(AlbumArtistColumn.class);
-            classes.add(ComposerColumn.class);
-            classes.add(GenreColumn.class);
-            classes.add(YearColumn.class);
-            classes.add(DateColumn.class);
-            classes.add(LengthColumn.class);
-            classes.add(ScoreColumn.class);
-            classes.add(FileNameColumn.class);
-            classes.add(PathColumn.class);
-            classes.add(SizeColumn.class);
-            classes.add(BitrateColumn.class);
-            classes.add(FrequencyColumn.class);
-            classes.add(TimesPlayedColumn.class);
-            classes.add(DiscNumberColumn.class);
-        }
-        return classes;
     }
 
     /**
@@ -78,7 +75,7 @@ public final class Columns {
         List<AbstractColumn> result = new ArrayList<AbstractColumn>();
 
         int order = 0;
-        for (Class<? extends AbstractColumn> columnClass : getClasses()) {
+        for (Class<? extends AbstractColumn> columnClass : classes) {
             AbstractColumn column = null;
             try {
                 column = columnClass.newInstance();

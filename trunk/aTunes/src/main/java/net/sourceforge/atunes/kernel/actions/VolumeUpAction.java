@@ -33,7 +33,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class VolumeUpAction extends AbstractAction {
+public class VolumeUpAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 8731458163463902477L;
 

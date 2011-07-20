@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.io.StringReader;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
+import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -49,7 +49,7 @@ public class LyrDBEngine extends AbstractLyricsEngine {
     /** The url to retrieve a lyric */
     private static final String LYRIC_URL = StringUtils.getString("http://www.lyrdb.com/getlyr.php?q=", LYRICS_ID_WILDCARD);
     
-	public LyrDBEngine(Proxy proxy) {
+	public LyrDBEngine(ExtendedProxy proxy) {
 		super(proxy);
 	}
 

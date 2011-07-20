@@ -31,7 +31,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
 
-import net.sourceforge.atunes.kernel.actions.AbstractAction;
+import net.sourceforge.atunes.kernel.actions.CustomAbstractAction;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddPodcastFeedAction;
 import net.sourceforge.atunes.kernel.actions.AddRadioAction;
@@ -158,7 +158,7 @@ public final class ApplicationMenuBar extends JMenuBar {
             // Add dinamically actions to show each navigation view loaded
             int acceleratorIndex = 1;
             for (AbstractNavigationView navigationView : NavigationHandler.getInstance().getNavigationViews()) {
-            	AbstractAction action = navigationView.getActionToShowView(); 
+            	CustomAbstractAction action = navigationView.getActionToShowView(); 
         		// The first 9 views will have an accelerator key ALT + index
         		if (acceleratorIndex < 10) {
         			action.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_0 + acceleratorIndex, ActionEvent.ALT_MASK));

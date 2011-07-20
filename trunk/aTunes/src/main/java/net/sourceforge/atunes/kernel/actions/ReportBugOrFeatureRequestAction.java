@@ -32,7 +32,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class ReportBugOrFeatureRequestAction extends AbstractAction {
+public class ReportBugOrFeatureRequestAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -2614037760672140565L;
 

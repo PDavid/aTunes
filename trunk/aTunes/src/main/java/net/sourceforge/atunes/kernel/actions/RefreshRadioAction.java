@@ -28,7 +28,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class RefreshRadioAction extends AbstractAction {
+public class RefreshRadioAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 2614238225399634969L;
 

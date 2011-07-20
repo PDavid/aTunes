@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
 
-import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
+import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
 import net.sourceforge.atunes.utils.NetworkUtils;
 
@@ -33,9 +33,9 @@ import net.sourceforge.atunes.utils.NetworkUtils;
  */
 public abstract class AbstractLyricsEngine {
 
-    private Proxy proxy;
+    private ExtendedProxy proxy;
 
-    public AbstractLyricsEngine(Proxy proxy) {
+    public AbstractLyricsEngine(ExtendedProxy proxy) {
         this.proxy = proxy;
     }
 

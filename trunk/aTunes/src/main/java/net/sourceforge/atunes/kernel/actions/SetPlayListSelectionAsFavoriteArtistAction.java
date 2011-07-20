@@ -40,7 +40,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class SetPlayListSelectionAsFavoriteArtistAction extends AbstractAction {
+public class SetPlayListSelectionAsFavoriteArtistAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 3403777999793279297L;
 

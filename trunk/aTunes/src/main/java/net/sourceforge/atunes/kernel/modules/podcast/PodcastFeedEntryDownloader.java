@@ -33,7 +33,7 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
-import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
+import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -77,7 +77,7 @@ public class PodcastFeedEntryDownloader extends SwingWorker<Boolean, Void> {
 
         try {
             out = new BufferedOutputStream(new FileOutputStream(localFile));
-            URLConnection conn = NetworkUtils.getConnection(podcastFeedEntry.getUrl(), Proxy.getProxy(ApplicationState.getInstance().getProxy()));
+            URLConnection conn = NetworkUtils.getConnection(podcastFeedEntry.getUrl(), ExtendedProxy.getProxy(ApplicationState.getInstance().getProxy()));
             in = conn.getInputStream();
             setTotalBytes(conn.getContentLength());
 

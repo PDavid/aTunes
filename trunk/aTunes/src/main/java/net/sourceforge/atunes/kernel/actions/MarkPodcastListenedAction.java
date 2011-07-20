@@ -32,7 +32,7 @@ import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class MarkPodcastListenedAction extends AbstractAction {
+public class MarkPodcastListenedAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 2594418895817769179L;
 

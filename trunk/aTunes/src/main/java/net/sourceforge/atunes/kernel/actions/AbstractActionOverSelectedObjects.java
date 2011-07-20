@@ -35,7 +35,7 @@ import net.sourceforge.atunes.model.AudioObject;
 import org.commonjukebox.plugins.model.PluginApi;
 
 @PluginApi
-public abstract class AbstractActionOverSelectedObjects<T extends AudioObject> extends AbstractAction {
+public abstract class AbstractActionOverSelectedObjects<T extends AudioObject> extends CustomAbstractAction {
 
     private static final long serialVersionUID = 1673432955671008277L;
 

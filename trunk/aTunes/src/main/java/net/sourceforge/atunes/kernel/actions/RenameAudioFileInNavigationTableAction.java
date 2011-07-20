@@ -32,7 +32,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.apache.commons.io.FilenameUtils;
 
-public class RenameAudioFileInNavigationTableAction extends AbstractAction {
+public class RenameAudioFileInNavigationTableAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 5607758675193509752L;
 

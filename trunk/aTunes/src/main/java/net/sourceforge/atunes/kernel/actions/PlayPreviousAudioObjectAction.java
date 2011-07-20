@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 
-public class PlayPreviousAudioObjectAction extends AbstractAction {
+public class PlayPreviousAudioObjectAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -1177020643937370678L;
 

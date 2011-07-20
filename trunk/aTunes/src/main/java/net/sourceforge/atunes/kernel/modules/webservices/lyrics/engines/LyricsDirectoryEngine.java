@@ -26,7 +26,7 @@ import java.util.List;
 
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Source;
-import net.sourceforge.atunes.kernel.modules.proxy.Proxy;
+import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -40,7 +40,7 @@ public class LyricsDirectoryEngine extends AbstractLyricsEngine {
 	private static final String BASE_URL = "http://www.lyricsdir.com/";
     private static final String CHARSET = "UTF-8";
 
-    public LyricsDirectoryEngine(Proxy proxy) {
+    public LyricsDirectoryEngine(ExtendedProxy proxy) {
         super(proxy);
     }
 

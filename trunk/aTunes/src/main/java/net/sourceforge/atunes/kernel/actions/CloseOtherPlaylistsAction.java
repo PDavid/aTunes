@@ -25,7 +25,7 @@ import java.awt.event.ActionEvent;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class CloseOtherPlaylistsAction extends AbstractAction {
+public class CloseOtherPlaylistsAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 902195930910854889L;
 

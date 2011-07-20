@@ -31,7 +31,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class NewPlayListAction extends AbstractAction {
+public class NewPlayListAction extends CustomAbstractAction {
 
     /**
      * 
