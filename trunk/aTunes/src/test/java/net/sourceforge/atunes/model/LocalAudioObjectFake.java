@@ -147,12 +147,12 @@ public class LocalAudioObjectFake implements LocalAudioObject {
 
 	@Override
 	public int compareTo(LocalAudioObject arg0) {
-		return 0;
+		return arg0 != null && arg0.equals(this) ? 0 : -1;
 	}
 	
 	@Override
 	public boolean equals(Object obj) {
-		return true;
+		return obj != null  && obj == this ? true : false;
 	}
 	
 	@Override

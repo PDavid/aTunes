@@ -59,6 +59,75 @@ public abstract class AbstractPattern {
             return null;
         }
     };
+    
+    static {
+        patterns = new ArrayList<AbstractPattern>();
+
+        // DUMMY PATTERN, USED TO MATCH ANYTHING
+        patterns.add(ANY_PATTERN);
+
+        patterns.add(new AbstractPattern('T', "TITLE", true, false) {
+            @Override
+            public String getAudioFileStringValue(LocalAudioObject audioFile) {
+                return audioFile.getTitleOrFileName();
+            }
+        });
+        patterns.add(new AbstractPattern('A', "ARTIST", true, true) {
+            @Override
+            public String getAudioFileStringValue(LocalAudioObject audioFile) {
+                return audioFile.getArtist();
+            }
+        });
+        patterns.add(new AbstractPattern('L', "ALBUM", true, true) {
+            @Override
+            public String getAudioFileStringValue(LocalAudioObject audioFile) {
+                return audioFile.getAlbum();
+            }
+        });
+        patterns.add(new AbstractPattern('R', "ALBUM_ARTIST", true, true) {
+            @Override
+            public String getAudioFileStringValue(LocalAudioObject audioFile) {
+                return audioFile.getAlbumArtist();
+            }
+        });
+        patterns.add(new AbstractPattern('N', "TRACK", true, false) {
+            @Override
+            public String getAudioFileStringValue(LocalAudioObject audioFile) {
+                String track = String.valueOf(audioFile.getTrackNumber());
+                return track.length() < 2 ? StringUtils.getString("0", track) : track;
+            }
+        });
+        patterns.add(new AbstractPattern('G', "GENRE", true, true) {
+            @Override
+            public String getAudioFileStringValue(LocalAudioObject audioFile) {
+                return audioFile.getGenre();
+            }
+        });
+        patterns.add(new AbstractPattern('Y', "YEAR", true, true) {
+            @Override
+            public String getAudioFileStringValue(LocalAudioObject audioFile) {
+                return audioFile.getYear();
+            }
+        });
+        patterns.add(new AbstractPattern('C', "COMPOSER", true, true) {
+            @Override
+            public String getAudioFileStringValue(LocalAudioObject audioFile) {
+                return audioFile.getComposer();
+            }
+        });
+        patterns.add(new AbstractPattern('S', "ARTIST_FIRST_CHAR", false, false) {
+            @Override
+            public String getAudioFileStringValue(LocalAudioObject audioFile) {
+                return audioFile.getArtist().substring(0, 1);
+            }
+        });
+        patterns.add(new AbstractPattern('D', "DISC_NUMBER", true, true) {
+            @Override
+            public String getAudioFileStringValue(LocalAudioObject audioFile) {
+                return String.valueOf(audioFile.getDiscNumber());
+            }
+        });
+    }
 
     /**
      * Returns all available patterns
@@ -66,74 +135,6 @@ public abstract class AbstractPattern {
      * @return
      */
     public static List<AbstractPattern> getPatterns() {
-        if (patterns == null) {
-            patterns = new ArrayList<AbstractPattern>();
-
-            // DUMMY PATTERN, USED TO MATCH ANYTHING
-            patterns.add(ANY_PATTERN);
-
-            patterns.add(new AbstractPattern('T', "TITLE", true, false) {
-                @Override
-                public String getAudioFileStringValue(LocalAudioObject audioFile) {
-                    return audioFile.getTitleOrFileName();
-                }
-            });
-            patterns.add(new AbstractPattern('A', "ARTIST", true, true) {
-                @Override
-                public String getAudioFileStringValue(LocalAudioObject audioFile) {
-                    return audioFile.getArtist();
-                }
-            });
-            patterns.add(new AbstractPattern('L', "ALBUM", true, true) {
-                @Override
-                public String getAudioFileStringValue(LocalAudioObject audioFile) {
-                    return audioFile.getAlbum();
-                }
-            });
-            patterns.add(new AbstractPattern('R', "ALBUM_ARTIST", true, true) {
-                @Override
-                public String getAudioFileStringValue(LocalAudioObject audioFile) {
-                    return audioFile.getAlbumArtist();
-                }
-            });
-            patterns.add(new AbstractPattern('N', "TRACK", true, false) {
-                @Override
-                public String getAudioFileStringValue(LocalAudioObject audioFile) {
-                    String track = String.valueOf(audioFile.getTrackNumber());
-                    return track.length() < 2 ? StringUtils.getString("0", track) : track;
-                }
-            });
-            patterns.add(new AbstractPattern('G', "GENRE", true, true) {
-                @Override
-                public String getAudioFileStringValue(LocalAudioObject audioFile) {
-                    return audioFile.getGenre();
-                }
-            });
-            patterns.add(new AbstractPattern('Y', "YEAR", true, true) {
-                @Override
-                public String getAudioFileStringValue(LocalAudioObject audioFile) {
-                    return audioFile.getYear();
-                }
-            });
-            patterns.add(new AbstractPattern('C', "COMPOSER", true, true) {
-                @Override
-                public String getAudioFileStringValue(LocalAudioObject audioFile) {
-                    return audioFile.getComposer();
-                }
-            });
-            patterns.add(new AbstractPattern('S', "ARTIST_FIRST_CHAR", false, false) {
-                @Override
-                public String getAudioFileStringValue(LocalAudioObject audioFile) {
-                    return audioFile.getArtist().substring(0, 1);
-                }
-            });
-            patterns.add(new AbstractPattern('D', "DISC_NUMBER", true, true) {
-                @Override
-                public String getAudioFileStringValue(LocalAudioObject audioFile) {
-                    return String.valueOf(audioFile.getDiscNumber());
-                }
-            });
-        }
         return patterns;
     }
 
@@ -144,7 +145,7 @@ public abstract class AbstractPattern {
      */
     public static List<AbstractPattern> getMassiveRecognitionPatterns() {
         List<AbstractPattern> result = new ArrayList<AbstractPattern>();
-        for (AbstractPattern p : getPatterns()) {
+        for (AbstractPattern p : patterns) {
             if (p.massiveRecognitionPattern) {
                 result.add(p);
             }
@@ -159,7 +160,7 @@ public abstract class AbstractPattern {
      */
     public static List<AbstractPattern> getRecognitionPatterns() {
         List<AbstractPattern> result = new ArrayList<AbstractPattern>();
-        for (AbstractPattern p : getPatterns()) {
+        for (AbstractPattern p : patterns) {
             if (p.recognitionPattern) {
                 result.add(p);
             }
@@ -265,7 +266,7 @@ public abstract class AbstractPattern {
      */
     public static String applyPatternTransformations(String pattern, LocalAudioObject song) {
         String result = pattern;
-        for (AbstractPattern transform : getPatterns()) {
+        for (AbstractPattern transform : patterns) {
             result = transform.applyPattern(result, song);
         }
         return result;
@@ -290,19 +291,19 @@ public abstract class AbstractPattern {
      * Returns a map containing string values result of matching a pattern
      * against a string
      * 
-     * @param patterns
+     * @param pattern
      * @param value
      * @param onlyMassiveRecognitionPatterns
      * @return
      */
-    public static Map<String, String> getPatternMatches(String patterns, String value, boolean onlyMassiveRecognitionPatterns) {
+    public static Map<String, String> getPatternMatches(String pattern, String value, boolean onlyMassiveRecognitionPatterns) {
         Map<String, String> matches = new HashMap<String, String>();
 
-        if (patterns == null || value == null) {
+        if (pattern == null || value == null) {
             return matches;
         }
 
-        String patternsString = patterns.trim();
+        String patternsString = pattern.trim();
 
         // Get all non-pattern sequences
         String[] nonPatternSequences = patternsString.split(StringUtils.getString(PATTERN_NAME_FIRST_CHAR, '.'));
@@ -373,7 +374,7 @@ public abstract class AbstractPattern {
 
         // Now return only necessary patterns
         Map<String, String> result = new HashMap<String, String>();
-        List<AbstractPattern> patternsToBeUsed = onlyMassiveRecognitionPatterns ? getMassiveRecognitionPatterns() : getPatterns();
+        List<AbstractPattern> patternsToBeUsed = onlyMassiveRecognitionPatterns ? getMassiveRecognitionPatterns() : patterns;
         for (AbstractPattern p : patternsToBeUsed) {
             if (matches.containsKey(p.getPattern())) {
                 result.put(p.getName(), matches.get(p.getPattern()));

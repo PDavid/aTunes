@@ -43,7 +43,7 @@ public final class DeviceSearchableObject extends AbstractCommonAudioFileSearcha
     /**
      * Singleton instance of this class
      */
-    private static DeviceSearchableObject instance;
+    private static DeviceSearchableObject instance = new DeviceSearchableObject();
 
     private FSDirectory indexDirectory;
 
@@ -60,9 +60,6 @@ public final class DeviceSearchableObject extends AbstractCommonAudioFileSearcha
      * @return
      */
     public static DeviceSearchableObject getInstance() {
-        if (instance == null) {
-            instance = new DeviceSearchableObject();
-        }
         return instance;
     }
 

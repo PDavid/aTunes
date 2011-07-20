@@ -77,6 +77,16 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
     private PluginsFactory factory;
 
     private static Set<PluginType> pluginTypes;
+    
+    static {
+        pluginTypes = new HashSet<PluginType>();
+        pluginTypes.add(new PluginType(PlaybackStateListener.class.getName(), PlayerHandler.getInstance(), false));
+        pluginTypes.add(new PluginType(AbstractColumn.class.getName(), ColumnSets.getInstance(), false));
+        pluginTypes.add(new PluginType(AbstractNavigationView.class.getName(), NavigationHandler.getInstance(), false));
+        pluginTypes.add(new PluginType(AbstractContextPanel.class.getName(), ContextHandler.getInstance(), false));
+        pluginTypes.add(new PluginType(AbstractLookAndFeel.class.getName(), LookAndFeelSelector.getInstance(), false));
+        pluginTypes.add(new PluginType(AbstractGeneralPurposePlugin.class.getName(), GeneralPurposePluginsHandler.getInstance(), false));
+    }
 
     /**
      * Contains problems while last plugin load operation
@@ -179,31 +189,13 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
     }
 
     /**
-     * A set of all plugin types accepted TODO: Add a new plugin type here
-     * 
-     * @return
-     */
-    private Set<PluginType> getPluginTypes() {
-        if (pluginTypes == null) {
-            pluginTypes = new HashSet<PluginType>();
-            pluginTypes.add(new PluginType(PlaybackStateListener.class.getName(), PlayerHandler.getInstance(), false));
-            pluginTypes.add(new PluginType(AbstractColumn.class.getName(), ColumnSets.getInstance(), false));
-            pluginTypes.add(new PluginType(AbstractNavigationView.class.getName(), NavigationHandler.getInstance(), false));
-            pluginTypes.add(new PluginType(AbstractContextPanel.class.getName(), ContextHandler.getInstance(), false));
-            pluginTypes.add(new PluginType(AbstractLookAndFeel.class.getName(), LookAndFeelSelector.getInstance(), false));
-            pluginTypes.add(new PluginType(AbstractGeneralPurposePlugin.class.getName(), GeneralPurposePluginsHandler.getInstance(), false));
-        }
-        return pluginTypes;
-    }
-
-    /**
      * Return class names of all plugin types
      * 
      * @return
      */
     private Set<String> getPluginClassNames() {
         Set<String> result = new HashSet<String>();
-        for (PluginType pluginType : getPluginTypes()) {
+        for (PluginType pluginType : pluginTypes) {
             result.add(pluginType.getClassType());
         }
         return result;
@@ -214,7 +206,7 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
      * for all plugin types
      */
     private void addPluginListeners() {
-        for (PluginType pluginType : getPluginTypes()) {
+        for (PluginType pluginType : pluginTypes) {
             factory.addPluginListener(pluginType.getClassType(), this);
             factory.addPluginListener(pluginType.getClassType(), pluginType.getListener());
         }
@@ -331,7 +323,7 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
      * @return
      */
     public boolean pluginNeedsRestart(PluginInfo plugin) {
-        for (PluginType pluginType : getPluginTypes()) {
+        for (PluginType pluginType : pluginTypes) {
             if (plugin.getPluginType().equals(pluginType.getClassType())) {
                 return pluginType.isApplicationNeedsRestart();
             }
