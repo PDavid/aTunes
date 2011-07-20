@@ -45,6 +45,7 @@ import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineManager;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -250,12 +251,16 @@ public abstract class OperatingSystemAdapter {
 	 */
 	public final Properties getOsProperties() {
 		Properties p = new Properties();
+		FileInputStream fis = null;
 		try {
-			p.load(new FileInputStream(getOsPropertiesFileName()));
+			fis = new FileInputStream(getOsPropertiesFileName());
+			p.load(fis);
 		} catch (FileNotFoundException e) {
 			Logger.error(e.getMessage());
 		} catch (IOException e) {
 			Logger.error(e);
+		} finally {
+			ClosingUtils.close(fis);
 		}
 		return p;
 	}
@@ -265,12 +270,16 @@ public abstract class OperatingSystemAdapter {
 	 * @param p
 	 */
 	public final void setOsProperties(Properties p) {
+		FileOutputStream fos = null;
 		try {
-			p.store(new FileOutputStream(getOsPropertiesFileName()), null);
+			fos = new FileOutputStream(getOsPropertiesFileName());
+			p.store(fos, null);
 		} catch (FileNotFoundException e) {
 			Logger.error(e);
 		} catch (IOException e) {
 			Logger.error(e);
+		} finally {
+			ClosingUtils.close(fos);
 		}
 	}
 	

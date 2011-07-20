@@ -56,8 +56,11 @@ public class WavEncoder implements Encoder {
     public boolean encode(File wavFile, File wavFile2, String title, int trackNumber, String artists, String composer) {
         Logger.info(StringUtils.getString("Wav encoding started... ", wavFile.getName(), " -> ", wavFile2.getName()));
         try {
-            wavFile.renameTo(wavFile2);
-            Logger.info("Renamed ok!!");
+            if (wavFile.renameTo(wavFile2)) {
+                Logger.info("Renamed ok!!");
+            } else {
+                Logger.error(StringUtils.getString(wavFile, " Renamed failed!!"));
+            }
             return true;
 
         } catch (Exception e) {
