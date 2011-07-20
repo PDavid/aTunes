@@ -58,8 +58,13 @@ public class PlayList implements Serializable, Cloneable {
      */
     private PointedList<AudioObject> audioObjects = new PlayListPointedList();
 
-    private static class PlayListAudioObjectComparator implements Comparator<PlayListAudioObject> {
-        @Override
+    private static class PlayListAudioObjectComparator implements Comparator<PlayListAudioObject>, Serializable {
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 2216966505910863325L;
+
+		@Override
         public int compare(PlayListAudioObject o1, PlayListAudioObject o2) {
             return -Integer.valueOf(o1.getPosition()).compareTo(Integer.valueOf(o2.getPosition()));
         }

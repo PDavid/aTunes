@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -64,8 +65,13 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class PlayListHandler extends AbstractHandler implements AudioFilesRemovedListener {
 
-    private static final class RowListComparator implements Comparator<Integer> {
-        private final boolean up;
+    private static final class RowListComparator implements Comparator<Integer>, Serializable {
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = -1389171859618293326L;
+		
+		private final boolean up;
 
         private RowListComparator(boolean up) {
             this.up = up;

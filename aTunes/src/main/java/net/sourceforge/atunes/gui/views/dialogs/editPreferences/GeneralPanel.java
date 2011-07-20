@@ -25,6 +25,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serializable;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,8 +64,13 @@ import org.jdesktop.swingx.combobox.ListComboBoxModel;
  */
 public final class GeneralPanel extends AbstractPreferencesPanel {
 
-    private static final class LocaleComparator implements Comparator<Locale> {
-        private final Locale currentLocale;
+    private static final class LocaleComparator implements Comparator<Locale>, Serializable {
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 8454923131242388725L;
+		
+		private final Locale currentLocale;
 
         private LocaleComparator(Locale currentLocale) {
             this.currentLocale = currentLocale;

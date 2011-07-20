@@ -25,6 +25,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Paint;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -192,8 +193,13 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
         }
     }
 
-    private static final class SkinsComparator implements Comparator<String> {
-        @Override
+    private static final class SkinsComparator implements Comparator<String>, Serializable {
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 8396385246074192265L;
+
+		@Override
         public int compare(String o1, String o2) {
             return o1.toLowerCase().compareTo(o2.toLowerCase());
         }
