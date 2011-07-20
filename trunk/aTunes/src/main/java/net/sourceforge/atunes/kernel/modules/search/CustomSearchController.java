@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.search;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -430,9 +431,14 @@ final class CustomSearchController extends AbstractSimpleController<CustomSearch
         // Nothing to do
     }
 
-    private static class TranslatedAttributesList implements Comparator<String> {
+    private static class TranslatedAttributesList implements Comparator<String>, Serializable {
 
-        @Override
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 8925031888751216736L;
+
+		@Override
         public int compare(String o1, String o2) {
             return -Integer.valueOf(o1.length()).compareTo(Integer.valueOf(o2.length()));
         }

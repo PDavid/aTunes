@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.modules.webservices.lastfm;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -460,8 +461,13 @@ public class LastFmCache extends AbstractCache {
         getArtistWikiCache().dispose();
     }
 
-    private static class SubmissionDataComparator implements Comparator<SubmissionData> {
-        @Override
+    private static class SubmissionDataComparator implements Comparator<SubmissionData>, Serializable {
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = -4769284375865961129L;
+
+		@Override
         public int compare(SubmissionData o1, SubmissionData o2) {
             return Integer.valueOf(o1.getStartTime()).compareTo(o2.getStartTime());
         }
