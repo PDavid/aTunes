@@ -77,8 +77,9 @@ public class NeroAacEncoder implements Encoder {
             Process p = new ProcessBuilder(StringUtils.getString(OsManager.getExternalToolsPath(), NERO_AAC), VERSION).start();
             stdInput = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 
-            while (stdInput.readLine() != null) {
-                // Nothing to do
+            String line = null;
+            while ((line = stdInput.readLine()) != null) {
+            	Logger.debug(line);
             }
 
             int code = p.waitFor();
@@ -133,7 +134,9 @@ public class NeroAacEncoder implements Encoder {
             stdInput = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 
             // Required to avoid deadlook under Windows
-            while (stdInput.readLine() != null) {
+            String line = null;
+            while ((line = stdInput.readLine()) != null) {
+            	Logger.debug(line);
                 // Enable indeterminate progress bar
                 if (listener != null) {
                     SwingUtilities.invokeLater(new Runnable() {

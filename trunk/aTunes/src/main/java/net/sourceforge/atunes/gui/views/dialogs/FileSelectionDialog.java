@@ -283,16 +283,6 @@ public final class FileSelectionDialog extends AbstractCustomModalDialog {
     }
 
     /**
-     * The main method.
-     * 
-     * @param args
-     *            the arguments
-     */
-    public static void main(String[] args) {
-        new FileSelectionDialog(null, true).startDialog();
-    }
-
-    /**
      * Gets the content.
      * 
      * @return the content

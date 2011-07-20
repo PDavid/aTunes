@@ -287,7 +287,7 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
 
     }
 
-    private class ProviderLabel extends JPanel {
+    private static class ProviderLabel extends JPanel {
 
         private static final long serialVersionUID = -2928151775717411054L;
 

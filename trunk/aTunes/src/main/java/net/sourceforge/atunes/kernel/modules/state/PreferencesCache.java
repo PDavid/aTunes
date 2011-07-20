@@ -84,7 +84,7 @@ class PreferencesCache extends AbstractCache {
         }
 
         // Store same preferences even if value is equal, otherwise could cause problems with collections (where equals is always true)
-        Element element = new Element(preferenceId.toString(), value != null ? new Preference(value) : value);
+        Element element = new Element(preferenceId.toString(), value != null ? new Preference(value) : null);
         getCache().put(element);
         getCache().flush();
         Logger.debug("Stored Preference: ", preferenceId, " Value: ", value != null ? value.toString() : null);
@@ -120,7 +120,7 @@ class PreferencesCache extends AbstractCache {
         Element element = new Element(preferenceId.toString(), value != null ? new PasswordPreference(value) : null);
         getCache().put(element);
         getCache().flush();
-        Logger.debug("Stored Password Preference: ", preferenceId, " Value: ", value.toString());
+        Logger.debug("Stored Password Preference: ", preferenceId, " Value: ", value != null ? value.toString() : null);
     }
 
     private Cache getCache() {

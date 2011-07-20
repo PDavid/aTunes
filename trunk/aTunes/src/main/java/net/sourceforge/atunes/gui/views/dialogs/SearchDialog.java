@@ -73,16 +73,6 @@ public final class SearchDialog extends AbstractCustomModalDialog {
     }
 
     /**
-     * The main method.
-     * 
-     * @param args
-     *            the args
-     */
-    public static void main(String[] args) {
-        new SearchDialog(null).setVisible(true);
-    }
-
-    /**
      * Gets the result.
      * 
      * @return the result

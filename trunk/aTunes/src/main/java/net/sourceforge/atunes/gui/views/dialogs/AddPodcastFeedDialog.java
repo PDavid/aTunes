@@ -73,16 +73,6 @@ public final class AddPodcastFeedDialog extends AbstractCustomModalDialog {
     }
 
     /**
-     * The main method.
-     * 
-     * @param args
-     *            the arguments
-     */
-    public static void main(String args[]) {
-        new AddPodcastFeedDialog(null).setVisible(true);
-    }
-
-    /**
      * Gets the content.
      * 
      * @return the content

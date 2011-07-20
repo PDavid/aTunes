@@ -61,8 +61,9 @@ public class Cdparanoia extends AbstractCdToWavConverter {
                 ProcessBuilder pb = new ProcessBuilder(CDPARANOIA_COMMAND_STRING, VERSION);
                 Process p = pb.start();
                 stdInput = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-                while (stdInput.readLine() != null) {
-                    // do nothing
+                String line = null;
+                while ((line = stdInput.readLine()) != null) {
+                	Logger.debug(line);
                 }
                 int code = p.waitFor();
                 if (code != 0) {

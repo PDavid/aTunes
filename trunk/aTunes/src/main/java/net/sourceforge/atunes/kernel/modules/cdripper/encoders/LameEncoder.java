@@ -82,8 +82,9 @@ public class LameEncoder implements Encoder {
             Process p = new ProcessBuilder(StringUtils.getString(OsManager.getExternalToolsPath(), LAME), VERSION).start();
             stdInput = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 
-            while (stdInput.readLine() != null) {
-                // Nothing to do
+            String line = null;
+            while ((line = stdInput.readLine()) != null) {
+            	Logger.debug(line);
             }
 
             int code = p.waitFor();

@@ -254,17 +254,6 @@ public final class RipCdDialog extends AbstractCustomModalDialog {
     }
 
     /**
-     * The main method.
-     * 
-     * @param args
-     *            the arguments
-     */
-    public static void main(String[] args) {
-        RipCdDialog dialog = new RipCdDialog(null);
-        dialog.setVisible(true);
-    }
-
-    /**
      * Gets the album text field.
      * 
      * @return the album text field
