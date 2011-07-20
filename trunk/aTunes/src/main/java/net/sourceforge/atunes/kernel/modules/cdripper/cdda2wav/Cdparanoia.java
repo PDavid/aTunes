@@ -90,7 +90,9 @@ public class Cdparanoia extends AbstractCdToWavConverter {
         Logger.info(StringUtils.getString("Writing wav file for track ", track, " in file ", file.getName()));
         try {
             // fileName = new File(fileName.getName());
-            file.getParentFile().mkdirs();
+            if (!file.getParentFile().mkdirs()) {
+            	Logger.error(StringUtils.getString(file.getParentFile(), " not created"));
+            }
 
             List<String> command = new ArrayList<String>();
             command.add(CDPARANOIA_COMMAND_STRING);

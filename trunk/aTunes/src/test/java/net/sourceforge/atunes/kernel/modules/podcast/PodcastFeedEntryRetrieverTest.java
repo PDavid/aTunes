@@ -39,7 +39,7 @@ public class PodcastFeedEntryRetrieverTest {
     }
 
     @Test
-    public void TestRetrievePodcastFeedEntries() {
+    public void testRetrievePodcastFeedEntries() {
 
         PodcastFeedEntryRetriever podcastFeedEntryRetriever = new PodcastFeedEntryRetriever(Arrays.asList(testedObject));
         List<PodcastFeed> podcastFeedsWithNewEntries = podcastFeedEntryRetriever.retrievePodcastFeedEntries(true, null);

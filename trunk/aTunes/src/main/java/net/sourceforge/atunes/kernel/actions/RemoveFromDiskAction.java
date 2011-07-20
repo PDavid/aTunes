@@ -66,7 +66,9 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
             for (LocalAudioObject audioFile : files) {
                 File file = audioFile.getFile();
                 if (file != null) {
-                    file.delete();
+                    if (!file.delete()) {
+                    	Logger.error(StringUtils.getString(file, " not deleted"));
+                    }
                 }
             }
             return null;

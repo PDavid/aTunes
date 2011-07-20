@@ -90,7 +90,9 @@ class CdRipper {
 		        }
 		    } else if (interrupted) {
 		        wavFileTemp.delete();
-		        infFileTemp.delete();
+		        if (!infFileTemp.delete()) {
+		        	Logger.error(StringUtils.getString(infFileTemp, " not deleted"));
+		        }
 		    } else if (!ripResultFinal) {
 		    	Logger.error(StringUtils.getString("Rip failed. Skipping track ", trackNumber, "..."));
 		    }

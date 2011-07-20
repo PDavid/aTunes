@@ -120,7 +120,9 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
 		                for (LocalAudioObject audioFile : filesToRemove) {
 		                    File file = audioFile.getFile();
 		                    if (file != null) {
-		                        file.delete();
+		                        if (!file.delete()) {
+		                        	Logger.error(StringUtils.getString(file, " not deleted"));
+		                        }
 		                    }
 		                }
 		                return null;

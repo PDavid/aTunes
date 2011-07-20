@@ -36,6 +36,7 @@ import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
+import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -261,7 +262,9 @@ public final class PlayListIO {
         FileWriter writer = null;
         try {
             if (file.exists()) {
-                file.delete();
+                if (!file.delete()) {
+                	Logger.error(StringUtils.getString(file, " not deleted"));
+                }
             }
             writer = new FileWriter(file);
             writer.append(StringUtils.getString(M3U_HEADER, OsManager.getLineTerminator()));

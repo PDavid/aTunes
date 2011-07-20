@@ -386,7 +386,9 @@ public final class PodcastFeedHandler extends AbstractHandler {
             @Override
             public void run() {
                 while (f.exists() && !Thread.currentThread().isInterrupted()) {
-                    f.delete();
+                    if (!f.delete()) {
+                    	Logger.error(StringUtils.getString(f, " not deleted"));
+                    }
                 }
                 try {
                     Thread.sleep(3000);

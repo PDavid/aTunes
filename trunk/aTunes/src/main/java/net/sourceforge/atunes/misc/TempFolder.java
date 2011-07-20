@@ -27,6 +27,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import net.sourceforge.atunes.kernel.OsManager;
+import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.commons.io.FileUtils;
@@ -100,7 +101,11 @@ public class TempFolder {
         File tempFolder = new File(OsManager.getTempFolder());
         File[] files = tempFolder.listFiles();
         for (File f : files) {
-            f.delete();
+            if (f.delete()) {
+            	Logger.info(f, " deleted");
+            } else {
+            	Logger.error(StringUtils.getString(f, " not deleted"));
+            }
         }
     }
 }

@@ -606,7 +606,9 @@ public final class RipperHandler extends AbstractHandler {
                         Logger.error(e);
                     }
                     if (folderCreated) {
-                        folder.delete();
+                        if (!folder.delete()) {
+                        	Logger.error(StringUtils.getString(folder, " not deleted"));
+                        }
                     }
                 }
             };

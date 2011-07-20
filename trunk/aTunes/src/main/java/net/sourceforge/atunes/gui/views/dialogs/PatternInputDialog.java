@@ -83,7 +83,7 @@ public final class PatternInputDialog extends AbstractCustomModalDialog {
 		    if (result != null && !result.trim().equals("")) {
 		        // Upper case all patterns found in result
 		        for (AbstractPattern pattern : AbstractPattern.getPatterns()) {
-		            result.replaceAll(pattern.getPattern().toLowerCase(), pattern.getPattern());
+		            result = result.replaceAll(pattern.getPattern().toLowerCase(), pattern.getPattern());
 		        }
 
 		        // If pattern was not already used add to list of previously used patterns

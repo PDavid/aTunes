@@ -37,6 +37,7 @@ import net.sourceforge.atunes.gui.views.dialogs.ProgressDialog;
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -160,7 +161,11 @@ public abstract class AbstractAudioFileTransferProcess extends AbstractProcess {
     protected void runCancel() {
         // Remove all transferred files
         for (File f : this.filesTransferred) {
-            f.delete();
+            if (f.delete()) {
+            	Logger.info(f, " deleted");
+            } else {
+            	Logger.error(StringUtils.getString(f, " not deleted"));
+            }
         }
     }
 
