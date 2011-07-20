@@ -178,7 +178,7 @@ public final class LastFmService {
      * 
      * @return
      */
-    public static LastFmService getInstance() {
+    public static synchronized LastFmService getInstance() {
         if (instance == null) {
             instance = new LastFmService(ApplicationState.getInstance().getProxy(), ApplicationState.getInstance().getLastFmUser(), ApplicationState.getInstance()
                     .getLastFmPassword());
