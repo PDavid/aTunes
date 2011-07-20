@@ -77,4 +77,11 @@ public interface TreeObject<T extends AudioObject> {
      * @return
      */
     public ImageIcon getExtendedToolTipImage();
+    
+	/**
+	 * Returns number of audio objects
+	 * @return
+	 */
+	public int size();
+
 }

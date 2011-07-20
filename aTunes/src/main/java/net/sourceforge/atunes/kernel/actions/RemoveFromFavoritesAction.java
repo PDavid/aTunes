@@ -47,14 +47,15 @@ public class RemoveFromFavoritesAction extends AbstractAction {
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("REMOVE_FROM_FAVORITES"));
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public void actionPerformed(ActionEvent e) {
         if (NavigationHandler.getInstance().getPopupMenuCaller() == NavigationHandler.getInstance().getView(FavoritesNavigationView.class).getTree()) {
             TreePath[] paths = NavigationHandler.getInstance().getView(FavoritesNavigationView.class).getTree().getSelectionPaths();
             if (paths != null) {
-                List<TreeObject> objects = new ArrayList<TreeObject>();
+                List<TreeObject<? extends AudioObject>> objects = new ArrayList<TreeObject<? extends AudioObject>>();
                 for (TreePath element : paths) {
-                    objects.add((TreeObject) ((DefaultMutableTreeNode) element.getLastPathComponent()).getUserObject());
+                    objects.add((TreeObject<? extends AudioObject>) ((DefaultMutableTreeNode) element.getLastPathComponent()).getUserObject());
                 }
                 FavoritesHandler.getInstance().removeFromFavorites(objects);
             }

@@ -165,9 +165,9 @@ public final class RadioNavigationView extends AbstractNavigationView {
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();
 
         // Get objects selected before refreshing tree
-        List<TreeObject> objectsSelected = getTreeObjectsSelected(getTree());
+        List<TreeObject<? extends AudioObject>> objectsSelected = getTreeObjectsSelected(getTree());
         // Get objects expanded before refreshing tree
-        List<TreeObject> objectsExpanded = getTreeObjectsExpanded(getTree(), root);
+        List<TreeObject<? extends AudioObject>> objectsExpanded = getTreeObjectsExpanded(getTree(), root);
 
         // Nodes to be selected after refresh
         List<DefaultMutableTreeNode> nodesToSelect = new ArrayList<DefaultMutableTreeNode>();
@@ -228,7 +228,7 @@ public final class RadioNavigationView extends AbstractNavigationView {
      * @param showAllStations
      *            the show all stations
      */
-    private static void addRadioNodes(List<Radio> radios, List<Radio> presetRadios, DefaultMutableTreeNode root, String currentFilter, boolean showAllStations, List<TreeObject> objectsExpanded, List<TreeObject> objectsSelected, List<DefaultMutableTreeNode> nodesToExpand, List<DefaultMutableTreeNode> nodesToSelect) {
+    private static void addRadioNodes(List<Radio> radios, List<Radio> presetRadios, DefaultMutableTreeNode root, String currentFilter, boolean showAllStations, List<TreeObject<? extends AudioObject>> objectsExpanded, List<TreeObject<? extends AudioObject>> objectsSelected, List<DefaultMutableTreeNode> nodesToExpand, List<DefaultMutableTreeNode> nodesToSelect) {
         if (radios == null) {
             return;
         }

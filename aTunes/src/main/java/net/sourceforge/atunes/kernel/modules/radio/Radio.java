@@ -47,7 +47,7 @@ import org.commonjukebox.plugins.model.PluginApi;
  * A radio station.
  */
 @PluginApi
-public final class Radio implements AudioObject, Serializable, TreeObject, Comparable<Radio> {
+public final class Radio implements AudioObject, Serializable, TreeObject<Radio>, Comparable<Radio> {
 
     private static final long serialVersionUID = 3295941106814718559L;
 
@@ -147,8 +147,8 @@ public final class Radio implements AudioObject, Serializable, TreeObject, Compa
     }
 
     @Override
-    public List<AudioObject> getAudioObjects() {
-        List<AudioObject> songs = new ArrayList<AudioObject>();
+    public List<Radio> getAudioObjects() {
+        List<Radio> songs = new ArrayList<Radio>();
         songs.add(this);
         return songs;
     }
@@ -535,5 +535,10 @@ public final class Radio implements AudioObject, Serializable, TreeObject, Compa
 			return false;
 		}
 		return true;
+	}
+	
+	@Override
+	public int size() {
+		return 1;
 	}
 }

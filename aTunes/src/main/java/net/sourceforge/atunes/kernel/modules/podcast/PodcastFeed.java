@@ -28,7 +28,6 @@ import java.util.List;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
-import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -36,7 +35,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * Represents a rss or atom podcast feed.
  */
-public class PodcastFeed implements TreeObject, Serializable {
+public class PodcastFeed implements TreeObject<PodcastFeedEntry>, Serializable {
 
     private static final long serialVersionUID = 1416452911272034086L;
 
@@ -88,8 +87,8 @@ public class PodcastFeed implements TreeObject, Serializable {
     }
 
     @Override
-    public synchronized List<AudioObject> getAudioObjects() {
-        return new ArrayList<AudioObject>(podcastFeedEntries);
+    public synchronized List<PodcastFeedEntry> getAudioObjects() {
+        return new ArrayList<PodcastFeedEntry>(podcastFeedEntries);
     }
 
     /**
@@ -288,13 +287,16 @@ public class PodcastFeed implements TreeObject, Serializable {
 
     @Override
     public ImageIcon getExtendedToolTipImage() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public boolean isExtendedToolTipImageSupported() {
-        // TODO Auto-generated method stub
         return false;
+    }
+    
+    @Override
+    public int size() {
+    	return podcastFeedEntries.size();
     }
 }

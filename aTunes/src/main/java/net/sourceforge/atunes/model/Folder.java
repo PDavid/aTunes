@@ -304,4 +304,17 @@ public class Folder implements Serializable, TreeObject<LocalAudioObject> {
     public boolean isExtendedToolTipImageSupported() {
         return false;
     }
+    
+	/**
+	 * Returns number of audio object
+	 * @return
+	 */
+	public int size() {
+		int size = getFiles().size();
+        for (Folder f : getFolders().values()) {
+        	size = size + f.size();
+        }       	
+		return size;
+	}
+
 }

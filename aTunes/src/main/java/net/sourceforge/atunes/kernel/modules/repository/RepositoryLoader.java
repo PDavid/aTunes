@@ -698,9 +698,8 @@ public class RepositoryLoader extends Thread {
 					genre);
 			if (g != null) {
 				g.removeAudioFile(file);
-				if (g.getAudioObjects().size() <= 1) {
-					RepositoryHandler.getInstance().getGenreStructure().remove(
-							genre);
+				if (g.size() <= 1) {
+					RepositoryHandler.getInstance().getGenreStructure().remove(genre);
 				}
 			}
 
@@ -709,7 +708,7 @@ public class RepositoryLoader extends Thread {
 					year);
 			if (y != null) {
 				y.removeAudioFile(file);
-				if (y.getAudioObjects().size() <= 1) {
+				if (y.size() <= 1) {
 					RepositoryHandler.getInstance().getYearStructure().remove(
 							year);
 				}

@@ -62,6 +62,7 @@ import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
+import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -185,9 +186,9 @@ public final class DeviceNavigationView extends AbstractNavigationView {
         List<DefaultMutableTreeNode> nodesToExpand = new ArrayList<DefaultMutableTreeNode>();
 
         // Get objects selected before refreshing tree
-        List<TreeObject> objectsSelected = getTreeObjectsSelected(getTree());
+        List<TreeObject<? extends AudioObject>> objectsSelected = getTreeObjectsSelected(getTree());
         // Get objects expanded before refreshing tree
-        List<TreeObject> objectsExpanded = getTreeObjectsExpanded(getTree(), root);
+        List<TreeObject<? extends AudioObject>> objectsExpanded = getTreeObjectsExpanded(getTree(), root);
 
         root.removeAllChildren();
 
@@ -210,12 +211,14 @@ public final class DeviceNavigationView extends AbstractNavigationView {
                 songs.addAll(DeviceHandler.getInstance().getAudioFilesList());
             } else {
                 for (int i = 0; i < node.getChildCount(); i++) {
-                    TreeObject<LocalAudioObject> obj = (TreeObject<LocalAudioObject>) ((DefaultMutableTreeNode) node.getChildAt(i)).getUserObject();
+                    @SuppressWarnings("unchecked")
+					TreeObject<LocalAudioObject> obj = (TreeObject<LocalAudioObject>) ((DefaultMutableTreeNode) node.getChildAt(i)).getUserObject();
                     songs.addAll(obj.getAudioObjects());
                 }
             }
         } else {
-            TreeObject<LocalAudioObject> obj = (TreeObject<LocalAudioObject>) node.getUserObject();
+            @SuppressWarnings("unchecked")
+			TreeObject<LocalAudioObject> obj = (TreeObject<LocalAudioObject>) node.getUserObject();
             songs = obj.getAudioObjects();
         }
         return songs;

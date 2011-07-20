@@ -75,7 +75,6 @@ import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
 import net.sourceforge.atunes.kernel.modules.repository.AudioFilesRemovedListener;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
@@ -360,9 +359,10 @@ final class NavigationController extends AbstractController implements AudioFile
      * @param currentAlbumToolTipContent
      *            the new current album tool tip content
      */
-    public void setCurrentExtendedToolTipContent(Object currentAlbumToolTipContent) {
+    @SuppressWarnings("unchecked")
+	public void setCurrentExtendedToolTipContent(Object currentAlbumToolTipContent) {
         this.currentExtendedToolTipContent = currentAlbumToolTipContent;
-        getExtendedToolTip().setSizeToFitImage(currentAlbumToolTipContent instanceof TreeObject && ((TreeObject) currentAlbumToolTipContent).isExtendedToolTipImageSupported());
+        getExtendedToolTip().setSizeToFitImage(currentAlbumToolTipContent instanceof TreeObject && ((TreeObject<? extends AudioObject>) currentAlbumToolTipContent).isExtendedToolTipImageSupported());
     }
 
     /**

@@ -33,7 +33,6 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
-import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -42,7 +41,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * This class represents a year, with a set of artist of this year.
  */
-public class Year implements Serializable, TreeObject {
+public class Year implements Serializable, TreeObject<LocalAudioObject> {
 
     private static final long serialVersionUID = -8560986690062265343L;
 
@@ -88,8 +87,8 @@ public class Year implements Serializable, TreeObject {
      * @return the audio objects
      */
     @Override
-    public List<AudioObject> getAudioObjects() {
-        List<AudioObject> result = new ArrayList<AudioObject>();
+    public List<LocalAudioObject> getAudioObjects() {
+        List<LocalAudioObject> result = new ArrayList<LocalAudioObject>();
         for (LocalAudioObject song : audioFiles) {
             result.add(song);
         }
@@ -136,7 +135,7 @@ public class Year implements Serializable, TreeObject {
     @Override
     public String getToolTip() {
         int artistNumber = getArtistSet().size();
-        int songs = getAudioObjects().size();
+        int songs = size();
         return StringUtils.getString(getName(), " (", I18nUtils.getString("ARTISTS"), ": ", artistNumber, ", ", I18nUtils.getString("SONGS"), ": ", songs, ")");
     }
 
@@ -150,7 +149,7 @@ public class Year implements Serializable, TreeObject {
         toolTip.setLine1(getName());
         int artistNumber = getArtistSet().size();
         toolTip.setLine2(StringUtils.getString(artistNumber, " ", (artistNumber > 1 ? I18nUtils.getString("ARTISTS") : I18nUtils.getString("ARTIST"))));
-        int songs = getAudioObjects().size();
+        int songs = size();
         toolTip.setLine3(StringUtils.getString(songs, " ", (songs > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG"))));
     }
 
@@ -225,6 +224,11 @@ public class Year implements Serializable, TreeObject {
             }
         }
         return artists;
+    }
+    
+    @Override
+    public int size() {
+    	return audioFiles.size();
     }
 
 }
