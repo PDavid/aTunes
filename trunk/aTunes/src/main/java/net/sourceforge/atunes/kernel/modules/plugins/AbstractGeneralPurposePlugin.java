@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.plugins;
 
+import org.commonjukebox.plugins.model.Plugin;
 import org.commonjukebox.plugins.model.PluginApi;
 
 /**
@@ -30,7 +31,7 @@ import org.commonjukebox.plugins.model.PluginApi;
  * 
  */
 @PluginApi
-public abstract class AbstractGeneralPurposePlugin {
+public abstract class AbstractGeneralPurposePlugin implements Plugin {
 
     /**
      * Called when plugin becomes active
