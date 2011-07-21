@@ -596,7 +596,9 @@ public final class RipperHandler extends AbstractHandler {
                 @Override
                 public void run() {
                     for (File f : filesImported) {
-                        f.delete();
+                        if (!f.delete()) {
+                        	Logger.error(StringUtils.getString(f, " not deleted"));
+                        }
                     }
 
                     // Wait two seconds to assure filesImported are deleted
