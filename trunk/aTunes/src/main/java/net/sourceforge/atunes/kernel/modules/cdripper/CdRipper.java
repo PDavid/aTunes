@@ -82,14 +82,22 @@ class CdRipper {
 		        }
 
 		        Logger.info("Deleting wav file...");
-		        wavFileTemp.delete();
-		        infFileTemp.delete();
+		        if (!wavFileTemp.delete()) {
+		        	Logger.error(StringUtils.getString(wavFileTemp, " not deleted"));
+		        }
+		        if (!infFileTemp.delete()) {
+		        	Logger.error(StringUtils.getString(infFileTemp, " not deleted"));
+		        }
 
 		        if (interrupted && resultFileTemp != null) {
-		            resultFileTemp.delete();
+		            if (!resultFileTemp.delete()) {
+		            	Logger.error(StringUtils.getString(resultFileTemp, " not deleted"));
+		            }
 		        }
-		    } else if (interrupted) {
-		        wavFileTemp.delete();
+		    } else if (interrupted) {		    	
+		        if (!wavFileTemp.delete()) {
+		        	Logger.error(StringUtils.getString(wavFileTemp, " not deleted"));
+		        }
 		        if (!infFileTemp.delete()) {
 		        	Logger.error(StringUtils.getString(infFileTemp, " not deleted"));
 		        }
