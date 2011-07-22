@@ -27,29 +27,13 @@ import java.awt.geom.Ellipse2D;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelChangeListener;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-
-public class AudioFileImageIcon implements LookAndFeelChangeListener {
+public class AudioFileImageIcon {
 
 	private static final int SMALL_WIDTH = 16;
 	private static final int SMALL_HEIGHT = 16;
 
 	private static final int MEDIUM_WIDTH = 70;
 	private static final int MEDIUM_HEIGHT = 70;
-	
-	private static ImageIcon smallImageIcon; // Cached as it's heavily used
-	
-	private AudioFileImageIcon() {
-		LookAndFeelSelector.getInstance().addLookAndFeelChangeListener(this);
-	}
-	
-	public static ImageIcon getSmallImageIcon() {
-		if (smallImageIcon == null) {
-			smallImageIcon = getSmallImage(null);
-		}
-		return smallImageIcon;
-	}
 	
 	private static ImageIcon getSmallImage(Paint color) {
 		Ellipse2D.Float e1 = new Ellipse2D.Float(1, 11, 6, 3);
@@ -82,16 +66,7 @@ public class AudioFileImageIcon implements LookAndFeelChangeListener {
 		return IconGenerator.generateIcon(color, MEDIUM_WIDTH, MEDIUM_HEIGHT, e1, e2, r1, r2, r3);
 	}
 
-	@Override
-	public void lookAndFeelChanged() {
-		smallImageIcon = getSmallImage(null);
-	}
-
 	public static ImageIcon getSmallImageIcon(Paint color) {
-		if (color == null) {
-			return getSmallImageIcon();
-		}
 		return getSmallImage(color);
-
 	}
 }
