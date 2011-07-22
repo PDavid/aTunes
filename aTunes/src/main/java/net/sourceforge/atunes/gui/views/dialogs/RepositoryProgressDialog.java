@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.gui.views.dialogs;
 
+import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -133,8 +134,11 @@ public final class RepositoryProgressDialog extends AbstractCustomModalDialog {
      * @return the content
      */
     private JPanel getContent() {
-        JPanel panel = new JPanel(new GridBagLayout());
+    	JPanel container = new JPanel(new BorderLayout());
+
+    	JPanel panel = new JPanel(new GridBagLayout());
         pictureLabel = new JLabel(LOGO);
+        pictureLabel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
         label = new JLabel(StringUtils.getString(I18nUtils.getString("LOADING"), "..."));
         progressLabel = new JLabel();
         separatorLabel = new JLabel(" / ");
@@ -150,33 +154,29 @@ public final class RepositoryProgressDialog extends AbstractCustomModalDialog {
         buttonsPanel.add(backgroundButton);
         buttonsPanel.add(cancelButton);
 
+        container.add(pictureLabel, BorderLayout.WEST);
+        
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
-        c.gridy = 0;
-        c.gridheight = 5;
-        c.insets = new Insets(0, 20, 0, 0);
-        panel.add(pictureLabel, c);
-        c.gridheight = 1;
-        c.gridx = 1;
         c.gridy = 0;
         c.weightx = 1;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.insets = new Insets(5, 20, 0, 20);
         c.anchor = GridBagConstraints.WEST;
         panel.add(label, c);
-        c.gridx = 2;
+        c.gridx = 1;
         c.weightx = 0;
         c.fill = GridBagConstraints.NONE;
         c.insets = new Insets(5, 0, 0, 3);
         c.anchor = GridBagConstraints.EAST;
         panel.add(progressLabel, c);
-        c.gridx = 3;
+        c.gridx = 2;
         c.insets = new Insets(5, 0, 0, 0);
         panel.add(separatorLabel, c);
-        c.gridx = 4;
+        c.gridx = 3;
         c.insets = new Insets(5, 0, 0, 20);
         panel.add(totalFilesLabel, c);
-        c.gridx = 1;
+        c.gridx = 0;
         c.gridy = 1;
         c.weightx = 1;
         c.gridwidth = 4;
@@ -196,7 +196,10 @@ public final class RepositoryProgressDialog extends AbstractCustomModalDialog {
         c.fill = GridBagConstraints.NONE;
         c.anchor = GridBagConstraints.CENTER;
         panel.add(buttonsPanel, c);
-        return panel;
+        
+        container.add(panel, BorderLayout.CENTER);
+        
+        return container;
     }
 
     /**
