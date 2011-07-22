@@ -114,9 +114,7 @@ public abstract class OperatingSystemAdapter {
 	 * 
 	 * @param frame
 	 */
-	public void setUpFrame(Frame frame) {
-		// Does nothing by default
-	}
+	public abstract void setUpFrame(Frame frame);
 
 	/**
 	 * Returns if shadow borders are supported
@@ -165,8 +163,8 @@ public abstract class OperatingSystemAdapter {
 	 * 
 	 * @return
 	 */
-	public Boolean testCdToWavConverter() {
-		return null; // None supported by default
+	public boolean testCdToWavConverter() {
+		return false; // None supported by default
 	}
 
 	/**

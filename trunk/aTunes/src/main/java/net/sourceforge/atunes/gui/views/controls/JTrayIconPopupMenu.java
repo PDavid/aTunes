@@ -18,33 +18,30 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.repository;
+package net.sourceforge.atunes.gui.views.controls;
 
-import java.io.File;
-import java.util.Collections;
+import javax.swing.JPopupMenu;
+import javax.swing.event.PopupMenuListener;
 
-import net.sourceforge.atunes.model.Repository;
+/**
+ * This special JPopupMenu prevents the user from removing the popup menu
+ * listener.
+ */
+public class JTrayIconPopupMenu extends JPopupMenu {
 
-import org.junit.Before;
-import org.junit.Test;
+    private static final long serialVersionUID = -220434547680783992L;
 
-
-public class RepositoryFillerTest {
-
-	private RepositoryFiller filler;
-	
-	@Before
-	public void init() {
-		filler = new RepositoryFiller(new Repository(Collections.singletonList(new File("")), null));
+    private PopupMenuListener listener;
+    
+    public JTrayIconPopupMenu(JTrayIcon trayIcon) {
+    	this.listener = trayIcon.getPopupMenuListener();
 	}
-	
-	@Test(expected=IllegalArgumentException.class)
-	public void createRepositoryFillerNullRepository() {
-		new RepositoryFiller(null);		
-	}
-	
-//	@Test
-//	public void addAudioFile() {
-//		filler.addAudioFile(new LocalAudioObjectFake(), new File(""), "");		
-//	}
+
+	@Override
+    public void removePopupMenuListener(PopupMenuListener l) {
+        if (l == listener) {
+            return;
+        }
+        super.removePopupMenuListener(l);
+    }
 }

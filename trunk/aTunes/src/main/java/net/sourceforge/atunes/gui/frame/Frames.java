@@ -33,24 +33,24 @@ public final class Frames {
     private Frames() {
     }
 
-    private static final List<Class<? extends Frame>> classes;
+    private static final List<Class<? extends Frame>> CLASSES;
 
     private static Map<Class<? extends Frame>, String> images = new HashMap<Class<? extends Frame>, String>();
 
     static {
-        classes = new ArrayList<Class<? extends Frame>>();
+        CLASSES = new ArrayList<Class<? extends Frame>>();
 
         add(DefaultSingleFrame.class, "1.png");
         add(EnhancedSingleFrame.class, "2.png");
     }
 
     private static void add(Class<? extends Frame> clazz, String image) {
-        classes.add(clazz);
+        CLASSES.add(clazz);
         images.put(clazz, image);
     }
 
     public static List<Class<? extends Frame>> getClasses() {
-        return new ArrayList<Class<? extends Frame>>(classes);
+        return new ArrayList<Class<? extends Frame>>(CLASSES);
     }
 
     public static ImageIcon getImage(Class<? extends Frame> clazz) {

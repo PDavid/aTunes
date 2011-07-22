@@ -406,7 +406,7 @@ public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog 
         /** The label. */
         private JLabel label;
 
-        private AbstractTreeCellRendererCode rendererCode;
+        private transient AbstractTreeCellRendererCode rendererCode;
 
         /**
          * Instantiates a new check renderer.

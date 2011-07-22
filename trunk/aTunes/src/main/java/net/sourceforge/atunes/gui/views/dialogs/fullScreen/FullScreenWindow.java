@@ -167,10 +167,10 @@ public final class FullScreenWindow extends AbstractCustomWindow {
     private boolean playing;
 
     /** The background. */
-    private Image background;
+    private transient Image background;
 
     /** The key adapter. */
-    private KeyAdapter keyAdapter = new KeyAdapter() {
+    private transient KeyAdapter keyAdapter = new KeyAdapter() {
         @Override
         public void keyPressed(KeyEvent e) {
             if (e.getKeyCode() == KeyEvent.VK_F11) {
@@ -181,21 +181,21 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 
     private Timer hideMouseTimer;
 
-    private MouseListener clickListener = new MouseAdapter() {
+    private transient MouseListener clickListener = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
             activateTimer();
         }
     };
 
-    private MouseMotionListener moveListener = new MouseMotionAdapter() {
+    private transient MouseMotionListener moveListener = new MouseMotionAdapter() {
         @Override
         public void mouseMoved(MouseEvent e) {
             activateTimer();
         }
     };
 
-    private MouseListener showMenuListener = new MouseAdapter() {
+    private transient MouseListener showMenuListener = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
             if (e.getButton() == MouseEvent.BUTTON3) {

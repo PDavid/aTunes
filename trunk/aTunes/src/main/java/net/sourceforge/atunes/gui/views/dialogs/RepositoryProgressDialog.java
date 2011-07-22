@@ -95,7 +95,7 @@ public final class RepositoryProgressDialog extends AbstractCustomModalDialog {
     private JLabel remainingTimeLabel;
     private JButton cancelButton;
     private JButton backgroundButton;
-    private MouseListener listener = new GlassPaneMouseListener();
+    private transient MouseListener listener = new GlassPaneMouseListener();
 
     /**
      * Instantiates a new repository progress dialog.

@@ -68,23 +68,6 @@ public final class JTrayIcon extends TrayIcon {
 		}
 	}
 
-	/**
-     * This special JPopupMenu prevents the user from removing the popup menu
-     * listener.
-     */
-    public class JTrayIconPopupMenu extends JPopupMenu {
-
-        private static final long serialVersionUID = -220434547680783992L;
-
-        @Override
-        public void removePopupMenuListener(PopupMenuListener l) {
-            if (l == popupMenuListener) {
-                return;
-            }
-            super.removePopupMenuListener(l);
-        }
-    }
-
     private JDialog trayParent;
     private JPopupMenu popupMenu;
     private MouseListener trayIconMouseListener;
@@ -213,5 +196,12 @@ public final class JTrayIcon extends TrayIcon {
         Point p2 = computeDisplayPoint(p.x, p.y, popupMenu.getPreferredSize());
         popupMenu.show(trayParent, p2.x - trayParent.getLocation().x, p2.y - trayParent.getLocation().y);
     }
+
+	/**
+	 * @return the popupMenuListener
+	 */
+	protected PopupMenuListener getPopupMenuListener() {
+		return popupMenuListener;
+	}
 
 }

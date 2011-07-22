@@ -216,7 +216,7 @@ public final class LastFmService {
         this.password = ApplicationState.getInstance().getLastFmPassword();
         
         Logger.debug("User: ", user);
-        Logger.debug("Password: ", password.hashCode());
+        Logger.debug("Password: ", password != null ? password.hashCode() : null);
         Caller.getInstance().setCache(null);
         Caller.getInstance().setProxy(proxy);
         Caller.getInstance().setUserAgent(CLIENT_ID);    	

@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import net.sourceforge.atunes.gui.frame.Frame;
 import net.sourceforge.atunes.kernel.OperatingSystem;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavConverter;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.Cdda2wav;
@@ -96,7 +97,7 @@ public class WindowsOperatingSystem extends OperatingSystemAdapter {
 	}
 	
 	@Override
-	public Boolean testCdToWavConverter() {
+	public boolean testCdToWavConverter() {
 		return Cdda2wav.pTestTool();
 	}
 	
@@ -137,4 +138,7 @@ public class WindowsOperatingSystem extends OperatingSystemAdapter {
 		return true;
 	}
 
+	@Override
+	public void setUpFrame(Frame frame) {
+	}
 }
