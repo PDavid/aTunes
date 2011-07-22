@@ -61,16 +61,12 @@ public final class InternetPanel extends AbstractPreferencesPanel {
     private JLabel proxyPasswordLabel;
     private JPasswordField proxyPassword;
 
-    private EditPreferencesDialog dialog;
-    
     /**
      * Instantiates a new internet panel.
      */
-    public InternetPanel(EditPreferencesDialog dialog) {
+    public InternetPanel() {
         super(I18nUtils.getString("INTERNET"));
 
-        this.dialog = dialog;
-        
         GridBagConstraints c = new GridBagConstraints();
         c.weightx = 1;
         c.fill = GridBagConstraints.HORIZONTAL;

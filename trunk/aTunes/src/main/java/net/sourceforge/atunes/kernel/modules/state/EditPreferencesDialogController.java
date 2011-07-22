@@ -70,7 +70,7 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
         panels.add(new PlayListPrefPanel());
         panels.add(new OSDPanel()); 
         panels.add(new ContextPanel()); 
-        panels.add(new InternetPanel(dialog)); 
+        panels.add(new InternetPanel()); 
         panels.add(new LastFmPanel()); 
         panels.add(new DevicePanel()); 
         panels.add(new RadioPanel()); 

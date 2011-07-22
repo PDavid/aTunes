@@ -53,7 +53,12 @@ public final class NavigationTable extends JTable implements DragSourceListener,
 
         setTransferHandler(new TransferHandler() {
 
-            @Override
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = -9033178513246597067L;
+
+			@Override
             public int getSourceActions(JComponent c) {
                 return TransferHandler.COPY;
     }
