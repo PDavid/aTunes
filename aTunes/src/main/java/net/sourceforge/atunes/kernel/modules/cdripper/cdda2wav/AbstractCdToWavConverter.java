@@ -73,19 +73,12 @@ public abstract class AbstractCdToWavConverter {
     }
 
     /**
-     * Tests if cdda2wav or icedax is present On Windows system cdda2wav is
-     * assumed present.
+     * Tests if cdda2wav or icedax is present
      * 
      * @return true if either cdda2wav or icedax was found, false else.
      */
     public static boolean testTool() {
-    	Boolean test = OsManager.testCdToWavConverter();
-    	if (test != null) {
-    		return test;
-    	} else if (Cdda2wav.pTestTool()) {
-            return true;
-        }
-        return Cdparanoia.pTestTool();
+    	return OsManager.testCdToWavConverter();
     }
 
     /*

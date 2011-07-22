@@ -287,7 +287,7 @@ public class OsManager {
 	 * Test OS-dependent converter
 	 * @return
 	 */
-	public static Boolean testCdToWavConverter() {
+	public static boolean testCdToWavConverter() {
 		return adapter.testCdToWavConverter();
 	}
 

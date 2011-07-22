@@ -42,7 +42,7 @@ import net.sourceforge.atunes.gui.images.PreviousImageIcon;
 import net.sourceforge.atunes.gui.images.StopImageIcon;
 import net.sourceforge.atunes.gui.views.controls.ActionTrayIcon;
 import net.sourceforge.atunes.gui.views.controls.JTrayIcon;
-import net.sourceforge.atunes.gui.views.controls.JTrayIcon.JTrayIconPopupMenu;
+import net.sourceforge.atunes.gui.views.controls.JTrayIconPopupMenu;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.actions.Actions;
@@ -433,7 +433,8 @@ public final class SystemTrayHandler extends AbstractHandler {
         	Image icon = ImageUtils.scaleImageBicubic(Images.getImage(Images.APP_LOGO_32).getImage(), iconSize.width, iconSize.height).getImage();
             trayIcon = new JTrayIcon(icon, OsManager.osType.isLinux(), Actions.getAction(ToggleWindowVisibilityAction.class));
             trayIcon.setToolTip(StringUtils.getString(Constants.APP_NAME, " ", Constants.VERSION.toShortString()));
-            trayIcon.setJTrayIconJPopupMenu(fillMenu(trayIcon.new JTrayIconPopupMenu()));
+            JTrayIconPopupMenu popupmenu = fillMenu(new JTrayIconPopupMenu(trayIcon));
+            trayIcon.setJTrayIconJPopupMenu(popupmenu);
         }
         return trayIcon;
     }

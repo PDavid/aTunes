@@ -80,7 +80,7 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 	}
 	
 	@Override
-	public Boolean testCdToWavConverter() {
+	public boolean testCdToWavConverter() {
 		return Cdparanoia.pTestTool();
 	}
 

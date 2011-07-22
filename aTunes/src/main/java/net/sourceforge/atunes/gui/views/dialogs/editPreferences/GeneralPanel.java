@@ -95,7 +95,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
     private ByImageChoosingPanel<Class<? extends Frame>> windowTypeChoosingPanel;
     private JButton trayPlayerColorSelector;
     
-    private ActionListener applySkinActionListener;
+    private transient ActionListener applySkinActionListener;
 
     private FontSettings currentFontSettings;
     
