@@ -43,7 +43,6 @@ import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmAlbum;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmAlbumList;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmLovedTrack;
@@ -180,8 +179,7 @@ public final class LastFmService {
      */
     public static synchronized LastFmService getInstance() {
         if (instance == null) {
-            instance = new LastFmService(ApplicationState.getInstance().getProxy(), ApplicationState.getInstance().getLastFmUser(), ApplicationState.getInstance()
-                    .getLastFmPassword());
+            instance = new LastFmService();
         }
         return instance;
     }
@@ -196,32 +194,32 @@ public final class LastFmService {
      * @param password
      *            the Last.fm password
      */
-    private LastFmService(ProxyBean proxyBean, String user, String password) {
+    private LastFmService() {
+    	updateService();
+    }
+    
+    /**
+     * Updates service after a configuration change
+     */
+    public void updateService() {
         ExtendedProxy proxy = null;
         try {
-            if (proxyBean != null) {
-                proxy = ExtendedProxy.getProxy(proxyBean);
+            if (ApplicationState.getInstance().getProxy() != null) {
+                proxy = ExtendedProxy.getProxy(ApplicationState.getInstance().getProxy());
             }
         } catch (Exception e) {
             Logger.error(e);
         }
 
         this.proxy = proxy;
-        this.user = user;
-        this.password = password;
+        this.user = ApplicationState.getInstance().getLastFmUser();
+        this.password = ApplicationState.getInstance().getLastFmPassword();
+        
         Logger.debug("User: ", user);
-        Logger.debug("Password: ", password);
+        Logger.debug("Password: ", password.hashCode());
         Caller.getInstance().setCache(null);
         Caller.getInstance().setProxy(proxy);
-        Caller.getInstance().setUserAgent(CLIENT_ID);
-    }
-
-    /**
-     * Updates service after a configuration change
-     */
-    public void updateService() {
-        // Force create service again
-        instance = null;
+        Caller.getInstance().setUserAgent(CLIENT_ID);    	
     }
 
     /**

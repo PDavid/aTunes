@@ -101,7 +101,7 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
     /**
      * Used to retrieve JSplitPane divider size of current look and feel
      */
-    protected static int defaultDividerSize;
+    protected int defaultDividerSize;
     
     private WindowAdapter fullFrameStateListener;
 

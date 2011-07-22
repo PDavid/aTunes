@@ -82,16 +82,8 @@ public final class YoutubeService {
      */
     private static YoutubeService instance;
 
-    private YoutubeService(ProxyBean proxyBean) {
-        ExtendedProxy proxy = null;
-        try {
-            if (proxyBean != null) {
-                proxy = ExtendedProxy.getProxy(proxyBean);
-            }
-        } catch (Exception e) {
-            Logger.error(e);
-        }
-        this.proxy = proxy;
+    private YoutubeService() {
+    	updateService();
     }
 
     /**
@@ -101,7 +93,7 @@ public final class YoutubeService {
      */
     public static YoutubeService getInstance() {
         if (instance == null) {
-            instance = new YoutubeService(ApplicationState.getInstance().getProxy());
+            instance = new YoutubeService();
         }
         return instance;
     }
@@ -110,8 +102,15 @@ public final class YoutubeService {
      * Updates service after a configuration change
      */
     public void updateService() {
-        // Force create service again
-        instance = null;
+        ExtendedProxy proxy = null;
+        try {
+            if (ApplicationState.getInstance().getProxy() != null) {
+                proxy = ExtendedProxy.getProxy(ApplicationState.getInstance().getProxy());
+            }
+        } catch (Exception e) {
+            Logger.error(e);
+        }
+        this.proxy = proxy;
     }
 
     /**

@@ -32,18 +32,16 @@ public class FolderTest {
 	private static final String FOLDER_1_NAME = "asdf";
 	private static final String FOLDER_2_NAME = "asdfghjk";
 	
-	private static Folder f1;
-	private static Folder f2;
+	private Folder f1;
+	private Folder f2;
 	
-	private LocalAudioObject af1;
-	private LocalAudioObject af2;
+	private LocalAudioObject af1 = new LocalAudioObjectFake();
+	private LocalAudioObject af2 = new LocalAudioObjectFake();
 	
 	@Before
 	public void init() {
 		f1 = new Folder(FOLDER_1_NAME);
 		f2 = new Folder(FOLDER_2_NAME);
-		af1 = new LocalAudioObjectFake();
-		af2 = new LocalAudioObjectFake();
 	}
 	
 	@Test

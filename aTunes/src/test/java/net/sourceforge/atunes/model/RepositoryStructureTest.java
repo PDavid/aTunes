@@ -22,18 +22,12 @@ package net.sourceforge.atunes.model;
 
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Before;
 import org.junit.Test;
 
 public class RepositoryStructureTest {
 
-	private static RepositoryStructure structure;
+	private static RepositoryStructure structure = new RepositoryStructure();
 	
-	@Before
-	public void init() {
-		structure = new RepositoryStructure();
-	}
-
 	@Test
 	public void testGetFolderStructure() {
 		assertTrue(structure.getFolderStructure().isEmpty());
