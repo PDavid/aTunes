@@ -509,46 +509,65 @@ public class RepositoryLoader extends Thread {
         if (audiofiles != null) {
         	RepositoryFiller filler = new RepositoryFiller(repository);
         	for (File audiofile : audiofiles) {
+        		
+        		Timer t0 = new Timer();
+        		t0.start();
+        		
         		if (!interrupt) {
-        			LocalAudioObject audio = null;
-
-        			// If a previous repository exists, check if file already was loaded.
-        			// If so, compare modification date. If modification date is equal to last repository load
-        			// don't read file again
-
-        			if (oldRepository == null) {
-        				audio = new AudioFile(audiofile);
-        			} else {
-        				LocalAudioObject oldAudioFile = oldRepository.getFile(audiofile.getAbsolutePath());
-        				if (oldAudioFile != null && oldAudioFile.isUpToDate()) {
-        					audio = oldAudioFile;
-        				} else {
-        					audio = new AudioFile(audiofile);
-        				}
-        			}
-
-        			audio.setExternalPictures(picturesList);
-        			if (!refresh && listener != null) {
-        				listener.notifyFileLoaded();
-        			}
-        			filesLoaded++;
-        			filler.addAudioFile(audio, relativeTo, relativePath);
-
-        			// Update current artist and album
-        			if (!refresh && listener != null) {
-        				listener.notifyCurrentAlbum(audio.getArtist(), audio.getAlbum());
-        			}
-        			
-        			// Update remaining time every 50 files
-        			if (!refresh && listener != null && filesLoaded % 50 == 0) {
-        				long t1 = System.currentTimeMillis();
-        				final long remainingTime = filesLoaded != 0 ? (totalFilesToLoad - filesLoaded) * (t1 - startReadTime) / filesLoaded : 0;
-        				listener.notifyRemainingTime(remainingTime);
-        				listener.notifyReadProgress();
-        			}
+        			processAudioFile(audiofile, picturesList, filler, relativeTo, relativePath);
         		}
+        		
+        		System.out.println(t0.stop());
+        		
         	}
+        	
+    		// Update remaining time after each folder
+    		if (!refresh && listener != null && !interrupt) {
+    			long t1 = System.currentTimeMillis();
+    			final long remainingTime = filesLoaded != 0 ? (totalFilesToLoad - filesLoaded) * (t1 - startReadTime) / filesLoaded : 0;
+    			listener.notifyRemainingTime(remainingTime);
+    			listener.notifyReadProgress();
+    		}
         }
+	}
+	
+	/**
+	 * Processes a single audio file
+	 * @param audiofile
+	 * @param picturesList
+	 * @param filler
+	 * @param relativeTo
+	 * @param relativePath
+	 */
+	private void processAudioFile(File audiofile, List<File> picturesList, RepositoryFiller filler, File relativeTo, String relativePath) {
+		LocalAudioObject audio = null;
+
+		// If a previous repository exists, check if file already was loaded.
+		// If so, compare modification date. If modification date is equal to last repository load
+		// don't read file again
+
+		if (oldRepository == null) {
+			audio = new AudioFile(audiofile);
+		} else {
+			LocalAudioObject oldAudioFile = oldRepository.getFile(audiofile.getAbsolutePath());
+			if (oldAudioFile != null && oldAudioFile.isUpToDate()) {
+				audio = oldAudioFile;
+			} else {
+				audio = new AudioFile(audiofile);
+			}
+		}
+
+		audio.setExternalPictures(picturesList);
+		if (!refresh && listener != null) {
+			listener.notifyFileLoaded();
+		}
+		filesLoaded++;
+		filler.addAudioFile(audio, relativeTo, relativePath);
+
+		// Update current artist and album
+		if (!refresh && listener != null) {
+			listener.notifyCurrentAlbum(audio.getArtist(), audio.getAlbum());
+		}		
 	}
 
 	/**
