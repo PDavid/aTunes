@@ -744,6 +744,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
                 public void run() {
                     if (progressDialog != null) {
                         progressDialog.getProgressLabel().setText(Integer.toString(filesLoaded));
+                        progressDialog.getSeparatorLabel().setVisible(true);
                         progressDialog.getProgressBar().setValue(filesLoaded);
                     }
                     GuiHandler.getInstance().getProgressBar().setValue(filesLoaded);
@@ -770,6 +771,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
             progressDialog.setButtonsEnabled(false);
             progressDialog.getLabel().setText(I18nUtils.getString("STORING_REPOSITORY_INFORMATION"));
             progressDialog.getProgressLabel().setText("");
+            progressDialog.getSeparatorLabel().setVisible(false);
             progressDialog.getTotalFilesLabel().setText("");
             progressDialog.getFolderLabel().setText(" ");
         }
