@@ -31,6 +31,8 @@ import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
 
 public class LocalAudioObjectFake implements LocalAudioObject {
 
+	private File file;
+	
 	@Override
 	public String getAlbum() {
 		return null;
@@ -151,18 +153,8 @@ public class LocalAudioObjectFake implements LocalAudioObject {
 	}
 	
 	@Override
-	public boolean equals(Object obj) {
-		return obj != null  && obj == this ? true : false;
-	}
-	
-	@Override
-	public int hashCode() {
-		return 0;
-	}
-
-	@Override
 	public File getFile() {
-		return null;
+		return file;
 	}
 
 	@Override
@@ -199,6 +191,7 @@ public class LocalAudioObjectFake implements LocalAudioObject {
 
 	@Override
 	public void setFile(File file) {
+		this.file = file;
 	}
 
 	@Override
@@ -209,6 +202,42 @@ public class LocalAudioObjectFake implements LocalAudioObject {
 	@Override
 	public boolean hasInternalPicture() {
 		return false;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((file == null) ? 0 : file.hashCode());
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof LocalAudioObjectFake)) {
+			return false;
+		}
+		LocalAudioObjectFake other = (LocalAudioObjectFake) obj;
+		if (file == null) {
+			if (other.file != null) {
+				return false;
+			}
+		} else if (!file.equals(other.file)) {
+			return false;
+		}
+		return true;
 	}
 	
 }

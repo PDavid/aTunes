@@ -68,17 +68,11 @@ class CdRipper {
 		@Override
 		public void run() {
 		    if (!interrupted && ripResultFinal && encoder != null) {
-		        boolean encodeResult = encoder.encode(wavFileTemp, resultFileTemp,
+		        if (!encoder.encode(wavFileTemp, resultFileTemp,
 		                (titles != null && titles.size() >= trackNumber ? titles.get(trackNumber - 1) : null), trackNumber,
 		                artistNames.size() > trackNumber - 1 ? artistNames.get(trackNumber - 1) : Artist.getUnknownArtist(),
-		                composerNames.size() > trackNumber - 1 ? composerNames.get(trackNumber - 1) : "");
-		        if (encodeResult && encoderListener != null && !interrupted) {
-		            SwingUtilities.invokeLater(new Runnable() {
-		                @Override
-		                public void run() {
-		                    encoderListener.notifyFileFinished(resultFileTemp);
-		                }
-		            });
+		                composerNames.size() > trackNumber - 1 ? composerNames.get(trackNumber - 1) : "")) {
+		        	Logger.error("Encoding unsuccessful");
 		        }
 
 		        Logger.info("Deleting wav file...");
@@ -115,7 +109,6 @@ class CdRipper {
     private AbstractCdToWavConverter cdToWavConverter;
     private Encoder encoder;
     private ProgressListener listener;
-    private ProgressListener encoderListener;
     private boolean interrupted;
     /** ExecutorService for file encoding. */
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -213,12 +206,11 @@ class CdRipper {
             return false;
         }
 
-        if (listener != null && encoderListener != null) {
+        if (listener != null) {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
                     listener.notifyProgress(0);
-                    encoderListener.notifyProgress(0);
                 }
             });
         }

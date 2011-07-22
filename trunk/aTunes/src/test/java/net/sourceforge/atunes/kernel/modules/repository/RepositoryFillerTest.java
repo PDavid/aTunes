@@ -31,7 +31,7 @@ import org.junit.Test;
 
 public class RepositoryFillerTest {
 
-	private static RepositoryFiller filler;
+	private RepositoryFiller filler;
 	
 	@Before
 	public void init() {

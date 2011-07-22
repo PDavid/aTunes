@@ -23,7 +23,6 @@ package net.sourceforge.atunes.model;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 
@@ -34,12 +33,7 @@ public class ArtistTest {
 	private static final String AUDIO_FILE_1 = "dhjada";
 	private static final String AUDIO_FILE_2 = "dhjadasd";
 	
-	private static Artist artist;
-	
-	@Before
-	public void init() {
-		artist = new Artist(ARTIST_NAME);		
-	}
+	private static Artist artist = new Artist(ARTIST_NAME);
 	
 	@Test
 	public void createArtist() {		
