@@ -90,7 +90,7 @@ public final class RepositoryProgressDialog extends AbstractCustomModalDialog {
     private JLabel label;
     private JLabel progressLabel;
     private JLabel separatorLabel;
-    private JLabel totalFilesLabel;
+	private JLabel totalFilesLabel;
     private JProgressBar progressBar;
     private JLabel folderLabel;
     private JLabel remainingTimeLabel;
@@ -138,10 +138,11 @@ public final class RepositoryProgressDialog extends AbstractCustomModalDialog {
 
     	JPanel panel = new JPanel(new GridBagLayout());
         pictureLabel = new JLabel(LOGO);
-        pictureLabel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+        pictureLabel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 10));
         label = new JLabel(StringUtils.getString(I18nUtils.getString("LOADING"), "..."));
         progressLabel = new JLabel();
         separatorLabel = new JLabel(" / ");
+        separatorLabel.setVisible(false);
         totalFilesLabel = new JLabel();
         progressBar = new JProgressBar();
         progressBar.setBorder(BorderFactory.createEmptyBorder());
@@ -302,4 +303,9 @@ public final class RepositoryProgressDialog extends AbstractCustomModalDialog {
     public void setImage(Image image) {
     	pictureLabel.setIcon(image != null ? ImageUtils.scaleImageBicubic(image, LOGO_SIZE, LOGO_SIZE) : LOGO);
     }
+    
+    public JLabel getSeparatorLabel() {
+		return separatorLabel;
+	}
+
 }
