@@ -483,13 +483,7 @@ public class RepositoryLoader extends Thread {
 	 */
 	private void processAudioFiles(File dir, List<File> picturesList, File relativeTo) {
         // Get audio files
-        File[] audiofiles = dir.listFiles(new FileFilter() {
-			
-			@Override
-			public boolean accept(File pathname) {
-				return AudioFile.isValidAudioFile(pathname);
-			}
-		});
+        File[] audiofiles = dir.listFiles(AudioFile.validAudioFileFilter());
         
         String pathToFile = dir.getAbsolutePath().replace('\\', '/');
 
@@ -509,16 +503,9 @@ public class RepositoryLoader extends Thread {
         if (audiofiles != null) {
         	RepositoryFiller filler = new RepositoryFiller(repository);
         	for (File audiofile : audiofiles) {
-        		
-        		Timer t0 = new Timer();
-        		t0.start();
-        		
         		if (!interrupt) {
         			processAudioFile(audiofile, picturesList, filler, relativeTo, relativePath);
         		}
-        		
-        		System.out.println(t0.stop());
-        		
         	}
         	
     		// Update remaining time after each folder

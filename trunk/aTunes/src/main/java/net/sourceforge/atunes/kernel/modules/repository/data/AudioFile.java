@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel.modules.repository.data;
 
 import java.awt.Paint;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -155,6 +156,16 @@ public final class AudioFile implements LocalAudioObject, Serializable {
         return !file.isDirectory()
                 && isValidAudioFile(file, Format.MP3, Format.OGG, Format.MP4_1, Format.MP4_2, Format.WAV, Format.WMA, Format.FLAC, Format.REAL_1, Format.REAL_2, Format.APE,
                         Format.MPC);
+    }
+    
+    public static FileFilter validAudioFileFilter() {
+    	return new FileFilter() {
+			
+			@Override
+			public boolean accept(File pathname) {
+				return isValidAudioFile(pathname);
+			}
+		};
     }
 
     /**
