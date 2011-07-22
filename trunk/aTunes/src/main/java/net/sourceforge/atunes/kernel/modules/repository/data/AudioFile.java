@@ -167,7 +167,7 @@ public final class AudioFile implements LocalAudioObject, Serializable {
      * @return if the file is a valid audio file
      */
     public static boolean isValidAudioFile(File file, Format... formats) {
-        String path = file.getAbsolutePath().toLowerCase();
+        String path = file.getName().toLowerCase();
         for (Format format : formats) {
             if (path.endsWith(format.getExtension())) {
                 return true;
