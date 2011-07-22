@@ -55,13 +55,13 @@ public final class MultipleInstancesHandler extends AbstractHandler {
     /**
      * Used to ignore errors in sockets when closing application
      */
-    private static boolean closing = false;
+    private boolean closing = false;
 
     /**
      * This class is responsible of listening to server socket and accept
      * connections from "slave" aTunes instances.
      */
-    static class SocketListener extends Thread {
+    class SocketListener extends Thread {
 
         /** The socket. */
         private ServerSocket socket;
@@ -124,7 +124,7 @@ public final class MultipleInstancesHandler extends AbstractHandler {
                     Logger.info(StringUtils.getString("Connection finished"));
                 }
             } catch (IOException e) {
-                if (!closing) {
+                if (!MultipleInstancesHandler.this.isClosing()) {
                     Logger.error(e);
                 }
             } finally {
@@ -314,5 +314,12 @@ public final class MultipleInstancesHandler extends AbstractHandler {
 
 	@Override
 	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+
+	/**
+	 * @return the closing
+	 */
+	private boolean isClosing() {
+		return closing;
+	}
 
 }
