@@ -284,6 +284,14 @@ public abstract class AbstractLookAndFeel {
 	public Paint getPaintForSpecialControls() {
 		return UIManager.getColor("Label.foreground"); 
 	}
+	
+	/**
+	 * Returns paint to be used with certain controls (player controls) when disabled
+	 * @return
+	 */
+	public Paint getPaintForDisabledSpecialControls() {
+		return UIManager.getColor("Label.foreground"); 
+	}	
 
 	/**
 	 * Returns paint to be used to draw a color mutable icon in given component
