@@ -22,7 +22,9 @@ package net.sourceforge.atunes.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.TreeSet;
 
 import javax.swing.ImageIcon;
 
@@ -46,8 +48,27 @@ public class Album implements Serializable, TreeObject<LocalAudioObject>, Compar
     private Artist artist;
 
     /** List of songs of this album. */
-    private List<LocalAudioObject> audioFiles;
+    private TreeSet<LocalAudioObject> audioFiles;
 
+    /**
+     * A Comparator for track numbers
+     *
+     */
+    private static class TrackNumberComparator implements Comparator<LocalAudioObject>, Serializable {
+    	
+    	/**
+		 * 
+		 */
+		private static final long serialVersionUID = 8487765896303750744L;
+
+		@Override
+    	public int compare(LocalAudioObject o1, LocalAudioObject o2) {
+			return Integer.valueOf(o1.getTrackNumber()).compareTo(Integer.valueOf(o2.getTrackNumber()));
+		}
+    	
+    }
+
+    
     /**
      * Constructor.
      * 
@@ -63,9 +84,9 @@ public class Album implements Serializable, TreeObject<LocalAudioObject>, Compar
      * Returns audio files
      * @return
      */
-    private List<LocalAudioObject> getAudioFiles() {
+    private TreeSet<LocalAudioObject> getAudioFiles() {
     	if (audioFiles == null) {
-    		audioFiles = new ArrayList<LocalAudioObject>();
+    		audioFiles = new TreeSet<LocalAudioObject>(new TrackNumberComparator());
     	}
     	return audioFiles;
     }
@@ -150,7 +171,7 @@ public class Album implements Serializable, TreeObject<LocalAudioObject>, Compar
      * @return the picture
      */
     public ImageIcon getPicture(ImageSize imageSize) {
-        return getAudioFiles().get(0).getImage(imageSize);
+        return getAudioFiles().first().getImage(imageSize);
     }
 
     
