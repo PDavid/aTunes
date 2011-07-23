@@ -395,7 +395,17 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
     		return new Color(c.getRed(), c.getGreen(), c.getBlue(), 180);
     	}
     }
-    
+
+    @Override
+    public Paint getPaintForDisabledSpecialControls() {
+    	if (org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin() instanceof CustomSubstanceSkin) {
+    		return ((CustomSubstanceSkin)org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin()).getPaintForDisabledSpecialControls();
+    	} else {
+    		Color c = org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin().getActiveColorScheme(DecorationAreaType.NONE).getForegroundColor();
+    		return new Color(c.getRed(), c.getGreen(), c.getBlue(), 140);
+    	}
+    }
+
     @Override
     public Paint getPaintForColorMutableIcon(Component component, boolean isSelected) {
     	if (org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin() instanceof CustomSubstanceSkin) {

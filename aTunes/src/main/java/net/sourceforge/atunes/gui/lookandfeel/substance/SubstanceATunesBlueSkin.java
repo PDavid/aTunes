@@ -292,4 +292,10 @@ public final class SubstanceATunesBlueSkin extends SubstanceSkin implements Cust
 		return highlightColor.darker();    		
 	}
 
+    @Override
+	public Paint getPaintForDisabledSpecialControls() {
+		Color c = highlightColor.darker();    		
+		return new Color(c.getRed(), c.getGreen(), c.getBlue(), 140);
+	}
+
 }

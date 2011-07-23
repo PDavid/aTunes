@@ -54,4 +54,10 @@ public class CustomTwilightSkin extends TwilightSkin implements CustomSubstanceS
 		return new Color(c.getRed(), c.getGreen(), c.getBlue(), 200);
 	}
 	
+	@Override
+	public Paint getPaintForDisabledSpecialControls() {
+		Color c = org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin().getActiveColorScheme(DecorationAreaType.HEADER).getUltraLightColor();    		
+		return new Color(c.getRed(), c.getGreen(), c.getBlue(), 150);
+	}
+	
 }

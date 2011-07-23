@@ -39,4 +39,10 @@ public interface CustomSubstanceSkin {
 	 */
 	public Paint getPaintForSpecialControls();
 
+	/**
+	 * Returns paint to be used with certain controls (player controls) when disabled
+	 * @return
+	 */
+	public Paint getPaintForDisabledSpecialControls();
+
 }
