@@ -31,6 +31,7 @@ import javax.swing.tree.TreePath;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
  * The listener interface for receiving navigationTreeMouse events.
@@ -83,7 +84,7 @@ public final class NavigationTreeMouseListener extends MouseAdapter {
         AbstractNavigationView currentView = NavigationHandler.getInstance().getCurrentView();
         controller.setPopupMenuCaller(currentView.getTree());
 
-        if (e.getButton() == MouseEvent.BUTTON3) {
+        if (GuiUtils.isSecondaryMouseButton(e)) {
             //	BUG 1626896
             int row = currentView.getTree().getRowForLocation(e.getX(), e.getY());
             if (isNewRowSelection(currentView.getTree(), e) && row != -1) {

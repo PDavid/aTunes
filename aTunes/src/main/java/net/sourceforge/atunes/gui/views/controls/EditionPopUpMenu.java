@@ -31,6 +31,7 @@ import javax.swing.JSeparator;
 import javax.swing.text.JTextComponent;
 
 import net.sourceforge.atunes.misc.ClipboardFacade;
+import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -94,7 +95,7 @@ public class EditionPopUpMenu extends JPopupMenu {
         @Override
         public void mouseClicked(MouseEvent e) {
             super.mouseClicked(e);
-            if (e.getButton() == MouseEvent.BUTTON3 && e.getComponent().isEnabled()) {
+            if (GuiUtils.isSecondaryMouseButton(e) && e.getComponent().isEnabled()) {
                 // Cut and delete if text selected and component editable
                 boolean textSelected = EditionPopUpMenu.this.textComponent.getSelectionStart() < EditionPopUpMenu.this.textComponent.getSelectionEnd();
                 cutAction.setEnabled(textSelected && EditionPopUpMenu.this.textComponent.isEditable());

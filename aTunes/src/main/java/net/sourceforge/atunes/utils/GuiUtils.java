@@ -32,6 +32,7 @@ import java.awt.Shape;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -45,6 +46,7 @@ import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.text.StyleConstants;
 
@@ -467,5 +469,14 @@ public final class GuiUtils {
         	}
             return superComponent;
         }
+    }
+    
+    /**
+     * Returns true if mouse event is from secondary mouse button (right-click or Ctrl-click in Mac)
+     * @param e
+     * @return
+     */
+    public static boolean isSecondaryMouseButton(MouseEvent e) {
+    	return SwingUtilities.isRightMouseButton(e) || e.isControlDown();
     }
 }
