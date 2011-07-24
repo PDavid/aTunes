@@ -64,6 +64,7 @@ aTunes 2.1.0
 - FIX: Detect incorrect proxy configuration and display an error
 - FIX: Rename radio label only applies to one label at a time
 - FIX: Value of "Disc" in tag editor is not saved [3005921]
+- FIX: Avoid ConcurrentModificationException while reading repository
 
 aTunes 2.0.1
 -------------
