@@ -28,6 +28,8 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.Action;
 
+import net.sourceforge.atunes.utils.GuiUtils;
+
 /**
  * Tray Icon that fires actions when left mouse button clicked
  * 
@@ -96,7 +98,7 @@ public class ActionTrayIcon extends TrayIcon {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            if (e.getButton() == MouseEvent.BUTTON1) {
+            if (GuiUtils.isPrimaryMouseButton(e)) {
                 action.actionPerformed(null);
             }
         }

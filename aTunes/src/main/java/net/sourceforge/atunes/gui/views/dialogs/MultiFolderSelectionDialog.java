@@ -139,7 +139,7 @@ public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog 
 		private final class FileSystemTreeMouseAdapter extends MouseAdapter {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-			    if (e.getButton() == MouseEvent.BUTTON1) {
+			    if (GuiUtils.isPrimaryMouseButton(e)) {
 			        int x = e.getX();
 			        int y = e.getY();
 			        int row = fileSystemTree.getRowForLocation(x, y);

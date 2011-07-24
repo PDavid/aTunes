@@ -203,7 +203,7 @@ public final class PlayListTable extends JTable implements DragSourceListener, D
     public void dragGestureRecognized(DragGestureEvent dge) {
         // Only allow drag events initiated with left mouse button
         InputEvent event = dge.getTriggerEvent();
-        if (!(event instanceof MouseEvent) || ((MouseEvent) event).getButton() != MouseEvent.BUTTON1) {
+        if (!(event instanceof MouseEvent) || !GuiUtils.isPrimaryMouseButton((MouseEvent)event)) {
             return;
         }
 

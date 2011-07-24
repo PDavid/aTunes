@@ -52,6 +52,7 @@ import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeVideoDow
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.FileNameUtils;
+import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -84,7 +85,7 @@ public class YoutubeContent extends AbstractContextPanelContent {
 		    if (e.isPopupTrigger()) {
 		        showPopup(e);
 		    }
-		    if (e.getButton() == MouseEvent.BUTTON1) {
+		    if (GuiUtils.isPrimaryMouseButton(e)) {
 		        playVideoAtYoutube();
 		    }
 		}
