@@ -63,6 +63,9 @@ public class Album implements Serializable, TreeObject<LocalAudioObject>, Compar
 
 		@Override
     	public int compare(LocalAudioObject o1, LocalAudioObject o2) {
+			if (o1.getTrackNumber() == o2.getTrackNumber()) {
+				return o1.compareTo(o2);
+			}
 			return Integer.valueOf(o1.getTrackNumber()).compareTo(Integer.valueOf(o2.getTrackNumber()));
 		}
     	
