@@ -31,6 +31,7 @@ import net.sourceforge.atunes.gui.model.AbstractColumnSetTableModel;
 import net.sourceforge.atunes.gui.model.AbstractCommonColumnModel;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.utils.GuiUtils;
 
 public class ColumnSetRowSorter {
 
@@ -49,7 +50,7 @@ public class ColumnSetRowSorter {
         table.getTableHeader().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getButton() == MouseEvent.BUTTON1) {
+                if (GuiUtils.isPrimaryMouseButton(e)) {
                     int columnClickedIndex = table.getTableHeader().getColumnModel().getColumnIndexAtX(e.getX());
                     if (columnClickedIndex != -1) {
                         // Get column

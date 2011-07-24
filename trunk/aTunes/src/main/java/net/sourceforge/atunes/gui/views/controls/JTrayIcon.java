@@ -35,6 +35,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
+import net.sourceforge.atunes.utils.GuiUtils;
+
 /*
  * This class is based on Java6Tray class from TVBrowser project
  * (http://sourceforge.net/projects/tvbrowser/)
@@ -126,7 +128,7 @@ public final class JTrayIcon extends TrayIcon {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getButton() == MouseEvent.BUTTON1) {
+                if (GuiUtils.isPrimaryMouseButton(e)) {
                     action.actionPerformed(null);
                 }
             }

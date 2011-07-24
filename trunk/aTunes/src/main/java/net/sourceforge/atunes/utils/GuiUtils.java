@@ -472,6 +472,15 @@ public final class GuiUtils {
     }
     
     /**
+     * Returns true if mouse event is from primary mouse button (left-click or not Ctrl-click in Mac)
+     * @param e
+     * @return
+     */
+    public static boolean isPrimaryMouseButton(MouseEvent e) {
+    	return SwingUtilities.isLeftMouseButton(e) && !e.isControlDown();
+    }
+    
+    /**
      * Returns true if mouse event is from secondary mouse button (right-click or Ctrl-click in Mac)
      * @param e
      * @return
