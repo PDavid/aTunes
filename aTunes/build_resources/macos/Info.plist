@@ -30,6 +30,7 @@
       ${classpath}
       <key>VMOptions</key>
       <string>-Xmx512m -Xms64m</string>
+      <string>-splash:splash.gif</string>
       <key>Properties</key>
             <dict>
                 <key>apple.laf.useScreenMenuBar</key>

@@ -84,7 +84,6 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 
     private static final long serialVersionUID = -9216216930198145476L;
 
-    private JCheckBox showTitle;
     private JComboBox language;
     private JCheckBox showIconTray;
     private JCheckBox showTrayPlayer;
@@ -106,7 +105,6 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
      */
     public GeneralPanel() {
         super(I18nUtils.getString("GENERAL"));
-        showTitle = new JCheckBox(I18nUtils.getString("SHOW_TITLE"));
         JLabel windowTypeLabel = new JLabel(I18nUtils.getString("WINDOW_TYPE"));
         JLabel languageLabel = new JLabel(I18nUtils.getString("LANGUAGE"));
         List<Locale> langs = I18nUtils.getLanguages();
@@ -254,21 +252,16 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
         add(fontSettings, c);
         c.gridx = 0;
         c.gridy = 7;
-        c.weightx = 1;
-        c.insets = new Insets(5, 0, 0, 0);
-        add(showTitle, c);
-        c.gridx = 0;
-        c.gridy = 8;
         c.weighty = 0.2;
         c.insets = new Insets(5, 0, 0, 0);
         add(showTrayPlayer, c);
         c.gridx = 1;
-        c.gridy = 8;
+        c.gridy = 7;
         c.weighty = 0.2;
         c.insets = new Insets(5, 0, 0, 0);
         add(trayPlayerColorSelector, c);
         c.gridx = 2;
-        c.gridy = 8;
+        c.gridy = 7;
         c.insets = new Insets(5, 0, 0, 0);
         add(showIconTray, c);
     }
@@ -276,8 +269,6 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
     @Override
     public boolean applyPreferences(ApplicationState state) {
         boolean needRestart = false;
-
-        state.setShowTitle(showTitle.isSelected());
 
         Class<? extends Frame> oldFrameClass = state.getFrameClass();
         Class<? extends Frame> newFrameClass = windowTypeChoosingPanel.getSelectedItem();
@@ -342,16 +333,6 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
     }
 
     /**
-     * Sets the show title.
-     * 
-     * @param show
-     *            the new show title
-     */
-    private void setShowTitle(boolean show) {
-        showTitle.setSelected(show);
-    }
-
-    /**
      * Sets the show tray player.
      * 
      * @param show
@@ -384,7 +365,6 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
     @Override
     public void updatePanel(ApplicationState state) {
         lookAndFeel.setModel(new ListComboBoxModel<String>(LookAndFeelSelector.getInstance().getAvailableLookAndFeels()));
-        setShowTitle(state.isShowTitle());
         setWindowType(state.getFrameClass());
         setLanguage(I18nUtils.getSelectedLocale());
         setShowIconTray(state.isShowSystemTray());

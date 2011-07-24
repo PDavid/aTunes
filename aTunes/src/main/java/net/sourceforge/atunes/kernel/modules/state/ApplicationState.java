@@ -392,17 +392,7 @@ public class ApplicationState {
     	this.cache.storePreference(Preferences.ENABLE_HOTKEYS, enableHotkeys);
     }
     
-    
-
-    public boolean isShowTitle() {
-    	return (Boolean) this.cache.retrievePreference(Preferences.SHOW_TITLE, true);
-    }
-
-    public void setShowTitle(boolean showTitle) {
-    	this.cache.storePreference(Preferences.SHOW_TITLE, showTitle);
-    }
-    
-    
+        
 
     public int getOsdDuration() {
     	return (Integer) this.cache.retrievePreference(Preferences.OSD_DURATION, 2);

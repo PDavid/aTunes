@@ -105,14 +105,6 @@ public class Kernel {
                     LookAndFeelSelector.getInstance().setLookAndFeel(ApplicationState.getInstance().getLookAndFeel());
                 }
             });
-            SwingUtilities.invokeAndWait(new Runnable() {
-                @Override
-                public void run() {
-            
-                    // Show title dialog
-                    GuiHandler.getInstance().showSplashScreen();
-                }
-            });
         } catch (InvocationTargetException e) {
             Logger.error(e);
             Logger.error(e.getCause());
