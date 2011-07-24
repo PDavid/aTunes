@@ -832,13 +832,20 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 
     @Override
     public void notifyReadProgress() {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-            	NavigationHandler.getInstance().notifyReload();
-                GuiHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
-            }
-        });
+        try {
+        	// Use invoke and wait in this case to avoid concurrent problems while reading repository and showing nodes in navigator tree (ConcurrentModificationException)
+			SwingUtilities.invokeAndWait(new Runnable() {
+			    @Override
+			    public void run() {
+			    	NavigationHandler.getInstance().notifyReload();
+			        GuiHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
+			    }
+			});
+		} catch (InterruptedException e) {
+			Logger.error(e);
+		} catch (InvocationTargetException e) {
+			Logger.error(e);
+		}
     }
 
     @Override
