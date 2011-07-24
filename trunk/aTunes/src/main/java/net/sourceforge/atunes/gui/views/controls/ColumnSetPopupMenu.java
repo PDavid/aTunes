@@ -32,6 +32,7 @@ import javax.swing.JTable;
 import net.sourceforge.atunes.gui.model.AbstractCommonColumnModel;
 import net.sourceforge.atunes.gui.views.dialogs.ColumnSetSelectorDialog;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class ColumnSetPopupMenu {
@@ -48,7 +49,7 @@ public class ColumnSetPopupMenu {
         @Override
         public void mouseClicked(MouseEvent e) {
             // Use right button to arrange columns
-            if (e.getButton() == MouseEvent.BUTTON3) {
+            if (GuiUtils.isSecondaryMouseButton(e)) {
                 rightMenu.show(table.getTableHeader(), e.getX(), e.getY());
             }
         }

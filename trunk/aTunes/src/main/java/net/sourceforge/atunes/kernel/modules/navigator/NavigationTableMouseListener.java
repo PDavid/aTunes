@@ -28,6 +28,7 @@ import net.sourceforge.atunes.gui.model.NavigationTableModel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
  * The listener interface for receiving navigationTableMouse events.
@@ -54,7 +55,7 @@ public final class NavigationTableMouseListener extends MouseAdapter {
     public void mouseClicked(MouseEvent event) {
         AbstractNavigationView currentView = NavigationHandler.getInstance().getCurrentView();
 
-        if (event.getButton() == MouseEvent.BUTTON3) {
+        if (GuiUtils.isSecondaryMouseButton(event)) {
             controller.setPopupMenuCaller(panel.getNavigationTable());
             int[] rowsSelected = panel.getNavigationTable().getSelectedRows();
             int selected = panel.getNavigationTable().rowAtPoint(event.getPoint());

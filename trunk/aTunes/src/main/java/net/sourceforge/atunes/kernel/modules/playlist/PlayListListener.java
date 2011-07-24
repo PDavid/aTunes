@@ -28,6 +28,7 @@ import javax.swing.event.ListSelectionListener;
 
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.menus.PlayListMenu;
+import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
  * The listener interface for receiving play list events.
@@ -55,7 +56,7 @@ public final class PlayListListener extends MouseAdapter implements ListSelectio
         if (e.getSource().equals(table)) {
             if (e.getClickCount() == 2) {
                 controller.playSelectedAudioObject();
-            } else if (e.getClickCount() == 1 && e.getButton() == MouseEvent.BUTTON3) {
+            } else if (e.getClickCount() == 1 && GuiUtils.isSecondaryMouseButton(e)) {
                 int[] currentlySelected = table.getSelectedRows();
                 int selected = table.rowAtPoint(e.getPoint());
                 boolean found = false;

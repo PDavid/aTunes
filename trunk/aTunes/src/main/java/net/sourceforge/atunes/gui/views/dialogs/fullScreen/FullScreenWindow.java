@@ -198,7 +198,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
     private transient MouseListener showMenuListener = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
-            if (e.getButton() == MouseEvent.BUTTON3) {
+            if (GuiUtils.isSecondaryMouseButton(e)) {
                 options.show(e.getComponent(), e.getX(), e.getY());
             }
         }
