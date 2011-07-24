@@ -28,7 +28,7 @@
 			<param name="variant" value="business-black" />
 			<os family="unix" />
 			<os family="windows" />
-s		</laf>
+		</laf>
 	</guiprefs>
 	<locale>
 		<langpack iso3="eng" />
@@ -64,7 +64,7 @@ s		</laf>
 		<res id="packsLang.xml_ita" src="build_tools/PacksPanel_ita.xml" />
 		<res id="packsLang.xml_spa" src="build_tools/PacksPanel_spa.xml" />
 		<res id="packsLang.xml_hrv" src="build_tools/PacksPanel_hrv.xml" />
-		<res id='installer.langsel.img' src="build_tools/appIconTitle.png" />
+		<res id='installer.langsel.img' src="atunes.png" />
 		
 		<res id="AntActionsSpec.xml" src="AntActionsSpec.xml" />
 	</resources>
