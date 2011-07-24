@@ -28,8 +28,7 @@
 			<param name="variant" value="business-black" />
 			<os family="unix" />
 			<os family="windows" />
-			<os family="mac" />
-		</laf>
+s		</laf>
 	</guiprefs>
 	<locale>
 		<langpack iso3="eng" />
@@ -111,9 +110,6 @@
 			<file src="aTunes.ico" targetdir="$INSTALL_PATH" >
 				<os family="unix" />
 			</file>
-			<file src="aTunes.icns" targetdir="$INSTALL_PATH" >
-				<os family="mac" />
-			</file>
 			<file src="uninstall.ico" targetdir="$INSTALL_PATH" >
 				<os family="win" />
 			</file>
@@ -139,19 +135,6 @@
 			<executable targetfile="$INSTALL_PATH/aTunes.sh" stage="never">
 				<os family="unix" />
 			</executable>
-			<file src="aTunes.command" targetdir="$INSTALL_PATH">
-				<os family="mac" />
-			</file>
-			<executable targetfile="$INSTALL_PATH/aTunes.command"
-				stage="never">
-				<os family="mac" />
-			</executable>
-			<file src="mac_tools" targetdir="$INSTALL_PATH">
-				<os family="mac" />
-			</file>
-			<symlink action="single" link="$INSTALL_PATH/mac_tools/mplayer" resource="/Applications/MPlayer OS X 2.app/contents/Resources/mplayer.app/contents/MacOS/mplayer" >
-				<os family="mac" />
-			</symlink>
 			<file src="license.txt" targetdir="$INSTALL_PATH" />
 		</pack>
 		<pack name="Base tools for Windows" id="win_tools_base.package" required="yes">
