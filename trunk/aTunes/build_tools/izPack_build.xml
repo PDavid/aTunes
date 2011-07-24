@@ -96,6 +96,14 @@
 			
 			<file src="translations" targetdir="$INSTALL_PATH" />
 			<file src="settings" targetdir="$INSTALL_PATH" />
+
+			<file src="splash.gif" targetdir="$INSTALL_PATH" >
+				<os family="win" />
+			</file>
+
+			<file src="splash.gif" targetdir="$INSTALL_PATH" >
+				<os family="unix" />
+			</file>
 			
 			<file src="aTunes.ico" targetdir="$INSTALL_PATH" >
 				<os family="win" />
@@ -169,16 +177,6 @@
 			<file src="win_tools/lame.exe" targetdir="$INSTALL_PATH/win_tools"/>
 			<file src="win_tools/flac.exe" targetdir="$INSTALL_PATH/win_tools"/>
 		</pack>
-		<!--pack name="Base tools for Mac OS X" id="mac_tools_base" required="yes">
-			<os family="mac" />
-			<description>Needed Mac OS X binaries (mplayer)</description>
-			<file src="mac_tools" targetdir="$INSTALL_PATH"/>
-			<executable targetfile="$INSTALL_PATH/mac_tools/mplayer"
-				    stage="never"/>
-			<file src="aTunes.command" targetdir="$INSTALL_PATH"/>
-			<executable targetfile="$INSTALL_PATH/aTunes.command"
-				    stage="never"/>
-		</pack-->
 	</packs>
 	<native type="izpack" name="ShellLink.dll" />
 	<native type="izpack" name="ShellLink_x64.dll"/>

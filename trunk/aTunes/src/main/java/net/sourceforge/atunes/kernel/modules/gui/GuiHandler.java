@@ -24,10 +24,8 @@ import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.GraphicsDevice;
 import java.awt.Image;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -44,11 +42,9 @@ import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileFilter;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.gui.frame.DefaultSingleFrame;
 import net.sourceforge.atunes.gui.frame.Frame;
 import net.sourceforge.atunes.gui.frame.FrameState;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.popup.FadingPopupFactory;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable.PlayState;
@@ -67,7 +63,6 @@ import net.sourceforge.atunes.gui.views.dialogs.RepositoryProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ReviewImportDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RipperProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.SearchDialog;
-import net.sourceforge.atunes.gui.views.dialogs.SplashScreenDialog;
 import net.sourceforge.atunes.gui.views.dialogs.TransferProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.UpdateDialog;
 import net.sourceforge.atunes.gui.views.dialogs.properties.PropertiesDialog;
@@ -128,7 +123,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     private IndeterminateProgressDialog indeterminateProgressDialog;
     private EqualizerDialog equalizerDialog;
     private AboutDialog aboutDialog;
-    private SplashScreenDialog splashScreenDialog;
     private ReviewImportDialog reviewImportDialog;
 
     /**
@@ -153,9 +147,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     @Override
     public void applicationStarted(List<AudioObject> playList) {
         GuiHandler.getInstance().setFullFrameVisible(true);
-        //Hide title dialog
-        GuiHandler.getInstance().hideSplashScreen();
-
     	
     	ApplicationState state = ApplicationState.getInstance();
     	FrameState frameState = state.getFrameState(getFrame().getClass());
@@ -437,17 +428,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     	if (getIndeterminateProgressDialog() != null) {
     		getIndeterminateProgressDialog().setVisible(false);
     	}
-    }
-
-    /**
-     * Hide splash screen.
-     */
-    public void hideSplashScreen() {
-        if (splashScreenDialog != null) {
-            splashScreenDialog.setVisible(false);
-            splashScreenDialog.dispose();
-            splashScreenDialog = null;
-        }
     }
 
     @Override
@@ -1018,32 +998,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     public int showSaveDialog(JFileChooser fileChooser, FileFilter filter) {
         fileChooser.setFileFilter(filter);
         return fileChooser.showSaveDialog(frame.getFrame());
-    }
-
-    /**
-     * Show splash screen.
-     */
-    public void showSplashScreen() {
-        if (ApplicationState.getInstance().isShowTitle()) {
-            JDialog.setDefaultLookAndFeelDecorated(false);
-            splashScreenDialog = new SplashScreenDialog(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getAppVersionLittleFont(), ColorDefinitions.TITLE_DIALOG_FONT_COLOR);
-            JDialog.setDefaultLookAndFeelDecorated(true);
-            // For multiple screens
-            if (GuiUtils.getNumberOfScreenDevices() > 1) {
-            	// This method is called before starting visualization so maybe frame state is not yet created
-            	FrameState state = ApplicationState.getInstance().getFrameState(getFrame().getClass());
-                // Get screen where application is shown
-                GraphicsDevice screen = state != null ? GuiUtils.getGraphicsDeviceForLocation(state.getXPosition(), state.getYPosition()) : null;
-                if (screen != null) {
-                	Rectangle screenBounds = screen.getDefaultConfiguration().getBounds();
-                	splashScreenDialog.setLocation(screenBounds.width / 2 - splashScreenDialog.getWidth() / 2 + screenBounds.x, screenBounds.height / 2 - splashScreenDialog.getHeight() / 2 + screenBounds.y);
-                } else {
-                	splashScreenDialog.setLocation(GuiUtils.getDeviceWidth() / 2 - splashScreenDialog.getWidth() / 2, GuiUtils.getDeviceHeight() / 2 - splashScreenDialog.getHeight() / 2);
-                }
-            }
-            splashScreenDialog.setVisible(true);
-            splashScreenDialog.toFront();
-        }
     }
 
     /**

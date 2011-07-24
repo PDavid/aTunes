@@ -14,6 +14,6 @@
     <maxVersion></maxVersion>
     <initialHeapSize>18</initialHeapSize>
     <maxHeapSize>512</maxHeapSize>
-    <args>-cp aTunes.jar;lib/* net.sourceforge.atunes.Main</args>
+    <args>-splash:splash.gif -cp aTunes.jar;lib/* net.sourceforge.atunes.Main</args>
   </jre>
 </launch4jConfig>
