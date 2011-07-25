@@ -67,6 +67,7 @@ aTunes 2.1.0
 - FIX: Value of "Disc" in tag editor is not saved [3005921]
 - FIX: Avoid ConcurrentModificationException while reading repository
 - FIX: Ctrl-click not working in Mac OS X
+- FIX: MultiFolderSelectionDialog showing files
 
 aTunes 2.0.1
 -------------
