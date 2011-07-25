@@ -19,7 +19,7 @@
     <key>CFBundleInfoDictionaryVersion</key>
     <string>6.0</string>
     <key>CFBundleIconFile</key>
-    <string>${iconFile}</string>
+    <string>aTunes.icns</string>    
     <key>Java</key>
     <dict>
       <key>MainClass</key>
@@ -30,7 +30,8 @@
       ${classpath}
       <key>VMOptions</key>
       <string>-Xmx512m -Xms64m</string>
-      <string>-splash:splash.gif</string>
+      <key>SplashFile</key>
+      <string>$JAVAROOT/../splash.gif</string>
       <key>Properties</key>
             <dict>
                 <key>apple.laf.useScreenMenuBar</key>
