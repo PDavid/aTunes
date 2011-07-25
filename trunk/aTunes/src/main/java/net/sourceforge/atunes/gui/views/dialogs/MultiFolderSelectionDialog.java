@@ -96,7 +96,7 @@ public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog 
 				    Arrays.sort(files);
 				    for (File f : files) {
 				    	// Show only file system elements with path
-				    	if (!"".equals(f.getPath().trim())) {
+				    	if (!"".equals(f.getPath().trim()) && !f.isFile()) {
 				    		CheckNode treeNode2 = new CheckNode(new Directory(f, fsView.getSystemDisplayName(f)), fsView.getSystemIcon(f));
 				    		result.add(treeNode2);
 				    		treeNode2.add(new DefaultMutableTreeNode(I18nUtils.getString("PLEASE_WAIT") + "..."));
