@@ -30,6 +30,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -99,7 +100,15 @@ public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog 
 				    	if (!"".equals(f.getPath().trim()) && !f.isFile()) {
 				    		CheckNode treeNode2 = new CheckNode(new Directory(f, fsView.getSystemDisplayName(f)), fsView.getSystemIcon(f));
 				    		result.add(treeNode2);
-				    		treeNode2.add(new DefaultMutableTreeNode(I18nUtils.getString("PLEASE_WAIT") + "..."));
+				    		File[] subfolders = f.listFiles(new FileFilter() {
+				    			@Override
+				    			public boolean accept(File pathname) {
+				    				return pathname.isDirectory();
+				    			}
+				    		});
+				    		if (subfolders != null && subfolders.length > 0) {
+				    			treeNode2.add(new DefaultMutableTreeNode(I18nUtils.getString("PLEASE_WAIT") + "..."));
+				    		}
 				    		treeNode2.setSelected(selectedNode.isSelected() || selectedFolders.contains(f));
 				    		treeNode2.setEnabled(!selectedNode.isSelected());
 				    	}
