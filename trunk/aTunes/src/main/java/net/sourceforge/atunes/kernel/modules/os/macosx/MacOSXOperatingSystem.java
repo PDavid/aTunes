@@ -64,13 +64,18 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 	}
 	
 	public void setUpFrame(Frame frame) {
+		// Generate and register the OSXAdapter, passing it a hash of all the methods we wish to
+		// use as delegates for various com.apple.eawt.ApplicationListener methods
 		try {
-			// Generate and register the OSXAdapter, passing it a hash of all the methods we wish to
-			// use as delegates for various com.apple.eawt.ApplicationListener methods
 			OSXAdapter.setQuitHandler(frame, frame.getClass().getDeclaredMethod("dispose", (Class[]) null));
+		} catch (Exception e) {
+			Logger.error(e.getMessage());
+		}
+		
+		try {
 			OSXAdapter.setAboutHandler(frame, frame.getClass().getDeclaredMethod("about", (Class[]) null));
 		} catch (Exception e) {
-			Logger.error(e);
+			Logger.error(e.getMessage());
 		}
 	}
 	
