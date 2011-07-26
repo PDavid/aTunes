@@ -128,7 +128,7 @@
 			<file src="libJXGrabKey.so" targetdir="$INSTALL_PATH" >
 				<os family="unix" />
 			</file>
-			<file src="aTunes.jar" targetdir="$INSTALL_PATH" />
+			<file src="../aTunes.jar" targetdir="$INSTALL_PATH" />
 			<file src="aTunes.sh" targetdir="$INSTALL_PATH">
 				<os family="unix" />
 			</file>

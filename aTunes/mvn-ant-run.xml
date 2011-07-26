@@ -80,8 +80,6 @@
 		<mkdir dir="${deploy_folder}/temp" />
 		<mkdir dir="${deploy_folder}/javadoc" />
 
-		<copy file="target/atunes-${version}.jar" tofile="${deploy_folder}/aTunes.jar" />
-
 		<copy todir="${deploy_folder}/temp">
 			<fileset dir="${images}" includes="*.*" />
 		</copy>
