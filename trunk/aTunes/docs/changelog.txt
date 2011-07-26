@@ -68,6 +68,7 @@ aTunes 2.1.0
 - FIX: Avoid ConcurrentModificationException while reading repository
 - FIX: Ctrl-click not working in Mac OS X
 - FIX: MultiFolderSelectionDialog showing files
+- FIX: Problem with ID3v1.0 trying to get internal image 
 
 aTunes 2.0.1
 -------------

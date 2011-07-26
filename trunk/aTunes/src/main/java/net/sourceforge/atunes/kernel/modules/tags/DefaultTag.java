@@ -56,70 +56,37 @@ public class DefaultTag extends AbstractTag {
         setAlbum(tag.getFirst(FieldKey.ALBUM));
         setArtist(tag.getFirst(FieldKey.ARTIST));
         setComment(tag.getFirst(FieldKey.COMMENT));
-        String result = tag.getFirst(FieldKey.GENRE);
-        // Code taken from Jajuk http://jajuk.info - (Copyright (C) 2008) The Jajuk team
-        // Detects if Genre is a number and try to map the corresponding genre
-        // This should only happen with ID3 tags
-        // Sometimes, the style has this form : (nb)
-        if (result.matches("\\(.*\\).*")) {
-            result = result.substring(1, result.indexOf(')'));
-            try {
-                result = AbstractTag.getGenreForCode(Integer.parseInt(result));
-            } catch (Exception e) {
-                setGenre(""); // error, return unknown
-            }
-        }
-        // If genre is a number mapping a known style, use this style
-        try {
-            int number = Integer.parseInt(result);
-            if (number >= 0 && AbstractTag.getGenreForCode(number) != "") {
-                result = AbstractTag.getGenreForCode(Integer.parseInt(result));
-            }
-        } catch (NumberFormatException e) {
-            // nothing wrong here
-        }
-        // End Jajuk code
-        setGenre(result);
+        setGenre(tag);        
         setTitle(tag.getFirst(FieldKey.TITLE));
-        try {
-            // We must catch Exception when file has ID3v1.0 tag - This tag format has no track number
-            try {
-                result = tag.getFirst(FieldKey.TRACK);
-            } catch (UnsupportedOperationException e) {
-                result = "-1";
-            }
-            //  Certain tags are in the form of track number/total number of tracks so check for this:
-            if (result.contains("/")) {
-                int separatorPosition;
-                separatorPosition = result.indexOf('/');
-                setTrackNumber(Integer.parseInt(result.substring(0, separatorPosition)));
-            } else {
-                setTrackNumber(Integer.parseInt(result));
-            }
-        } catch (NumberFormatException e) {
-            setTrackNumber(-1);
-        }
-        try {
-            setYear(Integer.parseInt(tag.getFirst(FieldKey.YEAR)));
-        } catch (NumberFormatException e) {
-            setYear(-1);
-        }
+        setTrackNumber(tag);
+        setYear(tag);        
         setLyrics(tag.getFirst(FieldKey.LYRICS));
         setComposer(tag.getFirst(FieldKey.COMPOSER));
         setAlbumArtist(tag.getFirst(FieldKey.ALBUM_ARTIST));
-        setInternalImage(tag.hasField(FieldKey.COVER_ART.name()));
-
-        result = getTagDateField(tag);
-        Date date = DateUtils.parseRFC3339Date(result);
-        if (date == null) {
-            try {
-                date = dateOnlyFormat.parse(result);
-            } catch (ParseException e) {
-                date = null;
-            }
-        }
-        setDate(date);
-
+        setInternalImage(tag);
+        setDate(tag);
+        setDiscNumber(tag);
+    }
+    
+    /**
+     * Sets internal image
+     * @param tag
+     */
+    private void setInternalImage(org.jaudiotagger.tag.Tag tag) {
+    	boolean hasImage = false;
+    	try {
+    		hasImage = tag.hasField(FieldKey.COVER_ART.name());
+    	} catch (UnsupportedOperationException e) {
+    		// Sometimes image is not supported (ID3v1). It's not a problem
+    	}
+		setInternalImage(hasImage);
+    }
+    
+    /**
+     * Sets disc number
+     * @param tag
+     */
+    private void setDiscNumber(org.jaudiotagger.tag.Tag tag) {
         // Disc Number
         String discNumberStr = tag.getFirst(FieldKey.DISC_NO);
         if (discNumberStr != null && !discNumberStr.trim().equals("")) {
@@ -138,7 +105,90 @@ public class DefaultTag extends AbstractTag {
                 }
             }
         }
-
+    }
+    
+    /**
+     * Sets date from tag
+     * @param tag
+     */
+    private void setDate(org.jaudiotagger.tag.Tag tag) {
+        String result = getTagDateField(tag);
+        Date date = DateUtils.parseRFC3339Date(result);
+        if (date == null) {
+            try {
+                date = dateOnlyFormat.parse(result);
+            } catch (ParseException e) {
+                date = null;
+            }
+        }
+        setDate(date);
+    }
+    
+    /**
+     * Sets year from tag
+     * @param tag
+     */
+    private void setYear(org.jaudiotagger.tag.Tag tag) {
+        try {
+            setYear(Integer.parseInt(tag.getFirst(FieldKey.YEAR)));
+        } catch (NumberFormatException e) {
+            setYear(-1);
+        }
+    }
+    
+    /**
+     * Sets track number from tag
+     * @param tag
+     */
+    private void setTrackNumber(org.jaudiotagger.tag.Tag tag) {
+    	String result = null;
+        try {
+            // We must catch Exception when file has ID3v1.0 tag - This tag format has no track number
+            try {
+                result = tag.getFirst(FieldKey.TRACK);
+            } catch (UnsupportedOperationException e) {
+                result = "-1";
+            }
+            //  Certain tags are in the form of track number/total number of tracks so check for this:
+            if (result.contains("/")) {
+                int separatorPosition;
+                separatorPosition = result.indexOf('/');
+                setTrackNumber(Integer.parseInt(result.substring(0, separatorPosition)));
+            } else {
+                setTrackNumber(Integer.parseInt(result));
+            }
+        } catch (NumberFormatException e) {
+            setTrackNumber(-1);
+        }
+    }
+    
+    /**
+     * Code taken from Jajuk http://jajuk.info - (Copyright (C) 2008) The Jajuk team
+     * Detects if Genre is a number and try to map the corresponding genre
+     * This should only happen with ID3 tags
+     * Sometimes, the style has this form : (nb)
+     * @param tag
+     */
+    private void setGenre(org.jaudiotagger.tag.Tag tag) {
+        String result = tag.getFirst(FieldKey.GENRE);
+        if (result.matches("\\(.*\\).*")) {
+            result = result.substring(1, result.indexOf(')'));
+            try {
+                result = AbstractTag.getGenreForCode(Integer.parseInt(result));
+            } catch (Exception e) {
+                setGenre(""); // error, return unknown
+            }
+        }
+        // If genre is a number mapping a known style, use this style
+        try {
+            int number = Integer.parseInt(result);
+            if (number >= 0 && AbstractTag.getGenreForCode(number) != "") {
+                result = AbstractTag.getGenreForCode(Integer.parseInt(result));
+            }
+        } catch (NumberFormatException e) {
+            // nothing wrong here
+        }
+        setGenre(result);
     }
 
     @Override
