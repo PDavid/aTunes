@@ -111,6 +111,7 @@ public final class RepositoryProgressDialog extends AbstractCustomModalDialog {
         backgroundButton.setVisible(false);
         cancelButton.setVisible(false);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        setResizable(false);
     }
 
     /**
