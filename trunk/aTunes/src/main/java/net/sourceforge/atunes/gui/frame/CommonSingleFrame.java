@@ -34,6 +34,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.CustomSplitPane;
 
 /**
@@ -67,9 +68,6 @@ public abstract class CommonSingleFrame extends AbstractSingleFrame {
         // Main Split Pane          
         leftVerticalSplitPane = new CustomSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         
-        // Save divider size
-        defaultDividerSize = leftVerticalSplitPane.getDividerSize();
-
         GridBagConstraints c = new GridBagConstraints();
 
         JPanel nonNavigatorPanel = new JPanel(new BorderLayout());
@@ -152,7 +150,7 @@ public abstract class CommonSingleFrame extends AbstractSingleFrame {
 			int rightWidth = splitPane.getWidth() - location;
 			int rightMinWidth = (int) splitPane.getRightComponent().getMinimumSize().getWidth(); 
 			if (rightMinWidth > rightWidth) {
-				location = location - (rightMinWidth - rightWidth + defaultDividerSize);
+				location = location - (rightMinWidth - rightWidth + LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getSplitPaneDividerSize());
 			}
 		}
 		super.applySplitPaneDividerPosition(splitPane, location, relPos);
@@ -170,7 +168,7 @@ public abstract class CommonSingleFrame extends AbstractSingleFrame {
 			int rightHeight = splitPane.getHeight() - location;
 			int rightMinHeight = (int) splitPane.getRightComponent().getMinimumSize().getHeight(); 
 			if (rightMinHeight > rightHeight) {
-				location = location - (rightMinHeight - rightHeight + defaultDividerSize);
+				location = location - (rightMinHeight - rightHeight + LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getSplitPaneDividerSize());
 			}
 		}
 		super.applySplitPaneDividerPosition(splitPane, location, relPos);

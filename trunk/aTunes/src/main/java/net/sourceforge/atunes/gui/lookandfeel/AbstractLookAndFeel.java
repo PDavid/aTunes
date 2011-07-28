@@ -30,6 +30,7 @@ import java.util.List;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComponent;
 import javax.swing.JList;
+import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.ListCellRenderer;
@@ -40,6 +41,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
+
+import net.sourceforge.atunes.gui.views.controls.CustomSplitPane;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
@@ -412,5 +415,12 @@ public abstract class AbstractLookAndFeel {
         return  baseFont.deriveFont(baseFont.getSize() + 25f);
     }
 
+    /**
+     * Returns split pane divider size for this look and feel. Default implementation returns current look and feel's default value
+     * @return
+     */
+    public int getSplitPaneDividerSize() {
+    	return new CustomSplitPane(JSplitPane.HORIZONTAL_SPLIT).getDividerSize();
+    }
 
 }

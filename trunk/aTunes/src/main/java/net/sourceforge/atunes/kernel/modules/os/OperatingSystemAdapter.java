@@ -301,4 +301,5 @@ public abstract class OperatingSystemAdapter {
 	 * @return
 	 */
 	public abstract boolean areTrayIconsSupported();	
+	
 }

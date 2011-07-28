@@ -48,6 +48,7 @@ import javax.swing.Timer;
 import net.sourceforge.atunes.gui.images.DeviceImageIcon;
 import net.sourceforge.atunes.gui.images.NewImageIcon;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.CustomFrame;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.dialogs.UpdateDialog;
@@ -98,11 +99,6 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
     private PlayerControlsPanel playerControls;
     private JXStatusBar statusBar;
 
-    /**
-     * Used to retrieve JSplitPane divider size of current look and feel
-     */
-    protected int defaultDividerSize;
-    
     private WindowAdapter fullFrameStateListener;
 
     /**
@@ -576,7 +572,7 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
     	final int location = frameState.getSplitPaneDividerPos(s);
         c.setVisible(show);
         // Depending on visibility, set divider size, so if panel is not shown, its divider is hidden too 
-       	sp.setDividerSize(show ? defaultDividerSize : 0);
+       	sp.setDividerSize(show ? LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getSplitPaneDividerSize() : 0);
         if (show) {
         	SwingUtilities.invokeLater(new Runnable() {
         		@Override
