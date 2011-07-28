@@ -30,7 +30,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -100,13 +99,8 @@ public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog 
 				    	if (!"".equals(f.getPath().trim()) && !f.isFile()) {
 				    		CheckNode treeNode2 = new CheckNode(new Directory(f, fsView.getSystemDisplayName(f)), fsView.getSystemIcon(f));
 				    		result.add(treeNode2);
-				    		File[] subfolders = f.listFiles(new FileFilter() {
-				    			@Override
-				    			public boolean accept(File pathname) {
-				    				return pathname.isDirectory();
-				    			}
-				    		});
-				    		if (subfolders != null && subfolders.length > 0) {
+				    		File[] subfolders = f.listFiles();
+				    		if (subfolders != null && subfolders.length > 0 && hasDirectories(subfolders, fsView)) {
 				    			treeNode2.add(new DefaultMutableTreeNode(I18nUtils.getString("PLEASE_WAIT") + "..."));
 				    		}
 				    		treeNode2.setSelected(selectedNode.isSelected() || selectedFolders.contains(f));
@@ -209,12 +203,12 @@ public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog 
 		        Arrays.sort(files);
 		        for (File f2 : files) {
 		            File[] f2Childs = f2.listFiles();
-		            if (f2Childs != null) {
-		                boolean hasDirs = hasDirectories(f2Childs);
+		            if (f2Childs != null && f2Childs.length > 0) {
+		                boolean hasDirs = hasDirectories(f2Childs, fsView);
 		                CheckNode treeNode2 = new CheckNode(new Directory(f2, fsView.getSystemDisplayName(f2)), fsView.getSystemIcon(f2));
 		                treeNode.add(treeNode2);
 		                if (hasDirs) {
-		                    treeNode2.add(new DefaultMutableTreeNode("Dummy node"));
+		                    treeNode2.add(new DefaultMutableTreeNode(I18nUtils.getString("PLEASE_WAIT") + "..."));
 		                }
 		            }
 		        }
@@ -665,9 +659,9 @@ public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog 
      *            The array of files that should be checked
      * @return if at least one directory is contained
      */
-    boolean hasDirectories(File[] files) {
+    boolean hasDirectories(File[] files, FileSystemView fsView) {
         for (File file : files) {
-            if (file.isDirectory()) {
+            if (file.isDirectory() && fsView.isTraversable(file)) {
                 return true;
             }
         }
