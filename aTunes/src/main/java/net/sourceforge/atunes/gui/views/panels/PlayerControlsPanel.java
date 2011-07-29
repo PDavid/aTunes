@@ -29,6 +29,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -227,7 +228,10 @@ public final class PlayerControlsPanel extends JPanel {
         volumeButton.setText("");
         volumeSlider = new VolumeSlider();
         volumeLevel = new VolumeLevel();
-        return getPanelWithPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider, volumeLevel);
+        JPanel panel = getPanelWithPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider, volumeLevel);
+        // add a small border to separate from other components
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 0));
+        return panel;
     }
 
     /**
@@ -270,7 +274,6 @@ public final class PlayerControlsPanel extends JPanel {
         c.gridy = 0;
         c.weightx = 0;
         c.fill = GridBagConstraints.NONE;
-        c.insets = new Insets(0, 0, 0, 0);
         setButton(panel, stopButton, c);
         c.gridx = 1;
         c.insets = new Insets(0, -6, 0, 0);
