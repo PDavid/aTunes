@@ -41,12 +41,12 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.kernel.modules.state.beans.FontBean;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -176,7 +176,8 @@ public final class FontChooserDialog extends AbstractCustomModalDialog {
         fontPreviewLabel.setMaximumSize(new Dimension(50, 20));
         fontPreviewLabel.setHorizontalAlignment(SwingConstants.CENTER);
         fontPreviewLabel.setText("Test Test");
-        fontList = new JList(fonts);
+        fontList = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getList();
+        fontList.setListData(fonts);
         fontList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         fontList.addListSelectionListener(new ListSelectionListener() {
 
@@ -187,7 +188,8 @@ public final class FontChooserDialog extends AbstractCustomModalDialog {
             }
         });
         fontList.setSelectedValue(fontSettings.getFont().getName(), true);
-        fontSizeList = new JList(FONT_SIZES);
+        fontSizeList = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getList();
+        fontSizeList.setListData(FONT_SIZES);
         fontSizeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         fontSizeList.addListSelectionListener(new ListSelectionListener() {
 
@@ -249,7 +251,7 @@ public final class FontChooserDialog extends AbstractCustomModalDialog {
         c.fill = GridBagConstraints.BOTH;
         c.anchor = GridBagConstraints.CENTER;
         c.insets = new Insets(5, 5, 5, 5);
-        panel.add(new JScrollPane(fontList), c);
+        panel.add(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListScrollPane(fontList), c);
         c.gridx = 1;
         c.gridy = 0;
         c.gridwidth = 1;
@@ -257,7 +259,7 @@ public final class FontChooserDialog extends AbstractCustomModalDialog {
         c.weighty = 0.7;
         c.fill = GridBagConstraints.BOTH;
         c.anchor = GridBagConstraints.CENTER;
-        panel.add(new JScrollPane(fontSizeList), c);
+        panel.add(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListScrollPane(fontSizeList), c);
         c.gridx = 0;
         c.gridy = 1;
         c.gridwidth = 2;

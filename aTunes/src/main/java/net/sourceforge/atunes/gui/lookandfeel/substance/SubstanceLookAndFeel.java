@@ -37,6 +37,7 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.ListCellRenderer;
@@ -188,7 +189,7 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
 
         @Override
         public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-            Component c = super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
+        	JComponent c = (JComponent) super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
             return code.getComponent(c, tree, value, sel, expanded, leaf, row, hasFocus);
         }
     }
@@ -424,4 +425,30 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
     public boolean supportsCustomFontSettings() {
     	return true;
     }
+    
+    @Override
+    public JScrollPane getTableScrollPane(JTable table) {
+    	return new JScrollPane(table);
+    }
+    
+    @Override
+    public JTable getTable() {
+    	return new JTable();
+    }
+    
+    @Override
+    public JScrollPane getTreeScrollPane(JTree tree) {
+    	return new JScrollPane(tree);
+    }
+    
+    @Override
+    public JScrollPane getListScrollPane(JList list) {
+    	return new JScrollPane(list);
+    }
+    
+    @Override
+    public JList getList() {
+    	return new JList();
+    }
+
 }

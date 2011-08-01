@@ -29,7 +29,9 @@ import java.util.List;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTree;
@@ -68,7 +70,11 @@ public abstract class AbstractLookAndFeel {
         @Override
         public JComponent getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         	JComponent c = (JComponent) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-            return code.getComponent(c, list, value, index, isSelected, cellHasFocus);
+        	if (code != null) {
+        		c = code.getComponent(c, list, value, index, isSelected, cellHasFocus);
+        	}
+            c.setOpaque(isSelected);
+            return c;
         }
     }
 
@@ -104,7 +110,11 @@ public abstract class AbstractLookAndFeel {
         @Override
         public JComponent getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         	JComponent c = (JComponent) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-            return code.getComponent(c, table, value, isSelected, hasFocus, row, column);
+        	if (code != null) {
+        		c = code.getComponent(c, table, value, isSelected, hasFocus, row, column);
+        	}
+            c.setOpaque(isSelected);
+            return c;
         }
     }
 
@@ -120,9 +130,18 @@ public abstract class AbstractLookAndFeel {
         }
 
         @Override
-        public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-            Component c = super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-            return code.getComponent(c, tree, value, sel, expanded, leaf, row, hasFocus);
+        public JComponent getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+        	// Use custom JLabel component (if call super method, returned component can't be fully customized)
+        	JComponent c = new JLabel(value.toString());
+        	if (code != null) {
+        		c = code.getComponent(c, tree, value,isSelected, expanded, leaf, row, hasFocus);
+        	}
+        	c.setOpaque(isSelected);
+        	if (isSelected) {
+        		c.setBackground(UIManager.getColor("Tree.selectionBackground"));
+        		c.setForeground(UIManager.getColor("Tree.selectionForeground"));
+        	}
+            return c;
         }
     }
 
@@ -266,7 +285,6 @@ public abstract class AbstractLookAndFeel {
     	while (keys.hasMoreElements()) {
     		Object key = keys.nextElement();
     		Object value = UIManager.get (key);
-//    		Logger.debug(key, " = ", value);
     		if (value instanceof FontUIResource) {
     			UIManager.put (key, f);
     		}
@@ -422,5 +440,37 @@ public abstract class AbstractLookAndFeel {
     public int getSplitPaneDividerSize() {
     	return new CustomSplitPane(JSplitPane.HORIZONTAL_SPLIT).getDividerSize();
     }
+    
+    /**
+     * Returns instance of table with special look and feel settings
+     * @return
+     */
+    public abstract JTable getTable();
+    
+    /**
+     * Returns scroll pane to show a table with special look and feel settings
+     * @return
+     */
+    public abstract JScrollPane getTableScrollPane(JTable table);
+    
+    /**
+     * Returns scroll pane to show a tree with special look and feel settings
+     * @param tree
+     * @return
+     */
+    public abstract JScrollPane getTreeScrollPane(JTree tree);
 
+    /**
+     * Returns instance of list with special look and feel settings
+     * @return
+     */
+    public abstract JList getList();
+    
+    /**
+     * Returns scroll pane to show a list with special look and feel settings
+     * @param list
+     * @return
+     */
+    public abstract JScrollPane getListScrollPane(JList list);
+    
 }

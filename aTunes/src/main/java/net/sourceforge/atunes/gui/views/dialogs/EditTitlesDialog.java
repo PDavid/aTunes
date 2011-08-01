@@ -30,6 +30,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -85,9 +86,9 @@ public final class EditTitlesDialog extends AbstractCustomModalDialog {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setOpaque(false);
 
-        table = new JTable();
+        table = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
         table.setOpaque(false);
-        JScrollPane scrollPane = new JScrollPane(table);
+        JScrollPane scrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(table);
         retrieveTitles = new JButton(I18nUtils.getString("GET_TITLES"));
         okButton = new JButton(I18nUtils.getString("OK"));
         cancelButton = new JButton(I18nUtils.getString("CANCEL"));

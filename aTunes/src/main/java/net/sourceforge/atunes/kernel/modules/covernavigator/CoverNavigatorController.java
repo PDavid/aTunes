@@ -221,6 +221,7 @@ public final class CoverNavigatorController extends AbstractSimpleController<Cov
         panel.add(coverLabel);
         panel.add(label);
         panel.setPreferredSize(new Dimension(COVER_PANEL_WIDTH, COVER_PANEL_HEIGHT));
+        panel.setOpaque(false);
 
         GuiUtils.applyComponentOrientation(panel);
         return panel;

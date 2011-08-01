@@ -24,6 +24,10 @@ import java.util.List;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTree;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -86,6 +90,31 @@ public class SystemLookAndFeel extends AbstractLookAndFeel {
     @Override
     public boolean supportsCustomFontSettings() {
     	return false;
+    }
+
+    @Override
+    public JScrollPane getTableScrollPane(JTable table) {
+    	return new JScrollPane(table);
+    }
+    
+    @Override
+    public JTable getTable() {
+    	return new JTable();
+    }
+    
+    @Override
+    public JScrollPane getTreeScrollPane(JTree tree) {
+    	return new JScrollPane(tree);
+    }
+    
+    @Override
+    public JScrollPane getListScrollPane(JList list) {
+    	return new JScrollPane(list);
+    }
+    
+    @Override
+    public JList getList() {
+    	return new JList();
     }
 
 }

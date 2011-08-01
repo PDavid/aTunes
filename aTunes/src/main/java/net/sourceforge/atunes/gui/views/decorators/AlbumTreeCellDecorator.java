@@ -43,6 +43,7 @@ public class AlbumTreeCellDecorator extends AbstractTreeCellDecorator {
                 ((JLabel) component).setIcon(AlbumFavoriteImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
             }
         }
+        
         return component;
     }
 

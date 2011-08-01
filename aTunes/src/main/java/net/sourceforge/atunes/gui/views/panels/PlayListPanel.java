@@ -25,6 +25,7 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 
 /**
@@ -59,8 +60,7 @@ public final class PlayListPanel extends JPanel {
     private void addContent() {
         playListTabPanel = new PlayListTabPanel();
         playListTable = new PlayListTable();
-        playListTableScroll = new JScrollPane(playListTable);
-        playListTableScroll.setOpaque(false); // for some look and feels
+        playListTableScroll = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(playListTable);
 
         add(playListTabPanel, BorderLayout.NORTH);
         add(playListTableScroll, BorderLayout.CENTER);

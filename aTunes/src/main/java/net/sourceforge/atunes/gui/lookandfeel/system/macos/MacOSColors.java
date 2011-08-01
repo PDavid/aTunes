@@ -18,13 +18,16 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.lookandfeel;
+package net.sourceforge.atunes.gui.lookandfeel.system.macos;
 
-import javax.swing.JComponent;
-import javax.swing.JTree;
+import java.awt.Color;
 
-public abstract class AbstractTreeCellRendererCode {
+class MacOSColors {
 
-    public abstract JComponent getComponent(JComponent superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus);
+	static final Color EVEN_ROW_COLOR = new Color(241, 245, 250);
+	
+    static final Color TABLE_GRID_COLOR = new Color(0xd9d9d9);
+
+
 
 }

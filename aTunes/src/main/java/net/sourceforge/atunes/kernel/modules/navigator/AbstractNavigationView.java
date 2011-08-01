@@ -35,6 +35,7 @@ import java.util.regex.Pattern;
 
 import javax.swing.Action;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -155,7 +156,7 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
      */
     public final JScrollPane getTreeScrollPane() {
         if (scrollPane == null) {
-            scrollPane = new JScrollPane(getTree());
+            scrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTreeScrollPane(getTree());
             scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         }
         return scrollPane;
@@ -613,7 +614,7 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
         return LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTreeCellRenderer(new AbstractTreeCellRendererCode() {
 
             @Override
-            public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
+            public JComponent getComponent(JComponent superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
                 for (AbstractTreeCellDecorator decorator : getTreeCellDecorators()) {
                     decorator.decorateTreeCellComponent(superComponent, ((DefaultMutableTreeNode) value).getUserObject(), isSelected);
                 }

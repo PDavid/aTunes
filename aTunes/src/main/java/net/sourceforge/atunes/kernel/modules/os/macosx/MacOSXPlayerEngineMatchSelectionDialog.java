@@ -32,11 +32,11 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.SimpleTextPane;
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -78,7 +78,8 @@ class MacOSXPlayerEngineMatchSelectionDialog extends JDialog {
 	private void addContent() {
 		SimpleTextPane instructions = new SimpleTextPane(I18nUtils.getString("MAC_PLAYER_ENGINE_SELECTION"));
 		
-		matchesList = new JList(matches.toArray());
+		matchesList = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getList();
+		matchesList.setListData(matches.toArray());
 		matchesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		matchesList.addListSelectionListener(new ListSelectionListener() {
 			
@@ -137,7 +138,7 @@ class MacOSXPlayerEngineMatchSelectionDialog extends JDialog {
 		panel.add(instructions, c);
 		c.gridy = 1;
 		c.weighty = 0.8;
-		panel.add(new JScrollPane(matchesList), c);
+		panel.add(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListScrollPane(matchesList), c);
 		c.gridy = 2;
 		c.weighty = 0;
 		c.fill = GridBagConstraints.HORIZONTAL;

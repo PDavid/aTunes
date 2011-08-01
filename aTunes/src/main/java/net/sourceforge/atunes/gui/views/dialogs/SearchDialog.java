@@ -36,6 +36,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
 import net.sourceforge.atunes.kernel.modules.internetsearch.SearchFactory;
@@ -97,7 +98,8 @@ public final class SearchDialog extends AbstractCustomModalDialog {
         JPanel panel = new JPanel(new GridBagLayout());
         JLabel text = new JLabel(StringUtils.getString(I18nUtils.getString("SEARCH_AT"), "..."));
         text.setFont(text.getFont().deriveFont(Font.PLAIN));
-        final JList list = new JList(SearchFactory.getSearches().toArray());
+        final JList list = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getList();
+        list.setListData(SearchFactory.getSearches().toArray());
         list.setSelectedIndex(0);
         list.setOpaque(false);
 
@@ -106,7 +108,7 @@ public final class SearchDialog extends AbstractCustomModalDialog {
         setAsDefaultCheckBox.setFont(setAsDefaultCheckBox.getFont().deriveFont(Font.PLAIN));
         setAsDefaultCheckBox.setHorizontalAlignment(SwingConstants.CENTER);
 
-        JScrollPane scrollPane = new JScrollPane(list);
+        JScrollPane scrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListScrollPane(list);
         JButton okButton = new JButton(I18nUtils.getString("OK"));
         okButton.addActionListener(new ActionListener() {
             @Override

@@ -81,6 +81,7 @@ public final class ByImageChoosingPanel<T> extends ScrollableFlowPanel {
     public ByImageChoosingPanel(List<? extends ImageEntry<T>> entries) {
         setLayout(new FlowLayout(FlowLayout.LEADING, 20, 20));
         init(entries);
+        setOpaque(false);
     }
 
     private void init(List<? extends ImageEntry<T>> entries) {

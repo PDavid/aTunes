@@ -28,7 +28,7 @@ import net.sourceforge.atunes.gui.OSXAdapter;
 import net.sourceforge.atunes.gui.frame.Frame;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
-import net.sourceforge.atunes.gui.lookandfeel.system.OSXLookAndFeel;
+import net.sourceforge.atunes.gui.lookandfeel.system.macos.MacOSXLookAndFeel;
 import net.sourceforge.atunes.kernel.OperatingSystem;
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavConverter;
@@ -106,7 +106,7 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 	public Map<String, Class<? extends AbstractLookAndFeel>> getSupportedLookAndFeels() {
 	    Map<String, Class<? extends AbstractLookAndFeel>> lookAndFeels = new HashMap<String, Class<? extends AbstractLookAndFeel>>();
         lookAndFeels.put(SubstanceLookAndFeel.SUBSTANCE, SubstanceLookAndFeel.class);
-        lookAndFeels.put(OSXLookAndFeel.SYSTEM, OSXLookAndFeel.class);
+        lookAndFeels.put(MacOSXLookAndFeel.SYSTEM, MacOSXLookAndFeel.class);
         return lookAndFeels;
 	}
 
@@ -115,7 +115,7 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 	 * @return
 	 */
 	public Class<? extends AbstractLookAndFeel> getDefaultLookAndFeel() {
-		return OSXLookAndFeel.class;
+		return MacOSXLookAndFeel.class;
 	}
 	
 	@Override

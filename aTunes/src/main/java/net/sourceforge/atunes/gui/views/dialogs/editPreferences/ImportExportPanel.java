@@ -34,11 +34,11 @@ import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -176,13 +176,13 @@ public final class ImportExportPanel extends AbstractPreferencesPanel {
         group2.add(folderPathNoChangeRadioButton);
         group2.add(folderPathCustomizedRadioButton);
 
-        availablePatternsTable = new JTable();
+        availablePatternsTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
         availablePatternsTable.setModel(new AvailablePatternsTableModel());
 
         JPanel patternsPanel = new JPanel(new BorderLayout());
         patternsPanel.setPreferredSize(new Dimension(250, 200));
         patternsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(0,0,0,0), I18nUtils.getString("AVAILABLE_PATTERNS")));
-        patternsPanel.add(new JScrollPane(availablePatternsTable), BorderLayout.CENTER);
+        patternsPanel.add(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(availablePatternsTable), BorderLayout.CENTER);
 
         reviewTagsBeforeImportCheckBox = new JCheckBox(I18nUtils.getString("REVIEW_TAGS_BEFORE_IMPORTING"));
         reviewTagsBeforeImportCheckBox.addActionListener(new ActionListener() {

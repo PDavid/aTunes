@@ -316,7 +316,8 @@ public final class RipCdDialog extends AbstractCustomModalDialog {
         JPanel panel = new JPanel(new GridBagLayout());
 
         tableModel = new CdInfoTableModel();
-        table = new JTable(tableModel);
+        table = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
+        table.setModel(tableModel);
         table.setShowGrid(false);
         table.getColumnModel().getColumn(0).setMaxWidth(20);
         table.getColumnModel().getColumn(4).setMaxWidth(50);
@@ -339,7 +340,7 @@ public final class RipCdDialog extends AbstractCustomModalDialog {
         table.setDefaultRenderer(String.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(
                 GuiUtils.getComponentOrientationTableCellRendererCode()));
 
-        JScrollPane scrollPane = new JScrollPane(table);
+        JScrollPane scrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(table);
         JLabel artistLabel = new JLabel(I18nUtils.getString("ALBUM_ARTIST"));
         artistTextField = new CustomTextField();
         JLabel albumLabel = new JLabel(I18nUtils.getString("ALBUM"));

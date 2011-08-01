@@ -101,13 +101,13 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
     public PluginsPanel(EditPreferencesDialog dialog) {
         super(I18nUtils.getString("PLUGINS"));
         this.dialog = dialog;
-        pluginsTable = new JTable();
+        pluginsTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
         pluginsTable.setRowHeight(CELL_HEIGHT);
         pluginsTable.setShowGrid(false);
         pluginsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         pluginsTable.setColumnModel(new PluginsTableDefaultTableColumnModel());
 
-        JScrollPane scrollPane = new JScrollPane(pluginsTable);
+        JScrollPane scrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(pluginsTable);
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;

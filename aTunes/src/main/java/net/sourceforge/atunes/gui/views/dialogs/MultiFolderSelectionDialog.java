@@ -20,10 +20,10 @@
 
 package net.sourceforge.atunes.gui.views.dialogs;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,12 +39,14 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.SwingWorker;
+import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeWillExpandListener;
@@ -57,6 +59,7 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellRendererCode;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -368,10 +371,10 @@ public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog 
      */
     private class CheckRenderer extends DefaultTreeCellRenderer {
 
-        private final class CheckRendererTreeCellRendererCode extends
-				AbstractTreeCellRendererCode {
+        private final class CheckRendererTreeCellRendererCode extends AbstractTreeCellRendererCode {
+        	
 			@Override
-			public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
+			public JComponent getComponent(JComponent superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
 			    String stringValue = value.toString();
 			    setEnabled(tree.isEnabled());
 			    if (value instanceof CheckNode) {
@@ -396,8 +399,24 @@ public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog 
 			        label.setFont(tree.getFont());
 			        label.setForeground(superComponent.getForeground());
 			    }
+			    
+			    check.setOpaque(false);
+			    label.setOpaque(false);
+			    
+			    label.setBackground(Color.RED);
 
-			    return CheckRenderer.this;
+			    JPanel panel = new JPanel(new BorderLayout());
+			    panel.add(check, BorderLayout.WEST);
+			    panel.add(label, BorderLayout.CENTER);
+			    
+	        	panel.setOpaque(isSelected);
+	        	if (isSelected) {
+	        		panel.setBackground(UIManager.getColor("Tree.selectionBackground"));
+	        		panel.setForeground(UIManager.getColor("Tree.selectionForeground"));
+	        		label.setForeground(UIManager.getColor("Tree.selectionForeground"));
+	        	}
+
+			    return panel;
 			}
 		}
 
@@ -415,46 +434,14 @@ public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog 
          * Instantiates a new check renderer.
          */
         public CheckRenderer() {
-            setLayout(new FlowLayout());
             check = new JCheckBox();
-            check.setOpaque(false);
-            add(check);
-            add(label = new JLabel());
+            label = new JLabel();
             rendererCode = new CheckRendererTreeCellRendererCode();
-        }
-
-        // TODO this method should be aware of component orientation
-        @Override
-        public void doLayout() {
-            Dimension d_check = check.getPreferredSize();
-            Dimension d_label = label.getPreferredSize();
-            int y_check = 0;
-            int y_label = 0;
-            if (d_check.height < d_label.height) {
-                y_check = (d_label.height - d_check.height) / 2;
-            } else {
-                y_label = (d_check.height - d_label.height) / 2;
-            }
-            check.setLocation(5, y_check);
-            check.setBounds(5, y_check, d_check.width + 5, d_check.height);
-            label.setLocation(d_check.width + 5, y_label);
-
-            label.setBounds(d_check.width + 5, y_label, d_label.width + 350, d_label.height);
-        }
-
-        @Override
-        public Dimension getPreferredSize() {
-            Dimension d_check = check.getPreferredSize();
-            Dimension d_label = label.getPreferredSize();
-            return new Dimension(d_check.width + d_label.width + 10, (d_check.height < d_label.height ? d_label.height : d_check.height));
         }
 
         @Override
         public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-            Component superComponent = super.getTreeCellRendererComponent(tree, "", isSelected, expanded, leaf, row, hasFocus);
-            // Remove icon from default renderer
-            ((DefaultTreeCellRenderer)superComponent).setIcon(null);
-            return rendererCode.getComponent(superComponent, tree, value, isSelected, expanded, leaf, row, hasFocus);
+            return rendererCode.getComponent(new JLabel(), tree, value, isSelected, expanded, leaf, row, hasFocus);
         }
 
     }
@@ -550,7 +537,7 @@ public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog 
 
         fileSystemTree = new JTree();
         fileSystemTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-        scrollPane = new JScrollPane();
+        scrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTreeScrollPane(fileSystemTree);
 
         okButton = new JButton(I18nUtils.getString("OK"));
         okButton.addActionListener(new ActionListener() {
@@ -642,7 +629,6 @@ public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog 
         fileSystemTree.setModel(model);
         fileSystemTree.setRootVisible(true);
         fileSystemTree.setCellRenderer(new CheckRenderer());
-        scrollPane.setViewportView(fileSystemTree);
         scrollPane.setVisible(true);
 
         new SetTreeSwingWorker().execute();

@@ -31,6 +31,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.WindowConstants;
 
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.CustomDialog;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -81,12 +82,12 @@ public final class SearchResultsDialog extends CustomDialog {
      */
     private JPanel getContent() {
         JPanel panel = new JPanel(new GridBagLayout());
-        searchResultsTable = new JTable();
+        searchResultsTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
         searchResultsTable.setShowGrid(false);
         // Disable autoresize, as we will control it
         searchResultsTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        tableScrollPane = new JScrollPane(searchResultsTable);
+        tableScrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(searchResultsTable);
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;

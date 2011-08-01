@@ -259,7 +259,7 @@ public final class AboutDialog extends AbstractCustomModalDialog {
         propertiesTable.setShowGrid(false);
         propertiesTable.setDefaultRenderer(Object.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(
                 GuiUtils.getComponentOrientationTableCellRendererCode()));
-        JScrollPane propertiesScrollPane = new JScrollPane(propertiesTable);
+        JScrollPane propertiesScrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(propertiesTable);
 
         JButton close = new JButton(I18nUtils.getString("CLOSE"));
         close.addActionListener(new ActionListener() {

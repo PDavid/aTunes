@@ -155,6 +155,8 @@ public final class PlayListTable extends JTable implements DragSourceListener, D
         if (getRowHeight() < 16) {
             setRowHeight(16);
         }
+        
+        setOpaque(false);
     }
 
     /**
