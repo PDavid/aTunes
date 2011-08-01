@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.utils;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Container;
 import java.awt.GraphicsDevice;
@@ -463,7 +462,7 @@ public final class GuiUtils {
 
     public static class ComponentOrientationTableCellRendererCode extends AbstractTableCellRendererCode {
         @Override
-        public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        public JComponent getComponent(JComponent superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         	if (superComponent instanceof JLabel) {
         		GuiUtils.applyComponentOrientation((JLabel) superComponent);
         	}

@@ -20,10 +20,9 @@
 
 package net.sourceforge.atunes.kernel.modules.columns;
 
-import java.awt.Component;
-
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JTable;
@@ -55,7 +54,7 @@ public class ScoreColumn extends AbstractColumn {
         comboBox.setRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListCellRenderer(new AbstractListCellRendererCode() {
 
             @Override
-            public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            public JComponent getComponent(JComponent superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 setLabel((JLabel) superComponent, (Integer) value);
                 return superComponent;
             }
@@ -69,7 +68,7 @@ public class ScoreColumn extends AbstractColumn {
         return LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new AbstractTableCellRendererCode() {
 
             @Override
-            public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            public JComponent getComponent(JComponent superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 setLabel((JLabel) superComponent, (Integer) value);
                 return superComponent;
             }

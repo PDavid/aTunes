@@ -31,12 +31,12 @@ import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
 
-import net.sourceforge.atunes.kernel.actions.CustomAbstractAction;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddPodcastFeedAction;
 import net.sourceforge.atunes.kernel.actions.AddRadioAction;
 import net.sourceforge.atunes.kernel.actions.CheckUpdatesAction;
 import net.sourceforge.atunes.kernel.actions.ConnectDeviceAction;
+import net.sourceforge.atunes.kernel.actions.CustomAbstractAction;
 import net.sourceforge.atunes.kernel.actions.CustomSearchAction;
 import net.sourceforge.atunes.kernel.actions.DisconnectDeviceAction;
 import net.sourceforge.atunes.kernel.actions.EditPreferencesAction;

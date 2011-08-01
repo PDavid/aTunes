@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.gui.views.dialogs.editPreferences;
 
-import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -36,6 +35,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -346,8 +346,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 
 	private static class PluginsTableCellRendererCode extends AbstractTableCellRendererCode {
         @Override
-        public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            Component c = superComponent;
+        public JComponent getComponent(JComponent c, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             ((JLabel) c).setText(((PluginInfo) value).getName());
             if (((PluginInfo) value).getIcon() != null) {
                 ((JLabel) c).setIcon(ImageUtils.scaleImageBicubic(((PluginInfo) value).getIcon(), CELL_HEIGHT - 5, CELL_HEIGHT - 5));

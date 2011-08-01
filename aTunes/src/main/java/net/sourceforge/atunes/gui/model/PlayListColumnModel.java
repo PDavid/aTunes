@@ -19,8 +19,7 @@
  */
 package net.sourceforge.atunes.gui.model;
 
-import java.awt.Component;
-
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -48,8 +47,8 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
         }
 
         @Override
-        public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            Component c = super.getComponent(superComponent, table, value, isSelected, hasFocus, row, column);
+        public JComponent getComponent(JComponent superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        	JComponent c = super.getComponent(superComponent, table, value, isSelected, hasFocus, row, column);
         	if (PlayListHandler.getInstance().isCurrentVisibleRowPlaying(row)) {
         		if (LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListSelectedItemFont() != null) {
         			 ((JLabel) c).setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListSelectedItemFont());
@@ -68,8 +67,8 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
         }
 
         @Override
-        public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            Component c = super.getComponent(superComponent, t, value, isSelected, hasFocus, row, column);
+        public JComponent getComponent(JComponent superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        	JComponent c = super.getComponent(superComponent, t, value, isSelected, hasFocus, row, column);
         	if (PlayListHandler.getInstance().isCurrentVisibleRowPlaying(row)) {
         		if (LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListSelectedItemFont() != null) {
         			 ((JLabel) c).setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListSelectedItemFont());
@@ -113,7 +112,7 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
             return new AbstractTableCellRendererCode() {
 
                 @Override
-                public Component getComponent(Component c, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                public JComponent getComponent(JComponent c, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                     String name = t.getColumnName(column);
                     //Display Integer values if the column is nameless
                     if (!"".equals(name)) {

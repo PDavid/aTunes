@@ -66,8 +66,8 @@ public abstract class AbstractLookAndFeel {
         }
 
         @Override
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+        public JComponent getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        	JComponent c = (JComponent) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             return code.getComponent(c, list, value, index, isSelected, cellHasFocus);
         }
     }
@@ -84,8 +84,8 @@ public abstract class AbstractLookAndFeel {
         }
 
         @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        public JComponent getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        	JComponent c = (JComponent) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
             return code.getComponent(c, table, value, isSelected, hasFocus, row, column);
         }
     }
@@ -102,8 +102,8 @@ public abstract class AbstractLookAndFeel {
         }
 
         @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        public JComponent getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        	JComponent c = (JComponent) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
             return code.getComponent(c, table, value, isSelected, hasFocus, row, column);
         }
     }

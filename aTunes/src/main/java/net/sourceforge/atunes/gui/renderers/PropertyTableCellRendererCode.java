@@ -20,9 +20,8 @@
 
 package net.sourceforge.atunes.gui.renderers;
 
-import java.awt.Component;
-
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 
@@ -39,7 +38,7 @@ public class PropertyTableCellRendererCode extends AbstractTableCellRendererCode
     }
 
     @Override
-    public Component getComponent(Component comp, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    public JComponent getComponent(JComponent comp, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         ImageIcon icon = null;
         Property val = (Property) value;
         if (val == Property.FAVORITE) {

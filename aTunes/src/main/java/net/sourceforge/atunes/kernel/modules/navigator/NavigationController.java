@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -216,7 +215,7 @@ final class NavigationController extends AbstractController implements AudioFile
         	navigationTreePanel.getTreeComboBox().setRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListCellRenderer(new AbstractListCellRendererCode() {
 
         		@Override
-        		public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        		public JComponent getComponent(JComponent superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         			((JLabel)superComponent).setIcon(((AbstractNavigationView)value).getIcon().getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(superComponent, isSelected)));
         			((JLabel)superComponent).setText(((AbstractNavigationView)value).getTitle());
         			return superComponent;
