@@ -38,6 +38,7 @@ import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
 
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
@@ -84,12 +85,13 @@ public final class SelectorDialog extends JDialog {
 
         JPanel panel = new JPanel(new GridBagLayout());
 
-        list = new JList(strings);
+        list = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getList();
+        list.setListData(strings);
         list.setSelectedIndex(0);
         list.setFont(list.getFont().deriveFont(Font.PLAIN));
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.setBorder(BorderFactory.createLineBorder(GuiUtils.getBorderColor()));
-        JScrollPane scrollPane = new JScrollPane(list);
+        JScrollPane scrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListScrollPane(list);
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;

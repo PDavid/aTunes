@@ -53,6 +53,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
@@ -234,13 +235,13 @@ public final class PatternInputDialog extends AbstractCustomModalDialog {
         patternComboBox.setEditable(true);
 
         JPanel patternPreviewPanel = new JPanel(new BorderLayout());
-        patternPreviewTable = new JTable();
-        JScrollPane patternPreviewTableScrollPane = new JScrollPane(patternPreviewTable);
+        patternPreviewTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
+        JScrollPane patternPreviewTableScrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(patternPreviewTable);
         patternPreviewPanel.add(patternPreviewTableScrollPane, BorderLayout.CENTER);
         patternPreviewPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), I18nUtils.getString("PREVIEW")));
 
         JPanel availablePatternsPanel = new JPanel(new BorderLayout());
-        availablePatternsTable = new JTable();
+        availablePatternsTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
         availablePatternsTable.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
@@ -258,7 +259,7 @@ public final class PatternInputDialog extends AbstractCustomModalDialog {
         		}
         	}
         });
-        JScrollPane availablePatternsScrollPane = new JScrollPane(availablePatternsTable);
+        JScrollPane availablePatternsScrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(availablePatternsTable);
         availablePatternsPanel.add(availablePatternsScrollPane, BorderLayout.CENTER);
         availablePatternsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), I18nUtils.getString("AVAILABLE_PATTERNS")));
 

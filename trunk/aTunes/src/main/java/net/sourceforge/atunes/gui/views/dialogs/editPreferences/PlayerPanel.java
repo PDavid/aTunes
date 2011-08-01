@@ -187,7 +187,7 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
         useShortPathNames = new JCheckBox(I18nUtils.getString("USE_SHORT_PATH_NAMES_FOR_MPLAYER"));
         enableGlobalHotkeys = new JCheckBox(I18nUtils.getString("ENABLE_GLOBAL_HOTKEYS"));
 
-        hotkeyTable = new JTable();
+        hotkeyTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
         hotkeyTable.setModel(tableModel);
         hotkeyTable.getTableHeader().setReorderingAllowed(false);
         hotkeyTable.getTableHeader().setResizingAllowed(false);
@@ -230,7 +230,7 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
             }
         });
 
-        JScrollPane scrollPane = new JScrollPane(hotkeyTable);
+        JScrollPane scrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(hotkeyTable);
         scrollPane.setMinimumSize(new Dimension(400, 200));
         cacheFilesBeforePlaying = new JCheckBox(I18nUtils.getString("CACHE_FILES_BEFORE_PLAYING"));
 

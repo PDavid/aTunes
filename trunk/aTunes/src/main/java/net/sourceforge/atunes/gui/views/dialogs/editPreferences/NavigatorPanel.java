@@ -210,7 +210,8 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 
         tagAttributesTableModel = new TagAttributesTableModel();
         tagAttributesTableModel.setTagAttributes(IncompleteTagsChecker.getAllTagAttributes());
-        highlighTagAttributesTable = new JTable(tagAttributesTableModel);
+        highlighTagAttributesTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
+        highlighTagAttributesTable.setModel(tagAttributesTableModel);
         highlighTagAttributesTable.setShowGrid(false);
         highlighTagAttributesTable.setTableHeader(null);
         highlighTagAttributesTable.getColumnModel().getColumn(0).setMaxWidth(20);
@@ -219,7 +220,7 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
         highlighTagAttributesTable.setDefaultRenderer(String.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(
                 GuiUtils.getComponentOrientationTableCellRendererCode()));
 
-        highlightTagAttributesScrollPane = new JScrollPane(highlighTagAttributesTable);
+        highlightTagAttributesScrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(highlighTagAttributesTable);
         highlightTagAttributesScrollPane.setMinimumSize(new Dimension(300, 150));
 
         GridBagConstraints c = new GridBagConstraints();

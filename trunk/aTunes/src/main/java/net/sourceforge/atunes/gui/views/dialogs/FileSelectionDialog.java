@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.gui.views.dialogs;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -170,7 +169,7 @@ public final class FileSelectionDialog extends AbstractCustomModalDialog {
 
 	private static class FileSystemTreeCellRendererCode extends AbstractTreeCellRendererCode {
         @Override
-        public Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
+        public JComponent getComponent(JComponent superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
             if (superComponent instanceof JLabel) {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
             	if (node.getUserObject() instanceof String) {
@@ -293,11 +292,11 @@ public final class FileSelectionDialog extends AbstractCustomModalDialog {
 
         fileSystemTree = new JTree();
         fileSystemTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-        JScrollPane scroll1 = new JScrollPane(fileSystemTree);
+        JScrollPane scroll1 = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTreeScrollPane(fileSystemTree);
 
-        fileSystemList = new JList();
+        fileSystemList = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getList();
         setListRenderer();
-        JScrollPane scroll2 = new JScrollPane(fileSystemList);
+        JScrollPane scroll2 = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListScrollPane(fileSystemList);
 
         selection = new JLabel();
 

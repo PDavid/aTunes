@@ -281,7 +281,7 @@ public final class ContextPanel extends AbstractPreferencesPanel {
                 }
             }
         });
-        JScrollPane enginesScrollPane = new JScrollPane(enginesTable);
+        JScrollPane enginesScrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(enginesTable);
         enginesScrollPane.setMinimumSize(new Dimension(200, 100));
 
         GridBagConstraints c = new GridBagConstraints();

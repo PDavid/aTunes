@@ -38,6 +38,7 @@ import javax.swing.JTree;
 import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
 
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.CustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -203,9 +204,9 @@ public final class CustomSearchDialog extends CustomDialog {
         if (simpleRulesPanel == null) {
             simpleRulesPanel = new JPanel(new GridBagLayout());
             simpleRulesPanel.setBorder(BorderFactory.createEtchedBorder());
-            simpleRulesList = new JList();
+            simpleRulesList = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getList();
             simpleRulesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-            simpleRulesScrollPane = new JScrollPane(simpleRulesList);
+            simpleRulesScrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListScrollPane(simpleRulesList);
             simpleRulesComboBox = new JComboBox();
             simpleRulesTextField = new CustomTextField();
             simpleRulesAddButton = new JButton(I18nUtils.getString("ADD"));
@@ -255,7 +256,7 @@ public final class CustomSearchDialog extends CustomDialog {
             complexRulesPanel.setBorder(BorderFactory.createEtchedBorder());
             complexRulesTree = new JTree();
 
-            complexRulesScrollPane = new JScrollPane(complexRulesTree);
+            complexRulesScrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTreeScrollPane(complexRulesTree);
             complexRulesAndButton = new JButton(I18nUtils.getString("AND"));
             complexRulesOrButton = new JButton(I18nUtils.getString("OR"));
             complexRulesNotButton = new JButton(I18nUtils.getString("NOT"));
@@ -330,16 +331,6 @@ public final class CustomSearchDialog extends CustomDialog {
             buttonsPanel.add(cancelButton);
         }
         return buttonsPanel;
-    }
-
-    /**
-     * The main method.
-     * 
-     * @param args
-     *            the arguments
-     */
-    public static void main(String[] args) {
-        new CustomSearchDialog(null).setVisible(true);
     }
 
     /**

@@ -27,6 +27,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.NavigationTable;
 
 public final class NavigationTablePanel extends JPanel {
@@ -54,7 +55,7 @@ public final class NavigationTablePanel extends JPanel {
 
         // Disable autoresize, as we will control it
         navigationTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        JScrollPane scrollPane2 = new JScrollPane(navigationTable);
+        JScrollPane scrollPane2 = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(navigationTable);
         scrollPane2.setOpaque(false); // for some look and feels
         add(scrollPane2, BorderLayout.CENTER);
     }

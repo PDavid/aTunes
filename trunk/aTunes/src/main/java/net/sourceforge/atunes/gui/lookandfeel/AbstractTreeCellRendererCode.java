@@ -20,12 +20,11 @@
 
 package net.sourceforge.atunes.gui.lookandfeel;
 
-import java.awt.Component;
-
+import javax.swing.JComponent;
 import javax.swing.JTree;
 
 public abstract class AbstractTreeCellRendererCode {
 
-    public abstract Component getComponent(Component superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus);
+    public abstract JComponent getComponent(JComponent superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus);
 
 }

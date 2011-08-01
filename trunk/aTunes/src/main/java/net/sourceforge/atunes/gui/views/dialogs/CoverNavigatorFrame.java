@@ -37,6 +37,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
 
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.CustomFrame;
 import net.sourceforge.atunes.gui.views.controls.ScrollableFlowPanel;
 import net.sourceforge.atunes.model.Artist;
@@ -102,14 +103,16 @@ public final class CoverNavigatorFrame extends CustomFrame {
         JPanel panel = new JPanel(new GridBagLayout());
 
         coversPanel = new ScrollableFlowPanel();
+        coversPanel.setOpaque(false);
         FlowLayout flowLayout = new FlowLayout();
         flowLayout.setAlignment(FlowLayout.LEADING);
         coversPanel.setLayout(flowLayout);
 
-        list = new JList(artists.toArray());
+        list = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getList();
+        list.setListData(artists.toArray());
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        JScrollPane listScrollPane = new JScrollPane(list);
+        JScrollPane listScrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListScrollPane(list);
         listScrollPane.setMinimumSize(new Dimension(200, 0));
 
         JScrollPane coversScrollPane = new JScrollPane(coversPanel);

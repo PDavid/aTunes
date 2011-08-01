@@ -72,16 +72,6 @@ public final class EditPreferencesDialog extends AbstractCustomModalFrame {
     }
 
     /**
-     * The main method.
-     * 
-     * @param args
-     *            the arguments
-     */
-    public static void main(String[] args) {
-        new EditPreferencesDialog(null).setVisible(true);
-    }
-
-    /**
      * Gets the cancel.
      * 
      * @return the cancel
@@ -100,7 +90,7 @@ public final class EditPreferencesDialog extends AbstractCustomModalFrame {
         container.setOpaque(false);
         list = new JList();
         list.setCellRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListCellRenderer(new PreferencesListCellRendererCode()));
-        JScrollPane scrollPane = new JScrollPane(list);
+        JScrollPane scrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListScrollPane(list);
         // Force minimum width of scroll pane to show items
         scrollPane.setMinimumSize(new Dimension(200, 0));
         options = new JPanel();

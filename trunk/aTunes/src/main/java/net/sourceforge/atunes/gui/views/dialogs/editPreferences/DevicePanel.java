@@ -35,11 +35,11 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
@@ -171,13 +171,13 @@ public final class DevicePanel extends AbstractPreferencesPanel {
         group2.add(folderPathNoChangeRadioButton);
         group2.add(folderPathCustomizedRadioButton);
 
-        availablePatternsTable = new JTable();
+        availablePatternsTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
         availablePatternsTable.setModel(new AvailablePatternsDefaultTableModel());
 
         JPanel patternsPanel = new JPanel(new BorderLayout());
         patternsPanel.setPreferredSize(new Dimension(250, 200));
         patternsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(0,0,0,0), I18nUtils.getString("AVAILABLE_PATTERNS")));
-        patternsPanel.add(new JScrollPane(availablePatternsTable), BorderLayout.CENTER);
+        patternsPanel.add(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(availablePatternsTable), BorderLayout.CENTER);
 
         copySameSongForDifferentAlbums = new JCheckBox(I18nUtils.getString("ALLOW_COPY_TO_DEVICE_SAME_SONG_FOR_DIFFERENT_ALBUMS"));
 

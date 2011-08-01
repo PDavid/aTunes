@@ -224,7 +224,8 @@ public final class ColumnSetSelectorDialog extends AbstractCustomModalDialog {
 
         model = new ColumnsTableModel();
 
-        columnsList = new JTable(model);
+        columnsList = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
+        columnsList.setModel(model);
         columnsList.setShowGrid(false);
         columnsList.setTableHeader(null);
         columnsList.getColumnModel().getColumn(0).setMaxWidth(20);
@@ -233,7 +234,7 @@ public final class ColumnSetSelectorDialog extends AbstractCustomModalDialog {
         columnsList.setDefaultRenderer(String.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(
                 GuiUtils.getComponentOrientationTableCellRendererCode()));
 
-        JScrollPane scrollPane = new JScrollPane(columnsList);
+        JScrollPane scrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(columnsList);
         JLabel label = new JLabel(I18nUtils.getString("SELECT_COLUMNS"));
         JButton okButton = new JButton(I18nUtils.getString("OK"));
         okButton.addActionListener(new ActionListener() {
