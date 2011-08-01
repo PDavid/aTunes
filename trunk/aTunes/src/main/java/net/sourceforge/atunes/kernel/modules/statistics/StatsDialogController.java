@@ -21,12 +21,12 @@
 package net.sourceforge.atunes.kernel.modules.statistics;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Paint;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -59,7 +59,7 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
 
     private static class RightAlignmentTableCellRendererCode extends AbstractTableCellRendererCode {
         @Override
-        public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        public JComponent getComponent(JComponent superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         	if (superComponent instanceof JLabel) {
         		JLabel l = (JLabel) superComponent;
         		l.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -71,7 +71,7 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
 
     private static class SwingOrientationTableCellRendererCode extends AbstractTableCellRendererCode {
         @Override
-        public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        public JComponent getComponent(JComponent superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         	if (superComponent instanceof JLabel) {
         		JLabel l = (JLabel) superComponent;
         		l.setHorizontalAlignment(GuiUtils.getComponentOrientationAsSwingConstant());

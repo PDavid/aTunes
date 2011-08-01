@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.gui.views.dialogs.editPreferences;
 
 import java.awt.CardLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -29,6 +28,7 @@ import java.awt.Insets;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -203,7 +203,7 @@ public final class EditPreferencesDialog extends AbstractCustomModalFrame {
 
     private static class PreferencesListCellRendererCode extends AbstractListCellRendererCode {
         @Override
-        public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        public JComponent getComponent(JComponent superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             JLabel label = (JLabel) superComponent;
             AbstractPreferencesPanel p = (AbstractPreferencesPanel) value;
             label.setText(p.getTitle());

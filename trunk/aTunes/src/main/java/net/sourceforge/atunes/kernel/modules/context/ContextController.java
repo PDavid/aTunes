@@ -20,11 +20,11 @@
 
 package net.sourceforge.atunes.kernel.modules.context;
 
-import java.awt.Component;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.List;
 
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 
@@ -55,7 +55,7 @@ class ContextController extends AbstractSimpleController<ContextPanel> {
 			getComponentControlled().getContextSelector().setRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListCellRenderer(new AbstractListCellRendererCode() {
 
 				@Override
-				public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+				public JComponent getComponent(JComponent superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 					((JLabel)superComponent).setIcon(((AbstractContextPanel)value).getIcon().getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(superComponent, isSelected || cellHasFocus)));
 					((JLabel)superComponent).setText(((AbstractContextPanel)value).getTitle());
 					return superComponent;

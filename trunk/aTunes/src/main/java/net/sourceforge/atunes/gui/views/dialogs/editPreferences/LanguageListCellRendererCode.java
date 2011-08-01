@@ -20,11 +20,11 @@
 
 package net.sourceforge.atunes.gui.views.dialogs.editPreferences;
 
-import java.awt.Component;
 import java.net.URL;
 import java.util.Locale;
 
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 
@@ -36,12 +36,12 @@ import net.sourceforge.atunes.utils.StringUtils;
 public class LanguageListCellRendererCode extends AbstractListCellRendererCode {
 	
     @Override
-    public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+    public JComponent getComponent(JComponent superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         if (!(value instanceof Locale)) {
             throw new IllegalArgumentException("Argument value must be instance of Locale");
         }
 
-        Component c = superComponent;
+        JComponent c = superComponent;
 
         Locale displayingLocale = (Locale) value;
         Locale currentLocale = ApplicationState.getInstance().getLocale().getLocale();

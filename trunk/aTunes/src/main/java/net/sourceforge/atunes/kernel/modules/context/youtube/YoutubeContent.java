@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -98,7 +99,7 @@ public class YoutubeContent extends AbstractContextPanelContent {
 
 	private static class YoutubeResultsTableCellRendererCode extends AbstractTableCellRendererCode {
         @Override
-        public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        public JComponent getComponent(JComponent superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             return getPanelForTableRenderer(((YoutubeResultEntry) value).getImage(), 
             								StringUtils.getString("<html>", ((YoutubeResultEntry) value).getName(), "<br>(", ((YoutubeResultEntry) value).getDuration(), ")</html>"), 
             								superComponent.getBackground(), 

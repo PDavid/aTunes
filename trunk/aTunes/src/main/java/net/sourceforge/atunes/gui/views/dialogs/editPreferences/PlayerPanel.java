@@ -62,8 +62,7 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
 	private final class HotkeyTableTableCellRendererCode extends
 			AbstractTableCellRendererCode {
 		@Override
-		public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-		    Component c = superComponent;
+		public JComponent getComponent(JComponent c, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 		    GuiUtils.applyComponentOrientation((JLabel) c);
 		    if (conflicts.contains(row) || notRecommendedKeys.contains(row)) {
 		        ((JLabel) c).setForeground(ColorDefinitions.WARNING_COLOR);

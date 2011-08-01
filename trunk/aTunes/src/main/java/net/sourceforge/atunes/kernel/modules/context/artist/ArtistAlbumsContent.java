@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
@@ -51,7 +52,7 @@ public class ArtistAlbumsContent extends AbstractContextPanelContent {
 
     private static class AlbumsTableCellRendererCode extends AbstractTableCellRendererCode {
         @Override
-        public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        public JComponent getComponent(JComponent superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             return getPanelForTableRenderer(((AlbumInfo) value).getCover(), 
             								StringUtils.getString("<html>", ((AlbumInfo) value).getTitle(), "</html>"), 
             								superComponent.getBackground(),

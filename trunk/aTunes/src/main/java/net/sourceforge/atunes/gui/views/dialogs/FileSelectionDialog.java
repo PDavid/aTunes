@@ -32,6 +32,7 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -191,7 +192,7 @@ public final class FileSelectionDialog extends AbstractCustomModalDialog {
 
     private static class FileSystemListCellRendererCode extends AbstractListCellRendererCode {
         @Override
-        public Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        public JComponent getComponent(JComponent superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         	if (superComponent instanceof JLabel) {
         		JLabel icon = (JLabel) superComponent;
         		File f = (File) value;

@@ -24,6 +24,7 @@ import java.awt.Component;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
@@ -112,7 +113,7 @@ public class SimilarArtistsContent extends AbstractContextPanelContent {
     private static class SimilarArtistTableCellRendererCode extends AbstractTableCellRendererCode {
 
         @Override
-        public Component getComponent(Component superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        public JComponent getComponent(JComponent superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             return getPanelForTableRenderer(((ArtistInfo) value).getImage(), 
             							    StringUtils.getString("<html><br>", ((ArtistInfo) value).getName(), "<br>", ((ArtistInfo) value).getMatch(), "%<br>", ((ArtistInfo) value).isAvailable() ? I18nUtils.getString("AVAILABLE_IN_REPOSITORY") : "", "</html>"), 
             							    superComponent.getBackground(),

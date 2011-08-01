@@ -20,9 +20,8 @@
 
 package net.sourceforge.atunes.gui.renderers;
 
-import java.awt.Component;
-
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 
@@ -38,8 +37,7 @@ public class ImageIconTableCellRendererCode extends AbstractTableCellRendererCod
     }
 
     @Override
-    public Component getComponent(Component superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        Component c = superComponent;
+    public JComponent getComponent(JComponent c, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         ((JLabel) c).setText(null);
         ((JLabel) c).setIcon((ImageIcon) value);
 

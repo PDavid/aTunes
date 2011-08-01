@@ -20,12 +20,11 @@
 
 package net.sourceforge.atunes.gui.lookandfeel;
 
-import java.awt.Component;
-
+import javax.swing.JComponent;
 import javax.swing.JList;
 
 public abstract class AbstractListCellRendererCode {
 
-    public abstract Component getComponent(Component superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus);
+    public abstract JComponent getComponent(JComponent superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus);
 
 }
