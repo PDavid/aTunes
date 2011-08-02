@@ -238,7 +238,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
         c.weightx = 1;
         c.weighty = 1;
         c.fill = GridBagConstraints.BOTH;
-        JScrollPane sp = new JScrollPane(windowTypeChoosingPanel);
+        JScrollPane sp = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getScrollPane(windowTypeChoosingPanel);
         sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         sp.getVerticalScrollBar().setUnitIncrement(20);
         add(sp, c);

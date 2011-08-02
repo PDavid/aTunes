@@ -31,10 +31,10 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
 import net.sourceforge.atunes.gui.images.RadioImageIcon;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.CustomFrame;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -105,7 +105,7 @@ public final class RadioBrowserDialog extends CustomFrame {
         c.weightx = 1;
         c.weighty = 1;
         c.fill = GridBagConstraints.BOTH;
-        panel.add(new JScrollPane(treeTable), c);
+        panel.add(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getScrollPane(treeTable), c);
         c.gridy = 2;
         c.weightx = 0;
         c.weighty = 0;

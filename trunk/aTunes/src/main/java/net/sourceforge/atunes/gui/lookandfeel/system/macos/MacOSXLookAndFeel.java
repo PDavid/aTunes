@@ -72,14 +72,14 @@ public class MacOSXLookAndFeel extends SystemLookAndFeel {
 	
 	@Override
 	public int getSplitPaneDividerSize() {
-		return 2; // Must be enough size to move easily with mouse
+		return 1; // Must be enough size to move easily with mouse
 	}
 	
 	@Override
 	public JScrollPane getTableScrollPane(JTable table) {
 		table.setOpaque(false);
 		table.setBorder(BorderFactory.createEmptyBorder());
-        JScrollPane scrollPane =  new JScrollPane(table);
+        JScrollPane scrollPane =  getScrollPane(table);
         scrollPane.setViewport(new StripedTableViewport(table));
         scrollPane.getViewport().setView(table);
         scrollPane.setCorner(JScrollPane.UPPER_RIGHT_CORNER, createCornerComponent(table));
@@ -90,7 +90,7 @@ public class MacOSXLookAndFeel extends SystemLookAndFeel {
 	public JScrollPane getTreeScrollPane(JTree tree) {
 		tree.setOpaque(false);
 		tree.setBorder(BorderFactory.createEmptyBorder());
-        JScrollPane scrollPane =  new JScrollPane(tree);
+        JScrollPane scrollPane =  getScrollPane(tree);
         scrollPane.setViewport(new StripedTreeViewport(tree));
         scrollPane.getViewport().setView(tree);
         return scrollPane;
@@ -100,7 +100,7 @@ public class MacOSXLookAndFeel extends SystemLookAndFeel {
     public JScrollPane getListScrollPane(JList list) {
     	list.setOpaque(false);
     	list.setBorder(BorderFactory.createEmptyBorder());
-        JScrollPane scrollPane =  new JScrollPane(list);
+        JScrollPane scrollPane =  getScrollPane(list);
         scrollPane.setViewport(new StripedListViewport(list));
         scrollPane.getViewport().setView(list);
     	return scrollPane;
@@ -154,5 +154,14 @@ public class MacOSXLookAndFeel extends SystemLookAndFeel {
         list.setCellRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListCellRenderer(null));
     	return list;
     }
+    
+    @Override
+    public JScrollPane getScrollPane(Component component) {
+    	JScrollPane scrollPane = new JScrollPane(component);
+    	scrollPane.setBorder(BorderFactory.createLineBorder(MacOSColors.SEPARATOR_COLOR));
+    	return scrollPane;
+    }
+    
+
 
 }

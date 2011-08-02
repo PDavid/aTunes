@@ -115,7 +115,7 @@ public final class CoverNavigatorFrame extends CustomFrame {
         JScrollPane listScrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListScrollPane(list);
         listScrollPane.setMinimumSize(new Dimension(200, 0));
 
-        JScrollPane coversScrollPane = new JScrollPane(coversPanel);
+        JScrollPane coversScrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getScrollPane(coversPanel);
         coversScrollPane.setBorder(BorderFactory.createLineBorder(GuiUtils.getBorderColor()));
         coversScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         coversScrollPane.getVerticalScrollBar().setUnitIncrement(20);

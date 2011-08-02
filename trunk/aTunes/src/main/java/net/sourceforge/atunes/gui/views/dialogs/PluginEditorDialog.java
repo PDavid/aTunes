@@ -34,10 +34,10 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -70,7 +70,7 @@ public class PluginEditorDialog extends AbstractCustomModalDialog {
     private JPanel getContent() {
         JPanel panel = new JPanel(new BorderLayout());
         PluginConfigurationPanel configPanel = new PluginConfigurationPanel(configuration);
-        panel.add(new JScrollPane(configPanel), BorderLayout.CENTER);
+        panel.add(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getScrollPane(configPanel), BorderLayout.CENTER);
         JButton okButton = new JButton(I18nUtils.getString("OK"));
         okButton.addActionListener(new ActionListener() {
             @Override

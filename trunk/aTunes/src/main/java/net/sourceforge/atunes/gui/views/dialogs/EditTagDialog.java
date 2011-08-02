@@ -44,6 +44,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalFrame;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
@@ -310,7 +311,7 @@ public final class EditTagDialog extends AbstractCustomModalFrame {
             }
         });
         commentCheckBox.setSelected(true);
-        JScrollPane scrollPane = new JScrollPane(commentTextArea);
+        JScrollPane scrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getScrollPane(commentTextArea);
         lyricsCheckBox = new JCheckBox();
         JLabel lyricsLabel = new JLabel(I18nUtils.getString("LYRICS"));
         lyricsTextArea = new CustomTextArea();
@@ -322,7 +323,7 @@ public final class EditTagDialog extends AbstractCustomModalFrame {
             }
         });
         lyricsCheckBox.setSelected(true);
-        JScrollPane scrollPane2 = new JScrollPane(lyricsTextArea);
+        JScrollPane scrollPane2 = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getScrollPane(lyricsTextArea);
         trackNumberCheckBox = new JCheckBox();
         JLabel trackNumberLabel = new JLabel(I18nUtils.getString("TRACK"));
         trackNumberTextField = new CustomTextField();
