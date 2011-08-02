@@ -32,6 +32,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomWindow;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
@@ -91,7 +92,7 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
         c.insets = new Insets(0, 10, 0, 10);
         container.add(line3, c);
         // Use scroll pane to draw a border consistent with look and feel
-        JScrollPane scrollPane = new JScrollPane(container);
+        JScrollPane scrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getScrollPane(container);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         add(scrollPane);

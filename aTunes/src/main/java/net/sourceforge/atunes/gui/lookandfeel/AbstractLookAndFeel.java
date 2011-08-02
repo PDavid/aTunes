@@ -473,4 +473,11 @@ public abstract class AbstractLookAndFeel {
      */
     public abstract JScrollPane getListScrollPane(JList list);
     
+    /**
+     * Returns scroll pane with special look and feel settings
+     * @param component
+     * @return
+     */
+    public abstract JScrollPane getScrollPane(Component component);
+    
 }

@@ -35,6 +35,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 
@@ -193,9 +194,7 @@ public abstract class AbstractContextPanel {
     				((JComponent) componentToAdd).setOpaque(false);
     			}
     			if (content.isScrollNeeded()) {
-    				JScrollPane scroll = new JScrollPane(componentToAdd);
-    				scroll.setBorder(null);
-    				scroll.getVerticalScrollBar().setUnitIncrement(50);
+    				JScrollPane scroll = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getScrollPane(componentToAdd);
     				componentToAdd = scroll;
     			}
     			content.setParentPanel(panel);
@@ -207,7 +206,7 @@ public abstract class AbstractContextPanel {
     			panel.add(componentToAdd, c);
     			c.gridy++;
     		}
-    		JScrollPane scrollPane = new JScrollPane(panel);
+    		JScrollPane scrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getScrollPane(panel);
     		scrollPane.getVerticalScrollBar().setUnitIncrement(50);
     		component = scrollPane;
     	}

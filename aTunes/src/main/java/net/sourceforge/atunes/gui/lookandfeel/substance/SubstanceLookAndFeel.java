@@ -427,8 +427,13 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
     }
     
     @Override
+    public JScrollPane getScrollPane(Component component) {
+    	return new JScrollPane(component);
+    }
+    
+    @Override
     public JScrollPane getTableScrollPane(JTable table) {
-    	return new JScrollPane(table);
+    	return getScrollPane(table);
     }
     
     @Override
@@ -438,12 +443,12 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
     
     @Override
     public JScrollPane getTreeScrollPane(JTree tree) {
-    	return new JScrollPane(tree);
+    	return getScrollPane(tree);
     }
     
     @Override
     public JScrollPane getListScrollPane(JList list) {
-    	return new JScrollPane(list);
+    	return getScrollPane(list);
     }
     
     @Override

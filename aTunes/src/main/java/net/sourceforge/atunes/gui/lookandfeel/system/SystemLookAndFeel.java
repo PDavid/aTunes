@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.gui.lookandfeel.system;
 
+import java.awt.Component;
 import java.util.List;
 
 import javax.swing.JDialog;
@@ -93,8 +94,13 @@ public class SystemLookAndFeel extends AbstractLookAndFeel {
     }
 
     @Override
+    public JScrollPane getScrollPane(Component component) {
+    	return new JScrollPane(component);
+    }
+    
+    @Override
     public JScrollPane getTableScrollPane(JTable table) {
-    	return new JScrollPane(table);
+    	return getScrollPane(table);
     }
     
     @Override
@@ -104,12 +110,12 @@ public class SystemLookAndFeel extends AbstractLookAndFeel {
     
     @Override
     public JScrollPane getTreeScrollPane(JTree tree) {
-    	return new JScrollPane(tree);
+    	return getScrollPane(tree);
     }
     
     @Override
     public JScrollPane getListScrollPane(JList list) {
-    	return new JScrollPane(list);
+    	return getScrollPane(list);
     }
     
     @Override

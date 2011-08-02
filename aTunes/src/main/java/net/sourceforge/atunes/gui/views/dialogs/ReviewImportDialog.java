@@ -37,7 +37,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
@@ -45,6 +44,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.tree.TreePath;
 
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.model.ReviewImportTreeTableModel;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
@@ -162,7 +162,7 @@ public final class ReviewImportDialog extends AbstractCustomModalDialog {
         panel.add(topPanel, c);
         c.gridy = 1;
         c.weighty = 1;
-        panel.add(new JScrollPane(treeTable), c);
+        panel.add(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getScrollPane(treeTable), c);
         c.gridy = 2;
         c.weightx = 0;
         c.weighty = 0;

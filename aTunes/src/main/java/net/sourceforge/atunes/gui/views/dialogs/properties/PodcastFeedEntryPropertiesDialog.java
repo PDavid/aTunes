@@ -156,7 +156,7 @@ final class PodcastFeedEntryPropertiesDialog extends PropertiesDialog {
         c.insets = new Insets(5, 10, 0, 10);
         panel.add(descriptionLabel, c);
 
-        descriptionScrollPane = new JScrollPane();
+        descriptionScrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getScrollPane(null);
         descriptionScrollPane.setMinimumSize(new Dimension(400, 100));
         c.gridx = 1;
         c.gridy = 8;

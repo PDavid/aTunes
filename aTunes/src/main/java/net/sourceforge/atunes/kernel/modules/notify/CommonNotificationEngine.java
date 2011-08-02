@@ -25,13 +25,13 @@ import java.util.UUID;
 
 import javax.swing.ImageIcon;
 
-import org.apache.commons.io.FileUtils;
-
 import net.sourceforge.atunes.misc.TempFolder;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.ImageUtils;
+
+import org.apache.commons.io.FileUtils;
 
 public abstract class CommonNotificationEngine implements NotificationEngine {
 
