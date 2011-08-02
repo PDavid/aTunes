@@ -115,7 +115,8 @@ class StripedTableViewport extends JViewport {
         return row % 2 == 0 ? MacOSColors.EVEN_ROW_COLOR : getBackground();
     }
 
-    private void paintVerticalGridLines(Graphics g) {
+    @SuppressWarnings("unused")
+	private void paintVerticalGridLines(Graphics g) {
         // paint the column grid dividers for the non-existent rows.
         int x = - (getViewPosition() != null ? getViewPosition().x : 0);
         for (int i = 0; i < fTable.getColumnCount(); i++) {
