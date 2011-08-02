@@ -27,7 +27,7 @@ import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
-import net.sourceforge.atunes.kernel.modules.notify.NotifyHandler;
+import net.sourceforge.atunes.kernel.modules.notify.NotificationsHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -260,7 +260,7 @@ public final class HotkeyHandler extends AbstractHandler implements HotkeyListen
             break;
         }
         case HOTKEY_SHOW_OSD: {
-            NotifyHandler.getInstance().showNotification(PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList());
+            NotificationsHandler.getInstance().showNotification(PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList());
             break;
         }
         default: {

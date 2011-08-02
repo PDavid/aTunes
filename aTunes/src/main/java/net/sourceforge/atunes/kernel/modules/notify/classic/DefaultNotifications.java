@@ -18,15 +18,17 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.notify;
+package net.sourceforge.atunes.kernel.modules.notify.classic;
 
 import javax.swing.JDialog;
 
 import net.sourceforge.atunes.gui.views.dialogs.OSDDialog;
+import net.sourceforge.atunes.kernel.modules.notify.CommonNotificationEngine;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.utils.I18nUtils;
 
-public class DefaultNotifications implements Notifications {
+public class DefaultNotifications extends CommonNotificationEngine {
 
 	/**
 	 * OSD controller
@@ -60,7 +62,7 @@ public class DefaultNotifications implements Notifications {
 	
     @Override
     public String getName() {
-        return "default";
+        return "Default";
     }
 
     @Override
@@ -70,5 +72,20 @@ public class DefaultNotifications implements Notifications {
     
     @Override
     public void disposeNotifications() {
+    }
+    
+    @Override
+    public boolean testEngineAvailable() {
+    	return true; // Always available
+    }
+    
+    @Override
+    public String getDescription() {
+    	return I18nUtils.getString("NOTIFICATION_ENGINE_DEFAULT_DESCRIPTION");
+    }
+    
+    @Override
+    public String getUrl() {
+    	return null;
     }
 }

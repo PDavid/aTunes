@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.notify;
+package net.sourceforge.atunes.kernel.modules.notify.libnotify;
 
 import net.sourceforge.atunes.misc.log.Logger;
 

@@ -36,7 +36,7 @@ import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeyHandler;
 import net.sourceforge.atunes.kernel.modules.instances.MultipleInstancesHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
-import net.sourceforge.atunes.kernel.modules.notify.NotifyHandler;
+import net.sourceforge.atunes.kernel.modules.notify.NotificationsHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.plugins.GeneralPurposePluginsHandler;
@@ -116,7 +116,7 @@ public abstract class AbstractHandler implements ApplicationLifeCycleListener,
     	handlers.add(HotkeyHandler.getInstance());
     	handlers.add(MultipleInstancesHandler.getInstance());
     	handlers.add(NavigationHandler.getInstance());
-        handlers.add(NotifyHandler.getInstance());
+        handlers.add(NotificationsHandler.getInstance());
         handlers.add(PlayerHandler.getInstance());
         handlers.add(FilterHandler.getInstance());
         handlers.add(PlayListHandler.getInstance());

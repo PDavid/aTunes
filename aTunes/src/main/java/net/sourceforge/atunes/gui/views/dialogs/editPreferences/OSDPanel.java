@@ -20,16 +20,21 @@
 
 package net.sourceforge.atunes.gui.views.dialogs.editPreferences;
 
+import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import net.sourceforge.atunes.gui.views.controls.UrlLabel;
+import net.sourceforge.atunes.kernel.modules.notify.NotificationEngine;
+import net.sourceforge.atunes.kernel.modules.notify.NotificationsHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -37,11 +42,19 @@ public final class OSDPanel extends AbstractPreferencesPanel {
 
     private static final long serialVersionUID = 4489293347321979288L;
 
+    private JComboBox notificationEngines;
+    
+    private JLabel engineAvailability;
+    
+    private JLabel engineDescription;
+    
+    private UrlLabel engineMoreInformation;
+    
+    private JPanel osdSettings;
     private JComboBox osdDuration;
     private JComboBox osdWidth;
     private JComboBox osdHorizontalAlignment;
     private JComboBox osdVerticalAlignment;
-    private JCheckBox useLibnotify;
 
     private static final String LEFT = I18nUtils.getString("LEFT");
     private static final String CENTER = I18nUtils.getString("CENTER");
@@ -54,6 +67,60 @@ public final class OSDPanel extends AbstractPreferencesPanel {
      */
     public OSDPanel() {
         super(I18nUtils.getString("OSD"));
+        
+        JLabel enginesLabel = new JLabel(I18nUtils.getString("NOTIFICATION_ENGINE"));
+        notificationEngines = new JComboBox(NotificationsHandler.getInstance().getNotificationEngines().toArray());
+        notificationEngines.addItemListener(new ItemListener() {
+			
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				updatePanel((String)e.getItem());
+			}
+		});
+        
+        
+        engineAvailability = new JLabel(I18nUtils.getString("NOTIFICATION_ENGINE_NOT_AVAILABLE"));
+        engineAvailability.setVisible(false);
+        
+        engineDescription = new JLabel();
+        
+        engineMoreInformation = new UrlLabel();
+     
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(10, 10, 0, 0);
+        add(enginesLabel, c);
+        
+        c.gridx = 1;
+        c.weightx = 1;
+        c.anchor = GridBagConstraints.WEST;
+        add(notificationEngines, c);
+        
+        c.gridx = 0;
+        c.gridy = 1;
+        c.gridwidth = 2;
+        add(engineAvailability, c);
+        
+        c.gridy = 2;
+        add(engineDescription, c);
+        
+        c.gridy = 3;
+        add(engineMoreInformation, c);
+        
+        osdSettings = getOSDSettings();
+        osdSettings.setVisible(false);
+        JPanel container = new JPanel(new BorderLayout());
+        container.add(osdSettings, BorderLayout.CENTER);
+        c.gridx = 0;
+        c.gridy = 4;
+        c.weighty = 1;
+        c.anchor = GridBagConstraints.NORTHWEST;
+        add(container, c);
+        
+    }
+
+    private JPanel getOSDSettings() {
+    	JPanel panel = new JPanel(new GridBagLayout());
+    	
         JLabel label = new JLabel(I18nUtils.getString("OSD_DURATION"));
         osdDuration = new JComboBox(new Integer[] { 2, 4, 6 });
         JLabel label2 = new JLabel(I18nUtils.getString("OSD_WIDTH"));
@@ -62,17 +129,6 @@ public final class OSDPanel extends AbstractPreferencesPanel {
         osdHorizontalAlignment = new JComboBox(new String[] { LEFT, CENTER, RIGHT });
         JLabel label4 = new JLabel(I18nUtils.getString("VERTICAL_ALIGNMENT"));
         osdVerticalAlignment = new JComboBox(new String[] { TOP, CENTER, BOTTOM });
-        JLabel label5 = new JLabel(I18nUtils.getString("USE_LIBNOTIFY"));
-        useLibnotify = new JCheckBox();
-        useLibnotify.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                osdDuration.setEnabled(!useLibnotify.isSelected());
-                osdWidth.setEnabled(!useLibnotify.isSelected());
-                osdHorizontalAlignment.setEnabled(!useLibnotify.isSelected());
-                osdVerticalAlignment.setEnabled(!useLibnotify.isSelected());
-            }
-        });
 
         GridBagConstraints c = new GridBagConstraints();
         c.anchor = GridBagConstraints.FIRST_LINE_START;
@@ -80,57 +136,49 @@ public final class OSDPanel extends AbstractPreferencesPanel {
         c.gridy = 0;
         c.gridwidth = 1;
         c.insets = new Insets(10, 10, 0, 0);
-        add(label, c);
+        panel.add(label, c);
         c.gridx = 1;
         c.weightx = 1;
         c.insets = new Insets(5, 10, 0, 0);
-        add(osdDuration, c);
+        panel.add(osdDuration, c);
         c.gridx = 0;
         c.gridy = 1;
         c.weightx = 0;
         c.insets = new Insets(10, 10, 0, 0);
-        add(label2, c);
+        panel.add(label2, c);
         c.gridx = 1;
         c.weightx = 1;
         c.insets = new Insets(5, 10, 0, 0);
-        add(osdWidth, c);
+        panel.add(osdWidth, c);
         c.gridx = 0;
         c.gridy = 2;
         c.weightx = 0;
         c.insets = new Insets(10, 10, 0, 0);
-        add(label3, c);
+        panel.add(label3, c);
         c.gridx = 1;
         c.weightx = 1;
         c.insets = new Insets(5, 10, 0, 0);
-        add(osdHorizontalAlignment, c);
+        panel.add(osdHorizontalAlignment, c);
         c.gridx = 0;
         c.gridy = 3;
         c.weightx = 0;
         c.insets = new Insets(10, 10, 0, 0);
-        add(label4, c);
+        panel.add(label4, c);
         c.gridx = 1;
         c.weightx = 1;
         c.insets = new Insets(5, 10, 0, 0);
-        add(osdVerticalAlignment, c);
-        c.gridx = 0;
-        c.gridy = 4;
-        c.weighty = 1;
-        c.weightx = 0;
-        c.insets = new Insets(20, 10, 0, 0);
-        add(label5, c);
-        c.gridx = 1;
-        c.weightx = 1;
-        c.insets = new Insets(15, 10, 0, 0);
-        add(useLibnotify, c);
-    }
+        panel.add(osdVerticalAlignment, c);
 
+    	return panel;
+    }
+    
     @Override
     public boolean applyPreferences(ApplicationState state) {
+    	state.setNotificationEngine((String)notificationEngines.getSelectedItem());
         state.setOsdDuration((Integer) osdDuration.getSelectedItem());
         state.setOsdWidth((Integer) osdWidth.getSelectedItem());
         state.setOsdHorizontalAlignment(getAlignment((String) osdHorizontalAlignment.getSelectedItem()));
         state.setOsdVerticalAlignment(getAlignment((String) osdVerticalAlignment.getSelectedItem()));
-        state.setUseLibnotify(useLibnotify.isSelected());
         return false;
     }
 
@@ -204,17 +252,37 @@ public final class OSDPanel extends AbstractPreferencesPanel {
         }
     }
 
-    public void setUseLibnotify(boolean b) {
-        useLibnotify.setSelected(b);
+    /**
+     * Sets notification engine in combo
+     * @param engine
+     */
+    private void setNotificationEngine(String engine) {
+    	notificationEngines.setSelectedItem(engine != null ? engine : NotificationsHandler.DEFAULT_ENGINE.getName());
+    	updatePanel((String)notificationEngines.getSelectedItem());
     }
-
+    
+    /**
+     * Updates panel depending in notification engine
+     * @param notificationEngine
+     */
+    private void updatePanel(String notificationEngine) {
+		NotificationEngine engine = NotificationsHandler.getInstance().getNotificationEngine(notificationEngine);
+		if (engine != null) {
+			engineAvailability.setVisible(!engine.isEngineAvailable());
+			engineDescription.setText(engine.getDescription());
+			engineMoreInformation.setText(engine.getUrl(), engine.getUrl());
+			// Show settings for default engine
+			osdSettings.setVisible(engine.getName().equals(NotificationsHandler.DEFAULT_ENGINE.getName()));
+		}
+    }
+    
     @Override
     public void updatePanel(ApplicationState state) {
+    	setNotificationEngine(state.getNotificationEngine());
         setOSDDuration(state.getOsdDuration());
         setOSDWidth(state.getOsdWidth());
         setOSDHorizontalAlignment(state.getOsdHorizontalAlignment());
         setOSDVerticalAlignment(state.getOsdVerticalAlignment());
-        setUseLibnotify(state.isUseLibnotify());
     }
 
     @Override
@@ -224,6 +292,10 @@ public final class OSDPanel extends AbstractPreferencesPanel {
 
     @Override
     public void validatePanel() throws PreferencesValidationException {
+    	// Notification engine must be available
+    	if (!NotificationsHandler.getInstance().getNotificationEngine((String)notificationEngines.getSelectedItem()).isEngineAvailable()) {
+    		throw new PreferencesValidationException(I18nUtils.getString("NOTIFICATION_ENGINE_NOT_AVAILABLE"), null);
+    	}
     }
 
     @Override
