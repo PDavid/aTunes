@@ -341,16 +341,22 @@ public final class GuiUtils {
         if (setWindowShapeMethod != null) {
             try {
                 setWindowShapeMethod.invoke(null, window, mask);
+                // any exception will disable call to method
             } catch (SecurityException e) {
                 Logger.error(e);
+                setWindowShapeMethod = null;
             } catch (IllegalArgumentException e) {
                 Logger.info("shaped windows not supported");
+                setWindowShapeMethod = null;
             } catch (IllegalAccessException e) {
                 Logger.error(e);
+                setWindowShapeMethod = null;
             } catch (InvocationTargetException e) {
                 Logger.error(e);
+                setWindowShapeMethod = null;
             } catch (UnsupportedOperationException e) {
                 Logger.error(e);
+                setWindowShapeMethod = null;
             }
         }
     }
@@ -368,21 +374,22 @@ public final class GuiUtils {
         if (setWindowOpacityMethod != null) {
             try {
                 setWindowOpacityMethod.invoke(null, window, opacity);
+                // any exception will disable call to method
             } catch (SecurityException e) {
                 Logger.error(e);
+                setWindowOpacityMethod = null;
             } catch (IllegalArgumentException e) {
                 Logger.info("opaque windows not supported");
+                setWindowOpacityMethod = null;
             } catch (IllegalAccessException e) {
                 Logger.error(e);
+                setWindowOpacityMethod = null;
             } catch (InvocationTargetException e) {
                 Logger.info("opaque windows not supported");
-                // In some systems where window opacity is not supported
-                // This method launches InvocationTargetException continuosly
-                // So the first time exception is thrown, we disable
-                // call to setWindowOpacityMethod
                 setWindowOpacityMethod = null;
             } catch (UnsupportedOperationException e) {
                 Logger.error(e);
+                setWindowOpacityMethod = null;
             }
         }
     }
