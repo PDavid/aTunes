@@ -35,6 +35,7 @@ aTunes 2.1.0
 - Return to simple context panel components layout, removing JXTaskPane (not fully look-and-feel compliance)
 - Disable plugin api validation [ patch by Laurent Cathala ]
 - New splash screen
+- Mac OS X notifications using Growl
 
 - FIX: Dialogs opened from preferences dialog use wrong parent [ patch by Laurent Cathala ]
 - FIX: Exception during renaming of file name

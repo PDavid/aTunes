@@ -61,6 +61,18 @@ public class Logger {
     }
 
     /**
+     * Logs an error event
+     * @param strings
+     */
+    public static void error(String...strings) {
+    	StringBuilder sb = new StringBuilder();
+    	for (String s : strings) {
+    		sb.append(s);
+    	}
+    	error(sb.toString());
+    }
+    
+    /**
      * Logs an error event.
      * 
      * @param o

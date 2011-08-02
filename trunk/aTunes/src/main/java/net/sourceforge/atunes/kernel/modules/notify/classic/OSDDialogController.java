@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.notify;
+package net.sourceforge.atunes.kernel.modules.notify.classic;
 
 import java.awt.Point;
 import java.awt.Toolkit;

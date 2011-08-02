@@ -1029,12 +1029,12 @@ public class ApplicationState {
     
     
 
-    public boolean isUseLibnotify() {
-    	return (Boolean) this.cache.retrievePreference(Preferences.USE_LIBNOTIFY, false);
+    public String getNotificationEngine() {
+    	return (String) this.cache.retrievePreference(Preferences.NOTIFICATION_ENGINE, null);
     }
 
-    public void setUseLibnotify(boolean useLibnotify) {
-    	this.cache.storePreference(Preferences.USE_LIBNOTIFY, useLibnotify);
+    public void setNotificationEngine(String notificationEngine) {
+    	this.cache.storePreference(Preferences.NOTIFICATION_ENGINE, notificationEngine);
     }
     
     

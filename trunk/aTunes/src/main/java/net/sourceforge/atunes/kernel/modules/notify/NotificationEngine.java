@@ -23,14 +23,45 @@ package net.sourceforge.atunes.kernel.modules.notify;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
 
-public interface Notifications {
+public interface NotificationEngine {
 
+	/**
+	 * @return true if engine is supported and available
+	 */
+	public boolean isEngineAvailable();
+	
+    /**
+     * @return name of notification engine
+     */
     public String getName();
 
+    /**
+     * Called to show a notification
+     * @param audioObject
+     */
     public void showNotification(AudioObject audioObject);
     
+    /**
+     * Called to free any resources held by notification engine
+     */
     public void disposeNotifications();
     
+    /**
+     * Update notification engine when settings change
+     * @param newState
+     */
     public void updateNotification(ApplicationState newState);
+    
+    /**
+     * Brief description of notification engine
+     * @return
+     */
+    public String getDescription();
+    
+    /**
+     * URL to find more information
+     * @return
+     */
+    public String getUrl();
 
 }
