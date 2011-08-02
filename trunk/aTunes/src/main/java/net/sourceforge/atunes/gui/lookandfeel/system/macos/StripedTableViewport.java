@@ -84,7 +84,8 @@ class StripedTableViewport extends JViewport {
     @Override
     protected void paintComponent(Graphics g) {
         paintStripedBackground(g);
-        paintVerticalGridLines(g);
+        // alex: removed vertical grid linex in tables as it can be too much lines (for example in play list)
+//        paintVerticalGridLines(g);
         super.paintComponent(g);
     }
 
