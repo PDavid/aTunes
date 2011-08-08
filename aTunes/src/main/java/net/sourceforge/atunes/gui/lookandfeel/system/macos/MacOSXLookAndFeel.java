@@ -87,12 +87,13 @@ public class MacOSXLookAndFeel extends SystemLookAndFeel {
 	}
 	
 	@Override
-	public JScrollPane getTreeScrollPane(JTree tree) {
+	public JScrollPane getTreeScrollPane(final JTree tree) {
 		tree.setOpaque(false);
 		tree.setBorder(BorderFactory.createEmptyBorder());
         JScrollPane scrollPane =  getScrollPane(tree);
         scrollPane.setViewport(new StripedTreeViewport(tree));
         scrollPane.getViewport().setView(tree);
+        tree.setUI(new CustomTreeUI());
         return scrollPane;
 	}
 	
