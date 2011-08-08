@@ -321,7 +321,7 @@ public abstract class AbstractLookAndFeel {
 	 * @return
 	 */
 	public Paint getPaintForColorMutableIcon(Component c, boolean isSelected) {
-		return UIManager.getColor("Label.foreground");	
+		return isSelected ? UIManager.getColor("Tree.selectionForeground") : UIManager.getColor("Label.foreground");	
 	}
 
 	/**
