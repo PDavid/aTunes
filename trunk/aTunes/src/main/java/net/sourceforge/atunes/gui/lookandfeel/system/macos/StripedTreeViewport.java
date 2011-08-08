@@ -25,10 +25,13 @@ import java.awt.Graphics;
 
 import javax.swing.JTree;
 import javax.swing.JViewport;
+import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+
+import org.apache.commons.lang.ArrayUtils;
 
 class StripedTreeViewport extends JViewport {
 
@@ -60,7 +63,7 @@ class StripedTreeViewport extends JViewport {
 			public void stateChanged(ChangeEvent e) {
 				repaint();
 			}
-		});
+		});    	
     }
 
     @Override
@@ -92,6 +95,9 @@ class StripedTreeViewport extends JViewport {
     }
 
     private Color getRowColor(int row) {
+    	if (ArrayUtils.contains(tree.getSelectionRows(), row)) {
+    		return UIManager.getColor("Tree.selectionBackground");
+    	}
         return row % 2 == 0 ? MacOSColors.EVEN_ROW_COLOR : getBackground();
     }
 }
