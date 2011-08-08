@@ -59,16 +59,6 @@ public class MacOSXLookAndFeel extends SystemLookAndFeel {
 	public Paint getPaintForSpecialControls() {
 		return new Color(20, 20, 20, 180); 
 	}
-
-	/**
-	 * Returns paint to be used to draw a color mutable icon in given component
-	 * @param c
-	 * @param isSelected
-	 * @return
-	 */
-	public Paint getPaintForColorMutableIcon(Component c, boolean isSelected) {
-		return new Color(20, 20, 20, 180);	
-	}
 	
 	@Override
 	public int getSplitPaneDividerSize() {
