@@ -88,7 +88,9 @@ public class LyrDBEngine extends AbstractLyricsEngine {
 			// Build url for ID
 			String urlString = LYRIC_URL.replace(LYRICS_ID_WILDCARD, id);
 			String lyric = readURL(getConnection(urlString), "UTF-8");
-			if (lyric != null) {				
+			if (lyric != null) {	
+				// Remove carriage return
+				lyric = lyric.replace("\r\r", "");
 				lyric = appendFooter(lyric);				
 				return new Lyrics(lyric, urlString);
 			}			
