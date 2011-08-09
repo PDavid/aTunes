@@ -68,7 +68,6 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.PlayPauseButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.PreviousButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.ProgressSlider;
 import net.sourceforge.atunes.gui.views.controls.playerControls.StopButton;
-import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeLevel;
 import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.OsManager;
@@ -80,7 +79,6 @@ import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
-import net.sourceforge.atunes.utils.StringUtils;
 
 public final class FullScreenWindow extends AbstractCustomWindow {
 
@@ -155,9 +153,6 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 
     /** The volume slider */
     private VolumeSlider volumeSlider;
-
-    /** The volume level */
-    private VolumeLevel volumeLevel;
 
     private JPanel textPanel;
 
@@ -384,7 +379,6 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         muteButton = new MuteButton(PlayerControlsPanel.STOP_MUTE_BUTTONS_SIZE);
         muteButton.setText("");
         volumeSlider = new VolumeSlider();
-        volumeLevel = new VolumeLevel();
 
         previousButton.addMouseListener(clickListener);
         playButton.addMouseListener(clickListener);
@@ -392,7 +386,6 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         nextButton.addMouseListener(clickListener);
         muteButton.addMouseListener(clickListener);
         volumeSlider.addMouseListener(clickListener);
-        volumeLevel.addMouseListener(clickListener);
 
         covers = new CoverFlow();
         Dimension coverSize = new Dimension(GuiUtils.getDeviceWidth(), GuiUtils.getDeviceHeight() * 5 / 7);
@@ -443,7 +436,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         c.fill = GridBagConstraints.HORIZONTAL;
         controlsPanel.add(progressSlider, c);
 
-        JPanel buttonsPanel = PlayerControlsPanel.getPanelWithPlayerControls(stopButton, previousButton, playButton, nextButton, muteButton, volumeSlider, volumeLevel);
+        JPanel buttonsPanel = PlayerControlsPanel.getPanelWithPlayerControls(stopButton, previousButton, playButton, nextButton, muteButton, volumeSlider);
 
         c.gridx = 0;
         c.gridwidth = 3;
@@ -528,7 +521,6 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 
     public void setVolume(int volume) {
         volumeSlider.setValue(volume);
-        volumeLevel.setText(StringUtils.getString(String.valueOf(volume), " %"));
     }
 
     /**

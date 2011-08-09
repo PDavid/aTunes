@@ -29,6 +29,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import net.sourceforge.atunes.kernel.modules.player.Volume;
+import net.sourceforge.atunes.utils.GuiUtils;
 
 public final class VolumeSlider extends JSlider {
 
@@ -41,7 +42,7 @@ public final class VolumeSlider extends JSlider {
         setMaximum(100);
         setValue(50);
         setFocusable(false);
-        setPreferredSize(new Dimension(80, 20));
+        setPreferredSize(new Dimension(GuiUtils.getComponentWidthForResolution(0.1f), 20));
 
         // Add behaviour
         addMouseWheelListener(new MouseWheelListener() {
