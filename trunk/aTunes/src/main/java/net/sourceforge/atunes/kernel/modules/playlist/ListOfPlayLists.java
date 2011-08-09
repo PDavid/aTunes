@@ -21,7 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.playlist;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.atunes.model.AudioObject;
@@ -49,9 +49,7 @@ public class ListOfPlayLists implements Serializable {
      */
     public static ListOfPlayLists getEmptyPlayList() {
         ListOfPlayLists l = new ListOfPlayLists();
-        List<PlayList> list = new ArrayList<PlayList>();
-        list.add(new PlayList());
-        l.setPlayLists(list);
+        l.setPlayLists(Collections.singletonList(new PlayList()));
         l.setSelectedPlayList(0);
         return l;
     }
@@ -61,13 +59,7 @@ public class ListOfPlayLists implements Serializable {
      * 
      * @return the playLists
      */
-    public List<PlayList> getPlayLists() {
-        // As some attributes are transient complete some information before return play lists
-        for (PlayList pl : playLists) {
-            if (pl.getMode() == null) {
-                pl.setMode(PlayListMode.getPlayListMode(pl));
-            }
-        }
+    List<PlayList> getPlayLists() {
         return playLists;
     }
 
@@ -106,8 +98,13 @@ public class ListOfPlayLists implements Serializable {
      * @param contents
      */
     public void setContents(List<List<AudioObject>> contents) {
-        for (int i = 0; i < getPlayLists().size(); i++) {
-            getPlayLists().get(i).setContent(contents.get(i));
+    	if (playLists.size() != contents.size()) {
+    		throw new IllegalArgumentException("Invalid play list contents");
+    	}
+        for (int i = 0; i < playLists.size(); i++) {
+        	PlayList pl = getPlayLists().get(i);
+            pl.setContent(contents.get(i));
+            pl.setMode(PlayListMode.getPlayListMode(pl));
         }
     }
 

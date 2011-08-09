@@ -434,10 +434,7 @@ public final class ApplicationStateHandler extends AbstractHandler {
             stream = new ObjectInputStream(new FileInputStream(StringUtils.getString(getUserConfigFolder(), "/", Constants.PLAYLISTS_CONTENTS_FILE)));
             List<List<AudioObject>> contents = (List<List<AudioObject>>) stream.readObject();
             Logger.info(StringUtils.getString("Playlists contents loaded"));
-            if (contents.size() == listOfPlayLists.getPlayLists().size()) {
-                listOfPlayLists.setContents(contents);
-            }
-
+            listOfPlayLists.setContents(contents);
             return listOfPlayLists;
         } catch (FileNotFoundException e) {
             Logger.info("No playlist information found");
