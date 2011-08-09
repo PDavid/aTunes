@@ -33,6 +33,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTree;
+import javax.swing.UIManager;
 import javax.swing.table.TableCellRenderer;
 
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
@@ -50,6 +51,9 @@ public class MacOSXLookAndFeel extends SystemLookAndFeel {
 	@Override
 	public void initializeLookAndFeel() {
 		super.initializeLookAndFeel();
+		UIManager.put("TableHeader.cellBorder", BorderFactory.createLineBorder(MacOSColors.TABLE_HEADER_COLOR));
+		UIManager.put("TableHeader.background", UIManager.get("Panel.background"));
+		
 	}
 	
 	/**
