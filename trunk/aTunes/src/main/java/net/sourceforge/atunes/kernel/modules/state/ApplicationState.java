@@ -1090,4 +1090,14 @@ public class ApplicationState {
     public void setTrayPlayerIconsColor(ColorBean color) {
     	this.cache.storePreference(Preferences.TRAY_PLAYER_ICONS_COLOR, color);
     }
+    
+    
+    
+    public boolean isShowPlayerControlsOnTop() {
+    	return (Boolean) this.cache.retrievePreference(Preferences.SHOW_PLAYER_CONTROLS_ON_TOP, false);
+    }
+    
+    public void setShowPlayerControlsOnTop(boolean onTop) {
+    	this.cache.storePreference(Preferences.SHOW_PLAYER_CONTROLS_ON_TOP, onTop);
+    }
 }

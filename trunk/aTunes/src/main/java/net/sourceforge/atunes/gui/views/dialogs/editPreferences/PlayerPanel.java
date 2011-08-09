@@ -139,6 +139,11 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
     
     /** Show advanced player controls */
     private JCheckBox showAdvancedPlayerControls;
+    
+    /**
+     * Show player controls on top
+     */
+    private JCheckBox showPlayerControlsOnTop;
 
     /** The use fade away. */
     private JCheckBox useFadeAway;
@@ -186,6 +191,7 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
         showAdvancedPlayerControls = new JCheckBox(I18nUtils.getString("SHOW_ADVANCED_PLAYER_CONTROLS"));
         useShortPathNames = new JCheckBox(I18nUtils.getString("USE_SHORT_PATH_NAMES_FOR_MPLAYER"));
         enableGlobalHotkeys = new JCheckBox(I18nUtils.getString("ENABLE_GLOBAL_HOTKEYS"));
+        showPlayerControlsOnTop = new JCheckBox(I18nUtils.getString("SHOW_PLAYER_CONTROLS_ON_TOP"));
 
         hotkeyTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
         hotkeyTable.setModel(tableModel);
@@ -253,16 +259,18 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
         c.gridy = 4;
         add(showAdvancedPlayerControls, c);
         c.gridy = 5;
-        add(useShortPathNames, c);
+        add(showPlayerControlsOnTop, c);
         c.gridy = 6;
-        add(cacheFilesBeforePlaying, c);
+        add(useShortPathNames, c);
         c.gridy = 7;
-        add(enableGlobalHotkeys, c);
+        add(cacheFilesBeforePlaying, c);
         c.gridy = 8;
+        add(enableGlobalHotkeys, c);
+        c.gridy = 9;
         c.weightx = 0;
         c.insets = new Insets(10, 20, 5, 10);
         add(scrollPane, c);
-        c.gridy = 9;
+        c.gridy = 10;
         c.weighty = 1;
         c.fill = GridBagConstraints.NONE;
         c.insets = new Insets(0, 20, 0, 0);
@@ -294,6 +302,13 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
             state.setPlayerEngine(engine);
             needRestart = true;
         }
+
+        boolean onTop = state.isShowPlayerControlsOnTop();
+        state.setShowPlayerControlsOnTop(showPlayerControlsOnTop.isSelected());
+        if (onTop != showPlayerControlsOnTop.isSelected()) {
+        	needRestart = true;
+        }
+        
         return needRestart;
     }
 
@@ -364,6 +379,14 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
 	private void setShowAdvancedPlayerControls(boolean showAdvancedPlayerControls) {
 		this.showAdvancedPlayerControls.setSelected(showAdvancedPlayerControls);
 	}
+	
+	/**
+	 * Sets the property to show player controls on top
+	 * @param onTop
+	 */
+	private void setShowPlayerControlsOnTop(boolean onTop) {
+		this.showPlayerControlsOnTop.setSelected(onTop);
+	}
     
     /**
      * Sets the cache files before playing.
@@ -390,6 +413,7 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
         setUseFadeAway(state.isUseFadeAway());
         setShowTicks(state.isShowTicks());
         setShowAdvancedPlayerControls(state.isShowAdvancedPlayerControls());
+        setShowPlayerControlsOnTop(state.isShowPlayerControlsOnTop());
         setCacheFilesBeforePlaying(state.isCacheFilesBeforePlaying());
         setEnableHotkeys(state.isEnableHotkeys());
         HotkeysConfig hotkeysConfig = state.getHotkeysConfig();
