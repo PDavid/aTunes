@@ -23,6 +23,7 @@ package net.sourceforge.atunes.gui.lookandfeel.system.macos;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Paint;
 
@@ -53,7 +54,11 @@ public class MacOSXLookAndFeel extends SystemLookAndFeel {
 		super.initializeLookAndFeel();
 		UIManager.put("TableHeader.cellBorder", BorderFactory.createLineBorder(MacOSColors.TABLE_HEADER_COLOR));
 		UIManager.put("TableHeader.background", UIManager.get("Panel.background"));
-		
+	}
+	
+	@Override
+	public void initializeFonts(Font baseFont) {
+		// Don't do any font initialization, keep original fonts
 	}
 	
 	/**
