@@ -66,22 +66,27 @@ public final class PlayerControlsPanel extends JPanel {
     /**
      * Size of main controls by standard layout (not Substance)
      */
-    public static final Dimension DEFAULT_BUTTONS_SIZE = new Dimension(35, 35);
+    public static final Dimension PLAY_PREVIOUS_NEXT_BUTTONS_SIZE = new Dimension(40, 40);
+    
+    /**
+     * Size of main controls by standard layout (not Substance)
+     */
+    public static final Dimension DEFAULT_BUTTONS_SIZE = new Dimension(34, 34);
 
     /** Size of play / pause button */
     public static final Dimension PLAY_BUTTON_SIZE = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isCustomPlayerControlsSupported() ? new Dimension(45, 45)
-            : DEFAULT_BUTTONS_SIZE;
+            : PLAY_PREVIOUS_NEXT_BUTTONS_SIZE;
 
     /** Size of previous and next buttons */
     public static final Dimension PREVIOUS_NEXT_BUTTONS_SIZE = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isCustomPlayerControlsSupported() ? new Dimension(62, 30)
-            : DEFAULT_BUTTONS_SIZE;
+            : PLAY_PREVIOUS_NEXT_BUTTONS_SIZE;
 
     /** Size of stop and mute buttons */
     public static final Dimension STOP_MUTE_BUTTONS_SIZE = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isCustomPlayerControlsSupported() ? new Dimension(30, 26)
             : DEFAULT_BUTTONS_SIZE;
 
     /** Size of shuffle, repeat, ... buttons */
-    public static final Dimension OTHER_BUTTONS_SIZE = new Dimension(28, 26);
+    public static final Dimension OTHER_BUTTONS_SIZE = new Dimension(30, 30);
 
     /** Height of progress bar when has no ticks */
     private static final int PROGRESS_BAR_NO_TICKS_HEIGHT = 26;
