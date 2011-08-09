@@ -27,9 +27,12 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.JTable;
 import javax.swing.JViewport;
+import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.TableColumn;
+
+import org.apache.commons.lang.ArrayUtils;
 
 /**
  * Based in work: 
@@ -112,6 +115,9 @@ class StripedTableViewport extends JViewport {
     }
 
     private Color getRowColor(int row) {
+    	if (ArrayUtils.contains(fTable.getSelectedRows(), row)) {
+    		return UIManager.getColor("Tree.selectionBackground");
+    	}
         return row % 2 == 0 ? MacOSColors.EVEN_ROW_COLOR : getBackground();
     }
 
