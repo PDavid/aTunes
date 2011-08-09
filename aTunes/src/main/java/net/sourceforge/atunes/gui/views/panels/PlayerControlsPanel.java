@@ -31,7 +31,6 @@ import java.awt.event.ComponentEvent;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JToggleButton;
@@ -48,7 +47,6 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.RepeatButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.SecondaryControl;
 import net.sourceforge.atunes.gui.views.controls.playerControls.ShuffleButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.StopButton;
-import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeLevel;
 import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
 import net.sourceforge.atunes.utils.GuiUtils;
 
@@ -108,7 +106,6 @@ public final class PlayerControlsPanel extends JPanel {
     private NextButton nextButton;
     private MuteButton volumeButton;
     private VolumeSlider volumeSlider;
-    private VolumeLevel volumeLevel;
     private boolean playing;
     private ProgressSlider progressSlider;
     private JPanel secondaryControls;
@@ -192,10 +189,6 @@ public final class PlayerControlsPanel extends JPanel {
         return volumeSlider;
     }
 
-    public JLabel getVolumeLevel() {
-        return volumeLevel;
-    }
-
     public NormalizationButton getNormalizeButton() {
         return normalizeButton;
     }
@@ -227,8 +220,7 @@ public final class PlayerControlsPanel extends JPanel {
         volumeButton = new MuteButton(STOP_MUTE_BUTTONS_SIZE);
         volumeButton.setText("");
         volumeSlider = new VolumeSlider();
-        volumeLevel = new VolumeLevel();
-        JPanel panel = getPanelWithPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider, volumeLevel);
+        JPanel panel = getPanelWithPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider);
         // add a small border to separate from other components
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 0));
         return panel;
@@ -244,13 +236,12 @@ public final class PlayerControlsPanel extends JPanel {
      * @param nextButton
      * @param volumeButton
      * @param volumeSlider
-     * @param volumeLevel
      * @return
      */
-    public static JPanel getPanelWithPlayerControls(StopButton stopButton, PreviousButton previousButton, PlayPauseButton playButton, NextButton nextButton, MuteButton volumeButton, JSlider volumeSlider, JLabel volumeLevel) {
+    public static JPanel getPanelWithPlayerControls(StopButton stopButton, PreviousButton previousButton, PlayPauseButton playButton, NextButton nextButton, MuteButton volumeButton, JSlider volumeSlider) {
         return LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isCustomPlayerControlsSupported() ? 
-        		getCustomPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider, volumeLevel) : 
-        		getStandardPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider, volumeLevel);
+        		getCustomPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider) : 
+        		getStandardPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider);
     }
 
     /**
@@ -262,10 +253,9 @@ public final class PlayerControlsPanel extends JPanel {
      * @param nextButton
      * @param volumeButton
      * @param volumeSlider
-     * @param volumeLevel
      * @return
      */
-    private static JPanel getCustomPlayerControls(StopButton stopButton, PreviousButton previousButton, PlayPauseButton playButton, NextButton nextButton, MuteButton volumeButton, JSlider volumeSlider, JLabel volumeLevel) {
+    private static JPanel getCustomPlayerControls(StopButton stopButton, PreviousButton previousButton, PlayPauseButton playButton, NextButton nextButton, MuteButton volumeButton, JSlider volumeSlider) {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setOpaque(false);
 
@@ -284,7 +274,7 @@ public final class PlayerControlsPanel extends JPanel {
         c.gridx = 3;
         c.insets = new Insets(0, -16, 0, 0);
         setButton(panel, nextButton, c);
-        if (volumeButton != null && volumeSlider != null && volumeLevel != null) {
+        if (volumeButton != null && volumeSlider != null) {
             c.gridx = 4;
             c.insets = new Insets(0, -7, 0, 0);
             panel.add(volumeButton, c);
@@ -293,8 +283,6 @@ public final class PlayerControlsPanel extends JPanel {
             c.fill = GridBagConstraints.NONE;
             c.insets = new Insets(0, -1, 3, 0);
             panel.add(volumeSlider, c);
-            c.gridx = 6;
-            panel.add(volumeLevel, c);
         }
         return panel;
     }
@@ -308,10 +296,9 @@ public final class PlayerControlsPanel extends JPanel {
      * @param nextButton
      * @param volumeButton
      * @param volumeSlider
-     * @param volumeLevel
      * @return
      */
-    private static JPanel getStandardPlayerControls(StopButton stopButton, PreviousButton previousButton, PlayPauseButton playButton, NextButton nextButton, MuteButton volumeButton, JSlider volumeSlider, JLabel volumeLevel) {
+    private static JPanel getStandardPlayerControls(StopButton stopButton, PreviousButton previousButton, PlayPauseButton playButton, NextButton nextButton, MuteButton volumeButton, JSlider volumeSlider) {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setOpaque(false);
         GridBagConstraints c = new GridBagConstraints();
@@ -326,17 +313,14 @@ public final class PlayerControlsPanel extends JPanel {
         setButton(panel, playButton, c);
         c.gridx = 3;
         setButton(panel, nextButton, c);
-        if (volumeButton != null && volumeSlider != null && volumeLevel != null) {
+        if (volumeButton != null && volumeSlider != null) {
             c.gridx = 4;
             panel.add(volumeButton, c);
             c.gridx = 5;
             c.weightx = 0;
             c.fill = GridBagConstraints.NONE;
-            c.insets = new Insets(0, 10, 0, 0);
-            volumeSlider.setMinimumSize(new Dimension(50, 20));
+            c.insets = new Insets(0, 5, 0, 0);
             panel.add(volumeSlider, c);
-            c.gridx = 6;
-            panel.add(volumeLevel, c);
         }
         return panel;
     }

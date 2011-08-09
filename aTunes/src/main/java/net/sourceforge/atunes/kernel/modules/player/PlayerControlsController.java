@@ -142,7 +142,6 @@ final class PlayerControlsController extends AbstractSimpleController<PlayerCont
      */
     void setVolume(int value) {
         getComponentControlled().getVolumeSlider().setValue(value);
-        getComponentControlled().getVolumeLevel().setText(StringUtils.getString(String.valueOf(value), " %"));
         getComponentControlled().getVolumeButton().updateIcon();
     }
 

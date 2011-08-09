@@ -57,7 +57,7 @@ public class FilterPanel extends JPanel {
 
     private void addContent() {
         filterButton = new PopUpButton(ApplicationState.getInstance().isShowPlayerControlsOnTop() ? PopUpButton.BOTTOM_RIGHT : PopUpButton.TOP_RIGHT);
-        filterTextField = new CustomTextField(20);
+        filterTextField = new CustomTextField(12);
         filterTextField.setText(StringUtils.getString(I18nUtils.getString("FILTER"), "..."));
         filterTextField.setToolTipText(I18nUtils.getString("FILTER_TEXTFIELD_TOOLTIP"));
         clearButton = new LookAndFeelAwareButton() {
