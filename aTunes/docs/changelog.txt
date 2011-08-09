@@ -36,6 +36,7 @@ aTunes 2.1.0
 - Disable plugin api validation [ patch by Laurent Cathala ]
 - New splash screen
 - Mac OS X notifications using Growl
+- Option to show player controls on top of window
 
 - FIX: Dialogs opened from preferences dialog use wrong parent [ patch by Laurent Cathala ]
 - FIX: Exception during renaming of file name
