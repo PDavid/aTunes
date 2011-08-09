@@ -145,20 +145,16 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
     private void setAlbumsChart() {
         DefaultCategoryDataset dataset = getDataSet(getMostPlayedAlbumsInRanking(10));
         JFreeChart chart = ChartFactory.createStackedBarChart3D(I18nUtils.getString("ALBUM_MOST_PLAYED"), null, null, dataset, PlotOrientation.HORIZONTAL, false, false, false);
-        chart.getTitle().setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getChartTitleFont());
         chart.setBackgroundPaint(Color.WHITE);
         chart.setPadding(new RectangleInsets(5, 0, 0, 0));
         NumberAxis axis = new NumberAxis();
         axis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-        axis.setTickLabelFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getChartTickLabelFont());
         chart.setBackgroundPaint(GuiUtils.getBackgroundColor());
         chart.getTitle().setPaint(GuiUtils.getForegroundColor());
         chart.getCategoryPlot().setRangeAxis(axis);
         chart.getCategoryPlot().setForegroundAlpha(1f);
         chart.getCategoryPlot().getRenderer().setSeriesPaint(0, Color.GREEN);
-        chart.getCategoryPlot().getDomainAxis().setTickLabelFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getChartTickLabelFont());
         chart.getCategoryPlot().getDomainAxis().setTickLabelPaint(GuiUtils.getForegroundColor());
-        chart.getCategoryPlot().getRangeAxis().setTickLabelFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getChartTickLabelFont());
         chart.getCategoryPlot().getRangeAxis().setTickLabelPaint(GuiUtils.getForegroundColor());
         chart.getPlot().setBackgroundPaint(GuiUtils.getBackgroundColor());
 
@@ -215,20 +211,16 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
     private void setArtistsChart() {
         DefaultCategoryDataset dataset = getDataSet(getMostPlayedArtistsInRanking(10));
         JFreeChart chart = ChartFactory.createStackedBarChart3D(I18nUtils.getString("ARTIST_MOST_PLAYED"), null, null, dataset, PlotOrientation.HORIZONTAL, false, false, false);
-        chart.getTitle().setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getChartTitleFont());
         chart.setBackgroundPaint(Color.WHITE);
         chart.setPadding(new RectangleInsets(5, 0, 0, 0));
         NumberAxis axis = new NumberAxis();
         axis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-        axis.setTickLabelFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getChartTickLabelFont());
         chart.setBackgroundPaint(GuiUtils.getBackgroundColor());
         chart.getTitle().setPaint(GuiUtils.getForegroundColor());
         chart.getCategoryPlot().setRangeAxis(axis);
         chart.getCategoryPlot().setForegroundAlpha(1f);
         chart.getCategoryPlot().getRenderer().setSeriesPaint(0, Color.GREEN);
-        chart.getCategoryPlot().getDomainAxis().setTickLabelFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getChartTickLabelFont());
         chart.getCategoryPlot().getDomainAxis().setTickLabelPaint(GuiUtils.getForegroundColor());
-        chart.getCategoryPlot().getRangeAxis().setTickLabelFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getChartTickLabelFont());
         chart.getCategoryPlot().getRangeAxis().setTickLabelPaint(GuiUtils.getForegroundColor());
         chart.getPlot().setBackgroundPaint(GuiUtils.getBackgroundColor());
 
@@ -292,7 +284,6 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
         dataset.setValue(I18nUtils.getString("SONGS_PLAYED"), different);
         dataset.setValue(I18nUtils.getString("SONGS_NEVER_PLAYED"), total - different);
         JFreeChart chart = ChartFactory.createPieChart3D(I18nUtils.getString("SONGS_PLAYED"), dataset, false, false, false);
-        chart.getTitle().setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getChartTitleFont());
         chart.setBackgroundPaint(GuiUtils.getBackgroundColor());
         chart.getTitle().setPaint(GuiUtils.getForegroundColor());
         chart.setPadding(new RectangleInsets(5, 0, 0, 0));
@@ -300,7 +291,6 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
                 new Color(0, 1, 0, 0.4f), new Color(1, 0, 0, 0.4f) }, DefaultDrawingSupplier.DEFAULT_STROKE_SEQUENCE, DefaultDrawingSupplier.DEFAULT_STROKE_SEQUENCE,
                 DefaultDrawingSupplier.DEFAULT_SHAPE_SEQUENCE);
         chart.getPlot().setDrawingSupplier(drawingSupplier);
-        ((PiePlot3D) chart.getPlot()).setLabelFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getChartTickLabelFont());
         ((PiePlot3D) chart.getPlot()).setOutlineVisible(false);
         ((PiePlot3D) chart.getPlot()).setBackgroundPaint(GuiUtils.getBackgroundColor());
         getComponentControlled().getGeneralChart().setIcon(new ImageIcon(chart.createBufferedImage(710, 250)));
@@ -334,20 +324,16 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
     private void setSongsChart() {
         DefaultCategoryDataset dataset = getDataSet(getMostPlayedAudioFilesInRanking(10));
         JFreeChart chart = ChartFactory.createStackedBarChart3D(I18nUtils.getString("SONG_MOST_PLAYED"), null, null, dataset, PlotOrientation.HORIZONTAL, false, false, false);
-        chart.getTitle().setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getChartTitleFont());
         chart.setBackgroundPaint(Color.WHITE);
         chart.setPadding(new RectangleInsets(5, 0, 0, 0));
         NumberAxis axis = new NumberAxis();
         axis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-        axis.setTickLabelFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getChartTickLabelFont());
         chart.setBackgroundPaint(GuiUtils.getBackgroundColor());
         chart.getTitle().setPaint(GuiUtils.getForegroundColor());
         chart.getCategoryPlot().setRangeAxis(axis);
         chart.getCategoryPlot().setForegroundAlpha(1f);
         chart.getCategoryPlot().getRenderer().setSeriesPaint(0, Color.GREEN);
-        chart.getCategoryPlot().getDomainAxis().setTickLabelFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getChartTickLabelFont());
         chart.getCategoryPlot().getDomainAxis().setTickLabelPaint(GuiUtils.getForegroundColor());
-        chart.getCategoryPlot().getRangeAxis().setTickLabelFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getChartTickLabelFont());
         chart.getCategoryPlot().getRangeAxis().setTickLabelPaint(GuiUtils.getForegroundColor());
         chart.getPlot().setBackgroundPaint(GuiUtils.getBackgroundColor());
 

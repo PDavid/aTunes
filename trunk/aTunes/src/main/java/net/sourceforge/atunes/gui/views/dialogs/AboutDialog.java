@@ -253,7 +253,6 @@ public final class AboutDialog extends AbstractCustomModalDialog {
         license.setBorder(BorderFactory.createEmptyBorder());
 
         UrlLabel contributors = new UrlLabel(I18nUtils.getString("CONTRIBUTORS"), Constants.CONTRIBUTORS_WEB);
-        contributors.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getAppVersionLittleFont());
 
         JTable propertiesTable = new JTable(tableModel);
         propertiesTable.setShowGrid(false);
