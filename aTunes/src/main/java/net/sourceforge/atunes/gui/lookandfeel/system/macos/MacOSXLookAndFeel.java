@@ -162,6 +162,15 @@ public class MacOSXLookAndFeel extends SystemLookAndFeel {
     	return scrollPane;
     }
     
+    @Override
+    public Font getPlayListFont() {
+    	return null;
+    }
+    
+    @Override
+    public Font getPlayListSelectedItemFont() {
+    	return null;
+    }
 
 
 }
