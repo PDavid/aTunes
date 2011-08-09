@@ -47,7 +47,7 @@ class FullScreenController extends AbstractSimpleController<FullScreenWindow> {
 	void toggleVisibility() {
 		getComponentControlled().setVisible(!getComponentControlled().isVisible());
 	}
-
+	
 	/**
 	 * Sets the audio object.
 	 * @param objects
