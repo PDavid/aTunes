@@ -73,17 +73,7 @@ public class FullScreenHandler extends AbstractHandler {
     
     @Override
     public void selectedAudioObjectChanged(AudioObject audioObject) {
-        List<AudioObject> objects = new ArrayList<AudioObject>(6);
-        objects.add(PlayListHandler.getInstance().getCurrentPlayList(false).getPreviousAudioObject(2));
-        objects.add(PlayListHandler.getInstance().getCurrentPlayList(false).getPreviousAudioObject(1));
-        objects.add(audioObject);
-        objects.add(PlayListHandler.getInstance().getCurrentPlayList(false).getNextAudioObject(1));
-        objects.add(PlayListHandler.getInstance().getCurrentPlayList(false).getNextAudioObject(2));
-        
-        // This is not visible in full screen, but used to prepare next cover
-        objects.add(PlayListHandler.getInstance().getCurrentPlayList(false).getNextAudioObject(3)); 
-        
-        getFullScreenController().setAudioObjects(objects);
+        updateAudioObjectsToShow(audioObject);
     }
 
 	@Override
@@ -104,10 +94,37 @@ public class FullScreenHandler extends AbstractHandler {
 		return controller;
 	}
 	
+	private void updateAudioObjectsToShow(AudioObject audioObject) {
+		getFullScreenController().setAudioObjects(getAudioObjectsToShow(audioObject));
+	}
+	
+	/**
+	 * Returns audio objects to show in full screen: 2 previous audio objects, current one, and next three objects
+	 * @param current current
+	 * @return
+	 */
+	private List<AudioObject> getAudioObjectsToShow(AudioObject current) {
+        List<AudioObject> objects = new ArrayList<AudioObject>(6);
+        objects.add(PlayListHandler.getInstance().getCurrentPlayList(false).getPreviousAudioObject(2));
+        objects.add(PlayListHandler.getInstance().getCurrentPlayList(false).getPreviousAudioObject(1));
+        objects.add(current);
+        objects.add(PlayListHandler.getInstance().getCurrentPlayList(false).getNextAudioObject(1));
+        objects.add(PlayListHandler.getInstance().getCurrentPlayList(false).getNextAudioObject(2));
+        
+        // This is not visible in full screen, but used to prepare next cover
+        objects.add(PlayListHandler.getInstance().getCurrentPlayList(false).getNextAudioObject(3)); 
+		
+        return objects;
+	}
+	
 	/**
 	 * Shows or hides full screen
 	 */
 	public void toggleFullScreenVisibility() {
+		// Be sure to update audio objects before show window
+		if (!getFullScreenController().isVisible()) {
+			updateAudioObjectsToShow(PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList());
+		}
 		getFullScreenController().toggleVisibility();
 	}
 
