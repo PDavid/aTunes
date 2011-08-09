@@ -29,6 +29,8 @@ class MacOSColors {
     static final Color TABLE_GRID_COLOR = new Color(0xd9d9d9);
 
     static final Color SEPARATOR_COLOR = Color.gray;
+    
+    static final Color TABLE_HEADER_COLOR = TABLE_GRID_COLOR;
 
 
 
