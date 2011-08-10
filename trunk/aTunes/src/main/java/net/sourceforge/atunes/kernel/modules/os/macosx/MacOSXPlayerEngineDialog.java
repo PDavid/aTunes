@@ -60,6 +60,7 @@ class MacOSXPlayerEngineDialog extends CustomDialog {
 	public MacOSXPlayerEngineDialog(JFrame parent) {
 		super(parent, 450, 250);
 		setResizable(false);
+		setModal(true);
 		setLocationRelativeTo(parent);
 		setTitle(I18nUtils.getString("PLAYER_ENGINE_SELECTION"));
 		enableDisposeActionWithEscapeKey();
@@ -146,6 +147,7 @@ class MacOSXPlayerEngineDialog extends CustomDialog {
 				} finally {
 					br.close();
 				}
+				Logger.debug("Process to search player engine returned code: ", process.waitFor());
 				process = null;
 				return matches;
 			}
