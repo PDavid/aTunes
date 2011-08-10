@@ -38,6 +38,10 @@ public class WebServicesHandler extends AbstractHandler {
 	
 	@Override
 	public void applicationStarted(List<AudioObject> playList) {
+	}
+	
+	@Override
+	public void allHandlersInitialized() {
         LastFmService.getInstance().submitCacheToLastFm();
 	}
 

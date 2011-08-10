@@ -72,6 +72,10 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
 
     @Override
     public void applicationStarted(List<AudioObject> playList) {
+    }
+    
+    @Override
+    public void allHandlersInitialized() {
         SearchHandler.getInstance().registerSearchableObject(FavoritesSearchableObject.getInstance());
     }
 

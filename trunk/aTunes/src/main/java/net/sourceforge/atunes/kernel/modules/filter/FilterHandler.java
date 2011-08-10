@@ -144,6 +144,10 @@ public final class FilterHandler extends AbstractHandler {
 
     @Override
     public void applicationStarted(List<AudioObject> playList) {
+    }
+    
+    @Override
+    public void allHandlersInitialized() {
         addFilter(allFilter);
 
         addFilter(NavigationHandler.getInstance().getTreeFilter());

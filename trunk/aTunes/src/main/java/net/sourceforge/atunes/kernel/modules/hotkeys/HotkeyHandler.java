@@ -100,6 +100,10 @@ public final class HotkeyHandler extends AbstractHandler implements HotkeyListen
 
     @Override
     public void applicationStarted(List<AudioObject> playList) {
+    }
+    
+    @Override
+    public void allHandlersInitialized() {
         // Hotkeys
         if (ApplicationState.getInstance().isEnableHotkeys()) {
             enableHotkeys(ApplicationState.getInstance().getHotkeysConfig());

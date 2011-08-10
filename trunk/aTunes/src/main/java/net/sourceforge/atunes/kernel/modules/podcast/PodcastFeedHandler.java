@@ -165,10 +165,14 @@ public final class PodcastFeedHandler extends AbstractHandler {
 
     @Override
     public void applicationStarted(List<AudioObject> playList) {
+    }
+
+    @Override
+    public void allHandlersInitialized() {
         startPodcastFeedEntryDownloadChecker();
         startPodcastFeedEntryRetriever();
     }
-
+    
     /**
      * Gets the single instance of PodcastFeedHandler.
      * 
