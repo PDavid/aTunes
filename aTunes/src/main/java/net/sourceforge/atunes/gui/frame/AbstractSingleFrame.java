@@ -493,8 +493,7 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
      */
     private Dimension getDefaultWindowSize() {
         // Set size always according to main device dimension 
-        // Avoid create a frame too big: if device width is greater than 2000 pixels then use half width
-    	return new Dimension((GuiUtils.getDeviceWidth() > 2000 ? GuiUtils.getDeviceWidth() / 2 : GuiUtils.getDeviceWidth()) - HORIZONTAL_MARGIN, GuiUtils.getDeviceHeight() - VERTICAL_MARGIN);
+    	return new Dimension(GuiUtils.getDeviceWidth() - HORIZONTAL_MARGIN, GuiUtils.getDeviceHeight() - VERTICAL_MARGIN);
     }
     
     private void setWindowSizeMaximized() {
@@ -567,7 +566,7 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
    		ApplicationState.getInstance().setFrameState(GuiHandler.getInstance().getFrame().getClass(), frameState);
     }
 
-    protected final void applyVisibility(final boolean show, String s, Component c, final JSplitPane sp) {
+    protected final void applyVisibility(final boolean show, final String s, Component c, final JSplitPane sp) {
     	// Get divider split location before its changed when showing component
     	final int location = frameState.getSplitPaneDividerPos(s);
         c.setVisible(show);
@@ -577,9 +576,8 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
         	SwingUtilities.invokeLater(new Runnable() {
         		@Override
         		public void run() {
-            		if (location > 0) {
-            			applySplitPaneDividerPosition(sp, location, 0);
-            		}
+            		applySplitPaneDividerPosition(sp, location, getDefaultSplitPaneRelativePositions() != null ? 
+            								getDefaultSplitPaneRelativePositions().get(s) : 0.5);
         		}
         	});
 
@@ -612,7 +610,8 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
 		Dimension actualSize = c.getSize();
 		int minimumSizeComponent = sp.getOrientation() == JSplitPane.HORIZONTAL_SPLIT ? minimumSize.width : minimumSize.height;
 		int actualSizeComponent = sp.getOrientation() == JSplitPane.HORIZONTAL_SPLIT ? actualSize.width : actualSize.height;
-		if (actualSizeComponent < minimumSizeComponent) {
+		// Don't test component size if actual size is 0, means it's not visible yet
+		if (actualSizeComponent > 0 && actualSizeComponent < minimumSizeComponent) {
 			int newWidth = sp.getOrientation() == JSplitPane.HORIZONTAL_SPLIT ? getSize().width + (minimumSizeComponent - actualSizeComponent) : getSize().width;
 			int newHeight = sp.getOrientation() == JSplitPane.HORIZONTAL_SPLIT ? getSize().height : getSize().height + (minimumSizeComponent - actualSizeComponent);
 			Logger.info("Changing window size to : ", newWidth , "x", newHeight);

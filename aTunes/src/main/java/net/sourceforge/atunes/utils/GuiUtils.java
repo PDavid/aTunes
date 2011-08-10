@@ -82,7 +82,7 @@ public final class GuiUtils {
      */
     private static Rectangle mainDeviceBounds;
 
-    public static final int MAX_COMPONENTS_WIDTH = 1280;
+    public static final int MAX_COMPONENTS_WIDTH = 3280;
 
     static {
         try {
