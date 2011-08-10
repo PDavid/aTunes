@@ -67,7 +67,9 @@ public class FullScreenHandler extends AbstractHandler {
         if (ApplicationState.getInstance().isStopPlayerOnPlayListClear()) {
 
             // Remove audio object information from full screen mode
-            getFullScreenController().setAudioObjects(null);
+        	if (getFullScreenController() != null) {
+        		getFullScreenController().setAudioObjects(null);
+        	}
         }
     }
     
@@ -81,21 +83,27 @@ public class FullScreenHandler extends AbstractHandler {
 	}
 
 	/**
-	 * Returns full screen controller
+	 * Returns full screen controller or null if not created, so it must be checked first
 	 * @return
 	 */
 	private FullScreenController getFullScreenController() {
-		if (controller == null) {
-			JDialog.setDefaultLookAndFeelDecorated(false);
-			FullScreenWindow window = new FullScreenWindow(GuiHandler.getInstance().getFrame().getFrame());
-	        JDialog.setDefaultLookAndFeelDecorated(true);
-	        controller = new FullScreenController(window);
-		}
 		return controller;
 	}
 	
+	/**
+	 * Creates full screen controller and window, to be called only when needed
+	 */
+	private void createFullScreenController() {
+		JDialog.setDefaultLookAndFeelDecorated(false);
+		FullScreenWindow window = new FullScreenWindow(GuiHandler.getInstance().getFrame().getFrame());
+        JDialog.setDefaultLookAndFeelDecorated(true);
+        controller = new FullScreenController(window);
+	}
+	
 	private void updateAudioObjectsToShow(AudioObject audioObject) {
-		getFullScreenController().setAudioObjects(getAudioObjectsToShow(audioObject));
+		if (getFullScreenController() != null) {
+			getFullScreenController().setAudioObjects(getAudioObjectsToShow(audioObject));
+		}
 	}
 	
 	/**
@@ -121,6 +129,9 @@ public class FullScreenHandler extends AbstractHandler {
 	 * Shows or hides full screen
 	 */
 	public void toggleFullScreenVisibility() {
+		// Here must create controller and window, as first call to this method will be when full screen becomes visible
+		createFullScreenController();
+		
 		// Be sure to update audio objects before show window
 		if (!getFullScreenController().isVisible()) {
 			updateAudioObjectsToShow(PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList());
@@ -133,7 +144,9 @@ public class FullScreenHandler extends AbstractHandler {
 	 * @param playing
 	 */
 	public void setPlaying(boolean playing) {
-		getFullScreenController().setPlaying(playing);
+		if (getFullScreenController() != null) {
+			getFullScreenController().setPlaying(playing);
+		}
 	}
 
 	/**
@@ -141,7 +154,10 @@ public class FullScreenHandler extends AbstractHandler {
 	 * @return
 	 */
 	public boolean isVisible() {
-		return getFullScreenController().isVisible();
+		if (getFullScreenController() != null) {
+			return getFullScreenController().isVisible();
+		}
+		return false;
 	}
 
 	/**
@@ -149,7 +165,9 @@ public class FullScreenHandler extends AbstractHandler {
 	 * @param currentLength
 	 */
 	public void setAudioObjectLength(long currentLength) {
-		getFullScreenController().setAudioObjectLenght(currentLength);
+		if (getFullScreenController() != null) {
+			getFullScreenController().setAudioObjectLenght(currentLength);
+		}
 	}
 
 	/**
@@ -158,7 +176,9 @@ public class FullScreenHandler extends AbstractHandler {
 	 * @param currentAudioObjectLength
 	 */
 	public void setCurrentAudioObjectPlayedTime(long actualPlayedTime, long currentAudioObjectLength) {
-		getFullScreenController().setCurrentAudioObjectPlayedTime(actualPlayedTime, currentAudioObjectLength);
+		if (getFullScreenController() != null) {
+			getFullScreenController().setCurrentAudioObjectPlayedTime(actualPlayedTime, currentAudioObjectLength);
+		}
 	}
 
 	/**
@@ -166,7 +186,9 @@ public class FullScreenHandler extends AbstractHandler {
 	 * @param finalVolume
 	 */
 	public void setVolume(int finalVolume) {
-		getFullScreenController().setVolume(finalVolume);
+		if (getFullScreenController() != null) {
+			getFullScreenController().setVolume(finalVolume);
+		}
 	}
 
 }
