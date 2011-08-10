@@ -30,6 +30,8 @@ import javax.swing.JViewport;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumn;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -71,6 +73,15 @@ class StripedTableViewport extends JViewport {
 
 			@Override
 			public void stateChanged(ChangeEvent e) {
+				repaint();
+			}
+		});
+        
+        fTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				invalidate();
 				repaint();
 			}
 		});
