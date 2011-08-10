@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.gui.views.dialogs;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Font;
@@ -375,6 +374,9 @@ public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog 
         	
 			@Override
 			public JComponent getComponent(JComponent superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
+				JCheckBox check = new JCheckBox();
+	            JLabel label = new JLabel();
+
 			    String stringValue = value.toString();
 			    setEnabled(tree.isEnabled());
 			    if (value instanceof CheckNode) {
@@ -403,8 +405,6 @@ public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog 
 			    check.setOpaque(false);
 			    label.setOpaque(false);
 			    
-			    label.setBackground(Color.RED);
-
 			    JPanel panel = new JPanel(new BorderLayout());
 			    panel.add(check, BorderLayout.WEST);
 			    panel.add(label, BorderLayout.CENTER);
@@ -422,20 +422,12 @@ public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog 
 
 		private static final long serialVersionUID = 5564069979708271654L;
 
-        /** The check. */
-        private JCheckBox check;
-
-        /** The label. */
-        private JLabel label;
-
         private transient AbstractTreeCellRendererCode rendererCode;
 
         /**
          * Instantiates a new check renderer.
          */
         public CheckRenderer() {
-            check = new JCheckBox();
-            label = new JLabel();
             rendererCode = new CheckRendererTreeCellRendererCode();
         }
 
