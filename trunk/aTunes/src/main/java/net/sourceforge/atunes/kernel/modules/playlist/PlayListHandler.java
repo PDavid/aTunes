@@ -781,6 +781,41 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
     public void moveRowTo(int sourceRow, int targetRow) {
         getCurrentPlayList(true).moveRowTo(sourceRow, targetRow);
     }
+    
+    /**
+     * Moves rows just after current audio object (play list must be active)
+     * @param rows
+     */
+    public void moveSelectionAfterCurrentAudioObject() {
+        PlayList currentPlayList = getCurrentPlayList(true);
+        List<AudioObject> selectedAudioObjects = getSelectedAudioObjects();
+        
+        //Recurse backwards to move the elements to the correct position
+        Collections.reverse(selectedAudioObjects);
+        
+        int beginNewPosition = getCurrentAudioObjectIndexInVisiblePlayList();
+        int endNewPosition = getCurrentAudioObjectIndexInVisiblePlayList();
+        for (int i = 0; i < selectedAudioObjects.size(); i++) {
+        	AudioObject o = selectedAudioObjects.get(i);
+        	int currentIndex = getCurrentAudioObjectIndexInVisiblePlayList();
+        	int sourceIndex = currentPlayList.indexOf(o);
+
+        	//Workaround otherwise file is put before current playing
+        	if (sourceIndex > currentIndex) {
+        		currentIndex++;
+        	}
+        	currentPlayList.moveRowTo(sourceIndex, currentIndex);
+
+        	// Get min and max indexes to set selected
+        	beginNewPosition = Math.min(currentIndex, beginNewPosition);
+        	endNewPosition = Math.max(currentIndex, endNewPosition);
+        }
+        
+        refreshPlayList();
+        
+        // Keep selected elements
+        getPlayListController().getComponentControlled().getPlayListTable().getSelectionModel().setSelectionInterval(getCurrentAudioObjectIndexInVisiblePlayList() + 1, getCurrentAudioObjectIndexInVisiblePlayList() + selectedAudioObjects.size());
+    }
 
     /**
      * Plays audio object passed to argument. If is not added to play list, it
@@ -1065,7 +1100,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
         }
         return audioObjects;
     }
-
+    
     /**
      * Returns <code>true</code> if the row is both visible and being played
      * 
@@ -1336,6 +1371,5 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
             controller.forceSwitchTo(index);
         }
     }
-
 
 }

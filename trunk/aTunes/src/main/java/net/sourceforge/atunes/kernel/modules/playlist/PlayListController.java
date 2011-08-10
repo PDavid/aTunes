@@ -127,9 +127,8 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
      * Move down.
      */
     void moveDown() {
-        PlayListTable table = GuiHandler.getInstance().getPlayListTable();
-        int[] rows = table.getSelectedRows();
-        if (rows.length > 0 && rows[rows.length - 1] < table.getRowCount() - 1) {
+        int[] rows = getComponentControlled().getPlayListTable().getSelectedRows();
+        if (rows.length > 0 && rows[rows.length - 1] < getComponentControlled().getPlayListTable().getRowCount() - 1) {
             PlayListHandler.getInstance().moveDown(rows);
             refreshPlayList();
             getComponentControlled().getPlayListTable().getSelectionModel().setSelectionInterval(rows[0] + 1, rows[rows.length - 1] + 1);
@@ -140,9 +139,8 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
      * Move to bottom.
      */
     void moveToBottom() {
-        PlayListTable table = GuiHandler.getInstance().getPlayListTable();
-        int[] rows = table.getSelectedRows();
-        if (rows.length > 0 && rows[rows.length - 1] < table.getRowCount() - 1) {
+        int[] rows = getComponentControlled().getPlayListTable().getSelectedRows();
+        if (rows.length > 0 && rows[rows.length - 1] < getComponentControlled().getPlayListTable().getRowCount() - 1) {
             PlayListHandler.getInstance().moveToBottom(rows);
             refreshPlayList();
             getComponentControlled().getPlayListTable().getSelectionModel().setSelectionInterval(getComponentControlled().getPlayListTable().getRowCount() - rows.length,
@@ -154,8 +152,7 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
      * Move to top.
      */
     void moveToTop() {
-        PlayListTable table = GuiHandler.getInstance().getPlayListTable();
-        int[] rows = table.getSelectedRows();
+        int[] rows = getComponentControlled().getPlayListTable().getSelectedRows();
         if (rows.length > 0 && rows[0] > 0) {
             PlayListHandler.getInstance().moveToTop(rows);
             refreshPlayList();
@@ -167,8 +164,7 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
      * Move up.
      */
     void moveUp() {
-        PlayListTable table = GuiHandler.getInstance().getPlayListTable();
-        int[] rows = table.getSelectedRows();
+        int[] rows = getComponentControlled().getPlayListTable().getSelectedRows();
         if (rows.length > 0 && rows[0] > 0) {
             PlayListHandler.getInstance().moveUp(rows);
             refreshPlayList();

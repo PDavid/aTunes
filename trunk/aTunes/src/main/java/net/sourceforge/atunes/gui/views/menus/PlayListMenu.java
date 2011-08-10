@@ -17,7 +17,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package net.sourceforge.atunes.gui.views.menus;
 
 import java.awt.Component;
@@ -42,6 +41,7 @@ import net.sourceforge.atunes.kernel.actions.ClearPlayListAction;
 import net.sourceforge.atunes.kernel.actions.CreatePlayListWithSelectedAlbumsAction;
 import net.sourceforge.atunes.kernel.actions.CreatePlayListWithSelectedArtistsAction;
 import net.sourceforge.atunes.kernel.actions.LoadPlayListAction;
+import net.sourceforge.atunes.kernel.actions.MoveAfterCurrentAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.MoveDownAction;
 import net.sourceforge.atunes.kernel.actions.MoveToBottomAction;
 import net.sourceforge.atunes.kernel.actions.MoveToTopAction;
@@ -62,7 +62,6 @@ import net.sourceforge.atunes.utils.I18nUtils;
 public final class PlayListMenu {
 
     private PlayListMenu() {
-
     }
 
     /**
@@ -174,6 +173,8 @@ public final class PlayListMenu {
      */
     private static JMenu getMoveMenu() {
         JMenu move = new JMenu(I18nUtils.getString("MOVE"));
+        move.add(Actions.getAction(MoveAfterCurrentAudioObjectAction.class));
+        move.add(new JSeparator());
         move.add(Actions.getAction(MoveToTopAction.class));
         move.add(Actions.getAction(MoveUpAction.class));
         move.add(Actions.getAction(MoveDownAction.class));
@@ -240,5 +241,4 @@ public final class PlayListMenu {
             }
         }
     }
-
 }
