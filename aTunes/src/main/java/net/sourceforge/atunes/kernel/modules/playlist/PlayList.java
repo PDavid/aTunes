@@ -239,7 +239,7 @@ public class PlayList implements Serializable, Cloneable {
      * @param sourceRow
      * @param targetRow
      */
-    protected void moveRowTo(int sourceRow, int targetRow) {
+    public void moveRowTo(int sourceRow, int targetRow) {
         // Check arguments
         if (sourceRow < 0 || sourceRow >= size()) {
             throw new IllegalArgumentException(StringUtils.getString("sourceRow = ", sourceRow, " playlist size = ", size()));
