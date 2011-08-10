@@ -23,6 +23,8 @@ package net.sourceforge.atunes.gui.frame;
 import java.awt.Dimension;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JComponent;
 import javax.swing.JSplitPane;
@@ -128,6 +130,14 @@ public final class EnhancedSingleFrame extends CommonSingleFrame implements net.
 		return new Dimension(CommonSingleFrameSizes.NAVIGATION_MAXIMUM_WIDTH, CommonSingleFrameSizes.NAVIGATION_MAXIMUM_HEIGHT);
 	}
 	
+	@Override
+	public Map<String, Double> getDefaultSplitPaneRelativePositions() {
+		Map<String, Double> values = new HashMap<String, Double>();
+		values.put(LEFT_VERTICAL_SPLIT_PANE, 0.2);
+		values.put(RIGHT_VERTICAL_SPLIT_PANE, 0.8);
+		values.put(PLAYLIST_SPLIT_PANE, 0.5);
+		return values;
+	}
 
 
 }

@@ -73,7 +73,7 @@ public abstract class CommonSingleFrame extends AbstractSingleFrame {
         JPanel nonNavigatorPanel = new JPanel(new BorderLayout());
         rightVerticalSplitPane = new CustomSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         rightVerticalSplitPane.setBorder(BorderFactory.createEmptyBorder());
-        rightVerticalSplitPane.setResizeWeight(1);
+        rightVerticalSplitPane.setResizeWeight(0.5);
         rightVerticalSplitPane.setLeftComponent(getComponentB());
         rightVerticalSplitPane.setRightComponent(getComponentC());
 
@@ -81,7 +81,7 @@ public abstract class CommonSingleFrame extends AbstractSingleFrame {
 
         leftVerticalSplitPane.setLeftComponent(getComponentA());
         leftVerticalSplitPane.setRightComponent(nonNavigatorPanel);
-        leftVerticalSplitPane.setResizeWeight(0.2);
+        leftVerticalSplitPane.setResizeWeight(0.5);
 
         leftVerticalSplitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
 

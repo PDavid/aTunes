@@ -23,6 +23,7 @@ package net.sourceforge.atunes.gui.frame;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.util.Map;
 
 import javax.swing.JFrame;
 import javax.swing.JProgressBar;
@@ -294,5 +295,11 @@ public interface Frame {
      * @param frameState
      */
     public void applicationStarted(FrameState frameState);
+
+	/**
+	 * Returns split pane default relative positions
+	 * @return
+	 */
+	public Map<String, Double> getDefaultSplitPaneRelativePositions();
 
 }
