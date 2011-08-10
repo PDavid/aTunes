@@ -328,8 +328,6 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     @Override
     public void applicationStarted(List<AudioObject> playList) {
         applyRepositoryFromCache();
-        SearchHandler.getInstance().registerSearchableObject(RepositorySearchableObject.getInstance());
-        repositoryRefresher = new RepositoryAutoRefresher(RepositoryHandler.this);
     }
     
     @Override
@@ -337,6 +335,8 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     	if (repository == null) {
     		applyRepository();
     	}
+        SearchHandler.getInstance().registerSearchableObject(RepositorySearchableObject.getInstance());
+        repositoryRefresher = new RepositoryAutoRefresher(RepositoryHandler.this);
     }
     
     @Override

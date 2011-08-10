@@ -99,6 +99,10 @@ public final class SystemTrayHandler extends AbstractHandler {
 
     @Override
     public void applicationStarted(List<AudioObject> playList) {
+    }
+    
+    @Override
+    public void allHandlersInitialized() {
     	if (OsManager.areTrayIconsSupported()) {
     		// System tray player
     		if (ApplicationState.getInstance().isShowTrayPlayer()) {

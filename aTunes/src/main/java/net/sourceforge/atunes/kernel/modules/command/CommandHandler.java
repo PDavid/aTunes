@@ -72,6 +72,10 @@ public final class CommandHandler extends AbstractHandler {
 
     @Override
     public void applicationStarted(List<AudioObject> playList) {
+    }
+    
+    @Override
+    public void allHandlersInitialized() {
         runCommands(ApplicationArguments.getSavedCommands());
     }
 

@@ -305,26 +305,18 @@ public final class RipperHandler extends AbstractHandler {
 
     @Override
     public void applicationFinish() {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void applicationStateChanged(ApplicationState newState) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void applicationStarted(List<AudioObject> playList) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     protected void initHandler() {
-        // TODO Auto-generated method stub
-
     }
 
     /**

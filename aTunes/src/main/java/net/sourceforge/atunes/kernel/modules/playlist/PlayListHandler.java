@@ -165,6 +165,10 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
             getPlayListController().refreshPlayList();
         }
         
+    }
+    
+    @Override
+    public void allHandlersInitialized() {
         // Create drag and drop listener
         PlayListTableTransferHandler playListTransferHandler = new PlayListTableTransferHandler();
         getPlayListController().getMainPlayListTable().setTransferHandler(playListTransferHandler);

@@ -112,6 +112,10 @@ public final class UpdateHandler extends AbstractHandler {
 
     @Override
     public void applicationStarted(List<AudioObject> playList) {
+    }
+    
+    @Override
+    public void allHandlersInitialized() {
         if (!Kernel.isNoUpdate()) {
             checkUpdates(ApplicationState.getInstance().getProxy(), false, false);
         }
