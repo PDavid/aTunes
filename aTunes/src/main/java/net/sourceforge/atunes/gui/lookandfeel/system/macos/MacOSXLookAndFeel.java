@@ -92,7 +92,6 @@ public class MacOSXLookAndFeel extends SystemLookAndFeel {
         JScrollPane scrollPane =  getScrollPane(tree);
         scrollPane.setViewport(new StripedTreeViewport(tree));
         scrollPane.getViewport().setView(tree);
-        tree.setUI(new CustomTreeUI());
         return scrollPane;
 	}
 	

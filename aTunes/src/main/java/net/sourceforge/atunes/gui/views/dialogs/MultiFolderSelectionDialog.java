@@ -150,43 +150,46 @@ public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog 
 			        int row = fileSystemTree.getRowForLocation(x, y);
 			        TreePath path = fileSystemTree.getPathForRow(row);
 
+			        // If user pressed button out of tree do nothing
+			        if (path == null) {
+			        	return;
+			        }
+			        
 			        // If user pressed button over text area, don't select node
 			        if (x > fileSystemTree.getPathBounds(path).x + checkBoxWidth) {
 			            return;
 			        }
 
-			        if (path != null) {
-			            //fileSystemTree.expandPath(path);
-			            CheckNode node = (CheckNode) path.getLastPathComponent();
+			        //fileSystemTree.expandPath(path);
+			        CheckNode node = (CheckNode) path.getLastPathComponent();
 
-			            if (node.isEnabled()) {
+			        if (node.isEnabled()) {
 
-			                boolean isSelected = !(node.isSelected());
-			                node.setSelected(isSelected);
+			        	boolean isSelected = !(node.isSelected());
+			        	node.setSelected(isSelected);
 
-			                if (isSelected) {
-			                    // Find if another child folder has been added before
-			                    List<File> childFolders = new ArrayList<File>();
-			                    for (File f : selectedFolders) {
-			                        if (f.getAbsolutePath().startsWith(node.getDir().getFile().getAbsolutePath())) {
-			                            childFolders.add(f);
-			                        }
-			                    }
-			                    for (File f : childFolders) {
-			                        selectedFolders.remove(f);
-			                    }
+			        	if (isSelected) {
+			        		// Find if another child folder has been added before
+			        		List<File> childFolders = new ArrayList<File>();
+			        		for (File f : selectedFolders) {
+			        			if (f.getAbsolutePath().startsWith(node.getDir().getFile().getAbsolutePath())) {
+			        				childFolders.add(f);
+			        			}
+			        		}
+			        		for (File f : childFolders) {
+			        			selectedFolders.remove(f);
+			        		}
 
-			                    selectedFolders.add(node.getDir().getFile());
-			                } else {
-			                    selectedFolders.remove(node.getDir().getFile());
-			                }
+			        		selectedFolders.add(node.getDir().getFile());
+			        	} else {
+			        		selectedFolders.remove(node.getDir().getFile());
+			        	}
 
-			                // I need revalidate if node is root.  but why?
-			                if (row == 0) {
-			                    fileSystemTree.revalidate();
-			                    fileSystemTree.repaint();
-			                }
-			            }
+			        	// I need revalidate if node is root.  but why?
+			        	if (row == 0) {
+			        		fileSystemTree.revalidate();
+			        		fileSystemTree.repaint();
+			        	}
 			        }
 			    }
 			}
