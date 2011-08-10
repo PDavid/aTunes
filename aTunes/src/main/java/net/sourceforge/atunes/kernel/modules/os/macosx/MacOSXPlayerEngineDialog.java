@@ -34,16 +34,15 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.SwingWorker;
 
+import net.sourceforge.atunes.gui.views.controls.CustomDialog;
 import net.sourceforge.atunes.gui.views.controls.SimpleTextPane;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -51,7 +50,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author alex
  *
  */
-class MacOSXPlayerEngineDialog extends JDialog {
+class MacOSXPlayerEngineDialog extends CustomDialog {
 
 	/**
 	 * 
@@ -59,13 +58,11 @@ class MacOSXPlayerEngineDialog extends JDialog {
 	private static final long serialVersionUID = -5594530223379760626L;
 
 	public MacOSXPlayerEngineDialog(JFrame parent) {
-		super(parent, true);
-		setSize(GuiUtils.getComponentWidthForResolution(0.4f),
-				GuiUtils.getComponentHeightForResolution(0.3f));
+		super(parent, 450, 250);
 		setResizable(false);
 		setLocationRelativeTo(parent);
 		setTitle(I18nUtils.getString("PLAYER_ENGINE_SELECTION"));
-		setDefaultCloseOperation(HIDE_ON_CLOSE);
+		enableDisposeActionWithEscapeKey();
         addContent();
 	}
 
