@@ -155,12 +155,10 @@ class FilterController extends AbstractSimpleController<FilterPanel> {
     
     @Override
     protected void addStateBindings() {
-        // TODO Auto-generated method stub
     }
 
     @Override
     protected void notifyReload() {
-        // TODO Auto-generated method stub
     }
 
     /**

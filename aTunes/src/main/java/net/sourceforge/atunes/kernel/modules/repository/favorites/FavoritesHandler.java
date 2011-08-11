@@ -62,7 +62,6 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
 
     @Override
     public void applicationStateChanged(ApplicationState newState) {
-        // TODO Auto-generated method stub	
     }
 
     @Override

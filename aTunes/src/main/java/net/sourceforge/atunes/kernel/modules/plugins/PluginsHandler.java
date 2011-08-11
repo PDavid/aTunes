@@ -130,14 +130,10 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
 
     @Override
     public void applicationFinish() {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void applicationStateChanged(ApplicationState newState) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
