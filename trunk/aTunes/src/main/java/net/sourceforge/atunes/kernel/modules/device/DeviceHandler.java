@@ -737,7 +737,5 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
 
 	@Override
 	public void notifyCurrentAlbum(String artist, String album) {
-		// TODO Auto-generated method stub
-		
 	}
 }

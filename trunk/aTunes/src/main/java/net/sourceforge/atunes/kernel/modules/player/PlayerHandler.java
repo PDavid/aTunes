@@ -545,7 +545,5 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 
 	@Override
 	protected void initHandler() {
-		// TODO Auto-generated method stub
-		
 	}
 }
