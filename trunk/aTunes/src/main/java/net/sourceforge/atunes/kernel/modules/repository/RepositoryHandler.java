@@ -677,7 +677,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     }
 
     /**
-     * Gets the auio files for artists.
+     * Gets the audio files for artists.
      * 
      * @param artists
      *            the artists
@@ -691,7 +691,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         }
         return result;
     }
-
+    
     /**
      * Returns true if folder is in repository.
      * 

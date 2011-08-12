@@ -52,6 +52,6 @@ public interface TrackInfo extends Serializable {
      * @param url
      *            the url to set
      */
-    public void setUrl(String url);
+    public void setUrl(String url);    
 
 }
