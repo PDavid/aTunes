@@ -74,6 +74,7 @@ import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.PlaybackState;
 import net.sourceforge.atunes.kernel.PlaybackStateListener;
 import net.sourceforge.atunes.kernel.modules.cdripper.RipperHandler;
@@ -155,7 +156,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
         showStatusBar(state.isShowStatusBar(), false);
         showContextPanel(state.isUseContext());
         
-        if (!ApplicationState.getInstance().isShowSystemTray()) {
+        if (!ApplicationState.getInstance().isShowSystemTray() && OsManager.isClosingMainWindowClosesApplication()) {
             GuiHandler.getInstance().setFrameDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         }        
     }
@@ -166,7 +167,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      * NOTE: This method is called using reflection from MACOSXAdapter. Refactoring will break code!
      */
     public void finish() {
-        if (!ApplicationState.getInstance().isShowSystemTray()) {
+        if (!ApplicationState.getInstance().isShowSystemTray() && OsManager.isClosingMainWindowClosesApplication()) {
             Kernel.finish();
         }
     }
@@ -518,6 +519,13 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      */
     public void setFullFrameVisible(boolean visible) {
         frame.setVisible(visible);
+    }
+    
+    /**
+     * Convenience method, called from MacOSXAdapter
+     */
+    public void showFullFrame() {
+    	setFullFrameVisible(true);
     }
 
     /**

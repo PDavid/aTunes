@@ -95,5 +95,11 @@ public class LinuxOperatingSystem extends OperatingSystemAdapter {
 	public boolean areMenuEntriesDelegated() {
 		return false;
 	}
+	
+	@Override
+	public boolean isClosingMainWindowClosesApplication() {
+		return true;
+	}
+
 
 }

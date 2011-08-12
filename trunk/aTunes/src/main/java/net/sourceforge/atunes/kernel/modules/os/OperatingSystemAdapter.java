@@ -307,4 +307,10 @@ public abstract class OperatingSystemAdapter {
 	 * @return
 	 */
 	public abstract boolean areMenuEntriesDelegated();
+	
+	/**
+	 * Returns if closing main window will terminate application
+	 * @return
+	 */
+	public abstract boolean isClosingMainWindowClosesApplication();
 }

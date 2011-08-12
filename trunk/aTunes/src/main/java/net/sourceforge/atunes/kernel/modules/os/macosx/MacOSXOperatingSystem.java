@@ -83,7 +83,12 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 		} catch (Exception e) {
 			Logger.error(e.getMessage());
 		}
-
+		
+		try {
+			MacOSXAdapter.setListener(GuiHandler.getInstance(), GuiHandler.class.getDeclaredMethod("showFullFrame", (Class[]) null));
+		} catch (Exception e) {
+			
+		}		
 	}
 	
 	@Override
@@ -139,6 +144,11 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 	@Override
 	public boolean areMenuEntriesDelegated() {
 		return true;
+	}
+	
+	@Override
+	public boolean isClosingMainWindowClosesApplication() {
+		return false;
 	}
 
 }
