@@ -38,6 +38,7 @@ import javax.swing.SwingUtilities;
 import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
 import net.sourceforge.atunes.kernel.modules.context.AlbumListInfo;
 import net.sourceforge.atunes.kernel.modules.context.ArtistInfo;
+import net.sourceforge.atunes.kernel.modules.context.ArtistTopTracks;
 import net.sourceforge.atunes.kernel.modules.context.SimilarArtistsInfo;
 import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
@@ -45,6 +46,7 @@ import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmAlbum;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmAlbumList;
+import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmArtistTopTracks;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmLovedTrack;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmSimilarArtists;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -465,6 +467,29 @@ public final class LastFmService {
             Logger.error(e);
         }
         return null;
+    }
+    
+    /**
+     * Returns top tracks for given artist name
+     * @param artistName
+     * @return 
+     */
+    public ArtistTopTracks getTopTracks(String artistName) {
+    	// Try to retrieve from cache
+    	ArtistTopTracks topTracks = lastFmCache.retrieveArtistTopTracks(artistName);
+    	
+    	if (topTracks != null) {
+    		return topTracks;
+    	}
+    	
+    	// Try to get from LastFM
+    	topTracks = LastFmArtistTopTracks.getTopTracks(artistName, Artist.getTopTracks(artistName, getApiKey()));
+    	
+    	if (topTracks != null) {
+    		lastFmCache.storeArtistTopTracks(artistName, topTracks);
+    	}
+    	
+    	return topTracks;
     }
 
     /**

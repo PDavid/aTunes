@@ -74,6 +74,7 @@ public class ArtistContextPanel extends AbstractContextPanel {
         if (contents == null) {
             contents = new ArrayList<AbstractContextPanelContent>();
             contents.add(new ArtistBasicInfoContent());
+            contents.add(new ArtistPopularTracksContent());
             contents.add(ApplicationState.getInstance().isShowContextAlbumsInGrid() ? new ArtistAlbumsFlowContent() : new ArtistAlbumsContent());
         }
         return contents;

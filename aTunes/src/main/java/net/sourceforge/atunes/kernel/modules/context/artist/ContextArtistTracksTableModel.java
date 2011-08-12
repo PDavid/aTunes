@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.context.album;
+package net.sourceforge.atunes.kernel.modules.context.artist;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,24 +26,24 @@ import java.util.List;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
+import net.sourceforge.atunes.kernel.modules.context.ArtistTopTracks;
 import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-class ContextTracksTableModel implements TableModel {
+class ContextArtistTracksTableModel implements TableModel {
 
-    private AlbumInfo album;
+    private ArtistTopTracks topTracks;
     private List<TableModelListener> listeners;
 
     /**
-     * Instantiates a new audio scrobbler tracks table model.
+     * Instantiates a new audio scrobbler artist tracks table model.
      * 
-     * @param album
-     *            the album
+     * @param topTracks
+     *            the top tracks
      */
-    public ContextTracksTableModel(AlbumInfo album) {
-        this.album = album;
+    public ContextArtistTracksTableModel(ArtistTopTracks topTracks) {
+        this.topTracks = topTracks;
         listeners = new ArrayList<TableModelListener>();
     }
 
@@ -69,7 +69,7 @@ class ContextTracksTableModel implements TableModel {
 
     @Override
     public int getRowCount() {
-        return album != null ? album.getTracks().size() : 0;
+        return topTracks != null ? topTracks.getTracks().size() : 0;
     }
 
     /**
@@ -81,7 +81,7 @@ class ContextTracksTableModel implements TableModel {
      * @return the track
      */
     public TrackInfo getTrack(int index) {
-        return album != null ? album.getTracks().get(index) : null;
+        return topTracks != null ? topTracks.getTracks().get(index) : null;
     }
 
     @Override
@@ -89,7 +89,7 @@ class ContextTracksTableModel implements TableModel {
         if (columnIndex == 0) {
             return StringUtils.getString(rowIndex + 1, ".");
         }
-        return album != null ? album.getTracks().get(rowIndex).getTitle() : "";
+        return topTracks != null ? topTracks.getTracks().get(rowIndex).getTitle() : "";
     }
 
     @Override

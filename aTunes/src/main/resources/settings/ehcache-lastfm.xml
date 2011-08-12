@@ -44,4 +44,9 @@
 		diskSpoolBufferSizeMB="5" diskPersistent="true"
 		memoryStoreEvictionPolicy="LFU" />
 
+	<cache name="artistTopTracks" maxElementsInMemory="10"
+		maxElementsOnDisk="10000" eternal="true" overflowToDisk="true"
+		diskSpoolBufferSizeMB="5" diskPersistent="true"
+		memoryStoreEvictionPolicy="LFU" />
+
 </ehcache>

@@ -195,6 +195,8 @@ public abstract class AbstractContextPanel {
     			}
     			if (content.isScrollNeeded()) {
     				JScrollPane scroll = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getScrollPane(componentToAdd);
+    				// Set a minimum height
+    				scroll.setMinimumSize(new Dimension(0, 200));
     				componentToAdd = scroll;
     			}
     			content.setParentPanel(panel);

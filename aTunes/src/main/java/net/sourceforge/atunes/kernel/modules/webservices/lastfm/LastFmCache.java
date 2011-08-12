@@ -39,6 +39,7 @@ import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
 import net.sourceforge.atunes.kernel.modules.context.AlbumListInfo;
 import net.sourceforge.atunes.kernel.modules.context.ArtistInfo;
+import net.sourceforge.atunes.kernel.modules.context.ArtistTopTracks;
 import net.sourceforge.atunes.kernel.modules.context.SimilarArtistsInfo;
 import net.sourceforge.atunes.misc.AbstractCache;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -54,6 +55,7 @@ public class LastFmCache extends AbstractCache {
     private static final String ARTIST_SIMILAR = "artistSimilar";
     private static final String ALBUM_LIST = "albumList";
     private static final String ARTIST_IMAGE = "artistImage";
+    private static final String ARTIST_TOP_TRACKS = "artistTopTracks";
     private static final String ALBUM_INFO = "albumInfo";
     private static final String ALBUM_COVER = "albumCover";
 
@@ -188,6 +190,20 @@ public class LastFmCache extends AbstractCache {
     }
 
     /**
+     * Retrieves a list of top tracks for given artist from cache
+     * @param artist
+     * @return
+     */
+    public synchronized ArtistTopTracks retrieveArtistTopTracks(String artist) {
+    	Element element = getArtistTopTracksCache().get(artist);
+    	if (element == null) {
+    		return null;
+    	} else {
+    		return (ArtistTopTracks) element.getValue();
+    	}
+    }
+    
+    /**
      * Retrieves an albumList from cache.
      * 
      * @param artist
@@ -309,6 +325,21 @@ public class LastFmCache extends AbstractCache {
         Element element = new Element(artist, image);
         getArtistImageCache().put(element);
         Logger.debug("Stored artist image for ", artist);
+    }
+    
+    /**
+     * Store an Artist top tracks list at cache
+     * @param artist
+     * @param topTracks
+     */
+    public synchronized void storeArtistTopTracks(String artist, ArtistTopTracks topTracks) {
+    	if (artist == null || topTracks == null) {
+    		return;
+    	}
+    	
+    	Element element = new Element(artist, topTracks);
+    	getArtistTopTracksCache().put(element);
+    	Logger.debug("Stored artist top tracks for ", artist);
     }
 
     /**
@@ -442,6 +473,10 @@ public class LastFmCache extends AbstractCache {
     private Cache getArtistImageCache() {
         return getCache(ARTIST_IMAGE);
     }
+    
+    private Cache getArtistTopTracksCache() {
+    	return getCache(ARTIST_TOP_TRACKS);
+    }
 
     private Cache getAlbumInfoCache() {
         return getCache(ALBUM_INFO);
@@ -459,6 +494,7 @@ public class LastFmCache extends AbstractCache {
         getSimilarArtistsCache().dispose();
         getArtistThumbsCache().dispose();
         getArtistWikiCache().dispose();
+        getArtistTopTracksCache().dispose();
     }
 
     private static class SubmissionDataComparator implements Comparator<SubmissionData>, Serializable {

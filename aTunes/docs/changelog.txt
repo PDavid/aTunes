@@ -38,6 +38,7 @@ aTunes 2.1.0
 - Mac OS X notifications using Growl
 - Option to show player controls on top of window
 - Move play list selection after current audio object [ patch by deathgorepain ]
+- New content in context panel shows artist top tracks
 
 - FIX: Dialogs opened from preferences dialog use wrong parent [ patch by Laurent Cathala ]
 - FIX: Exception during renaming of file name
