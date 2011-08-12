@@ -162,6 +162,8 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
 
     /**
      * Finish.
+     * 
+     * NOTE: This method is called using reflection from MACOSXAdapter. Refactoring will break code!
      */
     public void finish() {
         if (!ApplicationState.getInstance().isShowSystemTray()) {
@@ -578,6 +580,8 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
 
     /**
      * Show about dialog.
+     * 
+     * NOTE: This method is called using reflection from MACOSXAdapter. Refactoring will break code!
      */
     public void showAboutDialog() {
         if (aboutDialog == null) {

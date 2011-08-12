@@ -24,7 +24,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sourceforge.atunes.gui.OSXAdapter;
 import net.sourceforge.atunes.gui.frame.Frame;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
@@ -37,6 +36,7 @@ import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.os.OperatingSystemAdapter;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
+import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -67,16 +67,23 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 		// Generate and register the OSXAdapter, passing it a hash of all the methods we wish to
 		// use as delegates for various com.apple.eawt.ApplicationListener methods
 		try {
-			OSXAdapter.setQuitHandler(frame, frame.getClass().getDeclaredMethod("dispose", (Class[]) null));
+			MacOSXAdapter.setQuitHandler(GuiHandler.getInstance(), GuiHandler.class.getDeclaredMethod("finish", (Class[]) null));
 		} catch (Exception e) {
 			Logger.error(e.getMessage());
 		}
 		
 		try {
-			OSXAdapter.setAboutHandler(frame, frame.getClass().getDeclaredMethod("about", (Class[]) null));
+			MacOSXAdapter.setAboutHandler(GuiHandler.getInstance(), GuiHandler.class.getDeclaredMethod("showAboutDialog", (Class[]) null));
 		} catch (Exception e) {
 			Logger.error(e.getMessage());
 		}
+		
+		try {
+			MacOSXAdapter.setPreferencesHandler(ApplicationStateHandler.getInstance(), ApplicationStateHandler.class.getDeclaredMethod("editPreferences", (Class[]) null));
+		} catch (Exception e) {
+			Logger.error(e.getMessage());
+		}
+
 	}
 	
 	@Override
@@ -128,4 +135,10 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 	public boolean areTrayIconsSupported() {
 		return false;
 	}
+	
+	@Override
+	public boolean areMenuEntriesDelegated() {
+		return true;
+	}
+
 }

@@ -301,5 +301,10 @@ public abstract class OperatingSystemAdapter {
 	 * @return
 	 */
 	public abstract boolean areTrayIconsSupported();	
-	
+
+	/**
+	 * Returns if some menu entries are delegated to OS
+	 * @return
+	 */
+	public abstract boolean areMenuEntriesDelegated();
 }

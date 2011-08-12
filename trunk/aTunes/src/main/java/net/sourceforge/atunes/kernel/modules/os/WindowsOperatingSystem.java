@@ -141,4 +141,10 @@ public class WindowsOperatingSystem extends OperatingSystemAdapter {
 	@Override
 	public void setUpFrame(Frame frame) {
 	}
+	
+	@Override
+	public boolean areMenuEntriesDelegated() {
+		return false;
+	}
+	
 }

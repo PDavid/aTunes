@@ -600,6 +600,8 @@ public final class ApplicationStateHandler extends AbstractHandler {
     
     /**
      * Opens preferences dialog
+     * 
+     * NOTE: This method is called from MacOSXAdapter using reflection. Refactoring will break code!
      */
     public void editPreferences() {
     	EditPreferencesDialog dialog = new EditPreferencesDialog(GuiHandler.getInstance().getFrame().getFrame());
