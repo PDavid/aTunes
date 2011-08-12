@@ -90,7 +90,6 @@ public final class ReviewImportDialog extends AbstractCustomModalDialog {
     private void setContent() {
         JPanel panel = new JPanel(new GridBagLayout());
         treeTable = new JXTreeTable();
-        treeTable.setShowGrid(false);
         treeTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         treeTable.setRootVisible(false);
         treeTable.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);

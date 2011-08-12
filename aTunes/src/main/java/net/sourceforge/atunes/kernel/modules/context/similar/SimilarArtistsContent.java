@@ -81,7 +81,6 @@ public class SimilarArtistsContent extends AbstractContextPanelContent {
         // Create components
         similarArtistsTable = new ContextImageJTable();
         similarArtistsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        similarArtistsTable.setShowGrid(false);
         similarArtistsTable.setDefaultRenderer(ArtistInfo.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(
                 new SimilarArtistTableCellRendererCode()));
         similarArtistsTable.setColumnSelectionAllowed(false);

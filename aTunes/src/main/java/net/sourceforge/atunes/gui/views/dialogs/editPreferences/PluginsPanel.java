@@ -103,7 +103,6 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
         this.dialog = dialog;
         pluginsTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
         pluginsTable.setRowHeight(CELL_HEIGHT);
-        pluginsTable.setShowGrid(false);
         pluginsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         pluginsTable.setColumnModel(new PluginsTableDefaultTableColumnModel());
 

@@ -318,7 +318,6 @@ public final class RipCdDialog extends AbstractCustomModalDialog {
         tableModel = new CdInfoTableModel();
         table = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
         table.setModel(tableModel);
-        table.setShowGrid(false);
         table.getColumnModel().getColumn(0).setMaxWidth(20);
         table.getColumnModel().getColumn(4).setMaxWidth(50);
         JCheckBox checkBox = new JCheckBox();

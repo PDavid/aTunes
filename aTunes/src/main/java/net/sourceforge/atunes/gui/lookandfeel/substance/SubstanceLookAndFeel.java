@@ -438,7 +438,9 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
     
     @Override
     public JTable getTable() {
-    	return new JTable();
+    	JTable table = new JTable();
+    	table.setShowGrid(false);
+    	return table;
     }
     
     @Override

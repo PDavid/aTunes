@@ -226,7 +226,6 @@ public final class ColumnSetSelectorDialog extends AbstractCustomModalDialog {
 
         columnsList = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
         columnsList.setModel(model);
-        columnsList.setShowGrid(false);
         columnsList.setTableHeader(null);
         columnsList.getColumnModel().getColumn(0).setMaxWidth(20);
         columnsList.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JCheckBox()));

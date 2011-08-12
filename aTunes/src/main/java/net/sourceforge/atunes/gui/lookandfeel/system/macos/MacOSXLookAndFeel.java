@@ -152,6 +152,7 @@ public class MacOSXLookAndFeel extends SystemLookAndFeel {
     public JTable getTable() {
     	JTable table = new JTable();
         table.setDefaultRenderer(Object.class, getTableCellRenderer(null));
+        table.setShowGrid(false);
         return table;
     }    
 

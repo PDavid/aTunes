@@ -212,7 +212,6 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
         tagAttributesTableModel.setTagAttributes(IncompleteTagsChecker.getAllTagAttributes());
         highlighTagAttributesTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
         highlighTagAttributesTable.setModel(tagAttributesTableModel);
-        highlighTagAttributesTable.setShowGrid(false);
         highlighTagAttributesTable.setTableHeader(null);
         highlighTagAttributesTable.getColumnModel().getColumn(0).setMaxWidth(20);
         highlighTagAttributesTable.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JCheckBox()));

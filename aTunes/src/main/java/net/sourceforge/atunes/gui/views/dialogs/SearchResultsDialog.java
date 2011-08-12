@@ -83,7 +83,6 @@ public final class SearchResultsDialog extends CustomDialog {
     private JPanel getContent() {
         JPanel panel = new JPanel(new GridBagLayout());
         searchResultsTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
-        searchResultsTable.setShowGrid(false);
         // Disable autoresize, as we will control it
         searchResultsTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 

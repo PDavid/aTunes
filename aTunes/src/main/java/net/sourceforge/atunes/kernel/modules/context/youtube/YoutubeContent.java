@@ -172,7 +172,6 @@ public class YoutubeContent extends AbstractContextPanelContent {
         // Create components
         youtubeResultTable = new ContextImageJTable();
         youtubeResultTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        youtubeResultTable.setShowGrid(false);
         youtubeResultTable.getTableHeader().setReorderingAllowed(false);
         youtubeResultTable.setDefaultRenderer(YoutubeResultEntry.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(
                 new YoutubeResultsTableCellRendererCode()));
