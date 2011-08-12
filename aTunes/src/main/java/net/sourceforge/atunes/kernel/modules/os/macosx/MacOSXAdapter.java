@@ -30,6 +30,23 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 public class MacOSXAdapter implements InvocationHandler {
 
+	private static final class AppReOpenedListener implements InvocationHandler {
+		
+		private Object targetObject;
+		private Method targetMethod;
+
+		public AppReOpenedListener(Object target, Method reOpenedListener) {
+	        this.targetObject = target;
+	        this.targetMethod = reOpenedListener;
+		}
+		
+		@Override
+		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+			targetMethod.invoke(targetObject, (Object[]) null);
+			return null;
+		}
+	}
+	
     private static final class FileHandlerOSXAdapter extends MacOSXAdapter {
 		private FileHandlerOSXAdapter(String proxySignature, Object target,
 				Method handler) {
@@ -99,6 +116,11 @@ public class MacOSXAdapter implements InvocationHandler {
 		}
     }
     
+    public static void setAppReOpenedListener(Object target, Method reOpenedListener) {
+        setHandler(new AppReOpenedListener(target, reOpenedListener));
+    }
+
+    
     private static void logAboutMenuException(Exception e) {
         Logger.error("OSXAdapter could not access the About Menu");
         Logger.error(e);
@@ -147,7 +169,7 @@ public class MacOSXAdapter implements InvocationHandler {
     }
     
     // setHandler creates a Proxy object from the passed OSXAdapter and adds it as an ApplicationListener
-    public static void setHandler(MacOSXAdapter adapter) {
+    public static void setHandler(InvocationHandler adapter) {
         try {
             Class<?> applicationClass = Class.forName("com.apple.eawt.Application");
             if (macOSXApplication == null) {
@@ -174,6 +196,47 @@ public class MacOSXAdapter implements InvocationHandler {
         	logHandlerException(e);
 		}
     }
+    
+    public static void setListener(Object target, Method method) {
+    	setAppReOpenedListener(new AppReOpenedListener(target, method));
+    }
+    
+    /**
+     * creates a Proxy object from the passed OSXAdapter and adds it as an AppReOpenedListener
+     * @param adapter
+     */
+    private static void setAppReOpenedListener(AppReOpenedListener adapter) {
+        try {
+            Class<?> applicationClass = Class.forName("com.apple.eawt.Application");
+            if (macOSXApplication == null) {
+                macOSXApplication = applicationClass.getConstructor((Class[]) null).newInstance((Object[]) null);
+            }
+            Class<?> appEventListenerClass = Class.forName("com.apple.eawt.AppEventListener");
+            Method addListenerMethod = applicationClass.getDeclaredMethod("addAppEventListener", new Class[] { appEventListenerClass });
+            
+            Class<?> appReOpenedListenerClass = Class.forName("com.apple.eawt.AppReOpenedListener");
+            
+            
+            // Create a proxy object around this handler that can be reflectively added as an Apple AppReOpenedListener
+            Object osxAdapterProxy = Proxy.newProxyInstance(AppReOpenedListener.class.getClassLoader(), new Class[] { appReOpenedListenerClass }, adapter);
+            addListenerMethod.invoke(macOSXApplication, new Object[] { osxAdapterProxy });
+        } catch (ClassNotFoundException cnfe) {
+            Logger.error(StringUtils.getString("This version of Mac OS X does not support the Apple EAWT.  ApplicationEvent handling has been disabled (", cnfe, ")"));
+        } catch (IllegalArgumentException e) {
+        	logHandlerException(e);
+		} catch (SecurityException e) {
+        	logHandlerException(e);
+		} catch (InstantiationException e) {
+        	logHandlerException(e);
+		} catch (IllegalAccessException e) {
+        	logHandlerException(e);
+		} catch (InvocationTargetException e) {
+        	logHandlerException(e);
+		} catch (NoSuchMethodException e) {
+        	logHandlerException(e);
+		}
+    }
+
     
     private static void logHandlerException(Exception e) {
     	Logger.error("Mac OS X Adapter could not talk to EAWT:");

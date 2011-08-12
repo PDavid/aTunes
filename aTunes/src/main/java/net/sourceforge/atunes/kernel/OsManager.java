@@ -414,4 +414,14 @@ public class OsManager {
 	public static boolean areMenuEntriesDelegated() {
 		return adapter.areMenuEntriesDelegated();
 	}
+	
+	/**
+	 * Returns if closing main window will terminate application
+	 * 
+	 * If not, OS will have to provide some method to make window visible again
+	 * @return
+	 */
+	public static boolean isClosingMainWindowClosesApplication() {
+		return adapter.isClosingMainWindowClosesApplication();
+	}
 }

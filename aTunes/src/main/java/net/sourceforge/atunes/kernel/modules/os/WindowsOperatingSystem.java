@@ -147,4 +147,9 @@ public class WindowsOperatingSystem extends OperatingSystemAdapter {
 		return false;
 	}
 	
+	@Override
+	public boolean isClosingMainWindowClosesApplication() {
+		return true;
+	}
+
 }
