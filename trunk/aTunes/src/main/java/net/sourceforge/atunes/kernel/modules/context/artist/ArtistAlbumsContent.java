@@ -101,7 +101,6 @@ public class ArtistAlbumsContent extends AbstractContextPanelContent {
         // Create components
         albumsTable = new ContextImageJTable();
         albumsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        albumsTable.setShowGrid(false);
         albumsTable.getTableHeader().setReorderingAllowed(false);
         albumsTable.getTableHeader().setResizingAllowed(false);
         albumsTable.setDefaultRenderer(AlbumInfo.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new AlbumsTableCellRendererCode()));

@@ -81,7 +81,6 @@ public final class RadioBrowserDialog extends CustomFrame {
     private void setContent() {
         JPanel panel = new JPanel(new GridBagLayout());
         treeTable = new JXTreeTable();
-        treeTable.setShowGrid(false);
         treeTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JPanel topPanel = new JPanel(new BorderLayout(10, 0));
         radioIcon = new JLabel(RadioImageIcon.getIcon());

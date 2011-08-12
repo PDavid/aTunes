@@ -111,7 +111,6 @@ public final class PlayListTable extends JTable implements DragSourceListener, D
     public PlayListTable() {
         super();
         setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        setShowGrid(false);
         setDropMode(DropMode.ON);
 
         // Set table model

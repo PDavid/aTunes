@@ -255,7 +255,6 @@ public final class ContextPanel extends AbstractPreferencesPanel {
         final LyricsEnginesTableModel model = new LyricsEnginesTableModel();
         enginesTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
         enginesTable.setModel(model);
-        enginesTable.setShowGrid(false);
         enginesTable.setTableHeader(null);
         enginesTable.getColumnModel().getColumn(0).setMaxWidth(20);
         enginesTable.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JCheckBox()));

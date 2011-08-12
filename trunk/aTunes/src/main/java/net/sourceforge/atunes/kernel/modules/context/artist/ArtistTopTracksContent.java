@@ -145,7 +145,6 @@ public class ArtistTopTracksContent extends AbstractContextPanelContent {
         // Create components
         tracksTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
         tracksTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        tracksTable.setShowGrid(false);
         tracksTable.setDefaultRenderer(String.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(
                 GuiUtils.getComponentOrientationTableCellRendererCode()));
 

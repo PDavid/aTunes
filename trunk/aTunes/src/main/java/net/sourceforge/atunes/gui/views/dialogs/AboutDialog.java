@@ -256,7 +256,6 @@ public final class AboutDialog extends AbstractCustomModalDialog {
 
         JTable propertiesTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
         propertiesTable.setModel(tableModel);
-        propertiesTable.setShowGrid(false);
         propertiesTable.setDefaultRenderer(Object.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(
                 GuiUtils.getComponentOrientationTableCellRendererCode()));
         JScrollPane propertiesScrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(propertiesTable);

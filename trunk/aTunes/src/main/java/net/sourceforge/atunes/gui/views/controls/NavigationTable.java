@@ -47,7 +47,6 @@ public final class NavigationTable extends JTable implements DragSourceListener,
      */
     public NavigationTable() {
         super();
-        setShowGrid(false);
         setDragSource();
         setDragEnabled(true);
 

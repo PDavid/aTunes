@@ -132,7 +132,6 @@ public final class StatsDialog extends CustomFrame {
         // General stats
         JPanel generalPanel = new JPanel(new GridBagLayout());
         generalTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
-        generalTable.setShowGrid(false);
         JScrollPane generalScrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(generalTable);
         generalChart = new JLabel();
         generalChart.setHorizontalAlignment(SwingConstants.CENTER);
@@ -154,7 +153,6 @@ public final class StatsDialog extends CustomFrame {
         // Songs stats
         JPanel songPanel = new JPanel(new GridBagLayout());
         songsTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
-        songsTable.setShowGrid(false);
         JScrollPane songsScrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(songsTable);
         songsChart = new JLabel();
         songsChart.setHorizontalAlignment(SwingConstants.CENTER);
@@ -175,7 +173,6 @@ public final class StatsDialog extends CustomFrame {
         // Albums stats
         JPanel albumPanel = new JPanel(new GridBagLayout());
         albumsTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
-        albumsTable.setShowGrid(false);
         JScrollPane albumsScrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(albumsTable);
         albumsChart = new JLabel();
         albumsChart.setHorizontalAlignment(SwingConstants.CENTER);
@@ -194,7 +191,6 @@ public final class StatsDialog extends CustomFrame {
         // Artists stats
         JPanel artistPanel = new JPanel(new GridBagLayout());
         artistsTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
-        artistsTable.setShowGrid(false);
         JScrollPane artistsScrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(artistsTable);
         artistsChart = new JLabel();
         artistsChart.setHorizontalAlignment(SwingConstants.CENTER);
