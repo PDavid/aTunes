@@ -143,7 +143,7 @@ public class ArtistTopTracksContent extends AbstractContextPanelContent {
     @Override
     protected Component getComponent() {
         // Create components
-        tracksTable = new JTable();
+        tracksTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
         tracksTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tracksTable.setShowGrid(false);
         tracksTable.setDefaultRenderer(String.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(
