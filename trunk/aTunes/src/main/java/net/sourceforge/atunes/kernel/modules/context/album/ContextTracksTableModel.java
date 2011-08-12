@@ -31,7 +31,7 @@ import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public class ContextTracksTableModel implements TableModel {
+class ContextTracksTableModel implements TableModel {
 
     private AlbumInfo album;
     private List<TableModelListener> listeners;
