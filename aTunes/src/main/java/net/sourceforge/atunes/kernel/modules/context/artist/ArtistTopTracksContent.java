@@ -21,9 +21,15 @@
 package net.sourceforge.atunes.kernel.modules.context.artist;
 
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import javax.swing.JMenuItem;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
@@ -35,7 +41,11 @@ import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.context.ArtistTopTracks;
 import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
+import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
+import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -46,7 +56,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author alex
  * 
  */
-public class ArtistPopularTracksContent extends AbstractContextPanelContent {
+public class ArtistTopTracksContent extends AbstractContextPanelContent {
 
     private static class TracksDefaultTableColumnModel extends DefaultTableColumnModel {
 
@@ -67,9 +77,41 @@ public class ArtistPopularTracksContent extends AbstractContextPanelContent {
     private static final long serialVersionUID = -5538266144953409867L;
 
     private JTable tracksTable;
+    
+    private JMenuItem createPlayList;
+    
+    private ArtistTopTracks lastTopTracks;
+    
+    private class CreatePlaylistWithPopularTracksActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+        	// Get artist files from repository and match by title with top tracks to create a play list
+    		Artist artist = RepositoryHandler.getInstance().getArtistStructure().get(lastTopTracks.getArtist());
+    		if (artist != null) {
+    			List<LocalAudioObject> audioObjects = artist.getAudioObjects();
+    			Map<String, LocalAudioObject> titles = new HashMap<String, LocalAudioObject>();
+    			for (LocalAudioObject lao : audioObjects) {
+    				if (lao.getTitle() != null) {
+    					titles.put(lao.getTitle().toLowerCase(), lao); // Do lower case for a better match
+    				}
+    			}
+    			List<AudioObject> playlist = new ArrayList<AudioObject>();
+    			for (TrackInfo track : lastTopTracks.getTracks()) {
+    				if (titles.containsKey(track.getTitle().toLowerCase())) {
+    					playlist.add(titles.get(track.getTitle().toLowerCase()));
+    				}
+    			}
 
-    public ArtistPopularTracksContent() {
+    			// Create a new play list with artist as name and audio objects selected
+                PlayListHandler.getInstance().newPlayList(artist.getName(), playlist);
+    		}
+        }
+    }
+
+    public ArtistTopTracksContent() {
         super(new ArtistPopularTracksDataSource());
+    	createPlayList = new JMenuItem(I18nUtils.getString("CREATE_PLAYLIST_WITH_TOP_TRACKS"));
+    	createPlayList.addActionListener(new CreatePlaylistWithPopularTracksActionListener());
     }
 
     @Override
@@ -85,7 +127,10 @@ public class ArtistPopularTracksContent extends AbstractContextPanelContent {
     @Override
     protected void updateContentWithDataSourceResult(Map<String, ?> result) {
         if (result.containsKey(ArtistPopularTracksDataSource.OUTPUT_TRACKS)) {
-            tracksTable.setModel(new ContextArtistTracksTableModel((ArtistTopTracks) result.get(ArtistPopularTracksDataSource.OUTPUT_TRACKS)));
+        	lastTopTracks = (ArtistTopTracks) result.get(ArtistPopularTracksDataSource.OUTPUT_TRACKS);
+            tracksTable.setModel(new ContextArtistTracksTableModel(lastTopTracks));
+        } else {
+        	lastTopTracks = null;
         }
     }
 
@@ -131,4 +176,12 @@ public class ArtistPopularTracksContent extends AbstractContextPanelContent {
     protected boolean isScrollNeeded() {
     	return true;
     }
+    
+    @Override
+    public List<Component> getOptions() {
+        List<Component> options = new ArrayList<Component>();
+        options.add(createPlayList);
+        return options;
+    }
+
 }

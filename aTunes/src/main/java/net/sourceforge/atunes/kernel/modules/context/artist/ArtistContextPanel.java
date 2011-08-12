@@ -74,7 +74,7 @@ public class ArtistContextPanel extends AbstractContextPanel {
         if (contents == null) {
             contents = new ArrayList<AbstractContextPanelContent>();
             contents.add(new ArtistBasicInfoContent());
-            contents.add(new ArtistPopularTracksContent());
+            contents.add(new ArtistTopTracksContent());
             contents.add(ApplicationState.getInstance().isShowContextAlbumsInGrid() ? new ArtistAlbumsFlowContent() : new ArtistAlbumsContent());
         }
         return contents;
@@ -90,5 +90,4 @@ public class ArtistContextPanel extends AbstractContextPanel {
         // Enable panel for LocalAudioObject objects or Radios with song information available
         return audioObject instanceof LocalAudioObject || audioObject instanceof Radio && ((Radio) audioObject).isSongInfoAvailable();
     }
-
 }
