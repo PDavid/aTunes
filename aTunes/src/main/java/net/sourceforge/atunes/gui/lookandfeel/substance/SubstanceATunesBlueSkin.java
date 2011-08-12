@@ -257,7 +257,7 @@ public final class SubstanceATunesBlueSkin extends SubstanceSkin implements Cust
 
 		// the special theme bundle
 		SubstanceColorSchemeBundle specialSchemeBundle = new SubstanceColorSchemeBundle(activeScheme, activeScheme, disabledScheme);
-		this.registerDecorationAreaSchemeBundle(specialSchemeBundle, DecorationAreaType.PRIMARY_TITLE_PANE, DecorationAreaType.SECONDARY_TITLE_PANE, DecorationAreaType.HEADER);
+		this.registerDecorationAreaSchemeBundle(specialSchemeBundle, DecorationAreaType.PRIMARY_TITLE_PANE, DecorationAreaType.SECONDARY_TITLE_PANE);
 
 		this.setSelectedTabFadeStart(1);
 		this.setSelectedTabFadeEnd(1);
