@@ -104,6 +104,14 @@ public class MacOSXLookAndFeel extends SystemLookAndFeel {
         scrollPane.getViewport().setView(list);
     	return scrollPane;
     }
+    
+    @Override
+    public JScrollPane getScrollPane(Component component) {    	
+    	JScrollPane scrollPane = new JScrollPane(component);
+    	scrollPane.setBorder(BorderFactory.createLineBorder(MacOSColors.SEPARATOR_COLOR));
+    	return scrollPane;
+    }
+    
 
 	
     /**
@@ -152,13 +160,6 @@ public class MacOSXLookAndFeel extends SystemLookAndFeel {
     	JList list = new JList();
         list.setCellRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListCellRenderer(null));
     	return list;
-    }
-    
-    @Override
-    public JScrollPane getScrollPane(Component component) {
-    	JScrollPane scrollPane = new JScrollPane(component);
-    	scrollPane.setBorder(BorderFactory.createLineBorder(MacOSColors.SEPARATOR_COLOR));
-    	return scrollPane;
     }
     
     @Override

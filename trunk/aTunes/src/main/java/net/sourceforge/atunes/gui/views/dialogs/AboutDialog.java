@@ -254,7 +254,8 @@ public final class AboutDialog extends AbstractCustomModalDialog {
 
         UrlLabel contributors = new UrlLabel(I18nUtils.getString("CONTRIBUTORS"), Constants.CONTRIBUTORS_WEB);
 
-        JTable propertiesTable = new JTable(tableModel);
+        JTable propertiesTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
+        propertiesTable.setModel(tableModel);
         propertiesTable.setShowGrid(false);
         propertiesTable.setDefaultRenderer(Object.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(
                 GuiUtils.getComponentOrientationTableCellRendererCode()));

@@ -30,8 +30,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JComponent;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
@@ -194,7 +197,16 @@ public abstract class AbstractContextPanel {
     				((JComponent) componentToAdd).setOpaque(false);
     			}
     			if (content.isScrollNeeded()) {
-    				JScrollPane scroll = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getScrollPane(componentToAdd);
+    				JScrollPane scroll = null;
+    		    	if (componentToAdd instanceof JTable) {
+    		    		scroll = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane((JTable)componentToAdd);
+    		    	} else if (componentToAdd instanceof JTree) {
+    		    		scroll = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTreeScrollPane((JTree)componentToAdd);
+    		    	} else if (componentToAdd instanceof JList) {
+    		    		scroll = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListScrollPane((JList)componentToAdd);
+    		    	} else {
+    		    		scroll = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getScrollPane(componentToAdd);
+    		    	}
     				// Set a minimum height
     				scroll.setMinimumSize(new Dimension(0, 200));
     				componentToAdd = scroll;
