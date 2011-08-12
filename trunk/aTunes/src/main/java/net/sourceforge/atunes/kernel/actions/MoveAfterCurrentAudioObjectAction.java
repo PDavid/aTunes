@@ -58,7 +58,7 @@ public class MoveAfterCurrentAudioObjectAction extends CustomAbstractAction {
     @Override
     public boolean isEnabledForPlayListSelection(List<AudioObject> selection) {
         //Don't allow moving songs from other playlists into active playlist
-        if (!PlayListHandler.getInstance().isActivePlayListVisible()) {
+        if (!PlayListHandler.getInstance().isActivePlayListVisible() || PlayListHandler.getInstance().isFiltered()) {
             return false;
         }
 
