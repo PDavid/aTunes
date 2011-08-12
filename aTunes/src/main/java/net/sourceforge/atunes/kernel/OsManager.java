@@ -406,4 +406,12 @@ public class OsManager {
 	public static boolean areTrayIconsSupported() {
 		return adapter.areTrayIconsSupported();
 	}
+	
+	/**
+	 * Returns if some menu entries (preferences, about) are delegated to OS
+	 * @return
+	 */
+	public static boolean areMenuEntriesDelegated() {
+		return adapter.areMenuEntriesDelegated();
+	}
 }

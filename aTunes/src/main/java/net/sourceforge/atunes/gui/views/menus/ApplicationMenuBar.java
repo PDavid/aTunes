@@ -31,6 +31,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
 
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddPodcastFeedAction;
 import net.sourceforge.atunes.kernel.actions.AddRadioAction;
@@ -139,7 +140,9 @@ public final class ApplicationMenuBar extends JMenuBar {
             repair.add(Actions.getAction(RepairGenresAction.class));
             repair.add(Actions.getAction(RepairAlbumNamesAction.class));
             edit.add(player);
-            edit.add(Actions.getAction(EditPreferencesAction.class));
+            if (!OsManager.areMenuEntriesDelegated()) {
+            	edit.add(Actions.getAction(EditPreferencesAction.class));
+            }
             edit.add(new JSeparator());
             edit.add(repair);
         }
@@ -244,8 +247,10 @@ public final class ApplicationMenuBar extends JMenuBar {
             help.add(new JSeparator());
             help.add(Actions.getAction(ShowLogAction.class));
             help.add(Actions.getAction(CheckUpdatesAction.class));
-            help.add(new JSeparator());
-            help.add(Actions.getAction(ShowAboutAction.class));
+            if (!OsManager.areMenuEntriesDelegated()) {
+            	help.add(new JSeparator());
+            	help.add(Actions.getAction(ShowAboutAction.class));
+            }
         }
         return help;
     }
