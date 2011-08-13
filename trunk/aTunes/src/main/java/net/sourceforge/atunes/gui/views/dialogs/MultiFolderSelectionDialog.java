@@ -58,7 +58,7 @@ import javax.swing.tree.TreeSelectionModel;
 
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -68,7 +68,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * The Class MultiFolderSelectionDialog. Allows the selection of the repository
  * folders.
  */
-public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog {
+public final class MultiFolderSelectionDialog extends AbstractCustomDialog {
 
     /**
      * Width of a check box. This is used to calculate if user pressed mouse

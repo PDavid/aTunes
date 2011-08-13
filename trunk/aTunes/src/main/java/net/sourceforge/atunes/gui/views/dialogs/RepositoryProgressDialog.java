@@ -37,7 +37,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.RepositoryLoadCancelAction;
 import net.sourceforge.atunes.kernel.actions.RepositoryLoadInBackgroundAction;
@@ -50,7 +50,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * 
  * @author fleax
  */
-public final class RepositoryProgressDialog extends AbstractCustomModalDialog {
+public final class RepositoryProgressDialog extends AbstractCustomDialog {
 
     private static class GlassPaneMouseListener implements MouseListener {
         @Override

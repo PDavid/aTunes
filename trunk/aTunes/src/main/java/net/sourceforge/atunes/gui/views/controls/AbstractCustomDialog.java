@@ -30,7 +30,7 @@ import javax.swing.WindowConstants;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.utils.GuiUtils;
 
-public abstract class AbstractCustomModalDialog extends JDialog {
+public abstract class AbstractCustomDialog extends JDialog {
 
     private static final long serialVersionUID = 1L;
 
@@ -43,7 +43,7 @@ public abstract class AbstractCustomModalDialog extends JDialog {
      * @param modal
      * @param disposeOnClose
      */
-    public AbstractCustomModalDialog(Window owner, int width, int height, boolean modal, boolean disposeOnClose) {
+    public AbstractCustomDialog(Window owner, int width, int height, boolean modal, boolean disposeOnClose) {
         super(owner);
         setSize(width, height);
         setUndecorated(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isDialogUndecorated());

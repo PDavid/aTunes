@@ -39,7 +39,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.SwingWorker;
 
-import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.SimpleTextPane;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -50,7 +50,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author alex
  *
  */
-class MacOSXPlayerEngineDialog extends AbstractCustomModalDialog {
+class MacOSXPlayerEngineDialog extends AbstractCustomDialog {
 
 	/**
 	 * 

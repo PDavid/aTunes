@@ -33,7 +33,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import net.sourceforge.atunes.gui.images.RadioImageIcon;
-import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -43,7 +43,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  *
  */
-public final class RadioDialog extends AbstractCustomModalDialog {
+public final class RadioDialog extends AbstractCustomDialog {
 
     private static final long serialVersionUID = 7295438534550341824L;
 

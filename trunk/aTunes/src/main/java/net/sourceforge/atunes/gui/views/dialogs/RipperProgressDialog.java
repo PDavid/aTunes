@@ -20,12 +20,12 @@
 
 package net.sourceforge.atunes.gui.views.dialogs;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -35,16 +35,14 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.gui.images.AlbumImageIcon;
-import net.sourceforge.atunes.gui.views.controls.CustomFrame;
-import net.sourceforge.atunes.utils.GuiUtils;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public final class RipperProgressDialog extends CustomFrame {
+public final class RipperProgressDialog extends AbstractCustomDialog {
 
     private static final long serialVersionUID = -3891515847607545757L;
 
@@ -60,22 +58,11 @@ public final class RipperProgressDialog extends CustomFrame {
     /**
      * Instantiates a new ripper progress dialog.
      */
-    public RipperProgressDialog(Component owner) {
-        super(I18nUtils.getString("RIPPING_CD"), 420, 200, owner);
+    public RipperProgressDialog(Window owner) {
+        super(owner, 420, 200, true, false);
+        setTitle(I18nUtils.getString("RIPPING_CD"));
         setResizable(false);
-        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setContent();
-        GuiUtils.applyComponentOrientation(this);
-    }
-
-    /**
-     * The main method.
-     * 
-     * @param args
-     *            the arguments
-     */
-    public static void main(String[] args) {
-        new RipperProgressDialog(null).setVisible(true);
     }
 
     /**

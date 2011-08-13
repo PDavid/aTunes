@@ -38,14 +38,14 @@ import javax.swing.ListModel;
 
 import net.sourceforge.atunes.gui.lookandfeel.AbstractListCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * General characteristics of the preference dialog
  */
-public final class EditPreferencesDialog extends AbstractCustomModalDialog {
+public final class EditPreferencesDialog extends AbstractCustomDialog {
 
     private static final long serialVersionUID = -4759149194433605946L;
 

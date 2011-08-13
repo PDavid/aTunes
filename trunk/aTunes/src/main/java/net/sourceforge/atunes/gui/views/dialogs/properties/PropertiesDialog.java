@@ -26,14 +26,14 @@ import java.util.Map;
 
 import javax.swing.JFrame;
 
-import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public class PropertiesDialog extends AbstractCustomModalDialog {
+public class PropertiesDialog extends AbstractCustomDialog {
 
     private static final long serialVersionUID = 6097305595858691246L;
 
@@ -48,7 +48,7 @@ public class PropertiesDialog extends AbstractCustomModalDialog {
      *            the title
      */
     PropertiesDialog(String title, JFrame owner) {
-        super(owner, 560, 480, false, true);
+        super(owner, 560, 480, true, true);
         setMinimumSize(new Dimension(560, 480));
         setTitle(title);
         setResizable(true);

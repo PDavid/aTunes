@@ -37,7 +37,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.SimpleTextPane;
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -47,7 +47,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author alex
  *
  */
-class MacOSXPlayerEngineMatchSelectionDialog extends AbstractCustomModalDialog {
+class MacOSXPlayerEngineMatchSelectionDialog extends AbstractCustomDialog {
 
 	/**
 	 * 

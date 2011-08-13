@@ -35,7 +35,7 @@ import javax.swing.JPanel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
 import net.sourceforge.atunes.gui.views.controls.SimpleTextPane;
 import net.sourceforge.atunes.kernel.OsManager;
@@ -46,7 +46,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author alex
  *
  */
-class MacOSXPlayerEngineEnterPathDialog extends AbstractCustomModalDialog {
+class MacOSXPlayerEngineEnterPathDialog extends AbstractCustomDialog {
 
 	/**
 	 * 

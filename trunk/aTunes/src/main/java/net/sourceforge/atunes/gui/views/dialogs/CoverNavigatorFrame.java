@@ -20,12 +20,12 @@
 
 package net.sourceforge.atunes.gui.views.dialogs;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Window;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -35,16 +35,15 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.views.controls.CustomFrame;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.ScrollableFlowPanel;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public final class CoverNavigatorFrame extends CustomFrame {
+public final class CoverNavigatorFrame extends AbstractCustomDialog {
 
     private static final long serialVersionUID = -1744765531225480303L;
 
@@ -58,12 +57,10 @@ public final class CoverNavigatorFrame extends CustomFrame {
      * @param artists
      *            the artists
      */
-    public CoverNavigatorFrame(List<Artist> artists, Component owner) {
-        super(I18nUtils.getString("COVER_NAVIGATOR"), GuiUtils.getComponentWidthForResolution(0.75f), GuiUtils.getComponentHeightForResolution(0.75f), owner);
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+    public CoverNavigatorFrame(List<Artist> artists, Window owner) {
+        super(owner, GuiUtils.getComponentWidthForResolution(0.75f), GuiUtils.getComponentHeightForResolution(0.75f), true, true);
+        setTitle(I18nUtils.getString("COVER_NAVIGATOR"));
         setContent(artists);
-        GuiUtils.applyComponentOrientation(this);
-        enableCloseActionWithEscapeKey();
     }
 
     /**

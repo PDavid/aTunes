@@ -20,10 +20,10 @@
 
 package net.sourceforge.atunes.gui.views.dialogs;
 
-import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -33,25 +33,23 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
-import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.views.controls.CustomFrame;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.kernel.modules.updates.ApplicationVersion;
-import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public final class UpdateDialog extends CustomFrame {
+public final class UpdateDialog extends AbstractCustomDialog {
 
     private static final long serialVersionUID = -778226654176158965L;
 
-    public UpdateDialog(ApplicationVersion version, Component owner) {
-        super(I18nUtils.getString("NEW_VERSION_AVAILABLE"), 400, 150, owner);
+    public UpdateDialog(ApplicationVersion version, Window owner) {
+        super(owner, 400, 150, true, true);
+        setTitle(I18nUtils.getString("NEW_VERSION_AVAILABLE"));
         setResizable(false);
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         JPanel panel = new JPanel(new GridBagLayout());
         String text = I18nUtils.getString("NEW_VERSION_AVAILABLE_TEXT");
@@ -101,9 +99,6 @@ public final class UpdateDialog extends CustomFrame {
         panel.add(ok, c);
 
         add(panel);
-
-        enableDisposeActionWithEscapeKey();
-        GuiUtils.applyComponentOrientation(this);
     }
 
 }

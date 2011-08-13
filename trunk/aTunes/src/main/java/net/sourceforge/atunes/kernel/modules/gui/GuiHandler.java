@@ -308,7 +308,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      * @param owner
      * @return
      */
-    public ProgressDialog getNewProgressDialog(String title, Component owner) {
+    public ProgressDialog getNewProgressDialog(String title, Window owner) {
         return new ProgressDialog(title, owner == null ? frame.getFrame() : owner);
     }
 
@@ -319,7 +319,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      * @param owner
      * @return
      */
-    public TransferProgressDialog getNewTransferProgressDialog(String title, Component owner) {
+    public TransferProgressDialog getNewTransferProgressDialog(String title, Window owner) {
         return new TransferProgressDialog(title, owner == null ? frame.getFrame() : owner);
     }
 

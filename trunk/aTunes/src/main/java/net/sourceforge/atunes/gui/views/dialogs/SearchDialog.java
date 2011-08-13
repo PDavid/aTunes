@@ -37,7 +37,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
 import net.sourceforge.atunes.kernel.modules.internetsearch.SearchFactory;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -46,7 +46,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The Class SearchDialog.
  */
-public final class SearchDialog extends AbstractCustomModalDialog {
+public final class SearchDialog extends AbstractCustomDialog {
 
     private static final long serialVersionUID = 89888215541058798L;
 

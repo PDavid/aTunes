@@ -21,10 +21,10 @@
 package net.sourceforge.atunes.gui.views.dialogs;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -35,7 +35,7 @@ import javax.swing.ListSelectionModel;
 
 import net.sourceforge.atunes.gui.images.RadioImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.views.controls.CustomFrame;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -44,7 +44,7 @@ import org.jdesktop.swingx.JXTreeTable;
 /**
  * The Class RadioBrowserDialog.
  */
-public final class RadioBrowserDialog extends CustomFrame {
+public final class RadioBrowserDialog extends AbstractCustomDialog {
 
     private static final long serialVersionUID = 8523236886848649698L;
 
@@ -67,12 +67,10 @@ public final class RadioBrowserDialog extends CustomFrame {
     /**
      * Instantiates a new radio browser dialog.
      */
-    public RadioBrowserDialog(Component owner) {
-        super(I18nUtils.getString("RADIO_BROWSER"), GuiUtils.getComponentWidthForResolution(0.75f), GuiUtils.getComponentHeightForResolution(0.75f), owner);
+    public RadioBrowserDialog(Window owner) {
+        super(owner, GuiUtils.getComponentWidthForResolution(0.5f), GuiUtils.getComponentHeightForResolution(0.5f), true, true);
+        setTitle(I18nUtils.getString("RADIO_BROWSER"));
         setContent();
-        GuiUtils.applyComponentOrientation(this);
-        enableCloseActionWithEscapeKey();
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     /**

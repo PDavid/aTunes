@@ -43,7 +43,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -52,7 +52,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 /**
  * Dialog to select column set
  */
-public final class ColumnSetSelectorDialog extends AbstractCustomModalDialog {
+public final class ColumnSetSelectorDialog extends AbstractCustomDialog {
 
     private class ColumnsTableModel implements TableModel {
 

@@ -40,11 +40,11 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
+import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.tags.EditTagDialogController;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.LocalAudioObject;
-import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -108,8 +108,6 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
         addContent();
 
         setContent();
-
-        GuiUtils.applyComponentOrientation(this);
         this.pack();
     }
 
@@ -223,7 +221,7 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
         editTagsButton.setText(I18nUtils.getString("EDIT_TAG"));
         editTagsButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                EditTagDialogController ctl = new EditTagDialogController(new EditTagDialog(null, false));
+                EditTagDialogController ctl = new EditTagDialogController(new EditTagDialog(GuiHandler.getInstance().getFrame().getFrame(), false));
                 ctl.editFiles(java.util.Collections.singletonList(file));
             }
         });

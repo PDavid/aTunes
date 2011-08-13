@@ -34,7 +34,7 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -46,7 +46,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * 
  * @author sylvain
  */
-public final class EqualizerDialog extends AbstractCustomModalDialog {
+public final class EqualizerDialog extends AbstractCustomDialog {
 
     private static final long serialVersionUID = 7295438534550341824L;
 

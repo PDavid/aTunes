@@ -49,7 +49,7 @@ import net.sourceforge.atunes.gui.images.DeviceImageIcon;
 import net.sourceforge.atunes.gui.images.NewImageIcon;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.views.controls.CustomFrame;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomFrame;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.dialogs.UpdateDialog;
 import net.sourceforge.atunes.gui.views.menus.ApplicationMenuBar;
@@ -74,7 +74,7 @@ import org.jdesktop.swingx.JXStatusBar;
 /**
  * The standard frame
  */
-abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforge.atunes.gui.frame.Frame {
+abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.sourceforge.atunes.gui.frame.Frame {
 
     private static final long serialVersionUID = 1L;
 

@@ -21,10 +21,10 @@
 package net.sourceforge.atunes.gui.views.dialogs;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Window;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -35,15 +35,14 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.views.controls.CustomFrame;
-import net.sourceforge.atunes.utils.GuiUtils;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * The Class StatsDialog.
  */
-public final class StatsDialog extends CustomFrame {
+public final class StatsDialog extends AbstractCustomDialog {
 
     private static final long serialVersionUID = -7822497871738495670L;
 
@@ -77,12 +76,11 @@ public final class StatsDialog extends CustomFrame {
     /**
      * Instantiates a new stats dialog.
      */
-    public StatsDialog(Component owner) {
-        super(StringUtils.getString(I18nUtils.getString("STATS"), " - ", Constants.APP_NAME, " ", Constants.VERSION.toShortString()), 750, 750, owner);
+    public StatsDialog(Window owner) {
+        super(owner, 750, 750, true, true);
+        setTitle(StringUtils.getString(I18nUtils.getString("STATS"), " - ", Constants.APP_NAME, " ", Constants.VERSION.toShortString()));
         setResizable(true);
         add(getContent());
-        GuiUtils.applyComponentOrientation(this);
-        enableCloseActionWithEscapeKey();
     }
 
     /**

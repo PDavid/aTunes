@@ -38,7 +38,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -48,7 +48,7 @@ import org.commonjukebox.plugins.model.PluginConfiguration;
 import org.commonjukebox.plugins.model.PluginInfo;
 import org.commonjukebox.plugins.model.PluginProperty;
 
-public class PluginEditorDialog extends AbstractCustomModalDialog {
+public class PluginEditorDialog extends AbstractCustomDialog {
 
     /**
      * 
