@@ -62,7 +62,7 @@ public final class EditPreferencesDialog extends AbstractCustomModalDialog {
      *            the owner
      */
     public EditPreferencesDialog(JFrame owner) {
-        super(owner, GuiUtils.getComponentWidthForResolution(0.9f),GuiUtils.getComponentHeightForResolution(0.7f), true, true);
+        super(owner, GuiUtils.getComponentWidthForResolution(0.5f),GuiUtils.getComponentHeightForResolution(0.6f), true, true);
         setResizable(true);
         setTitle(I18nUtils.getString("PREFERENCES"));
         add(getContent());
@@ -89,7 +89,7 @@ public final class EditPreferencesDialog extends AbstractCustomModalDialog {
         list.setCellRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListCellRenderer(new PreferencesListCellRendererCode()));
         JScrollPane scrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListScrollPane(list);
         // Force minimum width of scroll pane to show items
-        scrollPane.setMinimumSize(new Dimension(200, 0));
+        scrollPane.setMinimumSize(new Dimension(100, 0));
         options = new JPanel();
         ok = new JButton(I18nUtils.getString("OK"));
         cancel = new JButton(I18nUtils.getString("CANCEL"));
