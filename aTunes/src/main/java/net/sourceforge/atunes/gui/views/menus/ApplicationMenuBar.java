@@ -112,8 +112,10 @@ public final class ApplicationMenuBar extends JMenuBar {
             file.add(new JSeparator());
             file.add(Actions.getAction(ImportToRepositoryAction.class));
             file.add(Actions.getAction(ExportAction.class));
-            file.add(new JSeparator());
-            file.add(Actions.getAction(ExitAction.class));
+            if (!OsManager.areMenuEntriesDelegated()) {
+            	file.add(new JSeparator());
+            	file.add(Actions.getAction(ExitAction.class));
+            }
         }
         return file;
     }
