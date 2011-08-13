@@ -178,6 +178,11 @@ public class MacOSXLookAndFeel extends SystemLookAndFeel {
     public Font getPlayListSelectedItemFont() {
     	return null;
     }
+    
+    @Override
+    public boolean isDialogUndecorated() {
+    	return true;
+    }
 
 
 }
