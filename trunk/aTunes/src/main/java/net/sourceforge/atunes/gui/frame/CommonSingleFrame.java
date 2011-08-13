@@ -204,21 +204,6 @@ public abstract class CommonSingleFrame extends AbstractSingleFrame {
 	}
 	
 	@Override
-	protected Dimension getPropertiesPanelMinimumSize() {
-		return new Dimension(1, CommonSingleFrameSizes.AUDIO_OBJECT_PROPERTIES_PANEL_HEIGHT);
-	}
-	
-	@Override
-	protected Dimension getPropertiesPanelPreferredSize() {
-		return new Dimension(1, CommonSingleFrameSizes.AUDIO_OBJECT_PROPERTIES_PANEL_HEIGHT);
-	}
-	
-	@Override
-	protected Dimension getPropertiesPanelMaximumSize() {
-		return new Dimension(1, CommonSingleFrameSizes.AUDIO_OBJECT_PROPERTIES_PANEL_HEIGHT);
-	}
-	
-	@Override
 	protected Dimension getWindowMinimumSize() {
 		return new Dimension(CommonSingleFrameSizes.WINDOW_MINIMUM_WIDTH, CommonSingleFrameSizes.WINDOW_MINIMUM_HEIGHT);
 	}

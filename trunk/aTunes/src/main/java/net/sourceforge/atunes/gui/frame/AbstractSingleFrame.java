@@ -709,24 +709,6 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
     protected abstract Dimension getPlayListPanelMaximumSize();
 
     /**
-     * Returns minimum size of properties panel
-     * @return
-     */
-    protected abstract Dimension getPropertiesPanelMinimumSize();
-
-    /**
-     * Returns preferred size of properties panel
-     * @return
-     */
-    protected abstract Dimension getPropertiesPanelPreferredSize();
-
-    /**
-     * Returns maximum size of properties panel
-     * @return
-     */
-    protected abstract Dimension getPropertiesPanelMaximumSize();
-
-    /**
      * Returns minimum size of window
      * @return
      */
