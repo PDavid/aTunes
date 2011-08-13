@@ -51,11 +51,6 @@ public class CommonSingleFrameSizes {
     public static final int CONTEXT_PANEL_PREFERRED_WIDTH = GuiUtils.getComponentWidthForResolution(0.25f);
     public static final int CONTEXT_PANEL_MAXIMUM_WIDTH = GuiUtils.getComponentWidthForResolution(0.4f);
 
-    /**
-     * Properties panel height
-     */
-    public static final int AUDIO_OBJECT_PROPERTIES_PANEL_HEIGHT = 100;
-
     /*
      * Play list panel widths 
      */
