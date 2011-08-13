@@ -33,14 +33,14 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The Class InputDialog.
  */
-public final class InputDialog extends AbstractCustomModalDialog {
+public final class InputDialog extends AbstractCustomDialog {
 
     private static final long serialVersionUID = -5789081662254435503L;
 

@@ -41,7 +41,7 @@ import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.modules.cdripper.RipperHandler;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
@@ -53,7 +53,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The dialog for ripping cds
  */
-public final class RipCdDialog extends AbstractCustomModalDialog {
+public final class RipCdDialog extends AbstractCustomDialog {
 
     /**
      * The model for cd info

@@ -31,14 +31,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The search results dialog.
  */
-public final class SearchResultsDialog extends AbstractCustomModalDialog {
+public final class SearchResultsDialog extends AbstractCustomDialog {
 
     private static final long serialVersionUID = 7219089044964361102L;
 

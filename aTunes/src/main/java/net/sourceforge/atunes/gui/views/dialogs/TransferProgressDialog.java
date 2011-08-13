@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.gui.views.dialogs;
 
-import java.awt.Component;
+import java.awt.Window;
 
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -40,7 +40,7 @@ public final class TransferProgressDialog extends ProgressDialog {
      * @param title
      *            the title
      */
-    public TransferProgressDialog(String title, Component owner) {
+    public TransferProgressDialog(String title, Window owner) {
         super(title, owner);
     }
 

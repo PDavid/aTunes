@@ -20,10 +20,10 @@
 
 package net.sourceforge.atunes.gui.views.dialogs;
 
-import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Window;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
@@ -33,14 +33,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JRootPane;
-import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.views.controls.CustomFrame;
-import net.sourceforge.atunes.utils.GuiUtils;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class ProgressDialog extends CustomFrame {
+public class ProgressDialog extends AbstractCustomDialog {
 
     private static final long serialVersionUID = 5792663290880992661L;
 
@@ -71,13 +69,12 @@ public class ProgressDialog extends CustomFrame {
      * @param title
      *            the title
      */
-    public ProgressDialog(String title, Component owner) {
-        super(title, 450, 150, owner);
+    public ProgressDialog(String title, Window owner) {
+        super(owner, 450, 150, true, true);
+        setTitle(title);
         getRootPane().setWindowDecorationStyle(JRootPane.INFORMATION_DIALOG);
         add(getContent());
         setResizable(false);
-        GuiUtils.applyComponentOrientation(this);
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     }
 
     /**
@@ -203,21 +200,6 @@ public class ProgressDialog extends CustomFrame {
      */
     public void setIcon(ImageIcon icon) {
         imagelabel.setIcon(icon);
-    }
-
-    /**
-     * The main method.
-     * 
-     * @param args
-     *            the arguments
-     */
-    public static void main(String[] args) {
-        ProgressDialog dialog = new ProgressDialog("test", null);
-        dialog.setInfoText("testing");
-        dialog.setTotalProgress(100);
-        dialog.setCurrentProgress(20);
-        dialog.setProgressBarValue(20);
-        dialog.setVisible(true);
     }
 
     /**

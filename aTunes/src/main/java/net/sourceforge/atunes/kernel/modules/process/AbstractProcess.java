@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.process;
 
-import java.awt.Component;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -103,7 +103,7 @@ public abstract class AbstractProcess {
      * The Swing component owner of this process. Needed to set owner of
      * progress dialog. Can be null
      */
-    private Component owner;
+    private Window owner;
 
     /**
      * Adds a listener to this process
@@ -281,7 +281,7 @@ public abstract class AbstractProcess {
      * @param owner
      *            the owner to set
      */
-    protected void setOwner(Component owner) {
+    protected void setOwner(Window owner) {
         this.owner = owner;
     }
 
@@ -322,7 +322,7 @@ public abstract class AbstractProcess {
     /**
      * @return the owner
      */
-    protected Component getOwner() {
+    protected Window getOwner() {
         return owner;
     }
 }

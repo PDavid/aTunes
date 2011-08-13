@@ -20,8 +20,8 @@
 
 package net.sourceforge.atunes.kernel.modules.webservices.lastfm;
 
-import java.awt.Component;
 import java.awt.Image;
+import java.awt.Window;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -53,7 +53,7 @@ public class GetCoversProcess extends AbstractProcess {
      * @param progressDialog
      *            the progress dialog
      */
-    public GetCoversProcess(Artist artist, Component owner) {
+    public GetCoversProcess(Artist artist, Window owner) {
         this.artist = artist;
         setOwner(owner);
     }

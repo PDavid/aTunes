@@ -34,14 +34,14 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The Class RepositorySelectionInfoDialog.
  */
-public final class RepositorySelectionInfoDialog extends AbstractCustomModalDialog {
+public final class RepositorySelectionInfoDialog extends AbstractCustomDialog {
 
     private static final long serialVersionUID = 4369595555397951445L;
 

@@ -22,49 +22,31 @@ package net.sourceforge.atunes.gui.views.controls;
 
 import java.awt.Component;
 
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 
 import net.sourceforge.atunes.utils.GuiUtils;
 
-public class CustomFrame extends JFrame {
+public abstract class AbstractCustomFrame extends JFrame {
 
     private static final long serialVersionUID = -7162399690169458143L;
 
     /**
      * Default constructor
      */
-    public CustomFrame() {
+    public AbstractCustomFrame() {
         super();
         GuiUtils.addAppIcons(this);
     }
 
-    /**
-     * Instantiates a new custom frame.
-     * 
-     * @param title
-     * @param width
-     * @param height
-     * @param owner
-     */
-    public CustomFrame(String title, int width, int height, Component owner) {
-        super(title);
-        setSize(width, height);
-        setLocationRelativeTo(owner);
-        GuiUtils.addAppIcons(this);
-    }
-
-    /**
-     * Enable close action with escape key.
-     */
-    public void enableCloseActionWithEscapeKey() {
-        GuiUtils.addCloseActionWithEscapeKey(this, getRootPane());
-    }
-
-    /**
-     * Enable dispose action with escape key.
-     */
-    public void enableDisposeActionWithEscapeKey() {
-        GuiUtils.addDisposeActionWithEscapeKey(this, getRootPane());
-    }
+    @Override
+    public Component add(Component comp) {
+    	if (comp instanceof JComponent) {
+    		((JComponent)comp).setOpaque(false);
+    	}
+        Component c = super.add(comp);
+        GuiUtils.applyComponentOrientation(this);
+    	return c;
+    }    
 
 }

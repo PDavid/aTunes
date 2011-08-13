@@ -40,7 +40,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 
-import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -50,7 +50,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * 
  * @author fleax
  */
-public final class ExportOptionsDialog extends AbstractCustomModalDialog {
+public final class ExportOptionsDialog extends AbstractCustomDialog {
 
     private static final long serialVersionUID = 4403091324599627762L;
 
