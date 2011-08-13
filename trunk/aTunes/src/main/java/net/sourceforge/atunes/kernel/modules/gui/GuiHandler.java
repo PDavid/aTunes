@@ -34,7 +34,6 @@ import java.util.logging.Level;
 
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
@@ -252,7 +251,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      * 
      * @return the indeterminate progress dialog
      */
-    private IndeterminateProgressDialog getNewIndeterminateProgressDialog(JFrame parent) {
+    private IndeterminateProgressDialog getNewIndeterminateProgressDialog(Window parent) {
         indeterminateProgressDialog = new IndeterminateProgressDialog(parent != null ? parent : frame.getFrame());
         return indeterminateProgressDialog;
     }
@@ -797,7 +796,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      * @param text
      *            the text
      */
-    public void showIndeterminateProgressDialog(final JFrame parent, final String text) {
+    public void showIndeterminateProgressDialog(final Window parent, final String text) {
     	getNewIndeterminateProgressDialog(parent);
     	getIndeterminateProgressDialog().setTitle(text);
     	getIndeterminateProgressDialog().setVisible(true);
