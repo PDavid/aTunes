@@ -78,7 +78,7 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
 
     private static final long serialVersionUID = 1L;
 
-    private static final int HORIZONTAL_MARGIN = GuiUtils.getComponentWidthForResolution(0.1f);
+    private static final int HORIZONTAL_MARGIN = GuiUtils.getComponentWidthForResolution(0.3f);
     private static final int VERTICAL_MARGIN = GuiUtils.getComponentHeightForResolution(0.2f);
     
     private FrameState frameState;
@@ -496,7 +496,7 @@ abstract class AbstractSingleFrame extends CustomFrame implements net.sourceforg
     	return new Dimension(GuiUtils.getDeviceWidth() - HORIZONTAL_MARGIN, GuiUtils.getDeviceHeight() - VERTICAL_MARGIN);
     }
     
-    private void setWindowSizeMaximized() {
+    private final void setWindowSizeMaximized() {
         Dimension screen = getToolkit().getScreenSize();
         setSize(screen.width - HORIZONTAL_MARGIN, screen.height - VERTICAL_MARGIN);
         setExtendedState(Frame.MAXIMIZED_BOTH);
