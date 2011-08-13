@@ -45,6 +45,7 @@ import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 
 import net.sourceforge.atunes.gui.images.PlayListStateImageIcon;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.model.AudioObjectsSource;
 import net.sourceforge.atunes.gui.model.PlayListColumnModel;
 import net.sourceforge.atunes.gui.model.TransferableList;
@@ -110,6 +111,7 @@ public final class PlayListTable extends JTable implements DragSourceListener, D
      */
     public PlayListTable() {
         super();
+        LookAndFeelSelector.getInstance().getCurrentLookAndFeel().decorateTable(this);
         setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         setDropMode(DropMode.ON);
 

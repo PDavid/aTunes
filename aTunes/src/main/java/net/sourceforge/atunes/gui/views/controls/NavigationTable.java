@@ -35,6 +35,7 @@ import javax.swing.JTable;
 import javax.swing.TransferHandler;
 import javax.swing.table.TableModel;
 
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.model.TransferableList;
 
 public final class NavigationTable extends JTable implements DragSourceListener, DragGestureListener {
@@ -47,6 +48,7 @@ public final class NavigationTable extends JTable implements DragSourceListener,
      */
     public NavigationTable() {
         super();
+        LookAndFeelSelector.getInstance().getCurrentLookAndFeel().decorateTable(this);
         setDragSource();
         setDragEnabled(true);
 
