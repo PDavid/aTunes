@@ -20,6 +20,9 @@
 
 package net.sourceforge.atunes.gui.views.controls;
 
+import java.awt.Component;
+
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JWindow;
 
@@ -36,18 +39,13 @@ public abstract class AbstractCustomWindow extends JWindow {
         GuiUtils.addAppIcons(this);
     }
 
-    /**
-     * Enable close action with escape key.
-     */
-    public void enableCloseActionWithEscapeKey() {
-        GuiUtils.addCloseActionWithEscapeKey(this, getRootPane());
-    }
-
-    /**
-     * Enable dispose action with escape key.
-     */
-    public void enableDisposeActionWithEscapeKey() {
-        GuiUtils.addDisposeActionWithEscapeKey(this, getRootPane());
-    }
-
+    @Override
+    public Component add(Component comp) {
+    	if (comp instanceof JComponent) {
+    		((JComponent)comp).setOpaque(false);
+    	}
+        Component c = super.add(comp);
+        GuiUtils.applyComponentOrientation(this);
+    	return c;
+    }    
 }

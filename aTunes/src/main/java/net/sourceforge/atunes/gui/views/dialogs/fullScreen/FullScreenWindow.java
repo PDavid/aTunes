@@ -228,7 +228,6 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         } else {
             setBackground(backgroundFile);
         }
-        GuiUtils.applyComponentOrientation(this);
 
         addMouseMotionListener(moveListener);
 
