@@ -76,7 +76,6 @@ public final class OSDDialog extends AbstractCustomWindow {
         setFocusableWindowState(false);
         setAlwaysOnTop(true);
         add(getContent());
-        GuiUtils.applyComponentOrientation(this);
     }
 
     public void setWidth(int width) {
