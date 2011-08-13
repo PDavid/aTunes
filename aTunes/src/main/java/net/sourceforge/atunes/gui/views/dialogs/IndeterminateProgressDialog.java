@@ -24,9 +24,9 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Window;
 
 import javax.swing.BorderFactory;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
@@ -60,7 +60,7 @@ public final class IndeterminateProgressDialog extends AbstractCustomModalDialog
      * @param parent
      *            the parent
      */
-    public IndeterminateProgressDialog(JFrame parent) {
+    public IndeterminateProgressDialog(Window parent) {
         super(parent, 400, 130, true, false);
         add(getContent());
         setResizable(false);

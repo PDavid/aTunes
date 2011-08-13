@@ -45,16 +45,15 @@ import javax.swing.JTextField;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalFrame;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
-import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The dialog for tag editing
  */
-public final class EditTagDialog extends AbstractCustomModalFrame {
+public final class EditTagDialog extends AbstractCustomModalDialog {
 
     private static final long serialVersionUID = 3395292301087643037L;
 
@@ -98,7 +97,7 @@ public final class EditTagDialog extends AbstractCustomModalFrame {
      * @param arePrevNextButtonsShown
      */
     public EditTagDialog(JFrame owner, boolean arePrevNextButtonsShown) {
-        super(owner, 500, 600);
+        super(owner, 500, 600, true, true);
         setTitle(I18nUtils.getString("EDIT_TAG"));
         setResizable(true);
 
@@ -109,9 +108,6 @@ public final class EditTagDialog extends AbstractCustomModalFrame {
         tabbedPane.addTab(I18nUtils.getString("COVER"), getCoverTab());
 
         add(getOKAndCancelButtonPanel(arePrevNextButtonsShown), BorderLayout.SOUTH);
-
-        GuiUtils.applyComponentOrientation(this);
-        enableCloseActionWithEscapeKey();
     }
 
     private JPanel getOKAndCancelButtonPanel(boolean arePrevNextButtonsShown) {
@@ -135,10 +131,6 @@ public final class EditTagDialog extends AbstractCustomModalFrame {
             panel.add(nextButton, c);
         }
         return panel;
-    }
-
-    public static void main(String[] args) {
-        new EditTagDialog(null, true).setVisible(true);
     }
 
     /**
