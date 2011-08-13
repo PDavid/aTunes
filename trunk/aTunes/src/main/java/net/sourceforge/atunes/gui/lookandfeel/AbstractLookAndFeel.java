@@ -430,6 +430,12 @@ public abstract class AbstractLookAndFeel {
     public abstract JTable getTable();
     
     /**
+     * Adds special look and feel settings to an already created JTable
+     * @param table
+     */
+    public abstract void decorateTable(JTable table);
+    
+    /**
      * Returns scroll pane to show a table with special look and feel settings
      * @return
      */

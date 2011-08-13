@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.modules.context;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 
 /**
  * <p>
@@ -36,6 +37,11 @@ public final class ContextImageJTable extends JTable {
 
     private static final long serialVersionUID = 339974237840854168L;
 
+    public ContextImageJTable() {
+    	super();
+    	LookAndFeelSelector.getInstance().getCurrentLookAndFeel().decorateTable(this);
+    }
+    
     @Override
     public void setRowHeight(int heigth) {
         super.setRowHeight(Constants.CONTEXT_IMAGE_HEIGHT + 5);

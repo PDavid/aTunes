@@ -111,6 +111,11 @@ public class SystemLookAndFeel extends AbstractLookAndFeel {
     }
     
     @Override
+    public void decorateTable(JTable table) {
+    	table.setShowGrid(false);
+    }
+    
+    @Override
     public JScrollPane getTreeScrollPane(JTree tree) {
     	return getScrollPane(tree);
     }

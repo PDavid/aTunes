@@ -155,6 +155,12 @@ public class MacOSXLookAndFeel extends SystemLookAndFeel {
         table.setShowGrid(false);
         return table;
     }    
+    
+    @Override
+    public void decorateTable(JTable table) {
+        table.setDefaultRenderer(Object.class, getTableCellRenderer(null));
+        table.setShowGrid(false);
+    }
 
     @Override
     public JList getList() {
