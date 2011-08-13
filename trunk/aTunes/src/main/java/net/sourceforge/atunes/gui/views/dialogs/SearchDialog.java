@@ -40,7 +40,6 @@ import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
 import net.sourceforge.atunes.kernel.modules.internetsearch.SearchFactory;
-import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -67,10 +66,8 @@ public final class SearchDialog extends AbstractCustomModalDialog {
      *            the owner
      */
     public SearchDialog(JFrame owner) {
-        super(owner, 300, 300, true);
+        super(owner, 300, 300, true, false);
         setContent();
-        GuiUtils.applyComponentOrientation(this);
-        enableCloseActionWithEscapeKey();
     }
 
     /**
@@ -153,7 +150,7 @@ public final class SearchDialog extends AbstractCustomModalDialog {
         c.weightx = 1;
         panel.add(auxPanel, c);
 
-        setContent(panel);
+        add(panel);
     }
 
     /**

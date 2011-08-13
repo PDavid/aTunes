@@ -49,7 +49,6 @@ import javax.swing.event.ListSelectionListener;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.kernel.modules.state.beans.FontBean;
-import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class FontChooserDialog extends AbstractCustomModalDialog {
@@ -156,16 +155,14 @@ public final class FontChooserDialog extends AbstractCustomModalDialog {
     private FontSettings fontSettings = new FontSettings();
 
     public FontChooserDialog(Window owner, int width, int height, Font font, boolean useFontSmoothing, boolean useFontSmoothingSettingsFromOs, Locale locale) {
-        super(owner, width, height, true);
+        super(owner, width, height, true, true);
         this.locale = locale;
         this.fontSettings.setFont(new FontBean(font));
         this.fontSettings.setUseFontSmoothing(useFontSmoothing);
         this.fontSettings.setUseFontSmoothingSettingsFromOs(useFontSmoothingSettingsFromOs);
         setResizable(false);
         setTitle(I18nUtils.getString("FONT_SETTINGS"));
-        setContent(getContent());
-        GuiUtils.applyComponentOrientation(this);
-        enableDisposeActionWithEscapeKey();
+        add(getContent());
     }
 
     private JPanel getContent() {

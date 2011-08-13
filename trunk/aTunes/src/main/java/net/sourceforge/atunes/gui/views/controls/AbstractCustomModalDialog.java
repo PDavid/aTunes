@@ -20,10 +20,11 @@
 
 package net.sourceforge.atunes.gui.views.controls;
 
+import java.awt.Component;
 import java.awt.Window;
 
+import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
@@ -37,46 +38,46 @@ public abstract class AbstractCustomModalDialog extends JDialog {
      * Instantiates a new custom modal dialog.
      * 
      * @param owner
-     *            the owner
      * @param width
-     *            the width
      * @param height
-     *            the height
      * @param modal
-     *            the modal
+     * @param disposeOnClose
      */
-    public AbstractCustomModalDialog(Window owner, int width, int height, boolean modal) {
+    public AbstractCustomModalDialog(Window owner, int width, int height, boolean modal, boolean disposeOnClose) {
         super(owner);
         setSize(width, height);
         setUndecorated(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isDialogUndecorated());
         setModalityType(modal ? ModalityType.APPLICATION_MODAL : ModalityType.MODELESS);
         setLocationRelativeTo(owner.getWidth() == 0 ? null : owner);
-        setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+        setDefaultCloseOperation(disposeOnClose ? WindowConstants.DISPOSE_ON_CLOSE : WindowConstants.HIDE_ON_CLOSE);
+        if (disposeOnClose) {
+        	enableDisposeActionWithEscapeKey();
+        } else {
+        	enableCloseActionWithEscapeKey();
+        }
     }
 
     /**
      * Enable close action with escape key.
      */
-    public void enableCloseActionWithEscapeKey() {
+    private void enableCloseActionWithEscapeKey() {
         GuiUtils.addCloseActionWithEscapeKey(this, getRootPane());
     }
 
     /**
      * Enable dispose action with escape key.
      */
-    public void enableDisposeActionWithEscapeKey() {
+    private void enableDisposeActionWithEscapeKey() {
         GuiUtils.addDisposeActionWithEscapeKey(this, getRootPane());
     }
 
-    /**
-     * Sets the content.
-     * 
-     * @param content
-     *            the new content
-     */
-    public void setContent(JPanel content) {
-        content.setOpaque(false);
-        add(content);
-    }
-
+    @Override
+    public Component add(Component comp) {
+    	if (comp instanceof JComponent) {
+    		((JComponent)comp).setOpaque(false);
+    	}
+        Component c = super.add(comp);
+        GuiUtils.applyComponentOrientation(this);
+    	return c;
+    }    
 }

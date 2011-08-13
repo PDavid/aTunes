@@ -36,18 +36,16 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.ListSelectionModel;
-import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.views.controls.CustomDialog;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
-import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The Class CustomSearchDialog.
  */
-public final class CustomSearchDialog extends CustomDialog {
+public final class CustomSearchDialog extends AbstractCustomModalDialog {
 
     private static final long serialVersionUID = -7447583622785097610L;
 
@@ -124,12 +122,10 @@ public final class CustomSearchDialog extends CustomDialog {
      *            the owner
      */
     public CustomSearchDialog(JFrame owner) {
-        super(owner, 600, 500);
+        super(owner, 600, 500, true, true);
         setResizable(false);
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(I18nUtils.getString("SEARCH"));
         add(getContent());
-        GuiUtils.applyComponentOrientation(this);
     }
 
     /**

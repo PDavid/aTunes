@@ -32,11 +32,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
-import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -63,7 +61,7 @@ public final class InputDialog extends AbstractCustomModalDialog {
      *            the image
      */
     public InputDialog(Window owner, String title, Image image) {
-        super(owner, 400, 130, true);
+        super(owner, 400, 130, true, true);
         setResizable(false);
         if (image != null) {
             setIconImage(image);
@@ -104,11 +102,7 @@ public final class InputDialog extends AbstractCustomModalDialog {
         c.gridy = 1;
         c.insets = new Insets(10, 50, 0, 50);
         panel.add(auxPanel, c);
-        setContent(panel);
-        enableDisposeActionWithEscapeKey();
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        GuiUtils.applyComponentOrientation(this);
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        add(panel);
         getRootPane().setDefaultButton(okButton);
     }
 

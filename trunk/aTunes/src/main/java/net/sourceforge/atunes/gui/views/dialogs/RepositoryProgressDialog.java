@@ -35,14 +35,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.RepositoryLoadCancelAction;
 import net.sourceforge.atunes.kernel.actions.RepositoryLoadInBackgroundAction;
-import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -105,12 +103,10 @@ public final class RepositoryProgressDialog extends AbstractCustomModalDialog {
      *            the parent
      */
     public RepositoryProgressDialog(JFrame parent) {
-        super(parent, 500, 250, false);
-        setContent(getContent());
-        GuiUtils.applyComponentOrientation(this);
+        super(parent, 500, 250, false, false);
+        add(getContent());
         backgroundButton.setVisible(false);
         cancelButton.setVisible(false);
-        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setResizable(false);
     }
 

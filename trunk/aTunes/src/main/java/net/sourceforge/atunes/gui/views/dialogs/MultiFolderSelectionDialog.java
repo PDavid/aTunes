@@ -46,7 +46,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.SwingWorker;
 import javax.swing.UIManager;
-import javax.swing.WindowConstants;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeWillExpandListener;
 import javax.swing.filechooser.FileSystemView;
@@ -512,12 +511,9 @@ public final class MultiFolderSelectionDialog extends AbstractCustomModalDialog 
      *            the owner
      */
     public MultiFolderSelectionDialog(JFrame owner) {
-        super(owner, 460, 530, true);
-        setContent(getContent());
+        super(owner, 460, 530, true, true);
+        add(getContent());
         setResizable(false);
-        GuiUtils.applyComponentOrientation(this);
-        enableCloseActionWithEscapeKey();
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     }
 
     /**

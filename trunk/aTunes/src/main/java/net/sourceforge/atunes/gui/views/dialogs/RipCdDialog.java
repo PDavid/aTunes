@@ -246,11 +246,9 @@ public final class RipCdDialog extends AbstractCustomModalDialog {
      *            the owner
      */
     public RipCdDialog(JFrame owner) {
-        super(owner, 750, 540, true);
+        super(owner, 750, 540, true, false);
         setTitle(I18nUtils.getString("RIP_CD"));
-        setContent(getContent());
-        GuiUtils.applyComponentOrientation(this);
-        enableCloseActionWithEscapeKey();
+        add(getContent());
     }
 
     /**

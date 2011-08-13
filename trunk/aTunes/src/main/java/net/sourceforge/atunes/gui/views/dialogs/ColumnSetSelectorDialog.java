@@ -38,7 +38,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.WindowConstants;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
@@ -204,11 +203,9 @@ public final class ColumnSetSelectorDialog extends AbstractCustomModalDialog {
      *            the owner
      */
     public ColumnSetSelectorDialog(JFrame owner) {
-        super(owner, 250, 300, true);
-        setContent(getContent());
+        super(owner, 250, 300, true, true);
+        add(getContent());
         setTitle(I18nUtils.getString("ARRANGE_COLUMNS"));
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        GuiUtils.applyComponentOrientation(this);
         // TODO: Add pack to all dialogs
         pack();
         setLocationRelativeTo(owner);
