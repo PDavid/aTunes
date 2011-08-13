@@ -136,8 +136,8 @@ public final class DefaultSingleFrame extends CommonSingleFrame implements net.s
 	@Override
 	public Map<String, Double> getDefaultSplitPaneRelativePositions() {
 		Map<String, Double> values = new HashMap<String, Double>();
-		values.put(LEFT_VERTICAL_SPLIT_PANE, 0.2);
-		values.put(RIGHT_VERTICAL_SPLIT_PANE, 0.8);
+		values.put(LEFT_VERTICAL_SPLIT_PANE, 0.15);
+		values.put(RIGHT_VERTICAL_SPLIT_PANE, 0.85);
 		values.put(NAVIGATOR_SPLIT_PANE, 0.5);
 		return values;
 	}

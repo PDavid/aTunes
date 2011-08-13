@@ -133,8 +133,8 @@ public final class EnhancedSingleFrame extends CommonSingleFrame implements net.
 	@Override
 	public Map<String, Double> getDefaultSplitPaneRelativePositions() {
 		Map<String, Double> values = new HashMap<String, Double>();
-		values.put(LEFT_VERTICAL_SPLIT_PANE, 0.2);
-		values.put(RIGHT_VERTICAL_SPLIT_PANE, 0.8);
+		values.put(LEFT_VERTICAL_SPLIT_PANE, 0.15);
+		values.put(RIGHT_VERTICAL_SPLIT_PANE, 0.85);
 		values.put(PLAYLIST_SPLIT_PANE, 0.5);
 		return values;
 	}
