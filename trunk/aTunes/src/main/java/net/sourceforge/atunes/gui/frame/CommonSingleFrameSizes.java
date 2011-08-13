@@ -29,13 +29,13 @@ public class CommonSingleFrameSizes {
 	/*
 	 * Frame minimum size
 	 */
-	public static final int WINDOW_MINIMUM_WIDTH = GuiUtils.getComponentWidthForResolution(0.65f);
+	public static final int WINDOW_MINIMUM_WIDTH = GuiUtils.getComponentWidthForResolution(0.5f);
 	public static final int WINDOW_MINIMUM_HEIGHT = GuiUtils.getComponentHeightForResolution(0.5f);
 	
     /*
      * Navigation panel sizes
      */
-	public static final int NAVIGATION_MINIMUM_WIDTH = GuiUtils.getComponentWidthForResolution(0.2f);
+	public static final int NAVIGATION_MINIMUM_WIDTH = GuiUtils.getComponentWidthForResolution(0.15f);
     public static final int NAVIGATION_MINIMUM_HEIGHT = GuiUtils.getComponentHeightForResolution(0.15f);
     
 	public static final int NAVIGATION_PREFERRED_WIDTH = GuiUtils.getComponentWidthForResolution(0.2f);
@@ -47,8 +47,8 @@ public class CommonSingleFrameSizes {
     /*
      * Context panel width 
      */
-    public static final int CONTEXT_PANEL_MINIMUM_WIDTH = GuiUtils.getComponentWidthForResolution(0.2f);
-    public static final int CONTEXT_PANEL_PREFERRED_WIDTH = GuiUtils.getComponentWidthForResolution(0.25f);
+    public static final int CONTEXT_PANEL_MINIMUM_WIDTH = GuiUtils.getComponentWidthForResolution(0.15f);
+    public static final int CONTEXT_PANEL_PREFERRED_WIDTH = GuiUtils.getComponentWidthForResolution(0.2f);
     public static final int CONTEXT_PANEL_MAXIMUM_WIDTH = GuiUtils.getComponentWidthForResolution(0.4f);
 
     /*
