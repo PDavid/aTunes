@@ -25,6 +25,10 @@ import java.awt.Graphics;
 
 import javax.swing.JTree;
 import javax.swing.JViewport;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 
 class StripedTreeViewport extends JViewport {
 
@@ -44,6 +48,25 @@ class StripedTreeViewport extends JViewport {
     protected void paintComponent(Graphics g) {
         paintStripedBackground(g);
         super.paintComponent(g);
+        initListeners();
+    }
+    
+    private void initListeners() {
+    	tree.addTreeSelectionListener(new TreeSelectionListener() {
+			
+			@Override
+			public void valueChanged(TreeSelectionEvent arg0) {
+				repaint();
+			}
+		});
+
+    	addChangeListener(new ChangeListener() {
+
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				repaint();
+			}
+		});    	
     }
 
     private void paintStripedBackground(Graphics g) {
@@ -61,14 +84,14 @@ class StripedTreeViewport extends JViewport {
         int currentRow = rowAtPoint < 0 ? 0 : rowAtPoint;
         while (topY < g.getClipBounds().y + g.getClipBounds().height) {
             int bottomY = topY + tree.getRowHeight();
-            g.setColor(getRowColor(currentRow, rowAtPoint));
+            g.setColor(getRowColor(currentRow));
             g.fillRect(g.getClipBounds().x, topY, g.getClipBounds().width, bottomY);
             topY = bottomY;
             currentRow ++;
         }
     }
 
-    private Color getRowColor(int row, int rowAtPoint) {
+    private Color getRowColor(int row) {
         return row % 2 == 0 ? MacOSColors.EVEN_ROW_COLOR : getBackground();
     }
 }

@@ -29,6 +29,8 @@ import javax.swing.JTable;
 import javax.swing.JViewport;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumn;
 
 /**
@@ -71,6 +73,15 @@ class StripedTableViewport extends JViewport {
 				repaint();
 			}
 		});        
+        
+        fTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				invalidate();
+				repaint();
+			}
+		});
     }
 
     private PropertyChangeListener createTableColumnWidthListener() {
