@@ -274,12 +274,10 @@ public final class FileSelectionDialog extends AbstractCustomModalDialog {
      *            the dir only
      */
     public FileSelectionDialog(JFrame owner, boolean dirOnly) {
-        super(owner, 660, 430, true);
+        super(owner, 660, 430, true, true);
         this.dirOnly = dirOnly;
-        setContent(getContent());
+        add(getContent());
         setResizable(false);
-        GuiUtils.applyComponentOrientation(this);
-        enableCloseActionWithEscapeKey();
     }
 
     /**

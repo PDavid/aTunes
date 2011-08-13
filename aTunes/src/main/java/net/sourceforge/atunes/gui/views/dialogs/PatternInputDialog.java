@@ -47,7 +47,6 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -58,7 +57,6 @@ import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -207,7 +205,7 @@ public final class PatternInputDialog extends AbstractCustomModalDialog {
      *            non-massive recognition (single file level)
      */
     public PatternInputDialog(Window owner, final boolean massiveRecognition) {
-        super(owner, 550, 350, true);
+        super(owner, 550, 350, true, true);
         setResizable(false);
         setIconImage(Images.getImage(Images.APP_LOGO_16).getImage());
         setTitle(I18nUtils.getString("PATTERN_INPUT"));
@@ -333,11 +331,7 @@ public final class PatternInputDialog extends AbstractCustomModalDialog {
         c.anchor = GridBagConstraints.CENTER;
         c.insets = new Insets(10, 10, 10, 10);
         panel.add(auxPanel, c);
-        setContent(panel);
-        enableDisposeActionWithEscapeKey();
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        GuiUtils.applyComponentOrientation(this);
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        add(panel);
         getRootPane().setDefaultButton(okButton);
     }
 

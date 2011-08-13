@@ -32,7 +32,6 @@ import javax.swing.JTable;
 
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
-import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -61,11 +60,8 @@ public final class EditTitlesDialog extends AbstractCustomModalDialog {
      *            the owner
      */
     public EditTitlesDialog(JFrame owner) {
-        super(owner, 500, 400, true);
-        setContent(getContent());
-        GuiUtils.applyComponentOrientation(this);
-        enableCloseActionWithEscapeKey();
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        super(owner, 500, 400, true, true);
+        add(getContent());
     }
 
     /**

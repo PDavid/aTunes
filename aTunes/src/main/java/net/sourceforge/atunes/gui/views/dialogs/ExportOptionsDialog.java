@@ -43,7 +43,6 @@ import javax.swing.JTextArea;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
-import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -79,12 +78,10 @@ public final class ExportOptionsDialog extends AbstractCustomModalDialog {
      *            the parent
      */
     public ExportOptionsDialog(JFrame parent) {
-        super(parent, 400, 220, true);
+        super(parent, 400, 220, true, false);
         setResizable(false);
         setTitle(I18nUtils.getString("EXPORT"));
-        setContent(getContent());
-        GuiUtils.applyComponentOrientation(this);
-        enableCloseActionWithEscapeKey();
+        add(getContent());
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {

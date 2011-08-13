@@ -37,7 +37,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.views.controls.CustomDialog;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.gui.views.controls.SimpleTextPane;
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -47,7 +47,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author alex
  *
  */
-class MacOSXPlayerEngineMatchSelectionDialog extends CustomDialog {
+class MacOSXPlayerEngineMatchSelectionDialog extends AbstractCustomModalDialog {
 
 	/**
 	 * 
@@ -63,14 +63,11 @@ class MacOSXPlayerEngineMatchSelectionDialog extends CustomDialog {
 	private List<String> matches;
 	
 	public MacOSXPlayerEngineMatchSelectionDialog(JDialog previousDialog, List<String> matches) {
-		super((JFrame)previousDialog.getParent(), 450, 250);
+		super((JFrame)previousDialog.getParent(), 450, 250, true, true);
 		this.previousDialog = previousDialog;
 		this.matches = matches;
-		setModal(true);
 		setResizable(false);
-		setLocationRelativeTo(previousDialog.getParent());
 		setTitle(I18nUtils.getString("PLAYER_ENGINE_SELECTION"));
-		enableDisposeActionWithEscapeKey();
         addContent();
 	}
 

@@ -37,7 +37,6 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
-import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -65,12 +64,10 @@ public final class EqualizerDialog extends AbstractCustomModalDialog {
      */
     public EqualizerDialog(JFrame owner) {
         // Width required by german translation
-        super(owner, 510, 300, true);
+        super(owner, 510, 300, true, false);
         setTitle(StringUtils.getString(I18nUtils.getString("EQUALIZER"), " - ", Constants.APP_NAME, " ", Constants.VERSION.toShortString()));
         add(getContent());
         setResizable(false);
-        GuiUtils.applyComponentOrientation(this);
-        enableCloseActionWithEscapeKey();
     }
 
     /**

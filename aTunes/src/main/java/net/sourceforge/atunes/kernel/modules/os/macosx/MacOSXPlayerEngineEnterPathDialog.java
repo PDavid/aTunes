@@ -35,7 +35,7 @@ import javax.swing.JPanel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import net.sourceforge.atunes.gui.views.controls.CustomDialog;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
 import net.sourceforge.atunes.gui.views.controls.SimpleTextPane;
 import net.sourceforge.atunes.kernel.OsManager;
@@ -46,7 +46,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author alex
  *
  */
-class MacOSXPlayerEngineEnterPathDialog extends CustomDialog {
+class MacOSXPlayerEngineEnterPathDialog extends AbstractCustomModalDialog {
 
 	/**
 	 * 
@@ -58,13 +58,10 @@ class MacOSXPlayerEngineEnterPathDialog extends CustomDialog {
 	private JButton finishButton;
 	
 	public MacOSXPlayerEngineEnterPathDialog(JDialog previousDialog) {
-		super((JFrame)previousDialog.getParent(), 450, 250);
-		setModal(true);
+		super((JFrame)previousDialog.getParent(), 450, 250, true, true);
 		this.previousDialog = previousDialog;
 		setResizable(false);
-		setLocationRelativeTo(previousDialog.getParent());
 		setTitle(I18nUtils.getString("PLAYER_ENGINE_SELECTION"));
-		enableDisposeActionWithEscapeKey();
         addContent();
 	}
 

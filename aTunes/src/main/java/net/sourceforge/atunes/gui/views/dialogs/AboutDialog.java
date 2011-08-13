@@ -223,11 +223,9 @@ public final class AboutDialog extends AbstractCustomModalDialog {
      *            the owner
      */
     public AboutDialog(JFrame owner) {
-        super(owner, 600, 550, true);
-        setContent(getContent());
+        super(owner, 600, 550, true, true);
+        add(getContent());
         setResizable(false);
-        GuiUtils.applyComponentOrientation(this);
-        enableCloseActionWithEscapeKey();
     }
 
     /**

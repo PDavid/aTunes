@@ -30,11 +30,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
-import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -63,12 +61,11 @@ public final class IndeterminateProgressDialog extends AbstractCustomModalDialog
      *            the parent
      */
     public IndeterminateProgressDialog(JFrame parent) {
-        super(parent, 400, 130, true);
-        setContent(getContent());
+        super(parent, 400, 130, true, false);
+        add(getContent());
         setResizable(false);
-        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        GuiUtils.applyComponentOrientation(this);
     }
+        
 
     /**
      * Gets the content.

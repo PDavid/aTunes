@@ -36,7 +36,6 @@ import javax.swing.JTextArea;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
-import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -55,13 +54,10 @@ public final class RepositorySelectionInfoDialog extends AbstractCustomModalDial
      *            the owner
      */
     public RepositorySelectionInfoDialog(JFrame owner) {
-        super(owner, 400, 250, true);
+        super(owner, 400, 250, true, true);
         setResizable(false);
         setTitle(I18nUtils.getString("REPOSITORY_SELECTION_INFO"));
         setContent();
-        GuiUtils.applyComponentOrientation(this);
-        enableCloseActionWithEscapeKey();
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     /**
@@ -102,7 +98,7 @@ public final class RepositorySelectionInfoDialog extends AbstractCustomModalDial
         c.fill = GridBagConstraints.NONE;
         c.anchor = GridBagConstraints.CENTER;
         panel.add(button, c);
-        setContent(panel);
+        add(panel);
     }
 
 	/**

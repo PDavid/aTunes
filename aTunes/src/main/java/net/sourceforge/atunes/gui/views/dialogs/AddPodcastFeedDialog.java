@@ -31,13 +31,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
-import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -63,13 +61,10 @@ public final class AddPodcastFeedDialog extends AbstractCustomModalDialog {
      *            the owner
      */
     public AddPodcastFeedDialog(JFrame owner) {
-        super(owner, 500, 170, true);
+        super(owner, 500, 170, true, true);
         setTitle(I18nUtils.getString("ADD_PODCAST_FEED"));
         setResizable(false);
-        setContent(getContent());
-        GuiUtils.applyComponentOrientation(this);
-        enableCloseActionWithEscapeKey();
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        add(getContent());
     }
 
     /**

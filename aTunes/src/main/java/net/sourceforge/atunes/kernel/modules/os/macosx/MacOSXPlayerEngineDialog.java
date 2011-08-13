@@ -39,7 +39,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.SwingWorker;
 
-import net.sourceforge.atunes.gui.views.controls.CustomDialog;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.gui.views.controls.SimpleTextPane;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -50,7 +50,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author alex
  *
  */
-class MacOSXPlayerEngineDialog extends CustomDialog {
+class MacOSXPlayerEngineDialog extends AbstractCustomModalDialog {
 
 	/**
 	 * 
@@ -58,12 +58,9 @@ class MacOSXPlayerEngineDialog extends CustomDialog {
 	private static final long serialVersionUID = -5594530223379760626L;
 
 	public MacOSXPlayerEngineDialog(JFrame parent) {
-		super(parent, 450, 250);
+		super(parent, 450, 250, true, true);
 		setResizable(false);
-		setModal(true);
-		setLocationRelativeTo(parent);
 		setTitle(I18nUtils.getString("PLAYER_ENGINE_SELECTION"));
-		enableDisposeActionWithEscapeKey();
         addContent();
 	}
 

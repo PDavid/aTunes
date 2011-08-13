@@ -25,16 +25,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JFrame;
-import javax.swing.WindowConstants;
 
-import net.sourceforge.atunes.gui.views.controls.CustomDialog;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public class PropertiesDialog extends CustomDialog {
+public class PropertiesDialog extends AbstractCustomModalDialog {
 
     private static final long serialVersionUID = 6097305595858691246L;
 
@@ -49,12 +48,10 @@ public class PropertiesDialog extends CustomDialog {
      *            the title
      */
     PropertiesDialog(String title, JFrame owner) {
-        super(owner, 560, 480);
+        super(owner, 560, 480, false, true);
         setMinimumSize(new Dimension(560, 480));
         setTitle(title);
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(true);
-        enableDisposeActionWithEscapeKey();
     }
 
     /**

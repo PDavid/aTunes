@@ -31,13 +31,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.gui.images.RadioImageIcon;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
-import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -69,13 +67,10 @@ public final class RadioDialog extends AbstractCustomModalDialog {
      * @param radio
      */
     public RadioDialog(JFrame owner, Radio radio) {
-        super(owner, 500, 200, true);
+        super(owner, 500, 200, true, true);
         setTitle(radio != null ? I18nUtils.getString("EDIT_RADIO") : I18nUtils.getString("ADD_RADIO"));
         setResizable(false);
-        setContent(getContent(radio));
-        GuiUtils.applyComponentOrientation(this);
-        enableDisposeActionWithEscapeKey();
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        add(getContent(radio));
     }
 
     /**

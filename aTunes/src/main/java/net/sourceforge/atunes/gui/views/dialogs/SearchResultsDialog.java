@@ -29,17 +29,16 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.views.controls.CustomDialog;
+import net.sourceforge.atunes.gui.views.controls.AbstractCustomModalDialog;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The search results dialog.
  */
-public final class SearchResultsDialog extends CustomDialog {
+public final class SearchResultsDialog extends AbstractCustomModalDialog {
 
     private static final long serialVersionUID = 7219089044964361102L;
 
@@ -65,14 +64,10 @@ public final class SearchResultsDialog extends CustomDialog {
      *            the owner
      */
     public SearchResultsDialog(JFrame owner) {
-        super(owner, GuiUtils.getComponentWidthForResolution(0.75f), GuiUtils.getComponentHeightForResolution(0.75f));
+        super(owner, GuiUtils.getComponentWidthForResolution(0.75f), GuiUtils.getComponentHeightForResolution(0.75f), true, true);
         setResizable(true);
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(I18nUtils.getString("SEARCH_RESULTS"));
         add(getContent());
-
-        enableDisposeActionWithEscapeKey();
-        GuiUtils.applyComponentOrientation(this);
     }
 
     /**
