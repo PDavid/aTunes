@@ -28,6 +28,7 @@ import net.sourceforge.atunes.gui.frame.Frame;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.system.macos.MacOSXLookAndFeel;
+import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.OperatingSystem;
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavConverter;
@@ -67,7 +68,7 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 		// Generate and register the OSXAdapter, passing it a hash of all the methods we wish to
 		// use as delegates for various com.apple.eawt.ApplicationListener methods
 		try {
-			MacOSXAdapter.setQuitHandler(GuiHandler.getInstance(), GuiHandler.class.getDeclaredMethod("finish", (Class[]) null));
+			MacOSXAdapter.setQuitHandler(null, Kernel.class.getDeclaredMethod("finish", (Class[]) null));
 		} catch (Exception e) {
 			Logger.error(e.getMessage());
 		}
