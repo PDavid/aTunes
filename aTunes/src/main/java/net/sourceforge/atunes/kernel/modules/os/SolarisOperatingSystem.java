@@ -115,5 +115,8 @@ public class SolarisOperatingSystem extends OperatingSystemAdapter {
 		return true;
 	}
 
-
+	@Override
+	public boolean isRipSupported() {
+		return true;
+	}
 }

@@ -313,4 +313,10 @@ public abstract class OperatingSystemAdapter {
 	 * @return
 	 */
 	public abstract boolean isClosingMainWindowClosesApplication();
+
+	/**
+	 * Returns true if rip CDs is supported in current system
+	 * @return
+	 */
+	public abstract boolean isRipSupported();
 }

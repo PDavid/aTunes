@@ -718,4 +718,12 @@ public final class RipperHandler extends AbstractHandler {
 	@Override
 	public void selectedAudioObjectChanged(AudioObject audioObject) {}
 
+	/**
+	 * Returns true if rip CDs is supported in current system
+	 * @return
+	 */
+	public boolean isRipSupported() {
+		return OsManager.isRipSupported();
+	}
+
 }

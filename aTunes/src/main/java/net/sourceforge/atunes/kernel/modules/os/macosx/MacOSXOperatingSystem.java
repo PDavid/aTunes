@@ -151,5 +151,11 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 	public boolean isClosingMainWindowClosesApplication() {
 		return false;
 	}
+	
+	@Override
+	public boolean isRipSupported() {
+		return false;
+	}
+
 
 }

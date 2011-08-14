@@ -424,4 +424,12 @@ public class OsManager {
 	public static boolean isClosingMainWindowClosesApplication() {
 		return adapter.isClosingMainWindowClosesApplication();
 	}
+
+	/**
+	 * Returns true if rip CDs is supported in current system
+	 * @return
+	 */
+	public static boolean isRipSupported() {
+		return adapter.isRipSupported();
+	}
 }

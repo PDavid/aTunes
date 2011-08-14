@@ -101,5 +101,10 @@ public class LinuxOperatingSystem extends OperatingSystemAdapter {
 		return true;
 	}
 
+	@Override
+	public boolean isRipSupported() {
+		return true;
+	}
+
 
 }
