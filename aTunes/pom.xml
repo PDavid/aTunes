@@ -372,7 +372,7 @@
 		<dependency>
 			<groupId>last.fm</groupId>
 			<artifactId>last.fm-bindings</artifactId>
-			<version>0.1.0</version>
+			<version>0.1.0-SVN-20110814</version>
 		</dependency>
 		<dependency>
 			<groupId>jxgrabkey</groupId>
