@@ -39,6 +39,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
@@ -154,6 +155,11 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
     /** The enable global hotkeys. */
     private JCheckBox enableGlobalHotkeys;
 
+    /**
+     * Scroll pane containing hotkeys
+     */
+    private JScrollPane hotkeyScrollPane;
+    
     /** The hotkey table. */
     private JTable hotkeyTable;
 
@@ -236,8 +242,8 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
             }
         });
 
-        JScrollPane scrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(hotkeyTable);
-        scrollPane.setMinimumSize(new Dimension(400, 200));
+        hotkeyScrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(hotkeyTable);
+        hotkeyScrollPane.setMinimumSize(new Dimension(400, 200));
         cacheFilesBeforePlaying = new JCheckBox(I18nUtils.getString("CACHE_FILES_BEFORE_PLAYING"));
 
         GridBagConstraints c = new GridBagConstraints();
@@ -269,12 +275,14 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
         c.gridy = 9;
         c.weightx = 0;
         c.insets = new Insets(10, 20, 5, 10);
-        add(scrollPane, c);
+        add(hotkeyScrollPane, c);
         c.gridy = 10;
         c.weighty = 1;
         c.fill = GridBagConstraints.NONE;
         c.insets = new Insets(0, 20, 0, 0);
-        add(resetHotkeys, c);
+        JPanel resetHotkeysPanel = new JPanel();
+        resetHotkeysPanel.add(resetHotkeys);
+        add(resetHotkeysPanel, c);
     }
 
     /**
@@ -282,7 +290,7 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
      * 
      * @return the enable global hotkeys
      */
-    public JCheckBox getEnableGlobalHotkeys() {
+    private JCheckBox getEnableGlobalHotkeys() {
         return enableGlobalHotkeys;
     }
 
@@ -420,7 +428,11 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
         setHotkeysConfig(hotkeysConfig != null ? hotkeysConfig : HotkeyHandler.getInstance().getHotkeysConfig());
         setUseShortPathNames(state.isUseShortPathNames());
         getUseShortPathNames().setEnabled(OsManager.usesShortPathNames());
-        getEnableGlobalHotkeys().setEnabled(HotkeyHandler.getInstance().areHotkeysSupported());
+        
+        boolean hotKeysSupported = HotkeyHandler.getInstance().areHotkeysSupported();
+        getEnableGlobalHotkeys().setVisible(hotKeysSupported);
+        getHotkeyScrollPane().setVisible(hotKeysSupported);
+        getResetHotkeys().setVisible(hotKeysSupported);
     }
 
     @Override
@@ -446,5 +458,19 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
             }
         }
     }
+
+	/**
+	 * @return hotkey scroll pane
+	 */
+	private JScrollPane getHotkeyScrollPane() {
+		return hotkeyScrollPane;
+	}
+
+	/**
+	 * @return the resetHotkeys
+	 */
+	private JButton getResetHotkeys() {
+		return resetHotkeys;
+	}
 
 }
