@@ -46,8 +46,10 @@ class ContextController extends AbstractSimpleController<ContextPanel> {
 			
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				getComponentControlled().showContextPanel((AbstractContextPanel)e.getItem());
-                ContextHandler.getInstance().contextPanelChanged();
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					getComponentControlled().showContextPanel((AbstractContextPanel)e.getItem());
+					ContextHandler.getInstance().contextPanelChanged();
+				}
             }
         });
 		
