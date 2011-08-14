@@ -70,7 +70,7 @@ public final class EditPreferencesDialogListener implements ListSelectionListene
 	        		}
 	        	}
 			} catch (PreferencesValidationException e1) {
-				GuiHandler.getInstance().showExceptionDialog(e1.getMessage(), e1);
+				GuiHandler.getInstance().showErrorDialog(e1.getMessage(), editPreferencesDialog);
 			}
         } else if (e.getSource() == editPreferencesDialog.getCancel()) {
             editPreferencesDialogController.resetImmediateChanges();
