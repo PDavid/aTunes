@@ -79,6 +79,9 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     	
         // Set previous selected tab
     	getController().setContextTab(ApplicationState.getInstance().getSelectedContextTab());
+    	
+    	// Enable listener for user selections
+    	getController().enableContextComboListener();
     }
     
 

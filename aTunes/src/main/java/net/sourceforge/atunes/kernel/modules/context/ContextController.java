@@ -27,6 +27,7 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.lookandfeel.AbstractListCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
@@ -42,17 +43,6 @@ class ContextController extends AbstractSimpleController<ContextPanel> {
 
 	@Override
 	protected void addBindings() {
-		getComponentControlled().getContextSelector().addItemListener(new ItemListener() {
-			
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.SELECTED) {
-					getComponentControlled().showContextPanel((AbstractContextPanel)e.getItem());
-					ContextHandler.getInstance().contextPanelChanged();
-				}
-            }
-        });
-		
 		if (LookAndFeelSelector.getInstance().getCurrentLookAndFeel().customComboBoxRenderersSupported()) {
 			getComponentControlled().getContextSelector().setRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListCellRenderer(new AbstractListCellRendererCode() {
 
@@ -107,6 +97,29 @@ class ContextController extends AbstractSimpleController<ContextPanel> {
 		for (AbstractContextPanel panel : contextPanels) {
 			getComponentControlled().addContextPanel(panel);
 		}		
+	}
+
+	/**
+	 * Enables listening for combo box selections by user
+	 */
+	void enableContextComboListener() {
+		// Wait until initial context panel selection is done
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				getComponentControlled().getContextSelector().addItemListener(new ItemListener() {
+					
+					@Override
+					public void itemStateChanged(ItemEvent e) {
+						if (e.getStateChange() == ItemEvent.SELECTED) {
+							getComponentControlled().showContextPanel((AbstractContextPanel)e.getItem());
+							ContextHandler.getInstance().contextPanelChanged();
+						}
+		            }
+		        });
+			}
+		});
+		
 	}
 
 }
