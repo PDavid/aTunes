@@ -41,6 +41,7 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.SimpleTextPane;
+import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -57,6 +58,12 @@ class MacOSXPlayerEngineDialog extends AbstractCustomDialog {
 	 */
 	private static final long serialVersionUID = -5594530223379760626L;
 
+	/**
+	 * URL to MPlayerX in Mac App Store
+	 */
+	static final String MPLAYER_APP_STORE_URL = "http://itunes.apple.com/en/app/mplayerx/id421131143?mt=12";
+	
+	
 	public MacOSXPlayerEngineDialog(JFrame parent) {
 		super(parent, 450, 250, true, true);
 		setResizable(false);
@@ -66,6 +73,7 @@ class MacOSXPlayerEngineDialog extends AbstractCustomDialog {
 
 	private void addContent() {
 		SimpleTextPane instructions = new SimpleTextPane(I18nUtils.getString("MAC_PLAYER_ENGINE_INSTRUCTIONS"));
+		UrlLabel appStoreURL = new UrlLabel(I18nUtils.getString("MAC_PLAYER_ENGINE_URL"), MPLAYER_APP_STORE_URL);
 		final JRadioButton search = new JRadioButton(I18nUtils.getString("SEARCH_PLAYER_ENGINE"));
 		JRadioButton enterPath = new JRadioButton(I18nUtils.getString("ENTER_PLAYER_ENGINE_PATH"));
 		ButtonGroup b = new ButtonGroup();
@@ -97,13 +105,21 @@ class MacOSXPlayerEngineDialog extends AbstractCustomDialog {
 		panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		GridBagConstraints c = new GridBagConstraints();
 		c.weightx = 1;
-		c.weighty = 0.5;
+		c.weighty = 0.4;
 		c.fill = GridBagConstraints.BOTH;
 		panel.add(instructions, c);
+		c.gridy = 1;
+		c.weightx = 0;
+		c.weighty = 0;
+		c.fill = GridBagConstraints.NONE;
+		c.anchor = GridBagConstraints.CENTER;
+		panel.add(appStoreURL, c);
 		JPanel options = new JPanel(new GridLayout(2, 1));
 		options.add(search);
 		options.add(enterPath);
-		c.gridy = 1;
+		c.gridy = 2;
+		c.weighty = 0.3;
+		c.fill = GridBagConstraints.BOTH;
 		panel.add(options, c);
 		JPanel buttons = new JPanel(new GridBagLayout());
 		GridBagConstraints c2 = new GridBagConstraints();
@@ -113,7 +129,7 @@ class MacOSXPlayerEngineDialog extends AbstractCustomDialog {
 		c2.gridx = 1;
 		c2.weightx = 0;
 		buttons.add(cancelButton, c2);
-		c.gridy = 2;
+		c.gridy = 3;
 		c.weighty = 0;
 		c.fill = GridBagConstraints.HORIZONTAL;
 		panel.add(buttons, c);
