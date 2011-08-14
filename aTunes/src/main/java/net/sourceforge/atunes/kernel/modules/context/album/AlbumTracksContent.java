@@ -121,6 +121,6 @@ public class AlbumTracksContent extends AbstractContextPanelContent {
             }
         });
 
-        return tracksTable;
+        return LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(tracksTable);
     }
 }
