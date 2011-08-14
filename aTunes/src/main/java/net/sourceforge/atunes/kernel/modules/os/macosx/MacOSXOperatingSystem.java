@@ -88,8 +88,10 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 		try {
 			MacOSXAdapter.setListener(GuiHandler.getInstance(), GuiHandler.class.getDeclaredMethod("showFullFrame", (Class[]) null));
 		} catch (Exception e) {
-			
-		}		
+			Logger.error(e.getMessage());
+		}
+		
+		MacOSXAdapter.addDockIconMenu();
 	}
 	
 	@Override

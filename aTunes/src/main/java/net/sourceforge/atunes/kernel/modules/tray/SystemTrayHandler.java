@@ -30,6 +30,7 @@ import java.util.List;
 
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.WindowConstants;
 
@@ -133,7 +134,7 @@ public final class SystemTrayHandler extends AbstractHandler {
      * 
      * @return the j tray icon popup menu
      */
-    private JTrayIconPopupMenu fillMenu(JTrayIconPopupMenu menu) {
+    private JPopupMenu fillMenu(JPopupMenu menu) {
         menu.add(getPlayMenuItem());
         menu.add(getStopMenuItem());
         menu.add(getPreviousMenuItem());
@@ -345,7 +346,6 @@ public final class SystemTrayHandler extends AbstractHandler {
      */
     private JMenuItem getStopMenuItem() {
         JMenuItem stop = new JMenuItem(Actions.getAction(StopCurrentAudioObjectAction.class));
-        stop.setText(I18nUtils.getString("STOP"));
         return stop;
     }
 
@@ -356,7 +356,6 @@ public final class SystemTrayHandler extends AbstractHandler {
      */
     private JMenuItem getPreviousMenuItem() {
         JMenuItem previous = new JMenuItem(Actions.getAction(PlayPreviousAudioObjectAction.class));
-        previous.setText(I18nUtils.getString("PREVIOUS"));
         return previous;
     }
 
@@ -367,7 +366,6 @@ public final class SystemTrayHandler extends AbstractHandler {
      */
     private JMenuItem getNextMenuItem() {
         JMenuItem next = new JMenuItem(Actions.getAction(PlayNextAudioObjectAction.class));
-        next.setText(I18nUtils.getString("NEXT"));
         return next;
     }
 
@@ -378,7 +376,6 @@ public final class SystemTrayHandler extends AbstractHandler {
      */
     private JCheckBoxMenuItem getMuteCheckBoxMenuItem() {
         JCheckBoxMenuItem mute = new JCheckBoxMenuItem(Actions.getAction(MuteAction.class));
-        mute.setText(I18nUtils.getString("MUTE"));
         mute.setIcon(null);
         return mute;
     }
@@ -437,7 +434,7 @@ public final class SystemTrayHandler extends AbstractHandler {
         	Image icon = ImageUtils.scaleImageBicubic(Images.getImage(Images.APP_LOGO_32).getImage(), iconSize.width, iconSize.height).getImage();
             trayIcon = new JTrayIcon(icon, OsManager.osType.isLinux(), Actions.getAction(ToggleWindowVisibilityAction.class));
             trayIcon.setToolTip(StringUtils.getString(Constants.APP_NAME, " ", Constants.VERSION.toShortString()));
-            JTrayIconPopupMenu popupmenu = fillMenu(new JTrayIconPopupMenu(trayIcon));
+            JPopupMenu popupmenu = fillMenu(new JTrayIconPopupMenu(trayIcon));
             trayIcon.setJTrayIconJPopupMenu(popupmenu);
         }
         return trayIcon;

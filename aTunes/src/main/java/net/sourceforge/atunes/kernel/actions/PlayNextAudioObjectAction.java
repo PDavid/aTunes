@@ -23,12 +23,14 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class PlayNextAudioObjectAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 2012440550238196002L;
 
     PlayNextAudioObjectAction() {
+    	super(I18nUtils.getString("NEXT"));
     }
 
     @Override

@@ -23,12 +23,14 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class StopCurrentAudioObjectAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -1177020643937370678L;
 
     StopCurrentAudioObjectAction() {
+    	super(I18nUtils.getString("STOP"));
     }
 
     @Override
