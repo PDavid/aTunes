@@ -149,7 +149,7 @@ public final class JTrayIcon extends TrayIcon {
      * @param popup
      *            the new j tray icon j popup menu
      */
-    public void setJTrayIconJPopupMenu(JTrayIconPopupMenu popup) {
+    public void setJTrayIconJPopupMenu(JPopupMenu popup) {
         popupMenu = popup;
         popupMenuListener = new PopupMenuListener() {
             @Override

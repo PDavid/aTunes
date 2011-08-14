@@ -20,14 +20,21 @@
 
 package net.sourceforge.atunes.kernel.modules.os.macosx;
 
+import java.awt.PopupMenu;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import net.sourceforge.atunes.kernel.actions.Actions;
+import net.sourceforge.atunes.kernel.actions.PlayAction;
+import net.sourceforge.atunes.kernel.actions.PlayNextAudioObjectAction;
+import net.sourceforge.atunes.kernel.actions.PlayPreviousAudioObjectAction;
+import net.sourceforge.atunes.kernel.actions.StopCurrentAudioObjectAction;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
+// TODO: Refactor
 public class MacOSXAdapter implements InvocationHandler {
 
 	private static final class AppReOpenedListener implements InvocationHandler {
@@ -320,4 +327,47 @@ public class MacOSXAdapter implements InvocationHandler {
     protected Method getTargetMethod() {
         return targetMethod;
     }    
+    
+    /**
+     * Adds dock icon menu
+     */
+    protected static void addDockIconMenu() {
+		try {
+			Class<?> applicationClass = Class.forName("com.apple.eawt.Application");
+	    	if (macOSXApplication == null) {
+	    		macOSXApplication = applicationClass.getConstructor((Class[]) null).newInstance((Object[]) null);
+	    	}
+	    	Method setDockMenu = applicationClass.getDeclaredMethod("setDockMenu", new Class[] { PopupMenu.class });
+	    	
+	    	setDockMenu.invoke(macOSXApplication, new Object[] { getDockMenu() });
+	    	
+		} catch (ClassNotFoundException e) {
+        	logHandlerException(e);
+		} catch (IllegalArgumentException e) {
+        	logHandlerException(e);
+		} catch (SecurityException e) {
+        	logHandlerException(e);
+		} catch (InstantiationException e) {
+        	logHandlerException(e);
+		} catch (IllegalAccessException e) {
+        	logHandlerException(e);
+		} catch (InvocationTargetException e) {
+        	logHandlerException(e);
+		} catch (NoSuchMethodException e) {
+        	logHandlerException(e);
+		}
+    }
+    
+    /**
+     * Returns menu for dock icon
+     * @return
+     */
+    private static PopupMenu getDockMenu() {
+    	PopupMenu menu = new PopupMenu();
+    	menu.add(Actions.getMenuItemForAction(PlayAction.class));
+    	menu.add(Actions.getMenuItemForAction(StopCurrentAudioObjectAction.class));
+    	menu.add(Actions.getMenuItemForAction(PlayPreviousAudioObjectAction.class));
+    	menu.add(Actions.getMenuItemForAction(PlayNextAudioObjectAction.class));
+    	return menu;
+    }
 }

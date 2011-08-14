@@ -21,9 +21,13 @@
 package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.Component;
+import java.awt.MenuItem;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.AbstractAction;
 import javax.swing.JMenuItem;
 
 import net.sourceforge.atunes.gui.model.AudioObjectsSource;
@@ -166,4 +170,20 @@ public final class Actions {
         return menuItem;
     }
 
+    /**
+     * Returns a MenuItem that executes given action class
+     * @param clazz
+     * @return
+     */
+    public static MenuItem getMenuItemForAction(final Class<? extends CustomAbstractAction> clazz) {
+    	MenuItem menuItem = new MenuItem((String)getAction(clazz).getValue(AbstractAction.NAME));
+    	menuItem.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				getAction(clazz).actionPerformed(null);
+			}
+		});
+    	return menuItem;
+    }    
 }
