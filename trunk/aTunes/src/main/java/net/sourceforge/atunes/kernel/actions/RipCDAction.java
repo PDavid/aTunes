@@ -42,6 +42,11 @@ public class RipCDAction extends CustomAbstractAction {
     }
 
     @Override
+    public void setEnabled(boolean newValue) {    	
+    	super.setEnabled(RipperHandler.getInstance().isRipSupported() && newValue);
+    }
+    
+    @Override
     public void actionPerformed(ActionEvent e) {
         RipperHandler.getInstance().startCdRipper();
     }
