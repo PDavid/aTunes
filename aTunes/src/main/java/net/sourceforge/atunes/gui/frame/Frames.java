@@ -42,6 +42,7 @@ public final class Frames {
 
         add(DefaultSingleFrame.class, "1.png");
         add(EnhancedSingleFrame.class, "2.png");
+        add(NavigatorTopPlayListBottomSingleFrame.class, "3.png");
     }
 
     private static void add(Class<? extends Frame> clazz, String image) {

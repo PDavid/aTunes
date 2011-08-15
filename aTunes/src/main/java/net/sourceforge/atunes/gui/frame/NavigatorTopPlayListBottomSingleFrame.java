@@ -32,13 +32,13 @@ import javax.swing.JSplitPane;
 import net.sourceforge.atunes.gui.views.controls.CustomSplitPane;
 import net.sourceforge.atunes.utils.GuiUtils;
 
-public final class EnhancedSingleFrame extends MainSplitPaneLeftSingleFrame implements net.sourceforge.atunes.gui.frame.Frame {
+public final class NavigatorTopPlayListBottomSingleFrame extends MainSplitPaneRightSingleFrame implements net.sourceforge.atunes.gui.frame.Frame {
 
     private static final long serialVersionUID = 1L;
 
-    private static final String PLAYLIST_SPLIT_PANE = "3";
+    private static final String NAVIGATOR_SPLIT_PANE = "3";
 
-    private CustomSplitPane playListSplitPane;
+    private CustomSplitPane navigatorSplitPane;
 
     private static final int NAVIGATION_TABLE_MINIMUM_WIDTH = CommonSingleFrameSizes.PLAY_LIST_PANEL_MINIMUM_WIDTH;
     private static final int NAVIGATION_TABLE_MINIMUM_HEIGHT = GuiUtils.getComponentHeightForResolution(0.1f);
@@ -49,14 +49,14 @@ public final class EnhancedSingleFrame extends MainSplitPaneLeftSingleFrame impl
     private static final int NAVIGATION_TABLE_MAXIMUM_WIDTH = CommonSingleFrameSizes.PLAY_LIST_PANEL_MAXIMUM_WIDTH;
     private static final int NAVIGATION_TABLE_MAXIMUM_HEIGHT = GuiUtils.getComponentHeightForResolution(0.4f);
 
-    public EnhancedSingleFrame() {
+    public NavigatorTopPlayListBottomSingleFrame() {
     	super();
     }
     
     @Override
     protected void setupSplitPaneDividerPosition(FrameState frameState) {
     	super.setupSplitPaneDividerPosition(frameState);
-        applySplitPaneDividerPosition(playListSplitPane, frameState.getSplitPaneDividerPos(PLAYLIST_SPLIT_PANE), 0.5);
+        applySplitPaneDividerPosition(navigatorSplitPane, frameState.getSplitPaneDividerPos(NAVIGATOR_SPLIT_PANE), 0.5);
     }
 
     @Override
@@ -66,33 +66,33 @@ public final class EnhancedSingleFrame extends MainSplitPaneLeftSingleFrame impl
 
     @Override
     public void showNavigationTree(boolean show) {
-        applyVisibility(show, LEFT_SPLIT_PANE, getNavigationTreePanel(), leftSplitPane);
+        applyVisibility(show, LEFT_SPLIT_PANE, navigatorSplitPane, leftSplitPane);
     }
 
     @Override
     public void showNavigationTable(boolean show) {
-        applyVisibility(show, PLAYLIST_SPLIT_PANE, getNavigationTablePanel(), playListSplitPane);
+        applyVisibility(show, NAVIGATOR_SPLIT_PANE, getNavigationTablePanel(), navigatorSplitPane);
     }
     
     @Override
     protected JComponent getComponentA() {
-    	return getNavigationTreePanel();
+    	navigatorSplitPane = new CustomSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+    	navigatorSplitPane.setLeftComponent(getNavigationTreePanel());
+    	navigatorSplitPane.setRightComponent(getNavigationTablePanel());
+    	navigatorSplitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
+
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                getFrameState().putSplitPaneDividerPos(NAVIGATOR_SPLIT_PANE, (Integer) evt.getNewValue());
+                storeFrameState();
+            }
+        });
+        return navigatorSplitPane;
     }
     
     @Override
     protected JComponent getComponentB() {
-        playListSplitPane = new CustomSplitPane(JSplitPane.VERTICAL_SPLIT);
-        playListSplitPane.setLeftComponent(getNavigationTablePanel());
-        playListSplitPane.setRightComponent(getPlayListPanel());
-        playListSplitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
-
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                getFrameState().putSplitPaneDividerPos(PLAYLIST_SPLIT_PANE, (Integer) evt.getNewValue());
-                storeFrameState();
-            }
-        });
-        return playListSplitPane;
+        return getPlayListPanel();
     }
     
     @Override
@@ -133,20 +133,22 @@ public final class EnhancedSingleFrame extends MainSplitPaneLeftSingleFrame impl
 	@Override
 	public Map<String, Double> getDefaultSplitPaneRelativePositions() {
 		Map<String, Double> values = new HashMap<String, Double>();
-		values.put(LEFT_SPLIT_PANE, 0.15);
-		values.put(RIGHT_SPLIT_PANE, 0.85);
-		values.put(PLAYLIST_SPLIT_PANE, 0.5);
+		values.put(LEFT_SPLIT_PANE, 0.5);
+		values.put(RIGHT_SPLIT_PANE, 0.8);
+		values.put(NAVIGATOR_SPLIT_PANE, 0.5);
 		return values;
 	}
-
+	
 	@Override
 	protected int getLeftSplitType() {
-		return JSplitPane.HORIZONTAL_SPLIT;
+		return JSplitPane.VERTICAL_SPLIT;
 	}
 	
 	@Override
 	protected int getRightSplitType() {
 		return JSplitPane.HORIZONTAL_SPLIT;
 	}
+
+
 
 }
