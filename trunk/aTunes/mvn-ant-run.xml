@@ -164,6 +164,11 @@
 				<include name="atunes.desktop" />
 			</tarfileset>
 		</deb>
-
 	</target>
+	
+	<!-- Copy splash image to folder where Mac OS package is created, since Maven plugin does not allow to do this -->
+	<target name="copy_splash">
+		<copy todir="${basedir}/target/atunes-${version}/aTunes.app/Contents/Resources" file="${build_resources}/splash.gif" />	
+	</target>
+
 </project>
