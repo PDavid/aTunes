@@ -32,7 +32,7 @@ import javax.swing.JSplitPane;
 import net.sourceforge.atunes.gui.views.controls.CustomSplitPane;
 import net.sourceforge.atunes.utils.GuiUtils;
 
-public final class EnhancedSingleFrame extends CommonSingleFrame implements net.sourceforge.atunes.gui.frame.Frame {
+public final class EnhancedSingleFrame extends MainSplitPaneLeftSingleFrame implements net.sourceforge.atunes.gui.frame.Frame {
 
     private static final long serialVersionUID = 1L;
 
@@ -61,12 +61,12 @@ public final class EnhancedSingleFrame extends CommonSingleFrame implements net.
 
     @Override
     public void showContextPanel(boolean show) {
-        applyVisibility(show, RIGHT_VERTICAL_SPLIT_PANE, getContextPanel(), rightVerticalSplitPane);
+        applyVisibility(show, RIGHT_SPLIT_PANE, getContextPanel(), rightSplitPane);
     }
 
     @Override
     public void showNavigationTree(boolean show) {
-        applyVisibility(show, LEFT_VERTICAL_SPLIT_PANE, getNavigationTreePanel(), leftVerticalSplitPane);
+        applyVisibility(show, LEFT_SPLIT_PANE, getNavigationTreePanel(), leftSplitPane);
     }
 
     @Override
@@ -133,11 +133,20 @@ public final class EnhancedSingleFrame extends CommonSingleFrame implements net.
 	@Override
 	public Map<String, Double> getDefaultSplitPaneRelativePositions() {
 		Map<String, Double> values = new HashMap<String, Double>();
-		values.put(LEFT_VERTICAL_SPLIT_PANE, 0.15);
-		values.put(RIGHT_VERTICAL_SPLIT_PANE, 0.85);
+		values.put(LEFT_SPLIT_PANE, 0.15);
+		values.put(RIGHT_SPLIT_PANE, 0.85);
 		values.put(PLAYLIST_SPLIT_PANE, 0.5);
 		return values;
 	}
 
+	@Override
+	protected int getLeftSplitType() {
+		return JSplitPane.HORIZONTAL_SPLIT;
+	}
+	
+	@Override
+	protected int getRightSplitType() {
+		return JSplitPane.HORIZONTAL_SPLIT;
+	}
 
 }

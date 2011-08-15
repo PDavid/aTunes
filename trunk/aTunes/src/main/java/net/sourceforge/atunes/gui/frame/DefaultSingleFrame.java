@@ -34,7 +34,7 @@ import net.sourceforge.atunes.gui.views.controls.CustomSplitPane;
 /**
  * The default frame.
  */
-public final class DefaultSingleFrame extends CommonSingleFrame implements net.sourceforge.atunes.gui.frame.Frame {
+public final class DefaultSingleFrame extends MainSplitPaneLeftSingleFrame implements net.sourceforge.atunes.gui.frame.Frame {
 
     private static final long serialVersionUID = 1L;
 
@@ -54,7 +54,7 @@ public final class DefaultSingleFrame extends CommonSingleFrame implements net.s
 
     @Override
     public void showContextPanel(boolean show) {
-        applyVisibility(show, RIGHT_VERTICAL_SPLIT_PANE, getContextPanel(), rightVerticalSplitPane);
+        applyVisibility(show, RIGHT_SPLIT_PANE, getContextPanel(), rightSplitPane);
     }
 
     @Override
@@ -74,7 +74,7 @@ public final class DefaultSingleFrame extends CommonSingleFrame implements net.s
      */
     private void checkNavigatorSplitPaneVisibility() {
     	boolean navigatorSplitPaneVisible = getNavigationTreePanel().isVisible() || getNavigationTablePanel().isVisible();
-   		applyVisibility(navigatorSplitPaneVisible, LEFT_VERTICAL_SPLIT_PANE, navigatorSplitPane, leftVerticalSplitPane);
+   		applyVisibility(navigatorSplitPaneVisible, LEFT_SPLIT_PANE, navigatorSplitPane, leftSplitPane);
     }
     
     @Override
@@ -136,11 +136,20 @@ public final class DefaultSingleFrame extends CommonSingleFrame implements net.s
 	@Override
 	public Map<String, Double> getDefaultSplitPaneRelativePositions() {
 		Map<String, Double> values = new HashMap<String, Double>();
-		values.put(LEFT_VERTICAL_SPLIT_PANE, 0.15);
-		values.put(RIGHT_VERTICAL_SPLIT_PANE, 0.85);
+		values.put(LEFT_SPLIT_PANE, 0.15);
+		values.put(RIGHT_SPLIT_PANE, 0.85);
 		values.put(NAVIGATOR_SPLIT_PANE, 0.5);
 		return values;
 	}
 
+	@Override
+	protected int getLeftSplitType() {
+		return JSplitPane.HORIZONTAL_SPLIT;
+	}
+	
+	@Override
+	protected int getRightSplitType() {
+		return JSplitPane.HORIZONTAL_SPLIT;
+	}
 }
 

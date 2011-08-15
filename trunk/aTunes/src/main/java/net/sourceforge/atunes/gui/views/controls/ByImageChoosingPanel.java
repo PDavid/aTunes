@@ -107,6 +107,7 @@ public final class ByImageChoosingPanel<T> extends ScrollableFlowPanel {
 
     private JPanel createPanel(JLabel imageLabel, CustomJRadioButton button) {
         JPanel p = new JPanel(new GridBagLayout());
+        p.setOpaque(false);
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;

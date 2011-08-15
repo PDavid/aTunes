@@ -49,11 +49,11 @@ public abstract class CommonSingleFrame extends AbstractSingleFrame {
 	 */
 	private static final long serialVersionUID = 6728998633745513923L;
 
-    protected static final String LEFT_VERTICAL_SPLIT_PANE = "1";
-    protected static final String RIGHT_VERTICAL_SPLIT_PANE = "2";
+    protected static final String LEFT_SPLIT_PANE = "1";
+    protected static final String RIGHT_SPLIT_PANE = "2";
 
-    protected CustomSplitPane leftVerticalSplitPane;
-    protected CustomSplitPane rightVerticalSplitPane;
+    protected CustomSplitPane leftSplitPane;
+    protected CustomSplitPane rightSplitPane;
 
 	public CommonSingleFrame() {
 		super();
@@ -66,37 +66,37 @@ public abstract class CommonSingleFrame extends AbstractSingleFrame {
         JPanel panel = new JPanel(new GridBagLayout());
 
         // Main Split Pane          
-        leftVerticalSplitPane = new CustomSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+        leftSplitPane = new CustomSplitPane(getLeftSplitType());
         
         GridBagConstraints c = new GridBagConstraints();
 
         JPanel nonNavigatorPanel = new JPanel(new BorderLayout());
-        rightVerticalSplitPane = new CustomSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-        rightVerticalSplitPane.setBorder(BorderFactory.createEmptyBorder());
-        rightVerticalSplitPane.setResizeWeight(0.5);
-        rightVerticalSplitPane.setLeftComponent(getComponentB());
-        rightVerticalSplitPane.setRightComponent(getComponentC());
+        rightSplitPane = new CustomSplitPane(getRightSplitType());
+        rightSplitPane.setBorder(BorderFactory.createEmptyBorder());
+        rightSplitPane.setResizeWeight(0.5);
+        rightSplitPane.setLeftComponent(getRightSplitPaneLeftComponent());
+        rightSplitPane.setRightComponent(getRightSplitPaneRightComponent());
 
-        nonNavigatorPanel.add(rightVerticalSplitPane, BorderLayout.CENTER);
+        nonNavigatorPanel.add(rightSplitPane, BorderLayout.CENTER);
 
-        leftVerticalSplitPane.setLeftComponent(getComponentA());
-        leftVerticalSplitPane.setRightComponent(nonNavigatorPanel);
-        leftVerticalSplitPane.setResizeWeight(0.5);
+        leftSplitPane.setLeftComponent(getLeftSplitPaneLeftComponent());
+        leftSplitPane.setRightComponent(getLeftSplitPaneRightComponent());
+        leftSplitPane.setResizeWeight(0.5);
 
-        leftVerticalSplitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
+        leftSplitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
 
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                getFrameState().putSplitPaneDividerPos(LEFT_VERTICAL_SPLIT_PANE, (Integer) evt.getNewValue());
+                getFrameState().putSplitPaneDividerPos(LEFT_SPLIT_PANE, (Integer) evt.getNewValue());
                 storeFrameState();
             }
         });
 
-        rightVerticalSplitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
+        rightSplitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
 
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                getFrameState().putSplitPaneDividerPos(RIGHT_VERTICAL_SPLIT_PANE, ((Integer) evt.getNewValue()));
+                getFrameState().putSplitPaneDividerPos(RIGHT_SPLIT_PANE, ((Integer) evt.getNewValue()));
                 storeFrameState();
             }
         });
@@ -107,7 +107,7 @@ public abstract class CommonSingleFrame extends AbstractSingleFrame {
 
         c.gridy = ApplicationState.getInstance().isShowPlayerControlsOnTop() ? 1 : 0;
         c.weighty = 1;
-        panel.add(leftVerticalSplitPane, c);
+        panel.add(getMainSplitPane(), c);
 
         c.gridy = ApplicationState.getInstance().isShowPlayerControlsOnTop() ? 0 : 1;
         c.weighty = 0;
@@ -122,10 +122,16 @@ public abstract class CommonSingleFrame extends AbstractSingleFrame {
         return panel;
 	}
 
+	protected abstract JSplitPane getMainSplitPane();
+	protected abstract JComponent getLeftSplitPaneLeftComponent();
+	protected abstract JComponent getLeftSplitPaneRightComponent();
+	protected abstract JComponent getRightSplitPaneLeftComponent();
+	protected abstract JComponent getRightSplitPaneRightComponent();
+	
 	@Override
 	protected void setupSplitPaneDividerPosition(FrameState frameState) {
-        applySplitPaneDividerPosition(leftVerticalSplitPane, frameState.getSplitPaneDividerPos(LEFT_VERTICAL_SPLIT_PANE), 0.5);
-        applySplitPaneDividerPosition(rightVerticalSplitPane, frameState.getSplitPaneDividerPos(RIGHT_VERTICAL_SPLIT_PANE), 0.5);
+        applySplitPaneDividerPosition(leftSplitPane, frameState.getSplitPaneDividerPos(LEFT_SPLIT_PANE), 0.5);
+        applySplitPaneDividerPosition(rightSplitPane, frameState.getSplitPaneDividerPos(RIGHT_SPLIT_PANE), 0.5);
 	}
 	
 	@Override
@@ -212,4 +218,7 @@ public abstract class CommonSingleFrame extends AbstractSingleFrame {
 	protected abstract JComponent getComponentA();
 	protected abstract JComponent getComponentB();
 	protected abstract JComponent getComponentC();
+	
+	protected abstract int getLeftSplitType();
+	protected abstract int getRightSplitType();
 }
