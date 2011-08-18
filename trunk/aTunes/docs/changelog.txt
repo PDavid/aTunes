@@ -74,6 +74,7 @@ aTunes 2.1.0
 - FIX: Ctrl-click not working in Mac OS X
 - FIX: MultiFolderSelectionDialog showing files
 - FIX: Problem with ID3v1.0 trying to get internal image 
+- FIX: After playing all playlist and playing again, moving to next song doesn't work
 
 aTunes 2.0.1
 -------------

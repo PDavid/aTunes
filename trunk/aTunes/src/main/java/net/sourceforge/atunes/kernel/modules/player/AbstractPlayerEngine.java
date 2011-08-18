@@ -776,7 +776,7 @@ public abstract class AbstractPlayerEngine {
         } else {
             if (resetIfNoObject) {
                 stopCurrentAudioObject(false);
-                PlayListHandler.getInstance().setPositionToPlayInCurrentPlayList(0);
+                PlayListHandler.getInstance().resetCurrentPlayList();
                 PlayListHandler.getInstance().selectedAudioObjectHasChanged(PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList());
             }
         }

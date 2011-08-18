@@ -532,4 +532,12 @@ public class PlayList implements Serializable, Cloneable {
         // This is an internal operation used when reading play lists from disk
         // There is no need to call listeners here. Even it will cause wrong behaviour
     }
+
+	/**
+	 * Resets play list
+	 */
+	public void reset() {
+		setCurrentAudioObjectIndex(0);
+		getMode().reset();
+	}
 }
