@@ -211,4 +211,8 @@ final class PlayListMode {
     void addToPlaybackHistory(AudioObject object) {
         this.playbackHistory.addToHistory(object);
     }    
+    
+    void reset() {
+    	shufflePlayList.setPointer(0);
+    }
 }

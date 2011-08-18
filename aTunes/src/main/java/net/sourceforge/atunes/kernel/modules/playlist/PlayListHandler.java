@@ -1020,13 +1020,10 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
     }
 
     /**
-     * Sets position to play in current play list
-     * 
-     * @param pos
-     *            the new play list position to play
+     * Resets current play list
      */
-    public final void setPositionToPlayInCurrentPlayList(int pos) {
-        getCurrentPlayList(false).setCurrentAudioObjectIndex(pos);
+    public final void resetCurrentPlayList() {
+        getCurrentPlayList(false).reset();
     }
 
     /**
