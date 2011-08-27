@@ -76,7 +76,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
     private FadeAwayRunnable currentFadeAwayRunnable = null;
 
     public MPlayerEngine() {
-        commandWriter = new MPlayerCommandWriter(null);
+        commandWriter = MPlayerCommandWriter.newCommandWriter(null);
     }
 
     @Override
@@ -142,7 +142,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 
             // Start the play process
             process = getProcess(audioObjectToPlay);
-            commandWriter = new MPlayerCommandWriter(process);
+            commandWriter = MPlayerCommandWriter.newCommandWriter(process);
             // Output reader needs original audio object, specially when cacheFilesBeforePlaying is true, as
             // statistics must be applied over original audio object, not the cached one
             mPlayerOutputReader = AbstractMPlayerOutputReader.newInstance(this, process, audioObject);

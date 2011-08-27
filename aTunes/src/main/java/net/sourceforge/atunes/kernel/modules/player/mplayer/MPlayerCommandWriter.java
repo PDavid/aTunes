@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel.modules.player.mplayer;
 
 import java.io.PrintStream;
 
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -36,12 +37,24 @@ class MPlayerCommandWriter {
     private volatile PrintStream streamToProcess;
 
     /**
+     * Returns new command writer for mplayer instance
+     * @param process
+     * @return
+     */
+    static MPlayerCommandWriter newCommandWriter(Process process) {
+    	if (OsManager.osType.isMacOsX()) {
+    		return new MPlayerXCommandWriter(process);
+    	}
+    	return new MPlayerCommandWriter(process);
+    }
+    
+    /**
      * Instantiates a new m player command writer.
      * 
      * @param process
      *            the process
      */
-    MPlayerCommandWriter(Process process) {
+    protected MPlayerCommandWriter(Process process) {
         this.process = process;
     }
 
@@ -51,7 +64,7 @@ class MPlayerCommandWriter {
      * @param command
      *            the command
      */
-    private void sendCommand(String command) {
+    protected void sendCommand(String command) {
         if (process != null) {
             if (streamToProcess == null) {
                 streamToProcess = new PrintStream(process.getOutputStream());
