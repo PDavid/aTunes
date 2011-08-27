@@ -58,7 +58,7 @@ class FadeAwayRunnable implements Runnable {
         this.process = process;
         this.initialVolume = initialVolume;
         this.handler = handler;
-        commandWriter = new MPlayerCommandWriter(process);
+        commandWriter = MPlayerCommandWriter.newCommandWriter(process);
     }
 
     @Override
