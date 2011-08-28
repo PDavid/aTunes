@@ -25,6 +25,7 @@ import java.util.List;
 
 import javax.swing.JDialog;
 
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.dialogs.fullScreen.FullScreenWindow;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
@@ -96,7 +97,7 @@ public class FullScreenHandler extends AbstractHandler {
 	private void createFullScreenController() {
 		JDialog.setDefaultLookAndFeelDecorated(false);
 		FullScreenWindow window = new FullScreenWindow(GuiHandler.getInstance().getFrame().getFrame());
-        JDialog.setDefaultLookAndFeelDecorated(true);
+        JDialog.setDefaultLookAndFeelDecorated(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isDialogUndecorated());
         controller = new FullScreenController(window);
 	}
 	

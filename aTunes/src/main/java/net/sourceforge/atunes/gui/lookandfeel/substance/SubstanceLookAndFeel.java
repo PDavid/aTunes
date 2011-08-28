@@ -79,6 +79,18 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
 
     public static final String SUBSTANCE = "Substance";
 
+    private Object menuBarUI;
+    
+    private Object menuUI;
+    
+    private Object menuItemUI;
+    
+    private Object checkBoxMenuItemUI;
+    
+    private Object radioButtonMenuItemUI;
+    
+    private Object popupMenuUI;
+    
 	private static final class CustomFontPolicy implements FontPolicy {
         private final class CustomFontSet implements FontSet {
 			private FontUIResource windowTitleFont = new FontUIResource(baseFont.deriveFont(Font.BOLD, baseFont.getSize() + 1f));
@@ -276,8 +288,17 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
         if (!OsManager.osType.isMacOsX()) {
         	// Avoid custom window decoration in mac os to draw window controls at left
         	JFrame.setDefaultLookAndFeelDecorated(true);
+            JDialog.setDefaultLookAndFeelDecorated(true);
+        } else {
+        	// This is a trick to draw menu at Mac OS X menu bar
+        	// Taken from http://www.pushing-pixels.org/2008/07/13/swing-applications-and-mac-os-x-menu-bar.html
+        	menuBarUI = UIManager.get("MenuBarUI");
+        	menuUI = UIManager.get("MenuUI");
+        	menuItemUI = UIManager.get("MenuItemUI");
+        	checkBoxMenuItemUI = UIManager.get("CheckBoxMenuItemUI");
+        	radioButtonMenuItemUI = UIManager.get("RadioButtonMenuItemUI");
+        	popupMenuUI = UIManager.get("PopupMenuUI");
         }
-        JDialog.setDefaultLookAndFeelDecorated(true);
     }
 
     @Override
@@ -289,6 +310,15 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
                 UIManager.setLookAndFeel(skins.get(DEFAULT_SKIN));
             }
 
+            if (OsManager.osType.isMacOsX()) {
+            	UIManager.put("MenuBarUI", menuBarUI);
+            	UIManager.put("MenuUI", menuUI);
+            	UIManager.put("MenuItemUI", menuItemUI);
+            	UIManager.put("CheckBoxMenuItemUI", checkBoxMenuItemUI);
+            	UIManager.put("RadioButtonMenuItemUI", radioButtonMenuItemUI);
+            	UIManager.put("PopupMenuUI", popupMenuUI);
+            }
+            
             // Get border color
             GuiUtils.setBorderColor(org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin().getActiveColorScheme(DecorationAreaType.GENERAL).getMidColor());
 
@@ -351,7 +381,7 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
 
     @Override
     public boolean isDialogUndecorated() {
-        return true;
+    	  return OsManager.osType.isMacOsX() ? false: true;
     }
 
     @Override
