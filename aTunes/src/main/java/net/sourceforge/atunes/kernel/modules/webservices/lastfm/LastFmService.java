@@ -17,7 +17,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package net.sourceforge.atunes.kernel.modules.webservices.lastfm;
 
 import java.awt.Image;
@@ -81,6 +80,7 @@ import de.umass.lastfm.scrobble.ScrobbleResult;
 public final class LastFmService {
 
     private final class SubmitNowPlayingInfoRunnable implements Runnable {
+
 		private final LocalAudioObject audioFile;
 
 		private SubmitNowPlayingInfoRunnable(LocalAudioObject audioFile) {
@@ -95,6 +95,7 @@ public final class LastFmService {
 		        if (e.getStatus() == 2) {
 		            Logger.error("Authentication failure on Last.fm service");
 		            SwingUtilities.invokeLater(new Runnable() {
+
 		                @Override
 		                public void run() {
 		                    GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("LASTFM_USER_ERROR"));
@@ -110,6 +111,7 @@ public final class LastFmService {
 	}
 
 	private final class SubmitToLastFmRunnable implements Runnable {
+
 		private final long secondsPlayed;
 		private final LocalAudioObject audioFile;
 
@@ -126,6 +128,7 @@ public final class LastFmService {
 		        if (e.getStatus() == 2) {
 		            Logger.error("Authentication failure on Last.fm service");
 		            SwingUtilities.invokeLater(new Runnable() {
+
 		                @Override
 		                public void run() {
 		                    GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("LASTFM_USER_ERROR"));
@@ -143,32 +146,24 @@ public final class LastFmService {
 	/*
      * DO NOT USE THESE KEYS FOR OTHER APPLICATIONS THAN aTunes!
      */
-    private static final byte[] API_KEY = { 78, 119, -39, -5, -89, -107, -38, 41, -87, -107, 122, 98, -33, 46, 32, -47, -44, 54, 97, 67, 105, 122, 11, -26, -81, 90, 94, 55, 121,
-            11, 14, -104, -70, 123, -88, -70, -108, 75, -77, 98 };
-    private static final byte[] API_SECRET = { 38, -8, 33, 63, 10, 86, 29, -2, 87, -63, 67, 111, -5, -101, -87, 38, 2, 35, 86, -86, 19, 110, -81, -115, 102, 54, -24, 27, 40, -124,
-            -57, -62, -70, 123, -88, -70, -108, 75, -77, 98 };
+    private static final byte[] API_KEY = {78, 119, -39, -5, -89, -107, -38, 41, -87, -107, 122, 98, -33, 46, 32, -47, -44, 54, 97, 67, 105, 122, 11, -26, -81, 90, 94, 55, 121,
+        11, 14, -104, -70, 123, -88, -70, -108, 75, -77, 98};
+    private static final byte[] API_SECRET = {38, -8, 33, 63, 10, 86, 29, -2, 87, -63, 67, 111, -5, -101, -87, 38, 2, 35, 86, -86, 19, 110, -81, -115, 102, 54, -24, 27, 40, -124,
+        -57, -62, -70, 123, -88, -70, -108, 75, -77, 98};
     private static final String CLIENT_ID = "atu";
-
     private static final String ARTIST_WILDCARD = "(%ARTIST%)";
     private static final String LANGUAGE_PARAM = "?setlang=";
     private static final String LANGUAGE_WILDCARD = "(%LANGUAGE%)";
     private static final String ARTIST_WIKI_URL = StringUtils.getString("http://www.lastfm.com/music/", ARTIST_WILDCARD, "/+wiki", LANGUAGE_PARAM, LANGUAGE_WILDCARD);
-
     private static final String VARIOUS_ARTISTS = "Various Artists";
-
     private static final int MIN_DURATION_TO_SUBMIT = 30;
     private static final int MAX_SUBMISSIONS = 50;
-
     private ExtendedProxy proxy;
-
     private String user;
     private String password;
-
     private static LastFmCache lastFmCache = new LastFmCache();
-
     /** Submissions need single threaded executor */
     private ExecutorService scrobblerExecutorService = Executors.newSingleThreadExecutor();
-
     /**
      * Singleton instance
      */
@@ -659,6 +654,28 @@ public final class LastFmService {
     }
 
     /**
+     * Removes a song from the list of loved tracks in Last.fm
+     * 
+     * @param song
+     */
+    public void removeLovedSong(AudioObject song) {
+        // Check all necessary conditions to submit request to Last.fm
+        if (!checkUser() || !checkAudioFile(song) || !checkPassword() || !checkArtist(song)) {
+            return;
+        }
+
+        Logger.info(StringUtils.getString("Trying to unlove song to Last.fm: ", song.getArtist(), " - ", song.getTitle()));
+        Result r = Track.unlove(song.getArtist(), song.getTitle(), getSession());
+        if (r.getStatus().equals(Status.OK)) {
+            Logger.info(StringUtils.getString("Successfully unloved song"));
+        } else {
+            Logger.error(StringUtils.getString("Error while unloving song"));
+            // TODO: Add a cache to submit
+        }
+
+    }
+
+    /**
      * Adds a song to the list of banned tracks in Last.fm
      * 
      * @param song
@@ -916,6 +933,7 @@ public final class LastFmService {
     public void submitCacheToLastFm() {
         if (ApplicationState.getInstance().isLastFmEnabled()) {
             Runnable r = new Runnable() {
+
                 @Override
                 public void run() {
                     try {

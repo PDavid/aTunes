@@ -52,7 +52,7 @@ public class SetPlayListSelectionAsFavoriteSongAction extends CustomAbstractActi
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        FavoritesHandler.getInstance().addFavoriteSongs(AudioFile.getAudioFiles(PlayListHandler.getInstance().getSelectedAudioObjects()));
+        FavoritesHandler.getInstance().toggleFavoriteSongs(AudioFile.getAudioFiles(PlayListHandler.getInstance().getSelectedAudioObjects()));
     }
 
     @Override
