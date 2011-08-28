@@ -43,7 +43,7 @@ public class SetFavoriteArtistFromNavigatorAction extends AbstractActionOverSele
 
     @Override
     protected void performAction(List<LocalAudioObject> objects) {
-        FavoritesHandler.getInstance().addFavoriteArtists(objects);
+        FavoritesHandler.getInstance().toggleFavoriteArtists(objects);
         NavigationHandler.getInstance().refreshNavigationTable();
     }
 

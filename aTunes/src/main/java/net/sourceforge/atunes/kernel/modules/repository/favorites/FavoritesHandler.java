@@ -19,6 +19,7 @@
  */
 package net.sourceforge.atunes.kernel.modules.repository.favorites;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -79,12 +80,17 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
     }
 
     /**
-     * Adds the favorite albums.
+     * Adds or removes the favorite albums.
      * 
      * @param songs
      *            the songs
      */
-    public void addFavoriteAlbums(List<LocalAudioObject> songs) {
+    public void toggleFavoriteAlbums(List<LocalAudioObject> songs) {
+    	if (songs == null || songs.isEmpty()) {
+    		return;
+    	}
+    	
+    	List<TreeObject<?>> toRemove = new ArrayList<TreeObject<?>>();
         Map<String, Artist> structure = RepositoryHandler.getInstance().getArtistStructure();
         Map<String, Album> favAlbums = getFavorites().getFavoriteAlbums();
         for (int i = 0; i < songs.size(); i++) {
@@ -94,30 +100,46 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
                 artist = structure.get(f.getAlbumArtist());
             }
             Album album = artist.getAlbum(f.getAlbum());
-            favAlbums.put(album.getName(), album);
+            if (favAlbums.containsValue(album)) {
+            	toRemove.add(album);
+            } else {
+            	favAlbums.put(album.getName(), album);
+            }
         }
+        
+        removeFromFavorites(toRemove);
         callActionsAfterFavoritesChange();
     }
 
     /**
-     * Adds the favorite artists.
+     * Adds or removes the favorite artists.
      * 
      * @param songs
      *            the songs
      */
-    public void addFavoriteArtists(List<LocalAudioObject> songs) {
+    public void toggleFavoriteArtists(List<LocalAudioObject> songs) {
+    	if (songs == null || songs.isEmpty()) {
+    		return;
+    	}
+
+    	List<TreeObject<?>> toRemove = new ArrayList<TreeObject<?>>();    	
         Map<String, Artist> structure = RepositoryHandler.getInstance().getArtistStructure();
         Map<String, Artist> favArtists = getFavorites().getFavoriteArtists();
         for (int i = 0; i < songs.size(); i++) {
         	LocalAudioObject f = songs.get(i);
             Artist artist = structure.get(f.getArtist());
-            favArtists.put(artist.getName(), artist);
+            if (favArtists.containsValue(artist)) {
+            	toRemove.add(artist);
+            } else {
+            	favArtists.put(artist.getName(), artist);
+            }
         }
+        removeFromFavorites(toRemove);
         callActionsAfterFavoritesChange();
     }
 
     /**
-     * Adds the favorite songs.
+     * Adds or remvoves the favorite songs.
      * 
      * @param songs
      *            the songs
@@ -133,14 +155,14 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
             if (favSongs.containsKey(song.getUrl())) {
                 toRemove.add(song);
             } else {
-            favSongs.put(song.getUrl(), song);
+            	favSongs.put(song.getUrl(), song);
 
-            // Add to LastFM if necessary
-            if (ApplicationState.getInstance().isLastFmEnabled() && ApplicationState.getInstance().isAutoLoveFavoriteSong()) {
-            	// TODO: do this with a listener interface            	
-                    ((AddLovedSongInLastFMAction) Actions.getAction(AddLovedSongInLastFMAction.class)).loveSong(song);
+            	// Add to LastFM if necessary
+            	if (ApplicationState.getInstance().isLastFmEnabled() && ApplicationState.getInstance().isAutoLoveFavoriteSong()) {
+            		// TODO: do this with a listener interface            	
+            		((AddLovedSongInLastFMAction) Actions.getAction(AddLovedSongInLastFMAction.class)).loveSong(song);
+            	}
             }
-        }
         }
         removeSongsFromFavorites(toRemove);
         callActionsAfterFavoritesChange();
@@ -228,7 +250,7 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
      * @param objects
      *            list of objects of type TreeObject
      */
-    public void removeFromFavorites(List<TreeObject<? extends AudioObject>> objects) {
+    public void removeFromFavorites(List<TreeObject<?>> objects) {
         for (TreeObject<? extends AudioObject> obj : objects) {
             if (obj instanceof Artist) {
                 getFavorites().getFavoriteArtists().remove(obj.toString());
@@ -247,16 +269,15 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
      *            the files
      */
     public void removeSongsFromFavorites(List<AudioObject> files) {
-        for (AudioObject file : files) {
-            getFavorites().getFavoriteAudioFiles().remove(file.getUrl());
-            // Unlove on LastFM if necessary
-            if (ApplicationState.getInstance().isLastFmEnabled() && ApplicationState.getInstance().isAutoLoveFavoriteSong()) {
-                // TODO: do this with a listener interface            	
-                ((UnlovesongInLastFmAction) Actions.getAction(UnlovesongInLastFmAction.class)).unloveSong(file);
-        }
-        }
-
-        callActionsAfterFavoritesChange();
+    	for (AudioObject file : files) {
+    		getFavorites().getFavoriteAudioFiles().remove(file.getUrl());
+    		// Unlove on LastFM if necessary
+    		if (ApplicationState.getInstance().isLastFmEnabled() && ApplicationState.getInstance().isAutoLoveFavoriteSong()) {
+    			// TODO: do this with a listener interface            	
+    			((UnlovesongInLastFmAction) Actions.getAction(UnlovesongInLastFmAction.class)).unloveSong(file);
+    		}
+    	}
+    	callActionsAfterFavoritesChange();
     }
 
     /**
