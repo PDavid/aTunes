@@ -40,6 +40,7 @@ aTunes 2.1.0
 - Move play list selection after current audio object [ patch by deathgorepain ]
 - New content in context panel shows artist top tracks
 - New window type: navigator (tree and table) at top, playlist at bottom
+- Toggle Favorites without accessing favorites panel [ patch by deathgorepain ]
 
 - FIX: Dialogs opened from preferences dialog use wrong parent [ patch by Laurent Cathala ]
 - FIX: Exception during renaming of file name

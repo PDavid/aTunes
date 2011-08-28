@@ -70,7 +70,7 @@ public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
                 // Get loved tracks
                 lovedTracks = get();
                 // Set favorites
-                FavoritesHandler.getInstance().addFavoriteSongs(lovedTracks);
+                FavoritesHandler.getInstance().toggleFavoriteSongs(lovedTracks);
             } catch (Exception e) {
             }
             GuiHandler.getInstance().showMessage(StringUtils.getString(I18nUtils.getString("LOVED_TRACKS_IMPORTED"), ": ", lovedTracks == null ? "0" : lovedTracks.size()));

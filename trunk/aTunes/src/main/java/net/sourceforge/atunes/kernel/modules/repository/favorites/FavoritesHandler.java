@@ -17,9 +17,9 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package net.sourceforge.atunes.kernel.modules.repository.favorites;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +27,7 @@ import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.FavoritesListeners;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction;
+import net.sourceforge.atunes.kernel.actions.UnlovesongInLastFmAction;
 import net.sourceforge.atunes.kernel.modules.repository.AudioFilesRemovedListener;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
@@ -47,7 +48,6 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
 
     /** The instance. */
     private static FavoritesHandler instance = new FavoritesHandler();
-
     /** The favorites. */
     private Favorites favorites;
 
@@ -122,26 +122,34 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
      * @param songs
      *            the songs
      */
-    public void addFavoriteSongs(List<LocalAudioObject> songs) {
+    public void toggleFavoriteSongs(List<LocalAudioObject> songs) {
         if (songs == null || songs.isEmpty()) {
             return;
         }
         Map<String, LocalAudioObject> favSongs = getFavorites().getFavoriteAudioFiles();
+        List<AudioObject> toRemove = new LinkedList<AudioObject>();
         for (LocalAudioObject song : songs) {
+            //Toggle favorite songs
+            if (favSongs.containsKey(song.getUrl())) {
+                toRemove.add(song);
+            } else {
             favSongs.put(song.getUrl(), song);
 
             // Add to LastFM if necessary
             if (ApplicationState.getInstance().isLastFmEnabled() && ApplicationState.getInstance().isAutoLoveFavoriteSong()) {
             	// TODO: do this with a listener interface            	
-           		((AddLovedSongInLastFMAction)Actions.getAction(AddLovedSongInLastFMAction.class)).loveSong(song);
+                    ((AddLovedSongInLastFMAction) Actions.getAction(AddLovedSongInLastFMAction.class)).loveSong(song);
             }
         }
+        }
+        removeSongsFromFavorites(toRemove);
         callActionsAfterFavoritesChange();
     }
 
     /**
      * Finish.
      */
+    @Override
     public void applicationFinish() {
         // Only store repository if it's dirty
         if (getFavorites().isDirty()) {
@@ -172,6 +180,7 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
     @Override
     protected Runnable getPreviousInitializationTask() {
         return new Runnable() {
+
             @Override
             public void run() {
                 favorites = ApplicationStateHandler.getInstance().retrieveFavoritesCache();
@@ -240,6 +249,11 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
     public void removeSongsFromFavorites(List<AudioObject> files) {
         for (AudioObject file : files) {
             getFavorites().getFavoriteAudioFiles().remove(file.getUrl());
+            // Unlove on LastFM if necessary
+            if (ApplicationState.getInstance().isLastFmEnabled() && ApplicationState.getInstance().isAutoLoveFavoriteSong()) {
+                // TODO: do this with a listener interface            	
+                ((UnlovesongInLastFmAction) Actions.getAction(UnlovesongInLastFmAction.class)).unloveSong(file);
+        }
         }
 
         callActionsAfterFavoritesChange();
@@ -278,8 +292,10 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
     }
 
 	@Override
-	public void playListCleared() {}
+    public void playListCleared() {
+    }
 
 	@Override
-	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+    public void selectedAudioObjectChanged(AudioObject audioObject) {
+}
 }
