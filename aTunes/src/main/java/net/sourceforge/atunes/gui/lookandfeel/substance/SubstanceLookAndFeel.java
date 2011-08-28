@@ -60,6 +60,7 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.PreviousButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.SecondaryControl;
 import net.sourceforge.atunes.gui.views.controls.playerControls.StopButton;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
+import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.GuiUtils;
 
@@ -272,7 +273,10 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
         AnimationConfigurationManager.getInstance().setTimelineDuration(0);
         UIManager.put(org.pushingpixels.substance.api.SubstanceLookAndFeel.TABBED_PANE_CONTENT_BORDER_KIND, SubstanceConstants.TabContentPaneBorderKind.SINGLE_FULL);
 
-        JFrame.setDefaultLookAndFeelDecorated(true);
+        if (!OsManager.osType.isMacOsX()) {
+        	// Avoid custom window decoration in mac os to draw window controls at left
+        	JFrame.setDefaultLookAndFeelDecorated(true);
+        }
         JDialog.setDefaultLookAndFeelDecorated(true);
     }
 
