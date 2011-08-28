@@ -181,7 +181,7 @@ public class MacOSXLookAndFeel extends SystemLookAndFeel {
     
     @Override
     public boolean isDialogUndecorated() {
-    	return true;
+    	return false;
     }
 
 

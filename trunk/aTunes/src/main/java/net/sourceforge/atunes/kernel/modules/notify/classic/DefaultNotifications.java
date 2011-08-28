@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel.modules.notify.classic;
 
 import javax.swing.JDialog;
 
+import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.dialogs.OSDDialog;
 import net.sourceforge.atunes.kernel.modules.notify.CommonNotificationEngine;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -49,7 +50,7 @@ public class DefaultNotifications extends CommonNotificationEngine {
         if (osdDialogController == null) {
             JDialog.setDefaultLookAndFeelDecorated(false);
             osdDialog = new OSDDialog(ApplicationState.getInstance().getOsdWidth());
-            JDialog.setDefaultLookAndFeelDecorated(true);
+            JDialog.setDefaultLookAndFeelDecorated(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isDialogUndecorated());
             osdDialogController = new OSDDialogController(osdDialog);
         }
         return osdDialogController;

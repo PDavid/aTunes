@@ -244,7 +244,7 @@ final class NavigationController extends AbstractController implements AudioFile
         if (extendedToolTip == null) {
             JDialog.setDefaultLookAndFeelDecorated(false);
             extendedToolTip = new ExtendedToolTip();
-            JDialog.setDefaultLookAndFeelDecorated(true);
+            JDialog.setDefaultLookAndFeelDecorated(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isDialogUndecorated());
         }
         return extendedToolTip;
     }
