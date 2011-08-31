@@ -25,10 +25,13 @@ import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -162,57 +165,6 @@ public abstract class AbstractContextPanelContent {
      */
     protected List<Component> getOptions() {
         return null;
-    }
-
-    /**
-     * Creates a panel to be shown in each row of a panel table
-     * 
-     * @param image
-     * @param text
-     * @param backgroundColor
-     * @param foregroundColor
-     * @param imageMaxWidth
-     * @param imageMaxHeight
-     * @return
-     */
-    protected static JPanel getPanelForTableRenderer(ImageIcon image, String text, Color backgroundColor, Color foregroundColor, int imageMaxWidth, int imageMaxHeight) {
-        // This renderer is a little tricky because images have no the same size so we must add two labels with custom insets to
-        // get desired alignment of images and text. Other ways to achieve this like setPreferredSize doesn't work because when width of panel is low
-        // preferred size is ignored, but insets don't
-        JPanel panel = new JPanel(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-
-        JLabel imageLabel = new JLabel(image);
-        imageLabel.setOpaque(false);
-        imageLabel.setBorder(image != null ? new DropShadowBorder() : null);
-        JLabel textLabel = new JLabel(text);
-        textLabel.setOpaque(false);
-        textLabel.setVerticalAlignment(SwingConstants.TOP);
-
-        panel.setOpaque(false);
-        if (backgroundColor != null) {
-            textLabel.setBackground(backgroundColor);
-            panel.setBackground(backgroundColor);
-            imageLabel.setBackground(backgroundColor);
-        }
-        if (foregroundColor != null) {
-        	textLabel.setForeground(foregroundColor);
-        }
-
-        c.gridx = 0;
-        c.gridy = 0;
-        c.anchor = GridBagConstraints.WEST;
-        c.insets = new Insets(2, (imageMaxWidth + 20) / 2 - (image != null ? image.getIconWidth() : 0) / 2, 0, 0);
-        panel.add(imageLabel, c);
-        c.gridx = 1;
-        c.weightx = 1;
-        c.weighty = 1;
-        c.fill = GridBagConstraints.BOTH;
-        c.insets = new Insets(0, (imageMaxWidth + 20) / 2 - (image != null ? image.getIconWidth() : 0) / 2, 0, 0);
-        panel.add(textLabel, c);
-
-        GuiUtils.applyComponentOrientation(panel);
-        return panel;
     }
 
     /**
