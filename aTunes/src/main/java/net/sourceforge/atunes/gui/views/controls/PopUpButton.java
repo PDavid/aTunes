@@ -67,10 +67,8 @@ public class PopUpButton extends JButton {
     private Polygon topShape;
     
     /**
-     * Instantiates a new pop up button.
+     * Instantiates a new pop up button with an arrow
      * 
-     * @param text
-     *            the text
      * @param location
      *            the location
      */
@@ -92,6 +90,18 @@ public class PopUpButton extends JButton {
         topShape.addPoint(4, 4);
         topShape.addPoint(0, -2);        
     }
+    
+    /**
+     * Instantiates a new pop up button with a text
+     * @param location
+     * @param text
+     */
+    public PopUpButton(int location, String text) {
+        super(text);
+        this.location = location;
+        setButton();
+        GuiUtils.applyComponentOrientation(menu);
+    }
 
     @Override
     public Component add(Component item) {
@@ -107,16 +117,18 @@ public class PopUpButton extends JButton {
     protected void paintComponent(Graphics g) {
     	super.paintComponent(g);
 
-    	Graphics2D g2 = (Graphics2D) g;
-    	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);    	
-    	g2.setPaint(isEnabled() ? LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForSpecialControls() :
-    						      LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForDisabledSpecialControls());
-    	g2.translate(getWidth() / 2, getHeight() / 2);
-    	if (this.location == BOTTOM_LEFT || this.location == BOTTOM_RIGHT) {
-    		g2.rotate(Math.PI);
+    	if (topShape != null) {
+    		Graphics2D g2 = (Graphics2D) g;
+    		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);    	
+    		g2.setPaint(isEnabled() ? LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForSpecialControls() :
+    			LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForDisabledSpecialControls());
+    		g2.translate(getWidth() / 2, getHeight() / 2);
+    		if (this.location == BOTTOM_LEFT || this.location == BOTTOM_RIGHT) {
+    			g2.rotate(Math.PI);
+    		}
+    		g2.fill(topShape);
+    		g2.dispose();
     	}
-    	g2.fill(topShape);
-    	g2.dispose();
     }
 
     /**
@@ -206,4 +218,11 @@ public class PopUpButton extends JButton {
 	public void addSeparator() {
 		menu.addSeparator();
 	}	
+	
+	/**
+	 * In certain situations we need to hide menu programatically without clicking button again
+	 */
+	public void hideMenu() {
+		menu.setVisible(false);
+	}
 }

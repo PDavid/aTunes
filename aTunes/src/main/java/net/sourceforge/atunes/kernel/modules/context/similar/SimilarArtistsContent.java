@@ -21,21 +21,22 @@
 package net.sourceforge.atunes.kernel.modules.context.similar;
 
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.context.ArtistInfo;
 import net.sourceforge.atunes.kernel.modules.context.ContextImageJTable;
+import net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanel;
 import net.sourceforge.atunes.kernel.modules.context.SimilarArtistsInfo;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.DesktopUtils;
@@ -81,25 +82,14 @@ public class SimilarArtistsContent extends AbstractContextPanelContent {
         // Create components
         similarArtistsTable = new ContextImageJTable();
         similarArtistsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        similarArtistsTable.setDefaultRenderer(ArtistInfo.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(
-                new SimilarArtistTableCellRendererCode()));
+        
+        SimilarArtistTableCellRendererCode code = new SimilarArtistTableCellRendererCode(ArtistInfo.class, similarArtistsTable);
+        code.bind();
+        
         similarArtistsTable.setColumnSelectionAllowed(false);
         similarArtistsTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
         similarArtistsTable.getTableHeader().setReorderingAllowed(false);
-
-        similarArtistsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    int selectedArtist = similarArtistsTable.getSelectedRow();
-                    if (selectedArtist != -1) {
-                        ArtistInfo artist = ((SimilarArtistsTableModel) similarArtistsTable.getModel()).getArtist(selectedArtist);
-                        DesktopUtils.openURL(artist.getUrl());
-                    }
-                }
-            }
-        });
-
+        
         return similarArtistsTable;
     }
 
@@ -109,18 +99,44 @@ public class SimilarArtistsContent extends AbstractContextPanelContent {
      * @author fleax
      * 
      */
-    private static class SimilarArtistTableCellRendererCode extends AbstractTableCellRendererCode {
+    private static class SimilarArtistTableCellRendererCode extends ContextTableRowPanel {
 
-        @Override
+        public SimilarArtistTableCellRendererCode(Class<?> clazz, ContextImageJTable table) {
+			super(clazz, table);
+		}
+
+		@Override
         public JComponent getComponent(JComponent superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             return getPanelForTableRenderer(((ArtistInfo) value).getImage(), 
             							    StringUtils.getString("<html><br>", ((ArtistInfo) value).getName(), "<br>", ((ArtistInfo) value).getMatch(), "%<br>", ((ArtistInfo) value).isAvailable() ? I18nUtils.getString("AVAILABLE_IN_REPOSITORY") : "", "</html>"), 
             							    superComponent.getBackground(),
             							    superComponent.getForeground(),
             							    Constants.CONTEXT_IMAGE_WIDTH, 
-            							    Constants.CONTEXT_IMAGE_HEIGHT);
+            							    Constants.CONTEXT_IMAGE_HEIGHT,
+            							    hasFocus);
         }
 
-    }
+		@Override
+		public List<AbstractAction> getActions() {
+			List<AbstractAction> actions = new ArrayList<AbstractAction>();
+			actions.add(new AbstractAction(I18nUtils.getString("READ_MORE")) {
+				
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = -7322221144744041599L;
 
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+                    int selectedArtist = table.getSelectedRow();
+                    if (selectedArtist != -1) {
+                        ArtistInfo artist = ((SimilarArtistsTableModel) table.getModel()).getArtist(selectedArtist);
+                        DesktopUtils.openURL(artist.getUrl());
+                    }
+
+				}
+			});
+			return actions;
+		}
+    }    
 }

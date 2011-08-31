@@ -124,7 +124,7 @@ public class YoutubeResultTableModel implements TableModel {
 
     @Override
     public boolean isCellEditable(int arg0, int arg1) {
-        return false;
+        return true;
     }
 
     @Override
