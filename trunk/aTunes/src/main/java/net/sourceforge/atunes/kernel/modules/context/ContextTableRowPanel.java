@@ -28,6 +28,7 @@ import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.lang.reflect.ParameterizedType;
 import java.util.EventObject;
 import java.util.List;
 
@@ -39,6 +40,8 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.event.CellEditorListener;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.TableCellEditor;
 
@@ -50,22 +53,24 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jdesktop.swingx.border.DropShadowBorder;
 
-public abstract class ContextTableRowPanel extends AbstractTableCellRendererCode implements TableCellEditor {
+public abstract class ContextTableRowPanel<T> extends AbstractTableCellRendererCode implements TableCellEditor {
 	
 	private Class<?> clazz;
 	
-	protected JTable table;
+	protected ContextTable table;
 	
-	public ContextTableRowPanel(Class<?> clazz, ContextImageJTable table) {
+	@SuppressWarnings("unchecked")
+	public ContextTableRowPanel() {
 		super();
-		this.clazz = clazz;
-		this.table = table;
+		this.clazz = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 	}
 	
 	/**
 	 * Binds as renderer and editor to table
+	 * @param table
 	 */
-	public void bind() {
+	public void bind(ContextTable table) {
+		this.table = table;
         this.table.setDefaultRenderer(clazz, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(this));
         this.table.setDefaultEditor(clazz, this);
 	}
@@ -91,7 +96,6 @@ public abstract class ContextTableRowPanel extends AbstractTableCellRendererCode
 
 	@Override
 	public boolean isCellEditable(EventObject anEvent) {
-		System.out.println("sa");
 		return true;
 	}
 
@@ -163,7 +167,7 @@ public abstract class ContextTableRowPanel extends AbstractTableCellRendererCode
         c.insets = new Insets(0, (imageMaxWidth + 20) / 2 - (image != null ? image.getIconWidth() : 0) / 2, 0, 0);
         panel.add(textLabel, c);
         
-        List<AbstractAction> actions = getActions();
+        final List<ContextTableAction<T>> actions = getActions();
         if (hasFocus && actions != null && !actions.isEmpty()) {
         	final PopUpButton button = new PopUpButton(GuiUtils.getComponentOrientationAsSwingConstant() == SwingConstants.LEFT ? PopUpButton.TOP_LEFT : PopUpButton.TOP_RIGHT, I18nUtils.getString("OPTIONS"));
         	for (AbstractAction action : actions) {
@@ -186,6 +190,25 @@ public abstract class ContextTableRowPanel extends AbstractTableCellRendererCode
         			}
         		}
 			});
+        	
+        	button.addPopupMenuListener(new PopupMenuListener() {
+				
+				@Override
+				public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+					for (ContextTableAction<T> action : actions) {
+						int row = table.getSelectedRow();
+						action.setEnabled(row != -1 && action.isEnabledForObject(action.getSelectedObject(row)));
+					}
+				}
+				
+				@Override
+				public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+				}
+				
+				@Override
+				public void popupMenuCanceled(PopupMenuEvent e) {
+				}
+			});
         }
 
         GuiUtils.applyComponentOrientation(panel);
@@ -195,5 +218,5 @@ public abstract class ContextTableRowPanel extends AbstractTableCellRendererCode
     @Override
     public abstract JComponent getComponent(JComponent superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column);
     
-    public abstract List<AbstractAction> getActions();
+    public abstract List<ContextTableAction<T>> getActions();
 }

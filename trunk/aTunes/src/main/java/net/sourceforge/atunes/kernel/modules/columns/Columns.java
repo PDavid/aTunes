@@ -33,6 +33,8 @@ import net.sourceforge.atunes.misc.log.Logger;
 public final class Columns {
 
     private static List<Class<? extends AbstractColumn>> classes;
+    
+    private static List<Class<? extends AbstractColumn>> albumClasses;
 
     static {
         classes = new ArrayList<Class<? extends AbstractColumn>>();
@@ -57,6 +59,15 @@ public final class Columns {
         classes.add(FrequencyColumn.class);
         classes.add(TimesPlayedColumn.class);
         classes.add(DiscNumberColumn.class);
+        
+		albumClasses = new ArrayList<Class<? extends AbstractColumn>>();
+		albumClasses.add(TypeColumn.class);
+		albumClasses.add(AlbumColumn.class);
+		albumClasses.add(ArtistColumn.class);
+		albumClasses.add(AlbumArtistColumn.class);
+		albumClasses.add(GenreColumn.class);
+		albumClasses.add(YearColumn.class);
+		albumClasses.add(DiscNumberColumn.class);
     }
     
     private Columns() {
@@ -91,4 +102,31 @@ public final class Columns {
 
         return result;
     }
+    
+    /**
+         * Returns all columns by default.
+         * 
+         * @param playListExclusive
+         *            used to return only play list columns
+         * 
+         * @return the columns by default
+         */
+        public static List<AbstractColumn> getAlbumColumns() {
+            List<AbstractColumn> result = new ArrayList<AbstractColumn>();
+    
+            int order = 0;
+            for (Class<? extends AbstractColumn> columnClass : albumClasses) {
+                AbstractColumn column = null;
+                try {
+                    column = columnClass.newInstance();
+                    column.setOrder(order);
+                    order++;
+                    result.add(column);
+                } catch (Exception e) {
+                    Logger.error(e);
+                }
+            }
+    
+            return result;
+        }
 }

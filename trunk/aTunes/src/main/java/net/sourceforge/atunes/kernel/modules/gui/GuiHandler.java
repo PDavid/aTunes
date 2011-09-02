@@ -48,6 +48,7 @@ import net.sourceforge.atunes.gui.popup.FadingPopupFactory;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable.PlayState;
 import net.sourceforge.atunes.gui.views.dialogs.AboutDialog;
+import net.sourceforge.atunes.gui.views.dialogs.AddArtistDragDialog;
 import net.sourceforge.atunes.gui.views.dialogs.AddPodcastFeedDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ColumnSetSelectorDialog;
 import net.sourceforge.atunes.gui.views.dialogs.EqualizerDialog;
@@ -606,6 +607,12 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
         AddPodcastFeedDialog dialog = new AddPodcastFeedDialog(frame.getFrame());
         dialog.setVisible(true);
         return dialog.getPodcastFeed();
+    }
+    
+    public void showAddArtistDragDialog(Artist currentArtist){
+    	AddArtistDragDialog dialog = new AddArtistDragDialog(frame.getFrame(),currentArtist);
+    	dialog.setVisible(true);
+    	
     }
 
     /**

@@ -1100,4 +1100,16 @@ public class ApplicationState {
     public void setShowPlayerControlsOnTop(boolean onTop) {
     	this.cache.storePreference(Preferences.SHOW_PLAYER_CONTROLS_ON_TOP, onTop);
     }
+    
+    
+        
+    @SuppressWarnings("unchecked")
+    public Map<String, ColumnBean> getAlbumsColumns() {
+    	Map<String, ColumnBean> map = (Map<String, ColumnBean>) this.cache.retrievePreference(Preferences.ALBUM_COLUMNS, null);
+    	return map != null ? Collections.unmodifiableMap(map) : null;
+    }
+
+    public void setAlbumColumns(Map<String, ColumnBean> columnsConfiguration) {
+    	this.cache.storePreference(Preferences.ALBUM_COLUMNS, columnsConfiguration);
+    }
 }

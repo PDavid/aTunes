@@ -36,6 +36,7 @@ import javax.swing.JTable;
 import javax.swing.TransferHandler;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import net.sourceforge.atunes.api.RepositoryApi;
 import net.sourceforge.atunes.gui.model.TransferableList;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
@@ -45,6 +46,7 @@ import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryLoader;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.LocalAudioObject;
 
@@ -180,6 +182,13 @@ public class PlayListTableTransferHandler extends TransferHandler {
             if (listOfObjectsDragged.get(0) instanceof PlayListDragableRow) {
                 return moveRowsInPlayList((List<PlayListDragableRow>) listOfObjectsDragged, ((JTable.DropLocation) support.getDropLocation()).getRow());
             }
+            
+            // DRAG AND DROP OF AN ARTIST -> add songs from this artist			
+            if (listOfObjectsDragged.get(0) instanceof DragableArtist) {
+            	
+            	return getArtistSongs((List<DragableArtist>) listOfObjectsDragged);
+            }
+            
 
             for (int i = 0; i < listOfObjectsDragged.size(); i++) {
                 Object objectDragged = listOfObjectsDragged.get(i);
@@ -215,7 +224,18 @@ public class PlayListTableTransferHandler extends TransferHandler {
         return false;
     }
 
-    /**
+    private static boolean getArtistSongs(List<DragableArtist> listOfObjectsDragged) {
+    	
+    	DragableArtist dragabreArtist = listOfObjectsDragged.get(0);
+    	Artist currentArtist = RepositoryApi.getArtist(dragabreArtist.getArtistInfo().getName());
+    	GuiHandler.getInstance().showAddArtistDragDialog(currentArtist);
+    	
+    	return true;
+    	
+	}
+
+	
+	/**
      * Move rows in play list
      * 
      * @param rowsDragged

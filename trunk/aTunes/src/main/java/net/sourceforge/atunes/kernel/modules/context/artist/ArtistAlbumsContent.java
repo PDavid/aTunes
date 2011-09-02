@@ -21,26 +21,15 @@
 package net.sourceforge.atunes.kernel.modules.context.artist;
 
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.AbstractAction;
-import javax.swing.JComponent;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
-
-import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
-import net.sourceforge.atunes.kernel.modules.context.ContextImageJTable;
-import net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanel;
+import net.sourceforge.atunes.kernel.modules.context.ContextTable;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * Albums of an artist
@@ -50,48 +39,8 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class ArtistAlbumsContent extends AbstractContextPanelContent {
 
-    private static class AlbumsTableCellRendererCode extends ContextTableRowPanel {
-    	
-        public AlbumsTableCellRendererCode(Class<?> clazz, ContextImageJTable table) {
-			super(clazz, table);
-		}
-
-		@Override
-        public JComponent getComponent(JComponent superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            return getPanelForTableRenderer(((AlbumInfo) value).getCover(), 
-            								StringUtils.getString("<html>", ((AlbumInfo) value).getTitle(), "</html>"), 
-            								superComponent.getBackground(),
-            								superComponent.getForeground(), 
-            								Constants.CONTEXT_IMAGE_WIDTH, 
-            								Constants.CONTEXT_IMAGE_HEIGHT,
-            								hasFocus);
-        }
-		
-		@Override
-		public List<AbstractAction> getActions() {
-			List<AbstractAction> actions = new ArrayList<AbstractAction>();
-			actions.add(new AbstractAction(I18nUtils.getString("READ_MORE")) {
-				
-				/**
-				 * 
-				 */
-				private static final long serialVersionUID = -7322221144744041599L;
-
-				@Override
-				public void actionPerformed(ActionEvent arg0) {
-                    int selectedAlbum = table.getSelectedRow();
-                    if (selectedAlbum != -1) {
-                        AlbumInfo album = ((ContextAlbumsTableModel) table.getModel()).getAlbum(selectedAlbum);
-                        DesktopUtils.openURL(album.getUrl());
-                    }
-				}
-			});
-			return actions;
-		}
-    }
-
     private static final long serialVersionUID = -5538266144953409867L;
-    private ContextImageJTable albumsTable;
+    private ContextTable albumsTable;
 
     public ArtistAlbumsContent() {
         super(new ArtistInfoDataSource());
@@ -127,16 +76,8 @@ public class ArtistAlbumsContent extends AbstractContextPanelContent {
     @Override
     protected Component getComponent() {
         // Create components
-        albumsTable = new ContextImageJTable();
-        albumsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-        AlbumsTableCellRendererCode code = new AlbumsTableCellRendererCode(AlbumInfo.class, albumsTable);
-        code.bind();
-
-        albumsTable.setColumnSelectionAllowed(false);
-        albumsTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-        albumsTable.getTableHeader().setReorderingAllowed(false);
-
+        albumsTable = new ContextTable();
+        albumsTable.addContextRowPanel(new AlbumsTableCellRendererCode());
         return albumsTable;
     }
 
