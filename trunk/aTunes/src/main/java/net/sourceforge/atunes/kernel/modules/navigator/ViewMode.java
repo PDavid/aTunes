@@ -22,21 +22,20 @@ package net.sourceforge.atunes.kernel.modules.navigator;
 
 public enum ViewMode {
 
-    ARTIST, ALBUM, GENRE, FOLDER, YEAR;
+    ARTIST(new ArtistTreeGenerator()), 
+    ALBUM(new AlbumTreeGenerator()), 
+    GENRE(new GenreTreeGenerator()), 
+    FOLDER(new FolderTreeGenerator()), 
+    YEAR(new YearTreeGenerator()), 
+    ARTIST_ALBUM(new ArtistTreeGenerator());
+    
+    private TreeGenerator treeGenerator;
+    
+    private ViewMode(TreeGenerator treeGenerator) {
+    	this.treeGenerator = treeGenerator;
+    }
     
     public TreeGenerator getTreeGenerator() {
-        TreeGenerator treeGenerator = null;
-        if (this == ViewMode.YEAR) {
-        	treeGenerator = new YearTreeGenerator(); 
-        } else if (this == ViewMode.ARTIST) {
-        	treeGenerator = new ArtistTreeGenerator();
-        } else if (this == ViewMode.ALBUM) {
-        	treeGenerator = new AlbumTreeGenerator();
-        } else if (this == ViewMode.GENRE) {
-            treeGenerator = new GenreTreeGenerator();
-        } else { // Folder view
-        	treeGenerator = new FolderTreeGenerator();
-        }
-        return treeGenerator;
+    	return this.treeGenerator;
     }
 }

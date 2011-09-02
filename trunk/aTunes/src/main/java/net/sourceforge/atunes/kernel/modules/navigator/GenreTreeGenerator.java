@@ -22,11 +22,14 @@ package net.sourceforge.atunes.kernel.modules.navigator;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
@@ -127,6 +130,84 @@ public class GenreTreeGenerator implements TreeGenerator {
 
         // Once tree has been refreshed, select previously selected nodes
         AbstractNavigationView.selectNodes(view.getTree(), nodesToSelect);
+    }
+    
+    @Override
+    public void selectAudioObject(JTree tree, AudioObject audioObject) {
+
+    	DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) tree.getModel().getRoot();
+    	TreePath treePath = null;
+
+    	@SuppressWarnings("unchecked")
+    	Enumeration<DefaultMutableTreeNode> genres = rootNode.children();
+
+    	while (genres.hasMoreElements()){
+    		DefaultMutableTreeNode genreNode = genres.nextElement();
+    		Genre genre = (Genre) genreNode.getUserObject();
+    		if (genre.getName().equals(audioObject.getGenre())){
+    			@SuppressWarnings("unchecked")
+    			Enumeration<DefaultMutableTreeNode> artists = genreNode.children();
+
+    			while (artists.hasMoreElements()){
+    				DefaultMutableTreeNode artistNode = artists.nextElement();
+    				Artist artist = (Artist) artistNode.getUserObject();
+    				if (artist.getName().equals(audioObject.getArtist())){
+    					@SuppressWarnings("unchecked")
+    					Enumeration<DefaultMutableTreeNode> albums = artistNode.children();
+    					while (albums.hasMoreElements()){
+    						DefaultMutableTreeNode albumNode = albums.nextElement();
+    						Album album = (Album) albumNode.getUserObject();
+    						if (album.getName().equals(audioObject.getAlbum())){
+    							treePath = new TreePath(albumNode.getPath());
+    							break;
+    						}
+    					}
+    					break;
+    				}
+    			}
+    			break;
+    		}
+    	}
+
+    	tree.setSelectionPath(treePath);
+    	tree.scrollPathToVisible(treePath);
+    }
+
+    @Override
+    public void selectArtist(JTree tree, String artistName) {
+    	DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) tree.getModel().getRoot();
+    	List<TreePath> treePathList = new ArrayList<TreePath>();
+    	TreePath[] treePaths = null;
+
+    	@SuppressWarnings("unchecked")
+    	Enumeration<DefaultMutableTreeNode> genres = rootNode.children();
+
+    	while (genres.hasMoreElements()){
+
+    		DefaultMutableTreeNode genreNode = genres.nextElement();
+
+    		@SuppressWarnings("unchecked")
+    		Enumeration<DefaultMutableTreeNode> artists = genreNode.children();
+
+    		while (artists.hasMoreElements()){
+    			DefaultMutableTreeNode artistNode = artists.nextElement();
+    			Artist artist = (Artist) artistNode.getUserObject();
+    			if (artist.getName().equals(artistName)){
+    				TreePath treePath = new TreePath(artistNode.getPath()); 
+    				treePathList.add(treePath);
+    				tree.expandPath(treePath);
+    				break;
+    			}
+    		}
+    	}
+
+    	treePaths = new TreePath[treePathList.size()];
+    	treePaths = (TreePath[]) treePathList.toArray(treePaths);
+
+    	tree.setSelectionPaths(treePaths);
+    	tree.scrollPathToVisible(treePaths[0]);
+
+
     }
 
 

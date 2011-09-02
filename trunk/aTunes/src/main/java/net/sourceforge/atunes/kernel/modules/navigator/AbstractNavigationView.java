@@ -170,6 +170,7 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
      */
     protected abstract Map<String, ?> getViewData(ViewMode viewMode);
 
+    
     /**
      * Refreshes view
      * 
@@ -553,6 +554,7 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
         }
     }
 
+    
     /**
      * Selects a list of nodes of a tree
      * 
@@ -662,4 +664,24 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
     public String toString() {
     	return getTitle();
     }
+
+	/**
+	 * Requests view to select given audio object
+	 * @param currentViewMode
+	 * @param audioObject
+	 */
+	public void selectAudioObject(ViewMode currentViewMode, AudioObject audioObject) {
+		
+	}
+
+	/**
+	 * Requests view to select given artist
+	 * @param currentViewMode
+	 * @param artist
+	 */
+	public void selectArtist(ViewMode currentViewMode, String artist) {
+		
+	}
+		
+	
 }

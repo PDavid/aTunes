@@ -22,11 +22,14 @@ package net.sourceforge.atunes.kernel.modules.navigator;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.Album;
@@ -102,5 +105,52 @@ public class AlbumTreeGenerator implements TreeGenerator {
         AbstractNavigationView.selectNodes(view.getTree(), nodesToSelect);
     }
 
+    @Override
+    public void selectAudioObject(JTree tree, AudioObject audioObject) {
 
+    	DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) tree.getModel().getRoot();
+    	TreePath treePath = null;
+
+    	@SuppressWarnings("unchecked")
+    	Enumeration<DefaultMutableTreeNode> albums = rootNode.children();
+
+    	while (albums.hasMoreElements()){
+    		DefaultMutableTreeNode albumNode = albums.nextElement();
+    		Album album = (Album) albumNode.getUserObject();
+    		if (album.getName().equals(audioObject.getAlbum())){
+    			treePath = new TreePath(albumNode.getPath());
+    			break;
+    		}
+    	}
+
+    	tree.setSelectionPath(treePath);
+    	tree.scrollPathToVisible(treePath);
+    }
+
+    @Override
+    public void selectArtist(JTree tree, String artist) {
+    	DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) tree.getModel().getRoot();
+    	List<TreePath> treePathList = new ArrayList<TreePath>();
+    	TreePath[] treePaths = null;
+
+    	@SuppressWarnings("unchecked")
+    	Enumeration<DefaultMutableTreeNode> albums = rootNode.children();
+
+    	while (albums.hasMoreElements()){
+    		DefaultMutableTreeNode albumNode = albums.nextElement();
+    		Album album = (Album) albumNode.getUserObject();
+    		if (album.getArtist().getName().equals(artist)){
+    			TreePath treePath = new TreePath(albumNode.getPath()); 
+    			treePathList.add(treePath);
+    			tree.expandPath(treePath);
+    			break;
+    		}
+    	}
+
+    	treePaths = new TreePath[treePathList.size()];
+    	treePaths = (TreePath[]) treePathList.toArray(treePaths);
+
+    	tree.setSelectionPaths(treePaths);
+    	tree.scrollPathToVisible(treePaths[0]);
+    }
 }

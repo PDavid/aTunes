@@ -40,6 +40,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JTable;
 import javax.swing.JTree;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.Timer;
 import javax.swing.event.TableModelEvent;
@@ -342,7 +343,12 @@ final class NavigationController extends AbstractController implements AudioFile
 
     @Override
     public void notifyReload() {
-        NavigationHandler.getInstance().refreshCurrentView();
+        SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				NavigationHandler.getInstance().refreshCurrentView();
+			}
+		});
     }
 
     /**
