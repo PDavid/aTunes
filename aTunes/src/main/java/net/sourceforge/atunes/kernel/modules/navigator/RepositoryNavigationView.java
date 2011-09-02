@@ -183,6 +183,16 @@ public class RepositoryNavigationView extends AbstractNavigationView {
         }
     }
 
+    @Override
+    public void selectAudioObject(ViewMode viewMode, AudioObject audioObject) {
+    	viewMode.getTreeGenerator().selectAudioObject(getTree(), audioObject);
+    }
+    
+    @Override
+	public void selectArtist(ViewMode viewMode, String artist) {
+    	viewMode.getTreeGenerator().selectArtist(getTree(), artist);
+	}
+    
     @SuppressWarnings("unchecked")
     @Override
     protected void refreshTree(ViewMode viewMode, String treeFilter) {
@@ -267,4 +277,6 @@ public class RepositoryNavigationView extends AbstractNavigationView {
         int songs = RepositoryHandler.getInstance().getAudioFilesList().size();
         return StringUtils.getString(I18nUtils.getString("REPOSITORY"), " (", songs, " ", (songs > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG")), ")");
     }
+
+	
 }

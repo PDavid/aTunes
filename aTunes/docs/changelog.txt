@@ -42,7 +42,8 @@ aTunes 2.1.0
 - New window type: navigator (tree and table) at top, playlist at bottom
 - Toggle Favorites without accessing favorites panel [ patch by deathgorepain ]
 - Action to select an album of artist to add to play list [ patch by Laurent Cathala ]
-- Drag and drop similar artists available to play list to add an album [ path by Laurent Cathala ]
+- Drag and drop similar artists available to play list to add an album [ patch by Laurent Cathala ]
+- Drag artists or play list items to tree to locate in navigator [ patch by Laurent Cathala ]
 
 
 - FIX: Dialogs opened from preferences dialog use wrong parent [ patch by Laurent Cathala ]

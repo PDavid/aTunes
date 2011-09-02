@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.modules.navigator;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
@@ -55,4 +56,13 @@ public interface TreeGenerator {
 						  DefaultTreeModel treeModel, 
 						  List<TreeObject<? extends AudioObject>> objectsSelected, 
 						  List<TreeObject<? extends AudioObject>> objectsExpanded);
+	
+	public void selectAudioObject(JTree tree, AudioObject audioObject);
+
+	/**
+	 * Request generator to select given artist
+	 * @param tree
+	 * @param artist
+	 */
+	public void selectArtist(JTree tree, String artist);
 }

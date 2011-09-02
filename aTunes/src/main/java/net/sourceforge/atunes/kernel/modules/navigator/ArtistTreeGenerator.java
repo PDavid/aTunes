@@ -22,11 +22,14 @@ package net.sourceforge.atunes.kernel.modules.navigator;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.Album;
@@ -117,5 +120,56 @@ public class ArtistTreeGenerator implements TreeGenerator {
         AbstractNavigationView.selectNodes(view.getTree(), nodesToSelect);
     }
 
+	@Override
+	public void selectAudioObject(JTree tree, AudioObject audioObject) {
+
+		DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) tree.getModel().getRoot();
+		TreePath treePath = null;
+
+		@SuppressWarnings("unchecked")
+		Enumeration<DefaultMutableTreeNode> artists = rootNode.children();
+		while (artists.hasMoreElements()){
+			DefaultMutableTreeNode artistNode = artists.nextElement();
+			Artist artist = (Artist) artistNode.getUserObject();
+			if (artist.getName().equals(audioObject.getArtist())){
+				@SuppressWarnings("unchecked")
+				Enumeration<DefaultMutableTreeNode> albums = artistNode.children();
+				while (albums.hasMoreElements()){
+					DefaultMutableTreeNode albumNode = albums.nextElement();
+					Album album = (Album) albumNode.getUserObject();
+					if (album.getName().equals(audioObject.getAlbum())){
+						treePath = new TreePath(albumNode.getPath());
+						break;
+					}
+				}
+				break;
+			}
+		}
+
+		tree.setSelectionPath(treePath);
+		tree.scrollPathToVisible(treePath);
+	}
+
+    @Override
+	public void selectArtist(JTree tree, String artistName) {
+		DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) tree.getModel().getRoot();
+		TreePath treePath = null;
+
+		@SuppressWarnings("unchecked")
+		Enumeration<DefaultMutableTreeNode> artists = rootNode.children();
+		while (artists.hasMoreElements()){
+			DefaultMutableTreeNode artistNode = artists.nextElement();
+			Artist artist = (Artist) artistNode.getUserObject();
+			if (artist.getName().equals(artistName)){
+				treePath = new TreePath(artistNode.getPath());
+				break;
+			}
+		}
+
+		tree.setSelectionPath(treePath);
+		tree.scrollPathToVisible(treePath);
+		tree.expandPath(treePath);
+
+	}
 
 }

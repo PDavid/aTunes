@@ -35,6 +35,7 @@ import net.sourceforge.atunes.gui.views.dialogs.SearchDialog;
 import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
 import net.sourceforge.atunes.kernel.AbstractHandler;
+import net.sourceforge.atunes.kernel.modules.draganddrop.TreeNavigationTransferHandler;
 import net.sourceforge.atunes.kernel.modules.filter.AbstractFilter;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
@@ -133,7 +134,11 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
         applyNavigationTableVisibility(ApplicationState.getInstance().isShowNavigationTree() && ApplicationState.getInstance().isShowNavigationTable());
 
         // Navigation Panel View
-        getNavigationController().setNavigationView(ApplicationState.getInstance().getNavigationView(), false);        
+        getNavigationController().setNavigationView(ApplicationState.getInstance().getNavigationView(), false); 
+        
+        
+        TreeNavigationTransferHandler treeNavigationTransferHandler = new TreeNavigationTransferHandler();
+        getNavigationController().getNavigationTreePanel().setTransferHandler(treeNavigationTransferHandler);
     }
 
     public List<AbstractNavigationView> getNavigationViews() {
@@ -174,7 +179,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
     public AbstractNavigationView getView(Class<? extends AbstractNavigationView> navigationViewClass) {
         return getNavigationViewsMap().get(navigationViewClass);
     }
-
+    
     /**
      * Refreshes current view to update data shown
      */
@@ -372,7 +377,20 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
         updateTableContent(NavigationHandler.getInstance().getCurrentView().getTree());
     }
 
-
-
+	/**
+	 * Called to select given artist in navigator
+	 * @param artist
+	 */
+	public void selectArtist(String artist) {
+		getCurrentView().selectArtist(getCurrentView().getCurrentViewMode(), artist);		
+	}
+	
+    /**
+     * Called to select given audio object in navigator
+     * @param audioObject
+     */
+    public void selectAudioObject(AudioObject audioObject){
+    	getCurrentView().selectAudioObject(getCurrentView().getCurrentViewMode(), audioObject);
+    }
 
 }
