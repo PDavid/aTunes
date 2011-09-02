@@ -187,6 +187,14 @@ public class PopUpButton extends JButton {
 			}
 		});
     }
+    
+    /**
+     * Adds a new popup menu listener
+     * @param listener
+     */
+    public void addPopupMenuListener(PopupMenuListener listener) {
+    	menu.addPopupMenuListener(listener);
+    }
 
     /**
      * Sets the menu location.
@@ -220,7 +228,7 @@ public class PopUpButton extends JButton {
 	}	
 	
 	/**
-	 * In certain situations we need to hide menu programatically without clicking button again
+	 * In certain situations we need to hide menu programmatically without clicking button again
 	 */
 	public void hideMenu() {
 		menu.setVisible(false);
