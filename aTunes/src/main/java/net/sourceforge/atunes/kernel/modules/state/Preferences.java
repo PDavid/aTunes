@@ -21,7 +21,8 @@
 package net.sourceforge.atunes.kernel.modules.state;
 
 public enum Preferences {
-
+	
+	ALBUM_COLUMNS,
 	ALLOW_REPEATED_SONGS_IN_DEVICE, 
 	APPLY_CHANGES_TO_SOURCE_FILES_BEFORE_IMPORT, 
 	AUTO_LOVE_FAVORITE_SONG, 

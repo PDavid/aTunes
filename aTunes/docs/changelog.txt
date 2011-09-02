@@ -5,7 +5,7 @@ aTunes 2.1.0
 - Allow creating patterns for tag edition by double-clicking on available patterns
 - UI: Removed line border from titled borders
 - Use absolute folder name when setting tags from patterns
-- Restore selection after track deletion in playlist [3007538] (patch by cy6ergnOm)
+- Restore selection after track deletion in playlist [3007538] [ patch by cy6ergnOm ]
 - Song properties dialog improved [3002167] (patch by cy6ergnOm)
 - Preferences reworked and saved immediately [ feature request 2977778 ]
 - Visual improvements
@@ -41,6 +41,9 @@ aTunes 2.1.0
 - New content in context panel shows artist top tracks
 - New window type: navigator (tree and table) at top, playlist at bottom
 - Toggle Favorites without accessing favorites panel [ patch by deathgorepain ]
+- Action to select an album of artist to add to play list [ patch by Laurent Cathala ]
+- Drag and drop similar artists available to play list to add an album [ path by Laurent Cathala ]
+
 
 - FIX: Dialogs opened from preferences dialog use wrong parent [ patch by Laurent Cathala ]
 - FIX: Exception during renaming of file name

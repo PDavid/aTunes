@@ -31,6 +31,7 @@ import javax.swing.JSeparator;
 
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.kernel.actions.Actions;
+import net.sourceforge.atunes.kernel.actions.AddAlbumWithSelectedArtistsAction;
 import net.sourceforge.atunes.kernel.actions.AddAlbumsMostPlayedAction;
 import net.sourceforge.atunes.kernel.actions.AddArtistsMostPlayedAction;
 import net.sourceforge.atunes.kernel.actions.AddRandomSongsAction;
@@ -124,6 +125,7 @@ public final class PlayListMenu {
         objects.add(new JSeparator());
         objects.add(Actions.getMenuItemForAction(CreatePlayListWithSelectedArtistsAction.class, table));
         objects.add(Actions.getMenuItemForAction(CreatePlayListWithSelectedAlbumsAction.class, table));
+        objects.add(Actions.getMenuItemForAction(AddAlbumWithSelectedArtistsAction.class,table));
         return objects;
     }
     

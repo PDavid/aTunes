@@ -23,37 +23,22 @@ package net.sourceforge.atunes.kernel.modules.context.youtube;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.AbstractAction;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
 
-import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
-import net.sourceforge.atunes.kernel.modules.context.ContextImageJTable;
-import net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanel;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.kernel.modules.context.ContextTable;
 import net.sourceforge.atunes.kernel.modules.internetsearch.SearchFactory;
-import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeResultEntry;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeService;
-import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeVideoDownloader;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.DesktopUtils;
-import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.StringUtils;
-
-import org.jfree.ui.ExtensionFileFilter;
 
 /**
  * Content to show videos from Youtube
@@ -65,7 +50,7 @@ public class YoutubeContent extends AbstractContextPanelContent {
 
     private static final long serialVersionUID = 5041098100868186051L;
 
-    private ContextImageJTable youtubeResultTable;
+    private ContextTable youtubeResultTable;
     
     private JMenuItem moreResults;
     
@@ -124,15 +109,8 @@ public class YoutubeContent extends AbstractContextPanelContent {
     @Override
     protected Component getComponent() {
         // Create components
-        youtubeResultTable = new ContextImageJTable();
-        youtubeResultTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        youtubeResultTable.getTableHeader().setReorderingAllowed(false);
-        
-        YoutubeResultsTableCellRendererCode code = new YoutubeResultsTableCellRendererCode(YoutubeResultEntry.class, youtubeResultTable);
-        code.bind();
-        
-        youtubeResultTable.setColumnSelectionAllowed(false);
-
+        youtubeResultTable = new ContextTable();
+        youtubeResultTable.addContextRowPanel(new YoutubeResultsTableCellRendererCode());
         return youtubeResultTable;
     }
 
@@ -165,82 +143,4 @@ public class YoutubeContent extends AbstractContextPanelContent {
                 ContextHandler.getInstance().getCurrentAudioObject()));
     }
 
-	private static class YoutubeResultsTableCellRendererCode extends ContextTableRowPanel {
-		
-        public YoutubeResultsTableCellRendererCode(Class<?> clazz, ContextImageJTable table) {
-			super(clazz, table);
-		}
-
-		@Override
-        public JComponent getComponent(JComponent superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            return getPanelForTableRenderer(((YoutubeResultEntry) value).getImage(), 
-            								StringUtils.getString("<html>", ((YoutubeResultEntry) value).getName(), "<br>(", ((YoutubeResultEntry) value).getDuration(), ")</html>"), 
-            								superComponent.getBackground(), 
-            								superComponent.getForeground(), 
-            								Constants.CONTEXT_IMAGE_WIDTH, 
-            								Constants.CONTEXT_IMAGE_HEIGHT, 
-            								hasFocus);
-        }
-		
-		@Override
-		public List<AbstractAction> getActions() {
-			List<AbstractAction> actions = new ArrayList<AbstractAction>();
-			actions.add(new AbstractAction(I18nUtils.getString("PLAY_VIDEO_AT_YOUTUBE")) {
-				
-				private static final long serialVersionUID = -7322221144744041599L;
-
-				@Override
-				public void actionPerformed(ActionEvent arg0) {
-			        int selectedVideo = table.getSelectedRow();
-			        if (selectedVideo != -1) {
-			            // get entry
-			            YoutubeResultEntry entry = ((YoutubeResultTableModel) table.getModel()).getEntry(selectedVideo);
-			            if (entry.getUrl() != null) {
-			                //open youtube url
-			                DesktopUtils.openURL(entry.getUrl());
-			                // When playing a video in web browser automatically pause current song
-			                if (PlayerHandler.getInstance().isEnginePlaying()) {
-			                    PlayerHandler.getInstance().playCurrentAudioObject(true);
-			                }
-			            }
-			        }
-
-				}
-			});
-			
-			actions.add(new AbstractAction(I18nUtils.getString("DOWNLOAD_VIDEO")) {
-				
-				/**
-				 * 
-				 */
-				private static final long serialVersionUID = 7103883762831086189L;
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-			        int selectedVideo = table.getSelectedRow();
-			        if (selectedVideo != -1) {
-			            // get entry
-			            YoutubeResultEntry entry = ((YoutubeResultTableModel) table.getModel()).getEntry(selectedVideo);
-
-			            // Open save dialog to select file
-			            JFileChooser dialog = new JFileChooser();
-			            dialog.setDialogType(JFileChooser.SAVE_DIALOG);
-			            dialog.setDialogTitle(I18nUtils.getString("SAVE_YOUTUBE_VIDEO"));
-			            dialog.setFileFilter(new ExtensionFileFilter("MP4", "MP4"));
-			            // Set default file name
-			            // for some reason dialog fails with files with [ or ] chars
-			            File defaultFileName = new File(FileNameUtils.getValidFileName(entry.getName().replace("\\", "\\\\").replace("$", "\\$").replace('[', ' ').replace(']', ' ')));
-			            dialog.setSelectedFile(defaultFileName);
-			            int returnValue = dialog.showSaveDialog(GuiHandler.getInstance().getFrame().getFrame());
-			            File selectedFile = dialog.getSelectedFile();
-			            if (selectedFile != null && JFileChooser.APPROVE_OPTION == returnValue) {
-			                final YoutubeVideoDownloader downloader = new YoutubeVideoDownloader(entry, selectedFile);
-			                downloader.execute();
-			            }
-			        }
-				}
-			});
-			return actions;
-		}
-    }
 }

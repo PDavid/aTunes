@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.context;
 
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
@@ -33,12 +34,16 @@ import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
  * >https://substance.dev.java.net/servlets/ProjectForumMessageView?messageID=
  * 22522&forumID=1484</a>
  */
-public final class ContextImageJTable extends JTable {
+public class ContextTable extends JTable {
 
     private static final long serialVersionUID = 339974237840854168L;
 
-    public ContextImageJTable() {
+    public ContextTable() {
     	super();
+    	setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        setColumnSelectionAllowed(false);
+        setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+        getTableHeader().setReorderingAllowed(false);
     	LookAndFeelSelector.getInstance().getCurrentLookAndFeel().decorateTable(this);
     }
     
@@ -46,5 +51,13 @@ public final class ContextImageJTable extends JTable {
     public void setRowHeight(int heigth) {
         super.setRowHeight(Constants.CONTEXT_IMAGE_HEIGHT + 5);
     }
+
+	/**
+	 * Adds row panel used to render and edit cells
+	 * @param rowPanel
+	 */
+	public void addContextRowPanel(ContextTableRowPanel<?> rowPanel) {
+		rowPanel.bind(this);
+	}
 
 }
