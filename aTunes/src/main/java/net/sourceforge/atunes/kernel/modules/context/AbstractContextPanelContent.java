@@ -20,27 +20,15 @@
 
 package net.sourceforge.atunes.kernel.modules.context;
 
-import java.awt.Color;
 import java.awt.Component;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.AbstractAction;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.utils.GuiUtils;
 
 import org.commonjukebox.plugins.model.PluginApi;
-import org.jdesktop.swingx.border.DropShadowBorder;
 
 /**
  * This class represents a little graphic component used in a context panel to
