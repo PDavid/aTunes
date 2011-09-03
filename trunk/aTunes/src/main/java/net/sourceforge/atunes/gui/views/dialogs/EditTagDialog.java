@@ -97,7 +97,7 @@ public final class EditTagDialog extends AbstractCustomDialog {
      * @param arePrevNextButtonsShown
      */
     public EditTagDialog(JFrame owner, boolean arePrevNextButtonsShown) {
-        super(owner, 500, 600, true, true);
+        super(owner, 500, 600, true, CloseAction.DISPOSE);
         setTitle(I18nUtils.getString("EDIT_TAG"));
         setResizable(true);
 

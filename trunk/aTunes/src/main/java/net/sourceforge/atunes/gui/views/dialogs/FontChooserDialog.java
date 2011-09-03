@@ -155,7 +155,7 @@ public final class FontChooserDialog extends AbstractCustomDialog {
     private FontSettings fontSettings = new FontSettings();
 
     public FontChooserDialog(Window owner, int width, int height, Font font, boolean useFontSmoothing, boolean useFontSmoothingSettingsFromOs, Locale locale) {
-        super(owner, width, height, true, true);
+        super(owner, width, height, true, CloseAction.DISPOSE);
         this.locale = locale;
         this.fontSettings.setFont(new FontBean(font));
         this.fontSettings.setUseFontSmoothing(useFontSmoothing);

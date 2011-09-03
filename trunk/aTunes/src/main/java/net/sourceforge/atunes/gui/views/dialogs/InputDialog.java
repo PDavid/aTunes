@@ -61,7 +61,7 @@ public final class InputDialog extends AbstractCustomDialog {
      *            the image
      */
     public InputDialog(Window owner, String title, Image image) {
-        super(owner, 400, 130, true, true);
+        super(owner, 400, 130, true, CloseAction.DISPOSE);
         setResizable(false);
         if (image != null) {
             setIconImage(image);

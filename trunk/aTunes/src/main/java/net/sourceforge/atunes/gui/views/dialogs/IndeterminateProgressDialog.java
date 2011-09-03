@@ -61,7 +61,7 @@ public final class IndeterminateProgressDialog extends AbstractCustomDialog {
      *            the parent
      */
     public IndeterminateProgressDialog(Window parent) {
-        super(parent, 400, 130, true, false);
+        super(parent, 400, 130, true, CloseAction.HIDE);
         add(getContent());
         setResizable(false);
     }

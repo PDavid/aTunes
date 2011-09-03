@@ -103,7 +103,7 @@ public final class RepositoryProgressDialog extends AbstractCustomDialog {
      *            the parent
      */
     public RepositoryProgressDialog(JFrame parent) {
-        super(parent, 500, 250, false, false);
+        super(parent, 500, 250, false, CloseAction.NOTHING);
         add(getContent());
         backgroundButton.setVisible(false);
         cancelButton.setVisible(false);

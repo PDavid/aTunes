@@ -60,7 +60,7 @@ public final class EditTitlesDialog extends AbstractCustomDialog {
      *            the owner
      */
     public EditTitlesDialog(JFrame owner) {
-        super(owner, 500, 400, true, true);
+        super(owner, 500, 400, true, CloseAction.DISPOSE);
         add(getContent());
     }
 

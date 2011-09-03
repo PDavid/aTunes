@@ -122,7 +122,7 @@ public final class CustomSearchDialog extends AbstractCustomDialog {
      *            the owner
      */
     public CustomSearchDialog(JFrame owner) {
-        super(owner, 600, 500, true, true);
+        super(owner, 600, 500, true, CloseAction.DISPOSE);
         setResizable(false);
         setTitle(I18nUtils.getString("SEARCH"));
         add(getContent());

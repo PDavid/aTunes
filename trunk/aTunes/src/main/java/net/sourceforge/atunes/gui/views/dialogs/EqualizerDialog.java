@@ -64,7 +64,7 @@ public final class EqualizerDialog extends AbstractCustomDialog {
      */
     public EqualizerDialog(JFrame owner) {
         // Width required by german translation
-        super(owner, 510, 300, true, false);
+        super(owner, 510, 300, true, CloseAction.HIDE);
         setTitle(StringUtils.getString(I18nUtils.getString("EQUALIZER"), " - ", Constants.APP_NAME, " ", Constants.VERSION.toShortString()));
         add(getContent());
         setResizable(false);

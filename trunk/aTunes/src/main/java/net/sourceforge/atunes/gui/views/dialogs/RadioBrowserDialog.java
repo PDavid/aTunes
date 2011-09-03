@@ -68,7 +68,7 @@ public final class RadioBrowserDialog extends AbstractCustomDialog {
      * Instantiates a new radio browser dialog.
      */
     public RadioBrowserDialog(Window owner) {
-        super(owner, GuiUtils.getComponentWidthForResolution(0.5f), GuiUtils.getComponentHeightForResolution(0.5f), true, true);
+        super(owner, GuiUtils.getComponentWidthForResolution(0.5f), GuiUtils.getComponentHeightForResolution(0.5f), true, CloseAction.DISPOSE);
         setTitle(I18nUtils.getString("RADIO_BROWSER"));
         setContent();
     }

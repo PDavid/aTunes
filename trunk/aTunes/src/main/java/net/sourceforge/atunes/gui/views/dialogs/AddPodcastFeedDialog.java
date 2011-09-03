@@ -61,7 +61,7 @@ public final class AddPodcastFeedDialog extends AbstractCustomDialog {
      *            the owner
      */
     public AddPodcastFeedDialog(JFrame owner) {
-        super(owner, 500, 170, true, true);
+        super(owner, 500, 170, true, CloseAction.DISPOSE);
         setTitle(I18nUtils.getString("ADD_PODCAST_FEED"));
         setResizable(false);
         add(getContent());

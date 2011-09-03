@@ -58,7 +58,7 @@ class MacOSXPlayerEngineEnterPathDialog extends AbstractCustomDialog {
 	private JButton finishButton;
 	
 	public MacOSXPlayerEngineEnterPathDialog(JDialog previousDialog) {
-		super((JFrame)previousDialog.getParent(), 450, 250, true, true);
+		super((JFrame)previousDialog.getParent(), 450, 250, true, CloseAction.DISPOSE);
 		this.previousDialog = previousDialog;
 		setResizable(false);
 		setTitle(I18nUtils.getString("PLAYER_ENGINE_SELECTION"));

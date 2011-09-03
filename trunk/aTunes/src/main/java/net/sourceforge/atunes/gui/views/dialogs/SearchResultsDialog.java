@@ -64,7 +64,7 @@ public final class SearchResultsDialog extends AbstractCustomDialog {
      *            the owner
      */
     public SearchResultsDialog(JFrame owner) {
-        super(owner, GuiUtils.getComponentWidthForResolution(0.75f), GuiUtils.getComponentHeightForResolution(0.75f), true, true);
+        super(owner, GuiUtils.getComponentWidthForResolution(0.75f), GuiUtils.getComponentHeightForResolution(0.75f), true, CloseAction.DISPOSE);
         setResizable(true);
         setTitle(I18nUtils.getString("SEARCH_RESULTS"));
         add(getContent());

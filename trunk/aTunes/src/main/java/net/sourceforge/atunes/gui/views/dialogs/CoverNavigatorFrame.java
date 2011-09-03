@@ -58,7 +58,7 @@ public final class CoverNavigatorFrame extends AbstractCustomDialog {
      *            the artists
      */
     public CoverNavigatorFrame(List<Artist> artists, Window owner) {
-        super(owner, GuiUtils.getComponentWidthForResolution(0.75f), GuiUtils.getComponentHeightForResolution(0.75f), true, true);
+        super(owner, GuiUtils.getComponentWidthForResolution(0.75f), GuiUtils.getComponentHeightForResolution(0.75f), true, CloseAction.DISPOSE);
         setTitle(I18nUtils.getString("COVER_NAVIGATOR"));
         setContent(artists);
     }

@@ -274,7 +274,7 @@ public final class FileSelectionDialog extends AbstractCustomDialog {
      *            the dir only
      */
     public FileSelectionDialog(JFrame owner, boolean dirOnly) {
-        super(owner, 660, 430, true, true);
+        super(owner, 660, 430, true, CloseAction.DISPOSE);
         this.dirOnly = dirOnly;
         add(getContent());
         setResizable(false);

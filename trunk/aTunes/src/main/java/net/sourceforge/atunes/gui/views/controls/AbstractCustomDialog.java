@@ -32,6 +32,21 @@ import net.sourceforge.atunes.utils.GuiUtils;
 
 public abstract class AbstractCustomDialog extends JDialog {
 
+	protected enum CloseAction {
+		
+		DISPOSE(WindowConstants.DISPOSE_ON_CLOSE), HIDE(WindowConstants.HIDE_ON_CLOSE), NOTHING(WindowConstants.DO_NOTHING_ON_CLOSE);
+		
+		private int constant;
+		
+		private CloseAction(int constant) {
+			this.constant = constant;
+		}
+		
+		public int getConstant() {
+			return constant;
+		}
+	}
+	
     private static final long serialVersionUID = 1L;
 
     /**
@@ -43,16 +58,16 @@ public abstract class AbstractCustomDialog extends JDialog {
      * @param modal
      * @param disposeOnClose
      */
-    public AbstractCustomDialog(Window owner, int width, int height, boolean modal, boolean disposeOnClose) {
+    public AbstractCustomDialog(Window owner, int width, int height, boolean modal, CloseAction closeAction) {
         super(owner);
         setSize(width, height);
         setUndecorated(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isDialogUndecorated());
         setModalityType(modal ? ModalityType.APPLICATION_MODAL : ModalityType.MODELESS);
         setLocationRelativeTo(owner.getWidth() == 0 ? null : owner);
-        setDefaultCloseOperation(disposeOnClose ? WindowConstants.DISPOSE_ON_CLOSE : WindowConstants.HIDE_ON_CLOSE);
-        if (disposeOnClose) {
+        setDefaultCloseOperation(closeAction.getConstant());
+        if (closeAction == CloseAction.DISPOSE) {
         	enableDisposeActionWithEscapeKey();
-        } else {
+        } else if (closeAction == CloseAction.HIDE) {
         	enableCloseActionWithEscapeKey();
         }
     }

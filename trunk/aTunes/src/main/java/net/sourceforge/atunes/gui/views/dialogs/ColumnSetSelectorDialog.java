@@ -203,7 +203,7 @@ public final class ColumnSetSelectorDialog extends AbstractCustomDialog {
      *            the owner
      */
     public ColumnSetSelectorDialog(JFrame owner) {
-        super(owner, 250, 300, true, true);
+        super(owner, 250, 300, true, CloseAction.DISPOSE);
         add(getContent());
         setTitle(I18nUtils.getString("ARRANGE_COLUMNS"));
         // TODO: Add pack to all dialogs

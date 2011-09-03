@@ -62,7 +62,7 @@ public final class EditPreferencesDialog extends AbstractCustomDialog {
      *            the owner
      */
     public EditPreferencesDialog(JFrame owner) {
-        super(owner, GuiUtils.getComponentWidthForResolution(0.5f),GuiUtils.getComponentHeightForResolution(0.6f), true, true);
+        super(owner, GuiUtils.getComponentWidthForResolution(0.5f),GuiUtils.getComponentHeightForResolution(0.6f), true, CloseAction.DISPOSE);
         setResizable(true);
         setTitle(I18nUtils.getString("PREFERENCES"));
         add(getContent());

@@ -59,7 +59,7 @@ public final class AddArtistDragDialog extends AbstractCustomDialog {
      * @param jFrame 
      */
     public AddArtistDragDialog(JFrame jFrame, final Artist artist) {
-        super(jFrame, 600, 500, true, true);
+        super(jFrame, 600, 500, true, CloseAction.DISPOSE);
       	String text = I18nUtils.getString("ADD_ARTIST_DIALOG_TITLE");
         text = text.replace("(%ARTIST%)", artist.getName());
         setTitle(text);

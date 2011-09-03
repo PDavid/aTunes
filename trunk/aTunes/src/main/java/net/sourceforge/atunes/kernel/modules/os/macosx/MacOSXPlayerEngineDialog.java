@@ -66,7 +66,7 @@ class MacOSXPlayerEngineDialog extends AbstractCustomDialog {
 	
 	
 	public MacOSXPlayerEngineDialog(JFrame parent) {
-		super(parent, 450, 250, true, true);
+		super(parent, 450, 250, true, CloseAction.DISPOSE);
 		setResizable(false);
 		setTitle(I18nUtils.getString("PLAYER_ENGINE_SELECTION"));
         addContent();
