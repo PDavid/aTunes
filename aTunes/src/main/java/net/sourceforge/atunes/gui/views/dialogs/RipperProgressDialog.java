@@ -59,7 +59,7 @@ public final class RipperProgressDialog extends AbstractCustomDialog {
      * Instantiates a new ripper progress dialog.
      */
     public RipperProgressDialog(Window owner) {
-        super(owner, 420, 200, true, false);
+        super(owner, 420, 200, true, CloseAction.HIDE);
         setTitle(I18nUtils.getString("RIPPING_CD"));
         setResizable(false);
         setContent();

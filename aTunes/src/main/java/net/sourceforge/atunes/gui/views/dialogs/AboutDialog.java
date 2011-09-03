@@ -223,7 +223,7 @@ public final class AboutDialog extends AbstractCustomDialog {
      *            the owner
      */
     public AboutDialog(JFrame owner) {
-        super(owner, 600, 550, true, true);
+        super(owner, 600, 550, true, CloseAction.DISPOSE);
         add(getContent());
         setResizable(false);
     }

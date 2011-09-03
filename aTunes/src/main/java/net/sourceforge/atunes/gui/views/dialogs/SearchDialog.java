@@ -66,7 +66,7 @@ public final class SearchDialog extends AbstractCustomDialog {
      *            the owner
      */
     public SearchDialog(JFrame owner) {
-        super(owner, 300, 300, true, false);
+        super(owner, 300, 300, true, CloseAction.HIDE);
         setContent();
     }
 

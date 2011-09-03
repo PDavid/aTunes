@@ -205,7 +205,7 @@ public final class PatternInputDialog extends AbstractCustomDialog {
      *            non-massive recognition (single file level)
      */
     public PatternInputDialog(Window owner, final boolean massiveRecognition) {
-        super(owner, 550, 350, true, true);
+        super(owner, 550, 350, true, CloseAction.DISPOSE);
         setResizable(false);
         setIconImage(Images.getImage(Images.APP_LOGO_16).getImage());
         setTitle(I18nUtils.getString("PATTERN_INPUT"));

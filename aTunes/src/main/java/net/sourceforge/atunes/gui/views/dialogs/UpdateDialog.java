@@ -47,7 +47,7 @@ public final class UpdateDialog extends AbstractCustomDialog {
     private static final long serialVersionUID = -778226654176158965L;
 
     public UpdateDialog(ApplicationVersion version, Window owner) {
-        super(owner, 400, 150, true, true);
+        super(owner, 400, 150, true, CloseAction.DISPOSE);
         setTitle(I18nUtils.getString("NEW_VERSION_AVAILABLE"));
         setResizable(false);
 

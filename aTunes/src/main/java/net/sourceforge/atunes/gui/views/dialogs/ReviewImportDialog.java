@@ -77,7 +77,7 @@ public final class ReviewImportDialog extends AbstractCustomDialog {
      * Instantiates a new ReviewImportDialog
      */
     public ReviewImportDialog(JFrame owner) {
-        super(owner, GuiUtils.getComponentWidthForResolution(0.80f), GuiUtils.getComponentHeightForResolution(0.75f), true, false);
+        super(owner, GuiUtils.getComponentWidthForResolution(0.80f), GuiUtils.getComponentHeightForResolution(0.75f), true, CloseAction.HIDE);
         setTitle(I18nUtils.getString("REVIEW_TAGS"));
         setContent();
     }

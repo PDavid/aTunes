@@ -67,7 +67,7 @@ public final class RadioDialog extends AbstractCustomDialog {
      * @param radio
      */
     public RadioDialog(JFrame owner, Radio radio) {
-        super(owner, 500, 200, true, true);
+        super(owner, 500, 200, true, CloseAction.DISPOSE);
         setTitle(radio != null ? I18nUtils.getString("EDIT_RADIO") : I18nUtils.getString("ADD_RADIO"));
         setResizable(false);
         add(getContent(radio));

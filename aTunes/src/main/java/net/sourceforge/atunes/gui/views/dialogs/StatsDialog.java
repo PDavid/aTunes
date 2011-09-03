@@ -77,7 +77,7 @@ public final class StatsDialog extends AbstractCustomDialog {
      * Instantiates a new stats dialog.
      */
     public StatsDialog(Window owner) {
-        super(owner, 750, 750, true, true);
+        super(owner, 750, 750, true, CloseAction.DISPOSE);
         setTitle(StringUtils.getString(I18nUtils.getString("STATS"), " - ", Constants.APP_NAME, " ", Constants.VERSION.toShortString()));
         setResizable(true);
         add(getContent());

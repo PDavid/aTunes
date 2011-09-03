@@ -58,7 +58,7 @@ public class PluginEditorDialog extends AbstractCustomDialog {
     private PluginConfiguration configuration;
 
     public PluginEditorDialog(Window owner, PluginInfo plugin, PluginConfiguration configuration) {
-        super(owner, GuiUtils.getComponentWidthForResolution(0.5f), GuiUtils.getComponentHeightForResolution(0.5f), true, true);
+        super(owner, GuiUtils.getComponentWidthForResolution(0.5f), GuiUtils.getComponentHeightForResolution(0.5f), true, CloseAction.DISPOSE);
         this.configuration = configuration;
         setResizable(true);
         setTitle(StringUtils.getString(I18nUtils.getString("PLUGIN_PROPERTIES_EDITOR"), ": ", plugin.getName()));

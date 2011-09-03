@@ -78,7 +78,7 @@ public final class ExportOptionsDialog extends AbstractCustomDialog {
      *            the parent
      */
     public ExportOptionsDialog(JFrame parent) {
-        super(parent, 400, 220, true, false);
+        super(parent, 400, 220, true, CloseAction.HIDE);
         setResizable(false);
         setTitle(I18nUtils.getString("EXPORT"));
         add(getContent());

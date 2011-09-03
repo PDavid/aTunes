@@ -63,7 +63,7 @@ class MacOSXPlayerEngineMatchSelectionDialog extends AbstractCustomDialog {
 	private List<String> matches;
 	
 	public MacOSXPlayerEngineMatchSelectionDialog(JDialog previousDialog, List<String> matches) {
-		super((JFrame)previousDialog.getParent(), 450, 250, true, true);
+		super((JFrame)previousDialog.getParent(), 450, 250, true, CloseAction.DISPOSE);
 		this.previousDialog = previousDialog;
 		this.matches = matches;
 		setResizable(false);

@@ -48,7 +48,7 @@ public class PropertiesDialog extends AbstractCustomDialog {
      *            the title
      */
     PropertiesDialog(String title, JFrame owner) {
-        super(owner, 560, 480, true, true);
+        super(owner, 560, 480, true, CloseAction.DISPOSE);
         setMinimumSize(new Dimension(560, 480));
         setTitle(title);
         setResizable(true);

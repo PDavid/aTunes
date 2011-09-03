@@ -70,7 +70,7 @@ public class ProgressDialog extends AbstractCustomDialog {
      *            the title
      */
     public ProgressDialog(String title, Window owner) {
-        super(owner, 450, 150, true, true);
+        super(owner, 450, 150, true, CloseAction.DISPOSE);
         setTitle(title);
         getRootPane().setWindowDecorationStyle(JRootPane.INFORMATION_DIALOG);
         add(getContent());
