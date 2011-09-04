@@ -40,6 +40,6 @@ public final class RepositoryApi {
      * @return
      */
     public static Artist getArtist(String artistName) {
-        return RepositoryHandler.getInstance().getArtistStructure().get(artistName);
+        return RepositoryHandler.getInstance().getArtist(artistName);
     }
 }

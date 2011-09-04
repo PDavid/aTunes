@@ -86,7 +86,7 @@ public class Artist implements Serializable, TreeObject<LocalAudioObject>, Compa
      */
     @Override
     public int compareTo(Artist o) {
-        return this.name.compareTo(o.name);
+        return this.name.toLowerCase().compareTo(o.name.toLowerCase());
     }
 
     @Override
@@ -94,7 +94,7 @@ public class Artist implements Serializable, TreeObject<LocalAudioObject>, Compa
         if (!(o instanceof Artist)) {
             return false;
         }
-        return ((Artist) o).name.equals(name);
+        return ((Artist) o).name.toLowerCase().equals(name.toLowerCase());
     }
 
     /**

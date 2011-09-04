@@ -61,6 +61,7 @@ import net.sourceforge.atunes.kernel.actions.RipCDAction;
 import net.sourceforge.atunes.kernel.actions.SelectRepositoryAction;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.ViewMode;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
@@ -101,6 +102,8 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 	private SwingWorker<Image, Void> coverWorker;
 	
 	private ExecutorService repositoryChangesService = Executors.newSingleThreadExecutor();
+	
+	private boolean caseSensitiveTrees = ApplicationState.getInstance().isKeyAlwaysCaseSensitiveInRepositoryStructure();
 	
 	private final class ImportFilesProcessListener implements ProcessListener {
 		private final ImportFilesProcess process;
@@ -316,7 +319,10 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 
     @Override
     public void applicationStateChanged(ApplicationState newState) {
-
+    	if (caseSensitiveTrees != newState.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
+    		caseSensitiveTrees = ApplicationState.getInstance().isKeyAlwaysCaseSensitiveInRepositoryStructure();
+    		refreshRepository();
+    	}
     }
 
     @Override
@@ -372,9 +378,9 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() {
-            	RepositoryHandler.getInstance().startTransaction();
+            	startTransaction();
                 RepositoryLoader.addToRepository(repository, files);
-                RepositoryHandler.getInstance().endTransaction();
+                endTransaction();
                 return null;
             }
 
@@ -400,9 +406,9 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
      *            the picture
      */
     public void addExternalPictureForAlbum(String artistName, String albumName, File picture) {
-    	RepositoryHandler.getInstance().startTransaction();
+    	startTransaction();
         RepositoryLoader.addExternalPictureForAlbum(repository, artistName, albumName, picture);
-        RepositoryHandler.getInstance().endTransaction();
+        endTransaction();
     }
 
     /**
@@ -454,25 +460,13 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     public List<Album> getAlbums() {
         List<Album> result = new ArrayList<Album>();
         if (repository != null) {
-            Collection<Artist> artists = repository.getArtistStructure().values();
+            Collection<Artist> artists = repository.getArtists();
             for (Artist a : artists) {
                 result.addAll(a.getAlbums().values());
             }
             Collections.sort(result);
         }
         return result;
-    }
-
-    /**
-     * Gets the artist and album structure.
-     * 
-     * @return the artist and album structure
-     */
-    public Map<String, Artist> getArtistStructure() {
-        if (repository != null) {
-            return repository.getArtistStructure();
-        }
-        return new HashMap<String, Artist>();
     }
 
     /**
@@ -483,12 +477,56 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     public List<Artist> getArtists() {
         List<Artist> result = new ArrayList<Artist>();
         if (repository != null) {
-            result.addAll(repository.getArtistStructure().values());
+            result.addAll(repository.getArtists());
             Collections.sort(result);
         }
         return result;
     }
+    
+    /**
+     * Returns artist with given name
+     * @param name
+     * @return
+     */
+    public Artist getArtist(String name) {
+    	if (repository != null) {
+    		return repository.getArtist(name);
+    	}
+    	return null;
+    }
+    
+    /**
+     * Removes artist
+     * @param artist
+     */
+    public void removeArtist(Artist artist) {
+    	if (repository != null) {
+    		repository.removeArtist(artist);
+    	}
+    }
 
+    /**
+     * Returns genre with given name
+     * @param genre
+     * @return
+     */
+    public Genre getGenre(String genre) {
+    	if (repository != null) {
+    		return repository.getGenre(genre);
+    	}
+    	return null;
+    }
+    
+    /**
+     * Removes genre
+     * @param genre
+     */
+    public void removeGenre(Genre genre) {
+    	if (repository != null) {
+    		repository.removeGenre(genre);
+    	}
+    }
+    
     /**
      * Gets the file if loaded.
      * 
@@ -514,18 +552,6 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     }
 
     /**
-     * Gets the genre structure.
-     * 
-     * @return the genre structure
-     */
-    public Map<String, Genre> getGenreStructure() {
-        if (repository != null) {
-            return repository.getGenreStructure();
-        }
-        return new HashMap<String, Genre>();
-    }
-
-    /**
      * Gets the year structure.
      * 
      * @return the year structure
@@ -546,7 +572,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     public Map<String, Album> getAlbumStructure() {
         if (repository != null) {
             Map<String, Album> albumsStructure = new HashMap<String, Album>();
-            Collection<Artist> artistCollection = repository.getArtistStructure().values();
+            Collection<Artist> artistCollection = repository.getArtists();
             for (Artist artist : artistCollection) {
                 for (Album album : artist.getAlbums().values()) {
                     albumsStructure.put(album.getNameAndArtist(), album);
@@ -584,7 +610,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
      * 
      * @return the repository
      */
-    public Repository getRepository() {
+    Repository getRepository() {
         return repository;
     }
 
@@ -1302,4 +1328,26 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 			repository.endTransaction();
 		}
 	}
+
+	/**
+	 * Returns data to show in tree
+	 * @param viewMode
+	 * @return
+	 */
+	public Map<String, ?> getDataForView(ViewMode viewMode) {
+		if (repository != null) {
+			if (viewMode == ViewMode.YEAR) {
+				return getYearStructure();
+			} else if (viewMode == ViewMode.GENRE) {
+				return repository.getGenreStructure();
+			} else if (viewMode == ViewMode.FOLDER) {
+				return getFolderStructure();
+			} else if (viewMode == ViewMode.ALBUM) {
+				return getAlbumStructure();
+			} else {
+				return repository.getArtistStructure();
+			}
+		}
+		return Collections.emptyMap();
+	}	
 }

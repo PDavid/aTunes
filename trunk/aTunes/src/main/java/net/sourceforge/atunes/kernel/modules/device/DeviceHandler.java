@@ -52,12 +52,12 @@ import net.sourceforge.atunes.kernel.actions.SynchronizeDeviceWithPlayListAction
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.ViewMode;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.AudioFilesRemovedListener;
 import net.sourceforge.atunes.kernel.modules.repository.LoaderListener;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryLoader;
-import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
@@ -88,6 +88,8 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
      * Used to store number of files copied
      */
     private int filesCopiedToDevice;
+    
+    private boolean caseSensitiveTrees = ApplicationState.getInstance().isKeyAlwaysCaseSensitiveInRepositoryStructure();
 
     /**
      * Instantiates a new device handler.
@@ -302,18 +304,6 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
     }
 
     /**
-     * Gets the device artist structure.
-     * 
-     * @return the device artist and album structure
-     */
-    public Map<String, Artist> getDeviceArtistStructure() {
-        if (deviceRepository != null) {
-            return deviceRepository.getArtistStructure();
-        }
-        return new HashMap<String, Artist>();
-    }
-
-    /**
      * Gets the device album structure
      * 
      * @return
@@ -321,7 +311,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
     public Map<String, Album> getDeviceAlbumStructure() {
         if (deviceRepository != null) {
             Map<String, Album> albumsStructure = new HashMap<String, Album>();
-            Collection<Artist> artistCollection = deviceRepository.getArtistStructure().values();
+            Collection<Artist> artistCollection = deviceRepository.getArtists();
             for (Artist artist : artistCollection) {
                 for (Album album : artist.getAlbums().values()) {
                     albumsStructure.put(album.getNameAndArtist(), album);
@@ -330,18 +320,6 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
             return albumsStructure;
         }
         return new HashMap<String, Album>();
-    }
-
-    /**
-     * Gets the device's genre structure
-     * 
-     * @return
-     */
-    public Map<String, Genre> getDeviceGenreStructure() {
-        if (deviceRepository != null) {
-            return deviceRepository.getGenreStructure();
-        }
-        return new HashMap<String, Genre>();
     }
 
     /**
@@ -623,11 +601,11 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
                 String title = af.getTitle();
 
                 // If artist is not present in device then add
-                if (getDeviceArtistStructure().get(artist) == null) {
+                Artist a = getArtist(artist);
+                if (a == null) {
                     result.add(af);
                 } else {
                     // Artist is present, then find song or album and song
-                    Artist a = getDeviceArtistStructure().get(artist);
                     if (ApplicationState.getInstance().isAllowRepeatedSongsInDevice()) {
                         if (a.getAlbum(album) == null) {
                             result.add(af);
@@ -676,8 +654,8 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
             String title = af.getTitle();
 
             // Remove objects present in device
-            if (getDeviceArtistStructure().get(artist) != null) {
-                Artist a = getDeviceArtistStructure().get(artist);
+            Artist a = getArtist(artist);
+            if (a != null) {
                 if (ApplicationState.getInstance().isAllowRepeatedSongsInDevice()) {
                     if (a.getAlbum(album) != null) {
                         Album alb = a.getAlbum(album);
@@ -707,6 +685,10 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
 
     @Override
     public void applicationStateChanged(ApplicationState newState) {
+    	if (caseSensitiveTrees != newState.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
+    		caseSensitiveTrees = ApplicationState.getInstance().isKeyAlwaysCaseSensitiveInRepositoryStructure();
+    		refreshDevice();
+    	}
     }
     
     /**
@@ -738,4 +720,41 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
 	@Override
 	public void notifyCurrentAlbum(String artist, String album) {
 	}
+	
+    /**
+     * Returns artist with given name
+     * @param name
+     * @return
+     */
+    public Artist getArtist(String name) {
+    	if (deviceRepository != null) {
+    		return deviceRepository.getArtist(name);
+    	}
+    	return null;
+    }
+
+	/**
+	 * Returns data to show in a tree
+	 * @param viewMode
+	 * @return
+	 */
+	public Map<String, ?> getDataForView(ViewMode viewMode) {
+		if (deviceRepository != null) {
+			Map<String, ?> data;
+			if (viewMode == ViewMode.YEAR) {
+				data = getYearStructure();
+			} else if (viewMode == ViewMode.GENRE) {
+				data = deviceRepository.getGenreStructure();
+			} else if (viewMode == ViewMode.FOLDER) {
+				data = getDeviceFolderStructure();
+			} else if (viewMode == ViewMode.ALBUM) {
+				data = getDeviceAlbumStructure();
+			} else {
+				data = deviceRepository.getArtistStructure();
+			}
+			return data;
+		}
+		return Collections.emptyMap();
+	}
+
 }

@@ -85,7 +85,7 @@ class SimilarArtistTableCellRendererCode extends ContextTableRowPanel<ArtistInfo
 
 			@Override
 			protected void execute(ArtistInfo object) {
-				GuiHandler.getInstance().showAddArtistDragDialog(RepositoryHandler.getInstance().getArtistStructure().get(object.getName()));
+				GuiHandler.getInstance().showAddArtistDragDialog(RepositoryHandler.getInstance().getArtist(object.getName()));
 			}
 			
 			@Override
@@ -95,7 +95,7 @@ class SimilarArtistTableCellRendererCode extends ContextTableRowPanel<ArtistInfo
 			
 			@Override
 			protected boolean isEnabledForObject(ArtistInfo object) {
-				return RepositoryHandler.getInstance().getArtistStructure().containsKey(object.getName());
+				return RepositoryHandler.getInstance().getArtist(object.getName()) != null;
 			}				
 		});
 		

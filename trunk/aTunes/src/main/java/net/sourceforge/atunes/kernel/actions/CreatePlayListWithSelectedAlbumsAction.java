@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.actions;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
@@ -55,16 +54,13 @@ public class CreatePlayListWithSelectedAlbumsAction extends AbstractActionOverSe
 
     @Override
     protected void performAction(List<AudioObject> objects) {
-        // Access the repository artist and album structure
-        Map<String, Artist> structure = RepositoryHandler.getInstance().getArtistStructure();
-
         // Get selected albums from play list
         List<Album> selectedAlbums = new ArrayList<Album>();
         for (AudioObject ao : objects) {
-            String artist = ao.getArtist();
+            String artistName = ao.getArtist();
             String album = ao.getAlbum();
-            if (structure.containsKey(artist)) {
-                Artist a = structure.get(artist);
+            Artist a = RepositoryHandler.getInstance().getArtist(artistName);
+            if (a != null) {
                 Album alb = a.getAlbum(album);
                 if (alb != null && !selectedAlbums.contains(alb)) {
                     selectedAlbums.add(alb);

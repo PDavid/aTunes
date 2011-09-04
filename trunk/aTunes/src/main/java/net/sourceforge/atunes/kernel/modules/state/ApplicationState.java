@@ -86,8 +86,6 @@ public class ApplicationState {
     public void setShowAllRadioStations(boolean showAllRadioStations) {
         this.cache.storePreference(Preferences.SHOW_ALL_RADIO_STATIONS, showAllRadioStations);
     }
-    
-    
 
     public boolean isShowNavigationTable() {
     	return (Boolean) this.cache.retrievePreference(Preferences.SHOW_NAVIGATION_TABLE, true);
@@ -97,7 +95,21 @@ public class ApplicationState {
         this.cache.storePreference(Preferences.SHOW_NAVIGATION_TABLE, showNavigationTable);
     }
     
-    
+    /**
+     * used in RepositoryFiller to build repository structure keys case sensitive or not
+     * @return true if case structures genre and artist handled sensitive, default = false for convenience
+     */
+    public boolean isKeyAlwaysCaseSensitiveInRepositoryStructure(){
+        return (Boolean) this.cache.retrievePreference(Preferences.CASE_SENSITIVE_REPOSITORY_STRUCTURE_KEYS, false);
+    }
+
+    /**
+     * enable case sensitive tree structure of artist and genre or merge keys case insensitive
+     * @param caseSensitiveRepositoryStructureKeys
+     */
+    public void setKeyAlwaysCaseSensitiveInRepositoryStructure(boolean caseSensitiveRepositoryStructureKeys){
+        this.cache.storePreference(Preferences.CASE_SENSITIVE_REPOSITORY_STRUCTURE_KEYS, caseSensitiveRepositoryStructureKeys);
+    }
 
     public boolean isShowAudioObjectProperties() {
         return (Boolean) this.cache.retrievePreference(Preferences.SHOW_AUDIO_OBJECT_PROPERTIES, false);
