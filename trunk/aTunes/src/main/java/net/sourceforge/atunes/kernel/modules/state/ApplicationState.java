@@ -1106,7 +1106,7 @@ public class ApplicationState {
     
     
     public boolean isShowPlayerControlsOnTop() {
-    	return (Boolean) this.cache.retrievePreference(Preferences.SHOW_PLAYER_CONTROLS_ON_TOP, false);
+    	return (Boolean) this.cache.retrievePreference(Preferences.SHOW_PLAYER_CONTROLS_ON_TOP, true);
     }
     
     public void setShowPlayerControlsOnTop(boolean onTop) {
