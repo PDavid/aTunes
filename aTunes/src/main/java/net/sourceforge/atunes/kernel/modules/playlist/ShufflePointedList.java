@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.playlist;
 
-import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.PlayListAudioObject;
@@ -37,15 +36,8 @@ class ShufflePointedList extends PointedList<Integer> {
             add(plao.getPosition());
         }
 
-        int currentPointer = getPointer() != null ? getPointer() : 0;
-        Integer pointedObject = getCurrentObject();
-
         // Shuffle
         shuffle();
-
-        setPointer(currentPointer);
-        int pointedObjectNewPosition = indexOf(pointedObject);
-        Collections.swap(this.getList(), currentPointer, pointedObjectNewPosition);
     }
 
     @Override
