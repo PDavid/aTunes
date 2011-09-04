@@ -130,7 +130,7 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 	 * @return
 	 */
 	public Class<? extends AbstractLookAndFeel> getDefaultLookAndFeel() {
-		return MacOSXLookAndFeel.class;
+		return SubstanceLookAndFeel.class;
 	}
 	
 	@Override
