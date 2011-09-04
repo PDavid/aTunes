@@ -447,7 +447,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 
     public List<File> getFolders() {
         if (repository != null) {
-            return repository.getFolders();
+            return repository.getRepositoryFolders();
         }
         return Collections.emptyList();
     }
@@ -540,18 +540,6 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     }
 
     /**
-     * Gets the folder structure.
-     * 
-     * @return the folder structure
-     */
-    public Map<String, Folder> getFolderStructure() {
-        if (repository != null) {
-            return repository.getFolderStructure();
-        }
-        return new HashMap<String, Folder>();
-    }
-
-    /**
      * Gets the year structure.
      * 
      * @return the year structure
@@ -590,7 +578,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
      */
     public int getFoldersCount() {
         if (repository != null) {
-            return repository.getFolders().size();
+            return repository.getRepositoryFolders().size();
         }
         return 0;
     }
@@ -626,7 +614,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         if (repository == null) {
             return null;
         }
-        for (File folder : repository.getFolders()) {
+        for (File folder : repository.getRepositoryFolders()) {
             if (file.getUrl().startsWith(folder.getAbsolutePath())) {
                 return folder;
             }
@@ -641,7 +629,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
      */
     public String getRepositoryPath() {
         // TODO: Remove this method as now more than one folder can be added to repository
-        return repository != null ? repository.getFolders().get(0).getAbsolutePath() : "";
+        return repository != null ? repository.getRepositoryFolders().get(0).getAbsolutePath() : "";
     }
 
     /**
@@ -669,21 +657,9 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
      */
     public Collection<LocalAudioObject> getAudioFilesList() {
         if (repository != null) {
-            return repository.getAudioFilesList();
+            return repository.getFiles();
         }
         return Collections.emptyList();
-    }
-
-    /**
-     * Gets the audio files.
-     * 
-     * @return
-     */
-    public Map<String, LocalAudioObject> getAudioFilesMap() {
-        if (repository != null) {
-            return repository.getAudioFiles();
-        }
-        return Collections.emptyMap();
     }
 
     /**
@@ -731,7 +707,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
             return false;
         }
         String path = folder.getAbsolutePath();
-        for (File folders : repository.getFolders()) {
+        for (File folders : repository.getRepositoryFolders()) {
             if (path.startsWith(folders.getAbsolutePath())) {
                 return true;
             }
@@ -804,7 +780,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 
         // Save folders: if repository config is lost application can reload data without asking user to select folders again
         List<String> repositoryFolders = new ArrayList<String>();
-        for (File folder : repository.getFolders()) {
+        for (File folder : repository.getRepositoryFolders()) {
             repositoryFolders.add(folder.getAbsolutePath());
         }
         ApplicationState.getInstance().setLastRepositoryFolders(repositoryFolders);
@@ -942,7 +918,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         Object selection;
         do {
             String exitString = Actions.getAction(ExitAction.class).getValue(Action.NAME).toString();
-            selection = GuiHandler.getInstance().showMessage(StringUtils.getString(I18nUtils.getString("REPOSITORY_NOT_FOUND"), ": ", rep.getFolders().get(0)),
+            selection = GuiHandler.getInstance().showMessage(StringUtils.getString(I18nUtils.getString("REPOSITORY_NOT_FOUND"), ": ", rep.getRepositoryFolders().get(0)),
                     I18nUtils.getString("REPOSITORY_NOT_FOUND"), JOptionPane.WARNING_MESSAGE,
                     new String[] { I18nUtils.getString("RETRY"), I18nUtils.getString("SELECT_REPOSITORY"), exitString });
 
@@ -1001,8 +977,8 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         Logger.info("Refreshing repository");
         filesLoaded = 0;
         Repository oldRepository = repository;
-        repository = new Repository(oldRepository.getFolders(), this);
-        currentLoader = new RepositoryLoader(oldRepository.getFolders(), oldRepository, repository, true);
+        repository = new Repository(oldRepository.getRepositoryFolders(), this);
+        currentLoader = new RepositoryLoader(oldRepository.getRepositoryFolders(), oldRepository, repository, true);
         currentLoader.addRepositoryLoaderListener(this);
         currentLoader.start();
     }
@@ -1165,7 +1141,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         MultiFolderSelectionDialog dialog = GuiHandler.getInstance().getMultiFolderSelectionDialog();
         dialog.setTitle(I18nUtils.getString("SELECT_REPOSITORY"));
         dialog.setText(I18nUtils.getString("SELECT_REPOSITORY_FOLDERS"));
-        dialog.startDialog((repository != null && !repositoryNotFound) ? repository.getFolders() : null);
+        dialog.startDialog((repository != null && !repositoryNotFound) ? repository.getRepositoryFolders() : null);
         if (!dialog.isCancelled()) {
             List<File> folders = dialog.getSelectedFolders();
             if (!folders.isEmpty()) {
@@ -1341,7 +1317,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 			} else if (viewMode == ViewMode.GENRE) {
 				return repository.getGenreStructure();
 			} else if (viewMode == ViewMode.FOLDER) {
-				return getFolderStructure();
+				return repository.getFolderStructure();
 			} else if (viewMode == ViewMode.ALBUM) {
 				return getAlbumStructure();
 			} else {
@@ -1349,5 +1325,12 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 			}
 		}
 		return Collections.emptyMap();
+	}
+
+	public LocalAudioObject getFile(String fileName) {
+		if (repository != null) {
+			return repository.getFile(fileName);
+		}
+		return null;
 	}	
 }

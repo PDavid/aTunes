@@ -101,7 +101,7 @@ final class RepositoryFiller {
      * @param audioFile
      */
     private void addToRepository(LocalAudioObject audioFile) {
-        repository.getAudioFiles().put(audioFile.getUrl(), audioFile);
+        repository.putFile(audioFile);
         repository.addSizeInBytes(audioFile.getFile().length());
         repository.addDurationInSeconds(audioFile.getDuration());
     }
@@ -156,10 +156,10 @@ final class RepositoryFiller {
     private void addToYearStructure(LocalAudioObject audioFile) {
     	String year = audioFile.getYear();
 
-    	Year yearObject = repository.getYearStructure().get(year);
+    	Year yearObject = repository.getYear(year);
     	if (yearObject == null) {
     		yearObject = new Year(year);
-    		repository.getYearStructure().put(year, yearObject);
+    		repository.putYear(yearObject);
     	}
 
     	yearObject.addAudioFile(audioFile);
@@ -176,10 +176,10 @@ final class RepositoryFiller {
      *            the file
      */
     private void addToFolderStructure(File relativeTo, String relativePath, LocalAudioObject file) {
-        Folder relativeFolder = repository.getFolderStructure().get(relativeTo.getAbsolutePath());
+        Folder relativeFolder = repository.getFolder(relativeTo.getAbsolutePath());
         if (relativeFolder == null) {
             relativeFolder = new Folder(relativeTo.getAbsolutePath());
-            repository.getFolderStructure().put(relativeFolder.getName(), relativeFolder);
+            repository.putFolder(relativeFolder);
         }
 
         String[] foldersInPath = relativePath.split("/");
@@ -193,10 +193,10 @@ final class RepositoryFiller {
                     parentFolder.addFolder(f);
                 }
             } else {
-                f = repository.getFolderStructure().get(folderName);
+                f = repository.getFolder(folderName);
                 if (f == null) {
                     f = new Folder(folderName);
-                    repository.getFolderStructure().put(f.getName(), f);
+                    repository.putFolder(f);
                 }
             }
             parentFolder = f;
@@ -305,12 +305,12 @@ final class RepositoryFiller {
 		}
 
 		// Remove from year structure if necessary
-		Year y = repository.getYearStructure().get(year);
+		Year y = repository.getYear(year);
 		if (y != null) {
 			y.removeAudioFile(file);
 
 			if (y.size() <= 1) {
-				repository.getYearStructure().remove(year);
+				repository.removeYear(y);
 			}
 		}
     }

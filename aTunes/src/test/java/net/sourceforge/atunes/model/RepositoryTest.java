@@ -50,14 +50,13 @@ public class RepositoryTest {
 	
 	@Test
 	public void createRepository() {
-		Assert.assertTrue(rep.getAudioFiles().isEmpty());
-		Assert.assertTrue(rep.getAudioFilesList().isEmpty());
+		Assert.assertTrue(rep.getFiles().isEmpty());
 		Assert.assertTrue(rep.getArtists().isEmpty());
-		Assert.assertTrue(rep.getFolderStructure().isEmpty());
+		Assert.assertTrue(rep.getFolders().isEmpty());
 		Assert.assertTrue(rep.getGenres().isEmpty());
-		Assert.assertTrue(rep.getYearStructure().isEmpty());
-		Assert.assertTrue(rep.getFolders().contains(f1));
-		Assert.assertTrue(rep.getFolders().contains(f2));
+		Assert.assertTrue(rep.getYears().isEmpty());
+		Assert.assertTrue(rep.getRepositoryFolders().contains(f1));
+		Assert.assertTrue(rep.getRepositoryFolders().contains(f2));
 		
 		Assert.assertEquals(0, rep.getTotalDurationInSeconds());
 		Assert.assertEquals(0, rep.getTotalSizeInBytes());
