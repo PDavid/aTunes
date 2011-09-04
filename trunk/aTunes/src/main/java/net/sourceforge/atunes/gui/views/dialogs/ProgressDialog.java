@@ -32,7 +32,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-import javax.swing.JRootPane;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
@@ -70,9 +69,8 @@ public class ProgressDialog extends AbstractCustomDialog {
      *            the title
      */
     public ProgressDialog(String title, Window owner) {
-        super(owner, 450, 150, true, CloseAction.DISPOSE);
+        super(owner, 450, 150, false, CloseAction.DISPOSE);
         setTitle(title);
-        getRootPane().setWindowDecorationStyle(JRootPane.INFORMATION_DIALOG);
         add(getContent());
         setResizable(false);
     }
