@@ -44,7 +44,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  *
  */
-public class GenreTreeGenerator implements TreeGenerator {
+class GenreTreeGenerator implements TreeGenerator {
 
 	/**
 	 * Builds tree

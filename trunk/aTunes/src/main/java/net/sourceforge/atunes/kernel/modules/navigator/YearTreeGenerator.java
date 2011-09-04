@@ -43,7 +43,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  *
  */
-public class YearTreeGenerator implements TreeGenerator {
+class YearTreeGenerator implements TreeGenerator {
 
 	/**
 	 * Builds tree

@@ -704,26 +704,16 @@ public class RepositoryLoader extends Thread {
 			}
 
 			// Remove from year structure
-			Year y = RepositoryHandler.getInstance().getYearStructure().get(
-					year);
+			Year y = RepositoryHandler.getInstance().getYear(year);
 			if (y != null) {
 				y.removeAudioFile(file);
 				if (y.size() <= 1) {
-					RepositoryHandler.getInstance().getYearStructure().remove(
-							year);
+					RepositoryHandler.getInstance().removeYear(y);
 				}
 			}
 
-			// Remove from file list
-			RepositoryHandler.getInstance().getRepository().removeFile(file);
-
-			// Update repository size
-			RepositoryHandler.getInstance().getRepository()
-					.removeSizeInBytes(file.getFile().length());
-
-			// Update repository duration
-			RepositoryHandler.getInstance().getRepository()
-					.removeDurationInSeconds(file.getDuration());
+			// Remove from repository
+			RepositoryHandler.getInstance().removeFile(file);
 		}
 		// File is on a device
 		else if (DeviceHandler.getInstance().isDevicePath(file.getUrl())) {
@@ -749,7 +739,7 @@ public class RepositoryLoader extends Thread {
 		}
 
 		// Get root folder
-		Folder rootFolder = RepositoryHandler.getInstance().getRepository().getFolder(repositoryFolder.getAbsolutePath());
+		Folder rootFolder = RepositoryHandler.getInstance().getFolder(repositoryFolder.getAbsolutePath());
 
 		// Now navigate through folder until find folder that contains file
 		String path = file.getFile().getParentFile().getAbsolutePath();
@@ -762,19 +752,6 @@ public class RepositoryLoader extends Thread {
 			f = f.getFolder(folderName);
 		}
 		return f;
-	}
-
-	/**
-	 * Renames a file in repository
-	 * 
-	 * @param audioFile
-	 * @param oldFile
-	 * @param newFile
-	 */
-	static void renameFile(LocalAudioObject audioFile, File oldFile, File newFile) {
-		audioFile.setFile(newFile);
-		RepositoryHandler.getInstance().getRepository().removeFile(oldFile);
-		RepositoryHandler.getInstance().getRepository().putFile(audioFile);
 	}
 
 	/**

@@ -42,7 +42,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  *
  */
-public class FolderTreeGenerator implements TreeGenerator {
+class FolderTreeGenerator implements TreeGenerator {
 
 	/**
 	 * Builds tree

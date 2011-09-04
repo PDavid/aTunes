@@ -65,6 +65,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.TreeObject;
+import net.sourceforge.atunes.model.ViewMode;
 
 public abstract class AbstractNavigationView implements AudioObjectsSource, TreeObjectsSource {
 
@@ -681,7 +682,5 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
 	 */
 	public void selectArtist(ViewMode currentViewMode, String artist) {
 		
-	}
-		
-	
+	}	
 }

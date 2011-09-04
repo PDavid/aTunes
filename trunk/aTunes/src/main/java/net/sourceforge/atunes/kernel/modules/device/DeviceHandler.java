@@ -52,22 +52,20 @@ import net.sourceforge.atunes.kernel.actions.SynchronizeDeviceWithPlayListAction
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
-import net.sourceforge.atunes.kernel.modules.navigator.ViewMode;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.AudioFilesRemovedListener;
 import net.sourceforge.atunes.kernel.modules.repository.LoaderListener;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryLoader;
-import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.model.Repository;
+import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -304,25 +302,6 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
     }
 
     /**
-     * Gets the device album structure
-     * 
-     * @return
-     */
-    public Map<String, Album> getDeviceAlbumStructure() {
-        if (deviceRepository != null) {
-            Map<String, Album> albumsStructure = new HashMap<String, Album>();
-            Collection<Artist> artistCollection = deviceRepository.getArtists();
-            for (Artist artist : artistCollection) {
-                for (Album album : artist.getAlbums().values()) {
-                    albumsStructure.put(album.getNameAndArtist(), album);
-                }
-            }
-            return albumsStructure;
-        }
-        return new HashMap<String, Album>();
-    }
-
-    /**
      * Returns a string with total and free space for a dir.
      * 
      * @return the device data
@@ -335,18 +314,6 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
                     .fromByteToMegaOrGiga(dir.getFreeSpace()), ")");
         }
         return null;
-    }
-
-    /**
-     * Gets the device folder structure.
-     * 
-     * @return the device folder structure
-     */
-    public Map<String, Folder> getDeviceFolderStructure() {
-        if (deviceRepository != null) {
-            return deviceRepository.getFolderStructure();
-        }
-        return new HashMap<String, Folder>();
     }
 
     /**
@@ -691,18 +658,6 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
     	}
     }
     
-    /**
-     * Gets the year structure.
-     * 
-     * @return the year structure
-     */
-    public Map<String, Year> getYearStructure() {
-        if (isDeviceConnected()) {
-            return deviceRepository.getYearStructure();
-        }
-        return new HashMap<String, Year>();
-    }
-
 	@Override
 	public void playListCleared() {}
 
@@ -739,22 +694,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
 	 * @return
 	 */
 	public Map<String, ?> getDataForView(ViewMode viewMode) {
-		if (deviceRepository != null) {
-			Map<String, ?> data;
-			if (viewMode == ViewMode.YEAR) {
-				data = getYearStructure();
-			} else if (viewMode == ViewMode.GENRE) {
-				data = deviceRepository.getGenreStructure();
-			} else if (viewMode == ViewMode.FOLDER) {
-				data = getDeviceFolderStructure();
-			} else if (viewMode == ViewMode.ALBUM) {
-				data = getDeviceAlbumStructure();
-			} else {
-				data = deviceRepository.getArtistStructure();
-			}
-			return data;
-		}
-		return Collections.emptyMap();
+		return viewMode.getDataForView(deviceRepository);
 	}
 
 }

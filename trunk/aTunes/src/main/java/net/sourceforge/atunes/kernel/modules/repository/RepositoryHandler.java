@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -61,7 +60,6 @@ import net.sourceforge.atunes.kernel.actions.RipCDAction;
 import net.sourceforge.atunes.kernel.actions.SelectRepositoryAction;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
-import net.sourceforge.atunes.kernel.modules.navigator.ViewMode;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
@@ -82,6 +80,7 @@ import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.model.Repository;
 import net.sourceforge.atunes.model.RepositoryListener;
+import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -537,38 +536,6 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
      */
     public LocalAudioObject getFileIfLoaded(String fileName) {
         return repository == null ? null : repository.getFile(fileName);
-    }
-
-    /**
-     * Gets the year structure.
-     * 
-     * @return the year structure
-     */
-    public Map<String, Year> getYearStructure() {
-        if (repository != null) {
-            return repository.getYearStructure();
-        }
-        return new HashMap<String, Year>();
-    }
-
-    /**
-     * Gets the album structure
-     * 
-     * @return
-     */
-    //TODO
-    public Map<String, Album> getAlbumStructure() {
-        if (repository != null) {
-            Map<String, Album> albumsStructure = new HashMap<String, Album>();
-            Collection<Artist> artistCollection = repository.getArtists();
-            for (Artist artist : artistCollection) {
-                for (Album album : artist.getAlbums().values()) {
-                    albumsStructure.put(album.getNameAndArtist(), album);
-                }
-            }
-            return albumsStructure;
-        }
-        return new HashMap<String, Album>();
     }
 
     /**
@@ -1073,13 +1040,26 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         File newFile = new File(StringUtils.getString(file.getParentFile().getAbsolutePath() + "/" + FileNameUtils.getValidFileName(name) + "." + extension));
         boolean succeeded = file.renameTo(newFile);
         if (succeeded) {
-        	startTransaction();        	
-            RepositoryLoader.renameFile(audioFile, file, newFile);
-        	endTransaction();
+        	renameFile(audioFile, file, newFile);
             NavigationHandler.getInstance().notifyReload();
             StatisticsHandler.getInstance().updateFileName(file.getAbsolutePath(), newFile.getAbsolutePath());
         }
     }
+    
+	/**
+	 * Renames a file in repository
+	 * 
+	 * @param audioFile
+	 * @param oldFile
+	 * @param newFile
+	 */
+	private void renameFile(LocalAudioObject audioFile, File oldFile, File newFile) {
+    	startTransaction(); 
+		audioFile.setFile(newFile);
+		repository.removeFile(oldFile);
+		repository.putFile(audioFile);
+    	endTransaction();
+	}
 
     /**
      * Repository is null.
@@ -1311,20 +1291,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 	 * @return
 	 */
 	public Map<String, ?> getDataForView(ViewMode viewMode) {
-		if (repository != null) {
-			if (viewMode == ViewMode.YEAR) {
-				return getYearStructure();
-			} else if (viewMode == ViewMode.GENRE) {
-				return repository.getGenreStructure();
-			} else if (viewMode == ViewMode.FOLDER) {
-				return repository.getFolderStructure();
-			} else if (viewMode == ViewMode.ALBUM) {
-				return getAlbumStructure();
-			} else {
-				return repository.getArtistStructure();
-			}
-		}
-		return Collections.emptyMap();
+		return viewMode.getDataForView(repository);
 	}
 
 	public LocalAudioObject getFile(String fileName) {
@@ -1332,5 +1299,51 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 			return repository.getFile(fileName);
 		}
 		return null;
-	}	
+	}
+
+	/**
+	 * @param year
+	 * @return
+	 * @see net.sourceforge.atunes.model.Repository#getYear(java.lang.String)
+	 */
+	public Year getYear(String year) {
+		if (repository != null) {
+			return repository.getYear(year);
+		}
+		return null;
+	}
+
+	/**
+	 * @param year
+	 * @see net.sourceforge.atunes.model.Repository#removeYear(net.sourceforge.atunes.kernel.modules.repository.data.Year)
+	 */
+	public void removeYear(Year year) {
+		if (repository != null) {
+			repository.removeYear(year);
+		}
+	}
+
+	/**
+	 * @param file
+	 * 
+	 */
+	public void removeFile(LocalAudioObject file) {
+		if (repository != null) {
+			repository.removeFile(file);
+			repository.removeSizeInBytes(file.getFile().length());
+			repository.removeDurationInSeconds(file.getDuration());
+		}
+	}
+
+	/**
+	 * @param path
+	 * @return
+	 * @see net.sourceforge.atunes.model.Repository#getFolder(java.lang.String)
+	 */
+	public Folder getFolder(String path) {
+		if (repository != null) {
+			return repository.getFolder(path);
+		}
+		return null;
+	}
 }
