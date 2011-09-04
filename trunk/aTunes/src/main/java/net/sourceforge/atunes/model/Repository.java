@@ -54,9 +54,29 @@ public class Repository implements Serializable {
     private long totalDurationInSeconds;
     
     /**
-     *  Structure of information
+     * File structure
      */
-    private RepositoryStructure structure;
+    private RepositoryStructure<LocalAudioObject> filesStructure;
+    
+    /**
+     * Artists structure
+     */
+    private RepositoryStructure<Artist> artistsStructure;
+    
+    /**
+     * Folders structure
+     */
+    private RepositoryStructure<Folder> foldersStructure;
+    
+    /**
+     * Genres structure
+     */
+    private RepositoryStructure<Genre> genresStructure;
+    
+    /**
+     *  Year structure
+     */
+    private RepositoryStructure<Year> yearStructure;
     
     /**
      * Object to be notified when this repository becomes dirty
@@ -76,7 +96,11 @@ public class Repository implements Serializable {
      */
     public Repository(List<File> folders, RepositoryListener listener) {
         this.folders = folders;
-        this.structure = new RepositoryStructure();
+        this.filesStructure = new RepositoryStructure<LocalAudioObject>();
+        this.artistsStructure = new RepositoryStructure<Artist>();
+        this.foldersStructure = new RepositoryStructure<Folder>();
+        this.genresStructure = new RepositoryStructure<Genre>();
+        this.yearStructure = new RepositoryStructure<Year>();
         this.listener = listener;
     }
 
@@ -87,59 +111,12 @@ public class Repository implements Serializable {
     private Repository() {}
     
     /**
-     * Count files.
-     * 
-     * @return the int
-     */
-    public int countFiles() {
-        return structure.getFilesStructure().size();
-    }
-
-    /**
-     * Gets the file.
-     * 
-     * @param fileName
-     *            the file name
-     * 
-     * @return the file
-     */
-    public LocalAudioObject getFile(String fileName) {
-        return structure.getFilesStructure().get(fileName);
-    }
-
-    /**
-     * Gets the files.
-     * 
-     * @return the files
-     */
-    public Map<String, LocalAudioObject> getAudioFiles() {
-        return structure.getFilesStructure();
-    }
-
-    /**
-     * Gets the files list.
-     * 
-     * @return the files list
-     */
-    public Collection<LocalAudioObject> getAudioFilesList() {
-        return structure.getFilesStructure().values();
-    }
-
-    /**
      * Gets the folders.
      * 
      * @return the folders
      */
-    public List<File> getFolders() {
+    public List<File> getRepositoryFolders() {
         return new ArrayList<File>(folders);
-    }
-
-    public Map<String, Folder> getFolderStructure() {
-        return structure.getFolderStructure();
-    }
-
-    public Map<String, Year> getYearStructure() {
-        return structure.getYearStructure();
     }
 
     /**
@@ -203,7 +180,7 @@ public class Repository implements Serializable {
      */
     public boolean exists() {
     	// All folders must exist
-    	for (File folder : getFolders()) {
+    	for (File folder : getRepositoryFolders()) {
     		if (!folder.exists()) {
     			return false;
     		}
@@ -217,12 +194,12 @@ public class Repository implements Serializable {
      * @throws InconsistentRepositoryException
      */
     public void validateRepository() throws InconsistentRepositoryException {
-        if (getAudioFiles() == null || 
-            getFolders() == null || 
-            getArtistStructure() == null || 
-            getFolderStructure() == null || 
-            getGenreStructure() == null ||
-            getYearStructure() == null) {
+        if (filesStructure == null || 
+            getRepositoryFolders() == null || 
+            artistsStructure == null || 
+            foldersStructure == null || 
+            genresStructure == null ||
+            yearStructure == null) {
                 throw new InconsistentRepositoryException();
         }
     }
@@ -281,16 +258,81 @@ public class Repository implements Serializable {
 		}
 	}
 	
-	// ARTIST OPERATIONS
+    //------------------------------------------ FILE OPERATIONS ------------------------------------- //
+    
+    /**
+     * Count files.
+     * 
+     * @return the int
+     */
+    public int countFiles() {
+        return filesStructure.count();
+    }
+
+    /**
+     * Gets the file.
+     * 
+     * @param fileName
+     *            the file name
+     * 
+     * @return the file
+     */
+    public LocalAudioObject getFile(String fileName) {
+        return filesStructure.get(fileName);
+    }
+    
+    /**
+     * Gets all files
+     * @return
+     */
+    public Collection<LocalAudioObject> getFiles() {
+    	return filesStructure.getAll();
+    }
+    
+    /**
+     * Puts a new file
+     * @param file
+     * @return
+     */
+    public LocalAudioObject putFile(LocalAudioObject file) {
+    	filesStructure.put(file.getUrl(), file);
+    	return file;
+    }
+
+	/**
+	 * Removes a file
+	 * @param file
+	 */
+	public void removeFile(LocalAudioObject file) {
+		filesStructure.remove(file.getUrl());
+	}
+	
+	/**
+	 * Removes a file
+	 * @param file
+	 */
+	public void removeFile(File file) {
+		filesStructure.remove(file.getAbsolutePath());
+	}
+	
+	// --------------------------------------- ARTIST OPERATIONS ------------------------------------- //
 	
     /**
      * Access artist structure
      * @return
      */
     public Map<String, Artist> getArtistStructure() {
-        return structure.getArtistStructure();
+        return artistsStructure.getStructure();
     }
     
+	/**
+	 * Return number of artists
+	 * @return
+	 */
+	public int countArtists() {
+		return artistsStructure.count();
+	}
+	
     /**
      * Returns artist given by name or null
      * @param artistName
@@ -298,9 +340,9 @@ public class Repository implements Serializable {
      */
     public Artist getArtist(String artistName) {
     	if (ApplicationState.getInstance().isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
-    		return getArtistStructure().get(artistName);
+    		return artistsStructure.get(artistName);
     	} else {
-    		return getArtistStructure().get(artistName.toLowerCase());
+    		return artistsStructure.get(artistName.toLowerCase());
     	}
     }
     
@@ -309,7 +351,7 @@ public class Repository implements Serializable {
      * @return
      */
     public Collection<Artist> getArtists() {
-    	return getArtistStructure().values();
+    	return artistsStructure.getAll();
     }
     
     /**
@@ -320,9 +362,9 @@ public class Repository implements Serializable {
     public Artist putArtist(String artistName) {
     	Artist artist = new Artist(artistName);
     	if (ApplicationState.getInstance().isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
-    		getArtistStructure().put(artistName, artist);
+    		artistsStructure.put(artistName, artist);
     	} else {
-    		getArtistStructure().put(artistName.toLowerCase(), artist);
+    		artistsStructure.put(artistName.toLowerCase(), artist);
     	}
     	return artist;
     }
@@ -333,20 +375,53 @@ public class Repository implements Serializable {
      */
     public void removeArtist(Artist artist) {
     	if (ApplicationState.getInstance().isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
-    		getArtistStructure().remove(artist.getName());
+    		artistsStructure.remove(artist.getName());
     	} else {
-    		getArtistStructure().remove(artist.getName().toLowerCase());
+    		artistsStructure.remove(artist.getName().toLowerCase());
     	}
     }
     
-    // GENRE OPERATIONS
+    // -------------------------------- FOLDER OPERATIONS ----------------------------------------- //
+    
+    public Map<String, Folder> getFolderStructure() {
+        return foldersStructure.getStructure();
+    }
+
+    /**
+     * Returns folder
+     * @param path
+     * @return
+     */
+    public Folder getFolder(String path) {
+    	return foldersStructure.get(path);
+    }
+    
+    /**
+     * Returns all folders
+     * @return
+     */
+    public Collection<Folder> getFolders() {
+    	return foldersStructure.getAll();
+    }
+    
+    /**
+     * Puts folder
+     * @param folder
+     * @return
+     */
+    public Folder putFolder(Folder folder) {
+    	foldersStructure.put(folder.getName(), folder);
+    	return folder;
+    }
+
+    // --------------------------------------------------- GENRE OPERATIONS ---------------------------------------------- //
     
     /**
      * Returns genre structure
      * @return
      */
     public Map<String, Genre> getGenreStructure() {
-        return structure.getGenreStructure();
+        return genresStructure.getStructure();
     }
 
     /**
@@ -354,7 +429,7 @@ public class Repository implements Serializable {
      * @return
      */
     public Collection<Genre> getGenres() {
-    	return getGenreStructure().values();
+    	return genresStructure.getAll();
     }
     
     /**
@@ -364,9 +439,9 @@ public class Repository implements Serializable {
      */
     public Genre getGenre(String genre) {
     	if (ApplicationState.getInstance().isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
-    		return getGenreStructure().get(genre);
+    		return genresStructure.get(genre);
     	} else {
-    		return getGenreStructure().get(genre.toLowerCase());
+    		return genresStructure.get(genre.toLowerCase());
     	}
     }
 
@@ -378,9 +453,9 @@ public class Repository implements Serializable {
     public Genre putGenre(String genreName) {
     	Genre genre = new Genre(genreName);
     	if (ApplicationState.getInstance().isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
-    		getGenreStructure().put(genreName, genre);
+    		genresStructure.put(genreName, genre);
     	} else {
-    		getGenreStructure().put(genreName.toLowerCase(), genre);
+    		genresStructure.put(genreName.toLowerCase(), genre);
     	}
     	return genre;
     }
@@ -391,12 +466,52 @@ public class Repository implements Serializable {
      */
     public void removeGenre(Genre genre) {
     	if (ApplicationState.getInstance().isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
-    		getGenreStructure().remove(genre.getName());
+    		genresStructure.remove(genre.getName());
     	} else {
-    		getGenreStructure().remove(genre.getName().toLowerCase());
+    		genresStructure.remove(genre.getName().toLowerCase());
     	}
     }
 
+    // ----------------------------------------------- YEAR OPERATIONS --------------------------------------------------- //
+    
+    public Map<String, Year> getYearStructure() {
+        return yearStructure.getStructure();
+    }
+
+    /**
+     * Returns year
+     * @param year
+     * @return
+     */
+    public Year getYear(String year) {
+    	return yearStructure.get(year);
+    }
+    
+    /**
+     * Gets all years
+     * @return
+     */
+    public Collection<Year> getYears() {
+    	return yearStructure.getAll();
+    }
+    
+    /**
+     * Puts a year
+     * @param year
+     * @return
+     */
+    public Year putYear(Year year) {
+    	yearStructure.put(year.getName(), year);
+    	return year;
+    }
+
+    /**
+     * Removes a year
+     * @param year
+     */
+    public void removeYear(Year year) {
+    	yearStructure.remove(year.getName());
+    }
 
 
 }

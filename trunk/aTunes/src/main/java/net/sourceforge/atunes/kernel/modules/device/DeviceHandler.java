@@ -140,7 +140,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
         Random r = new Random(new Date().getTime());
 
         // Get free space in device
-        long deviceFreeSpace = deviceRepository.getFolders().get(0).getFreeSpace();
+        long deviceFreeSpace = deviceRepository.getRepositoryFolders().get(0).getFreeSpace();
         if (leaveFree >= 0) {
             leaveFree = (leaveFree) * 1048576; // Transfrom to same unit
         } else {
@@ -214,7 +214,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
             size = size + file.getFile().length();
         }
         // Get free space in device
-        long deviceFreeSpace = deviceRepository.getFolders().get(0).getFreeSpace();
+        long deviceFreeSpace = deviceRepository.getRepositoryFolders().get(0).getFreeSpace();
 
         // Check if there is enough free space on device
         if (size > deviceFreeSpace) {
@@ -222,7 +222,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
             return;
         }
 
-        final TransferToDeviceProcess process = new TransferToDeviceProcess(collection, deviceRepository.getFolders().get(0).getAbsolutePath());
+        final TransferToDeviceProcess process = new TransferToDeviceProcess(collection, deviceRepository.getRepositoryFolders().get(0).getAbsolutePath());
         process.addProcessListener(new ProcessListener() {
             @Override
             public void processCanceled() {
@@ -330,7 +330,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
     private String getDeviceData() {
         if (deviceRepository != null) {
             int songs = deviceRepository.countFiles();
-            File dir = deviceRepository.getFolders().get(0);
+            File dir = deviceRepository.getRepositoryFolders().get(0);
             return StringUtils.getString(Integer.toString(songs), " ", I18nUtils.getString("SONGS"), "  (", I18nUtils.getString("FREE_SPACE"), ": ", StringUtils
                     .fromByteToMegaOrGiga(dir.getFreeSpace()), ")");
         }
@@ -365,7 +365,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
      */
     public Collection<LocalAudioObject> getAudioFilesList() {
         if (deviceRepository != null) {
-            return deviceRepository.getAudioFilesList();
+            return deviceRepository.getFiles();
         }
         return Collections.emptyList();
     }
@@ -468,8 +468,8 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
         GuiHandler.getInstance().showProgressBar(true, null);
         Logger.info("Refreshing device");
         Repository oldDeviceRepository = deviceRepository;
-        deviceRepository = new Repository(oldDeviceRepository.getFolders(), null);
-        currentLoader = new RepositoryLoader(oldDeviceRepository.getFolders(), oldDeviceRepository, deviceRepository, true);
+        deviceRepository = new Repository(oldDeviceRepository.getRepositoryFolders(), null);
+        currentLoader = new RepositoryLoader(oldDeviceRepository.getRepositoryFolders(), oldDeviceRepository, deviceRepository, true);
         currentLoader.addRepositoryLoaderListener(this);
         currentLoader.start();
     }
@@ -714,7 +714,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
 	 * @return
 	 */
 	public String getDeviceLocation() {
-		return getDeviceRepository() != null ? getDeviceRepository().getFolders().get(0).getAbsolutePath() : null;
+		return getDeviceRepository() != null ? getDeviceRepository().getRepositoryFolders().get(0).getAbsolutePath() : null;
 	}
 
 	@Override

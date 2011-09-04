@@ -91,7 +91,7 @@ public final class StatisticsHandler extends AbstractHandler {
      */
     private void fillStats(AudioFile audioFile) {
         String songPath = audioFile.getUrl();
-        if (RepositoryHandler.getInstance().getAudioFilesMap().containsKey(songPath)) {
+        if (RepositoryHandler.getInstance().getFile(songPath) != null) {
             statistics.setTotalPlays(statistics.getTotalPlays() + 1);
 
             AudioFileStats stats = statistics.getAudioFilesStats().get(songPath);

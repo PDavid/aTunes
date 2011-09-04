@@ -174,7 +174,7 @@ public class RepositoryLoader extends Thread {
 	 */
 	static int countFilesInRepository(Repository rep) {
 		int files = 0;
-		for (File dir : rep.getFolders()) {
+		for (File dir : rep.getRepositoryFolders()) {
 			files = files + countFiles(dir);
 		}
 		return files;
@@ -193,7 +193,7 @@ public class RepositoryLoader extends Thread {
 	private static File getRepositoryFolderContaining(Repository rep,
 			File folder) {
 		String path = folder.getAbsolutePath();
-		for (File f : rep.getFolders()) {
+		for (File f : rep.getRepositoryFolders()) {
 			if (path.startsWith(f.getAbsolutePath())) {
 				return f;
 			}
@@ -715,8 +715,7 @@ public class RepositoryLoader extends Thread {
 			}
 
 			// Remove from file list
-			RepositoryHandler.getInstance().getRepository().getAudioFiles()
-					.remove(file.getUrl());
+			RepositoryHandler.getInstance().getRepository().removeFile(file);
 
 			// Update repository size
 			RepositoryHandler.getInstance().getRepository()
@@ -750,8 +749,7 @@ public class RepositoryLoader extends Thread {
 		}
 
 		// Get root folder
-		Folder rootFolder = RepositoryHandler.getInstance().getRepository()
-				.getFolderStructure().get(repositoryFolder.getAbsolutePath());
+		Folder rootFolder = RepositoryHandler.getInstance().getRepository().getFolder(repositoryFolder.getAbsolutePath());
 
 		// Now navigate through folder until find folder that contains file
 		String path = file.getFile().getParentFile().getAbsolutePath();
@@ -775,10 +773,8 @@ public class RepositoryLoader extends Thread {
 	 */
 	static void renameFile(LocalAudioObject audioFile, File oldFile, File newFile) {
 		audioFile.setFile(newFile);
-		RepositoryHandler.getInstance().getRepository().getAudioFiles().remove(
-				oldFile.getAbsolutePath());
-		RepositoryHandler.getInstance().getRepository().getAudioFiles().put(
-				newFile.getAbsolutePath(), audioFile);
+		RepositoryHandler.getInstance().getRepository().removeFile(oldFile);
+		RepositoryHandler.getInstance().getRepository().putFile(audioFile);
 	}
 
 	/**
