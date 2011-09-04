@@ -91,13 +91,12 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
     	}
     	
     	List<TreeObject<?>> toRemove = new ArrayList<TreeObject<?>>();
-        Map<String, Artist> structure = RepositoryHandler.getInstance().getArtistStructure();
         Map<String, Album> favAlbums = getFavorites().getFavoriteAlbums();
         for (int i = 0; i < songs.size(); i++) {
         	LocalAudioObject f = songs.get(i);
-            Artist artist = structure.get(f.getArtist());
+            Artist artist = RepositoryHandler.getInstance().getArtist(f.getArtist());
             if (artist == null) {
-                artist = structure.get(f.getAlbumArtist());
+                artist = RepositoryHandler.getInstance().getArtist(f.getAlbumArtist());
             }
             Album album = artist.getAlbum(f.getAlbum());
             if (favAlbums.containsValue(album)) {
@@ -123,11 +122,10 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
     	}
 
     	List<TreeObject<?>> toRemove = new ArrayList<TreeObject<?>>();    	
-        Map<String, Artist> structure = RepositoryHandler.getInstance().getArtistStructure();
         Map<String, Artist> favArtists = getFavorites().getFavoriteArtists();
         for (int i = 0; i < songs.size(); i++) {
         	LocalAudioObject f = songs.get(i);
-            Artist artist = structure.get(f.getArtist());
+            Artist artist = RepositoryHandler.getInstance().getArtist(f.getArtist());
             if (favArtists.containsValue(artist)) {
             	toRemove.add(artist);
             } else {
@@ -300,11 +298,11 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
             getFavorites().getFavoriteAudioFiles().remove(file.getUrl());
 
             // If artist has been removed then remove it from favorites too
-            if (!RepositoryHandler.getInstance().getArtistStructure().containsKey(file.getArtist())) {
+            if (RepositoryHandler.getInstance().getArtist(file.getArtist()) == null) {
                 getFavorites().getFavoriteArtists().remove(file.getArtist());
             } else {
                 // If album has been removed then remove it from favorites too
-                if (RepositoryHandler.getInstance().getArtistStructure().get(file.getArtist()).getAlbum(file.getAlbum()) == null) {
+                if (RepositoryHandler.getInstance().getArtist(file.getArtist()).getAlbum(file.getAlbum()) == null) {
                     getFavorites().getFavoriteAlbums().remove(file.getAlbum());
                 }
             }

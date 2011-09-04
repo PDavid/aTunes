@@ -48,7 +48,7 @@ public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
             if (!lovedTracks.isEmpty()) {
                 List<LocalAudioObject> favoriteAudioFiles = new ArrayList<LocalAudioObject>();
                 for (LastFmLovedTrack lovedTrack : lovedTracks) {
-                    Artist artist = RepositoryHandler.getInstance().getArtistStructure().get(lovedTrack.getArtist());
+                    Artist artist = RepositoryHandler.getInstance().getArtist(lovedTrack.getArtist());
                     if (artist != null) {
                         for (LocalAudioObject audioObject : artist.getAudioObjects()) {
                             if (audioObject.getTitleOrFileName().equalsIgnoreCase(lovedTrack.getTitle())) {

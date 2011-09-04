@@ -56,6 +56,7 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
     private JComboBox extendedToolTipDelay;
     private JCheckBox useSmartTagViewSorting;
     private JCheckBox useArtistNamesSorting;
+    private JCheckBox useCaseSensitiveInTree;
 
     /**
      * Check box to highlight elements with incomplete tags (selected) or not
@@ -194,6 +195,7 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
         });
         useSmartTagViewSorting = new JCheckBox(I18nUtils.getString("USE_SMART_TAG_VIEW_SORTING"));
         useArtistNamesSorting = new JCheckBox(I18nUtils.getString("USE_PERSON_NAMES_ARTIST_TAG_VIEW_SORTING"));
+        useCaseSensitiveInTree = new JCheckBox(I18nUtils.getString("CASE_SENSITIVE_TREE"));
         highlightElementsWithIncompleteBasicTags = new JCheckBox(I18nUtils.getString("HIGHLIGHT_INCOMPLETE_TAG_ELEMENTS"));
         highlightElementsWithIncompleteBasicTags.addActionListener(new ActionListener() {
             @Override
@@ -246,8 +248,10 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
         c.gridy = 4;
         add(useArtistNamesSorting, c);
         c.gridy = 5;
-        add(highlightElementsWithIncompleteBasicTags, c);
+        add(useCaseSensitiveInTree, c);
         c.gridy = 6;
+        add(highlightElementsWithIncompleteBasicTags, c);
+        c.gridy = 7;
         c.weighty = 1;
         c.weightx = 0;
         c.anchor = GuiUtils.getComponentOrientation().isLeftToRight() ? GridBagConstraints.NORTHWEST : GridBagConstraints.NORTHEAST;
@@ -264,6 +268,7 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
         state.setHighlightIncompleteTagElements(highlightElementsWithIncompleteBasicTags.isSelected());
         state.setHighlightIncompleteTagFoldersAttributes(tagAttributesTableModel.getSelectedTagAttributes());
         state.setUsePersonNamesArtistTagViewSorting(useArtistNamesSorting.isSelected());
+        state.setKeyAlwaysCaseSensitiveInRepositoryStructure(useCaseSensitiveInTree.isSelected());
 
         return false;
     }
@@ -320,8 +325,18 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
     }
 
     /**
+     * Set the keys of repository structures artist and genre to case sensitive or not.
+     * @param value
+     */
+    private void setKeyAlwaysCaseSensitiveInRepositoryStructure(boolean value)
+    {
+        useCaseSensitiveInTree.setSelected(value);
+    }
+
+
+    /**
      * Sets property to highlight folder with incomplete tags
-     * 
+     *
      * @param highlightFoldersWithIncompleteBasicTags
      *            the highlightFoldersWithIncompleteBasicTags to set
      */
@@ -339,6 +354,7 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
         setUseSmartTagViewSorting(state.isUseSmartTagViewSorting());
         setHighlightFoldersWithIncompleteBasicTags(state.isHighlightIncompleteTagElements());
         setUsePersonNamesArtistTagViewSorting(state.isUsePersonNamesArtistTagViewSorting());
+        setKeyAlwaysCaseSensitiveInRepositoryStructure(state.isKeyAlwaysCaseSensitiveInRepositoryStructure());
     }
 
     @Override

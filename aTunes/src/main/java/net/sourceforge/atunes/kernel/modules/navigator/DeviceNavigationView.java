@@ -157,19 +157,7 @@ public final class DeviceNavigationView extends AbstractNavigationView {
 
     @Override
     protected Map<String, ?> getViewData(ViewMode viewMode) {
-        Map<String, ?> data;
-        if (viewMode == ViewMode.YEAR) {
-        	data = DeviceHandler.getInstance().getYearStructure();
-        } else if (viewMode == ViewMode.GENRE) {
-            data = DeviceHandler.getInstance().getDeviceGenreStructure();
-        } else if (viewMode == ViewMode.FOLDER) {
-            data = DeviceHandler.getInstance().getDeviceFolderStructure();
-        } else if (viewMode == ViewMode.ALBUM) {
-            data = DeviceHandler.getInstance().getDeviceAlbumStructure();
-        } else {
-            data = DeviceHandler.getInstance().getDeviceArtistStructure();
-        }
-        return data;
+    	return DeviceHandler.getInstance().getDataForView(viewMode);
     }
 
     @SuppressWarnings("unchecked")

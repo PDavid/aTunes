@@ -71,7 +71,7 @@ public class RepositoryStructure implements Serializable {
      * 
      * @return the artist structure
      */
-    public Map<String, Artist> getArtistStructure() {
+    Map<String, Artist> getArtistStructure() {
         return artistStructure;
     }
 

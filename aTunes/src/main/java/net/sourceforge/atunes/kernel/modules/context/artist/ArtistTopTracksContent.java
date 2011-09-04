@@ -86,7 +86,7 @@ public class ArtistTopTracksContent extends AbstractContextPanelContent {
         @Override
         public void actionPerformed(ActionEvent e) {
         	// Get artist files from repository and match by title with top tracks to create a play list
-    		Artist artist = RepositoryHandler.getInstance().getArtistStructure().get(lastTopTracks.getArtist());
+    		Artist artist = RepositoryHandler.getInstance().getArtist(lastTopTracks.getArtist());
     		if (artist != null) {
     			List<LocalAudioObject> audioObjects = artist.getAudioObjects();
     			Map<String, LocalAudioObject> titles = new HashMap<String, LocalAudioObject>();

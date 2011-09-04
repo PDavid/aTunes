@@ -78,7 +78,7 @@ public class Genre implements Serializable, TreeObject<LocalAudioObject> {
         if (!(o instanceof Genre)) {
             return false;
         }
-        return ((Genre) o).name.equals(name);
+        return ((Genre) o).name.toLowerCase().equals(name.toLowerCase());
     }
 
     /**

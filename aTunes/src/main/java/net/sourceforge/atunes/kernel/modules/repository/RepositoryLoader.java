@@ -295,7 +295,7 @@ public class RepositoryLoader extends Thread {
 				boolean oldArtistRemoved = false;
 				
 				if (artistChanged) {
-					Artist oldArtist = repository.getArtistStructure().get(oldTag.getArtist());
+					Artist oldArtist = repository.getArtist(oldTag.getArtist());
 					if (oldArtist == null) {
 						// Artist has been renamed -> Update statistics
 						StatisticsHandler.getInstance().updateArtist(oldTag.getArtist(), newTag.getArtist());
@@ -303,9 +303,7 @@ public class RepositoryLoader extends Thread {
 					}
 				}
 				if (albumChanged) {
-					Artist artistWithOldAlbum = oldArtistRemoved ? 
-							repository.getArtistStructure().get(newTag.getArtist())
-							: repository.getArtistStructure().get(oldTag.getArtist());
+					Artist artistWithOldAlbum = repository.getArtist(oldArtistRemoved ? newTag.getArtist() : oldTag.getArtist()); 
 					Album oldAlbum = artistWithOldAlbum.getAlbum(oldTag.getAlbum());
 					if (oldAlbum == null) {
 						// Album has been renamed -> Update statistics
@@ -632,7 +630,7 @@ public class RepositoryLoader extends Thread {
 	static void addExternalPictureForAlbum(Repository repository,
 			String artistName, String albumName, File picture) {
 		if (repository != null) {
-			Artist artist = repository.getArtistStructure().get(artistName);
+			Artist artist = repository.getArtist(artistName);
 			if (artist == null) {
 				return;
 			}
@@ -677,11 +675,9 @@ public class RepositoryLoader extends Thread {
 			}
 
 			// Remove from tree structure
-			Artist a = RepositoryHandler.getInstance().getArtistStructure()
-					.get(albumArtist);
+			Artist a = RepositoryHandler.getInstance().getArtist(albumArtist);
 			if (a == null) {
-				a = RepositoryHandler.getInstance().getArtistStructure().get(
-						artist);
+				a = RepositoryHandler.getInstance().getArtist(artist);
 			}
 			if (a != null) {
 				Album alb = a.getAlbum(album);
@@ -693,19 +689,17 @@ public class RepositoryLoader extends Thread {
 					}
 
 					if (a.size() <= 1) {
-						RepositoryHandler.getInstance().getArtistStructure()
-								.remove(a.getName());
+						RepositoryHandler.getInstance().removeArtist(a);
 					}
 				}
 			}
 
 			// Remove from genre structure
-			Genre g = RepositoryHandler.getInstance().getGenreStructure().get(
-					genre);
+			Genre g = RepositoryHandler.getInstance().getGenre(genre);
 			if (g != null) {
 				g.removeAudioFile(file);
 				if (g.size() <= 1) {
-					RepositoryHandler.getInstance().getGenreStructure().remove(genre);
+					RepositoryHandler.getInstance().removeGenre(g);
 				}
 			}
 
@@ -790,7 +784,7 @@ public class RepositoryLoader extends Thread {
 	/**
 	 * Refreshes folder
 	 * @param repository
-	 * @param folder
+	 * @param folders
 	 */
 	public static void refreshFolders(Repository repository, List<Folder> folders) {
 		RepositoryHandler.getInstance().startTransaction();

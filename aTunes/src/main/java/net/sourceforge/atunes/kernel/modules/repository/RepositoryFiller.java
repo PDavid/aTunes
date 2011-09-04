@@ -39,8 +39,8 @@ import net.sourceforge.atunes.model.Repository;
 final class RepositoryFiller {
 
 	private Repository repository;
-	
-    /**
+
+	/**
      * Creates a new filler for given repository
      * @param repository
      */
@@ -116,10 +116,9 @@ final class RepositoryFiller {
     	String album = audioFile.getAlbum();
 
     	// Create artist object if needed
-    	Artist artistObject = repository.getArtistStructure().get(artist);
+    	Artist artistObject = repository.getArtist(artist);
     	if (artistObject == null) {
-    		artistObject = new Artist(artist);
-    		repository.getArtistStructure().put(artist, artistObject);
+    		artistObject = repository.putArtist(artist);
     	}
 
     	// Create album object if needed
@@ -141,10 +140,9 @@ final class RepositoryFiller {
      */
     private void addToGenreStructure(LocalAudioObject audioFile) {
     	String genre = audioFile.getGenre();
-    	Genre genreObject = repository.getGenreStructure().get(genre);
+    	Genre genreObject = repository.getGenre(genre);
     	if (genreObject == null) {
-    		genreObject = new Genre(genre);
-    		repository.getGenreStructure().put(genre, genreObject);
+    		genreObject = repository.putGenre(genre);
     	}
     	genreObject.addAudioFile(audioFile);
     }
@@ -227,9 +225,9 @@ final class RepositoryFiller {
 		}
 		
 		boolean albumArtistPresent = true;
-		Artist a = repository.getArtistStructure().get(albumArtist);
+		Artist a = repository.getArtist(albumArtist);
 		if (a == null) {
-			a = repository.getArtistStructure().get(artist);
+			a = repository.getArtist(artist);
 			albumArtistPresent = false;
 		}
 		if (a != null) {
@@ -242,13 +240,13 @@ final class RepositoryFiller {
 				}
 
 				if (a.size() <= 0) {
-					repository.getArtistStructure().remove(a.getName());
+					repository.removeArtist(a);
 				}
 			}
 			// If album artist field is present, audio file might still be
 			// present under artist name so check
 			if (albumArtistPresent) {
-				a = repository.getArtistStructure().get(artist);
+				a = repository.getArtist(artist);
 				if (a != null) {
 					alb = a.getAlbum(album);
 					if (alb != null) {
@@ -260,7 +258,7 @@ final class RepositoryFiller {
 						// Maybe needs to be set to 0 in case node gets
 						// deleted
 						if (a.size() <= 1) {
-							repository.getArtistStructure().remove(a.getName());
+							repository.removeArtist(a);
 						}
 					}
 				}
@@ -282,12 +280,12 @@ final class RepositoryFiller {
 			genre = Genre.getUnknownGenre();
 		}
 
-		Genre g = repository.getGenreStructure().get(genre);
+		Genre g = repository.getGenre(genre);
 		if (g != null) {
 			g.removeAudioFile(file);
 
 			if (g.size() <= 1) {
-				repository.getGenreStructure().remove(genre);
+				repository.removeGenre(g);
 			}
 		}
     }

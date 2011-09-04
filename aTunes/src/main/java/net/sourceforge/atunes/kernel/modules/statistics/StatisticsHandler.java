@@ -107,7 +107,7 @@ public final class StatisticsHandler extends AbstractHandler {
 
             String artist = audioFile.getArtist();
 
-            Artist a = RepositoryHandler.getInstance().getArtistStructure().get(artist);
+            Artist a = RepositoryHandler.getInstance().getArtist(artist);
 
             // Unknown artist -> don't fill artist stats
             if (a == null) {
@@ -220,7 +220,7 @@ public final class StatisticsHandler extends AbstractHandler {
         if (statisticsAlbums != null) {
             List<Album> albums = new ArrayList<Album>();
             for (StatisticsAlbum statisticAlbum : statisticsAlbums) {
-            	Artist artist = RepositoryHandler.getInstance().getArtistStructure().get(statisticAlbum.getArtist());
+            	Artist artist = RepositoryHandler.getInstance().getArtist(statisticAlbum.getArtist());
             	if (artist != null) {
             		Album album = artist.getAlbum(statisticAlbum.getAlbum());
             		if (album != null) {
@@ -256,7 +256,7 @@ public final class StatisticsHandler extends AbstractHandler {
         if (artistsNames != null) {
             List<Artist> artists = new ArrayList<Artist>();
             for (String artistName : artistsNames) {
-                artists.add(RepositoryHandler.getInstance().getArtistStructure().get(artistName));
+                artists.add(RepositoryHandler.getInstance().getArtist(artistName));
             }
             return artists;
         }

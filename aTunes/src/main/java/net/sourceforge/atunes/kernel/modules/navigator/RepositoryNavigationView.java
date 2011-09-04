@@ -170,17 +170,7 @@ public class RepositoryNavigationView extends AbstractNavigationView {
 
     @Override
     protected Map<String, ?> getViewData(ViewMode viewMode) {
-        if (viewMode == ViewMode.YEAR) {
-            return RepositoryHandler.getInstance().getYearStructure();
-        } else if (viewMode == ViewMode.GENRE) {
-            return RepositoryHandler.getInstance().getGenreStructure();
-        } else if (viewMode == ViewMode.FOLDER) {
-            return RepositoryHandler.getInstance().getFolderStructure();
-        } else if (viewMode == ViewMode.ALBUM) {
-            return RepositoryHandler.getInstance().getAlbumStructure();
-        } else {
-            return RepositoryHandler.getInstance().getArtistStructure();
-        }
+    	return RepositoryHandler.getInstance().getDataForView(viewMode);
     }
 
     @Override

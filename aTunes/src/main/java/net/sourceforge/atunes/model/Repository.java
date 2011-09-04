@@ -31,6 +31,7 @@ import java.util.Map;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.kernel.modules.repository.exception.InconsistentRepositoryException;
+import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.Logger;
 
 public class Repository implements Serializable {
@@ -133,16 +134,8 @@ public class Repository implements Serializable {
         return new ArrayList<File>(folders);
     }
 
-    public Map<String, Artist> getArtistStructure() {
-        return structure.getArtistStructure();
-    }
-
     public Map<String, Folder> getFolderStructure() {
         return structure.getFolderStructure();
-    }
-
-    public Map<String, Genre> getGenreStructure() {
-        return structure.getGenreStructure();
     }
 
     public Map<String, Year> getYearStructure() {
@@ -287,4 +280,123 @@ public class Repository implements Serializable {
 			return this.pending;
 		}
 	}
+	
+	// ARTIST OPERATIONS
+	
+    /**
+     * Access artist structure
+     * @return
+     */
+    public Map<String, Artist> getArtistStructure() {
+        return structure.getArtistStructure();
+    }
+    
+    /**
+     * Returns artist given by name or null
+     * @param artistName
+     * @return
+     */
+    public Artist getArtist(String artistName) {
+    	if (ApplicationState.getInstance().isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
+    		return getArtistStructure().get(artistName);
+    	} else {
+    		return getArtistStructure().get(artistName.toLowerCase());
+    	}
+    }
+    
+    /**
+     * Returns all artists
+     * @return
+     */
+    public Collection<Artist> getArtists() {
+    	return getArtistStructure().values();
+    }
+    
+    /**
+     * Adds an artist to repository
+     * @param artistName
+     * @return created artist
+     */
+    public Artist putArtist(String artistName) {
+    	Artist artist = new Artist(artistName);
+    	if (ApplicationState.getInstance().isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
+    		getArtistStructure().put(artistName, artist);
+    	} else {
+    		getArtistStructure().put(artistName.toLowerCase(), artist);
+    	}
+    	return artist;
+    }
+    
+    /**
+     * Removes artist from repository
+     * @param artist
+     */
+    public void removeArtist(Artist artist) {
+    	if (ApplicationState.getInstance().isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
+    		getArtistStructure().remove(artist.getName());
+    	} else {
+    		getArtistStructure().remove(artist.getName().toLowerCase());
+    	}
+    }
+    
+    // GENRE OPERATIONS
+    
+    /**
+     * Returns genre structure
+     * @return
+     */
+    public Map<String, Genre> getGenreStructure() {
+        return structure.getGenreStructure();
+    }
+
+    /**
+     * Returns all genres
+     * @return
+     */
+    public Collection<Genre> getGenres() {
+    	return getGenreStructure().values();
+    }
+    
+    /**
+     * Returns genre given by name or null
+     * @param artistName
+     * @return
+     */
+    public Genre getGenre(String genre) {
+    	if (ApplicationState.getInstance().isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
+    		return getGenreStructure().get(genre);
+    	} else {
+    		return getGenreStructure().get(genre.toLowerCase());
+    	}
+    }
+
+    /**
+     * Adds a genre to repository
+     * @param genreName
+     * @return created genre
+     */
+    public Genre putGenre(String genreName) {
+    	Genre genre = new Genre(genreName);
+    	if (ApplicationState.getInstance().isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
+    		getGenreStructure().put(genreName, genre);
+    	} else {
+    		getGenreStructure().put(genreName.toLowerCase(), genre);
+    	}
+    	return genre;
+    }
+
+    /**
+     * Removes genre from repository
+     * @param artist
+     */
+    public void removeGenre(Genre genre) {
+    	if (ApplicationState.getInstance().isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
+    		getGenreStructure().remove(genre.getName());
+    	} else {
+    		getGenreStructure().remove(genre.getName().toLowerCase());
+    	}
+    }
+
+
+
 }

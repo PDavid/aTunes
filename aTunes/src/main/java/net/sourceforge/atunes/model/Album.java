@@ -117,9 +117,9 @@ public class Album implements Serializable, TreeObject<LocalAudioObject>, Compar
     	if (o == null || name == null || artist == null) {
     		return 1;
     	} else {
-    		int artistCompare = artist.compareTo(o.artist); 
+    		int artistCompare = artist.compareTo(o.artist);
     		if (artistCompare == 0) {
-    			return name.compareTo(o.name);
+    			return name.toLowerCase().compareTo(o.name.toLowerCase());
     		} else {
     			return artistCompare;
     		}
@@ -271,7 +271,7 @@ public class Album implements Serializable, TreeObject<LocalAudioObject>, Compar
 		if (name == null) {
 			if (other.name != null)
 				return false;
-		} else if (!name.equals(other.name))
+		} else if (!name.toLowerCase().equals(other.name.toLowerCase()))
 			return false;
 		return true;
 	}
