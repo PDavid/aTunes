@@ -65,6 +65,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.model.TreeObject;
+import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class DeviceNavigationView extends AbstractNavigationView {
@@ -181,7 +182,7 @@ public final class DeviceNavigationView extends AbstractNavigationView {
         root.removeAllChildren();
 
         // Build tree
-    	viewMode.getTreeGenerator().buildTree("DEVICE", this, (Map<String, Year>) getViewData(viewMode), treeFilter, root, treeModel, objectsSelected, objectsExpanded);
+        TreeGeneratorFactory.getTreeGenerator(viewMode).buildTree("DEVICE", this, (Map<String, Year>) getViewData(viewMode), treeFilter, root, treeModel, objectsSelected, objectsExpanded);
 
         
         // Expand nodes

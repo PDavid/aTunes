@@ -28,8 +28,8 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.gui.images.AlbumImageIcon;
 import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
-import net.sourceforge.atunes.kernel.modules.navigator.ViewMode;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class ShowAlbumsInNavigatorAction extends ActionWithColorMutableIcon {

@@ -42,7 +42,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  *
  */
-public class AlbumTreeGenerator implements TreeGenerator {
+class AlbumTreeGenerator implements TreeGenerator {
 
     protected static final class AlbumDefaultMutableTreeNode extends DefaultMutableTreeNode {
         private static final long serialVersionUID = -1276777390072754207L;

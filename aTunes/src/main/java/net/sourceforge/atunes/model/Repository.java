@@ -25,6 +25,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -321,7 +322,7 @@ public class Repository implements Serializable {
      * Access artist structure
      * @return
      */
-    public Map<String, Artist> getArtistStructure() {
+    Map<String, Artist> getArtistStructure() {
         return artistsStructure.getStructure();
     }
     
@@ -381,9 +382,30 @@ public class Repository implements Serializable {
     	}
     }
     
+    // -------------------------------- ALBUM OPERATIONS ----------------------------------------- //
+    
+    /**
+     * Access album structure
+     * @return
+     */
+    Map<String, Album> getAlbumStructure() {
+        Map<String, Album> albumsStructure = new HashMap<String, Album>();
+        Collection<Artist> artistCollection = getArtists();
+        for (Artist artist : artistCollection) {
+            for (Album album : artist.getAlbums().values()) {
+                albumsStructure.put(album.getNameAndArtist(), album);
+            }
+        }
+        return albumsStructure;
+    }
+    
     // -------------------------------- FOLDER OPERATIONS ----------------------------------------- //
     
-    public Map<String, Folder> getFolderStructure() {
+    /**
+     * Access folder structure
+     * @return
+     */
+    Map<String, Folder> getFolderStructure() {
         return foldersStructure.getStructure();
     }
 
@@ -420,7 +442,7 @@ public class Repository implements Serializable {
      * Returns genre structure
      * @return
      */
-    public Map<String, Genre> getGenreStructure() {
+    Map<String, Genre> getGenreStructure() {
         return genresStructure.getStructure();
     }
 
@@ -474,7 +496,11 @@ public class Repository implements Serializable {
 
     // ----------------------------------------------- YEAR OPERATIONS --------------------------------------------------- //
     
-    public Map<String, Year> getYearStructure() {
+    /**
+     * Structure
+     * @return
+     */
+    Map<String, Year> getYearStructure() {
         return yearStructure.getStructure();
     }
 

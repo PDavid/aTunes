@@ -18,24 +18,31 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.navigator;
+package net.sourceforge.atunes.model;
+
+import java.util.Collections;
+import java.util.Map;
 
 public enum ViewMode {
 
-    ARTIST(new ArtistTreeGenerator()), 
-    ALBUM(new AlbumTreeGenerator()), 
-    GENRE(new GenreTreeGenerator()), 
-    FOLDER(new FolderTreeGenerator()), 
-    YEAR(new YearTreeGenerator()), 
-    ARTIST_ALBUM(new ArtistTreeGenerator());
+    ARTIST, ALBUM, GENRE, FOLDER, YEAR, ARTIST_ALBUM;
     
-    private TreeGenerator treeGenerator;
-    
-    private ViewMode(TreeGenerator treeGenerator) {
-    	this.treeGenerator = treeGenerator;
-    }
-    
-    public TreeGenerator getTreeGenerator() {
-    	return this.treeGenerator;
+    /**
+     * Returns data from repository for this view
+     * @param repository
+     * @return
+     */
+    public Map<String, ?> getDataForView(Repository repository) {
+		if (repository != null) {
+			switch (this) {
+			case YEAR: return repository.getYearStructure();
+			case GENRE: return repository.getGenreStructure();
+			case FOLDER : return repository.getFolderStructure();
+			case ALBUM : return repository.getAlbumStructure();
+			case ARTIST : return repository.getArtistStructure();
+			case ARTIST_ALBUM : return repository.getArtistStructure();
+			}
+		}
+		return Collections.emptyMap();
     }
 }

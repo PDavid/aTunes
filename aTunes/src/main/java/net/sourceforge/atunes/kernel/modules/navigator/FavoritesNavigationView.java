@@ -67,6 +67,7 @@ import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.model.TreeObject;
+import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class FavoritesNavigationView extends AbstractNavigationView {

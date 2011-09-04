@@ -71,6 +71,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.model.TreeObject;
+import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -175,12 +176,12 @@ public class RepositoryNavigationView extends AbstractNavigationView {
 
     @Override
     public void selectAudioObject(ViewMode viewMode, AudioObject audioObject) {
-    	viewMode.getTreeGenerator().selectAudioObject(getTree(), audioObject);
+    	TreeGeneratorFactory.getTreeGenerator(viewMode).selectAudioObject(getTree(), audioObject);
     }
     
     @Override
 	public void selectArtist(ViewMode viewMode, String artist) {
-    	viewMode.getTreeGenerator().selectArtist(getTree(), artist);
+    	TreeGeneratorFactory.getTreeGenerator(viewMode).selectArtist(getTree(), artist);
 	}
     
     @SuppressWarnings("unchecked")
@@ -198,7 +199,7 @@ public class RepositoryNavigationView extends AbstractNavigationView {
         List<TreeObject<? extends AudioObject>> objectsExpanded = getTreeObjectsExpanded(tree, root);
         
         // Build tree
-        viewMode.getTreeGenerator().buildTree("REPOSITORY", this, (Map<String, Year>) getViewData(viewMode), treeFilter, root, treeModel, objectsSelected, objectsExpanded);
+        TreeGeneratorFactory.getTreeGenerator(viewMode).buildTree("REPOSITORY", this, (Map<String, Year>) getViewData(viewMode), treeFilter, root, treeModel, objectsSelected, objectsExpanded);
         
         getTree().expandRow(0);
     }

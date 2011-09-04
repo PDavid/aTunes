@@ -63,6 +63,7 @@ import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
