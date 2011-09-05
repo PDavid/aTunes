@@ -29,7 +29,7 @@
       <key>ClassPath</key>
       ${classpath}
       <key>VMOptions</key>
-      <string>-Xmx512m -Xms64m</string>
+      <string>-Xmx256m -Xms64m</string>
       <key>SplashFile</key>
       <string>$JAVAROOT/../splash.gif</string>
       <key>Properties</key>
