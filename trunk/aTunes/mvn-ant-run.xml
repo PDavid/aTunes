@@ -22,6 +22,9 @@
 	<taskdef name="desktopEntry" classpath="${lib_build}/ant-deb.jar" classname="com.googlecode.ant_deb_task.DesktopEntry" />
 	<!-- Creates an deb package-->
 	<taskdef name="deb" classpath="${lib_build}/ant-deb.jar" classname="com.googlecode.ant_deb_task.Deb" />
+	
+	<!-- SCP -->
+	<taskdef name="scp" classpath="${scp_classpath}" classname="org.apache.tools.ant.taskdefs.optional.ssh.Scp" />
 
 	<condition property="isMac">
 	      <os family="mac" />
@@ -169,6 +172,21 @@
 	<!-- Copy splash image to folder where Mac OS package is created, since Maven plugin does not allow to do this -->
 	<target name="copy_splash">
 		<copy todir="${basedir}/target/atunes-${version}/aTunes.app/Contents/Resources" file="${build_resources}/splash.gif" />	
+	</target>
+	
+	<!-- Uploads files to Sourceforge -->
+	<target name="upload">
+		<echo message="Starting upload"/>
+		
+		<scp todir="${user}:${password}@frs.sourceforge.net:/home/frs/project/a/at/atunes/latest">
+		    <fileset dir="${basedir}/target/">
+		      <include name="*.zip"/>
+		      <include name="*.exe"/>
+		      <include name="*.jar"/>
+		    </fileset>
+		  </scp>
+		
+		<echo message="Finished upload"/>
 	</target>
 
 </project>
