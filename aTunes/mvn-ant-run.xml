@@ -201,9 +201,8 @@
 		
 		<scp todir="${user}:${password}@frs.sourceforge.net:/home/frs/project/a/at/atunes/latest">
 		    <fileset dir="${basedir}/target/">
+		      <include name="*installer.*"/>
 		      <include name="*.zip"/>
-		      <include name="*.exe"/>
-		      <include name="*.jar"/>
 		    </fileset>
 		  </scp>
 		
