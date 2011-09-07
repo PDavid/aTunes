@@ -50,6 +50,18 @@ public abstract class AbstractCustomDialog extends JDialog {
     private static final long serialVersionUID = 1L;
 
     /**
+     * Convenience constructor, dialog is not closed if user presses close button
+     * Use this when dialog has a "cancel" or "close" button
+     * @param owner
+     * @param width
+     * @param height
+     * @param modal
+     */
+    public AbstractCustomDialog(Window owner, int width, int height, boolean modal) {
+    	this(owner, width, height, modal, CloseAction.NOTHING);
+    }
+    
+    /**
      * Instantiates a new custom modal dialog.
      * 
      * @param owner

@@ -54,7 +54,7 @@ public final class RepositorySelectionInfoDialog extends AbstractCustomDialog {
      *            the owner
      */
     public RepositorySelectionInfoDialog(JFrame owner) {
-        super(owner, 400, 250, true, CloseAction.NOTHING);
+        super(owner, 400, 250, true);
         setResizable(false);
         setTitle(I18nUtils.getString("REPOSITORY_SELECTION_INFO"));
         setContent();
