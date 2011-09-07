@@ -511,7 +511,7 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog {
      *            the owner
      */
     public MultiFolderSelectionDialog(JFrame owner) {
-        super(owner, 460, 530, true, CloseAction.DISPOSE);
+        super(owner, 460, 530, true);
         add(getContent());
         setResizable(false);
     }
