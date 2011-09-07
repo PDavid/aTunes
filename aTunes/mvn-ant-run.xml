@@ -191,10 +191,32 @@
 	</target>
 	
 	<!-- Copy splash image to folder where Mac OS package is created, since Maven plugin does not allow to do this -->
+	<!-- Also copy volume icon -->
 	<target name="copy_splash">
 		<copy todir="${basedir}/target/atunes-${version}/aTunes.app/Contents/Resources" file="${build_resources}/splash.gif" />	
+		<copy tofile="${basedir}/target/atunes-${version}/.VolumeIcon.icns" file="${build_resources}/macos/aTunes_dmg.icns" />
 	</target>
-	
+
+	<target name="recreate_dmg">
+		<!-- Remove created DMG which is wrong -->
+		<delete file="${basedir}/target/atunes-${version}.dmg"/>
+		
+		<!-- Remove xattr com.apple.FinderInfo which causes app bundle to being copied when executing it -->
+		<exec executable="xattr">
+			<arg value="-d"/>
+			<arg value="com.apple.FinderInfo"/>
+			<arg value="${basedir}/target/atunes-${version}/aTunes.app"/>
+		</exec>
+		
+		<!-- Create DMG again -->
+		<exec executable="${basedir}/build_tools/macos_createdmg.sh">
+			<arg value="${basedir}/target/atunes-${version}"/>
+			<arg value="aTunes ${version}"/>
+			<arg value="${basedir}/target/atunes-${version}_temp.dmg"/>
+			<arg value="${basedir}/target/atunes-${version}.dmg"/>
+		</exec>		
+	</target>
+
 	<!-- Uploads files to Sourceforge -->
 	<target name="upload">
 		<echo message="Starting upload"/>

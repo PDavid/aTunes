@@ -279,6 +279,21 @@
 							<goal>run</goal>
 						</goals>
 					</execution>
+					<execution>
+						<id>dmg</id>
+						<phase>verify</phase>
+						<configuration>
+							<tasks>
+								<property name="version" value="${project.version}" />
+								<ant antfile="${basedir}/mvn-ant-run.xml">
+									<target name="recreate_dmg" />
+								</ant>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
 				  </executions>
 				  </plugin>			
           	      <plugin>
