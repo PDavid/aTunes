@@ -21,18 +21,14 @@
 package net.sourceforge.atunes.kernel.modules.context.audioobject;
 
 import java.awt.Paint;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
 import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
-import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
-import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.LocalAudioObject;
@@ -48,14 +44,6 @@ public class AudioObjectContextPanel extends AbstractContextPanel {
 
     private static final long serialVersionUID = -7910261492394049289L;
 
-    private List<AbstractContextPanelContent> contents;
-
-    private LyricsService lyricsService;
-    
-    public void setLyricsService(LyricsService lyricsService) {
-		this.lyricsService = lyricsService;
-	}
-    
     @Override
     protected ColorMutableImageIcon getContextPanelIcon(final AudioObject audioObject) {
         if (audioObject != null) {
@@ -86,16 +74,6 @@ public class AudioObjectContextPanel extends AbstractContextPanel {
         }
 
         return I18nUtils.getString("SONG");
-    }
-
-    @Override
-    protected List<AbstractContextPanelContent> getContents() {
-        if (contents == null) {
-            contents = new ArrayList<AbstractContextPanelContent>();
-            contents.add(new AudioObjectBasicInfoContent(getState()));
-            contents.add(new LyricsContent(lyricsService));
-        }
-        return contents;
     }
 
     @Override

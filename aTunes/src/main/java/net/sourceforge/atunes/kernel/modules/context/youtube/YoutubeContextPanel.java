@@ -21,18 +21,14 @@
 package net.sourceforge.atunes.kernel.modules.context.youtube;
 
 import java.awt.Paint;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.VideoImageIcon;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
-import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeService;
 import net.sourceforge.atunes.model.AudioObject;
 
 /**
@@ -43,14 +39,6 @@ import net.sourceforge.atunes.model.AudioObject;
  */
 public class YoutubeContextPanel extends AbstractContextPanel {
 
-    private List<AbstractContextPanelContent> contents;
-
-    private YoutubeService youtubeService;
-    
-    public void setYoutubeService(YoutubeService youtubeService) {
-		this.youtubeService = youtubeService;
-	}
-    
     @Override
     protected ColorMutableImageIcon getContextPanelIcon(AudioObject audioObject) {
         return new ColorMutableImageIcon() {
@@ -69,15 +57,6 @@ public class YoutubeContextPanel extends AbstractContextPanel {
     @Override
     protected String getContextPanelTitle(AudioObject audioObject) {
         return "YouTube";
-    }
-
-    @Override
-    protected List<AbstractContextPanelContent> getContents() {
-        if (contents == null) {
-            contents = new ArrayList<AbstractContextPanelContent>();
-            contents.add(new YoutubeContent(getState(), youtubeService));
-        }
-        return contents;
     }
 
     @Override

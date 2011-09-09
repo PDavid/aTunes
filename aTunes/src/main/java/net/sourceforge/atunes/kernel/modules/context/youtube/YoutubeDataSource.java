@@ -49,10 +49,6 @@ public class YoutubeDataSource implements ContextInformationDataSource {
 
     private YoutubeService youtubeService;
     
-    public YoutubeDataSource(YoutubeService youtubeService) {
-    	this.youtubeService = youtubeService;
-    }
-    
     @Override
     public Map<String, ?> getData(Map<String, ?> parameters) {
         Map<String, Object> result = new HashMap<String, Object>();
@@ -69,4 +65,8 @@ public class YoutubeDataSource implements ContextInformationDataSource {
         }
         return null;
     }
+    
+    public void setYoutubeService(YoutubeService youtubeService) {
+		this.youtubeService = youtubeService;
+	}
 }

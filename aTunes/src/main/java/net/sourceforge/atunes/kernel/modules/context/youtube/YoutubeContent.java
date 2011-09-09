@@ -37,7 +37,6 @@ import net.sourceforge.atunes.kernel.modules.internetsearch.SearchFactory;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeResultEntry;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeService;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -57,14 +56,9 @@ public class YoutubeContent extends AbstractContextPanelContent {
     
     private JMenuItem openYoutube;
     
-    private IState state;
-    
     private YoutubeService youtubeService;
 
-    public YoutubeContent(IState state, YoutubeService youtubeService) {
-        super(new YoutubeDataSource(youtubeService));
-        this.state = state;
-        this.youtubeService = youtubeService;
+    public YoutubeContent() {
         moreResults = new JMenuItem(I18nUtils.getString("SEE_MORE_RESULTS"));
         moreResults.addActionListener(new ActionListener() {
 
@@ -117,7 +111,7 @@ public class YoutubeContent extends AbstractContextPanelContent {
     protected Component getComponent() {
         // Create components
         youtubeResultTable = new ContextTable();
-        youtubeResultTable.addContextRowPanel(new YoutubeResultsTableCellRendererCode(state, youtubeService));
+        youtubeResultTable.addContextRowPanel(new YoutubeResultsTableCellRendererCode(getState(), youtubeService));
         return youtubeResultTable;
     }
 
@@ -149,5 +143,9 @@ public class YoutubeContent extends AbstractContextPanelContent {
         DesktopUtils.openSearch(SearchFactory.getSearchForName("YouTube"), youtubeService.getSearchForAudioObject(
                 ContextHandler.getInstance().getCurrentAudioObject()));
     }
+    
+    public void setYoutubeService(YoutubeService youtubeService) {
+		this.youtubeService = youtubeService;
+	}
 
 }

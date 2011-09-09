@@ -85,9 +85,7 @@ public class LyricsContent extends AbstractContextPanelContent {
     
     private LyricsService lyricsService;
 
-    public LyricsContent(LyricsService lyricsService) {
-        super(new LyricsDataSource(lyricsService));
-        this.lyricsService = lyricsService;
+    public LyricsContent() {
         copyLyrics = new JMenuItem(new AbstractAction(I18nUtils.getString("COPY_TO_CLIPBOARD")) {
 
             private static final long serialVersionUID = -851267486478098295L;
@@ -187,4 +185,7 @@ public class LyricsContent extends AbstractContextPanelContent {
         return options;
     }
 
+    public void setLyricsService(LyricsService lyricsService) {
+		this.lyricsService = lyricsService;
+	}
 }
