@@ -31,9 +31,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -56,9 +56,10 @@ class AlbumTreeGenerator implements TreeGenerator {
             return ((Album) getUserObject()).getNameAndArtist();
         }
     }
-
+    
     /**
      * Builds tree
+     * @param state
      * @param rootTextKey
      * @param view
      * @param structure
@@ -68,13 +69,13 @@ class AlbumTreeGenerator implements TreeGenerator {
      * @param objectsSelected
      * @param objectsExpanded
      */
-    public void buildTree(String rootTextKey, AbstractNavigationView view, Map<String, ?> structure, String currentFilter, DefaultMutableTreeNode root, DefaultTreeModel treeModel, List<TreeObject<? extends AudioObject>> objectsSelected, List<TreeObject<? extends AudioObject>> objectsExpanded) {
+    public void buildTree(IState state, String rootTextKey, AbstractNavigationView view, Map<String, ?> structure, String currentFilter, DefaultMutableTreeNode root, DefaultTreeModel treeModel, List<TreeObject<? extends AudioObject>> objectsSelected, List<TreeObject<? extends AudioObject>> objectsExpanded) {
         // Set root
         root.setUserObject(I18nUtils.getString(rootTextKey));
         root.removeAllChildren();
 
         List<String> albumsNamesList = new ArrayList<String>(structure.keySet());
-        if (ApplicationState.getInstance().isUseSmartTagViewSorting()) {
+        if (state.isUseSmartTagViewSorting()) {
             Collections.sort(albumsNamesList, view.getSmartComparator());
         } else {
             Collections.sort(albumsNamesList, view.getDefaultComparator());

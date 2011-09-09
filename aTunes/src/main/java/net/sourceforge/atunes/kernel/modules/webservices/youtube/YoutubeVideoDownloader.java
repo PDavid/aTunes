@@ -33,7 +33,7 @@ import javax.swing.SwingWorker;
 import net.sourceforge.atunes.gui.views.dialogs.TransferProgressDialog;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -83,14 +83,20 @@ public class YoutubeVideoDownloader extends SwingWorker<Void, String> {
      */
     private boolean cancelled = false;
 
+    private ProxyBean proxy;
+    
+    private YoutubeService youtubeService;
+    
     /**
      * Creates a new downloader
      * 
      * @param entry
      * @param file
+     * @param proxy
      */
-    public YoutubeVideoDownloader(YoutubeResultEntry entry, File file) {
+    public YoutubeVideoDownloader(YoutubeResultEntry entry, File file, ProxyBean proxy, YoutubeService youtubeService) {
         this.entry = entry;
+        this.youtubeService = youtubeService;
         File f = file;
         // Adds FLV extension if necessary
         if (!file.getAbsolutePath().toUpperCase().endsWith(".mp4")) {
@@ -106,16 +112,17 @@ public class YoutubeVideoDownloader extends SwingWorker<Void, String> {
                 cancelled = true;
             }
         });
+        this.proxy = proxy;
         this.progressDialog.setVisible(true);
     }
 
     @Override
     protected Void doInBackground() throws Exception {
-        String url = YoutubeService.getInstance().getDirectUrlToBeAbleToPlaySong(entry.getUrl());
+        String url = youtubeService.getDirectUrlToBeAbleToPlaySong(entry.getUrl());
         InputStream input = null;
         FileOutputStream fout = null;
         try {
-            URLConnection connection = NetworkUtils.getConnection(url, ExtendedProxy.getProxy(ApplicationState.getInstance().getProxy()));
+            URLConnection connection = NetworkUtils.getConnection(url, ExtendedProxy.getProxy(proxy));
             publish(StringUtils.getString(TOTAL, Integer.toString(connection.getContentLength())));
             input = connection.getInputStream();
 

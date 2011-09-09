@@ -33,9 +33,9 @@ import javax.swing.Timer;
 import net.sourceforge.atunes.gui.WindowFader;
 import net.sourceforge.atunes.gui.views.dialogs.OSDDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.GenericImageSize;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.GuiUtils;
 
@@ -49,23 +49,18 @@ final class OSDDialogController extends AbstractSimpleController<OSDDialog> {
      * Instantiates a new oSD dialog controller.
      * 
      * @param dialogControlled
-     *            the dialog controlled
+     * @param state
      */
-    OSDDialogController(OSDDialog dialogControlled) {
-        super(dialogControlled);
+    OSDDialogController(OSDDialog dialogControlled, IState state) {
+        super(dialogControlled, state);
         addBindings();
         windowFader = new WindowFader(dialogControlled, 50);
     }
 
     @Override
-    protected void addBindings() {
+	public void addBindings() {
         MouseListener listener = new OSDDialogMouseListener(getComponentControlled(), this);
         getComponentControlled().addMouseListener(listener);
-    }
-
-    @Override
-    protected void addStateBindings() {
-        // Nothing to do
     }
 
     /**
@@ -77,11 +72,6 @@ final class OSDDialogController extends AbstractSimpleController<OSDDialog> {
             timer = null;
         }
         windowFader.clear();
-    }
-
-    @Override
-    protected void notifyReload() {
-        // Nothing to do
     }
 
     /**
@@ -101,19 +91,19 @@ final class OSDDialogController extends AbstractSimpleController<OSDDialog> {
         windowFader = new WindowFader(getComponentControlled(), 50);
 
         int x = 0;
-        if (ApplicationState.getInstance().getOsdHorizontalAlignment() == SwingConstants.CENTER) {
-            x = Toolkit.getDefaultToolkit().getScreenSize().width / 2 - ApplicationState.getInstance().getOsdWidth() / 2;
-        } else if (ApplicationState.getInstance().getOsdHorizontalAlignment() == SwingConstants.LEFT) {
+        if (getState().getOsdHorizontalAlignment() == SwingConstants.CENTER) {
+            x = Toolkit.getDefaultToolkit().getScreenSize().width / 2 - getState().getOsdWidth() / 2;
+        } else if (getState().getOsdHorizontalAlignment() == SwingConstants.LEFT) {
             x = 50;
         } else {
-            x = Toolkit.getDefaultToolkit().getScreenSize().width - ApplicationState.getInstance().getOsdWidth() - 50;
+            x = Toolkit.getDefaultToolkit().getScreenSize().width - getState().getOsdWidth() - 50;
         }
         x = Math.max(x, 0);
 
         int y = 0;
-        if (ApplicationState.getInstance().getOsdVerticalAlignment() == SwingConstants.CENTER) {
+        if (getState().getOsdVerticalAlignment() == SwingConstants.CENTER) {
             y = Toolkit.getDefaultToolkit().getScreenSize().height / 2 - getComponentControlled().getHeight() / 2;
-        } else if (ApplicationState.getInstance().getOsdVerticalAlignment() == SwingConstants.TOP) {
+        } else if (getState().getOsdVerticalAlignment() == SwingConstants.TOP) {
             y = 20;
         } else {
             y = Toolkit.getDefaultToolkit().getScreenSize().height - 20 - getComponentControlled().getHeight();
@@ -143,7 +133,7 @@ final class OSDDialogController extends AbstractSimpleController<OSDDialog> {
         getComponentControlled().repaint();
 
         windowFader.fadeIn();
-        timer = new Timer(ApplicationState.getInstance().getOsdDuration() * 1000, new ActionListener() {
+        timer = new Timer(getState().getOsdDuration() * 1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 windowFader.fadeOut();

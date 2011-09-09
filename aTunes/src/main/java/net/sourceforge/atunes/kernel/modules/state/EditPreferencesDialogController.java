@@ -50,6 +50,7 @@ import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 final class EditPreferencesDialogController extends AbstractSimpleController<EditPreferencesDialog> {
@@ -59,9 +60,11 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
 
     /**
      * Instantiates a new edits the preferences dialog controller.
+     * @param dialog
+     * @param state
      */
-    EditPreferencesDialogController(EditPreferencesDialog dialog) {
-        super(dialog);
+    EditPreferencesDialogController(EditPreferencesDialog dialog, IState state) {
+        super(dialog, state);
         panels = new ArrayList<AbstractPreferencesPanel>();
         panels.add(new GeneralPanel());
         panels.add(new RepositoryPanel()); 
@@ -76,6 +79,11 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
         panels.add(new RadioPanel()); 
         panels.add(new PodcastFeedPanel()); 
         panels.add(new ImportExportPanel());
+        
+        for (AbstractPreferencesPanel panel : panels) {
+        	panel.setState(state);
+        }
+        
         if (Kernel.isEnablePlugins()) {
         	panels.add(new PluginsPanel(dialog));
         }
@@ -85,7 +93,7 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
     }
 
     @Override
-    protected void addBindings() {
+	public void addBindings() {
         EditPreferencesDialogListener listener = new EditPreferencesDialogListener(getComponentControlled(), this);
         getComponentControlled().getList().addListSelectionListener(listener);
         getComponentControlled().getCancel().addActionListener(listener);
@@ -109,11 +117,6 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
         });
     }
 
-    @Override
-    protected void addStateBindings() {
-        // Nothing to do
-    }
-
     /**
      * Builds the list.
      */
@@ -125,11 +128,6 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
         }
 
         getComponentControlled().setListModel(listModel);
-    }
-
-    @Override
-    protected void notifyReload() {
-        // Nothing to do
     }
 
     /**
@@ -184,7 +182,7 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
         		// WARNING: There was a bug when call to applyPreferences was made as second operand of OR due to shortcut
         		// So call method and after do OR (method call as first operand is also valid)
         		// See bug https://sourceforge.net/tracker/?func=detail&aid=2999531&group_id=161929&atid=821812 for more information
-        		boolean panelNeedRestart = p.applyPreferences(ApplicationState.getInstance());
+        		boolean panelNeedRestart = p.applyPreferences(getState());
         		needRestart = needRestart || panelNeedRestart;
         	} else {
         		Logger.debug("Panel ", p.getTitle(), " is clean");
@@ -198,7 +196,7 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
      */
     void resetImmediateChanges() {
         for (AbstractPreferencesPanel p : panels) {
-            p.resetImmediateChanges(ApplicationState.getInstance());
+            p.resetImmediateChanges(getState());
         }
     }
 
@@ -208,7 +206,7 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
     public void start() {
         // Update panels
         for (AbstractPreferencesPanel panel : panels) {
-            panel.updatePanel(ApplicationState.getInstance());
+            panel.updatePanel(getState());
         }
 
         // Call dialogVisibilityChanged

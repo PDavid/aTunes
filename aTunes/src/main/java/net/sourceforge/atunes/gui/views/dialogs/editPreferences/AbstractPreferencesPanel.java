@@ -27,7 +27,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.model.IState;
 
 public abstract class AbstractPreferencesPanel extends JPanel {
 
@@ -42,6 +42,11 @@ public abstract class AbstractPreferencesPanel extends JPanel {
      * True if panel has been shown to user (so it could have been modified)
      */
     private boolean dirty;
+    
+    /**
+     * Access state of application
+     */
+    private IState state;
 
     /**
      * Instantiates a new preferences panel.
@@ -71,12 +76,28 @@ public abstract class AbstractPreferencesPanel extends JPanel {
     }
 
     /**
+     * Returns state of application
+     * @return
+     */
+    protected final IState getState() {
+    	return state;
+    }
+    
+    /**
+     * Sets state of application
+     * @param state
+     */
+    public final void setState(IState state) {
+    	this.state = state;
+    }
+    
+    /**
      * Called to update preferences values
      * 
      * @param state
      *            : current preferences
      */
-    public abstract void updatePanel(ApplicationState state);
+    public abstract void updatePanel(IState state);
 
     /**
      * Validates data of this panel
@@ -92,7 +113,7 @@ public abstract class AbstractPreferencesPanel extends JPanel {
      * @return <code>true</code>if it's necessary to restart application to
      *         apply the change
      */
-    public abstract boolean applyPreferences(ApplicationState state);
+    public abstract boolean applyPreferences(IState state);
 
     /**
      * Called if user cancels preference dialog. This method should reset
@@ -101,7 +122,7 @@ public abstract class AbstractPreferencesPanel extends JPanel {
      * 
      * @param state
      */
-    public abstract void resetImmediateChanges(ApplicationState state);
+    public abstract void resetImmediateChanges(IState state);
 
     /**
      * Called when preferences dialog is shown or hidden Useful to execute code
@@ -110,7 +131,7 @@ public abstract class AbstractPreferencesPanel extends JPanel {
      * @param visible
      */
     public abstract void dialogVisibilityChanged(boolean visible);
-
+    
 	public final boolean isDirty() {
 		return dirty;
 	}

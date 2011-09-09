@@ -55,6 +55,7 @@ import net.sourceforge.atunes.kernel.modules.updates.UpdateHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 
 public abstract class AbstractHandler implements ApplicationLifeCycleListener, 
                                                  ApplicationStateChangeListener,
@@ -63,6 +64,20 @@ public abstract class AbstractHandler implements ApplicationLifeCycleListener,
                                                  DeviceListener,
                                                  PlaybackStateListener {
 
+	private static IState state;
+	
+	/**
+	 * Returns access to state of application
+	 * @return
+	 */
+	protected IState getState() {
+		return state;
+	}
+	
+	protected static void setState(IState s) {
+		state = s;
+	}
+	
     /**
      * Initializes handler
      */

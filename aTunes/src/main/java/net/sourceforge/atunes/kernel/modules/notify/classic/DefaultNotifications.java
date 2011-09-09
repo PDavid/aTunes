@@ -25,8 +25,8 @@ import javax.swing.JDialog;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.dialogs.OSDDialog;
 import net.sourceforge.atunes.kernel.modules.notify.CommonNotificationEngine;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class DefaultNotifications extends CommonNotificationEngine {
@@ -41,6 +41,19 @@ public class DefaultNotifications extends CommonNotificationEngine {
 	 */
 	private OSDDialog osdDialog;
 	
+	/**
+	 * State of app
+	 */
+	private IState state;
+	
+	/**
+	 * 
+	 * @param state
+	 */
+	public DefaultNotifications(IState state) {
+		this.state = state;
+	}
+	
     /**
      * Gets the oSD dialog controller.
      * 
@@ -49,15 +62,15 @@ public class DefaultNotifications extends CommonNotificationEngine {
     private OSDDialogController getOSDDialogController() {
         if (osdDialogController == null) {
             JDialog.setDefaultLookAndFeelDecorated(false);
-            osdDialog = new OSDDialog(ApplicationState.getInstance().getOsdWidth());
+            osdDialog = new OSDDialog(state.getOsdWidth());
             JDialog.setDefaultLookAndFeelDecorated(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isDialogUndecorated());
-            osdDialogController = new OSDDialogController(osdDialog);
+            osdDialogController = new OSDDialogController(osdDialog, state);
         }
         return osdDialogController;
     }
 
     @Override
-    public void updateNotification(ApplicationState newState) {
+    public void updateNotification(IState newState) {
     	osdDialog.setWidth(newState.getOsdWidth());
     }
 	

@@ -32,9 +32,10 @@ import javax.imageio.ImageIO;
 
 import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
+import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.ImageUtils;
 
@@ -51,8 +52,8 @@ public class SetCoversProcess extends AbstractChangeTagProcess {
      * @param files
      *            the files
      */
-    SetCoversProcess(List<LocalAudioObject> files) {
-        super(files);
+    SetCoversProcess(List<LocalAudioObject> files, IState state) {
+        super(files, state);
     }
 
     @Override
@@ -91,11 +92,11 @@ public class SetCoversProcess extends AbstractChangeTagProcess {
                 if (coverCache.containsKey(cacheKey)) {
                     cover = coverCache.get(cacheKey);
                 } else {
-                    AlbumInfo albumInfo = LastFmService.getInstance().getAlbum(f.getArtist(), f.getAlbum());
+                    AlbumInfo albumInfo = WebServicesHandler.getInstance().getLastFmService().getAlbum(f.getArtist(), f.getAlbum());
                     if (albumInfo == null) {
                         continue;
                     }
-                    cover = LastFmService.getInstance().getImage(albumInfo);
+                    cover = WebServicesHandler.getInstance().getLastFmService().getImage(albumInfo);
                     if (cover == null) {
                         continue;
                     }

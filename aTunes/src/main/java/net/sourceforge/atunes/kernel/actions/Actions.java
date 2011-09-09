@@ -30,10 +30,12 @@ import java.util.Map;
 import javax.swing.AbstractAction;
 import javax.swing.JMenuItem;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.model.AudioObjectsSource;
 import net.sourceforge.atunes.gui.model.TreeObjectsSource;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.TreeObject;
 
 import org.commonjukebox.plugins.model.PluginApi;
@@ -46,6 +48,8 @@ public final class Actions {
      */
     private static Map<ActionInstance, CustomAbstractAction> actions = new HashMap<ActionInstance, CustomAbstractAction>();
 
+    private static IState state = Context.getBean(IState.class);
+    
     private Actions() {
     }
 
@@ -71,6 +75,7 @@ public final class Actions {
         if (action == null) {
             try {
                 action = clazz.newInstance();
+                action.setState(state);
                 action.setActionId(actionId);
                 action.setProperties(action.getProperties(actionId));
                 action.initialize();

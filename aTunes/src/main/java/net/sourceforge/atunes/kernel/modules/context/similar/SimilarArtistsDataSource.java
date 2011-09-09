@@ -31,7 +31,7 @@ import net.sourceforge.atunes.kernel.modules.context.ArtistInfo;
 import net.sourceforge.atunes.kernel.modules.context.ContextInformationDataSource;
 import net.sourceforge.atunes.kernel.modules.context.SimilarArtistsInfo;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
+import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.ImageUtils;
@@ -73,7 +73,7 @@ public class SimilarArtistsDataSource implements ContextInformationDataSource {
      */
     private SimilarArtistsInfo getSimilarArtists(AudioObject audioObject) {
         if (!Artist.isUnknownArtist(audioObject.getArtist())) {
-            SimilarArtistsInfo artists = LastFmService.getInstance().getSimilarArtists(audioObject.getArtist());
+            SimilarArtistsInfo artists = WebServicesHandler.getInstance().getLastFmService().getSimilarArtists(audioObject.getArtist());
             if (artists != null) {
             	Set<String> artistNamesSet = new HashSet<String>();
             	for (Artist a : RepositoryHandler.getInstance().getArtists()) {
@@ -81,7 +81,7 @@ public class SimilarArtistsDataSource implements ContextInformationDataSource {
             	}
                 for (int i = 0; i < artists.getArtists().size(); i++) {
                     ArtistInfo a = artists.getArtists().get(i);
-                    Image img = LastFmService.getInstance().getImage(a);
+                    Image img = WebServicesHandler.getInstance().getLastFmService().getImage(a);
                     a.setImage(ImageUtils.scaleImageBicubic(img, Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT));
                     a.setAvailable(artistNamesSet.contains(a.getName().toUpperCase()));
                 }

@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.context.album.AlbumContextPanel;
 import net.sourceforge.atunes.kernel.modules.context.artist.ArtistContextPanel;
@@ -33,9 +34,11 @@ import net.sourceforge.atunes.kernel.modules.context.youtube.YoutubeContextPanel
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService;
+import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeService;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LocalAudioObject;
 
 import org.commonjukebox.plugins.exceptions.PluginSystemException;
@@ -78,7 +81,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     	getController().addContextPanels(getContextPanels());
     	
         // Set previous selected tab
-    	getController().setContextTab(ApplicationState.getInstance().getSelectedContextTab());
+    	getController().setContextTab(getState().getSelectedContextTab());
     	
     	// Enable listener for user selections
     	getController().enableContextComboListener();
@@ -94,11 +97,11 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
         if (contextPanels == null) {
             contextPanels = new ArrayList<AbstractContextPanel>(5);
             // TODO: Put here every new context panel
-            contextPanels.add(new AudioObjectContextPanel());
-            contextPanels.add(new AlbumContextPanel());
-            contextPanels.add(new ArtistContextPanel());
+            contextPanels.add(new AudioObjectContextPanel((LyricsService) Context.getBean("lyricsService"), getState()));
+            contextPanels.add(new AlbumContextPanel(getState()));
+            contextPanels.add(new ArtistContextPanel(getState()));
             contextPanels.add(new SimilarArtistsContextPanel());
-            contextPanels.add(new YoutubeContextPanel());
+            contextPanels.add(new YoutubeContextPanel(getState(), (YoutubeService) Context.getBean("youtubeService")));
         }
         return contextPanels;
     }
@@ -120,7 +123,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
      */
     void contextPanelChanged() {
         // Update selected tab
-        ApplicationState.getInstance().setSelectedContextTab(getController().getContextTab() != null ? getController().getContextTab().getContextPanelName() : null);
+        getState().setSelectedContextTab(getController().getContextTab() != null ? getController().getContextTab().getContextPanelName() : null);
         // Call to fill information: Don't force update since audio object can be the same
         retrieveInfo(currentAudioObject, false);
     }
@@ -134,7 +137,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
         currentAudioObject = null;
 
         // Select first tab
-        ApplicationState.getInstance().setSelectedContextTab(null);
+        getState().setSelectedContextTab(null);
         getController().setContextTab(null);
     }
 
@@ -177,7 +180,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
             lastAudioObjectModificationTime = 0;
         }
 
-        if (ApplicationState.getInstance().isUseContext()) {
+        if (getState().isUseContext()) {
             // Enable or disable tabs
             getController().updateContextTabs();
 
@@ -211,7 +214,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
         }
 
         // Context panel can be removed so check index
-        String selectedTab = ApplicationState.getInstance().getSelectedContextTab();
+        String selectedTab = getState().getSelectedContextTab();
         // Update current context panel
         for (AbstractContextPanel panel : getContextPanels()) {
         	if (panel.getContextPanelName().equals(selectedTab)) {
@@ -228,7 +231,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     }
 
     @Override
-    public void applicationStateChanged(ApplicationState newState) {
+    public void applicationStateChanged(IState newState) {
     }
 
     /**
@@ -258,17 +261,17 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     
     @Override
     public void selectedAudioObjectChanged(AudioObject audioObject) {
-        if (ApplicationState.getInstance().isUseContext()) {
+        if (getState().isUseContext()) {
             retrieveInfoAndShowInPanel(audioObject);
         }
     }
     
     @Override
     public void playListCleared() {
-        if (ApplicationState.getInstance().isUseContext()) {
+        if (getState().isUseContext()) {
             retrieveInfoAndShowInPanel(null);
             
-            if (ApplicationState.getInstance().isStopPlayerOnPlayListClear()) {
+            if (getState().isStopPlayerOnPlayListClear()) {
             	ContextHandler.getInstance().clearContextPanels();
             }
         }
@@ -276,7 +279,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     
     private ContextController getController() {
     	if (controller == null) {
-    		controller = new ContextController(GuiHandler.getInstance().getContextPanel());
+    		controller = new ContextController(GuiHandler.getInstance().getContextPanel(), getState());
     	}
     	return controller;
     }

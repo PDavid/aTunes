@@ -23,7 +23,7 @@ package net.sourceforge.atunes.api;
 import java.awt.Image;
 
 import net.sourceforge.atunes.kernel.modules.context.SimilarArtistsInfo;
-import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
+import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
@@ -41,10 +41,10 @@ public final class WebServicesApi {
      * @return
      */
     public static SimilarArtistsInfo getSimilarArtists(String artistName) {
-        return LastFmService.getInstance().getSimilarArtists(artistName);
+        return WebServicesHandler.getInstance().getLastFmService().getSimilarArtists(artistName);
     }
 
     public static Image getAlbumImage(String artist, String album) {
-        return LastFmService.getInstance().getAlbumImage(artist, album);
+        return WebServicesHandler.getInstance().getLastFmService().getAlbumImage(artist, album);
     }
 }

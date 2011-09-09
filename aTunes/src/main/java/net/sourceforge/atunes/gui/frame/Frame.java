@@ -36,6 +36,7 @@ import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.modules.updates.ApplicationVersion;
+import net.sourceforge.atunes.model.IState;
 
 /**
  * The interface for all frames
@@ -301,5 +302,11 @@ public interface Frame {
 	 * @return
 	 */
 	public Map<String, Double> getDefaultSplitPaneRelativePositions();
+	
+	/**
+	 * Sets app state
+	 * @param state
+	 */
+	public void setState(IState state);
 
 }

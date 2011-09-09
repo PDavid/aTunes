@@ -36,7 +36,7 @@ import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.statistics.AudioFileStats;
 import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
-import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
+import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -112,7 +112,7 @@ public class AudioObjectBasicInfoDataSource implements ContextInformationDataSou
         if (audioObject instanceof AudioFile) {
             ImageIcon localImage = audioObject.getImage(Constants.ALBUM_IMAGE_SIZE);
             if (localImage == null) {
-                Image image = LastFmService.getInstance().getAlbumImage(audioObject.getArtist(), audioObject.getAlbum());
+                Image image = WebServicesHandler.getInstance().getLastFmService().getAlbumImage(audioObject.getArtist(), audioObject.getAlbum());
                 if (image != null) {
                     localImage = ImageUtils.resize(new ImageIcon(image), Constants.ALBUM_IMAGE_SIZE.getSize(), Constants.ALBUM_IMAGE_SIZE.getSize());
                 }

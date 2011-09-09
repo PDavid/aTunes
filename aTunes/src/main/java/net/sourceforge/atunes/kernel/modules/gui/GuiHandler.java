@@ -90,7 +90,6 @@ import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
 import net.sourceforge.atunes.kernel.modules.tray.SystemTrayHandler;
 import net.sourceforge.atunes.kernel.modules.updates.ApplicationVersion;
@@ -98,6 +97,7 @@ import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -149,14 +149,14 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     public void applicationStarted(List<AudioObject> playList) {
         GuiHandler.getInstance().setFullFrameVisible(true);
     	
-    	ApplicationState state = ApplicationState.getInstance();
+    	IState state = getState();
     	FrameState frameState = state.getFrameState(getFrame().getClass());
     	getFrame().applicationStarted(frameState);
     	
         showStatusBar(state.isShowStatusBar(), false);
         showContextPanel(state.isUseContext());
         
-        if (!ApplicationState.getInstance().isShowSystemTray() && OsManager.isClosingMainWindowClosesApplication()) {
+        if (!getState().isShowSystemTray() && OsManager.isClosingMainWindowClosesApplication()) {
             GuiHandler.getInstance().setFrameDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         }        
     }
@@ -167,7 +167,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      * NOTE: This method is called using reflection from MACOSXAdapter. Refactoring will break code!
      */
     public void finish() {
-        if (!ApplicationState.getInstance().isShowSystemTray() && OsManager.isClosingMainWindowClosesApplication()) {
+        if (!getState().isShowSystemTray() && OsManager.isClosingMainWindowClosesApplication()) {
             Kernel.finish();
         }
     }
@@ -224,7 +224,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      */
     public Frame getFrame() {
         if (frame == null) {
-            Class<? extends Frame> clazz = ApplicationState.getInstance().getFrameClass();
+            Class<? extends Frame> clazz = getState().getFrameClass();
             if (clazz != null) {
                 try {
                     frame = clazz.newInstance();
@@ -244,7 +244,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
 
     private void constructDefaultFrame() {
         frame = new DefaultSingleFrame();
-        ApplicationState.getInstance().setFrameClass(frame.getClass());
+        getState().setFrameClass(frame.getClass());
     }
 
     /**
@@ -376,7 +376,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      */
     public ReviewImportDialog getReviewImportDialog() {
         if (reviewImportDialog == null) {
-            reviewImportDialog = new ReviewImportDialog(frame.getFrame());
+            reviewImportDialog = new ReviewImportDialog(frame.getFrame(), getState());
         }
         return reviewImportDialog;
     }
@@ -646,7 +646,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      *            the show
      */
     public void showContextPanel(boolean show) {
-        ApplicationState.getInstance().setUseContext(show);
+        getState().setUseContext(show);
         frame.showContextPanel(show);
         if (show) {
             ContextHandler.getInstance().retrieveInfoAndShowInPanel(PlayListHandler.getInstance().getCurrentAudioObjectFromVisiblePlayList());
@@ -761,7 +761,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     }
 
     public void showNewPodcastFeedEntriesInfo() {
-        if (!ApplicationState.getInstance().isShowStatusBar()) {
+        if (!getState().isShowStatusBar()) {
             showMessage(I18nUtils.getString("NEW_PODCAST_ENTRIES"));
         } else {
             frame.showNewPodcastFeedEntriesInfo(true);
@@ -769,7 +769,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     }
 
     public void showNewVersionInfo(ApplicationVersion version, boolean alwaysInDialog) {
-        if (alwaysInDialog || !ApplicationState.getInstance().isShowStatusBar()) {
+        if (alwaysInDialog || !getState().isShowStatusBar()) {
             new UpdateDialog(version, frame.getFrame()).setVisible(true);
         } else {
             frame.showNewVersionInfo(true, version);
@@ -968,7 +968,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      *            the audio object
      */
     public void showPropertiesDialog(AudioObject audioObject) {
-        PropertiesDialog dialog = PropertiesDialog.newInstance(audioObject, frame.getFrame());
+        PropertiesDialog dialog = PropertiesDialog.newInstance(audioObject, frame.getFrame(), getState());
         if (dialog.isVisible()) {
             dialog.toFront();
         } else {
@@ -1026,7 +1026,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      */
     public void showStatusBar(boolean show, boolean save) {
     	if (save) {
-    		ApplicationState.getInstance().setShowStatusBar(show);
+    		getState().setShowStatusBar(show);
     	}
         frame.showStatusBar(show);
         repaint();
@@ -1069,15 +1069,16 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
             FadingPopupFactory.install();
         }
 
-        FrameState frameState = ApplicationState.getInstance().getFrameState(getFrame().getClass());
-        LocaleBean locale = ApplicationState.getInstance().getLocale();
-        LocaleBean oldLocale = ApplicationState.getInstance().getOldLocale();
+        FrameState frameState = getState().getFrameState(getFrame().getClass());
+        LocaleBean locale = getState().getLocale();
+        LocaleBean oldLocale = getState().getOldLocale();
         // Reset fame state if no frame state in state or if component orientation of locale has changed
         if (frameState == null || locale == null || locale != null && oldLocale != null
                 && !(ComponentOrientation.getOrientation(locale.getLocale()).equals(ComponentOrientation.getOrientation(oldLocale.getLocale())))) {
             frameState = new FrameState();
-            ApplicationState.getInstance().setFrameState(getFrame().getClass(), frameState);
+            getState().setFrameState(getFrame().getClass(), frameState);
         }
+        getFrame().setState(getState());
         getFrame().create(frameState);
 
         JProgressBar progressBar = getProgressBar();
@@ -1248,7 +1249,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     }
 
     @Override
-    public void applicationStateChanged(ApplicationState newState) {
+    public void applicationStateChanged(IState newState) {
         // Show or hide context panel
         showContextPanel(newState.isUseContext());
 

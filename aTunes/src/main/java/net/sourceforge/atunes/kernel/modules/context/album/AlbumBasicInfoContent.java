@@ -39,6 +39,7 @@ import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -60,8 +61,8 @@ public class AlbumBasicInfoContent extends AbstractContextPanelContent {
     private UrlLabel artistLabel;
     private UrlLabel yearLabel;
 
-    public AlbumBasicInfoContent() {
-        super(new AlbumInfoDataSource());
+    public AlbumBasicInfoContent(IState state) {
+        super(new AlbumInfoDataSource(state));
     }
 
     @Override

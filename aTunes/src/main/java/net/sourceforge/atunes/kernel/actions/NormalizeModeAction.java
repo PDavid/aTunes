@@ -32,7 +32,6 @@ import net.sourceforge.atunes.gui.images.NormalizationImageIcon;
 import net.sourceforge.atunes.gui.images.WarningImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class NormalizeModeAction extends ActionWithColorMutableIcon {
@@ -44,8 +43,6 @@ public class NormalizeModeAction extends ActionWithColorMutableIcon {
     public NormalizeModeAction() {
         super(I18nUtils.getString("NORMALIZE"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("NORMALIZE"));
-        putValue(SELECTED_KEY, ApplicationState.getInstance().isUseNormalisation());
-
         timer = new Timer(1000, new ActionListener() {
             boolean showWarning;
 
@@ -59,15 +56,20 @@ public class NormalizeModeAction extends ActionWithColorMutableIcon {
                 showWarning = !showWarning;
             }
         });
-        if (ApplicationState.getInstance().isUseNormalisation()) {
+    }
+    
+    @Override
+    protected void initialize() {
+        putValue(SELECTED_KEY, getState().isUseNormalisation());
+        if (getState().isUseNormalisation()) {
             timer.start();
         }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        boolean isNormalized = !ApplicationState.getInstance().isUseNormalisation();
-        ApplicationState.getInstance().setUseNormalisation(isNormalized);
+        boolean isNormalized = !getState().isUseNormalisation();
+        getState().setUseNormalisation(isNormalized);
         PlayerHandler.getInstance().applyNormalization();
         if (timer.isRunning()) {
             timer.stop();

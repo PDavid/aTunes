@@ -24,7 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
+import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LocalAudioObject;
 
 /**
@@ -41,8 +42,8 @@ public class EditTitlesProcess extends AbstractChangeTagProcess {
      * @param files
      *            the files
      */
-    public EditTitlesProcess(List<LocalAudioObject> files) {
-        super(files);
+    public EditTitlesProcess(List<LocalAudioObject> files, IState state) {
+        super(files, state);
     }
 
     @Override
@@ -81,7 +82,7 @@ public class EditTitlesProcess extends AbstractChangeTagProcess {
 
         // For each file
         for (LocalAudioObject f : files) {
-            String title = LastFmService.getInstance().getTitleForFile(f);
+            String title = WebServicesHandler.getInstance().getLastFmService().getTitleForFile(f);
             if (title != null) {
                 result.put(f, title);
             }

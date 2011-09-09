@@ -41,7 +41,7 @@ public class RepairAlbumNamesAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        TagEditionOperations.repairAlbumNames();
+        TagEditionOperations.repairAlbumNames(getState());
     }
 
 }

@@ -44,6 +44,7 @@ import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.tags.EditTagDialogController;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -95,15 +96,18 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
     private JLabel frequencyLabel;
     private LocalAudioObject file;
 
+    private IState state;
+    
     /**
      * Instantiates a new audio file properties dialog.
      * 
      * @param file
      *            the file
      */
-    AudioFilePropertiesDialog(AudioFile file, JFrame owner) {
+    AudioFilePropertiesDialog(AudioFile file, JFrame owner, IState state) {
         super(getTitleText(file), owner);
         this.file = file;
+        this.state = state;
         setAudioObject(file);
         addContent();
 
@@ -221,7 +225,7 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
         editTagsButton.setText(I18nUtils.getString("EDIT_TAG"));
         editTagsButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                EditTagDialogController ctl = new EditTagDialogController(new EditTagDialog(GuiHandler.getInstance().getFrame().getFrame(), false));
+                EditTagDialogController ctl = new EditTagDialogController(new EditTagDialog(GuiHandler.getInstance().getFrame().getFrame(), false), state);
                 ctl.editFiles(java.util.Collections.singletonList(file));
             }
         });

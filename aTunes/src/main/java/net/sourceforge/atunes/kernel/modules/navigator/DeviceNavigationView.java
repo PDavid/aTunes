@@ -63,6 +63,7 @@ import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.model.ViewMode;
@@ -81,6 +82,10 @@ public final class DeviceNavigationView extends AbstractNavigationView {
     /** The device table menu. */
     private JPopupMenu deviceTableMenu;
 
+    public DeviceNavigationView(IState state) {
+    	super(state);
+	}
+    
     @Override
     public ColorMutableImageIcon getIcon() {
         return new ColorMutableImageIcon() {
@@ -182,7 +187,7 @@ public final class DeviceNavigationView extends AbstractNavigationView {
         root.removeAllChildren();
 
         // Build tree
-        TreeGeneratorFactory.getTreeGenerator(viewMode).buildTree("DEVICE", this, (Map<String, Year>) getViewData(viewMode), treeFilter, root, treeModel, objectsSelected, objectsExpanded);
+        TreeGeneratorFactory.getTreeGenerator(viewMode, getState()).buildTree(getState(), "DEVICE", this, (Map<String, Year>) getViewData(viewMode), treeFilter, root, treeModel, objectsSelected, objectsExpanded);
 
         
         // Expand nodes

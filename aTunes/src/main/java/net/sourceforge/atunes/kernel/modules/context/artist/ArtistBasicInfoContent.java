@@ -39,6 +39,7 @@ import net.sourceforge.atunes.gui.views.controls.CustomTextPane;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 
@@ -59,8 +60,8 @@ public class ArtistBasicInfoContent extends AbstractContextPanelContent {
     private CustomTextPane artistWikiAbstract;
     private UrlLabel artistWikiReadMore;
 
-    public ArtistBasicInfoContent() {
-        super(new ArtistInfoDataSource());
+    public ArtistBasicInfoContent(IState state) {
+        super(new ArtistInfoDataSource(state));
     }
 
     @Override

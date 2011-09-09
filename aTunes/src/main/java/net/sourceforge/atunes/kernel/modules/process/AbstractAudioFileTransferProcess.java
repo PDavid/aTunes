@@ -36,8 +36,8 @@ import javax.swing.SwingUtilities;
 import net.sourceforge.atunes.gui.views.dialogs.ProgressDialog;
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -68,7 +68,8 @@ public abstract class AbstractAudioFileTransferProcess extends AbstractProcess {
      */
     private String userSelectionWhenErrors = null;
 
-    protected AbstractAudioFileTransferProcess(Collection<LocalAudioObject> collection) {
+    protected AbstractAudioFileTransferProcess(Collection<LocalAudioObject> collection, IState state) {
+    	super(state);
         this.filesToTransfer = collection;
         this.filesTransferred = new ArrayList<File>();
         setOwner(GuiHandler.getInstance().getFrame().getFrame());
@@ -216,7 +217,7 @@ public abstract class AbstractAudioFileTransferProcess extends AbstractProcess {
      * @return
      */
     public String getDirectory(LocalAudioObject song, File destination, boolean isMp3Device) {
-        return getDirectory(song, destination, isMp3Device, ApplicationState.getInstance().getImportExportFolderPathPattern());
+        return getDirectory(song, destination, isMp3Device, getState().getImportExportFolderPathPattern());
     }
 
     /**
@@ -250,7 +251,7 @@ public abstract class AbstractAudioFileTransferProcess extends AbstractProcess {
      * @return
      */
     public String getName(LocalAudioObject file, boolean isMp3Device) {
-        return getName(file, isMp3Device, ApplicationState.getInstance().getImportExportFileNamePattern());
+        return getName(file, isMp3Device, getState().getImportExportFileNamePattern());
     }
 
     /**

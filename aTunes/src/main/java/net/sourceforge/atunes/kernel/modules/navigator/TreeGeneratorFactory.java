@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ViewMode;
 
 class TreeGeneratorFactory {
@@ -27,9 +28,10 @@ class TreeGeneratorFactory {
 	/**
 	 * Returns generator for given mode
 	 * @param viewMode
+	 * @param state
 	 * @return
 	 */
-	static TreeGenerator getTreeGenerator(ViewMode viewMode) {
+	static TreeGenerator getTreeGenerator(ViewMode viewMode, IState state) {
 		switch (viewMode) {
 		case ARTIST: return new ArtistTreeGenerator();
 		case ALBUM: return new AlbumTreeGenerator();

@@ -32,10 +32,10 @@ import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
 import net.sourceforge.atunes.kernel.modules.context.AlbumListInfo;
 import net.sourceforge.atunes.kernel.modules.context.ContextInformationDataSource;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
+import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
@@ -76,6 +76,12 @@ public class AlbumInfoDataSource implements ContextInformationDataSource {
      */
     public static final String OUTPUT_ALBUM = "ALBUM";
 
+    private IState state;
+    
+    public AlbumInfoDataSource(IState state) {
+    	this.state = state;
+	}
+
     @Override
     public Map<String, ?> getData(Map<String, ?> parameters) {
         Map<String, Object> result = new HashMap<String, Object>();
@@ -104,7 +110,7 @@ public class AlbumInfoDataSource implements ContextInformationDataSource {
         String artist = audioObject.getAlbumArtist().isEmpty() ? audioObject.getArtist() : audioObject.getAlbumArtist();
 
         // Get album info
-        AlbumInfo album = LastFmService.getInstance().getAlbum(artist, audioObject.getAlbum());
+        AlbumInfo album = WebServicesHandler.getInstance().getLastFmService().getAlbum(artist, audioObject.getAlbum());
 
         // If album was not found try to get an album from the same artist that match
         if (album == null) {
@@ -117,8 +123,8 @@ public class AlbumInfoDataSource implements ContextInformationDataSource {
             List<AlbumInfo> albums = null;
             if (!audioObject.getArtist().equals(I18nUtils.getString("UNKNOWN_ARTIST"))) {
                 // Get 
-                AlbumListInfo albumList = LastFmService.getInstance().getAlbumList(audioObject.getArtist(), ApplicationState.getInstance().isHideVariousArtistsAlbums(),
-                        ApplicationState.getInstance().getMinimumSongNumberPerAlbum());
+                AlbumListInfo albumList = WebServicesHandler.getInstance().getLastFmService().getAlbumList(audioObject.getArtist(), state.isHideVariousArtistsAlbums(),
+                        state.getMinimumSongNumberPerAlbum());
                 if (albumList != null) {
                     albums = albumList.getAlbums();
                 }
@@ -158,7 +164,7 @@ public class AlbumInfoDataSource implements ContextInformationDataSource {
                 }
                 if (auxAlbum != null) {
                     // Get full information for album
-                    auxAlbum = LastFmService.getInstance().getAlbum(auxAlbum.getArtist(), auxAlbum.getTitle());
+                    auxAlbum = WebServicesHandler.getInstance().getLastFmService().getAlbum(auxAlbum.getArtist(), auxAlbum.getTitle());
                     if (auxAlbum != null) {
                         album = auxAlbum;
                     }
@@ -180,7 +186,7 @@ public class AlbumInfoDataSource implements ContextInformationDataSource {
     private Image getImage(AlbumInfo albumInfo, AudioObject audioObject) {
         Image image = null;
         if (albumInfo != null) {
-            image = LastFmService.getInstance().getImage(albumInfo);
+            image = WebServicesHandler.getInstance().getLastFmService().getImage(albumInfo);
             // This data source should only be used with audio files but anyway check if audioObject is an LocalAudioObject before save picture
             if (audioObject instanceof LocalAudioObject) {
                 savePicture(image, (LocalAudioObject) audioObject);
@@ -199,7 +205,7 @@ public class AlbumInfoDataSource implements ContextInformationDataSource {
      * @param file
      */
     private void savePicture(Image img, LocalAudioObject file) {
-        if (img != null && ApplicationState.getInstance().isSaveContextPicture()) { // save image in folder of file
+        if (img != null && state.isSaveContextPicture()) { // save image in folder of file
             String imageFileName = AudioFilePictureUtils.getFileNameForCover(file);
 
             File imageFile = new File(imageFileName);

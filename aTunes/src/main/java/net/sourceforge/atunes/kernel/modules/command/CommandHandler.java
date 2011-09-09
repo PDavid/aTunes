@@ -32,8 +32,8 @@ import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.PlayNextAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.PlayPreviousAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.ShowOSDAction;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 
 public final class CommandHandler extends AbstractHandler {
 
@@ -158,7 +158,7 @@ public final class CommandHandler extends AbstractHandler {
     }
 
     @Override
-    public void applicationStateChanged(ApplicationState newState) {
+    public void applicationStateChanged(IState newState) {
     }
 
     @Override

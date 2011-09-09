@@ -34,19 +34,22 @@ import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelChangeListener;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.model.IState;
 
 public final class MuteButton extends JToggleButton implements LookAndFeelChangeListener {
 
     private static final long serialVersionUID = 6007885049773560874L;
 
+    private IState state;
+    
     /**
      * Instantiates a new mute button.
      * 
      * @param size
      */
-    public MuteButton(Dimension size) {
+    public MuteButton(Dimension size, IState state) {
         super(Actions.getAction(MuteAction.class));
+        this.state = state;
 
         // Force size
         setPreferredSize(size);
@@ -60,25 +63,27 @@ public final class MuteButton extends JToggleButton implements LookAndFeelChange
     
     @Override
     public void lookAndFeelChanged() {
-    	updateIcon();
+    	updateIcon(state);
     }
     
     /**
      * Updates icon of mute
+     * @param state
      */
-    public void updateIcon() {
-    	setIcon(getVolumeIcon());
+    public void updateIcon(IState state) {
+    	setIcon(getVolumeIcon(state));
     }
     
     /**
      * Returns icon to use depending on volume and mute state
+     * @param state
      * @return
      */
-    public static ImageIcon getVolumeIcon() {
-        if (ApplicationState.getInstance().isMuteEnabled()) {
+    public static ImageIcon getVolumeIcon(IState state) {
+        if (state.isMuteEnabled()) {
             return VolumeMuteImageIcon.getIcon();
         } else {
-            int volume = ApplicationState.getInstance().getVolume();
+            int volume = state.getVolume();
             if (volume > 80) {
                 return VolumeMaxImageIcon.getIcon();
             } else if (volume > 40) {

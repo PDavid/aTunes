@@ -31,7 +31,9 @@ import javax.swing.JOptionPane;
 
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
+import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
+import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -50,10 +52,11 @@ public final class TagEditionOperations {
      * Adds the lyrics.
      * 
      * @param files
-     *            the files
+     * @param state
+     * @param lyricsService
      */
-    public static void addLyrics(List<LocalAudioObject> files) {
-        SetLyricsProcess process = new SetLyricsProcess(files);
+    public static void addLyrics(List<LocalAudioObject> files, IState state, LyricsService lyricsService) {
+        SetLyricsProcess process = new SetLyricsProcess(files, state, lyricsService);
         process.execute();
     }
 
@@ -61,10 +64,10 @@ public final class TagEditionOperations {
      * Edits the album name.
      * 
      * @param files
-     *            the files
+     * @param state
      */
-    private static void editAlbumName(List<LocalAudioObject> files) {
-        SetAlbumNamesProcess process = new SetAlbumNamesProcess(files);
+    private static void editAlbumName(List<LocalAudioObject> files, IState state) {
+        SetAlbumNamesProcess process = new SetAlbumNamesProcess(files, state);
         process.execute();
     }
 
@@ -72,15 +75,15 @@ public final class TagEditionOperations {
      * Sets genre based on Last.fm tags
      * 
      * @param files
-     *            the files
+     * @param state
      */
-    public static void editGenre(List<LocalAudioObject> files) {
-        SetGenresProcess process = new SetGenresProcess(files);
+    public static void editGenre(List<LocalAudioObject> files, IState state) {
+        SetGenresProcess process = new SetGenresProcess(files, state);
         process.execute();
     }
 
-    public static void editCover(List<LocalAudioObject> files) {
-        SetCoversProcess process = new SetCoversProcess(files);
+    public static void editCover(List<LocalAudioObject> files, IState state) {
+        SetCoversProcess process = new SetCoversProcess(files, state);
         process.execute();
     }
 
@@ -88,9 +91,9 @@ public final class TagEditionOperations {
      * Sets track number based on file name to an array of files.
      * 
      * @param files
-     *            the files
+     * @param state
      */
-    public static void editTrackNumber(List<LocalAudioObject> files) {
+    public static void editTrackNumber(List<LocalAudioObject> files, IState state) {
         /*
          * Given an array of files, returns a map containing each file and its
          * track number based on information found on file name.
@@ -105,7 +108,7 @@ public final class TagEditionOperations {
         }
         if (!filesToSet.isEmpty()) {
             // Call process
-            SetTrackNumberProcess process = new SetTrackNumberProcess(filesToSet);
+            SetTrackNumberProcess process = new SetTrackNumberProcess(filesToSet, state);
             process.execute();
         }
     }
@@ -139,7 +142,7 @@ public final class TagEditionOperations {
         // If trackNumber could not be retrieved from file name, try to get from last.fm
         // To get this, titles must match
         if (trackNumber == 0) {
-            trackNumber = LastFmService.getInstance().getTrackNumberForFile(audioFile);
+            trackNumber = WebServicesHandler.getInstance().getLastFmService().getTrackNumberForFile(audioFile);
         }
 
         return trackNumber;
@@ -148,7 +151,7 @@ public final class TagEditionOperations {
     /**
      * Repair album names.
      */
-    public static void repairAlbumNames() {
+    public static void repairAlbumNames(IState state) {
         // Show confirmation dialog
         if (GuiHandler.getInstance().showConfirmationDialog(I18nUtils.getString("REPAIR_ALBUM_NAMES_MESSAGE"), I18nUtils.getString("REPAIR_ALBUM_NAMES")) == JOptionPane.OK_OPTION) {
 
@@ -164,14 +167,15 @@ public final class TagEditionOperations {
             }
 
             // Call album name edit
-            editAlbumName(audioFilesToBeRepaired);
+            editAlbumName(audioFilesToBeRepaired, state);
         }
     }
 
     /**
      * Sets genres on audio files that have an empty genre.
+     * @param state
      */
-    public static void repairGenres() {
+    public static void repairGenres(IState state) {
         // Show confirmation dialog
         if (GuiHandler.getInstance().showConfirmationDialog(I18nUtils.getString("REPAIR_GENRES_MESSAGE"), I18nUtils.getString("REPAIR_GENRES")) == JOptionPane.OK_OPTION) {
 
@@ -187,7 +191,7 @@ public final class TagEditionOperations {
             }
 
             // Call genre edit
-            editGenre(audioFilesToBeRepaired);
+            editGenre(audioFilesToBeRepaired, state);
         }
 
     }
@@ -195,7 +199,7 @@ public final class TagEditionOperations {
     /**
      * Sets track number to audio files that have an empty track number.
      */
-    public static void repairTrackNumbers() {
+    public static void repairTrackNumbers(IState state) {
         // Show confirmation dialog
         if (GuiHandler.getInstance().showConfirmationDialog(I18nUtils.getString("REPAIR_TRACK_NUMBERS_MESSAGE"), I18nUtils.getString("REPAIR_TRACK_NUMBERS")) == JOptionPane.OK_OPTION) {
 
@@ -211,7 +215,7 @@ public final class TagEditionOperations {
             }
 
             // Call track number edit
-            editTrackNumber(audioFilesToBeRepaired);
+            editTrackNumber(audioFilesToBeRepaired, state);
         }
     }
 }

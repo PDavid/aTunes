@@ -40,7 +40,7 @@ public class RepairGenresAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        TagEditionOperations.repairGenres();
+        TagEditionOperations.repairGenres(getState());
     }
 
 }

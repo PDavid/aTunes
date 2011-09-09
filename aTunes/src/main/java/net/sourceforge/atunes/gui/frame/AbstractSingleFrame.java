@@ -63,9 +63,9 @@ import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.updates.ApplicationVersion;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -101,13 +101,20 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
 
     private WindowAdapter fullFrameStateListener;
 
+    protected IState state;
+    
     /**
      * Instantiates a new standard frame.
      */
     public AbstractSingleFrame() {
         super();
     }
-
+    
+    @Override
+    public void setState(IState state) {
+    	this.state = state;
+    }
+    
     @Override
     public void create(FrameState frameState) {
         this.frameState = frameState;
@@ -162,13 +169,13 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
 						
 						@Override
 						public void run() {
-							FrameState state = ApplicationState.getInstance().getFrameState(GuiHandler.getInstance().getFrame().getClass());
+							FrameState state = AbstractSingleFrame.this.state.getFrameState(GuiHandler.getInstance().getFrame().getClass());
 							state.setXPosition(event.getComponent().getX());
 							state.setYPosition(event.getComponent().getY());
 							state.setMaximized(GuiHandler.getInstance().isMaximized());
 							state.setWindowWidth(width);
 							state.setWindowHeight(height);
-							ApplicationState.getInstance().setFrameState(GuiHandler.getInstance().getFrame().getClass(), state);
+							AbstractSingleFrame.this.state.setFrameState(GuiHandler.getInstance().getFrame().getClass(), state);
 						}
 					}, 1000);
 				}
@@ -200,7 +207,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
                 @Override
                 public void windowStateChanged(WindowEvent e) {
                     if (e.getNewState() == Frame.ICONIFIED) {
-                        if (ApplicationState.getInstance().isShowSystemTray()) {
+                        if (state.isShowSystemTray()) {
                             AbstractSingleFrame.this.setVisible(false);
                         }
                         Logger.debug("Window Iconified");
@@ -242,7 +249,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
             contextPanel.setMinimumSize(getContextPanelMinimumSize());
             contextPanel.setPreferredSize(getContextPanelPreferredSize());
             contextPanel.setMaximumSize(getContextPanelMaximumSize());
-            if (!ApplicationState.getInstance().isUseContext()) {
+            if (!state.isUseContext()) {
                 contextPanel.setVisible(false);
             }
         }
@@ -310,7 +317,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     @Override
     public PlayerControlsPanel getPlayerControls() {
         if (playerControls == null) {
-            playerControls = new PlayerControlsPanel();
+            playerControls = new PlayerControlsPanel(state);
         }
         return playerControls;
     }
@@ -469,14 +476,14 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
      */
     void setWindowSize() {
         setMinimumSize(getWindowMinimumSize());
-        if (ApplicationState.getInstance().getFrameState(GuiHandler.getInstance().getFrame().getClass()).isMaximized()) {
+        if (state.getFrameState(GuiHandler.getInstance().getFrame().getClass()).isMaximized()) {
             setWindowSizeMaximized();
         } else {
             Dimension dimension = null;
-            if (ApplicationState.getInstance().getFrameState(GuiHandler.getInstance().getFrame().getClass()).getWindowWidth() != 0 && 
-                ApplicationState.getInstance().getFrameState(GuiHandler.getInstance().getFrame().getClass()).getWindowHeight() != 0) {
-                dimension = new Dimension(ApplicationState.getInstance().getFrameState(GuiHandler.getInstance().getFrame().getClass()).getWindowWidth(), 
-                		ApplicationState.getInstance().getFrameState(GuiHandler.getInstance().getFrame().getClass()).getWindowHeight());
+            if (state.getFrameState(GuiHandler.getInstance().getFrame().getClass()).getWindowWidth() != 0 && 
+                state.getFrameState(GuiHandler.getInstance().getFrame().getClass()).getWindowHeight() != 0) {
+                dimension = new Dimension(state.getFrameState(GuiHandler.getInstance().getFrame().getClass()).getWindowWidth(), 
+                		state.getFrameState(GuiHandler.getInstance().getFrame().getClass()).getWindowHeight());
             }
             if (dimension == null) {
             	dimension = getDefaultWindowSize();
@@ -563,7 +570,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     }
     
     protected void storeFrameState() {
-   		ApplicationState.getInstance().setFrameState(GuiHandler.getInstance().getFrame().getClass(), frameState);
+   		state.setFrameState(GuiHandler.getInstance().getFrame().getClass(), frameState);
     }
 
     protected final void applyVisibility(final boolean show, final String s, Component c, final JSplitPane sp) {

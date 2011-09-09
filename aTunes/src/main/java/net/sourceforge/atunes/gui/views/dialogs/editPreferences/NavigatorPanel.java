@@ -41,9 +41,9 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.tags.IncompleteTagsChecker;
 import net.sourceforge.atunes.kernel.modules.tags.TagAttribute;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -211,7 +211,6 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
         });
 
         tagAttributesTableModel = new TagAttributesTableModel();
-        tagAttributesTableModel.setTagAttributes(IncompleteTagsChecker.getAllTagAttributes());
         highlighTagAttributesTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
         highlighTagAttributesTable.setModel(tagAttributesTableModel);
         highlighTagAttributesTable.setTableHeader(null);
@@ -260,7 +259,7 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public boolean applyPreferences(ApplicationState state) {
+    public boolean applyPreferences(IState state) {
         state.setShowFavoritesInNavigator(showFavorites.isSelected());
         state.setShowExtendedTooltip(showExtendedToolTip.isSelected());
         state.setExtendedTooltipDelay((Integer) extendedToolTipDelay.getSelectedItem());
@@ -347,7 +346,8 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public void updatePanel(ApplicationState state) {
+    public void updatePanel(IState state) {
+        tagAttributesTableModel.setTagAttributes(IncompleteTagsChecker.getAllTagAttributes(state.getHighlightIncompleteTagFoldersAttributes()));
         setShowFavorites(state.isShowFavoritesInNavigator());
         setShowAlbumToolTip(state.isShowExtendedTooltip());
         setAlbumToolTipDelay(state.getExtendedTooltipDelay());
@@ -367,7 +367,7 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public void resetImmediateChanges(ApplicationState state) {
+    public void resetImmediateChanges(IState state) {
         // Do nothing
     }
 

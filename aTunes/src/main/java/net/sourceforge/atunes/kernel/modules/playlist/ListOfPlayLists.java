@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 
 /**
  * This class is used to contain all playlists when storing and reading from
@@ -47,9 +48,9 @@ public class ListOfPlayLists implements Serializable {
      * 
      * @return the empty play list
      */
-    public static ListOfPlayLists getEmptyPlayList() {
+    public static ListOfPlayLists getEmptyPlayList(IState state) {
         ListOfPlayLists l = new ListOfPlayLists();
-        l.setPlayLists(Collections.singletonList(new PlayList()));
+        l.setPlayLists(Collections.singletonList(new PlayList(state)));
         l.setSelectedPlayList(0);
         return l;
     }
@@ -96,16 +97,23 @@ public class ListOfPlayLists implements Serializable {
      * Fills contents of a list of playlists
      * 
      * @param contents
+     * @param state
      */
-    public void setContents(List<List<AudioObject>> contents) {
+    public void setContents(List<List<AudioObject>> contents, IState state) {
     	if (playLists.size() != contents.size()) {
     		throw new IllegalArgumentException("Invalid play list contents");
     	}
         for (int i = 0; i < playLists.size(); i++) {
         	PlayList pl = getPlayLists().get(i);
             pl.setContent(contents.get(i));
-            pl.setMode(PlayListMode.getPlayListMode(pl));
+            pl.setMode(PlayListMode.getPlayListMode(pl, state));
         }
     }
+
+	public void setState(IState state) {
+		for (PlayList p : playLists) {
+			p.setState(state);
+		}
+	}
 
 }

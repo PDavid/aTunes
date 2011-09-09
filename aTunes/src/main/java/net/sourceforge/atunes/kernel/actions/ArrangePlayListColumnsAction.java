@@ -43,7 +43,7 @@ public class ArrangePlayListColumnsAction extends CustomAbstractAction {
     public ArrangePlayListColumnsAction() {
         super(I18nUtils.getString("ARRANGE_COLUMNS"));
     }
-
+    
     @Override
     public void actionPerformed(ActionEvent e) {
     	ColumnSetPopupMenu.selectColumns((AbstractCommonColumnModel) PlayListHandler.getInstance().getPlayListTable().getColumnModel());

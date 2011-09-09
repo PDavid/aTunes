@@ -46,7 +46,13 @@ public class LyricsDataSource implements ContextInformationDataSource {
      */
     public static final String OUTPUT_AUDIO_OBJECT = INPUT_AUDIO_OBJECT;
 
-    @Override
+    private LyricsService lyricsService;
+    
+    public LyricsDataSource(LyricsService lyricsService) {
+		this.lyricsService = lyricsService;
+	}
+
+	@Override
     public Map<String, ?> getData(Map<String, ?> parameters) {
         Map<String, Object> result = new HashMap<String, Object>();
         if (parameters.containsKey(INPUT_AUDIO_OBJECT)) {
@@ -72,7 +78,7 @@ public class LyricsDataSource implements ContextInformationDataSource {
         // Query internet service for lyrics
         else {
             if (!audioObject.getTitle().trim().isEmpty() && !audioObject.getArtist().trim().isEmpty() && !audioObject.getArtist().equals(I18nUtils.getString("UNKNOWN_ARTIST"))) {
-                lyrics = LyricsService.getInstance().getLyrics(audioObject.getArtist().trim(), audioObject.getTitle().trim());
+                lyrics = lyricsService.getLyrics(audioObject.getArtist().trim(), audioObject.getTitle().trim());
             }
         }
 

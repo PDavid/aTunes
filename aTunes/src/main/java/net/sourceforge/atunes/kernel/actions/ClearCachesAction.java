@@ -27,8 +27,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SwingWorker;
 
-import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
-import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService;
+import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -53,10 +52,7 @@ public class ClearCachesAction extends CustomAbstractAction {
         SwingWorker<Boolean, Void> clearCaches = new SwingWorker<Boolean, Void>() {
             @Override
             protected Boolean doInBackground() throws Exception {
-                boolean exception;
-                exception = LastFmService.getInstance().clearCache();
-                exception = LyricsService.getInstance().clearCache() || exception;
-                return exception;
+                return WebServicesHandler.getInstance().clearCache();
             }
 
             @Override

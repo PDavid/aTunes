@@ -33,6 +33,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
@@ -52,9 +53,9 @@ import net.sourceforge.atunes.gui.views.controls.ByImageChoosingPanel.ImageEntry
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
 import net.sourceforge.atunes.kernel.OsManager;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.ColorBean;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
@@ -107,12 +108,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
         super(I18nUtils.getString("GENERAL"));
         JLabel windowTypeLabel = new JLabel(I18nUtils.getString("WINDOW_TYPE"));
         JLabel languageLabel = new JLabel(I18nUtils.getString("LANGUAGE"));
-        List<Locale> langs = I18nUtils.getLanguages();
-        Locale[] array = langs.toArray(new Locale[langs.size()]);
-        final Locale currentLocale = ApplicationState.getInstance().getLocale().getLocale();
-        Arrays.sort(array, new LocaleComparator(currentLocale));
-        language = new JComboBox(array);
-        language.setRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListCellRenderer(new LanguageListCellRendererCode()));
+        language = new JComboBox();
 
         showIconTray = new JCheckBox(I18nUtils.getString("SHOW_TRAY_ICON"));
         showTrayPlayer = new JCheckBox(I18nUtils.getString("SHOW_TRAY_PLAYER"));
@@ -157,10 +153,10 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
                 FontChooserDialog fontChooserDialog;
                 if (currentFontSettings != null) {
                     fontChooserDialog = new FontChooserDialog(getPreferenceDialog(), 300, 300, currentFontSettings.getFont().toFont(), currentFontSettings
-                            .isUseFontSmoothing(), currentFontSettings.isUseFontSmoothingSettingsFromOs(), ApplicationState.getInstance().getLocale().getLocale());
+                            .isUseFontSmoothing(), currentFontSettings.isUseFontSmoothingSettingsFromOs(), getState().getLocale().getLocale());
                 } else {
                     fontChooserDialog = new FontChooserDialog(getPreferenceDialog(), 300, 300, LookAndFeelSelector.getInstance().getCurrentLookAndFeel()
-                            .getDefaultFont(), true, false, ApplicationState.getInstance().getLocale().getLocale());
+                            .getDefaultFont(), true, false, getState().getLocale().getLocale());
                 }
                 fontChooserDialog.setVisible(true);
                 if (fontChooserDialog.getSelectedFontSettings() != null) {
@@ -176,16 +172,16 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
             	// When changing look and feel set default skin in combo or current skin if selected look and feel is the current one
             	String skinName = LookAndFeelSelector.getInstance().getDefaultSkin((String)lookAndFeel.getSelectedItem());
             	if (LookAndFeelSelector.getInstance().getCurrentLookAndFeelName().equals(lookAndFeel.getSelectedItem()) &&
-            			ApplicationState.getInstance().getLookAndFeel().getSkin() != null) {
-            		skinName = ApplicationState.getInstance().getLookAndFeel().getSkin();
+            			getState().getLookAndFeel().getSkin() != null) {
+            		skinName = getState().getLookAndFeel().getSkin();
             	} else {
             		// Different look and feel, if skin has changed we must reset it, if not, do nothing as to change look and feel
             		// user must restart application first
-            		String currentSkin = ApplicationState.getInstance().getLookAndFeel().getSkin();
+            		String currentSkin = getState().getLookAndFeel().getSkin();
                     if (currentSkin == null) {
-                    	currentSkin = LookAndFeelSelector.getInstance().getDefaultSkin(ApplicationState.getInstance().getLookAndFeel().getName());
+                    	currentSkin = LookAndFeelSelector.getInstance().getDefaultSkin(getState().getLookAndFeel().getName());
                     }
-            		LookAndFeelSelector.getInstance().applySkin(currentSkin);
+            		LookAndFeelSelector.getInstance().applySkin(currentSkin, getState());
             		
             		
             		
@@ -267,7 +263,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public boolean applyPreferences(ApplicationState state) {
+    public boolean applyPreferences(IState state) {
         boolean needRestart = false;
 
         Class<? extends Frame> oldFrameClass = state.getFrameClass();
@@ -363,7 +359,15 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public void updatePanel(ApplicationState state) {
+    public void updatePanel(IState state) {
+        List<Locale> langs = I18nUtils.getLanguages();
+        Locale[] array = langs.toArray(new Locale[langs.size()]);
+        final Locale currentLocale = getState().getLocale().getLocale();
+        Arrays.sort(array, new LocaleComparator(currentLocale));
+        language.setModel(new DefaultComboBoxModel(array));
+        language.setRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListCellRenderer(new LanguageListCellRendererCode(state)));
+
+    	
         lookAndFeel.setModel(new ListComboBoxModel<String>(LookAndFeelSelector.getInstance().getAvailableLookAndFeels()));
         setWindowType(state.getFrameClass());
         setLanguage(I18nUtils.getSelectedLocale());
@@ -381,9 +385,9 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public void resetImmediateChanges(ApplicationState state) {
+    public void resetImmediateChanges(IState state) {
         if (state.getLookAndFeel().getSkin() == null || !state.getLookAndFeel().getSkin().equals(skin.getSelectedItem())) {
-            LookAndFeelSelector.getInstance().applySkin(state.getLookAndFeel().getSkin());
+            LookAndFeelSelector.getInstance().applySkin(state.getLookAndFeel().getSkin(), getState());
         }
     }
 
@@ -429,7 +433,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
     		String selectedSkin = (String) skin.getSelectedItem();
     		boolean isCurrentLookAndFeel = LookAndFeelSelector.getInstance().getCurrentLookAndFeelName().equals(lookAndFeel.getSelectedItem());
     		if (isCurrentLookAndFeel) {
-    			LookAndFeelSelector.getInstance().applySkin(selectedSkin);
+    			LookAndFeelSelector.getInstance().applySkin(selectedSkin, getState());
     		}
     	}
     }

@@ -111,7 +111,7 @@ public class ExportAction extends CustomAbstractAction {
                         songs = AudioFile.getAudioFiles(PlayListHandler.getInstance().getSelectedAudioObjects());
                     }
 
-                    ExportFilesProcess process = new ExportFilesProcess(songs, path);
+                    ExportFilesProcess process = new ExportFilesProcess(songs, path, getState());
                     process.addProcessListener(new ExportProcessListener());
                     process.execute();
                 } else if (userWantsToCreate) {

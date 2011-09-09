@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 import java.util.Comparator;
 
 import net.sourceforge.atunes.gui.model.AbstractColumnSetTableModel;
-import net.sourceforge.atunes.kernel.modules.columns.PlayListColumnSet;
+import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.model.AudioObject;
 
@@ -42,11 +42,10 @@ public class PlayListTableModel extends AbstractColumnSetTableModel {
     /**
      * Constructor.
      * 
-     * @param table
-     *            the table
+     * @param columnSet
      */
-    public PlayListTableModel() {
-        super(PlayListColumnSet.getInstance());
+    public PlayListTableModel(AbstractColumnSet columnSet) {
+        super(columnSet);
     }
 
     /**

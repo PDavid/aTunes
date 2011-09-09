@@ -28,7 +28,6 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.FolderImageIcon;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -39,13 +38,17 @@ public class ShowFoldersInNavigatorAction extends ActionWithColorMutableIcon {
     ShowFoldersInNavigatorAction() {
         super(I18nUtils.getString("SHOW_FOLDERS"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_FOLDERS"));
-        putValue(SELECTED_KEY, ApplicationState.getInstance().getViewMode() == ViewMode.FOLDER);
     }
 
     @Override
+    protected void initialize() {
+        putValue(SELECTED_KEY, getState().getViewMode() == ViewMode.FOLDER);
+    }
+    
+    @Override
     public void actionPerformed(ActionEvent e) {
-        if (ApplicationState.getInstance().getViewMode() != ViewMode.FOLDER) {
-            ApplicationState.getInstance().setViewMode(ViewMode.FOLDER);
+        if (getState().getViewMode() != ViewMode.FOLDER) {
+            getState().setViewMode(ViewMode.FOLDER);
             NavigationHandler.getInstance().refreshCurrentView();
             Actions.getAction(CollapseTreesAction.class).setEnabled(true);
             Actions.getAction(ExpandTreesAction.class).setEnabled(true);

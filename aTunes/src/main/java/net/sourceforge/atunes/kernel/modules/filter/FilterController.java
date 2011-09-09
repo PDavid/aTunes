@@ -37,6 +37,7 @@ import javax.swing.event.DocumentListener;
 
 import net.sourceforge.atunes.gui.views.panels.FilterPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -94,8 +95,8 @@ class FilterController extends AbstractSimpleController<FilterPanel> {
      */
     private Map<String, JRadioButtonMenuItem> filters;
 
-    FilterController(FilterPanel panel) {
-        super(panel);
+    FilterController(FilterPanel panel, IState state) {
+        super(panel, state);
         addBindings();
         group = new ButtonGroup();
         filters = new HashMap<String, JRadioButtonMenuItem>();
@@ -103,7 +104,7 @@ class FilterController extends AbstractSimpleController<FilterPanel> {
     }
 
     @Override
-    protected void addBindings() {
+	public void addBindings() {
     	getComponentControlled().getFilterTextField().addFocusListener(new FocusListener() {
 			
 			@Override
@@ -153,14 +154,6 @@ class FilterController extends AbstractSimpleController<FilterPanel> {
 		});
     }
     
-    @Override
-    protected void addStateBindings() {
-    }
-
-    @Override
-    protected void notifyReload() {
-    }
-
     /**
      * Adds a new filter to controls
      * 

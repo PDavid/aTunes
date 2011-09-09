@@ -22,7 +22,8 @@ package net.sourceforge.atunes.gui.model;
 import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 
-import net.sourceforge.atunes.kernel.modules.columns.AlbumColumnSet;
+import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 
 /**
  * Column model used for table displaying album information
@@ -35,7 +36,7 @@ public final class AlbumTableColumnModel extends AbstractCommonColumnModel {
 
 
 	public AlbumTableColumnModel(JTable table) {
-        super(table,AlbumColumnSet.getInstance());
+        super(table, (AbstractColumnSet) Context.getBean("albumColumnSet"));
         enableColumnChange(true);
     }
 

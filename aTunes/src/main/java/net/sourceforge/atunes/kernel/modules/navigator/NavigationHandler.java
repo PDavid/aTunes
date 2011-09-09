@@ -31,19 +31,21 @@ import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.SearchDialog;
 import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
 import net.sourceforge.atunes.kernel.AbstractHandler;
+import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.draganddrop.TreeNavigationTransferHandler;
 import net.sourceforge.atunes.kernel.modules.filter.AbstractFilter;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -131,11 +133,11 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 
     @Override
     public void applicationStarted(List<AudioObject> playList) {
-        showNavigationTree(ApplicationState.getInstance().isShowNavigationTree());
-        applyNavigationTableVisibility(ApplicationState.getInstance().isShowNavigationTree() && ApplicationState.getInstance().isShowNavigationTable());
+        showNavigationTree(getState().isShowNavigationTree());
+        applyNavigationTableVisibility(getState().isShowNavigationTree() && getState().isShowNavigationTable());
 
         // Navigation Panel View
-        getNavigationController().setNavigationView(ApplicationState.getInstance().getNavigationView(), false); 
+        getNavigationController().setNavigationView(getState().getNavigationView(), false); 
         
         
         TreeNavigationTransferHandler treeNavigationTransferHandler = new TreeNavigationTransferHandler();
@@ -146,11 +148,11 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
         if (navigationViews == null) {
             navigationViews = new ArrayList<AbstractNavigationView>();
             // TODO: Dynamic load of navigation views, possibly from a config file
-            navigationViews.add(new RepositoryNavigationView());
-            navigationViews.add(new FavoritesNavigationView());
-            navigationViews.add(new DeviceNavigationView());
-            navigationViews.add(new RadioNavigationView());
-            navigationViews.add(new PodcastNavigationView());
+            navigationViews.add(new RepositoryNavigationView(getState()));
+            navigationViews.add(new FavoritesNavigationView(getState()));
+            navigationViews.add(new DeviceNavigationView(getState()));
+            navigationViews.add(new RadioNavigationView(getState(), (AbstractColumnSet) Context.getBean("radioNavigationColumnSet")));
+            navigationViews.add(new PodcastNavigationView(getState(), (AbstractCustomNavigatorColumnSet) Context.getBean("podcastNavigationColumnSet")));
         }
         return navigationViews;
     }
@@ -170,7 +172,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
     }
 
     public AbstractNavigationView getCurrentView() {
-        return getView(getViewByName(ApplicationState.getInstance().getNavigationView()));
+        return getView(getViewByName(getState().getNavigationView()));
     }
 
     public ViewMode getCurrentViewMode() {
@@ -185,7 +187,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
      * Refreshes current view to update data shown
      */
     public void refreshCurrentView() {
-        getCurrentView().refreshView(ApplicationState.getInstance().getViewMode(),
+        getCurrentView().refreshView(getState().getViewMode(),
                 FilterHandler.getInstance().isFilterSelected(getTreeFilter()) ? FilterHandler.getInstance().getFilter() : null);
     }
 
@@ -197,7 +199,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
      */
     public void refreshView(Class<? extends AbstractNavigationView> navigationViewClass) {
         if (getView(navigationViewClass).equals(getCurrentView())) {
-            getView(navigationViewClass).refreshView(ApplicationState.getInstance().getViewMode(),
+            getView(navigationViewClass).refreshView(getState().getViewMode(),
                     FilterHandler.getInstance().isFilterSelected(getTreeFilter()) ? FilterHandler.getInstance().getFilter() : null);
         }
     }
@@ -240,7 +242,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
     }
 
     @Override
-    public void applicationStateChanged(ApplicationState newState) {
+    public void applicationStateChanged(IState newState) {
         // TODO: Remove refreshing explicitly radio view
         refreshView(RadioNavigationView.class);
         refreshCurrentView();
@@ -269,7 +271,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
         if (navigationController == null) {
             NavigationTreePanel treePanel = GuiHandler.getInstance().getNavigationTreePanel();
             NavigationTablePanel tablePanel = GuiHandler.getInstance().getNavigationTablePanel();
-            navigationController = new NavigationController(treePanel, tablePanel);
+            navigationController = new NavigationController(treePanel, tablePanel, getState());
         }
         return navigationController;
     }
@@ -341,7 +343,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
      *            the show
      */
     public void showNavigationTree(boolean show) {    	
-        ApplicationState.getInstance().setShowNavigationTree(show);
+        getState().setShowNavigationTree(show);
 
     	// Disable or enable actions
         for (AbstractNavigationView navigationView : NavigationHandler.getInstance().getNavigationViews()) {
@@ -352,7 +354,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
         // Depending if is visible or not filtering is allowed or not
         FilterHandler.getInstance().setFilterEnabled(NavigationHandler.getInstance().getTreeFilter(), show);
         
-        applyNavigationTableVisibility(show && ApplicationState.getInstance().isShowNavigationTable());
+        applyNavigationTableVisibility(show && getState().isShowNavigationTable());
     }
     
     /**
@@ -362,7 +364,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
      *            the show
      */
     public void showNavigationTable(boolean show) {
-        ApplicationState.getInstance().setShowNavigationTable(show);
+        getState().setShowNavigationTable(show);
         applyNavigationTableVisibility(show);
     }
     

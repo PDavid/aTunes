@@ -54,8 +54,8 @@ import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ClearCachesAction;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsEngineInfo;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -325,7 +325,7 @@ public final class ContextPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public boolean applyPreferences(ApplicationState state) {
+    public boolean applyPreferences(IState state) {
         state.setUseContext(activateContext.isSelected());
         state.setSaveContextPicture(savePictures.isSelected());
         state.setHideVariousArtistsAlbums(hideVariousArtistsAlbums.isSelected());
@@ -397,7 +397,7 @@ public final class ContextPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public void updatePanel(ApplicationState state) {
+    public void updatePanel(IState state) {
         setActivateContext(state.isUseContext());
         setSavePictures(state.isSaveContextPicture());
         setHideVariousArtistsAlbums(state.isHideVariousArtistsAlbums());
@@ -407,7 +407,7 @@ public final class ContextPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public void resetImmediateChanges(ApplicationState state) {
+    public void resetImmediateChanges(IState state) {
         // Do nothing
     }
 

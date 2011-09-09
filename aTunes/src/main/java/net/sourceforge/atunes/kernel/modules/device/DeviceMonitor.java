@@ -26,8 +26,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import net.sourceforge.atunes.kernel.DeviceListeners;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IState;
 
 final class DeviceMonitor {
 
@@ -38,11 +38,11 @@ final class DeviceMonitor {
     /**
      * Start monitor.
      */
-    static void startMonitor() {
+    static void startMonitor(final IState state) {
     	service.scheduleAtFixedRate(new Runnable() {
     		@Override
     		public void run() {
-    			checkConnection();
+    			checkConnection(state);
     			checkDisconnection();
     		}
     	}, DELAY, DELAY, TimeUnit.SECONDS);
@@ -75,10 +75,11 @@ final class DeviceMonitor {
 
 	/**
 	 * Checks if there is a device connected, returning true if so, false otherwise
-	 * @return
-	 */
-    protected static boolean checkConnection() {
-        String deviceLocation = ApplicationState.getInstance().getDefaultDeviceLocation();
+     * @param deviceLocation
+     * @return
+     */
+    private static boolean checkConnection(IState state) {
+    	String deviceLocation = state.getDefaultDeviceLocation();
         if (deviceLocation != null && !deviceLocation.equals("")) {
             File deviceLocationFile = new File(deviceLocation);
             if (!DeviceHandler.getInstance().isDeviceConnected() && deviceLocationFile.exists()) {

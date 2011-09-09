@@ -30,13 +30,14 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.model.AlbumTableColumnModel;
 import net.sourceforge.atunes.gui.model.AlbumTableModel;
 import net.sourceforge.atunes.gui.renderers.ColumnRenderers;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.ColumnSetPopupMenu;
-import net.sourceforge.atunes.kernel.modules.columns.AlbumColumnSet;
+import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
@@ -94,8 +95,9 @@ public final class AddArtistDragDialog extends AbstractCustomDialog {
         albumTable.setColumnModel(columnModel);
         
         // why ??? don't work without
-        model.setColumnSet(AlbumColumnSet.getInstance());
-        columnModel.setColumnSet(AlbumColumnSet.getInstance());        
+        AbstractColumnSet columnSet = (AbstractColumnSet) Context.getBean("albumColumnSet");
+        model.setColumnSet(columnSet);
+        columnModel.setColumnSet(columnSet);        
         // ???
         
         // 	Set renderers

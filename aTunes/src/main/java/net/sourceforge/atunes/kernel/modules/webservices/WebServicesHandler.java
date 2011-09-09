@@ -22,18 +22,28 @@ package net.sourceforge.atunes.kernel.modules.webservices;
 
 import java.util.List;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeService;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 
 public class WebServicesHandler extends AbstractHandler {
 
 	private static WebServicesHandler instance;
 	
+	private LastFmService lastFmService;
+	
+	private LyricsService lyricsService;
+	
+	private YoutubeService youtubeService;
+	
 	private WebServicesHandler() {		
+		this.lastFmService = (LastFmService) Context.getBean("lastFmService");
+		this.lyricsService = (LyricsService) Context.getBean("lyricsService");
+		this.youtubeService = (YoutubeService) Context.getBean("youtubeService");
 	}
 	
 	@Override
@@ -42,33 +52,37 @@ public class WebServicesHandler extends AbstractHandler {
 	
 	@Override
 	public void allHandlersInitialized() {
-        LastFmService.getInstance().submitCacheToLastFm();
+        lastFmService.submitCacheToLastFm();
 	}
 
 	@Override
 	public void applicationFinish() {
-        LastFmService.getInstance().finishService();
-        LyricsService.getInstance().finishService();
+        lastFmService.finishService();
+        lyricsService.finishService();
 	}
 
 	@Override
-	public void applicationStateChanged(ApplicationState newState) {
-        LastFmService.getInstance().updateService();
-        LyricsService.getInstance().updateService();
-        YoutubeService.getInstance().updateService();
+	public void applicationStateChanged(IState newState) {
+        lastFmService.updateService();
+        lyricsService.updateService();
+        youtubeService.updateService();
 	}
 
 	@Override
 	protected void initHandler() {
-        LastFmService.getInstance().updateService();
-        LyricsService.getInstance().updateService();
+        lastFmService.updateService();
+        lyricsService.updateService();
 	}
 
+	public LastFmService getLastFmService() {
+		return lastFmService;
+	}
+	
 	/**
 	 * Returns instance
 	 * @return
 	 */
-	public static AbstractHandler getInstance() {
+	public static WebServicesHandler getInstance() {
 		if (instance == null) {
 			instance = new WebServicesHandler();
 		}
@@ -80,5 +94,11 @@ public class WebServicesHandler extends AbstractHandler {
 
 	@Override
 	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+
+	public boolean clearCache() {
+		boolean exception = lastFmService.clearCache();
+		exception = lyricsService.clearCache() || exception;
+		return exception;
+	}
 
 }

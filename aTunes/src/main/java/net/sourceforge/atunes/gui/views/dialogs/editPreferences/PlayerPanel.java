@@ -54,7 +54,7 @@ import net.sourceforge.atunes.kernel.modules.hotkeys.Hotkey;
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeyHandler;
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeysConfig;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -295,7 +295,7 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public boolean applyPreferences(ApplicationState state) {
+    public boolean applyPreferences(IState state) {
         boolean needRestart = false;
         state.setPlayAtStartup(playAtStartup.isSelected());
         state.setUseFadeAway(useFadeAway.isSelected());
@@ -415,7 +415,7 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public void updatePanel(ApplicationState state) {
+    public void updatePanel(IState state) {
         setPlayerEngine(state.getPlayerEngine());
         setPlayAtStartup(state.isPlayAtStartup());
         setUseFadeAway(state.isUseFadeAway());
@@ -436,7 +436,7 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public void resetImmediateChanges(ApplicationState state) {
+    public void resetImmediateChanges(IState state) {
         // Do nothing
     }
 
@@ -453,8 +453,8 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
             HotkeyHandler.getInstance().disableHotkeys();
         } else {
             // Enable hotkeys again only if user didn't disable them
-            if (ApplicationState.getInstance().isEnableHotkeys()) {
-                HotkeyHandler.getInstance().enableHotkeys(ApplicationState.getInstance().getHotkeysConfig());
+            if (getState().isEnableHotkeys()) {
+                HotkeyHandler.getInstance().enableHotkeys(getState().getHotkeysConfig());
             }
         }
     }

@@ -25,9 +25,9 @@ import java.util.Collection;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 
 import org.commonjukebox.plugins.exceptions.PluginSystemException;
 import org.commonjukebox.plugins.model.Plugin;
@@ -71,7 +71,7 @@ public class GeneralPurposePluginsHandler extends AbstractHandler implements Plu
     }
 
     @Override
-    public void applicationStateChanged(ApplicationState newState) {
+    public void applicationStateChanged(IState newState) {
     }
 
     @Override

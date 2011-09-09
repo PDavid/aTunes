@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.updates.UpdateHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -43,7 +42,7 @@ public class CheckUpdatesAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        UpdateHandler.getInstance().checkUpdates(ApplicationState.getInstance().getProxy(), true, true);
+        UpdateHandler.getInstance().checkUpdates(getState().getProxy(), true, true);
     }
 
 }

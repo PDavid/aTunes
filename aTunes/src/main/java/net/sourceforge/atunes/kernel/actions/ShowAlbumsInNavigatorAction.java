@@ -28,7 +28,6 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.gui.images.AlbumImageIcon;
 import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -39,13 +38,17 @@ public class ShowAlbumsInNavigatorAction extends ActionWithColorMutableIcon {
     public ShowAlbumsInNavigatorAction() {
         super(I18nUtils.getString("SHOW_ALBUMS"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_ALBUMS"));
-        putValue(SELECTED_KEY, ApplicationState.getInstance().getViewMode() == ViewMode.ALBUM);
     }
 
     @Override
+    protected void initialize() {
+        putValue(SELECTED_KEY, getState().getViewMode() == ViewMode.ALBUM);
+    }
+    
+    @Override
     public void actionPerformed(ActionEvent e) {
-        if (ApplicationState.getInstance().getViewMode() != ViewMode.ALBUM) {
-            ApplicationState.getInstance().setViewMode(ViewMode.ALBUM);
+        if (getState().getViewMode() != ViewMode.ALBUM) {
+            getState().setViewMode(ViewMode.ALBUM);
             NavigationHandler.getInstance().refreshCurrentView();
             Actions.getAction(CollapseTreesAction.class).setEnabled(true);
             Actions.getAction(ExpandTreesAction.class).setEnabled(true);

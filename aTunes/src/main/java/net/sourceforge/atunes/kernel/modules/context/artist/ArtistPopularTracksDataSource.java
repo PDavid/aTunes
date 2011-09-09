@@ -25,7 +25,7 @@ import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.context.ArtistTopTracks;
 import net.sourceforge.atunes.kernel.modules.context.ContextInformationDataSource;
-import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
+import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
 
@@ -62,7 +62,7 @@ public class ArtistPopularTracksDataSource implements ContextInformationDataSour
 
     private ArtistTopTracks getTopTracks(AudioObject audioObject) {
     	if (!Artist.isUnknownArtist(audioObject.getArtist())) {
-    		return LastFmService.getInstance().getTopTracks(audioObject.getArtist());
+    		return WebServicesHandler.getInstance().getLastFmService().getTopTracks(audioObject.getArtist());
     	}
     	return null;
     }

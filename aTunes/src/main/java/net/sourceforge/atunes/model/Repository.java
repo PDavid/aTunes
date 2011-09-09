@@ -32,7 +32,6 @@ import java.util.Map;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.kernel.modules.repository.exception.InconsistentRepositoryException;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.Logger;
 
 public class Repository implements Serializable {
@@ -90,12 +89,17 @@ public class Repository implements Serializable {
     private transient RepositoryTransaction transaction;
 
     /**
+     * State
+     */
+    private transient IState state;
+    
+    /**
      * Instantiates a new repository.
      * 
      * @param folders
      *            the folders
      */
-    public Repository(List<File> folders, RepositoryListener listener) {
+    public Repository(List<File> folders, RepositoryListener listener, IState state) {
         this.folders = folders;
         this.filesStructure = new RepositoryStructure<LocalAudioObject>();
         this.artistsStructure = new RepositoryStructure<Artist>();
@@ -103,6 +107,7 @@ public class Repository implements Serializable {
         this.genresStructure = new RepositoryStructure<Genre>();
         this.yearStructure = new RepositoryStructure<Year>();
         this.listener = listener;
+        this.state = state;
     }
 
     /**
@@ -110,6 +115,13 @@ public class Repository implements Serializable {
 	 */
     @SuppressWarnings("unused")
     private Repository() {}
+
+    /**
+     * @param state
+     */
+    public void setState(IState state) {
+    	this.state = state;
+    }
     
     /**
      * Gets the folders.
@@ -340,7 +352,7 @@ public class Repository implements Serializable {
      * @return
      */
     public Artist getArtist(String artistName) {
-    	if (ApplicationState.getInstance().isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
+    	if (state.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
     		return artistsStructure.get(artistName);
     	} else {
     		return artistsStructure.get(artistName.toLowerCase());
@@ -362,7 +374,7 @@ public class Repository implements Serializable {
      */
     public Artist putArtist(String artistName) {
     	Artist artist = new Artist(artistName);
-    	if (ApplicationState.getInstance().isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
+    	if (state.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
     		artistsStructure.put(artistName, artist);
     	} else {
     		artistsStructure.put(artistName.toLowerCase(), artist);
@@ -375,7 +387,7 @@ public class Repository implements Serializable {
      * @param artist
      */
     public void removeArtist(Artist artist) {
-    	if (ApplicationState.getInstance().isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
+    	if (state.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
     		artistsStructure.remove(artist.getName());
     	} else {
     		artistsStructure.remove(artist.getName().toLowerCase());
@@ -460,7 +472,7 @@ public class Repository implements Serializable {
      * @return
      */
     public Genre getGenre(String genre) {
-    	if (ApplicationState.getInstance().isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
+    	if (state.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
     		return genresStructure.get(genre);
     	} else {
     		return genresStructure.get(genre.toLowerCase());
@@ -474,7 +486,7 @@ public class Repository implements Serializable {
      */
     public Genre putGenre(String genreName) {
     	Genre genre = new Genre(genreName);
-    	if (ApplicationState.getInstance().isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
+    	if (state.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
     		genresStructure.put(genreName, genre);
     	} else {
     		genresStructure.put(genreName.toLowerCase(), genre);
@@ -487,7 +499,7 @@ public class Repository implements Serializable {
      * @param artist
      */
     public void removeGenre(Genre genre) {
-    	if (ApplicationState.getInstance().isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
+    	if (state.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
     		genresStructure.remove(genre.getName());
     	} else {
     		genresStructure.remove(genre.getName().toLowerCase());

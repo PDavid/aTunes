@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -38,12 +37,16 @@ public class OSDSettingAction extends CustomAbstractAction {
     OSDSettingAction() {
         super(I18nUtils.getString("SHOW_OSD"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_OSD"));
-        putValue(SELECTED_KEY, ApplicationState.getInstance().isShowOSD());
+    }
+    
+    @Override
+    protected void initialize() {
+        putValue(SELECTED_KEY, getState().isShowOSD());
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        ApplicationState.getInstance().setShowOSD((Boolean) getValue(SELECTED_KEY));
+        getState().setShowOSD((Boolean) getValue(SELECTED_KEY));
     }
 
 }

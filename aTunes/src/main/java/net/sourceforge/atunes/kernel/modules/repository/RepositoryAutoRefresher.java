@@ -23,13 +23,15 @@ package net.sourceforge.atunes.kernel.modules.repository;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.StringUtils;
 
 class RepositoryAutoRefresher extends Thread {
 
     private RepositoryHandler handler;
+    
+    private IState state;
 
     /**
      * Instantiates a new repository auto refresher.
@@ -37,11 +39,12 @@ class RepositoryAutoRefresher extends Thread {
      * @param repositoryHandler
      *            the repository handler
      */
-    public RepositoryAutoRefresher(RepositoryHandler repositoryHandler) {
+    public RepositoryAutoRefresher(RepositoryHandler repositoryHandler, IState state) {
         super();
         this.handler = repositoryHandler;
+        this.state = state;
         setPriority(Thread.MIN_PRIORITY);
-        if (ApplicationState.getInstance().getAutoRepositoryRefreshTime() != 0) {
+        if (state.getAutoRepositoryRefreshTime() != 0) {
             start();
         }
     }
@@ -50,7 +53,7 @@ class RepositoryAutoRefresher extends Thread {
     public void run() {
         try {
             while (true) {
-                Thread.sleep(ApplicationState.getInstance().getAutoRepositoryRefreshTime() * 60000L);
+                Thread.sleep(state.getAutoRepositoryRefreshTime() * 60000L);
                 if (!handler.repositoryIsNull() && !handler.isLoaderWorking()) {
                     Logger.info(StringUtils.getString("Checking for repository changes... (", new SimpleDateFormat("HH:mm:ss").format(new Date()), ')'));
                     int filesLoaded = handler.getAudioFilesList().size();
@@ -60,7 +63,7 @@ class RepositoryAutoRefresher extends Thread {
                     }
                 }
                 // If it has been disabled exit
-                if (ApplicationState.getInstance().getAutoRepositoryRefreshTime() == 0) {
+                if (state.getAutoRepositoryRefreshTime() == 0) {
                     break;
                 }
             }

@@ -33,7 +33,6 @@ import javax.swing.filechooser.FileFilter;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -56,7 +55,7 @@ public class SavePlayListAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        JFileChooser fileChooser = new JFileChooser(ApplicationState.getInstance().getSavePlaylistPath());
+        JFileChooser fileChooser = new JFileChooser(getState().getSavePlaylistPath());
         FileFilter filter = PlayListIO.getPlaylistFileFilter();
         // Open file chooser
         if (GuiHandler.getInstance().showSaveDialog(fileChooser, filter) == JFileChooser.APPROVE_OPTION) {
@@ -64,7 +63,7 @@ public class SavePlayListAction extends CustomAbstractAction {
             // Get selected file
             File file = fileChooser.getSelectedFile();
 
-            ApplicationState.getInstance().setSavePlaylistPath(file.getParentFile().getAbsolutePath());
+            getState().setSavePlaylistPath(file.getParentFile().getAbsolutePath());
 
             // If filename have incorrect extension, add it
             if (!file.getName().toUpperCase().endsWith(PlayListIO.M3U_FILE_EXTENSION.toUpperCase())) {

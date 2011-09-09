@@ -42,7 +42,6 @@ import net.sourceforge.atunes.kernel.modules.context.SimilarArtistsInfo;
 import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmAlbum;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmAlbumList;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmArtistTopTracks;
@@ -50,6 +49,7 @@ import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmLoved
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmSimilarArtists;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.CryptoUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -100,7 +100,7 @@ public final class LastFmService {
 		                public void run() {
 		                    GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("LASTFM_USER_ERROR"));
 		                    // Disable service by deleting password
-		                    ApplicationState.getInstance().setLastFmEnabled(false);
+		                    state.setLastFmEnabled(false);
 		                }
 		            });
 		        } else {
@@ -133,7 +133,7 @@ public final class LastFmService {
 		                public void run() {
 		                    GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("LASTFM_USER_ERROR"));
 		                    // Disable service by deleting password
-		                    ApplicationState.getInstance().setLastFmEnabled(false);
+		                    state.setLastFmEnabled(false);
 		                }
 		            });
 		        } else {
@@ -164,34 +164,16 @@ public final class LastFmService {
     private static LastFmCache lastFmCache = new LastFmCache();
     /** Submissions need single threaded executor */
     private ExecutorService scrobblerExecutorService = Executors.newSingleThreadExecutor();
-    /**
-     * Singleton instance
-     */
-    private static LastFmService instance;
-
-    /**
-     * Getter of singleton instance;
-     * 
-     * @return
-     */
-    public static synchronized LastFmService getInstance() {
-        if (instance == null) {
-            instance = new LastFmService();
-        }
-        return instance;
-    }
+    
+    private IState state;
 
     /**
      * Instantiates a new Last.fm service
      * 
-     * @param proxyBean
-     *            the proxy
-     * @param user
-     *            the Last.fm username
-     * @param password
-     *            the Last.fm password
+     * @param state
      */
-    private LastFmService() {
+    public LastFmService(IState state) {
+    	this.state = state;
     	updateService();
     }
     
@@ -201,16 +183,16 @@ public final class LastFmService {
     public void updateService() {
         ExtendedProxy proxy = null;
         try {
-            if (ApplicationState.getInstance().getProxy() != null) {
-                proxy = ExtendedProxy.getProxy(ApplicationState.getInstance().getProxy());
+            if (state.getProxy() != null) {
+                proxy = ExtendedProxy.getProxy(state.getProxy());
             }
         } catch (Exception e) {
             Logger.error(e);
         }
 
         this.proxy = proxy;
-        this.user = ApplicationState.getInstance().getLastFmUser();
-        this.password = ApplicationState.getInstance().getLastFmPassword();
+        this.user = state.getLastFmUser();
+        this.password = state.getLastFmPassword();
         
         Logger.debug("User: ", user);
         Logger.debug("Password: ", password != null ? password.hashCode() : null);
@@ -575,7 +557,7 @@ public final class LastFmService {
             String wikiText = lastFmCache.retrieveArtistWiki(artist);
             if (wikiText == null) {
 
-                Artist a = Artist.getInfo(artist, ApplicationState.getInstance().getLocale().getLocale(), null, getApiKey());
+                Artist a = Artist.getInfo(artist, state.getLocale().getLocale(), null, getApiKey());
                 wikiText = a != null ? a.getWikiSummary() : "";
                 wikiText = wikiText.replaceAll("<.*?>", "");
                 wikiText = StringUtils.unescapeHTML(wikiText, 0);
@@ -599,7 +581,7 @@ public final class LastFmService {
      */
     public String getWikiURL(String artist) {
         return ARTIST_WIKI_URL.replace(ARTIST_WILDCARD, NetworkUtils.encodeString(artist)).replace(LANGUAGE_WILDCARD,
-                ApplicationState.getInstance().getLocale().getLocale().getLanguage());
+                state.getLocale().getLocale().getLanguage());
     }
 
     /**
@@ -917,7 +899,7 @@ public final class LastFmService {
      *            the seconds played
      */
     public void submitToLastFm(final LocalAudioObject audioFile, final long secondsPlayed) {
-        if (ApplicationState.getInstance().isLastFmEnabled()) {
+        if (state.isLastFmEnabled()) {
             Runnable r = new SubmitToLastFmRunnable(secondsPlayed, audioFile);
             try {
                 scrobblerExecutorService.submit(r);
@@ -931,7 +913,7 @@ public final class LastFmService {
      * Submits Last.fm cache
      */
     public void submitCacheToLastFm() {
-        if (ApplicationState.getInstance().isLastFmEnabled()) {
+        if (state.isLastFmEnabled()) {
             Runnable r = new Runnable() {
 
                 @Override
@@ -962,7 +944,7 @@ public final class LastFmService {
      *            the file
      */
     public void submitNowPlayingInfoToLastFm(final LocalAudioObject audioFile) {
-        if (ApplicationState.getInstance().isLastFmEnabled()) {
+        if (state.isLastFmEnabled()) {
             Runnable r = new SubmitNowPlayingInfoRunnable(audioFile);
             try {
                 scrobblerExecutorService.submit(r);

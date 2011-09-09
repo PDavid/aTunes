@@ -27,6 +27,7 @@ import java.util.List;
 import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.model.SearchResultColumnModel;
 import net.sourceforge.atunes.gui.renderers.ColumnRenderers;
 import net.sourceforge.atunes.gui.views.controls.ColumnSetPopupMenu;
@@ -34,11 +35,12 @@ import net.sourceforge.atunes.gui.views.controls.ColumnSetRowSorter;
 import net.sourceforge.atunes.gui.views.dialogs.SearchResultsDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
-import net.sourceforge.atunes.kernel.modules.columns.SearchResultsColumnSet;
+import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 
 /**
  * Controller for the search result dialog.
@@ -46,9 +48,12 @@ import net.sourceforge.atunes.model.AudioObject;
 final class SearchResultsController extends AbstractSimpleController<SearchResultsDialog> {
 
     private List<AudioObject> results;
+    
+    private AbstractColumnSet columnSet;
 
-    SearchResultsController(SearchResultsDialog dialog) {
-        super(dialog);
+    SearchResultsController(SearchResultsDialog dialog, IState state) {
+        super(dialog, state);
+        this.columnSet = (AbstractColumnSet) Context.getBean("searchResultsColumnSet");
         addBindings();
     }
 
@@ -65,7 +70,7 @@ final class SearchResultsController extends AbstractSimpleController<SearchResul
 
         SearchResultTableModel tableModel = (SearchResultTableModel) getComponentControlled().getSearchResultsTable().getModel();
 
-        AbstractColumn sortedColumn = SearchResultsColumnSet.getInstance().getSortedColumn();
+        AbstractColumn sortedColumn = columnSet.getSortedColumn();
         if (sortedColumn != null) {
             Collections.sort(resultsList, sortedColumn.getComparator(false));
         } else {
@@ -78,12 +83,12 @@ final class SearchResultsController extends AbstractSimpleController<SearchResul
     }
 
     @Override
-    protected void addBindings() {
+	public void addBindings() {
         JTable table = getComponentControlled().getSearchResultsTable();
-        SearchResultTableModel tableModel = new SearchResultTableModel();
+        SearchResultTableModel tableModel = new SearchResultTableModel(columnSet);
         table.setModel(tableModel);
 
-        SearchResultColumnModel columnModel = new SearchResultColumnModel(table);
+        SearchResultColumnModel columnModel = new SearchResultColumnModel(table, columnSet);
         table.setColumnModel(columnModel);
 
         // Set sorter
@@ -151,15 +156,5 @@ final class SearchResultsController extends AbstractSimpleController<SearchResul
             selectedResults.add(results.get(table.convertRowIndexToModel(row)));
         }
         return selectedResults;
-    }
-
-    @Override
-    protected void addStateBindings() {
-        // Nothing to do
-    }
-
-    @Override
-    protected void notifyReload() {
-        // Nothing to do
     }
 }

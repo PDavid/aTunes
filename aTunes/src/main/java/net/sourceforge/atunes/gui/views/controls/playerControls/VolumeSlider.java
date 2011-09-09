@@ -29,13 +29,14 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import net.sourceforge.atunes.kernel.modules.player.Volume;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 public final class VolumeSlider extends JSlider {
 
     private static final long serialVersionUID = -7802263658163323018L;
 
-    public VolumeSlider() {
+    public VolumeSlider(final IState state) {
         super();
         setOpaque(false);
         setMinimum(0);
@@ -55,14 +56,14 @@ public final class VolumeSlider extends JSlider {
                     setValue(getValue() - 5);
                 }
 
-                Volume.setVolume(getValue());
+                Volume.setVolume(getValue(), state);
             }
         });
 
         addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-				Volume.setVolume(getValue());
+				Volume.setVolume(getValue(), state);
             }
         });
     }

@@ -39,7 +39,7 @@ import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -63,6 +63,8 @@ final class PodcastFeedEntryPropertiesDialog extends PropertiesDialog {
     private JScrollPane descriptionScrollPane;
     private JTextArea descriptionTextArea;
     private PodcastFeedEntry entry;
+    
+    private IState state;
 
     /**
      * Instantiates a new podcast feed entry properties dialog.
@@ -70,9 +72,10 @@ final class PodcastFeedEntryPropertiesDialog extends PropertiesDialog {
      * @param entry
      *            the entry
      */
-    PodcastFeedEntryPropertiesDialog(PodcastFeedEntry entry, JFrame owner) {
+    PodcastFeedEntryPropertiesDialog(PodcastFeedEntry entry, JFrame owner, IState state) {
         super(getTitleText(entry), owner);
         this.entry = entry;
+        this.state = state;
         setAudioObject(entry);
         addContent();
 
@@ -98,7 +101,7 @@ final class PodcastFeedEntryPropertiesDialog extends PropertiesDialog {
      */
     private void addContent() {
         JPanel panel = new JPanel(new GridBagLayout());
-
+        
         pictureLabel = new JLabel();
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
@@ -200,7 +203,7 @@ final class PodcastFeedEntryPropertiesDialog extends PropertiesDialog {
         }
         if (entry.getDate() != null) {
             dateLabel.setText(getHtmlFormatted(I18nUtils.getString("DATE"), StringUtils.getString(DateFormat.getDateInstance(DateFormat.LONG,
-                    ApplicationState.getInstance().getLocale().getLocale()).format(entry.getDate()), ", ", DateFormat.getTimeInstance().format(entry.getDate()))));
+                    state.getLocale().getLocale()).format(entry.getDate()), ", ", DateFormat.getTimeInstance().format(entry.getDate()))));
         } else {
             dateLabel.setText(getHtmlFormatted(I18nUtils.getString("DATE"), "-"));
         }

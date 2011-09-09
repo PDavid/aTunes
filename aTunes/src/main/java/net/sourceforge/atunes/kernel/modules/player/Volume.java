@@ -25,7 +25,7 @@ import java.awt.EventQueue;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.model.IState;
 
 public final class Volume {
 
@@ -33,7 +33,7 @@ public final class Volume {
 
     }
 
-    public static void setVolume(int volume, boolean saveVolume) {
+    public static void setVolume(int volume, boolean saveVolume, IState state) {
         if (volume < 0) {
             volume = 0;
         } else if (volume > 100) {
@@ -41,7 +41,7 @@ public final class Volume {
         }
         final int finalVolume = volume;
         if (saveVolume) {
-        	ApplicationState.getInstance().setVolume(finalVolume);
+        	state.setVolume(finalVolume);
         }
         PlayerHandler.getInstance().setVolume(finalVolume);
 
@@ -57,7 +57,7 @@ public final class Volume {
         }
     }
     
-    public static void setVolume(int volume) {
-    	setVolume(volume, true);
+    public static void setVolume(int volume, IState state) {
+    	setVolume(volume, true, state);
     }
 }

@@ -27,7 +27,6 @@ import net.sourceforge.atunes.gui.model.NavigationTableColumnModel;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnBean;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 
 /**
  * Custom column set to be used by navigation views that use custom columns
@@ -52,17 +51,17 @@ public abstract class AbstractCustomNavigatorColumnSet extends AbstractColumnSet
 
     @Override
     protected void setColumnsConfiguration(Map<String, ColumnBean> columnsConfiguration) {
-        Map<String, Map<String, ColumnBean>> configuration = ApplicationState.getInstance().getCustomNavigatorColumns();
+        Map<String, Map<String, ColumnBean>> configuration = state.getCustomNavigatorColumns();
         if (configuration == null) {
             configuration = new HashMap<String, Map<String, ColumnBean>>();
         }
         configuration.put(this.columnSetName, columnsConfiguration);
-        ApplicationState.getInstance().setCustomNavigatorColumns(configuration);
+        state.setCustomNavigatorColumns(configuration);
     }
 
     @Override
     protected Map<String, ColumnBean> getColumnsConfiguration() {
-        Map<String, Map<String, ColumnBean>> configuration = ApplicationState.getInstance().getCustomNavigatorColumns();
+        Map<String, Map<String, ColumnBean>> configuration = state.getCustomNavigatorColumns();
         if (configuration != null) {
             return configuration.get(this.columnSetName);
         }

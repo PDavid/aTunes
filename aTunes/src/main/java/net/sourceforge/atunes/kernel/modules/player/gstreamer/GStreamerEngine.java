@@ -33,9 +33,9 @@ import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 
 import org.gstreamer.Bus;
 import org.gstreamer.ElementFactory;
@@ -50,7 +50,8 @@ public class GStreamerEngine extends AbstractPlayerEngine {
     private Runnable remainingTimeRunnable;
     private ScheduledFuture<?> scheduledFuture;
 
-    public GStreamerEngine() {
+    public GStreamerEngine(IState state) {
+    	super(state);
         try {
             Gst.init("AudioPlayer", new String[] {});
             playBin = new PlayBin("AudioPlayer");
@@ -89,7 +90,7 @@ public class GStreamerEngine extends AbstractPlayerEngine {
         if (mute) {
             playBin.setVolumePercent(0);
         } else {
-            playBin.setVolumePercent(ApplicationState.getInstance().getVolume());
+            playBin.setVolumePercent(getState().getVolume());
         }
     }
 

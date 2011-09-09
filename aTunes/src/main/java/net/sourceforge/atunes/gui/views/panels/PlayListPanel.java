@@ -25,8 +25,10 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
+import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 
 /**
  * The playlist panel.
@@ -59,7 +61,7 @@ public final class PlayListPanel extends JPanel {
      */
     private void addContent() {
         playListTabPanel = new PlayListTabPanel();
-        playListTable = new PlayListTable();
+        playListTable = new PlayListTable((AbstractColumnSet) Context.getBean("playlistColumnSet"));
         playListTableScroll = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(playListTable);
 
         add(playListTabPanel, BorderLayout.NORTH);

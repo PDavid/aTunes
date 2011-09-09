@@ -29,6 +29,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import net.sourceforge.atunes.kernel.modules.command.Command;
 import net.sourceforge.atunes.kernel.modules.command.CommandHandler;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
@@ -46,6 +47,11 @@ public abstract class CustomAbstractAction extends javax.swing.AbstractAction im
      * Parameters of the instance
      */
     private Properties properties;
+    
+    /**
+     * State of the application
+     */
+    private IState state;
 
     public CustomAbstractAction() {
         super();
@@ -64,6 +70,14 @@ public abstract class CustomAbstractAction extends javax.swing.AbstractAction im
             CommandHandler.getInstance().registerCommand(this);
         }
     }
+    
+    protected void setState(IState state) {
+    	this.state = state;
+    }
+    
+    protected IState getState() {
+		return state;
+	}
 
     /**
      * @param actionId
@@ -88,8 +102,12 @@ public abstract class CustomAbstractAction extends javax.swing.AbstractAction im
         return null;
     }
 
-    protected void initialize() {
-        // This implementation does nothing
+    /**
+     * Initializes action if needed
+     * All initialization needed retrieving values from <code>getState</code> must be done here
+     * @param state
+     */
+    protected void initialize() {    	
     }
 
     /**

@@ -32,10 +32,10 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -48,6 +48,7 @@ class GenreTreeGenerator implements TreeGenerator {
 
 	/**
 	 * Builds tree
+	 * @param state
 	 * @param rootTextKey
 	 * @param view
 	 * @param structure
@@ -57,7 +58,7 @@ class GenreTreeGenerator implements TreeGenerator {
 	 * @param objectsSelected
 	 * @param objectsExpanded
 	 */
-    public void buildTree(String rootTextKey, AbstractNavigationView view, Map<String, ?> structure, String currentFilter, DefaultMutableTreeNode root, DefaultTreeModel treeModel, List<TreeObject<? extends AudioObject>> objectsSelected, List<TreeObject<? extends AudioObject>> objectsExpanded) {
+    public void buildTree(IState state, String rootTextKey, AbstractNavigationView view, Map<String, ?> structure, String currentFilter, DefaultMutableTreeNode root, DefaultTreeModel treeModel, List<TreeObject<? extends AudioObject>> objectsSelected, List<TreeObject<? extends AudioObject>> objectsExpanded) {
         // Nodes to be selected after refresh
         List<DefaultMutableTreeNode> nodesToSelect = new ArrayList<DefaultMutableTreeNode>();
         // Nodes to be expanded after refresh
@@ -82,9 +83,9 @@ class GenreTreeGenerator implements TreeGenerator {
                     nodesToExpand.add(genreNode);
                 }
                 List<String> artistNamesList = new ArrayList<String>(genre.getArtistSet());
-                if (ApplicationState.getInstance().isUseSmartTagViewSorting() && !ApplicationState.getInstance().isUsePersonNamesArtistTagViewSorting()) {
+                if (state.isUseSmartTagViewSorting() && !state.isUsePersonNamesArtistTagViewSorting()) {
                     Collections.sort(artistNamesList, view.getSmartComparator());
-                } else if (ApplicationState.getInstance().isUsePersonNamesArtistTagViewSorting()) {
+                } else if (state.isUsePersonNamesArtistTagViewSorting()) {
                     Collections.sort(artistNamesList, view.getArtistNamesComparator());
                 } else {
                     Collections.sort(artistNamesList, view.getDefaultComparator());
@@ -94,7 +95,7 @@ class GenreTreeGenerator implements TreeGenerator {
                     Artist artist = genreArtists.get(artistNamesList.get(j));
                     DefaultMutableTreeNode artistNode = new DefaultMutableTreeNode(artist);
                     List<String> albumNamesList = new ArrayList<String>(artist.getAlbums().keySet());
-                    if (ApplicationState.getInstance().isUseSmartTagViewSorting()) {
+                    if (state.isUseSmartTagViewSorting()) {
                         Collections.sort(albumNamesList, view.getSmartComparator());
                     } else {
                         Collections.sort(albumNamesList, view.getDefaultComparator());

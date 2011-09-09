@@ -27,7 +27,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.process.AbstractAudioFileTransferProcess;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -44,9 +44,10 @@ public class TransferToDeviceProcess extends AbstractAudioFileTransferProcess {
     /**
      * @param collection
      * @param path
+     * @param state
      */
-    public TransferToDeviceProcess(Collection<LocalAudioObject> collection, String path) {
-        super(collection);
+    public TransferToDeviceProcess(Collection<LocalAudioObject> collection, String path, IState state) {
+        super(collection, state);
         this.path = path;
     }
 
@@ -78,11 +79,11 @@ public class TransferToDeviceProcess extends AbstractAudioFileTransferProcess {
 
     @Override
     public String getDirectory(LocalAudioObject song, File destination, boolean isMp3Device) {
-        return getDirectory(song, destination, isMp3Device, ApplicationState.getInstance().getDeviceFolderPathPattern());
+        return getDirectory(song, destination, isMp3Device, getState().getDeviceFolderPathPattern());
     }
 
     @Override
     public String getName(LocalAudioObject file, boolean isMp3Device) {
-        return getName(file, isMp3Device, ApplicationState.getInstance().getDeviceFileNamePattern());
+        return getName(file, isMp3Device, getState().getDeviceFileNamePattern());
     }
 }

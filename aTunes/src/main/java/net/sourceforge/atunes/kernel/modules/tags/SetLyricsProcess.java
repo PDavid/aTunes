@@ -25,6 +25,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LocalAudioObject;
 
 /**
@@ -32,22 +33,26 @@ import net.sourceforge.atunes.model.LocalAudioObject;
  */
 public class SetLyricsProcess extends AbstractChangeTagProcess {
 
+	private LyricsService lyricsService;
+	
     /**
      * Writes lyrics to files if any is found. Context handler is used for
      * finding lyrics
      * 
      * @param files
-     *            to which the lyrics should be written
+     * @param state
+     * @param lyricsService
      */
-    SetLyricsProcess(List<LocalAudioObject> files) {
-        super(files);
+    SetLyricsProcess(List<LocalAudioObject> files, IState state, LyricsService lyricsService) {
+        super(files, state);
+        this.lyricsService = lyricsService;
     }
 
     @Override
     protected void changeTag(LocalAudioObject file) throws IOException {
         // Check if no lyrics is present and we have enough info for a query
         if (file.getLyrics().isEmpty() && !file.getArtist().isEmpty() && !file.getTitle().isEmpty()) {
-            Lyrics lyrics = LyricsService.getInstance().getLyrics(file.getArtist(), file.getTitle());
+            Lyrics lyrics = lyricsService.getLyrics(file.getArtist(), file.getTitle());
             String lyricsString = lyrics != null ? lyrics.getLyrics().trim() : "";
             if (!lyricsString.isEmpty()) {
                 TagModifier.setLyrics(file, lyricsString);

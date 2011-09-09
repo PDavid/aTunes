@@ -41,7 +41,7 @@ public class AddPodcastFeedAction extends CustomAbstractAction {
     AddPodcastFeedAction() {
         super(I18nUtils.getString("ADD_PODCAST_FEED"));
     }
-
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         PodcastFeedHandler.getInstance().addPodcastFeed();

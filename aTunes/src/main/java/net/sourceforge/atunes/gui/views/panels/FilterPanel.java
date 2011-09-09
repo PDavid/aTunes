@@ -36,7 +36,7 @@ import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.gui.views.controls.LookAndFeelAwareButton;
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -50,13 +50,16 @@ public class FilterPanel extends JPanel {
     
     private boolean filterApplied;
 
-    public FilterPanel() {
+    private IState state;
+    
+    public FilterPanel(IState state) {
         super(new BorderLayout());
+        this.state = state;
         addContent();
     }
 
     private void addContent() {
-        filterButton = new PopUpButton(ApplicationState.getInstance().isShowPlayerControlsOnTop() ? PopUpButton.BOTTOM_RIGHT : PopUpButton.TOP_RIGHT);
+        filterButton = new PopUpButton(state.isShowPlayerControlsOnTop() ? PopUpButton.BOTTOM_RIGHT : PopUpButton.TOP_RIGHT);
         filterTextField = new CustomTextField(12);
         filterTextField.setText(StringUtils.getString(I18nUtils.getString("FILTER"), "..."));
         filterTextField.setToolTipText(I18nUtils.getString("FILTER_TEXTFIELD_TOOLTIP"));

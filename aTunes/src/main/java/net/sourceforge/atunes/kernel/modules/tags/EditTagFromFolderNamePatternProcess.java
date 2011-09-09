@@ -26,6 +26,7 @@ import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LocalAudioObject;
 
 /**
@@ -47,8 +48,8 @@ public class EditTagFromFolderNamePatternProcess extends AbstractChangeTagProces
      * @param files
      *            the files
      */
-    public EditTagFromFolderNamePatternProcess(List<LocalAudioObject> files, String pattern) {
-        super(files);
+    public EditTagFromFolderNamePatternProcess(List<LocalAudioObject> files, String pattern, IState state) {
+        super(files, state);
         this.pattern = pattern;
     }
 

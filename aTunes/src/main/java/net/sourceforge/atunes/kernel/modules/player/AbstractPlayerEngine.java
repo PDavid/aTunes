@@ -36,11 +36,11 @@ import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
+import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.misc.TempFolder;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -169,6 +169,8 @@ public abstract class AbstractPlayerEngine {
      * Equalizer used
      */
     private Equalizer equalizer;
+    
+    private IState state;
     
     /**
      * A thread invoking play in engine
@@ -382,7 +384,7 @@ public abstract class AbstractPlayerEngine {
      */
     public final void stopCurrentAudioObject(boolean userStopped) {
         try {
-            boolean activateFadeAway = userStopped && ApplicationState.getInstance().isUseFadeAway() && !paused;
+            boolean activateFadeAway = userStopped && state.isUseFadeAway() && !paused;
             if (paused) {
                 paused = false;
             }
@@ -516,14 +518,14 @@ public abstract class AbstractPlayerEngine {
      * Lower volume
      */
     public final void volumeDown() {
-        Volume.setVolume(ApplicationState.getInstance().getVolume() - 5);
+        Volume.setVolume(state.getVolume() - 5, state);
     }
 
     /**
      * Raise volume
      */
     public final void volumeUp() {
-        Volume.setVolume(ApplicationState.getInstance().getVolume() + 5);
+        Volume.setVolume(state.getVolume() + 5, state);
     }
 
     /**
@@ -540,10 +542,12 @@ public abstract class AbstractPlayerEngine {
 
     /**
      * Instantiates a new player handler.
+     * @param state
      */
-    protected AbstractPlayerEngine() {
+    protected AbstractPlayerEngine(IState state) {
         // To properly init player must call method "initPlayerEngine"
-        equalizer = new Equalizer();
+        this.equalizer = new Equalizer(state);
+        this.state = state;
     }
 
     /**
@@ -562,7 +566,7 @@ public abstract class AbstractPlayerEngine {
      * @return <code>true</code> if sound normalization is enabled
      */
     protected final boolean isSoundNormalizationEnabled() {
-        return ApplicationState.getInstance().isUseNormalisation();
+        return state.isUseNormalisation();
     }
 
     /**
@@ -576,7 +580,7 @@ public abstract class AbstractPlayerEngine {
      * @return <code>true</code> if mute is enabled
      */
     protected final boolean isMuteEnabled() {
-        return ApplicationState.getInstance().isMuteEnabled();
+        return state.isMuteEnabled();
     }
 
     /**
@@ -632,9 +636,9 @@ public abstract class AbstractPlayerEngine {
     protected final void notifyRadioOrPodcastFeedEntryStarted() {
         Logger.debug("radio or podcast feed entry has started playing");
         // send volume command
-        setVolume(ApplicationState.getInstance().getVolume());
+        setVolume(state.getVolume());
         // if muted set mute again
-        if (ApplicationState.getInstance().isMuteEnabled()) {
+        if (state.isMuteEnabled()) {
             applyMuteState(true);
         }
         Logger.debug("MPlayer bug (ignoring muting and volume settings after streamed file starts playing) workaround applied");
@@ -658,7 +662,7 @@ public abstract class AbstractPlayerEngine {
     private void playAudioObject(final AudioObject audioObject) {
         Logger.info(StringUtils.getString("Started play of file ", audioObject));
 
-        if (ApplicationState.getInstance().isCacheFilesBeforePlaying()) {
+        if (state.isCacheFilesBeforePlaying()) {
 
         	PlayAudioObjectRunnable r = new PlayAudioObjectRunnable(audioObject);
         	
@@ -681,7 +685,7 @@ public abstract class AbstractPlayerEngine {
     	
         // If cacheFilesBeforePlaying is true and audio object is an audio file, copy it to temp folder
         // and start player process from this copied file
-	    if (audioObject instanceof LocalAudioObject && ApplicationState.getInstance().isCacheFilesBeforePlaying()) {
+	    if (audioObject instanceof LocalAudioObject && getState().isCacheFilesBeforePlaying()) {
 	    	
 	    	Logger.debug("Start caching file: ", audioObject.getUrl());
 	    	
@@ -724,7 +728,7 @@ public abstract class AbstractPlayerEngine {
 
 		// Send Now Playing info to Last.fm
 		if (audioObject instanceof AudioFile) {
-			LastFmService.getInstance().submitNowPlayingInfoToLastFm((AudioFile) audioObject);
+			WebServicesHandler.getInstance().getLastFmService().submitNowPlayingInfoToLastFm((AudioFile) audioObject);
 		}
 
 		AbstractPlayerEngine.this.audioObject = audioObject;
@@ -735,10 +739,10 @@ public abstract class AbstractPlayerEngine {
 		startPlayback(audioObjectToPlay, audioObject);
 
 		// Setting volume and balance
-		if (ApplicationState.getInstance().isMuteEnabled()) {
+		if (state.isMuteEnabled()) {
 			applyMuteState(true);
 		} else {
-			setVolume(ApplicationState.getInstance().getVolume());
+			setVolume(state.getVolume());
 		}
 
 		// Call listeners
@@ -847,6 +851,10 @@ public abstract class AbstractPlayerEngine {
 	 */
 	protected void setSubmissionState(SubmissionState submissionState) {
 		this.submissionState = submissionState;
+	}
+	
+	protected IState getState() {
+		return state;
 	}
 
 }

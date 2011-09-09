@@ -26,7 +26,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.model.ViewMode;
@@ -53,7 +52,7 @@ public class SetFavoriteAlbumFromNavigatorAction extends AbstractActionOverSelec
             return false;
         }
 
-        if (ApplicationState.getInstance().getViewMode() == ViewMode.FOLDER) {
+        if (getState().getViewMode() == ViewMode.FOLDER) {
             return false;
         }
 

@@ -61,9 +61,9 @@ import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.model.ViewMode;
 
@@ -107,6 +107,11 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
      * Action associated to show this navigation view
      */
     private ActionWithColorMutableIcon action;
+    
+    /**
+     * State of application
+     */
+    private IState state;
 
     /**
      * @return the title of this view
@@ -141,6 +146,14 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
      */
     public abstract JPopupMenu getTreePopupMenu();
 
+    public AbstractNavigationView(IState state) {
+    	this.state = state;
+    }
+    
+    protected IState getState() {
+    	return state;
+    }
+    
     /**
      * 
      * @return the table popup menu of this view
@@ -423,7 +436,7 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
      * @return
      */
     public ViewMode getCurrentViewMode() {
-        return ApplicationState.getInstance().getViewMode();
+        return state.getViewMode();
     }
 
     /**
@@ -619,7 +632,7 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
             @Override
             public JComponent getComponent(JComponent superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
                 for (AbstractTreeCellDecorator decorator : getTreeCellDecorators()) {
-                    decorator.decorateTreeCellComponent(superComponent, ((DefaultMutableTreeNode) value).getUserObject(), isSelected);
+                    decorator.decorateTreeCellComponent(getState(), superComponent, ((DefaultMutableTreeNode) value).getUserObject(), isSelected);
                 }
                 return superComponent;
             }
@@ -630,7 +643,7 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
      * @return New collator
      */
     protected Collator getCollator() {
-        return Collator.getInstance(ApplicationState.getInstance().getLocale().getLocale());
+        return Collator.getInstance(state.getLocale().getLocale());
     }
 
     /**

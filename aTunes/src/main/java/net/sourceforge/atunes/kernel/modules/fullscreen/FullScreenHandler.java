@@ -30,8 +30,8 @@ import net.sourceforge.atunes.gui.views.dialogs.fullScreen.FullScreenWindow;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 
 public class FullScreenHandler extends AbstractHandler {
 
@@ -59,13 +59,13 @@ public class FullScreenHandler extends AbstractHandler {
 	}
 
 	@Override
-	public void applicationStateChanged(ApplicationState newState) {
+	public void applicationStateChanged(IState newState) {
 	}
 
     @Override
     public void playListCleared() {
         // Next actions must be done ONLY if stopPlayerWhenPlayListClear is enabled
-        if (ApplicationState.getInstance().isStopPlayerOnPlayListClear()) {
+        if (getState().isStopPlayerOnPlayListClear()) {
 
             // Remove audio object information from full screen mode
         	if (getFullScreenController() != null) {
@@ -96,9 +96,9 @@ public class FullScreenHandler extends AbstractHandler {
 	 */
 	private void createFullScreenController() {
 		JDialog.setDefaultLookAndFeelDecorated(false);
-		FullScreenWindow window = new FullScreenWindow(GuiHandler.getInstance().getFrame().getFrame());
+		FullScreenWindow window = new FullScreenWindow(GuiHandler.getInstance().getFrame().getFrame(), getState());
         JDialog.setDefaultLookAndFeelDecorated(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isDialogUndecorated());
-        controller = new FullScreenController(window);
+        controller = new FullScreenController(window, getState());
 	}
 	
 	private void updateAudioObjectsToShow(AudioObject audioObject) {

@@ -53,6 +53,7 @@ import net.sourceforge.atunes.gui.renderers.ColumnRenderers;
 import net.sourceforge.atunes.gui.views.controls.ColumnSetPopupMenu;
 import net.sourceforge.atunes.gui.views.controls.ColumnSetRowSorter;
 import net.sourceforge.atunes.gui.views.menus.PlayListMenu;
+import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListDragableRow;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListTableModel;
@@ -109,14 +110,14 @@ public final class PlayListTable extends JTable implements DragSourceListener, D
     /**
      * Instantiates a new play list table.
      */
-    public PlayListTable() {
+    public PlayListTable(AbstractColumnSet columnSet) {
         super();
         LookAndFeelSelector.getInstance().getCurrentLookAndFeel().decorateTable(this);
         setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         setDropMode(DropMode.ON);
 
         // Set table model
-        PlayListTableModel model = new PlayListTableModel();
+        PlayListTableModel model = new PlayListTableModel(columnSet);
         setModel(model);
 
         // Set column model

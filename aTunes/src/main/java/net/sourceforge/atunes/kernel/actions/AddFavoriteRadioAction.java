@@ -35,6 +35,10 @@ public class AddFavoriteRadioAction extends AbstractActionOverSelectedObjects<Ra
 
     AddFavoriteRadioAction() {
         super(I18nUtils.getString("ADD_FAVORITE_RADIO"), Radio.class);
+    }
+    
+    @Override
+    protected void initialize() {
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("RADIO_VIEW_TOOLTIP"));
     }
 

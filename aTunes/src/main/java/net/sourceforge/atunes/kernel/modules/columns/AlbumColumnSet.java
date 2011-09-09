@@ -23,39 +23,13 @@ package net.sourceforge.atunes.kernel.modules.columns;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-
 /**
  * This class defines all columns than can be viewed in album list
  * 
  * @author encestre
  */
 public final class AlbumColumnSet extends AbstractColumnSet {
-
-    /**
-     * Singleton instance
-     */
-    private static AlbumColumnSet instance;
-
-    /**
-     * Private constructor
-     */
-    private AlbumColumnSet() {
-        super();
-    }
-
-    /**
-     * Returns singleton instance
-     * 
-     * @return
-     */
-    public static AlbumColumnSet getInstance() {
-        if (instance == null) {
-            instance = new AlbumColumnSet();
-        }
-        return instance;
-    }
-
+	
     @Override
     protected List<AbstractColumn> getAllowedColumns() {
         return Columns.getAlbumColumns();
@@ -63,12 +37,12 @@ public final class AlbumColumnSet extends AbstractColumnSet {
 
     @Override
     protected Map<String, ColumnBean> getColumnsConfiguration() {
-    	return ApplicationState.getInstance().getAlbumsColumns();
+    	return state.getAlbumsColumns();
     }
 
     @Override
     protected void setColumnsConfiguration(Map<String, ColumnBean> columnsConfiguration) {
-        ApplicationState.getInstance().setAlbumColumns(columnsConfiguration);
+        state.setAlbumColumns(columnsConfiguration);
     }
 
     @Override

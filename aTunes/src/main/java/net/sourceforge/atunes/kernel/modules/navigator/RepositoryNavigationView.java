@@ -69,6 +69,7 @@ import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.model.ViewMode;
@@ -85,6 +86,10 @@ public class RepositoryNavigationView extends AbstractNavigationView {
 
     private List<AbstractTreeCellDecorator> decorators;
 
+    public RepositoryNavigationView(IState state) {
+    	super(state);
+	}
+    
     @Override
     public ColorMutableImageIcon getIcon() {    	
         return new ColorMutableImageIcon() {
@@ -176,12 +181,12 @@ public class RepositoryNavigationView extends AbstractNavigationView {
 
     @Override
     public void selectAudioObject(ViewMode viewMode, AudioObject audioObject) {
-    	TreeGeneratorFactory.getTreeGenerator(viewMode).selectAudioObject(getTree(), audioObject);
+    	TreeGeneratorFactory.getTreeGenerator(viewMode, getState()).selectAudioObject(getTree(), audioObject);
     }
     
     @Override
 	public void selectArtist(ViewMode viewMode, String artist) {
-    	TreeGeneratorFactory.getTreeGenerator(viewMode).selectArtist(getTree(), artist);
+    	TreeGeneratorFactory.getTreeGenerator(viewMode, getState()).selectArtist(getTree(), artist);
 	}
     
     @SuppressWarnings("unchecked")
@@ -199,7 +204,7 @@ public class RepositoryNavigationView extends AbstractNavigationView {
         List<TreeObject<? extends AudioObject>> objectsExpanded = getTreeObjectsExpanded(tree, root);
         
         // Build tree
-        TreeGeneratorFactory.getTreeGenerator(viewMode).buildTree("REPOSITORY", this, (Map<String, Year>) getViewData(viewMode), treeFilter, root, treeModel, objectsSelected, objectsExpanded);
+        TreeGeneratorFactory.getTreeGenerator(viewMode, getState()).buildTree(getState(), "REPOSITORY", this, (Map<String, Year>) getViewData(viewMode), treeFilter, root, treeModel, objectsSelected, objectsExpanded);
         
         getTree().expandRow(0);
     }

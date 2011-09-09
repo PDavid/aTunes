@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -39,7 +38,11 @@ public class ShowNavigationTableAction extends CustomAbstractAction {
     ShowNavigationTableAction() {
         super(I18nUtils.getString("SHOW_NAVIGATION_TABLE"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_NAVIGATION_TABLE"));
-        putValue(SELECTED_KEY, ApplicationState.getInstance().isShowNavigationTable());
+    }
+    
+    @Override
+    protected void initialize() {
+        putValue(SELECTED_KEY, getState().isShowNavigationTable());
     }
 
     @Override

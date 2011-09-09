@@ -28,6 +28,7 @@ import java.util.Map;
 import net.sourceforge.atunes.gui.views.dialogs.EditTitlesDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.Album;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LocalAudioObject;
 
 final class EditTitlesDialogController extends AbstractSimpleController<EditTitlesDialog> {
@@ -40,24 +41,19 @@ final class EditTitlesDialogController extends AbstractSimpleController<EditTitl
      * Instantiates a new edits the titles dialog controller.
      * 
      * @param dialog
-     *            the dialog
+     * @param state
      */
-    EditTitlesDialogController(EditTitlesDialog dialog) {
-        super(dialog);
+    EditTitlesDialogController(EditTitlesDialog dialog, IState state) {
+        super(dialog, state);
         addBindings();
     }
 
     @Override
-    protected void addBindings() {
+	public void addBindings() {
         EditTitlesDialogActionListener actionListener = new EditTitlesDialogActionListener(getComponentControlled(), this);
         getComponentControlled().getRetrieveTitles().addActionListener(actionListener);
         getComponentControlled().getOkButton().addActionListener(actionListener);
         getComponentControlled().getCancelButton().addActionListener(actionListener);
-    }
-
-    @Override
-    protected void addStateBindings() {
-        // Nothing to do
     }
 
     /**
@@ -65,7 +61,7 @@ final class EditTitlesDialogController extends AbstractSimpleController<EditTitl
      */
     protected void editFiles() {
         Map<LocalAudioObject, String> filesAndTitles = ((EditTitlesTableModel) getComponentControlled().getTable().getModel()).getNewValues();
-        EditTitlesProcess process = new EditTitlesProcess(new ArrayList<LocalAudioObject>(filesAndTitles.keySet()));
+        EditTitlesProcess process = new EditTitlesProcess(new ArrayList<LocalAudioObject>(filesAndTitles.keySet()), getState());
         process.setFilesAndTitles(filesAndTitles);
         process.execute();
     }
@@ -92,11 +88,6 @@ final class EditTitlesDialogController extends AbstractSimpleController<EditTitl
      */
     protected Album getAlbum() {
         return album;
-    }
-
-    @Override
-    protected void notifyReload() {
-        // Nothing to do
     }
 
     /**

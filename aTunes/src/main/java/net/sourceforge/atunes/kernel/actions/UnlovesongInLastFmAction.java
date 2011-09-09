@@ -26,8 +26,7 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
+import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -45,8 +44,12 @@ public class UnlovesongInLastFmAction extends CustomAbstractAction {
 	UnlovesongInLastFmAction() {
         super(I18nUtils.getString("UNLOVE_SONG_IN_LASTFM"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("UNLOVE_SONG_IN_LASTFM"));
-        setEnabled(ApplicationState.getInstance().isLastFmEnabled());
     }
+	
+	@Override
+	protected void initialize() {
+        setEnabled(getState().isLastFmEnabled());
+	}
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -59,7 +62,7 @@ public class UnlovesongInLastFmAction extends CustomAbstractAction {
 
             @Override
             protected Void doInBackground() throws Exception {
-                LastFmService.getInstance().removeLovedSong(song);
+                WebServicesHandler.getInstance().getLastFmService().removeLovedSong(song);
                 return null;
             }
 

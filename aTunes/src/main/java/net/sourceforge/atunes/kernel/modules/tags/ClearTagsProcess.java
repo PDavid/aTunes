@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel.modules.tags;
 
 import java.util.List;
 
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LocalAudioObject;
 
 /**
@@ -29,8 +30,8 @@ import net.sourceforge.atunes.model.LocalAudioObject;
  */
 public class ClearTagsProcess extends AbstractChangeTagProcess {
 
-    public ClearTagsProcess(List<LocalAudioObject> filesToClear) {
-        super(filesToClear);
+    public ClearTagsProcess(List<LocalAudioObject> filesToClear, IState state) {
+        super(filesToClear, state);
     }
 
     @Override

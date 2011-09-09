@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.kernel.modules.state;
 
+import net.sourceforge.atunes.model.IState;
+
 public interface ApplicationStateChangeListener {
 
     /**
@@ -27,6 +29,6 @@ public interface ApplicationStateChangeListener {
      * 
      * @param newState
      */
-    public void applicationStateChanged(ApplicationState newState);
+    public void applicationStateChanged(IState newState);
 
 }

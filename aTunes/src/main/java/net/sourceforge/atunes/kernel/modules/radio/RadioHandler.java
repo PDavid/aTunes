@@ -35,11 +35,11 @@ import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.RadioNavigationView;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.NetworkUtils;
 import net.sourceforge.atunes.utils.XMLUtils;
 
@@ -51,7 +51,7 @@ import net.sourceforge.atunes.utils.XMLUtils;
 public final class RadioHandler extends AbstractHandler {
 
     private final class RetrieveRadiosSwingWorker extends SwingWorker<List<Radio>, Void> {
-        private final ProxyBean proxy = ApplicationState.getInstance().getProxy();
+        private final ProxyBean proxy = RadioHandler.this.getState().getProxy();
 
         @SuppressWarnings("unchecked")
         @Override
@@ -95,7 +95,7 @@ public final class RadioHandler extends AbstractHandler {
     }
 
     @Override
-    public void applicationStateChanged(ApplicationState newState) {
+    public void applicationStateChanged(IState newState) {
     }
 
     @Override
@@ -304,10 +304,10 @@ public final class RadioHandler extends AbstractHandler {
     @SuppressWarnings("unchecked")
     public List<Radio> retrieveRadiosForBrowser() throws IOException {
         try {
-            String xml = NetworkUtils.readURL(NetworkUtils.getConnection(Constants.RADIO_LIST_DOWNLOAD_COMMON_JUKEBOX, ExtendedProxy.getProxy(ApplicationState.getInstance().getProxy())));
+            String xml = NetworkUtils.readURL(NetworkUtils.getConnection(Constants.RADIO_LIST_DOWNLOAD_COMMON_JUKEBOX, ExtendedProxy.getProxy(getState().getProxy())));
             return (List<Radio>) XMLUtils.readObjectFromString(xml);
         } catch (Exception e) {
-            String xml = NetworkUtils.readURL(NetworkUtils.getConnection(Constants.RADIO_LIST_DOWNLOAD, ExtendedProxy.getProxy(ApplicationState.getInstance().getProxy())));
+            String xml = NetworkUtils.readURL(NetworkUtils.getConnection(Constants.RADIO_LIST_DOWNLOAD, ExtendedProxy.getProxy(getState().getProxy())));
             return (List<Radio>) XMLUtils.readObjectFromString(xml);
         }
     }
@@ -380,7 +380,7 @@ public final class RadioHandler extends AbstractHandler {
 	 * Shows radio browser
 	 */
 	public void showRadioBrowser() {
-		new RadioBrowserDialogController(new RadioBrowserDialog(GuiHandler.getInstance().getFrame().getFrame())).showRadioBrowser();
+		new RadioBrowserDialogController(new RadioBrowserDialog(GuiHandler.getInstance().getFrame().getFrame()), getState()).showRadioBrowser();
 	}
 
 	@Override

@@ -33,6 +33,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.filechooser.FileFilter;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.kernel.AbstractHandler;
@@ -41,7 +42,7 @@ import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.SavePlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
-import net.sourceforge.atunes.kernel.modules.columns.PlayListColumnSet;
+import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListTableTransferHandler;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListToDeviceDragAndDropListener;
 import net.sourceforge.atunes.kernel.modules.filter.AbstractFilter;
@@ -52,10 +53,10 @@ import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.AudioFilesRemovedListener;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -144,10 +145,14 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
 	 */
 	private PlayListController playListController;
 
+	
+	private AbstractColumnSet playListColumnSet;
+	
     /**
      * Private constructor.
      */
     private PlayListHandler() {
+    	playListColumnSet = (AbstractColumnSet) Context.getBean("playlistColumnSet");
     }
 
     @Override
@@ -325,9 +330,9 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
     public void newPlayList(String nameOfNewPlayList, List<? extends AudioObject> audioObjects) {
         PlayList newPlayList;
         if (audioObjects == null) {
-            newPlayList = new PlayList();
+            newPlayList = new PlayList(getState());
         } else {
-            newPlayList = new PlayList(audioObjects);
+            newPlayList = new PlayList(audioObjects, getState());
         }
         newPlayList.setName(nameOfNewPlayList);
         playLists.add(newPlayList);
@@ -374,7 +379,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
         }
 
         //don't stop player if user has setup the option
-        if (ApplicationState.getInstance().isStopPlayerOnPlayListSwitch()) {
+        if (getState().isStopPlayerOnPlayListSwitch()) {
             PlayerHandler.getInstance().stopCurrentAudioObject(false);
         }
 
@@ -509,14 +514,14 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
             int selectedAudioObject = 0;
 
             // If stopPlayerWhenPlayListClear property is disabled try to locate audio object in play list. If it's not available then stop playing
-            if (!ApplicationState.getInstance().isStopPlayerOnPlayListClear() && PlayerHandler.getInstance().isEnginePlaying()) {
+            if (!getState().isStopPlayerOnPlayListClear() && PlayerHandler.getInstance().isEnginePlaying()) {
                 int index = playList.indexOf(PlayerHandler.getInstance().getAudioObject());
                 if (index != -1) {
                     selectedAudioObject = index;
                 } else {
                     PlayerHandler.getInstance().stopCurrentAudioObject(false);
                 }
-            } else if (ApplicationState.getInstance().isShuffle()) {
+            } else if (getState().isShuffle()) {
                 // If shuffle enabled, select a random audio object
                 selectedAudioObject = playList.getRandomPosition();
             }
@@ -558,7 +563,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
             playList.clear();
 
             // Only if this play list is the active stop playback
-            if (isActivePlayListVisible() && ApplicationState.getInstance().isStopPlayerOnPlayListClear()) {
+            if (isActivePlayListVisible() && getState().isStopPlayerOnPlayListClear()) {
                 PlayerHandler.getInstance().stopCurrentAudioObject(false);
             }
 
@@ -573,7 +578,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
             GuiHandler.getInstance().showPlayListInformation(playList);
 
             // hide the ticks and labels
-            if (!ApplicationState.getInstance().isStopPlayerOnPlayListClear()) {
+            if (!getState().isStopPlayerOnPlayListClear()) {
                 GuiHandler.getInstance().getPlayerControls().getProgressSlider().setEnabled(false);
             } else {
                 GuiHandler.getInstance().getPlayerControls().setShowTicksAndLabels(false);
@@ -680,7 +685,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      * Loads play list from a file.
      */
     public void loadPlaylist() {
-        JFileChooser fileChooser = new JFileChooser(ApplicationState.getInstance().getLoadPlaylistPath());
+        JFileChooser fileChooser = new JFileChooser(getState().getLoadPlaylistPath());
         FileFilter filter = PlayListIO.getPlaylistFileFilter();
         // Open file chooser
         if (GuiHandler.getInstance().showOpenDialog(fileChooser, filter) == JFileChooser.APPROVE_OPTION) {
@@ -689,12 +694,12 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
 
             // If exists...
             if (file.exists()) {
-                ApplicationState.getInstance().setLoadPlaylistPath(file.getParentFile().getAbsolutePath());
+                getState().setLoadPlaylistPath(file.getParentFile().getAbsolutePath());
                 // Read file names
                 List<String> filesToLoad = PlayListIO.read(file);
                 // Background loading - but only when returned array is not null (Progress dialog hangs otherwise)
                 if (filesToLoad != null) {
-                    LoadPlayListProcess process = new LoadPlayListProcess(filesToLoad);
+                    LoadPlayListProcess process = new LoadPlayListProcess(filesToLoad, getState());
                     process.execute();
                 }
             } else {
@@ -982,7 +987,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
             }
 
             // Create a new play list by filtering elements
-            PlayList newPlayList = new PlayList(PlayListColumnSet.getInstance().filterAudioObjects(nonFilteredPlayList.getAudioObjects(), filterText));
+            PlayList newPlayList = new PlayList(playListColumnSet.filterAudioObjects(nonFilteredPlayList.getAudioObjects(), filterText), getState());
             setPlayListAfterFiltering(newPlayList);
         }
     }
@@ -1128,7 +1133,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
     }
 
     @Override
-    public void applicationStateChanged(ApplicationState newState) {
+    public void applicationStateChanged(IState newState) {
         if (newState.isAutoScrollPlayListEnabled()) {
             getPlayListController().scrollPlayList(true);
         }
@@ -1199,7 +1204,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      */
     private PlayListTabController getPlayListTabController() {
         if (playListTabController == null) {
-            playListTabController = new PlayListTabController(GuiHandler.getInstance().getPlayListPanel().getPlayListTabPanel());
+            playListTabController = new PlayListTabController(GuiHandler.getInstance().getPlayListPanel().getPlayListTabPanel(), getState());
         }
         return playListTabController;
     }
@@ -1245,7 +1250,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
         if (playListController == null) {
             PlayListPanel panel = null;
             panel = GuiHandler.getInstance().getPlayListPanel();
-            playListController = new PlayListController(panel);
+            playListController = new PlayListController(panel, getState());
         }
         return playListController;
     }

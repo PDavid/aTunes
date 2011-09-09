@@ -27,7 +27,6 @@ import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.ShuffleImageIcon;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -39,17 +38,20 @@ import net.sourceforge.atunes.utils.I18nUtils;
 public class ShuffleModeAction extends ActionWithColorMutableIcon {
 
     private static final long serialVersionUID = 6841858742889010498L;
-
+    
     ShuffleModeAction() {
         super(I18nUtils.getString("SHUFFLE"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHUFFLE"));
-        putValue(SELECTED_KEY, ApplicationState.getInstance().isShuffle());
-
+    }
+    
+    @Override
+    protected void initialize() {
+        putValue(SELECTED_KEY, getState().isShuffle());
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        ApplicationState.getInstance().setShuffle((Boolean) getValue(SELECTED_KEY));
+    	getState().setShuffle((Boolean) getValue(SELECTED_KEY));
     }
     
     @Override

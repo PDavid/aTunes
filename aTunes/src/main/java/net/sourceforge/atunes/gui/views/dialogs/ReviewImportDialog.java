@@ -50,6 +50,7 @@ import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.kernel.modules.tags.TagAttributesReviewed;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -74,10 +75,16 @@ public final class ReviewImportDialog extends AbstractCustomDialog {
     private boolean dialogCancelled = true;
 
     /**
+     * State of app
+     */
+    private IState state;
+    
+    /**
      * Instantiates a new ReviewImportDialog
      */
-    public ReviewImportDialog(JFrame owner) {
+    public ReviewImportDialog(JFrame owner, IState state) {
         super(owner, GuiUtils.getComponentWidthForResolution(0.80f), GuiUtils.getComponentHeightForResolution(0.75f), true, CloseAction.HIDE);
+        this.state = state;
         setTitle(I18nUtils.getString("REVIEW_TAGS"));
         setContent();
     }
@@ -125,7 +132,7 @@ public final class ReviewImportDialog extends AbstractCustomDialog {
             public void actionPerformed(ActionEvent e) {
                 TreePath[] selectedNodes = treeTable.getTreeSelectionModel().getSelectionPaths();
                 if (selectedNodes.length > 0) {
-                    PatternInputDialog inputDialog = new PatternInputDialog(ReviewImportDialog.this, true);
+                    PatternInputDialog inputDialog = new PatternInputDialog(ReviewImportDialog.this, true, state);
                     Object node = selectedNodes[0].getLastPathComponent();
                     Object folder = ((DefaultMutableTreeTableNode)node).getUserObject();
                     inputDialog.show(AbstractPattern.getMassiveRecognitionPatterns(), ((File)folder).getAbsolutePath());

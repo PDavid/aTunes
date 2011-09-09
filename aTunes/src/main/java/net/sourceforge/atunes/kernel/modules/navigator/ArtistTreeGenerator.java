@@ -31,10 +31,10 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -47,6 +47,7 @@ class ArtistTreeGenerator implements TreeGenerator {
 
 	/**
 	 * Builds tree
+	 * @param state
 	 * @param rootTextKey
 	 * @param view
 	 * @param structure
@@ -57,15 +58,15 @@ class ArtistTreeGenerator implements TreeGenerator {
 	 * @param objectsExpanded
 	 */
 	@Override
-    public void buildTree(String rootTextKey, AbstractNavigationView view, Map<String, ?> structure, String currentFilter, DefaultMutableTreeNode root, DefaultTreeModel treeModel, List<TreeObject<? extends AudioObject>> objectsSelected, List<TreeObject<? extends AudioObject>> objectsExpanded) {
+    public void buildTree(IState state, String rootTextKey, AbstractNavigationView view, Map<String, ?> structure, String currentFilter, DefaultMutableTreeNode root, DefaultTreeModel treeModel, List<TreeObject<? extends AudioObject>> objectsSelected, List<TreeObject<? extends AudioObject>> objectsExpanded) {
         // Set root
         root.setUserObject(I18nUtils.getString(rootTextKey));
         root.removeAllChildren();
 
         List<String> artistNamesList = new ArrayList<String>(structure.keySet());
-        if (ApplicationState.getInstance().isUseSmartTagViewSorting() && !ApplicationState.getInstance().isUsePersonNamesArtistTagViewSorting()) {
+        if (state.isUseSmartTagViewSorting() && !state.isUsePersonNamesArtistTagViewSorting()) {
             Collections.sort(artistNamesList, view.getSmartComparator());
-        } else if (ApplicationState.getInstance().isUsePersonNamesArtistTagViewSorting()) {
+        } else if (state.isUsePersonNamesArtistTagViewSorting()) {
             Collections.sort(artistNamesList, view.getArtistNamesComparator());
         } else {
             Collections.sort(artistNamesList, view.getDefaultComparator());
@@ -80,7 +81,7 @@ class ArtistTreeGenerator implements TreeGenerator {
             Artist artist = (Artist) structure.get(artistNamesList.get(i));
             DefaultMutableTreeNode artistNode = new DefaultMutableTreeNode(artist);
             List<String> albumNamesList = new ArrayList<String>(artist.getAlbums().keySet());
-            if (ApplicationState.getInstance().isUseSmartTagViewSorting()) {
+            if (state.isUseSmartTagViewSorting()) {
                 Collections.sort(albumNamesList, view.getSmartComparator());
             } else {
                 Collections.sort(albumNamesList, view.getDefaultComparator());

@@ -36,9 +36,9 @@ import javax.swing.JTextField;
 
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -210,7 +210,7 @@ public final class InternetPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public boolean applyPreferences(ApplicationState state) {
+    public boolean applyPreferences(IState state) {
         ProxyBean proxy = getProxy();
         state.setProxy(proxy);
         try {
@@ -268,12 +268,12 @@ public final class InternetPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public void updatePanel(ApplicationState state) {
+    public void updatePanel(IState state) {
         setConfiguration(state.getProxy());
     }
 
     @Override
-    public void resetImmediateChanges(ApplicationState state) {
+    public void resetImmediateChanges(IState state) {
         // Do nothing
     }
 

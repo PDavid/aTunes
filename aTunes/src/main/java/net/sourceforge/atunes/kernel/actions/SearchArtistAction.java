@@ -31,7 +31,6 @@ import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
 import net.sourceforge.atunes.kernel.modules.internetsearch.SearchFactory;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -50,12 +49,12 @@ public class SearchArtistAction extends CustomAbstractAction {
         TreePath path = NavigationHandler.getInstance().getCurrentView().getTree().getSelectionPath();
         if (((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject() instanceof Artist) {
             Artist a = (Artist) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
-            Search search = SearchFactory.getSearchForName(ApplicationState.getInstance().getDefaultSearch());
+            Search search = SearchFactory.getSearchForName(getState().getDefaultSearch());
             if (search == null) {
                 SearchDialog dialog = GuiHandler.getInstance().getSearchDialog();
                 search = NavigationHandler.getInstance().openSearchDialog(dialog, false);
                 if (search != null) {
-                    ApplicationState.getInstance().setDefaultSearch(search.toString());
+                    getState().setDefaultSearch(search.toString());
                 }
             }
 

@@ -65,6 +65,7 @@ import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandl
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.model.ViewMode;
@@ -82,6 +83,10 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
     /** The favorite table menu. */
     private JPopupMenu favoriteTableMenu;
 
+    public FavoritesNavigationView(IState state) {
+    	super(state);
+	}
+    
     @Override
     public ColorMutableImageIcon getIcon() {
         return new ColorMutableImageIcon() {

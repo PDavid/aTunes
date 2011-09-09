@@ -23,7 +23,7 @@ package net.sourceforge.atunes.gui.model;
 import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 
-import net.sourceforge.atunes.kernel.modules.columns.SearchResultsColumnSet;
+import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 
 public class SearchResultColumnModel extends AbstractCommonColumnModel {
 
@@ -32,11 +32,11 @@ public class SearchResultColumnModel extends AbstractCommonColumnModel {
     /**
      * Instantiates a new play list column model.
      * 
-     * @param playList
-     *            the play list
+     * @param table
+     * @param columnSet
      */
-    public SearchResultColumnModel(JTable table) {
-        super(table, SearchResultsColumnSet.getInstance());
+    public SearchResultColumnModel(JTable table, AbstractColumnSet columnSet) {
+        super(table, columnSet);
         enableColumnChange(true);
     }
 

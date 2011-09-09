@@ -28,9 +28,9 @@ import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class FilterHandler extends AbstractHandler {
@@ -151,10 +151,10 @@ public final class FilterHandler extends AbstractHandler {
         addFilter(allFilter);
 
         addFilter(NavigationHandler.getInstance().getTreeFilter());
-        setFilterEnabled(NavigationHandler.getInstance().getTreeFilter(), ApplicationState.getInstance().isShowNavigationTree());
+        setFilterEnabled(NavigationHandler.getInstance().getTreeFilter(), getState().isShowNavigationTree());
 
         addFilter(NavigationHandler.getInstance().getTableFilter());
-        setFilterEnabled(NavigationHandler.getInstance().getTableFilter(), ApplicationState.getInstance().isShowNavigationTable());
+        setFilterEnabled(NavigationHandler.getInstance().getTableFilter(), getState().isShowNavigationTable());
 
         addFilter(PlayListHandler.getInstance().getPlayListFilter());
 
@@ -166,7 +166,7 @@ public final class FilterHandler extends AbstractHandler {
     }
 
     @Override
-    public void applicationStateChanged(ApplicationState newState) {
+    public void applicationStateChanged(IState newState) {
     }
 
     /**
@@ -221,7 +221,7 @@ public final class FilterHandler extends AbstractHandler {
      */
     private FilterController getToolBarFilterController() {
         if (toolBarFilterController == null) {
-            toolBarFilterController = new FilterController(GuiHandler.getInstance().getPlayerControls().getFilterPanel());
+            toolBarFilterController = new FilterController(GuiHandler.getInstance().getPlayerControls().getFilterPanel(), getState());
         }
         return toolBarFilterController;
     }

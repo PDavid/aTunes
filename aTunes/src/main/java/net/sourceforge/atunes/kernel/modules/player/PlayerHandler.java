@@ -38,11 +38,11 @@ import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.xine.XineEngine;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
-import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
+import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -94,7 +94,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     }
 
     @Override
-    public void applicationStateChanged(ApplicationState newState) {
+    public void applicationStateChanged(IState newState) {
         // Set ticks for the player progress bar
     	getPlayerControlsController().getComponentControlled().setShowTicksAndLabels(newState.isShowTicks());
     	
@@ -291,10 +291,10 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
      * 
      * @return list with player engines
      */
-    private static List<AbstractPlayerEngine> getEngines() {
+    private List<AbstractPlayerEngine> getEngines() {
         List<AbstractPlayerEngine> result = new ArrayList<AbstractPlayerEngine>(2);
-        result.add(new MPlayerEngine());
-        result.add(new XineEngine());
+        result.add(new MPlayerEngine(getState()));
+        result.add(new XineEngine(getState()));
         //result.add(new VlcPlayerEngine());
         //result.add(new GStreamerEngine());
         return result;
@@ -344,7 +344,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
             Logger.info("List of availables engines : ", ArrayUtils.toString(engineNames));
 
         	// Get engine of application state (default or selected by user)
-            String selectedEngine = ApplicationState.getInstance().getPlayerEngine();
+            String selectedEngine = getState().getPlayerEngine();
 
             // If selected engine is not available then try default engine or another one
             if (!ArrayUtils.contains(engineNames, selectedEngine)) {
@@ -357,7 +357,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
                     selectedEngine = engines.iterator().next().getEngineName();
                 }
                 // Update application state with this engine
-                ApplicationState.getInstance().setPlayerEngine(selectedEngine);
+                getState().setPlayerEngine(selectedEngine);
             }
 
             for (AbstractPlayerEngine engine : engines) {
@@ -394,25 +394,25 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     	initPlayerEngine();
     	
         // Set volume on visual components
-        Volume.setVolume(ApplicationState.getInstance().getVolume(), false);
+        Volume.setVolume(getState().getVolume(), false, getState());
 
         // Mute
-        applyMuteState(ApplicationState.getInstance().isMuteEnabled());
+        applyMuteState(getState().isMuteEnabled());
     	
         // Initial playback state is stopped
         if (playerEngine != null) {
         	playerEngine.callPlaybackStateListeners(PlaybackState.STOPPED);
         }
 
-        if (ApplicationState.getInstance().isPlayAtStartup()) {
+        if (getState().isPlayAtStartup()) {
             playCurrentAudioObject(true);
         }
         
         // Progress bar ticks
-        getPlayerControlsController().getComponentControlled().setShowTicksAndLabels(ApplicationState.getInstance().isShowTicks());
+        getPlayerControlsController().getComponentControlled().setShowTicksAndLabels(getState().isShowTicks());
         
         // Show advanced controls
-        getPlayerControlsController().getComponentControlled().showAdvancedPlayerControls(ApplicationState.getInstance().isShowAdvancedPlayerControls());
+        getPlayerControlsController().getComponentControlled().showAdvancedPlayerControls(getState().isShowAdvancedPlayerControls());
 
     	if (playerEngine != null) {
             // Init engine
@@ -471,7 +471,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 
     		if (newState == PlaybackState.PLAY_FINISHED || newState == PlaybackState.PLAY_INTERRUPTED || newState == PlaybackState.STOPPED) {
     			if (playerEngine != null && playerEngine.getSubmissionState() == SubmissionState.PENDING && currentAudioObject instanceof AudioFile) {
-    				LastFmService.getInstance().submitToLastFm((AudioFile) currentAudioObject, getCurrentAudioObjectPlayedTime() / 1000);
+    				WebServicesHandler.getInstance().getLastFmService().submitToLastFm((AudioFile) currentAudioObject, getCurrentAudioObjectPlayedTime() / 1000);
     				StatisticsHandler.getInstance().setAudioFileStatistics((AudioFile) currentAudioObject);
     				playerEngine.setSubmissionState(SubmissionState.SUBMITTED);
     			}
@@ -518,7 +518,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
         if (playerControlsController == null) {
             PlayerControlsPanel panel = null;
             panel = GuiHandler.getInstance().getPlayerControls();
-            playerControlsController = new PlayerControlsController(panel);
+            playerControlsController = new PlayerControlsController(panel, getState());
         }
         return playerControlsController;
     }

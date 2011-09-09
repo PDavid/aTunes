@@ -29,7 +29,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -103,7 +103,7 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public boolean applyPreferences(ApplicationState state) {
+    public boolean applyPreferences(IState state) {
         state.setAutoRepositoryRefreshTime((Integer) refreshTime.getSelectedItem());
         state.setSaveRepositoryAsXml(saveRepositoryAsXml.isSelected());
         state.setCommandBeforeAccessRepository(commandBeforeAccessRepository.getText());
@@ -150,7 +150,7 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public void updatePanel(ApplicationState state) {
+    public void updatePanel(IState state) {
         setRefreshTime(state.getAutoRepositoryRefreshTime());
         setSaveRepositoryAsXml(state.isSaveRepositoryAsXml());
         setCommandBeforeAccessRepository(state.getCommandBeforeAccessRepository());
@@ -167,7 +167,7 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public void resetImmediateChanges(ApplicationState state) {
+    public void resetImmediateChanges(IState state) {
         // Do nothing
     }
 

@@ -46,7 +46,7 @@ public class ShowCoverNavigatorAction extends CustomAbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         CoverNavigatorFrame coverNavigator = new CoverNavigatorFrame(RepositoryHandler.getInstance().getArtists(), GuiHandler.getInstance().getFrame().getFrame());
-        new CoverNavigatorController(coverNavigator);
+        new CoverNavigatorController(coverNavigator, getState());
         coverNavigator.setVisible(true);
     }
 

@@ -25,7 +25,6 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -54,7 +53,7 @@ public class RefreshFolderFromNavigatorAction extends AbstractActionOverSelected
             return false;
         }
 
-        if (ApplicationState.getInstance().getViewMode() != ViewMode.FOLDER) {
+        if (getState().getViewMode() != ViewMode.FOLDER) {
             return false;
         }
 

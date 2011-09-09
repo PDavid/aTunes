@@ -30,9 +30,9 @@ import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.notify.NotificationsHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -88,7 +88,7 @@ public final class HotkeyHandler extends AbstractHandler implements HotkeyListen
     @Override
     protected void initHandler() {
         hotkeys = AbstractHotkeys.createInstance(this);
-        HotkeysConfig hc = ApplicationState.getInstance().getHotkeysConfig();
+        HotkeysConfig hc = getState().getHotkeysConfig();
         hotkeysConfig = hc != null ? hc : DEFAULT_HOTKEYS_CONFIG;
         if (hotkeys != null) {
             supported = true;
@@ -105,8 +105,8 @@ public final class HotkeyHandler extends AbstractHandler implements HotkeyListen
     @Override
     public void allHandlersInitialized() {
         // Hotkeys
-        if (ApplicationState.getInstance().isEnableHotkeys()) {
-            enableHotkeys(ApplicationState.getInstance().getHotkeysConfig());
+        if (getState().isEnableHotkeys()) {
+            enableHotkeys(getState().getHotkeysConfig());
         } else {
             disableHotkeys();
         }
@@ -196,7 +196,7 @@ public final class HotkeyHandler extends AbstractHandler implements HotkeyListen
                 }
 
                 // Disable hotkeys
-                ApplicationState.getInstance().setEnableHotkeys(false);
+                getState().setEnableHotkeys(false);
 
                 // Show an error message
                 GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("HOTKEYS_ACTIVATION_ERROR_MESSAGE"));
@@ -274,7 +274,7 @@ public final class HotkeyHandler extends AbstractHandler implements HotkeyListen
     }
 
     @Override
-    public void applicationStateChanged(ApplicationState newState) {
+    public void applicationStateChanged(IState newState) {
         if (newState.isEnableHotkeys()) {
             enableHotkeys(newState.getHotkeysConfig());
         } else {

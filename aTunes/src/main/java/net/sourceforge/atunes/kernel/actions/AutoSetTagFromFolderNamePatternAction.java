@@ -54,13 +54,13 @@ public class AutoSetTagFromFolderNamePatternAction extends AbstractActionOverSel
     @Override
     protected void performAction(List<LocalAudioObject> objects) {
         // Show pattern input dialog
-        PatternInputDialog inputDialog = new PatternInputDialog(GuiHandler.getInstance().getFrame().getFrame(), false);
+        PatternInputDialog inputDialog = new PatternInputDialog(GuiHandler.getInstance().getFrame().getFrame(), false, getState());
         inputDialog.show(AbstractPattern.getRecognitionPatterns(), objects.get(0).getFile().getParentFile().getAbsolutePath());
         String pattern = inputDialog.getResult();
 
         // If user entered a pattern apply to files
         if (pattern != null) {
-            new EditTagFromFolderNamePatternProcess(objects, pattern).execute();
+            new EditTagFromFolderNamePatternProcess(objects, pattern, getState()).execute();
         }
     }
 

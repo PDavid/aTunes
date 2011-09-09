@@ -31,8 +31,8 @@ import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.NetworkUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -59,9 +59,12 @@ public class PodcastFeedEntryRetriever implements Runnable {
     }
 
     private List<PodcastFeed> podcastFeeds;
+    
+    private IState state;
 
-    public PodcastFeedEntryRetriever(List<PodcastFeed> podcastFeeds) {
+    public PodcastFeedEntryRetriever(List<PodcastFeed> podcastFeeds, IState state) {
         this.podcastFeeds = podcastFeeds;
+        this.state = state;
     }
 
     /**
@@ -238,8 +241,8 @@ public class PodcastFeedEntryRetriever implements Runnable {
     @Override
     public void run() {
         try {
-            boolean removePodcastFeedEntriesRemovedFromPodcastFeed = ApplicationState.getInstance().isRemovePodcastFeedEntriesRemovedFromPodcastFeed();
-            ExtendedProxy proxy = ExtendedProxy.getProxy(ApplicationState.getInstance().getProxy());
+            boolean removePodcastFeedEntriesRemovedFromPodcastFeed = state.isRemovePodcastFeedEntriesRemovedFromPodcastFeed();
+            ExtendedProxy proxy = ExtendedProxy.getProxy(state.getProxy());
             List<PodcastFeed> podcastFeedsWithNewEntries = retrievePodcastFeedEntries(removePodcastFeedEntriesRemovedFromPodcastFeed, proxy);
             // If there are new entries show a message and refresh view
             showMessage(podcastFeedsWithNewEntries);

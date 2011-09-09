@@ -33,12 +33,12 @@ import net.sourceforge.atunes.kernel.modules.repository.AudioFilesRemovedListene
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
 import net.sourceforge.atunes.kernel.modules.search.searchableobjects.FavoritesSearchableObject;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 
@@ -62,7 +62,7 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
     }
 
     @Override
-    public void applicationStateChanged(ApplicationState newState) {
+    public void applicationStateChanged(IState newState) {
     }
 
     @Override
@@ -156,7 +156,7 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
             	favSongs.put(song.getUrl(), song);
 
             	// Add to LastFM if necessary
-            	if (ApplicationState.getInstance().isLastFmEnabled() && ApplicationState.getInstance().isAutoLoveFavoriteSong()) {
+            	if (getState().isLastFmEnabled() && getState().isAutoLoveFavoriteSong()) {
             		// TODO: do this with a listener interface            	
             		((AddLovedSongInLastFMAction) Actions.getAction(AddLovedSongInLastFMAction.class)).loveSong(song);
             	}
@@ -270,7 +270,7 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
     	for (AudioObject file : files) {
     		getFavorites().getFavoriteAudioFiles().remove(file.getUrl());
     		// Unlove on LastFM if necessary
-    		if (ApplicationState.getInstance().isLastFmEnabled() && ApplicationState.getInstance().isAutoLoveFavoriteSong()) {
+    		if (getState().isLastFmEnabled() && getState().isAutoLoveFavoriteSong()) {
     			// TODO: do this with a listener interface            	
     			((UnlovesongInLastFmAction) Actions.getAction(UnlovesongInLastFmAction.class)).unloveSong(file);
     		}

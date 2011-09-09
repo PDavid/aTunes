@@ -46,7 +46,7 @@ public class AutoSetTracksAction extends AbstractActionOverSelectedObjects<Local
 
     @Override
     protected void performAction(List<LocalAudioObject> objects) {
-        TagEditionOperations.editTrackNumber(objects);
+        TagEditionOperations.editTrackNumber(objects, getState());
     }
 
     @Override

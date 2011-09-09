@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 
 /**
  * This class defines all columns than can be viewed in search results
@@ -33,30 +32,6 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
  */
 public final class SearchResultsColumnSet extends AbstractColumnSet {
 
-    /**
-     * Singleton instance
-     */
-    private static SearchResultsColumnSet instance;
-
-    /**
-     * Private constructor
-     */
-    private SearchResultsColumnSet() {
-        super();
-    }
-
-    /**
-     * Returns singleton instance
-     * 
-     * @return
-     */
-    public static SearchResultsColumnSet getInstance() {
-        if (instance == null) {
-            instance = new SearchResultsColumnSet();
-        }
-        return instance;
-    }
-
     @Override
     protected List<AbstractColumn> getAllowedColumns() {
         return Columns.getColumns(false);
@@ -64,12 +39,12 @@ public final class SearchResultsColumnSet extends AbstractColumnSet {
 
     @Override
     protected Map<String, ColumnBean> getColumnsConfiguration() {
-        return ApplicationState.getInstance().getSearchResultsColumns();
+        return state.getSearchResultsColumns();
     }
 
     @Override
     protected void setColumnsConfiguration(Map<String, ColumnBean> columnsConfiguration) {
-        ApplicationState.getInstance().setSearchResultsColumns(columnsConfiguration);
+        state.setSearchResultsColumns(columnsConfiguration);
     }
 
     @Override

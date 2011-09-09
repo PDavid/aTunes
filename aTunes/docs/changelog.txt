@@ -45,6 +45,7 @@ aTunes 2.1.0
 - Drag and drop similar artists available to play list to add an album [ patch by Laurent Cathala ]
 - Drag artists or play list items to tree to locate in navigator [ patch by Laurent Cathala ]
 - Added option to show case sensitive elements in navigator tree [ patch by Jan-Martin Ziem ]
+- Started migration to use Spring IoC
 
 
 - FIX: Dialogs opened from preferences dialog use wrong parent [ patch by Laurent Cathala ]

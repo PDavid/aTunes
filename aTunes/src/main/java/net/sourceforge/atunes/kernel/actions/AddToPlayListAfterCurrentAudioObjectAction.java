@@ -36,7 +36,7 @@ public class AddToPlayListAfterCurrentAudioObjectAction extends AbstractActionOv
         super(I18nUtils.getString("ADD_TO_ACTIVE_PLAYLIST_AFTER_CURRENT_AUDIO_OBJECT"), AudioObject.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("ADD_TO_ACTIVE_PLAYLIST_AFTER_CURRENT_AUDIO_OBJECT"));
     }
-
+    
     @Override
     protected void performAction(List<AudioObject> objects) {
         PlayListHandler.getInstance().addToActivePlayList(objects);

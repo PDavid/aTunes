@@ -36,8 +36,8 @@ import net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenHandler;
 import net.sourceforge.atunes.kernel.modules.notify.classic.DefaultNotifications;
 import net.sourceforge.atunes.kernel.modules.notify.growl.GrowlNotificationEngine;
 import net.sourceforge.atunes.kernel.modules.notify.libnotify.LibnotifyNotificationEngine;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 
 public final class NotificationsHandler extends AbstractHandler implements PlaybackStateListener {
 
@@ -45,23 +45,16 @@ public final class NotificationsHandler extends AbstractHandler implements Playb
 
     private static Map<String, NotificationEngine> engines = new HashMap<String, NotificationEngine>();
     
-    public static final NotificationEngine DEFAULT_ENGINE = new DefaultNotifications();
+    public static NotificationEngine defaultEngine;
     
     /**
      * Adds a new notification engine
      * @param engine
      */
-    private static void addNotificationEngine(NotificationEngine engine) {
+    private void addNotificationEngine(NotificationEngine engine) {
    		engines.put(engine.getName(), engine);
     }
 
-    static {
-    	// Add here any new notification engine
-    	addNotificationEngine(DEFAULT_ENGINE);
-    	addNotificationEngine(new LibnotifyNotificationEngine());
-    	addNotificationEngine(new GrowlNotificationEngine());
-    }
-    
     private static Set<String> availableEngines = new HashSet<String>();
     
     private NotificationsHandler() {
@@ -78,9 +71,9 @@ public final class NotificationsHandler extends AbstractHandler implements Playb
      * @return notification engine to use
      */
     private NotificationEngine getNotificationEngine() {
-    	NotificationEngine engine = engines.get(ApplicationState.getInstance().getNotificationEngine());
+    	NotificationEngine engine = engines.get(getState().getNotificationEngine());
     	if (engine == null) {
-    		engine = DEFAULT_ENGINE;
+    		engine = defaultEngine;
     	}
     	return engine;
     }
@@ -91,12 +84,18 @@ public final class NotificationsHandler extends AbstractHandler implements Playb
     }
 
     @Override
-    public void applicationStateChanged(ApplicationState newState) {
+    public void applicationStateChanged(IState newState) {
     	getNotificationEngine().updateNotification(newState);
     }
     
     @Override
     protected void initHandler() {
+    	defaultEngine = new DefaultNotifications(getState());
+    	// Add here any new notification engine
+    	addNotificationEngine(defaultEngine);
+    	addNotificationEngine(new LibnotifyNotificationEngine());
+    	addNotificationEngine(new GrowlNotificationEngine());
+
     	// Load available engines
     	for (NotificationEngine engine : engines.values()) {
     		addAvailableNoticationEngine(engine);
@@ -130,7 +129,7 @@ public final class NotificationsHandler extends AbstractHandler implements Playb
 
     @Override
     public void playbackStateChanged(PlaybackState newState, AudioObject currentAudioObject) {
-        if (ApplicationState.getInstance().isShowOSD() && newState == PlaybackState.PLAYING) {
+        if (getState().isShowOSD() && newState == PlaybackState.PLAYING) {
             // Playing
             showNotification(currentAudioObject);
         }
@@ -150,9 +149,9 @@ public final class NotificationsHandler extends AbstractHandler implements Playb
 		Collections.sort(names, new Comparator<String>() {
 			@Override
 			public int compare(String o1, String o2) {
-				if (o1.equals(DEFAULT_ENGINE.getName())) {
+				if (o1.equals(defaultEngine.getName())) {
 					return -1;
-				} else if (o2.equals(DEFAULT_ENGINE.getName())) {
+				} else if (o2.equals(defaultEngine.getName())) {
 					return 1;
 				}
 				return o1.compareTo(o2);

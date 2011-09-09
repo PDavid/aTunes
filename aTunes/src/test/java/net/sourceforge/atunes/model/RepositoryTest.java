@@ -45,7 +45,7 @@ public class RepositoryTest {
 		List<File> folders = new ArrayList<File>();
 		folders.add(f1);
 		folders.add(f2);
-		rep = new Repository(folders, null);
+		rep = new Repository(folders, null, null);
 	}
 	
 	@Test

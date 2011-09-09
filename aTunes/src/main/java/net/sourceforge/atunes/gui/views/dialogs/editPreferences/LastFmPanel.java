@@ -39,9 +39,9 @@ import net.sourceforge.atunes.kernel.actions.AddBannedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.actions.ImportLovedTracksFromLastFMAction;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
+import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -54,7 +54,7 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
 				SwingWorker<Boolean, Void> {
 			@Override
 			protected Boolean doInBackground() {
-			    return LastFmService.getInstance().testLogin(lastFmUser.getText(), String.valueOf(lastFmPassword.getPassword()));
+			    return WebServicesHandler.getInstance().getLastFmService().testLogin(lastFmUser.getText(), String.valueOf(lastFmPassword.getPassword()));
 			}
 
 			@Override
@@ -162,7 +162,7 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public boolean applyPreferences(ApplicationState state) {
+    public boolean applyPreferences(IState state) {
         state.setLastFmUser(lastFmUser.getText());
         state.setLastFmPassword(String.valueOf(lastFmPassword.getPassword()));
         state.setLastFmEnabled(lastFmEnabled.isSelected());
@@ -213,7 +213,7 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public void updatePanel(ApplicationState state) {
+    public void updatePanel(IState state) {
         setLastFmUser(state.getLastFmUser());
         setLastFmPassword(state.getLastFmPassword());
         setLastFmEnabled(state.isLastFmEnabled());
@@ -233,7 +233,7 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public void resetImmediateChanges(ApplicationState state) {
+    public void resetImmediateChanges(IState state) {
         // Do nothing
     }
 

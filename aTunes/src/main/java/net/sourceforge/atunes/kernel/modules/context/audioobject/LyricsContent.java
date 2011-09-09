@@ -82,9 +82,12 @@ public class LyricsContent extends AbstractContextPanelContent {
     private String lyricsSourceUrl;
 
     private AudioObject audioObject;
+    
+    private LyricsService lyricsService;
 
-    public LyricsContent() {
-        super(new LyricsDataSource());
+    public LyricsContent(LyricsService lyricsService) {
+        super(new LyricsDataSource(lyricsService));
+        this.lyricsService = lyricsService;
         copyLyrics = new JMenuItem(new AbstractAction(I18nUtils.getString("COPY_TO_CLIPBOARD")) {
 
             private static final long serialVersionUID = -851267486478098295L;
@@ -138,7 +141,7 @@ public class LyricsContent extends AbstractContextPanelContent {
             openLyrics.setEnabled(lyricsNotEmpty);
             if (!lyricsNotEmpty) {
                 addLyrics.removeAll();
-                for (final Entry<String, String> entry : LyricsService.getInstance().getUrlsForAddingNewLyrics(audioObject.getArtist(), audioObject.getTitle()).entrySet()) {
+                for (final Entry<String, String> entry : lyricsService.getUrlsForAddingNewLyrics(audioObject.getArtist(), audioObject.getTitle()).entrySet()) {
                     JMenuItem mi = new JMenuItem(entry.getKey());
                     mi.addActionListener(new OpenUrlActionListener(entry));
                     addLyrics.add(mi);
