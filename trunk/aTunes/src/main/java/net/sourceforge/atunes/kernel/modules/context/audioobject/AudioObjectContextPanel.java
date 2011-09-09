@@ -35,7 +35,6 @@ import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.GenericImageSize;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -53,12 +52,9 @@ public class AudioObjectContextPanel extends AbstractContextPanel {
 
     private LyricsService lyricsService;
     
-    private IState state;
-    
-    public AudioObjectContextPanel(LyricsService lyricsService, IState state) {
-    	this.lyricsService = lyricsService;
-    	this.state = state;
-    }
+    public void setLyricsService(LyricsService lyricsService) {
+		this.lyricsService = lyricsService;
+	}
     
     @Override
     protected ColorMutableImageIcon getContextPanelIcon(final AudioObject audioObject) {
@@ -96,7 +92,7 @@ public class AudioObjectContextPanel extends AbstractContextPanel {
     protected List<AbstractContextPanelContent> getContents() {
         if (contents == null) {
             contents = new ArrayList<AbstractContextPanelContent>();
-            contents.add(new AudioObjectBasicInfoContent(state));
+            contents.add(new AudioObjectBasicInfoContent(getState()));
             contents.add(new LyricsContent(lyricsService));
         }
         return contents;

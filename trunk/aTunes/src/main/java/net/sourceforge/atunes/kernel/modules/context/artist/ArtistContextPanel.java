@@ -33,7 +33,6 @@ import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -48,13 +47,6 @@ public class ArtistContextPanel extends AbstractContextPanel {
     private static final long serialVersionUID = -7910261492394049289L;
 
     private List<AbstractContextPanelContent> contents;
-
-    private IState state;
-    
-    public ArtistContextPanel(IState state) {
-		super();
-		this.state = state;
-	}
 
 	@Override
     protected ColorMutableImageIcon getContextPanelIcon(AudioObject audioObject) {
@@ -80,9 +72,9 @@ public class ArtistContextPanel extends AbstractContextPanel {
     protected List<AbstractContextPanelContent> getContents() {
         if (contents == null) {
             contents = new ArrayList<AbstractContextPanelContent>();
-            contents.add(new ArtistBasicInfoContent(state));
+            contents.add(new ArtistBasicInfoContent(getState()));
             contents.add(new ArtistTopTracksContent());
-            contents.add(state.isShowContextAlbumsInGrid() ? new ArtistAlbumsFlowContent(state) : new ArtistAlbumsContent(state));
+            contents.add(getState().isShowContextAlbumsInGrid() ? new ArtistAlbumsFlowContent(getState()) : new ArtistAlbumsContent(getState()));
         }
         return contents;
     }

@@ -41,6 +41,7 @@ import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
@@ -62,6 +63,9 @@ public abstract class AbstractContextPanel {
     private AudioObject audioObject;
 
     private Component component;
+    
+    private IState state;
+    
     
     // BEGIN OF METHODS TO BE IMPLEMENTED BY CONCRETE CONTEXT PANELS
 
@@ -323,5 +327,13 @@ public abstract class AbstractContextPanel {
 	@Override
 	public String toString() {
 		return getTitle();
+	}
+	
+	protected IState getState() {
+		return state;
+	}
+	
+	public void setState(IState state) {
+		this.state = state;
 	}
 }
