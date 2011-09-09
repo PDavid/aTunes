@@ -34,7 +34,6 @@ import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeService;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.model.IState;
 
 /**
  * Panel to show youtube videos
@@ -46,14 +45,11 @@ public class YoutubeContextPanel extends AbstractContextPanel {
 
     private List<AbstractContextPanelContent> contents;
 
-    private IState state;
-    
     private YoutubeService youtubeService;
     
-    public YoutubeContextPanel(IState state, YoutubeService youtubeService) {
-    	this.state = state;
-    	this.youtubeService = youtubeService;
-    }
+    public void setYoutubeService(YoutubeService youtubeService) {
+		this.youtubeService = youtubeService;
+	}
     
     @Override
     protected ColorMutableImageIcon getContextPanelIcon(AudioObject audioObject) {
@@ -79,7 +75,7 @@ public class YoutubeContextPanel extends AbstractContextPanel {
     protected List<AbstractContextPanelContent> getContents() {
         if (contents == null) {
             contents = new ArrayList<AbstractContextPanelContent>();
-            contents.add(new YoutubeContent(state, youtubeService));
+            contents.add(new YoutubeContent(getState(), youtubeService));
         }
         return contents;
     }

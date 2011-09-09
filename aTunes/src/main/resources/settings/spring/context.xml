@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+	<bean id="contextPanels" class="java.util.ArrayList">
+		<constructor-arg>
+			<list>
+				<ref bean="audioObjectContextPanel"/>
+				<ref bean="albumContextPanel"/>
+				<ref bean="artistContextPanel"/>
+				<ref bean="similarArtistsContextPanel"/>
+				<ref bean="youtubeContextPanel"/>
+			</list>
+		</constructor-arg>
+	</bean>
+
+
+	<bean id="contextPanel" abstract="true" class="net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel">
+		<property name="state" ref="state"/>
+	</bean>
+
+	<bean id="albumContextPanel"
+		class="net.sourceforge.atunes.kernel.modules.context.album.AlbumContextPanel"
+		parent="contextPanel">
+	</bean>
+
+	<bean id="artistContextPanel"
+		class="net.sourceforge.atunes.kernel.modules.context.artist.ArtistContextPanel"
+		parent="contextPanel">
+	</bean>
+	<bean id="audioObjectContextPanel"
+		class="net.sourceforge.atunes.kernel.modules.context.audioobject.AudioObjectContextPanel"
+		parent="contextPanel">
+		<property name="lyricsService" ref="lyricsService"/>
+	</bean>
+
+
+	<bean id="similarArtistsContextPanel"
+		class="net.sourceforge.atunes.kernel.modules.context.similar.SimilarArtistsContextPanel"
+		parent="contextPanel">
+	</bean>
+	<bean id="youtubeContextPanel"
+		class="net.sourceforge.atunes.kernel.modules.context.youtube.YoutubeContextPanel"
+		parent="contextPanel">		
+	</bean>
+</beans>
