@@ -129,7 +129,7 @@
 	</target>
 
 	<target name="create_installer_not_mac" unless="isMac">
-		<launch4j_mac configFile="${build_tools}/launch4j_installer.xml" jar="${target}/aTunes_${version}_installer.jar" outfile="${target}/aTunes_${version}_installer.exe" />
+		<launch4j configFile="${build_tools}/launch4j_installer.xml" jar="${target}/aTunes_${version}_installer.jar" outfile="${target}/aTunes_${version}_installer.exe" />
 	</target>
 
 	<target name="create_installer_mac" if="isMac">
