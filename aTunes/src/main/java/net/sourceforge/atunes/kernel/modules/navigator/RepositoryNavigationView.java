@@ -35,17 +35,7 @@ import javax.swing.tree.DefaultTreeModel;
 
 import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
 import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
-import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
-import net.sourceforge.atunes.gui.views.decorators.AlbumTreeCellDecorator;
-import net.sourceforge.atunes.gui.views.decorators.ArtistTreeCellDecorator;
-import net.sourceforge.atunes.gui.views.decorators.FolderTreeCellDecorator;
-import net.sourceforge.atunes.gui.views.decorators.GenreTreeCellDecorator;
-import net.sourceforge.atunes.gui.views.decorators.IncompleteTagsTreeCellDecorator;
-import net.sourceforge.atunes.gui.views.decorators.StringTreeCellDecorator;
-import net.sourceforge.atunes.gui.views.decorators.TooltipTreeCellDecorator;
-import net.sourceforge.atunes.gui.views.decorators.UnknownElementTreeCellDecorator;
-import net.sourceforge.atunes.gui.views.decorators.YearTreeCellDecorator;
 import net.sourceforge.atunes.gui.views.menus.EditTagMenu;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAction;
@@ -83,8 +73,6 @@ public class RepositoryNavigationView extends AbstractNavigationView {
     private JPopupMenu treePopupMenu;
 
     private JPopupMenu tablePopupMenu;
-
-    private List<AbstractTreeCellDecorator> decorators;
 
     public RepositoryNavigationView(IState state) {
     	super(state);
@@ -203,7 +191,7 @@ public class RepositoryNavigationView extends AbstractNavigationView {
         // Get objects expanded before refreshing tree
         List<TreeObject<? extends AudioObject>> objectsExpanded = getTreeObjectsExpanded(tree, root);
         
-        // Build tree
+        // Build treeN
         TreeGeneratorFactory.getTreeGenerator(viewMode, getState()).buildTree(getState(), "REPOSITORY", this, (Map<String, Year>) getViewData(viewMode), treeFilter, root, treeModel, objectsSelected, objectsExpanded);
         
         getTree().expandRow(0);
@@ -246,23 +234,6 @@ public class RepositoryNavigationView extends AbstractNavigationView {
         return true;
     }
 
-    @Override
-    protected List<AbstractTreeCellDecorator> getTreeCellDecorators() {
-        if (decorators == null) {
-            decorators = new ArrayList<AbstractTreeCellDecorator>();
-            decorators.add(new ArtistTreeCellDecorator());
-            decorators.add(new AlbumTreeCellDecorator());
-            decorators.add(new GenreTreeCellDecorator());
-            decorators.add(new YearTreeCellDecorator());
-            decorators.add(new FolderTreeCellDecorator());
-            decorators.add(new StringTreeCellDecorator());
-            decorators.add(new TooltipTreeCellDecorator());
-            decorators.add(new UnknownElementTreeCellDecorator());
-            decorators.add(new IncompleteTagsTreeCellDecorator());
-        }
-        return decorators;
-    }
-
     /**
      * Gets the tool tip for repository.
      * 
@@ -273,6 +244,4 @@ public class RepositoryNavigationView extends AbstractNavigationView {
         int songs = RepositoryHandler.getInstance().getAudioFilesList().size();
         return StringUtils.getString(I18nUtils.getString("REPOSITORY"), " (", songs, " ", (songs > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG")), ")");
     }
-
-	
 }

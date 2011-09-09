@@ -36,13 +36,7 @@ import javax.swing.tree.DefaultTreeModel;
 
 import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.FavoriteImageIcon;
-import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
-import net.sourceforge.atunes.gui.views.decorators.AlbumTreeCellDecorator;
-import net.sourceforge.atunes.gui.views.decorators.ArtistTreeCellDecorator;
-import net.sourceforge.atunes.gui.views.decorators.IncompleteTagsTreeCellDecorator;
-import net.sourceforge.atunes.gui.views.decorators.StringTreeCellDecorator;
-import net.sourceforge.atunes.gui.views.decorators.UnknownElementTreeCellDecorator;
 import net.sourceforge.atunes.gui.views.menus.EditTagMenu;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAction;
@@ -72,8 +66,6 @@ import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class FavoritesNavigationView extends AbstractNavigationView {
-
-    private List<AbstractTreeCellDecorator> decorators;
 
     private JTree favoritesTree;
 
@@ -331,18 +323,4 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
     public boolean isViewModeSupported() {
         return false;
     }
-
-    @Override
-    protected List<AbstractTreeCellDecorator> getTreeCellDecorators() {
-        if (decorators == null) {
-            decorators = new ArrayList<AbstractTreeCellDecorator>();
-            decorators.add(new ArtistTreeCellDecorator());
-            decorators.add(new AlbumTreeCellDecorator());
-            decorators.add(new StringTreeCellDecorator());
-            decorators.add(new UnknownElementTreeCellDecorator());
-            decorators.add(new IncompleteTagsTreeCellDecorator());
-        }
-        return decorators;
-    }
-
 }

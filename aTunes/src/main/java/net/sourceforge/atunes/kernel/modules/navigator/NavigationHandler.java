@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +35,6 @@ import net.sourceforge.atunes.gui.views.dialogs.SearchDialog;
 import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.draganddrop.TreeNavigationTransferHandler;
 import net.sourceforge.atunes.kernel.modules.filter.AbstractFilter;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
@@ -127,8 +125,10 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
     public void applicationFinish() {
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     protected void initHandler() {
+    	navigationViews = (List<AbstractNavigationView>) Context.getBean("navigationViews");
     }
 
     @Override
@@ -145,15 +145,6 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
     }
 
     public List<AbstractNavigationView> getNavigationViews() {
-        if (navigationViews == null) {
-            navigationViews = new ArrayList<AbstractNavigationView>();
-            // TODO: Dynamic load of navigation views, possibly from a config file
-            navigationViews.add(new RepositoryNavigationView(getState()));
-            navigationViews.add(new FavoritesNavigationView(getState()));
-            navigationViews.add(new DeviceNavigationView(getState()));
-            navigationViews.add(new RadioNavigationView(getState(), (AbstractColumnSet) Context.getBean("radioNavigationColumnSet")));
-            navigationViews.add(new PodcastNavigationView(getState(), (AbstractCustomNavigatorColumnSet) Context.getBean("podcastNavigationColumnSet")));
-        }
         return navigationViews;
     }
 

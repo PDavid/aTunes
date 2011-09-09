@@ -112,6 +112,11 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
      * State of application
      */
     private IState state;
+    
+    /**
+     * Decorators used in view
+     */
+    private List<AbstractTreeCellDecorator> decorators;
 
     /**
      * @return the title of this view
@@ -138,7 +143,17 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
      * 
      * @return
      */
-    protected abstract List<AbstractTreeCellDecorator> getTreeCellDecorators();
+    protected final List<AbstractTreeCellDecorator> getTreeCellDecorators() {
+    	return decorators;
+    }
+    
+    /**
+     * Sets decorators
+     * @param decorators
+     */
+    public void setDecorators(List<AbstractTreeCellDecorator> decorators) {
+		this.decorators = decorators;
+	}
 
     /**
      * 

@@ -35,16 +35,7 @@ import javax.swing.tree.DefaultTreeModel;
 
 import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.DeviceImageIcon;
-import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
-import net.sourceforge.atunes.gui.views.decorators.AlbumTreeCellDecorator;
-import net.sourceforge.atunes.gui.views.decorators.ArtistTreeCellDecorator;
-import net.sourceforge.atunes.gui.views.decorators.FolderTreeCellDecorator;
-import net.sourceforge.atunes.gui.views.decorators.GenreTreeCellDecorator;
-import net.sourceforge.atunes.gui.views.decorators.IncompleteTagsTreeCellDecorator;
-import net.sourceforge.atunes.gui.views.decorators.StringTreeCellDecorator;
-import net.sourceforge.atunes.gui.views.decorators.UnknownElementTreeCellDecorator;
-import net.sourceforge.atunes.gui.views.decorators.YearTreeCellDecorator;
 import net.sourceforge.atunes.gui.views.menus.EditTagMenu;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAction;
@@ -70,8 +61,6 @@ import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class DeviceNavigationView extends AbstractNavigationView {
-
-    private List<AbstractTreeCellDecorator> decorators;
 
     /** The device tree. */
     private JTree deviceTree;
@@ -231,21 +220,5 @@ public final class DeviceNavigationView extends AbstractNavigationView {
     @Override
     public boolean isViewModeSupported() {
         return true;
-    }
-
-    @Override
-    protected List<AbstractTreeCellDecorator> getTreeCellDecorators() {
-        if (decorators == null) {
-            decorators = new ArrayList<AbstractTreeCellDecorator>();
-            decorators.add(new ArtistTreeCellDecorator());
-            decorators.add(new AlbumTreeCellDecorator());
-            decorators.add(new GenreTreeCellDecorator());
-            decorators.add(new YearTreeCellDecorator());
-            decorators.add(new FolderTreeCellDecorator());
-            decorators.add(new StringTreeCellDecorator());
-            decorators.add(new UnknownElementTreeCellDecorator());
-            decorators.add(new IncompleteTagsTreeCellDecorator());
-        }
-        return decorators;
     }
 }

@@ -36,10 +36,7 @@ import javax.swing.tree.DefaultTreeModel;
 
 import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.RadioImageIcon;
-import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
-import net.sourceforge.atunes.gui.views.decorators.RadioTreeCellDecorator;
-import net.sourceforge.atunes.gui.views.decorators.StringTreeCellDecorator;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddFavoriteRadioAction;
 import net.sourceforge.atunes.kernel.actions.AddRadioAction;
@@ -62,8 +59,6 @@ import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class RadioNavigationView extends AbstractNavigationView {
-
-    private List<AbstractTreeCellDecorator> decorators;
 
     /** The radio tree. */
     private JTree radioTree;
@@ -362,16 +357,6 @@ public final class RadioNavigationView extends AbstractNavigationView {
     @Override
     public boolean isViewModeSupported() {
         return false;
-    }
-
-    @Override
-    protected List<AbstractTreeCellDecorator> getTreeCellDecorators() {
-        if (decorators == null) {
-            decorators = new ArrayList<AbstractTreeCellDecorator>();
-            decorators.add(new StringTreeCellDecorator());
-            decorators.add(new RadioTreeCellDecorator());
-        }
-        return decorators;
     }
 
 }
