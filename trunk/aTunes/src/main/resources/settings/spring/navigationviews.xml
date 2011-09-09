@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<bean id="navigationViews" class="java.util.ArrayList">
+		<constructor-arg>
+			<list>
+				<ref bean="repositoryNavigationView" />
+				<ref bean="favoritesNavigationView" />
+				<ref bean="deviceNavigationView" />
+				<ref bean="radioNavigationView" />
+				<ref bean="podcastNavigationView" />
+			</list>
+		</constructor-arg>
+	</bean>
+
+
+	<bean id="navigationView" abstract="true" class="">
+		<constructor-arg ref="state" />
+	</bean>
+
+	<bean id="repositoryNavigationView"
+		class="net.sourceforge.atunes.kernel.modules.navigator.RepositoryNavigationView"
+		parent="navigationView">
+
+		<property name="decorators">
+			<list>
+				<ref bean="artistTreeCellDecorator" />
+				<ref bean="albumTreeCellDecorator" />
+				<ref bean="genreTreeCellDecorator" />
+				<ref bean="yearTreeCellDecorator" />
+				<ref bean="folderTreeCellDecorator" />
+				<ref bean="stringTreeCellDecorator" />
+				<ref bean="tooltipTreeCellDecorator" />
+				<ref bean="unknownElementTreeCellDecorator" />
+				<ref bean="incompleteTagsTreeCellDecorator" />
+			</list>
+		</property>
+
+	</bean>
+
+	<bean id="favoritesNavigationView"
+		class="net.sourceforge.atunes.kernel.modules.navigator.FavoritesNavigationView"
+		parent="navigationView">
+
+		<property name="decorators">
+			<list>
+				<ref bean="artistTreeCellDecorator" />
+				<ref bean="albumTreeCellDecorator" />
+				<ref bean="stringTreeCellDecorator" />
+				<ref bean="unknownElementTreeCellDecorator" />
+				<ref bean="incompleteTagsTreeCellDecorator" />
+			</list>
+		</property>
+
+	</bean>
+
+
+
+	<bean id="deviceNavigationView"
+		class="net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView"
+		parent="navigationView">
+
+		<property name="decorators">
+			<list>
+				<ref bean="artistTreeCellDecorator" />
+				<ref bean="albumTreeCellDecorator" />
+				<ref bean="genreTreeCellDecorator" />
+				<ref bean="yearTreeCellDecorator" />
+				<ref bean="folderTreeCellDecorator" />
+				<ref bean="stringTreeCellDecorator" />
+				<ref bean="unknownElementTreeCellDecorator" />
+				<ref bean="incompleteTagsTreeCellDecorator" />
+			</list>
+		</property>
+
+	</bean>
+
+
+
+	<bean id="radioNavigationView"
+		class="net.sourceforge.atunes.kernel.modules.navigator.RadioNavigationView"
+		parent="navigationView">
+		<constructor-arg ref="radioNavigationColumnSet" />
+		
+				<property name="decorators">
+			<list>
+				<ref bean="stringTreeCellDecorator" />
+				<ref bean="radioTreeCellDecorator" />
+			</list>
+		</property>
+		
+	</bean>
+	
+	
+	<bean id="podcastNavigationView"
+		class="net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView"
+		parent="navigationView">
+		<constructor-arg ref="podcastNavigationColumnSet" />
+
+		<property name="decorators">
+			<list>
+				<ref bean="stringTreeCellDecorator" />
+				<ref bean="podcastFeedTreeCellDecorator" />
+			</list>
+		</property>
+
+	</bean>
+
+
+</beans>

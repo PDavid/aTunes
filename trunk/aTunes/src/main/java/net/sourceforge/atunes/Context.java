@@ -31,7 +31,8 @@ public class Context {
 	}
 	
 	protected static void initialize() {
-		context = new ClassPathXmlApplicationContext("/settings/spring/state.xml", "/settings/spring/columnsets.xml", "/settings/spring/webservices.xml");
+		context = new ClassPathXmlApplicationContext("/settings/spring/state.xml", "/settings/spring/columnsets.xml", 
+				"/settings/spring/webservices.xml", "/settings/spring/navigationviews.xml", "/settings/spring/treecelldecorators.xml");
 	}
 	
 	public static <T> T getBean(Class<T> beanType) {
