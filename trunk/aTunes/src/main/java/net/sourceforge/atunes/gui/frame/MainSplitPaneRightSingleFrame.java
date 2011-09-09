@@ -36,10 +36,6 @@ public abstract class MainSplitPaneRightSingleFrame extends CommonSingleFrame {
 	private static final long serialVersionUID = -8996304310400258287L;
 
 
-	public MainSplitPaneRightSingleFrame() {
-		super();
-	}
-    
 	@Override
 	protected JComponent getLeftSplitPaneLeftComponent() {
 		return getComponentA();

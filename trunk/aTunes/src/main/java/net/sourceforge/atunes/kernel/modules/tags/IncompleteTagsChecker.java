@@ -27,10 +27,10 @@ import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.TreeObject;
 
 public final class IncompleteTagsChecker {
@@ -55,9 +55,10 @@ public final class IncompleteTagsChecker {
      * Returns a hash map with all tag attributes as key, and state (used or
      * not) as value
      * 
+     * @param attributes
      * @return
      */
-    public static Map<TagAttribute, Boolean> getAllTagAttributes() {
+    public static Map<TagAttribute, Boolean> getAllTagAttributes(List<TagAttribute> attributes) {
         Map<TagAttribute, Boolean> result = new HashMap<TagAttribute, Boolean>();
         result.put(TagAttribute.TITLE, false);
         result.put(TagAttribute.ARTIST, false);
@@ -70,7 +71,7 @@ public final class IncompleteTagsChecker {
         result.put(TagAttribute.ALBUM_ARTIST, false);
         result.put(TagAttribute.TRACK, false);
 
-        for (TagAttribute attr : ApplicationState.getInstance().getHighlightIncompleteTagFoldersAttributes()) {
+        for (TagAttribute attr : attributes) {
             result.put(attr, true);
         }
 
@@ -80,14 +81,16 @@ public final class IncompleteTagsChecker {
     /**
      * Returns true if audio file has filled all enabled attributes
      * 
+     * @param audioFile
+     * @param state
      * @return
      */
-    private static boolean hasTagAttributesFilled(AudioFile audioFile) {
+    private static boolean hasTagAttributesFilled(AudioFile audioFile, IState state) {
         if (audioFile.getTag() == null) {
             return false;
         }
 
-        for (TagAttribute ta : ApplicationState.getInstance().getHighlightIncompleteTagFoldersAttributes()) {
+        for (TagAttribute ta : state.getHighlightIncompleteTagFoldersAttributes()) {
             if (ta == TagAttribute.TITLE && audioFile.getTitle().isEmpty()) {
                 return false;
             }
@@ -138,11 +141,12 @@ public final class IncompleteTagsChecker {
      * incomplete tags
      * 
      * @param treeObject
+     * @param state
      * @return
      */
-    public static boolean hasIncompleteTags(TreeObject<? extends AudioObject> treeObject) {
+    public static boolean hasIncompleteTags(TreeObject<? extends AudioObject> treeObject, IState state) {
         for (AudioObject f : treeObject.getAudioObjects()) {
-            if (hasIncompleteTags(f)) {
+            if (hasIncompleteTags(f, state)) {
                 return true;
             }
         }
@@ -152,11 +156,13 @@ public final class IncompleteTagsChecker {
     /**
      * Returns <code>true</code> if object has incomplete tag tags
      * 
+     * @param audioObject
+     * @param state
      * @return
      */
-    public static boolean hasIncompleteTags(AudioObject audioObject) {
+    public static boolean hasIncompleteTags(AudioObject audioObject, IState state) {
         if (audioObject instanceof AudioFile) {
-            return !hasTagAttributesFilled((AudioFile) audioObject);
+            return !hasTagAttributesFilled((AudioFile) audioObject, state);
         }
         return false;
     }

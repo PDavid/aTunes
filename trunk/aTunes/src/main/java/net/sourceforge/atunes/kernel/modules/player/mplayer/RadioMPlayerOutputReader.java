@@ -26,8 +26,8 @@ import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IState;
 
 class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
 
@@ -38,6 +38,7 @@ class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
     private String lastArtist = "";
     private String lastTitle = "";
     private boolean started;
+    private IState state;
 
     /**
      * Instantiates a new radio m player output reader.
@@ -49,9 +50,10 @@ class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
      * @param radio
      *            the radio
      */
-    RadioMPlayerOutputReader(MPlayerEngine engine, Process process, Radio radio) {
+    RadioMPlayerOutputReader(MPlayerEngine engine, Process process, Radio radio, IState state) {
         super(engine, process);
         this.radio = radio;
+        this.state = state;
     }
 
     @Override
@@ -95,7 +97,7 @@ class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
         }
 
         // Read song info from radio stream
-        if (ApplicationState.getInstance().isReadInfoFromRadioStream() && line.startsWith("ICY Info:")) {
+        if (state.isReadInfoFromRadioStream() && line.startsWith("ICY Info:")) {
             try {
                 int i = line.indexOf("StreamTitle=");
                 int j = line.indexOf(';', i);

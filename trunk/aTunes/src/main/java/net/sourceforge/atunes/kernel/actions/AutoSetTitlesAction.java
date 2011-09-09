@@ -46,7 +46,7 @@ public class AutoSetTitlesAction extends AbstractActionOverSelectedObjects<Local
 
     @Override
     protected void performAction(List<LocalAudioObject> objects) {
-        new EditTitlesProcess(objects).execute();
+        new EditTitlesProcess(objects, getState()).execute();
     }
 
     @Override

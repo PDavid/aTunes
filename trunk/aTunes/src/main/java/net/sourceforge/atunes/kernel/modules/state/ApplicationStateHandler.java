@@ -49,6 +49,7 @@ import net.sourceforge.atunes.kernel.modules.statistics.Statistics;
 import net.sourceforge.atunes.misc.Timer;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.Repository;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -60,7 +61,7 @@ import net.sourceforge.atunes.utils.XMLUtils;
  */
 public final class ApplicationStateHandler extends AbstractHandler {
 
-    /** The instance. */
+	/** The instance. */
     private static ApplicationStateHandler instance = new ApplicationStateHandler();
 
     /**
@@ -112,7 +113,7 @@ public final class ApplicationStateHandler extends AbstractHandler {
     }
 
     @Override
-    public void applicationStateChanged(ApplicationState newState) {
+    public void applicationStateChanged(IState newState) {
         // Nothing to do
     }
 
@@ -123,7 +124,7 @@ public final class ApplicationStateHandler extends AbstractHandler {
         try {
             for (ApplicationStateChangeListener listener : stateChangeListeners) {
                 Logger.debug("Call to ApplicationStateChangeListener: ", listener.getClass().getName());
-                listener.applicationStateChanged(ApplicationState.getInstance());
+                listener.applicationStateChanged(getState());
             }
         } catch (Throwable t) {
             t.printStackTrace();
@@ -153,7 +154,7 @@ public final class ApplicationStateHandler extends AbstractHandler {
             ClosingUtils.close(stream);
         }
 
-        if (ApplicationState.getInstance().isSaveRepositoryAsXml()) {
+        if (getState().isSaveRepositoryAsXml()) {
             try {
                 XMLUtils.writeObjectToFile(favorites, StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_FAVORITES_NAME));
                 Logger.info("Storing favorites information...");
@@ -183,7 +184,7 @@ public final class ApplicationStateHandler extends AbstractHandler {
             ClosingUtils.close(stream);
         }
 
-        if (ApplicationState.getInstance().isSaveRepositoryAsXml()) {
+        if (getState().isSaveRepositoryAsXml()) {
             try {
                 XMLUtils.writeObjectToFile(statistics, StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_STATISTICS_NAME));
                 Logger.info("Storing statistics information...");
@@ -297,7 +298,7 @@ public final class ApplicationStateHandler extends AbstractHandler {
             ClosingUtils.close(oos);
         }
 
-        if (asXmlIfEnabled && ApplicationState.getInstance().isSaveRepositoryAsXml()) {
+        if (asXmlIfEnabled && getState().isSaveRepositoryAsXml()) {
             try {
                 Logger.info("Storing repository information as xml...");
                 Timer timer = new Timer();
@@ -347,7 +348,7 @@ public final class ApplicationStateHandler extends AbstractHandler {
             return new Favorites();
         } catch (IOException e) {
             Logger.info("No serialized favorites info found");
-            if (ApplicationState.getInstance().isSaveRepositoryAsXml()) {
+            if (getState().isSaveRepositoryAsXml()) {
                 try {
                     Logger.info("Reading xml favorites cache");
                     return (Favorites) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_FAVORITES_NAME));
@@ -359,7 +360,7 @@ public final class ApplicationStateHandler extends AbstractHandler {
             return new Favorites();
         } catch (ClassNotFoundException e) {
             Logger.info("No serialized favorites info found");
-            if (ApplicationState.getInstance().isSaveRepositoryAsXml()) {
+            if (getState().isSaveRepositoryAsXml()) {
                 try {
                     Logger.info("Reading xml favorites cache");
                     return (Favorites) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_FAVORITES_NAME));
@@ -391,7 +392,7 @@ public final class ApplicationStateHandler extends AbstractHandler {
             Logger.error(e);
         } catch (IOException e) {
             Logger.info("No serialized statistics info found");
-            if (ApplicationState.getInstance().isSaveRepositoryAsXml()) {
+            if (getState().isSaveRepositoryAsXml()) {
                 try {
                     Logger.info("Reading xml statistics cache");
                     return (Statistics) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_STATISTICS_NAME));
@@ -401,7 +402,7 @@ public final class ApplicationStateHandler extends AbstractHandler {
             }
         } catch (ClassNotFoundException e) {
             Logger.info("No serialized statistics info found");
-            if (ApplicationState.getInstance().isSaveRepositoryAsXml()) {
+            if (getState().isSaveRepositoryAsXml()) {
                 try {
                     Logger.info("Reading xml statistics cache");
                     return (Statistics) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_STATISTICS_NAME));
@@ -428,23 +429,24 @@ public final class ApplicationStateHandler extends AbstractHandler {
         try {
             // First get list of playlists
             ListOfPlayLists listOfPlayLists = (ListOfPlayLists) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.PLAYLISTS_FILE));
+            listOfPlayLists.setState(getState());
             Logger.info(StringUtils.getString("List of playlists loaded"));
 
             // Then read contents
             stream = new ObjectInputStream(new FileInputStream(StringUtils.getString(getUserConfigFolder(), "/", Constants.PLAYLISTS_CONTENTS_FILE)));
             List<List<AudioObject>> contents = (List<List<AudioObject>>) stream.readObject();
             Logger.info(StringUtils.getString("Playlists contents loaded"));
-            listOfPlayLists.setContents(contents);
+            listOfPlayLists.setContents(contents, getState());
             return listOfPlayLists;
         } catch (FileNotFoundException e) {
             Logger.info("No playlist information found");
-            return ListOfPlayLists.getEmptyPlayList();
+            return ListOfPlayLists.getEmptyPlayList(getState());
         } catch (IOException e) {
             Logger.error(e);
-            return ListOfPlayLists.getEmptyPlayList();
+            return ListOfPlayLists.getEmptyPlayList(getState());
         } catch (ClassNotFoundException e) {
             Logger.error(e);
-            return ListOfPlayLists.getEmptyPlayList();
+            return ListOfPlayLists.getEmptyPlayList(getState());
         } finally {
             ClosingUtils.close(stream);
         }
@@ -519,6 +521,7 @@ public final class ApplicationStateHandler extends AbstractHandler {
             Timer timer = new Timer();
             timer.start();
             Repository result = (Repository) ois.readObject();
+            result.setState(getState());
 
             // Check repository integrity
             result.validateRepository();
@@ -542,11 +545,12 @@ public final class ApplicationStateHandler extends AbstractHandler {
     
     private Repository exceptionReadingRepository(String folder) {
         Logger.info("No serialized repository info found");
-        if (ApplicationState.getInstance().isSaveRepositoryAsXml()) {
+        if (getState().isSaveRepositoryAsXml()) {
             try {
                 Logger.info("Reading xml repository cache");
                 long t0 = System.currentTimeMillis();
                 Repository repository = (Repository) XMLUtils.readObjectFromFile(StringUtils.getString(folder, "/", Constants.XML_CACHE_REPOSITORY_NAME));
+                repository.setState(getState());
 
                 // Check repository integrity
                 repository.validateRepository();
@@ -580,6 +584,7 @@ public final class ApplicationStateHandler extends AbstractHandler {
             Logger.info("Reading serialized device cache");
             long t0 = System.currentTimeMillis();
             Repository result = (Repository) ois.readObject();
+            result.setState(getState());
             long t1 = System.currentTimeMillis();
             Logger.info(StringUtils.getString("Reading device cache done (", (t1 - t0) / 1000.0, " seconds)"));
             return result;
@@ -605,7 +610,7 @@ public final class ApplicationStateHandler extends AbstractHandler {
      */
     public void editPreferences() {
     	EditPreferencesDialog dialog = new EditPreferencesDialog(GuiHandler.getInstance().getFrame().getFrame());
-    	new EditPreferencesDialogController(dialog).start();
+    	new EditPreferencesDialogController(dialog, getState()).start();
     }
 
 	@Override

@@ -44,6 +44,7 @@ import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 
@@ -123,16 +124,16 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
      * Instantiates a new edits the tag dialog controller.
      * 
      * @param dialog
-     *            the dialog
+     * @param state
      */
-    public EditTagDialogController(EditTagDialog dialog) {
-        super(dialog);
+    public EditTagDialogController(EditTagDialog dialog, IState state) {
+        super(dialog, state);
         addBindings();
         addStateBindings();
     }
 
     @Override
-    protected void addBindings() {
+	public void addBindings() {
         // Add genres combo box items
         List<String> genresSorted = Arrays.asList(AbstractTag.genres);
         Collections.sort(genresSorted);
@@ -149,11 +150,6 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
 
         getComponentControlled().getCoverButton().addActionListener(actionListener);
         getComponentControlled().getRemoveCoverButton().addActionListener(actionListener);
-    }
-
-    @Override
-    protected void addStateBindings() {
-        // Nothing to do
     }
 
     /**
@@ -463,7 +459,7 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
             editTagInfo.put("COVER", newCover);
         }
 
-        EditTagsProcess process = new EditTagsProcess(new ArrayList<LocalAudioObject>(audioFilesEditing), editTagInfo);
+        EditTagsProcess process = new EditTagsProcess(new ArrayList<LocalAudioObject>(audioFilesEditing), editTagInfo, getState());
         process.execute();
     }
 
@@ -483,11 +479,6 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
         audioFilesEditing = Collections.emptyList();
         newCover = null;
         coverEdited = false;
-    }
-
-    @Override
-    protected void notifyReload() {
-        // Nothing to do
     }
 
 }

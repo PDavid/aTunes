@@ -31,7 +31,7 @@ import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
-import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
+import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -191,7 +191,7 @@ public class Artist implements Serializable, TreeObject<LocalAudioObject>, Compa
 
     @Override
     public ImageIcon getExtendedToolTipImage() {
-        Image img = LastFmService.getInstance().getImage(name);
+        Image img = WebServicesHandler.getInstance().getLastFmService().getImage(name);
         if (img != null) {
             return new ImageIcon(img);
         }

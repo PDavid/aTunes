@@ -26,8 +26,7 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
+import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -49,7 +48,7 @@ public class AddBannedSongInLastFMAction extends CustomAbstractAction {
 
 		@Override
 		protected Void doInBackground() throws Exception {
-		    LastFmService.getInstance().addBannedSong(song);
+		    WebServicesHandler.getInstance().getLastFmService().addBannedSong(song);
 		    return null;
 		}
 
@@ -72,7 +71,11 @@ public class AddBannedSongInLastFMAction extends CustomAbstractAction {
     AddBannedSongInLastFMAction() {
         super(I18nUtils.getString("ADD_BANNED_SONG_IN_LASTFM"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("ADD_BANNED_SONG_IN_LASTFM"));
-        setEnabled(ApplicationState.getInstance().isLastFmEnabled());
+    }
+    
+    @Override
+    protected void initialize() {
+        setEnabled(getState().isLastFmEnabled());
     }
 
     @Override

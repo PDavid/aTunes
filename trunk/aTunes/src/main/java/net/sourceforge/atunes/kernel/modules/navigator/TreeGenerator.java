@@ -28,6 +28,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.TreeObject;
 
 /**
@@ -39,6 +40,7 @@ public interface TreeGenerator {
 
 	/**
 	 * Builds a tree
+	 * @param state
 	 * @param rootTextKey
 	 * @param view
 	 * @param structure
@@ -48,7 +50,8 @@ public interface TreeGenerator {
 	 * @param objectsSelected
 	 * @param objectsExpanded
 	 */
-	public void buildTree(String rootTextKey, 
+	public void buildTree(IState state, 
+				          String rootTextKey, 
 						  AbstractNavigationView view, 
 						  Map<String, ?> structure, 
 						  String currentFilter, 

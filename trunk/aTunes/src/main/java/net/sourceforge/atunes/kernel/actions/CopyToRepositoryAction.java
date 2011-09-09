@@ -72,7 +72,7 @@ public class CopyToRepositoryAction extends AbstractActionOverSelectedObjects<Lo
 
     @Override
     protected void performAction(List<LocalAudioObject> objects) {
-        final TransferToRepositoryProcess importer = new TransferToRepositoryProcess(objects);
+        final TransferToRepositoryProcess importer = new TransferToRepositoryProcess(objects, getState());
         importer.addProcessListener(new ImportProcessListener());
         importer.execute();
     }

@@ -42,12 +42,11 @@ public class AutoSetGenresAction extends AbstractActionOverSelectedObjects<Local
     AutoSetGenresAction() {
         super(I18nUtils.getString("AUTO_SET_GENRE"), LocalAudioObject.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("AUTO_SET_GENRE"));
-
     }
-
+    
     @Override
     protected void performAction(List<LocalAudioObject> objects) {
-        TagEditionOperations.editGenre(objects);
+        TagEditionOperations.editGenre(objects, getState());
     }
 
     @Override

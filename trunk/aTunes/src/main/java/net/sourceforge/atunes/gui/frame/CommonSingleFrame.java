@@ -35,7 +35,6 @@ import javax.swing.JSplitPane;
 
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.CustomSplitPane;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 
 /**
  * Common code for single frames. Right now all single frames have two vertical split panes, a tool bar and a status bar
@@ -55,10 +54,6 @@ public abstract class CommonSingleFrame extends AbstractSingleFrame {
     protected CustomSplitPane leftSplitPane;
     protected CustomSplitPane rightSplitPane;
 
-	public CommonSingleFrame() {
-		super();
-	}
-    
     
 	@Override
 	protected Container getContentPanel() {
@@ -105,11 +100,11 @@ public abstract class CommonSingleFrame extends AbstractSingleFrame {
         c.weightx = 1;
         c.fill = GridBagConstraints.BOTH;
 
-        c.gridy = ApplicationState.getInstance().isShowPlayerControlsOnTop() ? 1 : 0;
+        c.gridy = state.isShowPlayerControlsOnTop() ? 1 : 0;
         c.weighty = 1;
         panel.add(getMainSplitPane(), c);
 
-        c.gridy = ApplicationState.getInstance().isShowPlayerControlsOnTop() ? 0 : 1;
+        c.gridy = state.isShowPlayerControlsOnTop() ? 0 : 1;
         c.weighty = 0;
         panel.add(getPlayerControls(), c);
 

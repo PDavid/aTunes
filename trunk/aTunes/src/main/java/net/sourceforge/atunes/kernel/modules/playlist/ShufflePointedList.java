@@ -23,13 +23,20 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.PlayListAudioObject;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.PointedList;
+import net.sourceforge.atunes.model.IState;
 
 class ShufflePointedList extends PointedList<Integer> {
 
     private static final long serialVersionUID = -3538333832968145075L;
 
+    private transient IState state;
+    
+    public ShufflePointedList(IState state) {
+    	super();
+    	this.state = state;
+	}
+    
     void add(List<PlayListAudioObject> playListAudioObjects) {
         // Add positions
         for (PlayListAudioObject plao : playListAudioObjects) {
@@ -42,7 +49,7 @@ class ShufflePointedList extends PointedList<Integer> {
 
     @Override
     public boolean isCyclic() {
-        return ApplicationState.getInstance().isRepeat();
+        return state.isRepeat();
     }
 
 }

@@ -31,9 +31,9 @@ import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -49,7 +49,14 @@ public class ArtistContextPanel extends AbstractContextPanel {
 
     private List<AbstractContextPanelContent> contents;
 
-    @Override
+    private IState state;
+    
+    public ArtistContextPanel(IState state) {
+		super();
+		this.state = state;
+	}
+
+	@Override
     protected ColorMutableImageIcon getContextPanelIcon(AudioObject audioObject) {
         return new ColorMutableImageIcon() {
         	@Override
@@ -73,9 +80,9 @@ public class ArtistContextPanel extends AbstractContextPanel {
     protected List<AbstractContextPanelContent> getContents() {
         if (contents == null) {
             contents = new ArrayList<AbstractContextPanelContent>();
-            contents.add(new ArtistBasicInfoContent());
+            contents.add(new ArtistBasicInfoContent(state));
             contents.add(new ArtistTopTracksContent());
-            contents.add(ApplicationState.getInstance().isShowContextAlbumsInGrid() ? new ArtistAlbumsFlowContent() : new ArtistAlbumsContent());
+            contents.add(state.isShowContextAlbumsInGrid() ? new ArtistAlbumsFlowContent(state) : new ArtistAlbumsContent(state));
         }
         return contents;
     }

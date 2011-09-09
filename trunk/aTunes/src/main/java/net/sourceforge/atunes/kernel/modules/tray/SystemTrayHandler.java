@@ -59,9 +59,9 @@ import net.sourceforge.atunes.kernel.actions.ShuffleModeAction;
 import net.sourceforge.atunes.kernel.actions.StopCurrentAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.ToggleWindowVisibilityAction;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
@@ -106,12 +106,12 @@ public final class SystemTrayHandler extends AbstractHandler {
     public void allHandlersInitialized() {
     	if (OsManager.areTrayIconsSupported()) {
     		// System tray player
-    		if (ApplicationState.getInstance().isShowTrayPlayer()) {
+    		if (getState().isShowTrayPlayer()) {
     			initTrayPlayerIcons();
     		}
 
     		// System tray
-    		if (ApplicationState.getInstance().isShowSystemTray()) {
+    		if (getState().isShowSystemTray()) {
     			initTrayIcon();
     		}
     	}
@@ -227,7 +227,7 @@ public final class SystemTrayHandler extends AbstractHandler {
     public void setPlaying(boolean playing) {
     	this.playing = playing;
     	if (isTrayInitialized()) {
-        	Color color = ApplicationState.getInstance().getTrayPlayerIconsColor().getColor();
+        	Color color = getState().getTrayPlayerIconsColor().getColor();
         	Image icon = null;
             if (playing) {
                 getPlayMenuItem().setText(I18nUtils.getString("PAUSE"));
@@ -304,7 +304,7 @@ public final class SystemTrayHandler extends AbstractHandler {
     }
 
     @Override
-    public void applicationStateChanged(ApplicationState newState) {
+    public void applicationStateChanged(IState newState) {
         setTrayIconVisible(newState.isShowSystemTray());
         setTrayPlayerVisible(newState.isShowTrayPlayer());
         setTrayPlayerIconsColor(newState.getTrayPlayerIconsColor().getColor());
@@ -447,7 +447,7 @@ public final class SystemTrayHandler extends AbstractHandler {
      */
     private TrayIcon getNextTrayIcon() {
         if (nextIcon == null) {
-        	Color color = ApplicationState.getInstance().getTrayPlayerIconsColor().getColor();
+        	Color color = getState().getTrayPlayerIconsColor().getColor();
         	Image icon = NextImageIcon.getTrayIcon(color, tray.getTrayIconSize()).getImage();
             nextIcon = new ActionTrayIcon(icon, Actions.getAction(PlayNextAudioObjectAction.class));
         }
@@ -461,7 +461,7 @@ public final class SystemTrayHandler extends AbstractHandler {
      */
     private TrayIcon getStopTrayIcon() {
         if (stopIcon == null) {
-        	Color color = ApplicationState.getInstance().getTrayPlayerIconsColor().getColor();
+        	Color color = getState().getTrayPlayerIconsColor().getColor();
         	Image icon = StopImageIcon.getTrayIcon(color, tray.getTrayIconSize()).getImage();
             stopIcon = new ActionTrayIcon(icon, Actions.getAction(StopCurrentAudioObjectAction.class));
         }
@@ -475,7 +475,7 @@ public final class SystemTrayHandler extends AbstractHandler {
      */
     private TrayIcon getPlayTrayIcon() {
         if (playIcon == null) {
-        	Color color = ApplicationState.getInstance().getTrayPlayerIconsColor().getColor();
+        	Color color = getState().getTrayPlayerIconsColor().getColor();
         	Image icon = PlayImageIcon.getTrayIcon(color, tray.getTrayIconSize()).getImage();
             playIcon = new ActionTrayIcon(icon, Actions.getAction(PlayAction.class));
         }
@@ -489,7 +489,7 @@ public final class SystemTrayHandler extends AbstractHandler {
      */
     private TrayIcon getPreviousTrayIcon() {
     	if (previousIcon == null) {
-    		Color color = ApplicationState.getInstance().getTrayPlayerIconsColor().getColor();
+    		Color color = getState().getTrayPlayerIconsColor().getColor();
     		Image icon = PreviousImageIcon.getTrayIcon(color, tray.getTrayIconSize()).getImage();
     		previousIcon = new ActionTrayIcon(icon, Actions.getAction(PlayPreviousAudioObjectAction.class));
     	}

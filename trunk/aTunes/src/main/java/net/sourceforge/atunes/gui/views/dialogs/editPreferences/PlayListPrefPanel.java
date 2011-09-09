@@ -24,7 +24,7 @@ import java.awt.GridBagConstraints;
 
 import javax.swing.JCheckBox;
 
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class PlayListPrefPanel extends AbstractPreferencesPanel {
@@ -67,7 +67,7 @@ public final class PlayListPrefPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public boolean applyPreferences(ApplicationState state) {
+    public boolean applyPreferences(IState state) {
         state.setStopPlayerOnPlayListSwitch(stopSongWhenSwitching.isSelected());
         state.setStopPlayerOnPlayListClear(stopSongWhenClearing.isSelected());
         state.setAutoScrollPlayListEnabled(autoScrollPlayList.isSelected());
@@ -97,14 +97,14 @@ public final class PlayListPrefPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public void updatePanel(ApplicationState state) {
+    public void updatePanel(IState state) {
         setStopSongWhenSwitching(state.isStopPlayerOnPlayListSwitch());
         setStopSongWhenClearing(state.isStopPlayerOnPlayListClear());
         setAutoScrollPlayList(state.isAutoScrollPlayListEnabled());
     }
 
     @Override
-    public void resetImmediateChanges(ApplicationState state) {
+    public void resetImmediateChanges(IState state) {
         // Do nothing
     }
 

@@ -27,13 +27,15 @@ import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.kernel.modules.process.AbstractProcess;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 class LoadPlayListProcess extends AbstractProcess {
 
     private List<String> filenamesToLoad;
 
-    LoadPlayListProcess(List<String> filenamesToLoad) {
+    LoadPlayListProcess(List<String> filenamesToLoad, IState state) {
+    	super(state);
         this.filenamesToLoad = filenamesToLoad;
     }
 

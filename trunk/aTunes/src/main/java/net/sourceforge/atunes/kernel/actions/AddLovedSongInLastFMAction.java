@@ -26,8 +26,7 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
+import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -44,9 +43,13 @@ public class AddLovedSongInLastFMAction extends CustomAbstractAction {
     AddLovedSongInLastFMAction() {
         super(I18nUtils.getString("ADD_LOVED_SONG_IN_LASTFM"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("ADD_LOVED_SONG_IN_LASTFM"));
-        setEnabled(ApplicationState.getInstance().isLastFmEnabled());
     }
 
+    @Override
+    protected void initialize() {
+        setEnabled(getState().isLastFmEnabled());
+    }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         loveSong(ContextHandler.getInstance().getCurrentAudioObject());
@@ -63,7 +66,7 @@ public class AddLovedSongInLastFMAction extends CustomAbstractAction {
 
             @Override
             protected Void doInBackground() throws Exception {
-                LastFmService.getInstance().addLovedSong(song);
+                WebServicesHandler.getInstance().getLastFmService().addLovedSong(song);
                 return null;
             }
 

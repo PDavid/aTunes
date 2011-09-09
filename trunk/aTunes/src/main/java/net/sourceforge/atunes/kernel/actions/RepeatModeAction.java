@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -38,12 +37,16 @@ public class RepeatModeAction extends CustomAbstractAction {
     RepeatModeAction() {
         super(I18nUtils.getString("REPEAT"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("REPEAT"));
-        putValue(SELECTED_KEY, ApplicationState.getInstance().isRepeat());
+    }
+    
+    @Override
+    protected void initialize() {
+        putValue(SELECTED_KEY, getState().isRepeat());
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        ApplicationState.getInstance().setRepeat((Boolean) getValue(SELECTED_KEY));
+        getState().setRepeat((Boolean) getValue(SELECTED_KEY));
     }
 
 }

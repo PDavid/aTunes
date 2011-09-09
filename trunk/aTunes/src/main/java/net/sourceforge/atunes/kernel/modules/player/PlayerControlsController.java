@@ -31,9 +31,9 @@ import javax.swing.SwingUtilities;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.StringUtils;
 
 final class PlayerControlsController extends AbstractSimpleController<PlayerControlsPanel> {
@@ -50,28 +50,18 @@ final class PlayerControlsController extends AbstractSimpleController<PlayerCont
      * Instantiates a new player controls controller.
      * 
      * @param panel
-     *            the panel
+     * @param state
      */
-    PlayerControlsController(PlayerControlsPanel panel) {
-        super(panel);
+    PlayerControlsController(PlayerControlsPanel panel, IState state) {
+        super(panel, state);
         addBindings();
         addStateBindings();
     }
 
     @Override
-    protected void addBindings() {
+	public void addBindings() {
         ProgressBarSeekListener seekListener = new ProgressBarSeekListener(getComponentControlled().getProgressSlider());        
         getComponentControlled().getProgressSlider().addMouseListener(seekListener);
-    }
-
-    @Override
-    protected void addStateBindings() {
-        // Nothing to do
-    }
-
-    @Override
-    protected void notifyReload() {
-        // Nothing to do
     }
 
     /**
@@ -142,7 +132,7 @@ final class PlayerControlsController extends AbstractSimpleController<PlayerCont
      */
     void setVolume(int value) {
         getComponentControlled().getVolumeSlider().setValue(value);
-        getComponentControlled().getVolumeButton().updateIcon();
+        getComponentControlled().getVolumeButton().updateIcon(getState());
     }
 
     /**
@@ -183,7 +173,7 @@ final class PlayerControlsController extends AbstractSimpleController<PlayerCont
         //avoid NullPointerException 
         getComponentControlled().getProgressSlider().setLabelTable(null);
 
-        getComponentControlled().getProgressSlider().setPaintTicks(ApplicationState.getInstance().isShowTicks());
+        getComponentControlled().getProgressSlider().setPaintTicks(getState().isShowTicks());
         getComponentControlled().getProgressSlider().setMajorTickSpacing(majorTickSpacing);
         getComponentControlled().getProgressSlider().setMinorTickSpacing(minorTickSpacing);
 
@@ -222,7 +212,7 @@ final class PlayerControlsController extends AbstractSimpleController<PlayerCont
                 }
             }
         }
-        getComponentControlled().getProgressSlider().setPaintLabels(ApplicationState.getInstance().isShowTicks() && ticksLabels.size() > 0);
+        getComponentControlled().getProgressSlider().setPaintLabels(getState().isShowTicks() && ticksLabels.size() > 0);
         if (ticksLabels.size() > 0) {
         	getComponentControlled().getProgressSlider().setLabelTable(ticksLabels);
         }
@@ -251,7 +241,7 @@ final class PlayerControlsController extends AbstractSimpleController<PlayerCont
         // Disable slider if audio object is a radio or podcast feed entry
         boolean b = audioObject.isSeekable();
         if (b && audioObject instanceof PodcastFeedEntry) {
-            b = ApplicationState.getInstance().isUseDownloadedPodcastFeedEntries();
+            b = getState().isUseDownloadedPodcastFeedEntries();
         }
         setSlidable(b);
     }

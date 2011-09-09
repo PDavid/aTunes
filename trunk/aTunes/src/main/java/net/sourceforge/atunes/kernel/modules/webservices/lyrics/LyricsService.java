@@ -29,12 +29,12 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateChangeListener;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.AbstractLyricsEngine;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsEngineInfo;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public final class LyricsService implements ApplicationStateChangeListener {
@@ -56,30 +56,13 @@ public final class LyricsService implements ApplicationStateChangeListener {
     /** Contains a list of LyricsEngine to get lyrics. */
     private List<AbstractLyricsEngine> lyricsEngines;
 
+    private IState state;
+    
     /**
-     * Singleton instance
-     */
-    private static LyricsService instance;
-
-    /**
-     * Getter for singleton instance
-     * 
-     * @return
-     */
-    public static LyricsService getInstance() {
-        if (instance == null) {
-            instance = new LyricsService();
-        }
-        return instance;
-    }
-
-    /**
-     * Private constructor for singleton instance
-     * 
-     * @param lyricsEngines
-     * @param lyricsCache
-     */
-    private LyricsService() {
+	 * @param state
+	 */
+	public LyricsService(IState state) {
+		this.state = state;
     	updateService();
     }
 
@@ -87,7 +70,7 @@ public final class LyricsService implements ApplicationStateChangeListener {
      * Updates service after a configuration change
      */
     public void updateService() {
-        this.lyricsEngines = loadEngines(ApplicationState.getInstance().getProxy());
+        this.lyricsEngines = loadEngines(state.getProxy());
     }
 
     /**
@@ -186,7 +169,7 @@ public final class LyricsService implements ApplicationStateChangeListener {
      * @return the lyrics engines
      */
     private List<AbstractLyricsEngine> loadEngines(ProxyBean proxy) {
-        List<LyricsEngineInfo> lyricsEnginesInfo = ApplicationState.getInstance().getLyricsEnginesInfo();
+        List<LyricsEngineInfo> lyricsEnginesInfo = state.getLyricsEnginesInfo();
         boolean enginesModified = false;
 
         ExtendedProxy p = null;
@@ -263,7 +246,7 @@ public final class LyricsService implements ApplicationStateChangeListener {
         }
         
         if (enginesModified) {
-        	ApplicationState.getInstance().setLyricsEnginesInfo(lyricsEnginesInfo);
+        	state.setLyricsEnginesInfo(lyricsEnginesInfo);
         }
         
         return result;
@@ -325,7 +308,7 @@ public final class LyricsService implements ApplicationStateChangeListener {
     }
 
     @Override
-    public void applicationStateChanged(ApplicationState newState) {
+    public void applicationStateChanged(IState newState) {
         setLyricsEngines(newState.getProxy(), newState.getLyricsEnginesInfo());
     }
 

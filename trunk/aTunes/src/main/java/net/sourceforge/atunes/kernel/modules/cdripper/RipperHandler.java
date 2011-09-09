@@ -51,10 +51,10 @@ import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
 import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
+import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -78,7 +78,7 @@ public final class RipperHandler extends AbstractHandler {
 
 		@Override
 		protected AlbumInfo doInBackground() throws Exception {
-		    return LastFmService.getInstance().getAlbum(artist, album);
+		    return WebServicesHandler.getInstance().getLastFmService().getAlbum(artist, album);
 		}
 
 		@Override
@@ -308,7 +308,7 @@ public final class RipperHandler extends AbstractHandler {
     }
 
     @Override
-    public void applicationStateChanged(ApplicationState newState) {
+    public void applicationStateChanged(IState newState) {
     }
 
     @Override
@@ -365,7 +365,7 @@ public final class RipperHandler extends AbstractHandler {
      *         default one if it's available
      */
     String getEncoder() {
-        String encoderFormat = ApplicationState.getInstance().getEncoder();
+        String encoderFormat = getState().getEncoder();
         if (getAvailableEncoders().containsKey(encoderFormat)) {
             return encoderFormat;
         }
@@ -420,7 +420,7 @@ public final class RipperHandler extends AbstractHandler {
      * @return the encoder quality
      */
     String getEncoderQuality() {
-        return ApplicationState.getInstance().getEncoderQuality();
+        return getState().getEncoderQuality();
     }
 
     /**
@@ -429,7 +429,7 @@ public final class RipperHandler extends AbstractHandler {
      * @return The filename pattern
      */
     String getFileNamePattern() {
-        return ApplicationState.getInstance().getCdRipperFileNamePattern();
+        return getState().getCdRipperFileNamePattern();
     }
 
     /**
@@ -479,7 +479,7 @@ public final class RipperHandler extends AbstractHandler {
      * @return true if error correction for cd ripping should be used
      */
     boolean getCdErrorCorrection() {
-        return ApplicationState.getInstance().isUseCdErrorCorrection();
+        return getState().isUseCdErrorCorrection();
     }
 
     /**
@@ -538,7 +538,7 @@ public final class RipperHandler extends AbstractHandler {
 
         // Get image from amazon if necessary
         if (albumCoverURL != null) {
-            Image cover = LastFmService.getInstance().getImage(albumCoverURL);
+            Image cover = WebServicesHandler.getInstance().getLastFmService().getImage(albumCoverURL);
             dialog.setCover(cover);
             savePicture(cover, folderFile, artist, album);
         }
@@ -640,7 +640,7 @@ public final class RipperHandler extends AbstractHandler {
      *            the new format name of the encoder
      */
     void setEncoder(String encoder) {
-        ApplicationState.getInstance().setEncoder(encoder);
+        getState().setEncoder(encoder);
     }
 
     /**
@@ -650,7 +650,7 @@ public final class RipperHandler extends AbstractHandler {
      *            the new encoder quality
      */
     void setEncoderQuality(String quality) {
-        ApplicationState.getInstance().setEncoderQuality(quality);
+        getState().setEncoderQuality(quality);
     }
 
     /**
@@ -660,7 +660,7 @@ public final class RipperHandler extends AbstractHandler {
      *            The filename pattern used
      */
     void setFileNamePattern(String fileNamePattern) {
-        ApplicationState.getInstance().setCdRipperFileNamePattern(fileNamePattern);
+        getState().setCdRipperFileNamePattern(fileNamePattern);
     }
 
     /**
@@ -670,7 +670,7 @@ public final class RipperHandler extends AbstractHandler {
      *            True if cd correction should be set
      */
     void setUseCdErrorCorrection(boolean useCdErrorCorrection) {
-        ApplicationState.getInstance().setUseCdErrorCorrection(useCdErrorCorrection);
+        getState().setUseCdErrorCorrection(useCdErrorCorrection);
     }
 
     /**
@@ -707,7 +707,7 @@ public final class RipperHandler extends AbstractHandler {
      */
     RipCdDialogController getRipCdDialogController() {
         if (ripCdDialogController == null) {
-            ripCdDialogController = new RipCdDialogController(new RipCdDialog(GuiHandler.getInstance().getFrame().getFrame()));
+            ripCdDialogController = new RipCdDialogController(new RipCdDialog(GuiHandler.getInstance().getFrame().getFrame()), getState());
         }
         return ripCdDialogController;
     }

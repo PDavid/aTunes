@@ -67,16 +67,16 @@ import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.kernel.modules.repository.processes.ImportFilesProcess;
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
 import net.sourceforge.atunes.kernel.modules.search.searchableobjects.RepositorySearchableObject;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
 import net.sourceforge.atunes.kernel.modules.tags.TagAttributesReviewed;
-import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
+import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.Folder;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.model.Repository;
 import net.sourceforge.atunes.model.RepositoryListener;
@@ -102,7 +102,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 	
 	private ExecutorService repositoryChangesService = Executors.newSingleThreadExecutor();
 	
-	private boolean caseSensitiveTrees = ApplicationState.getInstance().isKeyAlwaysCaseSensitiveInRepositoryStructure();
+	private boolean caseSensitiveTrees;
 	
 	private final class ImportFilesProcessListener implements ProcessListener {
 		private final ImportFilesProcess process;
@@ -223,7 +223,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 
 		        TagAttributesReviewed tagAttributesReviewed = null;
 		        // Review tags if selected in settings
-		        if (ApplicationState.getInstance().isReviewTagsBeforeImport()) {
+		        if (RepositoryHandler.this.getState().isReviewTagsBeforeImport()) {
 		            ReviewImportDialog reviewImportDialog = GuiHandler.getInstance().getReviewImportDialog();
 		            reviewImportDialog.show(folders, filesToLoad);
 		            if (reviewImportDialog.isDialogCancelled()) {
@@ -232,7 +232,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 		            tagAttributesReviewed = reviewImportDialog.getResult();
 		        }
 
-		        final ImportFilesProcess process = new ImportFilesProcess(filesToLoad, folders, path, tagAttributesReviewed);
+		        final ImportFilesProcess process = new ImportFilesProcess(filesToLoad, folders, path, tagAttributesReviewed, RepositoryHandler.this.getState());
 		        process.addProcessListener(new ImportFilesProcessListener(process));
 		        process.execute();
 
@@ -317,9 +317,9 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     }
 
     @Override
-    public void applicationStateChanged(ApplicationState newState) {
+    public void applicationStateChanged(IState newState) {
     	if (caseSensitiveTrees != newState.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
-    		caseSensitiveTrees = ApplicationState.getInstance().isKeyAlwaysCaseSensitiveInRepositoryStructure();
+    		caseSensitiveTrees = getState().isKeyAlwaysCaseSensitiveInRepositoryStructure();
     		refreshRepository();
     	}
     }
@@ -327,6 +327,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     @Override
     protected void initHandler() {
         // Add itself as listener
+    	caseSensitiveTrees = getState().isKeyAlwaysCaseSensitiveInRepositoryStructure();
         addAudioFilesRemovedListener(this);
     }
 
@@ -341,7 +342,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     		applyRepository();
     	}
         SearchHandler.getInstance().registerSearchableObject(RepositorySearchableObject.getInstance());
-        repositoryRefresher = new RepositoryAutoRefresher(RepositoryHandler.this);
+        repositoryRefresher = new RepositoryAutoRefresher(RepositoryHandler.this, getState());
     }
     
     @Override
@@ -426,7 +427,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
             }
 
             // Execute command after last access to repository
-            String command = ApplicationState.getInstance().getCommandAfterAccessRepository();
+            String command = getState().getCommandAfterAccessRepository();
             if (command != null && !command.trim().isEmpty()) {
                 try {
                     Process p = Runtime.getRuntime().exec(command);
@@ -750,7 +751,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         for (File folder : repository.getRepositoryFolders()) {
             repositoryFolders.add(folder.getAbsolutePath());
         }
-        ApplicationState.getInstance().setLastRepositoryFolders(repositoryFolders);
+        getState().setLastRepositoryFolders(repositoryFolders);
 
         if (backgroundLoad) {
             GuiHandler.getInstance().hideProgressBar();
@@ -823,7 +824,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
             @Override
             public void run() {
                 // This is the first access to repository, so execute the command defined by user
-                String command = ApplicationState.getInstance().getCommandBeforeAccessRepository();
+                String command = getState().getCommandBeforeAccessRepository();
                 if (command != null && !command.trim().equals("")) {
                     try {
                         Process p = Runtime.getRuntime().exec(command);
@@ -905,7 +906,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
      * If any repository was loaded previously, try to reload folders
      */
     private void reloadExistingRepository() {
-        List<String> lastRepositoryFolders = ApplicationState.getInstance().getLastRepositoryFolders();
+        List<String> lastRepositoryFolders = getState().getLastRepositoryFolders();
         if (lastRepositoryFolders != null && !lastRepositoryFolders.isEmpty()) {
             List<File> foldersToRead = new ArrayList<File>();
             for (String f : lastRepositoryFolders) {
@@ -931,7 +932,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     private void readRepository(List<File> folders) {
         backgroundLoad = false;
         Repository oldRepository = repository;
-        repository = new Repository(folders, this);
+        repository = new Repository(folders, this, getState());
         currentLoader = new RepositoryLoader(folders, oldRepository, repository, false);
         currentLoader.addRepositoryLoaderListener(this);
         currentLoader.start();
@@ -944,7 +945,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         Logger.info("Refreshing repository");
         filesLoaded = 0;
         Repository oldRepository = repository;
-        repository = new Repository(oldRepository.getRepositoryFolders(), this);
+        repository = new Repository(oldRepository.getRepositoryFolders(), this, getState());
         currentLoader = new RepositoryLoader(oldRepository.getRepositoryFolders(), oldRepository, repository, true);
         currentLoader.addRepositoryLoaderListener(this);
         currentLoader.start();
@@ -1234,7 +1235,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 					coverWorker = new SwingWorker<Image, Void>() {
 						@Override
 						protected Image doInBackground() throws Exception {
-							return LastFmService.getInstance().getAlbumImage(artist, album);
+							return WebServicesHandler.getInstance().getLastFmService().getAlbumImage(artist, album);
 						}
 
 						@Override

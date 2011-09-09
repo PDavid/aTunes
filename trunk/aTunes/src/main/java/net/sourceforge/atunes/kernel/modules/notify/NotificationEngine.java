@@ -20,8 +20,8 @@
 
 package net.sourceforge.atunes.kernel.modules.notify;
 
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 
 public interface NotificationEngine {
 
@@ -50,7 +50,7 @@ public interface NotificationEngine {
      * Update notification engine when settings change
      * @param newState
      */
-    public void updateNotification(ApplicationState newState);
+    public void updateNotification(IState newState);
     
     /**
      * Brief description of notification engine

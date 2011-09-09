@@ -21,20 +21,20 @@
 package net.sourceforge.atunes.kernel;
 
 
-public abstract class AbstractController {
+public interface IController {
 
     /**
      * Adds the bindings.
      */
-    protected abstract void addBindings();
+    public void addBindings();
 
     /**
      * Adds the state bindings.
      */
-    protected abstract void addStateBindings();
+    public void addStateBindings();
 
     /**
      * Notify reload.
      */
-    protected abstract void notifyReload();
+    public void notifyReload();
 }

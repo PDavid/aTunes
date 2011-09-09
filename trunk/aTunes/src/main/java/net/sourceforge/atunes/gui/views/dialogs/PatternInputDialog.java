@@ -56,7 +56,7 @@ import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -88,18 +88,18 @@ public final class PatternInputDialog extends AbstractCustomDialog {
 		        // If pattern was not already used add to list of previously used patterns
 		        List<String> previousPatterns = null;
 		        if (massiveRecognition) {
-		            previousPatterns = ApplicationState.getInstance().getMassiveRecognitionPatterns();
+		            previousPatterns = state.getMassiveRecognitionPatterns();
 		        } else {
-		            previousPatterns = ApplicationState.getInstance().getRecognitionPatterns();
+		            previousPatterns = state.getRecognitionPatterns();
 		        }
 
 		        // Create previous list if necessary
 		        if (previousPatterns == null) {
 		            previousPatterns = new ArrayList<String>();
 		            if (massiveRecognition) {
-		                ApplicationState.getInstance().setMassiveRecognitionPatterns(previousPatterns);
+		                state.setMassiveRecognitionPatterns(previousPatterns);
 		            } else {
-		                ApplicationState.getInstance().setRecognitionPatterns(previousPatterns);
+		                state.setRecognitionPatterns(previousPatterns);
 		            }
 		        }
 
@@ -194,6 +194,11 @@ public final class PatternInputDialog extends AbstractCustomDialog {
     private static final String[] PREVIEW_COLUMN_NAMES = new String[] { I18nUtils.getString("NAME"), I18nUtils.getString("VALUE") };
 
     /**
+     * State of application
+     */
+    private IState state;
+    
+    /**
      * Instantiates a new pattern input dialog.
      * 
      * @param owner
@@ -203,9 +208,11 @@ public final class PatternInputDialog extends AbstractCustomDialog {
      *            <code>true</code> if the dialog will be used to enter a
      *            pattern for massive recognition or <code>false</code> for
      *            non-massive recognition (single file level)
+     * @param state
      */
-    public PatternInputDialog(Window owner, final boolean massiveRecognition) {
+    public PatternInputDialog(Window owner, final boolean massiveRecognition, IState state) {
         super(owner, 550, 350, true, CloseAction.DISPOSE);
+        this.state = state;
         setResizable(false);
         setIconImage(Images.getImage(Images.APP_LOGO_16).getImage());
         setTitle(I18nUtils.getString("PATTERN_INPUT"));
@@ -221,9 +228,9 @@ public final class PatternInputDialog extends AbstractCustomDialog {
         // Combo box used to enter pattern
         List<String> previousPatterns = null;
         if (massiveRecognition) {
-            previousPatterns = ApplicationState.getInstance().getMassiveRecognitionPatterns();
+            previousPatterns = state.getMassiveRecognitionPatterns();
         } else {
-            previousPatterns = ApplicationState.getInstance().getRecognitionPatterns();
+            previousPatterns = state.getRecognitionPatterns();
         }
         // Sort list
         if (previousPatterns != null) {

@@ -33,6 +33,7 @@ import javax.swing.SwingUtilities;
 import net.sourceforge.atunes.gui.views.dialogs.ProgressDialog;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -104,8 +105,21 @@ public abstract class AbstractProcess {
      * progress dialog. Can be null
      */
     private Window owner;
-
+    
     /**
+     * State of app
+     */
+    private IState state;
+
+    public AbstractProcess(IState state) {
+		this.state = state;
+	}
+    
+    protected IState getState() {
+		return state;
+	}
+
+	/**
      * Adds a listener to this process
      * 
      * @param listener

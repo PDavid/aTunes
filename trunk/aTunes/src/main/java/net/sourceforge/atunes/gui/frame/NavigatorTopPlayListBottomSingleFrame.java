@@ -49,10 +49,6 @@ public final class NavigatorTopPlayListBottomSingleFrame extends MainSplitPaneRi
     private static final int NAVIGATION_TABLE_MAXIMUM_WIDTH = CommonSingleFrameSizes.PLAY_LIST_PANEL_MAXIMUM_WIDTH;
     private static final int NAVIGATION_TABLE_MAXIMUM_HEIGHT = GuiUtils.getComponentHeightForResolution(0.4f);
 
-    public NavigatorTopPlayListBottomSingleFrame() {
-    	super();
-    }
-    
     @Override
     protected void setupSplitPaneDividerPosition(FrameState frameState) {
     	super.setupSplitPaneDividerPosition(frameState);

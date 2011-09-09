@@ -32,16 +32,19 @@ import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.tags.IncompleteTagsChecker;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 
 public final class NavigationTableColumnModel extends AbstractCommonColumnModel {
 
     private static final long serialVersionUID = 1071222881574684439L;
 
-    public NavigationTableColumnModel(JTable table) {
+    private IState state;
+    
+    public NavigationTableColumnModel(JTable table, IState state) {
         super(table);
+        this.state = state;
         enableColumnChange(true);
     }
 
@@ -59,15 +62,18 @@ public final class NavigationTableColumnModel extends AbstractCommonColumnModel 
     @Override
     public AbstractTableCellRendererCode getRendererCodeFor(Class<?> clazz) {
         AbstractTableCellRendererCode renderer = super.getRendererCodeFor(clazz);
-        return new NavigationTableCellRendererCode(renderer);
+        return new NavigationTableCellRendererCode(renderer, state);
     }
 
     private static class NavigationTableCellRendererCode extends AbstractTableCellRendererCode {
 
         private AbstractTableCellRendererCode renderer;
 
-        public NavigationTableCellRendererCode(AbstractTableCellRendererCode renderer) {
+        private IState state;
+        
+        public NavigationTableCellRendererCode(AbstractTableCellRendererCode renderer, IState state) {
             this.renderer = renderer;
+            this.state = state;
         }
 
         @Override
@@ -75,9 +81,9 @@ public final class NavigationTableColumnModel extends AbstractCommonColumnModel 
             // Get result from super renderer
         	JComponent c = renderer.getComponent(superComponent, t, value, isSelected, hasFocus, row, column);
             // Check incomplete tags if necessary
-            if (ApplicationState.getInstance().isHighlightIncompleteTagElements()) {
+            if (state.isHighlightIncompleteTagElements()) {
                 AudioObject audioObject = NavigationHandler.getInstance().getAudioObjectInNavigationTable(row);
-                if (IncompleteTagsChecker.hasIncompleteTags(audioObject)) {
+                if (IncompleteTagsChecker.hasIncompleteTags(audioObject, state)) {
                     ((JLabel) c).setForeground(Color.red);
                 } else {
                 	// Only Substance doesn't need this workaround

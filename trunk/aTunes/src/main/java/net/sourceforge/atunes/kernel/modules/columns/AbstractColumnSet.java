@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
@@ -47,9 +48,20 @@ public abstract class AbstractColumnSet {
     /** The current visible columns. */
     private List<Class<? extends AbstractColumn>> currentColumns;
 
+	/**
+	 * State of app
+	 */
+	protected IState state;	
+
+    
     public AbstractColumnSet() {
         ColumnSets.registerColumnSet(this);
     }
+    
+    public final void setState(IState state) {
+    	this.state = state;
+    }
+
 
     /**
      * Gets the available columns.

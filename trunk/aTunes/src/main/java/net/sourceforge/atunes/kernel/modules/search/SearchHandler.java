@@ -37,9 +37,9 @@ import net.sourceforge.atunes.gui.views.dialogs.SearchResultsDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.search.searchableobjects.DeviceSearchableObject;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -189,7 +189,7 @@ public final class SearchHandler extends AbstractHandler {
      */
     private CustomSearchController getSearchController() {
         if (customSearchController == null) {
-            customSearchController = new CustomSearchController(new CustomSearchDialog(GuiHandler.getInstance().getFrame().getFrame()));
+            customSearchController = new CustomSearchController(new CustomSearchDialog(GuiHandler.getInstance().getFrame().getFrame()), getState());
         }
         return customSearchController;
     }
@@ -201,7 +201,7 @@ public final class SearchHandler extends AbstractHandler {
      */
     private SearchResultsController getSearchResultsController() {
         if (searchResultsController == null) {
-            searchResultsController = new SearchResultsController(new SearchResultsDialog(GuiHandler.getInstance().getFrame().getFrame()));
+            searchResultsController = new SearchResultsController(new SearchResultsDialog(GuiHandler.getInstance().getFrame().getFrame()), getState());
         }
         return searchResultsController;
     }
@@ -213,7 +213,7 @@ public final class SearchHandler extends AbstractHandler {
     }
 
     @Override
-    public void applicationStateChanged(ApplicationState newState) {
+    public void applicationStateChanged(IState newState) {
     }
 
     @Override

@@ -33,16 +33,17 @@ import net.sourceforge.atunes.gui.lookandfeel.AbstractListCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.panels.ContextPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
+import net.sourceforge.atunes.model.IState;
 
 class ContextController extends AbstractSimpleController<ContextPanel> {
 
-	ContextController(ContextPanel componentControlled) {
-		super(componentControlled);
+	ContextController(ContextPanel componentControlled, IState state) {
+		super(componentControlled, state);
 		addBindings();
 	}
 
 	@Override
-	protected void addBindings() {
+	public void addBindings() {
 		if (LookAndFeelSelector.getInstance().getCurrentLookAndFeel().customComboBoxRenderersSupported()) {
 			getComponentControlled().getContextSelector().setRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListCellRenderer(new AbstractListCellRendererCode() {
 
@@ -54,14 +55,6 @@ class ContextController extends AbstractSimpleController<ContextPanel> {
 				}
 			}));
 		}
-	}
-
-	@Override
-	protected void addStateBindings() {
-	}
-
-	@Override
-	protected void notifyReload() {
 	}
 
 	/**

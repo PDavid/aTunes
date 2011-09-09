@@ -33,9 +33,9 @@ import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -54,6 +54,10 @@ public class XineEngine extends AbstractPlayerEngine {
     private Timer durationUpdater;
     private final Object xineLock = new Object();
 
+    public XineEngine(IState state) {
+    	super(state);
+	}
+    
     @Override
     protected boolean isEngineAvailable() {
     	try {
@@ -100,7 +104,7 @@ public class XineEngine extends AbstractPlayerEngine {
 
         xineController.open(audioObjectToPlay.getUrl());
 
-        xineController.setVolume(ApplicationState.getInstance().getVolume());
+        xineController.setVolume(getState().getVolume());
 
         // Apply equalizer
         applyEqualization(getEqualizer().getEqualizerValues());
@@ -197,7 +201,7 @@ public class XineEngine extends AbstractPlayerEngine {
         if (mute) {
             setVolume(0);
         } else {
-            setVolume(ApplicationState.getInstance().getVolume());
+            setVolume(getState().getVolume());
         }
     }
 
@@ -262,7 +266,7 @@ public class XineEngine extends AbstractPlayerEngine {
 		public void run() {
 		    // xineController.getVolume() always returns 0 ??
 		    // Using volume value from app instead of xine
-		    int vol = ApplicationState.getInstance().getVolume();
+		    int vol = XineEngine.this.getState().getVolume();
 		    int i = 0;
 		    while (i < 50 && vol > 0) {
 		        vol = vol - 2;
@@ -279,7 +283,7 @@ public class XineEngine extends AbstractPlayerEngine {
 		    internalStop();
 		    // Volume restored after stop
 		    // If we don't do this, volume is 0 in next audio object
-		    xineController.setVolume(ApplicationState.getInstance().getVolume());
+		    xineController.setVolume(XineEngine.this.getState().getVolume());
 		}
 	}
 

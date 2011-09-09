@@ -37,7 +37,6 @@ import javax.swing.tree.DefaultTreeModel;
 import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.RadioImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
-import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.gui.views.decorators.RadioTreeCellDecorator;
 import net.sourceforge.atunes.gui.views.decorators.StringTreeCellDecorator;
@@ -53,12 +52,11 @@ import net.sourceforge.atunes.kernel.actions.RemoveRadioAction;
 import net.sourceforge.atunes.kernel.actions.RenameRadioLabelAction;
 import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
-import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -78,6 +76,11 @@ public final class RadioNavigationView extends AbstractNavigationView {
 
     /** The column set */
     private AbstractColumnSet columnSet;
+
+    public RadioNavigationView(IState state, AbstractColumnSet columnSet) {
+    	super(state);
+    	this.columnSet = columnSet;
+	}
 
     @Override
     public ColorMutableImageIcon getIcon() {
@@ -149,7 +152,7 @@ public final class RadioNavigationView extends AbstractNavigationView {
     @Override
     protected Map<String, ?> getViewData(ViewMode viewMode) {
         Map<String, Object> data = new HashMap<String, Object>();
-        data.put("SHOW_ALL_STATIONS", ApplicationState.getInstance().isShowAllRadioStations());
+        data.put("SHOW_ALL_STATIONS", getState().isShowAllRadioStations());
         data.put("RADIOS", RadioHandler.getInstance().getRadios());
         data.put("PRESET_RADIOS", RadioHandler.getInstance().getRadioPresets());
         return data;
@@ -353,9 +356,6 @@ public final class RadioNavigationView extends AbstractNavigationView {
 
     @Override
     public AbstractColumnSet getCustomColumnSet() {
-        if (columnSet == null) {
-            columnSet = new RadioNavigationColumnSet(this.getClass().getName());
-        }
         return columnSet;
     }
 
@@ -372,102 +372,6 @@ public final class RadioNavigationView extends AbstractNavigationView {
             decorators.add(new RadioTreeCellDecorator());
         }
         return decorators;
-    }
-
-    private static final class RadioNavigationColumnSet extends AbstractCustomNavigatorColumnSet {
-
-        private static final class UrlColumn extends AbstractColumn {
-            /**
-			 * 
-			 */
-            private static final long serialVersionUID = -1615880013918017198L;
-
-            private UrlColumn(String name, Class<?> columnClass) {
-                super(name, columnClass);
-            }
-
-            @Override
-            protected int ascendingCompare(AudioObject o1, AudioObject o2) {
-                return o1.getUrl().compareTo(o2.getUrl());
-            }
-
-            @Override
-            public Object getValueFor(AudioObject audioObject) {
-                return audioObject.getUrl();
-            }
-        }
-
-        private static final class NameColumn extends AbstractColumn {
-            /**
-			 * 
-			 */
-            private static final long serialVersionUID = 3613237620716484881L;
-
-            private NameColumn(String name, Class<?> columnClass) {
-                super(name, columnClass);
-            }
-
-            @Override
-            public Object getValueFor(AudioObject audioObject) {
-                return ((Radio) audioObject).getName();
-            }
-
-            @Override
-            protected int ascendingCompare(AudioObject o1, AudioObject o2) {
-                return ((Radio) o1).getName().compareTo(((Radio) o2).getName());
-            }
-        }
-
-        private static final class EmptyColumn extends AbstractColumn {
-            /**
-			 * 
-			 */
-            private static final long serialVersionUID = 3613237620716484881L;
-
-            private EmptyColumn(String name, Class<?> columnClass) {
-                super(name, columnClass);
-            }
-
-            @Override
-            protected int ascendingCompare(AudioObject o1, AudioObject o2) {
-                return 0;
-            }
-
-            @Override
-            public Object getValueFor(AudioObject audioObject) {
-                return Property.NO_PROPERTIES;
-            }
-        }
-
-        public RadioNavigationColumnSet(String columnSetName) {
-            super(columnSetName);
-        }
-
-        @Override
-        protected List<AbstractColumn> getAllowedColumns() {
-            List<AbstractColumn> columns = new ArrayList<AbstractColumn>();
-
-            AbstractColumn property = new EmptyColumn("", Property.class);
-            property.setVisible(true);
-            property.setWidth(20);
-            property.setResizable(false);
-            columns.add(property);
-
-            AbstractColumn name = new NameColumn("NAME", String.class);
-            name.setVisible(true);
-            name.setWidth(150);
-            name.setUsedForFilter(true);
-            columns.add(name);
-
-            AbstractColumn url = new UrlColumn("URL", String.class);
-            url.setVisible(true);
-            url.setWidth(400);
-            url.setUsedForFilter(true);
-            columns.add(url);
-
-            return columns;
-        }
-
     }
 
 }

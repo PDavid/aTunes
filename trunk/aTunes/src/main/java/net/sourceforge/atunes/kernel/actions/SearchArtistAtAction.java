@@ -30,7 +30,6 @@ import net.sourceforge.atunes.gui.views.dialogs.SearchDialog;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -53,7 +52,7 @@ public class SearchArtistAtAction extends CustomAbstractAction {
             SearchDialog dialog = GuiHandler.getInstance().getSearchDialog();
             Search search = NavigationHandler.getInstance().openSearchDialog(dialog, true);
             if (dialog.isSetAsDefault() && search != null) {
-                ApplicationState.getInstance().setDefaultSearch(search.toString());
+                getState().setDefaultSearch(search.toString());
             }
             if (search != null) {
                 DesktopUtils.openSearch(search, a.getName());

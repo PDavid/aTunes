@@ -25,6 +25,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.process.AbstractProcess;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -47,7 +48,8 @@ public abstract class AbstractChangeTagProcess extends AbstractProcess {
      * 
      * @param filesToChange
      */
-    protected AbstractChangeTagProcess(List<LocalAudioObject> filesToChange) {
+    protected AbstractChangeTagProcess(List<LocalAudioObject> filesToChange, IState state) {
+    	super(state);
         this.filesToChange = filesToChange;
     }
 

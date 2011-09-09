@@ -36,8 +36,8 @@ import net.sourceforge.atunes.gui.views.dialogs.CustomSearchDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler.LogicalOperator;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -55,10 +55,10 @@ final class CustomSearchController extends AbstractSimpleController<CustomSearch
      * Constructor.
      * 
      * @param dialog
-     *            the dialog
+     * @param state
      */
-    CustomSearchController(CustomSearchDialog dialog) {
-        super(dialog);
+    CustomSearchController(CustomSearchDialog dialog, IState state) {
+        super(dialog, state);
         addBindings();
     }
 
@@ -69,8 +69,8 @@ final class CustomSearchController extends AbstractSimpleController<CustomSearch
         ((DefaultTreeModel) getComponentControlled().getComplexRulesTree().getModel()).setRoot(null);
         getComponentControlled().getSimpleRulesComboBox().setSelectedIndex(0);
         getComponentControlled().getSimpleRulesTextField().setText("");
-        getComponentControlled().getAdvancedSearchCheckBox().setSelected(ApplicationState.getInstance().isEnableAdvancedSearch());
-        enableAdvancedSearch(ApplicationState.getInstance().isEnableAdvancedSearch());
+        getComponentControlled().getAdvancedSearchCheckBox().setSelected(getState().isEnableAdvancedSearch());
+        enableAdvancedSearch(getState().isEnableAdvancedSearch());
         getComponentControlled().getAdvancedSearchTextField().setText("");
         getComponentControlled().setVisible(true);
     }
@@ -404,8 +404,8 @@ final class CustomSearchController extends AbstractSimpleController<CustomSearch
     }
 
     @Override
-    protected void addBindings() {
-        CustomSearchListener listener = new CustomSearchListener(this, getComponentControlled());
+	public void addBindings() {
+        CustomSearchListener listener = new CustomSearchListener(this, getComponentControlled(), getState());
         getComponentControlled().getSearchAtComboBox().addActionListener(listener);
         getComponentControlled().getSimpleRulesAddButton().addActionListener(listener);
         getComponentControlled().getComplexRulesTree().setModel(new DefaultTreeModel(null));
@@ -419,16 +419,6 @@ final class CustomSearchController extends AbstractSimpleController<CustomSearch
         getComponentControlled().getComplexRulesTree().addTreeSelectionListener(selListener);
         getComponentControlled().getCancelButton().addActionListener(listener);
         getComponentControlled().getAdvancedSearchTextField().addActionListener(listener);
-    }
-
-    @Override
-    protected void addStateBindings() {
-        // Nothing to do
-    }
-
-    @Override
-    protected void notifyReload() {
-        // Nothing to do
     }
 
     private static class TranslatedAttributesList implements Comparator<String>, Serializable {

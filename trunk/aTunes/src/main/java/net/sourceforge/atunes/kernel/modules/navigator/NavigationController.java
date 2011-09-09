@@ -48,6 +48,7 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractListCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.model.AbstractCommonColumnModel;
@@ -60,7 +61,7 @@ import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.gui.views.dialogs.SearchDialog;
 import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
-import net.sourceforge.atunes.kernel.AbstractController;
+import net.sourceforge.atunes.kernel.IController;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ShowAlbumsInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowArtistsInNavigatorAction;
@@ -69,18 +70,17 @@ import net.sourceforge.atunes.kernel.actions.ShowGenresInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowYearsInNavigatorAction;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
-import net.sourceforge.atunes.kernel.modules.columns.NavigatorColumnSet;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
 import net.sourceforge.atunes.kernel.modules.repository.AudioFilesRemovedListener;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 
-final class NavigationController extends AbstractController implements AudioFilesRemovedListener {
+final class NavigationController implements AudioFilesRemovedListener, IController {
 
     private final class ExtendedToolTipActionListener implements ActionListener {
 		private final class GetAndSetImageSwingWorker extends
@@ -144,18 +144,26 @@ final class NavigationController extends AbstractController implements AudioFile
     private Timer timer = new Timer(0, new ExtendedToolTipActionListener());
 
     /**
+     * State of app
+     */
+    private IState state;
+    
+    private AbstractColumnSet navigatorColumnSet;
+    
+    /**
      * Instantiates a new navigation controller.
      * 
      * @param treePanel
-     *            the tree panel
      * @param tablePanel
-     *            the table panel
+     * @param state
      */
-    NavigationController(NavigationTreePanel treePanel, NavigationTablePanel tablePanel) {
+    NavigationController(NavigationTreePanel treePanel, NavigationTablePanel tablePanel, IState state) {
         this.navigationTreePanel = treePanel;
         this.navigationTablePanel = tablePanel;
+        this.state = state;
         addBindings();
         RepositoryHandler.getInstance().addAudioFilesRemovedListener(this);
+        this.navigatorColumnSet = (AbstractColumnSet) Context.getBean("navigatorColumnSet");
     }
 
     public NavigationTreePanel getNavigationTreePanel() {
@@ -167,10 +175,10 @@ final class NavigationController extends AbstractController implements AudioFile
     }
 
     @Override
-    protected void addBindings() {
+    public void addBindings() {
         NavigationTableModel model = new NavigationTableModel();
         navigationTablePanel.getNavigationTable().setModel(model);
-        columnModel = new NavigationTableColumnModel(navigationTablePanel.getNavigationTable());
+        columnModel = new NavigationTableColumnModel(navigationTablePanel.getNavigationTable(), state);
         navigationTablePanel.getNavigationTable().setColumnModel(columnModel);
         ColumnRenderers.addRenderers(navigationTablePanel.getNavigationTable(), columnModel);
 
@@ -191,8 +199,8 @@ final class NavigationController extends AbstractController implements AudioFile
 
         // Add tree mouse listeners to all views
         // Add tree tool tip listener to all views
-        NavigationTreeMouseListener treeMouseListener = new NavigationTreeMouseListener(this);
-        NavigationTreeToolTipListener tooltipListener = new NavigationTreeToolTipListener(this);
+        NavigationTreeMouseListener treeMouseListener = new NavigationTreeMouseListener(this, state);
+        NavigationTreeToolTipListener tooltipListener = new NavigationTreeToolTipListener(this, state);
         for (AbstractNavigationView view : NavigationHandler.getInstance().getNavigationViews()) {
             view.getTree().addMouseListener(treeMouseListener);
             view.getTree().addMouseListener(tooltipListener);
@@ -225,7 +233,7 @@ final class NavigationController extends AbstractController implements AudioFile
     }
 
     @Override
-    protected void addStateBindings() {
+    public void addStateBindings() {
     }
 
     /**
@@ -317,12 +325,12 @@ final class NavigationController extends AbstractController implements AudioFile
      * @return
      */
     public List<? extends AudioObject> getAudioObjectsForTreeNode(Class<? extends AbstractNavigationView> navigationViewClass, DefaultMutableTreeNode node) {
-        List<? extends AudioObject> audioObjects = NavigationHandler.getInstance().getView(navigationViewClass).getAudioObjectForTreeNode(node, ApplicationState.getInstance().getViewMode(),
+        List<? extends AudioObject> audioObjects = NavigationHandler.getInstance().getView(navigationViewClass).getAudioObjectForTreeNode(node, state.getViewMode(),
                 FilterHandler.getInstance().isFilterSelected(NavigationHandler.getInstance().getTreeFilter()) ? FilterHandler.getInstance().getFilter() : null);
 
         AbstractColumnSet columnSet = NavigationHandler.getInstance().getCurrentView().getCustomColumnSet();
         if (columnSet == null) {
-            columnSet = NavigatorColumnSet.getInstance();
+            columnSet = navigatorColumnSet;
         }
 
         AbstractColumn columnSorted = columnSet.getSortedColumn();
@@ -336,7 +344,7 @@ final class NavigationController extends AbstractController implements AudioFile
      * Notify device reload.
      */
     public void notifyDeviceReload() {
-        NavigationHandler.getInstance().getView(DeviceNavigationView.class).refreshView(ApplicationState.getInstance().getViewMode(),
+        NavigationHandler.getInstance().getView(DeviceNavigationView.class).refreshView(state.getViewMode(),
                 FilterHandler.getInstance().isFilterSelected(NavigationHandler.getInstance().getTreeFilter()) ? FilterHandler.getInstance().getFilter() : null);
     }
 
@@ -380,7 +388,7 @@ final class NavigationController extends AbstractController implements AudioFile
         }
         
         if (saveNavigationView) {
-        	ApplicationState.getInstance().setNavigationView(navigationView.getName());
+        	state.setNavigationView(navigationView.getName());
         }
         
         getNavigationTreePanel().showNavigationView(NavigationHandler.getInstance().getView(navigationView));
@@ -396,7 +404,7 @@ final class NavigationController extends AbstractController implements AudioFile
         boolean useDefaultNavigatorColumns = NavigationHandler.getInstance().getView(navigationView).isUseDefaultNavigatorColumnSet();
         AbstractColumnSet columnSet = null;
         if (useDefaultNavigatorColumns) {
-            columnSet = NavigatorColumnSet.getInstance();
+            columnSet = navigatorColumnSet;
         } else {
             columnSet = NavigationHandler.getInstance().getView(navigationView).getCustomColumnSet();
         }
@@ -434,7 +442,7 @@ final class NavigationController extends AbstractController implements AudioFile
      */
     public void updateTableContent(JTree tree) {
         // If navigation table is not shown then don't update it
-        if (!ApplicationState.getInstance().isShowNavigationTable()) {
+        if (!state.isShowNavigationTable()) {
             return;
         }
 
@@ -449,7 +457,7 @@ final class NavigationController extends AbstractController implements AudioFile
             List<AudioObject> audioObjects = new ArrayList<AudioObject>();
             for (TreePath element : paths) {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) (element.getLastPathComponent());
-                audioObjects.addAll(getAudioObjectsForTreeNode(NavigationHandler.getInstance().getViewByName(ApplicationState.getInstance().getNavigationView()), node));
+                audioObjects.addAll(getAudioObjectsForTreeNode(NavigationHandler.getInstance().getViewByName(state.getNavigationView()), node));
             }
 
             // Filter objects
@@ -472,7 +480,7 @@ final class NavigationController extends AbstractController implements AudioFile
 
         if (NavigationHandler.getInstance().getCurrentView().isUseDefaultNavigatorColumnSet()) {
             // Use column set filtering
-            return NavigatorColumnSet.getInstance().filterAudioObjects(audioObjects, FilterHandler.getInstance().getFilter());
+            return navigatorColumnSet.filterAudioObjects(audioObjects, FilterHandler.getInstance().getFilter());
         } else {
             // Use custom filter
             return NavigationHandler.getInstance().getCurrentView().getCustomColumnSet().filterAudioObjects(audioObjects, FilterHandler.getInstance().getFilter());

@@ -43,7 +43,7 @@ public class ClearTagAction extends AbstractActionOverSelectedObjects<LocalAudio
 
     @Override
     protected void performAction(List<LocalAudioObject> objects) {
-        new ClearTagsProcess(objects).execute();
+        new ClearTagsProcess(objects, getState()).execute();
     }
 
     @Override

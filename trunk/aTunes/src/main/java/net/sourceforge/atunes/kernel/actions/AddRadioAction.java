@@ -42,7 +42,7 @@ public class AddRadioAction extends CustomAbstractAction {
         super(I18nUtils.getString("ADD_RADIO"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("ADD_RADIO"));
     }
-
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         RadioHandler.getInstance().addRadio();

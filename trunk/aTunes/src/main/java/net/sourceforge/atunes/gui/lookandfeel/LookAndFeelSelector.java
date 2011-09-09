@@ -34,9 +34,9 @@ import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.FontBean;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IState;
 
 import org.commonjukebox.plugins.exceptions.PluginSystemException;
 import org.commonjukebox.plugins.model.Plugin;
@@ -113,10 +113,10 @@ public final class LookAndFeelSelector implements PluginListener {
     /**
      * Sets the look and feel.
      * 
-     * @param theme
-     *            the new look and feel
+     * @param lookAndFeelBean
+     * @param state
      */
-    public void setLookAndFeel(LookAndFeelBean lookAndFeelBean) {
+    public void setLookAndFeel(LookAndFeelBean lookAndFeelBean, IState state) {
         if (Kernel.isIgnoreLookAndFeel()) {
             return;
         }
@@ -133,8 +133,8 @@ public final class LookAndFeelSelector implements PluginListener {
 			}
             lookAndFeelBean.setName(defaultLookAndFeel.getName());
             lookAndFeelBean.setSkin(defaultLookAndFeel.getDefaultSkin());
-            if (ApplicationState.getInstance().getLookAndFeel() == null) {
-                ApplicationState.getInstance().setLookAndFeel(lookAndFeelBean);
+            if (state.getLookAndFeel() == null) {
+                state.setLookAndFeel(lookAndFeelBean);
             }
         }
 
@@ -153,15 +153,16 @@ public final class LookAndFeelSelector implements PluginListener {
 		
         currentLookAndFeel.initializeLookAndFeel();
         currentLookAndFeel.setLookAndFeel(lookAndFeelBean.getSkin());        
-        initializeFonts(currentLookAndFeel);
+        initializeFonts(currentLookAndFeel, state);
     }
     
     /**
      * Initializes fonts for look and feel
      * @param lookAndFeel
+     * @param state
      */
-    private void initializeFonts(AbstractLookAndFeel lookAndFeel) {
-		FontSettings fontSettings = ApplicationState.getInstance().getFontSettings();
+    private void initializeFonts(AbstractLookAndFeel lookAndFeel, IState state) {
+		FontSettings fontSettings = state.getFontSettings();
 		if (lookAndFeel.supportsCustomFontSettings() && fontSettings != null && !fontSettings.isUseFontSmoothingSettingsFromOs()) {
 			if (fontSettings.isUseFontSmoothing()) {
 				System.setProperty("awt.useSystemAAFontSettings", "lcd");
@@ -182,12 +183,12 @@ public final class LookAndFeelSelector implements PluginListener {
     			 * Get appropriate font for the currently selected language. For
     			 * Chinese or Japanese we should use default font.
     			 */
-    			if ("zh".equals(ApplicationState.getInstance().getLocale().getLanguage()) || "ja".equals(ApplicationState.getInstance().getLocale().getLanguage())) {
+    			if ("zh".equals(state.getLocale().getLanguage()) || "ja".equals(state.getLocale().getLanguage())) {
     				font = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
     			} else {
     				font = UIManager.getFont("Label.font");
     			}
-    			ApplicationState.getInstance().setFontSettings(new FontSettings(new FontBean(font), USE_FONT_SMOOTHING_DEFAULT_VALUE, USE_FONT_SMOOTHING_SETTINGS_FROM_OS_DEFAULT_VALUE));
+    			state.setFontSettings(new FontSettings(new FontBean(font), USE_FONT_SMOOTHING_DEFAULT_VALUE, USE_FONT_SMOOTHING_SETTINGS_FROM_OS_DEFAULT_VALUE));
     		}
     	}
 		lookAndFeel.baseFont = font;
@@ -238,13 +239,13 @@ public final class LookAndFeelSelector implements PluginListener {
      * Updates the user interface to use a new skin
      * 
      * @param selectedSkin
-     *            The new skin
+     * @param state
      */
-    public void applySkin(String selectedSkin) {
+    public void applySkin(String selectedSkin, IState state) {
         LookAndFeelBean bean = new LookAndFeelBean();
         bean.setName(currentLookAndFeel.getName());
         bean.setSkin(selectedSkin);
-        setLookAndFeel(bean);
+        setLookAndFeel(bean, state);
         for (Window window : Window.getWindows()) {
             SwingUtilities.updateComponentTreeUI(window);
         }

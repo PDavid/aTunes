@@ -36,7 +36,6 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListLocalAudioObjectFi
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -80,7 +79,7 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
 		protected Map<String, List<LocalAudioObject>> doInBackground() {
 		    // Get play list elements
 		    List<LocalAudioObject> playListObjects;
-		    if (ApplicationState.getInstance().isAllowRepeatedSongsInDevice()) {
+		    if (SynchronizeDeviceWithPlayListAction.this.getState().isAllowRepeatedSongsInDevice()) {
 		        // Repeated songs allowed, filter only if have same artist and album
 		        playListObjects = AudioFile.filterRepeatedSongsAndAlbums(new PlayListLocalAudioObjectFilter().getObjects(PlayListHandler.getInstance().getCurrentPlayList(true)));
 		    } else {

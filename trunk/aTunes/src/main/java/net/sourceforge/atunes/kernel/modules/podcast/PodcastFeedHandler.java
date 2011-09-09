@@ -50,10 +50,10 @@ import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -289,7 +289,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
      */
     public void startPodcastFeedEntryRetriever() {
         // When upgrading from a previous version, retrievel interval can be 0
-        long retrieval = ApplicationState.getInstance().getPodcastFeedEntriesRetrievalInterval();
+        long retrieval = getState().getPodcastFeedEntriesRetrievalInterval();
         long retrievalInterval = retrieval > 0 ? retrieval : DEFAULT_PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL;
 
         schedulePodcastFeedEntryRetriever(retrievalInterval);
@@ -325,7 +325,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
         if (scheduledPodcastFeedEntryRetrieverFuture != null) {
             scheduledPodcastFeedEntryRetrieverFuture.cancel(true);
         }
-        scheduledPodcastFeedEntryRetrieverFuture = getPodcastFeedEntryRetrieverExecutorService().scheduleWithFixedDelay(new PodcastFeedEntryRetriever(getPodcastFeeds()), INITIAL_RETRIEVER_DELAY,
+        scheduledPodcastFeedEntryRetrieverFuture = getPodcastFeedEntryRetrieverExecutorService().scheduleWithFixedDelay(new PodcastFeedEntryRetriever(getPodcastFeeds(), getState()), INITIAL_RETRIEVER_DELAY,
                 newRetrievalInterval, TimeUnit.MILLISECONDS);
     }
 
@@ -335,7 +335,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
      * @see net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntryRetriever#retrievePodcastFeedEntries()
      */
     public void retrievePodcastFeedEntries() {
-    	getPodcastFeedEntryRetrieverExecutorService().execute(new PodcastFeedEntryRetriever(getPodcastFeeds()));
+    	getPodcastFeedEntryRetrieverExecutorService().execute(new PodcastFeedEntryRetriever(getPodcastFeeds(), getState()));
     }
 
     /**
@@ -350,7 +350,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
         }
         final TransferProgressDialog d = GuiHandler.getInstance().getNewTransferProgressDialog(I18nUtils.getString("PODCAST_FEED_ENTRY_DOWNLOAD"), null);
         d.setIcon(RssImageIcon.getIcon());
-        final PodcastFeedEntryDownloader downloadPodcastFeedEntry = new PodcastFeedEntryDownloader(podcastFeedEntry);
+        final PodcastFeedEntryDownloader downloadPodcastFeedEntry = new PodcastFeedEntryDownloader(podcastFeedEntry, getState().getProxy());
         synchronized (runningDownloads) {
             runningDownloads.add(downloadPodcastFeedEntry);
         }
@@ -417,7 +417,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
      * @return the download path
      */
     public String getDownloadPath(PodcastFeedEntry podcastFeedEntry) {
-        String path = ApplicationState.getInstance().getPodcastFeedEntryDownloadPath();
+        String path = getState().getPodcastFeedEntryDownloadPath();
         if (path == null || path.isEmpty()) {
             path = StringUtils.getString(OsManager.getUserConfigFolder(Kernel.isDebug()), "/", Constants.DEFAULT_PODCAST_FEED_ENTRY_DOWNLOAD_DIR);
         }
@@ -510,7 +510,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
     }
 
     @Override
-    public void applicationStateChanged(ApplicationState newState) {
+    public void applicationStateChanged(IState newState) {
         setPodcastFeedEntryRetrievalInterval(newState.getPodcastFeedEntriesRetrievalInterval());
     }
     

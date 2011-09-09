@@ -34,8 +34,8 @@ import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IState;
 
 final class PlayListController extends AbstractSimpleController<PlayListPanel> {
 
@@ -46,16 +46,16 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
      * Instantiates a new play list controller.
      * 
      * @param panel
-     *            the panel
+     * @param state
      */
-    PlayListController(PlayListPanel panel) {
-        super(panel);
+    PlayListController(PlayListPanel panel, IState state) {
+        super(panel, state);
         addBindings();
         addStateBindings();
     }
 
     @Override
-    protected void addBindings() {
+	public void addBindings() {
         final PlayListTable table = getComponentControlled().getPlayListTable();
 
         // Set key listener for table
@@ -68,11 +68,6 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
         table.getSelectionModel().addListSelectionListener(listener);
     }
 
-    @Override
-    protected void addStateBindings() {
-        // Nothing to do
-    }
-    
     private static int arrMin(int[] array) {
         int rs = Integer.MAX_VALUE;
         for(int i : array) {
@@ -172,11 +167,6 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
         }
     }
 
-    @Override
-    protected void notifyReload() {
-        // Nothing to do
-    }
-
     /**
      * Play selected audio object.
      * 
@@ -206,7 +196,7 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
      *            Audio object which should have focus
      */
     private synchronized void scrollPlayList(int audioObject, boolean isUserAction) {
-        if (!ApplicationState.getInstance().isAutoScrollPlayListEnabled() && !isUserAction) {
+        if (!getState().isAutoScrollPlayListEnabled() && !isUserAction) {
             return;
         }
 

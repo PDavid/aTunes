@@ -34,7 +34,9 @@ import net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanel;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeResultEntry;
+import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeService;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeVideoDownloader;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -43,6 +45,15 @@ import net.sourceforge.atunes.utils.StringUtils;
 import org.jfree.ui.ExtensionFileFilter;
 
 public class YoutubeResultsTableCellRendererCode extends ContextTableRowPanel<YoutubeResultEntry> {
+	
+	private IState state;
+	
+	private YoutubeService youtubeService;
+	
+	public YoutubeResultsTableCellRendererCode(IState state, YoutubeService youtubeService) {
+		this.state = state;
+		this.youtubeService = youtubeService;
+	}
 	
 	@Override
     public JComponent getComponent(JComponent superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -107,7 +118,7 @@ public class YoutubeResultsTableCellRendererCode extends ContextTableRowPanel<Yo
 	            int returnValue = dialog.showSaveDialog(GuiHandler.getInstance().getFrame().getFrame());
 	            File selectedFile = dialog.getSelectedFile();
 	            if (selectedFile != null && JFileChooser.APPROVE_OPTION == returnValue) {
-	                final YoutubeVideoDownloader downloader = new YoutubeVideoDownloader(entry, selectedFile);
+	                final YoutubeVideoDownloader downloader = new YoutubeVideoDownloader(entry, selectedFile, state.getProxy(), youtubeService);
 	                downloader.execute();
 	            }
 			}

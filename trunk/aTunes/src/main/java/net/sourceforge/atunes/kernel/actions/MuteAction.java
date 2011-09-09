@@ -24,7 +24,6 @@ import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -40,7 +39,11 @@ public class MuteAction extends CustomAbstractAction {
     MuteAction() {
         super(I18nUtils.getString("MUTE"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("MUTE"));
-        putValue(SELECTED_KEY, ApplicationState.getInstance().isMuteEnabled());
+    }
+    
+    @Override
+    protected void initialize() {
+        putValue(SELECTED_KEY, getState().isMuteEnabled());
         updateIcon();
     }
 
@@ -50,8 +53,8 @@ public class MuteAction extends CustomAbstractAction {
         if (e == null) {
             putValue(SELECTED_KEY, !(Boolean) getValue(SELECTED_KEY));
         }
-        ApplicationState.getInstance().setMuteEnabled((Boolean) getValue(SELECTED_KEY));
-        PlayerHandler.getInstance().applyMuteState(ApplicationState.getInstance().isMuteEnabled());
+        getState().setMuteEnabled((Boolean) getValue(SELECTED_KEY));
+        PlayerHandler.getInstance().applyMuteState(getState().isMuteEnabled());
         updateIcon();
     }
 
@@ -59,6 +62,6 @@ public class MuteAction extends CustomAbstractAction {
      * Updates icon of mute
      */
     private void updateIcon() {
-        putValue(SMALL_ICON, MuteButton.getVolumeIcon());
+        putValue(SMALL_ICON, MuteButton.getVolumeIcon(getState()));
     }
 }

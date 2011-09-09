@@ -29,7 +29,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 
 import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class PodcastFeedPanel extends AbstractPreferencesPanel {
@@ -97,7 +97,7 @@ public final class PodcastFeedPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public boolean applyPreferences(ApplicationState state) {
+    public boolean applyPreferences(IState state) {
         state.setPodcastFeedEntriesRetrievalInterval(((Long) retrievalInterval.getSelectedItem()) * 60 * 1000);
         state.setPodcastFeedEntryDownloadPath(downloadFolderFileChooser.getResult());
         state.setUseDownloadedPodcastFeedEntries(useDownloadedPodcastFeedEntries.isSelected());
@@ -147,7 +147,7 @@ public final class PodcastFeedPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public void updatePanel(ApplicationState state) {
+    public void updatePanel(IState state) {
         setRetrievalInterval(state.getPodcastFeedEntriesRetrievalInterval());
         setDownloadPath(state.getPodcastFeedEntryDownloadPath());
         setUseDownloadedPodcastFeedEntries(state.isUseDownloadedPodcastFeedEntries());
@@ -155,7 +155,7 @@ public final class PodcastFeedPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public void resetImmediateChanges(ApplicationState state) {
+    public void resetImmediateChanges(IState state) {
         // Do nothing
     }
 

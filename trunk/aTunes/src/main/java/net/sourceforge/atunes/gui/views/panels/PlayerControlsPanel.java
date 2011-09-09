@@ -48,6 +48,7 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.SecondaryControl
 import net.sourceforge.atunes.gui.views.controls.playerControls.ShuffleButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.StopButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
@@ -116,11 +117,14 @@ public final class PlayerControlsPanel extends JPanel {
     private JPanel secondaryControls;
     private FilterPanel filterPanel;
 
+    private IState state;
+    
     /**
      * Instantiates a new player controls panel.
      */
-    public PlayerControlsPanel() {
+    public PlayerControlsPanel(IState state) {
         super(new GridBagLayout());
+        this.state = state;
         addContent();
         GuiUtils.applyComponentOrientation(this);
     }
@@ -136,7 +140,7 @@ public final class PlayerControlsPanel extends JPanel {
         progressSlider = new ProgressSlider();
         JPanel mainControls = getMainControlsPanel();
         JPanel secondaryControls = getSecondaryControls();
-        filterPanel = new FilterPanel();
+        filterPanel = new FilterPanel(state);
         
         GridBagConstraints c = new GridBagConstraints();
         
@@ -222,9 +226,9 @@ public final class PlayerControlsPanel extends JPanel {
         playButton = new PlayPauseButton(PLAY_BUTTON_SIZE);
         stopButton = new StopButton(STOP_MUTE_BUTTONS_SIZE);
         nextButton = new NextButton(PREVIOUS_NEXT_BUTTONS_SIZE);
-        volumeButton = new MuteButton(STOP_MUTE_BUTTONS_SIZE);
+        volumeButton = new MuteButton(STOP_MUTE_BUTTONS_SIZE, state);
         volumeButton.setText("");
-        volumeSlider = new VolumeSlider();
+        volumeSlider = new VolumeSlider(state);
         JPanel panel = getPanelWithPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider);
         // add a small border to separate from other components
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 0));

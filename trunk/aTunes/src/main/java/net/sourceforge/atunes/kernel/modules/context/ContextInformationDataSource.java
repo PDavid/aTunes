@@ -42,4 +42,5 @@ public interface ContextInformationDataSource {
      * @return Map of objects containing information
      */
     public Map<String, ?> getData(Map<String, ?> parameters);
+    
 }

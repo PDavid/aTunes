@@ -46,7 +46,7 @@ public class AutoSetCoversAction extends AbstractActionOverSelectedObjects<Local
 
     @Override
     protected void performAction(List<LocalAudioObject> objects) {
-        TagEditionOperations.editCover(objects);
+        TagEditionOperations.editCover(objects, getState());
     }
 
     @Override

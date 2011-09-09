@@ -35,7 +35,7 @@ public class RepairTrackNumbersAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        TagEditionOperations.repairTrackNumbers();
+        TagEditionOperations.repairTrackNumbers(getState());
     }
 
 }

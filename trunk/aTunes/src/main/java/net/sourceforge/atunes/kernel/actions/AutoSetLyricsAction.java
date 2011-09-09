@@ -24,7 +24,9 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
+import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -46,7 +48,7 @@ public class AutoSetLyricsAction extends AbstractActionOverSelectedObjects<Local
 
     @Override
     protected void performAction(List<LocalAudioObject> objects) {
-        TagEditionOperations.addLyrics(objects);
+        TagEditionOperations.addLyrics(objects, getState(), (LyricsService) Context.getBean("lyricsService"));
     }
 
     @Override

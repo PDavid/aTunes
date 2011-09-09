@@ -29,9 +29,11 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.process.AbstractProcess;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
+import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
@@ -53,7 +55,8 @@ public class GetCoversProcess extends AbstractProcess {
      * @param progressDialog
      *            the progress dialog
      */
-    public GetCoversProcess(Artist artist, Window owner) {
+    public GetCoversProcess(Artist artist, Window owner, IState state) {
+    	super(state);
         this.artist = artist;
         setOwner(owner);
     }
@@ -70,7 +73,7 @@ public class GetCoversProcess extends AbstractProcess {
         for (int i = 0; i < albums.size() && !isCanceled(); i++) {
             Album album = albums.get(i);
             if (!hasCoverDownloaded(album)) {
-                Image albumImage = LastFmService.getInstance().getAlbumImage(artist.getName(), album.getName());
+                Image albumImage = WebServicesHandler.getInstance().getLastFmService().getAlbumImage(artist.getName(), album.getName());
                 if (albumImage != null) {
                     try {
                         ImageUtils.writeImageToFile(albumImage, AudioFilePictureUtils.getFileNameForCover((AudioFile)album.getAudioObjects().get(0)));

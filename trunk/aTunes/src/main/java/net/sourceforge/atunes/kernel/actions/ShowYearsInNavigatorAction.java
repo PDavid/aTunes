@@ -28,7 +28,6 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.DateImageIcon;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -39,13 +38,17 @@ public class ShowYearsInNavigatorAction extends ActionWithColorMutableIcon {
     ShowYearsInNavigatorAction() {
         super(I18nUtils.getString("SHOW_YEARS"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_YEARS"));
-        putValue(SELECTED_KEY, ApplicationState.getInstance().getViewMode() == ViewMode.YEAR);
     }
 
     @Override
+    protected void initialize() {
+        putValue(SELECTED_KEY, getState().getViewMode() == ViewMode.YEAR);
+    }
+    
+    @Override
     public void actionPerformed(ActionEvent e) {
-        if (ApplicationState.getInstance().getViewMode() != ViewMode.YEAR) {
-            ApplicationState.getInstance().setViewMode(ViewMode.YEAR);
+        if (getState().getViewMode() != ViewMode.YEAR) {
+            getState().setViewMode(ViewMode.YEAR);
             NavigationHandler.getInstance().refreshCurrentView();
             Actions.getAction(CollapseTreesAction.class).setEnabled(true);
             Actions.getAction(ExpandTreesAction.class).setEnabled(true);

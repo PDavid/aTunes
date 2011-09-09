@@ -25,21 +25,13 @@ import java.util.List;
 import net.sourceforge.atunes.gui.views.dialogs.fullScreen.FullScreenWindow;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 
 class FullScreenController extends AbstractSimpleController<FullScreenWindow> {
 
-	FullScreenController(FullScreenWindow componentControlled) {
-		super(componentControlled);
+	FullScreenController(FullScreenWindow componentControlled, IState state) {
+		super(componentControlled, state);
 	}
-
-	@Override
-	protected void addBindings() {}
-
-	@Override
-	protected void addStateBindings() {}
-
-	@Override
-	protected void notifyReload() {}
 
 	/**
 	 * Shows or hides full screen

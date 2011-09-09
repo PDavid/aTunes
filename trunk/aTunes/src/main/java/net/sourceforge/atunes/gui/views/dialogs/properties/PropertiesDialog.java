@@ -31,6 +31,7 @@ import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class PropertiesDialog extends AbstractCustomDialog {
@@ -90,21 +91,21 @@ public class PropertiesDialog extends AbstractCustomDialog {
      * New instance.
      * 
      * @param a
-     *            the a
-     * 
-     * @return the properties dialog
+     * @param owner
+     * @param state
+     * @return
      */
-    public static PropertiesDialog newInstance(AudioObject a, JFrame owner) {
+    public static PropertiesDialog newInstance(AudioObject a, JFrame owner, IState state) {
         if (getDialogsOpened().containsKey(a)) {
             return getDialogsOpened().get(a);
         } else {
             PropertiesDialog dialog = null;
             if (a instanceof PodcastFeedEntry) {
-                dialog = new PodcastFeedEntryPropertiesDialog((PodcastFeedEntry) a, owner);
+                dialog = new PodcastFeedEntryPropertiesDialog((PodcastFeedEntry) a, owner, state);
             } else if (a instanceof Radio) {
                 dialog = new RadioPropertiesDialog((Radio) a, owner);
             } else if (a instanceof AudioFile) {
-                dialog = new AudioFilePropertiesDialog((AudioFile) a, owner);
+                dialog = new AudioFilePropertiesDialog((AudioFile) a, owner, state);
             }
             getDialogsOpened().put(a, dialog);
             return dialog;

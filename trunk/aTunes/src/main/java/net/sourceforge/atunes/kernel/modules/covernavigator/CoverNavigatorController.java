@@ -47,6 +47,7 @@ import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.GetCoversProcess;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 import org.jdesktop.swingx.border.DropShadowBorder;
@@ -133,7 +134,7 @@ public final class CoverNavigatorController extends AbstractSimpleController<Cov
 		public void actionPerformed(ActionEvent e) {
 		    Artist selectedArtist = (Artist) frame.getList().getSelectedValue();
 		    if (selectedArtist != null) {
-		        GetCoversProcess process = new GetCoversProcess(selectedArtist, getComponentControlled());
+		        GetCoversProcess process = new GetCoversProcess(selectedArtist, getComponentControlled(), getState());
 		        process.addProcessListener(new GetCoversProcessListener());
 		        process.execute();
 		    }
@@ -164,15 +165,15 @@ public final class CoverNavigatorController extends AbstractSimpleController<Cov
      * Instantiates a new cover navigator controller.
      * 
      * @param frame
-     *            the frame
+     * @param state
      */
-    public CoverNavigatorController(CoverNavigatorFrame frame) {
-        super(frame);
+    public CoverNavigatorController(CoverNavigatorFrame frame, IState state) {
+        super(frame, state);
         addBindings();
     }
 
     @Override
-    protected void addBindings() {
+	public void addBindings() {
         final CoverNavigatorFrame frame = getComponentControlled();
         frame.getList().addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -184,11 +185,6 @@ public final class CoverNavigatorController extends AbstractSimpleController<Cov
 
         });
         frame.getCoversButton().addActionListener(new GetCoversButtonActionListener(frame));
-    }
-
-    @Override
-    protected void addStateBindings() {
-        // Nothing to do
     }
 
     /**
@@ -225,11 +221,6 @@ public final class CoverNavigatorController extends AbstractSimpleController<Cov
 
         GuiUtils.applyComponentOrientation(panel);
         return panel;
-    }
-
-    @Override
-    protected void notifyReload() {
-        // Nothing to do
     }
 
     /**

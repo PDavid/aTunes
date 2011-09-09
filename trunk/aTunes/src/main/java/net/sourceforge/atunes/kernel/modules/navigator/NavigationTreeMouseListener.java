@@ -29,8 +29,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
@@ -39,6 +39,8 @@ import net.sourceforge.atunes.utils.GuiUtils;
 public final class NavigationTreeMouseListener extends MouseAdapter {
 
     private NavigationController controller;
+    
+    private IState state;
 
     /**
      * Instantiates a new navigation tree mouse listener.
@@ -48,8 +50,9 @@ public final class NavigationTreeMouseListener extends MouseAdapter {
      * @param panel
      *            the panel
      */
-    public NavigationTreeMouseListener(NavigationController controller) {
+    public NavigationTreeMouseListener(NavigationController controller, IState state) {
         this.controller = controller;
+        this.state = state;
     }
 
     /**
@@ -111,7 +114,7 @@ public final class NavigationTreeMouseListener extends MouseAdapter {
 
     @Override
     public void mouseExited(MouseEvent arg0) {
-        if (!ApplicationState.getInstance().isShowExtendedTooltip()) {
+        if (!state.isShowExtendedTooltip()) {
             return;
         }
 

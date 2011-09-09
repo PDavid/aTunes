@@ -36,10 +36,10 @@ import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.FileNameUtils;
@@ -75,7 +75,8 @@ public class MPlayerEngine extends AbstractPlayerEngine {
     /** The current fade away process running */
     private FadeAwayRunnable currentFadeAwayRunnable = null;
 
-    public MPlayerEngine() {
+    public MPlayerEngine(IState state) {
+    	super(state);
         commandWriter = MPlayerCommandWriter.newCommandWriter(null);
     }
 
@@ -121,7 +122,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
          * again as it could be changed when paused
          */
         if (!isMuteEnabled()) {
-            commandWriter.sendVolumeCommand(ApplicationState.getInstance().getVolume());
+            commandWriter.sendVolumeCommand(getState().getVolume());
         }
         /*
          * End Mplayer volume problem workaround
@@ -145,7 +146,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
             commandWriter = MPlayerCommandWriter.newCommandWriter(process);
             // Output reader needs original audio object, specially when cacheFilesBeforePlaying is true, as
             // statistics must be applied over original audio object, not the cached one
-            mPlayerOutputReader = AbstractMPlayerOutputReader.newInstance(this, process, audioObject);
+            mPlayerOutputReader = AbstractMPlayerOutputReader.newInstance(this, process, audioObject, getState());
             mPlayerErrorReader = new MPlayerErrorReader(this, process, mPlayerOutputReader, audioObjectToPlay);
             mPlayerOutputReader.start();
             mPlayerErrorReader.start();
@@ -153,7 +154,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
             mPlayerPositionThread.start();
             commandWriter.sendGetDurationCommand();
 
-            setVolume(ApplicationState.getInstance().getVolume());
+            setVolume(getState().getVolume());
 
         } catch (Exception e) {
             stopCurrentAudioObject(false);
@@ -174,7 +175,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
                 return;
             }
             mPlayerErrorReader.interrupt();
-            currentFadeAwayRunnable = new FadeAwayRunnable(process, ApplicationState.getInstance().getVolume(), this);
+            currentFadeAwayRunnable = new FadeAwayRunnable(process, getState().getVolume(), this);
             Thread t = new Thread(currentFadeAwayRunnable);
             // Start fade away process
             t.start();
@@ -244,7 +245,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
         commandWriter.sendMuteCommand();
 
         // volume must be applied again because of the volume bug
-        setVolume(ApplicationState.getInstance().getVolume());
+        setVolume(getState().getVolume());
 
         // MPlayer bug: paused, demute, muted -> starts playing
         if (isPaused() && !mute) {
@@ -279,7 +280,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
         List<String> command = new ArrayList<String>();
 
         boolean isRemoteAudio = !(audioObject instanceof LocalAudioObject || (audioObject instanceof PodcastFeedEntry
-                && ApplicationState.getInstance().isUseDownloadedPodcastFeedEntries() && ((PodcastFeedEntry) audioObject).isDownloaded()));
+                && getState().isUseDownloadedPodcastFeedEntries() && ((PodcastFeedEntry) audioObject).isDownloaded()));
 
         command.add(OsManager.getPlayerEngineCommand(this));
         command.addAll(OsManager.getPlayerEngineParameters(this));
@@ -292,16 +293,16 @@ public class MPlayerEngine extends AbstractPlayerEngine {
         }
 
         // If a radio has a playlist url add playlist command
-        if (audioObject instanceof Radio && ((Radio) audioObject).hasPlaylistUrl(ExtendedProxy.getProxy(ApplicationState.getInstance().getProxy()))) {
+        if (audioObject instanceof Radio && ((Radio) audioObject).hasPlaylistUrl(ExtendedProxy.getProxy(getState().getProxy()))) {
             command.add(PLAYLIST);
         }
 
         // url
-        boolean shortPathName = ApplicationState.getInstance().isUseShortPathNames() && OsManager.usesShortPathNames() && audioObject instanceof AudioFile;
+        boolean shortPathName = getState().isUseShortPathNames() && OsManager.usesShortPathNames() && audioObject instanceof AudioFile;
         String url;
         if (audioObject instanceof PodcastFeedEntry && !isRemoteAudio) {
             url = PodcastFeedHandler.getInstance().getDownloadPath((PodcastFeedEntry) audioObject);
-            if (ApplicationState.getInstance().isUseShortPathNames() && OsManager.usesShortPathNames()) {
+            if (getState().isUseShortPathNames() && OsManager.usesShortPathNames()) {
                 shortPathName = true;
             }
         } else {
@@ -315,7 +316,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 
                 // proxy
                 StringBuilder proxy = new StringBuilder();
-                ProxyBean proxyBean = ApplicationState.getInstance().getProxy();
+                ProxyBean proxyBean = getState().getProxy();
                 if (proxyBean != null && proxyBean.getType().equals(ProxyBean.HTTP_PROXY)) {
                     //String user = proxyBean.getUser();
                     //String password = proxyBean.getPassword();

@@ -29,6 +29,7 @@ import net.sourceforge.atunes.gui.model.RadioBrowserTreeTableModel;
 import net.sourceforge.atunes.gui.views.dialogs.RadioBrowserDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IState;
 
 final class RadioBrowserDialogController extends AbstractSimpleController<RadioBrowserDialog> {
 
@@ -58,10 +59,10 @@ final class RadioBrowserDialogController extends AbstractSimpleController<RadioB
      * Instantiates a new radio browser dialog controller.
      * 
      * @param frameControlled
-     *            the frame controlled
+     * @param state
      */
-    RadioBrowserDialogController(RadioBrowserDialog frameControlled) {
-        super(frameControlled);
+    RadioBrowserDialogController(RadioBrowserDialog frameControlled, IState state) {
+        super(frameControlled, state);
         addBindings();
         addStateBindings();
     }
@@ -84,19 +85,8 @@ final class RadioBrowserDialogController extends AbstractSimpleController<RadioB
     }
 
     @Override
-    protected void addBindings() {
+	public void addBindings() {
         RadioBrowserDialogListener listener = new RadioBrowserDialogListener(getComponentControlled());
         getComponentControlled().getTreeTable().addMouseListener(listener);
     }
-
-    @Override
-    protected void addStateBindings() {
-        //getFrameControlled().getTreeTable().setRowSorter(new TableRowSorter<RadioBrowserTreeTableModel>(model));
-    }
-
-    @Override
-    protected void notifyReload() {
-        // Nothing to do
-    }
-
 }

@@ -23,21 +23,43 @@ package net.sourceforge.atunes.kernel;
 import java.awt.Component;
 
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IState;
 
-public abstract class AbstractSimpleController<T extends Component> extends AbstractController {
+public abstract class AbstractSimpleController<T extends Component> implements IController {
 
     private T componentControlled;
 
     /**
+     * State of app
+     */
+    private IState state;
+    
+    /**
      * Instantiates a new controller.
      */
-    public AbstractSimpleController(T componentControlled) {
+    public AbstractSimpleController(T componentControlled, IState state) {
         this.componentControlled = componentControlled;
+        this.state = state;
         Logger.debug("Creating ", this.getClass().getSimpleName());
     }
 
     public T getComponentControlled() {
         return componentControlled;
     }
+    
+    protected IState getState() {
+    	return state;
+    }
+    
+    @Override
+    public void addBindings() {
+    }
 
+    @Override
+    public void addStateBindings() {
+    }
+    
+    @Override
+    public void notifyReload() {
+    }
 }

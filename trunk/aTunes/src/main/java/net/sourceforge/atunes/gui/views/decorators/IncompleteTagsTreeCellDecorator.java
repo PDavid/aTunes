@@ -26,19 +26,19 @@ import javax.swing.JLabel;
 
 import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.tags.IncompleteTagsChecker;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.TreeObject;
 
 public class IncompleteTagsTreeCellDecorator extends AbstractTreeCellDecorator {
 
     @SuppressWarnings("unchecked")
 	@Override
-    public Component decorateTreeCellComponent(Component component, Object userObject, boolean isSelected) {
-        if (ApplicationState.getInstance().isHighlightIncompleteTagElements() && 
+    public Component decorateTreeCellComponent(IState state, Component component, Object userObject, boolean isSelected) {
+        if (state.isHighlightIncompleteTagElements() && 
         		userObject instanceof TreeObject && 
-        		IncompleteTagsChecker.hasIncompleteTags((TreeObject<? extends AudioObject>) userObject)) {
+        		IncompleteTagsChecker.hasIncompleteTags((TreeObject<? extends AudioObject>) userObject, state)) {
 
         	((JLabel) component).setForeground(ColorDefinitions.GENERAL_UNKNOWN_ELEMENT_FOREGROUND_COLOR);
         }

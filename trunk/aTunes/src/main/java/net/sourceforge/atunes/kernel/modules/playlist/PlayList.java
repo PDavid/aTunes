@@ -29,9 +29,9 @@ import java.util.Random;
 
 import net.sourceforge.atunes.kernel.PlayListAudioObject;
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.PointedList;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -56,7 +56,9 @@ public class PlayList implements Serializable, Cloneable {
     /**
      * Pointed List of audio objects of this play list
      */
-    private PointedList<AudioObject> audioObjects = new PlayListPointedList();
+    private PointedList<AudioObject> audioObjects;
+    
+    private transient IState state;
 
     private static class PlayListAudioObjectComparator implements Comparator<PlayListAudioObject>, Serializable {
         /**
@@ -73,25 +75,33 @@ public class PlayList implements Serializable, Cloneable {
     static class PlayListPointedList extends PointedList<AudioObject> {
         private static final long serialVersionUID = -6966402482637754615L;
 
-        PlayListPointedList() {
+        private transient IState state;
+        
+        PlayListPointedList(IState state) {
             super();
+            this.state = state;
         }
 
-        PlayListPointedList(PointedList<AudioObject> pointedList) {
+        PlayListPointedList(PointedList<AudioObject> pointedList, IState state) {
             super(pointedList);
+            this.state = state;
         }
 
         @Override
         public boolean isCyclic() {
-            return ApplicationState.getInstance().isRepeat();
+            return state.isRepeat();
         }
+        
+        public void setState(IState state) {
+			this.state = state;
+		}
     };
 
     /**
      * Default constructor
      */
-    protected PlayList() {
-        this((List<AudioObject>) null);
+    protected PlayList(IState state) {
+        this((List<AudioObject>) null, state);
     }
 
     /**
@@ -99,8 +109,10 @@ public class PlayList implements Serializable, Cloneable {
      * 
      * @param list
      */
-    protected PlayList(List<? extends AudioObject> audioObjectsList) {
-        this.mode = PlayListMode.getPlayListMode(this);
+    protected PlayList(List<? extends AudioObject> audioObjectsList, IState state) {
+        this.audioObjects = new PlayListPointedList(state);
+        this.mode = PlayListMode.getPlayListMode(this, state);
+        this.state = state;
         if (audioObjectsList != null) {
             add(audioObjectsList);
         }
@@ -110,13 +122,20 @@ public class PlayList implements Serializable, Cloneable {
      * Private constructor, only for clone
      * 
      * @param playList
+     * @param state
      */
-    private PlayList(PlayList playList) {
+    private PlayList(PlayList playList, IState state) {
         this.name = playList.name == null ? null : playList.name;
-        this.audioObjects = new PlayListPointedList(playList.audioObjects);
-        this.mode = PlayListMode.getPlayListMode(this);
+        this.state = state;
+        this.audioObjects = new PlayListPointedList(playList.audioObjects, state);
+        this.mode = PlayListMode.getPlayListMode(this, state);
     }
 
+    public void setState(IState state) {
+		this.state = state;
+		((PlayListPointedList)this.audioObjects).setState(state);
+	}
+    
     //////////////////////////////////////////////////////////////// ADD OPERATIONS /////////////////////////////////////////////////////////
 
     /**
@@ -393,7 +412,7 @@ public class PlayList implements Serializable, Cloneable {
 
     @Override
     protected PlayList clone() {
-        return new PlayList(this);
+        return new PlayList(this, state);
     }
 
     /**

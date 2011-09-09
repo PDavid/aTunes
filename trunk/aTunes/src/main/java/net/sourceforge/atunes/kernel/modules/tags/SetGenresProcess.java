@@ -25,8 +25,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
+import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LocalAudioObject;
 
 /**
@@ -42,8 +43,8 @@ public class SetGenresProcess extends AbstractChangeTagProcess {
      * @param files
      *            the files
      */
-    SetGenresProcess(List<LocalAudioObject> files) {
-        super(files);
+    SetGenresProcess(List<LocalAudioObject> files, IState state) {
+        super(files, state);
     }
 
     @Override
@@ -80,7 +81,7 @@ public class SetGenresProcess extends AbstractChangeTagProcess {
                 if (tagCache.containsKey(f.getArtist())) {
                     tag = tagCache.get(f.getArtist());
                 } else {
-                    tag = LastFmService.getInstance().getArtistTopTag(f.getArtist());
+                    tag = WebServicesHandler.getInstance().getLastFmService().getArtistTopTag(f.getArtist());
                     tagCache.put(f.getArtist(), tag);
                     // Wait one second to avoid IP banning
                     try {

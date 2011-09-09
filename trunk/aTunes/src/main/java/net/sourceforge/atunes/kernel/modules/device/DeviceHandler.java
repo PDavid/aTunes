@@ -57,12 +57,12 @@ import net.sourceforge.atunes.kernel.modules.repository.AudioFilesRemovedListene
 import net.sourceforge.atunes.kernel.modules.repository.LoaderListener;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryLoader;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.model.Repository;
 import net.sourceforge.atunes.model.ViewMode;
@@ -87,16 +87,17 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
      */
     private int filesCopiedToDevice;
     
-    private boolean caseSensitiveTrees = ApplicationState.getInstance().isKeyAlwaysCaseSensitiveInRepositoryStructure();
+    private boolean caseSensitiveTrees;
 
     /**
      * Instantiates a new device handler.
      */
-    private DeviceHandler() {
+    private DeviceHandler() {    	
     }
 
     @Override
     protected void initHandler() {
+    	caseSensitiveTrees = getState().isKeyAlwaysCaseSensitiveInRepositoryStructure();
         RepositoryHandler.getInstance().addAudioFilesRemovedListener(this);
     }
 
@@ -107,7 +108,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
     @Override
     public void allHandlersInitialized() {
         // Start device monitor
-        DeviceMonitor.startMonitor();
+        DeviceMonitor.startMonitor(getState());
     }
 
     /**
@@ -220,7 +221,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
             return;
         }
 
-        final TransferToDeviceProcess process = new TransferToDeviceProcess(collection, deviceRepository.getRepositoryFolders().get(0).getAbsolutePath());
+        final TransferToDeviceProcess process = new TransferToDeviceProcess(collection, deviceRepository.getRepositoryFolders().get(0).getAbsolutePath(), getState());
         process.addProcessListener(new ProcessListener() {
             @Override
             public void processCanceled() {
@@ -435,7 +436,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
         GuiHandler.getInstance().showProgressBar(true, null);
         Logger.info("Refreshing device");
         Repository oldDeviceRepository = deviceRepository;
-        deviceRepository = new Repository(oldDeviceRepository.getRepositoryFolders(), null);
+        deviceRepository = new Repository(oldDeviceRepository.getRepositoryFolders(), null, getState());
         currentLoader = new RepositoryLoader(oldDeviceRepository.getRepositoryFolders(), oldDeviceRepository, deviceRepository, true);
         currentLoader.addRepositoryLoaderListener(this);
         currentLoader.start();
@@ -466,7 +467,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
 
         List<File> folders = new ArrayList<File>();
         folders.add(path);
-        deviceRepository = new Repository(folders, null);
+        deviceRepository = new Repository(folders, null, getState());
         currentLoader = new RepositoryLoader(folders, null, deviceRepository, false);
         currentLoader.addRepositoryLoaderListener(this);
         currentLoader.start();
@@ -573,7 +574,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
                     result.add(af);
                 } else {
                     // Artist is present, then find song or album and song
-                    if (ApplicationState.getInstance().isAllowRepeatedSongsInDevice()) {
+                    if (getState().isAllowRepeatedSongsInDevice()) {
                         if (a.getAlbum(album) == null) {
                             result.add(af);
                         } else {
@@ -623,7 +624,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
             // Remove objects present in device
             Artist a = getArtist(artist);
             if (a != null) {
-                if (ApplicationState.getInstance().isAllowRepeatedSongsInDevice()) {
+                if (getState().isAllowRepeatedSongsInDevice()) {
                     if (a.getAlbum(album) != null) {
                         Album alb = a.getAlbum(album);
                         List<LocalAudioObject> deviceFiles = alb.getAudioObjects();
@@ -651,9 +652,9 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
     }
 
     @Override
-    public void applicationStateChanged(ApplicationState newState) {
+    public void applicationStateChanged(IState newState) {
     	if (caseSensitiveTrees != newState.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
-    		caseSensitiveTrees = ApplicationState.getInstance().isKeyAlwaysCaseSensitiveInRepositoryStructure();
+    		caseSensitiveTrees = getState().isKeyAlwaysCaseSensitiveInRepositoryStructure();
     		refreshDevice();
     	}
     }

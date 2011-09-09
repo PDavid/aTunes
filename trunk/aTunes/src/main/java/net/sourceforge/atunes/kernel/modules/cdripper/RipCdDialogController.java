@@ -35,6 +35,7 @@ import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
 import net.sourceforge.atunes.kernel.modules.cdripper.encoders.Encoder;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -60,15 +61,15 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
      * Instantiates a new rip cd dialog controller.
      * 
      * @param dialogControlled
-     *            the dialog controlled
+     * @param state
      */
-    RipCdDialogController(RipCdDialog dialogControlled) {
-        super(dialogControlled);
+    RipCdDialogController(RipCdDialog dialogControlled, IState state) {
+        super(dialogControlled, state);
         addBindings();
     }
 
     @Override
-    protected void addBindings() {
+	public void addBindings() {
 
         // Add genres combo box items
         List<String> genresSorted = Arrays.asList(AbstractTag.genres);
@@ -96,11 +97,6 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
         getComponentControlled().getTitlesButton().addActionListener(listener);
         getComponentControlled().getArtistTextField().addKeyListener(listener);
         getComponentControlled().getAlbumTextField().addKeyListener(listener);
-    }
-
-    @Override
-    protected void addStateBindings() {
-        // Nothing to to
     }
 
     /**
@@ -173,17 +169,6 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
      */
     boolean isFolderNameEdited() {
         return folderNameEdited;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.kernel.controllers.model.Controller#notifyReload()
-     */
-    @Override
-    protected void notifyReload() {
-        // Nothing to to
     }
 
     /**

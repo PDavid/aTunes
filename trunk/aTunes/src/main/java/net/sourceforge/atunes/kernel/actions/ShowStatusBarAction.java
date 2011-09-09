@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -39,7 +38,11 @@ public class ShowStatusBarAction extends CustomAbstractAction {
     ShowStatusBarAction() {
         super(I18nUtils.getString("SHOW_STATUS_BAR"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_STATUS_BAR"));
-        putValue(SELECTED_KEY, ApplicationState.getInstance().isShowStatusBar());
+    }
+    
+    @Override
+    protected void initialize() {
+        putValue(SELECTED_KEY, getState().isShowStatusBar());
     }
 
     @Override

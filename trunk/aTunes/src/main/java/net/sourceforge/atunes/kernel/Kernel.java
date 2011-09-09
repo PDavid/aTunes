@@ -31,17 +31,18 @@ import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.TempFolder;
 import net.sourceforge.atunes.misc.Timer;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -61,6 +62,8 @@ public class Kernel {
     
     /** Timer used to measure start time */
     private static Timer timer;
+    
+    private static IState state;
 
 	/**
 	 * True to enable plugins
@@ -85,11 +88,13 @@ public class Kernel {
         timer = new Timer();
         timer.start();
 
-        LanguageSelector.setLanguage();
+        state = (IState) Context.getBean("state");
+        
+        LanguageSelector.setLanguage(state);
         ColorDefinitions.initColors();
         // Init proxy settings
         try {
-            ExtendedProxy.initProxy(ExtendedProxy.getProxy(ApplicationState.getInstance().getProxy()));
+            ExtendedProxy.initProxy(ExtendedProxy.getProxy(state.getProxy()));
         } catch (UnknownHostException e) {
             Logger.error(e);
         } catch (IOException e) {
@@ -102,7 +107,7 @@ public class Kernel {
             SwingUtilities.invokeAndWait(new Runnable() {
                 @Override
                 public void run() {
-                    LookAndFeelSelector.getInstance().setLookAndFeel(ApplicationState.getInstance().getLookAndFeel());
+                    LookAndFeelSelector.getInstance().setLookAndFeel(state.getLookAndFeel(), state);
                 }
             });
         } catch (InvocationTargetException e) {
@@ -114,6 +119,7 @@ public class Kernel {
 		}
 
         // Register and initialize handlers
+        AbstractHandler.setState(state);
         AbstractHandler.registerAndInitializeHandlers();
 
         // Find for audio files on arguments

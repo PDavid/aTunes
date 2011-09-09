@@ -42,10 +42,6 @@ public final class DefaultSingleFrame extends MainSplitPaneLeftSingleFrame imple
 
     private CustomSplitPane navigatorSplitPane;
 
-    public DefaultSingleFrame() {
-    	super();
-    }
-    
     @Override
     protected void setupSplitPaneDividerPosition(FrameState frameState) {
     	super.setupSplitPaneDividerPosition(frameState);

@@ -41,9 +41,9 @@ import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
+import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -54,14 +54,14 @@ public class AudioObjectBasicInfoContent extends AbstractContextPanelContent {
     private static class AddBannedSongActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            LastFmService.getInstance().addBannedSong(ContextHandler.getInstance().getCurrentAudioObject());
+            WebServicesHandler.getInstance().getLastFmService().addBannedSong(ContextHandler.getInstance().getCurrentAudioObject());
         }
     }
 
     private static class AddLovedSongActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            LastFmService.getInstance().addLovedSong(ContextHandler.getInstance().getCurrentAudioObject());
+            WebServicesHandler.getInstance().getLastFmService().addLovedSong(ContextHandler.getInstance().getCurrentAudioObject());
         }
     }
 
@@ -96,12 +96,15 @@ public class AudioObjectBasicInfoContent extends AbstractContextPanelContent {
      * Mark song as banned track in last.fm
      */
     private JMenuItem bannedSong;
+    
+    private IState state;
 
     /**
      * Default constructor
      */
-    public AudioObjectBasicInfoContent() {
+    public AudioObjectBasicInfoContent(IState state) {
         super(new AudioObjectBasicInfoDataSource());
+        this.state = state;
         lovedSong = new JMenuItem(I18nUtils.getString("ADD_LOVED_SONG_IN_LASTFM"));
         lovedSong.addActionListener(new AddLovedSongActionListener());
         bannedSong = new JMenuItem(I18nUtils.getString("ADD_BANNED_SONG_IN_LASTFM"));
@@ -152,8 +155,8 @@ public class AudioObjectBasicInfoContent extends AbstractContextPanelContent {
         }
 
         // TODO: Allow these options for radios where song information is available
-        lovedSong.setEnabled(ApplicationState.getInstance().isLastFmEnabled() && result.get(AudioObjectBasicInfoDataSource.OUTPUT_AUDIO_OBJECT) instanceof AudioFile);
-        bannedSong.setEnabled(ApplicationState.getInstance().isLastFmEnabled() && result.get(AudioObjectBasicInfoDataSource.OUTPUT_AUDIO_OBJECT) instanceof AudioFile);
+        lovedSong.setEnabled(state.isLastFmEnabled() && result.get(AudioObjectBasicInfoDataSource.OUTPUT_AUDIO_OBJECT) instanceof AudioFile);
+        bannedSong.setEnabled(state.isLastFmEnabled() && result.get(AudioObjectBasicInfoDataSource.OUTPUT_AUDIO_OBJECT) instanceof AudioFile);
     }
 
     @Override

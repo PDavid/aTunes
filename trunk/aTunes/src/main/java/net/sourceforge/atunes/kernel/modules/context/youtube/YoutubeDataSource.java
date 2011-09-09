@@ -47,6 +47,12 @@ public class YoutubeDataSource implements ContextInformationDataSource {
      */
     public static final String OUTPUT_VIDEOS = "VIDEOS";
 
+    private YoutubeService youtubeService;
+    
+    public YoutubeDataSource(YoutubeService youtubeService) {
+    	this.youtubeService = youtubeService;
+    }
+    
     @Override
     public Map<String, ?> getData(Map<String, ?> parameters) {
         Map<String, Object> result = new HashMap<String, Object>();
@@ -57,9 +63,9 @@ public class YoutubeDataSource implements ContextInformationDataSource {
     }
 
     private List<YoutubeResultEntry> getYoutubeVideos(AudioObject audioObject) {
-        String searchString = YoutubeService.getInstance().getSearchForAudioObject(audioObject);
+        String searchString = youtubeService.getSearchForAudioObject(audioObject);
         if (searchString.length() > 0) {
-            return YoutubeService.getInstance().searchInYoutube(searchString, 1);
+            return youtubeService.searchInYoutube(searchString, 1);
         }
         return null;
     }

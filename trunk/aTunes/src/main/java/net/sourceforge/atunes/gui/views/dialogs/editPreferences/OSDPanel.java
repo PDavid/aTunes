@@ -35,7 +35,7 @@ import javax.swing.SwingConstants;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.kernel.modules.notify.NotificationEngine;
 import net.sourceforge.atunes.kernel.modules.notify.NotificationsHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class OSDPanel extends AbstractPreferencesPanel {
@@ -173,7 +173,7 @@ public final class OSDPanel extends AbstractPreferencesPanel {
     }
     
     @Override
-    public boolean applyPreferences(ApplicationState state) {
+    public boolean applyPreferences(IState state) {
     	state.setNotificationEngine((String)notificationEngines.getSelectedItem());
         state.setOsdDuration((Integer) osdDuration.getSelectedItem());
         state.setOsdWidth((Integer) osdWidth.getSelectedItem());
@@ -257,7 +257,7 @@ public final class OSDPanel extends AbstractPreferencesPanel {
      * @param engine
      */
     private void setNotificationEngine(String engine) {
-    	notificationEngines.setSelectedItem(engine != null ? engine : NotificationsHandler.DEFAULT_ENGINE.getName());
+    	notificationEngines.setSelectedItem(engine != null ? engine : NotificationsHandler.defaultEngine.getName());
     	updatePanel((String)notificationEngines.getSelectedItem());
     }
     
@@ -272,12 +272,12 @@ public final class OSDPanel extends AbstractPreferencesPanel {
 			engineDescription.setText(engine.getDescription());
 			engineMoreInformation.setText(engine.getUrl(), engine.getUrl());
 			// Show settings for default engine
-			osdSettings.setVisible(engine.getName().equals(NotificationsHandler.DEFAULT_ENGINE.getName()));
+			osdSettings.setVisible(engine.getName().equals(NotificationsHandler.defaultEngine.getName()));
 		}
     }
     
     @Override
-    public void updatePanel(ApplicationState state) {
+    public void updatePanel(IState state) {
     	setNotificationEngine(state.getNotificationEngine());
         setOSDDuration(state.getOsdDuration());
         setOSDWidth(state.getOsdWidth());
@@ -286,7 +286,7 @@ public final class OSDPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public void resetImmediateChanges(ApplicationState state) {
+    public void resetImmediateChanges(IState state) {
         // Do nothing
     }
 

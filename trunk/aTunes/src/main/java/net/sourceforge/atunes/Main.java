@@ -87,7 +87,11 @@ public final class Main {
             MultipleInstancesHandler.getInstance().sendArgumentsToFirstInstance(arguments);
         } else {
             // NORMAL APPLICATION STARTUP
+            // Set log4j properties
+            Log4jPropertiesLoader.loadProperties(Kernel.isDebug());
 
+        	Context.initialize();
+        	
             // Set ignore look and feel flag in kernel
             Kernel.setIgnoreLookAndFeel(arguments.contains(ApplicationArguments.IGNORE_LOOK_AND_FEEL));
 
@@ -101,9 +105,6 @@ public final class Main {
 
             // Set custom repository config folder if passed as argument
             OsManager.setCustomRepositoryConfigFolder(ApplicationArguments.getRepositoryConfigFolder(arguments));
-
-            // Set log4j properties
-            Log4jPropertiesLoader.loadProperties(Kernel.isDebug());
 
             // Enable uncaught exception catching
             try {

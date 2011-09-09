@@ -49,10 +49,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.text.StyleConstants;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IState;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
@@ -77,6 +78,8 @@ public final class GuiUtils {
     /** The set window opaque method. */
     private static Method setWindowOpaqueMethod;
 
+    private static IState state = Context.getBean(IState.class);
+    
     /**
      * Bounds of the main screen device, used to calculate sizes
      */
@@ -320,11 +323,11 @@ public final class GuiUtils {
      */
     private static void setComponentOrientation() {
     	componentOrientation = ComponentOrientation.LEFT_TO_RIGHT;
-    	if (ApplicationState.getInstance().getLocale() != null) {
-    		if ("ug".equalsIgnoreCase(ApplicationState.getInstance().getLocale().getLocale().getLanguage())) {
+    	if (state.getLocale() != null) {
+    		if ("ug".equalsIgnoreCase(state.getLocale().getLocale().getLanguage())) {
     			componentOrientation = ComponentOrientation.RIGHT_TO_LEFT;
     		} else {
-    			componentOrientation = ComponentOrientation.getOrientation(ApplicationState.getInstance().getLocale().getLocale());
+    			componentOrientation = ComponentOrientation.getOrientation(state.getLocale().getLocale());
     		}
     	}
     }

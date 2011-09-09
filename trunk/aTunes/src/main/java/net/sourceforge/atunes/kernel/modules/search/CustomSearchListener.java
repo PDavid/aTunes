@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import net.sourceforge.atunes.gui.views.dialogs.CustomSearchDialog;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.model.IState;
 
 /**
  * Listener of CustomSearchDialog controls.
@@ -38,16 +38,23 @@ final class CustomSearchListener implements ActionListener {
 	
     /** Dialog controlled. */
     private CustomSearchDialog dialog;
+    
+    /**
+     * State of app
+     */
+    private IState state;
 
     /**
      * Constructor.
      * 
      * @param controller
      * @param dialog
+     * @param state
      */
-    CustomSearchListener(CustomSearchController controller, CustomSearchDialog dialog) {
+    CustomSearchListener(CustomSearchController controller, CustomSearchDialog dialog, IState state) {
     	this.controller = controller;
         this.dialog = dialog;
+        this.state = state;
     }
 
     @Override
@@ -79,7 +86,7 @@ final class CustomSearchListener implements ActionListener {
         } else if (e.getSource().equals(dialog.getAdvancedSearchCheckBox())) {
             // Pressed Advanced Search Check Box
             controller.enableAdvancedSearch(dialog.getAdvancedSearchCheckBox().isSelected());
-            ApplicationState.getInstance().setEnableAdvancedSearch(dialog.getAdvancedSearchCheckBox().isSelected());
+            state.setEnableAdvancedSearch(dialog.getAdvancedSearchCheckBox().isSelected());
         } else if (e.getSource().equals(dialog.getCancelButton())) {
             // Pressed cancel button
             dialog.setVisible(false);

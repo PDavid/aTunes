@@ -30,8 +30,7 @@ import javax.swing.SwingWorker;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
-import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
+import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmLovedTrack;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.LocalAudioObject;
@@ -44,7 +43,7 @@ public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
         @Override
         protected List<LocalAudioObject> doInBackground() throws Exception {
             // Get loved tracks
-            List<LastFmLovedTrack> lovedTracks = LastFmService.getInstance().getLovedTracks();
+            List<LastFmLovedTrack> lovedTracks = WebServicesHandler.getInstance().getLastFmService().getLovedTracks();
             if (!lovedTracks.isEmpty()) {
                 List<LocalAudioObject> favoriteAudioFiles = new ArrayList<LocalAudioObject>();
                 for (LastFmLovedTrack lovedTrack : lovedTracks) {
@@ -82,7 +81,11 @@ public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
 
     ImportLovedTracksFromLastFMAction() {
         super(I18nUtils.getString("IMPORT_LOVED_TRACKS_FROM_LASTFM"));
-        setEnabled(ApplicationState.getInstance().isLastFmEnabled());
+    }
+    
+    @Override
+    protected void initialize() {
+        setEnabled(getState().isLastFmEnabled());
     }
 
     @Override

@@ -43,6 +43,10 @@ public class AddAlbumWithSelectedArtistsAction extends AbstractActionOverSelecte
     AddAlbumWithSelectedArtistsAction() {
         super(I18nUtils.getString("ADD_ALBUM_ARTIST_TO_PLAYLIST"), AudioObject.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("ADD_ALBUM_ARTIST_TOOLTIP"));
+    }
+    
+    @Override
+    protected void initialize() {
         setEnabled(false);
     }
 

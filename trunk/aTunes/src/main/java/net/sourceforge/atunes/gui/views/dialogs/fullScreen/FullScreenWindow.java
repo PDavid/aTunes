@@ -74,8 +74,8 @@ import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.player.ProgressBarSeekListener;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
@@ -203,22 +203,25 @@ public final class FullScreenWindow extends AbstractCustomWindow {
      * Audio Objects to show in full screen
      */
     private List<AudioObject> objects;
+    
+    private IState state;
 
     /**
      * Instantiates a new full screen dialog.
      * 
      * @param owner
-     *            the owner
+     * @param state
      */
-    public FullScreenWindow(JFrame owner) {
+    public FullScreenWindow(JFrame owner, IState state) {
         super(owner, 0, 0);
+        this.state = state;
         setLocation(0, 0);
         setAlwaysOnTop(true);
         setContent();
         addKeyListener(keyAdapter);
         File backgroundFile = null;
-        if (ApplicationState.getInstance().getFullScreenBackground() != null) {
-            backgroundFile = new File(ApplicationState.getInstance().getFullScreenBackground());
+        if (state.getFullScreenBackground() != null) {
+            backgroundFile = new File(state.getFullScreenBackground());
             if (!backgroundFile.exists()) {
                 backgroundFile = null;
             }
@@ -310,7 +313,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
     void setBackground(File file) {
         try {
             background = ImageIO.read(file);
-            ApplicationState.getInstance().setFullScreenBackground(file.getAbsolutePath());
+            FullScreenWindow.this.state.setFullScreenBackground(file.getAbsolutePath());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -354,7 +357,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 background = null;
-                ApplicationState.getInstance().setFullScreenBackground(null);
+                FullScreenWindow.this.state.setFullScreenBackground(null);
                 FullScreenWindow.this.invalidate();
                 FullScreenWindow.this.repaint();
             }
@@ -375,9 +378,9 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         playButton = new PlayPauseButton(PlayerControlsPanel.PLAY_BUTTON_SIZE);
         stopButton = new StopButton(PlayerControlsPanel.STOP_MUTE_BUTTONS_SIZE);
         nextButton = new NextButton(PlayerControlsPanel.PREVIOUS_NEXT_BUTTONS_SIZE);
-        muteButton = new MuteButton(PlayerControlsPanel.STOP_MUTE_BUTTONS_SIZE);
+        muteButton = new MuteButton(PlayerControlsPanel.STOP_MUTE_BUTTONS_SIZE, state);
         muteButton.setText("");
-        volumeSlider = new VolumeSlider();
+        volumeSlider = new VolumeSlider(state);
 
         previousButton.addMouseListener(clickListener);
         playButton.addMouseListener(clickListener);

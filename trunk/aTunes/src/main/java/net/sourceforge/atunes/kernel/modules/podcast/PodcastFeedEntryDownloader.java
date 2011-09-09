@@ -34,7 +34,7 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationState;
+import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.NetworkUtils;
@@ -52,6 +52,8 @@ public class PodcastFeedEntryDownloader extends SwingWorker<Boolean, Void> {
     private volatile long totalBytes;
     private volatile long byteProgress;
     private volatile boolean failed;
+    
+    private ProxyBean proxy;
 
     /**
      * Instantiates a new podcast feed entry downloader.
@@ -59,8 +61,9 @@ public class PodcastFeedEntryDownloader extends SwingWorker<Boolean, Void> {
      * @param podcastFeedEntry
      *            the podcast feed entry
      */
-    public PodcastFeedEntryDownloader(PodcastFeedEntry podcastFeedEntry) {
+    public PodcastFeedEntryDownloader(PodcastFeedEntry podcastFeedEntry, ProxyBean proxy) {
         this.podcastFeedEntry = podcastFeedEntry;
+        this.proxy = proxy;
     }
 
     @Override
@@ -77,7 +80,7 @@ public class PodcastFeedEntryDownloader extends SwingWorker<Boolean, Void> {
 
         try {
             out = new BufferedOutputStream(new FileOutputStream(localFile));
-            URLConnection conn = NetworkUtils.getConnection(podcastFeedEntry.getUrl(), ExtendedProxy.getProxy(ApplicationState.getInstance().getProxy()));
+            URLConnection conn = NetworkUtils.getConnection(podcastFeedEntry.getUrl(), ExtendedProxy.getProxy(proxy));
             in = conn.getInputStream();
             setTotalBytes(conn.getContentLength());
 

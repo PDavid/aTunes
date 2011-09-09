@@ -40,6 +40,7 @@ import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -98,21 +99,11 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
      * Instantiates a new stats dialog controller.
      * 
      * @param frame
-     *            the frame
+     * @param state
      */
-    StatsDialogController(StatsDialog frame) {
-        super(frame);
+    StatsDialogController(StatsDialog frame, IState state) {
+        super(frame, state);
         LookAndFeelSelector.getInstance().addLookAndFeelChangeListener(this);
-    }
-
-    @Override
-    protected void addBindings() {
-        // Nothing to do
-    }
-
-    @Override
-    protected void addStateBindings() {
-        // Nothing to do
     }
 
     /**
@@ -132,11 +123,6 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
             }
         }
         return result;
-    }
-
-    @Override
-    protected void notifyReload() {
-        // Nothing to do
     }
 
     /**
