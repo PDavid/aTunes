@@ -36,6 +36,13 @@
 	<condition property="isLinux">
 	      <os family="unix" />
 	</condition>
+	
+	<condition property="do_upload">
+		<not>
+			<!-- When property is not set it's equal to property name with {} -->
+			<equals arg1="${user}" arg2="{user}"/>
+		</not>
+	</condition>
 
 	<!-- Removes configuration, temporary and cache files -->
 	<target name="clean">
@@ -218,7 +225,9 @@
 	</target>
 
 	<!-- Uploads files to Sourceforge -->
-	<target name="upload">
+	<target name="upload" if="do_upload">
+		<echo message="${do_upload}"/>
+		<echo message="${user}"/>
 		<echo message="Starting upload"/>
 		
 		<scp todir="${user}:${password}@frs.sourceforge.net:/home/frs/project/a/at/atunes/latest">
