@@ -36,7 +36,6 @@ import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent
 import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
 import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -64,10 +63,6 @@ public class AlbumTracksContent extends AbstractContextPanelContent {
     private static final long serialVersionUID = -5538266144953409867L;
 
     private JTable tracksTable;
-
-    public AlbumTracksContent(IState state) {
-        super(new AlbumInfoDataSource(state));
-    }
 
     @Override
     protected String getContentName() {

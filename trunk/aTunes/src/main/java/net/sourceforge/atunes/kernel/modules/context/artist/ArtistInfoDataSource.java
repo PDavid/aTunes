@@ -94,11 +94,6 @@ public class ArtistInfoDataSource implements ContextInformationDataSource {
     public static final String OUTPUT_ALBUMS = "ALBUMS";
 
     private IState state;
-
-    public ArtistInfoDataSource(IState state) {
-    	super();
-    	this.state = state;
-	}
     
     @Override
     public Map<String, ?> getData(Map<String, ?> parameters) {
@@ -191,5 +186,9 @@ public class ArtistInfoDataSource implements ContextInformationDataSource {
     private Image getAlbumImage(AlbumInfo album) {
         return WebServicesHandler.getInstance().getLastFmService().getImage(album);
     }
+    
+    public void setState(IState state) {
+		this.state = state;
+	}
 
 }

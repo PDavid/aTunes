@@ -35,10 +35,6 @@ public class SimilarArtistsContent extends AbstractContextPanelContent {
     private static final long serialVersionUID = 5041098100868186051L;
     private ContextTable similarArtistsTable;
 
-    public SimilarArtistsContent() {
-        super(new SimilarArtistsDataSource());
-    }
-
     @Override
     protected String getContentName() {
         return I18nUtils.getString("SIMILAR");

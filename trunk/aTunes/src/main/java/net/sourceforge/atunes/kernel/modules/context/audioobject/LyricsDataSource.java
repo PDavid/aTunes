@@ -48,10 +48,6 @@ public class LyricsDataSource implements ContextInformationDataSource {
 
     private LyricsService lyricsService;
     
-    public LyricsDataSource(LyricsService lyricsService) {
-		this.lyricsService = lyricsService;
-	}
-
 	@Override
     public Map<String, ?> getData(Map<String, ?> parameters) {
         Map<String, Object> result = new HashMap<String, Object>();
@@ -88,5 +84,9 @@ public class LyricsDataSource implements ContextInformationDataSource {
 
         return lyrics;
     }
+    
+    public void setLyricsService(LyricsService lyricsService) {
+		this.lyricsService = lyricsService;
+	}
 
 }

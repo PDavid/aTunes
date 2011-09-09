@@ -52,6 +52,10 @@ import org.commonjukebox.plugins.model.PluginApi;
  * 
  * @author fleax
  */
+/**
+ * @author alex
+ *
+ */
 @PluginApi
 public abstract class AbstractContextPanel {
 
@@ -65,6 +69,8 @@ public abstract class AbstractContextPanel {
     private Component component;
     
     private IState state;
+    
+    private List<AbstractContextPanelContent> contents;
     
     
     // BEGIN OF METHODS TO BE IMPLEMENTED BY CONCRETE CONTEXT PANELS
@@ -96,14 +102,6 @@ public abstract class AbstractContextPanel {
      * @return The icon of the context panel
      */
     protected abstract ColorMutableImageIcon getContextPanelIcon(AudioObject audioObject);
-
-    /**
-     * List of contents shown in the context panel. Contents are shown in order
-     * in context tab
-     * 
-     * @return List of contents of the context panel
-     */
-    protected abstract List<AbstractContextPanelContent> getContents();
 
     /**
      * Indicates if panel must be visible for the given audio object
@@ -335,5 +333,18 @@ public abstract class AbstractContextPanel {
 	
 	public void setState(IState state) {
 		this.state = state;
+	}
+	
+    private final List<AbstractContextPanelContent> getContents() {
+    	return contents;
+    }
+    
+    /**
+     * List of contents shown in the context panel. Contents are shown in order
+     * in context tab
+     * @param contents
+     */
+    public final void setContents(List<AbstractContextPanelContent> contents) {
+		this.contents = contents;
 	}
 }

@@ -109,7 +109,6 @@ public class ArtistTopTracksContent extends AbstractContextPanelContent {
     }
 
     public ArtistTopTracksContent() {
-        super(new ArtistPopularTracksDataSource());
     	createPlayList = new JMenuItem(I18nUtils.getString("CREATE_PLAYLIST_WITH_TOP_TRACKS"));
     	createPlayList.addActionListener(new CreatePlaylistWithPopularTracksActionListener());
     }

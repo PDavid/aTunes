@@ -27,6 +27,7 @@ import java.util.Map;
 import javax.swing.JPanel;
 
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IState;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
@@ -57,16 +58,11 @@ public abstract class AbstractContextPanelContent {
      * panel that handles this content
      */
     private JPanel parentPanel;
-
+    
     /**
-     * Creates a new content with its custom data source
-     * 
-     * @param dataSource
+     * State of app
      */
-    protected AbstractContextPanelContent(ContextInformationDataSource dataSource) {
-        super();
-        this.dataSource = dataSource;
-    }
+    private IState state;
 
     /**
      * Updates the context panel content with information of the given audio
@@ -169,5 +165,23 @@ public abstract class AbstractContextPanelContent {
     protected JPanel getParentPanel() {
         return parentPanel;
     }
+    
+    protected IState getState() {
+		return state;
+	}
+    
+    public void setState(IState state) {
+		this.state = state;
+	}
+    
+    protected ContextInformationDataSource getDataSource() {
+		return dataSource;
+	}
+    
+    public void setDataSource(ContextInformationDataSource dataSource) {
+		this.dataSource = dataSource;
+	}
+    
+    
 
 }

@@ -114,7 +114,7 @@ public interface IState {
 
 	public void setSelectedContextTab(String selectedContextTab);
 
-	@SuppressWarnings("unchecked")
+
 	public Class<? extends Frame> getFrameClass();
 
 	public void setFrameClass(Class<? extends Frame> frameClass);
@@ -240,7 +240,7 @@ public interface IState {
 
 	public void setAutoLoveFavoriteSong(boolean autoLoveFavoriteSong);
 
-	@SuppressWarnings("unchecked")
+
 	public List<LyricsEngineInfo> getLyricsEnginesInfo();
 
 	public void setLyricsEnginesInfo(List<LyricsEngineInfo> lyricsEnginesInfo);
@@ -269,17 +269,17 @@ public interface IState {
 
 	public void setCdRipperFileNamePattern(String cdRipperFileNamePattern);
 
-	@SuppressWarnings("unchecked")
+
 	public Map<String, ColumnBean> getColumns();
 
 	public void setColumns(Map<String, ColumnBean> columns);
 
-	@SuppressWarnings("unchecked")
+
 	public Map<String, ColumnBean> getNavigatorColumns();
 
 	public void setNavigatorColumns(Map<String, ColumnBean> navigatorColumns);
 
-	@SuppressWarnings("unchecked")
+
 	public Map<String, ColumnBean> getSearchResultsColumns();
 
 	public void setSearchResultsColumns(
@@ -326,7 +326,7 @@ public interface IState {
 	public void setHighlightIncompleteTagElements(
 			boolean highlightIncompleteTagElements);
 
-	@SuppressWarnings("unchecked")
+
 	public List<TagAttribute> getHighlightIncompleteTagFoldersAttributes();
 
 	public void setHighlightIncompleteTagFoldersAttributes(
@@ -340,7 +340,7 @@ public interface IState {
 
 	public void setAutoScrollPlayListEnabled(boolean autoScrollPlayListEnabled);
 
-	@SuppressWarnings("unchecked")
+
 	public List<String> getLastRepositoryFolders();
 
 	public void setLastRepositoryFolders(List<String> lastRepositoryFolders);
@@ -417,12 +417,12 @@ public interface IState {
 
 	public void setHotkeysConfig(HotkeysConfig hotkeysConfig);
 
-	@SuppressWarnings("unchecked")
+
 	public List<String> getRecognitionPatterns();
 
 	public void setRecognitionPatterns(List<String> recognitionPatterns);
 
-	@SuppressWarnings("unchecked")
+
 	public List<String> getMassiveRecognitionPatterns();
 
 	public void setMassiveRecognitionPatterns(
@@ -454,7 +454,7 @@ public interface IState {
 
 	public void setSimilarArtistsMode(boolean isSimilarArtistsMode);
 
-	@SuppressWarnings("unchecked")
+
 	public Map<String, Map<String, ColumnBean>> getCustomNavigatorColumns();
 
 	public void setCustomNavigatorColumns(
@@ -468,7 +468,7 @@ public interface IState {
 
 	public void setShowPlayerControlsOnTop(boolean onTop);
 
-	@SuppressWarnings("unchecked")
+
 	public Map<String, ColumnBean> getAlbumsColumns();
 
 	public void setAlbumColumns(Map<String, ColumnBean> columnsConfiguration);

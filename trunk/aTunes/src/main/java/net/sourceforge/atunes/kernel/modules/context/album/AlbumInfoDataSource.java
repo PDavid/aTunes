@@ -78,10 +78,6 @@ public class AlbumInfoDataSource implements ContextInformationDataSource {
 
     private IState state;
     
-    public AlbumInfoDataSource(IState state) {
-    	this.state = state;
-	}
-
     @Override
     public Map<String, ?> getData(Map<String, ?> parameters) {
         Map<String, Object> result = new HashMap<String, Object>();
@@ -246,5 +242,9 @@ public class AlbumInfoDataSource implements ContextInformationDataSource {
     private boolean forbiddenToken(String t) {
         return t.contains("/");
     }
+    
+    public void setState(IState state) {
+		this.state = state;
+	}
 
 }
