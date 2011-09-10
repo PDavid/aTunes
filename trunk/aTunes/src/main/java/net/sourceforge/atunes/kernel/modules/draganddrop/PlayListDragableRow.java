@@ -20,14 +20,14 @@
 
 package net.sourceforge.atunes.kernel.modules.draganddrop;
 
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 
 public class PlayListDragableRow {
 
     /**
      * Content of the row
      */
-    private AudioObject rowContent;
+    private IAudioObject rowContent;
 
     /**
      * Original index of row when started drag and drop
@@ -37,7 +37,7 @@ public class PlayListDragableRow {
     /**
      * @return the rowContent
      */
-    public AudioObject getRowContent() {
+    public IAudioObject getRowContent() {
         return rowContent;
     }
 
@@ -48,7 +48,7 @@ public class PlayListDragableRow {
         return rowPosition;
     }
 
-    public PlayListDragableRow(AudioObject rowContent, int rowPosition) {
+    public PlayListDragableRow(IAudioObject rowContent, int rowPosition) {
         super();
         this.rowContent = rowContent;
         this.rowPosition = rowPosition;

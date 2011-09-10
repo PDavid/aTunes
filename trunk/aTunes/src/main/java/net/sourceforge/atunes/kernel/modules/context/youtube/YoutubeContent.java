@@ -36,7 +36,7 @@ import net.sourceforge.atunes.kernel.modules.context.ContextTable;
 import net.sourceforge.atunes.kernel.modules.internetsearch.SearchFactory;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeResultEntry;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeService;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -83,7 +83,7 @@ public class YoutubeContent extends AbstractContextPanelContent {
     }
 
     @Override
-    protected Map<String, ?> getDataSourceParameters(AudioObject audioObject) {
+    protected Map<String, ?> getDataSourceParameters(IAudioObject audioObject) {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put(YoutubeDataSource.INPUT_AUDIO_OBJECT, audioObject);
         return parameters;

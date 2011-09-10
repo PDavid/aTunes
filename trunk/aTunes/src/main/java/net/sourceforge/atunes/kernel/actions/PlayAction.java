@@ -30,7 +30,7 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.PlayPauseButton;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class PlayAction extends CustomAbstractAction {
@@ -70,7 +70,7 @@ public class PlayAction extends CustomAbstractAction {
     }
 
     @Override
-    public boolean isEnabledForPlayListSelection(List<AudioObject> selection) {
+    public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
         // Play action is always enabled even if play list or selection are empty, because this action is used in play button
         return true;
     }

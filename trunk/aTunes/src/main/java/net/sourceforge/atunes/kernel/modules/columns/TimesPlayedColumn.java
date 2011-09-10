@@ -27,7 +27,7 @@ import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.statistics.AudioFileStats;
 import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 
 public class TimesPlayedColumn extends AbstractColumn {
 
@@ -42,7 +42,7 @@ public class TimesPlayedColumn extends AbstractColumn {
     }
 
     @Override
-    protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
+    protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
         int times1 = 0;
         int times2 = 0;
         if (ao1 instanceof AudioFile) {
@@ -57,7 +57,7 @@ public class TimesPlayedColumn extends AbstractColumn {
     }
 
     @Override
-    public Object getValueFor(AudioObject audioObject) {
+    public Object getValueFor(IAudioObject audioObject) {
         if (audioObject instanceof Radio) {
             return "";
         }

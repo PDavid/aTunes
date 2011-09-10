@@ -50,7 +50,7 @@ import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.misc.Timer;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -147,7 +147,7 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
     }
 
     @Override
-    public void applicationStarted(List<AudioObject> playList) {
+    public void applicationStarted(List<IAudioObject> playList) {
     	if (!Kernel.isEnablePlugins()) {
     		return;
     	}
@@ -410,6 +410,6 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
 	public void playListCleared() {}
 
 	@Override
-	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+	public void selectedAudioObjectChanged(IAudioObject audioObject) {}
 
 }

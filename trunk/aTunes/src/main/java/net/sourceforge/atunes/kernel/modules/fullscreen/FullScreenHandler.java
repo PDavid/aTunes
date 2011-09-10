@@ -25,7 +25,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFullScreenHandler;
 
 public class FullScreenHandler extends AbstractHandler implements IFullScreenHandler {
@@ -45,7 +45,7 @@ public class FullScreenHandler extends AbstractHandler implements IFullScreenHan
     }
     
     @Override
-    public void selectedAudioObjectChanged(AudioObject audioObject) {
+    public void selectedAudioObjectChanged(IAudioObject audioObject) {
         updateAudioObjectsToShow(audioObject);
     }
 
@@ -64,7 +64,7 @@ public class FullScreenHandler extends AbstractHandler implements IFullScreenHan
         controller = new FullScreenController(getState());
 	}
 	
-	private void updateAudioObjectsToShow(AudioObject audioObject) {
+	private void updateAudioObjectsToShow(IAudioObject audioObject) {
 		if (getFullScreenController() != null) {
 			getFullScreenController().setAudioObjects(getAudioObjectsToShow(audioObject));
 		}
@@ -75,8 +75,8 @@ public class FullScreenHandler extends AbstractHandler implements IFullScreenHan
 	 * @param current current
 	 * @return
 	 */
-	private List<AudioObject> getAudioObjectsToShow(AudioObject current) {
-        List<AudioObject> objects = new ArrayList<AudioObject>(6);
+	private List<IAudioObject> getAudioObjectsToShow(IAudioObject current) {
+        List<IAudioObject> objects = new ArrayList<IAudioObject>(6);
         objects.add(PlayListHandler.getInstance().getCurrentPlayList(false).getPreviousAudioObject(2));
         objects.add(PlayListHandler.getInstance().getCurrentPlayList(false).getPreviousAudioObject(1));
         objects.add(current);

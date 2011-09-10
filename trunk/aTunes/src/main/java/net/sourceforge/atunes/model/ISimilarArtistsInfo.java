@@ -18,15 +18,20 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.context;
+package net.sourceforge.atunes.model;
 
 import java.io.Serializable;
 import java.util.List;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
+/**
+ * Represents artists similar to another one
+ * @author alex
+ *
+ */
 @PluginApi
-public interface SimilarArtistsInfo extends Serializable {
+public interface ISimilarArtistsInfo extends Serializable {
 
     /**
      * Gets the artist name.
@@ -40,7 +45,7 @@ public interface SimilarArtistsInfo extends Serializable {
      * 
      * @return the artists
      */
-    public List<ArtistInfo> getArtists();
+    public List<IArtistInfo> getArtists();
 
     /**
      * Gets the picture.
@@ -63,7 +68,7 @@ public interface SimilarArtistsInfo extends Serializable {
      * @param artists
      *            the artists to set
      */
-    public void setArtists(List<? extends ArtistInfo> artists);
+    public void setArtists(List<? extends IArtistInfo> artists);
 
     /**
      * Sets the picture.

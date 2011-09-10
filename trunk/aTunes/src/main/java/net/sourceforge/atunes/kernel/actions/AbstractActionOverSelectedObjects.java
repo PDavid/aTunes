@@ -30,12 +30,12 @@ import java.util.Map;
 import javax.swing.Icon;
 
 import net.sourceforge.atunes.gui.model.AudioObjectsSource;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
 @PluginApi
-public abstract class AbstractActionOverSelectedObjects<T extends AudioObject> extends CustomAbstractAction {
+public abstract class AbstractActionOverSelectedObjects<T extends IAudioObject> extends CustomAbstractAction {
 
     private static final long serialVersionUID = 1673432955671008277L;
 
@@ -87,7 +87,7 @@ public abstract class AbstractActionOverSelectedObjects<T extends AudioObject> e
             return;
         }
 
-        List<AudioObject> audioObjects = objectsSource.getSelectedAudioObjects();
+        List<IAudioObject> audioObjects = objectsSource.getSelectedAudioObjects();
 
         if (audioObjects == null || audioObjects.isEmpty()) {
             return;
@@ -95,7 +95,7 @@ public abstract class AbstractActionOverSelectedObjects<T extends AudioObject> e
 
         List<T> selectedObjects = new ArrayList<T>();
 
-        for (AudioObject ao : audioObjects) {
+        for (IAudioObject ao : audioObjects) {
             if (objectsClass.isAssignableFrom(ao.getClass())) {
                 @SuppressWarnings("unchecked")
                 T processedAudioObject = preprocessObject((T) ao);
@@ -110,12 +110,12 @@ public abstract class AbstractActionOverSelectedObjects<T extends AudioObject> e
     }
 
     @Override
-    public boolean isEnabledForPlayListSelection(List<AudioObject> selection) {
+    public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
         if (selection.isEmpty()) {
             return false;
         }
 
-        for (AudioObject ao : selection) {
+        for (IAudioObject ao : selection) {
             if (!(this.objectsClass.isAssignableFrom(ao.getClass()))) {
                 return false;
             }

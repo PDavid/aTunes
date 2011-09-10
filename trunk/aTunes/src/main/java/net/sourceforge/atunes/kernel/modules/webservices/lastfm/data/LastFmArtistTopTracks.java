@@ -24,11 +24,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.context.ArtistTopTracks;
 import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
+import net.sourceforge.atunes.model.IArtistTopTracks;
 import de.umass.lastfm.Track;
 
-public class LastFmArtistTopTracks implements ArtistTopTracks {
+public class LastFmArtistTopTracks implements IArtistTopTracks {
 
     /**
 	 * 
@@ -45,7 +45,7 @@ public class LastFmArtistTopTracks implements ArtistTopTracks {
      * @param topTracks
      * @return
      */
-    public static ArtistTopTracks getTopTracks(String artist, Collection<Track> topTracks) {
+    public static IArtistTopTracks getTopTracks(String artist, Collection<Track> topTracks) {
         LastFmArtistTopTracks result = new LastFmArtistTopTracks();
         result.artist = artist;
 

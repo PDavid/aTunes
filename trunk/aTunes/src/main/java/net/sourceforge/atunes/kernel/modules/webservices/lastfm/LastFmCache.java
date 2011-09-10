@@ -36,13 +36,13 @@ import net.sf.ehcache.Element;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.OsManager;
-import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
-import net.sourceforge.atunes.kernel.modules.context.AlbumListInfo;
-import net.sourceforge.atunes.kernel.modules.context.ArtistInfo;
-import net.sourceforge.atunes.kernel.modules.context.ArtistTopTracks;
-import net.sourceforge.atunes.kernel.modules.context.SimilarArtistsInfo;
 import net.sourceforge.atunes.misc.AbstractCache;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IAlbumInfo;
+import net.sourceforge.atunes.model.IAlbumListInfo;
+import net.sourceforge.atunes.model.IArtistInfo;
+import net.sourceforge.atunes.model.IArtistTopTracks;
+import net.sourceforge.atunes.model.ISimilarArtistsInfo;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.XMLUtils;
 
@@ -144,7 +144,7 @@ public class LastFmCache extends AbstractCache {
      * 
      * @return the image
      */
-    public synchronized Image retrieveAlbumCover(AlbumInfo album) {
+    public synchronized Image retrieveAlbumCover(IAlbumInfo album) {
         Element element = getAlbumCoverCache().get(album);
         if (element == null) {
             return null;
@@ -163,12 +163,12 @@ public class LastFmCache extends AbstractCache {
      * 
      * @return the audio scrobbler album
      */
-    public synchronized AlbumInfo retrieveAlbumInfo(String artist, String album) {
+    public synchronized IAlbumInfo retrieveAlbumInfo(String artist, String album) {
         Element element = getAlbumInfoCache().get(artist + album);
         if (element == null) {
             return null;
         } else {
-            return (AlbumInfo) element.getValue();
+            return (IAlbumInfo) element.getValue();
         }
     }
 
@@ -194,12 +194,12 @@ public class LastFmCache extends AbstractCache {
      * @param artist
      * @return
      */
-    public synchronized ArtistTopTracks retrieveArtistTopTracks(String artist) {
+    public synchronized IArtistTopTracks retrieveArtistTopTracks(String artist) {
     	Element element = getArtistTopTracksCache().get(artist);
     	if (element == null) {
     		return null;
     	} else {
-    		return (ArtistTopTracks) element.getValue();
+    		return (IArtistTopTracks) element.getValue();
     	}
     }
     
@@ -211,12 +211,12 @@ public class LastFmCache extends AbstractCache {
      * 
      * @return the audio scrobbler album list
      */
-    public synchronized AlbumListInfo retrieveAbumList(String artist) {
+    public synchronized IAlbumListInfo retrieveAbumList(String artist) {
         Element element = getAlbumListCache().get(artist);
         if (element == null) {
             return null;
         } else {
-            return (AlbumListInfo) element.getValue();
+            return (IAlbumListInfo) element.getValue();
         }
     }
 
@@ -228,12 +228,12 @@ public class LastFmCache extends AbstractCache {
      * 
      * @return the audio scrobbler similar artists
      */
-    public synchronized SimilarArtistsInfo retrieveArtistSimilar(String artist) {
+    public synchronized ISimilarArtistsInfo retrieveArtistSimilar(String artist) {
         Element element = getSimilarArtistsCache().get(artist);
         if (element == null) {
             return null;
         } else {
-            return (SimilarArtistsInfo) element.getValue();
+            return (ISimilarArtistsInfo) element.getValue();
         }
     }
 
@@ -245,7 +245,7 @@ public class LastFmCache extends AbstractCache {
      * 
      * @return the image
      */
-    public synchronized Image retrieveArtistThumbImage(ArtistInfo artist) {
+    public synchronized Image retrieveArtistThumbImage(IArtistInfo artist) {
         Element element = getArtistThumbsCache().get(artist);
         if (element == null) {
             return null;
@@ -279,7 +279,7 @@ public class LastFmCache extends AbstractCache {
      * @param cover
      *            the cover
      */
-    public synchronized void storeAlbumCover(AlbumInfo album, ImageIcon cover) {
+    public synchronized void storeAlbumCover(IAlbumInfo album, ImageIcon cover) {
         if (cover == null || album == null) {
             return;
         }
@@ -299,7 +299,7 @@ public class LastFmCache extends AbstractCache {
      * @param albumObject
      *            the album object
      */
-    public synchronized void storeAlbumInfo(String artist, String album, AlbumInfo albumObject) {
+    public synchronized void storeAlbumInfo(String artist, String album, IAlbumInfo albumObject) {
         if (artist == null || album == null || albumObject == null) {
             return;
         }
@@ -332,7 +332,7 @@ public class LastFmCache extends AbstractCache {
      * @param artist
      * @param topTracks
      */
-    public synchronized void storeArtistTopTracks(String artist, ArtistTopTracks topTracks) {
+    public synchronized void storeArtistTopTracks(String artist, IArtistTopTracks topTracks) {
     	if (artist == null || topTracks == null) {
     		return;
     	}
@@ -350,7 +350,7 @@ public class LastFmCache extends AbstractCache {
      * @param list
      *            the list
      */
-    public synchronized void storeAlbumList(String artist, AlbumListInfo list) {
+    public synchronized void storeAlbumList(String artist, IAlbumListInfo list) {
         if (artist == null || list == null) {
             return;
         }
@@ -368,7 +368,7 @@ public class LastFmCache extends AbstractCache {
      * @param similar
      *            the similar
      */
-    public synchronized void storeArtistSimilar(String artist, SimilarArtistsInfo similar) {
+    public synchronized void storeArtistSimilar(String artist, ISimilarArtistsInfo similar) {
         if (artist == null || similar == null) {
             return;
         }
@@ -386,7 +386,7 @@ public class LastFmCache extends AbstractCache {
      * @param image
      *            the image
      */
-    public synchronized void storeArtistThumbImage(ArtistInfo artist, ImageIcon image) {
+    public synchronized void storeArtistThumbImage(IArtistInfo artist, ImageIcon image) {
         if (image == null || artist == null) {
             return;
         }

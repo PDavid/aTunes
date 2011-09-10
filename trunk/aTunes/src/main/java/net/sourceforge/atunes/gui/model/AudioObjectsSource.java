@@ -22,7 +22,7 @@ package net.sourceforge.atunes.gui.model;
 
 import java.util.List;
 
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 
 public interface AudioObjectsSource {
 
@@ -31,5 +31,5 @@ public interface AudioObjectsSource {
      * 
      * @return
      */
-    public List<AudioObject> getSelectedAudioObjects();
+    public List<IAudioObject> getSelectedAudioObjects();
 }

@@ -32,7 +32,7 @@ import net.sourceforge.atunes.gui.images.AlbumImageIcon;
 import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.kernel.modules.columns.TypeColumn;
 import net.sourceforge.atunes.model.Album;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 
 /**
  * The Class AlbumTableModel.
@@ -156,6 +156,6 @@ public final class AlbumTableModel extends AbstractColumnSetTableModel {
     }
 
 	@Override
-	public void sort(Comparator<AudioObject> comparator) {
+	public void sort(Comparator<IAudioObject> comparator) {
 	}
 }

@@ -28,7 +28,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.kernel.modules.command.Command;
 import net.sourceforge.atunes.kernel.modules.command.CommandHandler;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 
 import org.commonjukebox.plugins.model.PluginApi;
@@ -129,7 +129,7 @@ public abstract class CustomAbstractAction extends javax.swing.AbstractAction im
      * @param selection
      * @return
      */
-    public boolean isEnabledForNavigationTableSelection(List<AudioObject> selection) {
+    public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
         return false;
     }
 
@@ -140,7 +140,7 @@ public abstract class CustomAbstractAction extends javax.swing.AbstractAction im
      * @param selection
      * @return
      */
-    public boolean isEnabledForPlayListSelection(List<AudioObject> selection) {
+    public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
         return false;
     }
 

@@ -28,7 +28,7 @@ import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.dialogs.fullScreen.FullScreenWindow;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 
 class FullScreenController extends AbstractSimpleController<FullScreenWindow> {
@@ -53,7 +53,7 @@ class FullScreenController extends AbstractSimpleController<FullScreenWindow> {
 	 * Sets the audio object.
 	 * @param objects
 	 */
-	void setAudioObjects(List<AudioObject> objects) {
+	void setAudioObjects(List<IAudioObject> objects) {
 		getComponentControlled().setAudioObjects(objects);
 	}
 

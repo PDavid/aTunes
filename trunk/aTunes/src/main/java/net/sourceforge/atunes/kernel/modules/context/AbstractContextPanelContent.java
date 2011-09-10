@@ -26,7 +26,7 @@ import java.util.Map;
 
 import javax.swing.JPanel;
 
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 
 import org.commonjukebox.plugins.model.PluginApi;
@@ -70,7 +70,7 @@ public abstract class AbstractContextPanelContent {
      * 
      * @param audioObject
      */
-    protected final void updateContextPanelContent(AudioObject audioObject) {
+    protected final void updateContextPanelContent(IAudioObject audioObject) {
         // Get data source parameters and call data source
         callDataSource(getDataSourceParameters(audioObject));
     }
@@ -119,7 +119,7 @@ public abstract class AbstractContextPanelContent {
      * @param audioObject
      * @return Map with parameters to call data source
      */
-    protected abstract Map<String, ?> getDataSourceParameters(AudioObject audioObject);
+    protected abstract Map<String, ?> getDataSourceParameters(IAudioObject audioObject);
 
     /**
      * Given a map containing result from data source updates this content

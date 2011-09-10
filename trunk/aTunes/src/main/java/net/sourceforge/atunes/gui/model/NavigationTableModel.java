@@ -27,7 +27,7 @@ import java.util.List;
 
 import javax.swing.event.TableModelEvent;
 
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 
 /**
  * The Class NavigationTableModel.
@@ -63,7 +63,7 @@ public final class NavigationTableModel extends AbstractColumnSetTableModel {
     }
 
     /** The songs. */
-    private List<? extends AudioObject> audioObjects;
+    private List<? extends IAudioObject> audioObjects;
 
     /**
      * Instantiates a new navigation table model.
@@ -93,7 +93,7 @@ public final class NavigationTableModel extends AbstractColumnSetTableModel {
      * 
      * @return the song at
      */
-    public AudioObject getAudioObjectAt(int row) {
+    public IAudioObject getAudioObjectAt(int row) {
         return audioObjects != null ? audioObjects.get(row) : null;
     }
 
@@ -102,7 +102,7 @@ public final class NavigationTableModel extends AbstractColumnSetTableModel {
      * 
      * @return the audio objects
      */
-    public List<? extends AudioObject> getAudioObjects() {
+    public List<? extends IAudioObject> getAudioObjects() {
         return audioObjects;
     }
 
@@ -114,8 +114,8 @@ public final class NavigationTableModel extends AbstractColumnSetTableModel {
      * 
      * @return the songs at
      */
-    public List<AudioObject> getAudioObjectsAt(int[] rows) {
-        List<AudioObject> result = new ArrayList<AudioObject>();
+    public List<IAudioObject> getAudioObjectsAt(int[] rows) {
+        List<IAudioObject> result = new ArrayList<IAudioObject>();
         for (int element : rows) {
             result.add(getAudioObjectAt(element));
         }
@@ -130,7 +130,7 @@ public final class NavigationTableModel extends AbstractColumnSetTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        AudioObject audioObject = getAudioObjectAt(rowIndex);
+        IAudioObject audioObject = getAudioObjectAt(rowIndex);
         if (audioObject == null) {
             return null;
         }
@@ -153,7 +153,7 @@ public final class NavigationTableModel extends AbstractColumnSetTableModel {
      * @param songs
      *            the new songs
      */
-    public void setSongs(List<? extends AudioObject> songs) {
+    public void setSongs(List<? extends IAudioObject> songs) {
         this.audioObjects = songs;
         refresh(TableModelEvent.INSERT);
     }
@@ -169,7 +169,7 @@ public final class NavigationTableModel extends AbstractColumnSetTableModel {
     }
 
     @Override
-    public void sort(Comparator<AudioObject> comparator) {
+    public void sort(Comparator<IAudioObject> comparator) {
         Collections.sort(this.audioObjects, comparator);
         refresh(TableModelEvent.UPDATE);
     }

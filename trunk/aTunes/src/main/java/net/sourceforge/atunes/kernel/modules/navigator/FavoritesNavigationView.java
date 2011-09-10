@@ -58,7 +58,7 @@ import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.TreeObject;
@@ -177,9 +177,9 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();
 
         // Get objects selected before refreshing tree
-        List<TreeObject<? extends AudioObject>> objectsSelected = getTreeObjectsSelected(getTree());
+        List<TreeObject<? extends IAudioObject>> objectsSelected = getTreeObjectsSelected(getTree());
         // Get objects expanded before refreshing tree
-        List<TreeObject<? extends AudioObject>> objectsExpanded = getTreeObjectsExpanded(getTree(), root);
+        List<TreeObject<? extends IAudioObject>> objectsExpanded = getTreeObjectsExpanded(getTree(), root);
 
         // Nodes to be selected after refresh
         List<DefaultMutableTreeNode> nodesToSelect = new ArrayList<DefaultMutableTreeNode>();
@@ -251,7 +251,7 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
      * @param albums
      *            the albums
      */
-    private static void addAlbumNodes(DefaultMutableTreeNode root, String currentFilter, Map<String, Album> albums, List<TreeObject<? extends AudioObject>> objectsSelected, List<TreeObject<? extends AudioObject>> objectsExpanded, List<DefaultMutableTreeNode> nodesToSelect, List<DefaultMutableTreeNode> nodesToExpand) {
+    private static void addAlbumNodes(DefaultMutableTreeNode root, String currentFilter, Map<String, Album> albums, List<TreeObject<? extends IAudioObject>> objectsSelected, List<TreeObject<? extends IAudioObject>> objectsExpanded, List<DefaultMutableTreeNode> nodesToSelect, List<DefaultMutableTreeNode> nodesToExpand) {
         List<String> albumsNamesList = new ArrayList<String>(albums.keySet());
         Collections.sort(albumsNamesList);
 
@@ -282,7 +282,7 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
      * @param artists
      *            the artists
      */
-    private static void addArtistNodes(DefaultMutableTreeNode root, String currentFilter, Map<String, Artist> artists, List<TreeObject<? extends AudioObject>> objectsSelected, List<TreeObject<? extends AudioObject>> objectsExpanded, List<DefaultMutableTreeNode> nodesToSelect, List<DefaultMutableTreeNode> nodesToExpand) {
+    private static void addArtistNodes(DefaultMutableTreeNode root, String currentFilter, Map<String, Artist> artists, List<TreeObject<? extends IAudioObject>> objectsSelected, List<TreeObject<? extends IAudioObject>> objectsExpanded, List<DefaultMutableTreeNode> nodesToSelect, List<DefaultMutableTreeNode> nodesToExpand) {
         List<String> artistNamesList = new ArrayList<String>(artists.keySet());
         Collections.sort(artistNamesList);
 

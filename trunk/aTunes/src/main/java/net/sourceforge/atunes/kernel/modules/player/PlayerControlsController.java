@@ -32,7 +32,7 @@ import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -237,7 +237,7 @@ final class PlayerControlsController extends AbstractSimpleController<PlayerCont
      * Updates controls when playing given audio object
      * @param audioObject
      */
-    void updatePlayerControls(AudioObject audioObject) {
+    void updatePlayerControls(IAudioObject audioObject) {
         // Disable slider if audio object is a radio or podcast feed entry
         boolean b = audioObject.isSeekable();
         if (b && audioObject instanceof PodcastFeedEntry) {

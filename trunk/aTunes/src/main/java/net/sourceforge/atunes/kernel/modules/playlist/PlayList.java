@@ -30,7 +30,7 @@ import java.util.Random;
 import net.sourceforge.atunes.kernel.PlayListAudioObject;
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.misc.PointedList;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -56,7 +56,7 @@ public class PlayList implements Serializable, Cloneable {
     /**
      * Pointed List of audio objects of this play list
      */
-    private PointedList<AudioObject> audioObjects;
+    private PointedList<IAudioObject> audioObjects;
     
     private transient IState state;
 
@@ -72,7 +72,7 @@ public class PlayList implements Serializable, Cloneable {
         }
     }
 
-    static class PlayListPointedList extends PointedList<AudioObject> {
+    static class PlayListPointedList extends PointedList<IAudioObject> {
         private static final long serialVersionUID = -6966402482637754615L;
 
         private transient IState state;
@@ -82,7 +82,7 @@ public class PlayList implements Serializable, Cloneable {
             this.state = state;
         }
 
-        PlayListPointedList(PointedList<AudioObject> pointedList, IState state) {
+        PlayListPointedList(PointedList<IAudioObject> pointedList, IState state) {
             super(pointedList);
             this.state = state;
         }
@@ -101,7 +101,7 @@ public class PlayList implements Serializable, Cloneable {
      * Default constructor
      */
     protected PlayList(IState state) {
-        this((List<AudioObject>) null, state);
+        this((List<IAudioObject>) null, state);
     }
 
     /**
@@ -109,7 +109,7 @@ public class PlayList implements Serializable, Cloneable {
      * 
      * @param list
      */
-    protected PlayList(List<? extends AudioObject> audioObjectsList, IState state) {
+    protected PlayList(List<? extends IAudioObject> audioObjectsList, IState state) {
         this.audioObjects = new PlayListPointedList(state);
         this.mode = PlayListMode.getPlayListMode(this, state);
         this.state = state;
@@ -143,8 +143,8 @@ public class PlayList implements Serializable, Cloneable {
      * 
      * @param audioObject
      */
-    protected void add(AudioObject audioObject) {
-        List<AudioObject> audioObjectsAdded = new ArrayList<AudioObject>();
+    protected void add(IAudioObject audioObject) {
+        List<IAudioObject> audioObjectsAdded = new ArrayList<IAudioObject>();
         audioObjectsAdded.add(audioObject);
         this.add(audioObjectsAdded);
     }
@@ -154,7 +154,7 @@ public class PlayList implements Serializable, Cloneable {
      * 
      * @param audioObjectsList
      */
-    private void add(List<? extends AudioObject> audioObjectsList) {
+    private void add(List<? extends IAudioObject> audioObjectsList) {
         int position = this.audioObjects.size();
         add(position, audioObjectsList);
     }
@@ -165,8 +165,8 @@ public class PlayList implements Serializable, Cloneable {
      * @param index
      * @param list
      */
-    protected void add(int index, AudioObject audioObject) {
-        List<AudioObject> audioObjectsAdded = new ArrayList<AudioObject>();
+    protected void add(int index, IAudioObject audioObject) {
+        List<IAudioObject> audioObjectsAdded = new ArrayList<IAudioObject>();
         audioObjectsAdded.add(audioObject);
         add(index, audioObjectsAdded);
     }
@@ -177,7 +177,7 @@ public class PlayList implements Serializable, Cloneable {
      * @param index
      * @param audioObjectsList
      */
-    protected void add(int index, List<? extends AudioObject> audioObjectsList) {
+    protected void add(int index, List<? extends IAudioObject> audioObjectsList) {
         this.audioObjects.addAll(index, audioObjectsList);
         notifyAudioObjectsAdded(index, audioObjectsList);
     }
@@ -190,7 +190,7 @@ public class PlayList implements Serializable, Cloneable {
      * @param list
      */
     protected void remove(int index) {
-        AudioObject ao = get(index);
+        IAudioObject ao = get(index);
         if (ao != null) {
             PlayListAudioObject plao = new PlayListAudioObject();
             plao.setPosition(index);
@@ -208,11 +208,11 @@ public class PlayList implements Serializable, Cloneable {
      * 
      * @param list
      */
-    protected void remove(List<? extends AudioObject> list) {
+    protected void remove(List<? extends IAudioObject> list) {
         // First get all positions of objects to remove
         List<PlayListAudioObject> playListAudioObjects = new ArrayList<PlayListAudioObject>();
-        for (AudioObject ao : list) {
-            List<AudioObject> clonedList = new ArrayList<AudioObject>(audioObjects.getList());
+        for (IAudioObject ao : list) {
+            List<IAudioObject> clonedList = new ArrayList<IAudioObject>(audioObjects.getList());
             while (clonedList.indexOf(ao) != -1) {
                 int index = clonedList.indexOf(ao);
                 PlayListAudioObject playListAudioObject = new PlayListAudioObject();
@@ -246,7 +246,7 @@ public class PlayList implements Serializable, Cloneable {
      * @param index
      * @param newObject
      */
-    protected void replace(int index, AudioObject newObject) {
+    protected void replace(int index, IAudioObject newObject) {
         this.audioObjects.replace(index, newObject);
     }
 
@@ -267,7 +267,7 @@ public class PlayList implements Serializable, Cloneable {
             throw new IllegalArgumentException(StringUtils.getString("targetRow = ", targetRow, " playlist size = ", size()));
         }
 
-        AudioObject audioObjectToMove = get(sourceRow);
+        IAudioObject audioObjectToMove = get(sourceRow);
 
         boolean sourceRowIsPointed = audioObjects.getPointer() == sourceRow;
 
@@ -288,7 +288,7 @@ public class PlayList implements Serializable, Cloneable {
      * 
      * @param c
      */
-    protected void sort(Comparator<AudioObject> c) {
+    protected void sort(Comparator<IAudioObject> c) {
         this.audioObjects.sort(c);
         notifyCurrentAudioObjectChanged(this.audioObjects.getCurrentObject());
     }
@@ -309,7 +309,7 @@ public class PlayList implements Serializable, Cloneable {
      * @param audioObject
      * @return
      */
-    public int indexOf(AudioObject audioObject) {
+    public int indexOf(IAudioObject audioObject) {
         return this.audioObjects.indexOf(audioObject);
     }
 
@@ -337,7 +337,7 @@ public class PlayList implements Serializable, Cloneable {
      * @param index
      * @return
      */
-    public AudioObject get(int index) {
+    public IAudioObject get(int index) {
         if (index < 0 || index >= this.audioObjects.size()) {
             return null;
         }
@@ -349,7 +349,7 @@ public class PlayList implements Serializable, Cloneable {
      * 
      * @return the current audio object
      */
-    protected AudioObject getCurrentAudioObject() {
+    protected IAudioObject getCurrentAudioObject() {
         return this.audioObjects.getCurrentObject();
     }
 
@@ -379,7 +379,7 @@ public class PlayList implements Serializable, Cloneable {
      * @param audioObject
      * @return
      */
-    public boolean contains(AudioObject audioObject) {
+    public boolean contains(IAudioObject audioObject) {
         return this.audioObjects.contains(audioObject);
     }
 
@@ -420,8 +420,8 @@ public class PlayList implements Serializable, Cloneable {
      * 
      * @return
      */
-    protected AudioObject moveToNextAudioObject() {
-        AudioObject nextObject = getMode().moveToNextAudioObject();
+    protected IAudioObject moveToNextAudioObject() {
+        IAudioObject nextObject = getMode().moveToNextAudioObject();
         notifyCurrentAudioObjectChanged(nextObject);
         return nextObject;
     }
@@ -431,17 +431,17 @@ public class PlayList implements Serializable, Cloneable {
      * 
      * @return
      */
-    protected AudioObject moveToPreviousAudioObject() {
-        AudioObject previousObject = getMode().moveToPreviousAudioObject();
+    protected IAudioObject moveToPreviousAudioObject() {
+        IAudioObject previousObject = getMode().moveToPreviousAudioObject();
         notifyCurrentAudioObjectChanged(previousObject);
         return previousObject;
     }
 
-    public AudioObject getNextAudioObject(int index) {
+    public IAudioObject getNextAudioObject(int index) {
         return getMode().getNextAudioObject(index);
     }
 
-    public AudioObject getPreviousAudioObject(int index) {
+    public IAudioObject getPreviousAudioObject(int index) {
         return getMode().getPreviousAudioObject(index);
     }
 
@@ -452,7 +452,7 @@ public class PlayList implements Serializable, Cloneable {
      */
     public String getLength() {
         long seconds = 0;
-        for (AudioObject song : this.audioObjects.getList()) {
+        for (IAudioObject song : this.audioObjects.getList()) {
             seconds += song.getDuration();
         }
         return StringUtils.fromSecondsToHoursAndDays(seconds);
@@ -463,7 +463,7 @@ public class PlayList implements Serializable, Cloneable {
      * 
      * @return
      */
-    protected List<AudioObject> getAudioObjects() {
+    protected List<IAudioObject> getAudioObjects() {
         return this.audioObjects.getList();
     }
 
@@ -473,7 +473,7 @@ public class PlayList implements Serializable, Cloneable {
      * @param position
      * @param audioObjectList
      */
-    private void notifyAudioObjectsAdded(int position, List<? extends AudioObject> audioObjectList) {
+    private void notifyAudioObjectsAdded(int position, List<? extends IAudioObject> audioObjectList) {
         List<PlayListAudioObject> playListAudioObjects = PlayListAudioObject.getList(position, audioObjectList);
 
         // Notify mode too
@@ -509,7 +509,7 @@ public class PlayList implements Serializable, Cloneable {
      * Private method to call listeners
      * @param audioObject
      */
-    private void notifyCurrentAudioObjectChanged(AudioObject audioObject) {
+    private void notifyCurrentAudioObjectChanged(IAudioObject audioObject) {
     	PlayListEventListeners.selectedAudioObjectHasChanged(audioObject);
     }
 
@@ -533,11 +533,11 @@ public class PlayList implements Serializable, Cloneable {
      * 
      * @return
      */
-    PointedList<AudioObject> getPointedList() {
+    PointedList<IAudioObject> getPointedList() {
         return this.audioObjects;
     }
 
-    void addToPlaybackHistory(AudioObject object) {
+    void addToPlaybackHistory(IAudioObject object) {
         this.mode.addToPlaybackHistory(object);
     }
 
@@ -546,7 +546,7 @@ public class PlayList implements Serializable, Cloneable {
      * 
      * @param content
      */
-    protected void setContent(List<AudioObject> content) {
+    protected void setContent(List<IAudioObject> content) {
         this.audioObjects.setContent(content);
         // This is an internal operation used when reading play lists from disk
         // There is no need to call listeners here. Even it will cause wrong behaviour

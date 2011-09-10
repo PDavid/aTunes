@@ -28,7 +28,7 @@ import net.sourceforge.atunes.gui.views.dialogs.PatternInputDialog;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.kernel.modules.tags.EditTagFromFileNamePatternProcess;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -67,7 +67,7 @@ public class AutoSetTagFromFileNamePatternAction extends AbstractActionOverSelec
     }
 
     @Override
-    public boolean isEnabledForNavigationTableSelection(List<AudioObject> selection) {
+    public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
         return !selection.isEmpty();
     }
 

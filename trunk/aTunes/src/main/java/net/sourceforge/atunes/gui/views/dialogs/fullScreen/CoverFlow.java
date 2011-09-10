@@ -33,6 +33,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.images.RadioImageIcon;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
@@ -40,19 +41,19 @@ import net.sourceforge.atunes.gui.views.controls.Cover3D;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 
 public final class CoverFlow extends JPanel {
 
     private final class PaintCoversSwingWorker extends SwingWorker<Void, Void> {
 		private final Cover3D cover;
-		private final AudioObject audioObject;
+		private final IAudioObject audioObject;
 		private final int index;
 
-		private PaintCoversSwingWorker(Cover3D cover, AudioObject audioObject, int index) {
+		private PaintCoversSwingWorker(Cover3D cover, IAudioObject audioObject, int index) {
 			this.cover = cover;
 			this.audioObject = audioObject;
 			this.index = index;
@@ -139,15 +140,15 @@ public final class CoverFlow extends JPanel {
      * @param updateCover
      *            the update cover
      */
-    void paint(final List<AudioObject> objects) {
+    void paint(final List<IAudioObject> objects) {
         int i = 0;
-        for (AudioObject ao : objects) {
+        for (IAudioObject ao : objects) {
             paint(ao, i < covers.size() ? covers.get(i) : null, i == 2, i);
             i++;
         }
     }
 
-    private void paint(final AudioObject audioObject, final Cover3D cover, boolean current, int index) {
+    private void paint(final IAudioObject audioObject, final Cover3D cover, boolean current, int index) {
         // No object
         if (audioObject == null) {
             return;
@@ -164,7 +165,7 @@ public final class CoverFlow extends JPanel {
      * @return
      */
     protected Image getPicture(AudioFile audioFile) {
-    	Image result = WebServicesHandler.getInstance().getLastFmService().getAlbumImage(audioFile.getArtist(), audioFile.getAlbum());
+    	Image result = Context.getBean(IWebServicesHandler.class).getAlbumImage(audioFile.getArtist(), audioFile.getAlbum());
         if (result == null) {
             ImageIcon[] pictures = AudioFilePictureUtils.getPicturesForFile(audioFile, -1, -1);
             if (pictures != null && pictures.length > 0) {

@@ -33,7 +33,7 @@ import javax.swing.filechooser.FileFilter;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -79,7 +79,7 @@ public class SavePlayListAction extends CustomAbstractAction {
     }
 
     @Override
-    public boolean isEnabledForPlayListSelection(List<AudioObject> selection) {
+    public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
         return !PlayListHandler.getInstance().getCurrentPlayList(true).isEmpty();
     }
 

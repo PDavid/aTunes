@@ -34,7 +34,7 @@ import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 
 import org.gstreamer.Bus;
@@ -151,7 +151,7 @@ public class GStreamerEngine extends AbstractPlayerEngine {
     }
 
     @Override
-    protected void startPlayback(AudioObject audioObjectToPlay, AudioObject audioObject) {
+    protected void startPlayback(IAudioObject audioObjectToPlay, IAudioObject audioObject) {
 
         if (audioObjectToPlay instanceof AudioFile) {
             playBin.setInputFile(new File(audioObjectToPlay.getUrl()));

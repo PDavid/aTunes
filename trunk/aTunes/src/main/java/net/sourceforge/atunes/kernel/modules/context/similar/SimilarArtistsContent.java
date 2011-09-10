@@ -26,8 +26,8 @@ import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.context.ContextTable;
-import net.sourceforge.atunes.kernel.modules.context.SimilarArtistsInfo;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.ISimilarArtistsInfo;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class SimilarArtistsContent extends AbstractContextPanelContent {
@@ -41,7 +41,7 @@ public class SimilarArtistsContent extends AbstractContextPanelContent {
     }
 
     @Override
-    protected Map<String, ?> getDataSourceParameters(AudioObject audioObject) {
+    protected Map<String, ?> getDataSourceParameters(IAudioObject audioObject) {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put(SimilarArtistsDataSource.INPUT_AUDIO_OBJECT, audioObject);
         return parameters;
@@ -50,7 +50,7 @@ public class SimilarArtistsContent extends AbstractContextPanelContent {
     @Override
     protected void updateContentWithDataSourceResult(Map<String, ?> result) {
         if (result.containsKey(SimilarArtistsDataSource.OUTPUT_ARTISTS)) {
-            similarArtistsTable.setModel(new SimilarArtistsTableModel(((SimilarArtistsInfo) result.get(SimilarArtistsDataSource.OUTPUT_ARTISTS)).getArtists()));
+            similarArtistsTable.setModel(new SimilarArtistsTableModel(((ISimilarArtistsInfo) result.get(SimilarArtistsDataSource.OUTPUT_ARTISTS)).getArtists()));
         }
     }
 

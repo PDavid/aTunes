@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 
 public class PlayListLocalAudioObjectFilter implements PlayListObjectFilter<ILocalAudioObject> {
@@ -31,7 +31,7 @@ public class PlayListLocalAudioObjectFilter implements PlayListObjectFilter<ILoc
 	@Override
 	public List<ILocalAudioObject> getObjects(PlayList playList) {
         List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
-        for (AudioObject ao : playList.getAudioObjects()) {
+        for (IAudioObject ao : playList.getAudioObjects()) {
             if (ao instanceof ILocalAudioObject) {
                 result.add((ILocalAudioObject)ao);
             }

@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.actions;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -44,7 +44,7 @@ public class ExtractPictureAction extends AbstractActionOverSelectedObjects<ILoc
     }
 
     @Override
-    public boolean isEnabledForNavigationTableSelection(List<AudioObject> selection) {
+    public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
         return selection.size() == 1 && selection.get(0) instanceof ILocalAudioObject && ((ILocalAudioObject) selection.get(0)).hasInternalPicture();
     }
 }

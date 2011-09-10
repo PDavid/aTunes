@@ -25,8 +25,8 @@ import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.context.ContextInformationDataSource;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
-import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.ILyricsService;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class LyricsDataSource implements ContextInformationDataSource {
@@ -46,13 +46,13 @@ public class LyricsDataSource implements ContextInformationDataSource {
      */
     public static final String OUTPUT_AUDIO_OBJECT = INPUT_AUDIO_OBJECT;
 
-    private LyricsService lyricsService;
+    private ILyricsService lyricsService;
     
 	@Override
     public Map<String, ?> getData(Map<String, ?> parameters) {
         Map<String, Object> result = new HashMap<String, Object>();
         if (parameters.containsKey(INPUT_AUDIO_OBJECT)) {
-            AudioObject audioObject = (AudioObject) parameters.get(INPUT_AUDIO_OBJECT);
+            IAudioObject audioObject = (IAudioObject) parameters.get(INPUT_AUDIO_OBJECT);
             result.put(OUTPUT_AUDIO_OBJECT, audioObject);
             result.put(OUTPUT_LYRIC, getLyrics(audioObject));
         }
@@ -65,7 +65,7 @@ public class LyricsDataSource implements ContextInformationDataSource {
      * @param audioObject
      * @return
      */
-    private Lyrics getLyrics(AudioObject audioObject) {
+    private Lyrics getLyrics(IAudioObject audioObject) {
         Lyrics lyrics = null;
         // First check if tag contains the lyrics. Favour this over internet services.
         if (!audioObject.getLyrics().trim().isEmpty()) {
@@ -85,7 +85,7 @@ public class LyricsDataSource implements ContextInformationDataSource {
         return lyrics;
     }
     
-    public void setLyricsService(LyricsService lyricsService) {
+    public void setLyricsService(ILyricsService lyricsService) {
 		this.lyricsService = lyricsService;
 	}
 

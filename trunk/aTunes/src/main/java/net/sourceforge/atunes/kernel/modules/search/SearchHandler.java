@@ -38,7 +38,7 @@ import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.search.searchableobjects.DeviceSearchableObject;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -114,10 +114,10 @@ public final class SearchHandler extends AbstractHandler {
 		    }
 		}
 
-		private void updateSearchIndex(List<AudioObject> audioObjects) {
+		private void updateSearchIndex(List<IAudioObject> audioObjects) {
 		    Logger.info("update search index");
 		    if (indexWriter != null) {
-		        for (AudioObject audioObject : audioObjects) {
+		        for (IAudioObject audioObject : audioObjects) {
 		            Document d = searchableObject.getDocumentForElement(audioObject);
 		            // Add dummy field
 		            d.add(new Field(INDEX_FIELD_DUMMY, INDEX_FIELD_DUMMY, Field.Store.YES, Field.Index.NOT_ANALYZED_NO_NORMS));
@@ -217,7 +217,7 @@ public final class SearchHandler extends AbstractHandler {
     }
 
     @Override
-    public void applicationStarted(List<AudioObject> playList) {
+    public void applicationStarted(List<IAudioObject> playList) {
     }
 
     @Override
@@ -295,7 +295,7 @@ public final class SearchHandler extends AbstractHandler {
      * @throws SearchQuerySyntaxException
      *             If the search query has invalid syntax
      */
-    public List<AudioObject> search(SearchableObject searchableObject, String queryStr) throws SearchIndexNotAvailableException, SearchQuerySyntaxException {
+    public List<IAudioObject> search(SearchableObject searchableObject, String queryStr) throws SearchIndexNotAvailableException, SearchQuerySyntaxException {
         ReadWriteLock searchIndexLock = indexLocks.get(searchableObject);
         Searcher searcher = null;
         try {
@@ -310,7 +310,7 @@ public final class SearchHandler extends AbstractHandler {
             for (ScoreDoc scoreDoc : topDocs.scoreDocs) {
                 rawSearchResults.add(new RawSearchResult(searcher.doc(scoreDoc.doc), scoreDoc.score));
             }
-            List<AudioObject> result = searchableObject.getSearchResult(rawSearchResults);
+            List<IAudioObject> result = searchableObject.getSearchResult(rawSearchResults);
             Logger.debug("Query: ", queryString, " (", result.size(), " search results)");
             return result;
         } catch (IOException e) {
@@ -377,7 +377,7 @@ public final class SearchHandler extends AbstractHandler {
      * @param result
      *            the result
      */
-    void showSearchResults(SearchableObject searchableObject, List<AudioObject> result) {
+    void showSearchResults(SearchableObject searchableObject, List<IAudioObject> result) {
         // Open search results dialog
         getSearchResultsController().showSearchResults(searchableObject, result);
     }
@@ -391,7 +391,7 @@ public final class SearchHandler extends AbstractHandler {
 	public void playListCleared() {}
 
 	@Override
-	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+	public void selectedAudioObjectChanged(IAudioObject audioObject) {}
 
 	@Override
 	public void deviceReady(String location) {

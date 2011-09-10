@@ -31,7 +31,7 @@ import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 
 public final class SmartPlayListHandler {
@@ -71,7 +71,7 @@ public final class SmartPlayListHandler {
         List<Album> albums = StatisticsHandler.getInstance().getMostPlayedAlbums(n);
 
         // Songs selected
-        List<AudioObject> songsSelected = new ArrayList<AudioObject>();
+        List<IAudioObject> songsSelected = new ArrayList<IAudioObject>();
 
         // Add album songs
         for (Album a : albums) {
@@ -96,7 +96,7 @@ public final class SmartPlayListHandler {
         List<Artist> artists = StatisticsHandler.getInstance().getMostPlayedArtists(n);
 
         // Songs selected
-        List<AudioObject> songsSelected = new ArrayList<AudioObject>();
+        List<IAudioObject> songsSelected = new ArrayList<IAudioObject>();
 
         // Add album songs
         for (Artist a : artists) {
@@ -121,7 +121,7 @@ public final class SmartPlayListHandler {
         List<ILocalAudioObject> songs = new ArrayList<ILocalAudioObject>(RepositoryHandler.getInstance().getAudioFilesList());
 
         // Songs selected
-        List<AudioObject> songsSelected = new ArrayList<AudioObject>();
+        List<IAudioObject> songsSelected = new ArrayList<IAudioObject>();
 
         // Initialize random generator
         Random r = new Random(new Date().getTime());
@@ -173,7 +173,7 @@ public final class SmartPlayListHandler {
         // Add to playlist
         int count = Math.min(unplayedSongs.size(), n);
         if (count > 0) {
-            List<AudioObject> audioObjects = new ArrayList<AudioObject>(unplayedSongs.subList(0, count));
+            List<IAudioObject> audioObjects = new ArrayList<IAudioObject>(unplayedSongs.subList(0, count));
             AudioObjectComparator.sort(audioObjects);
             PlayListHandler.getInstance().addToPlayList(audioObjects);
         }

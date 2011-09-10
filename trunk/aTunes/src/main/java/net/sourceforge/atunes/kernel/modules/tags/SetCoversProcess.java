@@ -30,13 +30,14 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
-import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.ImageUtils;
 
 /**
@@ -85,6 +86,7 @@ public class SetCoversProcess extends AbstractChangeTagProcess {
 
         Map<Integer, Image> coverCache = new HashMap<Integer, Image>();
 
+        IWebServicesHandler  webServicesHandler = Context.getBean(IWebServicesHandler.class);
         for (ILocalAudioObject f : files) {
             if (!Artist.isUnknownArtist(f.getArtist()) && !Album.isUnknownAlbum(f.getAlbum())) {
                 Image cover = null;
@@ -92,11 +94,11 @@ public class SetCoversProcess extends AbstractChangeTagProcess {
                 if (coverCache.containsKey(cacheKey)) {
                     cover = coverCache.get(cacheKey);
                 } else {
-                    AlbumInfo albumInfo = WebServicesHandler.getInstance().getLastFmService().getAlbum(f.getArtist(), f.getAlbum());
+                    IAlbumInfo albumInfo = webServicesHandler.getAlbum(f.getArtist(), f.getAlbum());
                     if (albumInfo == null) {
                         continue;
                     }
-                    cover = WebServicesHandler.getInstance().getLastFmService().getImage(albumInfo);
+                    cover = webServicesHandler.getAlbumImage(albumInfo);
                     if (cover == null) {
                         continue;
                     }

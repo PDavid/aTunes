@@ -14,5 +14,6 @@
 	
 	<bean id="tagHandler" class="net.sourceforge.atunes.kernel.modules.tags.TagHandler"/>
 
+	<bean id="webServicesHandler" class="net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler"/>
 
 </beans>

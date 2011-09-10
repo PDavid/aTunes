@@ -24,7 +24,7 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class LengthColumn extends AbstractColumn {
@@ -40,12 +40,12 @@ public class LengthColumn extends AbstractColumn {
     }
 
     @Override
-    protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
+    protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
         return Long.valueOf(ao1.getDuration()).compareTo(Long.valueOf(ao2.getDuration()));
     }
 
     @Override
-    public Object getValueFor(AudioObject audioObject) {
+    public Object getValueFor(IAudioObject audioObject) {
         // Return length
         if (audioObject instanceof Radio) {
             return "";

@@ -24,7 +24,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -44,7 +44,7 @@ public class SetFavoriteSongFromNavigatorAction extends AbstractActionOverSelect
     }
 
     @Override
-    public boolean isEnabledForNavigationTableSelection(List<AudioObject> selection) {
+    public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
         return true;
     }
 }

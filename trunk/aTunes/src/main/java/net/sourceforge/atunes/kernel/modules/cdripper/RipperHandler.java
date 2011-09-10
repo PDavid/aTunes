@@ -37,6 +37,7 @@ import java.util.concurrent.Executors;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.RipCdDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RipperProgressDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
@@ -47,14 +48,14 @@ import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavCo
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.NoCdListener;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
 import net.sourceforge.atunes.kernel.modules.cdripper.encoders.Encoder;
-import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
 import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -67,7 +68,7 @@ public final class RipperHandler extends AbstractHandler {
             StringUtils.getString(CdRipper.ARTIST_PATTERN, " - ", CdRipper.TITLE_PATTERN) };
 
     private final class FillSongTitlesSwingWorker extends
-			SwingWorker<AlbumInfo, Void> {
+			SwingWorker<IAlbumInfo, Void> {
 		private final String artist;
 		private final String album;
 
@@ -77,15 +78,15 @@ public final class RipperHandler extends AbstractHandler {
 		}
 
 		@Override
-		protected AlbumInfo doInBackground() throws Exception {
-		    return WebServicesHandler.getInstance().getLastFmService().getAlbum(artist, album);
+		protected IAlbumInfo doInBackground() throws Exception {
+		    return Context.getBean(IWebServicesHandler.class).getAlbum(artist, album);
 		}
 
 		@Override
 		protected void done() {
 		    try {
 		        if (get() != null) {
-		            albumCoverURL = get().getCoverURL();
+		            albumInfo = get();
 		            List<String> trackNames = new ArrayList<String>();
 		            for (TrackInfo trackInfo : get().getTracks()) {
 		                trackNames.add(trackInfo.getTitle());
@@ -255,7 +256,7 @@ public final class RipperHandler extends AbstractHandler {
     private CdRipper ripper;
     private volatile boolean interrupted;
     private boolean folderCreated;
-    private String albumCoverURL;
+    private IAlbumInfo albumInfo;
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     /**
@@ -312,7 +313,7 @@ public final class RipperHandler extends AbstractHandler {
     }
 
     @Override
-    public void applicationStarted(List<AudioObject> playList) {
+    public void applicationStarted(List<IAudioObject> playList) {
     }
 
     @Override
@@ -537,8 +538,8 @@ public final class RipperHandler extends AbstractHandler {
         final RipperProgressDialog dialog = GuiHandler.getInstance().getRipperProgressDialog();
 
         // Get image from amazon if necessary
-        if (albumCoverURL != null) {
-            Image cover = WebServicesHandler.getInstance().getLastFmService().getImage(albumCoverURL);
+        if (albumInfo != null) {
+            Image cover = Context.getBean(IWebServicesHandler.class).getAlbumImage(albumInfo);
             dialog.setCover(cover);
             savePicture(cover, folderFile, artist, album);
         }
@@ -716,7 +717,7 @@ public final class RipperHandler extends AbstractHandler {
 	public void playListCleared() {}
 
 	@Override
-	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+	public void selectedAudioObjectChanged(IAudioObject audioObject) {}
 
 	/**
 	 * Returns true if rip CDs is supported in current system

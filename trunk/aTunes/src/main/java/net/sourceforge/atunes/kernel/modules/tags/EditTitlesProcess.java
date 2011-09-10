@@ -24,9 +24,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IWebServicesHandler;
 
 /**
  * The Class ChangeTitlesProcess.
@@ -81,8 +82,9 @@ public class EditTitlesProcess extends AbstractChangeTagProcess {
         Map<ILocalAudioObject, String> result = new HashMap<ILocalAudioObject, String>();
 
         // For each file
+        IWebServicesHandler webServicesHandler = Context.getBean(IWebServicesHandler.class);
         for (ILocalAudioObject f : files) {
-            String title = WebServicesHandler.getInstance().getLastFmService().getTitleForFile(f);
+            String title = webServicesHandler.getTitleForAudioObject(f);
             if (title != null) {
                 result.put(f, title);
             }

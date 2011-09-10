@@ -40,11 +40,11 @@ import net.sourceforge.atunes.gui.views.controls.CustomTextPane;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
-import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService;
 import net.sourceforge.atunes.misc.ClipboardFacade;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.EditTagSources;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILyricsService;
 import net.sourceforge.atunes.model.ITagHandler;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -82,9 +82,9 @@ public class LyricsContent extends AbstractContextPanelContent {
 
     private String lyricsSourceUrl;
 
-    private AudioObject audioObject;
+    private IAudioObject audioObject;
     
-    private LyricsService lyricsService;
+    private ILyricsService lyricsService;
 
     public LyricsContent() {
         copyLyrics = new JMenuItem(new AbstractAction(I18nUtils.getString("COPY_TO_CLIPBOARD")) {
@@ -119,8 +119,8 @@ public class LyricsContent extends AbstractContextPanelContent {
     }
 
     @Override
-    protected Map<String, ?> getDataSourceParameters(AudioObject audioObject) {
-        Map<String, AudioObject> parameters = new HashMap<String, AudioObject>();
+    protected Map<String, ?> getDataSourceParameters(IAudioObject audioObject) {
+        Map<String, IAudioObject> parameters = new HashMap<String, IAudioObject>();
         parameters.put(LyricsDataSource.INPUT_AUDIO_OBJECT, audioObject);
         this.audioObject = audioObject;
         return parameters;
@@ -186,7 +186,7 @@ public class LyricsContent extends AbstractContextPanelContent {
         return options;
     }
 
-    public void setLyricsService(LyricsService lyricsService) {
+    public void setLyricsService(ILyricsService lyricsService) {
 		this.lyricsService = lyricsService;
 	}
 }

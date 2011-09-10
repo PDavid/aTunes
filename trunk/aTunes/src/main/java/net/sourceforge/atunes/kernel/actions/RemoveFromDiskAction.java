@@ -43,7 +43,7 @@ import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ViewMode;
@@ -108,7 +108,7 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
     }
 
     private void fromOtherViews() {
-        final List<AudioObject> files = NavigationHandler.getInstance().getFilesSelectedInNavigator();
+        final List<IAudioObject> files = NavigationHandler.getInstance().getFilesSelectedInNavigator();
         RepositoryHandler.getInstance().startTransaction();
         RepositoryHandler.getInstance().remove(AudioFile.getAudioFiles(files));
         RepositoryHandler.getInstance().endTransaction();
@@ -155,7 +155,7 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
     private void fromPodcastView() {
         int[] rows = NavigationHandler.getInstance().getNavigationTable().getSelectedRows();
         if (rows.length > 0) {
-            List<AudioObject> songs = new ArrayList<AudioObject>();
+            List<IAudioObject> songs = new ArrayList<IAudioObject>();
             for (int element : rows) {
                 songs.add(((NavigationTableModel) NavigationHandler.getInstance().getNavigationTable().getModel())
                         .getAudioObjectAt(element));
@@ -173,9 +173,9 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
     }
 
     @Override
-    public boolean isEnabledForNavigationTableSelection(List<AudioObject> selection) {
+    public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
         if (NavigationHandler.getInstance().getCurrentView().equals(NavigationHandler.getInstance().getView(PodcastNavigationView.class))) {
-            for (AudioObject ao : selection) {
+            for (IAudioObject ao : selection) {
                 if (!((PodcastFeedEntry) ao).isDownloaded()) {
                     return false;
                 }

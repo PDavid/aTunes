@@ -28,7 +28,7 @@ import javax.swing.SwingConstants;
 import net.sourceforge.atunes.gui.images.AlbumFavoriteImageIcon;
 import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 
 public class AlbumColumn extends AbstractColumn {
 
@@ -41,7 +41,7 @@ public class AlbumColumn extends AbstractColumn {
     }
 
     @Override
-    protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
+    protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
         if (ao1.getAlbum().equals(ao2.getAlbum())) {
             if (ao1.getDiscNumber() == ao2.getDiscNumber()) {
                 return Integer.valueOf(ao1.getTrackNumber()).compareTo(ao2.getTrackNumber());
@@ -52,7 +52,7 @@ public class AlbumColumn extends AbstractColumn {
     }
 
     @Override
-    public Object getValueFor(AudioObject audioObject) {
+    public Object getValueFor(IAudioObject audioObject) {
         // Return album
         return new TextAndIcon(audioObject.getAlbum(), 
         		!FavoritesHandler.getInstance().getFavoriteAlbumsInfo().containsKey(audioObject.getAlbum()) ? null : new ColorMutableImageIcon() {
@@ -65,7 +65,7 @@ public class AlbumColumn extends AbstractColumn {
     }
 
     @Override
-    public String getValueForFilter(AudioObject audioObject) {
+    public String getValueForFilter(IAudioObject audioObject) {
         return audioObject.getAlbum();
     }
 

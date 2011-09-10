@@ -21,7 +21,7 @@ package net.sourceforge.atunes.kernel.modules.columns;
 
 import javax.swing.SwingConstants;
 
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 
 public class TrackColumn extends AbstractColumn {
 
@@ -35,12 +35,12 @@ public class TrackColumn extends AbstractColumn {
     }
 
     @Override
-    protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
+    protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
         return Integer.valueOf(ao1.getTrackNumber()).compareTo(ao2.getTrackNumber());
     }
 
     @Override
-    public Object getValueFor(AudioObject audioObject) {
+    public Object getValueFor(IAudioObject audioObject) {
         // Return track number or null, otherwise problems while comparing arise
         int track = audioObject.getTrackNumber();
         return track > 0 ? track : null;

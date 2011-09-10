@@ -24,7 +24,7 @@ import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 
 public class FavoriteColumn extends AbstractColumn {
 
@@ -41,7 +41,7 @@ public class FavoriteColumn extends AbstractColumn {
     }
 
     @Override
-    protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
+    protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
         return 0;
     }
 
@@ -51,7 +51,7 @@ public class FavoriteColumn extends AbstractColumn {
     }
 
     @Override
-    public Object getValueFor(AudioObject audioObject) {
+    public Object getValueFor(IAudioObject audioObject) {
         // Return image
         if (audioObject instanceof Radio) {
             return null;

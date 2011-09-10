@@ -31,20 +31,20 @@ import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class CopyToDeviceAction extends AbstractActionOverSelectedObjects<AudioObject> {
+public class CopyToDeviceAction extends AbstractActionOverSelectedObjects<IAudioObject> {
 
     private static final long serialVersionUID = -7689483210176624995L;
 
     CopyToDeviceAction() {
-        super(I18nUtils.getString("COPY_TO_DEVICE"), AudioObject.class);
+        super(I18nUtils.getString("COPY_TO_DEVICE"), IAudioObject.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("COPY_TO_DEVICE"));
     }
 
     @Override
-    protected AudioObject preprocessObject(AudioObject audioObject) {
+    protected IAudioObject preprocessObject(IAudioObject audioObject) {
         if (audioObject instanceof AudioFile) {
             return audioObject;
         } else if (audioObject instanceof PodcastFeedEntry && ((PodcastFeedEntry) audioObject).isDownloaded()) {
@@ -56,7 +56,7 @@ public class CopyToDeviceAction extends AbstractActionOverSelectedObjects<AudioO
     }
 
     @Override
-    protected void performAction(List<AudioObject> objects) {
+    protected void performAction(List<IAudioObject> objects) {
         DeviceHandler.getInstance().copyFilesToDevice(AudioFile.getAudioFiles(objects));
     }
 
@@ -66,13 +66,13 @@ public class CopyToDeviceAction extends AbstractActionOverSelectedObjects<AudioO
     }
 
     @Override
-    public boolean isEnabledForNavigationTableSelection(List<AudioObject> selection) {
+    public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
         if (!DeviceHandler.getInstance().isDeviceConnected()) {
             return false;
         }
 
         if (NavigationHandler.getInstance().getCurrentView().equals(NavigationHandler.getInstance().getView(PodcastNavigationView.class))) {
-            for (AudioObject ao : selection) {
+            for (IAudioObject ao : selection) {
                 if (!((PodcastFeedEntry) ao).isDownloaded()) {
                     return false;
                 }

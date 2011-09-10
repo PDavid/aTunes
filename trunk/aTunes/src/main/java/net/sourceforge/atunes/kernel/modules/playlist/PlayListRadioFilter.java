@@ -24,14 +24,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 
 public class PlayListRadioFilter implements PlayListObjectFilter<Radio> {
 	
 	@Override
 	public List<Radio> getObjects(PlayList playList) {
         List<Radio> result = new ArrayList<Radio>();
-        for (AudioObject ao : playList.getAudioObjects()) {
+        for (IAudioObject ao : playList.getAudioObjects()) {
             if (ao instanceof Radio) {
                 result.add((Radio)ao);
             }

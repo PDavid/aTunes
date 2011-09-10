@@ -32,7 +32,7 @@ import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.PlayNextAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.PlayPreviousAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.ShowOSDAction;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 
 public final class CommandHandler extends AbstractHandler {
@@ -71,7 +71,7 @@ public final class CommandHandler extends AbstractHandler {
     }
 
     @Override
-    public void applicationStarted(List<AudioObject> playList) {
+    public void applicationStarted(List<IAudioObject> playList) {
     }
     
     @Override
@@ -191,6 +191,6 @@ public final class CommandHandler extends AbstractHandler {
 	public void playListCleared() {}
 
 	@Override
-	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+	public void selectedAudioObjectChanged(IAudioObject audioObject) {}
 
 }

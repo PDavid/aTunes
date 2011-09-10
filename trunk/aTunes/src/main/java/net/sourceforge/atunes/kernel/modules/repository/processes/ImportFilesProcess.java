@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.process.AbstractAudioFileTransferProcess;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
@@ -33,9 +34,9 @@ import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
 import net.sourceforge.atunes.kernel.modules.tags.TagAttributesReviewed;
 import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
 import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
-import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -238,7 +239,7 @@ public class ImportFilesProcess extends AbstractAudioFileTransferProcess {
      */
     private void setTitle(ILocalAudioObject fileToImport) {
         if (getState().isSetTitlesWhenImporting()) {
-            String newTitle = WebServicesHandler.getInstance().getLastFmService().getTitleForFile(fileToImport);
+            String newTitle = Context.getBean(IWebServicesHandler.class).getTitleForAudioObject(fileToImport);
             if (newTitle != null) {
                 if (fileToImport.getTag() == null) {
                     fileToImport.setTag(new DefaultTag());

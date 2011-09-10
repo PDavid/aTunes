@@ -25,20 +25,20 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class SetAsPlayListAction extends AbstractActionOverSelectedObjects<AudioObject> {
+public class SetAsPlayListAction extends AbstractActionOverSelectedObjects<IAudioObject> {
 
     private static final long serialVersionUID = -8993769615827375740L;
 
     SetAsPlayListAction() {
-        super(I18nUtils.getString("SET_AS_PLAYLIST"), AudioObject.class);
+        super(I18nUtils.getString("SET_AS_PLAYLIST"), IAudioObject.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SET_AS_PLAYLIST"));
     }
 
     @Override
-    protected void performAction(List<AudioObject> objects) {
+    protected void performAction(List<IAudioObject> objects) {
         PlayListHandler.getInstance().clearPlayList();
         PlayListHandler.getInstance().addToPlayList(objects);
     }
@@ -49,7 +49,7 @@ public class SetAsPlayListAction extends AbstractActionOverSelectedObjects<Audio
     }
 
     @Override
-    public boolean isEnabledForNavigationTableSelection(List<AudioObject> selection) {
+    public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
         return !selection.isEmpty();
     }
 }

@@ -33,9 +33,9 @@ import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
-import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
 import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -70,8 +70,8 @@ public class AlbumTracksContent extends AbstractContextPanelContent {
     }
 
     @Override
-    protected Map<String, ?> getDataSourceParameters(AudioObject audioObject) {
-        Map<String, AudioObject> parameters = new HashMap<String, AudioObject>();
+    protected Map<String, ?> getDataSourceParameters(IAudioObject audioObject) {
+        Map<String, IAudioObject> parameters = new HashMap<String, IAudioObject>();
         parameters.put(AlbumInfoDataSource.INPUT_AUDIO_OBJECT, audioObject);
         return parameters;
     }
@@ -79,7 +79,7 @@ public class AlbumTracksContent extends AbstractContextPanelContent {
     @Override
     protected void updateContentWithDataSourceResult(Map<String, ?> result) {
         if (result.containsKey(AlbumInfoDataSource.OUTPUT_ALBUM)) {
-            tracksTable.setModel(new ContextTracksTableModel((AlbumInfo) result.get(AlbumInfoDataSource.OUTPUT_ALBUM)));
+            tracksTable.setModel(new ContextTracksTableModel((IAlbumInfo) result.get(AlbumInfoDataSource.OUTPUT_ALBUM)));
         }
     }
 

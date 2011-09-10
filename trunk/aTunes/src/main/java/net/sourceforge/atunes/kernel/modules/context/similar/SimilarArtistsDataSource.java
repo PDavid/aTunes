@@ -27,13 +27,13 @@ import java.util.Map;
 import java.util.Set;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.kernel.modules.context.ArtistInfo;
 import net.sourceforge.atunes.kernel.modules.context.ContextInformationDataSource;
-import net.sourceforge.atunes.kernel.modules.context.SimilarArtistsInfo;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.model.Artist;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IArtistInfo;
+import net.sourceforge.atunes.model.ISimilarArtistsInfo;
+import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.ImageUtils;
 
 /**
@@ -54,11 +54,13 @@ public class SimilarArtistsDataSource implements ContextInformationDataSource {
      */
     public static final String OUTPUT_ARTISTS = "ARTISTS";
 
+	private IWebServicesHandler webServicesHandler;
+
     @Override
     public Map<String, ?> getData(Map<String, ?> parameters) {
         Map<String, Object> result = new HashMap<String, Object>();
         if (parameters.containsKey(INPUT_AUDIO_OBJECT)) {
-        	SimilarArtistsInfo info = getSimilarArtists((AudioObject) parameters.get(INPUT_AUDIO_OBJECT));
+        	ISimilarArtistsInfo info = getSimilarArtists((IAudioObject) parameters.get(INPUT_AUDIO_OBJECT));
         	if (info != null) {
         		result.put(OUTPUT_ARTISTS, info);
         	}
@@ -71,17 +73,17 @@ public class SimilarArtistsDataSource implements ContextInformationDataSource {
      * 
      * @param audioObject
      */
-    private SimilarArtistsInfo getSimilarArtists(AudioObject audioObject) {
+    private ISimilarArtistsInfo getSimilarArtists(IAudioObject audioObject) {
         if (!Artist.isUnknownArtist(audioObject.getArtist())) {
-            SimilarArtistsInfo artists = WebServicesHandler.getInstance().getLastFmService().getSimilarArtists(audioObject.getArtist());
+            ISimilarArtistsInfo artists = webServicesHandler.getSimilarArtists(audioObject.getArtist());
             if (artists != null) {
             	Set<String> artistNamesSet = new HashSet<String>();
             	for (Artist a : RepositoryHandler.getInstance().getArtists()) {
             		artistNamesSet.add(a.getName().toUpperCase());
             	}
                 for (int i = 0; i < artists.getArtists().size(); i++) {
-                    ArtistInfo a = artists.getArtists().get(i);
-                    Image img = WebServicesHandler.getInstance().getLastFmService().getImage(a);
+                    IArtistInfo a = artists.getArtists().get(i);
+                    Image img = webServicesHandler.getArtistThumbImage(a);
                     a.setImage(ImageUtils.scaleImageBicubic(img, Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT));
                     a.setAvailable(artistNamesSet.contains(a.getName().toUpperCase()));
                 }
@@ -91,4 +93,7 @@ public class SimilarArtistsDataSource implements ContextInformationDataSource {
         return null;
     }
 
+    public final void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+		this.webServicesHandler = webServicesHandler;
+	}
 }

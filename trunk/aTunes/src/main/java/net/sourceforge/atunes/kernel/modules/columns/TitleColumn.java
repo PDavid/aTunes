@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.columns;
 
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 
 public class TitleColumn extends AbstractColumn {
 
@@ -34,17 +34,17 @@ public class TitleColumn extends AbstractColumn {
     }
 
     @Override
-    protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
+    protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
         return ao1.getTitleOrFileName().compareTo(ao2.getTitleOrFileName());
     }
 
     @Override
-    public Object getValueFor(AudioObject audioObject) {
+    public Object getValueFor(IAudioObject audioObject) {
         return audioObject.getTitleOrFileName();
     }
 
     @Override
-    public String getValueForFilter(AudioObject audioObject) {
+    public String getValueForFilter(IAudioObject audioObject) {
         return audioObject.getTitle();
     }
 

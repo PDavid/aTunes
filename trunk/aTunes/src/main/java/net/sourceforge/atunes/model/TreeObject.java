@@ -33,7 +33,7 @@ import org.commonjukebox.plugins.model.PluginApi;
  * interface.
  */
 @PluginApi
-public interface TreeObject<T extends AudioObject> {
+public interface TreeObject<T extends IAudioObject> {
 
     /**
      * Returns the audio objects of this tree object

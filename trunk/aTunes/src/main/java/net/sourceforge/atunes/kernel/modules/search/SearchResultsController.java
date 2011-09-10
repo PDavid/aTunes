@@ -39,7 +39,7 @@ import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 
 /**
@@ -47,7 +47,7 @@ import net.sourceforge.atunes.model.IState;
  */
 final class SearchResultsController extends AbstractSimpleController<SearchResultsDialog> {
 
-    private List<AudioObject> results;
+    private List<IAudioObject> results;
     
     private AbstractColumnSet columnSet;
 
@@ -65,7 +65,7 @@ final class SearchResultsController extends AbstractSimpleController<SearchResul
      * @param resultsList
      *            the results
      */
-    public void showSearchResults(SearchableObject searchableObject, List<AudioObject> resultsList) {
+    public void showSearchResults(SearchableObject searchableObject, List<IAudioObject> resultsList) {
         this.results = resultsList;
 
         SearchResultTableModel tableModel = (SearchResultTableModel) getComponentControlled().getSearchResultsTable().getModel();
@@ -111,7 +111,7 @@ final class SearchResultsController extends AbstractSimpleController<SearchResul
      * Displays info of first selected item.
      */
     protected void showInfo() {
-        List<AudioObject> selectedResults = getSelectedResults();
+        List<IAudioObject> selectedResults = getSelectedResults();
         if (selectedResults == null) {
             return;
         }
@@ -122,7 +122,7 @@ final class SearchResultsController extends AbstractSimpleController<SearchResul
      * Adds selected results to current play list.
      */
     protected void addToPlayList() {
-        List<AudioObject> selectedResults = getSelectedResults();
+        List<IAudioObject> selectedResults = getSelectedResults();
         if (selectedResults == null) {
             return;
         }
@@ -133,7 +133,7 @@ final class SearchResultsController extends AbstractSimpleController<SearchResul
      * Adds selected results to a new play list.
      */
     protected void addToNewPlayList() {
-        List<AudioObject> selectedResults = getSelectedResults();
+        List<IAudioObject> selectedResults = getSelectedResults();
         if (selectedResults == null) {
             return;
         }
@@ -145,12 +145,12 @@ final class SearchResultsController extends AbstractSimpleController<SearchResul
      * 
      * @return the selected results
      */
-    private List<AudioObject> getSelectedResults() {
+    private List<IAudioObject> getSelectedResults() {
         int[] selectedRows = getComponentControlled().getSearchResultsTable().getSelectedRows();
         if (selectedRows.length == 0) {
             return null;
         }
-        List<AudioObject> selectedResults = new ArrayList<AudioObject>();
+        List<IAudioObject> selectedResults = new ArrayList<IAudioObject>();
         JTable table = getComponentControlled().getSearchResultsTable();
         for (int row : selectedRows) {
             selectedResults.add(results.get(table.convertRowIndexToModel(row)));

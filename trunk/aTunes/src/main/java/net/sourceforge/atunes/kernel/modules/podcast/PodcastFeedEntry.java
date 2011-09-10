@@ -32,7 +32,7 @@ import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.DateUtils;
@@ -40,7 +40,7 @@ import net.sourceforge.atunes.utils.DateUtils;
 /**
  * Represents a entry of a podcast feed.
  */
-public final class PodcastFeedEntry implements AudioObject, Serializable, Comparable<PodcastFeedEntry> {
+public final class PodcastFeedEntry implements IAudioObject, Serializable, Comparable<PodcastFeedEntry> {
 
     private static final long serialVersionUID = 4185336290582212484L;
 
@@ -108,9 +108,9 @@ public final class PodcastFeedEntry implements AudioObject, Serializable, Compar
      * 
      * @return the podcast feed entries
      */
-    public static List<PodcastFeedEntry> getPodcastFeedEntries(List<AudioObject> audioObjects) {
+    public static List<PodcastFeedEntry> getPodcastFeedEntries(List<IAudioObject> audioObjects) {
         List<PodcastFeedEntry> result = new ArrayList<PodcastFeedEntry>();
-        for (AudioObject audioObject : audioObjects) {
+        for (IAudioObject audioObject : audioObjects) {
             if (audioObject instanceof PodcastFeedEntry) {
                 result.add((PodcastFeedEntry) audioObject);
             }

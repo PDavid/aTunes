@@ -60,7 +60,7 @@ import net.sourceforge.atunes.kernel.actions.StopCurrentAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.ToggleWindowVisibilityAction;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -99,7 +99,7 @@ public final class SystemTrayHandler extends AbstractHandler {
     }
 
     @Override
-    public void applicationStarted(List<AudioObject> playList) {
+    public void applicationStarted(List<IAudioObject> playList) {
     }
     
     @Override
@@ -507,6 +507,6 @@ public final class SystemTrayHandler extends AbstractHandler {
 	public void playListCleared() {}
 
 	@Override
-	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+	public void selectedAudioObjectChanged(IAudioObject audioObject) {}
 
 }

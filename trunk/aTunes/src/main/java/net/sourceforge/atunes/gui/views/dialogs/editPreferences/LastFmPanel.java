@@ -33,15 +33,16 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddBannedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.actions.ImportLovedTracksFromLastFMAction;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
-import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -54,7 +55,7 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
 				SwingWorker<Boolean, Void> {
 			@Override
 			protected Boolean doInBackground() {
-			    return WebServicesHandler.getInstance().getLastFmService().testLogin(lastFmUser.getText(), String.valueOf(lastFmPassword.getPassword()));
+			    return Context.getBean(IWebServicesHandler.class).testLogin(lastFmUser.getText(), String.valueOf(lastFmPassword.getPassword()));
 			}
 
 			@Override

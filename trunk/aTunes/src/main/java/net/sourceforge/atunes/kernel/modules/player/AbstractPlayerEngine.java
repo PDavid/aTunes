@@ -36,13 +36,13 @@ import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.misc.TempFolder;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -58,10 +58,10 @@ public abstract class AbstractPlayerEngine {
 	 */
     private final class PlayAudioObjectRunnable implements Runnable {
     	
-		private final AudioObject audioObject;
-		AudioObject audioObjectToPlay = null;
+		private final IAudioObject audioObject;
+		IAudioObject audioObjectToPlay = null;
 		
-		private PlayAudioObjectRunnable(AudioObject audioObject) {
+		private PlayAudioObjectRunnable(IAudioObject audioObject) {
 			this.audioObject = audioObject;			
 			GuiHandler.getInstance().getFrame().getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		}
@@ -143,7 +143,7 @@ public abstract class AbstractPlayerEngine {
     /**
      * Audio object
      */
-    private AudioObject audioObject;
+    private IAudioObject audioObject;
 
     /**
      * Length of the current audio object
@@ -205,7 +205,7 @@ public abstract class AbstractPlayerEngine {
      * @param audioObject
      *            original audio object to update statistics
      */
-    protected abstract void startPlayback(AudioObject audioObjectToPlay, AudioObject audioObject);
+    protected abstract void startPlayback(IAudioObject audioObjectToPlay, IAudioObject audioObject);
 
     /**
      * This method must be implemented by player engines. This method pauses
@@ -345,7 +345,7 @@ public abstract class AbstractPlayerEngine {
                 stopCurrentAudioObject(false);
             }
         } else {
-            AudioObject nextAudioObject = null;
+            IAudioObject nextAudioObject = null;
             try {
                 if (paused && buttonPressed) { // Resume
                     if (!PlayListHandler.getInstance().getCurrentPlayList(false).isEmpty()) {
@@ -660,7 +660,7 @@ public abstract class AbstractPlayerEngine {
      * 
      * @param audioObject
      */
-    private void playAudioObject(final AudioObject audioObject) {
+    private void playAudioObject(final IAudioObject audioObject) {
         Logger.info(StringUtils.getString("Started play of file ", audioObject));
 
         if (state.isCacheFilesBeforePlaying()) {
@@ -681,8 +681,8 @@ public abstract class AbstractPlayerEngine {
      * @param audioObject
      * @return
      */
-    private AudioObject cacheAudioObject(AudioObject audioObject) {
-    	AudioObject audioObjectToPlay = null;
+    private IAudioObject cacheAudioObject(IAudioObject audioObject) {
+    	IAudioObject audioObjectToPlay = null;
     	
         // If cacheFilesBeforePlaying is true and audio object is an audio file, copy it to temp folder
         // and start player process from this copied file
@@ -716,7 +716,7 @@ public abstract class AbstractPlayerEngine {
      * @param audioObjectToPlay Cached audio object
      * @param audioObject real audio object
      */
-    private void playAudioObjectAfterCache(AudioObject audioObjectToPlay, AudioObject audioObject) {
+    private void playAudioObjectAfterCache(IAudioObject audioObjectToPlay, IAudioObject audioObject) {
 		// This audio object has not been listened yet
 		submissionState = SubmissionState.NOT_SUBMITTED;
 
@@ -729,7 +729,7 @@ public abstract class AbstractPlayerEngine {
 
 		// Send Now Playing info to Last.fm
 		if (audioObject instanceof AudioFile) {
-			WebServicesHandler.getInstance().getLastFmService().submitNowPlayingInfoToLastFm((AudioFile) audioObject);
+			Context.getBean(IWebServicesHandler.class).submitNowPlayingInfo(audioObject);
 		}
 
 		AbstractPlayerEngine.this.audioObject = audioObject;
@@ -764,7 +764,7 @@ public abstract class AbstractPlayerEngine {
      *            it's called because of an action of the user (previous, next,
      *            ...)
      */
-    private void switchPlaybackTo(AudioObject audioObjectToSwitchTo, boolean resetIfNoObject, boolean autoNext) {
+    private void switchPlaybackTo(IAudioObject audioObjectToSwitchTo, boolean resetIfNoObject, boolean autoNext) {
         if (audioObjectToSwitchTo != null) {
             try {
                 PlayListHandler.getInstance().selectedAudioObjectHasChanged(audioObjectToSwitchTo);
@@ -804,7 +804,7 @@ public abstract class AbstractPlayerEngine {
         setCallToPlaybackStateListenersDisabled(false);
     }
     
-    public AudioObject getAudioObject() {
+    public IAudioObject getAudioObject() {
         return audioObject;
     }
 

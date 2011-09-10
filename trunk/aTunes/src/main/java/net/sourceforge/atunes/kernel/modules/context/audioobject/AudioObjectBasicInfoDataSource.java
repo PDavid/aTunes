@@ -36,8 +36,8 @@ import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.statistics.AudioFileStats;
 import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
-import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
@@ -80,12 +80,14 @@ public class AudioObjectBasicInfoDataSource implements ContextInformationDataSou
      * Output parameter
      */
     public static final String OUTPUT_LASTPLAYDATE = "LAST_PLAY_DATE";
+    
+    private IWebServicesHandler webServicesHandler;
 
     @Override
     public Map<String, ?> getData(Map<String, ?> parameters) {
         Map<String, Object> result = new HashMap<String, Object>();
         if (parameters.containsKey(INPUT_AUDIO_OBJECT)) {
-            AudioObject audioObject = (AudioObject) parameters.get(INPUT_AUDIO_OBJECT);
+            IAudioObject audioObject = (IAudioObject) parameters.get(INPUT_AUDIO_OBJECT);
             result.put(OUTPUT_AUDIO_OBJECT, audioObject);
             result.put(OUTPUT_IMAGE, getImage(audioObject));
             if (audioObject instanceof AudioFile) {
@@ -108,11 +110,11 @@ public class AudioObjectBasicInfoDataSource implements ContextInformationDataSou
      * @param audioObject
      * @return
      */
-    private ImageIcon getImage(AudioObject audioObject) {
+    private ImageIcon getImage(IAudioObject audioObject) {
         if (audioObject instanceof AudioFile) {
             ImageIcon localImage = audioObject.getImage(Constants.ALBUM_IMAGE_SIZE);
             if (localImage == null) {
-                Image image = WebServicesHandler.getInstance().getLastFmService().getAlbumImage(audioObject.getArtist(), audioObject.getAlbum());
+                Image image = webServicesHandler.getAlbumImage(audioObject.getArtist(), audioObject.getAlbum());
                 if (image != null) {
                     localImage = ImageUtils.resize(new ImageIcon(image), Constants.ALBUM_IMAGE_SIZE.getSize(), Constants.ALBUM_IMAGE_SIZE.getSize());
                 }
@@ -132,7 +134,7 @@ public class AudioObjectBasicInfoDataSource implements ContextInformationDataSou
      * @param audioObject
      * @return
      */
-    private String getLastPlayDate(AudioObject audioObject) {
+    private String getLastPlayDate(IAudioObject audioObject) {
         // Get last date played
         AudioFileStats stats = StatisticsHandler.getInstance().getAudioFileStatistics((AudioFile) audioObject);
         if (stats == null) {
@@ -147,4 +149,8 @@ public class AudioObjectBasicInfoDataSource implements ContextInformationDataSou
             }
         }
     }
+    
+    public final void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+		this.webServicesHandler = webServicesHandler;
+	}
 }

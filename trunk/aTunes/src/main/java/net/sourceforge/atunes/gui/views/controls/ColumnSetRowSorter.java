@@ -30,7 +30,7 @@ import javax.swing.event.TableModelEvent;
 import net.sourceforge.atunes.gui.model.AbstractColumnSetTableModel;
 import net.sourceforge.atunes.gui.model.AbstractCommonColumnModel;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 public class ColumnSetRowSorter {
@@ -87,7 +87,7 @@ public class ColumnSetRowSorter {
      * 
      * @param comparator
      */
-    protected void sort(Comparator<AudioObject> comparator) {
+    protected void sort(Comparator<IAudioObject> comparator) {
 
         // Sort model
         this.model.sort(comparator);

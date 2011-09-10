@@ -26,9 +26,9 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
-import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
 import net.sourceforge.atunes.kernel.modules.context.ContextTable;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -48,7 +48,7 @@ public class ArtistAlbumsContent extends AbstractContextPanelContent {
     }
 
     @Override
-    protected Map<String, ?> getDataSourceParameters(AudioObject audioObject) {
+    protected Map<String, ?> getDataSourceParameters(IAudioObject audioObject) {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put(ArtistInfoDataSource.INPUT_AUDIO_OBJECT, audioObject);
         parameters.put(ArtistInfoDataSource.INPUT_ALBUMS, true);
@@ -59,7 +59,7 @@ public class ArtistAlbumsContent extends AbstractContextPanelContent {
     @Override
     protected void updateContentWithDataSourceResult(Map<String, ?> result) {
         if (result.containsKey(ArtistInfoDataSource.OUTPUT_ALBUMS)) {
-            albumsTable.setModel(new ContextAlbumsTableModel((List<AlbumInfo>) result.get(ArtistInfoDataSource.OUTPUT_ALBUMS)));
+            albumsTable.setModel(new ContextAlbumsTableModel((List<IAlbumInfo>) result.get(ArtistInfoDataSource.OUTPUT_ALBUMS)));
         }
     }
 

@@ -34,7 +34,7 @@ import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -88,7 +88,7 @@ public class XineEngine extends AbstractPlayerEngine {
     }
 
     @Override
-    protected void startPlayback(final AudioObject audioObjectToPlay, final AudioObject audioObject) {
+    protected void startPlayback(final IAudioObject audioObjectToPlay, final IAudioObject audioObject) {
 
         boolean valid = true;
 
@@ -288,10 +288,10 @@ public class XineEngine extends AbstractPlayerEngine {
 	}
 
 	private final class DurationUpdaterActionListener implements ActionListener {
-		private final AudioObject audioObjectToPlay;
+		private final IAudioObject audioObjectToPlay;
 		int prevPosition;
 
-		private DurationUpdaterActionListener(AudioObject audioObjectToPlay) {
+		private DurationUpdaterActionListener(IAudioObject audioObjectToPlay) {
 			this.audioObjectToPlay = audioObjectToPlay;
 		}
 

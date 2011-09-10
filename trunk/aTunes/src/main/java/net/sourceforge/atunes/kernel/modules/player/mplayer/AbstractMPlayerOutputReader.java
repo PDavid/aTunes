@@ -30,7 +30,7 @@ import javax.swing.SwingUtilities;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.ClosingUtils;
 
@@ -68,7 +68,7 @@ abstract class AbstractMPlayerOutputReader extends Thread {
      * @param state
      * @return the mplayer output reader
      */
-    static AbstractMPlayerOutputReader newInstance(MPlayerEngine engine, Process process, AudioObject ao, IState state) {
+    static AbstractMPlayerOutputReader newInstance(MPlayerEngine engine, Process process, IAudioObject ao, IState state) {
         if (ao instanceof AudioFile) {
             return new AudioFileMPlayerOutputReader(engine, process, (AudioFile) ao);
         } else if (ao instanceof Radio) {
@@ -138,7 +138,7 @@ abstract class AbstractMPlayerOutputReader extends Thread {
         }
     }
 
-    protected void readAndApplyLength(AudioObject audioObject, String line, boolean readOnlyFromTags) {
+    protected void readAndApplyLength(IAudioObject audioObject, String line, boolean readOnlyFromTags) {
         if (line.contains("ANS_LENGTH")) {
             // Length still inaccurate with mp3 VBR files!
             // Apply workaround to get length from audio file properties (read by jaudiotagger) instead of mplayer

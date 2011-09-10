@@ -34,11 +34,6 @@ import java.util.concurrent.RejectedExecutionException;
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
-import net.sourceforge.atunes.kernel.modules.context.AlbumListInfo;
-import net.sourceforge.atunes.kernel.modules.context.ArtistInfo;
-import net.sourceforge.atunes.kernel.modules.context.ArtistTopTracks;
-import net.sourceforge.atunes.kernel.modules.context.SimilarArtistsInfo;
 import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
@@ -48,8 +43,13 @@ import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmArtis
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmLovedTrack;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmSimilarArtists;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IAlbumInfo;
+import net.sourceforge.atunes.model.IAlbumListInfo;
+import net.sourceforge.atunes.model.IArtistInfo;
+import net.sourceforge.atunes.model.IArtistTopTracks;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ISimilarArtistsInfo;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.CryptoUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -113,9 +113,9 @@ public final class LastFmService {
 	private final class SubmitToLastFmRunnable implements Runnable {
 
 		private final long secondsPlayed;
-		private final ILocalAudioObject audioFile;
+		private final IAudioObject audioFile;
 
-		private SubmitToLastFmRunnable(long secondsPlayed, ILocalAudioObject audioFile) {
+		private SubmitToLastFmRunnable(long secondsPlayed, IAudioObject audioFile) {
 			this.secondsPlayed = secondsPlayed;
 			this.audioFile = audioFile;
 		}
@@ -219,10 +219,10 @@ public final class LastFmService {
      * 
      * @return the album
      */
-    public AlbumInfo getAlbum(String artist, String album) {
+    public IAlbumInfo getAlbum(String artist, String album) {
         try {
             // Try to get from cache
-            AlbumInfo albumObject = lastFmCache.retrieveAlbumInfo(artist, album);
+            IAlbumInfo albumObject = lastFmCache.retrieveAlbumInfo(artist, album);
             if (albumObject == null) {
                 Album a = Album.getInfo(artist, album, getApiKey());
                 if (a != null) {
@@ -247,7 +247,7 @@ public final class LastFmService {
      */
     public Image getAlbumImage(String artist, String album) {
         Image image = null;
-        AlbumInfo a = getAlbum(artist, album);
+        IAlbumInfo a = getAlbum(artist, album);
         if (a != null) {
             image = getImage(a);
         }
@@ -269,17 +269,17 @@ public final class LastFmService {
      * 
      * @return the album list
      */
-    public AlbumListInfo getAlbumList(String artist, boolean hideVariousArtists, int minimumSongNumber) {
+    public IAlbumListInfo getAlbumList(String artist, boolean hideVariousArtists, int minimumSongNumber) {
         try {
             // Try to get from cache
-            AlbumListInfo albumList = lastFmCache.retrieveAbumList(artist);
+            IAlbumListInfo albumList = lastFmCache.retrieveAbumList(artist);
             if (albumList == null) {
                 Collection<Album> as = Artist.getTopAlbums(artist, getApiKey());
                 if (as != null) {
-                    AlbumListInfo albums = LastFmAlbumList.getAlbumList(as, artist);
+                    IAlbumListInfo albums = LastFmAlbumList.getAlbumList(as, artist);
 
-                    List<AlbumInfo> result = new ArrayList<AlbumInfo>();
-                    for (AlbumInfo a : albums.getAlbums()) {
+                    List<IAlbumInfo> result = new ArrayList<IAlbumInfo>();
+                    for (IAlbumInfo a : albums.getAlbums()) {
                         if (a.getBigCoverURL() != null && !a.getBigCoverURL().isEmpty()) {
                             result.add(a);
                         }
@@ -293,12 +293,12 @@ public final class LastFmService {
             }
 
             if (albumList != null) {
-                List<AlbumInfo> albumsFiltered = null;
+                List<IAlbumInfo> albumsFiltered = null;
 
                 // Apply filter to hide "Various Artists" albums
                 if (hideVariousArtists) {
-                    albumsFiltered = new ArrayList<AlbumInfo>();
-                    for (AlbumInfo albumInfo : albumList.getAlbums()) {
+                    albumsFiltered = new ArrayList<IAlbumInfo>();
+                    for (IAlbumInfo albumInfo : albumList.getAlbums()) {
                         if (!albumInfo.getArtist().equals(VARIOUS_ARTISTS)) {
                             albumsFiltered.add(albumInfo);
                         }
@@ -308,9 +308,9 @@ public final class LastFmService {
 
                 // Apply filter to hide albums with less than X songs
                 if (minimumSongNumber > 0) {
-                    albumsFiltered = new ArrayList<AlbumInfo>();
-                    for (AlbumInfo albumInfo : albumList.getAlbums()) {
-                        AlbumInfo extendedAlbumInfo = getAlbum(artist, albumInfo.getTitle());
+                    albumsFiltered = new ArrayList<IAlbumInfo>();
+                    for (IAlbumInfo albumInfo : albumList.getAlbums()) {
+                        IAlbumInfo extendedAlbumInfo = getAlbum(artist, albumInfo.getTitle());
                         if (extendedAlbumInfo != null && extendedAlbumInfo.getTracks() != null && extendedAlbumInfo.getTracks().size() >= minimumSongNumber) {
                             albumsFiltered.add(albumInfo);
                         }
@@ -358,7 +358,7 @@ public final class LastFmService {
      * 
      * @return the image
      */
-    public Image getImage(AlbumInfo album) {
+    public Image getImage(IAlbumInfo album) {
         try {
             Image img = null;
             // Try to retrieve from cache
@@ -385,7 +385,7 @@ public final class LastFmService {
      * 
      * @return the image
      */
-    public Image getImage(ArtistInfo artist) {
+    public Image getThumbImage(IArtistInfo artist) {
         try {
             // Try to retrieve from cache
             Image img = lastFmCache.retrieveArtistThumbImage(artist);
@@ -451,9 +451,9 @@ public final class LastFmService {
      * @param artistName
      * @return 
      */
-    public ArtistTopTracks getTopTracks(String artistName) {
+    public IArtistTopTracks getTopTracks(String artistName) {
     	// Try to retrieve from cache
-    	ArtistTopTracks topTracks = lastFmCache.retrieveArtistTopTracks(artistName);
+    	IArtistTopTracks topTracks = lastFmCache.retrieveArtistTopTracks(artistName);
     	
     	if (topTracks != null) {
     		return topTracks;
@@ -502,16 +502,16 @@ public final class LastFmService {
      * 
      * @return the similar artists
      */
-    public SimilarArtistsInfo getSimilarArtists(String artist) {
+    public ISimilarArtistsInfo getSimilarArtists(String artist) {
         try {
             // Try to get from cache
-            SimilarArtistsInfo similar = lastFmCache.retrieveArtistSimilar(artist);
+            ISimilarArtistsInfo similar = lastFmCache.retrieveArtistSimilar(artist);
             
             // Check cache content. Since "match" value changed in last.fm api can be entries in cache with old value.
             // For those entries match is equal or less than 1.0, so discard entries where maximum match is that value
             if (similar != null) {
             	float maxMatch = 0;
-            	for (ArtistInfo artistInfo : similar.getArtists()) {
+            	for (IArtistInfo artistInfo : similar.getArtists()) {
             		float match = 0;
             		try {
             			match = Float.parseFloat(artistInfo.getMatch());
@@ -593,7 +593,7 @@ public final class LastFmService {
      *            seconds the audio file has already played
      * @throws ScrobblerException
      */
-    private void submit(ILocalAudioObject file, long secondsPlayed) throws ScrobblerException {
+    private void submit(IAudioObject file, long secondsPlayed) throws ScrobblerException {
         // Do all necessary checks
         if (!checkUser() || !checkPassword() || !checkArtist(file) || !checkTitle(file) || !checkDuration(file)) {
             return;
@@ -618,7 +618,7 @@ public final class LastFmService {
      * 
      * @param song
      */
-    public void addLovedSong(AudioObject song) {
+    public void addLovedSong(IAudioObject song) {
         // Check all necessary conditions to submit request to Last.fm
         if (!checkUser() || !checkAudioFile(song) || !checkPassword() || !checkArtist(song)) {
             return;
@@ -640,7 +640,7 @@ public final class LastFmService {
      * 
      * @param song
      */
-    public void removeLovedSong(AudioObject song) {
+    public void removeLovedSong(IAudioObject song) {
         // Check all necessary conditions to submit request to Last.fm
         if (!checkUser() || !checkAudioFile(song) || !checkPassword() || !checkArtist(song)) {
             return;
@@ -662,7 +662,7 @@ public final class LastFmService {
      * 
      * @param song
      */
-    public void addBannedSong(AudioObject song) {
+    public void addBannedSong(IAudioObject song) {
         // Check all necessary conditions to submit request to Last.fm
         if (!checkUser() || !checkAudioFile(song) || !checkPassword() || !checkArtist(song)) {
             return;
@@ -773,7 +773,7 @@ public final class LastFmService {
      * @param ao
      * @return
      */
-    private boolean checkAudioFile(AudioObject ao) {
+    private boolean checkAudioFile(IAudioObject ao) {
         if (!(ao instanceof ILocalAudioObject)) {
             return false;
         }
@@ -799,7 +799,7 @@ public final class LastFmService {
      * @param ao
      * @return
      */
-    private boolean checkArtist(AudioObject ao) {
+    private boolean checkArtist(IAudioObject ao) {
         if (net.sourceforge.atunes.model.Artist.isUnknownArtist(ao.getArtist())) {
             Logger.debug("Don't submit to Last.fm: Unknown artist");
             return false;
@@ -813,7 +813,7 @@ public final class LastFmService {
      * @param ao
      * @return
      */
-    private boolean checkTitle(AudioObject ao) {
+    private boolean checkTitle(IAudioObject ao) {
         if (ao.getTitle().trim().equals("")) {
             Logger.debug("Don't submit to Last.fm: Unknown Title");
             return false;
@@ -827,7 +827,7 @@ public final class LastFmService {
      * @param ao
      * @return
      */
-    private boolean checkDuration(AudioObject ao) {
+    private boolean checkDuration(IAudioObject ao) {
         if (ao.getDuration() < MIN_DURATION_TO_SUBMIT) {
             Logger.debug("Don't submit to Last.fm: Lenght < ", MIN_DURATION_TO_SUBMIT);
             return false;
@@ -855,7 +855,7 @@ public final class LastFmService {
         if (!net.sourceforge.atunes.model.Artist.isUnknownArtist(f.getArtist())
                 && !net.sourceforge.atunes.model.Album.isUnknownAlbum(f.getAlbum()) && f.getTrackNumber() > 0) {
             // Find album
-            AlbumInfo albumRetrieved = getAlbum(f.getArtist(), f.getAlbum());
+            IAlbumInfo albumRetrieved = getAlbum(f.getArtist(), f.getAlbum());
             if (albumRetrieved != null && albumRetrieved.getTracks().size() >= f.getTrackNumber()) {
             	// Get track
             	return albumRetrieved.getTracks().get(f.getTrackNumber() - 1).getTitle();
@@ -875,7 +875,7 @@ public final class LastFmService {
         if (!net.sourceforge.atunes.model.Artist.isUnknownArtist(f.getArtist())
                 && !net.sourceforge.atunes.model.Album.isUnknownAlbum(f.getAlbum()) && !StringUtils.isEmpty(f.getTitle())) {
             // Find album
-            AlbumInfo albumRetrieved = getAlbum(f.getArtist(), f.getAlbum());
+            IAlbumInfo albumRetrieved = getAlbum(f.getArtist(), f.getAlbum());
             if (albumRetrieved != null) {
                 // Try to match titles to get track
                 int trackIndex = 1;
@@ -898,7 +898,7 @@ public final class LastFmService {
      * @param secondsPlayed
      *            the seconds played
      */
-    public void submitToLastFm(final ILocalAudioObject audioFile, final long secondsPlayed) {
+    public void submitToLastFm(final IAudioObject audioFile, final long secondsPlayed) {
         if (state.isLastFmEnabled()) {
             Runnable r = new SubmitToLastFmRunnable(secondsPlayed, audioFile);
             try {

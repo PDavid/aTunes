@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.context;
+package net.sourceforge.atunes.model;
 
 import java.io.Serializable;
 
@@ -26,8 +26,13 @@ import javax.swing.ImageIcon;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
+/**
+ * Represents information about an artist
+ * @author alex
+ *
+ */
 @PluginApi
-public interface ArtistInfo extends Serializable {
+public interface IArtistInfo extends Serializable {
 
     /**
      * Gets the image.

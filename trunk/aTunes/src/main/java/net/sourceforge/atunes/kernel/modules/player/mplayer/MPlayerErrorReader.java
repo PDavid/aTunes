@@ -24,7 +24,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -35,7 +35,7 @@ class MPlayerErrorReader extends Thread {
 
     private MPlayerEngine engine;
     private BufferedReader in;
-    private AudioObject audioObject;
+    private IAudioObject audioObject;
     private AbstractMPlayerOutputReader outputReader;
 
     /**
@@ -48,7 +48,7 @@ class MPlayerErrorReader extends Thread {
      * @param audioObject
      *            the audio object
      */
-    MPlayerErrorReader(MPlayerEngine engine, Process process, AbstractMPlayerOutputReader outputReader, AudioObject audioObject) {
+    MPlayerErrorReader(MPlayerEngine engine, Process process, AbstractMPlayerOutputReader outputReader, IAudioObject audioObject) {
         this.engine = engine;
         in = new BufferedReader(new InputStreamReader(process.getErrorStream()));
         this.audioObject = audioObject;

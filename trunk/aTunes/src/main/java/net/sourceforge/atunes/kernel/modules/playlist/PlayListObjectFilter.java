@@ -22,9 +22,9 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 
 import java.util.List;
 
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 
-public interface PlayListObjectFilter<T extends AudioObject> {
+public interface PlayListObjectFilter<T extends IAudioObject> {
 
 	/**
 	 * Returns only objects of a subtype

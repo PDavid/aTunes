@@ -96,7 +96,7 @@ import net.sourceforge.atunes.kernel.modules.updates.ApplicationVersion;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Artist;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
@@ -147,7 +147,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     }
 
     @Override
-    public void applicationStarted(List<AudioObject> playList) {
+    public void applicationStarted(List<IAudioObject> playList) {
         GuiHandler.getInstance().setFullFrameVisible(true);
     	
     	IState state = getState();
@@ -968,7 +968,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      * @param audioObject
      *            the audio object
      */
-    public void showPropertiesDialog(AudioObject audioObject) {
+    public void showPropertiesDialog(IAudioObject audioObject) {
         PropertiesDialog dialog = PropertiesDialog.newInstance(audioObject, frame.getFrame(), getState());
         if (dialog.isVisible()) {
             dialog.toFront();
@@ -1107,7 +1107,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      * @param song
      *            the song
      */
-    public void updateStatusBar(AudioObject song) {
+    public void updateStatusBar(IAudioObject song) {
     	// TODO: Refactor this method
         if (!(song instanceof Radio || song instanceof PodcastFeedEntry)) {
             if (GuiUtils.getComponentOrientation().isLeftToRight()) {
@@ -1173,7 +1173,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      * @param song
      *            the song
      */
-    public void updateTitleBar(AudioObject song) {
+    public void updateTitleBar(IAudioObject song) {
         if (song != null) {
             if (song instanceof Radio) {
                 setTitleBar(StringUtils.getString(((Radio) song).getName(), " (", ((Radio) song).getUrl(), ")"));
@@ -1205,7 +1205,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     }
 
     @Override
-    public void playbackStateChanged(final PlaybackState newState, final AudioObject currentAudioObject) {
+    public void playbackStateChanged(final PlaybackState newState, final IAudioObject currentAudioObject) {
         if (!EventQueue.isDispatchThread()) {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
@@ -1218,7 +1218,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
         }
     }
 
-    private void playbackStateChangedEDT(PlaybackState newState, AudioObject currentAudioObject) {
+    private void playbackStateChangedEDT(PlaybackState newState, IAudioObject currentAudioObject) {
         if (newState == PlaybackState.PAUSED) {
             // Pause
             setPlaying(false);
@@ -1262,7 +1262,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
 	public void playListCleared() {}
 
 	@Override
-	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+	public void selectedAudioObjectChanged(IAudioObject audioObject) {}
 
 	@Override
 	public void deviceDisconnected(String location) {

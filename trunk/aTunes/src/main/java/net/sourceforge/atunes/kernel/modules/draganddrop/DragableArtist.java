@@ -20,21 +20,21 @@
 
 package net.sourceforge.atunes.kernel.modules.draganddrop;
 
-import net.sourceforge.atunes.kernel.modules.context.ArtistInfo;
+import net.sourceforge.atunes.model.IArtistInfo;
 
 public class DragableArtist {
 
-	private ArtistInfo artistInfo;
+	private IArtistInfo artistInfo;
 
-	public ArtistInfo getArtistInfo() {
+	public IArtistInfo getArtistInfo() {
 		return artistInfo;
 	}
 
-	public void setArtistInfo(ArtistInfo artistInfo) {
+	public void setArtistInfo(IArtistInfo artistInfo) {
 		this.artistInfo = artistInfo;
 	}
 
-	public DragableArtist(ArtistInfo artistInfo) {
+	public DragableArtist(IArtistInfo artistInfo) {
 		super();
 		this.artistInfo = artistInfo;
 	}

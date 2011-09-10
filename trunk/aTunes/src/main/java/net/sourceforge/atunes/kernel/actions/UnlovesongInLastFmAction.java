@@ -25,9 +25,10 @@ import java.util.concurrent.ExecutionException;
 
 import javax.swing.SwingWorker;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
-import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -56,13 +57,13 @@ public class UnlovesongInLastFmAction extends CustomAbstractAction {
         unloveSong(ContextHandler.getInstance().getCurrentAudioObject());
     }
 
-    public void unloveSong(final AudioObject song) {
+    public void unloveSong(final IAudioObject song) {
         setEnabled(false);
         new SwingWorker<Void, Void>() {
 
             @Override
             protected Void doInBackground() throws Exception {
-                WebServicesHandler.getInstance().getLastFmService().removeLovedSong(song);
+                Context.getBean(IWebServicesHandler.class).removeLovedSong(song);
                 return null;
             }
 

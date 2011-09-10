@@ -34,10 +34,11 @@ import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.AbstractLyricsEngine;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsEngineInfo;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.ILyricsService;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public final class LyricsService implements ApplicationStateChangeListener {
+public final class LyricsService implements ApplicationStateChangeListener, ILyricsService {
 
     private static final List<LyricsEngineInfo> DEFAULT_LYRICS_ENGINES;
     static {
@@ -66,24 +67,13 @@ public final class LyricsService implements ApplicationStateChangeListener {
     	updateService();
     }
 
-    /**
-     * Updates service after a configuration change
-     */
-    public void updateService() {
+    @Override
+	public void updateService() {
         this.lyricsEngines = loadEngines(state.getProxy());
     }
 
-    /**
-     * Public method to retrieve lyrics for a song.
-     * 
-     * @param artist
-     *            the artist
-     * @param song
-     *            the song
-     * 
-     * @return the lyrics
-     */
-    public Lyrics getLyrics(String artist, String song) {
+    @Override
+	public Lyrics getLyrics(String artist, String song) {
         // Try to get from cache
         Lyrics lyric = lyricsCache.retrieveLyric(artist, song);
         
@@ -134,17 +124,8 @@ public final class LyricsService implements ApplicationStateChangeListener {
         }
     }
 
-    /**
-     * Returns a map with lyric provider names and urls for adding new lyrics
-     * for the specified title and artist
-     * 
-     * @param artist
-     *            the artist
-     * @param title
-     *            the title
-     * @return a map with lyric provider names and urls for adding new lyrics
-     */
-    public Map<String, String> getUrlsForAddingNewLyrics(String artist, String title) {
+    @Override
+	public Map<String, String> getUrlsForAddingNewLyrics(String artist, String title) {
         Map<String, String> result = new HashMap<String, String>();
         for (AbstractLyricsEngine lyricsEngine : lyricsEngines) {
             String url = lyricsEngine.getUrlForAddingNewLyrics(artist, title);
@@ -298,12 +279,8 @@ public final class LyricsService implements ApplicationStateChangeListener {
         setLyricsEngines(result);
     }
 
-    /**
-     * Delegate method to clear cache
-     * 
-     * @return
-     */
-    public boolean clearCache() {
+    @Override
+	public boolean clearCache() {
         return lyricsCache.clearCache();
     }
 
@@ -312,10 +289,8 @@ public final class LyricsService implements ApplicationStateChangeListener {
         setLyricsEngines(newState.getProxy(), newState.getLyricsEnginesInfo());
     }
 
-    /**
-     * Finishes service
-     */
-    public void finishService() {
+    @Override
+	public void finishService() {
         lyricsCache.shutdown();
     }
 

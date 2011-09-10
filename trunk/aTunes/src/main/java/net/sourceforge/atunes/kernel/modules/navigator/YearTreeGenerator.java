@@ -34,7 +34,7 @@ import javax.swing.tree.TreePath;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITreeGenerator;
 import net.sourceforge.atunes.model.TreeObject;
@@ -59,7 +59,7 @@ public class YearTreeGenerator implements ITreeGenerator {
 	 * @param objectsSelected
 	 * @param objectsExpanded
 	 */
-    public void buildTree(IState state, String rootTextKey, AbstractNavigationView view, Map<String, ?> structure, String currentFilter, DefaultMutableTreeNode root, DefaultTreeModel treeModel, List<TreeObject<? extends AudioObject>> objectsSelected, List<TreeObject<? extends AudioObject>> objectsExpanded) {
+    public void buildTree(IState state, String rootTextKey, AbstractNavigationView view, Map<String, ?> structure, String currentFilter, DefaultMutableTreeNode root, DefaultTreeModel treeModel, List<TreeObject<? extends IAudioObject>> objectsSelected, List<TreeObject<? extends IAudioObject>> objectsExpanded) {
         // Nodes to be selected after refresh
         List<DefaultMutableTreeNode> nodesToSelect = new ArrayList<DefaultMutableTreeNode>();
         // Nodes to be expanded after refresh
@@ -125,7 +125,7 @@ public class YearTreeGenerator implements ITreeGenerator {
     }
 
     @Override
-    public void selectAudioObject(JTree tree, AudioObject audioObject) {
+    public void selectAudioObject(JTree tree, IAudioObject audioObject) {
 
     	DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) tree.getModel().getRoot();
     	TreePath treePath = null;

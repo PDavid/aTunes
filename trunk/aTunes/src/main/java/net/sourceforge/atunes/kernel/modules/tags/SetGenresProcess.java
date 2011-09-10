@@ -25,10 +25,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IWebServicesHandler;
 
 /**
  * The Class SetGenresProcess.
@@ -74,14 +75,15 @@ public class SetGenresProcess extends AbstractChangeTagProcess {
         Map<ILocalAudioObject, String> result = new HashMap<ILocalAudioObject, String>();
 
         Map<String, String> tagCache = new HashMap<String, String>();
-
+        
+        IWebServicesHandler webServicesHandler = Context.getBean(IWebServicesHandler.class);
         for (ILocalAudioObject f : files) {
             if (!Artist.isUnknownArtist(f.getArtist())) {
                 String tag = null;
                 if (tagCache.containsKey(f.getArtist())) {
                     tag = tagCache.get(f.getArtist());
                 } else {
-                    tag = WebServicesHandler.getInstance().getLastFmService().getArtistTopTag(f.getArtist());
+                    tag = webServicesHandler.getArtistTopTag(f.getArtist());
                     tagCache.put(f.getArtist(), tag);
                     // Wait one second to avoid IP banning
                     try {

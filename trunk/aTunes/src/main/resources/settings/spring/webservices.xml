@@ -13,6 +13,8 @@
 	<bean id="lyricsService"
 		class="net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService">
 		<constructor-arg ref="state" />
+		
+		
 	</bean>
 
 	<bean id="youtubeService"

@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.notify;
 
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 
 public interface NotificationEngine {
@@ -39,7 +39,7 @@ public interface NotificationEngine {
      * Called to show a notification
      * @param audioObject
      */
-    public void showNotification(AudioObject audioObject);
+    public void showNotification(IAudioObject audioObject);
     
     /**
      * Called to free any resources held by notification engine

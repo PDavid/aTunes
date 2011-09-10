@@ -42,7 +42,7 @@ import net.sourceforge.atunes.kernel.modules.tags.EditTagInfo;
 import net.sourceforge.atunes.kernel.modules.tags.TagDetector;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ImageSize;
@@ -117,12 +117,12 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
      * 
      * @return the audio files
      */
-    public static List<ILocalAudioObject> getAudioFiles(List<AudioObject> audioObjects) {
+    public static List<ILocalAudioObject> getAudioFiles(List<IAudioObject> audioObjects) {
         if (audioObjects == null) {
             return Collections.emptyList();
         }
         List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
-        for (AudioObject audioObject : audioObjects) {
+        for (IAudioObject audioObject : audioObjects) {
             if (audioObject instanceof ILocalAudioObject) {
                 result.add((ILocalAudioObject) audioObject);
             }

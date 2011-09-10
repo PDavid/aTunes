@@ -25,7 +25,7 @@ import java.util.Comparator;
 import net.sourceforge.atunes.gui.model.AbstractColumnSetTableModel;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 
 /**
  * The playlist table model.
@@ -111,7 +111,7 @@ public class PlayListTableModel extends AbstractColumnSetTableModel {
     	RepositoryHandler.getInstance().startTransaction();
     	
         // AudioFile
-        AudioObject audioObject = visiblePlayList.get(rowIndex);
+        IAudioObject audioObject = visiblePlayList.get(rowIndex);
 
         // Call column set value
         getColumn(columnIndex).setValueFor(audioObject, aValue);
@@ -132,7 +132,7 @@ public class PlayListTableModel extends AbstractColumnSetTableModel {
     }
 
     @Override
-    public void sort(Comparator<AudioObject> comparator) {
+    public void sort(Comparator<IAudioObject> comparator) {
         // If comparator is null, do nothing
         if (comparator == null) {
             return;

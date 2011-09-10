@@ -38,7 +38,7 @@ import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.CustomTextPane;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 
@@ -65,7 +65,7 @@ public class ArtistBasicInfoContent extends AbstractContextPanelContent {
     }
 
     @Override
-    protected Map<String, ?> getDataSourceParameters(AudioObject audioObject) {
+    protected Map<String, ?> getDataSourceParameters(IAudioObject audioObject) {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put(ArtistInfoDataSource.INPUT_AUDIO_OBJECT, audioObject);
         // Want image too 

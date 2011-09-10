@@ -26,14 +26,14 @@ import java.util.List;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-import net.sourceforge.atunes.kernel.modules.context.ArtistTopTracks;
 import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
+import net.sourceforge.atunes.model.IArtistTopTracks;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 class ContextArtistTracksTableModel implements TableModel {
 
-    private ArtistTopTracks topTracks;
+    private IArtistTopTracks topTracks;
     private List<TableModelListener> listeners;
 
     /**
@@ -42,7 +42,7 @@ class ContextArtistTracksTableModel implements TableModel {
      * @param topTracks
      *            the top tracks
      */
-    public ContextArtistTracksTableModel(ArtistTopTracks topTracks) {
+    public ContextArtistTracksTableModel(IArtistTopTracks topTracks) {
         this.topTracks = topTracks;
         listeners = new ArrayList<TableModelListener>();
     }

@@ -24,7 +24,7 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 
 /**
@@ -99,7 +99,7 @@ public class ListOfPlayLists implements Serializable {
      * @param contents
      * @param state
      */
-    public void setContents(List<List<AudioObject>> contents, IState state) {
+    public void setContents(List<List<IAudioObject>> contents, IState state) {
     	if (playLists.size() != contents.size()) {
     		throw new IllegalArgumentException("Invalid play list contents");
     	}

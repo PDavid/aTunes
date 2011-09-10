@@ -32,7 +32,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.model.Album;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITreeGenerator;
 import net.sourceforge.atunes.model.TreeObject;
@@ -70,7 +70,7 @@ public class AlbumTreeGenerator implements ITreeGenerator {
      * @param objectsSelected
      * @param objectsExpanded
      */
-    public void buildTree(IState state, String rootTextKey, AbstractNavigationView view, Map<String, ?> structure, String currentFilter, DefaultMutableTreeNode root, DefaultTreeModel treeModel, List<TreeObject<? extends AudioObject>> objectsSelected, List<TreeObject<? extends AudioObject>> objectsExpanded) {
+    public void buildTree(IState state, String rootTextKey, AbstractNavigationView view, Map<String, ?> structure, String currentFilter, DefaultMutableTreeNode root, DefaultTreeModel treeModel, List<TreeObject<? extends IAudioObject>> objectsSelected, List<TreeObject<? extends IAudioObject>> objectsExpanded) {
         // Set root
         root.setUserObject(I18nUtils.getString(rootTextKey));
         root.removeAllChildren();
@@ -108,7 +108,7 @@ public class AlbumTreeGenerator implements ITreeGenerator {
     }
 
     @Override
-    public void selectAudioObject(JTree tree, AudioObject audioObject) {
+    public void selectAudioObject(JTree tree, IAudioObject audioObject) {
 
     	DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) tree.getModel().getRoot();
     	TreePath treePath = null;

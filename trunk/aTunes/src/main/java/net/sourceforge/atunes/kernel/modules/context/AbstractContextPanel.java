@@ -40,7 +40,7 @@ import javax.swing.SwingUtilities;
 import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 
 import org.commonjukebox.plugins.model.PluginApi;
@@ -64,7 +64,7 @@ public abstract class AbstractContextPanel {
     /**
      * Last AudioObject used to update context panel
      */
-    private AudioObject audioObject;
+    private IAudioObject audioObject;
 
     private Component component;
     
@@ -91,7 +91,7 @@ public abstract class AbstractContextPanel {
      * 
      * @return The title of the context panel
      */
-    protected abstract String getContextPanelTitle(AudioObject audioObject);
+    protected abstract String getContextPanelTitle(IAudioObject audioObject);
 
     /**
      * Icon of the context panel. This icon is used in context tab
@@ -101,7 +101,7 @@ public abstract class AbstractContextPanel {
      *            <code>null</code> if no current audio object is selected
      * @return The icon of the context panel
      */
-    protected abstract ColorMutableImageIcon getContextPanelIcon(AudioObject audioObject);
+    protected abstract ColorMutableImageIcon getContextPanelIcon(IAudioObject audioObject);
 
     /**
      * Indicates if panel must be visible for the given audio object
@@ -111,7 +111,7 @@ public abstract class AbstractContextPanel {
      *            <code>null</code> if no current audio object is selected
      * @return
      */
-    protected abstract boolean isPanelVisibleForAudioObject(AudioObject audioObject);
+    protected abstract boolean isPanelVisibleForAudioObject(IAudioObject audioObject);
 
     // END OF METHODS TO BE IMPLEMENTED BY CONCRETE CONTEXT PANELS
 
@@ -123,7 +123,7 @@ public abstract class AbstractContextPanel {
      * 
      * @param audioObject
      */
-    protected final void updateContextPanel(final AudioObject audioObject, final boolean forceUpdate) {
+    protected final void updateContextPanel(final IAudioObject audioObject, final boolean forceUpdate) {
         if (!EventQueue.isDispatchThread()) {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
@@ -136,7 +136,7 @@ public abstract class AbstractContextPanel {
         }
     }
 
-    private void updateContextPanelEDT(AudioObject audioObject, boolean forceUpdate) {
+    private void updateContextPanelEDT(IAudioObject audioObject, boolean forceUpdate) {
         // If the AudioObject is the same as used before to update panel then do nothing if forceUpdate is false
         if (!forceUpdate && this.audioObject != null && this.audioObject.equals(audioObject)) {
             return;

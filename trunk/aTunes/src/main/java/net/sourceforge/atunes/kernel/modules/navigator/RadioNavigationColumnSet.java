@@ -26,7 +26,7 @@ import java.util.List;
 import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 
 public final class RadioNavigationColumnSet extends AbstractCustomNavigatorColumnSet {
 
@@ -41,12 +41,12 @@ public final class RadioNavigationColumnSet extends AbstractCustomNavigatorColum
         }
 
         @Override
-        protected int ascendingCompare(AudioObject o1, AudioObject o2) {
+        protected int ascendingCompare(IAudioObject o1, IAudioObject o2) {
             return o1.getUrl().compareTo(o2.getUrl());
         }
 
         @Override
-        public Object getValueFor(AudioObject audioObject) {
+        public Object getValueFor(IAudioObject audioObject) {
             return audioObject.getUrl();
         }
     }
@@ -62,12 +62,12 @@ public final class RadioNavigationColumnSet extends AbstractCustomNavigatorColum
         }
 
         @Override
-        public Object getValueFor(AudioObject audioObject) {
+        public Object getValueFor(IAudioObject audioObject) {
             return ((Radio) audioObject).getName();
         }
 
         @Override
-        protected int ascendingCompare(AudioObject o1, AudioObject o2) {
+        protected int ascendingCompare(IAudioObject o1, IAudioObject o2) {
             return ((Radio) o1).getName().compareTo(((Radio) o2).getName());
         }
     }
@@ -83,12 +83,12 @@ public final class RadioNavigationColumnSet extends AbstractCustomNavigatorColum
         }
 
         @Override
-        protected int ascendingCompare(AudioObject o1, AudioObject o2) {
+        protected int ascendingCompare(IAudioObject o1, IAudioObject o2) {
             return 0;
         }
 
         @Override
-        public Object getValueFor(AudioObject audioObject) {
+        public Object getValueFor(IAudioObject audioObject) {
             return Property.NO_PROPERTIES;
         }
     }
