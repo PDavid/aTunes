@@ -18,25 +18,14 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.tags;
-
-import java.util.List;
-
-import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IState;
+package net.sourceforge.atunes.model;
 
 /**
- * The Class ClearTagsProcess.
+ * Represents sources of files to be edited
+ * @author alex
+ *
  */
-public class ClearTagsProcess extends AbstractChangeTagProcess {
+public enum EditTagSources {
 
-    public ClearTagsProcess(List<ILocalAudioObject> filesToClear, IState state) {
-        super(filesToClear, state);
-    }
-
-    @Override
-    protected void changeTag(ILocalAudioObject file) {
-        TagModifier.deleteTags(file);
-    }
-
+	PLAYLIST, NAVIGATOR
 }

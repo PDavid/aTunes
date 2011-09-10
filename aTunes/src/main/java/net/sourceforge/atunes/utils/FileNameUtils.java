@@ -23,7 +23,7 @@ package net.sourceforge.atunes.utils;
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.LocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 
 import com.sun.jna.Library;
 import com.sun.jna.Memory;
@@ -250,7 +250,7 @@ public final class FileNameUtils {
      * 
      * @return Returns a (hopefully) valid filename
      */
-    public static String getNewFileName(String pattern, LocalAudioObject song) {
+    public static String getNewFileName(String pattern, ILocalAudioObject song) {
         String result = AbstractPattern.applyPatternTransformations(pattern, song);
         // We need to place \\ before escape sequences otherwise the ripper hangs. We can not do this later.
         result = result.replace("\\", "\\\\").replace("$", "\\$");
@@ -269,7 +269,7 @@ public final class FileNameUtils {
      * 
      * @return Returns a (hopefully) valid filename
      */
-    public static String getNewFolderPath(String pattern, LocalAudioObject song) {
+    public static String getNewFolderPath(String pattern, ILocalAudioObject song) {
         String result = AbstractPattern.applyPatternTransformations(pattern, song);
         // We need to place \\ before escape sequences otherwise the ripper hangs. We can not do this later.
         result = result.replace("\\", "\\\\").replace("$", "\\$");

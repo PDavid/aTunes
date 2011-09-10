@@ -44,8 +44,8 @@ import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.tags.EditTagDialogController;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -94,7 +94,7 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
     private JLabel genreLabel;
     private JLabel bitrateLabel;
     private JLabel frequencyLabel;
-    private LocalAudioObject file;
+    private ILocalAudioObject file;
 
     private IState state;
     

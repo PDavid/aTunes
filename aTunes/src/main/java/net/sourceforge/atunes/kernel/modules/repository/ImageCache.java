@@ -29,8 +29,8 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsCache;
 import net.sourceforge.atunes.misc.AbstractCache;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ImageSize;
-import net.sourceforge.atunes.model.LocalAudioObject;
 
 public class ImageCache extends AbstractCache {
 
@@ -59,7 +59,7 @@ public class ImageCache extends AbstractCache {
         return false;
     }
 
-    public synchronized boolean clear(LocalAudioObject audioFile) {
+    public synchronized boolean clear(ILocalAudioObject audioFile) {
         try {
             for (ImageSize imageSize : ImageSize.values()) {
                 getCache().remove(id(audioFile, imageSize));
@@ -84,7 +84,7 @@ public class ImageCache extends AbstractCache {
         }
     }
 
-    private static int id(LocalAudioObject audioFile, ImageSize imageSize) {
+    private static int id(ILocalAudioObject audioFile, ImageSize imageSize) {
         return (audioFile.getUrl() + imageSize.toString()).hashCode();
     }
 

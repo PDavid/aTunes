@@ -48,7 +48,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.model.LocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 
 /**
  * Some methods of this class about how to drag and drop from Gnome/KDE file
@@ -333,7 +333,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
                 if (f.isDirectory()) {
                     filesToAdd.addAll(RepositoryLoader.getSongsForFolder(f, null));
                 } else if (AudioFile.isValidAudioFile(f)) {
-                	LocalAudioObject song = new AudioFile(f);
+                	ILocalAudioObject song = new AudioFile(f);
                     filesToAdd.add(song);
                 } else if (f.getName().toLowerCase().endsWith("m3u")) {
                     filesToAdd.addAll(PlayListIO.getFilesFromList(f));

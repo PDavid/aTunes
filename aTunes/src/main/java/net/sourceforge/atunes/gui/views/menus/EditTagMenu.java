@@ -34,6 +34,7 @@ import net.sourceforge.atunes.kernel.actions.AutoSetTitlesAction;
 import net.sourceforge.atunes.kernel.actions.AutoSetTracksAction;
 import net.sourceforge.atunes.kernel.actions.ClearTagAction;
 import net.sourceforge.atunes.kernel.actions.EditTagAction;
+import net.sourceforge.atunes.model.EditTagSources;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class EditTagMenu extends JMenu {
@@ -42,7 +43,7 @@ public final class EditTagMenu extends JMenu {
 
     public EditTagMenu(boolean playlistMenu, AudioObjectsSource audioObjectsSource) {
         super(I18nUtils.getString("TAGS"));
-        add(Actions.getMenuItemForAction(EditTagAction.class, playlistMenu ? EditTagAction.EditTagSources.PLAYLIST.toString() : EditTagAction.EditTagSources.NAVIGATOR.toString(),
+        add(Actions.getMenuItemForAction(EditTagAction.class, playlistMenu ? EditTagSources.PLAYLIST.toString() : EditTagSources.NAVIGATOR.toString(),
                 audioObjectsSource));
         add(new JSeparator());
         add(Actions.getMenuItemForAction(AutoSetTagFromFolderNamePatternAction.class, audioObjectsSource));

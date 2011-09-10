@@ -28,12 +28,12 @@ import java.util.Map;
 import net.sourceforge.atunes.gui.views.dialogs.EditTitlesDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.Album;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.LocalAudioObject;
 
 final class EditTitlesDialogController extends AbstractSimpleController<EditTitlesDialog> {
 
-    private List<LocalAudioObject> filesToEdit;
+    private List<ILocalAudioObject> filesToEdit;
     private Album album;
     private EditTitlesTableModel model;
 
@@ -60,8 +60,8 @@ final class EditTitlesDialogController extends AbstractSimpleController<EditTitl
      * Edits the files.
      */
     protected void editFiles() {
-        Map<LocalAudioObject, String> filesAndTitles = ((EditTitlesTableModel) getComponentControlled().getTable().getModel()).getNewValues();
-        EditTitlesProcess process = new EditTitlesProcess(new ArrayList<LocalAudioObject>(filesAndTitles.keySet()), getState());
+        Map<ILocalAudioObject, String> filesAndTitles = ((EditTitlesTableModel) getComponentControlled().getTable().getModel()).getNewValues();
+        EditTitlesProcess process = new EditTitlesProcess(new ArrayList<ILocalAudioObject>(filesAndTitles.keySet()), getState());
         process.setFilesAndTitles(filesAndTitles);
         process.execute();
     }

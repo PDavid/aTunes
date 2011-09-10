@@ -33,7 +33,7 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Format;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.LocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jaudiotagger.audio.exceptions.CannotReadException;
@@ -60,9 +60,9 @@ import org.jaudiotagger.tag.reference.PictureTypes;
 public final class TagModifier {
 
     private static final class RefreshTagAfterModifyRunnable implements Runnable {
-		private final List<LocalAudioObject> audioFilesEditing;
+		private final List<ILocalAudioObject> audioFilesEditing;
 
-		private RefreshTagAfterModifyRunnable(List<LocalAudioObject> audioFilesEditing) {
+		private RefreshTagAfterModifyRunnable(List<ILocalAudioObject> audioFilesEditing) {
 			this.audioFilesEditing = audioFilesEditing;
 		}
 
@@ -102,7 +102,7 @@ public final class TagModifier {
      * @param file
      *            the file
      */
-    static void deleteTags(LocalAudioObject file) {
+    static void deleteTags(ILocalAudioObject file) {
         // Be sure file is writable before setting info
         setWritable(file);
         try {
@@ -132,7 +132,7 @@ public final class TagModifier {
      * @param audioFilesEditing
      *            the audio files editing
      */
-    static void refreshAfterTagModify(final List<LocalAudioObject> audioFilesEditing) {
+    static void refreshAfterTagModify(final List<ILocalAudioObject> audioFilesEditing) {
         SwingUtilities.invokeLater(new RefreshTagAfterModifyRunnable(audioFilesEditing));
     }
 
@@ -144,7 +144,7 @@ public final class TagModifier {
      * @param album
      *            Album of file
      */
-    static void setAlbum(LocalAudioObject file, String album) {
+    static void setAlbum(ILocalAudioObject file, String album) {
         // Be sure file is writable before setting info
         setWritable(file);
         try {
@@ -178,7 +178,7 @@ public final class TagModifier {
      * @param genre
      *            Genre of file
      */
-    static void setGenre(LocalAudioObject file, String genre) {
+    static void setGenre(ILocalAudioObject file, String genre) {
         // Be sure file is writable before setting info
         setWritable(file);
         try {
@@ -213,7 +213,7 @@ public final class TagModifier {
      * @param tag
      *            Tag to be written
      */
-    public static void setInfo(LocalAudioObject file, AbstractTag tag) {
+    public static void setInfo(ILocalAudioObject file, AbstractTag tag) {
         setInfo(file, tag, false, null);
     }
 
@@ -229,7 +229,7 @@ public final class TagModifier {
      * @param cover
      *            cover data as byte array
      */
-    static void setInfo(LocalAudioObject file, AbstractTag tag, boolean shouldEditCover, byte[] cover) {
+    static void setInfo(ILocalAudioObject file, AbstractTag tag, boolean shouldEditCover, byte[] cover) {
         // Be sure file is writable before setting info
         setWritable(file);
 
@@ -325,7 +325,7 @@ public final class TagModifier {
 		}
     }
 
-    private static void setStringTagField(LocalAudioObject file, org.jaudiotagger.tag.Tag tag, FieldKey fieldKey, String fieldValue) {
+    private static void setStringTagField(ILocalAudioObject file, org.jaudiotagger.tag.Tag tag, FieldKey fieldKey, String fieldValue) {
         if (fieldValue == null || fieldValue.isEmpty()) {
             // Delete tag field if value is empty
             tag.deleteField(fieldKey);
@@ -340,7 +340,7 @@ public final class TagModifier {
         }
     }
 
-    private static void setNumberTagField(LocalAudioObject file, org.jaudiotagger.tag.Tag tag, FieldKey fieldKey, int fieldValue) {
+    private static void setNumberTagField(ILocalAudioObject file, org.jaudiotagger.tag.Tag tag, FieldKey fieldKey, int fieldValue) {
         if (fieldValue == -1) {
             tag.deleteField(fieldKey);
         } else {
@@ -363,7 +363,7 @@ public final class TagModifier {
      * @param lyrics
      *            the lyrics
      */
-    static void setLyrics(LocalAudioObject file, String lyrics) {
+    static void setLyrics(ILocalAudioObject file, String lyrics) {
         // Be sure file is writable before setting info
         setWritable(file);
         try {
@@ -397,7 +397,7 @@ public final class TagModifier {
      * @param newTitle
      *            New title
      */
-    static void setTitles(LocalAudioObject file, String newTitle) {
+    static void setTitles(ILocalAudioObject file, String newTitle) {
         // Be sure file is writable before setting info
         setWritable(file);
         try {
@@ -431,7 +431,7 @@ public final class TagModifier {
      * @param track
      *            Track number
      */
-    static void setTrackNumber(LocalAudioObject file, Integer track) {
+    static void setTrackNumber(ILocalAudioObject file, Integer track) {
         // Be sure file is writable before setting info
         setWritable(file);
         try {
@@ -462,7 +462,7 @@ public final class TagModifier {
      * @param file
      * @param e
      */
-    private static final void reportWriteError(LocalAudioObject file, Exception e) {
+    private static final void reportWriteError(ILocalAudioObject file, Exception e) {
         Logger.error(StringUtils.getString("Could not edit tag. File: ", file.getUrl(), " Error: ", e));
         Logger.error(e);
     }
@@ -473,14 +473,14 @@ public final class TagModifier {
      * @param fieldKey
      * @param fieldValue
      */
-    private static final void reportWriteFieldError(LocalAudioObject file, FieldKey fieldKey, String fieldValue, Exception e) {
+    private static final void reportWriteFieldError(ILocalAudioObject file, FieldKey fieldKey, String fieldValue, Exception e) {
     	Logger.error(StringUtils.getString("Could not edit tag field ", fieldKey.name(), " with value \"", fieldValue, "\" for file: ", file.getUrl(), " Error: ", e));
     }
 
     /**
      * Sets write permissions if is not writable.
      */
-    private static void setWritable(LocalAudioObject file) {
+    private static void setWritable(ILocalAudioObject file) {
         // Set write permission on file
         if (!file.getFile().canWrite()) {
             file.getFile().setWritable(true);

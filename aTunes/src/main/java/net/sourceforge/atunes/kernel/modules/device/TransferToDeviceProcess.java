@@ -27,8 +27,8 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.process.AbstractAudioFileTransferProcess;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -46,7 +46,7 @@ public class TransferToDeviceProcess extends AbstractAudioFileTransferProcess {
      * @param path
      * @param state
      */
-    public TransferToDeviceProcess(Collection<LocalAudioObject> collection, String path, IState state) {
+    public TransferToDeviceProcess(Collection<ILocalAudioObject> collection, String path, IState state) {
         super(collection, state);
         this.path = path;
     }
@@ -62,7 +62,7 @@ public class TransferToDeviceProcess extends AbstractAudioFileTransferProcess {
     }
 
     @Override
-    protected File transferAudioFile(File destination, LocalAudioObject file, List<Exception> thrownExceptions) {
+    protected File transferAudioFile(File destination, ILocalAudioObject file, List<Exception> thrownExceptions) {
         String destDir = getDirectory(file, destination, true);
         String newName = getName(file, true);
         File destFile = new File(StringUtils.getString(destDir, OsManager.getFileSeparator(), newName));
@@ -78,12 +78,12 @@ public class TransferToDeviceProcess extends AbstractAudioFileTransferProcess {
     }
 
     @Override
-    public String getDirectory(LocalAudioObject song, File destination, boolean isMp3Device) {
+    public String getDirectory(ILocalAudioObject song, File destination, boolean isMp3Device) {
         return getDirectory(song, destination, isMp3Device, getState().getDeviceFolderPathPattern());
     }
 
     @Override
-    public String getName(LocalAudioObject file, boolean isMp3Device) {
+    public String getName(ILocalAudioObject file, boolean isMp3Device) {
         return getName(file, isMp3Device, getState().getDeviceFileNamePattern());
     }
 }

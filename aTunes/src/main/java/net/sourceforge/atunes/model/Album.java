@@ -37,7 +37,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * 
  * @author fleax
  */
-public class Album implements Serializable, TreeObject<LocalAudioObject>, Comparable<Album> {
+public class Album implements Serializable, TreeObject<ILocalAudioObject>, Comparable<Album> {
 
     private static final long serialVersionUID = -1481314950918557022L;
 
@@ -48,13 +48,13 @@ public class Album implements Serializable, TreeObject<LocalAudioObject>, Compar
     private Artist artist;
 
     /** List of songs of this album. */
-    private TreeSet<LocalAudioObject> audioFiles;
+    private TreeSet<ILocalAudioObject> audioFiles;
 
     /**
      * A Comparator for track numbers
      *
      */
-    private static class TrackNumberComparator implements Comparator<LocalAudioObject>, Serializable {
+    private static class TrackNumberComparator implements Comparator<ILocalAudioObject>, Serializable {
     	
     	/**
 		 * 
@@ -62,7 +62,7 @@ public class Album implements Serializable, TreeObject<LocalAudioObject>, Compar
 		private static final long serialVersionUID = 8487765896303750744L;
 
 		@Override
-    	public int compare(LocalAudioObject o1, LocalAudioObject o2) {
+    	public int compare(ILocalAudioObject o1, ILocalAudioObject o2) {
 			if (o1.getTrackNumber() == o2.getTrackNumber()) {
 				return o1.compareTo(o2);
 			}
@@ -87,9 +87,9 @@ public class Album implements Serializable, TreeObject<LocalAudioObject>, Compar
      * Returns audio files
      * @return
      */
-    private TreeSet<LocalAudioObject> getAudioFiles() {
+    private TreeSet<ILocalAudioObject> getAudioFiles() {
     	if (audioFiles == null) {
-    		audioFiles = new TreeSet<LocalAudioObject>(new TrackNumberComparator());
+    		audioFiles = new TreeSet<ILocalAudioObject>(new TrackNumberComparator());
     	}
     	return audioFiles;
     }
@@ -100,7 +100,7 @@ public class Album implements Serializable, TreeObject<LocalAudioObject>, Compar
      * @param file
      *            the file
      */
-    public void addAudioFile(LocalAudioObject file) {
+    public void addAudioFile(ILocalAudioObject file) {
     	getAudioFiles().add(file);
     }
 
@@ -141,8 +141,8 @@ public class Album implements Serializable, TreeObject<LocalAudioObject>, Compar
      * @return the audio objects
      */
     @Override
-    public List<LocalAudioObject> getAudioObjects() {
-        return new ArrayList<LocalAudioObject>(getAudioFiles());
+    public List<ILocalAudioObject> getAudioObjects() {
+        return new ArrayList<ILocalAudioObject>(getAudioFiles());
     }
 
     /**
@@ -184,7 +184,7 @@ public class Album implements Serializable, TreeObject<LocalAudioObject>, Compar
      * @param file
      *            the file
      */
-    public void removeAudioFile(LocalAudioObject file) {
+    public void removeAudioFile(ILocalAudioObject file) {
     	getAudioFiles().remove(file);
     }
 

@@ -33,8 +33,8 @@ import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -55,7 +55,7 @@ public final class TagEditionOperations {
      * @param state
      * @param lyricsService
      */
-    public static void addLyrics(List<LocalAudioObject> files, IState state, LyricsService lyricsService) {
+    public static void addLyrics(List<ILocalAudioObject> files, IState state, LyricsService lyricsService) {
         SetLyricsProcess process = new SetLyricsProcess(files, state, lyricsService);
         process.execute();
     }
@@ -66,7 +66,7 @@ public final class TagEditionOperations {
      * @param files
      * @param state
      */
-    private static void editAlbumName(List<LocalAudioObject> files, IState state) {
+    private static void editAlbumName(List<ILocalAudioObject> files, IState state) {
         SetAlbumNamesProcess process = new SetAlbumNamesProcess(files, state);
         process.execute();
     }
@@ -77,12 +77,12 @@ public final class TagEditionOperations {
      * @param files
      * @param state
      */
-    public static void editGenre(List<LocalAudioObject> files, IState state) {
+    public static void editGenre(List<ILocalAudioObject> files, IState state) {
         SetGenresProcess process = new SetGenresProcess(files, state);
         process.execute();
     }
 
-    public static void editCover(List<LocalAudioObject> files, IState state) {
+    public static void editCover(List<ILocalAudioObject> files, IState state) {
         SetCoversProcess process = new SetCoversProcess(files, state);
         process.execute();
     }
@@ -93,12 +93,12 @@ public final class TagEditionOperations {
      * @param files
      * @param state
      */
-    public static void editTrackNumber(List<LocalAudioObject> files, IState state) {
+    public static void editTrackNumber(List<ILocalAudioObject> files, IState state) {
         /*
          * Given an array of files, returns a map containing each file and its
          * track number based on information found on file name.
          */
-        Map<LocalAudioObject, Integer> filesToSet = new HashMap<LocalAudioObject, Integer>();
+        Map<ILocalAudioObject, Integer> filesToSet = new HashMap<ILocalAudioObject, Integer>();
         for (int j = 0; j < files.size(); j++) {
             int trackNumber = getTrackNumber(files.get(j));
 
@@ -119,7 +119,7 @@ public final class TagEditionOperations {
      * @param audioFile
      * @return
      */
-    public static int getTrackNumber(LocalAudioObject audioFile) {
+    public static int getTrackNumber(ILocalAudioObject audioFile) {
         // Try to get a number from file name
         String fileName = audioFile.getNameWithoutExtension();
         String[] aux = NUMBER_SEPARATOR_PATTERN.split(fileName);
@@ -156,11 +156,11 @@ public final class TagEditionOperations {
         if (GuiHandler.getInstance().showConfirmationDialog(I18nUtils.getString("REPAIR_ALBUM_NAMES_MESSAGE"), I18nUtils.getString("REPAIR_ALBUM_NAMES")) == JOptionPane.OK_OPTION) {
 
             // Get all repository audio files
-            Collection<LocalAudioObject> repositoryAudioFiles = RepositoryHandler.getInstance().getAudioFilesList();
+            Collection<ILocalAudioObject> repositoryAudioFiles = RepositoryHandler.getInstance().getAudioFilesList();
 
             // Get audio files with empty track number
-            List<LocalAudioObject> audioFilesToBeRepaired = new ArrayList<LocalAudioObject>();
-            for (LocalAudioObject file : repositoryAudioFiles) {
+            List<ILocalAudioObject> audioFilesToBeRepaired = new ArrayList<ILocalAudioObject>();
+            for (ILocalAudioObject file : repositoryAudioFiles) {
                 if ((file.getGenre() == null) || (file.getGenre().isEmpty())) {
                     audioFilesToBeRepaired.add(file);
                 }
@@ -180,11 +180,11 @@ public final class TagEditionOperations {
         if (GuiHandler.getInstance().showConfirmationDialog(I18nUtils.getString("REPAIR_GENRES_MESSAGE"), I18nUtils.getString("REPAIR_GENRES")) == JOptionPane.OK_OPTION) {
 
             // Get all repository audio files
-        	Collection<LocalAudioObject> repositoryAudioFiles = RepositoryHandler.getInstance().getAudioFilesList();
+        	Collection<ILocalAudioObject> repositoryAudioFiles = RepositoryHandler.getInstance().getAudioFilesList();
 
             // Get audio files with empty track number
-            List<LocalAudioObject> audioFilesToBeRepaired = new ArrayList<LocalAudioObject>();
-            for (LocalAudioObject file : repositoryAudioFiles) {
+            List<ILocalAudioObject> audioFilesToBeRepaired = new ArrayList<ILocalAudioObject>();
+            for (ILocalAudioObject file : repositoryAudioFiles) {
                 if ((file.getGenre() == null) || (file.getGenre().isEmpty())) {
                     audioFilesToBeRepaired.add(file);
                 }
@@ -204,11 +204,11 @@ public final class TagEditionOperations {
         if (GuiHandler.getInstance().showConfirmationDialog(I18nUtils.getString("REPAIR_TRACK_NUMBERS_MESSAGE"), I18nUtils.getString("REPAIR_TRACK_NUMBERS")) == JOptionPane.OK_OPTION) {
 
             // Get all repository audio files
-        	Collection<LocalAudioObject> repositoryAudioFiles = RepositoryHandler.getInstance().getAudioFilesList();
+        	Collection<ILocalAudioObject> repositoryAudioFiles = RepositoryHandler.getInstance().getAudioFilesList();
 
             // Get audio files with empty track number
-            List<LocalAudioObject> audioFilesToBeRepaired = new ArrayList<LocalAudioObject>();
-            for (LocalAudioObject song : repositoryAudioFiles) {
+            List<ILocalAudioObject> audioFilesToBeRepaired = new ArrayList<ILocalAudioObject>();
+            for (ILocalAudioObject song : repositoryAudioFiles) {
                 if (song.getTrackNumber() == 0) {
                     audioFilesToBeRepaired.add(song);
                 }

@@ -33,23 +33,23 @@ import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandl
 import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmLovedTrack;
 import net.sourceforge.atunes.model.Artist;
-import net.sourceforge.atunes.model.LocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
 
-    private static class ImportLovedTracksWorker extends SwingWorker<List<LocalAudioObject>, Void> {
+    private static class ImportLovedTracksWorker extends SwingWorker<List<ILocalAudioObject>, Void> {
         @Override
-        protected List<LocalAudioObject> doInBackground() throws Exception {
+        protected List<ILocalAudioObject> doInBackground() throws Exception {
             // Get loved tracks
             List<LastFmLovedTrack> lovedTracks = WebServicesHandler.getInstance().getLastFmService().getLovedTracks();
             if (!lovedTracks.isEmpty()) {
-                List<LocalAudioObject> favoriteAudioFiles = new ArrayList<LocalAudioObject>();
+                List<ILocalAudioObject> favoriteAudioFiles = new ArrayList<ILocalAudioObject>();
                 for (LastFmLovedTrack lovedTrack : lovedTracks) {
                     Artist artist = RepositoryHandler.getInstance().getArtist(lovedTrack.getArtist());
                     if (artist != null) {
-                        for (LocalAudioObject audioObject : artist.getAudioObjects()) {
+                        for (ILocalAudioObject audioObject : artist.getAudioObjects()) {
                             if (audioObject.getTitleOrFileName().equalsIgnoreCase(lovedTrack.getTitle())) {
                                 favoriteAudioFiles.add(audioObject);
                             }
@@ -64,7 +64,7 @@ public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
         @Override
         protected void done() {
             GuiHandler.getInstance().hideIndeterminateProgressDialog();
-            List<LocalAudioObject> lovedTracks = null;
+            List<ILocalAudioObject> lovedTracks = null;
             try {
                 // Get loved tracks
                 lovedTracks = get();
@@ -90,7 +90,7 @@ public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        SwingWorker<List<LocalAudioObject>, Void> worker = new ImportLovedTracksWorker();
+        SwingWorker<List<ILocalAudioObject>, Void> worker = new ImportLovedTracksWorker();
         GuiHandler.getInstance().showIndeterminateProgressDialog(I18nUtils.getString("GETTING_LOVED_TRACKS_FROM_LASTFM"));
         worker.execute();
     }

@@ -27,21 +27,21 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.model.Artist;
-import net.sourceforge.atunes.model.LocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class SetFavoriteArtistFromNavigatorAction extends AbstractActionOverSelectedObjects<LocalAudioObject> {
+public class SetFavoriteArtistFromNavigatorAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
     private static final long serialVersionUID = -3551889307264609825L;
 
     SetFavoriteArtistFromNavigatorAction() {
-        super(I18nUtils.getString("SET_FAVORITE_ARTIST"), LocalAudioObject.class);
+        super(I18nUtils.getString("SET_FAVORITE_ARTIST"), ILocalAudioObject.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SET_FAVORITE_ARTIST"));
     }
 
     @Override
-    protected void performAction(List<LocalAudioObject> objects) {
+    protected void performAction(List<ILocalAudioObject> objects) {
         FavoritesHandler.getInstance().toggleFavoriteArtists(objects);
         NavigationHandler.getInstance().refreshNavigationTable();
     }

@@ -25,8 +25,8 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.LocalAudioObject;
 
 /**
  * The Class SetLyricsProcess.
@@ -43,13 +43,13 @@ public class SetLyricsProcess extends AbstractChangeTagProcess {
      * @param state
      * @param lyricsService
      */
-    SetLyricsProcess(List<LocalAudioObject> files, IState state, LyricsService lyricsService) {
+    SetLyricsProcess(List<ILocalAudioObject> files, IState state, LyricsService lyricsService) {
         super(files, state);
         this.lyricsService = lyricsService;
     }
 
     @Override
-    protected void changeTag(LocalAudioObject file) throws IOException {
+    protected void changeTag(ILocalAudioObject file) throws IOException {
         // Check if no lyrics is present and we have enough info for a query
         if (file.getLyrics().isEmpty() && !file.getArtist().isEmpty() && !file.getTitle().isEmpty()) {
             Lyrics lyrics = lyricsService.getLyrics(file.getArtist(), file.getTitle());

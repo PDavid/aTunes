@@ -34,8 +34,8 @@ import net.sourceforge.atunes.kernel.modules.tags.TagAttributesReviewed;
 import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
 import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
 import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -56,7 +56,7 @@ public class ImportFilesProcess extends AbstractAudioFileTransferProcess {
     private String path;
 
     /** Set of audio files whose tag must be written */
-    private HashSet<LocalAudioObject> filesToChangeTag;
+    private HashSet<ILocalAudioObject> filesToChangeTag;
 
     /**
      * Imports songs to the repository
@@ -69,12 +69,12 @@ public class ImportFilesProcess extends AbstractAudioFileTransferProcess {
      *            Set of changes to be made on tags
      * @param state
      */
-    public ImportFilesProcess(List<LocalAudioObject> filesToImport, List<File> folders, String path, TagAttributesReviewed tagAttributesReviewed, IState state) {
+    public ImportFilesProcess(List<ILocalAudioObject> filesToImport, List<File> folders, String path, TagAttributesReviewed tagAttributesReviewed, IState state) {
         super(filesToImport, state);
         this.folders = folders;
         this.path = path;
-        this.filesToChangeTag = new HashSet<LocalAudioObject>();
-        for (LocalAudioObject fileToImport : filesToImport) {
+        this.filesToChangeTag = new HashSet<ILocalAudioObject>();
+        for (ILocalAudioObject fileToImport : filesToImport) {
             // Replace tags (in memory) before import audio files if necessary
             replaceTag(fileToImport, tagAttributesReviewed);
 
@@ -98,7 +98,7 @@ public class ImportFilesProcess extends AbstractAudioFileTransferProcess {
      * @return Returns the directory structure with full path where the file
      *         will be written
      */
-    public File getDirectory(LocalAudioObject song, File destinationBaseFolder) {
+    public File getDirectory(ILocalAudioObject song, File destinationBaseFolder) {
         // Get base folder or the first folder if there is any error
         File baseFolder = null;
         for (File folder : folders) {
@@ -125,7 +125,7 @@ public class ImportFilesProcess extends AbstractAudioFileTransferProcess {
     }
 
     @Override
-    protected File transferAudioFile(File destination, LocalAudioObject file, List<Exception> thrownExceptions) {
+    protected File transferAudioFile(File destination, ILocalAudioObject file, List<Exception> thrownExceptions) {
         // Change title. As this can be a long-time task we get titles during transfer process instead of before to avoid not showing any progress dialog
         // while performing this task
         setTitle(file);
@@ -156,7 +156,7 @@ public class ImportFilesProcess extends AbstractAudioFileTransferProcess {
      * @return A reference to the created file
      * @throws IOException
      */
-    private File importFile(File destination, LocalAudioObject file, List<Exception> thrownExceptions) {
+    private File importFile(File destination, ILocalAudioObject file, List<Exception> thrownExceptions) {
         File destDir = getDirectory(file, destination);
         String newName;
         if (getState().getImportExportFileNamePattern() != null) {
@@ -185,7 +185,7 @@ public class ImportFilesProcess extends AbstractAudioFileTransferProcess {
      * @param destFile
      *            destination file
      */
-    private void changeTag(LocalAudioObject sourceFile, LocalAudioObject destFile) {
+    private void changeTag(ILocalAudioObject sourceFile, ILocalAudioObject destFile) {
         if (filesToChangeTag.contains(sourceFile)) {
             TagModifier.setInfo(destFile, sourceFile.getTag());
         }
@@ -198,7 +198,7 @@ public class ImportFilesProcess extends AbstractAudioFileTransferProcess {
      * @param fileToImport
      * @param tagAttributesReviewed
      */
-    private void replaceTag(LocalAudioObject fileToImport, TagAttributesReviewed tagAttributesReviewed) {
+    private void replaceTag(ILocalAudioObject fileToImport, TagAttributesReviewed tagAttributesReviewed) {
         if (tagAttributesReviewed != null) {
             AbstractTag modifiedTag = tagAttributesReviewed.getTagForAudioFile(fileToImport);
             // This file must be changed
@@ -215,7 +215,7 @@ public class ImportFilesProcess extends AbstractAudioFileTransferProcess {
      * 
      * @param fileToImport
      */
-    private void setTrackNumber(LocalAudioObject fileToImport) {
+    private void setTrackNumber(ILocalAudioObject fileToImport) {
         if (getState().isSetTrackNumbersWhenImporting() && fileToImport.getTrackNumber() < 1) {
         	int newTrackNumber = TagEditionOperations.getTrackNumber(fileToImport);
         	if (newTrackNumber > 0) {
@@ -236,7 +236,7 @@ public class ImportFilesProcess extends AbstractAudioFileTransferProcess {
      * 
      * @param fileToImport
      */
-    private void setTitle(LocalAudioObject fileToImport) {
+    private void setTitle(ILocalAudioObject fileToImport) {
         if (getState().isSetTitlesWhenImporting()) {
             String newTitle = WebServicesHandler.getInstance().getLastFmService().getTitleForFile(fileToImport);
             if (newTitle != null) {

@@ -28,7 +28,7 @@ import java.util.Map;
 
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
-import net.sourceforge.atunes.model.LocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 
 /**
  * The Class Favorites.
@@ -38,7 +38,7 @@ public class Favorites implements Serializable {
     private static final long serialVersionUID = 4783402394156393291L;
 
     /** The favorite songs. */
-    private Map<String, LocalAudioObject> favoriteSongs;
+    private Map<String, ILocalAudioObject> favoriteSongs;
 
     /** The favorite albums. */
     private Map<String, Album> favoriteAlbums;
@@ -55,7 +55,7 @@ public class Favorites implements Serializable {
      * Instantiates a new favorites.
      */
     public Favorites() {
-        favoriteSongs = new HashMap<String, LocalAudioObject>();
+        favoriteSongs = new HashMap<String, ILocalAudioObject>();
         favoriteAlbums = new HashMap<String, Album>();
         favoriteArtists = new HashMap<String, Artist>();
     }
@@ -65,8 +65,8 @@ public class Favorites implements Serializable {
      * 
      * @return the all favorite songs
      */
-    public List<LocalAudioObject> getAllFavoriteSongs() {
-        List<LocalAudioObject> result = new ArrayList<LocalAudioObject>();
+    public List<ILocalAudioObject> getAllFavoriteSongs() {
+        List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
         for (Artist artist : favoriteArtists.values()) {
             result.addAll(artist.getAudioObjects());
         }
@@ -80,9 +80,9 @@ public class Favorites implements Serializable {
     /**
      * Gets a map with all favorite songs, with url as key
      */
-    public Map<String, LocalAudioObject> getAllFavoriteSongsMap() {
-        Map<String, LocalAudioObject> result = new HashMap<String, LocalAudioObject>();
-        for (LocalAudioObject af : getAllFavoriteSongs()) {
+    public Map<String, ILocalAudioObject> getAllFavoriteSongsMap() {
+        Map<String, ILocalAudioObject> result = new HashMap<String, ILocalAudioObject>();
+        for (ILocalAudioObject af : getAllFavoriteSongs()) {
             result.put(af.getUrl(), af);
         }
         return result;
@@ -111,7 +111,7 @@ public class Favorites implements Serializable {
      * 
      * @return the favorite songs
      */
-    public Map<String, LocalAudioObject> getFavoriteAudioFiles() {
+    public Map<String, ILocalAudioObject> getFavoriteAudioFiles() {
         return favoriteSongs;
     }
 
@@ -141,7 +141,7 @@ public class Favorites implements Serializable {
      * @param favoriteSongs
      *            the favorite songs
      */
-    public void setFavoriteSongs(Map<String, LocalAudioObject> favoriteSongs) {
+    public void setFavoriteSongs(Map<String, ILocalAudioObject> favoriteSongs) {
         this.favoriteSongs = favoriteSongs;
     }
 

@@ -27,53 +27,23 @@ import java.util.Map;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
 import net.sourceforge.atunes.gui.views.dialogs.EditTitlesDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.actions.EditTagAction.EditTagSources;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.model.Album;
-import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.LocalAudioObject;
+import net.sourceforge.atunes.model.EditTagSources;
+import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ITagHandler;
 
-public class TagHandler extends AbstractHandler {
+public class TagHandler extends AbstractHandler implements ITagHandler {
 
-	private static TagHandler instance;
-	
     /** The edit tag dialog controller. */
     private Map<EditTagSources, EditTagDialogController> editTagDialogControllerMap;
 
-	public static TagHandler getInstance() {
-		if (instance == null) {
-			instance = new TagHandler();
-		}
-		return instance;
-	}
-	
-	@Override
-	public void applicationStarted(List<AudioObject> playList) {
-	}
-
-	@Override
-	public void applicationFinish() {
-	}
-
-	@Override
-	public void applicationStateChanged(IState newState) {
-	}
-
-	@Override
-	protected void initHandler() {
-	}
-
-	public void editFiles(Album a) {
-		new EditTitlesDialogController(new EditTitlesDialog(GuiHandler.getInstance().getFrame().getFrame()), getState()).editFiles(a);
-	}
-	
     /**
      * Gets the edits the tag dialog controller.
      * 
      * @return the edits the tag dialog controller
      */
-    public EditTagDialogController getEditTagDialogController(EditTagSources sourceOfEditTagDialog) {
+    private EditTagDialogController getEditTagDialogController(EditTagSources sourceOfEditTagDialog) {
         if (editTagDialogControllerMap == null) {
             editTagDialogControllerMap = new HashMap<EditTagSources, EditTagDialogController>();
         }
@@ -85,14 +55,14 @@ public class TagHandler extends AbstractHandler {
         return editTagDialogControllerMap.get(sourceOfEditTagDialog);
     }
 
-	public void editFiles(EditTagSources navigator, List<LocalAudioObject> asList) {
+	@Override
+	public void editFiles(EditTagSources navigator, List<ILocalAudioObject> asList) {
 		getEditTagDialogController(navigator).editFiles(asList);
 	}
 	
 	@Override
-	public void playListCleared() {}
-
-	@Override
-	public void selectedAudioObjectChanged(AudioObject audioObject) {}
-
+	public void editFiles(Album a) {
+		new EditTitlesDialogController(new EditTitlesDialog(GuiHandler.getInstance().getFrame().getFrame()), getState()).editFiles(a);
+	}
+	
 }

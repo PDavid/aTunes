@@ -59,8 +59,8 @@ import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandl
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -218,25 +218,25 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
 
     @SuppressWarnings("unchecked")
 	@Override
-    public List<LocalAudioObject> getAudioObjectForTreeNode(DefaultMutableTreeNode node, ViewMode viewMode, String treeFilter) {
-        List<LocalAudioObject> songs = null;
+    public List<ILocalAudioObject> getAudioObjectForTreeNode(DefaultMutableTreeNode node, ViewMode viewMode, String treeFilter) {
+        List<ILocalAudioObject> songs = null;
 
         if (node.isRoot()) {
-            songs = new ArrayList<LocalAudioObject>();
+            songs = new ArrayList<ILocalAudioObject>();
             songs.addAll(RepositoryHandler.getInstance().getAudioFilesForArtists(FavoritesHandler.getInstance().getFavoriteArtistsInfo()));
             songs.addAll(RepositoryHandler.getInstance().getAudioFilesForAlbums(FavoritesHandler.getInstance().getFavoriteAlbumsInfo()));
             songs.addAll(FavoritesHandler.getInstance().getFavoriteSongsInfo().values());
         } else {
             if (node.getUserObject() instanceof TreeObject) {
-                songs = ((TreeObject<LocalAudioObject>) node.getUserObject()).getAudioObjects();
+                songs = ((TreeObject<ILocalAudioObject>) node.getUserObject()).getAudioObjects();
             } else {
-                songs = new ArrayList<LocalAudioObject>();
+                songs = new ArrayList<ILocalAudioObject>();
                 if (node.getUserObject().toString().equals(I18nUtils.getString("ARTISTS"))) {
                     songs.addAll(RepositoryHandler.getInstance().getAudioFilesForArtists(FavoritesHandler.getInstance().getFavoriteArtistsInfo()));
                 } else if (node.getUserObject().toString().equals(I18nUtils.getString("ALBUMS"))) {
                     songs.addAll(RepositoryHandler.getInstance().getAudioFilesForAlbums(FavoritesHandler.getInstance().getFavoriteAlbumsInfo()));
                 } else {
-                    songs.addAll(new ArrayList<LocalAudioObject>(FavoritesHandler.getInstance().getFavoriteSongsInfo().values()));
+                    songs.addAll(new ArrayList<ILocalAudioObject>(FavoritesHandler.getInstance().getFavoriteSongsInfo().values()));
                 }
             }
         }

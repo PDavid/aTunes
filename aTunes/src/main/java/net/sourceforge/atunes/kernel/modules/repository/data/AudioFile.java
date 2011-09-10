@@ -44,8 +44,8 @@ import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.GenericImageSize;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ImageSize;
-import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 
 import org.commonjukebox.plugins.model.PluginApi;
@@ -58,7 +58,7 @@ import org.commonjukebox.plugins.model.PluginApi;
  * @author fleax
  */
 @PluginApi
-public final class AudioFile implements LocalAudioObject, Serializable {
+public final class AudioFile implements ILocalAudioObject, Serializable {
 
     private static final long serialVersionUID = -1139001443603556703L;
 
@@ -117,14 +117,14 @@ public final class AudioFile implements LocalAudioObject, Serializable {
      * 
      * @return the audio files
      */
-    public static List<LocalAudioObject> getAudioFiles(List<AudioObject> audioObjects) {
+    public static List<ILocalAudioObject> getAudioFiles(List<AudioObject> audioObjects) {
         if (audioObjects == null) {
             return Collections.emptyList();
         }
-        List<LocalAudioObject> result = new ArrayList<LocalAudioObject>();
+        List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
         for (AudioObject audioObject : audioObjects) {
-            if (audioObject instanceof LocalAudioObject) {
-                result.add((LocalAudioObject) audioObject);
+            if (audioObject instanceof ILocalAudioObject) {
+                result.add((ILocalAudioObject) audioObject);
             }
         }
         return result;
@@ -140,7 +140,7 @@ public final class AudioFile implements LocalAudioObject, Serializable {
      * 
      * @return the new tag
      */
-    public static AbstractTag getNewTag(LocalAudioObject file, EditTagInfo editTagInfo) {
+    public static AbstractTag getNewTag(ILocalAudioObject file, EditTagInfo editTagInfo) {
         return new DefaultTag().getTagFromProperties(editTagInfo, file.getTag());
     }
 
@@ -556,7 +556,7 @@ public final class AudioFile implements LocalAudioObject, Serializable {
     }
 
     @Override
-    public int compareTo(LocalAudioObject o) {
+    public int compareTo(ILocalAudioObject o) {
         if (file == null || o.getFile() == null) {
             return 0;
         }
@@ -577,10 +577,10 @@ public final class AudioFile implements LocalAudioObject, Serializable {
      * @param list
      * @return
      */
-    public static List<LocalAudioObject> filterRepeatedSongs(List<LocalAudioObject> list) {
-        List<LocalAudioObject> result = new ArrayList<LocalAudioObject>(list);
+    public static List<ILocalAudioObject> filterRepeatedSongs(List<ILocalAudioObject> list) {
+        List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>(list);
         HashSet<Integer> artistAndTitles = new HashSet<Integer>();
-        for (LocalAudioObject af : list) {
+        for (ILocalAudioObject af : list) {
             // Build a set of strings of type artist_hash * title_hash
             Integer hash = (!af.getAlbumArtist().trim().equals("") ? af.getAlbumArtist() : af.getArtist()).hashCode() * af.getTitle().hashCode();
             if (artistAndTitles.contains(hash)) {
@@ -600,10 +600,10 @@ public final class AudioFile implements LocalAudioObject, Serializable {
      * @param list
      * @return
      */
-    public static List<LocalAudioObject> filterRepeatedSongsAndAlbums(List<LocalAudioObject> list) {
-        List<LocalAudioObject> result = new ArrayList<LocalAudioObject>(list);
+    public static List<ILocalAudioObject> filterRepeatedSongsAndAlbums(List<ILocalAudioObject> list) {
+        List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>(list);
         Set<Integer> artistAndTitles = new HashSet<Integer>();
-        for (LocalAudioObject af : list) {
+        for (ILocalAudioObject af : list) {
             // Build a set of strings of type artist_hash * album_hash * title_hash
             Integer hash = (!af.getAlbumArtist().trim().equals("") ? af.getAlbumArtist() : af.getArtist()).hashCode() * af.getAlbum().hashCode() * af.getTitle().hashCode();
             if (artistAndTitles.contains(hash)) {

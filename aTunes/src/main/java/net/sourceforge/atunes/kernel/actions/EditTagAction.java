@@ -26,10 +26,12 @@ import java.util.List;
 import javax.swing.KeyStroke;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.kernel.modules.tags.TagHandler;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.model.LocalAudioObject;
+import net.sourceforge.atunes.model.EditTagSources;
+import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ITagHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -38,16 +40,12 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class EditTagAction extends AbstractActionOverSelectedObjects<LocalAudioObject> {
+public class EditTagAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
     private static final long serialVersionUID = -4310895355731333072L;
 
-    public enum EditTagSources {
-        PLAYLIST, NAVIGATOR
-    };
-
     EditTagAction() {
-        super(I18nUtils.getString("EDIT_TAG"), LocalAudioObject.class);
+        super(I18nUtils.getString("EDIT_TAG"), ILocalAudioObject.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("EDIT_TAG"));
     }
 
@@ -59,11 +57,11 @@ public class EditTagAction extends AbstractActionOverSelectedObjects<LocalAudioO
     }
 
     @Override
-    protected void performAction(List<LocalAudioObject> objects) {
+    protected void performAction(List<ILocalAudioObject> objects) {
         // Start edit by opening edit dialog
         try {
             EditTagSources editTagSource = EditTagSources.valueOf(getActionId());
-            TagHandler.getInstance().editFiles(editTagSource, objects);
+            Context.getBean(ITagHandler.class).editFiles(editTagSource, objects);
         } catch (IllegalArgumentException iae) {
             Logger.error(iae);
         } catch (NullPointerException npe) {

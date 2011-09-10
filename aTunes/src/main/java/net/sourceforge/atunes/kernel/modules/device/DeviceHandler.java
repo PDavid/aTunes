@@ -62,8 +62,8 @@ import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.model.Repository;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -130,10 +130,10 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
         long leaveFree = leaveFreeLong;
 
         // Get reference to Repository songs
-        List<LocalAudioObject> songs = new ArrayList<LocalAudioObject>(RepositoryHandler.getInstance().getAudioFilesList());
+        List<ILocalAudioObject> songs = new ArrayList<ILocalAudioObject>(RepositoryHandler.getInstance().getAudioFilesList());
 
         // Songs selected
-        Map<Integer, LocalAudioObject> songsSelected = new HashMap<Integer, LocalAudioObject>();
+        Map<Integer, ILocalAudioObject> songsSelected = new HashMap<Integer, ILocalAudioObject>();
 
         // Initialize random generator
         Random r = new Random(new Date().getTime());
@@ -166,7 +166,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
         }
 
         // Write files
-        copyFilesToDevice(new ArrayList<LocalAudioObject>(songsSelected.values()));
+        copyFilesToDevice(new ArrayList<ILocalAudioObject>(songsSelected.values()));
     }
 
     /**
@@ -189,7 +189,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
      * 
      * @param collection
      */
-    public void copyFilesToDevice(Collection<LocalAudioObject> collection) {
+    public void copyFilesToDevice(Collection<ILocalAudioObject> collection) {
         copyFilesToDevice(collection, null);
     }
 
@@ -201,7 +201,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
      * @param listener
      *            A listener to be notified
      */
-    public void copyFilesToDevice(Collection<LocalAudioObject> collection, ProcessListener listener) {
+    public void copyFilesToDevice(Collection<ILocalAudioObject> collection, ProcessListener listener) {
         filesCopiedToDevice = 0;
         if (collection.isEmpty()) {
             return;
@@ -209,7 +209,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
 
         // Get size of files
         long size = 0;
-        for (LocalAudioObject file : collection) {
+        for (ILocalAudioObject file : collection) {
             size = size + file.getFile().length();
         }
         // Get free space in device
@@ -331,7 +331,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
      * 
      * @return the device songs
      */
-    public Collection<LocalAudioObject> getAudioFilesList() {
+    public Collection<ILocalAudioObject> getAudioFilesList() {
         if (deviceRepository != null) {
             return deviceRepository.getFiles();
         }
@@ -491,7 +491,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
      * 
      * @return the file if loaded
      */
-    public LocalAudioObject getFileIfLoaded(String fileName) {
+    public ILocalAudioObject getFileIfLoaded(String fileName) {
         return deviceRepository == null ? null : deviceRepository.getFile(fileName);
     }
 
@@ -530,13 +530,13 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
     }
 
     @Override
-    public void audioFilesRemoved(List<LocalAudioObject> audioFiles) {
+    public void audioFilesRemoved(List<ILocalAudioObject> audioFiles) {
         if (!isDeviceConnected()) {
             return;
         }
 
         boolean refresh = false;
-        for (LocalAudioObject af : audioFiles) {
+        for (ILocalAudioObject af : audioFiles) {
             if (isDevicePath(af.getFile().getAbsolutePath())) {
                 refresh = true;
                 break;
@@ -560,10 +560,10 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
      * @param list
      * @return
      */
-    public List<LocalAudioObject> getElementsNotPresentInDevice(List<LocalAudioObject> list) {
-        List<LocalAudioObject> result = new ArrayList<LocalAudioObject>();
+    public List<ILocalAudioObject> getElementsNotPresentInDevice(List<ILocalAudioObject> list) {
+        List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
         if (list != null && !list.isEmpty()) {
-            for (LocalAudioObject af : list) {
+            for (ILocalAudioObject af : list) {
                 String artist = af.getAlbumArtist() != null && !af.getAlbumArtist().trim().equals("") ? af.getAlbumArtist() : af.getArtist();
                 String album = af.getAlbum();
                 String title = af.getTitle();
@@ -580,7 +580,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
                         } else {
                             // Compare title of every file and add if title is not in list
                             Album alb = a.getAlbum(album);
-                            List<LocalAudioObject> deviceFiles = alb.getAudioObjects();
+                            List<ILocalAudioObject> deviceFiles = alb.getAudioObjects();
                             HashSet<String> titles = new HashSet<String>();
                             for (AudioObject deviceFile : deviceFiles) {
                                 titles.add(deviceFile.getTitle());
@@ -591,7 +591,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
                         }
                     } else {
                         // Compare title of every file of artist and add if title is not in list
-                        List<LocalAudioObject> deviceFiles = a.getAudioObjects();
+                        List<ILocalAudioObject> deviceFiles = a.getAudioObjects();
                         HashSet<String> titles = new HashSet<String>();
                         for (AudioObject deviceFile : deviceFiles) {
                             titles.add(deviceFile.getTitle());
@@ -612,11 +612,11 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
      * @param list
      * @return
      */
-    public List<LocalAudioObject> getElementsNotPresentInList(List<LocalAudioObject> list) {
+    public List<ILocalAudioObject> getElementsNotPresentInList(List<ILocalAudioObject> list) {
         // Start with all device
-        List<LocalAudioObject> result = new ArrayList<LocalAudioObject>(getAudioFilesList());
+        List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>(getAudioFilesList());
 
-        for (LocalAudioObject af : list) {
+        for (ILocalAudioObject af : list) {
             String artist = af.getAlbumArtist() != null && !af.getAlbumArtist().trim().equals("") ? af.getAlbumArtist() : af.getArtist();
             String album = af.getAlbum();
             String title = af.getTitle();
@@ -627,7 +627,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
                 if (getState().isAllowRepeatedSongsInDevice()) {
                     if (a.getAlbum(album) != null) {
                         Album alb = a.getAlbum(album);
-                        List<LocalAudioObject> deviceFiles = alb.getAudioObjects();
+                        List<ILocalAudioObject> deviceFiles = alb.getAudioObjects();
                         HashMap<String, AudioObject> titles = new HashMap<String, AudioObject>();
                         for (AudioObject deviceFile : deviceFiles) {
                             titles.put(deviceFile.getTitle(), deviceFile);
@@ -637,7 +637,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
                         }
                     }
                 } else {
-                    List<LocalAudioObject> deviceFiles = a.getAudioObjects();
+                    List<ILocalAudioObject> deviceFiles = a.getAudioObjects();
                     HashMap<String, AudioObject> titles = new HashMap<String, AudioObject>();
                     for (AudioObject deviceFile : deviceFiles) {
                         titles.put(deviceFile.getTitle(), deviceFile);

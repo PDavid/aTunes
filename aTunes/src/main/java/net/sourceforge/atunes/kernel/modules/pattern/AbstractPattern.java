@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import net.sourceforge.atunes.kernel.modules.tags.EditTagInfo;
-import net.sourceforge.atunes.model.LocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -54,7 +54,7 @@ public abstract class AbstractPattern {
      */
     private static final AbstractPattern ANY_PATTERN = new AbstractPattern('?', "ANY", true, true) {
         @Override
-        public String getAudioFileStringValue(LocalAudioObject audioFile) {
+        public String getAudioFileStringValue(ILocalAudioObject audioFile) {
             // This is a dummy pattern
             return null;
         }
@@ -68,62 +68,62 @@ public abstract class AbstractPattern {
 
         patterns.add(new AbstractPattern('T', "TITLE", true, false) {
             @Override
-            public String getAudioFileStringValue(LocalAudioObject audioFile) {
+            public String getAudioFileStringValue(ILocalAudioObject audioFile) {
                 return audioFile.getTitleOrFileName();
             }
         });
         patterns.add(new AbstractPattern('A', "ARTIST", true, true) {
             @Override
-            public String getAudioFileStringValue(LocalAudioObject audioFile) {
+            public String getAudioFileStringValue(ILocalAudioObject audioFile) {
                 return audioFile.getArtist();
             }
         });
         patterns.add(new AbstractPattern('L', "ALBUM", true, true) {
             @Override
-            public String getAudioFileStringValue(LocalAudioObject audioFile) {
+            public String getAudioFileStringValue(ILocalAudioObject audioFile) {
                 return audioFile.getAlbum();
             }
         });
         patterns.add(new AbstractPattern('R', "ALBUM_ARTIST", true, true) {
             @Override
-            public String getAudioFileStringValue(LocalAudioObject audioFile) {
+            public String getAudioFileStringValue(ILocalAudioObject audioFile) {
                 return audioFile.getAlbumArtist();
             }
         });
         patterns.add(new AbstractPattern('N', "TRACK", true, false) {
             @Override
-            public String getAudioFileStringValue(LocalAudioObject audioFile) {
+            public String getAudioFileStringValue(ILocalAudioObject audioFile) {
                 String track = String.valueOf(audioFile.getTrackNumber());
                 return track.length() < 2 ? StringUtils.getString("0", track) : track;
             }
         });
         patterns.add(new AbstractPattern('G', "GENRE", true, true) {
             @Override
-            public String getAudioFileStringValue(LocalAudioObject audioFile) {
+            public String getAudioFileStringValue(ILocalAudioObject audioFile) {
                 return audioFile.getGenre();
             }
         });
         patterns.add(new AbstractPattern('Y', "YEAR", true, true) {
             @Override
-            public String getAudioFileStringValue(LocalAudioObject audioFile) {
+            public String getAudioFileStringValue(ILocalAudioObject audioFile) {
                 return audioFile.getYear();
             }
         });
         patterns.add(new AbstractPattern('C', "COMPOSER", true, true) {
             @Override
-            public String getAudioFileStringValue(LocalAudioObject audioFile) {
+            public String getAudioFileStringValue(ILocalAudioObject audioFile) {
                 return audioFile.getComposer();
             }
         });
         patterns.add(new AbstractPattern('S', "ARTIST_FIRST_CHAR", false, false) {
             @Override
-            public String getAudioFileStringValue(LocalAudioObject audioFile) {
+            public String getAudioFileStringValue(ILocalAudioObject audioFile) {
                 return audioFile.getArtist().substring(0, 1);
             }
         });
         patterns.add(new AbstractPattern('D', "DISC_NUMBER", true, true) {
             @Override
-            public String getAudioFileStringValue(LocalAudioObject audioFile) {
+            public String getAudioFileStringValue(ILocalAudioObject audioFile) {
                 return String.valueOf(audioFile.getDiscNumber());
             }
         });
@@ -241,7 +241,7 @@ public abstract class AbstractPattern {
      * @param audioFile
      * @return
      */
-    public String applyPattern(String sourceString, LocalAudioObject audioFile) {
+    public String applyPattern(String sourceString, ILocalAudioObject audioFile) {
         if (!pattern.equals(ANY_PATTERN.pattern)) {
             return sourceString.replaceAll(pattern, getAudioFileStringValue(audioFile));
         }
@@ -254,7 +254,7 @@ public abstract class AbstractPattern {
      * @param audioFile
      * @return
      */
-    public abstract String getAudioFileStringValue(LocalAudioObject audioFile);
+    public abstract String getAudioFileStringValue(ILocalAudioObject audioFile);
 
     /**
      * Returns a String as result of applying all defined patterns over a
@@ -264,7 +264,7 @@ public abstract class AbstractPattern {
      * @param song
      * @return
      */
-    public static String applyPatternTransformations(String pattern, LocalAudioObject song) {
+    public static String applyPatternTransformations(String pattern, ILocalAudioObject song) {
         String result = pattern;
         for (AbstractPattern transform : patterns) {
             result = transform.applyPattern(result, song);

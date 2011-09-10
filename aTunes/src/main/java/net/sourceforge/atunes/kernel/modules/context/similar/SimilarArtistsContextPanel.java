@@ -30,7 +30,7 @@ import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.model.LocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -69,7 +69,7 @@ public class SimilarArtistsContextPanel extends AbstractContextPanel {
         }
 
         // Enable panel for LocalAudioObject objects or Radios with song information available
-        return audioObject instanceof LocalAudioObject || audioObject instanceof Radio && ((Radio) audioObject).isSongInfoAvailable();
+        return audioObject instanceof ILocalAudioObject || audioObject instanceof Radio && ((Radio) audioObject).isSongInfoAvailable();
     }
 
 }

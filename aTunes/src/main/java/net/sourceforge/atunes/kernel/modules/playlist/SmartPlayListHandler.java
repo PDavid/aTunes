@@ -32,7 +32,7 @@ import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.model.LocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 
 public final class SmartPlayListHandler {
 
@@ -118,7 +118,7 @@ public final class SmartPlayListHandler {
      */
     public void addRandomSongs(int n) {
         // Get reference to Repository songs
-        List<LocalAudioObject> songs = new ArrayList<LocalAudioObject>(RepositoryHandler.getInstance().getAudioFilesList());
+        List<ILocalAudioObject> songs = new ArrayList<ILocalAudioObject>(RepositoryHandler.getInstance().getAudioFilesList());
 
         // Songs selected
         List<AudioObject> songsSelected = new ArrayList<AudioObject>();
@@ -150,7 +150,7 @@ public final class SmartPlayListHandler {
      */
     public void addSongsMostPlayed(int n) {
         // Get songs
-        List<LocalAudioObject> songsSelected = StatisticsHandler.getInstance().getMostPlayedAudioFiles(n);
+        List<ILocalAudioObject> songsSelected = StatisticsHandler.getInstance().getMostPlayedAudioFiles(n);
 
         // Sort
         AudioObjectComparator.sort(songsSelected);
@@ -167,7 +167,7 @@ public final class SmartPlayListHandler {
      */
     public void addUnplayedSongs(int n) {
         // Get unplayed files
-        List<LocalAudioObject> unplayedSongs = StatisticsHandler.getInstance().getUnplayedAudioFiles();
+        List<ILocalAudioObject> unplayedSongs = StatisticsHandler.getInstance().getUnplayedAudioFiles();
         Collections.shuffle(unplayedSongs);
 
         // Add to playlist

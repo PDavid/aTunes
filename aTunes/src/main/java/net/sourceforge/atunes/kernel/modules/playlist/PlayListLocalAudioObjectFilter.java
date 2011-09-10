@@ -24,16 +24,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.model.LocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 
-public class PlayListLocalAudioObjectFilter implements PlayListObjectFilter<LocalAudioObject> {
+public class PlayListLocalAudioObjectFilter implements PlayListObjectFilter<ILocalAudioObject> {
 	
 	@Override
-	public List<LocalAudioObject> getObjects(PlayList playList) {
-        List<LocalAudioObject> result = new ArrayList<LocalAudioObject>();
+	public List<ILocalAudioObject> getObjects(PlayList playList) {
+        List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
         for (AudioObject ao : playList.getAudioObjects()) {
-            if (ao instanceof LocalAudioObject) {
-                result.add((LocalAudioObject)ao);
+            if (ao instanceof ILocalAudioObject) {
+                result.add((ILocalAudioObject)ao);
             }
         }
         return result;

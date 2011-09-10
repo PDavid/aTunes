@@ -23,8 +23,8 @@ package net.sourceforge.atunes.kernel.modules.tags;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.LocalAudioObject;
 
 /**
  * The Class EditTagsProcess.
@@ -42,13 +42,13 @@ public class EditTagsProcess extends AbstractChangeTagProcess {
      * @param editTagInfo
      *            Information to be written
      */
-    public EditTagsProcess(List<LocalAudioObject> audioFilesToEdit, EditTagInfo editTagInfo, IState state) {
+    public EditTagsProcess(List<ILocalAudioObject> audioFilesToEdit, EditTagInfo editTagInfo, IState state) {
         super(audioFilesToEdit, state);
         this.editTagInfo = editTagInfo;
     }
 
     @Override
-    protected void changeTag(LocalAudioObject audioFile) {
+    protected void changeTag(ILocalAudioObject audioFile) {
         AbstractTag newTag = AudioFile.getNewTag(audioFile, editTagInfo);
         AbstractTag oldTag = audioFile.getTag();
 

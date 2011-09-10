@@ -29,7 +29,7 @@ import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.kernel.modules.tags.EditTagFromFolderNamePatternProcess;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.model.LocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -39,7 +39,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * @author fleax
  * 
  */
-public class AutoSetTagFromFolderNamePatternAction extends AbstractActionOverSelectedObjects<LocalAudioObject> {
+public class AutoSetTagFromFolderNamePatternAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
     /**
      * 
@@ -47,12 +47,12 @@ public class AutoSetTagFromFolderNamePatternAction extends AbstractActionOverSel
     private static final long serialVersionUID = -1253820711948217089L;
 
     public AutoSetTagFromFolderNamePatternAction() {
-        super(StringUtils.getString(I18nUtils.getString("AUTO_SET_TAG_FROM_FOLDER_NAME_PATTERN"), "..."), LocalAudioObject.class);
+        super(StringUtils.getString(I18nUtils.getString("AUTO_SET_TAG_FROM_FOLDER_NAME_PATTERN"), "..."), ILocalAudioObject.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("AUTO_SET_TAG_FROM_FOLDER_NAME_PATTERN"));
     }
 
     @Override
-    protected void performAction(List<LocalAudioObject> objects) {
+    protected void performAction(List<ILocalAudioObject> objects) {
         // Show pattern input dialog
         PatternInputDialog inputDialog = new PatternInputDialog(GuiHandler.getInstance().getFrame().getFrame(), false, getState());
         inputDialog.show(AbstractPattern.getRecognitionPatterns(), objects.get(0).getFile().getParentFile().getAbsolutePath());

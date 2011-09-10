@@ -33,7 +33,7 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
-import net.sourceforge.atunes.model.LocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -42,7 +42,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * This class represents a genre, with a name, and a set of artist of this
  * genre.
  */
-public class Genre implements Serializable, TreeObject<LocalAudioObject> {
+public class Genre implements Serializable, TreeObject<ILocalAudioObject> {
 
     private static final long serialVersionUID = -6552057266561177152L;
 
@@ -50,7 +50,7 @@ public class Genre implements Serializable, TreeObject<LocalAudioObject> {
     private String name;
 
     /** List of songs of this genre. */
-    private List<LocalAudioObject> audioFiles;
+    private List<ILocalAudioObject> audioFiles;
 
     /**
      * Constructor.
@@ -60,7 +60,7 @@ public class Genre implements Serializable, TreeObject<LocalAudioObject> {
      */
     public Genre(String name) {
         this.name = name;
-        audioFiles = new ArrayList<LocalAudioObject>();
+        audioFiles = new ArrayList<ILocalAudioObject>();
     }
 
     /**
@@ -69,7 +69,7 @@ public class Genre implements Serializable, TreeObject<LocalAudioObject> {
      * @param a
      *            the a
      */
-    public void addAudioFile(LocalAudioObject a) {
+    public void addAudioFile(ILocalAudioObject a) {
         audioFiles.add(a);
     }
 
@@ -88,9 +88,9 @@ public class Genre implements Serializable, TreeObject<LocalAudioObject> {
      * @return the audio objects
      */
     @Override
-    public List<LocalAudioObject> getAudioObjects() {
-        List<LocalAudioObject> result = new ArrayList<LocalAudioObject>();
-        for (LocalAudioObject song : audioFiles) {
+    public List<ILocalAudioObject> getAudioObjects() {
+        List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
+        for (ILocalAudioObject song : audioFiles) {
             result.add(song);
         }
         return result;
@@ -116,7 +116,7 @@ public class Genre implements Serializable, TreeObject<LocalAudioObject> {
      * @param a
      *            the a
      */
-    public void removeAudioFile(LocalAudioObject a) {
+    public void removeAudioFile(ILocalAudioObject a) {
         audioFiles.remove(a);
     }
 
@@ -195,7 +195,7 @@ public class Genre implements Serializable, TreeObject<LocalAudioObject> {
      */
     public Map<String, Artist> getArtistObjects() {
         Map<String, Artist> structure = new HashMap<String, Artist>();
-        for (LocalAudioObject song : audioFiles) {
+        for (ILocalAudioObject song : audioFiles) {
             String artist = !song.getAlbumArtist().equals("") ? song.getAlbumArtist() : song.getArtist();
             if (!structure.containsKey(artist)) {
                 structure.put(artist, new Artist(artist));
@@ -214,7 +214,7 @@ public class Genre implements Serializable, TreeObject<LocalAudioObject> {
      */
     public Set<String> getArtistSet() {
         Set<String> artists = new HashSet<String>();
-        for (LocalAudioObject song : audioFiles) {
+        for (ILocalAudioObject song : audioFiles) {
             if (!song.getAlbumArtist().equals("")) {
                 artists.add(song.getAlbumArtist());
             } else {

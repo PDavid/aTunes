@@ -41,7 +41,7 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.model.LocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 
@@ -83,7 +83,7 @@ public final class EditTagDialogActionListener implements ActionListener {
             // get the LocalAudioObject of the next song in the play list after the first selection
             //nextFile.add((AudioFile)PlayListHandler.getInstance().getAudioObjectAtIndexRelativeToCurrentlyPlaying(++currentSelectedSongIndex - PlayListHandler.getInstance().getCurrentAudioObjectIndexInVisiblePlayList()));
 
-            List<LocalAudioObject> nextFile = new ArrayList<LocalAudioObject>();
+            List<ILocalAudioObject> nextFile = new ArrayList<ILocalAudioObject>();
             boolean validAudioFile = false;
             int length = PlayListHandler.getInstance().getCurrentPlayList(true).size();
             // Before moving down check if we need to jump an audio object like a radio stream
@@ -110,7 +110,7 @@ public final class EditTagDialogActionListener implements ActionListener {
             AudioObject currentSelectedSong = selectedFiles.get(0);
             int currentSelectedSongIndex = PlayListHandler.getInstance().getIndexOfAudioObject(currentSelectedSong);
 
-            List<LocalAudioObject> prevFile = new ArrayList<LocalAudioObject>();
+            List<ILocalAudioObject> prevFile = new ArrayList<ILocalAudioObject>();
             boolean validAudioFile = false;
             // Before moving down check if we need to jump an audio object like a radio stream
             while (validAudioFile == false) {
@@ -126,7 +126,7 @@ public final class EditTagDialogActionListener implements ActionListener {
                 }
             }
             if (validAudioFile) {
-                prevFile.add((LocalAudioObject) selectedFiles.get(0));
+                prevFile.add((ILocalAudioObject) selectedFiles.get(0));
                 controller.editFiles(prevFile);
             }
         } else if (e.getSource() == dialog.getCancelButton()) {
@@ -171,7 +171,7 @@ public final class EditTagDialogActionListener implements ActionListener {
      * @return the common parent directory or <code>null</code>
      */
     private File getCommonDirectoryForAudioFiles() {
-        List<LocalAudioObject> audioFilesEditing = controller.getAudioFilesEditing();
+        List<ILocalAudioObject> audioFilesEditing = controller.getAudioFilesEditing();
         if (audioFilesEditing.size() == 1) {
             return audioFilesEditing.get(0).getFile().getParentFile();
         } else {

@@ -29,7 +29,7 @@ import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.model.LocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -67,7 +67,7 @@ public class CreatePlayListWithSelectedArtistsAction extends AbstractActionOverS
 
         // For every artist
         for (Artist artist : selectedArtists) {
-            List<LocalAudioObject> audioObjects = RepositoryHandler.getInstance().getAudioFilesForArtists(Collections.singletonMap(artist.getName(), artist));
+            List<ILocalAudioObject> audioObjects = RepositoryHandler.getInstance().getAudioFilesForArtists(Collections.singletonMap(artist.getName(), artist));
             AudioObjectComparator.sort(audioObjects);
 
             // Create a new play list with artist as name and audio objects selected

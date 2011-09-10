@@ -29,7 +29,7 @@ import java.util.List;
 import javax.swing.table.TableCellEditor;
 
 import net.sourceforge.atunes.kernel.modules.tags.TagAttributesReviewed;
-import net.sourceforge.atunes.model.LocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jdesktop.swingx.JXTreeTable;
@@ -47,7 +47,7 @@ public final class ReviewImportTreeTableModel extends AbstractTreeTableModel {
     private List<File> folders;
 
     /** AudioFiles to import */
-    private List<LocalAudioObject> audioFilesToImport;
+    private List<ILocalAudioObject> audioFilesToImport;
 
     /** A hash map to store folders and its children folders */
     private HashMap<File, List<File>> foldersMap = new HashMap<File, List<File>>();
@@ -71,7 +71,7 @@ public final class ReviewImportTreeTableModel extends AbstractTreeTableModel {
      * @param filesToImport
      * @param treeTable
      */
-    public ReviewImportTreeTableModel(List<File> folders, List<LocalAudioObject> filesToImport, JXTreeTable treeTable) {
+    public ReviewImportTreeTableModel(List<File> folders, List<ILocalAudioObject> filesToImport, JXTreeTable treeTable) {
         super(new DefaultMutableTreeTableNode(ROOT));
         this.folders = folders;
         this.audioFilesToImport = filesToImport;
@@ -183,7 +183,7 @@ public final class ReviewImportTreeTableModel extends AbstractTreeTableModel {
      * @param audioFile
      * @return
      */
-    private String getValueForColumn(int column, LocalAudioObject audioFile) {
+    private String getValueForColumn(int column, ILocalAudioObject audioFile) {
         return this.tagAttributesReviewed.getValueForTagAttribute(column - 1, audioFile);
     }
 
@@ -207,7 +207,7 @@ public final class ReviewImportTreeTableModel extends AbstractTreeTableModel {
         }
 
         String value = "";
-        for (LocalAudioObject audioFile : audioFilesToImport) {
+        for (ILocalAudioObject audioFile : audioFilesToImport) {
             if (audioFile.getFile().getParentFile().equals(folder)) {
                 if (value.equals("")) {
                     value = getValueForColumn(column, audioFile);

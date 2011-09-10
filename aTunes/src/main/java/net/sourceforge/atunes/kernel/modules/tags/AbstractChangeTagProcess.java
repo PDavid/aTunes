@@ -25,8 +25,8 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.process.AbstractProcess;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -41,14 +41,14 @@ public abstract class AbstractChangeTagProcess extends AbstractProcess {
     /**
      * List of LocalAudioObject objects to change
      */
-    private List<LocalAudioObject> filesToChange;
+    private List<ILocalAudioObject> filesToChange;
 
     /**
      * Constructor, initialized with AudioFiles to be changed
      * 
      * @param filesToChange
      */
-    protected AbstractChangeTagProcess(List<LocalAudioObject> filesToChange, IState state) {
+    protected AbstractChangeTagProcess(List<ILocalAudioObject> filesToChange, IState state) {
     	super(state);
         this.filesToChange = filesToChange;
     }
@@ -100,7 +100,7 @@ public abstract class AbstractChangeTagProcess extends AbstractProcess {
      * @param file
      * @throws IOException
      */
-    protected abstract void changeTag(LocalAudioObject file) throws IOException;
+    protected abstract void changeTag(ILocalAudioObject file) throws IOException;
 
     /**
      * Some processes need an initial task to get some information needed to
@@ -113,7 +113,7 @@ public abstract class AbstractChangeTagProcess extends AbstractProcess {
     /**
      * @return the filesToChange
      */
-    protected List<LocalAudioObject> getFilesToChange() {
+    protected List<ILocalAudioObject> getFilesToChange() {
         return filesToChange;
     }
 
@@ -121,7 +121,7 @@ public abstract class AbstractChangeTagProcess extends AbstractProcess {
      * @param filesToChange
      *            the filesToChange to set
      */
-    protected void setFilesToChange(List<LocalAudioObject> filesToChange) {
+    protected void setFilesToChange(List<ILocalAudioObject> filesToChange) {
         this.filesToChange = filesToChange;
     }
 }

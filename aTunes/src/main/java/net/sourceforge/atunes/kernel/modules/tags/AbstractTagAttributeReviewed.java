@@ -25,7 +25,7 @@ import java.util.HashMap;
 
 import javax.swing.table.TableCellEditor;
 
-import net.sourceforge.atunes.model.LocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 
 /**
  * Keeps information about changes made in an attribute when importing
@@ -77,7 +77,7 @@ abstract class AbstractTagAttributeReviewed {
      * @param audioFile
      * @return
      */
-    abstract String getValue(LocalAudioObject audioFile);
+    abstract String getValue(ILocalAudioObject audioFile);
 
     /**
      * Modifies a Tag with the given value

@@ -37,7 +37,7 @@ import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
 import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
 import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.LocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -176,7 +176,7 @@ public class LameEncoder implements Encoder {
 
             // Gather the info and write the tag
             try {
-            	LocalAudioObject audiofile = new AudioFile(mp3File);
+            	ILocalAudioObject audiofile = new AudioFile(mp3File);
                 AbstractTag tag = new DefaultTag();
 
                 tag.setAlbum(album);
