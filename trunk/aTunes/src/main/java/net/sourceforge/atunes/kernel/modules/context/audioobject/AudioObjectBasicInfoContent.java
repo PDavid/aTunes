@@ -43,7 +43,7 @@ import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.model.LocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jdesktop.swingx.border.DropShadowBorder;
@@ -132,7 +132,7 @@ public class AudioObjectBasicInfoContent extends AbstractContextPanelContent {
             audioObjectImage.setIcon(image);
         }
         if (result.containsKey(AudioObjectBasicInfoDataSource.OUTPUT_AUDIO_OBJECT)) {
-            if (result.get(AudioObjectBasicInfoDataSource.OUTPUT_AUDIO_OBJECT) instanceof LocalAudioObject && image != null) {
+            if (result.get(AudioObjectBasicInfoDataSource.OUTPUT_AUDIO_OBJECT) instanceof ILocalAudioObject && image != null) {
                 audioObjectImage.setBorder(new DropShadowBorder());
             } else {
                 audioObjectImage.setBorder(null);

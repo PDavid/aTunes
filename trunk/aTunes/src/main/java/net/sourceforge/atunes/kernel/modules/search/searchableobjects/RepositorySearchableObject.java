@@ -31,7 +31,7 @@ import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.search.RawSearchResult;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.model.LocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -83,7 +83,7 @@ public final class RepositorySearchableObject extends AbstractCommonAudioFileSea
     public List<AudioObject> getSearchResult(List<RawSearchResult> rawSearchResults) {
         List<AudioObject> result = new ArrayList<AudioObject>();
         for (RawSearchResult rawSearchResult : rawSearchResults) {
-        	LocalAudioObject audioFile = RepositoryHandler.getInstance().getFileIfLoaded(rawSearchResult.getDocument().get("url"));
+        	ILocalAudioObject audioFile = RepositoryHandler.getInstance().getFileIfLoaded(rawSearchResult.getDocument().get("url"));
             if (audioFile != null) {
                 result.add(audioFile);
             }

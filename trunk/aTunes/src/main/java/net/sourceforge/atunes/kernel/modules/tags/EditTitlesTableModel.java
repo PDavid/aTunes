@@ -29,7 +29,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 
-import net.sourceforge.atunes.model.LocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class EditTitlesTableModel extends AbstractTableModel {
@@ -37,10 +37,10 @@ public final class EditTitlesTableModel extends AbstractTableModel {
     private static final long serialVersionUID = -4440078678648669115L;
 
     /** The files. */
-    private List<LocalAudioObject> files;
+    private List<ILocalAudioObject> files;
 
     /** The new values. */
-    private Map<LocalAudioObject, String> newValues;
+    private Map<ILocalAudioObject, String> newValues;
 
     /** The listeners. */
     private List<TableModelListener> listeners;
@@ -51,9 +51,9 @@ public final class EditTitlesTableModel extends AbstractTableModel {
      * @param files
      *            the files
      */
-    public EditTitlesTableModel(List<LocalAudioObject> files) {
+    public EditTitlesTableModel(List<ILocalAudioObject> files) {
         this.files = files;
-        this.newValues = new HashMap<LocalAudioObject, String>();
+        this.newValues = new HashMap<ILocalAudioObject, String>();
         this.listeners = new ArrayList<TableModelListener>();
     }
 
@@ -90,7 +90,7 @@ public final class EditTitlesTableModel extends AbstractTableModel {
      * 
      * @return the new values
      */
-    public Map<LocalAudioObject, String> getNewValues() {
+    public Map<ILocalAudioObject, String> getNewValues() {
         return newValues;
     }
 
@@ -101,7 +101,7 @@ public final class EditTitlesTableModel extends AbstractTableModel {
 
     @Override
     public String getValueAt(int rowIndex, int columnIndex) {
-    	LocalAudioObject file = files.get(rowIndex);
+    	ILocalAudioObject file = files.get(rowIndex);
         if (columnIndex == 0) {
             return file.getFile().getName();
         }

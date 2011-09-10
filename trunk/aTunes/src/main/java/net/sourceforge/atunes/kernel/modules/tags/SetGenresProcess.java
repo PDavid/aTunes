@@ -27,15 +27,15 @@ import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.LocalAudioObject;
 
 /**
  * The Class SetGenresProcess.
  */
 public class SetGenresProcess extends AbstractChangeTagProcess {
 
-    private Map<LocalAudioObject, String> filesAndGenres;
+    private Map<ILocalAudioObject, String> filesAndGenres;
 
     /**
      * Instantiates a new sets the genres process.
@@ -43,7 +43,7 @@ public class SetGenresProcess extends AbstractChangeTagProcess {
      * @param files
      *            the files
      */
-    SetGenresProcess(List<LocalAudioObject> files, IState state) {
+    SetGenresProcess(List<ILocalAudioObject> files, IState state) {
         super(files, state);
     }
 
@@ -54,7 +54,7 @@ public class SetGenresProcess extends AbstractChangeTagProcess {
     }
 
     @Override
-    protected void changeTag(LocalAudioObject file) throws IOException {
+    protected void changeTag(ILocalAudioObject file) throws IOException {
         String genre = this.filesAndGenres.get(file);
         // If file has already genre setted, avoid
         if (!file.getGenre().equals(genre)) {
@@ -70,12 +70,12 @@ public class SetGenresProcess extends AbstractChangeTagProcess {
      * 
      * @return the genres for files
      */
-    private Map<LocalAudioObject, String> getGenresForFiles(List<LocalAudioObject> files) {
-        Map<LocalAudioObject, String> result = new HashMap<LocalAudioObject, String>();
+    private Map<ILocalAudioObject, String> getGenresForFiles(List<ILocalAudioObject> files) {
+        Map<ILocalAudioObject, String> result = new HashMap<ILocalAudioObject, String>();
 
         Map<String, String> tagCache = new HashMap<String, String>();
 
-        for (LocalAudioObject f : files) {
+        for (ILocalAudioObject f : files) {
             if (!Artist.isUnknownArtist(f.getArtist())) {
                 String tag = null;
                 if (tagCache.containsKey(f.getArtist())) {

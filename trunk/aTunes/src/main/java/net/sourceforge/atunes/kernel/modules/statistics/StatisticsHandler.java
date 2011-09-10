@@ -36,8 +36,8 @@ import net.sourceforge.atunes.misc.RankList;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public final class StatisticsHandler extends AbstractHandler {
@@ -281,10 +281,10 @@ public final class StatisticsHandler extends AbstractHandler {
      * 
      * @return the most played audio files
      */
-    public List<LocalAudioObject> getMostPlayedAudioFiles(int n) {
+    public List<ILocalAudioObject> getMostPlayedAudioFiles(int n) {
         List<String> audioFilesUrls = statistics.getAudioFilesRanking().getNFirstElements(n);
         if (audioFilesUrls != null) {
-            List<LocalAudioObject> audioFiles = new ArrayList<LocalAudioObject>();
+            List<ILocalAudioObject> audioFiles = new ArrayList<ILocalAudioObject>();
             for (String audioFileUrl : audioFilesUrls) {
                 audioFiles.add(RepositoryHandler.getInstance().getFileIfLoaded(audioFileUrl));
             }
@@ -309,10 +309,10 @@ public final class StatisticsHandler extends AbstractHandler {
      * @return the audio file most played
      */
 
-    public Map<LocalAudioObject, Integer> getAudioFileMostPlayed() {
-        Map<LocalAudioObject, Integer> result = new HashMap<LocalAudioObject, Integer>();
+    public Map<ILocalAudioObject, Integer> getAudioFileMostPlayed() {
+        Map<ILocalAudioObject, Integer> result = new HashMap<ILocalAudioObject, Integer>();
         if (statistics.getAudioFilesRanking().size() > 0) {
-        	LocalAudioObject firstAudioFile = getMostPlayedAudioFiles(1).get(0);
+        	ILocalAudioObject firstAudioFile = getMostPlayedAudioFiles(1).get(0);
             Integer count = statistics.getAudioFilesRanking().getNFirstElementCounts(1).get(0);
             result.put(firstAudioFile, count);
         } else {
@@ -360,8 +360,8 @@ public final class StatisticsHandler extends AbstractHandler {
      * 
      * @return the unplayed audio files
      */
-    public List<LocalAudioObject> getUnplayedAudioFiles() {
-        List<LocalAudioObject> unplayedAudioFiles = new ArrayList<LocalAudioObject>(RepositoryHandler.getInstance().getAudioFilesList());
+    public List<ILocalAudioObject> getUnplayedAudioFiles() {
+        List<ILocalAudioObject> unplayedAudioFiles = new ArrayList<ILocalAudioObject>(RepositoryHandler.getInstance().getAudioFilesList());
         unplayedAudioFiles.removeAll(statistics.getAudioFilesRanking().getNFirstElements(-1));
         return unplayedAudioFiles;
     }

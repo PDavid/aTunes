@@ -48,7 +48,6 @@ import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandl
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
-import net.sourceforge.atunes.kernel.modules.tags.TagHandler;
 import net.sourceforge.atunes.kernel.modules.tray.SystemTrayHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -56,6 +55,7 @@ import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.IHandler;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ITagHandler;
 import net.sourceforge.atunes.model.IUpdateHandler;
 
 public abstract class AbstractHandler implements IHandler {
@@ -137,7 +137,7 @@ public abstract class AbstractHandler implements IHandler {
         handlers.add(SystemTrayHandler.getInstance());
         handlers.add(GeneralPurposePluginsHandler.getInstance());
         handlers.add(WebServicesHandler.getInstance());
-        handlers.add(TagHandler.getInstance());
+        handlers.add((AbstractHandler) Context.getBean(ITagHandler.class));
         handlers.add((AbstractHandler) Context.getBean(IFullScreenHandler.class));
 
         ExecutorService executorService = Executors.newFixedThreadPool(3);

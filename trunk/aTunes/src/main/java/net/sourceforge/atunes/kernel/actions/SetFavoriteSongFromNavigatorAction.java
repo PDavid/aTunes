@@ -25,20 +25,20 @@ import java.util.List;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.model.LocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class SetFavoriteSongFromNavigatorAction extends AbstractActionOverSelectedObjects<LocalAudioObject> {
+public class SetFavoriteSongFromNavigatorAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
     private static final long serialVersionUID = 4023700964403110853L;
 
     public SetFavoriteSongFromNavigatorAction() {
-        super(I18nUtils.getString("SET_FAVORITE_SONG"), LocalAudioObject.class);
+        super(I18nUtils.getString("SET_FAVORITE_SONG"), ILocalAudioObject.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SET_FAVORITE_SONG"));
     }
 
     @Override
-    protected void performAction(List<LocalAudioObject> objects) {
+    protected void performAction(List<ILocalAudioObject> objects) {
         FavoritesHandler.getInstance().toggleFavoriteSongs(objects);
         NavigationHandler.getInstance().refreshNavigationTable();
     }

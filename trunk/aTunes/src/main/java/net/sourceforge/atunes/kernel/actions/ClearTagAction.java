@@ -26,10 +26,10 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.kernel.modules.tags.ClearTagsProcess;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.model.LocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class ClearTagAction extends AbstractActionOverSelectedObjects<LocalAudioObject> {
+public class ClearTagAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
     private static final long serialVersionUID = 4476719536754930347L;
 
@@ -37,12 +37,12 @@ public class ClearTagAction extends AbstractActionOverSelectedObjects<LocalAudio
     public static final String NAVIGATOR = "NAVIGATOR";
 
     ClearTagAction() {
-        super(I18nUtils.getString("CLEAR_TAG"), LocalAudioObject.class);
+        super(I18nUtils.getString("CLEAR_TAG"), ILocalAudioObject.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("CLEAR_TAG"));
     }
 
     @Override
-    protected void performAction(List<LocalAudioObject> objects) {
+    protected void performAction(List<ILocalAudioObject> objects) {
         new ClearTagsProcess(objects, getState()).execute();
     }
 

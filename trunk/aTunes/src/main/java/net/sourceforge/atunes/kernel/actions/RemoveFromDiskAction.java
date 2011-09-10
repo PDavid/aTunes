@@ -45,7 +45,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.Folder;
-import net.sourceforge.atunes.model.LocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -55,15 +55,15 @@ import org.apache.commons.io.FileUtils;
 public class RemoveFromDiskAction extends CustomAbstractAction {
 
     private static final class DeleteFilesWorker extends SwingWorker<Void, Void> {
-        private final List<LocalAudioObject> files;
+        private final List<ILocalAudioObject> files;
 
-        private DeleteFilesWorker(List<LocalAudioObject> files) {
+        private DeleteFilesWorker(List<ILocalAudioObject> files) {
             this.files = files;
         }
 
         @Override
         protected Void doInBackground() {
-            for (LocalAudioObject audioFile : files) {
+            for (ILocalAudioObject audioFile : files) {
                 File file = audioFile.getFile();
                 if (file != null) {
                     if (!file.delete()) {

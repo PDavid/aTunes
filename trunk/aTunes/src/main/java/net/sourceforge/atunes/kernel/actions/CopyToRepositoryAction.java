@@ -30,10 +30,10 @@ import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.model.LocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class CopyToRepositoryAction extends AbstractActionOverSelectedObjects<LocalAudioObject> {
+public class CopyToRepositoryAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
     private static class ImportProcessListener implements ProcessListener {
         private static final class ImportProcessFinishedRunnable implements Runnable {
@@ -66,12 +66,12 @@ public class CopyToRepositoryAction extends AbstractActionOverSelectedObjects<Lo
     private static final long serialVersionUID = 2416674807979541242L;
 
     CopyToRepositoryAction() {
-        super(I18nUtils.getString("COPY_TO_REPOSITORY"), LocalAudioObject.class);
+        super(I18nUtils.getString("COPY_TO_REPOSITORY"), ILocalAudioObject.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("COPY_TO_REPOSITORY"));
     }
 
     @Override
-    protected void performAction(List<LocalAudioObject> objects) {
+    protected void performAction(List<ILocalAudioObject> objects) {
         final TransferToRepositoryProcess importer = new TransferToRepositoryProcess(objects, getState());
         importer.addProcessListener(new ImportProcessListener());
         importer.execute();

@@ -45,7 +45,7 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.model.LocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -88,9 +88,9 @@ public class ArtistTopTracksContent extends AbstractContextPanelContent {
         	// Get artist files from repository and match by title with top tracks to create a play list
     		Artist artist = RepositoryHandler.getInstance().getArtist(lastTopTracks.getArtist());
     		if (artist != null) {
-    			List<LocalAudioObject> audioObjects = artist.getAudioObjects();
-    			Map<String, LocalAudioObject> titles = new HashMap<String, LocalAudioObject>();
-    			for (LocalAudioObject lao : audioObjects) {
+    			List<ILocalAudioObject> audioObjects = artist.getAudioObjects();
+    			Map<String, ILocalAudioObject> titles = new HashMap<String, ILocalAudioObject>();
+    			for (ILocalAudioObject lao : audioObjects) {
     				if (lao.getTitle() != null) {
     					titles.put(lao.getTitle().toLowerCase(), lao); // Do lower case for a better match
     				}

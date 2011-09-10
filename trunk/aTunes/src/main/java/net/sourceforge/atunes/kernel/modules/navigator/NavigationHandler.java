@@ -43,8 +43,8 @@ import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -275,7 +275,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 		return getNavigationController().getFilesSelectedInNavigator();
 	}
 
-	public boolean sameParentFile(List<LocalAudioObject> audioFiles) {
+	public boolean sameParentFile(List<ILocalAudioObject> audioFiles) {
 		return getNavigationController().sameParentFile(audioFiles);		
 	}
 

@@ -25,8 +25,8 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.LocalAudioObject;
 
 /**
  * The Class ChangeTitlesProcess.
@@ -34,7 +34,7 @@ import net.sourceforge.atunes.model.LocalAudioObject;
 public class EditTitlesProcess extends AbstractChangeTagProcess {
 
     /** The files and titles. */
-    private Map<LocalAudioObject, String> filesAndTitles;
+    private Map<ILocalAudioObject, String> filesAndTitles;
 
     /**
      * Instantiates a new change titles process.
@@ -42,7 +42,7 @@ public class EditTitlesProcess extends AbstractChangeTagProcess {
      * @param files
      *            the files
      */
-    public EditTitlesProcess(List<LocalAudioObject> files, IState state) {
+    public EditTitlesProcess(List<ILocalAudioObject> files, IState state) {
         super(files, state);
     }
 
@@ -55,7 +55,7 @@ public class EditTitlesProcess extends AbstractChangeTagProcess {
     }
 
     @Override
-    protected void changeTag(LocalAudioObject file) {
+    protected void changeTag(ILocalAudioObject file) {
         String newTitle = filesAndTitles.get(file);
         TagModifier.setTitles(file, newTitle);
     }
@@ -64,7 +64,7 @@ public class EditTitlesProcess extends AbstractChangeTagProcess {
      * @param filesAndTitles
      *            the filesAndTitles to set
      */
-    public void setFilesAndTitles(Map<LocalAudioObject, String> filesAndTitles) {
+    public void setFilesAndTitles(Map<ILocalAudioObject, String> filesAndTitles) {
         this.filesAndTitles = filesAndTitles;
     }
 
@@ -77,11 +77,11 @@ public class EditTitlesProcess extends AbstractChangeTagProcess {
      * @return the titles for files
      */
 
-    public Map<LocalAudioObject, String> getTitlesForFiles(List<LocalAudioObject> files) {
-        Map<LocalAudioObject, String> result = new HashMap<LocalAudioObject, String>();
+    public Map<ILocalAudioObject, String> getTitlesForFiles(List<ILocalAudioObject> files) {
+        Map<ILocalAudioObject, String> result = new HashMap<ILocalAudioObject, String>();
 
         // For each file
-        for (LocalAudioObject f : files) {
+        for (ILocalAudioObject f : files) {
             String title = WebServicesHandler.getInstance().getLastFmService().getTitleForFile(f);
             if (title != null) {
                 result.put(f, title);

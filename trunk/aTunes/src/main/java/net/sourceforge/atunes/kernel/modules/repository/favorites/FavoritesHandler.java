@@ -38,8 +38,8 @@ import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 
 /**
@@ -85,7 +85,7 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
      * @param songs
      *            the songs
      */
-    public void toggleFavoriteAlbums(List<LocalAudioObject> songs) {
+    public void toggleFavoriteAlbums(List<ILocalAudioObject> songs) {
     	if (songs == null || songs.isEmpty()) {
     		return;
     	}
@@ -93,7 +93,7 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
     	List<TreeObject<?>> toRemove = new ArrayList<TreeObject<?>>();
         Map<String, Album> favAlbums = getFavorites().getFavoriteAlbums();
         for (int i = 0; i < songs.size(); i++) {
-        	LocalAudioObject f = songs.get(i);
+        	ILocalAudioObject f = songs.get(i);
             Artist artist = RepositoryHandler.getInstance().getArtist(f.getArtist());
             if (artist == null) {
                 artist = RepositoryHandler.getInstance().getArtist(f.getAlbumArtist());
@@ -116,7 +116,7 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
      * @param songs
      *            the songs
      */
-    public void toggleFavoriteArtists(List<LocalAudioObject> songs) {
+    public void toggleFavoriteArtists(List<ILocalAudioObject> songs) {
     	if (songs == null || songs.isEmpty()) {
     		return;
     	}
@@ -124,7 +124,7 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
     	List<TreeObject<?>> toRemove = new ArrayList<TreeObject<?>>();    	
         Map<String, Artist> favArtists = getFavorites().getFavoriteArtists();
         for (int i = 0; i < songs.size(); i++) {
-        	LocalAudioObject f = songs.get(i);
+        	ILocalAudioObject f = songs.get(i);
             Artist artist = RepositoryHandler.getInstance().getArtist(f.getArtist());
             if (favArtists.containsValue(artist)) {
             	toRemove.add(artist);
@@ -142,13 +142,13 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
      * @param songs
      *            the songs
      */
-    public void toggleFavoriteSongs(List<LocalAudioObject> songs) {
+    public void toggleFavoriteSongs(List<ILocalAudioObject> songs) {
         if (songs == null || songs.isEmpty()) {
             return;
         }
-        Map<String, LocalAudioObject> favSongs = getFavorites().getFavoriteAudioFiles();
+        Map<String, ILocalAudioObject> favSongs = getFavorites().getFavoriteAudioFiles();
         List<AudioObject> toRemove = new LinkedList<AudioObject>();
-        for (LocalAudioObject song : songs) {
+        for (ILocalAudioObject song : songs) {
             //Toggle favorite songs
             if (favSongs.containsKey(song.getUrl())) {
                 toRemove.add(song);
@@ -222,14 +222,14 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
      * 
      * @return the favorite songs
      */
-    public List<LocalAudioObject> getFavoriteSongs() {
+    public List<ILocalAudioObject> getFavoriteSongs() {
         return getFavorites().getAllFavoriteSongs();
     }
 
     /**
      * Gets the favorite songs map
      */
-    public Map<String, LocalAudioObject> getFavoriteSongsMap() {
+    public Map<String, ILocalAudioObject> getFavoriteSongsMap() {
         return getFavorites().getAllFavoriteSongsMap();
     }
 
@@ -238,7 +238,7 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
      * 
      * @return the favorite songs info
      */
-    public Map<String, LocalAudioObject> getFavoriteSongsInfo() {
+    public Map<String, ILocalAudioObject> getFavoriteSongsInfo() {
         return getFavorites().getFavoriteAudioFiles();
     }
 
@@ -292,8 +292,8 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
     }
 
     @Override
-    public void audioFilesRemoved(List<LocalAudioObject> audioFiles) {
-        for (LocalAudioObject file : audioFiles) {
+    public void audioFilesRemoved(List<ILocalAudioObject> audioFiles) {
+        for (ILocalAudioObject file : audioFiles) {
             // Remove from favorite audio files
             getFavorites().getFavoriteAudioFiles().remove(file.getUrl());
 

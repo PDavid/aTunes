@@ -35,8 +35,8 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.ImageUtils;
 
 /**
@@ -44,7 +44,7 @@ import net.sourceforge.atunes.utils.ImageUtils;
  */
 public class SetCoversProcess extends AbstractChangeTagProcess {
 
-    private Map<LocalAudioObject, Image> filesAndCovers;
+    private Map<ILocalAudioObject, Image> filesAndCovers;
 
     /**
      * Instantiates a new sets the covers process.
@@ -52,7 +52,7 @@ public class SetCoversProcess extends AbstractChangeTagProcess {
      * @param files
      *            the files
      */
-    SetCoversProcess(List<LocalAudioObject> files, IState state) {
+    SetCoversProcess(List<ILocalAudioObject> files, IState state) {
         super(files, state);
     }
 
@@ -63,7 +63,7 @@ public class SetCoversProcess extends AbstractChangeTagProcess {
     }
 
     @Override
-    protected void changeTag(LocalAudioObject file) throws IOException {
+    protected void changeTag(ILocalAudioObject file) throws IOException {
         BufferedImage bufferedCover = ImageUtils.toBufferedImage(this.filesAndCovers.get(file));
         AbstractTag newTag = AudioFile.getNewTag(file, new EditTagInfo());
         newTag.setInternalImage(true);
@@ -80,12 +80,12 @@ public class SetCoversProcess extends AbstractChangeTagProcess {
      * 
      * @return the covers for files
      */
-    private Map<LocalAudioObject, Image> getCoversForFiles(List<LocalAudioObject> files) {
-        Map<LocalAudioObject, Image> result = new HashMap<LocalAudioObject, Image>();
+    private Map<ILocalAudioObject, Image> getCoversForFiles(List<ILocalAudioObject> files) {
+        Map<ILocalAudioObject, Image> result = new HashMap<ILocalAudioObject, Image>();
 
         Map<Integer, Image> coverCache = new HashMap<Integer, Image>();
 
-        for (LocalAudioObject f : files) {
+        for (ILocalAudioObject f : files) {
             if (!Artist.isUnknownArtist(f.getArtist()) && !Album.isUnknownAlbum(f.getAlbum())) {
                 Image cover = null;
                 int cacheKey = f.getArtist().hashCode() + f.getAlbum().hashCode();

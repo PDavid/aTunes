@@ -35,8 +35,8 @@ public class FolderTest {
 	private Folder f1;
 	private Folder f2;
 	
-	private LocalAudioObject af1 = new LocalAudioObjectFake();
-	private LocalAudioObject af2 = new LocalAudioObjectFake();
+	private ILocalAudioObject af1 = new LocalAudioObjectFake();
+	private ILocalAudioObject af2 = new LocalAudioObjectFake();
 	
 	@Before
 	public void init() {

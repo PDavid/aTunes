@@ -56,7 +56,7 @@ public class Repository implements Serializable {
     /**
      * File structure
      */
-    private RepositoryStructure<LocalAudioObject> filesStructure;
+    private RepositoryStructure<ILocalAudioObject> filesStructure;
     
     /**
      * Artists structure
@@ -101,7 +101,7 @@ public class Repository implements Serializable {
      */
     public Repository(List<File> folders, RepositoryListener listener, IState state) {
         this.folders = folders;
-        this.filesStructure = new RepositoryStructure<LocalAudioObject>();
+        this.filesStructure = new RepositoryStructure<ILocalAudioObject>();
         this.artistsStructure = new RepositoryStructure<Artist>();
         this.foldersStructure = new RepositoryStructure<Folder>();
         this.genresStructure = new RepositoryStructure<Genre>();
@@ -290,7 +290,7 @@ public class Repository implements Serializable {
      * 
      * @return the file
      */
-    public LocalAudioObject getFile(String fileName) {
+    public ILocalAudioObject getFile(String fileName) {
         return filesStructure.get(fileName);
     }
     
@@ -298,7 +298,7 @@ public class Repository implements Serializable {
      * Gets all files
      * @return
      */
-    public Collection<LocalAudioObject> getFiles() {
+    public Collection<ILocalAudioObject> getFiles() {
     	return filesStructure.getAll();
     }
     
@@ -307,7 +307,7 @@ public class Repository implements Serializable {
      * @param file
      * @return
      */
-    public LocalAudioObject putFile(LocalAudioObject file) {
+    public ILocalAudioObject putFile(ILocalAudioObject file) {
     	filesStructure.put(file.getUrl(), file);
     	return file;
     }
@@ -316,7 +316,7 @@ public class Repository implements Serializable {
 	 * Removes a file
 	 * @param file
 	 */
-	public void removeFile(LocalAudioObject file) {
+	public void removeFile(ILocalAudioObject file) {
 		filesStructure.remove(file.getUrl());
 	}
 	

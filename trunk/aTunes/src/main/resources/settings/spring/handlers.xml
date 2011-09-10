@@ -12,6 +12,7 @@
 	
 	<bean id="fullScreenHandler" class="net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenHandler"/>
 	
+	<bean id="tagHandler" class="net.sourceforge.atunes.kernel.modules.tags.TagHandler"/>
 
 
 </beans>

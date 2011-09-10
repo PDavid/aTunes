@@ -28,7 +28,7 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.model.LocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -37,17 +37,17 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class AutoSetLyricsAction extends AbstractActionOverSelectedObjects<LocalAudioObject> {
+public class AutoSetLyricsAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
     private static final long serialVersionUID = 4778415252933283915L;
 
     AutoSetLyricsAction() {
-        super(I18nUtils.getString("AUTO_SET_LYRICS"), LocalAudioObject.class);
+        super(I18nUtils.getString("AUTO_SET_LYRICS"), ILocalAudioObject.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("AUTO_SET_LYRICS"));
     }
 
     @Override
-    protected void performAction(List<LocalAudioObject> objects) {
+    protected void performAction(List<ILocalAudioObject> objects) {
         TagEditionOperations.addLyrics(objects, getState(), (LyricsService) Context.getBean("lyricsService"));
     }
 

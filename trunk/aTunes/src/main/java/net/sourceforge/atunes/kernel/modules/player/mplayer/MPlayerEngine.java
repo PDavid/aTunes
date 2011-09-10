@@ -39,8 +39,8 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.FileNameUtils;
 
@@ -279,7 +279,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
         ProcessBuilder pb = new ProcessBuilder();
         List<String> command = new ArrayList<String>();
 
-        boolean isRemoteAudio = !(audioObject instanceof LocalAudioObject || (audioObject instanceof PodcastFeedEntry
+        boolean isRemoteAudio = !(audioObject instanceof ILocalAudioObject || (audioObject instanceof PodcastFeedEntry
                 && getState().isUseDownloadedPodcastFeedEntries() && ((PodcastFeedEntry) audioObject).isDownloaded()));
 
         command.add(OsManager.getPlayerEngineCommand(this));
@@ -350,7 +350,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
         }
 
         //float[] eualizer = getEqualizer();
-        if ((audioObject instanceof LocalAudioObject && getEqualizer().getEqualizerValues() != null) || isSoundNormalizationEnabled()) {
+        if ((audioObject instanceof ILocalAudioObject && getEqualizer().getEqualizerValues() != null) || isSoundNormalizationEnabled()) {
             command.add(AUDIO_FILTER);
         }
 
@@ -360,7 +360,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
         }
 
         // Build equalizer command. Mplayer uses 10 bands
-        if (audioObject instanceof LocalAudioObject && getEqualizer().getEqualizerValues() != null) {
+        if (audioObject instanceof ILocalAudioObject && getEqualizer().getEqualizerValues() != null) {
             float[] equalizer = getEqualizer().getEqualizerValues();
             command.add(EQUALIZER + equalizer[0] + ":" + equalizer[1] + ":" + equalizer[2] + ":" + equalizer[3] + ":" + equalizer[4] + ":" + equalizer[5] + ":" + equalizer[6]
                     + ":" + equalizer[7] + ":" + equalizer[8] + ":" + equalizer[9]);

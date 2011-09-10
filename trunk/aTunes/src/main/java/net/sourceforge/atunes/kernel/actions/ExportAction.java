@@ -34,7 +34,7 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.processes.ExportFilesProcess;
-import net.sourceforge.atunes.model.LocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -101,7 +101,7 @@ public class ExportAction extends CustomAbstractAction {
 
                 // If path exists then start export
                 if (pathExists) {
-                    List<LocalAudioObject> songs;
+                    List<ILocalAudioObject> songs;
 
                     // If user wants to export navigator ask current navigation view to return selected objects
                     if (exportNavigator) {

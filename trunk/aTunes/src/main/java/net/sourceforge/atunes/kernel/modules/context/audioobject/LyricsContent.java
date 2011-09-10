@@ -35,16 +35,17 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.text.StyleConstants;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.CustomTextPane;
-import net.sourceforge.atunes.kernel.actions.EditTagAction.EditTagSources;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.tags.TagHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService;
 import net.sourceforge.atunes.misc.ClipboardFacade;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.model.LocalAudioObject;
+import net.sourceforge.atunes.model.EditTagSources;
+import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ITagHandler;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -110,7 +111,7 @@ public class LyricsContent extends AbstractContextPanelContent {
                     DesktopUtils.openURL(lyricsSourceUrl);
                 } else {
                     if (audioObject instanceof AudioFile) {
-                    	TagHandler.getInstance().editFiles(EditTagSources.NAVIGATOR, Arrays.asList((LocalAudioObject) audioObject));                        
+                    	Context.getBean(ITagHandler.class).editFiles(EditTagSources.NAVIGATOR, Arrays.asList((ILocalAudioObject) audioObject));                        
                     }
                 }
             }

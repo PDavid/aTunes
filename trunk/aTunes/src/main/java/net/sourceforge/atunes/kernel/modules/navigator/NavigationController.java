@@ -76,8 +76,8 @@ import net.sourceforge.atunes.kernel.modules.repository.AudioFilesRemovedListene
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 
 final class NavigationController implements AudioFilesRemovedListener, IController {
@@ -287,9 +287,9 @@ final class NavigationController implements AudioFilesRemovedListener, IControll
      *            collection of files
      * @return if a collection of files have the same parent file
      */
-    public boolean sameParentFile(Collection<? extends LocalAudioObject> c) {
+    public boolean sameParentFile(Collection<? extends ILocalAudioObject> c) {
         Set<File> set = new HashSet<File>();
-        for (LocalAudioObject af : c) {
+        for (ILocalAudioObject af : c) {
             set.add(af.getFile().getParentFile());
         }
         return set.size() == 1;
@@ -519,7 +519,7 @@ final class NavigationController implements AudioFilesRemovedListener, IControll
     }
 
     @Override
-    public void audioFilesRemoved(List<LocalAudioObject> audioFiles) {
+    public void audioFilesRemoved(List<ILocalAudioObject> audioFiles) {
         notifyReload();
     }
 }

@@ -36,7 +36,7 @@ import javax.swing.filechooser.FileFilter;
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.LocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.tag.datatype.Artwork;
@@ -61,7 +61,7 @@ public final class AudioFilePictureUtils {
      * @param song
      *            the song
      */
-    public static void exportPicture(LocalAudioObject song, Component parent) {
+    public static void exportPicture(ILocalAudioObject song, Component parent) {
         try {
             JFileChooser fileChooser = new JFileChooser();
             FileFilter filter = new FileFilter() {
@@ -152,7 +152,7 @@ public final class AudioFilePictureUtils {
      * @return the file name for cover
      */
 
-    public static String getFileNameForCover(LocalAudioObject file) {
+    public static String getFileNameForCover(ILocalAudioObject file) {
         if (file == null) {
             return null;
         }
@@ -172,7 +172,7 @@ public final class AudioFilePictureUtils {
      * 
      * @return the inside picture
      */
-    public static ImageIcon getInsidePicture(LocalAudioObject file, int width, int height) {
+    public static ImageIcon getInsidePicture(ILocalAudioObject file, int width, int height) {
         try {
             org.jaudiotagger.tag.Tag tag = AudioFileIO.read(file.getFile()).getTag();
             if (tag == null) {
@@ -267,7 +267,7 @@ public final class AudioFilePictureUtils {
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    private static void savePictureToFile(LocalAudioObject song, File file) throws FileNotFoundException, IOException {
+    private static void savePictureToFile(ILocalAudioObject song, File file) throws FileNotFoundException, IOException {
         ImageIcon image = getInsidePicture(song, -1, -1);
         ImageUtils.writeImageToFile(image.getImage(), file.getAbsolutePath());
     }

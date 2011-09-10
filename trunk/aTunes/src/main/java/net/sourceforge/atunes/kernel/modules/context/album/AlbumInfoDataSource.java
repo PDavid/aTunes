@@ -35,9 +35,9 @@ import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ImageSize;
-import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
@@ -184,8 +184,8 @@ public class AlbumInfoDataSource implements ContextInformationDataSource {
         if (albumInfo != null) {
             image = WebServicesHandler.getInstance().getLastFmService().getImage(albumInfo);
             // This data source should only be used with audio files but anyway check if audioObject is an LocalAudioObject before save picture
-            if (audioObject instanceof LocalAudioObject) {
-                savePicture(image, (LocalAudioObject) audioObject);
+            if (audioObject instanceof ILocalAudioObject) {
+                savePicture(image, (ILocalAudioObject) audioObject);
             }
         } else {
             image = audioObject.getImage(ImageSize.SIZE_MAX).getImage();
@@ -200,7 +200,7 @@ public class AlbumInfoDataSource implements ContextInformationDataSource {
      * @param img
      * @param file
      */
-    private void savePicture(Image img, LocalAudioObject file) {
+    private void savePicture(Image img, ILocalAudioObject file) {
         if (img != null && state.isSaveContextPicture()) { // save image in folder of file
             String imageFileName = AudioFilePictureUtils.getFileNameForCover(file);
 

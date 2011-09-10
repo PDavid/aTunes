@@ -24,27 +24,27 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.model.LocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class ExtractPictureAction extends AbstractActionOverSelectedObjects<LocalAudioObject> {
+public class ExtractPictureAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
     private static final long serialVersionUID = -8618297820141610193L;
 
     ExtractPictureAction() {
-        super(I18nUtils.getString("EXTRACT_PICTURE"), LocalAudioObject.class);
+        super(I18nUtils.getString("EXTRACT_PICTURE"), ILocalAudioObject.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("EXTRACT_PICTURE"));
     }
 
     @Override
-    protected void performAction(List<LocalAudioObject> objects) {
+    protected void performAction(List<ILocalAudioObject> objects) {
         // Export only first picture
         AudioFilePictureUtils.exportPicture(objects.get(0), GuiHandler.getInstance().getFrame().getFrame());
     }
 
     @Override
     public boolean isEnabledForNavigationTableSelection(List<AudioObject> selection) {
-        return selection.size() == 1 && selection.get(0) instanceof LocalAudioObject && ((LocalAudioObject) selection.get(0)).hasInternalPicture();
+        return selection.size() == 1 && selection.get(0) instanceof ILocalAudioObject && ((ILocalAudioObject) selection.get(0)).hasInternalPicture();
     }
 }

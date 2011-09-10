@@ -40,7 +40,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * 
  * @author fleax
  */
-public class Folder implements Serializable, TreeObject<LocalAudioObject> {
+public class Folder implements Serializable, TreeObject<ILocalAudioObject> {
 
     /**
 	 * 
@@ -51,7 +51,7 @@ public class Folder implements Serializable, TreeObject<LocalAudioObject> {
     private String name;
 
     /** List of files in this folder. */
-    private List<LocalAudioObject> files;
+    private List<ILocalAudioObject> files;
 
     /** List of folders in this folder, indexed by name. */
     private Map<String, Folder> folders;
@@ -75,7 +75,7 @@ public class Folder implements Serializable, TreeObject<LocalAudioObject> {
      * @param file
      *            the file
      */
-    public void addAudioFile(LocalAudioObject file) {
+    public void addAudioFile(ILocalAudioObject file) {
         getFiles().add(file);
     }
 
@@ -110,8 +110,8 @@ public class Folder implements Serializable, TreeObject<LocalAudioObject> {
      * @return the audio objects
      */
     @Override
-    public List<LocalAudioObject> getAudioObjects() {
-        List<LocalAudioObject> result = null;
+    public List<ILocalAudioObject> getAudioObjects() {
+        List<ILocalAudioObject> result = null;
         for (Folder f : getFolders().values()) {
         	if (result == null) {
         		result = f.getAudioObjects();
@@ -120,7 +120,7 @@ public class Folder implements Serializable, TreeObject<LocalAudioObject> {
         	}
         }
         if (result == null) {
-        	result = new ArrayList<LocalAudioObject>();
+        	result = new ArrayList<ILocalAudioObject>();
         }
        	result.addAll(getFiles());
         return result;
@@ -131,9 +131,9 @@ public class Folder implements Serializable, TreeObject<LocalAudioObject> {
      * 
      * @return the files
      */
-    private List<LocalAudioObject> getFiles() {
+    private List<ILocalAudioObject> getFiles() {
     	if (files == null) {
-    		files = new ArrayList<LocalAudioObject>();
+    		files = new ArrayList<ILocalAudioObject>();
     	}
         return files;
     }
@@ -195,7 +195,7 @@ public class Folder implements Serializable, TreeObject<LocalAudioObject> {
      * @param file
      *            the file
      */
-    public void removeAudioFile(LocalAudioObject file) {
+    public void removeAudioFile(ILocalAudioObject file) {
         getFiles().remove(file);
     }
 

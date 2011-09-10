@@ -49,8 +49,8 @@ import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmLoved
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmSimilarArtists;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.CryptoUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.NetworkUtils;
@@ -81,9 +81,9 @@ public final class LastFmService {
 
     private final class SubmitNowPlayingInfoRunnable implements Runnable {
 
-		private final LocalAudioObject audioFile;
+		private final ILocalAudioObject audioFile;
 
-		private SubmitNowPlayingInfoRunnable(LocalAudioObject audioFile) {
+		private SubmitNowPlayingInfoRunnable(ILocalAudioObject audioFile) {
 			this.audioFile = audioFile;
 		}
 
@@ -113,9 +113,9 @@ public final class LastFmService {
 	private final class SubmitToLastFmRunnable implements Runnable {
 
 		private final long secondsPlayed;
-		private final LocalAudioObject audioFile;
+		private final ILocalAudioObject audioFile;
 
-		private SubmitToLastFmRunnable(long secondsPlayed, LocalAudioObject audioFile) {
+		private SubmitToLastFmRunnable(long secondsPlayed, ILocalAudioObject audioFile) {
 			this.secondsPlayed = secondsPlayed;
 			this.audioFile = audioFile;
 		}
@@ -593,7 +593,7 @@ public final class LastFmService {
      *            seconds the audio file has already played
      * @throws ScrobblerException
      */
-    private void submit(LocalAudioObject file, long secondsPlayed) throws ScrobblerException {
+    private void submit(ILocalAudioObject file, long secondsPlayed) throws ScrobblerException {
         // Do all necessary checks
         if (!checkUser() || !checkPassword() || !checkArtist(file) || !checkTitle(file) || !checkDuration(file)) {
             return;
@@ -723,7 +723,7 @@ public final class LastFmService {
      *            audio file
      * @throws ScrobblerException
      */
-    private void submitNowPlayingInfo(LocalAudioObject file) throws ScrobblerException {
+    private void submitNowPlayingInfo(ILocalAudioObject file) throws ScrobblerException {
         // Do all necessary checks
         if (!checkUser() || !checkPassword() || !checkArtist(file) || !checkTitle(file)) {
             return;
@@ -774,7 +774,7 @@ public final class LastFmService {
      * @return
      */
     private boolean checkAudioFile(AudioObject ao) {
-        if (!(ao instanceof LocalAudioObject)) {
+        if (!(ao instanceof ILocalAudioObject)) {
             return false;
         }
         return true;
@@ -850,7 +850,7 @@ public final class LastFmService {
      * @param f
      * @return
      */
-    public String getTitleForFile(LocalAudioObject f) {
+    public String getTitleForFile(ILocalAudioObject f) {
         // If has valid artist name, album name, and track number...
         if (!net.sourceforge.atunes.model.Artist.isUnknownArtist(f.getArtist())
                 && !net.sourceforge.atunes.model.Album.isUnknownAlbum(f.getAlbum()) && f.getTrackNumber() > 0) {
@@ -870,7 +870,7 @@ public final class LastFmService {
      * @param f
      * @return
      */
-    public int getTrackNumberForFile(LocalAudioObject f) {
+    public int getTrackNumberForFile(ILocalAudioObject f) {
         // If has valid artist name, album name and title
         if (!net.sourceforge.atunes.model.Artist.isUnknownArtist(f.getArtist())
                 && !net.sourceforge.atunes.model.Album.isUnknownAlbum(f.getAlbum()) && !StringUtils.isEmpty(f.getTitle())) {
@@ -898,7 +898,7 @@ public final class LastFmService {
      * @param secondsPlayed
      *            the seconds played
      */
-    public void submitToLastFm(final LocalAudioObject audioFile, final long secondsPlayed) {
+    public void submitToLastFm(final ILocalAudioObject audioFile, final long secondsPlayed) {
         if (state.isLastFmEnabled()) {
             Runnable r = new SubmitToLastFmRunnable(secondsPlayed, audioFile);
             try {
@@ -943,7 +943,7 @@ public final class LastFmService {
      * @param audioFile
      *            the file
      */
-    public void submitNowPlayingInfoToLastFm(final LocalAudioObject audioFile) {
+    public void submitNowPlayingInfoToLastFm(final ILocalAudioObject audioFile) {
         if (state.isLastFmEnabled()) {
             Runnable r = new SubmitNowPlayingInfoRunnable(audioFile);
             try {

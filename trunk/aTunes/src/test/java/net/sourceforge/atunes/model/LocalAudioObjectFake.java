@@ -29,7 +29,7 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
 
-public class LocalAudioObjectFake implements LocalAudioObject {
+public class LocalAudioObjectFake implements ILocalAudioObject {
 
 	private File file;
 	
@@ -148,7 +148,7 @@ public class LocalAudioObjectFake implements LocalAudioObject {
 	}
 
 	@Override
-	public int compareTo(LocalAudioObject arg0) {
+	public int compareTo(ILocalAudioObject arg0) {
 		return arg0 != null && arg0.equals(this) ? 0 : -1;
 	}
 	

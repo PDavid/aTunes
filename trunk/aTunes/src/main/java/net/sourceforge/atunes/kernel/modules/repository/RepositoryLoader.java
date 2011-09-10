@@ -44,7 +44,7 @@ import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.Folder;
-import net.sourceforge.atunes.model.LocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.Repository;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -211,8 +211,8 @@ public class RepositoryLoader extends Thread {
 	 * 
 	 * @return the songs for dir
 	 */
-	public static List<LocalAudioObject> getSongsForFolder(File folder, LoaderListener listener) {
-		List<LocalAudioObject> result = new ArrayList<LocalAudioObject>();
+	public static List<ILocalAudioObject> getSongsForFolder(File folder, LoaderListener listener) {
+		List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
 
 		File[] list = folder.listFiles();
 		List<File> pictures = new ArrayList<File>();
@@ -249,7 +249,7 @@ public class RepositoryLoader extends Thread {
 	 * @param listener
 	 * @return
 	 */
-	public static List<LocalAudioObject> getSongsForFolders(List<File> folders,
+	public static List<ILocalAudioObject> getSongsForFolders(List<File> folders,
 			LoaderListener listener) {
 		int filesCount = 0;
 		for (File folder : folders) {
@@ -258,7 +258,7 @@ public class RepositoryLoader extends Thread {
 		if (listener != null) {
 			listener.notifyFilesInRepository(filesCount);
 		}
-		List<LocalAudioObject> result = new ArrayList<LocalAudioObject>();
+		List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
 		for (File folder : folders) {
 			result.addAll(getSongsForFolder(folder, listener));
 		}
@@ -276,7 +276,7 @@ public class RepositoryLoader extends Thread {
 	 * @param file
 	 *            the file
 	 */
-	static void refreshFile(Repository repository, LocalAudioObject file) {
+	static void refreshFile(Repository repository, ILocalAudioObject file) {
 		try {
 			// Get old tag
 			AbstractTag oldTag = file.getTag();
@@ -525,7 +525,7 @@ public class RepositoryLoader extends Thread {
 	 * @param relativePath
 	 */
 	private void processAudioFile(File audiofile, List<File> picturesList, RepositoryFiller filler, File relativeTo, String relativePath) {
-		LocalAudioObject audio = null;
+		ILocalAudioObject audio = null;
 
 		// If a previous repository exists, check if file already was loaded.
 		// If so, compare modification date. If modification date is equal to last repository load
@@ -534,7 +534,7 @@ public class RepositoryLoader extends Thread {
 		if (oldRepository == null) {
 			audio = new AudioFile(audiofile);
 		} else {
-			LocalAudioObject oldAudioFile = oldRepository.getFile(audiofile.getAbsolutePath());
+			ILocalAudioObject oldAudioFile = oldRepository.getFile(audiofile.getAbsolutePath());
 			if (oldAudioFile != null && oldAudioFile.isUpToDate()) {
 				audio = oldAudioFile;
 			} else {
@@ -639,8 +639,8 @@ public class RepositoryLoader extends Thread {
 				return;
 			}
 
-			List<LocalAudioObject> audioFiles = album.getAudioObjects();
-			for (LocalAudioObject af : audioFiles) {
+			List<ILocalAudioObject> audioFiles = album.getAudioObjects();
+			for (ILocalAudioObject af : audioFiles) {
 				af.addExternalPicture(picture);
 			}
 		}
@@ -655,7 +655,7 @@ public class RepositoryLoader extends Thread {
 	 * @param file
 	 *            File to be removed permanently
 	 */
-	static void deleteFile(LocalAudioObject file) {
+	static void deleteFile(ILocalAudioObject file) {
 		String albumArtist = file.getAlbumArtist();
 		String artist = file.getArtist();
 		String album = file.getAlbum();
@@ -729,7 +729,7 @@ public class RepositoryLoader extends Thread {
 	 * 
 	 * @return Either folder or null if file is not in repository
 	 */
-	private static Folder getFolderForFile(LocalAudioObject file) {
+	private static Folder getFolderForFile(ILocalAudioObject file) {
 		// Get repository folder where file is
 		File repositoryFolder = RepositoryHandler.getInstance()
 				.getRepositoryFolderContainingFile(file);
@@ -764,8 +764,8 @@ public class RepositoryLoader extends Thread {
 		
 		for (Folder folder : folders) {
 			// Remove o refresh previous files		
-			List<LocalAudioObject> aos = folder.getAudioObjects();
-			for (LocalAudioObject ao : aos) {
+			List<ILocalAudioObject> aos = folder.getAudioObjects();
+			for (ILocalAudioObject ao : aos) {
 				if (ao.getFile().exists()) {
 					Logger.debug("Refreshing file: ", ao.getFile().getAbsolutePath());
 					refreshFile(repository, ao);
@@ -776,8 +776,8 @@ public class RepositoryLoader extends Thread {
 			}
 
 			// Add new files
-			List<LocalAudioObject> allObjects = getSongsForFolder(folder.getFolderPath(), null);
-			for (LocalAudioObject ao : allObjects) {
+			List<ILocalAudioObject> allObjects = getSongsForFolder(folder.getFolderPath(), null);
+			for (ILocalAudioObject ao : allObjects) {
 				if (repository.getFile(ao.getFile().getAbsolutePath()) == null) {
 					Logger.debug("Adding file: ", ao.getFile().getAbsolutePath());
 					addToRepository(repository, Collections.singletonList(ao.getFile()));

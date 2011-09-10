@@ -25,7 +25,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
 
-public interface LocalAudioObject extends AudioObject, Comparable<LocalAudioObject> {
+public interface ILocalAudioObject extends AudioObject, Comparable<ILocalAudioObject> {
 	
 	/**
 	 * Returns file containing audio object

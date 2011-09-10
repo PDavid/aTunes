@@ -26,8 +26,8 @@ import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.LocalAudioObject;
 
 /**
  * The Class EditTagFromFolderNamePatternProcess.
@@ -40,7 +40,7 @@ public class EditTagFromFolderNamePatternProcess extends AbstractChangeTagProces
     private String pattern;
 
     /** The files and tags. */
-    private Map<LocalAudioObject, EditTagInfo> filesAndTags;
+    private Map<ILocalAudioObject, EditTagInfo> filesAndTags;
 
     /**
      * Instantiates a new process
@@ -48,7 +48,7 @@ public class EditTagFromFolderNamePatternProcess extends AbstractChangeTagProces
      * @param files
      *            the files
      */
-    public EditTagFromFolderNamePatternProcess(List<LocalAudioObject> files, String pattern, IState state) {
+    public EditTagFromFolderNamePatternProcess(List<ILocalAudioObject> files, String pattern, IState state) {
         super(files, state);
         this.pattern = pattern;
     }
@@ -57,8 +57,8 @@ public class EditTagFromFolderNamePatternProcess extends AbstractChangeTagProces
     protected void retrieveInformationBeforeChangeTags() {
         super.retrieveInformationBeforeChangeTags();
         if (filesAndTags == null) {
-            filesAndTags = new HashMap<LocalAudioObject, EditTagInfo>();
-            for (LocalAudioObject file : getFilesToChange()) {
+            filesAndTags = new HashMap<ILocalAudioObject, EditTagInfo>();
+            for (ILocalAudioObject file : getFilesToChange()) {
                 Map<String, String> matches = AbstractPattern.getPatternMatches(pattern, file.getFile().getParentFile().getAbsolutePath(), true);
                 EditTagInfo editTagInfo = AbstractPattern.getEditTagInfoFromMatches(matches);
                 filesAndTags.put(file, editTagInfo);
@@ -67,7 +67,7 @@ public class EditTagFromFolderNamePatternProcess extends AbstractChangeTagProces
     }
 
     @Override
-    protected void changeTag(LocalAudioObject file) {
+    protected void changeTag(ILocalAudioObject file) {
         TagModifier.setInfo(file, AudioFile.getNewTag(file, filesAndTags.get(file)));
     }
 }

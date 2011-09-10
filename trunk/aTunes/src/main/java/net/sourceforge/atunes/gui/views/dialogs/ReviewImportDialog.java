@@ -50,8 +50,8 @@ import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.kernel.modules.tags.TagAttributesReviewed;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -210,7 +210,7 @@ public final class ReviewImportDialog extends AbstractCustomDialog {
      * @param folders
      * @param files
      */
-    public void show(List<File> folders, List<LocalAudioObject> filesToLoad) {
+    public void show(List<File> folders, List<ILocalAudioObject> filesToLoad) {
         treeTable.setTreeTableModel(new ReviewImportTreeTableModel(folders, filesToLoad, treeTable));
         treeTable.getColumnExt(0).setPreferredWidth(300);
         ((ReviewImportTreeTableModel) treeTable.getTreeTableModel()).setCellEditors();

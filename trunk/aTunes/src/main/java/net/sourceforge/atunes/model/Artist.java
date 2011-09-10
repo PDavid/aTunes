@@ -43,7 +43,7 @@ import org.commonjukebox.plugins.model.PluginApi;
  * @author fleax
  */
 @PluginApi
-public class Artist implements Serializable, TreeObject<LocalAudioObject>, Comparable<Artist> {
+public class Artist implements Serializable, TreeObject<ILocalAudioObject>, Comparable<Artist> {
 
     /**
 	 * 
@@ -127,8 +127,8 @@ public class Artist implements Serializable, TreeObject<LocalAudioObject>, Compa
      * @return the audio objects
      */
     @Override
-    public List<LocalAudioObject> getAudioObjects() {
-        List<LocalAudioObject> songs = new ArrayList<LocalAudioObject>();
+    public List<ILocalAudioObject> getAudioObjects() {
+        List<ILocalAudioObject> songs = new ArrayList<ILocalAudioObject>();
         for (Album album : getAlbums().values()) {
             songs.addAll(album.getAudioObjects());
         }
