@@ -1,27 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-     xmlns:context="http://www.springframework.org/schema/context"
-     xsi:schemaLocation="http://www.springframework.org/schema/beans
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
          http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
          http://www.springframework.org/schema/context
-         http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+         http://www.springframework.org/schema/context/spring-context-3.0.xsd"
 
-<bean id="columnSet" class="net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet" abstract="true">
-	<property name="state" ref="state"/>
-</bean>
+	default-autowire="byName" default-lazy-init="true">
 
-<bean id="navigatorColumnSet" parent="columnSet" class="net.sourceforge.atunes.kernel.modules.columns.NavigatorColumnSet"/>
-<bean id="playlistColumnSet" parent="columnSet" class="net.sourceforge.atunes.kernel.modules.columns.PlayListColumnSet"/>
-<bean id="albumColumnSet" parent="columnSet" class="net.sourceforge.atunes.kernel.modules.columns.AlbumColumnSet"/>
-<bean id="searchResultsColumnSet" parent="columnSet" class="net.sourceforge.atunes.kernel.modules.columns.SearchResultsColumnSet"/>
+	<bean id="columnSet"
+		class="net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet"
+		abstract="true" />
+	<bean id="navigatorColumnSet" parent="columnSet"
+		class="net.sourceforge.atunes.kernel.modules.columns.NavigatorColumnSet" />
+	<bean id="playlistColumnSet" parent="columnSet"
+		class="net.sourceforge.atunes.kernel.modules.columns.PlayListColumnSet" />
+	<bean id="albumColumnSet" parent="columnSet"
+		class="net.sourceforge.atunes.kernel.modules.columns.AlbumColumnSet" />
+	<bean id="searchResultsColumnSet" parent="columnSet"
+		class="net.sourceforge.atunes.kernel.modules.columns.SearchResultsColumnSet" />
 
-<bean id="podcastNavigationColumnSet" parent="columnSet" class="net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationColumnSet">
-	<constructor-arg value="PodcastNavigationView"/>
-</bean>
+	<bean id="podcastNavigationColumnSet" parent="columnSet"
+		class="net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationColumnSet">
+		<constructor-arg value="PodcastNavigationView" />
+	</bean>
 
-<bean id="radioNavigationColumnSet" parent="columnSet" class="net.sourceforge.atunes.kernel.modules.navigator.RadioNavigationColumnSet">
-	<constructor-arg value="RadioNavigationView"/>
-</bean>
+	<bean id="radioNavigationColumnSet" parent="columnSet"
+		class="net.sourceforge.atunes.kernel.modules.navigator.RadioNavigationColumnSet">
+		<constructor-arg value="RadioNavigationView" />
+	</bean>
 
 </beans>

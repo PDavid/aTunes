@@ -4,7 +4,9 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
          http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
          http://www.springframework.org/schema/context
-         http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+         http://www.springframework.org/schema/context/spring-context-3.0.xsd"
+
+	default-autowire="byName" default-lazy-init="true">
 
 	<bean id="navigationViews" class="java.util.ArrayList">
 		<constructor-arg>
@@ -86,17 +88,17 @@
 		class="net.sourceforge.atunes.kernel.modules.navigator.RadioNavigationView"
 		parent="navigationView">
 		<constructor-arg ref="radioNavigationColumnSet" />
-		
-				<property name="decorators">
+
+		<property name="decorators">
 			<list>
 				<ref bean="stringTreeCellDecorator" />
 				<ref bean="radioTreeCellDecorator" />
 			</list>
 		</property>
-		
+
 	</bean>
-	
-	
+
+
 	<bean id="podcastNavigationView"
 		class="net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView"
 		parent="navigationView">
