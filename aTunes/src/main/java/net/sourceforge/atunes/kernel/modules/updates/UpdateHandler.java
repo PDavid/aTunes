@@ -23,14 +23,11 @@ package net.sourceforge.atunes.kernel.modules.updates;
 import java.io.IOException;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
-import java.util.List;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IUpdateHandler;
 import net.sourceforge.atunes.utils.NetworkUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -54,22 +51,6 @@ public final class UpdateHandler extends AbstractHandler implements IUpdateHandl
 	}
     
     @Override
-    public void applicationFinish() {
-    }
-
-    @Override
-    public void applicationStateChanged(IState newState) {
-    }
-
-    @Override
-    protected void initHandler() {
-    }
-
-    @Override
-    public void applicationStarted(List<AudioObject> playList) {
-    }
-    
-    @Override
     public void allHandlersInitialized() {
         if (!Kernel.isNoUpdate()) {
             checkUpdates(false, false);
@@ -81,6 +62,7 @@ public final class UpdateHandler extends AbstractHandler implements IUpdateHandl
      * @param alwaysInDialog
      * @param showNoNewVersion
      */
+    @Override
     public void checkUpdates(boolean alwaysInDialog, boolean showNoNewVersion) {
         new CheckUpdatesSwingWorker(this, showNoNewVersion, alwaysInDialog).execute();
     }
@@ -93,6 +75,7 @@ public final class UpdateHandler extends AbstractHandler implements IUpdateHandl
      * 
      * @return the last version
      */
+    @Override
     public ApplicationVersion getLastVersion() {
         ApplicationVersion result = null;
         try {
@@ -125,11 +108,4 @@ public final class UpdateHandler extends AbstractHandler implements IUpdateHandl
         }
         return result;
     }
-
-	@Override
-	public void playListCleared() {}
-
-	@Override
-	public void selectedAudioObjectChanged(AudioObject audioObject) {}
-
 }

@@ -75,11 +75,6 @@ public abstract class AbstractHandler implements IHandler {
 	}
 	
     /**
-     * Initializes handler
-     */
-    protected abstract void initHandler();
-
-    /**
      * Returns a task to be executed before initialize handler By default
      * handlers do not define any task
      * 
@@ -205,4 +200,24 @@ public abstract class AbstractHandler implements IHandler {
     @Override
     public void doUserInteraction() {}
     
+    @Override
+    public void applicationFinish() {}
+
+    @Override
+    public void applicationStateChanged(IState newState) {}
+
+    @Override
+    public void applicationStarted(List<AudioObject> playList) {}
+    
+	@Override
+	public void playListCleared() {}
+
+	@Override
+	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+
+    /**
+     * Initializes handler 
+     */
+    protected void initHandler() {
+    }
 }
