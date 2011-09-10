@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.navigator;
+package net.sourceforge.atunes.model;
 
 import java.util.List;
 import java.util.Map;
@@ -27,16 +27,14 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
-import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.TreeObject;
+import net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView;
 
 /**
  * Interface for methods that generate a tree for a particular view mode
  * @author fleax
  *
  */
-public interface TreeGenerator {
+public interface ITreeGenerator {
 
 	/**
 	 * Builds a tree

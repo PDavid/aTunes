@@ -36,6 +36,7 @@ import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ITreeGenerator;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -44,7 +45,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  *
  */
-class GenreTreeGenerator implements TreeGenerator {
+public class GenreTreeGenerator implements ITreeGenerator {
 
 	/**
 	 * Builds tree

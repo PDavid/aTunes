@@ -169,12 +169,12 @@ public class RepositoryNavigationView extends AbstractNavigationView {
 
     @Override
     public void selectAudioObject(ViewMode viewMode, AudioObject audioObject) {
-    	TreeGeneratorFactory.getTreeGenerator(viewMode, getState()).selectAudioObject(getTree(), audioObject);
+    	getTreeGeneratorFactory().getTreeGenerator(viewMode).selectAudioObject(getTree(), audioObject);
     }
     
     @Override
 	public void selectArtist(ViewMode viewMode, String artist) {
-    	TreeGeneratorFactory.getTreeGenerator(viewMode, getState()).selectArtist(getTree(), artist);
+    	getTreeGeneratorFactory().getTreeGenerator(viewMode).selectArtist(getTree(), artist);
 	}
     
     @SuppressWarnings("unchecked")
@@ -192,7 +192,7 @@ public class RepositoryNavigationView extends AbstractNavigationView {
         List<TreeObject<? extends AudioObject>> objectsExpanded = getTreeObjectsExpanded(tree, root);
         
         // Build treeN
-        TreeGeneratorFactory.getTreeGenerator(viewMode, getState()).buildTree(getState(), "REPOSITORY", this, (Map<String, Year>) getViewData(viewMode), treeFilter, root, treeModel, objectsSelected, objectsExpanded);
+        getTreeGeneratorFactory().getTreeGenerator(viewMode).buildTree(getState(), "REPOSITORY", this, (Map<String, Year>) getViewData(viewMode), treeFilter, root, treeModel, objectsSelected, objectsExpanded);
         
         getTree().expandRow(0);
     }

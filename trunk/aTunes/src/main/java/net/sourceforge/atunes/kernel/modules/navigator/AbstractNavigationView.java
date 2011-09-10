@@ -47,6 +47,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellRendererCode;
@@ -64,6 +65,7 @@ import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ITreeGeneratorFactory;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.model.ViewMode;
 
@@ -117,6 +119,8 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
      * Decorators used in view
      */
     private List<AbstractTreeCellDecorator> decorators;
+    
+    private ITreeGeneratorFactory treeGeneratorFactory;
 
     /**
      * @return the title of this view
@@ -137,7 +141,7 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
      * @return the JTree that contains this view
      */
     public abstract JTree getTree();
-
+    
     /**
      * Return decorators to be used in view
      * 
@@ -163,7 +167,12 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
 
     public AbstractNavigationView(IState state) {
     	this.state = state;
+    	this.treeGeneratorFactory = Context.getBean(ITreeGeneratorFactory.class);
     }
+    
+    public ITreeGeneratorFactory getTreeGeneratorFactory() {
+		return treeGeneratorFactory;
+	}
     
     protected IState getState() {
     	return state;

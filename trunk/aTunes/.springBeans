@@ -5,10 +5,30 @@
 	<configSuffixes>
 		<configSuffix><![CDATA[xml]]></configSuffix>
 	</configSuffixes>
-	<enableImports><![CDATA[false]]></enableImports>
+	<enableImports><![CDATA[true]]></enableImports>
 	<configs>
 		<config>src/main/resources/settings/spring/context.xml</config>
+		<config>src/main/resources/settings/spring/columnsets.xml</config>
+		<config>src/main/resources/settings/spring/navigationviews.xml</config>
+		<config>src/main/resources/settings/spring/state.xml</config>
+		<config>src/main/resources/settings/spring/treecelldecorators.xml</config>
+		<config>src/main/resources/settings/spring/treegenerators.xml</config>
+		<config>src/main/resources/settings/spring/webservices.xml</config>
 	</configs>
 	<configSets>
+		<configSet>
+			<name><![CDATA[beans]]></name>
+			<allowBeanDefinitionOverriding>true</allowBeanDefinitionOverriding>
+			<incomplete>false</incomplete>
+			<configs>
+				<config>src/main/resources/settings/spring/columnsets.xml</config>
+				<config>src/main/resources/settings/spring/context.xml</config>
+				<config>src/main/resources/settings/spring/navigationviews.xml</config>
+				<config>src/main/resources/settings/spring/state.xml</config>
+				<config>src/main/resources/settings/spring/treecelldecorators.xml</config>
+				<config>src/main/resources/settings/spring/treegenerators.xml</config>
+				<config>src/main/resources/settings/spring/webservices.xml</config>
+			</configs>
+		</configSet>
 	</configSets>
 </beansProjectDescription>

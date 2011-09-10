@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+	default-autowire="byName" default-lazy-init="true">
+
+	<bean id="treeGeneratorFactory"
+		class="net.sourceforge.atunes.kernel.modules.navigator.TreeGeneratorFactory">
+		<property name="generators">
+			<map>
+				<entry key-ref="artistViewMode" value-ref="artistTreeGenerator"/>
+				<entry key-ref="albumViewMode" value-ref="albumTreeGenerator"/>
+				<entry key-ref="genreViewMode" value-ref="genreTreeGenerator"/>
+				<entry key-ref="folderViewMode" value-ref="folderTreeGenerator"/>
+				<entry key-ref="yearViewMode" value-ref="yearTreeGenerator"/>
+				<entry key-ref="artistViewMode" value-ref="artistTreeGenerator"/>
+			</map>
+		</property>
+	</bean>
+
+
+
+	<bean id="artistTreeGenerator"
+		class="net.sourceforge.atunes.kernel.modules.navigator.ArtistTreeGenerator">
+	</bean>
+	<bean id="albumTreeGenerator"
+		class="net.sourceforge.atunes.kernel.modules.navigator.AlbumTreeGenerator">
+	</bean>
+	<bean id="genreTreeGenerator"
+		class="net.sourceforge.atunes.kernel.modules.navigator.GenreTreeGenerator">
+	</bean>
+	<bean id="folderTreeGenerator"
+		class="net.sourceforge.atunes.kernel.modules.navigator.FolderTreeGenerator">
+	</bean>
+	<bean id="yearTreeGenerator"
+		class="net.sourceforge.atunes.kernel.modules.navigator.YearTreeGenerator">
+	</bean>
+	
+	
+	
+	<bean id="artistViewMode" class="net.sourceforge.atunes.model.ViewMode" factory-method="valueOf">
+		<constructor-arg value="ARTIST"/>
+	</bean>
+	<bean id="albumViewMode" class="net.sourceforge.atunes.model.ViewMode" factory-method="valueOf">
+		<constructor-arg value="ALBUM"/>
+	</bean>
+	<bean id="genreViewMode" class="net.sourceforge.atunes.model.ViewMode" factory-method="valueOf">
+		<constructor-arg value="GENRE"/>
+	</bean>
+	<bean id="folderViewMode" class="net.sourceforge.atunes.model.ViewMode" factory-method="valueOf">
+		<constructor-arg value="FOLDER"/>
+	</bean>
+	<bean id="yearViewMode" class="net.sourceforge.atunes.model.ViewMode" factory-method="valueOf">
+		<constructor-arg value="YEAR"/>
+	</bean>
+	<bean id="artistAlbumViewMode" class="net.sourceforge.atunes.model.ViewMode" factory-method="valueOf">
+		<constructor-arg value="ARTIST_ALBUM"/>
+	</bean>
+</beans>
