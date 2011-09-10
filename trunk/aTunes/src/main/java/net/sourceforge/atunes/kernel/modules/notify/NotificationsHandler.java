@@ -29,14 +29,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.PlaybackState;
 import net.sourceforge.atunes.kernel.PlaybackStateListener;
-import net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenHandler;
 import net.sourceforge.atunes.kernel.modules.notify.classic.DefaultNotifications;
 import net.sourceforge.atunes.kernel.modules.notify.growl.GrowlNotificationEngine;
 import net.sourceforge.atunes.kernel.modules.notify.libnotify.LibnotifyNotificationEngine;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.IState;
 
 public final class NotificationsHandler extends AbstractHandler implements PlaybackStateListener {
@@ -122,7 +123,7 @@ public final class NotificationsHandler extends AbstractHandler implements Playb
      */
     public void showNotification(AudioObject audioObject) {
     	// only show notification if not in full screen
-    	if (!FullScreenHandler.getInstance().isVisible()) {
+    	if (!Context.getBean(IFullScreenHandler.class).isVisible()) {
     		getNotificationEngine().showNotification(audioObject);
     	}
     }

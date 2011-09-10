@@ -41,6 +41,7 @@ import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileFilter;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.frame.DefaultSingleFrame;
 import net.sourceforge.atunes.gui.frame.Frame;
 import net.sourceforge.atunes.gui.frame.FrameState;
@@ -79,7 +80,6 @@ import net.sourceforge.atunes.kernel.PlaybackState;
 import net.sourceforge.atunes.kernel.PlaybackStateListener;
 import net.sourceforge.atunes.kernel.modules.cdripper.RipperHandler;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
-import net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayList;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
@@ -97,6 +97,7 @@ import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -548,7 +549,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      */
     private void setPlaying(boolean playing) {
         PlayerHandler.getInstance().setPlaying(playing);
-        FullScreenHandler.getInstance().setPlaying(playing);
+        Context.getBean(IFullScreenHandler.class).setPlaying(playing);
         SystemTrayHandler.getInstance().setPlaying(playing);
     }
 

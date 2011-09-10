@@ -27,9 +27,9 @@ import java.lang.reflect.InvocationTargetException;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.PlaybackState;
 import net.sourceforge.atunes.kernel.PlaybackStateListeners;
-import net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenHandler;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
@@ -40,6 +40,7 @@ import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.misc.TempFolder;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -594,7 +595,7 @@ public abstract class AbstractPlayerEngine {
         this.currentAudioObjectLength = currentLength;
         // Update sliders with max length
         PlayerHandler.getInstance().setAudioObjectLength(currentLength);
-        FullScreenHandler.getInstance().setAudioObjectLength(currentLength);
+        Context.getBean(IFullScreenHandler.class).setAudioObjectLength(currentLength);
     }
 
     /**
@@ -607,7 +608,7 @@ public abstract class AbstractPlayerEngine {
         long actualPlayedTime = playedTime;
         this.currentAudioObjectPlayedTime = actualPlayedTime;
         PlayerHandler.getInstance().setCurrentAudioObjectTimePlayed(actualPlayedTime, currentAudioObjectLength);
-        FullScreenHandler.getInstance().setCurrentAudioObjectPlayedTime(actualPlayedTime, currentAudioObjectLength);
+        Context.getBean(IFullScreenHandler.class).setCurrentAudioObjectPlayedTime(actualPlayedTime, currentAudioObjectLength);
 
         // Conditions to submit an object:
         // - Not submitted before

@@ -9,6 +9,9 @@
 	<bean id="updateHandler" class="net.sourceforge.atunes.kernel.modules.updates.UpdateHandler">
 		<property name="updatesURL" value="http://www.atunes.org/latest.xml"></property>
 	</bean>
+	
+	<bean id="fullScreenHandler" class="net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenHandler"/>
+	
 
 
 </beans>

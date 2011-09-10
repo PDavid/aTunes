@@ -24,7 +24,8 @@ import java.awt.EventQueue;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenHandler;
+import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.IState;
 
 public final class Volume {
@@ -49,11 +50,11 @@ public final class Volume {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    FullScreenHandler.getInstance().setVolume(finalVolume);
+                	Context.getBean(IFullScreenHandler.class).setVolume(finalVolume);
                 }
             });
         } else {
-        	FullScreenHandler.getInstance().setVolume(finalVolume);
+        	Context.getBean(IFullScreenHandler.class).setVolume(finalVolume);
         }
     }
     
