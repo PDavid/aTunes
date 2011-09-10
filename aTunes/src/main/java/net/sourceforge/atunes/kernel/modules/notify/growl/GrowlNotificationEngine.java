@@ -28,7 +28,7 @@ import java.util.List;
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.notify.CommonNotificationEngine;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -46,7 +46,7 @@ public class GrowlNotificationEngine extends CommonNotificationEngine {
 	}
 
 	@Override
-	public void showNotification(AudioObject audioObject) {
+	public void showNotification(IAudioObject audioObject) {
 		String image = getTemporalImage(audioObject);
 		List<String> command = getCommand(audioObject, image);
 		ProcessBuilder pb = new ProcessBuilder(command);
@@ -103,7 +103,7 @@ public class GrowlNotificationEngine extends CommonNotificationEngine {
 	 * @param image
 	 * @return
 	 */
-	private List<String> getCommand(AudioObject audioObject, String image) {
+	private List<String> getCommand(IAudioObject audioObject, String image) {
 		List<String> args = new ArrayList<String>();
 		args.add(GROWLNOTIFY);
 		args.add(TITLE_ARG);

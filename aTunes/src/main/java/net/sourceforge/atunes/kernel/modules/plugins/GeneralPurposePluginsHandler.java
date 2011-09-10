@@ -26,7 +26,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 
 import org.commonjukebox.plugins.exceptions.PluginSystemException;
@@ -57,7 +57,7 @@ public class GeneralPurposePluginsHandler extends AbstractHandler implements Plu
     }
 
     @Override
-    public void applicationStarted(List<AudioObject> playList) {
+    public void applicationStarted(List<IAudioObject> playList) {
     }
 
     @Override
@@ -108,5 +108,5 @@ public class GeneralPurposePluginsHandler extends AbstractHandler implements Plu
 	public void playListCleared() {}
 
 	@Override
-	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+	public void selectedAudioObjectChanged(IAudioObject audioObject) {}
 }

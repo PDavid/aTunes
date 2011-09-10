@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -47,7 +47,7 @@ public class AutoScrollPlayListAction extends CustomAbstractAction {
     }
     
     @Override
-    public boolean isEnabledForPlayListSelection(List<AudioObject> selection) {
+    public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
         return !selection.isEmpty();
     }
 

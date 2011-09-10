@@ -53,7 +53,7 @@ import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.TreeObject;
@@ -169,9 +169,9 @@ public final class DeviceNavigationView extends AbstractNavigationView {
         List<DefaultMutableTreeNode> nodesToExpand = new ArrayList<DefaultMutableTreeNode>();
 
         // Get objects selected before refreshing tree
-        List<TreeObject<? extends AudioObject>> objectsSelected = getTreeObjectsSelected(getTree());
+        List<TreeObject<? extends IAudioObject>> objectsSelected = getTreeObjectsSelected(getTree());
         // Get objects expanded before refreshing tree
-        List<TreeObject<? extends AudioObject>> objectsExpanded = getTreeObjectsExpanded(getTree(), root);
+        List<TreeObject<? extends IAudioObject>> objectsExpanded = getTreeObjectsExpanded(getTree(), root);
 
         root.removeAllChildren();
 

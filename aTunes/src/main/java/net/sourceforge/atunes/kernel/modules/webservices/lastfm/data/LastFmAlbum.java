@@ -30,15 +30,15 @@ import java.util.Locale;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
 import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
+import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.utils.StringUtils;
 import de.umass.lastfm.Album;
 import de.umass.lastfm.ImageSize;
 import de.umass.lastfm.Playlist;
 import de.umass.lastfm.Track;
 
-public class LastFmAlbum implements AlbumInfo {
+public class LastFmAlbum implements IAlbumInfo {
 
     private static final long serialVersionUID = -8021357529697065642L;
 
@@ -65,7 +65,7 @@ public class LastFmAlbum implements AlbumInfo {
      * 
      * @return the album
      */
-    public static AlbumInfo getAlbum(Album a, Playlist pl) {
+    public static IAlbumInfo getAlbum(Album a, Playlist pl) {
         LastFmAlbum album = new LastFmAlbum();
 
         album.artist = a.getArtist();

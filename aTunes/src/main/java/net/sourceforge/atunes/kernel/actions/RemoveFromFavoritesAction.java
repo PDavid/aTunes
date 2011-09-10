@@ -34,7 +34,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -53,16 +53,16 @@ public class RemoveFromFavoritesAction extends CustomAbstractAction {
         if (NavigationHandler.getInstance().getPopupMenuCaller() == NavigationHandler.getInstance().getView(FavoritesNavigationView.class).getTree()) {
             TreePath[] paths = NavigationHandler.getInstance().getView(FavoritesNavigationView.class).getTree().getSelectionPaths();
             if (paths != null) {
-                List<TreeObject<? extends AudioObject>> objects = new ArrayList<TreeObject<? extends AudioObject>>();
+                List<TreeObject<? extends IAudioObject>> objects = new ArrayList<TreeObject<? extends IAudioObject>>();
                 for (TreePath element : paths) {
-                    objects.add((TreeObject<? extends AudioObject>) ((DefaultMutableTreeNode) element.getLastPathComponent()).getUserObject());
+                    objects.add((TreeObject<? extends IAudioObject>) ((DefaultMutableTreeNode) element.getLastPathComponent()).getUserObject());
                 }
                 FavoritesHandler.getInstance().removeFromFavorites(objects);
             }
         } else {
             int[] rows = NavigationHandler.getInstance().getNavigationTable().getSelectedRows();
             if (rows.length > 0) {
-                List<AudioObject> audioObjects = ((NavigationTableModel) NavigationHandler.getInstance().getNavigationTable()
+                List<IAudioObject> audioObjects = ((NavigationTableModel) NavigationHandler.getInstance().getNavigationTable()
                         .getModel()).getAudioObjectsAt(rows);
                 FavoritesHandler.getInstance().removeSongsFromFavorites(audioObjects);
             }
@@ -86,7 +86,7 @@ public class RemoveFromFavoritesAction extends CustomAbstractAction {
     }
 
     @Override
-    public boolean isEnabledForNavigationTableSelection(List<AudioObject> selection) {
+    public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
         // Enabled if all selected items are favorite songs (not belong to favorite artist nor album)
         return FavoritesHandler.getInstance().getFavoriteSongsInfo().values().containsAll(AudioFile.getAudioFiles(selection));
     }

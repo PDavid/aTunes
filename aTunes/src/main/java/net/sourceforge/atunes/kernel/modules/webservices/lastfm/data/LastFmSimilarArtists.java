@@ -24,12 +24,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.context.ArtistInfo;
-import net.sourceforge.atunes.kernel.modules.context.SimilarArtistsInfo;
+import net.sourceforge.atunes.model.IArtistInfo;
+import net.sourceforge.atunes.model.ISimilarArtistsInfo;
 import de.umass.lastfm.Artist;
 import de.umass.lastfm.ImageSize;
 
-public class LastFmSimilarArtists implements SimilarArtistsInfo {
+public class LastFmSimilarArtists implements ISimilarArtistsInfo {
 
     private static final long serialVersionUID = -8771547790339792068L;
 
@@ -37,21 +37,21 @@ public class LastFmSimilarArtists implements SimilarArtistsInfo {
 
     private String artistName;
     private String picture;
-    private List<ArtistInfo> artists;
+    private List<IArtistInfo> artists;
 
     /**
      * Gets the similar artists.
      * 
      * @return the similar artists
      */
-    public static SimilarArtistsInfo getSimilarArtists(Collection<Artist> as, Artist a) {
+    public static ISimilarArtistsInfo getSimilarArtists(Collection<Artist> as, Artist a) {
         List<Artist> list = new ArrayList<Artist>(as);
         LastFmSimilarArtists similar = new LastFmSimilarArtists();
 
         similar.artistName = a.getName();
         similar.picture = a.getImageURL(ImageSize.LARGE);
 
-        similar.artists = new ArrayList<ArtistInfo>();
+        similar.artists = new ArrayList<IArtistInfo>();
         for (int i = 0; i < list.size(); i++) {
             if (i == MAX_SIMILAR_ARTISTS) {
                 break;
@@ -78,7 +78,7 @@ public class LastFmSimilarArtists implements SimilarArtistsInfo {
      * @return the artists
      */
     @Override
-    public List<ArtistInfo> getArtists() {
+    public List<IArtistInfo> getArtists() {
         return artists;
     }
 
@@ -110,8 +110,8 @@ public class LastFmSimilarArtists implements SimilarArtistsInfo {
      *            the artists to set
      */
     @Override
-    public void setArtists(List<? extends ArtistInfo> artists) {
-        this.artists = artists != null ? new ArrayList<ArtistInfo>(artists) : null;
+    public void setArtists(List<? extends IArtistInfo> artists) {
+        this.artists = artists != null ? new ArrayList<IArtistInfo>(artists) : null;
     }
 
     /**

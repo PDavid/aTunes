@@ -25,10 +25,11 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.EditTitlesDialog;
-import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
 import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
-import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
+import net.sourceforge.atunes.model.IAlbumInfo;
+import net.sourceforge.atunes.model.IWebServicesHandler;
 
 /**
  * The listener interface for receiving editTitlesDialogAction events.
@@ -63,7 +64,7 @@ public final class EditTitlesDialogActionListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == dialog.getRetrieveTitles()) {
-            AlbumInfo albumInfo = WebServicesHandler.getInstance().getLastFmService().getAlbum(controller.getAlbum().getArtist().toString(), controller.getAlbum().getName());
+            IAlbumInfo albumInfo = Context.getBean(IWebServicesHandler.class).getAlbum(controller.getAlbum().getArtist().toString(), controller.getAlbum().getName());
             if (albumInfo != null) {
                 List<String> tracks = new ArrayList<String>();
                 for (TrackInfo trackInfo : albumInfo.getTracks()) {

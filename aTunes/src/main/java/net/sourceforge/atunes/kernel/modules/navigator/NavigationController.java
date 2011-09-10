@@ -75,7 +75,7 @@ import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
 import net.sourceforge.atunes.kernel.modules.repository.AudioFilesRemovedListener;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.TreeObject;
@@ -262,8 +262,8 @@ final class NavigationController implements AudioFilesRemovedListener, IControll
      * 
      * @return the files selected in navigator
      */
-    public List<AudioObject> getFilesSelectedInNavigator() {
-        List<AudioObject> files = new ArrayList<AudioObject>();
+    public List<IAudioObject> getFilesSelectedInNavigator() {
+        List<IAudioObject> files = new ArrayList<IAudioObject>();
         if (getPopupMenuCaller() instanceof JTable) {
             int[] rows = navigationTablePanel.getNavigationTable().getSelectedRows();
             files.addAll(((NavigationTableModel) navigationTablePanel.getNavigationTable().getModel()).getAudioObjectsAt(rows));
@@ -312,7 +312,7 @@ final class NavigationController implements AudioFilesRemovedListener, IControll
      * 
      * @return the song in navigation table
      */
-    public AudioObject getAudioObjectInNavigationTable(int row) {
+    public IAudioObject getAudioObjectInNavigationTable(int row) {
         return ((NavigationTableModel) navigationTablePanel.getNavigationTable().getModel()).getAudioObjectAt(row);
     }
 
@@ -324,8 +324,8 @@ final class NavigationController implements AudioFilesRemovedListener, IControll
      * @param node
      * @return
      */
-    public List<? extends AudioObject> getAudioObjectsForTreeNode(Class<? extends AbstractNavigationView> navigationViewClass, DefaultMutableTreeNode node) {
-        List<? extends AudioObject> audioObjects = NavigationHandler.getInstance().getView(navigationViewClass).getAudioObjectForTreeNode(node, state.getViewMode(),
+    public List<? extends IAudioObject> getAudioObjectsForTreeNode(Class<? extends AbstractNavigationView> navigationViewClass, DefaultMutableTreeNode node) {
+        List<? extends IAudioObject> audioObjects = NavigationHandler.getInstance().getView(navigationViewClass).getAudioObjectForTreeNode(node, state.getViewMode(),
                 FilterHandler.getInstance().isFilterSelected(NavigationHandler.getInstance().getTreeFilter()) ? FilterHandler.getInstance().getFilter() : null);
 
         AbstractColumnSet columnSet = NavigationHandler.getInstance().getCurrentView().getCustomColumnSet();
@@ -370,7 +370,7 @@ final class NavigationController implements AudioFilesRemovedListener, IControll
     @SuppressWarnings("unchecked")
 	public void setCurrentExtendedToolTipContent(Object currentAlbumToolTipContent) {
         this.currentExtendedToolTipContent = currentAlbumToolTipContent;
-        getExtendedToolTip().setSizeToFitImage(currentAlbumToolTipContent instanceof TreeObject && ((TreeObject<? extends AudioObject>) currentAlbumToolTipContent).isExtendedToolTipImageSupported());
+        getExtendedToolTip().setSizeToFitImage(currentAlbumToolTipContent instanceof TreeObject && ((TreeObject<? extends IAudioObject>) currentAlbumToolTipContent).isExtendedToolTipImageSupported());
     }
 
     /**
@@ -454,7 +454,7 @@ final class NavigationController implements AudioFilesRemovedListener, IControll
         TreePath[] paths = tree.getSelectionPaths();
 
         if (paths != null) {
-            List<AudioObject> audioObjects = new ArrayList<AudioObject>();
+            List<IAudioObject> audioObjects = new ArrayList<IAudioObject>();
             for (TreePath element : paths) {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) (element.getLastPathComponent());
                 audioObjects.addAll(getAudioObjectsForTreeNode(NavigationHandler.getInstance().getViewByName(state.getNavigationView()), node));
@@ -473,7 +473,7 @@ final class NavigationController implements AudioFilesRemovedListener, IControll
      * @param audioObjects
      * @return
      */
-    private List<AudioObject> filterNavigationTable(List<AudioObject> audioObjects) {
+    private List<IAudioObject> filterNavigationTable(List<IAudioObject> audioObjects) {
         if (!FilterHandler.getInstance().isFilterSelected(NavigationHandler.getInstance().getTableFilter())) {
             return audioObjects;
         }

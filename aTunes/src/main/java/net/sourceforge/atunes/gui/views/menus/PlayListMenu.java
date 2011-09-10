@@ -57,7 +57,7 @@ import net.sourceforge.atunes.kernel.actions.SetPlayListSelectionAsFavoriteSongA
 import net.sourceforge.atunes.kernel.actions.ShowPlayListItemInfoAction;
 import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class PlayListMenu {
@@ -201,7 +201,7 @@ public final class PlayListMenu {
      * @param menu
      * @param selection
      */
-    private static void updatePlayListPopupMenuItems(JPopupMenu menu, List<AudioObject> selection) {
+    private static void updatePlayListPopupMenuItems(JPopupMenu menu, List<IAudioObject> selection) {
         for (Component c : menu.getComponents()) {
             Action action = null;
             if (c instanceof JMenuItem) {
@@ -225,7 +225,7 @@ public final class PlayListMenu {
      * @param menu
      * @param selection
      */
-    private static void updatePlayListMenuItems(JMenu menu, List<AudioObject> selection) {
+    private static void updatePlayListMenuItems(JMenu menu, List<IAudioObject> selection) {
         for (int i = 0; i < menu.getItemCount(); i++) {
             JMenuItem menuItem = menu.getItem(i);
             // For some reason getItem can return null

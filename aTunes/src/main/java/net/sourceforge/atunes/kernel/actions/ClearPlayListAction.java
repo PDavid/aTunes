@@ -29,7 +29,7 @@ import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -57,7 +57,7 @@ public class ClearPlayListAction extends CustomAbstractAction {
     }
 
     @Override
-    public boolean isEnabledForPlayListSelection(List<AudioObject> selection) {
+    public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
         return true;
     }
 

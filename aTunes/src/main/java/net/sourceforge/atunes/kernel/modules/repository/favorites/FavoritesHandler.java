@@ -37,7 +37,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.TreeObject;
@@ -71,7 +71,7 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
     }
 
     @Override
-    public void applicationStarted(List<AudioObject> playList) {
+    public void applicationStarted(List<IAudioObject> playList) {
     }
     
     @Override
@@ -147,7 +147,7 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
             return;
         }
         Map<String, ILocalAudioObject> favSongs = getFavorites().getFavoriteAudioFiles();
-        List<AudioObject> toRemove = new LinkedList<AudioObject>();
+        List<IAudioObject> toRemove = new LinkedList<IAudioObject>();
         for (ILocalAudioObject song : songs) {
             //Toggle favorite songs
             if (favSongs.containsKey(song.getUrl())) {
@@ -249,7 +249,7 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
      *            list of objects of type TreeObject
      */
     public void removeFromFavorites(List<TreeObject<?>> objects) {
-        for (TreeObject<? extends AudioObject> obj : objects) {
+        for (TreeObject<? extends IAudioObject> obj : objects) {
             if (obj instanceof Artist) {
                 getFavorites().getFavoriteArtists().remove(obj.toString());
             } else {
@@ -266,8 +266,8 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
      * @param files
      *            the files
      */
-    public void removeSongsFromFavorites(List<AudioObject> files) {
-    	for (AudioObject file : files) {
+    public void removeSongsFromFavorites(List<IAudioObject> files) {
+    	for (IAudioObject file : files) {
     		getFavorites().getFavoriteAudioFiles().remove(file.getUrl());
     		// Unlove on LastFM if necessary
     		if (getState().isLastFmEnabled() && getState().isAutoLoveFavoriteSong()) {
@@ -315,6 +315,6 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
     }
 
 	@Override
-    public void selectedAudioObjectChanged(AudioObject audioObject) {
+    public void selectedAudioObjectChanged(IAudioObject audioObject) {
 }
 }

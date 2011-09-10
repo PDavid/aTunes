@@ -27,7 +27,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SwingWorker;
 
-import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
+import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -52,20 +53,17 @@ public class ClearCachesAction extends CustomAbstractAction {
         SwingWorker<Boolean, Void> clearCaches = new SwingWorker<Boolean, Void>() {
             @Override
             protected Boolean doInBackground() throws Exception {
-                return WebServicesHandler.getInstance().clearCache();
+                return Context.getBean(IWebServicesHandler.class).clearCache();
             }
 
             @Override
             protected void done() {
             	((JPanel)((JButton)e.getSource()).getParent()).setCursor(Cursor.getDefaultCursor());
-
-//                GuiHandler.getInstance().getEditPreferencesDialog().setCursor(Cursor.getDefaultCursor());
                 setEnabled(true);
             }
         };
         setEnabled(false);
     	((JPanel)((JButton)e.getSource()).getParent()).setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-//        GuiHandler.getInstance().getEditPreferencesDialog().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         clearCaches.execute();
     }
 

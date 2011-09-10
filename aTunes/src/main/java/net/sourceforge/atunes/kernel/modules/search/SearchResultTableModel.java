@@ -26,14 +26,14 @@ import java.util.List;
 
 import net.sourceforge.atunes.gui.model.AbstractColumnSetTableModel;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 
 /**
  * The table model for search results.
  */
 public class SearchResultTableModel extends AbstractColumnSetTableModel {
 
-    private List<AudioObject> results;
+    private List<IAudioObject> results;
 
     /**
      * Constructor.
@@ -103,12 +103,12 @@ public class SearchResultTableModel extends AbstractColumnSetTableModel {
      * @param results
      *            the results to set
      */
-    public void setResults(List<AudioObject> results) {
+    public void setResults(List<IAudioObject> results) {
         this.results = results;
     }
 
     @Override
-    public void sort(Comparator<AudioObject> comparator) {
+    public void sort(Comparator<IAudioObject> comparator) {
         Collections.sort(this.results, comparator);
     }
 }

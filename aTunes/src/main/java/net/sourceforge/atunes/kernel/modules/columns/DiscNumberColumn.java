@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.modules.columns;
 
 import javax.swing.SwingConstants;
 
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 
 public class DiscNumberColumn extends AbstractColumn {
 
@@ -36,12 +36,12 @@ public class DiscNumberColumn extends AbstractColumn {
     }
 
     @Override
-    protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
+    protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
         return Integer.valueOf(ao1.getDiscNumber()).compareTo(ao2.getDiscNumber());
     }
 
     @Override
-    public Object getValueFor(AudioObject audioObject) {
+    public Object getValueFor(IAudioObject audioObject) {
         // Return disc number
         return audioObject.getDiscNumber() > 0 ? audioObject.getDiscNumber() : null;
     }

@@ -23,29 +23,29 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.StringUtils;
 
 class PlaybackHistory {
 
     static class Heap {
 
-        private List<AudioObject> heap = new ArrayList<AudioObject>();
+        private List<IAudioObject> heap = new ArrayList<IAudioObject>();
 
-        AudioObject pop() {
+        IAudioObject pop() {
             if (heap.isEmpty()) {
                 return null;
             }
-            AudioObject ao = heap.get(heap.size() - 1);
+            IAudioObject ao = heap.get(heap.size() - 1);
             heap.remove(heap.size() - 1);
             return ao;
         }
 
-        void push(AudioObject ao) {
+        void push(IAudioObject ao) {
             heap.add(ao);
         }
 
-        AudioObject get(int index) {
+        IAudioObject get(int index) {
             int position = heap.size() - index;
             if (!heap.isEmpty() && position >= 0 && position < heap.size()) {
                 return heap.get(position);
@@ -53,7 +53,7 @@ class PlaybackHistory {
             return null;
         }
 
-        void remove(AudioObject ao) {
+        void remove(IAudioObject ao) {
             // Remove all occurrences
             while (heap.contains(ao)) {
                 heap.remove(ao);
@@ -67,7 +67,7 @@ class PlaybackHistory {
         @Override
         public String toString() {
             StringBuilder sb = new StringBuilder("[");
-            for (AudioObject ao : heap) {
+            for (IAudioObject ao : heap) {
                 sb.append(ao).append(" <- ");
             }
             sb.append("]");
@@ -78,20 +78,20 @@ class PlaybackHistory {
 
     private Heap previousHeap = new Heap();
 
-    private AudioObject currentAudioObject;
+    private IAudioObject currentAudioObject;
 
     private Heap nextHeap = new Heap();
 
-    AudioObject getPreviousInHistory(int index) {
+    IAudioObject getPreviousInHistory(int index) {
         return previousHeap.get(index);
     }
 
-    AudioObject getNextInHistory(int index) {
+    IAudioObject getNextInHistory(int index) {
         return nextHeap.get(index);
     }
 
-    AudioObject moveToPreviousInHistory() {
-        AudioObject ao = previousHeap.pop();
+    IAudioObject moveToPreviousInHistory() {
+        IAudioObject ao = previousHeap.pop();
         if (ao != null) {
             if (currentAudioObject != null) {
                 nextHeap.push(currentAudioObject);
@@ -102,8 +102,8 @@ class PlaybackHistory {
         return null;
     }
 
-    AudioObject moveToNextInHistory() {
-        AudioObject ao = nextHeap.pop();
+    IAudioObject moveToNextInHistory() {
+        IAudioObject ao = nextHeap.pop();
         if (ao != null) {
             if (currentAudioObject != null) {
                 previousHeap.push(currentAudioObject);
@@ -114,7 +114,7 @@ class PlaybackHistory {
         return null;
     }
 
-    void addToHistory(AudioObject audioObject) {
+    void addToHistory(IAudioObject audioObject) {
         if (currentAudioObject != null && currentAudioObject != audioObject) {
             if (previousHeap.get(1) == audioObject) {
                 currentAudioObject = previousHeap.pop();
@@ -127,8 +127,8 @@ class PlaybackHistory {
         }
     }
 
-    void remove(List<AudioObject> audioObjectsToRemove) {
-        for (AudioObject ao : audioObjectsToRemove) {
+    void remove(List<IAudioObject> audioObjectsToRemove) {
+        for (IAudioObject ao : audioObjectsToRemove) {
             previousHeap.remove(ao);
             nextHeap.remove(ao);
         }

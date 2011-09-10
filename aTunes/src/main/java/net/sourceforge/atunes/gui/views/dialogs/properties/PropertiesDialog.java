@@ -30,7 +30,7 @@ import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -38,9 +38,9 @@ public class PropertiesDialog extends AbstractCustomDialog {
 
     private static final long serialVersionUID = 6097305595858691246L;
 
-    private static Map<AudioObject, PropertiesDialog> dialogsOpened;
+    private static Map<IAudioObject, PropertiesDialog> dialogsOpened;
 
-    private AudioObject audioObject;
+    private IAudioObject audioObject;
 
     /**
      * Instantiates a new properties dialog.
@@ -95,7 +95,7 @@ public class PropertiesDialog extends AbstractCustomDialog {
      * @param state
      * @return
      */
-    public static PropertiesDialog newInstance(AudioObject a, JFrame owner, IState state) {
+    public static PropertiesDialog newInstance(IAudioObject a, JFrame owner, IState state) {
         if (getDialogsOpened().containsKey(a)) {
             return getDialogsOpened().get(a);
         } else {
@@ -112,14 +112,14 @@ public class PropertiesDialog extends AbstractCustomDialog {
         }
     }
 
-    private static Map<AudioObject, PropertiesDialog> getDialogsOpened() {
+    private static Map<IAudioObject, PropertiesDialog> getDialogsOpened() {
         if (dialogsOpened == null) {
-            dialogsOpened = new HashMap<AudioObject, PropertiesDialog>();
+            dialogsOpened = new HashMap<IAudioObject, PropertiesDialog>();
         }
         return dialogsOpened;
     }
 
-    protected AudioObject getAudioObject() {
+    protected IAudioObject getAudioObject() {
         return this.audioObject;
     }
 
@@ -127,7 +127,7 @@ public class PropertiesDialog extends AbstractCustomDialog {
      * @param audioObject
      *            the audioObject to set
      */
-    protected void setAudioObject(AudioObject audioObject) {
+    protected void setAudioObject(IAudioObject audioObject) {
         this.audioObject = audioObject;
     }
 

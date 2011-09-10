@@ -33,7 +33,7 @@ import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.tags.IncompleteTagsChecker;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 
 public final class NavigationTableColumnModel extends AbstractCommonColumnModel {
@@ -82,7 +82,7 @@ public final class NavigationTableColumnModel extends AbstractCommonColumnModel 
         	JComponent c = renderer.getComponent(superComponent, t, value, isSelected, hasFocus, row, column);
             // Check incomplete tags if necessary
             if (state.isHighlightIncompleteTagElements()) {
-                AudioObject audioObject = NavigationHandler.getInstance().getAudioObjectInNavigationTable(row);
+                IAudioObject audioObject = NavigationHandler.getInstance().getAudioObjectInNavigationTable(row);
                 if (IncompleteTagsChecker.hasIncompleteTags(audioObject, state)) {
                     ((JLabel) c).setForeground(Color.red);
                 } else {

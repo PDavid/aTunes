@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.modules.search;
 import java.io.IOException;
 import java.util.List;
 
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.store.FSDirectory;
@@ -63,14 +63,14 @@ public interface SearchableObject {
      * @return the search result
      * 
      */
-    public List<AudioObject> getSearchResult(List<RawSearchResult> rawSearchResults);
+    public List<IAudioObject> getSearchResult(List<RawSearchResult> rawSearchResults);
 
     /**
      * Returns elements to index.
      * 
      * @return the elements to index
      */
-    public List<AudioObject> getElementsToIndex();
+    public List<IAudioObject> getElementsToIndex();
 
     /**
      * Builds a Lucene Document for a given AudioObject.
@@ -80,5 +80,5 @@ public interface SearchableObject {
      * 
      * @return the document for element
      */
-    public Document getDocumentForElement(AudioObject audioObject);
+    public Document getDocumentForElement(IAudioObject audioObject);
 }

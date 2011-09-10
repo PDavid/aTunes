@@ -35,9 +35,9 @@ import javax.swing.TransferHandler;
 import javax.swing.table.TableModel;
 
 import net.sourceforge.atunes.gui.model.TransferableList;
-import net.sourceforge.atunes.kernel.modules.context.ArtistInfo;
 import net.sourceforge.atunes.kernel.modules.context.ContextTable;
 import net.sourceforge.atunes.kernel.modules.draganddrop.DragableArtist;
+import net.sourceforge.atunes.model.IArtistInfo;
 
 /**
  * 
@@ -103,7 +103,7 @@ public final class SimilarArtistsContextTable extends ContextTable implements Dr
     public void dragGestureRecognized(DragGestureEvent dge) {
         int row = getSelectedRow();
         
-        ArtistInfo artistInfo = ((SimilarArtistsTableModel) getModel()).getArtist(row);
+        IArtistInfo artistInfo = ((SimilarArtistsTableModel) getModel()).getArtist(row);
         if (artistInfo.isAvailable()){
 	        List<Object> itemsToDrag = new ArrayList<Object>();
 	        itemsToDrag.add(new DragableArtist(artistInfo));

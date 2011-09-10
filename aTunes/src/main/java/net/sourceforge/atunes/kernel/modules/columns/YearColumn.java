@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.modules.columns;
 
 import javax.swing.SwingConstants;
 
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 
 public class YearColumn extends AbstractColumn {
 
@@ -38,18 +38,18 @@ public class YearColumn extends AbstractColumn {
     }
 
     @Override
-    protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
+    protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
         return ao1.getYear().compareTo(ao2.getYear());
     }
 
     @Override
-    public Object getValueFor(AudioObject audioObject) {
+    public Object getValueFor(IAudioObject audioObject) {
         // Return year
         return audioObject.getYear();
     }
 
     @Override
-    public String getValueForFilter(AudioObject audioObject) {
+    public String getValueForFilter(IAudioObject audioObject) {
         return audioObject.getYear();
     }
 

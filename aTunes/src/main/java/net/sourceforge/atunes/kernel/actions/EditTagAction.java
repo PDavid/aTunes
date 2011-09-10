@@ -28,7 +28,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.EditTagSources;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ITagHandler;
@@ -78,7 +78,7 @@ public class EditTagAction extends AbstractActionOverSelectedObjects<ILocalAudio
     }
 
     @Override
-    public boolean isEnabledForNavigationTableSelection(List<AudioObject> selection) {
+    public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
         if (EditTagSources.NAVIGATOR.toString().equals(getActionId())) {
             return !selection.isEmpty();
         }
@@ -86,7 +86,7 @@ public class EditTagAction extends AbstractActionOverSelectedObjects<ILocalAudio
     }
 
     @Override
-    public boolean isEnabledForPlayListSelection(List<AudioObject> selection) {
+    public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
     	return super.isEnabledForPlayListSelection(selection);
     }    
 }

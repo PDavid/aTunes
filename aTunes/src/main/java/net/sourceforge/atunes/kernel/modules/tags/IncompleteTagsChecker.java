@@ -29,7 +29,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.TreeObject;
 
@@ -144,8 +144,8 @@ public final class IncompleteTagsChecker {
      * @param state
      * @return
      */
-    public static boolean hasIncompleteTags(TreeObject<? extends AudioObject> treeObject, IState state) {
-        for (AudioObject f : treeObject.getAudioObjects()) {
+    public static boolean hasIncompleteTags(TreeObject<? extends IAudioObject> treeObject, IState state) {
+        for (IAudioObject f : treeObject.getAudioObjects()) {
             if (hasIncompleteTags(f, state)) {
                 return true;
             }
@@ -160,7 +160,7 @@ public final class IncompleteTagsChecker {
      * @param state
      * @return
      */
-    public static boolean hasIncompleteTags(AudioObject audioObject, IState state) {
+    public static boolean hasIncompleteTags(IAudioObject audioObject, IState state) {
         if (audioObject instanceof AudioFile) {
             return !hasTagAttributesFilled((AudioFile) audioObject, state);
         }

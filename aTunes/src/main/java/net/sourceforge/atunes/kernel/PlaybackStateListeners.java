@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 
 /**
  * Holds references to PlaybackStateListener instances
@@ -49,7 +49,7 @@ public class PlaybackStateListeners {
      * @param newState
      * @param audioObject
      */
-    public static void playbackStateChanged(PlaybackState newState, AudioObject audioObject) {
+    public static void playbackStateChanged(PlaybackState newState, IAudioObject audioObject) {
 		for (PlaybackStateListener listener : listeners) {
 			listener.playbackStateChanged(newState, audioObject);
 		}

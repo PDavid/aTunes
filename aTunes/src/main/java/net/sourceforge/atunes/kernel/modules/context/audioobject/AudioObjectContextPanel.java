@@ -29,7 +29,7 @@ import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -45,7 +45,7 @@ public class AudioObjectContextPanel extends AbstractContextPanel {
     private static final long serialVersionUID = -7910261492394049289L;
 
     @Override
-    protected ColorMutableImageIcon getContextPanelIcon(final AudioObject audioObject) {
+    protected ColorMutableImageIcon getContextPanelIcon(final IAudioObject audioObject) {
         if (audioObject != null) {
             return audioObject.getGenericImage(GenericImageSize.SMALL);
         } else {
@@ -64,7 +64,7 @@ public class AudioObjectContextPanel extends AbstractContextPanel {
     }
 
     @Override
-    protected String getContextPanelTitle(AudioObject audioObject) {
+    protected String getContextPanelTitle(IAudioObject audioObject) {
         if (audioObject instanceof ILocalAudioObject || (audioObject instanceof Radio && ((Radio) audioObject).isSongInfoAvailable())) {
             return I18nUtils.getString("SONG");
         } else if (audioObject instanceof Radio) {
@@ -77,7 +77,7 @@ public class AudioObjectContextPanel extends AbstractContextPanel {
     }
 
     @Override
-    protected boolean isPanelVisibleForAudioObject(AudioObject audioObject) {
+    protected boolean isPanelVisibleForAudioObject(IAudioObject audioObject) {
         return audioObject != null;
     }
 

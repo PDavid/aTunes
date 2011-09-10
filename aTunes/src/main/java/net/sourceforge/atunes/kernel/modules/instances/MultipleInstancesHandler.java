@@ -41,7 +41,7 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -104,8 +104,8 @@ public final class MultipleInstancesHandler extends AbstractHandler {
                         Logger.info(StringUtils.getString("Received connection with content: \"", str, "\""));
                         if (PlayListIO.isValidPlayList(fileStr)) {
                             List<String> songs = PlayListIO.read(fileStr);
-                            List<AudioObject> files = PlayListIO.getAudioObjectsFromFileNamesList(songs);
-                            for (AudioObject file : files) {
+                            List<IAudioObject> files = PlayListIO.getAudioObjectsFromFileNamesList(songs);
+                            for (IAudioObject file : files) {
                                 queue.addSong(file);
                             }
                         } else if (AudioFile.isValidAudioFile(fileStr)) {
@@ -144,7 +144,7 @@ public final class MultipleInstancesHandler extends AbstractHandler {
     static class SongsQueue extends Thread {
 
         /** The songs queue. */
-        private List<AudioObject> songsQueue;
+        private List<IAudioObject> songsQueue;
 
         /** The last song added. */
         private long lastSongAdded = 0;
@@ -153,7 +153,7 @@ public final class MultipleInstancesHandler extends AbstractHandler {
          * Instantiates a new songs queue.
          */
         SongsQueue() {
-            songsQueue = new ArrayList<AudioObject>();
+            songsQueue = new ArrayList<IAudioObject>();
         }
 
         /**
@@ -162,7 +162,7 @@ public final class MultipleInstancesHandler extends AbstractHandler {
          * @param song
          *            the song
          */
-        public void addSong(AudioObject song) {
+        public void addSong(IAudioObject song) {
             songsQueue.add(song);
             lastSongAdded = System.currentTimeMillis();
         }
@@ -181,7 +181,7 @@ public final class MultipleInstancesHandler extends AbstractHandler {
                             @Override
                             public void run() {
                                 // Get an auxiliar list with songs
-                                ArrayList<AudioObject> auxList = new ArrayList<AudioObject>(songsQueue);
+                                ArrayList<IAudioObject> auxList = new ArrayList<IAudioObject>(songsQueue);
                                 // Clear songs queue
                                 songsQueue.clear();
                                 // Add songs
@@ -221,7 +221,7 @@ public final class MultipleInstancesHandler extends AbstractHandler {
     }
 
     @Override
-    public void applicationStarted(List<AudioObject> playList) {
+    public void applicationStarted(List<IAudioObject> playList) {
     }
 
     /**
@@ -313,7 +313,7 @@ public final class MultipleInstancesHandler extends AbstractHandler {
 	public void playListCleared() {}
 
 	@Override
-	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+	public void selectedAudioObjectChanged(IAudioObject audioObject) {}
 
 	/**
 	 * @return the closing

@@ -30,10 +30,10 @@ import java.util.Map;
 import javax.swing.Icon;
 
 import net.sourceforge.atunes.gui.model.TreeObjectsSource;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 
-public abstract class AbstractActionOverSelectedTreeObjects<T extends TreeObject<? extends AudioObject>> extends CustomAbstractAction {
+public abstract class AbstractActionOverSelectedTreeObjects<T extends TreeObject<? extends IAudioObject>> extends CustomAbstractAction {
 
     /**
 	 * 
@@ -88,7 +88,7 @@ public abstract class AbstractActionOverSelectedTreeObjects<T extends TreeObject
             return;
         }
 
-        List<TreeObject<? extends AudioObject>> treeObjects = objectsSource.getSelectedTreeObjects();
+        List<TreeObject<? extends IAudioObject>> treeObjects = objectsSource.getSelectedTreeObjects();
 
         if (treeObjects == null || treeObjects.isEmpty()) {
             return;
@@ -96,7 +96,7 @@ public abstract class AbstractActionOverSelectedTreeObjects<T extends TreeObject
 
         List<T> selectedTreeObjects = new ArrayList<T>();
 
-        for (TreeObject<? extends AudioObject> ao : treeObjects) {
+        for (TreeObject<? extends IAudioObject> ao : treeObjects) {
             if (objectsClass.isAssignableFrom(ao.getClass())) {
                 @SuppressWarnings("unchecked")
                 T processedTreeObject = preprocessObject((T) ao);

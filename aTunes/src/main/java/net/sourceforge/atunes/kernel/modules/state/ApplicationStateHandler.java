@@ -48,7 +48,7 @@ import net.sourceforge.atunes.kernel.modules.repository.favorites.Favorites;
 import net.sourceforge.atunes.kernel.modules.statistics.Statistics;
 import net.sourceforge.atunes.misc.Timer;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.Repository;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -83,7 +83,7 @@ public final class ApplicationStateHandler extends AbstractHandler {
     }
 
     @Override
-    public void applicationStarted(List<AudioObject> playList) {
+    public void applicationStarted(List<IAudioObject> playList) {
     }
 
     /**
@@ -213,7 +213,7 @@ public final class ApplicationStateHandler extends AbstractHandler {
      * 
      * @param playListsContents
      */
-    public void persistPlayListsContents(List<List<AudioObject>> playListsContents) {
+    public void persistPlayListsContents(List<List<IAudioObject>> playListsContents) {
         ObjectOutputStream stream = null;
         try {
             stream = new ObjectOutputStream(new FileOutputStream(StringUtils.getString(getUserConfigFolder(), "/", Constants.PLAYLISTS_CONTENTS_FILE)));
@@ -434,7 +434,7 @@ public final class ApplicationStateHandler extends AbstractHandler {
 
             // Then read contents
             stream = new ObjectInputStream(new FileInputStream(StringUtils.getString(getUserConfigFolder(), "/", Constants.PLAYLISTS_CONTENTS_FILE)));
-            List<List<AudioObject>> contents = (List<List<AudioObject>>) stream.readObject();
+            List<List<IAudioObject>> contents = (List<List<IAudioObject>>) stream.readObject();
             Logger.info(StringUtils.getString("Playlists contents loaded"));
             listOfPlayLists.setContents(contents, getState());
             return listOfPlayLists;
@@ -617,6 +617,6 @@ public final class ApplicationStateHandler extends AbstractHandler {
 	public void playListCleared() {}
 
 	@Override
-	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+	public void selectedAudioObjectChanged(IAudioObject audioObject) {}
 
 }

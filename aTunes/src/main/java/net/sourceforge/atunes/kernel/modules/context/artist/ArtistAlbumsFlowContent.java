@@ -36,8 +36,8 @@ import javax.swing.JLabel;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.controls.ScrollableFlowPanel;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
-import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -47,10 +47,10 @@ import org.jdesktop.swingx.border.DropShadowBorder;
 public class ArtistAlbumsFlowContent extends AbstractContextPanelContent {
 
     private static final class CoverMouseAdapter extends MouseAdapter {
-        private final AlbumInfo album;
+        private final IAlbumInfo album;
         private final JLabel coverLabel;
 
-        private CoverMouseAdapter(AlbumInfo album, JLabel coverLabel) {
+        private CoverMouseAdapter(IAlbumInfo album, JLabel coverLabel) {
             this.album = album;
             this.coverLabel = coverLabel;
         }
@@ -87,7 +87,7 @@ public class ArtistAlbumsFlowContent extends AbstractContextPanelContent {
     }
 
     @Override
-    protected Map<String, ?> getDataSourceParameters(AudioObject audioObject) {
+    protected Map<String, ?> getDataSourceParameters(IAudioObject audioObject) {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put(ArtistInfoDataSource.INPUT_AUDIO_OBJECT, audioObject);
         parameters.put(ArtistInfoDataSource.INPUT_ALBUMS, true);
@@ -98,8 +98,8 @@ public class ArtistAlbumsFlowContent extends AbstractContextPanelContent {
     @Override
     protected void updateContentWithDataSourceResult(Map<String, ?> result) {
         if (result != null && result.containsKey(ArtistInfoDataSource.OUTPUT_ALBUMS)) {
-            List<AlbumInfo> albums = (List<AlbumInfo>) result.get(ArtistInfoDataSource.OUTPUT_ALBUMS);
-            for (AlbumInfo album : albums) {
+            List<IAlbumInfo> albums = (List<IAlbumInfo>) result.get(ArtistInfoDataSource.OUTPUT_ALBUMS);
+            for (IAlbumInfo album : albums) {
                 coversPanel.add(getLabelForAlbum(album));
             }
             coversPanel.revalidate();
@@ -121,7 +121,7 @@ public class ArtistAlbumsFlowContent extends AbstractContextPanelContent {
      *            the album
      * @return the label for album
      */
-    JLabel getLabelForAlbum(final AlbumInfo album) {
+    JLabel getLabelForAlbum(final IAlbumInfo album) {
         final JLabel coverLabel = new JLabel(album.getCover());
         coverLabel.setToolTipText(album.getTitle());
         if (album.getCover() == null) {

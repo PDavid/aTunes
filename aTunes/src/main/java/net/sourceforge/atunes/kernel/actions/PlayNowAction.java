@@ -26,7 +26,7 @@ import java.util.List;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class PlayNowAction extends CustomAbstractAction {
@@ -43,12 +43,12 @@ public class PlayNowAction extends CustomAbstractAction {
         // Play now feature plays selected song inmediately. If song is added to play list, then is automatically selected.
         // If not, it's added to play list    	
         int selectedRow = NavigationHandler.getInstance().getNavigationTable().getSelectedRow();
-        AudioObject song = ((NavigationTableModel) NavigationHandler.getInstance().getNavigationTable().getModel()).getAudioObjectAt(selectedRow);
+        IAudioObject song = ((NavigationTableModel) NavigationHandler.getInstance().getNavigationTable().getModel()).getAudioObjectAt(selectedRow);
         PlayListHandler.getInstance().playNow(song);
     }
 
     @Override
-    public boolean isEnabledForNavigationTableSelection(List<AudioObject> selection) {
+    public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
         return selection.size() == 1;
     }
 

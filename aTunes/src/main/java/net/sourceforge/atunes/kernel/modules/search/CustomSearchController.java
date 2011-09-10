@@ -36,7 +36,7 @@ import net.sourceforge.atunes.gui.views.dialogs.CustomSearchDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler.LogicalOperator;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -361,7 +361,7 @@ final class CustomSearchController extends AbstractSimpleController<CustomSearch
 
             try {
                 // Invoke query
-                List<AudioObject> result = SearchHandler.getInstance().search(selectedSearchableObject, query);
+                List<IAudioObject> result = SearchHandler.getInstance().search(selectedSearchableObject, query);
 
                 // If no matches found show a message
                 if (result.isEmpty()) {

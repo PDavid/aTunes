@@ -32,7 +32,7 @@ import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITreeGenerator;
@@ -59,7 +59,7 @@ public class FolderTreeGenerator implements ITreeGenerator {
 	 * @param objectsExpanded
 	 */
     @SuppressWarnings("unchecked")
-	public void buildTree(IState state, String rootTextKey, AbstractNavigationView view, Map<String, ?> structure, String currentFilter, DefaultMutableTreeNode root, DefaultTreeModel treeModel, List<TreeObject<? extends AudioObject>> objectsSelected, List<TreeObject<? extends AudioObject>> objectsExpanded) {
+	public void buildTree(IState state, String rootTextKey, AbstractNavigationView view, Map<String, ?> structure, String currentFilter, DefaultMutableTreeNode root, DefaultTreeModel treeModel, List<TreeObject<? extends IAudioObject>> objectsSelected, List<TreeObject<? extends IAudioObject>> objectsExpanded) {
 
         // Refresh nodes
         root.setUserObject(I18nUtils.getString(rootTextKey));
@@ -73,7 +73,7 @@ public class FolderTreeGenerator implements ITreeGenerator {
             // So when refreshing folder view for first time add these nodes to list of expanded objects
             for (int i = 0; i < root.getChildCount(); i++) {
                 TreeNode childNode = root.getChildAt(i);
-                objectsExpanded.add((TreeObject<? extends AudioObject>) ((DefaultMutableTreeNode) childNode).getUserObject());
+                objectsExpanded.add((TreeObject<? extends IAudioObject>) ((DefaultMutableTreeNode) childNode).getUserObject());
             }
         }
 
@@ -92,7 +92,7 @@ public class FolderTreeGenerator implements ITreeGenerator {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void selectAudioObject(JTree tree, AudioObject audioObject) {
+    public void selectAudioObject(JTree tree, IAudioObject audioObject) {
 
     	if (audioObject instanceof AudioFile) {
     		TreePath treePath = null;

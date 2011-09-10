@@ -29,12 +29,12 @@ import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
-import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -53,10 +53,9 @@ public final class TagEditionOperations {
      * 
      * @param files
      * @param state
-     * @param lyricsService
      */
-    public static void addLyrics(List<ILocalAudioObject> files, IState state, LyricsService lyricsService) {
-        SetLyricsProcess process = new SetLyricsProcess(files, state, lyricsService);
+    public static void addLyrics(List<ILocalAudioObject> files, IState state) {
+        SetLyricsProcess process = new SetLyricsProcess(files, state);
         process.execute();
     }
 
@@ -142,7 +141,7 @@ public final class TagEditionOperations {
         // If trackNumber could not be retrieved from file name, try to get from last.fm
         // To get this, titles must match
         if (trackNumber == 0) {
-            trackNumber = WebServicesHandler.getInstance().getLastFmService().getTrackNumberForFile(audioFile);
+            trackNumber = Context.getBean(IWebServicesHandler.class).getTrackNumber(audioFile);
         }
 
         return trackNumber;

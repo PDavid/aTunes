@@ -33,7 +33,7 @@ import net.sourceforge.atunes.gui.images.StarImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractListCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 
 public class ScoreColumn extends AbstractColumn {
 
@@ -76,17 +76,17 @@ public class ScoreColumn extends AbstractColumn {
     }
 
     @Override
-    protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
+    protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
         return -((Integer) ao1.getStars()).compareTo(ao2.getStars());
     }
 
     @Override
-    public Object getValueFor(AudioObject audioObject) {
+    public Object getValueFor(IAudioObject audioObject) {
         return audioObject.getStars();
     }
 
     @Override
-    public void setValueFor(AudioObject audioObject, Object value) {
+    public void setValueFor(IAudioObject audioObject, Object value) {
         audioObject.setStars((Integer) value);
     }
 

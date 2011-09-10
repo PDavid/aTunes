@@ -74,7 +74,7 @@ import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.player.ProgressBarSeekListener;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -202,7 +202,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
     /**
      * Audio Objects to show in full screen
      */
-    private List<AudioObject> objects;
+    private List<IAudioObject> objects;
     
     private IState state;
 
@@ -271,7 +271,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
      * @param audioObject
      *            the new audio object
      */
-    public void setAudioObjects(List<AudioObject> objects) {
+    public void setAudioObjects(List<IAudioObject> objects) {
         if (objects == null || objects.isEmpty()) {
             textLabel.setText("");
             textLabel2.setText("");
@@ -285,7 +285,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         }
     }
 
-    private void setText(AudioObject audioObject) {
+    private void setText(IAudioObject audioObject) {
         // No object
         if (audioObject == null) {
             textLabel.setText("");

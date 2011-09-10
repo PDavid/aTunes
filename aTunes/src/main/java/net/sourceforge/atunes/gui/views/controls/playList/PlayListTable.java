@@ -57,7 +57,7 @@ import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListDragableRow;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListTableModel;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
@@ -214,7 +214,7 @@ public final class PlayListTable extends JTable implements DragSourceListener, D
         // Get selected rows, add PlayListDragableRow objects to a list and start a drag event
         List<Object> itemsToDrag = new ArrayList<Object>();
         int[] selectedRows = getSelectedRows();
-        List<AudioObject> selectedAudioObjects = PlayListHandler.getInstance().getSelectedAudioObjects();
+        List<IAudioObject> selectedAudioObjects = PlayListHandler.getInstance().getSelectedAudioObjects();
         for (int i = 0; i < selectedAudioObjects.size(); i++) {
             itemsToDrag.add(new PlayListDragableRow(selectedAudioObjects.get(i), selectedRows[i]));
         }
@@ -231,7 +231,7 @@ public final class PlayListTable extends JTable implements DragSourceListener, D
     }
 
     @Override
-    public List<AudioObject> getSelectedAudioObjects() {
+    public List<IAudioObject> getSelectedAudioObjects() {
         return PlayListHandler.getInstance().getSelectedAudioObjects();
     }
 }

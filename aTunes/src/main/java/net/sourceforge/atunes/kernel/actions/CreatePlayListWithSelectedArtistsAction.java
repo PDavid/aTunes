@@ -28,7 +28,7 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.model.Artist;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -41,21 +41,21 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class CreatePlayListWithSelectedArtistsAction extends AbstractActionOverSelectedObjects<AudioObject> {
+public class CreatePlayListWithSelectedArtistsAction extends AbstractActionOverSelectedObjects<IAudioObject> {
 
     private static final long serialVersionUID = 242525309967706255L;
 
     CreatePlayListWithSelectedArtistsAction() {
-        super(I18nUtils.getString("SET_ARTIST_AS_PLAYLIST"), AudioObject.class);
+        super(I18nUtils.getString("SET_ARTIST_AS_PLAYLIST"), IAudioObject.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("ARTIST_BUTTON_TOOLTIP"));
         setEnabled(false);
     }
 
     @Override
-    protected void performAction(List<AudioObject> objects) {
+    protected void performAction(List<IAudioObject> objects) {
         // Get selected artists from play list
         List<Artist> selectedArtists = new ArrayList<Artist>();
-        for (AudioObject ao : objects) {
+        for (IAudioObject ao : objects) {
             String artist = ao.getArtist();
             Artist a = RepositoryHandler.getInstance().getArtist(artist);
             if (a != null) {
@@ -76,7 +76,7 @@ public class CreatePlayListWithSelectedArtistsAction extends AbstractActionOverS
     }
 
     @Override
-    public boolean isEnabledForPlayListSelection(List<AudioObject> selection) {
+    public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
         return !selection.isEmpty();
     }
 }

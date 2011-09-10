@@ -39,12 +39,12 @@ import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
-import net.sourceforge.atunes.kernel.modules.context.ArtistTopTracks;
 import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.model.Artist;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IArtistTopTracks;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -80,7 +80,7 @@ public class ArtistTopTracksContent extends AbstractContextPanelContent {
     
     private JMenuItem createPlayList;
     
-    private ArtistTopTracks lastTopTracks;
+    private IArtistTopTracks lastTopTracks;
     
     private class CreatePlaylistWithPopularTracksActionListener implements ActionListener {
         @Override
@@ -95,7 +95,7 @@ public class ArtistTopTracksContent extends AbstractContextPanelContent {
     					titles.put(lao.getTitle().toLowerCase(), lao); // Do lower case for a better match
     				}
     			}
-    			List<AudioObject> playlist = new ArrayList<AudioObject>();
+    			List<IAudioObject> playlist = new ArrayList<IAudioObject>();
     			for (TrackInfo track : lastTopTracks.getTracks()) {
     				if (titles.containsKey(track.getTitle().toLowerCase())) {
     					playlist.add(titles.get(track.getTitle().toLowerCase()));
@@ -119,14 +119,14 @@ public class ArtistTopTracksContent extends AbstractContextPanelContent {
     }
 
     @Override
-    protected Map<String, ?> getDataSourceParameters(AudioObject audioObject) {
+    protected Map<String, ?> getDataSourceParameters(IAudioObject audioObject) {
     	return Collections.singletonMap(ArtistPopularTracksDataSource.INPUT_AUDIO_OBJECT, audioObject);
     }
 
     @Override
     protected void updateContentWithDataSourceResult(Map<String, ?> result) {
         if (result.containsKey(ArtistPopularTracksDataSource.OUTPUT_TRACKS)) {
-        	lastTopTracks = (ArtistTopTracks) result.get(ArtistPopularTracksDataSource.OUTPUT_TRACKS);
+        	lastTopTracks = (IArtistTopTracks) result.get(ArtistPopularTracksDataSource.OUTPUT_TRACKS);
             tracksTable.setModel(new ContextArtistTracksTableModel(lastTopTracks));
         } else {
         	lastTopTracks = null;

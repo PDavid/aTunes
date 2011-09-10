@@ -30,7 +30,7 @@ import java.util.Map;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 
 /**
  * Holds references to ApplicationLifeCycleListener instances
@@ -58,7 +58,7 @@ public class ApplicationLifeCycleListeners {
      * Call after application started
      * @param playList
      */
-    static void applicationStarted(List<AudioObject> playList) {
+    static void applicationStarted(List<IAudioObject> playList) {
         for (ApplicationLifeCycleListener listener : listeners) {
        		listener.applicationStarted(playList);
         }

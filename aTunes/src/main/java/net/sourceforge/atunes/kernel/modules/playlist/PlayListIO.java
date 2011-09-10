@@ -37,7 +37,7 @@ import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -81,8 +81,8 @@ public final class PlayListIO {
      * 
      * @return the audio objects from file names list
      */
-    public static List<AudioObject> getAudioObjectsFromFileNamesList(List<String> fileNames) {
-        List<AudioObject> result = new ArrayList<AudioObject>();
+    public static List<IAudioObject> getAudioObjectsFromFileNamesList(List<String> fileNames) {
+        List<IAudioObject> result = new ArrayList<IAudioObject>();
         for (String fileName : fileNames) {
             result.add(getAudioFileOrCreate(fileName));
         }
@@ -96,8 +96,8 @@ public final class PlayListIO {
      * @param resourceName
      * @return
      */
-    static AudioObject getAudioFileOrCreate(String resourceName) {
-        AudioObject ao = null;
+    static IAudioObject getAudioFileOrCreate(String resourceName) {
+        IAudioObject ao = null;
 
         // It's an online radio
         if (resourceName.startsWith(M3U_HTTP_PREFIX)) {
@@ -126,7 +126,7 @@ public final class PlayListIO {
      * 
      * @return the files from list
      */
-    public static List<AudioObject> getFilesFromList(File file) {
+    public static List<IAudioObject> getFilesFromList(File file) {
         List<String> list = read(file);
         return getAudioObjectsFromFileNamesList(list);
     }
@@ -268,7 +268,7 @@ public final class PlayListIO {
             }
             writer = new FileWriter(file);
             writer.append(StringUtils.getString(M3U_HEADER, OsManager.getLineTerminator()));
-            for (AudioObject f : playlist.getAudioObjects()) {
+            for (IAudioObject f : playlist.getAudioObjects()) {
                 writer.append(StringUtils.getString(f.getUrl(), OsManager.getLineTerminator()));
             }
             writer.flush();

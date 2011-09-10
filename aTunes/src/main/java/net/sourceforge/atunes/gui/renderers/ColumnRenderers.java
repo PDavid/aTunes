@@ -33,7 +33,7 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.statistics.AudioFileStats;
 import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -103,7 +103,7 @@ public final class ColumnRenderers {
      * 
      * @return the tool tip for audio object
      */
-    static String getToolTipForAudioObject(AudioObject audioObject) {
+    static String getToolTipForAudioObject(IAudioObject audioObject) {
         if (audioObject instanceof AudioFile) {
             // Get information
             AudioFileStats stats = StatisticsHandler.getInstance().getAudioFileStatistics((AudioFile) audioObject);

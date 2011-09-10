@@ -55,10 +55,10 @@ public interface ITreeGenerator {
 						  String currentFilter, 
 						  DefaultMutableTreeNode root, 
 						  DefaultTreeModel treeModel, 
-						  List<TreeObject<? extends AudioObject>> objectsSelected, 
-						  List<TreeObject<? extends AudioObject>> objectsExpanded);
+						  List<TreeObject<? extends IAudioObject>> objectsSelected, 
+						  List<TreeObject<? extends IAudioObject>> objectsExpanded);
 	
-	public void selectAudioObject(JTree tree, AudioObject audioObject);
+	public void selectAudioObject(JTree tree, IAudioObject audioObject);
 
 	/**
 	 * Request generator to select given artist

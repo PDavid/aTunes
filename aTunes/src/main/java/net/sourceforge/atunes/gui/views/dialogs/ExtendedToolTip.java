@@ -34,7 +34,7 @@ import javax.swing.ScrollPaneConstants;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomWindow;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.ImageUtils;
 
@@ -154,7 +154,7 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
     @SuppressWarnings("unchecked")
 	public static boolean canObjectBeShownInExtendedToolTip(Object object) {
         if (object instanceof TreeObject) {
-            return ((TreeObject<? extends AudioObject>) object).isExtendedToolTipSupported();
+            return ((TreeObject<? extends IAudioObject>) object).isExtendedToolTipSupported();
         }
         return false;
     }
@@ -170,7 +170,7 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
         // Picture is set asynchronously 
         setImage(null);
         if (obj instanceof TreeObject) {
-            ((TreeObject<? extends AudioObject>) obj).setExtendedToolTip(this);
+            ((TreeObject<? extends IAudioObject>) obj).setExtendedToolTip(this);
         }
     }
 
@@ -183,7 +183,7 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
     @SuppressWarnings("unchecked")
 	public static ImageIcon getImage(Object obj) {
         if (obj instanceof TreeObject) {
-            return ((TreeObject<? extends AudioObject>) obj).getExtendedToolTipImage();
+            return ((TreeObject<? extends IAudioObject>) obj).getExtendedToolTipImage();
         }
         return null;
     }

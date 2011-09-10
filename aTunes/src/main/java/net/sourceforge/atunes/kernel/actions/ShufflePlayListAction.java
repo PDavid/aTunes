@@ -27,7 +27,7 @@ import java.util.List;
 import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -53,7 +53,7 @@ public class ShufflePlayListAction extends CustomAbstractAction {
     }
 
     @Override
-    public boolean isEnabledForPlayListSelection(List<AudioObject> selection) {
+    public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
         return true;
     }
 

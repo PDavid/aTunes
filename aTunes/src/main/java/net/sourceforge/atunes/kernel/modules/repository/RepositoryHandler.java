@@ -41,6 +41,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.MultiFolderSelectionDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RepositoryProgressDialog;
@@ -70,14 +71,14 @@ import net.sourceforge.atunes.kernel.modules.search.searchableobjects.Repository
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
 import net.sourceforge.atunes.kernel.modules.tags.TagAttributesReviewed;
-import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.model.Repository;
 import net.sourceforge.atunes.model.RepositoryListener;
 import net.sourceforge.atunes.model.ViewMode;
@@ -332,7 +333,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     }
 
     @Override
-    public void applicationStarted(List<AudioObject> playList) {
+    public void applicationStarted(List<IAudioObject> playList) {
         applyRepositoryFromCache();
     }
     
@@ -1222,7 +1223,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 	public void playListCleared() {}
 
 	@Override
-	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+	public void selectedAudioObjectChanged(IAudioObject audioObject) {}
 	
 	@Override
 	public void notifyCurrentAlbum(final String artist, final String album) {
@@ -1235,7 +1236,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 					coverWorker = new SwingWorker<Image, Void>() {
 						@Override
 						protected Image doInBackground() throws Exception {
-							return WebServicesHandler.getInstance().getLastFmService().getAlbumImage(artist, album);
+							return Context.getBean(IWebServicesHandler.class).getAlbumImage(artist, album);
 						}
 
 						@Override

@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.kernel;
 
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
@@ -33,6 +33,6 @@ public interface PlaybackStateListener {
      * @param newState
      * @param currentAudioObject
      */
-    public void playbackStateChanged(PlaybackState newState, AudioObject currentAudioObject);
+    public void playbackStateChanged(PlaybackState newState, IAudioObject currentAudioObject);
 
 }

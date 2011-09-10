@@ -18,19 +18,25 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.context;
+package net.sourceforge.atunes.model;
 
 import java.io.Serializable;
 import java.util.List;
 
-public interface AlbumListInfo extends Serializable {
+
+/**
+ * Information about a list of albums
+ * @author alex
+ *
+ */
+public interface IAlbumListInfo extends Serializable {
 
     /**
      * Gets the albums.
      * 
      * @return the albums
      */
-    public List<AlbumInfo> getAlbums();
+    public List<IAlbumInfo> getAlbums();
 
     /**
      * Gets the artist.
@@ -45,7 +51,7 @@ public interface AlbumListInfo extends Serializable {
      * @param albums
      *            the albums to set
      */
-    public void setAlbums(List<? extends AlbumInfo> albums);
+    public void setAlbums(List<? extends IAlbumInfo> albums);
 
     /**
      * Sets the artist.

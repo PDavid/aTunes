@@ -24,7 +24,7 @@ import java.util.Comparator;
 
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public abstract class AbstractColumnSetTableModel extends AbstractCommonTableModel {
@@ -91,7 +91,7 @@ public abstract class AbstractColumnSetTableModel extends AbstractCommonTableMod
      * 
      * @param comparator
      */
-    public abstract void sort(Comparator<AudioObject> comparator);
+    public abstract void sort(Comparator<IAudioObject> comparator);
 
     /**
      * @param columnSet

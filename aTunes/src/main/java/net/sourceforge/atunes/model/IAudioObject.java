@@ -32,7 +32,7 @@ import org.commonjukebox.plugins.model.PluginApi;
  * Interface for all audio objects (e.g. AudioFile, Radio, PodcastFeedEntry)
  */
 @PluginApi
-public interface AudioObject {
+public interface IAudioObject {
 
     /**
      * Gets the album.

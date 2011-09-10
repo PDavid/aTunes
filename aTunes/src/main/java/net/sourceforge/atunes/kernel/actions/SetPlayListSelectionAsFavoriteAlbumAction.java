@@ -31,7 +31,7 @@ import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -56,12 +56,12 @@ public class SetPlayListSelectionAsFavoriteAlbumAction extends CustomAbstractAct
     }
 
     @Override
-    public boolean isEnabledForPlayListSelection(List<AudioObject> selection) {
+    public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
         if (selection.isEmpty()) {
             return false;
         }
 
-        for (AudioObject ao : selection) {
+        for (IAudioObject ao : selection) {
             if (ao instanceof Radio || ao instanceof PodcastFeedEntry) {
                 return false;
             }

@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 
 import org.commonjukebox.plugins.model.PluginApi;
@@ -212,12 +212,12 @@ public abstract class AbstractColumnSet {
      * @param filter
      * @return
      */
-    public List<AudioObject> filterAudioObjects(List<AudioObject> audioObjects, String filter) {
-        List<AudioObject> result = new ArrayList<AudioObject>();
+    public List<IAudioObject> filterAudioObjects(List<IAudioObject> audioObjects, String filter) {
+        List<IAudioObject> result = new ArrayList<IAudioObject>();
         List<AbstractColumn> columnsForFilter = getColumnsForFilter();
         String lowerCaseFilter = filter.toLowerCase();
 
-        for (AudioObject audioObject : audioObjects) {
+        for (IAudioObject audioObject : audioObjects) {
             if (filterAudioObject(audioObject, columnsForFilter, lowerCaseFilter)) {
                 result.add(audioObject);
             }
@@ -234,7 +234,7 @@ public abstract class AbstractColumnSet {
      * @param columns
      * @return
      */
-    private boolean filterAudioObject(AudioObject audioObject, List<AbstractColumn> columns, String filter) {
+    private boolean filterAudioObject(IAudioObject audioObject, List<AbstractColumn> columns, String filter) {
         boolean passed = false;
         int i = 0;
         while (!passed && i < columns.size()) {

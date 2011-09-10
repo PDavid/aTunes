@@ -36,7 +36,7 @@ import net.sourceforge.atunes.kernel.PlaybackStateListener;
 import net.sourceforge.atunes.kernel.modules.notify.classic.DefaultNotifications;
 import net.sourceforge.atunes.kernel.modules.notify.growl.GrowlNotificationEngine;
 import net.sourceforge.atunes.kernel.modules.notify.libnotify.LibnotifyNotificationEngine;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.IState;
 
@@ -104,7 +104,7 @@ public final class NotificationsHandler extends AbstractHandler implements Playb
     };
 
     @Override
-    public void applicationStarted(List<AudioObject> playList) {
+    public void applicationStarted(List<IAudioObject> playList) {
     }
 
     /**
@@ -121,7 +121,7 @@ public final class NotificationsHandler extends AbstractHandler implements Playb
     /**
      * Show notification
      */
-    public void showNotification(AudioObject audioObject) {
+    public void showNotification(IAudioObject audioObject) {
     	// only show notification if not in full screen
     	if (!Context.getBean(IFullScreenHandler.class).isVisible()) {
     		getNotificationEngine().showNotification(audioObject);
@@ -129,7 +129,7 @@ public final class NotificationsHandler extends AbstractHandler implements Playb
     }
 
     @Override
-    public void playbackStateChanged(PlaybackState newState, AudioObject currentAudioObject) {
+    public void playbackStateChanged(PlaybackState newState, IAudioObject currentAudioObject) {
         if (getState().isShowOSD() && newState == PlaybackState.PLAYING) {
             // Playing
             showNotification(currentAudioObject);
@@ -140,7 +140,7 @@ public final class NotificationsHandler extends AbstractHandler implements Playb
 	public void playListCleared() {}
 
 	@Override
-	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+	public void selectedAudioObjectChanged(IAudioObject audioObject) {}
 	
 	/**
 	 * @return set of names of notification engines, default is the first one

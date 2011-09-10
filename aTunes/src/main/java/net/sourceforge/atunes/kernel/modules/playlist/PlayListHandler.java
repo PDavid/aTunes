@@ -55,7 +55,7 @@ import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -162,7 +162,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
     }
 
     @Override
-    public void applicationStarted(List<AudioObject> playList) {
+    public void applicationStarted(List<IAudioObject> playList) {
         PlayListHandler.getInstance().setPlayLists();
 
         if (!playList.isEmpty()) {
@@ -314,7 +314,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      * @param audioObjects
      *            the audio objects
      */
-    public void newPlayList(List<AudioObject> audioObjects) {
+    public void newPlayList(List<IAudioObject> audioObjects) {
         newPlayList(getNameForPlaylist(null), audioObjects);
     }
 
@@ -327,7 +327,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      * @param audioObjects
      *            the audio objects to add to the new play list
      */
-    public void newPlayList(String nameOfNewPlayList, List<? extends AudioObject> audioObjects) {
+    public void newPlayList(String nameOfNewPlayList, List<? extends IAudioObject> audioObjects) {
         PlayList newPlayList;
         if (audioObjects == null) {
             newPlayList = new PlayList(getState());
@@ -433,7 +433,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      * 
      * @return
      */
-    public AudioObject getCurrentAudioObjectFromVisiblePlayList() {
+    public IAudioObject getCurrentAudioObjectFromVisiblePlayList() {
         if (getCurrentPlayList(true) != null) {
             return getCurrentPlayList(true).getCurrentAudioObject();
         }
@@ -445,7 +445,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      * 
      * @return
      */
-    public AudioObject getCurrentAudioObjectFromCurrentPlayList() {
+    public IAudioObject getCurrentAudioObjectFromCurrentPlayList() {
         if (getCurrentPlayList(false) != null) {
             return getCurrentPlayList(false).getCurrentAudioObject();
         }
@@ -476,7 +476,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      * @param audioObjects
      *            the audio objects
      */
-    public void addToPlayList(List<? extends AudioObject> audioObjects) {
+    public void addToPlayList(List<? extends IAudioObject> audioObjects) {
         addToPlayList(getCurrentPlayList(true).size(), audioObjects, true);
     }
 
@@ -488,7 +488,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      * @param audioObjects
      *            the audio objects
      */
-    public void addToPlayList(int location, List<? extends AudioObject> audioObjects, boolean visible) {
+    public void addToPlayList(int location, List<? extends IAudioObject> audioObjects, boolean visible) {
         // If null or empty, nothing to do
         if (audioObjects == null || audioObjects.isEmpty()) {
             return;
@@ -542,7 +542,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
         Logger.info(StringUtils.getString(audioObjects.size(), " audio objects added to play list"));
     }
 
-    public void addToActivePlayList(List<? extends AudioObject> audioObjects) {
+    public void addToActivePlayList(List<? extends IAudioObject> audioObjects) {
         PlayList playList = getCurrentPlayList(false);
         addToPlayList(playList.getCurrentAudioObjectIndex() + 1, audioObjects, false);
     }
@@ -659,11 +659,11 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
 
         	// When possible, take audio objects from Repository instead of from PlayList stored.
         	// This way we prevent to have duplicated objects in PlayList for same audio object, one of PlayList and one of Repository
-        	List<AudioObject> audioObjects = new ArrayList<AudioObject>(lastPlayList.getAudioObjects());
+        	List<IAudioObject> audioObjects = new ArrayList<IAudioObject>(lastPlayList.getAudioObjects());
         	// lastPlayList.clear();
         	//TODO also for radios and podcast feed entries
         	for (int i = 0; i < audioObjects.size(); i++) {
-        		AudioObject ao = audioObjects.get(i);
+        		IAudioObject ao = audioObjects.get(i);
         		ILocalAudioObject repositoryFile = RepositoryHandler.getInstance().getFileIfLoaded(ao.getUrl());
         		if (repositoryFile != null) {
         			lastPlayList.replace(i, repositoryFile);
@@ -752,7 +752,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
         PlayList currentPlayList = getCurrentPlayList(true);
         int j = 0;
         for (int i = rows.length - 1; i >= 0; i--) {
-            AudioObject aux = currentPlayList.get(rows[i]);
+            IAudioObject aux = currentPlayList.get(rows[i]);
             currentPlayList.remove(rows[i]);
             currentPlayList.add(currentPlayList.size() - j++, aux);
         }
@@ -772,7 +772,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
     public void moveToTop(int[] rows) {
         PlayList currentPlayList = getCurrentPlayList(true);
         for (int i = 0; i < rows.length; i++) {
-            AudioObject aux = currentPlayList.get(rows[i]);
+            IAudioObject aux = currentPlayList.get(rows[i]);
             currentPlayList.remove(rows[i]);
             currentPlayList.add(i, aux);
         }
@@ -793,7 +793,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      */
     public void moveSelectionAfterCurrentAudioObject() {
         PlayList currentPlayList = getCurrentPlayList(true);
-        List<AudioObject> selectedAudioObjects = getSelectedAudioObjects();
+        List<IAudioObject> selectedAudioObjects = getSelectedAudioObjects();
         
         //Recurse backwards to move the elements to the correct position
         Collections.reverse(selectedAudioObjects);
@@ -801,7 +801,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
         int beginNewPosition = getCurrentAudioObjectIndexInVisiblePlayList();
         int endNewPosition = getCurrentAudioObjectIndexInVisiblePlayList();
         for (int i = 0; i < selectedAudioObjects.size(); i++) {
-        	AudioObject o = selectedAudioObjects.get(i);
+        	IAudioObject o = selectedAudioObjects.get(i);
         	int currentIndex = getCurrentAudioObjectIndexInVisiblePlayList();
         	int sourceIndex = currentPlayList.indexOf(o);
 
@@ -829,9 +829,9 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      * @param audioObject
      *            the audio object
      */
-    public void playNow(AudioObject audioObject) {
+    public void playNow(IAudioObject audioObject) {
         if (!getCurrentPlayList(true).contains(audioObject)) {
-            List<AudioObject> list = new ArrayList<AudioObject>();
+            List<IAudioObject> list = new ArrayList<IAudioObject>();
             list.add(audioObject);
             addToPlayListAndPlay(list);
         } else {
@@ -848,7 +848,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      */
     public void removeAudioObjects(int[] rows) {
         PlayList currentPlayList = getCurrentPlayList(true);
-        AudioObject playingAudioObject = currentPlayList.getCurrentAudioObject();
+        IAudioObject playingAudioObject = currentPlayList.getCurrentAudioObject();
         boolean hasToBeRemoved = false;
         for (int element : rows) {
             if (element == currentPlayList.getCurrentAudioObjectIndex()) {
@@ -906,7 +906,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      * @param audioObject
      *            the audio object
      */
-    public void selectedAudioObjectHasChanged(final AudioObject audioObject) {
+    public void selectedAudioObjectHasChanged(final IAudioObject audioObject) {
         if (audioObject == null) {
             return;
         }
@@ -943,7 +943,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      * @param audioObjects
      *            the audio objects
      */
-    public void addToPlayListAndPlay(List<AudioObject> audioObjects) {
+    public void addToPlayListAndPlay(List<IAudioObject> audioObjects) {
         if (audioObjects == null || audioObjects.isEmpty()) {
             return;
         }
@@ -1036,7 +1036,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      * 
      * @return
      */
-    public AudioObject getNextAudioObject() {
+    public IAudioObject getNextAudioObject() {
         return getCurrentPlayList(false).moveToNextAudioObject();
     }
 
@@ -1045,7 +1045,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      * 
      * @return
      */
-    public AudioObject getPreviousAudioObject() {
+    public IAudioObject getPreviousAudioObject() {
         return getCurrentPlayList(false).moveToPreviousAudioObject();
     }
 
@@ -1057,7 +1057,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      * 
      * @return The index of the audio object
      */
-    public int getIndexOfAudioObject(AudioObject aObject) {
+    public int getIndexOfAudioObject(IAudioObject aObject) {
         return getCurrentPlayList(false).indexOf(aObject);
     }
 
@@ -1069,7 +1069,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      * 
      * @return The audio object
      */
-    public AudioObject getAudioObjectAtIndex(int index) {
+    public IAudioObject getAudioObjectAtIndex(int index) {
         return getCurrentPlayList(false).getNextAudioObject(index);
     }
 
@@ -1089,12 +1089,12 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      * 
      * @return the selected audio objects
      */
-    public List<AudioObject> getSelectedAudioObjects() {
-        List<AudioObject> audioObjects = new ArrayList<AudioObject>();
+    public List<IAudioObject> getSelectedAudioObjects() {
+        List<IAudioObject> audioObjects = new ArrayList<IAudioObject>();
         int[] selectedRows = GuiHandler.getInstance().getPlayListTable().getSelectedRows();
         if (selectedRows.length > 0) {
             for (int element : selectedRows) {
-                AudioObject file = PlayListHandler.getInstance().getCurrentPlayList(true).get(element);
+                IAudioObject file = PlayListHandler.getInstance().getCurrentPlayList(true).get(element);
                 if (file != null) {
                     audioObjects.add(file);
                 }
@@ -1117,7 +1117,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
         return getCurrentPlayList(true).getCurrentAudioObjectIndex();
     }
 
-    public void addToPlaybackHistory(AudioObject object) {
+    public void addToPlaybackHistory(IAudioObject object) {
         getCurrentPlayList(false).addToPlaybackHistory(object);
         Logger.debug("Added to history: ", object.getTitle());
     }
@@ -1153,8 +1153,8 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      * 
      * @return
      */
-    private List<List<AudioObject>> getPlayListsContents() {
-        List<List<AudioObject>> result = new ArrayList<List<AudioObject>>(playLists.size());
+    private List<List<IAudioObject>> getPlayListsContents() {
+        List<List<IAudioObject>> result = new ArrayList<List<IAudioObject>>(playLists.size());
         for (PlayList playList : playLists) {
             result.add(playList.getAudioObjects());
         }
@@ -1184,11 +1184,11 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      * @param index
      * @return
      */
-    public List<AudioObject> getPlayListContent(int index) {
+    public List<IAudioObject> getPlayListContent(int index) {
         if (index >= this.playLists.size()) {
             throw new IllegalArgumentException(new StringBuilder().append("Invalid play list index ").append(index).toString());
         } else {
-            List<AudioObject> result = new ArrayList<AudioObject>();
+            List<IAudioObject> result = new ArrayList<IAudioObject>();
             PlayList playlist = this.playLists.get(index);
             for (int i = 0; i < playlist.size(); i++) {
                 result.add(playlist.get(i));
@@ -1307,7 +1307,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
 	}
 	
 	@Override
-	public void selectedAudioObjectChanged(AudioObject audioObject) {
+	public void selectedAudioObjectChanged(IAudioObject audioObject) {
         getPlayListController().refreshPlayList();
         getPlayListController().scrollPlayList(false);
         playListsChanged(true, true);

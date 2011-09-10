@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.OsManager;
@@ -39,10 +40,10 @@ import net.sourceforge.atunes.kernel.modules.player.xine.XineEngine;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
-import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -103,7 +104,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     }
 
     @Override
-    public void applicationStarted(List<AudioObject> playList) {
+    public void applicationStarted(List<IAudioObject> playList) {
     	// All initialization in this handler must be done after all handlers are initialized and ready
     }
 
@@ -300,7 +301,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
         return result;
     }
 
-    public AudioObject getAudioObject() {
+    public IAudioObject getAudioObject() {
     	return playerEngine != null ? playerEngine.getAudioObject() : null;
     }
 
@@ -464,14 +465,14 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     }
 
     @Override
-    public void playbackStateChanged(PlaybackState newState, AudioObject currentAudioObject) {
+    public void playbackStateChanged(PlaybackState newState, IAudioObject currentAudioObject) {
     	if (playbackState != newState) {
     		this.playbackState = newState;
     		Logger.debug("Playback state changed to:", newState);
 
     		if (newState == PlaybackState.PLAY_FINISHED || newState == PlaybackState.PLAY_INTERRUPTED || newState == PlaybackState.STOPPED) {
     			if (playerEngine != null && playerEngine.getSubmissionState() == SubmissionState.PENDING && currentAudioObject instanceof AudioFile) {
-    				WebServicesHandler.getInstance().getLastFmService().submitToLastFm((AudioFile) currentAudioObject, getCurrentAudioObjectPlayedTime() / 1000);
+    				Context.getBean(IWebServicesHandler.class).submit((AudioFile) currentAudioObject, getCurrentAudioObjectPlayedTime() / 1000);
     				StatisticsHandler.getInstance().setAudioFileStatistics((AudioFile) currentAudioObject);
     				playerEngine.setSubmissionState(SubmissionState.SUBMITTED);
     			}
@@ -539,7 +540,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 	public void playListCleared() {}
 
 	@Override
-	public void selectedAudioObjectChanged(AudioObject audioObject) {
+	public void selectedAudioObjectChanged(IAudioObject audioObject) {
 		getPlayerControlsController().updatePlayerControls(audioObject);
 	}
 

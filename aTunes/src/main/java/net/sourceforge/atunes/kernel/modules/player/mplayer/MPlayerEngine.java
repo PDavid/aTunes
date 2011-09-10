@@ -38,7 +38,7 @@ import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -130,7 +130,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
     }
 
     @Override
-    protected void startPlayback(AudioObject audioObjectToPlay, AudioObject audioObject) {
+    protected void startPlayback(IAudioObject audioObjectToPlay, IAudioObject audioObject) {
         try {
             // If there is a fade away working, stop it inmediately
             if (currentFadeAwayRunnable != null) {
@@ -274,7 +274,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    private Process getProcess(AudioObject audioObject) throws IOException {
+    private Process getProcess(IAudioObject audioObject) throws IOException {
 
         ProcessBuilder pb = new ProcessBuilder();
         List<String> command = new ArrayList<String>();

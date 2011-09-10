@@ -29,7 +29,7 @@ import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
 
@@ -50,7 +50,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     /**
      * The current audio object used to retrieve information
      */
-    private AudioObject currentAudioObject;
+    private IAudioObject currentAudioObject;
 
     /**
      * Time stamp when audio object was modified. Used to decide if context info
@@ -69,7 +69,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
 
     @SuppressWarnings("unchecked")
 	@Override
-    public void applicationStarted(List<AudioObject> playList) {
+    public void applicationStarted(List<IAudioObject> playList) {
     	
     	contextPanels = (List<AbstractContextPanel>) Context.getBean("contextPanels");
     	
@@ -133,7 +133,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
      * @param ao
      *            the audio object
      */
-    public void retrieveInfoAndShowInPanel(AudioObject ao) {
+    public void retrieveInfoAndShowInPanel(IAudioObject ao) {
         boolean audioObjectModified = false;
         // Avoid retrieve information about the same audio object twice except if is an LocalAudioObject and has been recently changed
         if (currentAudioObject != null && currentAudioObject.equals(ao)) {
@@ -184,7 +184,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
      *            audio object is the same but has been modified so context data
      *            can be different
      */
-    private void retrieveInfo(AudioObject audioObject, boolean forceUpdate) {
+    private void retrieveInfo(IAudioObject audioObject, boolean forceUpdate) {
         if (audioObject == null) {
             return;
         }
@@ -213,7 +213,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     /**
      * @return the lastAudioObject
      */
-    public AudioObject getCurrentAudioObject() {
+    public IAudioObject getCurrentAudioObject() {
         return currentAudioObject;
     }
 
@@ -236,7 +236,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     }
     
     @Override
-    public void selectedAudioObjectChanged(AudioObject audioObject) {
+    public void selectedAudioObjectChanged(IAudioObject audioObject) {
         if (getState().isUseContext()) {
             retrieveInfoAndShowInPanel(audioObject);
         }

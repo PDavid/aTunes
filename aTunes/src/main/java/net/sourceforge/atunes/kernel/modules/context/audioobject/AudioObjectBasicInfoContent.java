@@ -24,8 +24,6 @@ import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,30 +37,15 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
-import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jdesktop.swingx.border.DropShadowBorder;
 
 public class AudioObjectBasicInfoContent extends AbstractContextPanelContent {
-
-    private static class AddBannedSongActionListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            WebServicesHandler.getInstance().getLastFmService().addBannedSong(ContextHandler.getInstance().getCurrentAudioObject());
-        }
-    }
-
-    private static class AddLovedSongActionListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            WebServicesHandler.getInstance().getLastFmService().addLovedSong(ContextHandler.getInstance().getCurrentAudioObject());
-        }
-    }
 
     private static final long serialVersionUID = 996227362636450601L;
 
@@ -96,14 +79,16 @@ public class AudioObjectBasicInfoContent extends AbstractContextPanelContent {
      */
     private JMenuItem bannedSong;
     
+    private IWebServicesHandler webServicesHandler;
+    
     /**
      * Default constructor
      */
     public AudioObjectBasicInfoContent() {
         lovedSong = new JMenuItem(I18nUtils.getString("ADD_LOVED_SONG_IN_LASTFM"));
-        lovedSong.addActionListener(new AddLovedSongActionListener());
+        lovedSong.addActionListener(new AddLovedSongActionListener(webServicesHandler));
         bannedSong = new JMenuItem(I18nUtils.getString("ADD_BANNED_SONG_IN_LASTFM"));
-        bannedSong.addActionListener(new AddBannedSongActionListener());
+        bannedSong.addActionListener(new AddBannedSongActionListener(webServicesHandler));
     }
 
     @Override
@@ -119,8 +104,8 @@ public class AudioObjectBasicInfoContent extends AbstractContextPanelContent {
     }
 
     @Override
-    protected Map<String, ?> getDataSourceParameters(AudioObject audioObject) {
-        Map<String, AudioObject> parameters = new HashMap<String, AudioObject>();
+    protected Map<String, ?> getDataSourceParameters(IAudioObject audioObject) {
+        Map<String, IAudioObject> parameters = new HashMap<String, IAudioObject>();
         parameters.put(AudioObjectBasicInfoDataSource.INPUT_AUDIO_OBJECT, audioObject);
         return parameters;
     }
@@ -201,5 +186,9 @@ public class AudioObjectBasicInfoContent extends AbstractContextPanelContent {
         options.add(bannedSong);
         return options;
     }
+    
+    public final void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+		this.webServicesHandler = webServicesHandler;
+	}
 
 }

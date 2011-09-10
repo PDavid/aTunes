@@ -24,28 +24,28 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
-import net.sourceforge.atunes.kernel.modules.context.AlbumListInfo;
+import net.sourceforge.atunes.model.IAlbumInfo;
+import net.sourceforge.atunes.model.IAlbumListInfo;
 import de.umass.lastfm.Album;
 
-public class LastFmAlbumList implements AlbumListInfo {
+public class LastFmAlbumList implements IAlbumListInfo {
 
     private static final long serialVersionUID = 5865751328573689357L;
 
     private String artist;
-    private List<AlbumInfo> albums;
+    private List<IAlbumInfo> albums;
 
     /**
      * Gets the album list.
      * 
      * @return the album list
      */
-    public static AlbumListInfo getAlbumList(Collection<Album> as, String artist) {
-        List<AlbumInfo> albums = new ArrayList<AlbumInfo>();
-        AlbumListInfo albumList = new LastFmAlbumList();
+    public static IAlbumListInfo getAlbumList(Collection<Album> as, String artist) {
+        List<IAlbumInfo> albums = new ArrayList<IAlbumInfo>();
+        IAlbumListInfo albumList = new LastFmAlbumList();
 
         for (Album a : as) {
-            AlbumInfo album = LastFmAlbum.getAlbum(a, null);
+            IAlbumInfo album = LastFmAlbum.getAlbum(a, null);
             albums.add(album);
         }
 
@@ -59,7 +59,7 @@ public class LastFmAlbumList implements AlbumListInfo {
      * @return the albums
      */
     @Override
-    public List<AlbumInfo> getAlbums() {
+    public List<IAlbumInfo> getAlbums() {
         return albums;
     }
 
@@ -80,8 +80,8 @@ public class LastFmAlbumList implements AlbumListInfo {
      *            the albums to set
      */
     @Override
-    public void setAlbums(List<? extends AlbumInfo> albums) {
-        this.albums = albums != null ? new ArrayList<AlbumInfo>(albums) : null;
+    public void setAlbums(List<? extends IAlbumInfo> albums) {
+        this.albums = albums != null ? new ArrayList<IAlbumInfo>(albums) : null;
     }
 
     /**

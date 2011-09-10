@@ -40,7 +40,7 @@ import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
@@ -76,8 +76,8 @@ public final class EditTagDialogActionListener implements ActionListener {
             controller.editTag();
             controller.clear();
             // get the index of the first selected song in the play list
-            List<AudioObject> selectedFiles = PlayListHandler.getInstance().getSelectedAudioObjects();
-            AudioObject currentSelectedSong = selectedFiles.get(0);
+            List<IAudioObject> selectedFiles = PlayListHandler.getInstance().getSelectedAudioObjects();
+            IAudioObject currentSelectedSong = selectedFiles.get(0);
             int currentSelectedSongIndex = PlayListHandler.getInstance().getIndexOfAudioObject(currentSelectedSong);
 
             // get the LocalAudioObject of the next song in the play list after the first selection
@@ -106,8 +106,8 @@ public final class EditTagDialogActionListener implements ActionListener {
             controller.clear();
 
             // get the index of the first selected song in the play list
-            List<AudioObject> selectedFiles = PlayListHandler.getInstance().getSelectedAudioObjects();
-            AudioObject currentSelectedSong = selectedFiles.get(0);
+            List<IAudioObject> selectedFiles = PlayListHandler.getInstance().getSelectedAudioObjects();
+            IAudioObject currentSelectedSong = selectedFiles.get(0);
             int currentSelectedSongIndex = PlayListHandler.getInstance().getIndexOfAudioObject(currentSelectedSong);
 
             List<ILocalAudioObject> prevFile = new ArrayList<ILocalAudioObject>();

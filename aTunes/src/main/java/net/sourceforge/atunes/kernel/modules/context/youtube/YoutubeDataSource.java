@@ -27,7 +27,7 @@ import java.util.Map;
 import net.sourceforge.atunes.kernel.modules.context.ContextInformationDataSource;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeResultEntry;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeService;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 
 /**
  * Similar artists data source
@@ -53,12 +53,12 @@ public class YoutubeDataSource implements ContextInformationDataSource {
     public Map<String, ?> getData(Map<String, ?> parameters) {
         Map<String, Object> result = new HashMap<String, Object>();
         if (parameters.containsKey(INPUT_AUDIO_OBJECT)) {
-            result.put(OUTPUT_VIDEOS, getYoutubeVideos((AudioObject) parameters.get(INPUT_AUDIO_OBJECT)));
+            result.put(OUTPUT_VIDEOS, getYoutubeVideos((IAudioObject) parameters.get(INPUT_AUDIO_OBJECT)));
         }
         return result;
     }
 
-    private List<YoutubeResultEntry> getYoutubeVideos(AudioObject audioObject) {
+    private List<YoutubeResultEntry> getYoutubeVideos(IAudioObject audioObject) {
         String searchString = youtubeService.getSearchForAudioObject(audioObject);
         if (searchString.length() > 0) {
             return youtubeService.searchInYoutube(searchString, 1);

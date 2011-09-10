@@ -24,16 +24,16 @@ import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.notify.CommonNotificationEngine;
 import net.sourceforge.atunes.kernel.modules.notify.libnotify.Notify.NotifyNotification;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class LibnotifyNotificationEngine extends CommonNotificationEngine {
 
     private final class ShowNotificationRunnable implements Runnable {
-		private final AudioObject audioObject;
+		private final IAudioObject audioObject;
 
-		private ShowNotificationRunnable(AudioObject audioObject) {
+		private ShowNotificationRunnable(IAudioObject audioObject) {
 			this.audioObject = audioObject;
 		}
 
@@ -75,7 +75,7 @@ public class LibnotifyNotificationEngine extends CommonNotificationEngine {
     }
 
     @Override
-    public void showNotification(final AudioObject audioObject) {
+    public void showNotification(final IAudioObject audioObject) {
         new Thread(new ShowNotificationRunnable(audioObject)).start();
     }
     

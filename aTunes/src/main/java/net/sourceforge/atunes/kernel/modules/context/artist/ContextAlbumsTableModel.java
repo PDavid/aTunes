@@ -26,18 +26,18 @@ import java.util.List;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
+import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class ContextAlbumsTableModel implements TableModel {
 
-    private List<AlbumInfo> albums;
+    private List<IAlbumInfo> albums;
     private List<TableModelListener> listeners;
 
     /**
      * Instantiates a new audio scrobbler albums table model.
      */
-    public ContextAlbumsTableModel(List<AlbumInfo> albums) {
+    public ContextAlbumsTableModel(List<IAlbumInfo> albums) {
         this.albums = albums;
         listeners = new ArrayList<TableModelListener>();
     }
@@ -55,13 +55,13 @@ public class ContextAlbumsTableModel implements TableModel {
      * 
      * @return the album
      */
-    public AlbumInfo getAlbum(int index) {
+    public IAlbumInfo getAlbum(int index) {
         return albums.get(index);
     }
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        return AlbumInfo.class;
+        return IAlbumInfo.class;
     }
 
     @Override

@@ -52,7 +52,7 @@ import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.model.ViewMode;
@@ -164,9 +164,9 @@ public final class RadioNavigationView extends AbstractNavigationView {
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();
 
         // Get objects selected before refreshing tree
-        List<TreeObject<? extends AudioObject>> objectsSelected = getTreeObjectsSelected(getTree());
+        List<TreeObject<? extends IAudioObject>> objectsSelected = getTreeObjectsSelected(getTree());
         // Get objects expanded before refreshing tree
-        List<TreeObject<? extends AudioObject>> objectsExpanded = getTreeObjectsExpanded(getTree(), root);
+        List<TreeObject<? extends IAudioObject>> objectsExpanded = getTreeObjectsExpanded(getTree(), root);
 
         // Nodes to be selected after refresh
         List<DefaultMutableTreeNode> nodesToSelect = new ArrayList<DefaultMutableTreeNode>();
@@ -189,8 +189,8 @@ public final class RadioNavigationView extends AbstractNavigationView {
     }
 
     @Override
-    public List<AudioObject> getAudioObjectForTreeNode(DefaultMutableTreeNode node, ViewMode viewMode, String treeFilter) {
-        List<AudioObject> songs = new ArrayList<AudioObject>();
+    public List<IAudioObject> getAudioObjectForTreeNode(DefaultMutableTreeNode node, ViewMode viewMode, String treeFilter) {
+        List<IAudioObject> songs = new ArrayList<IAudioObject>();
         if (node.isRoot()) {
             // Add all radios in child nodes
             for (int i = 0; i < node.getChildCount(); i++) {
@@ -227,7 +227,7 @@ public final class RadioNavigationView extends AbstractNavigationView {
      * @param showAllStations
      *            the show all stations
      */
-    private static void addRadioNodes(List<Radio> radios, List<Radio> presetRadios, DefaultMutableTreeNode root, String currentFilter, boolean showAllStations, List<TreeObject<? extends AudioObject>> objectsExpanded, List<TreeObject<? extends AudioObject>> objectsSelected, List<DefaultMutableTreeNode> nodesToExpand, List<DefaultMutableTreeNode> nodesToSelect) {
+    private static void addRadioNodes(List<Radio> radios, List<Radio> presetRadios, DefaultMutableTreeNode root, String currentFilter, boolean showAllStations, List<TreeObject<? extends IAudioObject>> objectsExpanded, List<TreeObject<? extends IAudioObject>> objectsSelected, List<DefaultMutableTreeNode> nodesToExpand, List<DefaultMutableTreeNode> nodesToSelect) {
         if (radios == null) {
             return;
         }

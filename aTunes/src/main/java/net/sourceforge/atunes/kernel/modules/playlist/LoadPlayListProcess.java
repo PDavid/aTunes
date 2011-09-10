@@ -26,7 +26,7 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.kernel.modules.process.AbstractProcess;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -56,7 +56,7 @@ class LoadPlayListProcess extends AbstractProcess {
 
     @Override
     protected boolean runProcess() {
-        final List<AudioObject> songsLoaded = new ArrayList<AudioObject>();
+        final List<IAudioObject> songsLoaded = new ArrayList<IAudioObject>();
         for (int i = 0; i < filenamesToLoad.size() && !isCanceled(); i++) {
             songsLoaded.add(PlayListIO.getAudioFileOrCreate(filenamesToLoad.get(i)));
             setCurrentProgress(i + 1);
@@ -68,9 +68,9 @@ class LoadPlayListProcess extends AbstractProcess {
 
     private static class AddToPlayListRunnable implements Runnable {
 
-        private List<AudioObject> songsLoaded;
+        private List<IAudioObject> songsLoaded;
 
-        public AddToPlayListRunnable(List<AudioObject> songsLoaded) {
+        public AddToPlayListRunnable(List<IAudioObject> songsLoaded) {
             this.songsLoaded = songsLoaded;
         }
 

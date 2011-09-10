@@ -35,7 +35,7 @@ import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.RadioImageIcon;
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.model.TreeObject;
@@ -47,7 +47,7 @@ import org.commonjukebox.plugins.model.PluginApi;
  * A radio station.
  */
 @PluginApi
-public final class Radio implements AudioObject, Serializable, TreeObject<Radio>, Comparable<Radio> {
+public final class Radio implements IAudioObject, Serializable, TreeObject<Radio>, Comparable<Radio> {
 
     private static final long serialVersionUID = 3295941106814718559L;
 
@@ -105,9 +105,9 @@ public final class Radio implements AudioObject, Serializable, TreeObject<Radio>
      * 
      * @return the radios
      */
-    public static List<Radio> getRadios(List<AudioObject> audioObjects) {
+    public static List<Radio> getRadios(List<IAudioObject> audioObjects) {
         List<Radio> result = new ArrayList<Radio>();
-        for (AudioObject audioObject : audioObjects) {
+        for (IAudioObject audioObject : audioObjects) {
             if (audioObject instanceof Radio) {
                 result.add((Radio) audioObject);
             }

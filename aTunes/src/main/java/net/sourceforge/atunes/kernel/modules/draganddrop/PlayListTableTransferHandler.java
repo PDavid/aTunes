@@ -47,7 +47,7 @@ import net.sourceforge.atunes.kernel.modules.repository.RepositoryLoader;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Artist;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 
 /**
@@ -172,7 +172,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
     @SuppressWarnings("unchecked")
     private static boolean processInternalImport(TransferSupport support) {
         try {
-            List<AudioObject> audioObjectsToAdd = new ArrayList<AudioObject>();
+            List<IAudioObject> audioObjectsToAdd = new ArrayList<IAudioObject>();
             List<?> listOfObjectsDragged = (List<?>) support.getTransferable().getTransferData(internalDataFlavor);
             if (listOfObjectsDragged == null || listOfObjectsDragged.isEmpty()) {
                 return false;
@@ -194,7 +194,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
                 Object objectDragged = listOfObjectsDragged.get(i);
                 // DRAG AND DROP FROM TREE
                 if (objectDragged instanceof DefaultMutableTreeNode) {
-                    List<? extends AudioObject> objectsToImport = NavigationHandler.getInstance().getAudioObjectsForTreeNode(
+                    List<? extends IAudioObject> objectsToImport = NavigationHandler.getInstance().getAudioObjectsForTreeNode(
                             NavigationHandler.getInstance().getCurrentView().getClass(), (DefaultMutableTreeNode) objectDragged);
                     if (objectsToImport != null) {
                         audioObjectsToAdd.addAll(objectsToImport);
@@ -328,7 +328,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
         }
 
         if (files != null && !files.isEmpty()) {
-            List<AudioObject> filesToAdd = new ArrayList<AudioObject>();
+            List<IAudioObject> filesToAdd = new ArrayList<IAudioObject>();
             for (File f : files) {
                 if (f.isDirectory()) {
                     filesToAdd.addAll(RepositoryLoader.getSongsForFolder(f, null));

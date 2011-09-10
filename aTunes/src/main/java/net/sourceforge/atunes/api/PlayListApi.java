@@ -25,7 +25,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.playlist.PlayList;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
@@ -60,8 +60,8 @@ public final class PlayListApi {
      * 
      * @return Audio objects being played
      */
-    public static List<AudioObject> getCurrentPlayList() {
-        List<AudioObject> result = new ArrayList<AudioObject>();
+    public static List<IAudioObject> getCurrentPlayList() {
+        List<IAudioObject> result = new ArrayList<IAudioObject>();
         PlayList playlist = PlayListHandler.getInstance().getCurrentPlayList(false);
         for (int i = 0; i < playlist.size(); i++) {
             result.add(playlist.get(i));
@@ -75,7 +75,7 @@ public final class PlayListApi {
      * @param index
      * @return
      */
-    public static List<AudioObject> getPlayList(int index) {
+    public static List<IAudioObject> getPlayList(int index) {
         return PlayListHandler.getInstance().getPlayListContent(index);
     }
 
@@ -84,7 +84,7 @@ public final class PlayListApi {
      * 
      * @param objects
      */
-    public static void add(List<AudioObject> objects) {
+    public static void add(List<IAudioObject> objects) {
         PlayListHandler.getInstance().addToPlayList(objects);
     }
 }

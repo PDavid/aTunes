@@ -25,12 +25,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
-import net.sourceforge.atunes.kernel.modules.context.AlbumListInfo;
 import net.sourceforge.atunes.kernel.modules.context.ContextInformationDataSource;
-import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IAlbumInfo;
+import net.sourceforge.atunes.model.IAlbumListInfo;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 
@@ -95,11 +95,13 @@ public class ArtistInfoDataSource implements ContextInformationDataSource {
 
     private IState state;
     
+    private IWebServicesHandler webServicesHandler;
+    
     @Override
     public Map<String, ?> getData(Map<String, ?> parameters) {
         Map<String, Object> result = new HashMap<String, Object>();
         if (parameters.containsKey(INPUT_AUDIO_OBJECT)) {
-            AudioObject audioObject = (AudioObject) parameters.get(INPUT_AUDIO_OBJECT);
+            IAudioObject audioObject = (IAudioObject) parameters.get(INPUT_AUDIO_OBJECT);
             result.put(OUTPUT_AUDIO_OBJECT, audioObject);
 
             // Basic artist information
@@ -107,7 +109,7 @@ public class ArtistInfoDataSource implements ContextInformationDataSource {
                 result.put(OUTPUT_WIKI_TEXT, getWikiText(audioObject));
                 result.put(OUTPUT_WIKI_URL, getWikiUrl(audioObject));
 
-                AlbumListInfo albumList = getAlbumList(audioObject);
+                IAlbumListInfo albumList = getAlbumList(audioObject);
                 if (albumList != null && !albumList.getAlbums().isEmpty()) {
                     result.put(OUTPUT_ARTIST_NAME, albumList.getAlbums().get(0).getArtist());
                     result.put(OUTPUT_ARTIST_URL, albumList.getAlbums().get(0).getArtistUrl());
@@ -115,9 +117,9 @@ public class ArtistInfoDataSource implements ContextInformationDataSource {
                 result.put(OUTPUT_IMAGE, getArtistImage(audioObject));
             } else {
                 // Albums list and images
-                AlbumListInfo albumList = getAlbumList(audioObject);
+                IAlbumListInfo albumList = getAlbumList(audioObject);
                 if (albumList != null && !albumList.getAlbums().isEmpty()) {
-                    for (AlbumInfo album : albumList.getAlbums()) {
+                    for (IAlbumInfo album : albumList.getAlbums()) {
                         album.setCover(ImageUtils.scaleImageBicubic(getAlbumImage(album), Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT));
                     }
                     result.put(OUTPUT_ALBUMS, albumList.getAlbums());
@@ -133,9 +135,9 @@ public class ArtistInfoDataSource implements ContextInformationDataSource {
      * @param audioObject
      * @return
      */
-    private String getWikiText(AudioObject audioObject) {
+    private String getWikiText(IAudioObject audioObject) {
         if (!audioObject.getArtist().equals(I18nUtils.getString("UNKNOWN_ARTIST"))) {
-            return WebServicesHandler.getInstance().getLastFmService().getWikiText(audioObject.getArtist());
+            return webServicesHandler.getBioText(audioObject.getArtist());
         }
         return null;
     }
@@ -146,9 +148,9 @@ public class ArtistInfoDataSource implements ContextInformationDataSource {
      * @param audioObject
      * @return
      */
-    private String getWikiUrl(AudioObject audioObject) {
+    private String getWikiUrl(IAudioObject audioObject) {
         if (!audioObject.getArtist().equals(I18nUtils.getString("UNKNOWN_ARTIST"))) {
-            return WebServicesHandler.getInstance().getLastFmService().getWikiURL(audioObject.getArtist());
+            return webServicesHandler.getBioURL(audioObject.getArtist());
         }
         return null;
     }
@@ -159,9 +161,9 @@ public class ArtistInfoDataSource implements ContextInformationDataSource {
      * @param audioObject
      * @return
      */
-    private AlbumListInfo getAlbumList(AudioObject audioObject) {
+    private IAlbumListInfo getAlbumList(IAudioObject audioObject) {
         if (!audioObject.getArtist().equals(I18nUtils.getString("UNKNOWN_ARTIST"))) {
-            return WebServicesHandler.getInstance().getLastFmService().getAlbumList(audioObject.getArtist(), state.isHideVariousArtistsAlbums(),
+            return webServicesHandler.getAlbumList(audioObject.getArtist(), state.isHideVariousArtistsAlbums(),
                     state.getMinimumSongNumberPerAlbum());
         }
         return null;
@@ -173,8 +175,8 @@ public class ArtistInfoDataSource implements ContextInformationDataSource {
      * @param audioObject
      * @return
      */
-    private Image getArtistImage(AudioObject audioObject) {
-        return WebServicesHandler.getInstance().getLastFmService().getImage(audioObject.getArtist());
+    private Image getArtistImage(IAudioObject audioObject) {
+        return webServicesHandler.getArtistImage(audioObject.getArtist());
     }
 
     /**
@@ -183,12 +185,16 @@ public class ArtistInfoDataSource implements ContextInformationDataSource {
      * @param album
      * @return
      */
-    private Image getAlbumImage(AlbumInfo album) {
-        return WebServicesHandler.getInstance().getLastFmService().getImage(album);
+    private Image getAlbumImage(IAlbumInfo album) {
+        return webServicesHandler.getAlbumImage(album);
     }
     
-    public void setState(IState state) {
+    public final void setState(IState state) {
 		this.state = state;
+	}
+    
+    public final void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+		this.webServicesHandler = webServicesHandler;
 	}
 
 }

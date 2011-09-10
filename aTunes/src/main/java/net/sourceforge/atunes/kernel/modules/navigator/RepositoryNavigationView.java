@@ -58,7 +58,7 @@ import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.TreeObject;
@@ -168,7 +168,7 @@ public class RepositoryNavigationView extends AbstractNavigationView {
     }
 
     @Override
-    public void selectAudioObject(ViewMode viewMode, AudioObject audioObject) {
+    public void selectAudioObject(ViewMode viewMode, IAudioObject audioObject) {
     	getTreeGeneratorFactory().getTreeGenerator(viewMode).selectAudioObject(getTree(), audioObject);
     }
     
@@ -187,9 +187,9 @@ public class RepositoryNavigationView extends AbstractNavigationView {
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();
 
         // Get objects selected before refreshing tree
-        List<TreeObject<? extends AudioObject>> objectsSelected = getTreeObjectsSelected(tree);
+        List<TreeObject<? extends IAudioObject>> objectsSelected = getTreeObjectsSelected(tree);
         // Get objects expanded before refreshing tree
-        List<TreeObject<? extends AudioObject>> objectsExpanded = getTreeObjectsExpanded(tree, root);
+        List<TreeObject<? extends IAudioObject>> objectsExpanded = getTreeObjectsExpanded(tree, root);
         
         // Build treeN
         getTreeGeneratorFactory().getTreeGenerator(viewMode).buildTree(getState(), "REPOSITORY", this, (Map<String, Year>) getViewData(viewMode), treeFilter, root, treeModel, objectsSelected, objectsExpanded);
@@ -198,7 +198,7 @@ public class RepositoryNavigationView extends AbstractNavigationView {
     }
 
     @Override
-    public List<? extends AudioObject> getAudioObjectForTreeNode(DefaultMutableTreeNode node, ViewMode viewMode, String treeFilter) {
+    public List<? extends IAudioObject> getAudioObjectForTreeNode(DefaultMutableTreeNode node, ViewMode viewMode, String treeFilter) {
         List<ILocalAudioObject> songs = new ArrayList<ILocalAudioObject>();
         if (node.isRoot()) {
             if (treeFilter == null) {

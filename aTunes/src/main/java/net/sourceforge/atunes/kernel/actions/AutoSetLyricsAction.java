@@ -24,10 +24,8 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
-import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -48,7 +46,7 @@ public class AutoSetLyricsAction extends AbstractActionOverSelectedObjects<ILoca
 
     @Override
     protected void performAction(List<ILocalAudioObject> objects) {
-        TagEditionOperations.addLyrics(objects, getState(), (LyricsService) Context.getBean("lyricsService"));
+        TagEditionOperations.addLyrics(objects, getState());
     }
 
     @Override
@@ -57,7 +55,7 @@ public class AutoSetLyricsAction extends AbstractActionOverSelectedObjects<ILoca
     }
 
     @Override
-    public boolean isEnabledForNavigationTableSelection(List<AudioObject> selection) {
+    public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
         return !selection.isEmpty();
     }
 

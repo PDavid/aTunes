@@ -49,14 +49,14 @@ import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
 import net.sourceforge.atunes.kernel.modules.tray.SystemTrayHandler;
-import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.IHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITagHandler;
 import net.sourceforge.atunes.model.IUpdateHandler;
+import net.sourceforge.atunes.model.IWebServicesHandler;
 
 public abstract class AbstractHandler implements IHandler {
 
@@ -136,7 +136,7 @@ public abstract class AbstractHandler implements IHandler {
         handlers.add(StatisticsHandler.getInstance());
         handlers.add(SystemTrayHandler.getInstance());
         handlers.add(GeneralPurposePluginsHandler.getInstance());
-        handlers.add(WebServicesHandler.getInstance());
+        handlers.add((AbstractHandler) Context.getBean(IWebServicesHandler.class));
         handlers.add((AbstractHandler) Context.getBean(ITagHandler.class));
         handlers.add((AbstractHandler) Context.getBean(IFullScreenHandler.class));
 
@@ -183,7 +183,7 @@ public abstract class AbstractHandler implements IHandler {
     public void deviceDisconnected(String location) {}
     
     @Override
-    public void playbackStateChanged(PlaybackState newState, AudioObject currentAudioObject) {}
+    public void playbackStateChanged(PlaybackState newState, IAudioObject currentAudioObject) {}
     
     @Override
     public void audioObjectsAdded(List<PlayListAudioObject> audioObjectsAdded) {}
@@ -207,13 +207,13 @@ public abstract class AbstractHandler implements IHandler {
     public void applicationStateChanged(IState newState) {}
 
     @Override
-    public void applicationStarted(List<AudioObject> playList) {}
+    public void applicationStarted(List<IAudioObject> playList) {}
     
 	@Override
 	public void playListCleared() {}
 
 	@Override
-	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+	public void selectedAudioObjectChanged(IAudioObject audioObject) {}
 
     /**
      * Initializes handler 

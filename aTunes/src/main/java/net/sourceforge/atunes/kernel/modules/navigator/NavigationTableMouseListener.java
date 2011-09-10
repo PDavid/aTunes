@@ -27,7 +27,7 @@ import java.util.List;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
@@ -79,7 +79,7 @@ public final class NavigationTableMouseListener extends MouseAdapter {
         } else {
             if (event.getClickCount() == 2) {
                 int[] selRow = panel.getNavigationTable().getSelectedRows();
-                List<AudioObject> songs = ((NavigationTableModel) panel.getNavigationTable().getModel()).getAudioObjectsAt(selRow);
+                List<IAudioObject> songs = ((NavigationTableModel) panel.getNavigationTable().getModel()).getAudioObjectsAt(selRow);
                 if (songs != null && songs.size() >= 1) {
                     PlayListHandler.getInstance().addToPlayList(songs);
                 }

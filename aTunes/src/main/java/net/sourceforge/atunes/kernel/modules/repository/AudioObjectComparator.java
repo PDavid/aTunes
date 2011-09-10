@@ -25,7 +25,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 
 /**
  * Default comparator used to sort audio objects
@@ -33,7 +33,7 @@ import net.sourceforge.atunes.model.AudioObject;
  * @author fleax
  * 
  */
-public class AudioObjectComparator implements Comparator<AudioObject>, Serializable {
+public class AudioObjectComparator implements Comparator<IAudioObject>, Serializable {
 
     /**
 	 * 
@@ -41,7 +41,7 @@ public class AudioObjectComparator implements Comparator<AudioObject>, Serializa
 	private static final long serialVersionUID = -1297150534262349691L;
 
 	@Override
-    public int compare(AudioObject a1, AudioObject a2) {
+    public int compare(IAudioObject a1, IAudioObject a2) {
 
         // Sort by album artist
         int c1 = a1.getAlbumArtist().compareTo(a2.getAlbumArtist());
@@ -82,7 +82,7 @@ public class AudioObjectComparator implements Comparator<AudioObject>, Serializa
      * 
      * @param audioObjects
      */
-    public static void sort(List<? extends AudioObject> audioObjects) {
+    public static void sort(List<? extends IAudioObject> audioObjects) {
         Collections.sort(audioObjects, new AudioObjectComparator());
     }
 

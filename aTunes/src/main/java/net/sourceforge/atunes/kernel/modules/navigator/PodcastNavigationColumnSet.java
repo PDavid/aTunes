@@ -27,7 +27,7 @@ import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.kernel.modules.columns.DateColumn;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class PodcastNavigationColumnSet extends AbstractCustomNavigatorColumnSet {
@@ -43,12 +43,12 @@ public class PodcastNavigationColumnSet extends AbstractCustomNavigatorColumnSet
         }
 
         @Override
-        public Object getValueFor(AudioObject audioObject) {
+        public Object getValueFor(IAudioObject audioObject) {
             return StringUtils.seconds2String(audioObject.getDuration());
         }
 
         @Override
-        protected int ascendingCompare(AudioObject o1, AudioObject o2) {
+        protected int ascendingCompare(IAudioObject o1, IAudioObject o2) {
             return Integer.valueOf(o1.getDuration()).compareTo(Integer.valueOf(o2.getDuration()));
         }
     }
@@ -64,12 +64,12 @@ public class PodcastNavigationColumnSet extends AbstractCustomNavigatorColumnSet
         }
 
         @Override
-        public Object getValueFor(AudioObject audioObject) {
+        public Object getValueFor(IAudioObject audioObject) {
             return audioObject.getTitleOrFileName();
         }
 
         @Override
-        protected int ascendingCompare(AudioObject o1, AudioObject o2) {
+        protected int ascendingCompare(IAudioObject o1, IAudioObject o2) {
             return o1.getTitleOrFileName().compareTo(o2.getTitleOrFileName());
         }
     }
@@ -85,12 +85,12 @@ public class PodcastNavigationColumnSet extends AbstractCustomNavigatorColumnSet
         }
 
         @Override
-        public Object getValueFor(AudioObject audioObject) {
+        public Object getValueFor(IAudioObject audioObject) {
             return ((PodcastFeedEntry) audioObject).isOld() ? Property.OLD_ENTRY : Property.NO_PROPERTIES;
         }
 
         @Override
-        protected int ascendingCompare(AudioObject o1, AudioObject o2) {
+        protected int ascendingCompare(IAudioObject o1, IAudioObject o2) {
             return Boolean.valueOf(((PodcastFeedEntry) o1).isOld()).compareTo(Boolean.valueOf(((PodcastFeedEntry) o2).isOld()));
         }
     }
@@ -106,12 +106,12 @@ public class PodcastNavigationColumnSet extends AbstractCustomNavigatorColumnSet
         }
 
         @Override
-        public Object getValueFor(AudioObject audioObject) {
+        public Object getValueFor(IAudioObject audioObject) {
             return ((PodcastFeedEntry) audioObject).isDownloaded() ? Property.DOWNLOADED_ENTRY : Property.NO_PROPERTIES;
         }
 
         @Override
-        protected int ascendingCompare(AudioObject o1, AudioObject o2) {
+        protected int ascendingCompare(IAudioObject o1, IAudioObject o2) {
             return Boolean.valueOf(((PodcastFeedEntry) o1).isDownloaded()).compareTo(Boolean.valueOf(((PodcastFeedEntry) o2).isDownloaded()));
         }
     }
@@ -127,12 +127,12 @@ public class PodcastNavigationColumnSet extends AbstractCustomNavigatorColumnSet
         }
 
         @Override
-        public Object getValueFor(AudioObject audioObject) {
+        public Object getValueFor(IAudioObject audioObject) {
             return ((PodcastFeedEntry) audioObject).isListened() ? Property.NO_PROPERTIES : Property.NOT_LISTENED_ENTRY;
         }
 
         @Override
-        protected int ascendingCompare(AudioObject o1, AudioObject o2) {
+        protected int ascendingCompare(IAudioObject o1, IAudioObject o2) {
             return Boolean.valueOf(((PodcastFeedEntry) o1).isListened()).compareTo(Boolean.valueOf(((PodcastFeedEntry) o2).isListened()));
         }
     }

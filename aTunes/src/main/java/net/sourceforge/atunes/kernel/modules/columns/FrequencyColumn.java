@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.modules.columns;
 
 import javax.swing.SwingConstants;
 
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class FrequencyColumn extends AbstractColumn {
@@ -37,12 +37,12 @@ public class FrequencyColumn extends AbstractColumn {
     }
 
     @Override
-    protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
+    protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
         return Integer.valueOf(ao1.getFrequency()).compareTo(Integer.valueOf(ao2.getFrequency()));
     }
 
     @Override
-    public Object getValueFor(AudioObject audioObject) {
+    public Object getValueFor(IAudioObject audioObject) {
         // Return FREQUENCY
         if (audioObject.getFrequency() > 0) {
             return StringUtils.getString(Integer.toString(audioObject.getFrequency()), " Hz");

@@ -29,7 +29,7 @@ import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.model.Artist;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -44,7 +44,7 @@ public class ArtistContextPanel extends AbstractContextPanel {
     private static final long serialVersionUID = -7910261492394049289L;
 
 	@Override
-    protected ColorMutableImageIcon getContextPanelIcon(AudioObject audioObject) {
+    protected ColorMutableImageIcon getContextPanelIcon(IAudioObject audioObject) {
         return new ColorMutableImageIcon() {
         	@Override
         	public ImageIcon getIcon(Paint paint) {
@@ -59,12 +59,12 @@ public class ArtistContextPanel extends AbstractContextPanel {
     }
 
     @Override
-    protected String getContextPanelTitle(AudioObject audioObject) {
+    protected String getContextPanelTitle(IAudioObject audioObject) {
         return I18nUtils.getString("ARTIST");
     }
 
     @Override
-    protected boolean isPanelVisibleForAudioObject(AudioObject audioObject) {
+    protected boolean isPanelVisibleForAudioObject(IAudioObject audioObject) {
         // Avoid unknown artist
         if (Artist.isUnknownArtist(audioObject.getArtist())) {
             return false;

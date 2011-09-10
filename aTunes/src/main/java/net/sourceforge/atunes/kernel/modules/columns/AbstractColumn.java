@@ -26,7 +26,7 @@ import java.util.Comparator;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 import org.commonjukebox.plugins.model.PluginApi;
@@ -186,7 +186,7 @@ public abstract class AbstractColumn implements Comparable<AbstractColumn>, Seri
      * 
      * @return
      */
-    protected abstract int ascendingCompare(AudioObject o1, AudioObject o2);
+    protected abstract int ascendingCompare(IAudioObject o1, IAudioObject o2);
 
     /**
      * Gets the header text.
@@ -214,7 +214,7 @@ public abstract class AbstractColumn implements Comparable<AbstractColumn>, Seri
      * 
      * @return the value for
      */
-    public abstract Object getValueFor(AudioObject audioObject);
+    public abstract Object getValueFor(IAudioObject audioObject);
 
     /**
      * Returns if this column can be shown only in play list. By default
@@ -340,7 +340,7 @@ public abstract class AbstractColumn implements Comparable<AbstractColumn>, Seri
      * @param value
      *            the value
      */
-    public void setValueFor(AudioObject audioObject, Object value) {
+    public void setValueFor(IAudioObject audioObject, Object value) {
         // Does nothing, should be overrided
     }
 
@@ -382,7 +382,7 @@ public abstract class AbstractColumn implements Comparable<AbstractColumn>, Seri
      * @param changeSort
      * @return
      */
-    public Comparator<AudioObject> getComparator(boolean changeSort) {
+    public Comparator<IAudioObject> getComparator(boolean changeSort) {
         if (columnSort == null) {
             columnSort = ColumnSort.ASCENDING;
         } else if (columnSort == ColumnSort.ASCENDING && changeSort) {
@@ -391,9 +391,9 @@ public abstract class AbstractColumn implements Comparable<AbstractColumn>, Seri
             columnSort = ColumnSort.ASCENDING;
         }
 
-        return new Comparator<AudioObject>() {
+        return new Comparator<IAudioObject>() {
             @Override
-            public int compare(AudioObject o1, AudioObject o2) {
+            public int compare(IAudioObject o1, IAudioObject o2) {
                 return columnSort == ColumnSort.ASCENDING ? ascendingCompare(o1, o2) : -ascendingCompare(o1, o2);
             }
         };
@@ -421,7 +421,7 @@ public abstract class AbstractColumn implements Comparable<AbstractColumn>, Seri
      * @param audioObject
      * @return
      */
-    public String getValueForFilter(AudioObject audioObject) {
+    public String getValueForFilter(IAudioObject audioObject) {
         return getValueFor(audioObject).toString();
     }
 

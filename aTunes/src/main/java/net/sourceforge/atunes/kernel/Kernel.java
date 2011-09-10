@@ -41,7 +41,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.TempFolder;
 import net.sourceforge.atunes.misc.Timer;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -169,7 +169,7 @@ public class Kernel {
     /**
      * Call actions after start.
      */
-    static void callActionsAfterStart(List<AudioObject> playList) {
+    static void callActionsAfterStart(List<IAudioObject> playList) {
     	ApplicationLifeCycleListeners.applicationStarted(playList);
     	ApplicationLifeCycleListeners.allHandlersInitialized();
     }

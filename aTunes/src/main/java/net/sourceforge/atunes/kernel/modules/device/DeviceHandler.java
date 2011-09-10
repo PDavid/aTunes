@@ -61,7 +61,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.Repository;
@@ -102,7 +102,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
     }
 
     @Override
-    public void applicationStarted(List<AudioObject> playList) {
+    public void applicationStarted(List<IAudioObject> playList) {
     }
     
     @Override
@@ -582,7 +582,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
                             Album alb = a.getAlbum(album);
                             List<ILocalAudioObject> deviceFiles = alb.getAudioObjects();
                             HashSet<String> titles = new HashSet<String>();
-                            for (AudioObject deviceFile : deviceFiles) {
+                            for (IAudioObject deviceFile : deviceFiles) {
                                 titles.add(deviceFile.getTitle());
                             }
                             if (!titles.contains(title)) {
@@ -593,7 +593,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
                         // Compare title of every file of artist and add if title is not in list
                         List<ILocalAudioObject> deviceFiles = a.getAudioObjects();
                         HashSet<String> titles = new HashSet<String>();
-                        for (AudioObject deviceFile : deviceFiles) {
+                        for (IAudioObject deviceFile : deviceFiles) {
                             titles.add(deviceFile.getTitle());
                         }
                         if (!titles.contains(title)) {
@@ -628,8 +628,8 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
                     if (a.getAlbum(album) != null) {
                         Album alb = a.getAlbum(album);
                         List<ILocalAudioObject> deviceFiles = alb.getAudioObjects();
-                        HashMap<String, AudioObject> titles = new HashMap<String, AudioObject>();
-                        for (AudioObject deviceFile : deviceFiles) {
+                        HashMap<String, IAudioObject> titles = new HashMap<String, IAudioObject>();
+                        for (IAudioObject deviceFile : deviceFiles) {
                             titles.put(deviceFile.getTitle(), deviceFile);
                         }
                         if (titles.containsKey(title)) {
@@ -638,8 +638,8 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
                     }
                 } else {
                     List<ILocalAudioObject> deviceFiles = a.getAudioObjects();
-                    HashMap<String, AudioObject> titles = new HashMap<String, AudioObject>();
-                    for (AudioObject deviceFile : deviceFiles) {
+                    HashMap<String, IAudioObject> titles = new HashMap<String, IAudioObject>();
+                    for (IAudioObject deviceFile : deviceFiles) {
                         titles.put(deviceFile.getTitle(), deviceFile);
                     }
                     if (titles.containsKey(title)) {
@@ -663,7 +663,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
 	public void playListCleared() {}
 
 	@Override
-	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+	public void selectedAudioObjectChanged(IAudioObject audioObject) {}
 
 	/**
 	 * Returns device location

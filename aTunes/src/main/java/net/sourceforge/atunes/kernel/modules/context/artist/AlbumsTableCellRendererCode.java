@@ -27,19 +27,19 @@ import javax.swing.JComponent;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanel;
+import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-class AlbumsTableCellRendererCode extends ContextTableRowPanel<AlbumInfo> {
+class AlbumsTableCellRendererCode extends ContextTableRowPanel<IAlbumInfo> {
 	
 	@Override
     public JComponent getComponent(JComponent superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        return getPanelForTableRenderer(((AlbumInfo) value).getCover(), 
-        								StringUtils.getString("<html>", ((AlbumInfo) value).getTitle(), "</html>"), 
+        return getPanelForTableRenderer(((IAlbumInfo) value).getCover(), 
+        								StringUtils.getString("<html>", ((IAlbumInfo) value).getTitle(), "</html>"), 
         								superComponent.getBackground(),
         								superComponent.getForeground(), 
         								Constants.CONTEXT_IMAGE_WIDTH, 
@@ -48,25 +48,25 @@ class AlbumsTableCellRendererCode extends ContextTableRowPanel<AlbumInfo> {
     }
 	
 	@Override
-	public List<ContextTableAction<AlbumInfo>> getActions() {
-		ContextTableAction<AlbumInfo> action = new ContextTableAction<AlbumInfo>(I18nUtils.getString("READ_MORE"), table) {
+	public List<ContextTableAction<IAlbumInfo>> getActions() {
+		ContextTableAction<IAlbumInfo> action = new ContextTableAction<IAlbumInfo>(I18nUtils.getString("READ_MORE"), table) {
 			/**
 			 * 
 			 */
 			private static final long serialVersionUID = 4367597772680455920L;
 
 			@Override
-			protected void execute(AlbumInfo object) {
+			protected void execute(IAlbumInfo object) {
 				DesktopUtils.openURL(object.getUrl());
 			}
 			
 			@Override
-			protected AlbumInfo getSelectedObject(int row) {
+			protected IAlbumInfo getSelectedObject(int row) {
 				return  ((ContextAlbumsTableModel) table.getModel()).getAlbum(row);
 			}
 			
 			@Override
-			protected boolean isEnabledForObject(AlbumInfo object) {
+			protected boolean isEnabledForObject(IAlbumInfo object) {
 				return true;
 			}
 			

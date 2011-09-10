@@ -18,12 +18,19 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.context;
+package net.sourceforge.atunes.model;
 
 import java.io.Serializable;
 import java.util.List;
 
-public interface ArtistTopTracks extends Serializable {
+import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
+
+/**
+ * Represents a list of best tracks of an artist
+ * @author alex
+ *
+ */
+public interface IArtistTopTracks extends Serializable {
 
 	/**
 	 * Gets the artist.

@@ -22,11 +22,11 @@ package net.sourceforge.atunes.kernel.modules.webservices.lastfm.data;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.kernel.modules.context.ArtistInfo;
+import net.sourceforge.atunes.model.IArtistInfo;
 import de.umass.lastfm.Artist;
 import de.umass.lastfm.ImageSize;
 
-public class LastFmArtist implements ArtistInfo {
+public class LastFmArtist implements IArtistInfo {
 
     private static final long serialVersionUID = 2077813440652134441L;
 

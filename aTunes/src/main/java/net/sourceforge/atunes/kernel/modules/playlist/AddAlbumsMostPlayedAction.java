@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Properties;
 
 import net.sourceforge.atunes.kernel.actions.CustomAbstractAction;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -69,7 +69,7 @@ public class AddAlbumsMostPlayedAction extends CustomAbstractAction {
     }
 
     @Override
-    public boolean isEnabledForPlayListSelection(List<AudioObject> selection) {
+    public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
         return true;
     }
 

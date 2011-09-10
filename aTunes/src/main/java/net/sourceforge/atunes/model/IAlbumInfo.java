@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.context;
+package net.sourceforge.atunes.model;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -26,7 +26,14 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
-public interface AlbumInfo extends Serializable {
+import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
+
+/**
+ * Information about an album, usually retrieved from a web service
+ * @author alex
+ *
+ */
+public interface IAlbumInfo extends Serializable {
 
     /**
      * Gets the artist.

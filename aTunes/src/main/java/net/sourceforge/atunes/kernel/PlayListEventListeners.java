@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 
 /**
  * Holds references to PlayListEventListener instances
@@ -79,7 +79,7 @@ public class PlayListEventListeners {
      * @param audioObject
      *            the audio object
      */
-    public static void selectedAudioObjectHasChanged(final AudioObject audioObject) {
+    public static void selectedAudioObjectHasChanged(final IAudioObject audioObject) {
         if (audioObject == null) {
             return;
         }

@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.modules.columns;
 
 import javax.swing.SwingConstants;
 
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class BitrateColumn extends AbstractColumn {
@@ -38,12 +38,12 @@ public class BitrateColumn extends AbstractColumn {
     }
 
     @Override
-    protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
+    protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
         return Long.valueOf(ao1.getBitrate()).compareTo(Long.valueOf(ao2.getBitrate()));
     }
 
     @Override
-    public Object getValueFor(AudioObject audioObject) {
+    public Object getValueFor(IAudioObject audioObject) {
         // Return bitrate
         if (audioObject.getBitrate() > 0) {
             return StringUtils.getString(Long.toString(audioObject.getBitrate()), " Kbps");

@@ -25,7 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.PlayListAudioObject;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 
 final class PlayListMode {
@@ -69,12 +69,12 @@ final class PlayListMode {
         }
     }
 
-    AudioObject moveToPreviousAudioObject() {
+    IAudioObject moveToPreviousAudioObject() {
         if (this.playList.isEmpty()) {
             return null;
         }
 
-        AudioObject previosulyPlayedObject = playbackHistory.moveToPreviousInHistory();
+        IAudioObject previosulyPlayedObject = playbackHistory.moveToPreviousInHistory();
         if (previosulyPlayedObject != null) {
             int index = this.playList.indexOf(previosulyPlayedObject);
             // Update pointed object
@@ -93,16 +93,16 @@ final class PlayListMode {
             return this.playList.get(previousIndex);
         }
 
-        AudioObject previousAudioObject = playList.getPointedList().moveToPreviousObject();
+        IAudioObject previousAudioObject = playList.getPointedList().moveToPreviousObject();
         return previousAudioObject;
     }
 
-    AudioObject moveToNextAudioObject() {
+    IAudioObject moveToNextAudioObject() {
         if (this.playList.isEmpty()) {
             return null;
         }
 
-        AudioObject nextPreviouslyPlayedObject = playbackHistory.moveToNextInHistory();
+        IAudioObject nextPreviouslyPlayedObject = playbackHistory.moveToNextInHistory();
         if (nextPreviouslyPlayedObject != null) {
             int index = this.playList.indexOf(nextPreviouslyPlayedObject);
             // Update pointed object
@@ -121,16 +121,16 @@ final class PlayListMode {
             return this.playList.get(nextIndex);
         }
 
-        AudioObject nextAudioObject = playList.getPointedList().moveToNextObject();
+        IAudioObject nextAudioObject = playList.getPointedList().moveToNextObject();
         return nextAudioObject;
     }
 
-    AudioObject getPreviousAudioObject(int index) {
+    IAudioObject getPreviousAudioObject(int index) {
         if (this.playList.isEmpty()) {
             return null;
         }
 
-        AudioObject previosulyPlayedObject = playbackHistory.getPreviousInHistory(index);
+        IAudioObject previosulyPlayedObject = playbackHistory.getPreviousInHistory(index);
         if (previosulyPlayedObject != null) {
             return previosulyPlayedObject;
         }
@@ -147,12 +147,12 @@ final class PlayListMode {
         return playList.getPointedList().getPreviousObject(index);
     }
 
-    AudioObject getNextAudioObject(int index) {
+    IAudioObject getNextAudioObject(int index) {
         if (this.playList.isEmpty()) {
             return null;
         }
 
-        AudioObject nextPreviouslyPlayedObject = playbackHistory.getNextInHistory(index);
+        IAudioObject nextPreviouslyPlayedObject = playbackHistory.getNextInHistory(index);
         if (nextPreviouslyPlayedObject != null) {
             return nextPreviouslyPlayedObject;
         }
@@ -192,7 +192,7 @@ final class PlayListMode {
         // Update history
         // Only remove from history audio objects removed from play list
         // If an audio object is duplicated in play list and is in history, if one of its occurrences is removed, history is not updated
-        List<AudioObject> audioObjectsToRemoveFromHistory = new ArrayList<AudioObject>();
+        List<IAudioObject> audioObjectsToRemoveFromHistory = new ArrayList<IAudioObject>();
         for (PlayListAudioObject plao : audioObjectsRemoved) {
             if (!playList.contains(plao.getAudioObject())) {
                 // If audio object is no more present in play list then remove from history
@@ -211,7 +211,7 @@ final class PlayListMode {
         return state.isShuffle();
     }
 
-    void addToPlaybackHistory(AudioObject object) {
+    void addToPlaybackHistory(IAudioObject object) {
         this.playbackHistory.addToHistory(object);
     }    
     

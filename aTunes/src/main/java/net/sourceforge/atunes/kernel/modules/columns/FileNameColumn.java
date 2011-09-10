@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.modules.columns;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 
 public class FileNameColumn extends AbstractColumn {
 
@@ -38,12 +38,12 @@ public class FileNameColumn extends AbstractColumn {
     }
 
     @Override
-    protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
+    protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
         return ((AudioFile) ao1).getFile().getName().compareTo(((AudioFile) ao2).getFile().getName());
     }
 
     @Override
-    public Object getValueFor(AudioObject audioObject) {
+    public Object getValueFor(IAudioObject audioObject) {
         if (audioObject instanceof Radio) {
             return "";
         }

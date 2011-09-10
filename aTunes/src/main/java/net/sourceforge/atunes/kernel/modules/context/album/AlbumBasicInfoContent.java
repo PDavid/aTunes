@@ -37,8 +37,8 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
-import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -66,7 +66,7 @@ public class AlbumBasicInfoContent extends AbstractContextPanelContent {
     }
 
     @Override
-    protected Map<String, ?> getDataSourceParameters(AudioObject audioObject) {
+    protected Map<String, ?> getDataSourceParameters(IAudioObject audioObject) {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put(AlbumInfoDataSource.INPUT_AUDIO_OBJECT, audioObject);
         // Want image too 
@@ -76,9 +76,9 @@ public class AlbumBasicInfoContent extends AbstractContextPanelContent {
 
     @Override
     protected void updateContentWithDataSourceResult(Map<String, ?> result) {
-        AudioObject audioObject = (AudioObject) result.get(AlbumInfoDataSource.OUTPUT_AUDIO_OBJECT);
+        IAudioObject audioObject = (IAudioObject) result.get(AlbumInfoDataSource.OUTPUT_AUDIO_OBJECT);
         if (result.containsKey(AlbumInfoDataSource.OUTPUT_ALBUM)) {
-            AlbumInfo album = (AlbumInfo) result.get(AlbumInfoDataSource.OUTPUT_ALBUM);
+            IAlbumInfo album = (IAlbumInfo) result.get(AlbumInfoDataSource.OUTPUT_ALBUM);
             artistLabel.setText(album != null ? album.getArtist() : audioObject.getArtist(), album != null ? album.getArtistUrl() : null);
             artistLabel.setEnabled(album != null && album.getArtistUrl() != null);
             albumLabel.setText(album != null ? album.getTitle() : I18nUtils.getString("UNKNOWN_ALBUM"), album != null ? album.getUrl() : null);

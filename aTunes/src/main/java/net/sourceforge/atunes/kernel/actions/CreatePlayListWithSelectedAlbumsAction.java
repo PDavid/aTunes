@@ -29,7 +29,7 @@ import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -42,21 +42,21 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class CreatePlayListWithSelectedAlbumsAction extends AbstractActionOverSelectedObjects<AudioObject> {
+public class CreatePlayListWithSelectedAlbumsAction extends AbstractActionOverSelectedObjects<IAudioObject> {
 
     private static final long serialVersionUID = -2917908051161952409L;
 
     CreatePlayListWithSelectedAlbumsAction() {
-        super(I18nUtils.getString("SET_ALBUM_AS_PLAYLIST"), AudioObject.class);
+        super(I18nUtils.getString("SET_ALBUM_AS_PLAYLIST"), IAudioObject.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("ALBUM_BUTTON_TOOLTIP"));
         setEnabled(false);
     }
 
     @Override
-    protected void performAction(List<AudioObject> objects) {
+    protected void performAction(List<IAudioObject> objects) {
         // Get selected albums from play list
         List<Album> selectedAlbums = new ArrayList<Album>();
-        for (AudioObject ao : objects) {
+        for (IAudioObject ao : objects) {
             String artistName = ao.getArtist();
             String album = ao.getAlbum();
             Artist a = RepositoryHandler.getInstance().getArtist(artistName);
@@ -79,7 +79,7 @@ public class CreatePlayListWithSelectedAlbumsAction extends AbstractActionOverSe
     }
 
     @Override
-    public boolean isEnabledForPlayListSelection(List<AudioObject> selection) {
+    public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
         return !selection.isEmpty();
     }
 }

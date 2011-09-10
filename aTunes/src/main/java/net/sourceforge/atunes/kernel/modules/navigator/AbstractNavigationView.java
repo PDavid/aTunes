@@ -63,7 +63,7 @@ import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITreeGeneratorFactory;
 import net.sourceforge.atunes.model.TreeObject;
@@ -217,13 +217,13 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
      */
     public void refreshView(ViewMode viewMode, String treeFilter) {
         // Get selected rows before refresh
-        List<AudioObject> selectedObjects = ((NavigationTableModel) getNavigationTable().getModel()).getAudioObjectsAt(getNavigationTable().getSelectedRows());
+        List<IAudioObject> selectedObjects = ((NavigationTableModel) getNavigationTable().getModel()).getAudioObjectsAt(getNavigationTable().getSelectedRows());
 
         // Call to refresh tree
         refreshTree(viewMode, treeFilter);
 
         // Set the same selected audio objects as before refreshing
-        for (AudioObject audioObject : selectedObjects) {
+        for (IAudioObject audioObject : selectedObjects) {
             int indexOfAudioObject = ((NavigationTableModel) getNavigationTable().getModel()).getAudioObjects().indexOf(audioObject);
             if (indexOfAudioObject != -1) {
                 getNavigationTable().addRowSelectionInterval(indexOfAudioObject, indexOfAudioObject);
@@ -247,7 +247,7 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
      * @param treeFilter
      * @return
      */
-    public abstract List<? extends AudioObject> getAudioObjectForTreeNode(DefaultMutableTreeNode node, ViewMode viewMode, String treeFilter);
+    public abstract List<? extends IAudioObject> getAudioObjectForTreeNode(DefaultMutableTreeNode node, ViewMode viewMode, String treeFilter);
 
     /**
      * Returns <code>true</code> if the view supports organize information in
@@ -356,7 +356,7 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
      * @param menu
      * @param selection
      */
-    private void updateTablePopupMenuItems(JPopupMenu menu, List<AudioObject> selection) {
+    private void updateTablePopupMenuItems(JPopupMenu menu, List<IAudioObject> selection) {
         for (Component c : menu.getComponents()) {
             Action action = null;
             if (c instanceof JMenuItem) {
@@ -380,7 +380,7 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
      * @param menu
      * @param selection
      */
-    private void updateTableMenuItems(JMenu menu, List<AudioObject> selection) {
+    private void updateTableMenuItems(JMenu menu, List<IAudioObject> selection) {
         for (int i = 0; i < menu.getItemCount(); i++) {
             JMenuItem menuItem = menu.getItem(i);
             // For some reason getItem can return null
@@ -468,11 +468,11 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
      * 
      * @return
      */
-    public List<AudioObject> getSelectedAudioObjects() {
-        List<AudioObject> selectedInTable = ((NavigationTableModel) getNavigationTable().getModel()).getAudioObjectsAt(getNavigationTable().getSelectedRows());
+    public List<IAudioObject> getSelectedAudioObjects() {
+        List<IAudioObject> selectedInTable = ((NavigationTableModel) getNavigationTable().getModel()).getAudioObjectsAt(getNavigationTable().getSelectedRows());
         if (selectedInTable.isEmpty()) {
             TreePath[] paths = getTree().getSelectionPaths();
-            List<AudioObject> audioObjectsSelected = new ArrayList<AudioObject>();
+            List<IAudioObject> audioObjectsSelected = new ArrayList<IAudioObject>();
             if (paths != null) {
                 for (TreePath path : paths) {
                     audioObjectsSelected.addAll(getAudioObjectForTreeNode((DefaultMutableTreeNode) path.getLastPathComponent(), getCurrentViewMode(), FilterHandler.getInstance()
@@ -487,12 +487,12 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
     
     @SuppressWarnings("unchecked")
 	@Override
-    public List<TreeObject<? extends AudioObject>> getSelectedTreeObjects() {
+    public List<TreeObject<? extends IAudioObject>> getSelectedTreeObjects() {
         TreePath[] paths = getTree().getSelectionPaths();
-        List<TreeObject<? extends AudioObject>> treeObjectsSelected = new ArrayList<TreeObject<? extends AudioObject>>();
+        List<TreeObject<? extends IAudioObject>> treeObjectsSelected = new ArrayList<TreeObject<? extends IAudioObject>>();
         if (paths != null) {
             for (TreePath path : paths) {
-            	treeObjectsSelected.add((TreeObject<? extends AudioObject>)((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject());
+            	treeObjectsSelected.add((TreeObject<? extends IAudioObject>)((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject());
             }
         }
         return treeObjectsSelected;
@@ -504,7 +504,7 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
      * @param clazz
      * @return
      */
-    protected JMenuItem getMenuItemForAction(Class<? extends AbstractActionOverSelectedObjects<? extends AudioObject>> clazz) {
+    protected JMenuItem getMenuItemForAction(Class<? extends AbstractActionOverSelectedObjects<? extends IAudioObject>> clazz) {
         return Actions.getMenuItemForAction(clazz, this);
     }
 
@@ -514,7 +514,7 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
      * @param clazz
      * @return
      */
-    protected JMenuItem getMenuItemForTreeAction(Class<? extends AbstractActionOverSelectedTreeObjects<? extends TreeObject<? extends AudioObject>>> clazz) {
+    protected JMenuItem getMenuItemForTreeAction(Class<? extends AbstractActionOverSelectedTreeObjects<? extends TreeObject<? extends IAudioObject>>> clazz) {
         return Actions.getMenuItemForTreeAction(clazz, this);
     }
 
@@ -524,7 +524,7 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
      * @param clazz
      * @return
      */
-    protected JMenuItem getMenuItemForAction(Class<? extends AbstractActionOverSelectedObjects<? extends AudioObject>> clazz, String actionId) {
+    protected JMenuItem getMenuItemForAction(Class<? extends AbstractActionOverSelectedObjects<? extends IAudioObject>> clazz, String actionId) {
         return Actions.getMenuItemForAction(clazz, actionId, this);
     }
 
@@ -535,9 +535,9 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
      * @return
      */
     @SuppressWarnings("unchecked")
-	protected static final List<TreeObject<? extends AudioObject>> getTreeObjectsSelected(JTree tree) {
+	protected static final List<TreeObject<? extends IAudioObject>> getTreeObjectsSelected(JTree tree) {
         // Get objects selected before refreshing tree
-        List<TreeObject<? extends AudioObject>> objectsSelected = new ArrayList<TreeObject<? extends AudioObject>>();
+        List<TreeObject<? extends IAudioObject>> objectsSelected = new ArrayList<TreeObject<? extends IAudioObject>>();
         TreePath[] pathsSelected = tree.getSelectionPaths();
 
         // If any node was selected
@@ -545,7 +545,7 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
             for (TreePath pathSelected : pathsSelected) {
                 Object obj = ((DefaultMutableTreeNode) pathSelected.getLastPathComponent()).getUserObject();
                 if (obj instanceof TreeObject) {
-                    objectsSelected.add((TreeObject<? extends AudioObject>) obj);
+                    objectsSelected.add((TreeObject<? extends IAudioObject>) obj);
                 }
             }
         }
@@ -561,9 +561,9 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
      * @return
      */
     @SuppressWarnings("unchecked")
-	protected static final List<TreeObject<? extends AudioObject>> getTreeObjectsExpanded(JTree tree, DefaultMutableTreeNode root) {
+	protected static final List<TreeObject<? extends IAudioObject>> getTreeObjectsExpanded(JTree tree, DefaultMutableTreeNode root) {
         // Get objects expanded before refreshing tree
-        List<TreeObject<? extends AudioObject>> objectsExpanded = new ArrayList<TreeObject<? extends AudioObject>>();
+        List<TreeObject<? extends IAudioObject>> objectsExpanded = new ArrayList<TreeObject<? extends IAudioObject>>();
         Enumeration<TreePath> enume = tree.getExpandedDescendants(new TreePath(root.getPath()));
 
         // If any node was expanded
@@ -572,7 +572,7 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
                 TreePath p = enume.nextElement();
                 Object obj = ((DefaultMutableTreeNode) p.getLastPathComponent()).getUserObject();
                 if (obj instanceof TreeObject) {
-                    objectsExpanded.add((TreeObject<? extends AudioObject>) obj);
+                    objectsExpanded.add((TreeObject<? extends IAudioObject>) obj);
                 }
             }
         }
@@ -708,7 +708,7 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
 	 * @param currentViewMode
 	 * @param audioObject
 	 */
-	public void selectAudioObject(ViewMode currentViewMode, AudioObject audioObject) {
+	public void selectAudioObject(ViewMode currentViewMode, IAudioObject audioObject) {
 		
 	}
 

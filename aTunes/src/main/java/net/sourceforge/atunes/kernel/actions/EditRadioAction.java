@@ -26,7 +26,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class EditRadioAction extends AbstractActionOverSelectedObjects<Radio> {
@@ -56,7 +56,7 @@ public class EditRadioAction extends AbstractActionOverSelectedObjects<Radio> {
     }
     
     @Override
-    public boolean isEnabledForNavigationTableSelection(List<AudioObject> selection) {
+    public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
         return selection.size() == 1;
     }
 }

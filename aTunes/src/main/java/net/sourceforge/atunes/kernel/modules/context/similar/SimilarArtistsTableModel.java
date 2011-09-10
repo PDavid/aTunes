@@ -26,7 +26,7 @@ import java.util.List;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-import net.sourceforge.atunes.kernel.modules.context.ArtistInfo;
+import net.sourceforge.atunes.model.IArtistInfo;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -35,7 +35,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 public class SimilarArtistsTableModel implements TableModel {
 
     /** The artists. */
-    private List<ArtistInfo> artists;
+    private List<IArtistInfo> artists;
 
     /** The listeners. */
     private List<TableModelListener> listeners;
@@ -43,7 +43,7 @@ public class SimilarArtistsTableModel implements TableModel {
     /**
      * Instantiates a new audio scrobbler artists table model.
      */
-    public SimilarArtistsTableModel(List<ArtistInfo> artists) {
+    public SimilarArtistsTableModel(List<IArtistInfo> artists) {
         this.artists = artists;
         listeners = new ArrayList<TableModelListener>();
     }
@@ -68,7 +68,7 @@ public class SimilarArtistsTableModel implements TableModel {
      * 
      * @return the artist
      */
-    public ArtistInfo getArtist(int index) {
+    public IArtistInfo getArtist(int index) {
         return artists.get(index);
     }
 
@@ -79,7 +79,7 @@ public class SimilarArtistsTableModel implements TableModel {
      */
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        return ArtistInfo.class;
+        return IArtistInfo.class;
     }
 
     /*

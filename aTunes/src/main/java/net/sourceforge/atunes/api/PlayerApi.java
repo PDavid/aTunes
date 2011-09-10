@@ -23,7 +23,7 @@ package net.sourceforge.atunes.api;
 import net.sourceforge.atunes.kernel.PlaybackState;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
@@ -67,7 +67,7 @@ public final class PlayerApi {
      * 
      * @return
      */
-    public static AudioObject getCurrentAudioObject() {
+    public static IAudioObject getCurrentAudioObject() {
         return PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList();
     }
 

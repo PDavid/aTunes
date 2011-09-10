@@ -26,7 +26,7 @@ import java.util.List;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
 import net.sourceforge.atunes.kernel.modules.search.SearchableObject;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.lucene.document.Document;
@@ -115,7 +115,7 @@ public abstract class AbstractCommonAudioFileSearchableObject implements Searcha
     }
 
     @Override
-    public Document getDocumentForElement(AudioObject audioObject) {
+    public Document getDocumentForElement(IAudioObject audioObject) {
     	if (audioObject instanceof AudioFile) {
     		AudioFile audioFile = (AudioFile) audioObject;
 

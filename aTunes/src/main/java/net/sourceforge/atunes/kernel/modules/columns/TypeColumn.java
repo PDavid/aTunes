@@ -32,7 +32,7 @@ import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 
 public class TypeColumn extends AbstractColumn {
 
@@ -50,7 +50,7 @@ public class TypeColumn extends AbstractColumn {
     }
 
     @Override
-    protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
+    protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
         return 0;
     }
 
@@ -60,7 +60,7 @@ public class TypeColumn extends AbstractColumn {
     }
 
     @Override
-    public Object getValueFor(AudioObject audioObject) {
+    public Object getValueFor(IAudioObject audioObject) {
         if (audioObject instanceof AudioFile) {
             return new ColorMutableImageIcon() {
             	@Override

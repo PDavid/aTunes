@@ -25,10 +25,11 @@ import java.util.concurrent.ExecutionException;
 
 import javax.swing.SwingWorker;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
-import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -40,15 +41,15 @@ import net.sourceforge.atunes.utils.I18nUtils;
 public class AddBannedSongInLastFMAction extends CustomAbstractAction {
 
     private final class BanSongSwingWorker extends SwingWorker<Void, Void> {
-		private final AudioObject song;
+		private final IAudioObject song;
 
-		private BanSongSwingWorker(AudioObject song) {
+		private BanSongSwingWorker(IAudioObject song) {
 			this.song = song;
 		}
 
 		@Override
 		protected Void doInBackground() throws Exception {
-		    WebServicesHandler.getInstance().getLastFmService().addBannedSong(song);
+			Context.getBean(IWebServicesHandler.class).addBannedSong(song);
 		    return null;
 		}
 
@@ -88,7 +89,7 @@ public class AddBannedSongInLastFMAction extends CustomAbstractAction {
      * 
      * @param song
      */
-    public void banSong(final AudioObject song) {
+    public void banSong(final IAudioObject song) {
         setEnabled(false);
         new BanSongSwingWorker(song).execute();
     }

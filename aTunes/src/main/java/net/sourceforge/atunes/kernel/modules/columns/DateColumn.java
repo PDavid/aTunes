@@ -24,7 +24,7 @@ import java.text.DateFormat;
 
 import javax.swing.SwingConstants;
 
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 
 public class DateColumn extends AbstractColumn {
 
@@ -39,7 +39,7 @@ public class DateColumn extends AbstractColumn {
     }
 
     @Override
-    protected int ascendingCompare(AudioObject ao1, AudioObject ao2) {
+    protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
         if (ao1.getDate() == null)
             return 1;
         else if (ao2.getDate() == null)
@@ -49,7 +49,7 @@ public class DateColumn extends AbstractColumn {
     }
 
     @Override
-    public Object getValueFor(AudioObject audioObject) {
+    public Object getValueFor(IAudioObject audioObject) {
         if (audioObject.getDate() != null)
             return dateFormat.format(audioObject.getDate());
         else
@@ -57,7 +57,7 @@ public class DateColumn extends AbstractColumn {
     }
 
     @Override
-    public String getValueForFilter(AudioObject audioObject) {
+    public String getValueForFilter(IAudioObject audioObject) {
         return dateFormat.format(audioObject.getDate());
     }
 }

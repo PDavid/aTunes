@@ -24,7 +24,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class DownloadPodcastEntryAction extends AbstractActionOverSelectedObjects<PodcastFeedEntry> {
@@ -45,8 +45,8 @@ public class DownloadPodcastEntryAction extends AbstractActionOverSelectedObject
     }
 
     @Override
-    public boolean isEnabledForNavigationTableSelection(List<AudioObject> selection) {
-        for (AudioObject ao : selection) {
+    public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
+        for (IAudioObject ao : selection) {
             if (!(ao instanceof PodcastFeedEntry) || ((PodcastFeedEntry) ao).isDownloaded() || PodcastFeedHandler.getInstance().isDownloading((PodcastFeedEntry) ao)) {
                 return false;
             }

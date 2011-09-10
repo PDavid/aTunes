@@ -28,15 +28,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import net.sourceforge.atunes.kernel.modules.context.AlbumInfo;
-import net.sourceforge.atunes.kernel.modules.context.AlbumListInfo;
 import net.sourceforge.atunes.kernel.modules.context.ContextInformationDataSource;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IAlbumInfo;
+import net.sourceforge.atunes.model.IAlbumListInfo;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -78,13 +78,15 @@ public class AlbumInfoDataSource implements ContextInformationDataSource {
 
     private IState state;
     
+    private IWebServicesHandler webServicesHandler;
+    
     @Override
     public Map<String, ?> getData(Map<String, ?> parameters) {
         Map<String, Object> result = new HashMap<String, Object>();
         if (parameters.containsKey(INPUT_AUDIO_OBJECT)) {
-            AudioObject audioObject = (AudioObject) parameters.get(INPUT_AUDIO_OBJECT);
+            IAudioObject audioObject = (IAudioObject) parameters.get(INPUT_AUDIO_OBJECT);
             result.put(OUTPUT_AUDIO_OBJECT, audioObject);
-            AlbumInfo albumInfo = getAlbumInfo(audioObject);
+            IAlbumInfo albumInfo = getAlbumInfo(audioObject);
             if (albumInfo != null) {
                 result.put(OUTPUT_ALBUM, albumInfo);
                 if (parameters.containsKey(INPUT_BOOLEAN_IMAGE)) {
@@ -101,12 +103,12 @@ public class AlbumInfoDataSource implements ContextInformationDataSource {
      * @param audioObject
      * @return
      */
-    private AlbumInfo getAlbumInfo(AudioObject audioObject) {
+    private IAlbumInfo getAlbumInfo(IAudioObject audioObject) {
         // If possible use album artist
         String artist = audioObject.getAlbumArtist().isEmpty() ? audioObject.getArtist() : audioObject.getAlbumArtist();
 
         // Get album info
-        AlbumInfo album = WebServicesHandler.getInstance().getLastFmService().getAlbum(artist, audioObject.getAlbum());
+        IAlbumInfo album = webServicesHandler.getAlbum(artist, audioObject.getAlbum());
 
         // If album was not found try to get an album from the same artist that match
         if (album == null) {
@@ -116,10 +118,10 @@ public class AlbumInfoDataSource implements ContextInformationDataSource {
             } catch (InterruptedException e) {
             }
 
-            List<AlbumInfo> albums = null;
+            List<IAlbumInfo> albums = null;
             if (!audioObject.getArtist().equals(I18nUtils.getString("UNKNOWN_ARTIST"))) {
                 // Get 
-                AlbumListInfo albumList = WebServicesHandler.getInstance().getLastFmService().getAlbumList(audioObject.getArtist(), state.isHideVariousArtistsAlbums(),
+                IAlbumListInfo albumList = webServicesHandler.getAlbumList(audioObject.getArtist(), state.isHideVariousArtistsAlbums(),
                         state.getMinimumSongNumberPerAlbum());
                 if (albumList != null) {
                     albums = albumList.getAlbums();
@@ -128,10 +130,10 @@ public class AlbumInfoDataSource implements ContextInformationDataSource {
 
             if (albums != null) {
                 // Try to find an album which fits 
-                AlbumInfo auxAlbum = null;
+                IAlbumInfo auxAlbum = null;
                 int i = 0;
                 while (auxAlbum == null && i < albums.size()) {
-                    AlbumInfo a = albums.get(i);
+                    IAlbumInfo a = albums.get(i);
                     StringTokenizer st = new StringTokenizer(a.getTitle(), " ");
                     boolean matches = true;
                     int tokensAnalyzed = 0;
@@ -160,7 +162,7 @@ public class AlbumInfoDataSource implements ContextInformationDataSource {
                 }
                 if (auxAlbum != null) {
                     // Get full information for album
-                    auxAlbum = WebServicesHandler.getInstance().getLastFmService().getAlbum(auxAlbum.getArtist(), auxAlbum.getTitle());
+                    auxAlbum = webServicesHandler.getAlbum(auxAlbum.getArtist(), auxAlbum.getTitle());
                     if (auxAlbum != null) {
                         album = auxAlbum;
                     }
@@ -179,10 +181,10 @@ public class AlbumInfoDataSource implements ContextInformationDataSource {
      * @param audioObject
      * @return
      */
-    private Image getImage(AlbumInfo albumInfo, AudioObject audioObject) {
+    private Image getImage(IAlbumInfo albumInfo, IAudioObject audioObject) {
         Image image = null;
         if (albumInfo != null) {
-            image = WebServicesHandler.getInstance().getLastFmService().getImage(albumInfo);
+            image = webServicesHandler.getAlbumImage(albumInfo);
             // This data source should only be used with audio files but anyway check if audioObject is an LocalAudioObject before save picture
             if (audioObject instanceof ILocalAudioObject) {
                 savePicture(image, (ILocalAudioObject) audioObject);
@@ -243,8 +245,12 @@ public class AlbumInfoDataSource implements ContextInformationDataSource {
         return t.contains("/");
     }
     
-    public void setState(IState state) {
+    public final void setState(IState state) {
 		this.state = state;
+	}
+    
+    public final void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+		this.webServicesHandler = webServicesHandler;
 	}
 
 }

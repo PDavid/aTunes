@@ -42,7 +42,7 @@ import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ViewMode;
@@ -132,7 +132,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
     }
 
     @Override
-    public void applicationStarted(List<AudioObject> playList) {
+    public void applicationStarted(List<IAudioObject> playList) {
         showNavigationTree(getState().isShowNavigationTree());
         applyNavigationTableVisibility(getState().isShowNavigationTree() && getState().isShowNavigationTable());
 
@@ -271,7 +271,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 		getNavigationController().refreshTable();
 	}
 
-	public List<AudioObject> getFilesSelectedInNavigator() {
+	public List<IAudioObject> getFilesSelectedInNavigator() {
 		return getNavigationController().getFilesSelectedInNavigator();
 	}
 
@@ -303,11 +303,11 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 		getNavigationController().notifyDeviceReload();		
 	}
 
-	public List<? extends AudioObject> getAudioObjectsForTreeNode(Class<? extends AbstractNavigationView> class1,DefaultMutableTreeNode objectDragged) {
+	public List<? extends IAudioObject> getAudioObjectsForTreeNode(Class<? extends AbstractNavigationView> class1,DefaultMutableTreeNode objectDragged) {
 		return getNavigationController().getAudioObjectsForTreeNode(class1, objectDragged);
 	}
 
-	public AudioObject getAudioObjectInNavigationTable(Integer row) {
+	public IAudioObject getAudioObjectInNavigationTable(Integer row) {
 		return getNavigationController().getAudioObjectInNavigationTable(row);
 	}
 
@@ -319,7 +319,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 	public void playListCleared() {}
 
 	@Override
-	public void selectedAudioObjectChanged(AudioObject audioObject) {}
+	public void selectedAudioObjectChanged(IAudioObject audioObject) {}
 
 	@Override
 	public void favoritesChanged() {
@@ -383,7 +383,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
      * Called to select given audio object in navigator
      * @param audioObject
      */
-    public void selectAudioObject(AudioObject audioObject){
+    public void selectAudioObject(IAudioObject audioObject){
     	getCurrentView().selectAudioObject(getCurrentView().getCurrentViewMode(), audioObject);
     }
 

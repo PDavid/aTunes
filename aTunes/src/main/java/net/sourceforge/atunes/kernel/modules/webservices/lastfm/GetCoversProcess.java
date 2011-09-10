@@ -27,13 +27,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.process.AbstractProcess;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
@@ -70,10 +71,11 @@ public class GetCoversProcess extends AbstractProcess {
     protected boolean runProcess() {
         long coversRetrieved = 0;
         List<Album> albums = new ArrayList<Album>(artist.getAlbums().values());
+        IWebServicesHandler webServicesHandler = Context.getBean(IWebServicesHandler.class);
         for (int i = 0; i < albums.size() && !isCanceled(); i++) {
             Album album = albums.get(i);
             if (!hasCoverDownloaded(album)) {
-                Image albumImage = WebServicesHandler.getInstance().getLastFmService().getAlbumImage(artist.getName(), album.getName());
+                Image albumImage = webServicesHandler.getAlbumImage(artist.getName(), album.getName());
                 if (albumImage != null) {
                     try {
                         ImageUtils.writeImageToFile(albumImage, AudioFilePictureUtils.getFileNameForCover((AudioFile)album.getAudioObjects().get(0)));
