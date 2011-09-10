@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel;
 
 import java.awt.Component;
 
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IState;
 
 public abstract class AbstractSimpleController<T extends Component> implements IController {
@@ -33,16 +32,29 @@ public abstract class AbstractSimpleController<T extends Component> implements I
      * State of app
      */
     private IState state;
-    
+
+    /**
+     * Default constructor
+     */
+    public AbstractSimpleController() {
+    }
+
     /**
      * Instantiates a new controller.
      */
     public AbstractSimpleController(T componentControlled, IState state) {
         this.componentControlled = componentControlled;
         this.state = state;
-        Logger.debug("Creating ", this.getClass().getSimpleName());
     }
-
+    
+    public final void setComponentControlled(T componentControlled) {
+		this.componentControlled = componentControlled;
+	}
+    
+    public final void setState(IState state) {
+		this.state = state;
+	}
+    
     public T getComponentControlled() {
         return componentControlled;
     }

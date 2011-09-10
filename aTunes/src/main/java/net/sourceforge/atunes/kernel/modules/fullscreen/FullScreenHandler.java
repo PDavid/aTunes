@@ -23,45 +23,15 @@ package net.sourceforge.atunes.kernel.modules.fullscreen;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JDialog;
-
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.views.dialogs.fullScreen.FullScreenWindow;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.model.AudioObject;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IFullScreenHandler;
 
-public class FullScreenHandler extends AbstractHandler {
+public class FullScreenHandler extends AbstractHandler implements IFullScreenHandler {
 
-	private static FullScreenHandler instance;
-	
 	private FullScreenController controller;
 	
-	/**
-	 * Returns singleton instance of this handler
-	 * @return
-	 */
-	public static FullScreenHandler getInstance() {
-		if (instance == null) {
-			instance = new FullScreenHandler();
-		}
-		return instance;
-	}
-	
-	@Override
-	public void applicationStarted(List<AudioObject> playList) {
-	}
-
-	@Override
-	public void applicationFinish() {
-	}
-
-	@Override
-	public void applicationStateChanged(IState newState) {
-	}
-
     @Override
     public void playListCleared() {
         // Next actions must be done ONLY if stopPlayerWhenPlayListClear is enabled
@@ -79,10 +49,6 @@ public class FullScreenHandler extends AbstractHandler {
         updateAudioObjectsToShow(audioObject);
     }
 
-	@Override
-	protected void initHandler() {
-	}
-
 	/**
 	 * Returns full screen controller or null if not created, so it must be checked first
 	 * @return
@@ -92,13 +58,10 @@ public class FullScreenHandler extends AbstractHandler {
 	}
 	
 	/**
-	 * Creates full screen controller and window, to be called only when needed
+	 * Creates full screen controller, to be called only when needed
 	 */
 	private void createFullScreenController() {
-		JDialog.setDefaultLookAndFeelDecorated(false);
-		FullScreenWindow window = new FullScreenWindow(GuiHandler.getInstance().getFrame().getFrame(), getState());
-        JDialog.setDefaultLookAndFeelDecorated(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isDialogUndecorated());
-        controller = new FullScreenController(window, getState());
+        controller = new FullScreenController(getState());
 	}
 	
 	private void updateAudioObjectsToShow(AudioObject audioObject) {
@@ -126,9 +89,7 @@ public class FullScreenHandler extends AbstractHandler {
         return objects;
 	}
 	
-	/**
-	 * Shows or hides full screen
-	 */
+	@Override
 	public void toggleFullScreenVisibility() {
 		// Here must create controller and window, as first call to this method will be when full screen becomes visible
 		createFullScreenController();
@@ -140,20 +101,14 @@ public class FullScreenHandler extends AbstractHandler {
 		getFullScreenController().toggleVisibility();
 	}
 
-	/**
-	 * Sets playing
-	 * @param playing
-	 */
+	@Override
 	public void setPlaying(boolean playing) {
 		if (getFullScreenController() != null) {
 			getFullScreenController().setPlaying(playing);
 		}
 	}
 
-	/**
-	 * Returns true if full screen is visible
-	 * @return
-	 */
+	@Override
 	public boolean isVisible() {
 		if (getFullScreenController() != null) {
 			return getFullScreenController().isVisible();
@@ -161,35 +116,24 @@ public class FullScreenHandler extends AbstractHandler {
 		return false;
 	}
 
-	/**
-	 * Sets audio object length
-	 * @param currentLength
-	 */
+	@Override
 	public void setAudioObjectLength(long currentLength) {
 		if (getFullScreenController() != null) {
 			getFullScreenController().setAudioObjectLenght(currentLength);
 		}
 	}
 
-	/**
-	 * Set audio object played time
-	 * @param actualPlayedTime
-	 * @param currentAudioObjectLength
-	 */
+	@Override
 	public void setCurrentAudioObjectPlayedTime(long actualPlayedTime, long currentAudioObjectLength) {
 		if (getFullScreenController() != null) {
 			getFullScreenController().setCurrentAudioObjectPlayedTime(actualPlayedTime, currentAudioObjectLength);
 		}
 	}
 
-	/**
-	 * Sets volume
-	 * @param finalVolume
-	 */
+	@Override
 	public void setVolume(int finalVolume) {
 		if (getFullScreenController() != null) {
 			getFullScreenController().setVolume(finalVolume);
 		}
 	}
-
 }

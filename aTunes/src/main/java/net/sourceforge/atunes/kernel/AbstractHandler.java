@@ -32,7 +32,6 @@ import net.sourceforge.atunes.kernel.modules.command.CommandHandler;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
-import net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenHandler;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeyHandler;
 import net.sourceforge.atunes.kernel.modules.instances.MultipleInstancesHandler;
@@ -54,6 +53,7 @@ import net.sourceforge.atunes.kernel.modules.tray.SystemTrayHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.IHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IUpdateHandler;
@@ -138,7 +138,7 @@ public abstract class AbstractHandler implements IHandler {
         handlers.add(GeneralPurposePluginsHandler.getInstance());
         handlers.add(WebServicesHandler.getInstance());
         handlers.add(TagHandler.getInstance());
-        handlers.add(FullScreenHandler.getInstance());
+        handlers.add((AbstractHandler) Context.getBean(IFullScreenHandler.class));
 
         ExecutorService executorService = Executors.newFixedThreadPool(3);
         // Register handlers
