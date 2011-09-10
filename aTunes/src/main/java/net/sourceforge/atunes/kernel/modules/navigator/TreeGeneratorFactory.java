@@ -20,27 +20,28 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
-import net.sourceforge.atunes.model.IState;
+import java.util.Map;
+
+import net.sourceforge.atunes.model.ITreeGenerator;
+import net.sourceforge.atunes.model.ITreeGeneratorFactory;
 import net.sourceforge.atunes.model.ViewMode;
 
-class TreeGeneratorFactory {
+public class TreeGeneratorFactory implements ITreeGeneratorFactory {
 
-	/**
-	 * Returns generator for given mode
-	 * @param viewMode
-	 * @param state
-	 * @return
-	 */
-	static TreeGenerator getTreeGenerator(ViewMode viewMode, IState state) {
-		switch (viewMode) {
-		case ARTIST: return new ArtistTreeGenerator();
-		case ALBUM: return new AlbumTreeGenerator();
-		case GENRE: return new GenreTreeGenerator();
-		case FOLDER: return new FolderTreeGenerator();
-		case YEAR: return new YearTreeGenerator();
-		case ARTIST_ALBUM: return new ArtistTreeGenerator();
-		default: return null;
+	private Map<ViewMode, ITreeGenerator> generators;
+	
+	@Override
+	public void setGenerators(Map<ViewMode, ITreeGenerator> generators) {
+		this.generators = generators;
+	}
+	
+	@Override
+	public ITreeGenerator getTreeGenerator(ViewMode viewMode) {
+		ITreeGenerator generator = null;
+		if (generators != null) {
+			generator = generators.get(viewMode);
 		}
+		return generator;
 	}
 		
 	

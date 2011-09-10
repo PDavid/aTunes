@@ -176,7 +176,7 @@ public final class DeviceNavigationView extends AbstractNavigationView {
         root.removeAllChildren();
 
         // Build tree
-        TreeGeneratorFactory.getTreeGenerator(viewMode, getState()).buildTree(getState(), "DEVICE", this, (Map<String, Year>) getViewData(viewMode), treeFilter, root, treeModel, objectsSelected, objectsExpanded);
+        getTreeGeneratorFactory().getTreeGenerator(viewMode).buildTree(getState(), "DEVICE", this, (Map<String, Year>) getViewData(viewMode), treeFilter, root, treeModel, objectsSelected, objectsExpanded);
 
         
         // Expand nodes

@@ -34,6 +34,7 @@ import javax.swing.tree.TreePath;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ITreeGenerator;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -42,7 +43,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  *
  */
-class AlbumTreeGenerator implements TreeGenerator {
+public class AlbumTreeGenerator implements ITreeGenerator {
 
     protected static final class AlbumDefaultMutableTreeNode extends DefaultMutableTreeNode {
         private static final long serialVersionUID = -1276777390072754207L;

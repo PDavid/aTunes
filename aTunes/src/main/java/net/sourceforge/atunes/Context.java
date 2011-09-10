@@ -37,7 +37,8 @@ public class Context {
 				"/settings/spring/webservices.xml", 
 				"/settings/spring/navigationviews.xml", 
 				"/settings/spring/treecelldecorators.xml",
-				"/settings/spring/context.xml"
+				"/settings/spring/context.xml",
+				"/settings/spring/treegenerators.xml"
 				);
 	}
 	

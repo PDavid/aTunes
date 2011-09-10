@@ -35,6 +35,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ITreeGenerator;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -43,7 +44,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  *
  */
-class FolderTreeGenerator implements TreeGenerator {
+public class FolderTreeGenerator implements ITreeGenerator {
 
 	/**
 	 * Builds tree
