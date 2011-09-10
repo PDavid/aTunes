@@ -14,6 +14,7 @@
 		<config>src/main/resources/settings/spring/treecelldecorators.xml</config>
 		<config>src/main/resources/settings/spring/treegenerators.xml</config>
 		<config>src/main/resources/settings/spring/webservices.xml</config>
+		<config>src/main/resources/settings/spring/handlers.xml</config>
 	</configs>
 	<configSets>
 		<configSet>

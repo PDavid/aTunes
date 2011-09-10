@@ -31,6 +31,7 @@ public class Context {
 	}
 	
 	protected static void initialize() {
+		
 		context = new ClassPathXmlApplicationContext(
 				"/settings/spring/state.xml", 
 				"/settings/spring/columnsets.xml", 
@@ -38,7 +39,8 @@ public class Context {
 				"/settings/spring/navigationviews.xml", 
 				"/settings/spring/treecelldecorators.xml",
 				"/settings/spring/context.xml",
-				"/settings/spring/treegenerators.xml"
+				"/settings/spring/treegenerators.xml",
+				"/settings/spring/handlers.xml"
 				);
 	}
 	

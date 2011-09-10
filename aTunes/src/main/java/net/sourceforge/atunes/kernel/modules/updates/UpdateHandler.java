@@ -24,20 +24,14 @@ import java.io.IOException;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
-import javax.swing.SwingWorker;
-
-import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
-import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.model.IUpdateHandler;
 import net.sourceforge.atunes.utils.NetworkUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.XMLUtils;
@@ -48,52 +42,17 @@ import org.w3c.dom.Element;
 /**
  * Handler for updates
  */
-public final class UpdateHandler extends AbstractHandler {
+public final class UpdateHandler extends AbstractHandler implements IUpdateHandler {
 
-    private final class CheckUpdatesSwingWorker extends
-			SwingWorker<ApplicationVersion, Void> {
-		private final boolean showNoNewVersion;
-		private final ProxyBean p;
-		private final boolean alwaysInDialog;
+    /** 
+     * Url to look for new version. 
+     */
+    private String updatesURL;
 
-		private CheckUpdatesSwingWorker(boolean showNoNewVersion, ProxyBean p,
-				boolean alwaysInDialog) {
-			this.showNoNewVersion = showNoNewVersion;
-			this.p = p;
-			this.alwaysInDialog = alwaysInDialog;
-		}
-
-		@Override
-		protected ApplicationVersion doInBackground() throws Exception {
-		    return getLastVersion(p);
-		}
-
-		@Override
-		protected void done() {
-		    try {
-		        ApplicationVersion version = get();
-		        if (version != null && version.compareTo(Constants.VERSION) == 1) {
-		            GuiHandler.getInstance().showNewVersionInfo(version, alwaysInDialog);
-		        } else if (showNoNewVersion) {
-		            GuiHandler.getInstance().showMessage(I18nUtils.getString("NOT_NEW_VERSION"));
-		        }
-		    } catch (InterruptedException e) {
-		        Logger.error(e);
-		    } catch (ExecutionException e) {
-		        Logger.error(e);
-		    }
-		}
+    public final void setUpdatesURL(String updatesURL) {
+		this.updatesURL = updatesURL;
 	}
-
-	/** Url to look for new version. */
-    private static final String updatesURL = "http://www.atunes.org/latest.xml";
-
-    /** Instance */
-    private static UpdateHandler instance = new UpdateHandler();
-
-    private UpdateHandler() {
-    }
-
+    
     @Override
     public void applicationFinish() {
     }
@@ -106,10 +65,6 @@ public final class UpdateHandler extends AbstractHandler {
     protected void initHandler() {
     }
 
-    public static UpdateHandler getInstance() {
-        return instance;
-    }
-
     @Override
     public void applicationStarted(List<AudioObject> playList) {
     }
@@ -117,22 +72,17 @@ public final class UpdateHandler extends AbstractHandler {
     @Override
     public void allHandlersInitialized() {
         if (!Kernel.isNoUpdate()) {
-            checkUpdates(getState().getProxy(), false, false);
+            checkUpdates(false, false);
         }
     }
 
     /**
      * Used to check for new version.
-     * 
-     * @param p
-     *            the p
      * @param alwaysInDialog
-     *            if the new version info shouls always be shown in a dialog
      * @param showNoNewVersion
-     *            the show no new version
      */
-    public void checkUpdates(final ProxyBean p, final boolean alwaysInDialog, final boolean showNoNewVersion) {
-        new CheckUpdatesSwingWorker(showNoNewVersion, p, alwaysInDialog).execute();
+    public void checkUpdates(boolean alwaysInDialog, boolean showNoNewVersion) {
+        new CheckUpdatesSwingWorker(this, showNoNewVersion, alwaysInDialog).execute();
     }
 
     /**
@@ -143,15 +93,10 @@ public final class UpdateHandler extends AbstractHandler {
      * 
      * @return the last version
      */
-    ApplicationVersion getLastVersion(ProxyBean p) {
+    public ApplicationVersion getLastVersion() {
         ApplicationVersion result = null;
         try {
-            ExtendedProxy proxy;
-            if (p != null) {
-                proxy = ExtendedProxy.getProxy(p);
-            } else {
-                proxy = null;
-            }
+            ExtendedProxy proxy = ExtendedProxy.getProxy(getState().getProxy());
             URLConnection connection = NetworkUtils.getConnection(updatesURL, proxy);
             Document xml = XMLUtils.getXMLDocument(NetworkUtils.readURL(connection));
 
@@ -179,16 +124,6 @@ public final class UpdateHandler extends AbstractHandler {
             Logger.error(e);
         }
         return result;
-    }
-
-    /**
-     * The main method.
-     * 
-     * @param args
-     *            the arguments
-     */
-    public static void main(String[] args) {
-        instance.checkUpdates(null, true, true);
     }
 
 	@Override

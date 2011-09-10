@@ -119,8 +119,7 @@ public class Kernel {
 		}
 
         // Register and initialize handlers
-        AbstractHandler.setState(state);
-        AbstractHandler.registerAndInitializeHandlers();
+        AbstractHandler.registerAndInitializeHandlers(state);
 
         // Find for audio files on arguments
         final List<String> songs = new ArrayList<String>();

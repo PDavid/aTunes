@@ -26,6 +26,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.cdripper.RipperHandler;
 import net.sourceforge.atunes.kernel.modules.command.CommandHandler;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
@@ -46,25 +47,20 @@ import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationStateChangeListener;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
 import net.sourceforge.atunes.kernel.modules.tags.TagHandler;
 import net.sourceforge.atunes.kernel.modules.tray.SystemTrayHandler;
-import net.sourceforge.atunes.kernel.modules.updates.UpdateHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.AudioObject;
+import net.sourceforge.atunes.model.IHandler;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IUpdateHandler;
 
-public abstract class AbstractHandler implements ApplicationLifeCycleListener, 
-                                                 ApplicationStateChangeListener,
-                                                 PlayListEventListener,
-                                                 FavoritesListener,
-                                                 DeviceListener,
-                                                 PlaybackStateListener {
+public abstract class AbstractHandler implements IHandler {
 
-	private static IState state;
+	private IState state;
 	
 	/**
 	 * Returns access to state of application
@@ -74,8 +70,8 @@ public abstract class AbstractHandler implements ApplicationLifeCycleListener,
 		return state;
 	}
 	
-	protected static void setState(IState s) {
-		state = s;
+	public void setState(IState state) {
+		this.state = state;
 	}
 	
     /**
@@ -116,8 +112,9 @@ public abstract class AbstractHandler implements ApplicationLifeCycleListener,
 
     /**
      * Creates and registers all defined handlers
+     * @param state
      */
-    static void registerAndInitializeHandlers() {
+    static void registerAndInitializeHandlers(IState state) {
         // Instance handlers
     	// TODO: Add here every new Handler
     	List<AbstractHandler> handlers = new ArrayList<AbstractHandler>();
@@ -139,7 +136,7 @@ public abstract class AbstractHandler implements ApplicationLifeCycleListener,
         handlers.add(RadioHandler.getInstance());
         handlers.add(RepositoryHandler.getInstance());
         handlers.add(SearchHandler.getInstance());
-        handlers.add(UpdateHandler.getInstance());
+        handlers.add((AbstractHandler)Context.getBean(IUpdateHandler.class));
         handlers.add(GuiHandler.getInstance());
         handlers.add(StatisticsHandler.getInstance());
         handlers.add(SystemTrayHandler.getInstance());
@@ -151,6 +148,7 @@ public abstract class AbstractHandler implements ApplicationLifeCycleListener,
         ExecutorService executorService = Executors.newFixedThreadPool(3);
         // Register handlers
         for (AbstractHandler handler : handlers) {
+        	handler.setState(state);
             registerHandler(handler);
             Runnable task = handler.getPreviousInitializationTask();
             if (task != null) {
