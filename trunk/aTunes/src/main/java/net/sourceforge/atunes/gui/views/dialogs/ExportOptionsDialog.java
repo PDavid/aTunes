@@ -34,7 +34,6 @@ import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -43,6 +42,8 @@ import javax.swing.JTextArea;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
+import net.sourceforge.atunes.model.IExportOptionsDialog;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -50,7 +51,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * 
  * @author fleax
  */
-public final class ExportOptionsDialog extends AbstractCustomDialog {
+public final class ExportOptionsDialog extends AbstractCustomDialog implements IExportOptionsDialog {
 
     private static final long serialVersionUID = 4403091324599627762L;
 
@@ -70,15 +71,12 @@ public final class ExportOptionsDialog extends AbstractCustomDialog {
      * Setted to true when cancelled
      */
     private boolean cancel;
-
+    
     /**
      * Instantiates a new export options dialog.
-     * 
-     * @param parent
-     *            the parent
      */
-    public ExportOptionsDialog(JFrame parent) {
-        super(parent, 400, 220, true, CloseAction.HIDE);
+    public ExportOptionsDialog(IFrame frame) {
+        super(frame, 400, 220, true, CloseAction.DISPOSE);
         setResizable(false);
         setTitle(I18nUtils.getString("EXPORT"));
         add(getContent());
@@ -90,7 +88,7 @@ public final class ExportOptionsDialog extends AbstractCustomDialog {
             }
         });
     }
-
+    
     /**
      * Gets the content.
      * 
@@ -173,43 +171,36 @@ public final class ExportOptionsDialog extends AbstractCustomDialog {
         return container;
     }
 
-    /**
-     * Gets the export button.
-     * 
-     * @return the export button
-     */
-    public JButton getExportButton() {
-        return exportButton;
-    }
-
-    /**
-     * Gets the export location.
-     * 
-     * @return the export location
-     */
-    public String getExportLocation() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IExportOptionsDialog#getExportLocation()
+	 */
+    @Override
+	public String getExportLocation() {
         return exportLocationFileChooser.getResult();
     }
 
-    public void startDialog() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IExportOptionsDialog#startDialog()
+	 */
+    @Override
+	public void startDialog() {
         cancel = false;
         super.setVisible(true);
     }
 
-    /**
-     * @return the cancel
-     */
-    public boolean isCancel() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IExportOptionsDialog#isCancel()
+	 */
+    @Override
+	public boolean isCancel() {
         return cancel;
     }
 
-    /**
-     * Returns <code>true</code> if user selected to export current navigator
-     * selection, <code>false</code> otherwise (then selected current play list)
-     * 
-     * @return
-     */
-    public boolean exportNavigatorSelection() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IExportOptionsDialog#isExportNavigatorSelection()
+	 */
+    @Override
+	public boolean isExportNavigatorSelection() {
         return currentNavigatorSelectionRadioButton.isSelected();
     }
 }
