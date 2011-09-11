@@ -28,8 +28,8 @@ import java.util.Map;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.Folder;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.TreeObject;
 
 /**

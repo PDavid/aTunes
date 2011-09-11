@@ -32,8 +32,8 @@ import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.GenericImageSize;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.DateUtils;
 

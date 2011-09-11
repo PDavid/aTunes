@@ -27,8 +27,8 @@ import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.context.ContextTable;
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAlbumInfo;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**

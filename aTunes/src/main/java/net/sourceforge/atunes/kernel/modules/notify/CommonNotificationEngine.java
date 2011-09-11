@@ -26,8 +26,8 @@ import java.util.UUID;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.misc.TempFolder;
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.GenericImageSize;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.ImageUtils;
 

@@ -41,8 +41,8 @@ import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
 import net.sourceforge.atunes.misc.ClipboardFacade;
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.EditTagSources;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILyricsService;
 import net.sourceforge.atunes.model.ITagHandler;
