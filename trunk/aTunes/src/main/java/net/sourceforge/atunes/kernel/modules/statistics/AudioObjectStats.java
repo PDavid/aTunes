@@ -23,10 +23,12 @@ package net.sourceforge.atunes.kernel.modules.statistics;
 import java.io.Serializable;
 import java.util.Date;
 
+import net.sourceforge.atunes.model.IAudioObjectStatistics;
+
 /**
- * The playing stats of an audio file.
+ * The playing stats of an audio object.
  */
-public class AudioFileStats implements Serializable {
+public class AudioObjectStats implements Serializable, IAudioObjectStatistics {
 
     private static final long serialVersionUID = -2392613471327847012L;
 
@@ -39,51 +41,34 @@ public class AudioFileStats implements Serializable {
     /**
      * Instantiates a new audio file stats object.
      */
-    public AudioFileStats() {
+    public AudioObjectStats() {
         lastPlayed = new Date();
         timesPlayed = 1;
     }
 
-    /**
-     * Gets the last played.
-     * 
-     * @return the last played
-     */
-    public Date getLastPlayed() {
+    @Override
+	public Date getLastPlayed() {
         return new Date(lastPlayed.getTime());
     }
 
-    /**
-     * Gets the times played.
-     * 
-     * @return the times played
-     */
-    public int getTimesPlayed() {
+    @Override
+	public int getTimesPlayed() {
         return timesPlayed;
     }
 
-    /**
-     * Increase times played.
-     */
-    public void increaseTimesPlayed() {
+    @Override
+	public void increaseTimesPlayed() {
         this.timesPlayed++;
     }
 
-    /**
-     * Reset.
-     */
-    public void reset() {
+    @Override
+	public void reset() {
         lastPlayed = null;
         timesPlayed = 0;
     }
 
-    /**
-     * Sets the last played.
-     * 
-     * @param lastPlayed
-     *            the new last played
-     */
-    public void setLastPlayed(Date lastPlayed) {
+    @Override
+	public void setLastPlayed(Date lastPlayed) {
         this.lastPlayed = new Date(lastPlayed.getTime());
     }
 }

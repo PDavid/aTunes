@@ -46,7 +46,7 @@ import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.Favorites;
-import net.sourceforge.atunes.kernel.modules.statistics.AudioFileStats;
+import net.sourceforge.atunes.kernel.modules.statistics.AudioObjectStats;
 import net.sourceforge.atunes.kernel.modules.statistics.Statistics;
 import net.sourceforge.atunes.kernel.modules.statistics.StatisticsAlbum;
 import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
@@ -319,7 +319,7 @@ public final class XMLUtils {
         xStream.alias("Repository", Repository.class);
         xStream.alias("RepositoryStats", Statistics.class);
         xStream.alias("RepositoryStructure", RepositoryStructure.class);
-        xStream.alias("SongStats", AudioFileStats.class);
+        xStream.alias("SongStats", AudioObjectStats.class);
         xStream.alias("RankList", RankList.class);
         xStream.alias("StatisticsAlbum", StatisticsAlbum.class);
         xStream.alias("AudioFile", AudioFile.class);

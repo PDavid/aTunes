@@ -19,4 +19,6 @@
 	<bean id="generalPurposePluginsHandler" class="net.sourceforge.atunes.kernel.modules.plugins.GeneralPurposePluginsHandler"/>
 	
 	<bean id="systemTrayHandler" class="net.sourceforge.atunes.kernel.modules.tray.SystemTrayHandler"/>
+	
+	<bean id="statisticsHandler" class="net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler"/>
 </beans>

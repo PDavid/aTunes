@@ -24,8 +24,9 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.RankList;
+import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IAudioObjectStatistics;
 
 public class Statistics implements Serializable {
 
@@ -38,7 +39,7 @@ public class Statistics implements Serializable {
     private RankList<StatisticsAlbum> albumsRanking;
     /** The artists ranking. The ranking contains names of artists */
     private RankList<String> artistsRanking;
-    private Map<String, AudioFileStats> audioFilesStats;
+    private Map<String, AudioObjectStats> audioFilesStats;
 
     /**
      * Instantiates a new repository stats.
@@ -47,7 +48,7 @@ public class Statistics implements Serializable {
         audioFilesRanking = new RankList<String>();
         albumsRanking = new RankList<StatisticsAlbum>();
         artistsRanking = new RankList<String>();
-        audioFilesStats = new HashMap<String, AudioFileStats>();
+        audioFilesStats = new HashMap<String, AudioObjectStats>();
     }
 
     /**
@@ -91,7 +92,7 @@ public class Statistics implements Serializable {
      * 
      * @return the audio files stats
      */
-    public Map<String, AudioFileStats> getAudioFilesStats() {
+    public Map<String, AudioObjectStats> getAudioFilesStats() {
         return audioFilesStats;
     }
 
@@ -103,7 +104,7 @@ public class Statistics implements Serializable {
      * 
      * @return the stats for file
      */
-    public AudioFileStats getStatsForAudioFile(AudioFile audioFile) {
+    public IAudioObjectStatistics getStatsForAudioFile(IAudioObject audioFile) {
         if (audioFile != null) {
             return audioFilesStats.get(audioFile.getUrl());
         }
@@ -135,7 +136,7 @@ public class Statistics implements Serializable {
      * @param audioFilesStats
      *            the audio files stats
      */
-    public void setAudioFilesStats(Map<String, AudioFileStats> audioFilesStats) {
+    public void setAudioFilesStats(Map<String, AudioObjectStats> audioFilesStats) {
         this.audioFilesStats = audioFilesStats;
     }
 

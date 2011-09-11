@@ -31,7 +31,6 @@ import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
-import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -185,7 +184,7 @@ public class Artist implements Serializable, TreeObject<ILocalAudioObject>, Comp
         toolTip.setLine1(name);
         int albumNumber = getAlbums().size();
         toolTip.setLine2(StringUtils.getString(albumNumber, " ", (albumNumber > 1 ? I18nUtils.getString("ALBUMS") : I18nUtils.getString("ALBUM"))));
-        Integer timesPlayed = StatisticsHandler.getInstance().getArtistTimesPlayed(this);
+        Integer timesPlayed = Context.getBean(IStatisticsHandler.class).getArtistTimesPlayed(this);
         toolTip.setLine3(StringUtils.getString(I18nUtils.getString("TIMES_PLAYED"), ": ", timesPlayed));
     }
 

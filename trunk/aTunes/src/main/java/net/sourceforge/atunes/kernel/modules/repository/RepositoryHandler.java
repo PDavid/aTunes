@@ -69,7 +69,6 @@ import net.sourceforge.atunes.kernel.modules.repository.processes.ImportFilesPro
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
 import net.sourceforge.atunes.kernel.modules.search.searchableobjects.RepositorySearchableObject;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
-import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
 import net.sourceforge.atunes.kernel.modules.tags.TagAttributesReviewed;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
@@ -78,6 +77,7 @@ import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.model.Repository;
 import net.sourceforge.atunes.model.RepositoryListener;
@@ -104,6 +104,8 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 	private ExecutorService repositoryChangesService = Executors.newSingleThreadExecutor();
 	
 	private boolean caseSensitiveTrees;
+	
+	private IStatisticsHandler statisticsHandler;
 	
 	private final class ImportFilesProcessListener implements ProcessListener {
 		private final ImportFilesProcess process;
@@ -251,15 +253,18 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     	
     	private List<Folder> folders;
     	
-    	public RefreshFoldersSwingWorker(Repository repository, List<Folder> folders) {
+    	private IStatisticsHandler statisticsHandler;
+    	
+    	public RefreshFoldersSwingWorker(Repository repository, List<Folder> folders, IStatisticsHandler statisticsHandler) {
     		this.repository = repository;
     		this.folders = folders;
+    		this.statisticsHandler = statisticsHandler;
 		}
     	
     	@Override
     	protected Void doInBackground() throws Exception {
     		getInstance().startTransaction();
-            RepositoryLoader.refreshFolders(repository, folders);
+            RepositoryLoader.refreshFolders(repository, folders, statisticsHandler);
             getInstance().endTransaction();
     		return null;
     	}
@@ -330,6 +335,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         // Add itself as listener
     	caseSensitiveTrees = getState().isKeyAlwaysCaseSensitiveInRepositoryStructure();
         addAudioFilesRemovedListener(this);
+        statisticsHandler = Context.getBean(IStatisticsHandler.class);
     }
 
     @Override
@@ -959,7 +965,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
      *            the file
      */
     public void refreshFile(ILocalAudioObject file) {
-        RepositoryLoader.refreshFile(repository, file);
+        RepositoryLoader.refreshFile(repository, file, statisticsHandler);
     }
 
     /**
@@ -971,7 +977,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     public void refreshFolders(List<Folder> folders) {
         GuiHandler.getInstance().showProgressBar(true, StringUtils.getString(I18nUtils.getString("REFRESHING"), "..."));
         enableRepositoryActions(false);
-    	new RefreshFoldersSwingWorker(repository, folders).execute();
+    	new RefreshFoldersSwingWorker(repository, folders, statisticsHandler).execute();
     }
 
     /**
@@ -1044,7 +1050,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         if (succeeded) {
         	renameFile(audioFile, file, newFile);
             NavigationHandler.getInstance().notifyReload();
-            StatisticsHandler.getInstance().updateFileName(file.getAbsolutePath(), newFile.getAbsolutePath());
+            Context.getBean(IStatisticsHandler.class).updateFileName(audioFile, file.getAbsolutePath(), newFile.getAbsolutePath());
         }
     }
     

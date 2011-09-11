@@ -40,8 +40,9 @@ import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
-import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -58,6 +59,8 @@ import org.jfree.ui.RectangleInsets;
 
 final class StatsDialogController extends AbstractSimpleController<StatsDialog>  implements LookAndFeelChangeListener {
 
+	private IStatisticsHandler statisticsHandler;
+	
     private static class RightAlignmentTableCellRendererCode extends AbstractTableCellRendererCode {
         @Override
         public JComponent getComponent(JComponent superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -100,9 +103,11 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
      * 
      * @param frame
      * @param state
+     * @param statisticsHandler
      */
-    StatsDialogController(StatsDialog frame, IState state) {
+    StatsDialogController(StatsDialog frame, IState state, IStatisticsHandler statisticsHandler) {
         super(frame, state);
+        this.statisticsHandler = statisticsHandler;
         LookAndFeelSelector.getInstance().addLookAndFeelChangeListener(this);
     }
 
@@ -158,8 +163,8 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
             for (int i = 0; i < albums.size(); i++) {
                 content[i][0] = albums.get(i)[0];
                 content[i][1] = albums.get(i)[1];
-                if (StatisticsHandler.getInstance().getTotalAudioFilesPlayed() != -1) {
-                    content[i][2] = StringUtils.toString(100.0 * (float) ((Integer) albums.get(i)[1]) / StatisticsHandler.getInstance().getTotalAudioFilesPlayed(), 2);
+                if (statisticsHandler.getTotalAudioObjectsPlayed() != -1) {
+                    content[i][2] = StringUtils.toString(100.0 * (float) ((Integer) albums.get(i)[1]) / statisticsHandler.getTotalAudioObjectsPlayed(), 2);
                 } else {
                     content[i][2] = 0;
                 }
@@ -178,8 +183,8 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
      */
     private List<Object[]> getMostPlayedAlbumsInRanking(int n) {
         List<Object[]> result = new ArrayList<Object[]>();
-        List<Album> albums = StatisticsHandler.getInstance().getMostPlayedAlbums(n);
-        List<Integer> count = StatisticsHandler.getInstance().getMostPlayedAlbumsCount(n);
+        List<Album> albums = statisticsHandler.getMostPlayedAlbums(n);
+        List<Integer> count = statisticsHandler.getMostPlayedAlbumsCount(n);
         if (albums != null) {
             for (int i = 0; i < albums.size(); i++) {
                 Object[] obj = new Object[2];
@@ -225,8 +230,8 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
             for (int i = 0; i < artists.size(); i++) {
                 content[i][0] = artists.get(i)[0];
                 content[i][1] = artists.get(i)[1];
-                if (StatisticsHandler.getInstance().getTotalAudioFilesPlayed() != -1) {
-                    content[i][2] = StringUtils.toString(100.0 * (float) ((Integer) artists.get(i)[1]) / StatisticsHandler.getInstance().getTotalAudioFilesPlayed(), 2);
+                if (statisticsHandler.getTotalAudioObjectsPlayed() != -1) {
+                    content[i][2] = StringUtils.toString(100.0 * (float) ((Integer) artists.get(i)[1]) / statisticsHandler.getTotalAudioObjectsPlayed(), 2);
                 } else {
                     content[i][2] = 0;
                 }
@@ -245,8 +250,8 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
      */
     private List<Object[]> getMostPlayedArtistsInRanking(int n) {
         List<Object[]> result = new ArrayList<Object[]>();
-        List<Artist> artists = StatisticsHandler.getInstance().getMostPlayedArtists(n);
-        List<Integer> count = StatisticsHandler.getInstance().getMostPlayedArtistsCount(n);
+        List<Artist> artists = statisticsHandler.getMostPlayedArtists(n);
+        List<Integer> count = statisticsHandler.getMostPlayedArtistsCount(n);
         if (artists != null) {
             for (int i = 0; i < artists.size(); i++) {
                 if (artists.get(i) != null) {
@@ -265,7 +270,7 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
      */
     private void setGeneralChart() {
         DefaultPieDataset dataset = new DefaultPieDataset();
-        int different = StatisticsHandler.getInstance().getDifferentAudioFilesPlayed();
+        int different = statisticsHandler.getDifferentAudioObjectsPlayed();
         int total = RepositoryHandler.getInstance().getAudioFilesList().size();
         dataset.setValue(I18nUtils.getString("SONGS_PLAYED"), different);
         dataset.setValue(I18nUtils.getString("SONGS_NEVER_PLAYED"), total - different);
@@ -287,7 +292,7 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
      */
 
     private void setGeneralTable() {
-        int different = StatisticsHandler.getInstance().getDifferentAudioFilesPlayed();
+        int different = statisticsHandler.getDifferentAudioObjectsPlayed();
         int total = RepositoryHandler.getInstance().getAudioFilesList().size();
         if (total != 0) {
             String[] headers = new String[] { " ", I18nUtils.getString("COUNT"), "%" };
@@ -338,8 +343,8 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
             for (int i = 0; i < songs.size(); i++) {
                 content[i][0] = songs.get(i)[0];
                 content[i][1] = songs.get(i)[1];
-                if (StatisticsHandler.getInstance().getTotalAudioFilesPlayed() != -1) {
-                    content[i][2] = StringUtils.toString(100.0 * (float) ((Integer) songs.get(i)[1]) / StatisticsHandler.getInstance().getTotalAudioFilesPlayed(), 2);
+                if (statisticsHandler.getTotalAudioObjectsPlayed() != -1) {
+                    content[i][2] = StringUtils.toString(100.0 * (float) ((Integer) songs.get(i)[1]) / statisticsHandler.getTotalAudioObjectsPlayed(), 2);
                 } else {
                     content[i][2] = 0;
                 }
@@ -358,12 +363,12 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
      */
     private List<Object[]> getMostPlayedAudioFilesInRanking(int n) {
         List<Object[]> result = new ArrayList<Object[]>();
-        List<ILocalAudioObject> audioFiles = StatisticsHandler.getInstance().getMostPlayedAudioFiles(n);
-        List<Integer> count = StatisticsHandler.getInstance().getMostPlayedAudioFilesCount(n);
+        List<IAudioObject> audioFiles = statisticsHandler.getMostPlayedAudioObjects(n);
+        List<Integer> count = statisticsHandler.getMostPlayedAudioObjectsCount(n);
         if (audioFiles != null) {
             for (int i = 0; i < audioFiles.size(); i++) {
                 Object[] obj = new Object[2];
-                ILocalAudioObject audioFile = audioFiles.get(i);
+                IAudioObject audioFile = audioFiles.get(i);
                 if (audioFile != null) {
                 	obj[0] = StringUtils.getString(audioFile.getTitleOrFileName(), " (", audioFile.getArtist(), ")");
                 	obj[1] = count.get(i);
