@@ -8,6 +8,25 @@
 	<bean id="exportOptionsDialog" class="net.sourceforge.atunes.gui.views.dialogs.ExportOptionsDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 	</bean>
+	
+	<bean id="equalizerDialog" class="net.sourceforge.atunes.gui.views.dialogs.EqualizerDialog" scope="prototype">
+		<constructor-arg ref="frame"/>
+	</bean> 
 
+	<bean id="fileSelectionDialog" class="net.sourceforge.atunes.gui.views.dialogs.FileSelectionDialog" scope="prototype">
+		<constructor-arg ref="frame"/>
+	</bean>
+
+	<bean id="multiFolderSelectionDialog" class="net.sourceforge.atunes.gui.views.dialogs.MultiFolderSelectionDialog" scope="prototype">
+		<constructor-arg ref="frame"/>
+	</bean>
+
+	<bean id="progressDialog" class="net.sourceforge.atunes.gui.views.dialogs.ProgressDialog" scope="prototype">
+		<constructor-arg ref="frame"/>
+	</bean>
+
+	<bean id="transferDialog" class="net.sourceforge.atunes.gui.views.dialogs.TransferProgressDialog" scope="prototype">
+		<constructor-arg ref="frame"/>
+	</bean>
 
 </beans>

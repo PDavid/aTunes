@@ -20,36 +20,51 @@
 
 package net.sourceforge.atunes.gui.views.dialogs;
 
-import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.IProgressDialog;
-import net.sourceforge.atunes.utils.StringUtils;
+import java.io.File;
 
 /**
- * The Class TransferProgressDialog.
+ * Shows a dialog to select files or folders
+ * @author alex
+ *
  */
-public final class TransferProgressDialog extends ProgressDialog implements IProgressDialog {
+public interface IFileSelectionDialog {
 
-    /**
-	 * 
+	/**
+	 * Sets title
+	 * @param title
 	 */
-    private static final long serialVersionUID = 1264914965691724365L;
+	public void setTitle(String title);
+	
+	/**
+	 * Only selects folders, not files
+	 * @param directoryOnly
+	 */
+	public void setDirectoryOnly(boolean directoryOnly);
+	
+	/**
+	 * Gets the selected dir.
+	 * 
+	 * @return the selected dir
+	 */
+	public File getSelectedDir();
 
-    /**
-     * Instantiates a new transfer progress dialog.
-     * 
-     * @param frame
-     */
-    public TransferProgressDialog(IFrame frame) {
-        super(frame);
-    }
+	/**
+	 * Gets the selected files.
+	 * 
+	 * @return the selected files
+	 */
+	public File[] getSelectedFiles();
 
-    @Override
-    public void setCurrentProgress(long value) {
-        getCurrentLabel().setText(StringUtils.fromByteToMegaOrGiga(value));
-    }
+	/**
+	 * Checks if is canceled.
+	 * 
+	 * @return true, if is canceled
+	 */
+	public boolean isCanceled();
 
-    @Override
-    public void setTotalProgress(long value) {
-        getTotalLabel().setText(StringUtils.fromByteToMegaOrGiga(value));
-    }
+	/**
+	 * Start dialog.
+	 */
+	public void showDialog();
+
 }

@@ -25,11 +25,11 @@ import java.io.File;
 import java.util.List;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.views.dialogs.MultiFolderSelectionDialog;
 import net.sourceforge.atunes.gui.views.dialogs.SelectorDialog;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IMultiFolderSelectionDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -57,10 +57,10 @@ public class ImportToRepositoryAction extends CustomAbstractAction {
         }
 
         // Now show dialog to select folders
-        MultiFolderSelectionDialog dialog = GuiHandler.getInstance().getMultiFolderSelectionDialog();
+        IMultiFolderSelectionDialog dialog = Context.getBean(IMultiFolderSelectionDialog.class);
         dialog.setTitle(I18nUtils.getString("IMPORT"));
         dialog.setText(I18nUtils.getString("SELECT_FOLDERS_TO_IMPORT"));
-        dialog.startDialog(null);
+        dialog.showDialog(null);
         if (!dialog.isCancelled()) {
             List<File> folders = dialog.getSelectedFolders();
             // If user selected folders...

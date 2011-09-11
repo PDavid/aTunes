@@ -40,7 +40,8 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.views.dialogs.FileSelectionDialog;
+import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.gui.views.dialogs.IFileSelectionDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.actions.Actions;
@@ -173,14 +174,14 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
      * Connect device.
      */
     public void connectDevice() {
-        FileSelectionDialog dialog = GuiHandler.getInstance().getFileSelectionDialog(true);
+    	IFileSelectionDialog dialog = Context.getBean(IFileSelectionDialog.class);
+    	dialog.setDirectoryOnly(true);
         dialog.setTitle(I18nUtils.getString("SELECT_DEVICE"));
-        dialog.startDialog();
+        dialog.showDialog();
         if (!dialog.isCanceled()) {
             File dir = dialog.getSelectedDir();
-
             GuiHandler.getInstance().showProgressBar(true, null);
-            this.retrieveDevice(dir);
+            retrieveDevice(dir);
         }
     }
 
