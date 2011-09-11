@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -221,7 +220,7 @@ public final class FilterHandler extends AbstractHandler {
      */
     private FilterController getToolBarFilterController() {
         if (toolBarFilterController == null) {
-            toolBarFilterController = new FilterController(GuiHandler.getInstance().getPlayerControls().getFilterPanel(), getState());
+            toolBarFilterController = new FilterController(getFrame().getPlayerControls().getFilterPanel(), getState());
         }
         return toolBarFilterController;
     }

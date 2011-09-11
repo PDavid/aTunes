@@ -35,7 +35,6 @@ import net.sourceforge.atunes.gui.model.SearchResultColumnModel;
 import net.sourceforge.atunes.gui.views.dialogs.CustomSearchDialog;
 import net.sourceforge.atunes.gui.views.dialogs.SearchResultsDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.search.searchableobjects.DeviceSearchableObject;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -189,7 +188,7 @@ public final class SearchHandler extends AbstractHandler {
      */
     private CustomSearchController getSearchController() {
         if (customSearchController == null) {
-            customSearchController = new CustomSearchController(new CustomSearchDialog(GuiHandler.getInstance().getFrame().getFrame()), getState());
+            customSearchController = new CustomSearchController(new CustomSearchDialog(getFrame().getFrame()), getState());
         }
         return customSearchController;
     }
@@ -201,7 +200,7 @@ public final class SearchHandler extends AbstractHandler {
      */
     private SearchResultsController getSearchResultsController() {
         if (searchResultsController == null) {
-            searchResultsController = new SearchResultsController(new SearchResultsDialog(GuiHandler.getInstance().getFrame().getFrame()), getState());
+            searchResultsController = new SearchResultsController(new SearchResultsDialog(getFrame().getFrame()), getState());
         }
         return searchResultsController;
     }

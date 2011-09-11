@@ -28,7 +28,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.frame.Frame;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavConverter;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
@@ -38,6 +37,7 @@ import net.sourceforge.atunes.kernel.modules.os.SolarisOperatingSystem;
 import net.sourceforge.atunes.kernel.modules.os.WindowsOperatingSystem;
 import net.sourceforge.atunes.kernel.modules.os.macosx.MacOSXOperatingSystem;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.commons.io.FileUtils;
@@ -230,7 +230,7 @@ public class OsManager {
      * Setup specific properties for frame
      * @param frame
      */
-    public static void setupFrame(Frame frame) {
+    public static void setupFrame(IFrame frame) {
     	adapter.setUpFrame(frame);
     }
 
@@ -270,9 +270,10 @@ public class OsManager {
 	 * Sets window in full screen
 	 * @param window
 	 * @param fullscreen
+	 * @param frame
 	 */
-	public static void setFullScreen(Window window, boolean fullscreen) {
-		adapter.setFullScreen(window, fullscreen);
+	public static void setFullScreen(Window window, boolean fullscreen, IFrame frame) {
+		adapter.setFullScreen(window, fullscreen, frame);
 	}
 
 	/**

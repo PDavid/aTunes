@@ -57,7 +57,6 @@ import net.sourceforge.atunes.kernel.actions.ShowAboutAction;
 import net.sourceforge.atunes.kernel.actions.ShuffleModeAction;
 import net.sourceforge.atunes.kernel.actions.StopCurrentAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.ToggleWindowVisibilityAction;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ISystemTrayHandler;
@@ -155,7 +154,7 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
         if (isTrayInitialized()) {
             trayIconVisible = true;
             addTrayIcon(getTrayIcon());
-            GuiHandler.getInstance().setFrameDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+            getFrame().setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         } else {
             Logger.error("No system tray supported");
         }
@@ -223,7 +222,7 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
         } else {
             if (!visible && trayIconVisible && isTrayInitialized()) {
                 tray.remove(getTrayIcon());
-                GuiHandler.getInstance().setFrameDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                getFrame().setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
                 trayIconVisible = false;
             }
         }

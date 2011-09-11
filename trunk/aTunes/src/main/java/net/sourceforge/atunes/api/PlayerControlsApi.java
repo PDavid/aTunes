@@ -22,7 +22,8 @@ package net.sourceforge.atunes.api;
 
 import javax.swing.Action;
 
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.model.IFrame;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
@@ -39,6 +40,6 @@ public final class PlayerControlsApi {
      * @param button
      */
     public static void addSecondaryControl(Action action) {
-        GuiHandler.getInstance().getPlayerControls().addSecondaryControl(action);
+        Context.getBean(IFrame.class).getPlayerControls().addSecondaryControl(action);
     }
 }

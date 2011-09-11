@@ -25,12 +25,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import net.sourceforge.atunes.gui.frame.Frame;
 import net.sourceforge.atunes.kernel.OperatingSystem;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.Cdda2wav;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.Cdparanoia;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class SolarisOperatingSystem extends OperatingSystemAdapter {
@@ -102,7 +102,7 @@ public class SolarisOperatingSystem extends OperatingSystemAdapter {
 	}
 
 	@Override
-	public void setUpFrame(Frame frame) {
+	public void setUpFrame(IFrame frame) {
 	}
 
 	@Override

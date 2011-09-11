@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.gui.model.PlayListColumnModel;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 
 /**
  * This class defines all columns than can be viewed in Play List.
@@ -50,6 +49,6 @@ public final class PlayListColumnSet extends AbstractColumnSet {
 
     @Override
     protected void refreshColumns() {
-        ((PlayListColumnModel) GuiHandler.getInstance().getPlayListTable().getColumnModel()).arrangeColumns(false);
+        ((PlayListColumnModel) frame.getPlayListTable().getColumnModel()).arrangeColumns(false);
     }
 }

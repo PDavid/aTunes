@@ -25,8 +25,11 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.gui.views.dialogs.UpdateDialog;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IUpdateHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -38,11 +41,15 @@ final class CheckUpdatesSwingWorker extends
 	private final IUpdateHandler updateHandler;
 	private final boolean showNoNewVersion;
 	private final boolean alwaysInDialog;
+	private IState state;
+	private IFrame frame;
 
-	CheckUpdatesSwingWorker(IUpdateHandler updateHandler, boolean showNoNewVersion, boolean alwaysInDialog) {
+	CheckUpdatesSwingWorker(IUpdateHandler updateHandler, boolean showNoNewVersion, boolean alwaysInDialog, IState state, IFrame frame) {
 		this.updateHandler = updateHandler;
 		this.showNoNewVersion = showNoNewVersion;
 		this.alwaysInDialog = alwaysInDialog;
+		this.state = state;
+		this.frame = frame;
 	}
 
 	@Override
@@ -55,7 +62,11 @@ final class CheckUpdatesSwingWorker extends
 	    try {
 	        ApplicationVersion version = get();
 	        if (version != null && version.compareTo(Constants.VERSION) == 1) {
-	            GuiHandler.getInstance().showNewVersionInfo(version, alwaysInDialog);
+	        	 if (alwaysInDialog || !state.isShowStatusBar()) {
+	                 new UpdateDialog(version, frame.getFrame()).setVisible(true);
+	             } else {
+	                 frame.showNewVersionInfo(true, version);
+	             }
 	        } else if (showNoNewVersion) {
 	            GuiHandler.getInstance().showMessage(I18nUtils.getString("NOT_NEW_VERSION"));
 	        }

@@ -35,6 +35,7 @@ import javax.swing.JSplitPane;
 
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.CustomSplitPane;
+import net.sourceforge.atunes.model.IFrameState;
 
 /**
  * Common code for single frames. Right now all single frames have two vertical split panes, a tool bar and a status bar
@@ -124,7 +125,7 @@ public abstract class CommonSingleFrame extends AbstractSingleFrame {
 	protected abstract JComponent getRightSplitPaneRightComponent();
 	
 	@Override
-	protected void setupSplitPaneDividerPosition(FrameState frameState) {
+	protected void setupSplitPaneDividerPosition(IFrameState frameState) {
         applySplitPaneDividerPosition(leftSplitPane, frameState.getSplitPaneDividerPos(LEFT_SPLIT_PANE), 0.5);
         applySplitPaneDividerPosition(rightSplitPane, frameState.getSplitPaneDividerPos(RIGHT_SPLIT_PANE), 0.5);
 	}

@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IState;
 
 import org.commonjukebox.plugins.model.PluginApi;
@@ -52,7 +53,8 @@ public abstract class AbstractColumnSet {
 	 * State of app
 	 */
 	protected IState state;	
-
+	
+    protected IFrame frame;
     
     public AbstractColumnSet() {
         ColumnSets.registerColumnSet(this);
@@ -61,6 +63,11 @@ public abstract class AbstractColumnSet {
     public final void setState(IState state) {
     	this.state = state;
     }
+
+    public final void setFrame(IFrame frame) {
+		this.frame = frame;
+	}
+
 
 
     /**

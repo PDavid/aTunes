@@ -27,7 +27,6 @@ import java.util.Map;
 
 import javax.swing.SwingConstants;
 
-import net.sourceforge.atunes.gui.frame.Frame;
 import net.sourceforge.atunes.gui.frame.FrameState;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelBean;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
@@ -41,6 +40,8 @@ import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.kernel.modules.tags.IncompleteTagsChecker;
 import net.sourceforge.atunes.kernel.modules.tags.TagAttribute;
+import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IFrameState;
 import net.sourceforge.atunes.model.ILyricsEngineInfo;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateStore;
@@ -377,15 +378,15 @@ public class ApplicationState implements IState {
 	 */
     @Override
 	@SuppressWarnings("unchecked")
-	public Class<? extends Frame> getFrameClass() {
-        return (Class<? extends Frame>) this.stateStore.retrievePreference(Preferences.FRAME_CLASS, null);
+	public Class<? extends IFrame> getFrameClass() {
+        return (Class<? extends IFrame>) this.stateStore.retrievePreference(Preferences.FRAME_CLASS, null);
     }
 
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setFrameClass(java.lang.Class)
 	 */
     @Override
-	public void setFrameClass(Class<? extends Frame> frameClass) {
+	public void setFrameClass(Class<? extends IFrame> frameClass) {
     	this.stateStore.storePreference(Preferences.FRAME_CLASS, frameClass);
     }
     
@@ -1128,12 +1129,12 @@ public class ApplicationState implements IState {
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getFrameState(java.lang.Class)
 	 */
     @Override
-	public FrameState getFrameState(Class<? extends Frame> frame) {
+	public FrameState getFrameState(Class<? extends IFrame> frame) {
     	// Map creation is controlled in this class to avoid modification without persistence 
     	@SuppressWarnings("unchecked")
-		Map<Class<? extends Frame>, FrameState> state = (Map<Class<? extends Frame>, FrameState>) this.stateStore.retrievePreference(Preferences.FRAME_STATES, null);
+		Map<Class<? extends IFrame>, FrameState> state = (Map<Class<? extends IFrame>, FrameState>) this.stateStore.retrievePreference(Preferences.FRAME_STATES, null);
     	if (state == null) {
-    		state = new HashMap<Class<? extends Frame>, FrameState>();
+    		state = new HashMap<Class<? extends IFrame>, FrameState>();
     		this.stateStore.storePreference(Preferences.FRAME_STATES, state);
     	}
     	// Clone object to be sure changes made by application to frame state are not made over object in cache
@@ -1144,14 +1145,14 @@ public class ApplicationState implements IState {
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setFrameState(java.lang.Class, net.sourceforge.atunes.gui.frame.FrameState)
 	 */
     @Override
-	public void setFrameState(Class<? extends Frame> frame, FrameState fs) {
+	public void setFrameState(Class<? extends IFrame> frame, IFrameState fs) {
     	// Clone object to be sure changes made by application to frame state are not made over object in cache
     	FrameState frameState = new FrameState(fs);
     	if (getFrameState(frame) == null || !getFrameState(frame).equals(frameState)) {
         	@SuppressWarnings("unchecked")
-    		Map<Class<? extends Frame>, FrameState> state = (Map<Class<? extends Frame>, FrameState>) this.stateStore.retrievePreference(Preferences.FRAME_STATES, null);
+    		Map<Class<? extends IFrame>, FrameState> state = (Map<Class<? extends IFrame>, FrameState>) this.stateStore.retrievePreference(Preferences.FRAME_STATES, null);
     		if (state == null) {
-    			state = new HashMap<Class<? extends Frame>, FrameState>();
+    			state = new HashMap<Class<? extends IFrame>, FrameState>();
     		}
     		state.put(frame, frameState);
     		this.stateStore.storePreference(Preferences.FRAME_STATES, state);

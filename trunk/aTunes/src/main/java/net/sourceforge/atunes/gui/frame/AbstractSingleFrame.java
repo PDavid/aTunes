@@ -40,6 +40,7 @@ import java.util.TimerTask;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuBar;
 import javax.swing.JProgressBar;
 import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
@@ -53,6 +54,7 @@ import net.sourceforge.atunes.gui.views.controls.AbstractCustomFrame;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.dialogs.UpdateDialog;
 import net.sourceforge.atunes.gui.views.menus.ApplicationMenuBar;
+import net.sourceforge.atunes.gui.views.menus.IMenuBar;
 import net.sourceforge.atunes.gui.views.panels.ContextPanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
@@ -65,6 +67,7 @@ import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.updates.ApplicationVersion;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IFrameState;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -74,14 +77,14 @@ import org.jdesktop.swingx.JXStatusBar;
 /**
  * The standard frame
  */
-abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.sourceforge.atunes.gui.frame.Frame {
+abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.sourceforge.atunes.model.IFrame {
 
     private static final long serialVersionUID = 1L;
 
     private static final int HORIZONTAL_MARGIN = GuiUtils.getComponentWidthForResolution(0.3f);
     private static final int VERTICAL_MARGIN = GuiUtils.getComponentHeightForResolution(0.2f);
     
-    private FrameState frameState;
+    private IFrameState frameState;
 
     private NavigationTreePanel navigationTreePanel;
     private NavigationTablePanel navigationTablePanel;
@@ -93,7 +96,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     private JLabel statusBarNewVersionLabel;
     private UpdateDialog updateDialog;
     private JProgressBar progressBar;
-    private ApplicationMenuBar appMenuBar;
+    private IMenuBar appMenuBar;
     private PlayListPanel playListPanel;
     private ContextPanel contextPanel;
     private PlayerControlsPanel playerControls;
@@ -116,7 +119,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     }
     
     @Override
-    public void create(FrameState frameState) {
+    public void create(IFrameState frameState) {
         this.frameState = frameState;
 
         // Set window location
@@ -156,8 +159,8 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
 			}
 			
 			private void saveState(final ComponentEvent event) {
-				final int width = GuiHandler.getInstance().getWindowSize().width;
-				final int height = GuiHandler.getInstance().getWindowSize().height;
+				final int width = AbstractSingleFrame.this.getSize().width;
+				final int height = AbstractSingleFrame.this.getSize().height;
 				
 				if (isVisible() && width != 0 && height != 0) {
 					if (timer != null) {
@@ -169,13 +172,13 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
 						
 						@Override
 						public void run() {
-							FrameState state = AbstractSingleFrame.this.state.getFrameState(GuiHandler.getInstance().getFrame().getClass());
+							IFrameState state = AbstractSingleFrame.this.state.getFrameState(AbstractSingleFrame.this.getClass());
 							state.setXPosition(event.getComponent().getX());
 							state.setYPosition(event.getComponent().getY());
-							state.setMaximized(GuiHandler.getInstance().isMaximized());
+							state.setMaximized(AbstractSingleFrame.this.getExtendedState() == java.awt.Frame.MAXIMIZED_BOTH);
 							state.setWindowWidth(width);
 							state.setWindowHeight(height);
-							AbstractSingleFrame.this.state.setFrameState(GuiHandler.getInstance().getFrame().getClass(), state);
+							AbstractSingleFrame.this.state.setFrameState(AbstractSingleFrame.this.getClass(), state);
 						}
 					}, 1000);
 				}
@@ -186,14 +189,14 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
         setContentPane(getContentPanel());
 
         // Add menu bar
-        ApplicationMenuBar bar = getAppMenuBar();
-        setJMenuBar(bar);
+        IMenuBar bar = getAppMenuBar();
+        setJMenuBar((JMenuBar) bar);
 
         // Apply component orientation
         GuiUtils.applyComponentOrientation(this);
     }
 
-    protected abstract void setupSplitPaneDividerPosition(FrameState frameState);
+    protected abstract void setupSplitPaneDividerPosition(IFrameState frameState);
 
     /**
      * Gets the window state listener.
@@ -235,7 +238,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     }
 
     @Override
-    public ApplicationMenuBar getAppMenuBar() {
+    public IMenuBar getAppMenuBar() {
         if (appMenuBar == null) {
             appMenuBar = new ApplicationMenuBar();
         }
@@ -476,14 +479,14 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
      */
     void setWindowSize() {
         setMinimumSize(getWindowMinimumSize());
-        if (state.getFrameState(GuiHandler.getInstance().getFrame().getClass()).isMaximized()) {
+        if (state.getFrameState(getClass()).isMaximized()) {
             setWindowSizeMaximized();
         } else {
             Dimension dimension = null;
-            if (state.getFrameState(GuiHandler.getInstance().getFrame().getClass()).getWindowWidth() != 0 && 
-                state.getFrameState(GuiHandler.getInstance().getFrame().getClass()).getWindowHeight() != 0) {
-                dimension = new Dimension(state.getFrameState(GuiHandler.getInstance().getFrame().getClass()).getWindowWidth(), 
-                		state.getFrameState(GuiHandler.getInstance().getFrame().getClass()).getWindowHeight());
+            if (state.getFrameState(getClass()).getWindowWidth() != 0 && 
+                state.getFrameState(getClass()).getWindowHeight() != 0) {
+                dimension = new Dimension(state.getFrameState(getClass()).getWindowWidth(), 
+                		state.getFrameState(getClass()).getWindowHeight());
             }
             if (dimension == null) {
             	dimension = getDefaultWindowSize();
@@ -565,12 +568,12 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     }
 
     @Override
-    public FrameState getFrameState() {
+    public IFrameState getFrameState() {
         return frameState;
     }
     
     protected void storeFrameState() {
-   		state.setFrameState(GuiHandler.getInstance().getFrame().getClass(), frameState);
+   		state.setFrameState(getClass(), frameState);
     }
 
     protected final void applyVisibility(final boolean show, final String s, Component c, final JSplitPane sp) {
@@ -636,7 +639,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     }
     
     @Override
-    public void applicationStarted(FrameState frameState) {
+    public void applicationStarted(IFrameState frameState) {
     	// Setting window size after frame is visible avoids using workarounds to set extended state in Linux
     	// and work both in Windows and Linux
         setWindowSize();

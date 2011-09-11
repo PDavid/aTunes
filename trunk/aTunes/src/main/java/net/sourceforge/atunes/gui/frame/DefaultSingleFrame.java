@@ -30,11 +30,12 @@ import javax.swing.JComponent;
 import javax.swing.JSplitPane;
 
 import net.sourceforge.atunes.gui.views.controls.CustomSplitPane;
+import net.sourceforge.atunes.model.IFrameState;
 
 /**
  * The default frame.
  */
-public final class DefaultSingleFrame extends MainSplitPaneLeftSingleFrame implements net.sourceforge.atunes.gui.frame.Frame {
+public final class DefaultSingleFrame extends MainSplitPaneLeftSingleFrame implements net.sourceforge.atunes.model.IFrame {
 
     private static final long serialVersionUID = 1L;
 
@@ -43,7 +44,7 @@ public final class DefaultSingleFrame extends MainSplitPaneLeftSingleFrame imple
     private CustomSplitPane navigatorSplitPane;
 
     @Override
-    protected void setupSplitPaneDividerPosition(FrameState frameState) {
+    protected void setupSplitPaneDividerPosition(IFrameState frameState) {
     	super.setupSplitPaneDividerPosition(frameState);
         applySplitPaneDividerPosition(navigatorSplitPane, frameState.getSplitPaneDividerPos(NAVIGATOR_SPLIT_PANE), 0.5);
     }

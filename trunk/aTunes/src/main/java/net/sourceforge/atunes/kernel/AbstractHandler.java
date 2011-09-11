@@ -48,6 +48,7 @@ import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.IGeneralPurposePluginsHandler;
 import net.sourceforge.atunes.model.IHandler;
@@ -63,6 +64,10 @@ public abstract class AbstractHandler implements IHandler {
 
 	private IState state;
 	
+	private IFrame frame;
+	
+	private static List<AbstractHandler> handlers;
+	
 	/**
 	 * Returns access to state of application
 	 * @return
@@ -73,6 +78,16 @@ public abstract class AbstractHandler implements IHandler {
 	
 	public void setState(IState state) {
 		this.state = state;
+	}
+	
+	protected IFrame getFrame() {
+		return frame;
+	}
+	
+	public static void setFrame(IFrame frame) {
+		for (AbstractHandler handler : getHandlers()) {
+			handler.frame = frame;
+		}
 	}
 	
     /**
@@ -106,45 +121,51 @@ public abstract class AbstractHandler implements IHandler {
         PlayListEventListeners.addPlayListEventListener(handler);
     }
 
+    private static List<AbstractHandler> getHandlers() {
+    	if (handlers == null) {
+            // Instance handlers
+        	// TODO: Add here every new Handler
+        	handlers = new ArrayList<AbstractHandler>();
+        	handlers.add(ApplicationStateHandler.getInstance());
+        	handlers.add(PodcastFeedHandler.getInstance());
+        	handlers.add(ContextHandler.getInstance());
+        	handlers.add(RipperHandler.getInstance());
+        	handlers.add(CommandHandler.getInstance());
+        	handlers.add(DeviceHandler.getInstance());
+        	handlers.add(FavoritesHandler.getInstance());
+        	handlers.add(HotkeyHandler.getInstance());
+        	handlers.add(MultipleInstancesHandler.getInstance());
+        	handlers.add(NavigationHandler.getInstance());
+            handlers.add(NotificationsHandler.getInstance());
+            handlers.add(PlayerHandler.getInstance());
+            handlers.add(FilterHandler.getInstance());
+            handlers.add(PlayListHandler.getInstance());
+            handlers.add(PluginsHandler.getInstance());
+            handlers.add(RadioHandler.getInstance());
+            handlers.add(RepositoryHandler.getInstance());
+            handlers.add(SearchHandler.getInstance());
+            handlers.add((AbstractHandler)Context.getBean(IUpdateHandler.class));
+            handlers.add(GuiHandler.getInstance());
+            handlers.add((AbstractHandler) Context.getBean(ISmartPlayListHandler.class));
+            handlers.add((AbstractHandler) Context.getBean(IStatisticsHandler.class));
+            handlers.add((AbstractHandler) Context.getBean(ISystemTrayHandler.class));
+            handlers.add((AbstractHandler) Context.getBean(IGeneralPurposePluginsHandler.class));
+            handlers.add((AbstractHandler) Context.getBean(IWebServicesHandler.class));
+            handlers.add((AbstractHandler) Context.getBean(ITagHandler.class));
+            handlers.add((AbstractHandler) Context.getBean(IFullScreenHandler.class));
+    	}
+    	return handlers;
+    }
+    
     /**
      * Creates and registers all defined handlers
      * @param state
      */
     static void registerAndInitializeHandlers(IState state) {
-        // Instance handlers
-    	// TODO: Add here every new Handler
-    	List<AbstractHandler> handlers = new ArrayList<AbstractHandler>();
-    	handlers.add(ApplicationStateHandler.getInstance());
-    	handlers.add(PodcastFeedHandler.getInstance());
-    	handlers.add(ContextHandler.getInstance());
-    	handlers.add(RipperHandler.getInstance());
-    	handlers.add(CommandHandler.getInstance());
-    	handlers.add(DeviceHandler.getInstance());
-    	handlers.add(FavoritesHandler.getInstance());
-    	handlers.add(HotkeyHandler.getInstance());
-    	handlers.add(MultipleInstancesHandler.getInstance());
-    	handlers.add(NavigationHandler.getInstance());
-        handlers.add(NotificationsHandler.getInstance());
-        handlers.add(PlayerHandler.getInstance());
-        handlers.add(FilterHandler.getInstance());
-        handlers.add(PlayListHandler.getInstance());
-        handlers.add(PluginsHandler.getInstance());
-        handlers.add(RadioHandler.getInstance());
-        handlers.add(RepositoryHandler.getInstance());
-        handlers.add(SearchHandler.getInstance());
-        handlers.add((AbstractHandler)Context.getBean(IUpdateHandler.class));
-        handlers.add(GuiHandler.getInstance());
-        handlers.add((AbstractHandler) Context.getBean(ISmartPlayListHandler.class));
-        handlers.add((AbstractHandler) Context.getBean(IStatisticsHandler.class));
-        handlers.add((AbstractHandler) Context.getBean(ISystemTrayHandler.class));
-        handlers.add((AbstractHandler) Context.getBean(IGeneralPurposePluginsHandler.class));
-        handlers.add((AbstractHandler) Context.getBean(IWebServicesHandler.class));
-        handlers.add((AbstractHandler) Context.getBean(ITagHandler.class));
-        handlers.add((AbstractHandler) Context.getBean(IFullScreenHandler.class));
 
         ExecutorService executorService = Executors.newFixedThreadPool(3);
         // Register handlers
-        for (AbstractHandler handler : handlers) {
+        for (AbstractHandler handler : getHandlers()) {
         	handler.setState(state);
             registerHandler(handler);
             Runnable task = handler.getPreviousInitializationTask();
@@ -154,7 +175,7 @@ public abstract class AbstractHandler implements IHandler {
         }
 
         // Initialize handlers
-        for (final AbstractHandler handler : handlers) {
+        for (final AbstractHandler handler : getHandlers()) {
             executorService.submit(new Runnable() {
             	@Override
             	public void run() {

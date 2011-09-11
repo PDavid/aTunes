@@ -708,7 +708,7 @@ public final class RipperHandler extends AbstractHandler {
      */
     RipCdDialogController getRipCdDialogController() {
         if (ripCdDialogController == null) {
-            ripCdDialogController = new RipCdDialogController(new RipCdDialog(GuiHandler.getInstance().getFrame().getFrame()), getState());
+            ripCdDialogController = new RipCdDialogController(new RipCdDialog(getFrame().getFrame()), getState());
         }
         return ripCdDialogController;
     }

@@ -42,6 +42,7 @@ import net.sourceforge.atunes.misc.TempFolder;
 import net.sourceforge.atunes.misc.Timer;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -88,7 +89,7 @@ public class Kernel {
         timer = new Timer();
         timer.start();
 
-        state = (IState) Context.getBean("state");
+        state = (IState) Context.getBean(IState.class);
         
         LanguageSelector.setLanguage(state);
         ColorDefinitions.initColors();
@@ -108,6 +109,9 @@ public class Kernel {
                 @Override
                 public void run() {
                     LookAndFeelSelector.getInstance().setLookAndFeel(state.getLookAndFeel(), state);
+                    
+                    IFrame frame = Context.getBean(IFrame.class);
+                    AbstractHandler.setFrame(frame);
                 }
             });
         } catch (InvocationTargetException e) {

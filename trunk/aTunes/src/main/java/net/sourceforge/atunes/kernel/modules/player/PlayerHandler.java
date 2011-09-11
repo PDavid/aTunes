@@ -27,13 +27,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.PlaybackState;
 import net.sourceforge.atunes.kernel.PlaybackStateListener;
 import net.sourceforge.atunes.kernel.PlaybackStateListeners;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine.SubmissionState;
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.xine.XineEngine;
@@ -294,8 +292,8 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
      */
     private List<AbstractPlayerEngine> getEngines() {
         List<AbstractPlayerEngine> result = new ArrayList<AbstractPlayerEngine>(2);
-        result.add(new MPlayerEngine(getState()));
-        result.add(new XineEngine(getState()));
+        result.add(new MPlayerEngine(getState(), getFrame()));
+        result.add(new XineEngine(getState(), getFrame()));
         //result.add(new VlcPlayerEngine());
         //result.add(new GStreamerEngine());
         return result;
@@ -517,9 +515,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
      */
     private PlayerControlsController getPlayerControlsController() {
         if (playerControlsController == null) {
-            PlayerControlsPanel panel = null;
-            panel = GuiHandler.getInstance().getPlayerControls();
-            playerControlsController = new PlayerControlsController(panel, getState());
+            playerControlsController = new PlayerControlsController(getFrame().getPlayerControls(), getState());
         }
         return playerControlsController;
     }

@@ -30,9 +30,10 @@ import javax.swing.JComponent;
 import javax.swing.JSplitPane;
 
 import net.sourceforge.atunes.gui.views.controls.CustomSplitPane;
+import net.sourceforge.atunes.model.IFrameState;
 import net.sourceforge.atunes.utils.GuiUtils;
 
-public final class EnhancedSingleFrame extends MainSplitPaneLeftSingleFrame implements net.sourceforge.atunes.gui.frame.Frame {
+public final class EnhancedSingleFrame extends MainSplitPaneLeftSingleFrame implements net.sourceforge.atunes.model.IFrame {
 
     private static final long serialVersionUID = 1L;
 
@@ -50,7 +51,7 @@ public final class EnhancedSingleFrame extends MainSplitPaneLeftSingleFrame impl
     private static final int NAVIGATION_TABLE_MAXIMUM_HEIGHT = GuiUtils.getComponentHeightForResolution(0.4f);
 
     @Override
-    protected void setupSplitPaneDividerPosition(FrameState frameState) {
+    protected void setupSplitPaneDividerPosition(IFrameState frameState) {
     	super.setupSplitPaneDividerPosition(frameState);
         applySplitPaneDividerPosition(playListSplitPane, frameState.getSplitPaneDividerPos(PLAYLIST_SPLIT_PANE), 0.5);
     }

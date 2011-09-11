@@ -235,7 +235,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 		            tagAttributesReviewed = reviewImportDialog.getResult();
 		        }
 
-		        final ImportFilesProcess process = new ImportFilesProcess(filesToLoad, folders, path, tagAttributesReviewed, RepositoryHandler.this.getState());
+		        final ImportFilesProcess process = new ImportFilesProcess(filesToLoad, folders, path, tagAttributesReviewed, RepositoryHandler.this.getState(), RepositoryHandler.this.getFrame());
 		        process.addProcessListener(new ImportFilesProcessListener(process));
 		        process.execute();
 
@@ -312,7 +312,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
             if (progressDialog != null) {
                 progressDialog.showProgressDialog();
             }
-            GuiHandler.getInstance().getProgressBar().removeMouseListener(progressBarMouseAdapter);
+            getFrame().getProgressBar().removeMouseListener(progressBarMouseAdapter);
         };
     };
 
@@ -724,7 +724,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
                         progressDialog.getSeparatorLabel().setVisible(true);
                         progressDialog.getProgressBar().setValue(filesLoaded);
                     }
-                    GuiHandler.getInstance().getProgressBar().setValue(filesLoaded);
+                    getFrame().getProgressBar().setValue(filesLoaded);
                 }
             });
         }
@@ -738,8 +738,8 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
             progressDialog.getTotalFilesLabel().setText(StringUtils.getString(totalFiles));
             progressDialog.getProgressBar().setMaximum(totalFiles);
         }
-        GuiHandler.getInstance().getProgressBar().setIndeterminate(false);
-        GuiHandler.getInstance().getProgressBar().setMaximum(totalFiles);
+        getFrame().getProgressBar().setIndeterminate(false);
+        getFrame().getProgressBar().setMaximum(totalFiles);
     }
 
     @Override
@@ -922,7 +922,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
             GuiHandler.getInstance().showMessage(I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"));
             retrieve(foldersToRead);
         } else {
-        	RepositorySelectionInfoDialog dialog = new RepositorySelectionInfoDialog(GuiHandler.getInstance().getFrame().getFrame());
+        	RepositorySelectionInfoDialog dialog = new RepositorySelectionInfoDialog(getFrame().getFrame());
         	dialog.setVisible(true);
         	if (dialog.userAccepted()) {
         		selectRepository();
@@ -1092,7 +1092,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         // Start with indeterminate dialog
         progressDialog.showProgressDialog();
         progressDialog.getProgressBar().setIndeterminate(true);
-        GuiHandler.getInstance().getProgressBar().setIndeterminate(true);
+        getFrame().getProgressBar().setIndeterminate(true);
         filesLoaded = 0;
         try {
             if (folders == null || folders.isEmpty()) {
@@ -1154,7 +1154,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
      */
     public void importFolders(final List<File> folders, final String path) {
         final ProgressDialog progressDialog = GuiHandler.getInstance().getNewProgressDialog(StringUtils.getString(I18nUtils.getString("READING_FILES_TO_IMPORT"), "..."),
-                GuiHandler.getInstance().getFrame().getFrame());
+                getFrame().getFrame());
         progressDialog.disableCancelButton();
         progressDialog.setVisible(true);
         SwingWorker<List<ILocalAudioObject>, Void> worker = new ImportFoldersSwingWorker(folders, path, progressDialog);
@@ -1184,7 +1184,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
                 progressDialog.hideProgressDialog();
             }
             GuiHandler.getInstance().showProgressBar(false, StringUtils.getString(I18nUtils.getString("LOADING"), "..."));
-            GuiHandler.getInstance().getProgressBar().addMouseListener(progressBarMouseAdapter);
+            getFrame().getProgressBar().addMouseListener(progressBarMouseAdapter);
         }
 
     }

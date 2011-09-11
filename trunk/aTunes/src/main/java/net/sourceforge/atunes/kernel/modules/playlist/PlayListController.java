@@ -32,15 +32,17 @@ import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IState;
 
 final class PlayListController extends AbstractSimpleController<PlayListPanel> {
 
     /** The visible rect. */
     private Rectangle visibleRect;
+    
+    private IFrame frame;
 
     /**
      * Instantiates a new play list controller.
@@ -48,8 +50,9 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
      * @param panel
      * @param state
      */
-    PlayListController(PlayListPanel panel, IState state) {
+    PlayListController(PlayListPanel panel, IState state, IFrame frame) {
         super(panel, state);
+        this.frame = frame;
         addBindings();
         addStateBindings();
     }
@@ -81,7 +84,7 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
      * Delete selection.
      */
     void deleteSelection() {
-        PlayListTable table = GuiHandler.getInstance().getPlayListTable();
+        PlayListTable table = frame.getPlayListTable();
         int[] rows = table.getSelectedRows();
         if (rows.length > 0) {
             javax.swing.JTable aTable = getComponentControlled().getPlayListTable();
@@ -239,11 +242,11 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
     }
 
     void refreshPlayList() {
-        int[] selectedRows = GuiHandler.getInstance().getPlayListTable().getSelectedRows();
-        ((PlayListTableModel) GuiHandler.getInstance().getPlayListTable().getModel()).refresh(TableModelEvent.UPDATE);
+        int[] selectedRows = frame.getPlayListTable().getSelectedRows();
+        ((PlayListTableModel) frame.getPlayListTable().getModel()).refresh(TableModelEvent.UPDATE);
         // Select previous selected rows
         for (int selectedRow : selectedRows) {
-            GuiHandler.getInstance().getPlayListTable().getSelectionModel().addSelectionInterval(selectedRow, selectedRow);
+        	frame.getPlayListTable().getSelectionModel().addSelectionInterval(selectedRow, selectedRow);
         }
     }
 

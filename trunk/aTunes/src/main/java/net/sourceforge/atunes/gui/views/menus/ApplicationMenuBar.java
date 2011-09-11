@@ -79,7 +79,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 /**
  * The application menu bar.
  */
-public final class ApplicationMenuBar extends JMenuBar {
+public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
 
     private static final long serialVersionUID = 234977404080329591L;
 
@@ -270,12 +270,11 @@ public final class ApplicationMenuBar extends JMenuBar {
         add(getCustomHelpMenu());
     }
 
-    /**
-     * Adds a menu before "Help" menu
-     * 
-     * @param newMenu
-     */
-    public void addMenu(JMenu newMenu) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.menus.IMenuBar#addMenu(javax.swing.JMenu)
+	 */
+    @Override
+	public void addMenu(JMenu newMenu) {
         remove(getComponentCount() - 1);
         add(newMenu);
         add(getCustomHelpMenu());

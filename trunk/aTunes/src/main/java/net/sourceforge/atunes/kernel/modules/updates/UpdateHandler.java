@@ -64,7 +64,7 @@ public final class UpdateHandler extends AbstractHandler implements IUpdateHandl
      */
     @Override
     public void checkUpdates(boolean alwaysInDialog, boolean showNoNewVersion) {
-        new CheckUpdatesSwingWorker(this, showNoNewVersion, alwaysInDialog).execute();
+        new CheckUpdatesSwingWorker(this, showNoNewVersion, alwaysInDialog, getState(), getFrame()).execute();
     }
 
     /**

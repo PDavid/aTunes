@@ -26,7 +26,6 @@ import java.util.List;
 
 import net.sourceforge.atunes.gui.views.dialogs.StatsDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.misc.RankList;
@@ -256,7 +255,7 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
     @Override
     public void showStatistics() {
 		if (controller == null) {
-			controller = new StatsDialogController(new StatsDialog(GuiHandler.getInstance().getFrame().getFrame()), getState(), this); 
+			controller = new StatsDialogController(new StatsDialog(getFrame().getFrame()), getState(), this); 
 		}
 		controller.showStats();
 	}

@@ -27,7 +27,6 @@ import java.util.Map;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
 import net.sourceforge.atunes.gui.views.dialogs.EditTitlesDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.EditTagSources;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -50,7 +49,7 @@ public class TagHandler extends AbstractHandler implements ITagHandler {
 
         if (!editTagDialogControllerMap.containsKey(sourceOfEditTagDialog)) {
             boolean arePrevNextButtonsShown = sourceOfEditTagDialog != EditTagSources.NAVIGATOR;
-            editTagDialogControllerMap.put(sourceOfEditTagDialog, new EditTagDialogController(new EditTagDialog(GuiHandler.getInstance().getFrame().getFrame(), arePrevNextButtonsShown), getState()));
+            editTagDialogControllerMap.put(sourceOfEditTagDialog, new EditTagDialogController(new EditTagDialog(getFrame().getFrame(), arePrevNextButtonsShown), getState()));
         }
         return editTagDialogControllerMap.get(sourceOfEditTagDialog);
     }
@@ -62,7 +61,7 @@ public class TagHandler extends AbstractHandler implements ITagHandler {
 	
 	@Override
 	public void editFiles(Album a) {
-		new EditTitlesDialogController(new EditTitlesDialog(GuiHandler.getInstance().getFrame().getFrame()), getState()).editFiles(a);
+		new EditTitlesDialogController(new EditTitlesDialog(getFrame().getFrame()), getState()).editFiles(a);
 	}
 	
 }

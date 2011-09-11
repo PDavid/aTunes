@@ -32,7 +32,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import net.sourceforge.atunes.gui.frame.Frame;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.system.SystemLookAndFeel;
@@ -45,6 +44,7 @@ import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineManager;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -114,7 +114,7 @@ public abstract class OperatingSystemAdapter {
 	 * 
 	 * @param frame
 	 */
-	public abstract void setUpFrame(Frame frame);
+	public abstract void setUpFrame(IFrame frame);
 
 	/**
 	 * Returns if shadow borders are supported
@@ -136,16 +136,15 @@ public abstract class OperatingSystemAdapter {
 
 	/**
 	 * Sets full screen
-	 * 
 	 * @param window
 	 * @param fullscreen
+	 * @param frame
 	 */
-	public void setFullScreen(Window window, boolean fullscreen) {
+	public void setFullScreen(Window window, boolean fullscreen, IFrame frame) {
 		// Default behaviour
 		// Get in which screen is application and set full screen in that screen
 		GraphicsDevice graphicsDevice = GuiUtils
-				.getGraphicsDeviceForLocation(GuiHandler.getInstance()
-						.getFrame().getLocation());
+				.getGraphicsDeviceForLocation(frame.getLocation());
 		graphicsDevice.setFullScreenWindow(fullscreen ? window : null);
 	}
 

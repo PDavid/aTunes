@@ -8,6 +8,7 @@
 	<bean id="columnSet"
 		class="net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet"
 		abstract="true" />
+		
 	<bean id="navigatorColumnSet" parent="columnSet"
 		class="net.sourceforge.atunes.kernel.modules.columns.NavigatorColumnSet" />
 	<bean id="playlistColumnSet" parent="columnSet"

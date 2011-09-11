@@ -27,6 +27,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.process.AbstractAudioFileTransferProcess;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -45,9 +46,10 @@ public class TransferToDeviceProcess extends AbstractAudioFileTransferProcess {
      * @param collection
      * @param path
      * @param state
+     * @param frame
      */
-    public TransferToDeviceProcess(Collection<ILocalAudioObject> collection, String path, IState state) {
-        super(collection, state);
+    public TransferToDeviceProcess(Collection<ILocalAudioObject> collection, String path, IState state, IFrame frame) {
+        super(collection, state, frame);
         this.path = path;
     }
 

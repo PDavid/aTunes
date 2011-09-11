@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.frame;
+package net.sourceforge.atunes.model;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -29,33 +29,32 @@ import javax.swing.JFrame;
 import javax.swing.JProgressBar;
 
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
-import net.sourceforge.atunes.gui.views.menus.ApplicationMenuBar;
+import net.sourceforge.atunes.gui.views.menus.IMenuBar;
 import net.sourceforge.atunes.gui.views.panels.ContextPanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.modules.updates.ApplicationVersion;
-import net.sourceforge.atunes.model.IState;
 
 /**
  * The interface for all frames
  */
-public interface Frame {
+public interface IFrame {
 
     /**
      * Creates the frame.
      * 
      * @param frameState
      */
-    public void create(FrameState frameState);
+    public void create(IFrameState frameState);
 
     /**
      * Gets the app menu bar.
      * 
      * @return the app menu bar
      */
-    public ApplicationMenuBar getAppMenuBar();
+    public IMenuBar getAppMenuBar();
 
     /**
      * Gets the context information panel.
@@ -83,7 +82,7 @@ public interface Frame {
      * 
      * @return the state of the frame
      */
-    public FrameState getFrameState();
+    public IFrameState getFrameState();
 
     /**
      * Gets the location.
@@ -295,7 +294,7 @@ public interface Frame {
      * Actions to perform when application is started and frame is visible
      * @param frameState
      */
-    public void applicationStarted(FrameState frameState);
+    public void applicationStarted(IFrameState frameState);
 
 	/**
 	 * Returns split pane default relative positions

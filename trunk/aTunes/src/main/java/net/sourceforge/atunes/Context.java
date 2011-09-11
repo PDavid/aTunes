@@ -40,7 +40,8 @@ public class Context {
 				"/settings/spring/treecelldecorators.xml",
 				"/settings/spring/context.xml",
 				"/settings/spring/treegenerators.xml",
-				"/settings/spring/handlers.xml"
+				"/settings/spring/handlers.xml",
+				"/settings/spring/frame.xml"
 				);
 	}
 	
