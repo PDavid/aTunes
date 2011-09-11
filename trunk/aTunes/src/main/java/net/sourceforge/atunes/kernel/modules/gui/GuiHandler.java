@@ -91,7 +91,6 @@ import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
-import net.sourceforge.atunes.kernel.modules.tray.SystemTrayHandler;
 import net.sourceforge.atunes.kernel.modules.updates.ApplicationVersion;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -100,6 +99,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ISystemTrayHandler;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -550,7 +550,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     private void setPlaying(boolean playing) {
         PlayerHandler.getInstance().setPlaying(playing);
         Context.getBean(IFullScreenHandler.class).setPlaying(playing);
-        SystemTrayHandler.getInstance().setPlaying(playing);
+        Context.getBean(ISystemTrayHandler.class).setPlaying(playing);
     }
 
     /**
@@ -584,7 +584,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
         String result = strBuilder.toString();
 
         frame.setTitle(result);
-        SystemTrayHandler.getInstance().setTrayToolTip(result);
+        Context.getBean(ISystemTrayHandler.class).setTrayToolTip(result);
     }
 
     /**

@@ -47,13 +47,13 @@ import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandl
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
-import net.sourceforge.atunes.kernel.modules.tray.SystemTrayHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.IGeneralPurposePluginsHandler;
 import net.sourceforge.atunes.model.IHandler;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ISystemTrayHandler;
 import net.sourceforge.atunes.model.ITagHandler;
 import net.sourceforge.atunes.model.IUpdateHandler;
 import net.sourceforge.atunes.model.IWebServicesHandler;
@@ -134,7 +134,7 @@ public abstract class AbstractHandler implements IHandler {
         handlers.add((AbstractHandler)Context.getBean(IUpdateHandler.class));
         handlers.add(GuiHandler.getInstance());
         handlers.add(StatisticsHandler.getInstance());
-        handlers.add(SystemTrayHandler.getInstance());
+        handlers.add((AbstractHandler) Context.getBean(ISystemTrayHandler.class));
         handlers.add((AbstractHandler) Context.getBean(IGeneralPurposePluginsHandler.class));
         handlers.add((AbstractHandler) Context.getBean(IWebServicesHandler.class));
         handlers.add((AbstractHandler) Context.getBean(ITagHandler.class));

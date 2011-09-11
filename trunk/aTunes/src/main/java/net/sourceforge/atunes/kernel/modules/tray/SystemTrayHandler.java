@@ -26,7 +26,6 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
-import java.util.List;
 
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenuItem;
@@ -60,8 +59,8 @@ import net.sourceforge.atunes.kernel.actions.StopCurrentAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.ToggleWindowVisibilityAction;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ISystemTrayHandler;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
@@ -70,9 +69,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The system tray handler.
  */
-public final class SystemTrayHandler extends AbstractHandler {
-
-    private static SystemTrayHandler instance = new SystemTrayHandler();
+public final class SystemTrayHandler extends AbstractHandler implements ISystemTrayHandler {
 
     private boolean trayInitialized;
     private boolean trayIconVisible;
@@ -87,21 +84,6 @@ public final class SystemTrayHandler extends AbstractHandler {
     
     private boolean playing;
 
-    /**
-     * Instantiates a new system tray handler.
-     */
-    private SystemTrayHandler() {
-    }
-
-    @Override
-    protected void initHandler() {
-
-    }
-
-    @Override
-    public void applicationStarted(List<IAudioObject> playList) {
-    }
-    
     @Override
     public void allHandlersInitialized() {
     	if (OsManager.areTrayIconsSupported()) {
@@ -115,15 +97,6 @@ public final class SystemTrayHandler extends AbstractHandler {
     			initTrayIcon();
     		}
     	}
-    }
-
-    /**
-     * Gets the single instance of SystemTrayHandler.
-     * 
-     * @return single instance of SystemTrayHandler
-     */
-    public static SystemTrayHandler getInstance() {
-        return instance;
     }
 
     /**
@@ -218,13 +191,8 @@ public final class SystemTrayHandler extends AbstractHandler {
         }
     }
 
-    /**
-     * Sets the playing.
-     * 
-     * @param playing
-     *            the new playing
-     */
-    public void setPlaying(boolean playing) {
+    @Override
+	public void setPlaying(boolean playing) {
     	this.playing = playing;
     	if (isTrayInitialized()) {
         	Color color = getState().getTrayPlayerIconsColor().getColor();
@@ -281,13 +249,8 @@ public final class SystemTrayHandler extends AbstractHandler {
         }
     }
 
-    /**
-     * Sets the tray tool tip.
-     * 
-     * @param msg
-     *            the new tray tool tip
-     */
-    public void setTrayToolTip(String msg) {
+    @Override
+	public void setTrayToolTip(String msg) {
     	if (isTrayInitialized()) {
     		getTrayIcon().setToolTip(msg);
     	}
@@ -502,11 +465,4 @@ public final class SystemTrayHandler extends AbstractHandler {
 	protected boolean isTrayInitialized() {
 		return trayInitialized;
 	}
-
-	@Override
-	public void playListCleared() {}
-
-	@Override
-	public void selectedAudioObjectChanged(IAudioObject audioObject) {}
-
 }
