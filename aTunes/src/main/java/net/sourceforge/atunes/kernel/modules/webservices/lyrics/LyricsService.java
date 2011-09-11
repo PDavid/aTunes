@@ -94,7 +94,7 @@ public final class LyricsService implements ApplicationStateChangeListener, ILyr
                     if (lyric == null) {
                     	Logger.info(StringUtils.getString("Lyrics for: ", artist, "/", song, " not found with engine: ", lyricsEngines.get(i).getLyricsProviderName()));
                     } else {
-                    	Logger.debug("Engine: ", lyricsEngines.get(i).getLyricsProviderName(), " returned lyrics for: ", artist, "/", song, ": ", lyric.getLyrics());
+                    	Logger.debug("Engine: ", lyricsEngines.get(i).getLyricsProviderName(), " returned lyrics for: ", artist, "/", song);
                     }
                     
                     i++;
