@@ -24,8 +24,10 @@ import java.awt.event.ActionEvent;
 import java.util.List;
 import java.util.Properties;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.actions.CustomAbstractAction;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.ISmartPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -65,7 +67,7 @@ public class AddArtistsMostPlayedAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        SmartPlayListHandler.getInstance().addArtistsMostPlayed((Integer) this.getProperties().get(PARAMETER));
+    	Context.getBean(ISmartPlayListHandler.class).addArtistsMostPlayed((Integer) this.getProperties().get(PARAMETER));
     }
 
     @Override

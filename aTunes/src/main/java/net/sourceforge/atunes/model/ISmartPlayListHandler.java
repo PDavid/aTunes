@@ -20,14 +20,51 @@
 
 package net.sourceforge.atunes.model;
 
-import org.commonjukebox.plugins.model.PluginListener;
-
-
 /**
- * Responsible of loading plugins
+ * Responsible of build play lists based on statistical or context information
  * @author alex
  *
  */
-public interface IGeneralPurposePluginsHandler extends PluginListener, IHandler {
+public interface ISmartPlayListHandler extends IHandler {
+
+	/**
+	 * Gets n albums most played and adds to play list.
+	 * 
+	 * @param n
+	 *            the n
+	 */
+	public void addAlbumsMostPlayed(int n);
+
+	/**
+	 * Gets n artists most played and adds to play list.
+	 * 
+	 * @param n
+	 *            the n
+	 */
+	public void addArtistsMostPlayed(int n);
+
+	/**
+	 * Gets a number of random songs and adds to play list.
+	 * 
+	 * @param n
+	 *            the n
+	 */
+	public void addRandomSongs(int n);
+
+	/**
+	 * Gets n songs most played and adds to play list.
+	 * 
+	 * @param n
+	 *            the n
+	 */
+	public void addSongsMostPlayed(int n);
+
+	/**
+	 * Adds n unplayed songs to playlist.
+	 * 
+	 * @param n
+	 *            the n
+	 */
+	public void addUnplayedSongs(int n);
 
 }
