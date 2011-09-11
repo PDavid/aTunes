@@ -33,7 +33,6 @@ import net.sourceforge.atunes.kernel.modules.state.beans.ColorBean;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.kernel.modules.tags.TagAttribute;
-import net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsEngineInfo;
 
 /**
  * Mock implememtation of IState, allows override any method for test
@@ -605,13 +604,13 @@ public class MockState implements IState {
 	}
 
 	@Override
-	public List<LyricsEngineInfo> getLyricsEnginesInfo() {
+	public List<ILyricsEngineInfo> getLyricsEnginesInfo() {
 
 		return null;
 	}
 
 	@Override
-	public void setLyricsEnginesInfo(List<LyricsEngineInfo> lyricsEnginesInfo) {
+	public void setLyricsEnginesInfo(List<ILyricsEngineInfo> lyricsEnginesInfo) {
 
 		
 	}

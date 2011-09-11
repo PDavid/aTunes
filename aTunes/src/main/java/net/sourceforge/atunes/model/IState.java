@@ -33,7 +33,6 @@ import net.sourceforge.atunes.kernel.modules.state.beans.ColorBean;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.kernel.modules.tags.TagAttribute;
-import net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsEngineInfo;
 
 public interface IState {
 
@@ -241,9 +240,9 @@ public interface IState {
 	public void setAutoLoveFavoriteSong(boolean autoLoveFavoriteSong);
 
 
-	public List<LyricsEngineInfo> getLyricsEnginesInfo();
+	public List<ILyricsEngineInfo> getLyricsEnginesInfo();
 
-	public void setLyricsEnginesInfo(List<LyricsEngineInfo> lyricsEnginesInfo);
+	public void setLyricsEnginesInfo(List<ILyricsEngineInfo> lyricsEnginesInfo);
 
 	public String getFullScreenBackground();
 

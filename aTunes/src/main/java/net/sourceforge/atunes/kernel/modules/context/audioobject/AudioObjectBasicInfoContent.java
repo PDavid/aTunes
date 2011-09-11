@@ -86,9 +86,7 @@ public class AudioObjectBasicInfoContent extends AbstractContextPanelContent {
      */
     public AudioObjectBasicInfoContent() {
         lovedSong = new JMenuItem(I18nUtils.getString("ADD_LOVED_SONG_IN_LASTFM"));
-        lovedSong.addActionListener(new AddLovedSongActionListener(webServicesHandler));
         bannedSong = new JMenuItem(I18nUtils.getString("ADD_BANNED_SONG_IN_LASTFM"));
-        bannedSong.addActionListener(new AddBannedSongActionListener(webServicesHandler));
     }
 
     @Override
@@ -189,6 +187,8 @@ public class AudioObjectBasicInfoContent extends AbstractContextPanelContent {
     
     public final void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
+        this.lovedSong.addActionListener(new AddLovedSongActionListener(this.webServicesHandler));
+        this.bannedSong.addActionListener(new AddBannedSongActionListener(this.webServicesHandler));
 	}
 
 }
