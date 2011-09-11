@@ -26,21 +26,25 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IStatisticsHandler;
 
-public final class SmartPlayListHandler {
+public final class SmartPlayListHandler extends AbstractHandler {
 
     /**
      * Singleton instance
      */
     private static SmartPlayListHandler instance;
 
+    private IStatisticsHandler statisticsHandler;
+    
     /**
      * Default constructor
      */
@@ -60,6 +64,11 @@ public final class SmartPlayListHandler {
         return instance;
     }
 
+    @Override
+    protected void initHandler() {
+    	statisticsHandler = Context.getBean(IStatisticsHandler.class);
+    }
+    
     /**
      * Gets n albums most played and adds to play list.
      * 
@@ -68,7 +77,7 @@ public final class SmartPlayListHandler {
      */
     public void addAlbumsMostPlayed(int n) {
         // Get n most played albums
-        List<Album> albums = StatisticsHandler.getInstance().getMostPlayedAlbums(n);
+        List<Album> albums = statisticsHandler.getMostPlayedAlbums(n);
 
         // Songs selected
         List<IAudioObject> songsSelected = new ArrayList<IAudioObject>();
@@ -93,7 +102,7 @@ public final class SmartPlayListHandler {
      */
     public void addArtistsMostPlayed(int n) {
         // Get n most played albums
-        List<Artist> artists = StatisticsHandler.getInstance().getMostPlayedArtists(n);
+        List<Artist> artists = statisticsHandler.getMostPlayedArtists(n);
 
         // Songs selected
         List<IAudioObject> songsSelected = new ArrayList<IAudioObject>();
@@ -150,7 +159,7 @@ public final class SmartPlayListHandler {
      */
     public void addSongsMostPlayed(int n) {
         // Get songs
-        List<ILocalAudioObject> songsSelected = StatisticsHandler.getInstance().getMostPlayedAudioFiles(n);
+        List<IAudioObject> songsSelected = statisticsHandler.getMostPlayedAudioObjects(n);
 
         // Sort
         AudioObjectComparator.sort(songsSelected);
@@ -167,7 +176,7 @@ public final class SmartPlayListHandler {
      */
     public void addUnplayedSongs(int n) {
         // Get unplayed files
-        List<ILocalAudioObject> unplayedSongs = StatisticsHandler.getInstance().getUnplayedAudioFiles();
+        List<IAudioObject> unplayedSongs = statisticsHandler.getUnplayedAudioObjects();
         Collections.shuffle(unplayedSongs);
 
         // Add to playlist

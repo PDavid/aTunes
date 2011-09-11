@@ -37,7 +37,6 @@ import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
-import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
 import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
 import net.sourceforge.atunes.misc.Timer;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -45,6 +44,7 @@ import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.Repository;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -276,7 +276,7 @@ public class RepositoryLoader extends Thread {
 	 * @param file
 	 *            the file
 	 */
-	static void refreshFile(Repository repository, ILocalAudioObject file) {
+	static void refreshFile(Repository repository, ILocalAudioObject file, IStatisticsHandler statisticsHandler) {
 		try {
 			// Get old tag
 			AbstractTag oldTag = file.getTag();
@@ -298,7 +298,7 @@ public class RepositoryLoader extends Thread {
 					Artist oldArtist = repository.getArtist(oldTag.getArtist());
 					if (oldArtist == null) {
 						// Artist has been renamed -> Update statistics
-						StatisticsHandler.getInstance().updateArtist(oldTag.getArtist(), newTag.getArtist());
+						statisticsHandler.replaceArtist(oldTag.getArtist(), newTag.getArtist());
 						oldArtistRemoved = true;
 					}
 				}
@@ -307,9 +307,7 @@ public class RepositoryLoader extends Thread {
 					Album oldAlbum = artistWithOldAlbum.getAlbum(oldTag.getAlbum());
 					if (oldAlbum == null) {
 						// Album has been renamed -> Update statistics
-						StatisticsHandler.getInstance().updateAlbum(
-								artistWithOldAlbum.getName(),
-								oldTag.getAlbum(), newTag.getAlbum());
+						statisticsHandler.replaceAlbum(artistWithOldAlbum.getName(), oldTag.getAlbum(), newTag.getAlbum());
 					}
 				}
 			}
@@ -758,8 +756,9 @@ public class RepositoryLoader extends Thread {
 	 * Refreshes folder
 	 * @param repository
 	 * @param folders
+	 * @param statisticsHandler
 	 */
-	public static void refreshFolders(Repository repository, List<Folder> folders) {
+	public static void refreshFolders(Repository repository, List<Folder> folders, IStatisticsHandler statisticsHandler) {
 		RepositoryHandler.getInstance().startTransaction();
 		
 		for (Folder folder : folders) {
@@ -768,7 +767,7 @@ public class RepositoryLoader extends Thread {
 			for (ILocalAudioObject ao : aos) {
 				if (ao.getFile().exists()) {
 					Logger.debug("Refreshing file: ", ao.getFile().getAbsolutePath());
-					refreshFile(repository, ao);
+					refreshFile(repository, ao, statisticsHandler);
 				} else {
 					Logger.debug("Removing file: ", ao.getFile().getAbsolutePath());
 					RepositoryHandler.getInstance().remove(Collections.singletonList(ao));

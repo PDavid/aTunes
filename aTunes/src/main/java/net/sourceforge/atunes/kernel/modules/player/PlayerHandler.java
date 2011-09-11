@@ -39,10 +39,10 @@ import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.xine.XineEngine;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -473,7 +473,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     		if (newState == PlaybackState.PLAY_FINISHED || newState == PlaybackState.PLAY_INTERRUPTED || newState == PlaybackState.STOPPED) {
     			if (playerEngine != null && playerEngine.getSubmissionState() == SubmissionState.PENDING && currentAudioObject instanceof AudioFile) {
     				Context.getBean(IWebServicesHandler.class).submit((AudioFile) currentAudioObject, getCurrentAudioObjectPlayedTime() / 1000);
-    				StatisticsHandler.getInstance().setAudioFileStatistics((AudioFile) currentAudioObject);
+    				Context.getBean(IStatisticsHandler.class).updateAudioObjectStatistics(currentAudioObject);
     				playerEngine.setSubmissionState(SubmissionState.SUBMITTED);
     			}
     		}

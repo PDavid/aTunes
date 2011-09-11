@@ -22,7 +22,8 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler;
+import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -42,7 +43,7 @@ public class ShowStatsAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        StatisticsHandler.getInstance().showStats();
+        Context.getBean(IStatisticsHandler.class).showStatistics();
     }
 
 }
